@@ -2,7 +2,6 @@ import { BiaOsBridgeDatabase } from '../bia-os-bridge';
 
 export class BiaOsBridgeElectronDatabase implements BiaOsBridgeDatabase {
   async runQuery(query: string, params: any[]): Promise<number> {
-    console.log('runQuery', window);
     return await (window as any).biaElectronBridge?.database?.runQuery(
       query,
       params

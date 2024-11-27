@@ -16,7 +16,6 @@ export class DatabaseIpc extends BiaIpc {
     super.init();
 
     this.db = new sqlite3.Database(this.dbPath);
-    this.createTables();
   }
 
   protected setHandling(): void {
@@ -41,30 +40,13 @@ export class DatabaseIpc extends BiaIpc {
     });
   }
 
-  private createTables() {
-    const query = `
-            CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT NOT NULL,
-                email TEXT NOT NULL UNIQUE
-            );
-        `;
-    this.db.run(query, err => {
-      if (err) {
-        console.error('Failed to create tables:', err);
-      } else {
-        console.log('Tables created successfully.');
-      }
-    });
-  }
-
   private runQuery(query, params = []) {
     return new Promise((resolve, reject) => {
       this.db.run(query, params, function (err) {
         if (err) {
           reject(err);
         } else {
-          resolve({ id: this.lastID });
+          resolve(this.changes);
         }
       });
     });

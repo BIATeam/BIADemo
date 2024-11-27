@@ -16,13 +16,16 @@ export class HomeIndexComponent implements OnInit, OnDestroy {
     this.layoutService.hideBreadcrumb();
 
     //  === OS Bridge Database ===
-    await this.osBridge.database.runQuery(`
+    await this.osBridge.database.runQuery(
+      `
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             email TEXT NOT NULL UNIQUE
         );
-    `, []);
+    `,
+      []
+    );
 
     const addUsers = await this.osBridge.database.runQuery(
       'INSERT INTO users (name, email) VALUES (?, ?)',
