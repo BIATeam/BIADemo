@@ -16,8 +16,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     /// <summary>
     /// The API controller used to manage users.
     /// </summary>
-    // Android workaround
+#if ANDROID
     [AllowAnonymous]
+#endif
     public class LogsController : AuthControllerBase
     {
         /// <summary>

@@ -18,12 +18,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base;
-
+    
     /// <summary>
     /// The API controller used to authenticate users.
     /// </summary>
-    // Android workaround
+#if ANDROID
     [AllowAnonymous]
+#endif
     public class AuthController : AuthControllerBase
     {
         /// <summary>
