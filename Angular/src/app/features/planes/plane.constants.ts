@@ -25,6 +25,14 @@ export const planeCRUDConfiguration: CrudConfig = new CrudConfig({
     useUpdate: true,
     useDelete: true,
   },
+  showIcons: {
+    showCalcMode: true,
+    showPopup: true,
+    showView: true,
+    showSignalR: true,
+    showCompactMode: true,
+    showVirtualScroll: true,
+  },
   // End BIADemo
   // IMPORTANT: this key should be unique in all the application.
   // storeKey: 'feature-' + featureName,

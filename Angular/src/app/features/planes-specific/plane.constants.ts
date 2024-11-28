@@ -22,6 +22,11 @@ export const planeCRUDConfiguration: CrudConfig = new CrudConfig({
   tableStateKey: 'planesGrid',
   useCompactMode: true,
   useVirtualScroll: false,
+  showIcons: {
+    showPopup: true,
+    showView: true,
+    showCompactMode: true,
+  },
 });
 
 export const planeSpecificCRUDConfiguration: CrudConfig = new CrudConfig({

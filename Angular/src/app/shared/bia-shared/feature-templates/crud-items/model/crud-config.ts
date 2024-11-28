@@ -2,6 +2,15 @@ import { TeamTypeId } from 'src/app/shared/constants';
 import { BiaFieldsConfig } from '../../../model/bia-field-config';
 import { BiaTableState } from '../../../model/bia-table-state';
 
+export interface ShowIconsConfig {
+  showCalcMode: boolean;
+  showPopup: boolean;
+  showView: boolean;
+  showSignalR: boolean;
+  showCompactMode: boolean;
+  showVirtualScroll: boolean;
+}
+
 export class CrudConfig {
   featureName: string;
   storeKey: string;
@@ -23,6 +32,14 @@ export class CrudConfig {
     useUpdate: boolean;
     useDelete: boolean;
   };
+  showIcons: ShowIconsConfig = {
+    showCalcMode: false,
+    showPopup: false,
+    showView: false,
+    showSignalR: false,
+    showCompactMode: false,
+    showVirtualScroll: false,
+  };
 
   constructor({
     featureName,
@@ -39,6 +56,7 @@ export class CrudConfig {
     bulkMode,
     useCompactMode = false,
     useVirtualScroll = false,
+    showIcons,
   }: {
     featureName: string;
     fieldsConfig: BiaFieldsConfig;
@@ -58,6 +76,7 @@ export class CrudConfig {
     };
     useCompactMode?: boolean;
     useVirtualScroll?: boolean;
+    showIcons?: Partial<ShowIconsConfig>;
   }) {
     this.featureName = featureName;
     this.fieldsConfig = fieldsConfig;
@@ -77,5 +96,8 @@ export class CrudConfig {
       bulkMode?.useUpdate === true;
     this.useCompactMode = useCompactMode;
     this.useVirtualScroll = !!useVirtualScroll;
+    if (showIcons) {
+      this.showIcons = { ...this.showIcons, ...showIcons };
+    }
   }
 }
