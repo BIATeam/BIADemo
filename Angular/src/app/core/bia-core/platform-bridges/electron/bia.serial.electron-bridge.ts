@@ -1,6 +1,6 @@
-import { BiaOsBridgeSerial } from '../bia-os-bridge';
+import { BiaSerialPlatformBridge } from '../bia.platform-bridge';
 
-export class BiaOsBridgeElectronSerial implements BiaOsBridgeSerial {
+export class BiaSerialElectronBridge implements BiaSerialPlatformBridge {
   async getSerialPorts(): Promise<any[]> {
     return await (
       window as any

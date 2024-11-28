@@ -1,6 +1,6 @@
-import { BiaOsBridgeUsb } from '../bia-os-bridge';
+import { BiaUsbPlaformBridge } from '../bia.platform-bridge';
 
-export class BiaOsBridgeElectronUsb implements BiaOsBridgeUsb {
+export class BiaUsbElectronBridge implements BiaUsbPlaformBridge {
   onUsbDeviceConnected(callback: (device: any) => void): void {
     (window as any).biaElectronBridge?.usb?.onUsbDeviceConnected(callback);
   }

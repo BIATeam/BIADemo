@@ -17,14 +17,14 @@ import { KeycloakAngularModule } from 'keycloak-angular';
 import { AppSettingsModule } from 'src/app/domains/bia-domains/app-settings/app-settings.module';
 import { NotificationSignalRService } from 'src/app/domains/bia-domains/notification/services/notification-signalr.service';
 import { TeamModule } from 'src/app/domains/bia-domains/team/team.module';
+import { BiaPlatformBridge } from './platform-bridges/bia.platform-bridge';
+import { biaPlatformBridgeFactory } from './platform-bridges/bia.platform-bridge.factory';
 import { AuthService } from './services/auth.service';
 import { BiaAppInitService } from './services/bia-app-init.service';
 import { BiaThemeService } from './services/bia-theme.service';
 import { BiaTranslationService } from './services/bia-translation.service';
 
 // OS Bridge
-import { BiaOsBridge } from './os-bridges/bia-os-bridge';
-import { biaOsBridgeFactory } from './os-bridges/bia-os-bridge-factory';
 
 export function initializeApp(appInitService: BiaAppInitService) {
   return async (): Promise<any> => {
@@ -72,8 +72,8 @@ const BASE_HREF = [
     ...SERVICES,
     ...BASE_HREF,
     {
-      provide: BiaOsBridge,
-      useFactory: biaOsBridgeFactory,
+      provide: BiaPlatformBridge,
+      useFactory: biaPlatformBridgeFactory,
     },
     {
       provide: APP_INITIALIZER,

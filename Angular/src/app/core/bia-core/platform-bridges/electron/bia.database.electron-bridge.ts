@@ -1,6 +1,6 @@
-import { BiaOsBridgeDatabase } from '../bia-os-bridge';
+import { BiaDatabasePlatformBridge } from '../bia.platform-bridge';
 
-export class BiaOsBridgeElectronDatabase implements BiaOsBridgeDatabase {
+export class BiaDatabaseElectronBridge implements BiaDatabasePlatformBridge {
   async runQuery(query: string, params: any[]): Promise<number> {
     return await (window as any).biaElectronBridge?.database?.runQuery(
       query,
