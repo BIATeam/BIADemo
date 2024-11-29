@@ -6,12 +6,15 @@ import {
 import type { MenuItemConstructorOptions } from 'electron';
 import { app, MenuItem } from 'electron';
 import electronIsDev from 'electron-is-dev';
+import log from 'electron-log';
 import unhandled from 'electron-unhandled';
 import { autoUpdater } from 'electron-updater';
 import { DatabaseIpc } from './ipc/database.ipc';
 import { SerialPortIpc } from './ipc/serial-port.ipc';
 import { UsbIpc } from './ipc/usb.ipc';
 import { ElectronCapacitorApp, setupReloadWatcher } from './setup';
+
+log.initialize();
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
@@ -63,6 +66,8 @@ if (electronIsDev) {
   await electronCapacitorApp.init();
   // Check for updates if we are in a packaged app.
   autoUpdater.checkForUpdatesAndNotify();
+
+  await navigator.usb.requestDevice();
 })();
 
 // Handle when all of our windows are close (platforms have their own expectations).
