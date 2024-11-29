@@ -46,34 +46,47 @@ export class HomeIndexComponent implements OnInit, OnDestroy {
     // console.log('Users deleted result', deletedUSers);
 
     // === Platform Bridge USB ===
-    console.log('USB ports', await this.platformBridge.usb.getUsbPorts());
-    this.platformBridge.usb.onUsbDeviceConnected(device => {
-      console.log('USB connected:', device);
-    });
+    // console.log('USB ports', await this.platformBridge.usb.getUsbPorts());
+    // this.platformBridge.usb.onUsbDeviceConnected(device => {
+    //   console.log('USB connected:', device);
+    // });
 
-    this.platformBridge.usb.onUsbDeviceDisconnected(device => {
-      console.log('USB disconnected:', device);
-    });
+    // this.platformBridge.usb.onUsbDeviceDisconnected(device => {
+    //   console.log('USB disconnected:', device);
+    // });
 
     //=== Platform Bridge Serial Port ===
-    console.log(
-      'Serial Ports',
-      await this.platformBridge.serialPort.getSerialPorts()
-    );
+    // console.log(
+    //   'Serial Ports',
+    //   await this.platformBridge.serialPort.getSerialPorts()
+    // );
 
-    this.platformBridge.serialPort.onSerialPortConnected(portInfo => {
-      console.log('Serial Port connected', portInfo);
-      this.platformBridge.serialPort.listenPort(
-        portInfo.path,
-        (portPath, err) =>
-          console.log(`Error on listening Serial Port ${portPath}`, err),
-        (portPath, data) =>
-          console.log(`Serial Port ${portPath} data received`, data)
-      );
-    });
+    // this.platformBridge.serialPort.onSerialPortConnected(portInfo => {
+    //   console.log('Serial Port connected', portInfo);
+    //   this.platformBridge.serialPort.listenPort(
+    //     portInfo.path,
+    //     (portPath, err) =>
+    //       console.log(`Error on listening Serial Port ${portPath}`, err),
+    //     (portPath, data) =>
+    //       console.log(`Serial Port ${portPath} data received`, data)
+    //   );
+    // });
 
-    this.platformBridge.serialPort.onSerialPortDisconnected(portInfo => {
-      console.log('Serial Port disconnected', portInfo);
+    // this.platformBridge.serialPort.onSerialPortDisconnected(portInfo => {
+    //   console.log('Serial Port disconnected', portInfo);
+    // });
+
+    console.log(this.platformBridge);
+
+    document.getElementById('connect-usb')?.addEventListener('click', () => {
+      (navigator as any).usb
+        .requestDevice({ filters: [] })
+        .then((devices: any[]) => {
+          devices.forEach(device => {
+            console.log(device.productName);
+            console.log(device.manufacturerName);
+          });
+        });
     });
   }
 
