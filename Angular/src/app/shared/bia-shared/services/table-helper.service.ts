@@ -124,6 +124,9 @@ export class TableHelperService {
             ? ' - var(--footer-height)'
             : '';
       }
+      if (layoutService._config.menuMode === 'horizontal') {
+        height += ' - 3rem';
+      }
     }
     if (compactMode) {
       height += ' - 0.208rem + 58px';

@@ -23,6 +23,11 @@ body {
   min-height: calc(100vh - 6.45rem - var(--footer-height));
 }
 
+.layout-horizontal .layout-content-wrapper p-breadcrumb + .layout-content {
+  padding: 0;
+  min-height: calc(100vh - 9.45rem - var(--footer-height));
+}
+
 .layout-container.layout-footer-overlay {
   .layout-content-wrapper .layout-content {
     padding: 0;
@@ -32,6 +37,18 @@ body {
   .layout-content-wrapper p-breadcrumb + .layout-content {
     padding: 0;
     min-height: calc(100vh - 6.45rem);
+  }
+
+  &.layout-horizontal {
+    .layout-content-wrapper .layout-content {
+      padding: 0;
+      min-height: calc(100vh - 7rem);
+    }
+
+    .layout-content-wrapper p-breadcrumb + .layout-content {
+      padding: 0;
+      min-height: calc(100vh - 9.45rem);
+    }
   }
 }
 

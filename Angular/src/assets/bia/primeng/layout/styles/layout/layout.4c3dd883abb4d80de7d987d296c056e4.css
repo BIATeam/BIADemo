@@ -2484,6 +2484,11 @@ body {
   min-height: calc(100vh - 6.45rem - var(--footer-height));
 }
 
+.layout-horizontal .layout-content-wrapper p-breadcrumb + .layout-content {
+  padding: 0;
+  min-height: calc(100vh - 9.45rem - var(--footer-height));
+}
+
 .layout-container.layout-footer-overlay
   .layout-content-wrapper
   .layout-content {
@@ -2496,6 +2501,19 @@ body {
   + .layout-content {
   padding: 0;
   min-height: calc(100vh - 6.45rem);
+}
+.layout-container.layout-footer-overlay.layout-horizontal
+  .layout-content-wrapper
+  .layout-content {
+  padding: 0;
+  min-height: calc(100vh - 7rem);
+}
+.layout-container.layout-footer-overlay.layout-horizontal
+  .layout-content-wrapper
+  p-breadcrumb
+  + .layout-content {
+  padding: 0;
+  min-height: calc(100vh - 9.45rem);
 }
 
 @media screen and (min-width: 1729px) {
