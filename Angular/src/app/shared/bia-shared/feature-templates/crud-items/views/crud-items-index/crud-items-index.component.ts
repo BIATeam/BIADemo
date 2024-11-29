@@ -550,7 +550,8 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
   onClearFilters() {
     const table = this.crudItemListComponent.getPrimeNgTable();
     if (table) {
-      table.clear();
+      table.filters = {};
+      table.onLazyLoad.emit(table.createLazyLoadMetadata());
     }
   }
 }

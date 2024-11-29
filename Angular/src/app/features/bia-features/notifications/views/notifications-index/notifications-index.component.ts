@@ -198,6 +198,14 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
     this.displayedColumns = values;
   }
 
+  onClearFilters() {
+    const table = this.notificationListComponent.getPrimeNgTable();
+    if (table) {
+      table.filters = {};
+      table.onLazyLoad.emit(table.createLazyLoadMetadata());
+    }
+  }
+
   onToggleSearch() {
     this.showColSearch = !this.showColSearch;
   }
