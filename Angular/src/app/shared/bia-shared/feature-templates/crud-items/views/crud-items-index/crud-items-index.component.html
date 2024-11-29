@@ -21,6 +21,7 @@
       [columnToDisplays]="displayedColumns"
       (displayedColumnsChange)="displayedColumnsChanged($event)"
       (filter)="searchGlobalChanged($event)"
+      (clearFilters)="onClearFilters()"
       (toggleSearch)="onToggleSearch()"
       (viewChange)="onViewChange($event)"
       [tableStateKey]="tableStateKey"
