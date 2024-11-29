@@ -4,6 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "init:ssl": "cert\\mkcert.exe -install && cert\\mkcert.exe -cert-file cert/localhost.pem -key-file cert/localhost-key.pem localhost",
+    "start:ssl": "ng serve --ssl --ssl-cert cert/localhost.pem --ssl-key cert/localhost-key.pem",
     "start4iis": "ng serve --configuration iis",
     "build": "ng build",
     "test": "ng test",
