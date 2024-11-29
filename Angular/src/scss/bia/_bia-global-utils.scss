@@ -97,3 +97,9 @@ bia-ultima-layout .bia-page-remove-margin {
 i.bia-pointer:before {
   cursor: pointer;
 }
+
+@media screen and (max-width: 1300px) {
+  .bia-responsive-flex-row {
+    flex-wrap: wrap;
+  }
+}
