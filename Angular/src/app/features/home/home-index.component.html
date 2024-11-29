@@ -4,4 +4,15 @@
     {{ 'msg.welcome' | translate }}
   </h4>
   <button id="connect-usb">Connect USB Device</button>
+
+  <button (click)="openFile()">Open File</button>
+  <button (click)="readFile()">Read File</button>
+  <button (click)="writeFile()">Write File</button>
+  <pre>{{ fileContent }}</pre>
+
+  <button (click)="openFolder()">Open Folder</button>
+  <button (click)="addFile()">Add File</button>
+  <button (click)="deleteFile()">Delete File</button>
+  <button (click)="listFiles()">List Files</button>
+  <pre>{{ folderContents | json }}</pre>
 </div>

@@ -1,5 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BiaPlatformBridge } from 'src/app/core/bia-core/platform-bridges/bia.platform-bridge';
+import { BiaDirectorySystemService } from 'src/app/core/bia-core/services/bia-directory-system.service';
+import { BiaFileSystemService } from 'src/app/core/bia-core/services/bia-file-system.service';
 import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/services/layout.service';
 
 @Component({
@@ -10,7 +12,9 @@ import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/se
 export class HomeIndexComponent implements OnInit, OnDestroy {
   constructor(
     private layoutService: BiaLayoutService,
-    private platformBridge: BiaPlatformBridge
+    private platformBridge: BiaPlatformBridge,
+    private fileSystemService: BiaFileSystemService,
+    private directorySystemService: BiaDirectorySystemService
   ) {}
   async ngOnInit(): Promise<void> {
     this.layoutService.hideBreadcrumb();
@@ -47,7 +51,7 @@ export class HomeIndexComponent implements OnInit, OnDestroy {
 
     //=== Platform Bridge USB ===
     console.log('USB ports', await this.platformBridge.usb.getUsbPorts());
-    
+
     this.platformBridge.usb.onUsbDeviceConnected(device => {
       console.log('USB connected:', device);
     });
@@ -88,5 +92,47 @@ export class HomeIndexComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.layoutService.showBreadcrumb();
+  }
+
+  fileContent: string | null = null;
+  async openFile() {
+    const file = await this.fileSystemService.openFilePicker();
+    if (file) {
+      console.log('File selected:', file.name);
+    }
+  }
+
+  async readFile() {
+    this.fileContent = await this.fileSystemService.readFile();
+  }
+
+  async writeFile() {
+    const content = 'New file content!';
+    await this.fileSystemService.writeFile(content);
+  }
+
+  folderContents: string[] = [];
+  async openFolder() {
+    const directoryHandle =
+      await this.directorySystemService.openDirectoryPicker();
+    if (directoryHandle) {
+      console.log('Folder selected:', directoryHandle.name);
+    }
+  }
+
+  async addFile() {
+    await this.directorySystemService.addFile(
+      'newFile.txt',
+      'This is some content for the file.'
+    );
+  }
+
+  async deleteFile() {
+    await this.directorySystemService.deleteEntry('newFile.txt');
+  }
+
+  async listFiles() {
+    this.folderContents =
+      await this.directorySystemService.readDirectoryContents();
   }
 }

@@ -21,6 +21,8 @@ import { BiaPlatformBridge } from './platform-bridges/bia.platform-bridge';
 import { biaPlatformBridgeFactory } from './platform-bridges/bia.platform-bridge.factory';
 import { AuthService } from './services/auth.service';
 import { BiaAppInitService } from './services/bia-app-init.service';
+import { BiaDirectorySystemService } from './services/bia-directory-system.service';
+import { BiaFileSystemService } from './services/bia-file-system.service';
 import { BiaThemeService } from './services/bia-theme.service';
 import { BiaTranslationService } from './services/bia-translation.service';
 
@@ -54,6 +56,8 @@ const SERVICES = [
   BiaThemeService,
   BiaTranslationService,
   NotificationSignalRService,
+  BiaFileSystemService,
+  BiaDirectorySystemService,
 ];
 
 const BASE_HREF = [
