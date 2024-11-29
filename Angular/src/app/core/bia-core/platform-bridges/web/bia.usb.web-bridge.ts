@@ -26,7 +26,7 @@ export class BiaUsbWebBridge implements BiaUsbPlaformBridge {
   }
 
   onUsbDeviceConnected(callback: (device: any) => void): void {
-    (navigator as any).usb.addEventListener('connect', (event: any) => {
+    (navigator as any).usb.onconnect = (event: any) => {
       const device = event.device;
       this.connectedDevices.set(this.getDeviceKey(device), device); // Track the connected device
       callback({
@@ -35,23 +35,23 @@ export class BiaUsbWebBridge implements BiaUsbPlaformBridge {
         productName: device.productName,
         manufacturerName: device.manufacturerName,
       });
-    });
+    };
   }
 
   onUsbDeviceDisconnected(callback: (device: any) => void): void {
-    (navigator as any).usb.addEventListener('disconnect', (event: any) => {
+    (navigator as any).usb.ondisconnect = (event: any) => {
       const device = event.device;
       const deviceKey = this.getDeviceKey(device);
       if (this.connectedDevices.has(deviceKey)) {
         this.connectedDevices.delete(deviceKey); // Remove the disconnected device
-        callback({
-          vendorId: device.vendorId,
-          productId: device.productId,
-          productName: device.productName,
-          manufacturerName: device.manufacturerName,
-        });
       }
-    });
+      callback({
+        vendorId: device.vendorId,
+        productId: device.productId,
+        productName: device.productName,
+        manufacturerName: device.manufacturerName,
+      });
+    };
   }
 
   private getDeviceKey(device: any): string {
