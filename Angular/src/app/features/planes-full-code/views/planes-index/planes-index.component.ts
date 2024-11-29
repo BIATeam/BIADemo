@@ -233,7 +233,9 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   onClearFilters() {
     const table = this.planeListComponent.getPrimeNgTable();
     if (table) {
-      table.filters = {};
+      Object.keys(table.filters).forEach(key =>
+        this.tableHelperService.clearFilterMetaData(table.filters[key])
+      );
       table.onLazyLoad.emit(table.createLazyLoadMetadata());
     }
   }
