@@ -103,6 +103,18 @@ export class TableHelperService {
     return elemCopy;
   }
 
+  public clearFilterMetaData(filter: FilterMetadata | FilterMetadata[]) {
+    if (Array.isArray(filter)) {
+      filter.splice(1);
+      this.clearFilterMetaData(filter[0]);
+    } else {
+      filter.value = null;
+      if (filter.matchMode === 'empty' || filter.matchMode === 'notEmpty') {
+        filter.matchMode = '';
+      }
+    }
+  }
+
   public getFillScrollHeightValue(
     layoutService: BiaLayoutService,
     compactMode: boolean,
