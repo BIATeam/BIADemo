@@ -63,3 +63,6 @@ src/config.json
 
 #dart
 .dart_tool/package_config.json
+
+# Angular cert
+/cert/*.pem
