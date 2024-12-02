@@ -6,8 +6,8 @@ import { CrudConfig } from '../../../feature-templates/crud-items/model/crud-con
   templateUrl: './bia-table-behavior-controller.component.html',
   styleUrls: ['./bia-table-behavior-controller.component.scss'],
 })
-export class BiaTableBehaviorControllerComponent {
-  @Input() crudConfiguration: CrudConfig;
+export class BiaTableBehaviorControllerComponent<TDto extends { id: number }> {
+  @Input() crudConfiguration: CrudConfig<TDto>;
 
   @Output() useCalcModeChanged = new EventEmitter<boolean>();
   @Output() usePopupChanged = new EventEmitter<boolean>();

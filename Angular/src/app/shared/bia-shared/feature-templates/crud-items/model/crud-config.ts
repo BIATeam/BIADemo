@@ -11,7 +11,7 @@ export interface ShowIconsConfig {
   showVirtualScroll: boolean;
 }
 
-export class CrudConfig {
+export class CrudConfig<TDto extends { id: number }> {
   featureName: string;
   storeKey: string;
   useCalcMode: boolean;
@@ -21,7 +21,7 @@ export class CrudConfig {
   useViewTeamWithTypeId: TeamTypeId | null;
   usePopup: boolean;
   useOfflineMode: boolean;
-  fieldsConfig: BiaFieldsConfig;
+  fieldsConfig: BiaFieldsConfig<TDto>;
   defaultViewPref: BiaTableState;
   optionFilter: any;
   useBulk: boolean;
@@ -59,7 +59,7 @@ export class CrudConfig {
     showIcons,
   }: {
     featureName: string;
-    fieldsConfig: BiaFieldsConfig;
+    fieldsConfig: BiaFieldsConfig<TDto>;
     storeKey?: string;
     useCalcMode?: boolean;
     useSignalR?: boolean;

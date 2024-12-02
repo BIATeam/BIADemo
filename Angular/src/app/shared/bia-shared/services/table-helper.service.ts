@@ -25,7 +25,9 @@ export class TableHelperService {
     };
   }
 
-  public hasFilter(biaTableComponent: BiaTableComponent): boolean {
+  public hasFilter<TDto extends { id: number }>(
+    biaTableComponent: BiaTableComponent<TDto>
+  ): boolean {
     if (this.isNullUndefEmptyStr(biaTableComponent)) {
       return false;
     }

@@ -5,29 +5,29 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
-import { CrudConfig } from '../../model/crud-config';
-import {
-  BiaFieldConfig,
-  BiaFieldsConfig,
-  PropType,
-} from 'src/app/shared/bia-shared/model/bia-field-config';
-import { clone } from 'src/app/shared/bia-shared/utils';
-import { FileUpload } from 'primeng/fileupload';
-import { AppSettings } from 'src/app/domains/bia-domains/app-settings/model/app-settings';
-import { BulkParam } from '../../services/crud-item-bulk.service';
 import {
   UntypedFormBuilder,
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
+import { FileUpload } from 'primeng/fileupload';
+import { AppSettings } from 'src/app/domains/bia-domains/app-settings/model/app-settings';
+import {
+  BiaFieldConfig,
+  BiaFieldsConfig,
+  PropType,
+} from 'src/app/shared/bia-shared/model/bia-field-config';
+import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
+import { clone } from 'src/app/shared/bia-shared/utils';
+import { CrudConfig } from '../../model/crud-config';
+import { BulkParam } from '../../services/crud-item-bulk.service';
 
 @Component({
   selector: 'bia-crud-item-bulk-form',
   templateUrl: './crud-item-bulk-form.component.html',
   styleUrls: ['./crud-item-bulk-form.component.scss'],
 })
-export class CrudItemBulkFormComponent {
+export class CrudItemBulkFormComponent<TDto extends { id: number }> {
   @ViewChild('fileUpload') fileUpload: FileUpload;
 
   fillFormDone = false;
@@ -42,15 +42,15 @@ export class CrudItemBulkFormComponent {
 
   displayedColumns: KeyValuePair[];
   displayedColumnErrors: KeyValuePair[];
-  fieldsConfigErrors: BiaFieldsConfig;
+  fieldsConfigErrors: BiaFieldsConfig<TDto>;
   sortFieldValue = '';
-  protected crudConfigurationError: CrudConfig;
+  protected crudConfigurationError: CrudConfig<TDto>;
 
-  protected _crudConfiguration: CrudConfig;
-  get crudConfiguration(): CrudConfig {
+  protected _crudConfiguration: CrudConfig<TDto>;
+  get crudConfiguration(): CrudConfig<TDto> {
     return this._crudConfiguration;
   }
-  @Input() set crudConfiguration(value: CrudConfig) {
+  @Input() set crudConfiguration(value: CrudConfig<TDto>) {
     this._crudConfiguration = value;
     this.initHasDate();
     this.initTableParam();
@@ -152,10 +152,16 @@ export class CrudItemBulkFormComponent {
     if (this.crudConfiguration) {
       this.crudConfigurationError = clone(this.crudConfiguration);
       this.crudConfigurationError.fieldsConfig.columns.push(
-        Object.assign(new BiaFieldConfig('sErrors', 'bia.errors'), {
-          isEditable: false,
-          type: PropType.String,
-        })
+        Object.assign(
+          new BiaFieldConfig<TDto>(
+            <keyof TDto & string>'sErrors',
+            'bia.errors'
+          ),
+          {
+            isEditable: false,
+            type: PropType.String,
+          }
+        )
       );
 
       this.displayedColumnErrors =
