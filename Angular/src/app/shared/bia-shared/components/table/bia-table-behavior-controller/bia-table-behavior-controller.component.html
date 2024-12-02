@@ -43,4 +43,13 @@
     (click)="useVirtualScrollChanged.emit(!crudConfiguration.useVirtualScroll)"
     pTooltip="{{ 'bia.useVirtualScroll' | translate }}"
     tooltipPosition="top"></i>
+  <i
+    *ngIf="crudConfiguration.showIcons.showResizableColumn"
+    class="pi pi-arrows-h bia-pointer"
+    [class]="crudConfiguration.useResizableColumn ? 'enable' : 'disabled'"
+    (click)="
+      useResizableColumnChanged.emit(!crudConfiguration.useResizableColumn)
+    "
+    pTooltip="{{ 'bia.useResizableColumn' | translate }}"
+    tooltipPosition="top"></i>
 </div>

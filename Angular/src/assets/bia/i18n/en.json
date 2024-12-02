@@ -90,6 +90,7 @@
     "useCalcMode": "Edit in table",
     "useCompactMode": "Compact display",
     "usePopup": "Use popups",
+    "useResizableColumn": "Resizable column",
     "useSignalR": "Live data update",
     "useView": "Display and use views",
     "useVirtualScroll": "Inifinite scroll",

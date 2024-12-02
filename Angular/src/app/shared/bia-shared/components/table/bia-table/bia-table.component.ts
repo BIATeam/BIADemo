@@ -70,7 +70,7 @@ export class BiaTableComponent<TDto extends { id: number }>
   @Input() showLoadingAfter = 100;
   @Input() scrollHeightValue = 'calc( 100vh - 460px)';
   @Input() isScrollable = true;
-  @Input() isResizableColumn = true;
+  @Input() isResizableColumn = false;
   @Input() frozeSelectColumn = true;
   @Input() canSelectMultipleElement = true;
   @Input() rowHeight = 33.56;
@@ -146,6 +146,7 @@ export class BiaTableComponent<TDto extends { id: number }>
     this.onSearchGlobalChange(changes);
     this.onViewPreferenceChange(changes);
     this.onAdvancedFilterChange(changes);
+    this.onIsResizableColumnChange(changes);
   }
 
   clearFilters() {
@@ -206,6 +207,19 @@ export class BiaTableComponent<TDto extends { id: number }>
         );
       }
       this.updateDisplayedColumns(true);
+    }
+  }
+
+  protected onIsResizableColumnChange(changes: SimpleChanges) {
+    if (
+      changes.isResizableColumn &&
+      changes.isResizableColumn.currentValue !== true
+    ) {
+      if (this.table) {
+        this.table.columnWidthsState = '';
+      }
+
+      this.restoreColumnWidthsTable();
     }
   }
 
@@ -501,7 +515,10 @@ export class BiaTableComponent<TDto extends { id: number }>
       if (tableState?.columnOrder) {
         this.updateDisplayedColumns(false);
         this.table.restoreState();
-        this.restoreColumnWidthsTable();
+
+        if (this.table.resizableColumns) {
+          this.restoreColumnWidthsTable();
+        }
 
         if (this.table.sortMode === 'multiple') {
           this.table.sortMultiple();
@@ -533,7 +550,7 @@ export class BiaTableComponent<TDto extends { id: number }>
    * and to reset the column widths if the columnWidthsState is not defined.
    */
   protected restoreColumnWidthsTable() {
-    if (this.table && this.table.isStateful() && this.table.resizableColumns) {
+    if (this.table) {
       // The restoreColumnWidths method of PrimeNG does not restore the default size.
       // Therefore, we handle it here.
       if (this.table.styleElement) {

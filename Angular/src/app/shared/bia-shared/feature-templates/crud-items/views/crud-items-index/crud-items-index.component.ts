@@ -165,6 +165,10 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     this.initVirtualScroll();
   }
 
+  useResizableColumnChange(e: boolean) {
+    this.crudConfiguration.useResizableColumn = e;
+  }
+
   protected useViewConfig(manualChange: boolean) {
     this.tableStateKey = this.crudConfiguration.useView
       ? this.crudConfiguration.tableStateKey

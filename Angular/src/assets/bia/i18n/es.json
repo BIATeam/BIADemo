@@ -90,6 +90,7 @@
     "useCalcMode": "Editando en la tabla",
     "useCompactMode": "Pantalla compacta",
     "usePopup": "Usar popups",
+    "useResizableColumn": "Columna redimensionable",
     "useSignalR": "Actualización de datos en tiempo real",
     "useView": "Ver y usar vistas",
     "useVirtualScroll": "Pergamino infinito",

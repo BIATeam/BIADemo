@@ -37,8 +37,9 @@
           (useSignalRChanged)="useSignalRChange($event)"
           (useViewChanged)="useViewChange($event)"
           (useCompactModeChanged)="useCompactModeChange($event)"
-          (useVirtualScrollChanged)="
-            useVirtualScrollChange($event)
+          (useVirtualScrollChanged)="useVirtualScrollChange($event)"
+          (useResizableColumnChanged)="
+            useResizableColumnChange($event)
           "></bia-table-behavior-controller>
       </ng-template>
     </bia-table-controller>
@@ -70,6 +71,7 @@
       [scrollHeightValue]="getFillScrollHeightValue()"
       (stateSave)="onStateSave($event)"
       [virtualScroll]="crudConfiguration.useVirtualScroll"
+      [isResizableColumn]="crudConfiguration.useResizableColumn"
       [rowHeight]="defaultRowHeight"></bia-table>
     <bia-crud-item-table
       *ngIf="crudConfiguration.useCalcMode"

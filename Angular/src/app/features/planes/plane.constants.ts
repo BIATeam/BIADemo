@@ -32,6 +32,7 @@ export const planeCRUDConfiguration: CrudConfig<Plane> = new CrudConfig({
     showSignalR: true,
     showCompactMode: true,
     showVirtualScroll: true,
+    showResizableColumn: true,
   },
   // End BIADemo
   // IMPORTANT: this key should be unique in all the application.

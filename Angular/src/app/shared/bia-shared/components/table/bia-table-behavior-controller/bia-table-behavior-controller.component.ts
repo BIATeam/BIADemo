@@ -15,4 +15,5 @@ export class BiaTableBehaviorControllerComponent<TDto extends { id: number }> {
   @Output() useViewChanged = new EventEmitter<boolean>();
   @Output() useCompactModeChanged = new EventEmitter<boolean>();
   @Output() useVirtualScrollChanged = new EventEmitter<boolean>();
+  @Output() useResizableColumnChanged = new EventEmitter<boolean>();
 }

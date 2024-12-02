@@ -53,8 +53,9 @@
           (useSignalRChanged)="useSignalRChange($event)"
           (useViewChanged)="useViewChange($event)"
           (useCompactModeChanged)="useCompactModeChange($event)"
-          (useVirtualScrollChanged)="
-            useVirtualScrollChange($event)
+          (useVirtualScrollChanged)="useVirtualScrollChange($event)"
+          (useResizableColumnChanged)="
+            useResizableColumnChange($event)
           "></bia-table-behavior-controller
       ></ng-template>
     </bia-table-controller>
@@ -85,6 +86,7 @@
       [scrollHeightValue]="getFillScrollHeightValue()"
       [frozeSelectColumn]="true"
       [virtualScroll]="crudConfiguration.useVirtualScroll"
+      [isResizableColumn]="crudConfiguration.useResizableColumn"
       [rowHeight]="defaultRowHeight"></bia-table>
     <app-plane-table
       *ngIf="crudConfiguration.useCalcMode"
@@ -118,6 +120,7 @@
       [frozeSelectColumn]="true"
       [scrollHeightValue]="getFillScrollHeightValue()"
       [virtualScroll]="crudConfiguration.useVirtualScroll"
+      [isResizableColumn]="crudConfiguration.useResizableColumn"
       [rowHeight]="defaultRowHeight"></app-plane-table>
   </div>
 </div>

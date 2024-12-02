@@ -9,6 +9,7 @@ export interface ShowIconsConfig {
   showSignalR: boolean;
   showCompactMode: boolean;
   showVirtualScroll: boolean;
+  showResizableColumn: boolean;
 }
 
 export class CrudConfig<TDto extends { id: number }> {
@@ -27,6 +28,7 @@ export class CrudConfig<TDto extends { id: number }> {
   useBulk: boolean;
   useCompactMode?: boolean;
   useVirtualScroll = false;
+  useResizableColumn = false;
   bulkMode?: {
     useInsert: boolean;
     useUpdate: boolean;
@@ -39,6 +41,7 @@ export class CrudConfig<TDto extends { id: number }> {
     showSignalR: false,
     showCompactMode: false,
     showVirtualScroll: false,
+    showResizableColumn: false,
   };
 
   constructor({
@@ -56,6 +59,7 @@ export class CrudConfig<TDto extends { id: number }> {
     bulkMode,
     useCompactMode = false,
     useVirtualScroll = false,
+    useResizableColumn = false,
     showIcons,
   }: {
     featureName: string;
@@ -76,6 +80,7 @@ export class CrudConfig<TDto extends { id: number }> {
     };
     useCompactMode?: boolean;
     useVirtualScroll?: boolean;
+    useResizableColumn?: boolean;
     showIcons?: Partial<ShowIconsConfig>;
   }) {
     this.featureName = featureName;
@@ -96,6 +101,7 @@ export class CrudConfig<TDto extends { id: number }> {
       bulkMode?.useUpdate === true;
     this.useCompactMode = useCompactMode;
     this.useVirtualScroll = !!useVirtualScroll;
+    this.useResizableColumn = useResizableColumn;
     if (showIcons) {
       this.showIcons = { ...this.showIcons, ...showIcons };
     }

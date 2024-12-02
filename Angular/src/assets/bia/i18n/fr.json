@@ -90,6 +90,7 @@
     "useCalcMode": "Édition dans le tableau",
     "useCompactMode": "Affichage compact",
     "usePopup": "Utiliser les popups",
+    "useResizableColumn": "Colonne redimensionnable",
     "useSignalR": "Mise à jour des données en temps réel",
     "useView": "Afficher et utiliser les vues",
     "useVirtualScroll": "Défilement infini",
