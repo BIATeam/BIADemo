@@ -20,6 +20,10 @@ export class BiaDirectorySystemService {
     }
   }
 
+  setHandler(handler: FileSystemDirectoryHandle) {
+    this.directoryHandle = handler;
+  }
+
   /**
    * Adds a new file to the selected directory.
    * @param fileName The name of the new file.

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BiaPlatformBridge } from 'src/app/core/bia-core/platform-bridges/bia.platform-bridge';
 import { BiaDirectorySystemService } from 'src/app/core/bia-core/services/bia-directory-system.service';
 import { BiaFileSystemService } from 'src/app/core/bia-core/services/bia-file-system.service';
+import { biaDatabase } from 'src/app/core/bia-core/services/bia.database';
 import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/services/layout.service';
 
 @Component({
@@ -12,7 +12,7 @@ import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/se
 export class HomeIndexComponent implements OnInit, OnDestroy {
   constructor(
     private layoutService: BiaLayoutService,
-    private platformBridge: BiaPlatformBridge,
+    //private platformBridge: BiaPlatformBridge,
     private fileSystemService: BiaFileSystemService,
     private directorySystemService: BiaDirectorySystemService
   ) {}
@@ -50,36 +50,36 @@ export class HomeIndexComponent implements OnInit, OnDestroy {
     // console.log('Users deleted result', deletedUSers);
 
     //=== Platform Bridge USB ===
-    console.log('USB ports', await this.platformBridge.usb.getUsbPorts());
+    // console.log('USB ports', await this.platformBridge.usb.getUsbPorts());
 
-    this.platformBridge.usb.onUsbDeviceConnected(device => {
-      console.log('USB connected:', device);
-    });
+    // this.platformBridge.usb.onUsbDeviceConnected(device => {
+    //   console.log('USB connected:', device);
+    // });
 
-    this.platformBridge.usb.onUsbDeviceDisconnected(device => {
-      console.log('USB disconnected:', device);
-    });
+    // this.platformBridge.usb.onUsbDeviceDisconnected(device => {
+    //   console.log('USB disconnected:', device);
+    // });
 
     //=== Platform Bridge Serial Port ===
-    console.log(
-      'Serial Ports',
-      await this.platformBridge.serialPort.getSerialPorts()
-    );
+    // console.log(
+    //   'Serial Ports',
+    //   await this.platformBridge.serialPort.getSerialPorts()
+    // );
 
-    this.platformBridge.serialPort.onSerialPortConnected(portInfo => {
-      console.log('Serial Port connected', portInfo);
-      this.platformBridge.serialPort.listenPort(
-        portInfo,
-        (portPath, err) =>
-          console.log(`Error on listening Serial Port ${portPath}`, err),
-        (portPath, data) =>
-          console.log(`Serial Port ${portPath} data received`, data)
-      );
-    });
+    // this.platformBridge.serialPort.onSerialPortConnected(portInfo => {
+    //   console.log('Serial Port connected', portInfo);
+    //   this.platformBridge.serialPort.listenPort(
+    //     portInfo,
+    //     (portPath, err) =>
+    //       console.log(`Error on listening Serial Port ${portPath}`, err),
+    //     (portPath, data) =>
+    //       console.log(`Serial Port ${portPath} data received`, data)
+    //   );
+    // });
 
-    this.platformBridge.serialPort.onSerialPortDisconnected(portInfo => {
-      console.log('Serial Port disconnected', portInfo);
-    });
+    // this.platformBridge.serialPort.onSerialPortDisconnected(portInfo => {
+    //   console.log('Serial Port disconnected', portInfo);
+    // });
 
     document.getElementById('connect-usb')?.addEventListener('click', () => {
       (navigator as any).usb
@@ -96,6 +96,11 @@ export class HomeIndexComponent implements OnInit, OnDestroy {
           console.log('Serial ports requested', devices);
         });
     });
+
+    const folderHandler = await biaDatabase.getDirectory('user');
+    if (folderHandler) {
+      this.directorySystemService.setHandler(folderHandler);
+    }
   }
 
   ngOnDestroy(): void {
@@ -125,6 +130,9 @@ export class HomeIndexComponent implements OnInit, OnDestroy {
       await this.directorySystemService.openDirectoryPicker();
     if (directoryHandle) {
       console.log('Folder selected:', directoryHandle.name);
+      biaDatabase.saveDirectory('user', directoryHandle, {
+        timestamp: Date.now(),
+      });
     }
   }
 
