@@ -3,16 +3,26 @@
   <h4>
     {{ 'msg.welcome' | translate }}
   </h4>
-  <button id="connect-usb">Connect USB Device</button>
+  <div>
+    <button id="connect-usb">Connect USB Device</button>
+  </div>
 
-  <button (click)="openFile()">Open File</button>
-  <button (click)="readFile()">Read File</button>
-  <button (click)="writeFile()">Write File</button>
-  <pre>{{ fileContent }}</pre>
+  <div>
+    <button id="connect-serial">Connect Serial Device</button>
+  </div>
 
-  <button (click)="openFolder()">Open Folder</button>
-  <button (click)="addFile()">Add File</button>
-  <button (click)="deleteFile()">Delete File</button>
-  <button (click)="listFiles()">List Files</button>
-  <pre>{{ folderContents | json }}</pre>
+  <div>
+    <button (click)="openFile()">Open File</button>
+    <button (click)="readFile()">Read File</button>
+    <button (click)="writeFile()">Write File</button>
+    <pre>{{ fileContent }}</pre>
+  </div>
+
+  <div>
+    <button (click)="openFolder()">Open Folder</button>
+    <button (click)="addFile()">Add File</button>
+    <button (click)="deleteFile()">Delete File</button>
+    <button (click)="listFiles()">List Files</button>
+    <pre>{{ folderContents | json }}</pre>
+  </div>
 </div>

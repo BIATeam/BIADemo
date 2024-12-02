@@ -17,12 +17,12 @@ export class BiaSerialElectronBridge implements BiaSerialPlatformBridge {
     );
   }
   listenPort(
-    portPath: string,
-    errorCallback: (portPath: string, err: any) => void,
-    onDataReceivedCallback: (portPath: string, data: any) => void
+    portInfo: any,
+    errorCallback: (portInfo: any, err: any) => void,
+    onDataReceivedCallback: (portInfo: any, data: any) => void
   ): void {
     (window as any).biaElectronBridge?.serialPort?.listenPort(
-      portPath,
+      portInfo.path,
       errorCallback,
       onDataReceivedCallback
     );

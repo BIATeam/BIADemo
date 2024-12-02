@@ -7,8 +7,6 @@ export class BiaSerialWebBridge implements BiaSerialPlatformBridge {
     }
   }
 
-  private connectedPorts: Map<string, any> = new Map();
-
   async getSerialPorts(): Promise<any[]> {
     try {
       // Get the list of all connected serial ports
@@ -22,64 +20,61 @@ export class BiaSerialWebBridge implements BiaSerialPlatformBridge {
 
   onSerialPortConnected(callback: (portInfo: any) => void): void {
     (navigator as any).serial.addEventListener('connect', (event: any) => {
-      console.log('Serial connect', event);
-      const port = event.target;
-      const portInfo = port.getInfo(); // Port information
-      this.connectedPorts.set(JSON.stringify(portInfo), port); // Track the connected port
-      callback(portInfo);
+      callback(event.target.getInfo());
     });
   }
 
   onSerialPortDisconnected(callback: (portInfo: any) => void): void {
     (navigator as any).serial.addEventListener('disconnect', (event: any) => {
-      const port = event.target;
-      const portInfo = port.getInfo(); // Port information
-      this.connectedPorts.delete(JSON.stringify(portInfo)); // Remove the port from tracking
-      callback(portInfo);
+      callback(event.target.getInfo());
     });
   }
 
   async listenPort(
-    portPath: string,
-    errorCallback: (portPath: string, err: any) => void,
-    onDataReceivedCallback: (portPath: string, data: any) => void
+    portInfo: any,
+    errorCallback: (portInfo: any, err: any) => void,
+    onDataReceivedCallback: (portInfo: any, data: any) => void
   ): Promise<void> {
-    try {
-      const port = Array.from(this.connectedPorts.values()).find(
-        p => JSON.stringify(p.getInfo()) === portPath
-      );
-      if (!port) {
-        throw new Error(`Port with path ${portPath} not found`);
+    console.info('Listen port', portInfo);
+    const ports = await this.getSerialPorts();
+    const port = ports.find((p: any) => {
+      const infos = p.getInfo();
+      if (
+        infos.usbProductId === portInfo.usbProductId &&
+        infos.usbVendorId === portInfo.usbVendorId
+      ) {
+        return p;
       }
+    });
 
+    if (!port) {
+      throw new Error(`Port not found`);
+    }
+
+    try {
       await port.open({ baudRate: 9600 });
-
-      const decoder = new TextDecoderStream();
-      const inputStream = port.readable.pipeThrough(decoder);
-      const reader = inputStream.getReader();
-
-      // Start listening for data
-      const readLoop = async () => {
+      while (port.readable) {
+        const reader = port.readable.getReader();
         try {
-          setInterval(async () => {
+          // eslint-disable-next-line no-constant-condition
+          while (true) {
             const { value, done } = await reader.read();
             if (done) {
-              return;
+              console.log('End of port read');
+              break;
             }
-            if (value) {
-              onDataReceivedCallback(portPath, value);
-            }
-          }, 100);
-        } catch (err) {
-          console.error('Error reading from port:', err);
-          errorCallback(portPath, err);
+            console.log(value);
+            onDataReceivedCallback(port, value);
+          }
+        } catch (error) {
+          console.warn(error);
+        } finally {
+          reader.releaseLock();
         }
-      };
-
-      readLoop();
+      }
     } catch (err) {
       console.error('Error listening to port:', err);
-      errorCallback(portPath, err);
+      errorCallback(port, err);
     }
   }
 }

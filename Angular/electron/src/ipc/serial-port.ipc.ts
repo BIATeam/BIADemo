@@ -37,9 +37,7 @@ export class SerialPortIpc extends BiaIpc {
 
     if (this.isInit) {
       for (const newPort of newPorts) {
-        this.electronCapacitorApp
-          .getMainWindow()
-          .webContents.send('serialPort:onConnected', newPort);
+        this.send('serialPort:onConnected', newPort);
       }
       for (const oldPort of oldPorts) {
         if (this.listeningPorts.indexOf(oldPort) !== -1) {
@@ -47,9 +45,7 @@ export class SerialPortIpc extends BiaIpc {
             p => p.path !== oldPort.path
           );
         }
-        this.electronCapacitorApp
-          .getMainWindow()
-          .webContents.send('serialPort:onDisconnected', oldPort);
+        this.send('serialPort:onDisconnected', oldPort);
       }
     }
 
@@ -65,29 +61,23 @@ export class SerialPortIpc extends BiaIpc {
     const portInfo = this.ports.find(p => p.path == portPath);
 
     if (this.listeningPorts.indexOf(portInfo) !== -1) {
-      this.electronCapacitorApp
-        .getMainWindow()
-        .webContents.send(
-          'serialPort:listen:onError',
-          portPath,
-          new Error(`Already listening to port at path ${portPath}`)
-        );
+      this.send(
+        'serialPort:listen:onError',
+        portPath,
+        new Error(`Already listening to port at path ${portPath}`)
+      );
       return;
     }
 
     const port = new SerialPort({ path: portPath, baudRate: 9600 }, err => {
       if (err) {
-        this.electronCapacitorApp
-          .getMainWindow()
-          .webContents.send('serialPort:listen:onError', portPath, err);
+        this.send('serialPort:listen:onError', portPath, err);
       }
     });
 
     if (port) {
       port.on('data', data =>
-        this.electronCapacitorApp
-          .getMainWindow()
-          .webContents.send('serialPort:listen:onData', portPath, data)
+        this.send('serialPort:listen:onData', portPath, data)
       );
 
       this.listeningPorts.push(portInfo);

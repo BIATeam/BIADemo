@@ -20,8 +20,8 @@ export abstract class BiaSerialPlatformBridge {
   abstract onSerialPortConnected(callback: (portInfo: any) => void): void;
   abstract onSerialPortDisconnected(callback: (portInfo: any) => void): void;
   abstract listenPort(
-    portPath: string,
-    errorCallback: (portPath: string, err: any) => void,
-    onDataReceivedCallback: (portPath: string, data: any) => void
+    portInfo: any,
+    errorCallback: (portPath: any, err: any) => void,
+    onDataReceivedCallback: (portPath: any, data: any) => void
   ): void;
 }

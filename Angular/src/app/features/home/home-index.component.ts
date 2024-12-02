@@ -61,31 +61,39 @@ export class HomeIndexComponent implements OnInit, OnDestroy {
     });
 
     //=== Platform Bridge Serial Port ===
-    // console.log(
-    //   'Serial Ports',
-    //   await this.platformBridge.serialPort.getSerialPorts()
-    // );
+    console.log(
+      'Serial Ports',
+      await this.platformBridge.serialPort.getSerialPorts()
+    );
 
-    // this.platformBridge.serialPort.onSerialPortConnected(portInfo => {
-    //   console.log('Serial Port connected', portInfo);
-    //   this.platformBridge.serialPort.listenPort(
-    //     portInfo.path,
-    //     (portPath, err) =>
-    //       console.log(`Error on listening Serial Port ${portPath}`, err),
-    //     (portPath, data) =>
-    //       console.log(`Serial Port ${portPath} data received`, data)
-    //   );
-    // });
+    this.platformBridge.serialPort.onSerialPortConnected(portInfo => {
+      console.log('Serial Port connected', portInfo);
+      this.platformBridge.serialPort.listenPort(
+        portInfo,
+        (portPath, err) =>
+          console.log(`Error on listening Serial Port ${portPath}`, err),
+        (portPath, data) =>
+          console.log(`Serial Port ${portPath} data received`, data)
+      );
+    });
 
-    // this.platformBridge.serialPort.onSerialPortDisconnected(portInfo => {
-    //   console.log('Serial Port disconnected', portInfo);
-    // });
+    this.platformBridge.serialPort.onSerialPortDisconnected(portInfo => {
+      console.log('Serial Port disconnected', portInfo);
+    });
 
     document.getElementById('connect-usb')?.addEventListener('click', () => {
       (navigator as any).usb
         .requestDevice({ filters: [] })
         .then((devices: any[]) => {
-          console.log('Devices', devices);
+          console.log('Usb devices requested : ', devices);
+        });
+    });
+
+    document.getElementById('connect-serial')?.addEventListener('click', () => {
+      (navigator as any).serial
+        .requestPort({ filters: [] })
+        .then((devices: any[]) => {
+          console.log('Serial ports requested', devices);
         });
     });
   }
