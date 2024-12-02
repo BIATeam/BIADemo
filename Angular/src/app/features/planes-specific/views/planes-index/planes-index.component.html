@@ -8,8 +8,14 @@
       (create)="onCreate()"
       (exportCSV)="onExportCSV('plane.listOf')"
       (delete)="onDelete()"
-      [selectedElements]="selectedCrudItems"></bia-table-header>
+      [selectedElements]="selectedCrudItems"
+      [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
+      [tableControllerVisible]="showTableController"
+      (toggleTableControllerVisibility)="
+        toggleTableControllerVisibility()
+      "></bia-table-header>
     <bia-table-controller
+      [ngClass]="{ 'table-controller-hidden': !showTableController }"
       [defaultPageSize]="defaultPageSize"
       [columns]="columns"
       [columnToDisplays]="displayedColumns"

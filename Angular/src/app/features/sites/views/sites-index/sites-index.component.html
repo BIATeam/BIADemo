@@ -7,7 +7,7 @@
       crudConfiguration.fieldsConfig.advancedFilter
     "></bia-team-advanced-filter>
   <div class="flex-grow-1 bia-page-margin">
-    <div>
+    <div [ngClass]="{ 'table-compact': crudConfiguration.useCompactMode }">
       <bia-table-header
         [headerTitle]="'site.listOf' | translate"
         [canAdd]="canAdd && !crudConfiguration.useCalcMode"
@@ -20,7 +20,10 @@
         [showBtnFilter]="true"
         [showFilter]="showAdvancedFilter"
         [hasFilter]="hasAdvancedFilter"
-        (openFilter)="onOpenFilter()">
+        (openFilter)="onOpenFilter()"
+        [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
+        [tableControllerVisible]="showTableController"
+        (toggleTableControllerVisibility)="toggleTableControllerVisibility()">
         <!-- // Custo for teams -->
         <ng-template pTemplate="actionOnSelected">
           <button
@@ -42,6 +45,7 @@
         </ng-template>
       </bia-table-header>
       <bia-table-controller
+        [ngClass]="{ 'table-controller-hidden': !showTableController }"
         [defaultPageSize]="defaultPageSize"
         [columns]="columns"
         [columnToDisplays]="displayedColumns"
