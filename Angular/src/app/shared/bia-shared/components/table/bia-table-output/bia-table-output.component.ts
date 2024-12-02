@@ -19,8 +19,8 @@ import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.
   styleUrls: ['./bia-table-output.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class BiaTableOutputComponent
-  extends BiaFieldBaseComponent
+export class BiaTableOutputComponent<CrudItem>
+  extends BiaFieldBaseComponent<CrudItem>
   implements OnInit, OnDestroy, AfterContentInit
 {
   @Input() data: any;

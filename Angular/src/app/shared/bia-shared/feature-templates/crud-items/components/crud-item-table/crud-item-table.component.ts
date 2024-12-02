@@ -19,7 +19,7 @@ import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
   ],
 })
 export class CrudItemTableComponent<CrudItem extends BaseDto>
-  extends BiaCalcTableComponent
+  extends BiaCalcTableComponent<CrudItem>
   implements OnChanges
 {
   constructor(
@@ -38,17 +38,17 @@ export class CrudItemTableComponent<CrudItem extends BaseDto>
     const fields: { [key: string]: any } = { id: [this.element.id] };
     for (const col of this.configuration.columns) {
       if (col.validators && col.validators.length > 0) {
-        fields[col.field] = [
-          this.element[col.field as keyof CrudItem],
+        fields[col.field.toString()] = [
+          this.element[col.field],
           col.validators,
         ];
       } else if (col.isRequired) {
-        fields[col.field] = [
-          this.element[col.field as keyof CrudItem],
+        fields[col.field.toString()] = [
+          this.element[col.field],
           Validators.required,
         ];
       } else {
-        fields[col.field] = [this.element[col.field as keyof CrudItem]];
+        fields[col.field.toString()] = [this.element[col.field]];
       }
     }
     return fields;
@@ -64,9 +64,7 @@ export class CrudItemTableComponent<CrudItem extends BaseDto>
             Reflect.set(
               crudItem,
               col.field,
-              crudItem[col.field as keyof CrudItem]
-                ? crudItem[col.field as keyof CrudItem]
-                : false
+              crudItem[col.field] ? crudItem[col.field] : false
             );
             break;
           case PropType.ManyToMany:
@@ -75,7 +73,9 @@ export class CrudItemTableComponent<CrudItem extends BaseDto>
               col.field,
               BiaOptionService.differential(
                 Reflect.get(crudItem, col.field) as BaseDto[],
-                this.element ? Reflect.get(this.element, col.field) : undefined
+                (this.element
+                  ? (Reflect.get(this.element, col.field) ?? [])
+                  : []) as BaseDto[]
               )
             );
             break;

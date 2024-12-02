@@ -1,19 +1,19 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import {
   BiaFieldConfig,
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
-import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 
 @Component({
   selector: 'bia-field-base',
   template: '',
 })
-export class BiaFieldBaseComponent implements OnInit, OnDestroy {
-  @Input() field: BiaFieldConfig;
+export class BiaFieldBaseComponent<CrudItem> implements OnInit, OnDestroy {
+  @Input() field: BiaFieldConfig<CrudItem>;
   protected sub = new Subscription();
 
   constructor(

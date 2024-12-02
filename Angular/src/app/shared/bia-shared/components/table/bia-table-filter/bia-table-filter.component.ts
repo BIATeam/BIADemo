@@ -29,8 +29,8 @@ import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.
   changeDetection: ChangeDetectionStrategy.Default,
   encapsulation: ViewEncapsulation.None,
 })
-export class BiaTableFilterComponent
-  extends BiaFieldBaseComponent
+export class BiaTableFilterComponent<CrudItem>
+  extends BiaFieldBaseComponent<CrudItem>
   implements OnInit, OnDestroy
 {
   @Input() table: Table;
@@ -70,7 +70,7 @@ export class BiaTableFilterComponent
     }
   }
 
-  isArrayFilter(col: BiaFieldConfig): FilterMetadata[] | null {
+  isArrayFilter(col: BiaFieldConfig<CrudItem>): FilterMetadata[] | null {
     if (
       this.table &&
       this.table.filters &&
@@ -93,7 +93,7 @@ export class BiaTableFilterComponent
     return filter && !Array.isArray(filter) ? filter : null;
   }
 
-  isArraySimple(col: BiaFieldConfig) {
+  isArraySimple(col: BiaFieldConfig<CrudItem>) {
     if (this.table) {
       if (this.table.filters) {
         const filter: FilterMetadata = this.table.filters[
@@ -107,8 +107,8 @@ export class BiaTableFilterComponent
     return false;
   }
 
-  setSimpleFilter(event: any, col: BiaFieldConfig) {
-    this.table.filter(event?.value, col.field, col.filterMode);
+  setSimpleFilter(event: any, col: BiaFieldConfig<CrudItem>) {
+    this.table.filter(event?.value, col.field.toString(), col.filterMode);
   }
 
   protected initFiterConfiguration() {

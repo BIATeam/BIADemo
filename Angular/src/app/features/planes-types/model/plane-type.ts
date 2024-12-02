@@ -1,9 +1,9 @@
+import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import {
   BiaFieldConfig,
   BiaFieldsConfig,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
-import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 
 // TODO after creation of CRUD PlaneType : adapt the model
 export interface PlaneType extends BaseDto {
@@ -12,7 +12,7 @@ export interface PlaneType extends BaseDto {
 }
 
 // TODO after creation of CRUD PlaneType : adapt the field configuration
-export const planeTypeFieldsConfiguration: BiaFieldsConfig = {
+export const planeTypeFieldsConfiguration: BiaFieldsConfig<PlaneType> = {
   columns: [
     Object.assign(new BiaFieldConfig('title', 'planeType.title'), {
       isRequired: true,

@@ -45,13 +45,15 @@ const arraysEqual = (a1: any, a2: any) =>
   templateUrl: './bia-table.component.html',
   styleUrls: ['./bia-table.component.scss'],
 })
-export class BiaTableComponent implements OnChanges, AfterContentInit {
+export class BiaTableComponent<TDto extends { id: number }>
+  implements OnChanges, AfterContentInit
+{
   @Input() pageSize: number;
   @Input() totalRecord: number;
   @Input() paginator = true;
   @Input() pageSizeOptions: number[] = [10, 25, 50, 100];
   @Input() virtualScroll = false;
-  @Input() elements: any[];
+  @Input() elements: TDto[];
   @Input() columnToDisplays: KeyValuePair[];
   @Input() reorderableColumns = true;
   @Input() sortFieldValue = '';
@@ -78,11 +80,11 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   protected isSelectFrozen = false;
   protected widthSelect: string;
   protected alignFrozenSelect = 'left';
-  protected _configuration: BiaFieldsConfig;
-  get configuration(): BiaFieldsConfig {
+  protected _configuration: BiaFieldsConfig<TDto>;
+  get configuration(): BiaFieldsConfig<TDto> {
     return this._configuration;
   }
-  @Input() set configuration(value: BiaFieldsConfig) {
+  @Input() set configuration(value: BiaFieldsConfig<TDto>) {
     this._configuration = value;
     this.manageSelectFrozen(value);
   }
@@ -101,15 +103,15 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   // specificInputTemplate: TemplateRef<any>;
   specificOutputTemplate: TemplateRef<any>;
 
-  protected _selectedElements: any[] = [];
-  get selectedElements(): any[] {
+  protected _selectedElements: TDto[] = [];
+  get selectedElements(): TDto[] {
     return this._selectedElements;
   }
-  set selectedElements(value: any[]) {
+  set selectedElements(value: TDto[]) {
     this._selectedElements = value;
   }
 
-  displayedColumns: BiaFieldConfig[];
+  displayedColumns: BiaFieldConfig<TDto>[];
   showLoading$: Observable<any>;
 
   protected defaultSortField: string;
@@ -199,7 +201,9 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
       if (changes.columnToDisplays.isFirstChange()) {
         this.initDefaultSort();
         this.defaultPageSize = this.pageSize;
-        this.defaultColumns = this.displayedColumns.map(x => x.field);
+        this.defaultColumns = this.displayedColumns.map(x =>
+          x.field.toString()
+        );
       }
       this.updateDisplayedColumns(true);
     }
@@ -211,7 +215,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
       this.displayedColumns &&
       this.displayedColumns.length > 0
     ) {
-      this.sortFieldValue = this.displayedColumns[0].field;
+      this.sortFieldValue = this.displayedColumns[0].field.toString();
     }
     this.defaultSortField = this.sortFieldValue;
     this.defaultSortOrder = this.sortOrderValue;
@@ -219,7 +223,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
 
   protected updateDisplayedColumns(saveTableState: boolean) {
     //setTimeout(() =>{
-    const columns: BiaFieldConfig[] = this.getColumns();
+    const columns: BiaFieldConfig<TDto>[] = this.getColumns();
     let displayedColumns;
     if (this.columnToDisplays) {
       displayedColumns = columns.filter(
@@ -279,9 +283,9 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
     }
   }
 
-  protected getColumns(): BiaFieldConfig[] {
+  protected getColumns(): BiaFieldConfig<TDto>[] {
     const tableState: BiaTableState | null = this.getTableState();
-    let columns: BiaFieldConfig[] = [];
+    let columns: BiaFieldConfig<TDto>[] = [];
     let columnOrder: string[] | undefined = [];
     if (tableState && tableState.columnOrder) {
       columnOrder = tableState.columnOrder;
@@ -292,7 +296,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
     if (columnOrder && columnOrder?.length > 0) {
       // The primeTableColumns are sorted by columnOrder.
       columnOrder.forEach(colName => {
-        const column: BiaFieldConfig = this.configuration.columns.filter(
+        const column: BiaFieldConfig<TDto> = this.configuration.columns.filter(
           col => col.field === colName
         )[0];
         columns.push(column);
@@ -301,7 +305,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
       // A hide then show column does not appear in sorted fields,
       // We start by finding them (missingColumns)
       const missingColumns = this.configuration.columns.filter(
-        col => columnOrder?.indexOf(col.field) === -1
+        col => columnOrder?.indexOf(col.field.toString()) === -1
       );
 
       missingColumns.forEach(missingColumn => {
@@ -424,7 +428,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
           if (col.isSearchable === true && col.type !== PropType.Boolean) {
             this.table?.filter(
               value,
-              TABLE_FILTER_GLOBAL + col.field,
+              TABLE_FILTER_GLOBAL + col.field.toString(),
               col.filterMode
             );
           }
@@ -558,7 +562,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
    * If in the configuration, we have at least one frozen column, we freeze the select column.
    * @param biaFieldsConfig
    */
-  protected manageSelectFrozen(biaFieldsConfig: BiaFieldsConfig) {
+  protected manageSelectFrozen(biaFieldsConfig: BiaFieldsConfig<TDto>) {
     if (!this.frozeSelectColumn && biaFieldsConfig) {
       if (biaFieldsConfig?.columns?.some(x => x.isFrozen === true) === true) {
         this.isSelectFrozen = true;
