@@ -1,5 +1,5 @@
 <div>
-  <div>
+  <div [ngClass]="{ 'table-compact': crudConfiguration.useCompactMode }">
     <bia-table-header
       [headerTitle]="'member.listOf' | translate"
       [canAdd]="canAdd && !crudConfiguration.useCalcMode"
@@ -8,8 +8,14 @@
       (create)="onCreate()"
       (exportCSV)="onExportCSV('member.listOf')"
       (delete)="onDelete()"
-      [selectedElements]="selectedCrudItems"></bia-table-header>
+      [selectedElements]="selectedCrudItems"
+      [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
+      [tableControllerVisible]="showTableController"
+      (toggleTableControllerVisibility)="
+        toggleTableControllerVisibility()
+      "></bia-table-header>
     <bia-table-controller
+      [ngClass]="{ 'table-controller-hidden': !showTableController }"
       [defaultPageSize]="defaultPageSize"
       [columns]="columns"
       [columnToDisplays]="displayedColumns"

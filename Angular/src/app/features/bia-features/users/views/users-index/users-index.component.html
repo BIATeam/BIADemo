@@ -1,5 +1,5 @@
 <div>
-  <div>
+  <div [ngClass]="{ 'table-compact': crudConfiguration.useCompactMode }">
     <bia-table-header
       [headerTitle]="'user.listOf' | translate"
       [canAdd]="canAdd"
@@ -12,7 +12,10 @@
       (fullExportCSV)="onExportCSV('user.listOf', true)"
       (delete)="onDelete()"
       (bulk)="onBulk()"
-      [selectedElements]="selectedCrudItems">
+      [selectedElements]="selectedCrudItems"
+      [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
+      [tableControllerVisible]="showTableController"
+      (toggleTableControllerVisibility)="toggleTableControllerVisibility()">
       <ng-template pTemplate="actionOnList">
         <button
           pButton
@@ -23,6 +26,7 @@
       </ng-template>
     </bia-table-header>
     <bia-table-controller
+      [ngClass]="{ 'table-controller-hidden': !showTableController }"
       [defaultPageSize]="defaultPageSize"
       [columns]="columns"
       [columnToDisplays]="displayedColumns"

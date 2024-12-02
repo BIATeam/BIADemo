@@ -7,15 +7,15 @@
       [canEdit]="canEdit"
       [canBulk]="canSave && crudConfiguration.useBulk"
       [canExportCSV]="true"
-      [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
-      [tableControllerVisible]="showTableController"
       (create)="onCreate()"
       (exportCSV)="onExportCSV('plane.listOf')"
       (fullExportCSV)="onExportCSV('plane.listOf', true)"
       (delete)="onDelete()"
       (bulk)="onBulk()"
-      (toggleTableControllerVisibility)="toggleTableControllerVisibility()"
-      [selectedElements]="selectedCrudItems">
+      [selectedElements]="selectedCrudItems"
+      [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
+      [tableControllerVisible]="showTableController"
+      (toggleTableControllerVisibility)="toggleTableControllerVisibility()">
       <!-- BIAToolKit - Begin Partial PlaneIndexHtml Engine -->
       <ng-template pTemplate="actionOnSelected">
         <button
