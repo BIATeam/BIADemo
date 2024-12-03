@@ -77,16 +77,12 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                 this.biaNetSection.WorkerFeatures,
                 this.configuration);
 
-            // Begin BIADemo
-            services.AddSingleton<IDatabaseHandlerRepository, PlaneHandlerRepository>();
-            services.AddSingleton<IDatabaseHandlerRepository, AirportHandlerRepository>();
-
-            // End BIADemo
-
             // End BIA Standard service
 #if BIA_FRONT_FEATURE
             // Begin BIADemo
             services.AddHostedService<Worker>();
+            services.AddSingleton<IDatabaseHandlerRepository, PlaneHandlerRepository>();
+            services.AddSingleton<IDatabaseHandlerRepository, AirportHandlerRepository>();
 
             // End BIADemo
 #endif

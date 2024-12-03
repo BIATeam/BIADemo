@@ -21,7 +21,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.User;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Models;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Services;
 
@@ -484,7 +483,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
                         if (userFromDirectory != null)
                         {
-                            User user = await this.userAppService.AddUserFromUserDirectoryAsync(identityKey, userFromDirectory);
+                            Domain.User.Entities.User user = await this.userAppService.AddUserFromUserDirectoryAsync(identityKey, userFromDirectory);
                             userInfo = this.userAppService.CreateUserInfo(user);
                         }
                     }

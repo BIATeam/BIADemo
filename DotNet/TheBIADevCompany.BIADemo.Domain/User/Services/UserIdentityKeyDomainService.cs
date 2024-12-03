@@ -69,8 +69,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Services
         }
 
         // -------------------------------- Directory EntityKey --------------------------------------
-#endif
-
         /// <summary>
         /// Check the Identity Key from the User in database.
         /// It is use to specify the unique identifier that is compare during the authentication process.
@@ -94,6 +92,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Services
         {
             return userFromDirectory.Login;
         }
+#endif
 
         /// <summary>
         /// Gets the Identity Key to compare with User in database.
