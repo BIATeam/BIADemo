@@ -15,7 +15,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.*" />
     <PackageReference Include="NLog.Extensions.Hosting" Version="5.3.*" />
     <PackageReference Include="NLog.Extensions.Logging" Version="5.3.*" />
-	<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="[8.0.*,9.0.0)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="[8.0.*,9.0.0)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Crosscutting.Ioc\TheBIADevCompany.BIADemo.Crosscutting.Ioc.csproj" />
@@ -64,6 +64,10 @@
     <Compile Remove="**\*Plane*.cs" />
     <Compile Remove="**\*Worker*.cs" />
     <Compile Remove="**\*HangfiresController*.cs" />
+    <Compile Remove="**\*Part*.cs" />
+    <Compile Remove="**\*CountryOption*.cs" />
+    <Compile Remove="**\*DocumentAnalysis*.cs" />
+    <Compile Remove="**\*PdfAnalysis*.cs" />
     <!--BIATEMPLATE-->
     <Compile Remove="**\*Audit*.cs" />
     <Compile Remove="**\*Error*.cs" />

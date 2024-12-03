@@ -28,23 +28,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
 #endif
-    using System.Security.Principal;
-    using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.Service;
-    using Microsoft.AspNetCore.Http;
     using TheBIADevCompany.BIADemo.Application.User;
-
-    // Begin BIADemo
-    using TheBIADevCompany.BIADemo.Domain.RepoContract.DocumentAnalysis;
-
-    // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.User.Models;
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
-
-    // Begin BIADemo
-    using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories.DocumentAnalysis;
-
-    // End BIADemo
 
     /// <summary>
     /// The IoC Container.
@@ -170,6 +156,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddScoped<DataContextFactory>();
 #if BIA_FRONT_FEATURE
             collection.AddSingleton<IAuditFeature, AuditFeature>();
+            collection.AddSingleton<BIA.Net.Core.Application.Services.IAuditFeatureService, BIA.Net.Core.Application.Services.AuditFeatureService>();
 #endif
         }
 
@@ -188,8 +175,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
             // Begin BIADemo
             collection.AddHttpClient<IRemotePlaneRepository, RemotePlaneRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection));
-            collection.AddSingleton<PdfAnalysisRepository>();
-            collection.AddSingleton<IDocumentAnalysisRepositoryFactory, DocumentAnalysisRepositoryFactory>();
+            collection.AddSingleton<Infrastructure.Service.Repositories.DocumentAnalysis.PdfAnalysisRepository>();
+            collection.AddSingleton<Domain.RepoContract.DocumentAnalysis.IDocumentAnalysisRepositoryFactory, Infrastructure.Service.Repositories.DocumentAnalysis.DocumentAnalysisRepositoryFactory>();
 
             // End BIADemo
 #endif

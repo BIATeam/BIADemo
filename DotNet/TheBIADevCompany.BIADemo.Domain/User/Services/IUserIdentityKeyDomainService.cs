@@ -19,7 +19,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Services
     /// </summary>
     public interface IUserIdentityKeyDomainService
     {
-        #if BIA_FRONT_FEATURE
+#if BIA_FRONT_FEATURE
         /// <summary>
         /// Checks the database identity key.
         /// </summary>
@@ -47,7 +47,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Services
         /// <param name="user">The user dto.</param>
         /// <returns>The userDto identity key.</returns>
         string GetDtoIdentityKey(UserDto user);
-        #endif
 
         /// <summary>
         /// Checks the directory identity key.
@@ -62,6 +61,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Services
         /// <param name="userFromDirectory">The user from directory.</param>
         /// <returns>The directory identity key.</returns>
         string GetDirectoryIdentityKey(UserFromDirectory userFromDirectory);
+#endif
 
         /// <summary>
         /// Gets the directory identity key.
