@@ -84,6 +84,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
   canDelete = false;
   canAdd = false;
   canSave = false;
+  canSelect = false;
   columns: KeyValuePair[];
   displayedColumns: KeyValuePair[];
   reorderableColumns = true;
