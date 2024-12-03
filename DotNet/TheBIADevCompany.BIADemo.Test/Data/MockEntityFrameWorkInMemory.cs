@@ -9,15 +9,14 @@ namespace TheBIADevCompany.BIADemo.Test.Data
     using System.Linq;
     using BIA.Net.Core.Infrastructure.Data;
     using BIA.Net.Core.Test.Data;
-    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Site.Entities;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 #if BIA_FRONT_FEATURE
     // Begin BIADemo
+    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
 
     // End BIADemo
+    using TheBIADevCompany.BIADemo.Domain.Site.Entities;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.View.Entities;
-
 #endif
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
 

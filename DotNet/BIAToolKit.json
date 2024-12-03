@@ -104,7 +104,8 @@
         "TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\AircraftMaintenanceCompany\\CountryOptionsController.cs",
         "TheBIADevCompany.BIADemo.Application\\AircraftMaintenanceCompany\\CountryOptionAppService.cs",
         "TheBIADevCompany.BIADemo.Application\\AircraftMaintenanceCompany\\ICountryOptionAppService.cs",
-        "TheBIADevCompany.BIADemo.Domain\\AircraftMaintenanceCompany\\Mappers\\CountryOptionMapper.cs"
+        "TheBIADevCompany.BIADemo.Domain\\AircraftMaintenanceCompany\\Mappers\\CountryOptionMapper.cs",
+        "TheBIADevCompany.BIADemo.Domain\\AircraftMaintenanceCompany\\Entities\\Country.cs"
       ],
       "Exclude": []
     },
