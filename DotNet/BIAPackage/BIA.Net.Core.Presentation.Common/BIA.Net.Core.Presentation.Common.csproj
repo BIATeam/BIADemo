@@ -31,6 +31,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<!--installed here because one of the packages references this one in a version that contains a vulnerability-->
+		<PackageReference Include="Microsoft.Identity.Client" Version="4.66.*" />
+		<PackageReference Include="Npgsql" Version="[8.0.*,9.0.0)" />
+		<PackageReference Include="System.Drawing.Common" Version="[8.0.*,9.0.0)" />
+		<PackageReference Include="System.Formats.Asn1" Version="[8.0.*,9.0.0)" />
+		<PackageReference Include="Azure.Identity" Version="1.13.*" />
+		<PackageReference Include="MessagePack" Version="2.5.*" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<ProjectReference Include="..\BIA.Net.Core.Domain.Dto\BIA.Net.Core.Domain.Dto.csproj" />
 	</ItemGroup>
 
