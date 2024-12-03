@@ -6,12 +6,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 {
     using Microsoft.EntityFrameworkCore;
     using TheBIADevCompany.BIADemo.Domain.Audit.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     // Begin BIADemo
+    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
 
     // End BIADemo
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// Class used to update the model builder for user domain.
