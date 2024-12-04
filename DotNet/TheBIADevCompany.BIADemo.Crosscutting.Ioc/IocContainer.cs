@@ -19,18 +19,19 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.Ioc;
     using BIA.Net.Core.IocContainer;
+    using BIA.Net.Core.Presentation.Common.Features.HubForClients;
     using Hangfire;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using TheBIADevCompany.BIADemo.Application.User;
+    using TheBIADevCompany.BIADemo.Domain.User.Models;
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
+    using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
 #if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
 #endif
-    using TheBIADevCompany.BIADemo.Application.User;
-    using TheBIADevCompany.BIADemo.Domain.User.Models;
-    using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
 
     /// <summary>
     /// The IoC Container.
@@ -169,7 +170,14 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
             collection.AddTransient<IMailRepository, MailRepository>();
 
-            collection.AddTransient<IClientForHubRepository, SignalRClientForHubRepository>();
+            if (!string.IsNullOrEmpty(biaNetSection.CommonFeatures.ClientForHub?.SignalRUrl))
+            {
+                collection.AddTransient<IClientForHubRepository, ExternalClientForSignalRRepository>();
+            }
+            else
+            {
+                collection.AddTransient<IClientForHubRepository, InternalClientForSignalRRepository<HubForClients>>();
+            }
 
             collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
 

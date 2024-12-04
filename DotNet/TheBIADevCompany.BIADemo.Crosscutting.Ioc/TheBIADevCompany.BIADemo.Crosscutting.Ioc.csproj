@@ -6,6 +6,7 @@
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Presentation.Common\BIA.Net.Core.Presentation.Common.csproj" />
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Application\TheBIADevCompany.BIADemo.Application.csproj" />
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Infrastructure.Data\TheBIADevCompany.BIADemo.Infrastructure.Data.csproj" />
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Infrastructure.Service\TheBIADevCompany.BIADemo.Infrastructure.Service.csproj" />

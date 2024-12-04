@@ -16,10 +16,9 @@ namespace BIA.Net.Core.WorkerService.Features
     using Hangfire;
     using Hangfire.PerformContextAccessor;
     using Hangfire.PostgreSql;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
+    using StackExchange.Redis;
 
     /// <summary>
     /// Add the standard service.
@@ -41,11 +40,30 @@ namespace BIA.Net.Core.WorkerService.Features
             var biaNetSection = new BiaNetSection();
             configuration.GetSection("BiaNet").Bind(biaNetSection);
 
+            // Hub For Clients
+            if (biaNetSection.CommonFeatures.ClientForHub?.IsActive == true
+                && !string.IsNullOrEmpty(biaNetSection.CommonFeatures.ClientForHub.RedisConnectionString))
+            {
+                if (string.IsNullOrEmpty(biaNetSection.CommonFeatures.ClientForHub.RedisChannelPrefix))
+                {
+                    services.AddSignalR().AddStackExchangeRedis(biaNetSection.CommonFeatures.ClientForHub.RedisConnectionString);
+                }
+                else
+                {
+                    services.AddSignalR().AddStackExchangeRedis(
+                        biaNetSection.CommonFeatures.ClientForHub.RedisConnectionString,
+                        redisOptions =>
+                        {
+                            redisOptions.Configuration.ChannelPrefix = RedisChannel.Literal(biaNetSection.CommonFeatures.ClientForHub.RedisChannelPrefix);
+                        });
+                }
+            }
+
             // Identity
             services.AddTransient<IPrincipal>(
                 provider =>
                 {
-                    var claims = new List<Claim> { new (ClaimTypes.Name, Environment.UserName) };
+                    var claims = new List<Claim> { new(ClaimTypes.Name, Environment.UserName) };
                     var userIdentity = new ClaimsIdentity(claims, "NonEmptyAuthType");
                     return new BiaClaimsPrincipal(new ClaimsPrincipal(userIdentity));
                 });
