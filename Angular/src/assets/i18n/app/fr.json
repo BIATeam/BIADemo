@@ -61,7 +61,9 @@
     "originalPrice": "Prix d'origine",
     "estimatedPrice": "Prix estimé",
     "isToBeMaintained": "Maintenu",
-    "isHybrid": "Hybride"
+    "isHybrid": "Hybride",
+    "principalPart": "Pièce principale",
+    "installedParts": "Pièces installées"
   },
   "maintenanceTeam": {
     "add": "Ajouter équipe de maintenance",
