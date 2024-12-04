@@ -64,7 +64,9 @@ export const notificationReducers = createReducer<State>(
       ...state,
     };
     if (index > -1) {
-      copyState.unreadIds = [...copyState.unreadIds].splice(index, 1);
+      const notifs = [...copyState.unreadIds];
+      notifs.splice(index, 1);
+      copyState.unreadIds = notifs;
     }
     return copyState;
   }),
