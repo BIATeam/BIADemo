@@ -5,6 +5,8 @@ import { parse } from 'date-fns';
   providedIn: 'root',
 })
 export class DateHelperService {
+  public static dateFormatIso8601 = 'yyyy-MM-dd';
+
   public static isDate(value: any): boolean {
     const regex = /(\d{4})-(\d{2})-(\d{2})T/;
     if (typeof value === 'string' && value.match(regex)) {
@@ -55,17 +57,6 @@ export class DateHelperService {
 
     dateString = dateString.replace('  ', ' ').trim();
 
-    // Attempt to parse the date directly
-    let parsedDate = new Date(dateString);
-    if (!isNaN(parsedDate.getTime())) {
-      // If there is no time, add it to avoid delay in the conversion
-      if (!timePattern.test(dateString)) {
-        dateString += ' 00:00';
-        parsedDate = new Date(dateString);
-      }
-      return parsedDate;
-    }
-
     // Handle custom format if provided
     if (dateFormat != null) {
       let format = dateFormat;
@@ -73,6 +64,17 @@ export class DateHelperService {
         format = dateFormat + ' ' + timeFormat;
       }
       return parse(dateString, format, new Date());
+    } else {
+      // Attempt to parse the date directly
+      let parsedDate = new Date(dateString);
+      if (!isNaN(parsedDate.getTime())) {
+        // If there is no time, add it to avoid delay in the conversion
+        if (!timePattern.test(dateString)) {
+          dateString += ' 00:00';
+          parsedDate = new Date(dateString);
+        }
+        return parsedDate;
+      }
     }
 
     return <Date>{};

@@ -90,7 +90,7 @@ export abstract class CrudItemBulkComponent<CrudItem extends BaseDto>
     );
 
     if (columnIdExists !== true) {
-      const crudConfigCopy = clone(crudConfig);
+      const crudConfigCopy = clone(crudConfig, false);
       crudConfigCopy.fieldsConfig.columns.unshift(this.getColumnId());
       return crudConfigCopy;
     } else {
