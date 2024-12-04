@@ -53,6 +53,7 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
     /// BIAToolKit - End Block manufacturer
     /// BIAToolKit - Begin Block isActive
     Object.assign(new BiaFieldConfig('isActive', 'plane.isActive'), {
+      isRequired: true,
       isSearchable: true,
       isSortable: false,
       type: PropType.Boolean,
@@ -60,7 +61,6 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
     /// BIAToolKit - End Block isActive
     /// BIAToolKit - Begin Block isMaintenance
     Object.assign(new BiaFieldConfig('isMaintenance', 'plane.isMaintenance'), {
-      isRequired: true,
       isSearchable: true,
       isSortable: false,
       type: PropType.Boolean,
