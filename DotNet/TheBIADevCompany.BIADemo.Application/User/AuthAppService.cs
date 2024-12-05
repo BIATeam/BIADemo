@@ -22,7 +22,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.User;
     using TheBIADevCompany.BIADemo.Domain.User.Models;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Services;
+    using TheBIADevCompany.BIADemo.Domain.User.Services;
 
     /// <summary>
     /// Auth App Service.
