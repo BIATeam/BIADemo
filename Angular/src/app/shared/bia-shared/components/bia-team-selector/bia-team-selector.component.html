@@ -1,5 +1,7 @@
 <div class="controls flex flex-row align-items-center">
-  <label *ngIf="teamType.label">{{ teamType.label | translate }} : </label>
+  <label *ngIf="displayTeamList === true && teamType.label"
+    >{{ teamType.label | translate }} :
+  </label>
   <p-dropdown
     *ngIf="displayTeamList === true"
     [options]="teams"

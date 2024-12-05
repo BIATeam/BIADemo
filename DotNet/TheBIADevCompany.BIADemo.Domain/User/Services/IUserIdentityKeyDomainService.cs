@@ -2,7 +2,7 @@
 // Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.UserModule.Services
+namespace TheBIADevCompany.BIADemo.Domain.User.Services
 {
     using System;
     using System.Collections.Generic;

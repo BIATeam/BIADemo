@@ -297,7 +297,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             }
 
             var currentData = await this.FetchDataAsync(this.brokerSqlConnection);
-            this.HanldeChangedData(this.brokerPreviousData, currentData);
+            this.HandleChangedData(this.brokerPreviousData, currentData);
             this.brokerPreviousData = currentData;
 
             await this.brokerSqlConnection.CloseAsync();
@@ -340,7 +340,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
                 try
                 {
                     var currentData = await this.FetchDataAsync(this.pollingDbConnection);
-                    this.HanldeChangedData(previousData, currentData);
+                    this.HandleChangedData(previousData, currentData);
                     previousData = currentData;
                 }
                 catch (Exception ex)
@@ -384,7 +384,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// </summary>
         /// <param name="previousDataSet">Set of previous data to compare.</param>
         /// <param name="currentDataSet">Set of current data to compare.</param>
-        protected virtual void HanldeChangedData(List<Dictionary<string, object>> previousDataSet, List<Dictionary<string, object>> currentDataSet)
+        protected virtual void HandleChangedData(List<Dictionary<string, object>> previousDataSet, List<Dictionary<string, object>> currentDataSet)
         {
             this.GetChangedData(previousDataSet, currentDataSet).ForEach(x =>
             {

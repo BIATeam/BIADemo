@@ -226,7 +226,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
       this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
     } else {
       if (manualChange) {
-        this.crudItemService.signalRService.destroy();
+        this.crudItemService.signalRService.destroy(this.crudItemService);
       }
     }
   }
@@ -336,7 +336,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
 
   onHide() {
     if (this.crudConfiguration.useSignalR) {
-      this.crudItemService.signalRService.destroy();
+      this.crudItemService.signalRService.destroy(this.crudItemService);
     }
   }
 

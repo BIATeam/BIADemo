@@ -46,7 +46,7 @@ export class CrudItemBulkService<T extends BaseDto> {
   protected crudConfig: CrudConfig<T>;
   public bulkParam = <BulkParam>{
     useCurrentView: false,
-    dateFormat: 'dd/MM/yyyy',
+    dateFormat: DateHelperService.dateFormatIso8601,
     timeFormat: 'HH:mm',
   };
 

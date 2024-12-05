@@ -11,6 +11,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { FileUpload } from 'primeng/fileupload';
+import { DateHelperService } from 'src/app/core/bia-core/services/date-helper.service';
 import { AppSettings } from 'src/app/domains/bia-domains/app-settings/model/app-settings';
 import {
   BiaFieldConfig,
@@ -120,6 +121,7 @@ export class CrudItemBulkFormComponent<TDto extends { id: number }> {
     if (this.appSettings && this.appSettings.cultures.length > 0) {
       this.appSettings.cultures.map(x => x.dateFormat);
       this.dateFormats = [
+        DateHelperService.dateFormatIso8601,
         ...new Set(this.appSettings.cultures.map(x => x.dateFormat)), // new Set => Distinct()
       ];
       this.timeFormats = [
@@ -150,7 +152,7 @@ export class CrudItemBulkFormComponent<TDto extends { id: number }> {
 
   initTableErrorParam() {
     if (this.crudConfiguration) {
-      this.crudConfigurationError = clone(this.crudConfiguration);
+      this.crudConfigurationError = clone(this.crudConfiguration, false);
       this.crudConfigurationError.fieldsConfig.columns.push(
         Object.assign(
           new BiaFieldConfig<TDto>(

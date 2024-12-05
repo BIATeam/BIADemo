@@ -30,8 +30,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Mappers;
     using TheBIADevCompany.BIADemo.Domain.User.Models;
+    using TheBIADevCompany.BIADemo.Domain.User.Services;
     using TheBIADevCompany.BIADemo.Domain.User.Specifications;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Services;
 
     /// <summary>
     /// The application service used for user.

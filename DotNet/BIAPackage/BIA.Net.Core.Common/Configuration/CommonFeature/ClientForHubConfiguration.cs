@@ -17,5 +17,15 @@ namespace BIA.Net.Core.Common.Configuration.CommonFeature
         /// Url to join the SignalR Hub.
         /// </summary>
         public string SignalRUrl { get; set; }
+
+        /// <summary>
+        /// Connection string for redis server.
+        /// </summary>
+        public string RedisConnectionString { get; set; }
+
+        /// <summary>
+        /// Channel prefix of redis messages.
+        /// </summary>
+        public string RedisChannelPrefix { get; set; }
     }
 }

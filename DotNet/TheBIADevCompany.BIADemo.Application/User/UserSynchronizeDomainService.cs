@@ -14,8 +14,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using BIA.Net.Core.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Models;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Services;
-    using static TheBIADevCompany.BIADemo.Crosscutting.Common.Rights;
+    using TheBIADevCompany.BIADemo.Domain.User.Services;
 
     /// <summary>
     /// The service used for synchronization between AD and DB.
