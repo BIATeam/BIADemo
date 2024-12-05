@@ -14,7 +14,7 @@ namespace TheBIADevCompany.BIADemo.Application
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Domain.User.Models;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Services;
+    using TheBIADevCompany.BIADemo.Domain.User.Services;
 
     /// <summary>
     /// Bia Claims Transformation.

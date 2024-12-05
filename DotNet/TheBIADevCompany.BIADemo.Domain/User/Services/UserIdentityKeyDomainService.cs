@@ -2,7 +2,7 @@
 // Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.UserModule.Services
+namespace TheBIADevCompany.BIADemo.Domain.User.Services
 {
     using System;
     using System.Collections.Generic;
@@ -69,6 +69,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Services
         }
 
         // -------------------------------- Directory EntityKey --------------------------------------
+
         /// <summary>
         /// Check the Identity Key from the User in database.
         /// It is use to specify the unique identifier that is compare during the authentication process.
