@@ -17,5 +17,18 @@ namespace BIA.Net.Core.Domain.Dto.Base
         /// Parent Key.
         /// </summary>
         public string ParentKey { get; set; }
+
+        /// <summary>
+        /// Accessor for signalR group name.
+        /// </summary>
+        public string GroupName
+        {
+            get
+            {
+                return this.ParentKey != null ?
+                        this.ParentKey.ToString() + ">" + this.FeatureName :
+                        this.FeatureName;
+            }
+        }
     }
 }
