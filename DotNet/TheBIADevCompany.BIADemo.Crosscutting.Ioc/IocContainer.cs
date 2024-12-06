@@ -58,7 +58,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
             BiaIocContainer.ConfigureContainer(collection, configuration, isUnitTest);
 
-            ConfigureInfrastructureServiceContainer(collection, biaNetSection);
+            ConfigureInfrastructureServiceContainer(collection, biaNetSection, isUnitTest);
             ConfigureDomainContainer(collection);
             ConfigureApplicationContainer(collection, isApi);
 
@@ -162,7 +162,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         }
 
 #pragma warning disable S1172 // Unused method parameters should be removed
-        private static void ConfigureInfrastructureServiceContainer(IServiceCollection collection, BiaNetSection biaNetSection)
+        private static void ConfigureInfrastructureServiceContainer(IServiceCollection collection, BiaNetSection biaNetSection, bool isUnitTest = false)
 #pragma warning restore S1172 // Unused method parameters should be removed
         {
             collection.AddSingleton<IUserDirectoryRepository<UserFromDirectory>, LdapRepository>();
@@ -170,7 +170,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
             collection.AddTransient<IMailRepository, MailRepository>();
 
-            if (!string.IsNullOrEmpty(biaNetSection.CommonFeatures.ClientForHub?.SignalRUrl))
+            if (isUnitTest || !string.IsNullOrEmpty(biaNetSection.CommonFeatures.ClientForHub?.SignalRUrl))
             {
                 collection.AddTransient<IClientForHubRepository, ExternalClientForSignalRRepository>();
             }
