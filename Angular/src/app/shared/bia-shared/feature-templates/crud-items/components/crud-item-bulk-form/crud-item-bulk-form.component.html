@@ -106,9 +106,10 @@
           >
         </div>
       </ng-template>
-      <ng-template pTemplate="content" *ngIf="bulkData.toInserts.length > 0">
+      <ng-template pTemplate="content">
         <p class="m-0">
           <bia-table
+            *ngIf="bulkData.toInserts.length > 0"
             [elements]="bulkData.toInserts"
             [paginator]="false"
             [totalRecord]="bulkData.toInserts.length"
@@ -146,9 +147,10 @@
           >
         </div>
       </ng-template>
-      <ng-template pTemplate="content" *ngIf="bulkData.toUpdates.length > 0">
+      <ng-template pTemplate="content">
         <p class="m-0">
           <bia-table
+            *ngIf="bulkData.toUpdates.length > 0"
             [elements]="bulkData.toUpdates"
             [paginator]="false"
             [totalRecord]="bulkData.toUpdates.length"
@@ -186,9 +188,10 @@
           >
         </div>
       </ng-template>
-      <ng-template pTemplate="content" *ngIf="bulkData.toDeletes.length > 0">
+      <ng-template pTemplate="content">
         <p class="m-0">
           <bia-table
+            *ngIf="bulkData.toDeletes.length > 0"
             [elements]="bulkData.toDeletes"
             [paginator]="false"
             [totalRecord]="bulkData.toDeletes.length"
