@@ -60,7 +60,7 @@ export class MyDb extends BiaDatabase {
     );
 
     this.defineSchemaVersion(5, {
-      documents: 'name, content',
+      documents: 'name',
     });
   }
 }
