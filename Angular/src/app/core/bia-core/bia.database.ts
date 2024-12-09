@@ -34,12 +34,4 @@ export abstract class BiaDatabase extends Dexie {
       });
     }
   }
-
-  protected deleteTable(tableName: string) {
-    const db = this as any;
-    if (db.objectStoreNames.contains(tableName)) {
-      db.deleteObjectStore(tableName);
-      console.info(`Table ${tableName} deleted on database ${this.name}`);
-    }
-  }
 }
