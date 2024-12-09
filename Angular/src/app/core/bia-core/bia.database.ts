@@ -5,13 +5,13 @@ export abstract class BiaDatabase extends Dexie {
     super(databaseName);
   }
 
-  init() {
+  init(): void {
     this.defineSchemas();
   }
 
   protected abstract defineSchemas(): void;
 
-  protected defineVersion(
+  protected defineSchemaVersion(
     version: number,
     schema: any,
     upgradeCallback?: (trans: Transaction) => Promise<void>

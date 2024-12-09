@@ -1,4 +1,4 @@
-import { Table } from 'dexie';
+import { liveQuery, Table } from 'dexie';
 
 export class BiaRepository<TEntity, TKey> {
   private table: Table<TEntity, TKey>;
@@ -6,6 +6,8 @@ export class BiaRepository<TEntity, TKey> {
   protected constructor(table: Table<TEntity, TKey>) {
     this.table = table;
   }
+
+  items$ = liveQuery(() => this.read());
 
   async create(data: TEntity): Promise<TKey> {
     try {
