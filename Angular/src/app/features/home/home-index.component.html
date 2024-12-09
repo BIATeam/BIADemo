@@ -3,4 +3,60 @@
   <h4>
     {{ 'msg.welcome' | translate }}
   </h4>
+
+  <h4>Users</h4>
+  <ul>
+    <li *ngFor="let user of userRepository.items$ | async">
+      {{ user.name }} - {{ user.email }}
+      <button (click)="deleteUser(user)">Delete</button>
+    </li>
+  </ul>
+  <button (click)="addUser()">Add User</button>
+
+  <h4>Documents</h4>
+  <ul>
+    <li *ngFor="let document of documentRepository.items$ | async">
+      {{ document.name }}
+      <button (click)="openDocument(document)">Open</button>
+      <button (click)="viewDocument(document)">View</button>
+      <button (click)="deleteDocument(document)">Delete</button>
+    </li>
+  </ul>
+
+  <button (click)="onFileSelect()">Upload Document</button>
+  <input
+    type="file"
+    #fileInput
+    style="display: none"
+    (change)="handleFileUpload($event)" />
+
+  <div
+    *ngIf="selectedDocument"
+    style="
+      border: 1px solid #ccc;
+      padding: 10px;
+      height: 600px;
+      overflow: auto;
+    ">
+    <ng-container [ngSwitch]="selectedDocumentType">
+      <!-- Text or unknown content -->
+      <pre *ngSwitchCase="'text'">{{ documentContent }}</pre>
+
+      <!-- Image content -->
+      <img
+        *ngSwitchCase="'image'"
+        [src]="documentContent"
+        alt="Preview"
+        style="max-width: 100%; max-height: 100%" />
+
+      <!-- PDF content -->
+      <iframe
+        *ngSwitchCase="'pdf'"
+        [src]="documentContent"
+        style="width: 100%; height: 100%"></iframe>
+
+      <!-- Unsupported format -->
+      <p *ngSwitchDefault>Preview not available for this file type.</p>
+    </ng-container>
+  </div>
 </div>

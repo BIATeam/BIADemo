@@ -4,6 +4,7 @@ import { PrimeNGConfig } from 'primeng/api';
 import { BiaInjectExternalService } from './core/bia-core/services/bia-inject-external.service';
 import { BiaMatomoService } from './core/bia-core/services/matomo/bia-matomo.service';
 import { BiaLayoutService } from './shared/bia-shared/components/layout/services/layout.service';
+import { MyDb } from './shared/db/my-db/my-db.db';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +19,8 @@ export class AppComponent implements OnInit {
     private biaExternalJsService: BiaInjectExternalService,
     private primeNgConfig: PrimeNGConfig,
     private translateService: TranslateService,
-    private layoutService: BiaLayoutService
+    private layoutService: BiaLayoutService,
+    private myDb: MyDb
   ) {
     this.layoutService.defaultConfigUpdate({});
     this.layoutService.setConfigDisplay({
@@ -37,5 +39,6 @@ export class AppComponent implements OnInit {
     this.translateService
       .get('primeng')
       .subscribe(res => this.primeNgConfig.setTranslation(res));
+    this.myDb.init();
   }
 }
