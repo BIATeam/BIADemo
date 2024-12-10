@@ -161,6 +161,9 @@ RemoveFolder -path 'src\app\domains\country-option'
 RemoveFolder -path 'src\assets\bia\primeng\bia'
 RemoveFolder -path 'src\assets\bia\primeng\layout\images'
 
+Write-Host "RemoveFolder src\app\core\databases\biademo"
+RemoveFolder -path 'src\app\core\databases\biademo'
+
 Write-Host "Remove BIA demo only files"
 RemoveBIADemoOnlyFiles -Path $newPath -ExcludeDir ('dist', 'node_modules', '.angular')
 
