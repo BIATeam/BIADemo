@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { MyDocument } from 'src/app/databases/biademo/entities/document.entity';
+import { User } from 'src/app/databases/biademo/entities/user.entity';
+import { MyDocumentRepository } from 'src/app/databases/biademo/repositories/my-document.repository';
+import { UserRepository } from 'src/app/databases/biademo/repositories/user.repository';
 import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/services/layout.service';
-import { MyDocument } from 'src/app/shared/db/my-db/entities/document.entity';
-import { User } from 'src/app/shared/db/my-db/entities/user.entity';
-import { DocumentRepository } from 'src/app/shared/db/my-db/repositories/document.repository';
-import { UserRepository } from 'src/app/shared/db/my-db/repositories/user.repository';
 
 @Component({
   selector: 'app-home-index',
@@ -20,7 +20,7 @@ export class HomeIndexComponent implements OnInit, OnDestroy {
   constructor(
     private layoutService: BiaLayoutService,
     protected userRepository: UserRepository,
-    protected documentRepository: DocumentRepository,
+    protected documentRepository: MyDocumentRepository,
     private sanitizer: DomSanitizer
   ) {}
   ngOnInit(): void {

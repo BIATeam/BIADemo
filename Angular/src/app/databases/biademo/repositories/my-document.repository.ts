@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BiaRepository } from 'src/app/core/bia-core/data/bia.repository';
+import { BiaDemoDatabase } from '../biademo.database';
 import { MyDocument } from '../entities/document.entity';
-import { MyDb } from '../my-db.db';
 
 @Injectable()
-export class DocumentRepository extends BiaRepository<MyDocument, string> {
-  constructor(db: MyDb) {
+export class MyDocumentRepository extends BiaRepository<MyDocument, string> {
+  constructor(db: BiaDemoDatabase) {
     super(db.documents);
   }
 }

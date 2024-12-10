@@ -6,13 +6,13 @@ import { User } from './entities/user.entity';
 import { Warehouse } from './entities/warehouse.entity';
 
 @Injectable()
-export class MyDb extends BiaDatabase {
+export class BiaDemoDatabase extends BiaDatabase {
   users!: Table<User, number>;
   warehouses!: Table<Warehouse, number>;
   documents!: Table<MyDocument, string>;
 
   constructor() {
-    super('MyDb');
+    super('BiaDemo');
   }
 
   protected defineSchemas(): void {

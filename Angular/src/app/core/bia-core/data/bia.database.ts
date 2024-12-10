@@ -6,6 +6,7 @@ export abstract class BiaDatabase extends Dexie {
 
   protected constructor(databaseName: string) {
     super(databaseName);
+    this.init();
   }
 
   protected isInit(): boolean {
@@ -16,8 +17,9 @@ export abstract class BiaDatabase extends Dexie {
     return this._isUpgradeFailure;
   }
 
-  init(): void {
+  private init(): void {
     if (!this._isInit) {
+      console.log(`Database ${this.name} init...`);
       this._isUpgradeFailure = false;
       this.defineSchemas();
       this._isInit = !this._isUpgradeFailure;
