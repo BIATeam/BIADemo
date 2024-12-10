@@ -21,10 +21,10 @@ export class AppComponent implements OnInit {
     private biaExternalJsService: BiaInjectExternalService,
     private primeNgConfig: PrimeNGConfig,
     private translateService: TranslateService,
-    private layoutService: BiaLayoutService,
     // Begin BIADemo
-    private biaDemoDatabase: BiaDemoDatabase
+    private biaDemoDatabase: BiaDemoDatabase,
     // End BIADemo
+    private layoutService: BiaLayoutService
   ) {
     this.layoutService.defaultConfigUpdate({});
     this.layoutService.setConfigDisplay({
