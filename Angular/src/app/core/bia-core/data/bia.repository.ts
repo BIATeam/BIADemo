@@ -1,6 +1,6 @@
 import { liveQuery, Table } from 'dexie';
 
-export class BiaRepository<TEntity, TKey> {
+export abstract class BiaRepository<TEntity, TKey> {
   protected constructor(protected table: Table<TEntity, TKey>) {}
 
   items$ = liveQuery(() => this.read());

@@ -17,6 +17,7 @@ export class AppDB extends BiaDatabase {
 
   constructor() {
     super('biaDemoDB');
+    this.init();
   }
 
   protected defineSchemas(): void {

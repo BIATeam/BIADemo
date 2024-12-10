@@ -6,7 +6,15 @@ export abstract class BiaDatabase extends Dexie {
 
   protected constructor(databaseName: string) {
     super(databaseName);
-    this.init();
+  }
+
+  init(): void {
+    if (!this._isInit) {
+      console.info(`Database ${this.name} init`);
+      this._isUpgradeFailure = false;
+      this.defineSchemas();
+      this._isInit = !this._isUpgradeFailure;
+    }
   }
 
   protected isInit(): boolean {
@@ -15,15 +23,6 @@ export abstract class BiaDatabase extends Dexie {
 
   protected isUpgradeFailure(): boolean {
     return this._isUpgradeFailure;
-  }
-
-  private init(): void {
-    if (!this._isInit) {
-      console.log(`Database ${this.name} init...`);
-      this._isUpgradeFailure = false;
-      this.defineSchemas();
-      this._isInit = !this._isUpgradeFailure;
-    }
   }
 
   protected abstract defineSchemas(): void;
@@ -36,15 +35,11 @@ export abstract class BiaDatabase extends Dexie {
     const versionBuilder = this.version(version).stores(schema);
     if (upgradeCallback) {
       versionBuilder.upgrade(async trans => {
-        console.info(`Migrate database ${this.name} to version ${version}...`);
         try {
           await upgradeCallback(trans);
-          console.info(
-            `Database ${this.name} has migrated successfully to version ${version}`
-          );
         } catch (err) {
           console.error(
-            `Fail to migrate database ${this.name} to version ${version}`,
+            `Fail to upgrade database ${this.name} to version ${version}`,
             err
           );
           this._isUpgradeFailure = true;
