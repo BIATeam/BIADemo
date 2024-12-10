@@ -1,12 +1,27 @@
 import Dexie, { Transaction } from 'dexie';
 
 export abstract class BiaDatabase extends Dexie {
+  private _isInit = false;
+  private _isUpgradeFailure = false;
+
   protected constructor(databaseName: string) {
     super(databaseName);
   }
 
+  protected isInit(): boolean {
+    return this._isInit;
+  }
+
+  protected isUpgradeFailure(): boolean {
+    return this._isUpgradeFailure;
+  }
+
   init(): void {
-    this.defineSchemas();
+    if (!this._isInit) {
+      this._isUpgradeFailure = false;
+      this.defineSchemas();
+      this._isInit = !this._isUpgradeFailure;
+    }
   }
 
   protected abstract defineSchemas(): void;
@@ -30,6 +45,7 @@ export abstract class BiaDatabase extends Dexie {
             `Fail to migrate database ${this.name} to version ${version}`,
             err
           );
+          this._isUpgradeFailure = true;
         }
       });
     }
