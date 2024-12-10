@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Table } from 'dexie';
-import { BiaDatabase } from 'src/app/core/bia-core/data/bia.database';
+import { BiaDatabase } from 'src/app/shared/bia-shared/data/bia.database';
 import { MyDocument } from './entities/document.entity';
 import { User } from './entities/user.entity';
 import { Warehouse } from './entities/warehouse.entity';

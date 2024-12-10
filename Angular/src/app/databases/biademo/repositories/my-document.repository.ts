@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BiaRepository } from 'src/app/core/bia-core/data/bia.repository';
+import { BiaRepository } from 'src/app/shared/bia-shared/data/bia.repository';
 import { BiaDemoDatabase } from '../biademo.database';
 import { MyDocument } from '../entities/document.entity';
 

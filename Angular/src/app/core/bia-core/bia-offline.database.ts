@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Table } from 'dexie';
-import { BiaDatabase } from './data/bia.database';
+import { BiaDatabase } from '../../shared/bia-shared/data/bia.database';
 import { HttpRequestItem } from './models/http-request-item';
 
 export interface DataItem {
