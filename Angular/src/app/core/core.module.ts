@@ -10,13 +10,13 @@ import { BiaCoreModule } from './bia-core/bia-core.module';
 import { BiaTranslationService } from './bia-core/services/bia-translation.service';
 
 // Begin BIADemo
-import { AppDB } from './bia-core/db';
+import { BiaOfflineDatabase } from './bia-core/bia-offline.database';
 import { biaOnlineOfflineInterceptor } from './bia-core/interceptors/bia-online-offline.interceptor';
 import { BiaOnlineOfflineService } from './bia-core/services/bia-online-offline.service';
 const ONLINEOFFLINE = [
   BiaOnlineOfflineService,
   biaOnlineOfflineInterceptor,
-  AppDB,
+  BiaOfflineDatabase,
 ];
 // End BIADemo
 

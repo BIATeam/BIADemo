@@ -11,7 +11,7 @@ import { from, NEVER, Observable, of, throwError } from 'rxjs';
 import { catchError, first, map, tap } from 'rxjs/operators';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { clone } from 'src/app/shared/bia-shared/utils';
-import { AppDB, DataItem } from '../db';
+import { BiaOfflineDatabase, DataItem } from '../bia-offline.database';
 import {
   DeleteParam,
   DeletesParam,
@@ -31,7 +31,7 @@ export abstract class GenericDas {
   public http: HttpClient;
   public route: string;
   protected matomoTracker: MatomoTracker;
-  protected db: AppDB;
+  protected db: BiaOfflineDatabase;
   protected baseHref: string;
 
   constructor(
@@ -43,7 +43,7 @@ export abstract class GenericDas {
     this.route = GenericDas.buildRoute(endpoint);
     this.matomoTracker = injector.get<MatomoTracker>(MatomoTracker);
     if (BiaOnlineOfflineService.isModeEnabled === true) {
-      this.db = injector.get<AppDB>(AppDB);
+      this.db = injector.get<BiaOfflineDatabase>(BiaOfflineDatabase);
     }
   }
 

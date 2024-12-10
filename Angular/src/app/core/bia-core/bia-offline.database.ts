@@ -11,12 +11,12 @@ export interface DataItem {
 @Injectable({
   providedIn: 'root',
 })
-export class AppDB extends BiaDatabase {
+export class BiaOfflineDatabase extends BiaDatabase {
   public httpRequests!: Table<HttpRequestItem, number>;
   public datas!: Table<DataItem, string>;
 
   constructor() {
-    super('biaDemoDB');
+    super('biaOfflineDB');
     this.init();
   }
 

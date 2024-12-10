@@ -18,7 +18,7 @@ import {
 import { catchError, filter, first, skip } from 'rxjs/operators';
 import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
 import { HttpStatusCodeCustom } from 'src/app/shared/bia-shared/model/http-status-code-custom.enum';
-import { AppDB } from '../db';
+import { BiaOfflineDatabase } from '../bia-offline.database';
 import { HttpOptions } from '../models/http-options';
 import { HttpRequestItem } from '../models/http-request-item';
 import { BiaEnvironmentService } from './bia-environment.service';
@@ -54,7 +54,7 @@ export class BiaOnlineOfflineService implements OnDestroy {
 
   constructor(
     protected http: HttpClient,
-    protected db: AppDB,
+    protected db: BiaOfflineDatabase,
     protected biaMessageService: BiaMessageService,
     protected translateService: TranslateService,
     protected appSettingsService: AppSettingsService

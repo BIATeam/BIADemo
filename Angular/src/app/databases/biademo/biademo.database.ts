@@ -12,7 +12,7 @@ export class BiaDemoDatabase extends BiaDatabase {
   documents!: Table<MyDocument, string>;
 
   constructor() {
-    super('BiaDemo');
+    super('biaDemoDB');
   }
 
   protected defineSchemas(): void {
