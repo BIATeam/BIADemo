@@ -23,7 +23,6 @@ import { BiaTranslateHttpLoader } from './core/bia-core/services/bia-translate-h
 import { getCurrentCulture } from './core/bia-core/services/bia-translation.service';
 import { BiaErrorHandler } from './core/bia-core/shared/bia-error-handler';
 import { CoreModule } from './core/core.module';
-import { DatabasesModule } from './databases/databases.module';
 import { HomeModule } from './features/home/home.module';
 import { ROOT_REDUCERS, metaReducers } from './store/state';
 
@@ -66,7 +65,6 @@ export function createTranslateLoader(http: HttpClient, store: TranslateStore) {
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000',
     }),
-    DatabasesModule,
   ],
   providers: [
     DatePipe,

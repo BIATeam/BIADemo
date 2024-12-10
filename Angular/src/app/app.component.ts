@@ -4,7 +4,7 @@ import { PrimeNGConfig } from 'primeng/api';
 import { BiaInjectExternalService } from './core/bia-core/services/bia-inject-external.service';
 import { BiaMatomoService } from './core/bia-core/services/matomo/bia-matomo.service';
 // Begin BIADemo
-import { BiaDemoDatabase } from './databases/biademo/biademo.database';
+import { BiaDemoDatabase } from './core/databases/biademo/biademo.database';
 // End BIADemo
 import { BiaLayoutService } from './shared/bia-shared/components/layout/services/layout.service';
 
@@ -43,7 +43,6 @@ export class AppComponent implements OnInit {
     this.translateService
       .get('primeng')
       .subscribe(res => this.primeNgConfig.setTranslation(res));
-
     // Begin BIADemo
     this.biaDemoDatabase.init();
     // End BIADemo

@@ -13,6 +13,7 @@ import { BiaTranslationService } from './bia-core/services/bia-translation.servi
 import { BiaOfflineDatabase } from './bia-core/bia-offline.database';
 import { biaOnlineOfflineInterceptor } from './bia-core/interceptors/bia-online-offline.interceptor';
 import { BiaOnlineOfflineService } from './bia-core/services/bia-online-offline.service';
+import { DatabasesModule } from './databases/databases.module';
 const ONLINEOFFLINE = [
   BiaOnlineOfflineService,
   biaOnlineOfflineInterceptor,
@@ -21,7 +22,7 @@ const ONLINEOFFLINE = [
 // End BIADemo
 
 @NgModule({
-  imports: [RouterModule, BiaCoreModule],
+  imports: [RouterModule, BiaCoreModule, DatabasesModule],
   // Begin BIADemo
   providers: [...ONLINEOFFLINE],
   // End BIADemo

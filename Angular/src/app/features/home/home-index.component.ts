@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { MyDocument } from 'src/app/databases/biademo/entities/document.entity';
-import { User } from 'src/app/databases/biademo/entities/user.entity';
-import { MyDocumentRepository } from 'src/app/databases/biademo/repositories/my-document.repository';
-import { UserRepository } from 'src/app/databases/biademo/repositories/user.repository';
+import { MyDocument } from 'src/app/core/databases/biademo/entities/document.entity';
+import { MyDocumentRepository } from 'src/app/core/databases/biademo/repositories/my-document.repository';
+import { UserRepository } from 'src/app/core/databases/biademo/repositories/user.repository';
 import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/services/layout.service';
+import { User } from '../bia-features/users/model/user';
 
 @Component({
   selector: 'app-home-index',
