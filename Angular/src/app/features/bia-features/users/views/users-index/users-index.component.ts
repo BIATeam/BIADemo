@@ -38,9 +38,7 @@ export class UsersIndexComponent
   }
 
   protected setPermissions() {
-    this.canSync =
-      this.appSettingsService.appSettings?.keycloak?.isActive !== true &&
-      this.authService.hasPermission(Permission.User_Sync);
+    this.canSync = false; // This button is no longer useful with the UserInDB mode;
     this.canEdit = this.authService.hasPermission(Permission.User_UpdateRoles);
     this.canDelete = this.authService.hasPermission(Permission.User_Delete);
     this.canAdd = this.authService.hasPermission(Permission.User_Add);
