@@ -142,6 +142,27 @@ body {
   }
 }
 
+.layout-footer-button {
+  position: absolute;
+  top: -2rem;
+  right: 0;
+
+  width: 4rem;
+  height: 2rem;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.layout-container.layout-footer-overlay-active
+  .layout-footer
+  .layout-footer-button {
+  transform: translateX(4rem);
+}
+
 .layout-container.layout-footer-overlay-active
   .layout-footer
   .layout-footer-button
@@ -156,8 +177,15 @@ body {
   transform: rotate(180deg);
 }
 
-.layout-footer .layout-footer-button i {
-  transition: transform var(--transition-duration);
+.layout-footer .layout-footer-button {
+  transform: translateX(0);
+  transition:
+    transform 0.3s cubic-bezier(0, 0, 0.2, 1),
+    background-color var(--transition-duration);
+
+  i {
+    transition: transform var(--transition-duration);
+  }
 }
 
 .layout-container.layout-footer-overlay.layout-footer-overlay-active
