@@ -57,6 +57,7 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       isSearchable: true,
       isSortable: false,
       type: PropType.Boolean,
+      validators: [Validators.required],
     }),
     /// BIAToolKit - End Block isActive
     /// BIAToolKit - Begin Block isMaintenance
@@ -64,7 +65,6 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       isSearchable: true,
       isSortable: false,
       type: PropType.Boolean,
-      validators: [Validators.required],
     }),
     /// BIAToolKit - End Block isMaintenance
     /// BIAToolKit - Begin Block firstFlightDate
