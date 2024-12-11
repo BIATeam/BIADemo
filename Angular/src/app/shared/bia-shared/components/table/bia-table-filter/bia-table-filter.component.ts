@@ -16,6 +16,7 @@ import {
   BiaFieldConfig,
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
+  PrimeNGFiltering,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { OptionDto } from '../../../model/option-dto';
@@ -108,7 +109,25 @@ export class BiaTableFilterComponent<CrudItem>
   }
 
   setSimpleFilter(event: any, col: BiaFieldConfig<CrudItem>) {
-    this.table.filter(event?.value, col.field.toString(), col.filterMode);
+    if (col.type === PropType.ManyToMany) {
+      const separator = ',';
+      if (
+        event?.value?.trim().length > 0 &&
+        event?.value?.slice(-1) !== ' ' &&
+        event?.value?.slice(-1) !== separator
+      ) {
+        const valuesArray: string[] = event?.value
+          .split(separator)
+          .map((value: string) => value.trim());
+        this.table.filter(
+          valuesArray,
+          col.field.toString(),
+          PrimeNGFiltering.In
+        );
+      }
+    } else {
+      this.table.filter(event?.value, col.field.toString(), col.filterMode);
+    }
   }
 
   protected initFiterConfiguration() {
