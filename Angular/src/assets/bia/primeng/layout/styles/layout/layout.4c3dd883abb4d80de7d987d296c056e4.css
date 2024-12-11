@@ -2484,11 +2484,6 @@ body {
   min-height: calc(100vh - 6.45rem - var(--footer-height));
 }
 
-.layout-horizontal .layout-content-wrapper p-breadcrumb + .layout-content {
-  padding: 0;
-  min-height: calc(100vh - 9.45rem - var(--footer-height));
-}
-
 .layout-container.layout-footer-overlay
   .layout-content-wrapper
   .layout-content {
@@ -2516,6 +2511,60 @@ body {
   min-height: calc(100vh - 9.45rem);
 }
 
+.layout-container.layout-horizontal .layout-content-wrapper .layout-content {
+  padding: 0;
+  min-height: calc(100vh - 7rem - var(--footer-height));
+}
+.layout-container.layout-horizontal
+  .layout-content-wrapper
+  p-breadcrumb
+  + .layout-content {
+  padding: 0;
+  min-height: calc(100vh - 9.45rem - var(--footer-height));
+}
+
+.layout-container.layout-content-wrapper-fullscreen .layout-content-wrapper,
+.layout-container.layout-content-wrapper-fullscreen.layout-footer-overlay
+  .layout-content-wrapper {
+  padding-top: 0;
+}
+.layout-container.layout-content-wrapper-fullscreen
+  .layout-content-wrapper
+  .layout-content,
+.layout-container.layout-content-wrapper-fullscreen.layout-footer-overlay
+  .layout-content-wrapper
+  .layout-content {
+  min-height: 100vh;
+}
+.layout-container.layout-content-wrapper-fullscreen .layout-sidebar,
+.layout-container.layout-content-wrapper-fullscreen.layout-footer-overlay
+  .layout-sidebar {
+  height: 100%;
+  top: 0;
+}
+
+.layout-container.layout-content-wrapper-fullscreen.layout-horizontal
+  .layout-content-wrapper,
+.layout-container.layout-content-wrapper-fullscreen.layout-footer-overlay.layout-horizontal
+  .layout-content-wrapper {
+  padding-top: 3rem;
+}
+.layout-container.layout-content-wrapper-fullscreen.layout-horizontal
+  .layout-content-wrapper
+  .layout-content,
+.layout-container.layout-content-wrapper-fullscreen.layout-footer-overlay.layout-horizontal
+  .layout-content-wrapper
+  .layout-content {
+  min-height: calc(100vh - 3rem);
+}
+.layout-container.layout-content-wrapper-fullscreen.layout-horizontal
+  .layout-sidebar,
+.layout-container.layout-content-wrapper-fullscreen.layout-footer-overlay.layout-horizontal
+  .layout-sidebar {
+  height: 3rem;
+  top: 0;
+}
+
 @media screen and (min-width: 1729px) {
   .layout-content {
     width: 100%;
@@ -2530,17 +2579,6 @@ body {
 
 .layout-menuitem-root-clickable:hover {
   background-color: var(--menuitem-hover-bg);
-}
-
-.layout-content-wrapper-fullscreen .layout-content-wrapper {
-  padding-top: 0;
-}
-.layout-content-wrapper-fullscreen .layout-content-wrapper .layout-content {
-  min-height: 100vh;
-}
-.layout-content-wrapper-fullscreen .layout-sidebar {
-  height: 100%;
-  top: 0;
 }
 
 .layout-topbar .layout-topbar-start {
