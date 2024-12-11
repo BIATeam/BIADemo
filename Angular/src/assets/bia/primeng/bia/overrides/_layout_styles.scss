@@ -162,11 +162,11 @@ body {
 
 .layout-container.layout-footer-overlay.layout-footer-overlay-active
   .layout-footer {
-  transform: translateY(-100%);
+  transform: translateX(-100%);
 }
 
 .layout-container.layout-footer-overlay .layout-footer {
-  transform: translateY(0);
+  transform: translateX(0);
   transition: transform 0.3s cubic-bezier(0, 0, 0.2, 1);
 }
 

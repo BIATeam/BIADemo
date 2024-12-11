@@ -35,18 +35,18 @@
 .footer-overlay {
   position: fixed;
   height: var(--footer-height);
-  right: 0;
-  bottom: calc(var(--footer-height) * -1);
+  right: -100%;
+  bottom: 0;
   width: 100%;
 }
 
 .layout-footer-button {
   position: absolute;
-  top: -2rem;
-  right: 0;
+  top: 0;
+  left: -2rem;
 
-  width: 4rem;
-  height: 2rem;
+  width: 2rem;
+  height: var(--footer-height);
   display: inline-flex;
   flex-shrink: 0;
   align-items: center;
