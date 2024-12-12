@@ -50,16 +50,9 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
                     }
                 }
 
-                object tableLock = new object();
-
-                Parallel.ForEach(datas, item =>
+                foreach (T item in datas)
                 {
-                    DataRow row = default;
-
-                    lock (tableLock)
-                    {
-                        row = table.NewRow();
-                    }
+                    DataRow row = table.NewRow();
 
                     foreach ((string EntityName, string SqlName) mapping in columnMappings)
                     {
@@ -67,11 +60,8 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
                         row[mapping.SqlName] = value ?? DBNull.Value;
                     }
 
-                    lock (tableLock)
-                    {
-                        table.Rows.Add(row);
-                    }
-                });
+                    table.Rows.Add(row);
+                }
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
