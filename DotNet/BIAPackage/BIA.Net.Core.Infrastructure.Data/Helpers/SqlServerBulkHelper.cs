@@ -25,7 +25,8 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
         /// <typeparam name="T">Type en entity.</typeparam>
         /// <param name="dbContext">The database context.</param>
         /// <param name="datas">The datas.</param>
-        public static void Insert<T>(BiaDataContext dbContext, List<T> datas)
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        public static async Task InsertAsync<T>(BiaDataContext dbContext, List<T> datas)
             where T : class
         {
             IEntityType entityType = dbContext.Model.FindEntityType(typeof(T));
@@ -65,7 +66,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    connection.Open();
+                    await connection.OpenAsync();
 
                     using (SqlBulkCopy bulkCopy = new SqlBulkCopy(connection))
                     {
@@ -76,10 +77,10 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
                             bulkCopy.ColumnMappings.Add(sqlName, sqlName);
                         }
 
-                        bulkCopy.WriteToServer(table);
+                        await bulkCopy.WriteToServerAsync(table);
                     }
 
-                    connection.Close();
+                    await connection.CloseAsync();
                 }
             }
         }
