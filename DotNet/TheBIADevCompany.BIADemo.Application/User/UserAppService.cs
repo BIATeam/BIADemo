@@ -333,6 +333,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
             await this.userSynchronizeDomainService.SynchronizeFromADGroupAsync(fullSynchro);
         }
 
+        /// <inheritdoc cref="IUserAppService.SynchronizeWithIdpAsync"/>
+        public async Task SynchronizeWithIdpAsync()
+        {
+            await this.userSynchronizeDomainService.SynchronizeFromIdpAsync();
+        }
+
         /// <inheritdoc cref="IUserAppService.UpdateLastLoginDateAndActivate"/>
         public async Task UpdateLastLoginDateAndActivate(int userId, bool activate)
         {

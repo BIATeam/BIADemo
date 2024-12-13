@@ -397,7 +397,15 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         [Authorize(Roles = Rights.Users.Sync)]
         public async Task<IActionResult> Synchronize(bool fullSynchro = false)
         {
-            await this.userService.SynchronizeWithADAsync(fullSynchro);
+            if (this.configuration?.Authentication?.Keycloak?.IsActive == true)
+            {
+                await this.userService.SynchronizeWithIdpAsync();
+            }
+            else
+            {
+                await this.userService.SynchronizeWithADAsync(fullSynchro);
+            }
+
 #if UseHubForClientInUser
             _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");
 #endif

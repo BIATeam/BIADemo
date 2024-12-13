@@ -10,8 +10,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
+    using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Models;
     using TheBIADevCompany.BIADemo.Domain.User.Services;
@@ -36,18 +36,46 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         private readonly IUserIdentityKeyDomainService userIdentityKeyDomainService;
 
+        private readonly IIdentityProviderRepository identityProviderRepository;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="UserSynchronizeDomainService"/> class.
+        /// Initializes a new instance of the <see cref="UserSynchronizeDomainService" /> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
-        /// <param name="configuration">The configuration of the BiaNet section.</param>
         /// <param name="adHelper">The AD helper.</param>
         /// <param name="userIdentityKeyDomainService">The user IdentityKey Domain Service.</param>
-        public UserSynchronizeDomainService(ITGenericRepository<User, int> repository, IUserDirectoryRepository<UserFromDirectory> adHelper, IUserIdentityKeyDomainService userIdentityKeyDomainService)
+        /// <param name="identityProviderRepository">The identity provider repository.</param>
+        public UserSynchronizeDomainService(
+            ITGenericRepository<User, int> repository,
+            IUserDirectoryRepository<UserFromDirectory> adHelper,
+            IUserIdentityKeyDomainService userIdentityKeyDomainService,
+            IIdentityProviderRepository identityProviderRepository)
         {
             this.repository = repository;
             this.userDirectoryHelper = adHelper;
             this.userIdentityKeyDomainService = userIdentityKeyDomainService;
+            this.identityProviderRepository = identityProviderRepository;
+        }
+
+        /// <inheritdoc cref="IUserSynchronizeDomainService.SynchronizeFromIdpAsync"/>
+        public async Task SynchronizeFromIdpAsync()
+        {
+            IEnumerable<User> users = await this.repository.GetAllEntityAsync(filter: user => !string.IsNullOrWhiteSpace(user.Login) && user.IsActive);
+
+            if (users?.Any() == true)
+            {
+                foreach (User user in users)
+                {
+                    List<UserFromDirectory> userFromDirectories = await this.identityProviderRepository.SearchUserAsync(user.Login, 0, 1);
+                    if (userFromDirectories.Count == 1 && string.Equals(userFromDirectories[0].Login, user.Login, StringComparison.OrdinalIgnoreCase))
+                    {
+                        UserFromDirectory userFromDirectory = userFromDirectories[0];
+                        this.ResynchronizeUser(user, userFromDirectory);
+                    }
+                }
+
+                await this.repository.UnitOfWork.CommitAsync();
+            }
         }
 
         /// <inheritdoc cref="IUserSynchronizeDomainService.SynchronizeFromADGroupAsync"/>
