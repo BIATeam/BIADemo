@@ -50,6 +50,7 @@
       "mx": "MX",
       "us": "US"
     },
+    "language": "Language",
     "languages": "Languages",
     "layoutScale": "Layout scale",
     "manage": "Manage",

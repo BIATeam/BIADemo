@@ -237,7 +237,7 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
       'bia.lang.mx',
       'bia.lang.us',
       'bia.greetings',
-      'bia.languages',
+      'bia.language',
       'bia.theme',
       'bia.themeLight',
       'bia.themeDark',
@@ -255,6 +255,12 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
               },
             });
           });
+
+          menuItemLang.sort((a, b) => {
+            if (!a.label) return 1;
+            if (!b.label) return -1;
+            return a.label.localeCompare(b.label);
+          });
         }
 
         let displayName = '';
@@ -268,7 +274,7 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
             items: [
               [
                 {
-                  label: translations['bia.languages'],
+                  label: translations['bia.language'],
                   items: menuItemLang,
                 },
                 {

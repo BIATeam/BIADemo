@@ -50,7 +50,8 @@
       "mx": "MX",
       "us": "US"
     },
-    "languages": "Langue",
+    "language": "Langue",
+    "languages": "Langues",
     "layoutScale": "Échelle de mise en page",
     "manage": "Gérer",
     "menuMode": "Style de barre latérale",
