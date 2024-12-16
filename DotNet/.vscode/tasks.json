@@ -2,56 +2,12 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "angular: start",
-      "type": "npm",
-      "script": "start",
-      "options": {
-        "cwd": "${workspaceFolder}/Angular"
-      },
-      "isBackground": true,
-      "problemMatcher": {
-        "owner": "typescript",
-        "pattern": "$tsc",
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": {
-            "regexp": "(.*?)"
-          },
-          "endsPattern": {
-            "regexp": "bundle generation complete"
-          }
-        }
-      }
-    },
-    {
-      "label": "angular: test",
-      "type": "npm",
-      "script": "test",
-      "options": {
-        "cwd": "${workspaceFolder}/Angular"
-      },
-      "isBackground": true,
-      "problemMatcher": {
-        "owner": "typescript",
-        "pattern": "$tsc",
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": {
-            "regexp": "(.*?)"
-          },
-          "endsPattern": {
-            "regexp": "bundle generation complete"
-          }
-        }
-      }
-    },
-    {
       "label": "dotnet: build debug api",
       "command": "dotnet",
       "type": "process",
       "args": [
         "build",
-        "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.Presentation.Api/TheBIADevCompany.BIADemo.Presentation.Api.csproj",
+        "${workspaceFolder}/TheBIADevCompany.BIADemo.Presentation.Api/TheBIADevCompany.BIADemo.Presentation.Api.csproj",
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary"
       ],
@@ -63,7 +19,7 @@
       "type": "process",
       "args": [
         "build",
-        "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.WorkerService/TheBIADevCompany.BIADemo.WorkerService.csproj",
+        "${workspaceFolder}/TheBIADevCompany.BIADemo.WorkerService/TheBIADevCompany.BIADemo.WorkerService.csproj",
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary"
       ],
@@ -75,7 +31,7 @@
       "type": "process",
       "args": [
         "build",
-        "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.DeployDB/TheBIADevCompany.BIADemo.DeployDB.csproj",
+        "${workspaceFolder}/TheBIADevCompany.BIADemo.DeployDB/TheBIADevCompany.BIADemo.DeployDB.csproj",
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary"
       ],
@@ -87,7 +43,7 @@
       "type": "process",
       "args": [
         "build",
-        "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.Presentation.Api/TheBIADevCompany.BIADemo.Presentation.Api.csproj",
+        "${workspaceFolder}/TheBIADevCompany.BIADemo.Presentation.Api/TheBIADevCompany.BIADemo.Presentation.Api.csproj",
         "-c",
         "Release"
       ],
@@ -99,7 +55,7 @@
       "type": "process",
       "args": [
         "build",
-        "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.WorkerService/TheBIADevCompany.BIADemo.WorkerService.csproj",
+        "${workspaceFolder}/TheBIADevCompany.BIADemo.WorkerService/TheBIADevCompany.BIADemo.WorkerService.csproj",
         "-c",
         "Release"
       ],
@@ -111,7 +67,7 @@
       "type": "process",
       "args": [
         "build",
-        "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.DeployDB/TheBIADevCompany.BIADemo.DeployDB.csproj",
+        "${workspaceFolder}/TheBIADevCompany.BIADemo.DeployDB/TheBIADevCompany.BIADemo.DeployDB.csproj",
         "-c",
         "Release"
       ],
@@ -127,9 +83,9 @@
         "add",
         "${input:migrationName}",
         "--project",
-        "DotNet\\TheBIADevCompany.BIADemo.Infrastructure.Data",
+        "TheBIADevCompany.BIADemo.Infrastructure.Data",
         "-s",
-        "DotNet\\TheBIADevCompany.BIADemo.Presentation.Api",
+        "TheBIADevCompany.BIADemo.Presentation.Api",
         "-c",
         "DataContext"
       ],
@@ -144,7 +100,7 @@
         "database",
         "update",
         "-s",
-        "DotNet\\TheBIADevCompany.BIADemo.Presentation.Api",
+        "TheBIADevCompany.BIADemo.Presentation.Api",
         "-c",
         "DataContext"
       ],
@@ -160,7 +116,7 @@
         "update",
         "${input:migrationTarget}",
         "-s",
-        "DotNet\\TheBIADevCompany.BIADemo.Presentation.Api",
+        "TheBIADevCompany.BIADemo.Presentation.Api",
         "-c",
         "DataContext"
       ],
@@ -175,9 +131,9 @@
         "migrations",
         "remove",
         "--project",
-        "DotNet\\TheBIADevCompany.BIADemo.Infrastructure.Data",
+        "TheBIADevCompany.BIADemo.Infrastructure.Data",
         "-s",
-        "DotNet\\TheBIADevCompany.BIADemo.Presentation.Api",
+        "TheBIADevCompany.BIADemo.Presentation.Api",
         "-c",
         "DataContext"
       ],
