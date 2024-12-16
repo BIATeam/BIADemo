@@ -257,9 +257,9 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
           });
 
           menuItemLang.sort((a, b) => {
-            if (!a.label) return 1;
-            if (!b.label) return -1;
-            return a.label.localeCompare(b.label);
+            const labelA = a.label || '';
+            const labelB = b.label || '';
+            return labelA.localeCompare(labelB);
           });
         }
 
