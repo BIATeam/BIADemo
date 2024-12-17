@@ -10,7 +10,7 @@
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
     "e2e": "ng e2e",
-    "clean": "npx prettier --write . && ng lint --fix",
+    "clean": "npx prettier --write . --plugin=prettier-plugin-organize-imports && ng lint --fix",
     "build:iis": "ng build --configuration iis",
     "build:aot": "ng build --aot --base-href /BIADemo/App/ --configuration iis",
     "build:aot2": "ng build --aot --base-href /BIADemo2/App/ --output-path dist/BIADemo2 --configuration iis",
@@ -81,6 +81,7 @@
     "eslint-plugin-prettier": "~5.2.1",
     "prettier": "~3.4.2",
     "prettier-eslint": "~16.3.0",
+    "prettier-plugin-organize-imports": "~4.1.0",
     "ts-node": "~10.9.2",
     "tslib": "~2.8.1",
     "typescript": "~5.4.5"
