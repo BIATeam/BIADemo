@@ -60,7 +60,7 @@ function UpdateDirectoryBuildPropsAnalyzersReferences
     if($analyzersNugetsItemGroup -ne $null) { 
         $nugetPackageReference = $xmlContent.CreateElement("PackageReference")
         $nugetPackageReference.SetAttribute("Include", "BIA.Net.Analyzers")
-        $nugetPackageReference.SetAttribute("Version", "1.0.0")
+        $nugetPackageReference.SetAttribute("Version", "4.0.*")
 
         $privateAssets = $xmlContent.CreateElement("PrivateAssets")
         $privateAssets.InnerText = "all"
