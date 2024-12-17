@@ -135,7 +135,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
 
         private UserFromDirectory ConvertToUserDirectory(SearchUserResponseDto searchUserResponseDto)
         {
-            if (searchUserResponseDto != null)
+            if (searchUserResponseDto != null && searchUserResponseDto.Attribute != null)
             {
                 string sid = null;
 

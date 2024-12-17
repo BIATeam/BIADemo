@@ -14,6 +14,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
     public interface IUserSynchronizeDomainService
     {
         /// <summary>
+        /// Synchronize the users in DB from the Idp.
+        /// </summary>
+        /// <returns>The result of the task.</returns>
+        Task SynchronizeFromIdpAsync();
+
+        /// <summary>
         /// Synchronize the users in DB from the AD User group.
         /// </summary>
         /// <param name="fullSynchro">If true resynchronize existing user.</param>

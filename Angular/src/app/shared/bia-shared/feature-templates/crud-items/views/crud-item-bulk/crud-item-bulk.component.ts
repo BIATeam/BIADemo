@@ -6,24 +6,24 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, take } from 'rxjs';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+import { BiaFormComponent } from 'src/app/shared/bia-shared/components/form/bia-form/bia-form.component';
 import {
   BulkData,
   BulkParam,
   CrudItemBulkService,
 } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-bulk.service';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
-import { CrudConfig } from '../../model/crud-config';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CrudItemService } from '../../services/crud-item.service';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { BiaFormComponent } from 'src/app/shared/bia-shared/components/form/bia-form/bia-form.component';
-import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
-import { clone } from 'src/app/shared/bia-shared/utils';
 import {
   BiaFieldConfig,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
+import { clone } from 'src/app/shared/bia-shared/utils';
+import { CrudConfig } from '../../model/crud-config';
+import { CrudItemService } from '../../services/crud-item.service';
 
 @Component({
   template: '',
@@ -32,7 +32,7 @@ export abstract class CrudItemBulkComponent<CrudItem extends BaseDto>
   implements OnInit, AfterViewInit, OnDestroy
 {
   protected sub = new Subscription();
-  protected crudConfiguration: CrudConfig;
+  protected crudConfiguration: CrudConfig<CrudItem>;
   protected bulkData: BulkData<CrudItem>;
   protected crudItemBulkService: CrudItemBulkService<CrudItem>;
   protected authService: AuthService;
@@ -42,7 +42,8 @@ export abstract class CrudItemBulkComponent<CrudItem extends BaseDto>
   protected canEdit = true;
   protected canDelete = true;
   protected canAdd = true;
-  @ViewChild(BiaFormComponent) biaFormComponent: BiaFormComponent;
+
+  @ViewChild(BiaFormComponent) biaFormComponent: BiaFormComponent<CrudItem>;
 
   constructor(
     protected injector: Injector,
@@ -83,13 +84,13 @@ export abstract class CrudItemBulkComponent<CrudItem extends BaseDto>
     }
   }
 
-  protected addColumnId(crudConfig: CrudConfig) {
+  protected addColumnId(crudConfig: CrudConfig<CrudItem>) {
     const columnIdExists = crudConfig.fieldsConfig.columns.some(
       column => column.field === 'id'
     );
 
     if (columnIdExists !== true) {
-      const crudConfigCopy = clone(crudConfig);
+      const crudConfigCopy = clone(crudConfig, false);
       crudConfigCopy.fieldsConfig.columns.unshift(this.getColumnId());
       return crudConfigCopy;
     } else {
@@ -97,8 +98,8 @@ export abstract class CrudItemBulkComponent<CrudItem extends BaseDto>
     }
   }
 
-  protected getColumnId(): BiaFieldConfig {
-    return Object.assign(new BiaFieldConfig('id', 'bia.id'), {
+  protected getColumnId(): BiaFieldConfig<CrudItem> {
+    return Object.assign(new BiaFieldConfig<CrudItem>('id', 'bia.id'), {
       isEditable: false,
       type: PropType.Number,
     });
@@ -127,7 +128,7 @@ export abstract class CrudItemBulkComponent<CrudItem extends BaseDto>
 
   abstract save(toSaves: CrudItem[]): void;
 
-  protected getForm(): BiaFormComponent {
+  protected getForm(): BiaFormComponent<CrudItem> {
     return this.biaFormComponent;
   }
 

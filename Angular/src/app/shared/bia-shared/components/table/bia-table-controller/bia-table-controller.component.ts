@@ -149,13 +149,19 @@ export class BiaTableControllerComponent
       this.displayedColumns = this.defaultDisplayedColumns;
       this.sub.add(
         this.translateService.stream(cols).subscribe(results => {
-          this.listedColumns = new Array<SelectItem>();
+          const tmpListedColumns = new Array<SelectItem>();
           this.columns.forEach(col => {
-            this.listedColumns.push({
+            tmpListedColumns.push({
               label: results[col.value],
               value: col.key,
             });
           });
+          tmpListedColumns.sort((a, b) => {
+            const labelA = a.label || '';
+            const labelB = b.label || '';
+            return labelA.localeCompare(labelB);
+          });
+          this.listedColumns = [...tmpListedColumns];
         })
       );
     }

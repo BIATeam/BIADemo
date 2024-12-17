@@ -25,6 +25,7 @@ import {
   BiaFieldConfig,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
+import { BaseDto } from '../../../model/base-dto';
 
 @Component({
   selector: 'bia-form',
@@ -32,11 +33,11 @@ import {
   styleUrls: ['./bia-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class BiaFormComponent
+export class BiaFormComponent<TDto extends { id: number }>
   implements OnInit, OnDestroy, OnChanges, AfterContentInit
 {
-  @Input() element: any = {};
-  @Input() fields: BiaFieldConfig[];
+  @Input() element?: TDto;
+  @Input() fields: BiaFieldConfig<TDto>[];
   @Input() dictOptionDtos: DictOptionDto[];
   @Output() save = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<void>();
@@ -54,7 +55,6 @@ export class BiaFormComponent
   ) {}
 
   ngOnInit() {
-    this.element ??= {};
     this.initForm();
   }
 
@@ -116,11 +116,19 @@ export class BiaFormComponent
     const fields: { [key: string]: any } = { id: [this.element?.id] };
     for (const col of this.fields) {
       if (col.validators && col.validators.length > 0) {
-        fields[col.field] = [this.element[col.field], col.validators];
+        fields[col.field as string] = [
+          this.element ? this.element[col.field] : null,
+          col.validators,
+        ];
       } else if (col.isRequired) {
-        fields[col.field] = [this.element[col.field], Validators.required];
+        fields[col.field as string] = [
+          this.element ? this.element[col.field] : null,
+          Validators.required,
+        ];
       } else {
-        fields[col.field] = [this.element[col.field]];
+        fields[col.field as string] = [
+          this.element ? this.element[col.field] : null,
+        ];
       }
     }
     return fields;
@@ -139,7 +147,7 @@ export class BiaFormComponent
     }
   }
   public getElement() {
-    const element: any = this.form?.value;
+    const element: TDto = this.form?.value;
     element.id = element.id > 0 ? element.id : 0;
     for (const col of this.fields) {
       switch (col.type) {
@@ -155,8 +163,10 @@ export class BiaFormComponent
             element,
             col.field,
             BiaOptionService.differential(
-              Reflect.get(element, col.field),
-              this.element ? Reflect.get(this.element, col.field) : undefined
+              Reflect.get(element, col.field) as BaseDto[],
+              (this.element
+                ? (Reflect.get(this.element, col.field) ?? [])
+                : []) as BaseDto[]
             )
           );
           break;

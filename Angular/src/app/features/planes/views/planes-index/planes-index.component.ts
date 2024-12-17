@@ -35,10 +35,12 @@ export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
     this.canDelete = this.authService.hasPermission(Permission.Plane_Delete);
     this.canAdd = this.authService.hasPermission(Permission.Plane_Create);
     this.canSave = this.authService.hasPermission(Permission.Plane_Save);
+    this.canSelect = this.canDelete;
     /// BIAToolKit - Begin Partial PlaneIndexTsCanViewChildSet Engine
     this.canViewEngines = this.authService.hasPermission(
       Permission.Engine_List_Access
     );
+    this.canSelect = this.canSelect || this.canViewEngines;
     /// BIAToolKit - End Partial PlaneIndexTsCanViewChildSet Engine
     // BIAToolKit - Begin PlaneIndexTsCanViewChildSet
     // BIAToolKit - End PlaneIndexTsCanViewChildSet

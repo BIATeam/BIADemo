@@ -62,12 +62,15 @@ export class CrudItemSignalRService<CrudItem extends BaseDto> {
     this.signalRService.joinGroup(this.targetedFeature);
   }
 
-  destroy() {
+  destroy(crudItemService: CrudListAndItemService<CrudItem, CrudItem>) {
     console.log(
-      '%c [CrudItems] Unregister SignalR : refresh-crud-items',
+      '%c [' +
+        crudItemService.getConsoleLabel() +
+        '] Unregister SignalR : ' +
+        crudItemService.getSignalRRefreshEvent(),
       'color: purple; font-weight: bold'
     );
-    this.signalRService.removeMethod('refresh-crud-items');
+    this.signalRService.removeMethod(crudItemService.getSignalRRefreshEvent());
     this.signalRService.leaveGroup(this.targetedFeature);
   }
 }

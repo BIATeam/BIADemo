@@ -25,7 +25,9 @@ export class TableHelperService {
     };
   }
 
-  public hasFilter(biaTableComponent: BiaTableComponent): boolean {
+  public hasFilter<TDto extends { id: number }>(
+    biaTableComponent: BiaTableComponent<TDto>
+  ): boolean {
     if (this.isNullUndefEmptyStr(biaTableComponent)) {
       return false;
     }
@@ -103,6 +105,18 @@ export class TableHelperService {
     return elemCopy;
   }
 
+  public clearFilterMetaData(filter: FilterMetadata | FilterMetadata[]) {
+    if (Array.isArray(filter)) {
+      filter.splice(1);
+      this.clearFilterMetaData(filter[0]);
+    } else {
+      filter.value = null;
+      if (filter.matchMode === 'empty' || filter.matchMode === 'notEmpty') {
+        filter.matchMode = '';
+      }
+    }
+  }
+
   public getFillScrollHeightValue(
     layoutService: BiaLayoutService,
     compactMode: boolean,
@@ -123,6 +137,9 @@ export class TableHelperService {
           layoutService._config.footerMode != 'overlay'
             ? ' - var(--footer-height)'
             : '';
+      }
+      if (layoutService._config.menuMode === 'horizontal') {
+        height += ' - 3rem';
       }
     }
     if (compactMode) {

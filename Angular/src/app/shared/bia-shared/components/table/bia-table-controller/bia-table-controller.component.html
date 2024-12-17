@@ -41,14 +41,19 @@
       icon="pi pi-filter"
       styleClass="p-overlay-badge"
       [text]="true"
-      (click)="onToggleSearch()">
+      (click)="onToggleSearch()"
+      pTooltip="{{ 'bia.showHideFilters' | translate }}"
+      tooltipPosition="top">
       @if (hasColumnFilter) {
         <span class="p-badge p-component p-badge-dot p-badge-warning"></span>
       }
     </p-button>
     <p-button
+      styleClass="bia-btn-del-filter"
       icon="pi pi-filter-slash"
       [text]="true"
-      (onClick)="onClearFilters()" />
+      (onClick)="onClearFilters()"
+      pTooltip="{{ 'bia.deleteFilters' | translate }}"
+      tooltipPosition="top" />
   </div>
 </div>

@@ -74,8 +74,8 @@ export class BiaFieldDateFormat {
   }
 }
 
-export class BiaFieldConfig {
-  field: string;
+export class BiaFieldConfig<TDto> {
+  field: keyof TDto & string;
   header: string;
   type: PropType;
   filterMode: PrimeNGFiltering;
@@ -117,7 +117,7 @@ export class BiaFieldConfig {
     return this.type.toLowerCase();
   }
 
-  constructor(field: string, header: string, maxlength = 255) {
+  constructor(field: keyof TDto & string, header: string, maxlength = 255) {
     this.field = field;
     this.header = header;
     this.type = PropType.String;
@@ -141,9 +141,9 @@ export class BiaFieldConfig {
     this.displayFormat = null;
   }
 
-  public clone(): BiaFieldConfig {
+  public clone(): BiaFieldConfig<TDto> {
     return Object.assign(
-      new BiaFieldConfig(this.field, this.header, this.maxlength),
+      new BiaFieldConfig<TDto>(this.field, this.header, this.maxlength),
       {
         type: this.type,
         filterMode: this.filterMode,
@@ -170,7 +170,7 @@ export class BiaFieldConfig {
   }
 }
 
-export interface BiaFieldsConfig {
-  columns: BiaFieldConfig[];
+export interface BiaFieldsConfig<TDto> {
+  columns: BiaFieldConfig<TDto>[];
   advancedFilter?: any;
 }

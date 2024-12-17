@@ -26,7 +26,7 @@ export interface Engine extends BaseDto {
   flightHours: number;
   averageFlightHours: number | null;
   fuelConsumption: number;
-  averagefuelConsumption: number | null;
+  averageFuelConsumption: number | null;
   originalPrice: number;
   estimatedPrice: number | null;
   isToBeMaintained: boolean;
@@ -38,7 +38,7 @@ export interface Engine extends BaseDto {
 }
 
 // TODO after creation of CRUD Engine : adapt the field configuration
-export const engineFieldsConfiguration: BiaFieldsConfig = {
+export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
   columns: [
     /// BIAToolKit - Begin Block reference
     Object.assign(new BiaFieldConfig('reference', 'engine.reference'), {

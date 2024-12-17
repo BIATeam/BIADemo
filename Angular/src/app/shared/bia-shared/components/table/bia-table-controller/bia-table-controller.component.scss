@@ -1,3 +1,5 @@
+@import '../../../../../../scss/bia/bia-variables';
+
 :host {
   display: block;
   position: relative;
@@ -20,6 +22,10 @@
     .p-multiselect-label {
       padding: 0.125rem !important;
     }
+  }
+
+  .bia-btn-del-filter {
+    color: $biaRed !important;
   }
 }
 

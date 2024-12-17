@@ -116,6 +116,86 @@
         "Release"
       ],
       "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Database Add migration",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "ef",
+        "migrations",
+        "add",
+        "${input:migrationName}",
+        "--project",
+        "DotNet\\TheBIADevCompany.BIADemo.Infrastructure.Data",
+        "-s",
+        "DotNet\\TheBIADevCompany.BIADemo.Presentation.Api",
+        "-c",
+        "DataContext"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Database Udpate",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "ef",
+        "database",
+        "update",
+        "-s",
+        "DotNet\\TheBIADevCompany.BIADemo.Presentation.Api",
+        "-c",
+        "DataContext"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Database Rollback",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "ef",
+        "database",
+        "update",
+        "${input:migrationTarget}",
+        "-s",
+        "DotNet\\TheBIADevCompany.BIADemo.Presentation.Api",
+        "-c",
+        "DataContext"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Database Remove last migration",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "ef",
+        "migrations",
+        "remove",
+        "--project",
+        "DotNet\\TheBIADevCompany.BIADemo.Infrastructure.Data",
+        "-s",
+        "DotNet\\TheBIADevCompany.BIADemo.Presentation.Api",
+        "-c",
+        "DataContext"
+      ],
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "migrationName",
+      "description": "Migration Name:",
+      "default": "Initial",
+      "type": "promptString"
+    },
+    {
+      "id": "migrationTarget",
+      "description": "Migration Target:",
+      "default": "",
+      "type": "promptString"
     }
   ]
 }

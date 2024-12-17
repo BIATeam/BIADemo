@@ -43,7 +43,7 @@
           [elements]="displayedEngines"
           [configuration]="engineCrudConfig"
           [dictOptionDtos]="[]"
-          [totalRecord]="crudItem.engines.length"
+          [totalRecord]="crudItem?.engines?.length ?? 0"
           [paginator]="false"
           [showColSearch]="false"
           [canEdit]="true"

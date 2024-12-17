@@ -247,7 +247,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
     this.setNoMargin(this.activatedRoute);
     this.sub.add(
       this.translateService
-        .stream('bia.languages')
+        .stream('bia.language')
         .subscribe(() => this.updateMenuItems())
     );
     this.router.events
@@ -268,7 +268,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
   protected updateMenuItems() {
     const menuItems = this.createBreadcrumbs(this.activatedRoute.root);
     if (menuItems !== undefined) {
-      this.menuItems = menuItems;
+      setTimeout(() => (this.menuItems = menuItems), 0);
     }
   }
 

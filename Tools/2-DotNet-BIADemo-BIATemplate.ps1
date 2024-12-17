@@ -146,6 +146,7 @@ RemoveItemFolder -path '*\obj'
 
 Write-Host "Remove Migrations and keep .editconfig"
 Remove-Item '*.BIADemo.Infrastructure.Data\Migrations\*.cs' -Recurse -Force -Confirm:$false
+Remove-Item '*.BIADemo.Infrastructure.Data\Migrations\*.sql' -Recurse -Force -Confirm:$false
 
 Write-Host "Remove BIA demo only files"
 RemoveBIADemoOnlyFiles

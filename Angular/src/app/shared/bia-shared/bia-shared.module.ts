@@ -108,6 +108,7 @@ import { BiaUltimaLayoutModule } from './components/layout/ultima/ultima-layout.
 import { NotificationTeamWarningModule } from './components/notification-team-warning/notification-team-warning.module';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { BiaCalcTableComponent } from './components/table/bia-calc-table/bia-calc-table.component';
+import { BiaTableBehaviorControllerComponent } from './components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
 import { BiaTableControllerComponent } from './components/table/bia-table-controller/bia-table-controller.component';
 import { BiaTableFilterComponent } from './components/table/bia-table-filter/bia-table-filter.component';
 import { BiaTableFooterControllerComponent } from './components/table/bia-table-footer-controller/bia-table-footer-controller.component';
@@ -215,6 +216,7 @@ const COMPONENTS = [
   BiaTableHeaderComponent,
   BiaTableControllerComponent,
   BiaTableFooterControllerComponent,
+  BiaTableBehaviorControllerComponent,
   LayoutComponent,
   PageLayoutComponent,
   PopupLayoutComponent,

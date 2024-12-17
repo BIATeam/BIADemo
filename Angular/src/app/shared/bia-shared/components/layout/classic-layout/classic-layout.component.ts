@@ -60,7 +60,7 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy {
     this.setNoMargin(this.activatedRoute);
     this.sub.add(
       this.translateService
-        .stream('bia.languages')
+        .stream('bia.language')
         .subscribe(() => this.updateMenuItems())
     );
     this.router.events

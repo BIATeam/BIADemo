@@ -14,7 +14,7 @@ namespace BIA.Net.Core.Common.Configuration.ApiFeature
     public class DelegateJobToWorker
     {
         /// <summary>
-        /// Boolean to activate the feature HubForClients.
+        /// Boolean to activate the feature DelegateJobToWorker.
         /// </summary>
         public bool IsActive { get; set; }
 

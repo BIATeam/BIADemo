@@ -109,9 +109,8 @@
     </div>
   </div>
 </div>
-<a class="fullscreen-exit"
+<a class="fullscreen-exit" *ngIf="fullscreenMode"
   ><i
-    *ngIf="fullscreenMode"
     class="pi pi-window-minimize bia-mat-tiny-fab bia-pointer"
     (click)="toggleFullscreenMode()"></i>
 </a>

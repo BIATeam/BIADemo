@@ -282,11 +282,11 @@ export class BiaLayoutService {
 
   defaultConfigUpdate(
     config: Partial<AppConfig>,
-    overwriteLocaleStorageConfig = false
+    overwriteLocalStorageConfig = false
   ) {
     const lValue = localStorage.getItem(BIA_USER_CONFIG);
     let valueToUpdate: Partial<AppConfig>;
-    if (!overwriteLocaleStorageConfig && lValue) {
+    if (!overwriteLocalStorageConfig && lValue) {
       valueToUpdate = JSON.parse(lValue);
     } else {
       valueToUpdate = config;

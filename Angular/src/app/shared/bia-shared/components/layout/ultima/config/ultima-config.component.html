@@ -6,11 +6,11 @@
     }}</a>
   </small>
   <ng-container *ngIf="layoutService.configDisplay().showLang">
-    <h5>{{ 'bia.languages' | translate }}</h5>
+    <h5>{{ 'bia.language' | translate }}</h5>
     <div class="flex flex-wrap row-gap-3">
       <div
         class="flex align-items-center gap-2 w-6"
-        *ngFor="let lang of supportedLangs">
+        *ngFor="let lang of getSupportedLangsSorted()">
         <p-radioButton
           name="lang"
           [value]="lang"

@@ -9,7 +9,7 @@ export class TranslateFieldPipe extends TranslatePipe implements PipeTransform {
     input: any,
     key: string,
     translationKey: string,
-    languageId: number
+    languageId: string
   ): string {
     return input !== undefined && input !== null
       ? translationKey
@@ -22,7 +22,7 @@ export class TranslateFieldPipe extends TranslatePipe implements PipeTransform {
     input: any,
     key: string,
     translationkey: string,
-    languageId: number
+    languageId: string
   ): string {
     const translation: any = (input[translationkey] as any[]).filter(
       t => t.languageId === languageId

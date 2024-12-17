@@ -13,7 +13,7 @@
 		<Company>BIA</Company>
 		<Authors>BIA Team</Authors>
 		<Description>Analyzers for BIA.Net Core Framework</Description>
-		<Copyright>Copyright © BIA 2024</Copyright>
+		<Copyright>Copyright © BIA 2025</Copyright>
 		<PackageIcon>LogoBIA.png</PackageIcon>
 		<DevelopmentDependency>true</DevelopmentDependency>
 		<NoPackageAnalysis>true</NoPackageAnalysis>

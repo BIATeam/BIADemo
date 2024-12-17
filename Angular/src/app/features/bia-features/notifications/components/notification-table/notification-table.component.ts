@@ -5,8 +5,8 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { BiaCalcTableComponent } from 'src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component';
-import { Notification } from '../../model/notification';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+import { Notification } from '../../model/notification';
 
 @Component({
   selector: 'bia-notification-table',
@@ -17,7 +17,7 @@ import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
   ],
 })
 export class NotificationTableComponent
-  extends BiaCalcTableComponent
+  extends BiaCalcTableComponent<Notification>
   implements OnChanges
 {
   constructor(

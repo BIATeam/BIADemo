@@ -22,8 +22,8 @@ import { DictOptionDto } from '../bia-table/dict-option-dto';
   templateUrl: './bia-calc-table.component.html',
   styleUrls: ['../bia-table/bia-table.component.scss'],
 })
-export class BiaCalcTableComponent
-  extends BiaTableComponent
+export class BiaCalcTableComponent<TDto extends { id: number }>
+  extends BiaTableComponent<TDto>
   implements OnInit, AfterContentInit
 {
   @Input() canAdd = true;
@@ -33,7 +33,7 @@ export class BiaCalcTableComponent
 
   public formId: string;
   public form: UntypedFormGroup;
-  public element: any = {};
+  public element: TDto = <TDto>{};
   public hasChanged = false;
   protected currentRow: HTMLElement;
   protected currentInput: HTMLElement;
@@ -78,9 +78,7 @@ export class BiaCalcTableComponent
   public onElementsChange(changes: SimpleChanges) {
     super.onElementsChange(changes);
     if (changes.elements && this.table) {
-      //if (this.elements && this.canAdd === true) {
       this.addFooterEmptyObject();
-      //}
     }
   }
 

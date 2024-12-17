@@ -10,8 +10,10 @@ namespace BIA.Net.Core.Presentation.Api.Features
     using System.Security.Principal;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
+#pragma warning disable BIA001 // Forbidden reference to Domain layer in Presentation layer
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Service;
+#pragma warning restore BIA001 // Forbidden reference to Domain layer in Presentation layer
     using BIA.Net.Core.Presentation.Api.Features.HangfireDashboard;
     using BIA.Net.Core.Presentation.Api.StartupConfiguration;
     using BIA.Net.Core.Presentation.Common.Features.HubForClients;

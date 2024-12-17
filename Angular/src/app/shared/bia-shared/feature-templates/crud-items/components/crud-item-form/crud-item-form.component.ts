@@ -18,14 +18,14 @@ import { BiaFieldConfig } from 'src/app/shared/bia-shared/model/bia-field-config
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class CrudItemFormComponent<CrudItem extends BaseDto> {
-  @Input() crudItem: CrudItem;
-  @Input() fields: BiaFieldConfig[];
+  @Input() crudItem?: CrudItem;
+  @Input() fields: BiaFieldConfig<CrudItem>[];
   @Input() dictOptionDtos: DictOptionDto[];
 
   @Output() save = new EventEmitter<CrudItem>();
   @Output() cancel = new EventEmitter<void>();
 
-  @ViewChild(BiaFormComponent) biaFormComponent: BiaFormComponent;
+  @ViewChild(BiaFormComponent) biaFormComponent: BiaFormComponent<CrudItem>;
 
   onCancel() {
     this.cancel.next();

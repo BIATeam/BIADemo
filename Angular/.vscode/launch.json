@@ -5,10 +5,28 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Angular",
       "type": "msedge",
       "request": "launch",
-      "name": "Launch Edge against localhost",
       "url": "http://localhost:4200",
+      "webRoot": "${workspaceFolder}",
+      "sourceMaps": true
+    },
+    {
+      "name": "Angular + npm start",
+      "type": "msedge",
+      "request": "launch",
+      "preLaunchTask": "angular: start",
+      "url": "http://localhost:4200",
+      "webRoot": "${workspaceFolder}",
+      "sourceMaps": true
+    },
+    {
+      "type": "chrome",
+      "request": "attach",
+      "name": "Attach to Chrome",
+      "port": 9222,
+      "urlFilter": "http://localhost:4200/*",
       "webRoot": "${workspaceFolder}"
     }
   ]

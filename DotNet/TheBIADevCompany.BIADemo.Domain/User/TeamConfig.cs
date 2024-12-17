@@ -7,12 +7,12 @@ namespace TheBIADevCompany.BIADemo.Domain.User
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Helpers;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     // Begin BIADemo
+    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities;
 
     // End BIADemo
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// Team prefixe.

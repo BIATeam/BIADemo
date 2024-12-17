@@ -113,7 +113,7 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
       'bia.lang.mx',
       'bia.lang.us',
       'bia.greetings',
-      'bia.languages',
+      'bia.language',
       'bia.theme',
       'bia.themeLight',
       'bia.themeDark',
@@ -133,6 +133,12 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
               },
             });
           });
+
+          menuItemLang.sort((a, b) => {
+            const labelA = a.label || '';
+            const labelB = b.label || '';
+            return labelA.localeCompare(labelB);
+          });
         }
 
         this.displayName =
@@ -142,7 +148,7 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
 
         this.topBarMenuItems = [
           {
-            label: translations['bia.languages'],
+            label: translations['bia.language'],
             items: menuItemLang,
           },
           {

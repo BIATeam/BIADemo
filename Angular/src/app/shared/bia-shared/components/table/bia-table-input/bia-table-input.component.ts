@@ -28,11 +28,11 @@ import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.
   styleUrls: ['./bia-table-input.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class BiaTableInputComponent
-  extends BiaFieldBaseComponent
+export class BiaTableInputComponent<CrudItem>
+  extends BiaFieldBaseComponent<CrudItem>
   implements OnInit, OnDestroy, AfterContentInit
 {
-  @Input() field: BiaFieldConfig;
+  @Input() field: BiaFieldConfig<CrudItem>;
   @Input() form: UntypedFormGroup;
   @Input() dictOptionDtos: DictOptionDto[];
 

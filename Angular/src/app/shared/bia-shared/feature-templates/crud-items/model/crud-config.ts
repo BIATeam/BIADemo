@@ -2,7 +2,17 @@ import { TeamTypeId } from 'src/app/shared/constants';
 import { BiaFieldsConfig } from '../../../model/bia-field-config';
 import { BiaTableState } from '../../../model/bia-table-state';
 
-export class CrudConfig {
+export interface ShowIconsConfig {
+  showCalcMode: boolean;
+  showPopup: boolean;
+  showView: boolean;
+  showSignalR: boolean;
+  showCompactMode: boolean;
+  showVirtualScroll: boolean;
+  showResizableColumn: boolean;
+}
+
+export class CrudConfig<TDto extends { id: number }> {
   featureName: string;
   storeKey: string;
   useCalcMode: boolean;
@@ -12,16 +22,26 @@ export class CrudConfig {
   useViewTeamWithTypeId: TeamTypeId | null;
   usePopup: boolean;
   useOfflineMode: boolean;
-  fieldsConfig: BiaFieldsConfig;
+  fieldsConfig: BiaFieldsConfig<TDto>;
   defaultViewPref: BiaTableState;
   optionFilter: any;
   useBulk: boolean;
   useCompactMode?: boolean;
   useVirtualScroll = false;
+  useResizableColumn = false;
   bulkMode?: {
     useInsert: boolean;
     useUpdate: boolean;
     useDelete: boolean;
+  };
+  showIcons: ShowIconsConfig = {
+    showCalcMode: false,
+    showPopup: false,
+    showView: false,
+    showSignalR: false,
+    showCompactMode: false,
+    showVirtualScroll: false,
+    showResizableColumn: false,
   };
 
   constructor({
@@ -39,9 +59,11 @@ export class CrudConfig {
     bulkMode,
     useCompactMode = false,
     useVirtualScroll = false,
+    useResizableColumn = false,
+    showIcons,
   }: {
     featureName: string;
-    fieldsConfig: BiaFieldsConfig;
+    fieldsConfig: BiaFieldsConfig<TDto>;
     storeKey?: string;
     useCalcMode?: boolean;
     useSignalR?: boolean;
@@ -58,6 +80,8 @@ export class CrudConfig {
     };
     useCompactMode?: boolean;
     useVirtualScroll?: boolean;
+    useResizableColumn?: boolean;
+    showIcons?: Partial<ShowIconsConfig>;
   }) {
     this.featureName = featureName;
     this.fieldsConfig = fieldsConfig;
@@ -77,5 +101,9 @@ export class CrudConfig {
       bulkMode?.useUpdate === true;
     this.useCompactMode = useCompactMode;
     this.useVirtualScroll = !!useVirtualScroll;
+    this.useResizableColumn = useResizableColumn;
+    if (showIcons) {
+      this.showIcons = { ...this.showIcons, ...showIcons };
+    }
   }
 }

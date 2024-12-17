@@ -1,10 +1,10 @@
-import {
-  PrimeNGFiltering,
-  BiaFieldConfig,
-  PropType,
-  BiaFieldsConfig,
-} from 'src/app/shared/bia-shared/model/bia-field-config';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
+import {
+  BiaFieldConfig,
+  BiaFieldsConfig,
+  PrimeNGFiltering,
+  PropType,
+} from 'src/app/shared/bia-shared/model/bia-field-config';
 
 // TODO after creation of CRUD Engine : adapt the model
 export interface Engine extends BaseDto {
@@ -16,7 +16,7 @@ export interface Engine extends BaseDto {
 }
 
 // TODO after creation of CRUD Engine : adapt the field configuration
-export const engineFieldsConfiguration: BiaFieldsConfig = {
+export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
   columns: [
     Object.assign(new BiaFieldConfig('reference', 'engine.reference'), {}),
     Object.assign(

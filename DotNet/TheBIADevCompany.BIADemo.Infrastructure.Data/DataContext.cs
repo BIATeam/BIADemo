@@ -12,22 +12,21 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
-    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities;
-
 #if BIA_FRONT_FEATURE
     // Begin BIADemo
+    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities;
 
     // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.Audit.Entities;
     using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
+
+    // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
+
+    // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.Site.Entities;
     using TheBIADevCompany.BIADemo.Domain.Translation.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
-
-    // Begin BIADemo
-
-    // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.View.Entities;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders;
 #endif
@@ -59,7 +58,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         }
 
 #if BIA_FRONT_FEATURE
-
         /// <summary>
         /// Gets or sets the Plane DBSet.
         /// </summary>

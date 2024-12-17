@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { take, tap } from 'rxjs';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
@@ -33,6 +34,7 @@ export class BiaUltimaConfigComponent {
     protected biaTranslation: BiaTranslationService,
     protected biaTheme: BiaThemeService,
     public menuService: MenuService,
+    protected translateService: TranslateService,
     protected readonly appSettingsService: AppSettingsService
   ) {
     this.biaTranslation.currentCulture$
@@ -131,5 +133,20 @@ export class BiaUltimaConfigComponent {
 
   incrementScale() {
     this.scale++;
+  }
+
+  getSupportedLangsSorted(): string[] {
+    this.supportedLangs.sort((a, b) => {
+      const langA = this.getLanguageName(a);
+      const langB = this.getLanguageName(b);
+      return langA.localeCompare(langB);
+    });
+
+    return this.supportedLangs;
+  }
+
+  getLanguageName(lang: string): string {
+    const translateKey = this.getLanguageTranslateKey(lang);
+    return this.translateService.instant(translateKey);
   }
 }
