@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
@@ -29,12 +29,6 @@ export class PlaneService extends CrudItemService<Plane> {
     super(dasService, signalRService, optionsService);
   }
 
-  public static getDisplayItemName(plane: Plane) {
-    /// BIAToolKit - Begin Display
-    return plane?.msn;
-    /// BIAToolKit - End Display
-  }
-
   public getParentIds(): any[] {
     // TODO after creation of CRUD Plane : adapt the parent Key tothe context. It can be null if root crud
     return [this.authService.getCurrentTeamId(TeamTypeId.Site)];
@@ -60,6 +54,13 @@ export class PlaneService extends CrudItemService<Plane> {
   public crudItem$: Observable<Plane> = this.store.select(
     FeaturePlanesStore.getCurrentPlane
   );
+
+  public displayItemName$: Observable<string> = this.crudItem$.pipe(
+    /// BIAToolKit - Begin Display
+    map(plane => plane?.msn)
+    /// BIAToolKit - End Display
+  );
+
   public loadingGet$: Observable<boolean> = this.store.select(
     FeaturePlanesStore.getPlaneLoadingGet
   );

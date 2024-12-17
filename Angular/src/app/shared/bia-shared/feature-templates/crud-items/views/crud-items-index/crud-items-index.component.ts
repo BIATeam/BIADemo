@@ -51,6 +51,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
   biaTableControllerComponent: BiaTableControllerComponent;
   @ViewChild(CrudItemTableComponent, { static: false })
   crudItemTableComponent: CrudItemTableComponent<CrudItem>;
+  protected parentDisplayItemName$: Observable<string>;
 
   _showTableController = true;
 

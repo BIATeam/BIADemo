@@ -31,9 +31,7 @@ export class PlaneItemComponent
   ngOnInit() {
     super.ngOnInit();
     this.sub.add(
-      this.planeService.crudItem$.subscribe(plane => {
-        // TODO after creation of CRUD Plane : set the field of the item to display in the breadcrump
-        const displayItemName = PlaneService.getDisplayItemName(plane);
+      this.planeService.displayItemName$.subscribe(displayItemName => {
         if (displayItemName) {
           this.route.data.pipe(first()).subscribe(routeData => {
             (routeData as any)['breadcrumb'] = displayItemName;

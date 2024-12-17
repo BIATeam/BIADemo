@@ -2,6 +2,7 @@
   <div [ngClass]="{ 'table-compact': crudConfiguration.useCompactMode }">
     <bia-table-header
       [headerTitle]="'member.listOf' | translate"
+      [parentDisplayName]="(parentDisplayItemName$ | async) ?? ''"
       [canAdd]="canAdd && !crudConfiguration.useCalcMode"
       [canDelete]="canDelete"
       [canExportCSV]="true"
