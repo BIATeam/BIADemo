@@ -2,7 +2,7 @@ import { HttpBackend, HttpRequest } from '@angular/common/http';
 import { Injectable, NgZone } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { NGXLoggerServerService } from 'ngx-logger';
-import { from, Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
 
 @Injectable({

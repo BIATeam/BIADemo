@@ -1,19 +1,19 @@
 import {
   Component,
-  OnInit,
-  Output,
   EventEmitter,
   OnDestroy,
+  OnInit,
+  Output,
 } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { FeatureNotificationsActions } from '../../store/notifications-actions';
-import { Observable, Subscription } from 'rxjs';
-import { Notification, NotificationData } from '../../model/notification';
-import { AppState } from 'src/app/store/state';
-import { NotificationService } from '../../services/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Permission } from 'src/app/shared/permission';
+import { Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { Permission } from 'src/app/shared/permission';
+import { AppState } from 'src/app/store/state';
+import { Notification, NotificationData } from '../../model/notification';
+import { NotificationService } from '../../services/notification.service';
+import { FeatureNotificationsActions } from '../../store/notifications-actions';
 
 @Component({
   selector: 'bia-notification-detail',

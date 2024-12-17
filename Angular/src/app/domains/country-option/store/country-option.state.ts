@@ -1,4 +1,3 @@
-import * as fromCountryOptions from './country-options-reducer';
 import {
   Action,
   combineReducers,
@@ -6,6 +5,7 @@ import {
   createSelector,
 } from '@ngrx/store';
 import { storeKey } from '../country-option.contants';
+import * as fromCountryOptions from './country-options-reducer';
 
 export interface CountryOptionsState {
   countryOptions: fromCountryOptions.State;

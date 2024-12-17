@@ -1,7 +1,7 @@
 import { Component, Injector } from '@angular/core';
+import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
 import { Plane } from '../../model/plane';
 import { planeCRUDConfiguration } from '../../plane.constants';
-import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
 import { PlaneService } from '../../services/plane.service';
 
 @Component({

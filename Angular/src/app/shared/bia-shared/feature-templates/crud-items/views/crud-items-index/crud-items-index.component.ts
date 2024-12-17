@@ -11,7 +11,7 @@ import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { saveAs } from 'file-saver';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { combineLatest, Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, combineLatest } from 'rxjs';
 import { filter, skip, take, tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';

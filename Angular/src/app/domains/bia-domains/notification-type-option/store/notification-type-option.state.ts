@@ -1,10 +1,10 @@
-import * as fromNotificationTypeOptions from './notification-type-options-reducer';
 import {
   Action,
   combineReducers,
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
+import * as fromNotificationTypeOptions from './notification-type-options-reducer';
 
 export interface NotificationTypeOptionsState {
   notificationTypeOptions: fromNotificationTypeOptions.State;

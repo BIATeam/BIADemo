@@ -1,4 +1,3 @@
-import * as fromAircraftMaintenanceCompanies from './aircraft-maintenance-companies-reducer';
 import {
   Action,
   combineReducers,
@@ -6,6 +5,7 @@ import {
   createSelector,
 } from '@ngrx/store';
 import { aircraftMaintenanceCompanyCRUDConfiguration } from '../aircraft-maintenance-company.constants';
+import * as fromAircraftMaintenanceCompanies from './aircraft-maintenance-companies-reducer';
 
 export namespace FeatureAircraftMaintenanceCompaniesStore {
   export interface AircraftMaintenanceCompaniesState {

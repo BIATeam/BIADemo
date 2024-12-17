@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { FeatureNotificationsActions } from '../../store/notifications-actions';
-import { Notification } from '../../model/notification';
-import { AppState } from 'src/app/store/state';
-import { NotificationOptionsService } from '../../services/notification-options.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+import { AppState } from 'src/app/store/state';
+import { Notification } from '../../model/notification';
+import { NotificationOptionsService } from '../../services/notification-options.service';
+import { FeatureNotificationsActions } from '../../store/notifications-actions';
 
 @Component({
   selector: 'bia-notification-new',

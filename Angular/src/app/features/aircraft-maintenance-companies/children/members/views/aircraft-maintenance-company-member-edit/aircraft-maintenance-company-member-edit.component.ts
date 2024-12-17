@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit } from '@angular/core';
-import { AircraftMaintenanceCompanyService } from '../../../../services/aircraft-maintenance-company.service';
 import { MemberEditComponent } from 'src/app/shared/bia-shared/feature-templates/members/views/member-edit/member-edit.component';
 import { TeamTypeId } from 'src/app/shared/constants';
+import { AircraftMaintenanceCompanyService } from '../../../../services/aircraft-maintenance-company.service';
 
 @Component({
   selector: 'app-aircraft-maintenance-company-member-edit',

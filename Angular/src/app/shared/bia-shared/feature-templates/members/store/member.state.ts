@@ -1,4 +1,3 @@
-import * as fromMembers from './members-reducer';
 import {
   Action,
   combineReducers,
@@ -6,6 +5,7 @@ import {
   createSelector,
 } from '@ngrx/store';
 import { memberCRUDConfiguration } from '../member.constants';
+import * as fromMembers from './members-reducer';
 
 export namespace FeatureMembersStore {
   export interface MembersState {

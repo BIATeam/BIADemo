@@ -1,9 +1,9 @@
 import { Component, Injector } from '@angular/core';
+import { CrudItemBulkComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-bulk/crud-item-bulk.component';
+import { Permission } from 'src/app/shared/permission';
 import { User } from '../../model/user';
 import { UserService } from '../../services/user.service';
 import { userCRUDConfiguration } from '../../user.constants';
-import { CrudItemBulkComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-bulk/crud-item-bulk.component';
-import { Permission } from 'src/app/shared/permission';
 
 @Component({
   selector: 'bia-user-bulk',

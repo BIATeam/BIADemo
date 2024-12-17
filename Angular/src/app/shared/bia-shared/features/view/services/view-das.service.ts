@@ -1,8 +1,8 @@
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AbstractDas } from 'src/app/core/bia-core/services/abstract-das.service';
-import { View } from '../model/view';
 import { AssignViewToTeam } from '../model/assign-view-to-team';
+import { View } from '../model/view';
 // import { DefaultView } from '../model/defaultView';
 
 @Injectable({

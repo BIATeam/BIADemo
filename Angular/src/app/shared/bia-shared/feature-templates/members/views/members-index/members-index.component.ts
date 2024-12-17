@@ -1,9 +1,9 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
-import { Member } from '../../model/member';
-import { memberCRUDConfiguration } from '../../member.constants';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
-import { MemberService } from '../../services/member.service';
 import { MemberTableComponent } from '../../components/member-table/member-table.component';
+import { memberCRUDConfiguration } from '../../member.constants';
+import { Member } from '../../model/member';
+import { MemberService } from '../../services/member.service';
 
 @Component({
   selector: 'bia-members-index',

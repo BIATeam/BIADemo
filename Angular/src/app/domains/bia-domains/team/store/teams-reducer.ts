@@ -1,4 +1,4 @@
-import { EntityState, createEntityAdapter, Update } from '@ngrx/entity';
+import { EntityState, Update, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { Team } from '../model/team';
 import { DomainTeamsActions } from './teams-actions';

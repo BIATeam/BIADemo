@@ -1,14 +1,14 @@
+import { HttpStatusCode } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { FeatureUsersFromDirectoryActions } from './users-from-directory-actions';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
-import { UserFromDirectoryDas } from '../services/user-from-directory-das.service';
-import { TranslateService } from '@ngx-translate/core';
 import { DomainUserOptionsActions } from 'src/app/domains/bia-domains/user-option/store/user-options-actions';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
-import { HttpStatusCode } from '@angular/common/http';
+import { UserFromDirectoryDas } from '../services/user-from-directory-das.service';
+import { FeatureUsersFromDirectoryActions } from './users-from-directory-actions';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place

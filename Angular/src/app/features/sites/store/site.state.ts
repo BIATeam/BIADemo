@@ -1,4 +1,3 @@
-import * as fromSites from './sites-reducer';
 import {
   Action,
   combineReducers,
@@ -6,6 +5,7 @@ import {
   createSelector,
 } from '@ngrx/store';
 import { siteCRUDConfiguration } from '../site.constants';
+import * as fromSites from './sites-reducer';
 
 export namespace FeatureSitesStore {
   export interface SitesState {

@@ -1,13 +1,13 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
+import { View } from '../model/view';
 import {
-  loadAllView,
-  loadAllSuccess,
   closeViewDialog,
+  loadAllSuccess,
+  loadAllView,
   openViewDialog,
   setViewSuccess,
 } from './views-actions';
-import { View } from '../model/view';
 
 // This adapter will allow is to manipulate views (mostly CRUD operations)
 export const viewsAdapter = createEntityAdapter<View>({

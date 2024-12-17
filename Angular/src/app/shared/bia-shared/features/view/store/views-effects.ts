@@ -1,31 +1,31 @@
 import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
+import { AssignViewToTeam } from '../model/assign-view-to-team';
+import { DefaultView } from '../model/default-view';
+import { TeamDefaultView } from '../model/team-default-view';
+import { TeamView } from '../model/team-view';
+import { View } from '../model/view';
+import { TeamViewDas } from '../services/team-view-das.service';
+import { UserViewDas } from '../services/user-view-das.service';
+import { ViewDas } from '../services/view-das.service';
 import {
+  addTeamView,
+  addUserView,
+  assignViewToTeam,
   failure,
   loadAllSuccess,
   loadAllView,
-  removeUserView,
-  setDefaultUserView,
-  addUserView,
-  addTeamView,
-  setDefaultTeamView,
   removeTeamView,
-  updateUserView,
-  assignViewToTeam,
-  updateTeamView,
+  removeUserView,
+  setDefaultTeamView,
+  setDefaultUserView,
   setViewSuccess,
+  updateTeamView,
+  updateUserView,
 } from './views-actions';
-import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
-import { ViewDas } from '../services/view-das.service';
-import { View } from '../model/view';
-import { TeamViewDas } from '../services/team-view-das.service';
-import { TeamDefaultView } from '../model/team-default-view';
-import { TeamView } from '../model/team-view';
-import { UserViewDas } from '../services/user-view-das.service';
-import { DefaultView } from '../model/default-view';
-import { AssignViewToTeam } from '../model/assign-view-to-team';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place

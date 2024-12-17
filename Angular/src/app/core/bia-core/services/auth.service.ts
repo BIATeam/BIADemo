@@ -3,7 +3,7 @@ import { Injectable, Injector, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { jwtDecode } from 'jwt-decode';
-import { BehaviorSubject, NEVER, Observable, of, Subscription } from 'rxjs';
+import { BehaviorSubject, NEVER, Observable, Subscription, of } from 'rxjs';
 import { catchError, filter, map, skip, switchMap, take } from 'rxjs/operators';
 import { DomainTeamsActions } from 'src/app/domains/bia-domains/team/store/teams-actions';
 import {

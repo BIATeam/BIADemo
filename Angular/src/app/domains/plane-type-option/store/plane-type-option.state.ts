@@ -1,4 +1,3 @@
-import * as fromPlaneTypeOptions from './plane-type-options-reducer';
 import {
   Action,
   combineReducers,
@@ -6,6 +5,7 @@ import {
   createSelector,
 } from '@ngrx/store';
 import { storeKey } from '../plane-type-option.contants';
+import * as fromPlaneTypeOptions from './plane-type-options-reducer';
 
 export interface PlaneTypeOptionsState {
   planeTypeOptions: fromPlaneTypeOptions.State;

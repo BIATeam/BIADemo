@@ -1,7 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { AbstractDas } from 'src/app/core/bia-core/services/abstract-das.service';
-import { View } from '../model/view';
 import { DefaultView } from '../model/default-view';
+import { View } from '../model/view';
 
 @Injectable({
   providedIn: 'root',

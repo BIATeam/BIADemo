@@ -1,4 +1,3 @@
-import * as fromEngines from './engines-reducer';
 import {
   Action,
   combineReducers,
@@ -6,6 +5,7 @@ import {
   createSelector,
 } from '@ngrx/store';
 import { engineCRUDConfiguration } from '../engine.constants';
+import * as fromEngines from './engines-reducer';
 
 export namespace FeatureEnginesStore {
   export interface EnginesState {

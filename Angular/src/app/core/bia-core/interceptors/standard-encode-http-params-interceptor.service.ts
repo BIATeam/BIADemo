@@ -1,14 +1,14 @@
 import {
-  HttpInterceptor,
-  HttpRequest,
+  HTTP_INTERCEPTORS,
   HttpEvent,
   HttpHandler,
+  HttpInterceptor,
   HttpParams,
-  HTTP_INTERCEPTORS,
+  HttpRequest,
 } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { StandardEncoder } from './standard-encoder';
-import { Injectable } from '@angular/core';
 
 // Workaroud issue: https://github.com/angular/angular/issues/11058
 // Because dot.NET interpret '+' as space

@@ -5,16 +5,16 @@ import {
   TemplatePortal,
 } from '@angular/cdk/portal';
 import {
-  effect,
   Injectable,
   InjectionToken,
   Injector,
-  signal,
   TemplateRef,
   ViewContainerRef,
+  effect,
+  signal,
 } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { BehaviorSubject, debounceTime, Subject } from 'rxjs';
+import { BehaviorSubject, Subject, debounceTime } from 'rxjs';
 import { STORAGE_THEME_KEY } from 'src/app/core/bia-core/services/bia-theme.service';
 import { STORAGE_CULTURE_KEY } from 'src/app/core/bia-core/services/bia-translation.service';
 import { BiaNavigation } from 'src/app/shared/bia-shared/model/bia-navigation';

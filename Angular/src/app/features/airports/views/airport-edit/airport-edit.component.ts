@@ -1,7 +1,7 @@
 import { Component, Injector } from '@angular/core';
-import { Airport } from '../../model/airport';
-import { airportCRUDConfiguration } from '../../airport.constants';
 import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
+import { airportCRUDConfiguration } from '../../airport.constants';
+import { Airport } from '../../model/airport';
 import { AirportService } from '../../services/airport.service';
 
 @Component({

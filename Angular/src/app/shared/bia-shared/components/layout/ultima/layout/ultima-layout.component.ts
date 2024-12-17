@@ -11,7 +11,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuItem } from 'primeng/api';
-import { filter, map, Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, filter, map } from 'rxjs';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { EnvironmentType } from 'src/app/domains/bia-domains/app-settings/model/app-settings';

@@ -1,10 +1,10 @@
-import * as fromUserOptions from './user-options-reducer';
 import {
   Action,
   combineReducers,
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
+import * as fromUserOptions from './user-options-reducer';
 
 export interface UserOptionsState {
   userOptions: fromUserOptions.State;

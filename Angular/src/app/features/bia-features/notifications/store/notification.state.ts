@@ -1,10 +1,10 @@
-import * as fromNotifications from './notifications-reducer';
 import {
   Action,
   combineReducers,
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
+import * as fromNotifications from './notifications-reducer';
 
 export interface NotificationsState {
   notifications: fromNotifications.State;

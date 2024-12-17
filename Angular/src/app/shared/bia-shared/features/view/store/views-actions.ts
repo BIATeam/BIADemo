@@ -1,9 +1,9 @@
 import { createAction, props } from '@ngrx/store';
-import { View } from '../model/view';
+import { AssignViewToTeam } from '../model/assign-view-to-team';
 import { DefaultView } from '../model/default-view';
 import { TeamDefaultView } from '../model/team-default-view';
 import { TeamView } from '../model/team-view';
-import { AssignViewToTeam } from '../model/assign-view-to-team';
+import { View } from '../model/view';
 
 export const loadAllView = createAction('[Views] Load all');
 

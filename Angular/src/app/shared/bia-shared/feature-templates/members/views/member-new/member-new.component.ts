@@ -1,12 +1,12 @@
 import { Component, Injector, OnInit } from '@angular/core';
-import { Member, Members } from '../../model/member';
-import { CrudItemNewComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-new/crud-item-new.component';
-import { MemberService } from '../../services/member.service';
-import { memberCRUDConfiguration } from '../../member.constants';
-import { Permission } from 'src/app/shared/permission';
+import { skip } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { getLastUsersAdded } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
-import { skip } from 'rxjs/operators';
+import { CrudItemNewComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-new/crud-item-new.component';
+import { Permission } from 'src/app/shared/permission';
+import { memberCRUDConfiguration } from '../../member.constants';
+import { Member, Members } from '../../model/member';
+import { MemberService } from '../../services/member.service';
 
 @Component({
   selector: 'bia-member-new',
