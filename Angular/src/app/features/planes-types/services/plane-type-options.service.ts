@@ -10,7 +10,7 @@ import { CrudItemOptionsService } from 'src/app/shared/bia-shared/feature-templa
 export class PlaneTypeOptionsService extends CrudItemOptionsService {
   constructor() {
     super();
-    // TODO after creation of CRUD PlaneType : get all requiered option dto use in Table calc and create and edit form
+    // TODO after creation of CRUD PlaneType : get all required option dto use in Table calc and create and edit form
 
     this.dictOptionDtos$ = combineLatest([]).pipe(
       map(() => <DictOptionDto[]>[])

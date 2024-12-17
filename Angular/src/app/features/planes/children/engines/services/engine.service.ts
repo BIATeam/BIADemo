@@ -22,7 +22,7 @@ export class EngineService extends CrudItemService<Engine> {
     public dasService: EngineDas,
     public signalRService: CrudItemSignalRService<Engine>,
     public optionsService: EngineOptionsService,
-    // requiered only for parent key
+    // required only for parent key
     public planeService: PlaneService
   ) {
     super(dasService, signalRService, optionsService);

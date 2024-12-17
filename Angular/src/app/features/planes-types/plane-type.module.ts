@@ -109,7 +109,7 @@ export const ROUTES: Routes = [
       FeaturePlanesTypesStore.reducers
     ),
     EffectsModule.forFeature([PlanesTypesEffects]),
-    // TODO after creation of CRUD PlaneType : select the optioDto dommain module requiered for link
+    // TODO after creation of CRUD PlaneType : select the optioDto dommain module required for link
     // Domain Modules:
   ],
 })

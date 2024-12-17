@@ -10,7 +10,7 @@ import { CrudItemOptionsService } from 'src/app/shared/bia-shared/feature-templa
 export class AircraftMaintenanceCompanyOptionsService extends CrudItemOptionsService {
   constructor() {
     super();
-    // TODO after creation of CRUD Team AircraftMaintenanceCompany : get all requiered option dto use in Table calc and create and edit form
+    // TODO after creation of CRUD Team AircraftMaintenanceCompany : get all required option dto use in Table calc and create and edit form
 
     this.dictOptionDtos$ = combineLatest([]).pipe(
       map(() => <DictOptionDto[]>[])

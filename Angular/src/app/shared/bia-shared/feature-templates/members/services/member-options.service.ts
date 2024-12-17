@@ -20,7 +20,7 @@ export class MemberOptionsService extends CrudItemOptionsService {
 
   constructor(protected store: Store<AppState>) {
     super();
-    // TODO after creation of CRUD Member : get all requiered option dto use in Table calc and create and edit form
+    // TODO after creation of CRUD Member : get all required option dto use in Table calc and create and edit form
     this.userOptions$ = this.store.select(getAllUserOptions);
     this.roleOptions$ = this.store.select(getAllRoleOptions);
 

@@ -21,7 +21,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 // import { EditorModule } from 'primeng/editor';
-// Warning it requiered to install Quill package:
+// Warning it required to install Quill package:
 //    - npm install quill
 // And modify angular.json to add quill css and js :
 // "styles": [
@@ -37,7 +37,7 @@ import { DropdownModule } from 'primeng/dropdown';
 
 import { FieldsetModule } from 'primeng/fieldset';
 // import { FullCalendarModule } from 'primeng/fullcalendar';
-// Warning it requiered to install Fullcalandar package:
+// Warning it required to install Fullcalandar package:
 //    - npm install @fullcalendar/core
 //    - npm install @fullcalendar/daygrid
 //    - npm install @fullcalendar/interaction

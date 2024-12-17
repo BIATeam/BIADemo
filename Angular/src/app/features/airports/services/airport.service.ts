@@ -22,7 +22,7 @@ export class AirportService extends CrudItemService<Airport> {
     public dasService: AirportDas,
     public signalRService: CrudItemSignalRService<Airport>,
     public optionsService: AirportOptionsService,
-    // requiered only for parent key
+    // required only for parent key
     protected authService: AuthService
   ) {
     super(dasService, signalRService, optionsService);

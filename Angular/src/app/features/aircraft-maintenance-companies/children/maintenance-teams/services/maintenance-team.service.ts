@@ -23,7 +23,7 @@ export class MaintenanceTeamService extends CrudItemService<MaintenanceTeam> {
     public dasService: MaintenanceTeamDas,
     public signalRService: CrudItemSignalRService<MaintenanceTeam>,
     public optionsService: MaintenanceTeamOptionsService,
-    // requiered only for parent key
+    // required only for parent key
     protected authService: AuthService
   ) {
     super(dasService, signalRService, optionsService);

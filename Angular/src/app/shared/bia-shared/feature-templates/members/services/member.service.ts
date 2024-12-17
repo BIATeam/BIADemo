@@ -22,7 +22,7 @@ export class MemberService extends CrudItemService<Member> {
     public dasService: MemberDas,
     public signalRService: CrudItemSignalRService<Member>,
     public optionsService: MemberOptionsService,
-    // requiered only for parent key
+    // required only for parent key
     protected authService: AuthService
   ) {
     super(dasService, signalRService, optionsService);

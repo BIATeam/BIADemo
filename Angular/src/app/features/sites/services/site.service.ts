@@ -23,7 +23,7 @@ export class SiteService extends CrudItemService<Site> {
     public dasService: SiteDas,
     public signalRService: CrudItemSignalRService<Site>,
     public optionsService: SiteOptionsService,
-    // requiered only for parent key
+    // required only for parent key
     protected authService: AuthService
   ) {
     super(dasService, signalRService, optionsService);

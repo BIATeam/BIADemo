@@ -101,11 +101,11 @@ import { MemberFormNewComponent } from './components/member-form-new/member-form
       FeatureMembersStore.reducers
     ),
     EffectsModule.forFeature([MembersEffects]),
-    // TODO after creation of CRUD Member : select the optioDto dommain module requiered for link
+    // TODO after creation of CRUD Member : select the optioDto dommain module required for link
     // Domain Modules:
     UserOptionModule,
     RoleOptionModule,
-    UserFromDirectoryModule, // requiered for the add user from directory feature
+    UserFromDirectoryModule, // required for the add user from directory feature
   ],
   exports: [
     MemberItemComponent,

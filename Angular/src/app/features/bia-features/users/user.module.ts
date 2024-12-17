@@ -138,10 +138,10 @@ export const ROUTES: Routes = [
       FeatureUsersStore.reducers
     ),
     EffectsModule.forFeature([UsersEffects]),
-    // TODO after creation of CRUD User : select the optioDto dommain module requiered for link
+    // TODO after creation of CRUD User : select the optioDto dommain module required for link
     // Domain Modules:
     RoleOptionModule,
-    UserFromDirectoryModule, // requiered for the add user from directory feature
+    UserFromDirectoryModule, // required for the add user from directory feature
   ],
 })
 export class UserModule {}

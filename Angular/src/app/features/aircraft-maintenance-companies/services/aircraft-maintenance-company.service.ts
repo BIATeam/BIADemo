@@ -23,7 +23,7 @@ export class AircraftMaintenanceCompanyService extends CrudItemService<AircraftM
     public dasService: AircraftMaintenanceCompanyDas,
     public signalRService: CrudItemSignalRService<AircraftMaintenanceCompany>,
     public optionsService: AircraftMaintenanceCompanyOptionsService,
-    // requiered only for parent key
+    // required only for parent key
     protected authService: AuthService
   ) {
     super(dasService, signalRService, optionsService);
