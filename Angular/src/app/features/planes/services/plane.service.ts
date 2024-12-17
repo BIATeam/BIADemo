@@ -57,7 +57,7 @@ export class PlaneService extends CrudItemService<Plane> {
 
   public displayItemName$: Observable<string> = this.crudItem$.pipe(
     /// BIAToolKit - Begin Display
-    map(plane => plane?.msn)
+    map(plane => plane?.msn?.toString() ?? '')
     /// BIAToolKit - End Display
   );
 

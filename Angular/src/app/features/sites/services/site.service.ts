@@ -72,7 +72,7 @@ export class SiteService extends CrudItemService<Site> {
   );
 
   public displayItemName$: Observable<string> = this.crudItem$.pipe(
-    map(site => site?.title)
+    map(site => site?.title?.toString() ?? '')
   );
 
   public loadingGet$: Observable<boolean> = this.store.select(
