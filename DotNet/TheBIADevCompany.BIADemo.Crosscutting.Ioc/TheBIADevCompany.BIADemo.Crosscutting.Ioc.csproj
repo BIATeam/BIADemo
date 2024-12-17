@@ -6,11 +6,9 @@
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Presentation.Common\BIA.Net.Core.Presentation.Common.csproj" />
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Application\TheBIADevCompany.BIADemo.Application.csproj" />
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Infrastructure.Data\TheBIADevCompany.BIADemo.Infrastructure.Data.csproj" />
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Infrastructure.Service\TheBIADevCompany.BIADemo.Infrastructure.Service.csproj" />
-    <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Ioc\BIA.Net.Core.Ioc.csproj" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>$(DefineConstants);BIA_BACK_TO_BACK_AUTH;BIA_FRONT_FEATURE</DefineConstants>
@@ -62,5 +60,9 @@
     <Compile Remove="**\WakeUpTask.cs" />
     <Compile Remove="**\LanguagesController.cs" />
     <Compile Remove="**\LdapDomainsController.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="BIA.Net.Core.Ioc" Version="4.0.*" />
+    <PackageReference Include="BIA.Net.Core.Presentation.Common" Version="4.0.*" />
   </ItemGroup>
 </Project>
