@@ -4,6 +4,7 @@
     "Type": "CRUD",
     "FeatureName": "Plane",
     "FeatureNamePlural": "Planes",
+    "DisplayItemName": "msn",
     "ZipName": "crud.zip",
     "Contains": {
       "Include": ["src\\app\\features\\planes\\*"],
@@ -22,6 +23,7 @@
     "Type": "CRUD",
     "FeatureName": "Engine",
     "FeatureNamePlural": "Engines",
+    "DisplayItemName": "reference",
     "ZipName": "crud-parent.zip",
     "Contains": {
       "Include": ["src\\app\\features\\planes\\children\\engines\\*"],

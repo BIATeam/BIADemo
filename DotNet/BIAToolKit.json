@@ -148,6 +148,7 @@
     "Type": "Option",
     "FeatureName": "Country",
     "FeatureNamePlural": "Countries",
+    "DisplayItemName": "Name",
     "ZipName": "option.zip",
     "Contains": {
       "Include": [
