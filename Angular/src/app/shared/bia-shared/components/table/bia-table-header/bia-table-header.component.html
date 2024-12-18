@@ -42,7 +42,11 @@
           ? ' pi-angle-double-up'
           : ' pi-angle-double-down')
       "
-      (click)="toggleTableControllerVisibility.emit()"></p-button>
+      (click)="toggleTableControllerVisibility.emit()"
+      pTooltip="{{
+        (tableControllerVisible ? 'bia.hideController' : 'bia.showController')
+          | translate
+      }}"></p-button>
     <ng-container *ngTemplateOutlet="customControlTemplate"></ng-container>
   </div>
   <div
