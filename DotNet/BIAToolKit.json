@@ -156,45 +156,66 @@
       "Exclude": []
     },
     "Children": [],
-    "Parents": [
+    "AdaptPaths": [
       {
-        "Name": "AircraftMaintenanceCompany",
-        "NamePlural": "AircraftMaintenanceCompanies",
-        "DomainName": "AircraftMaintenanceCompany",
-        "IsPrincipal": "true",
-        "AdaptPaths": [
-          {
-            "RootPath": "TheBIADevCompany.BIADemo.Application\\",
-            "InitialDeepLevel": 0,
+        "RootPath": "TheBIADevCompany.BIADemo.Application\\",
+        "InitialDeepLevel": 0,
 
-            "MoveFiles": [
-              {
-                "FromRelativePath": "AircraftMaintenanceCompany\\",
-                "ToRelativePathWithParent": "{DomainName}\\"
-              }
-            ]
+        "MoveFiles": [
+          {
+            "FromRelativePath": "AircraftMaintenanceCompany\\",
+            "ToRelativePathNoParent": "{DomainName}\\"
+          }
+        ],
+
+        "ReplaceInFiles": [
+          {
+            "RegexMatch": "^namespace\\s+(?:[A-Za-z0-9_]+\\.)+Application.([A-Za-z0-9_]+)$",
+            "NoParentValue": "{DomainName}"
           },
           {
-            "RootPath": "TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\",
-            "InitialDeepLevel": 0,
+            "RegexMatch": ".*using MyCompany.MyFirstProject.Domain.([A-Za-z0-9_]+).Mappers;",
+            "NoParentValue": "{DomainName}"
+          }
+        ]
+      },
+      {
+        "RootPath": "TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\",
+        "InitialDeepLevel": 0,
 
-            "MoveFiles": [
-              {
-                "FromRelativePath": "AircraftMaintenanceCompany\\",
-                "ToRelativePathWithParent": "{DomainName}\\"
-              }
-            ]
+        "MoveFiles": [
+          {
+            "FromRelativePath": "AircraftMaintenanceCompany\\",
+            "ToRelativePathNoParent": "{DomainName}\\"
+          }
+        ],
+
+        "ReplaceInFiles": [
+          {
+            "RegexMatch": "^namespace\\s+(?:[A-Za-z0-9_]+\\.)+Controllers.([A-Za-z0-9_]+)$",
+            "NoParentValue": "{DomainName}"
           },
           {
-            "RootPath": "TheBIADevCompany.BIADemo.Domain\\",
-            "InitialDeepLevel": 0,
+            "RegexMatch": ".*using MyCompany.MyFirstProject.Application.([A-Za-z0-9_]+);",
+            "NoParentValue": "{DomainName}"
+          }
+        ]
+      },
+      {
+        "RootPath": "TheBIADevCompany.BIADemo.Domain\\",
+        "InitialDeepLevel": 0,
 
-            "MoveFiles": [
-              {
-                "FromRelativePath": "AircraftMaintenanceCompany\\Mappers",
-                "ToRelativePathWithParent": "{DomainName}\\Mappers"
-              }
-            ]
+        "MoveFiles": [
+          {
+            "FromRelativePath": "AircraftMaintenanceCompany\\Mappers",
+            "ToRelativePathNoParent": "{DomainName}\\Mappers"
+          }
+        ],
+
+        "ReplaceInFiles": [
+          {
+            "RegexMatch": "^namespace\\s+(?:[A-Za-z0-9_]+\\.)+Domain.([A-Za-z0-9_]+).Mappers",
+            "NoParentValue": "{DomainName}"
           }
         ]
       }
