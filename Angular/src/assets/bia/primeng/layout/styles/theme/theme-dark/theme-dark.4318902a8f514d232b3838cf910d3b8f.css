@@ -10021,6 +10021,11 @@ p-breadcrumb .p-breadcrumb .p-menuitem-link {
     display: none;
   }
 }
+@layer primeng {
+  .p-datepicker-calendar > tbody > tr > td > span:focus {
+    background: rgba(0, 0, 0, 0.08);
+  }
+}
 body {
   --menu-bg: #02143a;
   --topbar-bg: #02143a;
