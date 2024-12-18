@@ -148,7 +148,10 @@ export class TableHelperService {
       if (!showTableController) {
         height += ' + 2.545rem + 10px';
       }
+    } else if (!showTableController) {
+      height += ' + 2.285rem + 35px';
     }
+
     if (offset) {
       height += ` ${offset}`;
     }
