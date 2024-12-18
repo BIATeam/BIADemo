@@ -34,7 +34,6 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
     }),
     Object.assign(new BiaFieldConfig('isActive', 'plane.isActive'), {
       isSearchable: false,
-      isSortable: false,
       specificOutput: true,
       specificInput: true,
       type: PropType.Boolean,

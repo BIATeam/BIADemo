@@ -190,7 +190,6 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
     /// BIAToolKit - Begin Block isHybrid
     Object.assign(new BiaFieldConfig('isHybrid', 'engine.isHybrid'), {
       isSearchable: true,
-      isSortable: false,
       type: PropType.Boolean,
     }),
     /// BIAToolKit - End Block isHybrid
@@ -200,7 +199,6 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
       {
         isRequired: true,
         isSearchable: true,
-        isSortable: false,
         type: PropType.Boolean,
         validators: [Validators.required],
       }
