@@ -210,6 +210,7 @@
     "Type": "Team",
     "FeatureName": "MaintenanceTeam",
     "FeatureNamePlural": "MaintenanceTeams",
+    "FeatureDomain": "AircraftMaintenanceCompany",
     "ZipName": "team.zip",
     "Contains": {
       "Include": [
