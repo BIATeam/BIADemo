@@ -9724,6 +9724,9 @@ p-multiselect.ng-dirty.ng-invalid .p-multiselect:not(.p-disabled).p-focus {
   body .p-dialog .p-dialog-titlebar {
     background-color: #fafafa;
   }
+  .p-dropdown .p-icon-wrapper {
+    width: 1.1rem;
+  }
 }
 @layer primeng {
   body .p-datatable .p-datatable-tbody > tr {
