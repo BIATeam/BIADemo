@@ -16,6 +16,7 @@ import { AppState } from 'src/app/store/state';
 import { memberCRUDConfiguration } from '../member.constants';
 import { Member } from '../model/member';
 import { MemberDas } from '../services/member-das.service';
+import { MemberService } from '../services/member.service';
 import { FeatureMembersStore } from './member.state';
 import { FeatureMembersActions } from './members-actions';
 
@@ -83,6 +84,7 @@ export class MembersEffects {
           .pipe(
             map(() => {
               this.biaMessageService.showAddSuccess();
+              this.memberService.parentService?.refreshList();
               if (memberCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
@@ -121,6 +123,7 @@ export class MembersEffects {
           .pipe(
             map(() => {
               this.biaMessageService.showAddSuccess();
+              this.memberService.parentService?.refreshList();
               if (memberCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
@@ -158,6 +161,7 @@ export class MembersEffects {
           .pipe(
             map(() => {
               this.biaMessageService.showUpdateSuccess();
+              this.memberService.parentService?.refreshList();
               if (memberCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
@@ -195,6 +199,7 @@ export class MembersEffects {
           .pipe(
             map(() => {
               this.biaMessageService.showDeleteSuccess();
+              this.memberService.parentService?.refreshList();
               if (memberCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
@@ -232,6 +237,7 @@ export class MembersEffects {
           .pipe(
             map(() => {
               this.biaMessageService.showDeleteSuccess();
+              this.memberService.parentService?.refreshList();
               if (memberCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
@@ -252,6 +258,7 @@ export class MembersEffects {
   constructor(
     protected actions$: Actions,
     protected memberDas: MemberDas,
+    protected memberService: MemberService,
     protected biaMessageService: BiaMessageService,
     protected store: Store<AppState>
   ) {}
