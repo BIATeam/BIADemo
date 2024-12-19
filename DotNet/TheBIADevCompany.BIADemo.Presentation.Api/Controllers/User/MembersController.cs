@@ -1,8 +1,8 @@
 // <copyright file="MembersController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
-#define UseHubForClientInMember
-#define UseHubForClientInUser
+// #define UseHubForClientInMember
+// #define UseHubForClientInUser
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 {
@@ -196,7 +196,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         }
 
         /// <summary>
-        /// Add a member.
+        /// Add several members.
         /// </summary>
         /// <param name="dtos">The members DTO.</param>
         /// <returns>The result of the creation.</returns>
@@ -214,21 +214,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                     return this.StatusCode(StatusCodes.Status403Forbidden);
                 }
 
-                List<MemberDto> dtoList = new List<MemberDto>();
-                foreach (var user in dtos.Users)
-                {
-                    MemberDto dto = new MemberDto
-                    {
-                        User = user,
-                        Roles = dtos.Roles,
-                        TeamId = dtos.TeamId,
-                        DtoState = DtoState.Added,
-                    };
-                    dtoList.Add(dto);
-                }
-
 #pragma warning disable S1481 // Unused local variables should be removed
-                var savedDtos = await this.memberService.SaveAsync(dtoList);
+                var savedDtos = await this.memberService.AddUsers(dtos);
 #pragma warning restore S1481 // Unused local variables should be removed
 #if UseHubForClientInMember
                 _ = this.clientForHubService.SendTargetedMessage(dtos.TeamId.ToString(), "members", "refresh-members");

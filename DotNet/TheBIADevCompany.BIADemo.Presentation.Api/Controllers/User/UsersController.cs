@@ -1,7 +1,7 @@
 // <copyright file="UsersController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
-#define UseHubForClientInUser
+// #define UseHubForClientInUser
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 {
     using System;
