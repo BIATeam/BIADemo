@@ -1,0 +1,9 @@
+@layer primeng {
+  .p-datepicker-calendar > tbody > tr > td > span:focus {
+    background: rgba(0, 0, 0, 0.08);
+  }
+
+  .p-datepicker .p-timepicker button:focus {
+    background: rgba(0, 0, 0, 0.08);
+  }
+}

@@ -17,6 +17,26 @@ function RemoveFolderContents {
   }
 }
 
+function ReplaceProjectNameRecurse {
+  param (
+    [string]$oldName,
+    [string]$newName,
+    $Path,
+    $ExcludeDir
+  )
+  foreach ($childDirectory in Get-ChildItem -Force -Path $Path -Directory -Exclude $ExcludeDir) {
+    ReplaceProjectNameRecurse -oldName $oldName -newName $newName -Path $childDirectory.FullName -Exclude $ExcludeDir
+  }
+  Get-ChildItem -LiteralPath $Path -File -Include *.csproj, *.cs, *.sln, *.json, *.config, *.ps1, *.ts, *.html, *.yml | ForEach-Object { 
+    $oldContent = [System.IO.File]::ReadAllText($_.FullName);
+    $newContent = $oldContent.Replace($oldName, $newName);
+    if ($oldContent -ne $newContent) {
+      Write-Host $_.FullName
+      [System.IO.File]::WriteAllText($_.FullName, $newContent)
+    }
+  }
+}
+
 # Formats JSON in a nicer format than the built-in ConvertTo-Json does.
 function Format-Json([Parameter(Mandatory, ValueFromPipeline)][String] $json) {
   $indent = 0;

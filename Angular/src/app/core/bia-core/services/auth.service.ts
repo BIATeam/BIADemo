@@ -395,6 +395,14 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       );
   }
 
+  clearSessionExceptLoginInfos() {
+    const loginParam = sessionStorage.getItem(STORAGE_LOGINPARAM_KEY);
+    sessionStorage.clear();
+    if (loginParam) {
+      sessionStorage.setItem(STORAGE_LOGINPARAM_KEY, loginParam);
+    }
+  }
+
   protected async getLatestVersion() {
     await this.biaSwUpdateService.checkForUpdate();
 

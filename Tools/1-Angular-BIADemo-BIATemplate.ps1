@@ -15,26 +15,6 @@ $oldPath = Resolve-Path -Path "$scriptPath\..\..\$oldName\Angular"
 Write-Host "old name: " $oldName
 Write-Host "new name: " $newName
 
-###### ###### ###### Specific Functions ###### ###### ######
-function ReplaceProjectName {
-  param (
-    [string]$oldName,
-    [string]$newName,
-    $Path,
-    $ExcludeDir
-  )
-  foreach ($childDirectory in Get-ChildItem -Force -Path $Path -Directory -Exclude $ExcludeDir) {
-    ReplaceProjectName -oldName $oldName -newName $newName -Path $childDirectory.FullName -Exclude $ExcludeDir
-  }
-  Get-ChildItem -LiteralPath $Path -File -Include *.csproj, *.cs, *.sln, *.json, *.config, *.ps1, *.ts, *.html, *.yml | ForEach-Object { 
-    $oldContent = [System.IO.File]::ReadAllText($_.FullName);
-    $newContent = $oldContent.Replace($oldName, $newName);
-    if ($oldContent -ne $newContent) {
-      Write-Host $_.FullName
-      [System.IO.File]::WriteAllText($_.FullName, $newContent)
-    }
-  }
-}
 
 # Deletes lines between // Begin BIADemo and // End BIADemo 
 function RemoveCodeExample {
@@ -171,8 +151,8 @@ Write-Host "Remove code example partial files"
 RemoveCodeExample -Path $newPath -ExcludeDir ('dist', 'node_modules', '.angular', $docsFolder, 'scss' )
 
 Write-Host "replace project name"
-ReplaceProjectName -oldName $oldName -newName $newName -Path $newPath  -ExcludeDir ('dist', 'node_modules', '.angular', 'scss')
-ReplaceProjectName -oldName $oldName.ToLower() -newName $newName.ToLower() -Path $newPath  -ExcludeDir ('dist', 'node_modules', '.angular', 'scss')
+ReplaceProjectNameRecurse -oldName $oldName -newName $newName -Path $newPath  -ExcludeDir ('dist', 'node_modules', '.angular', 'scss')
+ReplaceProjectNameRecurse -oldName $oldName.ToLower() -newName $newName.ToLower() -Path $newPath  -ExcludeDir ('dist', 'node_modules', '.angular', 'scss')
 
 $a = Get-Content $newPath'\angular.json' -raw | ConvertFrom-Json
 $a.projects.BIATemplate.architect.build.options.serviceWorker = $false

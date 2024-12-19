@@ -9724,6 +9724,9 @@ p-multiselect.ng-dirty.ng-invalid .p-multiselect:not(.p-disabled).p-focus {
   body .p-dialog .p-dialog-titlebar {
     background-color: #fafafa;
   }
+  .p-dropdown .p-icon-wrapper {
+    width: 1.1rem;
+  }
 }
 @layer primeng {
   body .p-datatable .p-datatable-tbody > tr {
@@ -9987,6 +9990,14 @@ p-breadcrumb .p-breadcrumb .p-menuitem-link {
   }
   .p-datatable .p-datatable-footer:empty {
     display: none;
+  }
+}
+@layer primeng {
+  .p-datepicker-calendar > tbody > tr > td > span:focus {
+    background: rgba(0, 0, 0, 0.08);
+  }
+  .p-datepicker .p-timepicker button:focus {
+    background: rgba(0, 0, 0, 0.08);
   }
 }
 body {

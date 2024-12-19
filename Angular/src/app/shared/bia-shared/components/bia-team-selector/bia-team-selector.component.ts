@@ -113,7 +113,7 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
       this.teamType.teamTypeId,
       this.currentTeam.id
     );
-    sessionStorage.clear();
+    this.authService.clearSessionExceptLoginInfos();
     location.reload();
   }
 
