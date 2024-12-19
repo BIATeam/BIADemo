@@ -108,7 +108,7 @@
         "IsPrincipal": "true",
         "AdaptPaths": [
           {
-            "RootPath": "src\\app\\features\\",
+            "RootPath": "src\\app\\",
             "InitialDeepLevel": 1,
             "DeepLevelIdentifier": "children",
 

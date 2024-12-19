@@ -245,36 +245,44 @@
       "Exclude": []
     },
     "Children": [],
-    "Parents": [
+    "AdaptPaths": [
       {
-        "Name": "AircraftMaintenanceCompany",
-        "NamePlural": "AircraftMaintenanceCompanies",
-        "DomainName": "AircraftMaintenanceCompany",
-        "IsPrincipal": "true",
-        "AdaptPaths": [
-          {
-            "RootPath": "TheBIADevCompany.BIADemo.Application\\",
-            "InitialDeepLevel": 0,
+        "RootPath": "TheBIADevCompany.BIADemo.Application\\",
+        "InitialDeepLevel": 0,
 
-            "MoveFiles": [
-              {
-                "FromRelativePath": "AircraftMaintenanceCompany\\",
-                "ToRelativePathNoParent": "{NewCrudNamePascalSingular}\\",
-                "ToRelativePathWithParent": "{ParentDomainName}\\"
-              }
-            ]
+        "MoveFiles": [
+          {
+            "FromRelativePath": "AircraftMaintenanceCompany\\",
+            "ToRelativePathNoParent": "{DomainName}\\"
+          }
+        ],
+
+        "ReplaceInFiles": [
+          {
+            "RegexMatch": "^namespace\\s+(?:[A-Za-z0-9_]+\\.)+Application.([A-Za-z0-9_]+)$",
+            "NoParentValue": "{DomainName}"
+          }
+        ]
+      },
+      {
+        "RootPath": "TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\",
+        "InitialDeepLevel": 0,
+
+        "MoveFiles": [
+          {
+            "FromRelativePath": "AircraftMaintenanceCompany\\",
+            "ToRelativePathNoParent": "{DomainName}\\"
+          }
+        ],
+
+        "ReplaceInFiles": [
+          {
+            "RegexMatch": "^namespace\\s+(?:[A-Za-z0-9_]+\\.)+Controllers.([A-Za-z0-9_]+)$",
+            "NoParentValue": "{DomainName}"
           },
           {
-            "RootPath": "TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\",
-            "InitialDeepLevel": 0,
-
-            "MoveFiles": [
-              {
-                "FromRelativePath": "AircraftMaintenanceCompany\\",
-                "ToRelativePathNoParent": "{NewCrudNamePascalSingular}\\",
-                "ToRelativePathWithParent": "{ParentDomainName}\\"
-              }
-            ]
+            "RegexMatch": ".*using TheBIADevCompany.BIADemo.Application.([A-Za-z0-9_]+);",
+            "NoParentValue": "{DomainName}"
           }
         ]
       }
