@@ -114,9 +114,9 @@
 
             "MoveFiles": [
               {
-                "FromRelativePath": "aircraft-maintenance-companies\\children\\",
-                "ToRelativePathNoParent": "",
-                "ToRelativePathWithParent": "{ParentRelativePath}\\children\\"
+                "FromRelativePath": "features\\aircraft-maintenance-companies\\children\\",
+                "ToRelativePathNoParent": "features\\",
+                "ToRelativePathWithParent": "features\\{ParentRelativePath}\\children\\"
               }
             ],
 
