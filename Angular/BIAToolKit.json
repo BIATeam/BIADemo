@@ -108,30 +108,37 @@
         "IsPrincipal": "true",
         "AdaptPaths": [
           {
-            "RootPath": "src\\app\\",
+            "RootPath": "src\\app\\features\\",
             "InitialDeepLevel": 1,
             "DeepLevelIdentifier": "children",
 
             "MoveFiles": [
               {
-                "FromRelativePath": "features\\aircraft-maintenance-companies\\children\\",
-                "ToRelativePathNoParent": "features\\",
-                "ToRelativePathWithParent": "features\\{ParentRelativePath}\\children\\"
+                "FromRelativePath": "aircraft-maintenance-companies\\children\\",
+                "ToRelativePathNoParent": "",
+                "ToRelativePathWithParent": "{ParentRelativePath}\\children\\"
               }
             ],
 
             "ReplaceInFiles": [
               {
-                "RegexMatch": "'([^']*)'",
-                "Pattern": "aircraft-maintenance-companies/children/",
-                "NoParentValue": "",
-                "WithParentValue": "{ParentRelativePathLinux}/children/"
-              },
-              {
                 "RegexMatch": "(\\.\\./){6}shared/bia-shared/.*\\.(html|scss)\\'",
                 "Pattern": "'../../../../../../",
                 "NoParentValue": "'../../../../",
                 "WithParentAddByDeeperLevel": "../../"
+              }
+            ]
+          },
+          {
+            "RootPath": "src\\app\\",
+            "InitialDeepLevel": 0,
+
+            "ReplaceInFiles": [
+              {
+                "RegexMatch": "'([^']*)'",
+                "Pattern": "features/aircraft-maintenance-companies/children/",
+                "NoParentValue": "features/",
+                "WithParentValue": "{ParentRelativePathLinux}/children/"
               }
             ]
           }
