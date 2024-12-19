@@ -26,6 +26,7 @@ export class AircraftMaintenanceCompanyMembersIndexComponent
   ngOnInit() {
     this.teamTypeId = TeamTypeId.AircraftMaintenanceCompany;
     super.ngOnInit();
+    this.memberService.parentService = this.aircraftMaintenanceCompanyService;
   }
 
   protected setPermissions() {

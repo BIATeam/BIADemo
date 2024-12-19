@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {
   /* BIAToolKit - Begin Option */
   Observable,
-  /* BIAToolKit - Begin Option */
+  /* BIAToolKit - End Option */
   combineLatest,
 } from 'rxjs';
 import { map } from 'rxjs/operators';

@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { AppState } from 'src/app/store/state';
+import { BaseDto } from '../../../model/base-dto';
 import { memberCRUDConfiguration } from '../member.constants';
 import { Member, Members } from '../model/member';
 import { FeatureMembersStore } from '../store/member.state';
@@ -29,6 +30,8 @@ export class MemberService extends CrudItemService<Member> {
   }
 
   teamTypeId: number;
+
+  public parentService: CrudItemService<BaseDto>;
 
   public getParentIds(): any[] {
     // TODO after creation of CRUD Member : adapt the parent Key tothe context. It can be null if root crud
