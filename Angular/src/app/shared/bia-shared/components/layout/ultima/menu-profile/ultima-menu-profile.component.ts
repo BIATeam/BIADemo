@@ -52,11 +52,13 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
       this.appSettingsService.appSettings.profileConfiguration?.urlProfileImage.replace(
         '{login}',
         value
-      ) ?? '';
-    this.avatarUrl = url;
+      );
+    this.avatarUrl = url || this.defaultProfileImage;
   }
 
-  avatarUrl = 'assets/bia/img/PersonPlaceholder.png';
+  private readonly defaultProfileImage = 'assets/bia/img/PersonPlaceholder.png';
+
+  avatarUrl = this.defaultProfileImage;
 
   usernameParam?: { name: string };
   displayName: string;
@@ -174,6 +176,6 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
   }
 
   onImgError() {
-    this.avatarUrl = 'assets/bia/img/PersonPlaceholder.png';
+    this.avatarUrl = this.defaultProfileImage;
   }
 }
