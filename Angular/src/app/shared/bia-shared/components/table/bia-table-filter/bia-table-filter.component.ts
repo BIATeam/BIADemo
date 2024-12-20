@@ -220,4 +220,10 @@ export class BiaTableFilterComponent<CrudItem>
   setFilterConstraint(filterConstraint: FilterMetadata, value: OptionDto[]) {
     filterConstraint.value = value.map(x => x.display);
   }
+
+  onMultiSelectChange(filterConstraint: any) {
+    if (!filterConstraint.value || filterConstraint.value.length === 0) {
+      filterConstraint.value = null;
+    }
+  }
 }
