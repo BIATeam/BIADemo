@@ -2685,34 +2685,34 @@ body {
 }
 
 .layout-topbar .layout-topbar-start {
-  width: var(--side-bar-width);
+  width: var(--sidebar-width);
 }
 
 .layout-sidebar {
-  width: var(--side-bar-width);
+  width: var(--sidebar-width);
 }
 
 @media screen and (min-width: 992px) {
   .layout-drawer.layout-sidebar-active .layout-sidebar {
-    width: var(--side-bar-width);
+    width: var(--sidebar-width);
   }
   .layout-drawer.layout-sidebar-anchored .layout-topbar {
-    padding-left: var(--side-bar-width);
+    padding-left: var(--sidebar-width);
   }
   .layout-drawer.layout-sidebar-anchored .layout-content-wrapper {
-    margin-left: var(--side-bar-width);
+    margin-left: var(--sidebar-width);
   }
   .layout-reveal.layout-sidebar-anchored .layout-topbar {
-    padding-left: var(--side-bar-width);
+    padding-left: var(--sidebar-width);
   }
   .layout-reveal.layout-sidebar-anchored .layout-content-wrapper {
-    margin-left: var(--side-bar-width);
+    margin-left: var(--sidebar-width);
   }
   .layout-reveal .layout-sidebar {
-    transform: translateX(calc((var(--side-bar-width) - 4.25rem) * -1));
+    transform: translateX(calc((var(--sidebar-width) - 4.25rem) * -1));
   }
   .layout-container.layout-static .layout-content-wrapper {
-    margin-left: var(--side-bar-width);
+    margin-left: var(--sidebar-width);
   }
   .layout-container.layout-static-inactive .layout-content-wrapper {
     margin-left: 0;
