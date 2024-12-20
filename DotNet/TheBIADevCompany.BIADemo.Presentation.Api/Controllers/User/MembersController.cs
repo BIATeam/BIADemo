@@ -460,7 +460,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                 }
 
                 UserDto userDto = new UserDto();
-                userDto.Login = dto.User.Display;
+                userDto.Login = dto.Login;
                 ResultAddUsersFromDirectoryDto result = await this.userService.AddByIdentityKeyAsync(userDto);
 #if UseHubForClientInUser
                 _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");

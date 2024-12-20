@@ -22,6 +22,7 @@ export class MembersIndexComponent
     super(injector, injector.get<MemberService>(MemberService));
     this.crudConfiguration = memberCRUDConfiguration;
     this.memberService = injector.get<MemberService>(MemberService);
+    this.pageSize = 100;
   }
 
   ngOnInit() {
