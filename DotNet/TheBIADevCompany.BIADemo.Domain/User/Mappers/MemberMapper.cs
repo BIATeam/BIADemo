@@ -66,6 +66,10 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
                     Id = entity.User.Id,
                     Display = entity.User.Display() + (entity.User.IsActive ? string.Empty : " **Disabled**"),
                 },
+                FirstName = entity.User.FirstName,
+                LastName = entity.User.LastName,
+                Login = entity.User.Login,
+                IsActive = entity.User.IsActive,
                 Roles = entity.MemberRoles.Select(x => new OptionDto { Id = x.RoleId, Display = x.Role.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? x.Role.Label }),
             };
         }

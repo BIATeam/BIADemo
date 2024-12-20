@@ -14,6 +14,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -172,6 +173,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                     return this.StatusCode(StatusCodes.Status403Forbidden);
                 }
 
+                if (dto.User == null && string.IsNullOrEmpty(dto.Login))
+                {
+                    return this.BadRequest();
+                }
+
                 // Specific Code to add user if required
                 var addUserResult = await this.AddUserIfRequired(dto);
                 if (addUserResult != null)
@@ -252,6 +258,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                 if (!this.IsAuthorizeForTeam(dto.TeamId, Rights.Members.UpdateSuffix).Result)
                 {
                     return this.StatusCode(StatusCodes.Status403Forbidden);
+                }
+
+                if (dto.User == null && string.IsNullOrEmpty(dto.Login))
+                {
+                    return this.BadRequest();
                 }
 
                 // Specific Code to add user if required
@@ -434,12 +445,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 
         private async Task<IActionResult> AddUserIfRequired(MemberDto dto)
         {
-            if (dto.User.DtoState == DtoState.AddedNewChoice)
+            if (dto.User == null)
             {
-                var existingUser = await this.userService.GetUserInfoAsync(dto.User.Display);
+                var existingUser = await this.userService.GetUserInfoAsync(dto.Login);
                 if (existingUser != null && existingUser.IsActive)
                 {
-                    dto.User.Id = existingUser.Id;
+                    dto.User = new OptionDto() { Id = existingUser.Id };
                     return null;
                 }
 
