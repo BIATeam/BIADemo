@@ -496,7 +496,9 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     this.columns = this.crudConfiguration.fieldsConfig.columns.map(
       col => <KeyValuePair>{ key: col.field, value: col.header }
     );
-    this.displayedColumns = [...this.columns];
+    this.displayedColumns = this.crudConfiguration.fieldsConfig.columns
+      .filter(col => col.isVisible)
+      .map(col => <KeyValuePair>{ key: col.field, value: col.header });
     this.sortFieldValue = this.columns[0].key;
 
     this.defaultViewPref = <BiaTableState>{
@@ -505,9 +507,9 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
       sortField: this.sortFieldValue,
       sortOrder: 1,
       filters: {},
-      columnOrder: this.crudConfiguration.fieldsConfig.columns.map(
-        x => x.field
-      ),
+      columnOrder: this.crudConfiguration.fieldsConfig.columns
+        .filter(col => col.isVisible)
+        .map(x => x.field),
       advancedFilter: undefined,
     };
   }

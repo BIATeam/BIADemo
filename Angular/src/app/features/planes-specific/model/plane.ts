@@ -58,6 +58,7 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
         type: PropType.TimeSecOnly,
         validators: [Validators.required],
         minWidth: '50px',
+        isVisible: false,
       }
     ),
     Object.assign(new BiaFieldConfig('capacity', 'plane.capacity'), {
