@@ -18,7 +18,8 @@
               let-filter="filterCallback">
               <p-multiSelect
                 [options]="optionValues"
-                [(ngModel)]="filterConstraint.value">
+                [(ngModel)]="filterConstraint.value"
+                (onChange)="onMultiSelectChange(filterConstraint)">
                 <ng-template let-option pTemplate="item">
                   <div class="inline-block vertical-align-middle">
                     <span class="ml-1 mt-1">{{ option }}</span>
