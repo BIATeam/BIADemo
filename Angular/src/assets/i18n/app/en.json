@@ -135,6 +135,7 @@
   "End BIADemo": "To remove in project up to here",
   "member": {
     "add": "Add member",
+    "isActive": "Active",
     "listOf": "List of members",
     "manage": "Manage member",
     "roles": "Roles",

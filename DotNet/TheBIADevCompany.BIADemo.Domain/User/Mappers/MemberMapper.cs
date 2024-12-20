@@ -45,6 +45,10 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
                         x.Role.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? x.Role.Label).OrderBy(x => x)
                     },
                     { "User", member => member.User.LastName + " " + member.User.FirstName + " (" + member.User.Login + ")" },
+                    { "FirstName", member => member.User.FirstName },
+                    { "LastName", member => member.User.LastName },
+                    { "Login", member => member.User.Login },
+                    { "IsActive", member => member.User.IsActive },
                 };
             }
         }

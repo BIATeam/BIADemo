@@ -42,6 +42,11 @@ export const memberFieldsConfiguration: BiaFieldsConfig<Member> = {
       isEditable: false,
       isOnlyInitializable: true,
     }),
+    Object.assign(new BiaFieldConfig('isActive', 'member.isActive'), {
+      isEditable: false,
+      type: PropType.Boolean,
+      isHideByDefault: true,
+    }),
     Object.assign(new BiaFieldConfig<Member>('roles', 'member.roles'), {
       type: PropType.ManyToMany,
     }),
