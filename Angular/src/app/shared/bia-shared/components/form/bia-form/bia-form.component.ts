@@ -1,8 +1,10 @@
 import {
   AfterContentInit,
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ContentChildren,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -11,6 +13,7 @@ import {
   Output,
   QueryList,
   TemplateRef,
+  ViewChildren,
 } from '@angular/core';
 import {
   UntypedFormBuilder,
@@ -34,7 +37,7 @@ import { BaseDto } from '../../../model/base-dto';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class BiaFormComponent<TDto extends { id: number }>
-  implements OnInit, OnDestroy, OnChanges, AfterContentInit
+  implements OnInit, OnDestroy, OnChanges, AfterContentInit, AfterViewInit
 {
   @Input() element?: TDto;
   @Input() fields: BiaFieldConfig<TDto>[];
@@ -48,6 +51,9 @@ export class BiaFormComponent<TDto extends { id: number }>
 
   form?: UntypedFormGroup;
   protected sub = new Subscription();
+
+  @ViewChildren('refFormField', { read: ElementRef })
+  formElements: QueryList<ElementRef>;
 
   constructor(
     public formBuilder: UntypedFormBuilder
@@ -85,6 +91,29 @@ export class BiaFormComponent<TDto extends { id: number }>
     }
   }
 
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.setFocus();
+    });
+  }
+
+  /**
+   * Find the first active form element and set the focus on it.
+   */
+  protected setFocus() {
+    const formElement = 'input, textarea, select';
+    const firstActiveField = this.formElements.find(field => {
+      const element = field.nativeElement.querySelector(formElement);
+      return element && !element.disabled;
+    });
+    if (firstActiveField) {
+      const element = firstActiveField.nativeElement.querySelector(formElement);
+      if (element) {
+        element.focus();
+      }
+    }
+  }
+
   public checkObject(obj: any): { element: any; errorMessages: string[] } {
     const errorMessages: string[] = [];
     if (this.form) {
@@ -112,6 +141,7 @@ export class BiaFormComponent<TDto extends { id: number }>
   protected initForm() {
     this.form = this.formBuilder.group(this.formFields());
   }
+
   protected formFields() {
     const fields: { [key: string]: any } = { id: [this.element?.id] };
     for (const col of this.fields) {
