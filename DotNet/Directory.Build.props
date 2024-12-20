@@ -14,10 +14,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="BIA.Net.Analyzers" Version="4.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
   <PropertyGroup>
     <IsBiaPackageProject Condition="'$(MSBuildProjectName)' != '' and $(MSBuildProjectName.StartsWith('BIA.Net'))">true</IsBiaPackageProject>
@@ -27,5 +23,13 @@
     <Using Include="System.Collections.Generic" />
     <Using Include="System.Threading.Tasks" />
     <Using Include="System.Linq" />
+  </ItemGroup>
+  <ItemGroup Label="AnalyzerReferencesProject" Condition="!$(MSBuildProjectDirectory.Contains('BIAPackage'))">
+    <ProjectReference Include="..\BIAPackage\BIA.Net.Analyzers\BIA.Net.Analyzers\BIA.Net.Analyzers.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
+    <ProjectReference Include="..\BIAPackage\BIA.Net.Analyzers\BIA.Net.Analyzers.CodeFixes\BIA.Net.Analyzers.CodeFixes.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
+  </ItemGroup>
+  <ItemGroup Label="AnalyzerReferencesBiaPackage" Condition="$(MSBuildProjectDirectory.Contains('BIAPackage')) and !$(MSBuildProjectDirectory.Contains('BIA.Net.Analyzers'))">
+    <ProjectReference Include="..\BIA.Net.Analyzers\BIA.Net.Analyzers\BIA.Net.Analyzers.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
+    <ProjectReference Include="..\BIA.Net.Analyzers\BIA.Net.Analyzers.CodeFixes\BIA.Net.Analyzers.CodeFixes.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
   </ItemGroup>
 </Project>

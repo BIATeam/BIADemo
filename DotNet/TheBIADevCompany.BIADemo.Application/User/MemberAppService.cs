@@ -47,9 +47,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             : base(repository)
         {
             this.principal = principal as BiaClaimsPrincipal;
-
-            // Include already add with the mapper MemberMapper
-            // this.Repository.QueryCustomizer = queryCustomizer
         }
 
         /// <inheritdoc cref="IMemberAppService.GetRangeByTeamAsync"/>
