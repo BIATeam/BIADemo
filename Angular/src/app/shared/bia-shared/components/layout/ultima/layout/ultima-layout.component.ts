@@ -27,8 +27,8 @@ import { AppState } from 'src/app/store/state';
 import { BiaLayoutService } from '../../services/layout.service';
 import { MenuService } from '../../services/menu.service';
 import { BiaUltimaFooterComponent } from '../footer/ultima-footer.component';
-import { BiaUltimaSideBarComponent } from '../side-bar/ultima-side-bar.component';
-import { BiaUltimaTopBarComponent } from '../top-bar/ultima-top-bar.component';
+import { BiaUltimaSidebarComponent } from '../sidebar/ultima-sidebar.component';
+import { BiaUltimaTopbarComponent } from '../topbar/ultima-topbar.component';
 
 @Component({
   selector: 'bia-ultima-layout',
@@ -62,8 +62,8 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
 
   protected sub = new Subscription();
 
-  @ViewChild(BiaUltimaSideBarComponent) appSidebar!: BiaUltimaSideBarComponent;
-  @ViewChild(BiaUltimaTopBarComponent) appTopbar!: BiaUltimaTopBarComponent;
+  @ViewChild(BiaUltimaSidebarComponent) appSidebar!: BiaUltimaSidebarComponent;
+  @ViewChild(BiaUltimaTopbarComponent) appTopbar!: BiaUltimaTopbarComponent;
   @ViewChild(BiaUltimaFooterComponent) appFooter!: BiaUltimaFooterComponent;
 
   envName$: Observable<string | undefined>;
