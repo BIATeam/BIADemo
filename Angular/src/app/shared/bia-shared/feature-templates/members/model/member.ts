@@ -32,11 +32,11 @@ export const memberFieldsConfiguration: BiaFieldsConfig<Member> = {
     }),
     Object.assign(new BiaFieldConfig('lastName', 'user.lastName'), {
       isEditable: false,
-      isVisible: false,
+      isHideByDefault: true,
     }),
     Object.assign(new BiaFieldConfig('firstName', 'user.firstName'), {
       isEditable: false,
-      isVisible: false,
+      isHideByDefault: true,
     }),
     Object.assign(new BiaFieldConfig('login', 'user.login'), {
       isEditable: false,

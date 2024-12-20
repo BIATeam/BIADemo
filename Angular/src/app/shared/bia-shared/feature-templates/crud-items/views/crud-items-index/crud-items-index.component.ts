@@ -497,7 +497,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
       col => <KeyValuePair>{ key: col.field, value: col.header }
     );
     this.displayedColumns = this.crudConfiguration.fieldsConfig.columns
-      .filter(col => col.isVisible)
+      .filter(col => !col.isHideByDefault)
       .map(col => <KeyValuePair>{ key: col.field, value: col.header });
     this.sortFieldValue = this.columns[0].key;
 
@@ -508,7 +508,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
       sortOrder: 1,
       filters: {},
       columnOrder: this.crudConfiguration.fieldsConfig.columns
-        .filter(col => col.isVisible)
+        .filter(col => !col.isHideByDefault)
         .map(x => x.field),
       advancedFilter: undefined,
     };

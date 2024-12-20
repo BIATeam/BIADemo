@@ -87,6 +87,7 @@ export class BiaFieldConfig<TDto> {
   isOnlyUpdatable: boolean;
   isEditableChoice: boolean;
   isVisible: boolean;
+  isHideByDefault: boolean;
   maxlength: number;
   translateKey: string;
   searchPlaceholder: string;
@@ -130,6 +131,7 @@ export class BiaFieldConfig<TDto> {
     this.isOnlyUpdatable = false;
     this.isEditableChoice = false;
     this.isVisible = true;
+    this.isHideByDefault = false;
     this.maxlength = maxlength;
     this.isRequired = false;
     this.specificOutput = false;
@@ -155,6 +157,7 @@ export class BiaFieldConfig<TDto> {
         isOnlyUpdatable: this.isOnlyUpdatable,
         isChoiceEditable: this.isEditableChoice,
         isVisible: this.isVisible,
+        isHideByDefault: this.isHideByDefault,
         translateKey: this.translateKey,
         searchPlaceholder: this.searchPlaceholder,
         isRequired: this.isRequired,
