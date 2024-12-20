@@ -1,5 +1,5 @@
 <div class="p-3">
-  <small *ngIf="layoutService.configDisplay().showEditAvatar">
+  <small *ngIf="layoutService.configDisplay().showEditAvatar && urlEditAvatar">
     <i class="pi pi-pencil"></i
     ><a class="edit-avatar" [href]="urlEditAvatar" target="_blank">{{
       'bia.editProfileImage' | translate
