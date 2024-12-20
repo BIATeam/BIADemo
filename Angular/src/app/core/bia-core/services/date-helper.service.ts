@@ -5,8 +5,6 @@ import { parse } from 'date-fns';
   providedIn: 'root',
 })
 export class DateHelperService {
-  public static dateFormatIso8601 = 'yyyy-MM-dd';
-
   public static isDate(value: any): boolean {
     const regex = /(\d{4})-(\d{2})-(\d{2})T/;
     if (typeof value === 'string' && value.match(regex)) {

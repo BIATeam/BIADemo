@@ -15,6 +15,7 @@
         formControlName="dateFormat"
         [options]="dateFormats"
         (ngModelChange)="onSubmit()"
+        appendTo="body"
         placeholder="Select Date Format">
       </p-dropdown>
       <label>{{ 'bulk.dateFormat' | translate }}</label>
@@ -25,6 +26,7 @@
         formControlName="timeFormat"
         [options]="timeFormats"
         (ngModelChange)="onSubmit()"
+        appendTo="body"
         placeholder="Select Time Format">
       </p-dropdown>
       <label>{{ 'bulk.timeFormat' | translate }}</label>

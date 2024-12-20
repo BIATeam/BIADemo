@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import * as Papa from 'papaparse';
 import { Observable, combineLatest, from, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { DateHelperService } from 'src/app/core/bia-core/services/date-helper.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
@@ -46,11 +47,14 @@ export class CrudItemBulkService<T extends BaseDto> {
   protected crudConfig: CrudConfig<T>;
   public bulkParam = <BulkParam>{
     useCurrentView: false,
-    dateFormat: DateHelperService.dateFormatIso8601,
-    timeFormat: 'HH:mm',
   };
 
-  constructor(protected translateService: TranslateService) {}
+  constructor(
+    protected translateService: TranslateService,
+    protected biaTranslationService: BiaTranslationService
+  ) {
+    this.initBulkParam();
+  }
 
   public init(
     form: BiaFormComponent<T>,
@@ -68,6 +72,15 @@ export class CrudItemBulkService<T extends BaseDto> {
 
     return from(this.readFileAsText(file)).pipe(
       switchMap(csv => this.parseCSV(csv))
+    );
+  }
+
+  protected initBulkParam() {
+    this.biaTranslationService.currentCultureDateFormat$.subscribe(
+      dateFormat => {
+        this.bulkParam.dateFormat = dateFormat.dateFormat;
+        this.bulkParam.timeFormat = dateFormat.timeFormat;
+      }
     );
   }
 
@@ -220,10 +233,17 @@ export class CrudItemBulkService<T extends BaseDto> {
       if (isEmpty(dateString)) {
         return;
       }
+
+      const containsDash = dateString.indexOf('-') > 0;
+      const dateFormat = containsDash
+        ? 'yyyy-MM-dd'
+        : this.bulkParam.dateFormat;
+      const timeFormat = containsDash ? 'HH:mm' : this.bulkParam.timeFormat;
+
       const date: Date = DateHelperService.parseDate(
         dateString,
-        this.bulkParam.dateFormat,
-        this.bulkParam.timeFormat
+        dateFormat,
+        timeFormat
       );
       if (DateHelperService.isValidDate(date)) {
         csvObj[column.field] = <any>date;
