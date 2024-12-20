@@ -1,5 +1,6 @@
 import {
   AfterContentInit,
+  AfterViewInit,
   Component,
   ContentChildren,
   EventEmitter,
@@ -46,7 +47,7 @@ const arraysEqual = (a1: any, a2: any) =>
   styleUrls: ['./bia-table.component.scss'],
 })
 export class BiaTableComponent<TDto extends { id: number }>
-  implements OnChanges, AfterContentInit
+  implements OnChanges, AfterContentInit, AfterViewInit
 {
   @Input() pageSize: number;
   @Input() totalRecord: number;
@@ -123,6 +124,12 @@ export class BiaTableComponent<TDto extends { id: number }>
     public authService: AuthService,
     public translateService: TranslateService
   ) {}
+
+  ngAfterViewInit(): void {
+    if (this.table) {
+      this.table.saveState = this.saveState.bind(this.table);
+    }
+  }
 
   ngAfterContentInit() {
     this.templates.forEach(item => {
@@ -630,5 +637,44 @@ export class BiaTableComponent<TDto extends { id: number }>
 
   public getOptionDto(key: string) {
     return this.dictOptionDtos.filter(x => x.key === key)[0]?.value;
+  }
+
+  // Override of function saveState from PrimeNg table component to avoid saving column resize and selection and always save columnOrder even when column not reorderable.
+  // Original source : https://github.com/primefaces/primeng/blob/v17-prod/src/app/components/table/table.ts#L2800
+  private saveState() {
+    const table: Table = this as unknown as Table;
+
+    const storage = table.getStorage();
+    let state: TableState = {};
+
+    if (table.paginator) {
+      state.first = <number>table.first;
+      state.rows = table.rows;
+    }
+
+    if (table.sortField) {
+      state.sortField = table.sortField;
+      state.sortOrder = table.sortOrder;
+    }
+
+    if (table.multiSortMeta) {
+      state.multiSortMeta = table.multiSortMeta;
+    }
+
+    if (table.hasFilter()) {
+      state.filters = table.filters;
+    }
+    // Begin change for BIA
+
+    table.saveColumnOrder(state);
+
+    // End change for BIA
+
+    if (Object.keys(table.expandedRowKeys).length) {
+      state.expandedRowKeys = table.expandedRowKeys;
+    }
+
+    storage.setItem(<string>table.stateKey, JSON.stringify(state));
+    table.onStateSave.emit(state);
   }
 }
