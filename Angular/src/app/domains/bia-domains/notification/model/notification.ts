@@ -31,7 +31,7 @@ export enum NotificationType {
 }
 
 export interface NotificationData {
-  route: string[];
+  route: string[] | null;
   display: string;
-  teams: NotificationTeam[];
+  teams: NotificationTeam[] | null;
 }
