@@ -61,7 +61,13 @@ export const notificationReducers = createReducer<State>(
   ),
   on(FeatureNotificationsActions.loadSuccess, (state, { notification }) => {
     const notif = clone(notification);
-    notif.data = JSON.parse(notification.jData);
+    try {
+      notif.data = notification.jData
+        ? JSON.parse(notification.jData)
+        : { route: null, display: '', teams: null };
+    } catch (e) {
+      notif.data = { route: null, display: '', teams: null };
+    }
     return { ...state, currentNotification: notif, loadingGet: false };
   }),
   on(FeatureNotificationsActions.failure, state => {

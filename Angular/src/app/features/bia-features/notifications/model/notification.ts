@@ -47,7 +47,7 @@ export class NotificationTeam extends BaseDto {
 }
 
 export interface NotificationData {
-  route: string[];
+  route: string[] | null;
   display: string;
-  teams: NotificationTeam[];
+  teams: NotificationTeam[] | null;
 }

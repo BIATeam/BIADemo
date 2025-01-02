@@ -213,28 +213,24 @@
                 <ng-container formArrayName="notifiedTeams">
                   <tr [formGroupName]="rowIndex">
                     <td>
-                      <p-cellEditor>
-                        <p-dropdown
-                          [options]="teamOptions"
-                          placeholder="&nbsp;"
-                          formControlName="team"
-                          optionLabel="display"
-                          datakey="id"
-                          [style]="{ width: '100%' }"
-                          [showClear]="true"
-                          appendTo="body"></p-dropdown>
-                      </p-cellEditor>
+                      <p-dropdown
+                        [options]="teamOptions"
+                        placeholder="&nbsp;"
+                        formControlName="team"
+                        optionLabel="display"
+                        datakey="id"
+                        [style]="{ width: '100%' }"
+                        [showClear]="true"
+                        appendTo="body"></p-dropdown>
                     </td>
                     <td>
-                      <p-cellEditor>
-                        <p-multiSelect
-                          [options]="roleOptions"
-                          formControlName="roles"
-                          optionLabel="display"
-                          datakey="id"
-                          [style]="{ width: '100%' }"
-                          appendTo="body"></p-multiSelect>
-                      </p-cellEditor>
+                      <p-multiSelect
+                        [options]="roleOptions"
+                        formControlName="roles"
+                        optionLabel="display"
+                        datakey="id"
+                        [style]="{ width: '100%' }"
+                        appendTo="body"></p-multiSelect>
                     </td>
                     <td>
                       <i
@@ -280,11 +276,6 @@
       </div>
       <div class="flex flex-row justify-content-center">
         <div class="flex-1" style="max-width: 90%">
-          <!-- <span class="p-float-label">
-            <textarea formControlName="jData" type="text" pInputText maxlength="64" style ="width:100%" rows="5" pInputTextarea>
-            </textarea>
-            <label>{{ 'notification.jData' | translate }}</label>
-          </span> -->
           <span
             style="left: 5px; top: -20px; font-size: 12px; color: #00839b"
             >{{ 'notification.jData' | translate }}</span

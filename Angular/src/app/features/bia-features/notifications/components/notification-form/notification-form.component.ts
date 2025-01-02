@@ -7,9 +7,11 @@ import {
   Output,
 } from '@angular/core';
 import {
+  AbstractControl,
   UntypedFormArray,
   UntypedFormBuilder,
   UntypedFormGroup,
+  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
@@ -95,7 +97,7 @@ export class NotificationFormComponent implements OnChanges {
         /*this.notification.createdBy*/
       ],
       notifiedUsers: [this.notification.notifiedUsers],
-      jData: [this.notification.jData],
+      jData: [this.notification.jData, JsonValidator.valid],
       notificationTranslations: this.formBuilder.array([]),
       languageToAdd: [],
       notifiedTeams: this.formBuilder.array([]),
@@ -346,5 +348,19 @@ export class NotificationFormComponent implements OnChanges {
     }
 
     return differential;
+  }
+}
+
+export class JsonValidator {
+  static valid(control: AbstractControl): ValidationErrors | null {
+    if (control.value) {
+      try {
+        JSON.parse(control.value);
+      } catch (e) {
+        return { jsonInvalid: true };
+      }
+    }
+
+    return null;
   }
 }
