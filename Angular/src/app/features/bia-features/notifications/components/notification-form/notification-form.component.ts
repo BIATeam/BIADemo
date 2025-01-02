@@ -7,17 +7,16 @@ import {
   Output,
 } from '@angular/core';
 import {
-  AbstractControl,
   UntypedFormArray,
   UntypedFormBuilder,
   UntypedFormGroup,
-  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+import { JsonValidator } from 'src/app/shared/bia-shared/validators/json.validator';
 import { APP_TANSLATION_IDS_TO_NOT_ADD_MANUALY } from 'src/app/shared/constants';
 import {
   Notification,
@@ -348,19 +347,5 @@ export class NotificationFormComponent implements OnChanges {
     }
 
     return differential;
-  }
-}
-
-export class JsonValidator {
-  static valid(control: AbstractControl): ValidationErrors | null {
-    if (control.value) {
-      try {
-        JSON.parse(control.value);
-      } catch (e) {
-        return { jsonInvalid: true };
-      }
-    }
-
-    return null;
   }
 }
