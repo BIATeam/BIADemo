@@ -1,4 +1,5 @@
-<div class="header flex flex-row justify-content-between align-content-between">
+<div
+  class="header flex flex-row gap-2 justify-content-between align-content-between">
   <div
     class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
     <ng-container *ngIf="showBtnFilter">
@@ -31,7 +32,7 @@
   </div>
   <div
     class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
-    <h1>{{ headerTitle }}</h1>
+    <h1>{{ headerTitleComplete }}</h1>
     <p-button
       *ngIf="showTableControllerButton"
       styleClass="p-button-outlined"
@@ -41,7 +42,11 @@
           ? ' pi-angle-double-up'
           : ' pi-angle-double-down')
       "
-      (click)="toggleTableControllerVisibility.emit()"></p-button>
+      (click)="toggleTableControllerVisibility.emit()"
+      pTooltip="{{
+        (tableControllerVisible ? 'bia.hideController' : 'bia.showController')
+          | translate
+      }}"></p-button>
     <ng-container *ngTemplateOutlet="customControlTemplate"></ng-container>
   </div>
   <div

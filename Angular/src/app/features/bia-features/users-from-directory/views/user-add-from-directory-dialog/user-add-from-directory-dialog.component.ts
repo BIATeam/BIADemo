@@ -1,14 +1,14 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/store/state';
 import { Observable } from 'rxjs';
-import { FeatureUsersFromDirectoryActions } from '../../store/users-from-directory-actions';
-import { getAllUsersFromDirectory } from '../../store/user-from-directory.state';
-import { getAllLdapDomain } from 'src/app/domains/bia-domains/ldap-domain/store/ldap-domain.state';
-import { UserFromDirectory } from '../../model/user-from-directory';
 import { LdapDomain } from 'src/app/domains/bia-domains/ldap-domain/model/ldap-domain';
 import { DomainLdapDomainsActions } from 'src/app/domains/bia-domains/ldap-domain/store/ldap-domain-actions';
+import { getAllLdapDomain } from 'src/app/domains/bia-domains/ldap-domain/store/ldap-domain.state';
+import { AppState } from 'src/app/store/state';
 import { UserFilter } from '../../model/user-filter';
+import { UserFromDirectory } from '../../model/user-from-directory';
+import { getAllUsersFromDirectory } from '../../store/user-from-directory.state';
+import { FeatureUsersFromDirectoryActions } from '../../store/users-from-directory-actions';
 
 @Component({
   selector: 'bia-user-add-from-directory-dialog',

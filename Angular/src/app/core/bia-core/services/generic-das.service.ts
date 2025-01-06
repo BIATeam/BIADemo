@@ -7,7 +7,7 @@ import {
 } from '@angular/common/http';
 import { Injector } from '@angular/core';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { from, NEVER, Observable, of, throwError } from 'rxjs';
+import { NEVER, Observable, from, of, throwError } from 'rxjs';
 import { catchError, first, map, tap } from 'rxjs/operators';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { clone } from 'src/app/shared/bia-shared/utils';

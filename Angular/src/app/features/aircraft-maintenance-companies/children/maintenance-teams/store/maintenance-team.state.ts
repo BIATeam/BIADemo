@@ -1,4 +1,3 @@
-import * as fromMaintenanceTeams from './maintenance-teams-reducer';
 import {
   Action,
   combineReducers,
@@ -6,6 +5,7 @@ import {
   createSelector,
 } from '@ngrx/store';
 import { maintenanceTeamCRUDConfiguration } from '../maintenance-team.constants';
+import * as fromMaintenanceTeams from './maintenance-teams-reducer';
 
 export namespace FeatureMaintenanceTeamsStore {
   export interface MaintenanceTeamsState {

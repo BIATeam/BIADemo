@@ -60,7 +60,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
 
   @HostBinding('class') classes = 'bia-flex';
   @ViewChild(BiaTableComponent, { static: false })
-  biaTableComponent: BiaTableComponent;
+  biaTableComponent: BiaTableComponent<Plane>;
   @ViewChild(PlaneTableComponent, { static: false })
   planeTableComponent: PlaneTableComponent;
   private get planeListComponent() {
@@ -83,7 +83,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   canEdit = false;
   canDelete = false;
   canAdd = false;
-  tableConfiguration: BiaFieldsConfig;
+  tableConfiguration: BiaFieldsConfig<Plane>;
   columns: KeyValuePair[];
   displayedColumns: KeyValuePair[];
   viewPreference: string;
@@ -230,6 +230,16 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
     this.displayedColumns = values;
   }
 
+  onClearFilters() {
+    const table = this.planeListComponent.getPrimeNgTable();
+    if (table) {
+      Object.keys(table.filters).forEach(key =>
+        this.tableHelperService.clearFilterMetaData(table.filters[key])
+      );
+      table.onLazyLoad.emit(table.createLazyLoadMetadata());
+    }
+  }
+
   onToggleSearch() {
     this.showColSearch = !this.showColSearch;
   }
@@ -248,7 +258,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
     this.planeListComponent
       .getPrimeNgTable()
       ?.columns?.map(
-        (x: BiaFieldConfig) =>
+        (x: BiaFieldConfig<Plane>) =>
           (columns[x.field] = this.translateService.instant(x.header))
       );
     const columnsAndFilter: PagingFilterFormatDto = {

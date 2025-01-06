@@ -11,7 +11,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuItem } from 'primeng/api';
-import { filter, map, Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, filter, map } from 'rxjs';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { EnvironmentType } from 'src/app/domains/bia-domains/app-settings/model/app-settings';
@@ -27,8 +27,8 @@ import { AppState } from 'src/app/store/state';
 import { BiaLayoutService } from '../../services/layout.service';
 import { MenuService } from '../../services/menu.service';
 import { BiaUltimaFooterComponent } from '../footer/ultima-footer.component';
-import { BiaUltimaSideBarComponent } from '../side-bar/ultima-side-bar.component';
-import { BiaUltimaTopBarComponent } from '../top-bar/ultima-top-bar.component';
+import { BiaUltimaSidebarComponent } from '../sidebar/ultima-sidebar.component';
+import { BiaUltimaTopbarComponent } from '../topbar/ultima-topbar.component';
 
 @Component({
   selector: 'bia-ultima-layout',
@@ -62,8 +62,8 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
 
   protected sub = new Subscription();
 
-  @ViewChild(BiaUltimaSideBarComponent) appSidebar!: BiaUltimaSideBarComponent;
-  @ViewChild(BiaUltimaTopBarComponent) appTopbar!: BiaUltimaTopBarComponent;
+  @ViewChild(BiaUltimaSidebarComponent) appSidebar!: BiaUltimaSidebarComponent;
+  @ViewChild(BiaUltimaTopbarComponent) appTopbar!: BiaUltimaTopbarComponent;
   @ViewChild(BiaUltimaFooterComponent) appFooter!: BiaUltimaFooterComponent;
 
   envName$: Observable<string | undefined>;
@@ -247,7 +247,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
     this.setNoMargin(this.activatedRoute);
     this.sub.add(
       this.translateService
-        .stream('bia.languages')
+        .stream('bia.language')
         .subscribe(() => this.updateMenuItems())
     );
     this.router.events
@@ -268,7 +268,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
   protected updateMenuItems() {
     const menuItems = this.createBreadcrumbs(this.activatedRoute.root);
     if (menuItems !== undefined) {
-      this.menuItems = menuItems;
+      setTimeout(() => (this.menuItems = menuItems), 0);
     }
   }
 

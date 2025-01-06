@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { DomainTeamOptionsActions } from './team-options-actions';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
-import { TeamOptionDas } from '../services/team-option-das.service';
 import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
+import { TeamOptionDas } from '../services/team-option-das.service';
+import { DomainTeamOptionsActions } from './team-options-actions';
 /**
  * Effects file is for isolating and managing side effects of the application in one place
  * Http requests, Sockets, Routing, LocalStorage, etc

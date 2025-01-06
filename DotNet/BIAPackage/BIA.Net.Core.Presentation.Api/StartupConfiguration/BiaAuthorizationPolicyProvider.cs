@@ -22,8 +22,8 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
         /// <summary>
         /// Initializes a new instance of the <see cref="BiaAuthorizationPolicyProvider"/> class.
         /// </summary>
-        /// <param name="options">Authorization options</param>
-        /// <param name="configuration">Configuration</param>
+        /// <param name="options">Authorization options.</param>
+        /// <param name="configuration">Configuration.</param>
         public BiaAuthorizationPolicyProvider(IOptions<AuthorizationOptions> options, IConfiguration configuration)
             : base(options)
         {

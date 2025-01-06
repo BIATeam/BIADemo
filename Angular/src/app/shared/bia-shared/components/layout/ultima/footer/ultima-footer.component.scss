@@ -27,7 +27,7 @@
   height: 100%;
 
   & > img {
-    height: 100%;
+    max-height: 100%;
     padding: 0.5rem;
   }
 }
@@ -38,20 +38,4 @@
   right: 0;
   bottom: calc(var(--footer-height) * -1);
   width: 100%;
-}
-
-.layout-footer-button {
-  position: absolute;
-  top: -2rem;
-  right: 0;
-
-  width: 4rem;
-  height: 2rem;
-  display: inline-flex;
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-  border-top-left-radius: 0.5rem;
-  transition: background-color var(--transition-duration);
-  cursor: pointer;
 }

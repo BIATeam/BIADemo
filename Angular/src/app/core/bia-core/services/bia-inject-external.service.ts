@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Subscription, Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { AppSettings } from 'src/app/domains/bia-domains/app-settings/model/app-settings';
 import { getAppSettings } from 'src/app/domains/bia-domains/app-settings/store/app-settings.state';

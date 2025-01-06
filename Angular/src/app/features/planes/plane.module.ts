@@ -158,7 +158,7 @@ export const ROUTES: Routes = [
       FeaturePlanesStore.reducers
     ),
     EffectsModule.forFeature([PlanesEffects]),
-    // TODO after creation of CRUD Plane : select the optioDto dommain module requiered for link
+    // TODO after creation of CRUD Plane : select the optioDto dommain module required for link
     // Domain Modules:
     // BIAToolKit - Begin Option Airport
     AirportOptionModule,

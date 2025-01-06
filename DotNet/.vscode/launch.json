@@ -1,0 +1,63 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "DotNet WebApi",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "dotnet: build debug api",
+      "program": "${workspaceFolder}/TheBIADevCompany.BIADemo.Presentation.Api/bin/Debug/net8.0/TheBIADevCompany.BIADemo.Presentation.Api.dll",
+      "args": [
+        "--urls=http://localhost:32128",
+        "--pathbase=/BIADemo/WebApi",
+        "--hot-reload"
+      ],
+      "cwd": "${workspaceFolder}/TheBIADevCompany.BIADemo.Presentation.Api/bin/Debug/net8.0/",
+      "stopAtEntry": false,
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "\\bNow listening on:\\s+(https?://\\S+:32128)",
+        "uriFormat": "%s/BIADemo/WebApi/swagger/index.html"
+      },
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_USE_POLLING_FILE_WATCHER": "true",
+        "ASPNETCORE_PATHBASE": "/BIADemo",
+        "ASPNETCORE_URLS": "http://localhost:32128/"
+      }
+    },
+    {
+      "name": "DotNet Worker",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "dotnet: build debug worker",
+      "program": "${workspaceFolder}/TheBIADevCompany.BIADemo.WorkerService/bin/Debug/net8.0/TheBIADevCompany.BIADemo.WorkerService.dll",
+      "args": ["--hot-reload"],
+      "cwd": "${workspaceFolder}/TheBIADevCompany.BIADemo.WorkerService",
+      "stopAtEntry": false,
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_USE_POLLING_FILE_WATCHER": "true"
+      },
+      "console": "internalConsole"
+    },
+    {
+      "name": "DotNet DeployDB",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "dotnet: build debug deploy db",
+      "program": "${workspaceFolder}/TheBIADevCompany.BIADemo.DeployDB/bin/Debug/net8.0/TheBIADevCompany.BIADemo.DeployDB.dll",
+      "args": ["--hot-reload"],
+      "cwd": "${workspaceFolder}/TheBIADevCompany.BIADemo.DeployDB",
+      "stopAtEntry": false,
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_USE_POLLING_FILE_WATCHER": "true"
+      },
+      "console": "internalConsole"
+    }
+  ]
+}

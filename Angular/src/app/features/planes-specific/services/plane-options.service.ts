@@ -20,7 +20,7 @@ export class PlaneOptionsService extends CrudItemOptionsService {
 
   constructor(private store: Store<AppState>) {
     super();
-    // TODO after creation of CRUD Plane : get all requiered option dto use in Table calc and create and edit form
+    // TODO after creation of CRUD Plane : get all required option dto use in Table calc and create and edit form
     this.planeTypeOptions$ = this.store.select(getAllPlaneTypeOptions);
     this.airportOptions$ = this.store.select(getAllAirportOptions);
 

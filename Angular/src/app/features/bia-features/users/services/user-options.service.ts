@@ -18,7 +18,7 @@ export class UserOptionsService extends CrudItemOptionsService {
 
   constructor(protected store: Store<AppState>) {
     super();
-    // TODO after creation of CRUD User : get all requiered option dto use in Table calc and create and edit form
+    // TODO after creation of CRUD User : get all required option dto use in Table calc and create and edit form
     this.roleOptions$ = this.store.select(getAllRoleOptions);
 
     this.dictOptionDtos$ = combineLatest([this.roleOptions$]).pipe(

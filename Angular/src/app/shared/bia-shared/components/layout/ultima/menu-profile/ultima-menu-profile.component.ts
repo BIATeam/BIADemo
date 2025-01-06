@@ -52,11 +52,13 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
       this.appSettingsService.appSettings.profileConfiguration?.urlProfileImage.replace(
         '{login}',
         value
-      ) ?? '';
-    this.avatarUrl = url;
+      );
+    this.avatarUrl = url || this.defaultProfileImage;
   }
 
-  avatarUrl = 'assets/bia/img/PersonPlaceholder.png';
+  private readonly defaultProfileImage = 'assets/bia/img/PersonPlaceholder.png';
+
+  avatarUrl = this.defaultProfileImage;
 
   usernameParam?: { name: string };
   displayName: string;
@@ -113,7 +115,7 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
       'bia.lang.mx',
       'bia.lang.us',
       'bia.greetings',
-      'bia.languages',
+      'bia.language',
       'bia.theme',
       'bia.themeLight',
       'bia.themeDark',
@@ -133,6 +135,12 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
               },
             });
           });
+
+          menuItemLang.sort((a, b) => {
+            const labelA = a.label || '';
+            const labelB = b.label || '';
+            return labelA.localeCompare(labelB);
+          });
         }
 
         this.displayName =
@@ -142,7 +150,7 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
 
         this.topBarMenuItems = [
           {
-            label: translations['bia.languages'],
+            label: translations['bia.language'],
             items: menuItemLang,
           },
           {
@@ -168,6 +176,6 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
   }
 
   onImgError() {
-    this.avatarUrl = 'assets/bia/img/PersonPlaceholder.png';
+    this.avatarUrl = this.defaultProfileImage;
   }
 }

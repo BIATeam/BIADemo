@@ -16,8 +16,10 @@ import {
   BiaFieldConfig,
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
+  PrimeNGFiltering,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
+import { OptionDto } from '../../../model/option-dto';
 import { TableHelperService } from '../../../services/table-helper.service';
 import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.component';
 
@@ -28,14 +30,16 @@ import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.
   changeDetection: ChangeDetectionStrategy.Default,
   encapsulation: ViewEncapsulation.None,
 })
-export class BiaTableFilterComponent
-  extends BiaFieldBaseComponent
+export class BiaTableFilterComponent<CrudItem>
+  extends BiaFieldBaseComponent<CrudItem>
   implements OnInit, OnDestroy
 {
   @Input() table: Table;
+  @Input() options?: OptionDto[];
 
-  // @Output() valueChange = new EventEmitter<void>();
-  // @Output() complexInput = new EventEmitter<boolean>();
+  get optionValues() {
+    return this.options?.map(x => x.display) ?? [];
+  }
 
   public columnFilterType = '';
   protected matchModeOptions: SelectItem[] | undefined = undefined;
@@ -67,7 +71,7 @@ export class BiaTableFilterComponent
     }
   }
 
-  isArrayFilter(col: BiaFieldConfig): FilterMetadata[] | null {
+  isArrayFilter(col: BiaFieldConfig<CrudItem>): FilterMetadata[] | null {
     if (
       this.table &&
       this.table.filters &&
@@ -90,7 +94,7 @@ export class BiaTableFilterComponent
     return filter && !Array.isArray(filter) ? filter : null;
   }
 
-  isArraySimple(col: BiaFieldConfig) {
+  isArraySimple(col: BiaFieldConfig<CrudItem>) {
     if (this.table) {
       if (this.table.filters) {
         const filter: FilterMetadata = this.table.filters[
@@ -104,8 +108,26 @@ export class BiaTableFilterComponent
     return false;
   }
 
-  setSimpleFilter(event: any, col: BiaFieldConfig) {
-    this.table.filter(event?.value, col.field, col.filterMode);
+  setSimpleFilter(event: any, col: BiaFieldConfig<CrudItem>) {
+    if (col.type === PropType.ManyToMany) {
+      const separator = ',';
+      if (
+        event?.value?.trim().length > 0 &&
+        event?.value?.slice(-1) !== ' ' &&
+        event?.value?.slice(-1) !== separator
+      ) {
+        const valuesArray: string[] = event?.value
+          .split(separator)
+          .map((value: string) => value.trim());
+        this.table.filter(
+          valuesArray,
+          col.field.toString(),
+          PrimeNGFiltering.In
+        );
+      }
+    } else {
+      this.table.filter(event?.value, col.field.toString(), col.filterMode);
+    }
   }
 
   protected initFiterConfiguration() {
@@ -193,5 +215,15 @@ export class BiaTableFilterComponent
     setTimeout(() => {
       this.showColumnFilter = true;
     });
+  }
+
+  setFilterConstraint(filterConstraint: FilterMetadata, value: OptionDto[]) {
+    filterConstraint.value = value.map(x => x.display);
+  }
+
+  onMultiSelectChange(filterConstraint: any) {
+    if (!filterConstraint.value || filterConstraint.value.length === 0) {
+      filterConstraint.value = null;
+    }
   }
 }

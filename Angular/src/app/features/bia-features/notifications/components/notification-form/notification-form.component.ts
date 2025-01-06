@@ -16,6 +16,7 @@ import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.serv
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+import { JsonValidator } from 'src/app/shared/bia-shared/validators/json.validator';
 import { APP_TANSLATION_IDS_TO_NOT_ADD_MANUALY } from 'src/app/shared/constants';
 import {
   Notification,
@@ -95,7 +96,7 @@ export class NotificationFormComponent implements OnChanges {
         /*this.notification.createdBy*/
       ],
       notifiedUsers: [this.notification.notifiedUsers],
-      jData: [this.notification.jData],
+      jData: [this.notification.jData, JsonValidator.valid],
       notificationTranslations: this.formBuilder.array([]),
       languageToAdd: [],
       notifiedTeams: this.formBuilder.array([]),

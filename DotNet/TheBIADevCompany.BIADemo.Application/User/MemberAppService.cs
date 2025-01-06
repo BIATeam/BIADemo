@@ -16,9 +16,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
+    using BIA.Net.Core.Domain.Specification;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
@@ -45,15 +47,47 @@ namespace TheBIADevCompany.BIADemo.Application.User
             : base(repository)
         {
             this.principal = principal as BiaClaimsPrincipal;
-
-            // Include already add with the mapper MemberMapper
-            // this.Repository.QueryCustomizer = queryCustomizer
         }
 
         /// <inheritdoc cref="IMemberAppService.GetRangeByTeamAsync"/>
         public async Task<(IEnumerable<MemberDto> Members, int Total)> GetRangeByTeamAsync(PagingFilterFormatDto filters)
         {
             return await this.GetRangeAsync(filters: filters, specification: MemberSpecification.SearchGetAll(filters));
+        }
+
+        /// <inheritdoc cref="IMemberAppService.AddUsers"/>
+        public async Task<IEnumerable<MemberDto>> AddUsers(MembersDto membersDto)
+        {
+            IEnumerable<MemberDto> dtoActualList = await this.GetAllAsync(specification: new DirectSpecification<Member>(s => s.TeamId == membersDto.TeamId));
+
+            List<MemberDto> dtoList = new List<MemberDto>();
+            foreach (var user in membersDto.Users)
+            {
+                MemberDto existingMember = dtoActualList.FirstOrDefault(m => m.User.Id == user.Id);
+                if (existingMember != null)
+                {
+                    IEnumerable<OptionDto> newRoles = membersDto.Roles.Where(r => !existingMember.Roles.Any(re => re.Id == r.Id)).ToList();
+                    if (newRoles.Any())
+                    {
+                        existingMember.Roles = existingMember.Roles.Union(newRoles);
+                        existingMember.DtoState = DtoState.Modified;
+                        dtoList.Add(existingMember);
+                    }
+                }
+                else
+                {
+                    MemberDto dto = new MemberDto
+                    {
+                        User = user,
+                        Roles = membersDto.Roles,
+                        TeamId = membersDto.TeamId,
+                        DtoState = DtoState.Added,
+                    };
+                    dtoList.Add(dto);
+                }
+            }
+
+            return await this.SaveAsync(dtoList);
         }
 
         /// <inheritdoc cref="IMemberAppService.SetDefaultSite"/>

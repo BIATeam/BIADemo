@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import * as Papa from 'papaparse';
 import { Observable, combineLatest, from, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { DateHelperService } from 'src/app/core/bia-core/services/date-helper.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
@@ -39,22 +40,25 @@ export interface BulkData<T extends BaseDto> {
   providedIn: 'root',
 })
 export class CrudItemBulkService<T extends BaseDto> {
-  protected form: BiaFormComponent;
+  protected form: BiaFormComponent<T>;
   protected bulkData: BulkData<T>;
   protected tmpBulkDataErrors: TmpBulkDataError<T>[] = [];
   protected crudItemService: CrudItemService<T>;
-  protected crudConfig: CrudConfig;
+  protected crudConfig: CrudConfig<T>;
   public bulkParam = <BulkParam>{
     useCurrentView: false,
-    dateFormat: 'dd/MM/yyyy',
-    timeFormat: 'HH:mm',
   };
 
-  constructor(protected translateService: TranslateService) {}
+  constructor(
+    protected translateService: TranslateService,
+    protected biaTranslationService: BiaTranslationService
+  ) {
+    this.initBulkParam();
+  }
 
   public init(
-    form: BiaFormComponent,
-    crudConfig: CrudConfig,
+    form: BiaFormComponent<T>,
+    crudConfig: CrudConfig<T>,
     crudItemService: CrudItemService<T>
   ): void {
     this.crudItemService = crudItemService;
@@ -68,6 +72,15 @@ export class CrudItemBulkService<T extends BaseDto> {
 
     return from(this.readFileAsText(file)).pipe(
       switchMap(csv => this.parseCSV(csv))
+    );
+  }
+
+  protected initBulkParam() {
+    this.biaTranslationService.currentCultureDateFormat$.subscribe(
+      dateFormat => {
+        this.bulkParam.dateFormat = dateFormat.dateFormat;
+        this.bulkParam.timeFormat = dateFormat.timeFormat;
+      }
     );
   }
 
@@ -133,7 +146,7 @@ export class CrudItemBulkService<T extends BaseDto> {
   protected getColumnMapping() {
     return this.crudConfig.fieldsConfig.columns.reduce(
       (map: { [key: string]: string }, obj) => {
-        map[this.translateService.instant(obj.header)] = obj.field;
+        map[this.translateService.instant(obj.header)] = obj.field.toString();
         return map;
       },
       {}
@@ -145,7 +158,7 @@ export class CrudItemBulkService<T extends BaseDto> {
       map((dictOptionDtos: DictOptionDto[]) => {
         csvObjs.map(csvObj => {
           this.crudConfig.fieldsConfig.columns.map(column => {
-            const csvValue: any = csvObj[<keyof typeof csvObj>column.field];
+            const csvValue: any = csvObj[column.field];
             if (csvValue != null) {
               if (column.type === PropType.String) {
                 this.parseCSVString(csvObj, column);
@@ -200,124 +213,122 @@ export class CrudItemBulkService<T extends BaseDto> {
     return cleanedData;
   }
 
-  protected parseCSVString(csvObj: T, column: BiaFieldConfig) {
+  protected parseCSVString(csvObj: T, column: BiaFieldConfig<T>) {
     const regex1 = /"=""(.*?)"""/g;
     const regex2 = /=""(.*?)""/g;
 
-    csvObj[<keyof typeof csvObj>column.field] = <any>String(
-      csvObj[<keyof typeof csvObj>column.field]
-    )
+    csvObj[column.field] = <any>String(csvObj[column.field])
       .replace(regex1, (match, p1) => p1)
       .replace(regex2, (match, p2) => p2)
       .trim();
   }
 
-  protected parseCSVDateAndDateTime(csvObj: T, column: BiaFieldConfig) {
-    const csvValue = csvObj[<keyof typeof csvObj>column.field]
-      ?.toString()
-      .trim();
+  protected parseCSVDateAndDateTime(csvObj: T, column: BiaFieldConfig<T>) {
+    const csvValue = csvObj[column.field]?.toString().trim();
 
     if (isEmpty(csvValue)) {
-      csvObj[<keyof typeof csvObj>column.field] = <any>null;
+      csvObj[column.field] = <any>null;
     } else {
-      const dateString = String(csvObj[<keyof typeof csvObj>column.field]);
+      const dateString = String(csvObj[column.field]);
       if (isEmpty(dateString)) {
         return;
       }
+
+      const containsDash = dateString.indexOf('-') > 0;
+      const dateFormat = containsDash
+        ? 'yyyy-MM-dd'
+        : this.bulkParam.dateFormat;
+      const timeFormat = containsDash ? 'HH:mm' : this.bulkParam.timeFormat;
+
       const date: Date = DateHelperService.parseDate(
         dateString,
-        this.bulkParam.dateFormat,
-        this.bulkParam.timeFormat
+        dateFormat,
+        timeFormat
       );
       if (DateHelperService.isValidDate(date)) {
-        csvObj[<keyof typeof csvObj>column.field] = <any>date;
+        csvObj[column.field] = <any>date;
       } else {
         this.addErrorToSave(
           csvObj,
-          column.field + ': unsupported date format: ' + csvValue
+          column.field.toString() + ': unsupported date format: ' + csvValue
         );
       }
     }
   }
 
-  protected parseCSVDate(csvObj: T, column: BiaFieldConfig) {
+  protected parseCSVDate(csvObj: T, column: BiaFieldConfig<T>) {
     return this.parseCSVDateAndDateTime(csvObj, column);
   }
 
-  protected parseCSVDateTime(csvObj: T, column: BiaFieldConfig) {
+  protected parseCSVDateTime(csvObj: T, column: BiaFieldConfig<T>) {
     return this.parseCSVDateAndDateTime(csvObj, column);
   }
 
-  protected parseCSVBoolean(csvObj: T, column: BiaFieldConfig) {
-    const csvValue = csvObj[<keyof typeof csvObj>column.field]
-      ?.toString()
-      .trim();
+  protected parseCSVBoolean(csvObj: T, column: BiaFieldConfig<T>) {
+    const csvValue = csvObj[column.field]?.toString().trim();
 
     if (isEmpty(csvValue)) {
-      csvObj[<keyof typeof csvObj>column.field] = <any>false;
+      csvObj[column.field] = <any>false;
     } else if (csvValue?.toUpperCase() === 'X') {
-      csvObj[<keyof typeof csvObj>column.field] = <any>true;
+      csvObj[column.field] = <any>true;
     } else {
       this.addErrorToSave(
         csvObj,
-        column.field + ': unsupported boolean format: ' + csvValue
+        column.field.toString() + ': unsupported boolean format: ' + csvValue
       );
     }
   }
 
-  protected parseCSVNumber(csvObj: T, column: BiaFieldConfig) {
-    const csvValue = csvObj[<keyof typeof csvObj>column.field]
-      ?.toString()
-      .trim();
+  protected parseCSVNumber(csvObj: T, column: BiaFieldConfig<T>) {
+    const csvValue = csvObj[column.field]?.toString().trim();
 
     const number = Number(csvValue);
     if (isNaN(number)) {
       this.addErrorToSave(
         csvObj,
-        column.field + ': unsupported number format: ' + csvValue
+        column.field.toString() + ': unsupported number format: ' + csvValue
       );
     } else {
-      csvObj[<keyof typeof csvObj>column.field] = <any>number;
+      csvObj[column.field] = <any>number;
     }
   }
 
   protected parseCSVOneToMany(
     csvObj: T,
-    column: BiaFieldConfig,
+    column: BiaFieldConfig<T>,
     dictOptionDtos: DictOptionDto[]
   ) {
-    const csvValue = csvObj[<keyof typeof csvObj>column.field]
-      ?.toString()
-      .trim();
+    const csvValue = csvObj[column.field]?.toString().trim();
 
     if (isEmpty(csvValue) === true) {
-      csvObj[<keyof typeof csvObj>column.field] = <any>null;
+      csvObj[column.field] = <any>null;
     } else {
       const dictOptionDto = dictOptionDtos?.find(x => x.key === column.field);
       const optionDto =
         dictOptionDto?.value?.find(x => x.display === csvValue) ?? null;
 
       if (isEmpty(optionDto) !== true) {
-        csvObj[<keyof typeof csvObj>column.field] = <any>optionDto;
+        csvObj[column.field] = <any>optionDto;
       } else {
-        this.addErrorToSave(csvObj, column.field + ' not found: ' + csvValue);
+        this.addErrorToSave(
+          csvObj,
+          column.field.toString() + ' not found: ' + csvValue
+        );
       }
     }
   }
 
   protected parseCSVManyToMany(
     csvObj: T,
-    column: BiaFieldConfig,
+    column: BiaFieldConfig<T>,
     dictOptionDtos: DictOptionDto[]
   ) {
-    const csvValue = csvObj[<keyof typeof csvObj>column.field]
-      ?.toString()
-      .trim();
+    const csvValue = csvObj[column.field]?.toString().trim();
 
     if (isEmpty(csvValue) === true) {
-      csvObj[<keyof typeof csvObj>column.field] = <any>null;
+      csvObj[column.field] = <any>null;
     } else {
-      const csvValues = csvObj[<keyof typeof csvObj>column.field]
+      const csvValues = csvObj[column.field]
         ?.toString()
         .trim()
         .split(/ - | -|- /) // Regular expression for ' - ' OR '- ' OR ' -'
@@ -331,12 +342,10 @@ export class CrudItemBulkService<T extends BaseDto> {
       if (csvValues?.length !== optionDtos?.length) {
         this.addErrorToSave(
           csvObj,
-          column.field +
-            ' not found: ' +
-            csvObj[<keyof typeof csvObj>column.field]
+          column.field.toString() + ' not found: ' + csvObj[column.field]
         );
       } else {
-        csvObj[<keyof typeof csvObj>column.field] = <any>optionDtos;
+        csvObj[column.field] = <any>optionDtos;
       }
     }
   }

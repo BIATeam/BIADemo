@@ -31,11 +31,10 @@ export class EngineItemComponent
   ngOnInit() {
     super.ngOnInit();
     this.sub.add(
-      this.engineService.crudItem$.subscribe(engine => {
-        // TODO after creation of CRUD Engine : set the field of the item to display in the breadcrump
-        if (engine?.reference) {
+      this.engineService.displayItemName$.subscribe(displayItemName => {
+        if (displayItemName) {
           this.route.data.pipe(first()).subscribe(routeData => {
-            (routeData as any)['breadcrumb'] = engine.reference;
+            (routeData as any)['breadcrumb'] = displayItemName;
           });
           this.layoutService.refreshBreadcrumb();
         }

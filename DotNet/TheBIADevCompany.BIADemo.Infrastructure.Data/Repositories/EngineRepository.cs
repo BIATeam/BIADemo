@@ -40,11 +40,5 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories
                 .Where(x => SqlServerDbFunctionsExtensions.DateDiffDay(EF.Functions, x.LastMaintenanceDate, DateTime.Today) <= nbMonth)
                 .ExecuteUpdateAsync(setters => setters.SetProperty(b => b.IsToBeMaintained, false));
         }
-
-        /// <<inheritdoc cref="IEngineRepository.TodoShouldBeImpossibleToDeclareDbSetInInetrefaceDomain"/>
-        public DbSet<Engine> TodoShouldBeImpossibleToDeclareDbSetInInetrefaceDomain()
-        {
-            return this.RetrieveSet();
-        }
     }
 }

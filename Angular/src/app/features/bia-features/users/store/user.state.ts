@@ -1,4 +1,3 @@
-import * as fromUsers from './users-reducer';
 import {
   Action,
   combineReducers,
@@ -6,6 +5,7 @@ import {
   createSelector,
 } from '@ngrx/store';
 import { userCRUDConfiguration } from '../user.constants';
+import * as fromUsers from './users-reducer';
 
 export namespace FeatureUsersStore {
   export interface UsersState {

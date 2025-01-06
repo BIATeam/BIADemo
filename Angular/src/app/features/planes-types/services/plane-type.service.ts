@@ -22,7 +22,7 @@ export class PlaneTypeService extends CrudItemService<PlaneType> {
     public dasService: PlaneTypeDas,
     public signalRService: CrudItemSignalRService<PlaneType>,
     public optionsService: PlaneTypeOptionsService,
-    // requiered only for parent key
+    // required only for parent key
     protected authService: AuthService
   ) {
     super(dasService, signalRService, optionsService);

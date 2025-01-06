@@ -6,10 +6,7 @@
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MailKit" Version="4.8.*" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="[8.0.*,9.0.0)" />
     <PackageReference Include="PdfPig" Version="0.1.*" />
-    <PackageReference Include="System.DirectoryServices" Version="[8.0.*,9.0.0)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Domain\TheBIADevCompany.BIADemo.Domain.csproj" />
@@ -31,6 +28,10 @@
     <Compile Remove="**\*Plane*.cs" />
     <Compile Remove="**\*Worker*.cs" />
     <Compile Remove="**\*HangfiresController*.cs" />
+    <Compile Remove="**\*Part*.cs" />
+    <Compile Remove="**\*Country*.cs" />
+    <Compile Remove="**\*Document*.cs" />
+    <Compile Remove="**\*Analysis*.cs" />
     <!--BIATEMPLATE-->
     <Compile Remove="**\*Audit*.cs" />
     <Compile Remove="**\*Error*.cs" />

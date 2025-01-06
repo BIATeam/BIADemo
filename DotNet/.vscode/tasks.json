@@ -1,0 +1,157 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "dotnet: build debug api",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/TheBIADevCompany.BIADemo.Presentation.Api/TheBIADevCompany.BIADemo.Presentation.Api.csproj",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "dotnet: build debug worker",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/TheBIADevCompany.BIADemo.WorkerService/TheBIADevCompany.BIADemo.WorkerService.csproj",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "dotnet: build debug deploy db",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/TheBIADevCompany.BIADemo.DeployDB/TheBIADevCompany.BIADemo.DeployDB.csproj",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "dotnet: build release api",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/TheBIADevCompany.BIADemo.Presentation.Api/TheBIADevCompany.BIADemo.Presentation.Api.csproj",
+        "-c",
+        "Release"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "dotnet: build release worker",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/TheBIADevCompany.BIADemo.WorkerService/TheBIADevCompany.BIADemo.WorkerService.csproj",
+        "-c",
+        "Release"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "dotnet: build release deploy db",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/TheBIADevCompany.BIADemo.DeployDB/TheBIADevCompany.BIADemo.DeployDB.csproj",
+        "-c",
+        "Release"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Database Add migration",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "ef",
+        "migrations",
+        "add",
+        "${input:migrationName}",
+        "--project",
+        "TheBIADevCompany.BIADemo.Infrastructure.Data",
+        "-s",
+        "TheBIADevCompany.BIADemo.Presentation.Api",
+        "-c",
+        "DataContext"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Database Udpate",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "ef",
+        "database",
+        "update",
+        "-s",
+        "TheBIADevCompany.BIADemo.Presentation.Api",
+        "-c",
+        "DataContext"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Database Rollback",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "ef",
+        "database",
+        "update",
+        "${input:migrationTarget}",
+        "-s",
+        "TheBIADevCompany.BIADemo.Presentation.Api",
+        "-c",
+        "DataContext"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Database Remove last migration",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "ef",
+        "migrations",
+        "remove",
+        "--project",
+        "TheBIADevCompany.BIADemo.Infrastructure.Data",
+        "-s",
+        "TheBIADevCompany.BIADemo.Presentation.Api",
+        "-c",
+        "DataContext"
+      ],
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "migrationName",
+      "description": "Migration Name:",
+      "default": "Initial",
+      "type": "promptString"
+    },
+    {
+      "id": "migrationTarget",
+      "description": "Migration Target:",
+      "default": "",
+      "type": "promptString"
+    }
+  ]
+}

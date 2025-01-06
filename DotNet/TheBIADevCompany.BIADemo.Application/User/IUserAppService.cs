@@ -96,6 +96,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
         Task SynchronizeWithADAsync(bool fullSynchro = false);
 
         /// <summary>
+        /// Synchronize users with Idp.
+        /// </summary>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        Task SynchronizeWithIdpAsync();
+
+        /// <summary>
         /// Updates the last login date.
         /// </summary>
         /// <param name="userId">The user identifier.</param>

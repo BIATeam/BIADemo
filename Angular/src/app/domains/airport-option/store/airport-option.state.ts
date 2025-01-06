@@ -1,4 +1,3 @@
-import * as fromAirportOptions from './airport-options-reducer';
 import {
   Action,
   combineReducers,
@@ -6,6 +5,7 @@ import {
   createSelector,
 } from '@ngrx/store';
 import { storeKey } from '../airport-option.contants';
+import * as fromAirportOptions from './airport-options-reducer';
 
 export interface AirportOptionsState {
   airportOptions: fromAirportOptions.State;

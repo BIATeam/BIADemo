@@ -39,7 +39,7 @@ export class MaintenanceTeamOptionsService extends CrudItemOptionsService {
     // BIAToolKit - End Option
   ) {
     super();
-    // TODO after creation of CRUD Team MaintenanceTeam : get all requiered option dto use in Table calc and create and edit form
+    // TODO after creation of CRUD Team MaintenanceTeam : get all required option dto use in Table calc and create and edit form
     // BIAToolKit - Begin Option Country
     this.countriesOptions$ = this.store.select(getAllCountryOptions);
     // BIAToolKit - End Option Country

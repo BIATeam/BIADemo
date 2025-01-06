@@ -1,8 +1,8 @@
 // <copyright file="MembersController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
-#define UseHubForClientInMember
-#define UseHubForClientInUser
+// #define UseHubForClientInMember
+// #define UseHubForClientInUser
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 {
@@ -14,6 +14,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -172,6 +173,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                     return this.StatusCode(StatusCodes.Status403Forbidden);
                 }
 
+                if (dto.User == null && string.IsNullOrEmpty(dto.Login))
+                {
+                    return this.BadRequest();
+                }
+
                 // Specific Code to add user if required
                 var addUserResult = await this.AddUserIfRequired(dto);
                 if (addUserResult != null)
@@ -196,7 +202,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         }
 
         /// <summary>
-        /// Add a member.
+        /// Add several members.
         /// </summary>
         /// <param name="dtos">The members DTO.</param>
         /// <returns>The result of the creation.</returns>
@@ -214,21 +220,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                     return this.StatusCode(StatusCodes.Status403Forbidden);
                 }
 
-                List<MemberDto> dtoList = new List<MemberDto>();
-                foreach (var user in dtos.Users)
-                {
-                    MemberDto dto = new MemberDto
-                    {
-                        User = user,
-                        Roles = dtos.Roles,
-                        TeamId = dtos.TeamId,
-                        DtoState = DtoState.Added,
-                    };
-                    dtoList.Add(dto);
-                }
-
 #pragma warning disable S1481 // Unused local variables should be removed
-                var savedDtos = await this.memberService.SaveAsync(dtoList);
+                var savedDtos = await this.memberService.AddUsers(dtos);
 #pragma warning restore S1481 // Unused local variables should be removed
 #if UseHubForClientInMember
                 _ = this.clientForHubService.SendTargetedMessage(dtos.TeamId.ToString(), "members", "refresh-members");
@@ -265,6 +258,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                 if (!this.IsAuthorizeForTeam(dto.TeamId, Rights.Members.UpdateSuffix).Result)
                 {
                     return this.StatusCode(StatusCodes.Status403Forbidden);
+                }
+
+                if (dto.User == null && string.IsNullOrEmpty(dto.Login))
+                {
+                    return this.BadRequest();
                 }
 
                 // Specific Code to add user if required
@@ -447,12 +445,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 
         private async Task<IActionResult> AddUserIfRequired(MemberDto dto)
         {
-            if (dto.User.DtoState == DtoState.AddedNewChoice)
+            if (dto.User == null)
             {
-                var existingUser = await this.userService.GetUserInfoAsync(dto.User.Display);
+                var existingUser = await this.userService.GetUserInfoAsync(dto.Login);
                 if (existingUser != null && existingUser.IsActive)
                 {
-                    dto.User.Id = existingUser.Id;
+                    dto.User = new OptionDto() { Id = existingUser.Id };
                     return null;
                 }
 
@@ -462,7 +460,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                 }
 
                 UserDto userDto = new UserDto();
-                userDto.Login = dto.User.Display;
+                userDto.Login = dto.Login;
                 ResultAddUsersFromDirectoryDto result = await this.userService.AddByIdentityKeyAsync(userDto);
 #if UseHubForClientInUser
                 _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");

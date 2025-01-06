@@ -61,7 +61,9 @@
     "originalPrice": "Prix d'origine",
     "estimatedPrice": "Prix estimé",
     "isToBeMaintained": "Maintenu",
-    "isHybrid": "Hybride"
+    "isHybrid": "Hybride",
+    "principalPart": "Pièce principale",
+    "installedParts": "Pièces installées"
   },
   "maintenanceTeam": {
     "add": "Ajouter équipe de maintenance",
@@ -96,7 +98,7 @@
   "plane": {
     "add": "Ajouter avion",
     "capacity": "Capacité",
-    "connectingAirports": "Aéroports de connection",
+    "connectingAirports": "Aéroports de connexion",
     "currentAirport": "Aéroport courant",
     "deliveryDate": "Date de livraison",
     "edit": "Modifier avion",
@@ -133,6 +135,7 @@
   "End BIADemo": "To remove in project up to here",
   "member": {
     "add": "Ajouter membre",
+    "isActive": "Actif",
     "listOf": "Liste des membres",
     "manage": "Gérer membre",
     "roles": "Roles",

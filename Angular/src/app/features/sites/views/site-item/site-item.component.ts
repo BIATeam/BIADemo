@@ -31,10 +31,10 @@ export class SiteItemComponent
   ngOnInit() {
     super.ngOnInit();
     this.sub.add(
-      this.siteService.crudItem$.subscribe(site => {
-        if (site?.title) {
+      this.siteService.displayItemName$.subscribe(displayItemName => {
+        if (displayItemName) {
           this.route.data.pipe(first()).subscribe(routeData => {
-            (routeData as any)['breadcrumb'] = site.title;
+            (routeData as any)['breadcrumb'] = displayItemName;
           });
           this.layoutService.refreshBreadcrumb();
         }

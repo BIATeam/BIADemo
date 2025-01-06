@@ -1,10 +1,10 @@
-import * as fromHangfire from './hangfire-reducer';
 import {
   Action,
   combineReducers,
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
+import * as fromHangfire from './hangfire-reducer';
 
 export interface HangfireState {
   hangfire: fromHangfire.State;

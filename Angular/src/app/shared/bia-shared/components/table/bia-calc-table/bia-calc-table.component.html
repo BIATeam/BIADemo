@@ -4,6 +4,8 @@
     #dt
     [autoLayout]="true"
     [reorderableColumns]="reorderableColumns"
+    [resizableColumns]="isResizableColumn"
+    [columnResizeMode]="'expand'"
     [columns]="displayedColumns"
     [value]="elements"
     [paginator]="!virtualScroll && paginator"
@@ -46,6 +48,7 @@
             *ngIf="col?.isSortable === true"
             [pSortableColumn]="col.field"
             pReorderableColumn
+            pResizableColumn
             [style.min-width]="col.minWidth"
             [alignFrozen]="col.alignFrozen"
             pFrozenColumn
@@ -66,6 +69,7 @@
           <th
             *ngIf="col?.isSortable !== true"
             pReorderableColumn
+            pResizableColumn
             [style.min-width]="col.minWidth"
             [alignFrozen]="col.alignFrozen"
             pFrozenColumn
@@ -95,11 +99,16 @@
           *ngFor="let col of columns"
           [ngSwitch]="col.field"
           pReorderableColumn
+          pResizableColumn
           [style.min-width]="col.minWidth"
           [alignFrozen]="col.alignFrozen"
           pFrozenColumn
           [frozen]="col.isFrozen">
-          <bia-table-filter [field]="col" [table]="dt"> </bia-table-filter>
+          <bia-table-filter
+            [field]="col"
+            [table]="dt"
+            [options]="getOptionDto(col.field)">
+          </bia-table-filter>
         </th>
       </tr>
     </ng-template>

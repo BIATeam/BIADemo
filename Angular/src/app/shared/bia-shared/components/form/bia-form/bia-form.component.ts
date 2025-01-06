@@ -1,8 +1,10 @@
 import {
   AfterContentInit,
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ContentChildren,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -11,6 +13,7 @@ import {
   Output,
   QueryList,
   TemplateRef,
+  ViewChildren,
 } from '@angular/core';
 import {
   UntypedFormBuilder,
@@ -25,6 +28,7 @@ import {
   BiaFieldConfig,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
+import { BaseDto } from '../../../model/base-dto';
 
 @Component({
   selector: 'bia-form',
@@ -32,11 +36,11 @@ import {
   styleUrls: ['./bia-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class BiaFormComponent
-  implements OnInit, OnDestroy, OnChanges, AfterContentInit
+export class BiaFormComponent<TDto extends { id: number }>
+  implements OnInit, OnDestroy, OnChanges, AfterContentInit, AfterViewInit
 {
-  @Input() element: any = {};
-  @Input() fields: BiaFieldConfig[];
+  @Input() element?: TDto;
+  @Input() fields: BiaFieldConfig<TDto>[];
   @Input() dictOptionDtos: DictOptionDto[];
   @Output() save = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<void>();
@@ -48,13 +52,15 @@ export class BiaFormComponent
   form?: UntypedFormGroup;
   protected sub = new Subscription();
 
+  @ViewChildren('refFormField', { read: ElementRef })
+  formElements: QueryList<ElementRef>;
+
   constructor(
     public formBuilder: UntypedFormBuilder
     // protected authService: AuthService
   ) {}
 
   ngOnInit() {
-    this.element ??= {};
     this.initForm();
   }
 
@@ -81,6 +87,29 @@ export class BiaFormComponent
       this.form.reset();
       if (this.element) {
         this.form.patchValue({ ...this.element });
+      }
+    }
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.setFocus();
+    });
+  }
+
+  /**
+   * Find the first active form element and set the focus on it.
+   */
+  protected setFocus() {
+    const formElement = 'input, textarea, select';
+    const firstActiveField = this.formElements.find(field => {
+      const element = field.nativeElement.querySelector(formElement);
+      return element && !element.disabled;
+    });
+    if (firstActiveField) {
+      const element = firstActiveField.nativeElement.querySelector(formElement);
+      if (element) {
+        element.focus();
       }
     }
   }
@@ -112,15 +141,24 @@ export class BiaFormComponent
   protected initForm() {
     this.form = this.formBuilder.group(this.formFields());
   }
+
   protected formFields() {
     const fields: { [key: string]: any } = { id: [this.element?.id] };
     for (const col of this.fields) {
       if (col.validators && col.validators.length > 0) {
-        fields[col.field] = [this.element[col.field], col.validators];
+        fields[col.field as string] = [
+          this.element ? this.element[col.field] : null,
+          col.validators,
+        ];
       } else if (col.isRequired) {
-        fields[col.field] = [this.element[col.field], Validators.required];
+        fields[col.field as string] = [
+          this.element ? this.element[col.field] : null,
+          Validators.required,
+        ];
       } else {
-        fields[col.field] = [this.element[col.field]];
+        fields[col.field as string] = [
+          this.element ? this.element[col.field] : null,
+        ];
       }
     }
     return fields;
@@ -139,7 +177,7 @@ export class BiaFormComponent
     }
   }
   public getElement() {
-    const element: any = this.form?.value;
+    const element: TDto = this.form?.value;
     element.id = element.id > 0 ? element.id : 0;
     for (const col of this.fields) {
       switch (col.type) {
@@ -155,8 +193,10 @@ export class BiaFormComponent
             element,
             col.field,
             BiaOptionService.differential(
-              Reflect.get(element, col.field),
-              this.element ? Reflect.get(this.element, col.field) : undefined
+              Reflect.get(element, col.field) as BaseDto[],
+              (this.element
+                ? (Reflect.get(this.element, col.field) ?? [])
+                : []) as BaseDto[]
             )
           );
           break;

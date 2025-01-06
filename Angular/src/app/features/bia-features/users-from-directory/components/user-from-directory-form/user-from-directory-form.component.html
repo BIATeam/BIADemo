@@ -3,7 +3,9 @@
     class="p-fluid app-field-container flex flex-column justify-content-start">
     <div class="flex flex-row justify-content-center">
       <div class="app-field-container flex-1" style="max-width: 50%">
-        <div *ngIf="useKeycloak !== true" class="p-float-label">
+        <div
+          *ngIf="useKeycloak !== true && domains.length > 1"
+          class="p-float-label">
           <p-dropdown
             [options]="domains"
             placeholder="&nbsp;"

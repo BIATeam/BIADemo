@@ -2,7 +2,7 @@
 // Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.UserModule.Services
+namespace TheBIADevCompany.BIADemo.Domain.User.Services
 {
     using System;
     using System.Collections.Generic;
@@ -69,7 +69,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Services
         }
 
         // -------------------------------- Directory EntityKey --------------------------------------
-#endif
 
         /// <summary>
         /// Check the Identity Key from the User in database.
@@ -94,6 +93,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Services
         {
             return userFromDirectory.Login;
         }
+#endif
 
         /// <summary>
         /// Gets the Identity Key to compare with User in database.

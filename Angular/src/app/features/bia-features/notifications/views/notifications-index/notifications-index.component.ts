@@ -52,7 +52,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
 
   @HostBinding('class') classes = 'bia-flex';
   @ViewChild(BiaTableComponent, { static: false })
-  notificationListComponent: BiaTableComponent;
+  notificationListComponent: BiaTableComponent<NotificationListItem>;
   protected sub = new Subscription();
   showColSearch = false;
   globalSearchValue = '';
@@ -66,7 +66,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   canRead = false;
   canDelete = false;
   canAdd = false;
-  tableConfiguration: BiaFieldsConfig;
+  tableConfiguration: BiaFieldsConfig<NotificationListItem>;
   columns: KeyValuePair[];
   displayedColumns: KeyValuePair[];
   viewPreference: string;
@@ -198,6 +198,16 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
     this.displayedColumns = values;
   }
 
+  onClearFilters() {
+    const table = this.notificationListComponent.getPrimeNgTable();
+    if (table) {
+      Object.keys(table.filters).forEach(key =>
+        this.tableHelperService.clearFilterMetaData(table.filters[key])
+      );
+      table.onLazyLoad.emit(table.createLazyLoadMetadata());
+    }
+  }
+
   onToggleSearch() {
     this.showColSearch = !this.showColSearch;
   }
@@ -211,7 +221,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
     this.notificationListComponent
       .getPrimeNgTable()
       ?.columns?.map(
-        (x: BiaFieldConfig) =>
+        (x: BiaFieldConfig<NotificationListItem>) =>
           (columns[x.field] = this.translateService.instant(x.header))
       );
     const columnsAndFilter: PagingFilterFormatDto = {

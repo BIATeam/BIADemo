@@ -1,16 +1,16 @@
 <div class="p-3">
-  <small *ngIf="layoutService.configDisplay().showEditAvatar">
+  <small *ngIf="layoutService.configDisplay().showEditAvatar && urlEditAvatar">
     <i class="pi pi-pencil"></i
     ><a class="edit-avatar" [href]="urlEditAvatar" target="_blank">{{
       'bia.editProfileImage' | translate
     }}</a>
   </small>
   <ng-container *ngIf="layoutService.configDisplay().showLang">
-    <h5>{{ 'bia.languages' | translate }}</h5>
+    <h5>{{ 'bia.language' | translate }}</h5>
     <div class="flex flex-wrap row-gap-3">
       <div
         class="flex align-items-center gap-2 w-6"
-        *ngFor="let lang of supportedLangs">
+        *ngFor="let lang of getSupportedLangsSorted()">
         <p-radioButton
           name="lang"
           [value]="lang"

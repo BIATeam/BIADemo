@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { Observable } from 'rxjs';
+import { first, Observable } from 'rxjs';
 import { AbstractDasWithListAndItem } from 'src/app/core/bia-core/services/abstract-das-with-list-and-item.service';
 import { BaseDto } from '../../../model/base-dto';
 import { TargetedFeature } from '../../../model/signalR';
@@ -30,4 +30,10 @@ export abstract class CrudListAndItemService<
   abstract loadingGetAll$: Observable<boolean>;
 
   abstract loadAllByPost(event: TableLazyLoadEvent): void;
+
+  public refreshList() {
+    this.lastLazyLoadEvent$
+      .pipe(first())
+      .subscribe(event => this.loadAllByPost(event));
+  }
 }

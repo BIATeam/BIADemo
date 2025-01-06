@@ -24,16 +24,16 @@ export interface Plane extends BaseDto {
 }
 
 // TODO after creation of CRUD Plane : adapt the field configuration
-export const planeFieldsConfiguration: BiaFieldsConfig = {
+export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
   columns: [
     Object.assign(new BiaFieldConfig('msn', 'plane.msn'), {
       isRequired: true,
       isFrozen: true,
       minWidth: '50px',
+      maxConstraints: 5,
     }),
     Object.assign(new BiaFieldConfig('isActive', 'plane.isActive'), {
       isSearchable: false,
-      isSortable: false,
       specificOutput: true,
       specificInput: true,
       type: PropType.Boolean,
@@ -58,6 +58,7 @@ export const planeFieldsConfiguration: BiaFieldsConfig = {
         type: PropType.TimeSecOnly,
         validators: [Validators.required],
         minWidth: '50px',
+        isHideByDefault: true,
       }
     ),
     Object.assign(new BiaFieldConfig('capacity', 'plane.capacity'), {

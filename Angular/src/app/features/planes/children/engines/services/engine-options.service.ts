@@ -32,7 +32,7 @@ export class EngineOptionsService extends CrudItemOptionsService {
     // BIAToolKit - End Option
   ) {
     super();
-    // TODO after creation of CRUD Team MaintenanceTeam : get all requiered option dto use in Table calc and create and edit form
+    // TODO after creation of CRUD Team MaintenanceTeam : get all required option dto use in Table calc and create and edit form
     // BIAToolKit - Begin Option Part
     this.partsOptions$ = this.store.select(getAllPartOptions);
     // BIAToolKit - End Option Part

@@ -56,6 +56,7 @@ export class BiaTableControllerComponent
   @Output() filter = new EventEmitter<string>();
   @Output() toggleSearch = new EventEmitter<void>();
   @Output() viewChange = new EventEmitter<string>();
+  @Output() clearFilters = new EventEmitter<void>();
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   @ViewChild(ViewListComponent, { static: false })
@@ -121,6 +122,11 @@ export class BiaTableControllerComponent
     this.toggleSearch.emit();
   }
 
+  onClearFilters() {
+    this.filterCtrl.setValue('');
+    this.clearFilters.emit();
+  }
+
   onViewChange(event: string) {
     this.setControlByViewState(event);
     setTimeout(() => this.viewChange.emit(event));
@@ -143,13 +149,19 @@ export class BiaTableControllerComponent
       this.displayedColumns = this.defaultDisplayedColumns;
       this.sub.add(
         this.translateService.stream(cols).subscribe(results => {
-          this.listedColumns = new Array<SelectItem>();
+          const tmpListedColumns = new Array<SelectItem>();
           this.columns.forEach(col => {
-            this.listedColumns.push({
+            tmpListedColumns.push({
               label: results[col.value],
               value: col.key,
             });
           });
+          tmpListedColumns.sort((a, b) => {
+            const labelA = a.label || '';
+            const labelB = b.label || '';
+            return labelA.localeCompare(labelB);
+          });
+          this.listedColumns = [...tmpListedColumns];
         })
       );
     }

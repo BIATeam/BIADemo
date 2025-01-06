@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/store/state';
-import { BiaSignalRService } from 'src/app/core/bia-core/services/bia-signalr.service';
-import { DomainNotificationsActions } from '../store/notifications-actions';
-import { Notification } from '../model/notification';
-import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
+import { BiaSignalRService } from 'src/app/core/bia-core/services/bia-signalr.service';
 import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
-import { getAllTeams } from '../../team/store/team.state';
+import { AppState } from 'src/app/store/state';
 import { Team } from '../../team/model/team';
+import { getAllTeams } from '../../team/store/team.state';
+import { Notification } from '../model/notification';
+import { DomainNotificationsActions } from '../store/notifications-actions';
 
 /**
  * Service managing SignalR events for hangfire jobs.

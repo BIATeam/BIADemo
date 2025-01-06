@@ -1,10 +1,10 @@
-import * as fromViews from './views-reducer';
 import {
   Action,
   combineReducers,
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
+import * as fromViews from './views-reducer';
 
 export interface ViewsState {
   views: fromViews.State;

@@ -1,8 +1,8 @@
+import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import {
   BiaFieldConfig,
   BiaFieldsConfig,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
-import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 
 // TODO after creation of CRUD Airport : adapt the model
 export interface Airport extends BaseDto {
@@ -11,7 +11,7 @@ export interface Airport extends BaseDto {
 }
 
 // TODO after creation of CRUD Airport : adapt the field configuration
-export const airportFieldsConfiguration: BiaFieldsConfig = {
+export const airportFieldsConfiguration: BiaFieldsConfig<Airport> = {
   columns: [
     Object.assign(new BiaFieldConfig('name', 'airport.name'), {
       isRequired: true,

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { AppState } from 'src/app/store/state';
@@ -22,8 +22,8 @@ export class EngineService extends CrudItemService<Engine> {
     public dasService: EngineDas,
     public signalRService: CrudItemSignalRService<Engine>,
     public optionsService: EngineOptionsService,
-    // requiered only for parent key
-    protected planeService: PlaneService
+    // required only for parent key
+    public planeService: PlaneService
   ) {
     super(dasService, signalRService, optionsService);
   }
@@ -54,6 +54,13 @@ export class EngineService extends CrudItemService<Engine> {
   public crudItem$: Observable<Engine> = this.store.select(
     FeatureEnginesStore.getCurrentEngine
   );
+
+  public displayItemName$: Observable<string> = this.crudItem$.pipe(
+    /// BIAToolKit - Begin Display reference
+    map(engine => engine?.reference?.toString() ?? '')
+    /// BIAToolKit - End Display reference
+  );
+
   public loadingGet$: Observable<boolean> = this.store.select(
     FeatureEnginesStore.getEngineLoadingGet
   );

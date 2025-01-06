@@ -35,15 +35,25 @@
     <label for="name">{{ 'bia.search' | translate }}</label>
     <i class="pi pi-search bia-pointer"></i>
   </div>
-  <div
-    class="pi pi-filter bia-pointer bia-column-filter-icon"
-    (click)="onToggleSearch()"
-    *ngIf="hasColumnFilter === false"></div>
-  <div
-    class="pi pi-filter bia-pointer bia-column-filter-icon"
-    (click)="onToggleSearch()"
-    pBadge
-    severity="warning"
-    style="overflow: visible"
-    *ngIf="hasColumnFilter === true"></div>
+  <div class="flex gap-3">
+    <p-button
+      [style]="{ overflow: 'visible' }"
+      icon="pi pi-filter"
+      styleClass="p-overlay-badge"
+      [text]="true"
+      (click)="onToggleSearch()"
+      pTooltip="{{ 'bia.showHideFilters' | translate }}"
+      tooltipPosition="top">
+      @if (hasColumnFilter) {
+        <span class="p-badge p-component p-badge-dot p-badge-warning"></span>
+      }
+    </p-button>
+    <p-button
+      styleClass="bia-btn-del-filter"
+      icon="pi pi-filter-slash"
+      [text]="true"
+      (onClick)="onClearFilters()"
+      pTooltip="{{ 'bia.deleteFilters' | translate }}"
+      tooltipPosition="top" />
+  </div>
 </div>
