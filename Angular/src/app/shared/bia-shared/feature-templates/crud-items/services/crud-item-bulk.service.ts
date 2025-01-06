@@ -66,10 +66,8 @@ export class CrudItemBulkService<T extends BaseDto> {
     this.form = form;
   }
 
-  public uploadCsv(files: FileList): Observable<BulkData<T>> {
+  public uploadCsv(file: File): Observable<BulkData<T>> {
     this.initBulkData();
-    const file = files.item(0);
-
     return from(this.readFileAsText(file)).pipe(
       switchMap(csv => this.parseCSV(csv))
     );

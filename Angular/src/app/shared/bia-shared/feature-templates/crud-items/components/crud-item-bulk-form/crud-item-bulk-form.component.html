@@ -2,13 +2,18 @@
   <p-fileUpload
     #fileUpload
     mode="basic"
-    [chooseLabel]="'bia.select' | translate"
+    [chooseLabel]="'bia.browse' | translate"
     chooseIcon="pi pi-upload"
     [customUpload]="true"
     accept="text/csv"
-    (onSelect)="onFileSelected($event)">
+    (onSelect)="onFileSelected()">
   </p-fileUpload>
-
+  <button
+    [disabled]="this.fileUpload.hasFiles() !== true"
+    pButton
+    label="{{ 'primeng.apply' | translate }}"
+    type="button"
+    (click)="onApply()"></button>
   <ng-container *ngIf="hasDate === true">
     <span class="p-float-label">
       <p-dropdown
@@ -16,6 +21,8 @@
         [options]="dateFormats"
         (ngModelChange)="onSubmit()"
         appendTo="body"
+        optionLabel="example"
+        optionValue="format"
         placeholder="Select Date Format">
       </p-dropdown>
       <label>{{ 'bulk.dateFormat' | translate }}</label>
@@ -27,6 +34,8 @@
         [options]="timeFormats"
         (ngModelChange)="onSubmit()"
         appendTo="body"
+        optionLabel="example"
+        optionValue="format"
         placeholder="Select Time Format">
       </p-dropdown>
       <label>{{ 'bulk.timeFormat' | translate }}</label>
