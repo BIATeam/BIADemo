@@ -1,7 +1,7 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { DomainNotificationsActions } from './notifications-actions';
 import { Notification } from '../model/notification';
+import { DomainNotificationsActions } from './notifications-actions';
 
 // This adapter will allow is to manipulate notifications (mostly CRUD operations)
 export const notificationsAdapter = createEntityAdapter<Notification>({
@@ -64,15 +64,17 @@ export const notificationReducers = createReducer<State>(
       ...state,
     };
     if (index > -1) {
-      copyState.unreadIds.splice(index, 1);
+      const notifs = [...copyState.unreadIds];
+      notifs.splice(index, 1);
+      copyState.unreadIds = notifs;
     }
     return copyState;
   }),
   on(DomainNotificationsActions.addUnreadNotification, (state, { id }) => {
     const copyState = {
       ...state,
+      unreadIds: [...state.unreadIds, id],
     };
-    copyState.unreadIds.push(id);
     return copyState;
   })
 );

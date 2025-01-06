@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { DomainNotificationsActions } from './notifications-actions';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { NotificationDas } from '../services/notification-das.service';
+import { DomainNotificationsActions } from './notifications-actions';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place

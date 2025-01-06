@@ -12,7 +12,7 @@ export class SiteOptionsService extends CrudItemOptionsService {
         private store: Store<AppState>,
     */) {
     super();
-    // TODO after creation of CRUD Team Site : get all requiered option dto use in Table calc and create and edit form
+    // TODO after creation of CRUD Team Site : get all required option dto use in Table calc and create and edit form
     /*        this.siteTypeOptions$ = this.store.select(getAllSiteTypeOptions);
         this.airportOptions$ = this.store.select(getAllAirportOptions);
 

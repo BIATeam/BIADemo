@@ -1,0 +1,55 @@
+<div class="flex flex-row gap-3 bia-table-controller-container">
+  <i
+    *ngIf="crudConfiguration.showIcons.showCalcMode"
+    class="pi pi-table bia-pointer"
+    [class]="crudConfiguration.useCalcMode ? 'enable' : 'disabled'"
+    (click)="useCalcModeChanged.emit(!crudConfiguration.useCalcMode)"
+    pTooltip="{{ 'bia.useCalcMode' | translate }}"
+    tooltipPosition="top"></i>
+  <i
+    *ngIf="
+      crudConfiguration.showIcons.showPopup && !crudConfiguration.useCalcMode
+    "
+    class="pi pi-clone bia-pointer"
+    [class]="crudConfiguration.usePopup ? 'enable' : 'disabled'"
+    (click)="usePopupChanged.emit(!crudConfiguration.usePopup)"
+    pTooltip="{{ 'bia.usePopup' | translate }}"
+    tooltipPosition="top"></i>
+  <i
+    *ngIf="crudConfiguration.showIcons.showView"
+    class="pi pi-eye bia-pointer"
+    [class]="crudConfiguration.useView ? 'enable' : 'disabled'"
+    (click)="useViewChanged.emit(!crudConfiguration.useView)"
+    pTooltip="{{ 'bia.useView' | translate }}"
+    tooltipPosition="top"></i>
+  <i
+    *ngIf="crudConfiguration.showIcons.showSignalR"
+    class="pi pi-sync bia-pointer"
+    [class]="crudConfiguration.useSignalR ? 'enable' : 'disabled'"
+    (click)="useSignalRChanged.emit(!crudConfiguration.useSignalR)"
+    pTooltip="{{ 'bia.useSignalR' | translate }}"
+    tooltipPosition="top"></i>
+  <i
+    *ngIf="crudConfiguration.showIcons.showCompactMode"
+    class="pi pi-arrow-down-left-and-arrow-up-right-to-center bia-pointer"
+    [class]="crudConfiguration.useCompactMode ? 'enable' : 'disabled'"
+    (click)="useCompactModeChanged.emit(!crudConfiguration.useCompactMode)"
+    pTooltip="{{ 'bia.useCompactMode' | translate }}"
+    tooltipPosition="top"></i>
+  <i
+    *ngIf="crudConfiguration.showIcons.showVirtualScroll"
+    class="pi pi-arrows-v bia-pointer"
+    [class]="crudConfiguration.useVirtualScroll ? 'enable' : 'disabled'"
+    (click)="useVirtualScrollChanged.emit(!crudConfiguration.useVirtualScroll)"
+    pTooltip="{{ 'bia.useVirtualScroll' | translate }}"
+    tooltipPosition="top"></i>
+  <i
+    *ngIf="crudConfiguration.showIcons.showResizableColumn"
+    class="pi pi-arrows-h bia-pointer"
+    [class]="crudConfiguration.useResizableColumn ? 'enable' : 'disabled'"
+    (click)="
+      useResizableColumnChanged.emit(!crudConfiguration.useResizableColumn)
+    "
+    pTooltip="{{ 'bia.useResizableColumn' | translate }}"
+    tooltipPosition="top"></i>
+</div>

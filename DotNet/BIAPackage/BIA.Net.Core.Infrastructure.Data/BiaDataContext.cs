@@ -148,7 +148,7 @@ namespace BIA.Net.Core.Infrastructure.Data
         {
             if (this.Database.ProviderName.EndsWith(".SqlServer"))
             {
-                SqlServerBulkHelper.Insert(this, items?.ToList());
+                await SqlServerBulkHelper.InsertAsync(this, items?.ToList());
             }
             else
             {

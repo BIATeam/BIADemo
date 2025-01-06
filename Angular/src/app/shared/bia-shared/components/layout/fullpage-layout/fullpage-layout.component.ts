@@ -1,13 +1,13 @@
 import {
   AfterViewInit,
+  Component,
   ComponentRef,
   HostBinding,
+  OnDestroy,
   OnInit,
+  ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { OnDestroy } from '@angular/core';
-import { ViewChild } from '@angular/core';
-import { Component } from '@angular/core';
 import {
   ActivatedRoute,
   ActivatedRouteSnapshot,

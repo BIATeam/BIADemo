@@ -1,4 +1,4 @@
-<div class="flex flex-row flex-wrap bia-page-remove-margin">
+<div class="flex flex-row bia-page-remove-margin bia-responsive-flex-row">
   <bia-team-advanced-filter
     *ngIf="showAdvancedFilter"
     (filter)="onFilter($event)"
@@ -7,7 +7,7 @@
       crudConfiguration.fieldsConfig.advancedFilter
     "></bia-team-advanced-filter>
   <div class="flex-grow-1 bia-page-margin">
-    <div>
+    <div [ngClass]="{ 'table-compact': crudConfiguration.useCompactMode }">
       <bia-table-header
         [headerTitle]="'site.listOf' | translate"
         [canAdd]="canAdd && !crudConfiguration.useCalcMode"
@@ -20,7 +20,10 @@
         [showBtnFilter]="true"
         [showFilter]="showAdvancedFilter"
         [hasFilter]="hasAdvancedFilter"
-        (openFilter)="onOpenFilter()">
+        (openFilter)="onOpenFilter()"
+        [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
+        [tableControllerVisible]="showTableController"
+        (toggleTableControllerVisibility)="toggleTableControllerVisibility()">
         <!-- // Custo for teams -->
         <ng-template pTemplate="actionOnSelected">
           <button
@@ -42,11 +45,13 @@
         </ng-template>
       </bia-table-header>
       <bia-table-controller
+        [ngClass]="{ 'table-controller-hidden': !showTableController }"
         [defaultPageSize]="defaultPageSize"
         [columns]="columns"
         [columnToDisplays]="displayedColumns"
         (displayedColumnsChange)="displayedColumnsChanged($event)"
         (filter)="searchGlobalChanged($event)"
+        (clearFilters)="onClearFilters()"
         (toggleSearch)="onToggleSearch()"
         (viewChange)="onViewChange($event)"
         [tableStateKey]="tableStateKey"
@@ -54,32 +59,17 @@
         [useViewTeamWithTypeId]="useViewTeamWithTypeId"
         [hasColumnFilter]="hasColumnFilter">
         <ng-template pTemplate="customControl">
-          <div class="flex flex-row gap-3 bia-table-controller-container">
-            <i
-              class="pi pi-table bia-pointer"
-              [class]="crudConfiguration.useCalcMode ? 'enable' : 'disabled'"
-              (click)="useCalcModeChange(!crudConfiguration.useCalcMode)"
-              pTooltip="{{ 'bia.useCalcMode' | translate }}"
-              tooltipPosition="top"></i>
-            <i
-              class="pi pi-eye bia-pointer"
-              [class]="crudConfiguration.useView ? 'enable' : 'disabled'"
-              (click)="useViewChange(!crudConfiguration.useView)"
-              pTooltip="{{ 'bia.useView' | translate }}"
-              tooltipPosition="top"></i>
-            <i
-              class="pi pi-sync bia-pointer"
-              [class]="crudConfiguration.useSignalR ? 'enable' : 'disabled'"
-              (click)="useSignalRChange(!crudConfiguration.useSignalR)"
-              pTooltip="{{ 'bia.useSignalR' | translate }}"
-              tooltipPosition="top"></i>
-            <i
-              class="pi pi-clone bia-pointer"
-              [class]="crudConfiguration.usePopup ? 'enable' : 'disabled'"
-              (click)="usePopupChange(!crudConfiguration.usePopup)"
-              pTooltip="{{ 'bia.usePopup' | translate }}"
-              tooltipPosition="top"></i>
-          </div>
+          <bia-table-behavior-controller
+            [crudConfiguration]="crudConfiguration"
+            (useCalcModeChanged)="useCalcModeChange($event)"
+            (usePopupChanged)="usePopupChange($event)"
+            (useSignalRChanged)="useSignalRChange($event)"
+            (useViewChanged)="useViewChange($event)"
+            (useCompactModeChanged)="useCompactModeChange($event)"
+            (useVirtualScrollChanged)="useVirtualScrollChange($event)"
+            (useResizableColumnChanged)="
+              useResizableColumnChange($event)
+            "></bia-table-behavior-controller>
         </ng-template>
       </bia-table-controller>
       <bia-table

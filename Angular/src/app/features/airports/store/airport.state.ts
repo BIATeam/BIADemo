@@ -1,4 +1,3 @@
-import * as fromAirports from './airports-reducer';
 import {
   Action,
   combineReducers,
@@ -6,6 +5,7 @@ import {
   createSelector,
 } from '@ngrx/store';
 import { airportCRUDConfiguration } from '../airport.constants';
+import * as fromAirports from './airports-reducer';
 
 export namespace FeatureAirportsStore {
   export interface AirportsState {

@@ -1,26 +1,26 @@
 // Modules
-import { NgModule, Optional, SkipSelf, APP_INITIALIZER } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { APP_INITIALIZER, NgModule, Optional, SkipSelf } from '@angular/core';
 
 // PrimeNG Services
 import { MessageService } from 'primeng/api';
 
 // Interceptor
-import { standardEncodeHttpParamsInterceptor } from './interceptors/standard-encode-http-params-interceptor.service';
 import { biaXhrWithCredInterceptor } from './interceptors/bia-xhr-with-cred-interceptor.service';
+import { standardEncodeHttpParamsInterceptor } from './interceptors/standard-encode-http-params-interceptor.service';
 import { biaTokenInterceptor } from './interceptors/token.interceptor';
 
 // Services
-import { AuthService } from './services/auth.service';
-import { BiaThemeService } from './services/bia-theme.service';
-import { BiaTranslationService } from './services/bia-translation.service';
-import { BiaAppInitService } from './services/bia-app-init.service';
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
-import { NotificationSignalRService } from 'src/app/domains/bia-domains/notification/services/notification-signalr.service';
-import { AppSettingsModule } from 'src/app/domains/bia-domains/app-settings/app-settings.module';
-import { TeamModule } from 'src/app/domains/bia-domains/team/team.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { KeycloakAngularModule } from 'keycloak-angular';
+import { AppSettingsModule } from 'src/app/domains/bia-domains/app-settings/app-settings.module';
+import { NotificationSignalRService } from 'src/app/domains/bia-domains/notification/services/notification-signalr.service';
+import { TeamModule } from 'src/app/domains/bia-domains/team/team.module';
+import { AuthService } from './services/auth.service';
+import { BiaAppInitService } from './services/bia-app-init.service';
+import { BiaThemeService } from './services/bia-theme.service';
+import { BiaTranslationService } from './services/bia-translation.service';
 
 export function initializeApp(appInitService: BiaAppInitService) {
   return (): Promise<any> => {

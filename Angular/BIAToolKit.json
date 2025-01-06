@@ -4,6 +4,7 @@
     "Type": "CRUD",
     "FeatureName": "Plane",
     "FeatureNamePlural": "Planes",
+    "DisplayItemName": "msn",
     "ZipName": "crud.zip",
     "Contains": {
       "Include": ["src\\app\\features\\planes\\*"],
@@ -22,6 +23,7 @@
     "Type": "CRUD",
     "FeatureName": "Engine",
     "FeatureNamePlural": "Engines",
+    "DisplayItemName": "reference",
     "ZipName": "crud-parent.zip",
     "Contains": {
       "Include": ["src\\app\\features\\planes\\children\\engines\\*"],
@@ -120,16 +122,23 @@
 
             "ReplaceInFiles": [
               {
-                "RegexMatch": "'([^']*)'",
-                "Pattern": "aircraft-maintenance-companies/children/",
-                "NoParentValue": "",
-                "WithParentValue": "{ParentRelativePathLinux}/children/"
-              },
-              {
                 "RegexMatch": "(\\.\\./){6}shared/bia-shared/.*\\.(html|scss)\\'",
                 "Pattern": "'../../../../../../",
                 "NoParentValue": "'../../../../",
                 "WithParentAddByDeeperLevel": "../../"
+              }
+            ]
+          },
+          {
+            "RootPath": "src\\app\\",
+            "InitialDeepLevel": 0,
+
+            "ReplaceInFiles": [
+              {
+                "RegexMatch": "'([^']*)'",
+                "Pattern": "features/aircraft-maintenance-companies/children/",
+                "NoParentValue": "features/",
+                "WithParentValue": "{ParentRelativePathLinux}/children/"
               }
             ]
           }

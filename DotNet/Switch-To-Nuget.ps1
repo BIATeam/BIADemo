@@ -1,4 +1,4 @@
-$RelativePathToBIAPackage = "..\..\BIADemo\DotNet\BIAPackage"
+$RelativePathToBIAPackage = "BIAPackage"
 $SolutionName = "BIADemo"
 $ProjectPrefix = "TheBIADevCompany." + $SolutionName
 
@@ -15,7 +15,7 @@ function AddBIAPackageToSolution {
 		# Remove the library reference
 		dotnet remove $ProjectFile reference $BIAProjectFile
 		# Restore the NuGet package reference
-		dotnet add $ProjectFile package BIA.Net.Core.$layerPackage -v 3.10.*
+		dotnet add $ProjectFile package BIA.Net.Core.$layerPackage -v 4.0.*
 	}
 }
 
@@ -26,7 +26,7 @@ AddBIAPackageToSolution "Application" "Application"
 AddBIAPackageToSolution "Infrastructure.Data" "Infrastructure.Data"
 AddBIAPackageToSolution "Infrastructure.Service" "Infrastructure.Service"
 AddBIAPackageToSolution "Crosscutting.Ioc" "Ioc"
-AddBIAPackageToSolution "" "Presentation.Common"
+AddBIAPackageToSolution "Crosscutting.Ioc" "Presentation.Common"
 AddBIAPackageToSolution "Presentation.Api" "Presentation.Api"
 AddBIAPackageToSolution "Test" "Test"
 AddBIAPackageToSolution "WorkerService" "WorkerService"

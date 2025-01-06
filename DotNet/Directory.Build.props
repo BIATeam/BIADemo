@@ -1,35 +1,35 @@
 <Project>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)BIA.ruleset</CodeAnalysisRuleSet>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)BIA.ruleset</CodeAnalysisRuleSet>
-	</PropertyGroup>
-	<ItemGroup Label="AnalyzersNugets">
-		<PackageReference Include="SonarAnalyzer.CSharp" Version="9.*">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="StyleCop.Analyzers" Version="1.*">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-	</ItemGroup>
-	<ItemGroup Label="AnalyzerReferencesProject" Condition="!$(MSBuildProjectDirectory.Contains('BIAPackage'))">
-		<ProjectReference Include="..\BIAPackage\BIA.Net.Analyzers\BIA.Net.Analyzers\BIA.Net.Analyzers.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
-		<ProjectReference Include="..\BIAPackage\BIA.Net.Analyzers\BIA.Net.Analyzers.CodeFixes\BIA.Net.Analyzers.CodeFixes.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
-	</ItemGroup>
-	<ItemGroup Label="AnalyzerReferencesBiaPackage" Condition="$(MSBuildProjectDirectory.Contains('BIAPackage')) and !$(MSBuildProjectDirectory.Contains('BIA.Net.Analyzers'))">
-		<ProjectReference Include="..\BIA.Net.Analyzers\BIA.Net.Analyzers\BIA.Net.Analyzers.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
-		<ProjectReference Include="..\BIA.Net.Analyzers\BIA.Net.Analyzers.CodeFixes\BIA.Net.Analyzers.CodeFixes.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
-	</ItemGroup>
-	<PropertyGroup>
-		<IsBiaPackageProject Condition="'$(MSBuildProjectName)' != '' and $(MSBuildProjectName.StartsWith('BIA.Net'))">true</IsBiaPackageProject>
-	</PropertyGroup>
-	<ItemGroup Condition="'$(IsBiaPackageProject)' != 'true'">
-		<Using Include="System" />
-		<Using Include="System.Collections.Generic" />
-		<Using Include="System.Threading.Tasks" />
-		<Using Include="System.Linq" />
-	</ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)BIA.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)BIA.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup Label="AnalyzersNugets">
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.*">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.*">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <IsBiaPackageProject Condition="'$(MSBuildProjectName)' != '' and $(MSBuildProjectName.StartsWith('BIA.Net'))">true</IsBiaPackageProject>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(IsBiaPackageProject)' != 'true'">
+    <Using Include="System" />
+    <Using Include="System.Collections.Generic" />
+    <Using Include="System.Threading.Tasks" />
+    <Using Include="System.Linq" />
+  </ItemGroup>
+  <ItemGroup Label="AnalyzerReferencesProject" Condition="!$(MSBuildProjectDirectory.Contains('BIAPackage'))">
+    <ProjectReference Include="..\BIAPackage\BIA.Net.Analyzers\BIA.Net.Analyzers\BIA.Net.Analyzers.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
+    <ProjectReference Include="..\BIAPackage\BIA.Net.Analyzers\BIA.Net.Analyzers.CodeFixes\BIA.Net.Analyzers.CodeFixes.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
+  </ItemGroup>
+  <ItemGroup Label="AnalyzerReferencesBiaPackage" Condition="$(MSBuildProjectDirectory.Contains('BIAPackage')) and !$(MSBuildProjectDirectory.Contains('BIA.Net.Analyzers'))">
+    <ProjectReference Include="..\BIA.Net.Analyzers\BIA.Net.Analyzers\BIA.Net.Analyzers.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
+    <ProjectReference Include="..\BIA.Net.Analyzers\BIA.Net.Analyzers.CodeFixes\BIA.Net.Analyzers.CodeFixes.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
+  </ItemGroup>
 </Project>

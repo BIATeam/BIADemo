@@ -1,11 +1,11 @@
 import { Component, Injector, ViewChild } from '@angular/core';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
+import { Permission } from 'src/app/shared/permission';
+import { PlaneTypeTableComponent } from '../../components/plane-type-table/plane-type-table.component';
 import { PlaneType } from '../../model/plane-type';
 import { planeTypeCRUDConfiguration } from '../../plane-type.constants';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { Permission } from 'src/app/shared/permission';
-import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
 import { PlaneTypeService } from '../../services/plane-type.service';
-import { PlaneTypeTableComponent } from '../../components/plane-type-table/plane-type-table.component';
 
 @Component({
   selector: 'app-planes-types-index',

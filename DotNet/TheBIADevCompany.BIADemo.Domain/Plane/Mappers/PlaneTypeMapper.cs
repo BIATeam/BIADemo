@@ -3,7 +3,7 @@
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
+namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
 {
     using System;
     using System.Collections.Generic;

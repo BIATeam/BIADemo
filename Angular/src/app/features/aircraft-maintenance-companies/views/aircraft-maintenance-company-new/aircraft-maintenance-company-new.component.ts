@@ -1,8 +1,8 @@
 import { Component, Injector } from '@angular/core';
-import { AircraftMaintenanceCompany } from '../../model/aircraft-maintenance-company';
 import { CrudItemNewComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-new/crud-item-new.component';
-import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maintenance-company.service';
 import { aircraftMaintenanceCompanyCRUDConfiguration } from '../../aircraft-maintenance-company.constants';
+import { AircraftMaintenanceCompany } from '../../model/aircraft-maintenance-company';
+import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maintenance-company.service';
 
 @Component({
   selector: 'app-aircraft-maintenance-company-new',

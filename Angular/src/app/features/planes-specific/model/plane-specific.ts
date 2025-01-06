@@ -12,14 +12,15 @@ export interface PlaneSpecific extends Plane {
 }
 
 // TODO after creation of CRUD Plane : adapt the field configuration
-export const planeSpecificFieldsConfiguration: BiaFieldsConfig = {
-  columns: [
-    ...planeFieldsConfiguration.columns,
-    Object.assign(new BiaFieldConfig('engines', 'plane.engines'), {
-      specificOutput: true,
-      specificInput: true,
-      minWidth: '50px',
-      type: PropType.ManyToMany,
-    }),
-  ],
-};
+export const planeSpecificFieldsConfiguration: BiaFieldsConfig<PlaneSpecific> =
+  {
+    columns: [
+      ...planeFieldsConfiguration.columns,
+      Object.assign(new BiaFieldConfig('engines', 'plane.engines'), {
+        specificOutput: true,
+        specificInput: true,
+        minWidth: '50px',
+        type: PropType.ManyToMany,
+      }),
+    ],
+  };

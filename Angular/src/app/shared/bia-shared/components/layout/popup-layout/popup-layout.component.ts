@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  Component,
   ComponentRef,
   HostBinding,
   OnDestroy,
@@ -7,7 +8,6 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BiaInjectorService } from 'src/app/core/bia-core/services/bia-injector.service';
 
@@ -49,11 +49,25 @@ export class PopupLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
         this.viewContainerRef,
         this.activatedRoute.snapshot.data['injectComponent']
       );
+      this.setFocusOnFirstField();
     }, 0);
   }
   ngOnDestroy() {
     if (this.dynamicComponent !== undefined) {
       this.dynamicComponent.destroy();
     }
+  }
+
+  private setFocusOnFirstField() {
+    // Attendre que le contenu soit bien rendu dans le DOM
+    setTimeout(() => {
+      const firstField =
+        this.viewContainerRef.element.nativeElement.querySelector(
+          'input, select, textarea'
+        );
+      if (firstField) {
+        firstField.focus();
+      }
+    }, 0);
   }
 }

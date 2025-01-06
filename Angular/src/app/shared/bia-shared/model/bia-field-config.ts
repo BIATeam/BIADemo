@@ -74,8 +74,8 @@ export class BiaFieldDateFormat {
   }
 }
 
-export class BiaFieldConfig {
-  field: string;
+export class BiaFieldConfig<TDto> {
+  field: keyof TDto & string;
   header: string;
   type: PropType;
   filterMode: PrimeNGFiltering;
@@ -87,6 +87,7 @@ export class BiaFieldConfig {
   isOnlyUpdatable: boolean;
   isEditableChoice: boolean;
   isVisible: boolean;
+  isHideByDefault: boolean;
   maxlength: number;
   translateKey: string;
   searchPlaceholder: string;
@@ -117,7 +118,7 @@ export class BiaFieldConfig {
     return this.type.toLowerCase();
   }
 
-  constructor(field: string, header: string, maxlength = 255) {
+  constructor(field: keyof TDto & string, header: string, maxlength = 255) {
     this.field = field;
     this.header = header;
     this.type = PropType.String;
@@ -130,6 +131,7 @@ export class BiaFieldConfig {
     this.isOnlyUpdatable = false;
     this.isEditableChoice = false;
     this.isVisible = true;
+    this.isHideByDefault = false;
     this.maxlength = maxlength;
     this.isRequired = false;
     this.specificOutput = false;
@@ -141,9 +143,9 @@ export class BiaFieldConfig {
     this.displayFormat = null;
   }
 
-  public clone(): BiaFieldConfig {
+  public clone(): BiaFieldConfig<TDto> {
     return Object.assign(
-      new BiaFieldConfig(this.field, this.header, this.maxlength),
+      new BiaFieldConfig<TDto>(this.field, this.header, this.maxlength),
       {
         type: this.type,
         filterMode: this.filterMode,
@@ -155,6 +157,7 @@ export class BiaFieldConfig {
         isOnlyUpdatable: this.isOnlyUpdatable,
         isChoiceEditable: this.isEditableChoice,
         isVisible: this.isVisible,
+        isHideByDefault: this.isHideByDefault,
         translateKey: this.translateKey,
         searchPlaceholder: this.searchPlaceholder,
         isRequired: this.isRequired,
@@ -170,7 +173,7 @@ export class BiaFieldConfig {
   }
 }
 
-export interface BiaFieldsConfig {
-  columns: BiaFieldConfig[];
+export interface BiaFieldsConfig<TDto> {
+  columns: BiaFieldConfig<TDto>[];
   advancedFilter?: any;
 }

@@ -21,7 +21,7 @@ const USER_FROM_DIRECTORY_COMPONENTS = [
     SharedModule,
     StoreModule.forFeature('users-from-directory', reducers),
     EffectsModule.forFeature([UsersFromDirectoryEffects]),
-    UserOptionModule, // requiered for synchronization when user added
+    UserOptionModule, // required for synchronization when user added
     LdapDomainModule,
   ],
   declarations: [...USER_FROM_DIRECTORY_COMPONENTS],

@@ -1,10 +1,10 @@
-import * as fromRoleOptions from './role-options-reducer';
 import {
   Action,
   combineReducers,
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
+import * as fromRoleOptions from './role-options-reducer';
 
 export interface RoleOptionsState {
   roleOptions: fromRoleOptions.State;

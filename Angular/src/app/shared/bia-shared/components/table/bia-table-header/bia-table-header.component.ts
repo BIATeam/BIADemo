@@ -9,6 +9,7 @@ import {
   OnChanges,
   Output,
   QueryList,
+  SimpleChanges,
   TemplateRef,
 } from '@angular/core';
 import { Router } from '@angular/router';
@@ -33,6 +34,7 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   @Input() canBack = false;
   @Input() canExportCSV = false;
   @Input() headerTitle: string;
+  @Input() parentDisplayName: string;
   @Input() selectedElements: any[];
   @Input() showTableControllerButton = false;
   @Input() tableControllerVisible = false;
@@ -50,6 +52,7 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   customControlTemplate: TemplateRef<any>;
 
   nbSelectedElements = 0;
+  headerTitleComplete = '';
 
   constructor(
     protected location: Location,
@@ -74,12 +77,23 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
     });
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
     if (this.selectedElements) {
       this.nbSelectedElements = this.selectedElements.length;
     } else {
       this.nbSelectedElements = 0;
     }
+
+    if (changes.parentDisplayName || changes.headerTitle) {
+      this.updateHeaderTitle();
+    }
+  }
+
+  protected updateHeaderTitle() {
+    this.headerTitleComplete =
+      this.parentDisplayName?.length > 0
+        ? `${this.parentDisplayName} - ${this.headerTitle}`
+        : this.headerTitle;
   }
 
   onBack() {

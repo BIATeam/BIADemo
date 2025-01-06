@@ -28,15 +28,15 @@ import { BiaUltimaLayoutComponent } from './layout/ultima-layout.component';
 import { BiaUltimaMenuItemComponent } from './menu-item/ultima-menu-item.component';
 import { BiaUltimaMenuProfileComponent } from './menu-profile/ultima-menu-profile.component';
 import { BiaUltimaMenuComponent } from './menu/ultima-menu.component';
-import { BiaUltimaSideBarComponent } from './side-bar/ultima-side-bar.component';
-import { BiaUltimaTopBarComponent } from './top-bar/ultima-top-bar.component';
+import { BiaUltimaSidebarComponent } from './sidebar/ultima-sidebar.component';
+import { BiaUltimaTopbarComponent } from './topbar/ultima-topbar.component';
 
 @NgModule({
   declarations: [
     BiaUltimaLayoutComponent,
-    BiaUltimaTopBarComponent,
+    BiaUltimaTopbarComponent,
     BiaUltimaMenuComponent,
-    BiaUltimaSideBarComponent,
+    BiaUltimaSidebarComponent,
     BiaUltimaMenuItemComponent,
     BiaUltimaFooterComponent,
     BiaUltimaMenuProfileComponent,
@@ -44,9 +44,9 @@ import { BiaUltimaTopBarComponent } from './top-bar/ultima-top-bar.component';
   ],
   exports: [
     BiaUltimaLayoutComponent,
-    BiaUltimaTopBarComponent,
+    BiaUltimaTopbarComponent,
     BiaUltimaMenuComponent,
-    BiaUltimaSideBarComponent,
+    BiaUltimaSidebarComponent,
     BiaUltimaMenuItemComponent,
     BiaUltimaFooterComponent,
     BiaUltimaMenuProfileComponent,

@@ -8,13 +8,20 @@
       (create)="onCreate()"
       (exportCSV)="onExportCSV('plane.listOf')"
       (delete)="onDelete()"
-      [selectedElements]="selectedCrudItems"></bia-table-header>
+      [selectedElements]="selectedCrudItems"
+      [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
+      [tableControllerVisible]="showTableController"
+      (toggleTableControllerVisibility)="
+        toggleTableControllerVisibility()
+      "></bia-table-header>
     <bia-table-controller
+      [ngClass]="{ 'table-controller-hidden': !showTableController }"
       [defaultPageSize]="defaultPageSize"
       [columns]="columns"
       [columnToDisplays]="displayedColumns"
       (displayedColumnsChange)="displayedColumnsChanged($event)"
       (filter)="searchGlobalChanged($event)"
+      (clearFilters)="onClearFilters()"
       (toggleSearch)="onToggleSearch()"
       (viewChange)="onViewChange($event)"
       [tableStateKey]="tableStateKey"
@@ -23,26 +30,17 @@
       [useViewTeamWithTypeId]="useViewTeamWithTypeId"
       [hasColumnFilter]="hasColumnFilter">
       <ng-template pTemplate="customControl">
-        <div class="flex flex-row gap-3 bia-table-controller-container">
-          <i
-            class="pi pi-eye bia-pointer"
-            [class]="crudConfiguration.useView ? 'enable' : 'disabled'"
-            (click)="useViewChange(!crudConfiguration.useView)"
-            pTooltip="{{ 'bia.useView' | translate }}"
-            tooltipPosition="top"></i>
-          <i
-            class="pi pi-sync bia-pointer"
-            [class]="crudConfiguration.useSignalR ? 'enable' : 'disabled'"
-            (click)="useSignalRChange(!crudConfiguration.useSignalR)"
-            pTooltip="{{ 'bia.useSignalR' | translate }}"
-            tooltipPosition="top"></i>
-          <i
-            class="pi pi-clone bia-pointer"
-            [class]="crudConfiguration.usePopup ? 'enable' : 'disabled'"
-            (click)="usePopupChange(!crudConfiguration.usePopup)"
-            pTooltip="{{ 'bia.usePopup' | translate }}"
-            tooltipPosition="top"></i>
-        </div>
+        <bia-table-behavior-controller
+          [crudConfiguration]="crudConfiguration"
+          (useCalcModeChanged)="useCalcModeChange($event)"
+          (usePopupChanged)="usePopupChange($event)"
+          (useSignalRChanged)="useSignalRChange($event)"
+          (useViewChanged)="useViewChange($event)"
+          (useCompactModeChanged)="useCompactModeChange($event)"
+          (useVirtualScrollChanged)="useVirtualScrollChange($event)"
+          (useResizableColumnChanged)="
+            useResizableColumnChange($event)
+          "></bia-table-behavior-controller>
       </ng-template>
     </bia-table-controller>
     <bia-table
@@ -50,6 +48,9 @@
         crudConfiguration.useVirtualScroll
           ? virtualCrudItems
           : ((crudItems$ | async) ?? [])
+      "
+      [dictOptionDtos]="
+        (planeService.optionsService.dictOptionDtos$ | async) ?? []
       "
       [totalRecord]="(totalCount$ | async) ?? 0"
       [columnToDisplays]="displayedColumns"

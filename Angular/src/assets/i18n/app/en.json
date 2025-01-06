@@ -61,7 +61,9 @@
     "originalPrice": "Original price",
     "estimatedPrice": "Estimated price",
     "isToBeMaintained": "Maintained",
-    "isHybrid": "Hybrid"
+    "isHybrid": "Hybrid",
+    "principalPart": "Principal part",
+    "installedParts": "Installed parts"
   },
   "maintenanceTeam": {
     "add": "Add maintenance team",
@@ -133,6 +135,7 @@
   "End BIADemo": "To remove in project up to here",
   "member": {
     "add": "Add member",
+    "isActive": "Active",
     "listOf": "List of members",
     "manage": "Manage member",
     "roles": "Roles",

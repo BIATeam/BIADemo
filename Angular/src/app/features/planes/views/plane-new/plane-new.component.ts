@@ -1,8 +1,8 @@
 import { Component, Injector } from '@angular/core';
-import { Plane } from '../../model/plane';
 import { CrudItemNewComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-new/crud-item-new.component';
-import { PlaneService } from '../../services/plane.service';
+import { Plane } from '../../model/plane';
 import { planeCRUDConfiguration } from '../../plane.constants';
+import { PlaneService } from '../../services/plane.service';
 
 @Component({
   selector: 'app-plane-new',

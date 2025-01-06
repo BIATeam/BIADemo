@@ -40,7 +40,7 @@ export class Plane extends BaseDto {
 }
 
 // TODO after creation of CRUD Plane : adapt the field configuration
-export const planeFieldsConfiguration: BiaFieldsConfig = {
+export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
   columns: [
     /// BIAToolKit - Begin Block msn
     Object.assign(new BiaFieldConfig('msn', 'plane.msn'), {
@@ -53,18 +53,22 @@ export const planeFieldsConfiguration: BiaFieldsConfig = {
     /// BIAToolKit - End Block manufacturer
     /// BIAToolKit - Begin Block isActive
     Object.assign(new BiaFieldConfig('isActive', 'plane.isActive'), {
+      isRequired: true,
       isSearchable: true,
+      // Begin BIADemo
       isSortable: false,
+      // End BIADemo
       type: PropType.Boolean,
+      validators: [Validators.required],
     }),
     /// BIAToolKit - End Block isActive
     /// BIAToolKit - Begin Block isMaintenance
     Object.assign(new BiaFieldConfig('isMaintenance', 'plane.isMaintenance'), {
-      isRequired: true,
       isSearchable: true,
+      // Begin BIADemo
       isSortable: false,
+      // End BIADemo
       type: PropType.Boolean,
-      validators: [Validators.required],
     }),
     /// BIAToolKit - End Block isMaintenance
     /// BIAToolKit - Begin Block firstFlightDate

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { DomainTeamsActions } from './teams-actions';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { TeamDas } from '../services/team-das.service';
+import { DomainTeamsActions } from './teams-actions';
 /**
  * Effects file is for isolating and managing side effects of the application in one place
  * Http requests, Sockets, Routing, LocalStorage, etc

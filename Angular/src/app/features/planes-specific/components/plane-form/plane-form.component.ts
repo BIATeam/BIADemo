@@ -15,12 +15,13 @@ import { PlaneSpecific } from '../../model/plane-specific';
   ],
 })
 export class PlaneFormComponent extends CrudItemFormComponent<PlaneSpecific> {
-  engineCrudConfig: BiaFieldsConfig = engineCRUDConfiguration.fieldsConfig;
+  engineCrudConfig: BiaFieldsConfig<Engine> =
+    engineCRUDConfiguration.fieldsConfig;
   newId: number = CrudHelperService.newIdStartingValue;
   selectedEngines: Engine[] = [];
 
   get displayedEngines(): Engine[] {
-    return this.crudItem.engines
+    return this.crudItem?.engines
       ? this.crudItem.engines.filter(e => e.dtoState !== DtoState.Deleted)
       : [];
   }
@@ -30,10 +31,11 @@ export class PlaneFormComponent extends CrudItemFormComponent<PlaneSpecific> {
   }
 
   onEngineSave(engine: Engine) {
+    this.crudItem ??= <PlaneSpecific>{};
     this.crudItem.engines ??= [];
     this.newId = CrudHelperService.onEmbeddedItemSave(
       engine,
-      this.crudItem.engines,
+      this.crudItem?.engines ?? [],
       this.newId
     );
   }

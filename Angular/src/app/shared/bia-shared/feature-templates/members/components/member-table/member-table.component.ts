@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { CrudItemTableComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-table/crud-item-table.component';
+import { FieldValidator } from 'src/app/shared/bia-shared/validators/field.validator';
 import { Member } from '../../model/member';
 
 @Component({
@@ -22,5 +23,12 @@ export class MemberTableComponent extends CrudItemTableComponent<Member> {
     public translateService: TranslateService
   ) {
     super(formBuilder, authService, biaMessageService, translateService);
+  }
+
+  public initForm() {
+    this.form = this.formBuilder.group(this.formFields());
+    this.form.addValidators([
+      FieldValidator.atLeastOneFilled(['user', 'login']),
+    ]);
   }
 }

@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'bia-classic-page-layout',

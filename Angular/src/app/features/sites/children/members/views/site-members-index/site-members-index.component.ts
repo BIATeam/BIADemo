@@ -26,6 +26,8 @@ export class SiteMembersIndexComponent
   ngOnInit() {
     this.teamTypeId = TeamTypeId.Site;
     super.ngOnInit();
+    this.parentDisplayItemName$ = this.siteService.displayItemName$;
+    this.memberService.parentService = this.siteService;
   }
 
   protected setPermissions() {

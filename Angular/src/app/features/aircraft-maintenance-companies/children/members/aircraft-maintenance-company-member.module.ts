@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AircraftMaintenanceCompanyMembersIndexComponent } from './views/aircraft-maintenance-company-members-index/aircraft-maintenance-company-members-index.component';
-import { SharedModule } from 'src/app/shared/shared.module';
-import { AircraftMaintenanceCompanyMemberNewComponent } from './views/aircraft-maintenance-company-member-new/aircraft-maintenance-company-member-new.component';
-import { AircraftMaintenanceCompanyMemberEditComponent } from './views/aircraft-maintenance-company-member-edit/aircraft-maintenance-company-member-edit.component';
-import { Permission } from 'src/app/shared/permission';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
-import { AircraftMaintenanceCompanyMemberItemComponent } from './views/aircraft-maintenance-company-member-item/aircraft-maintenance-company-member-item.component';
-import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
 import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
+import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
 import { MemberModule } from 'src/app/shared/bia-shared/feature-templates/members/member.module';
+import { Permission } from 'src/app/shared/permission';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { AircraftMaintenanceCompanyMemberEditComponent } from './views/aircraft-maintenance-company-member-edit/aircraft-maintenance-company-member-edit.component';
+import { AircraftMaintenanceCompanyMemberItemComponent } from './views/aircraft-maintenance-company-member-item/aircraft-maintenance-company-member-item.component';
+import { AircraftMaintenanceCompanyMemberNewComponent } from './views/aircraft-maintenance-company-member-new/aircraft-maintenance-company-member-new.component';
+import { AircraftMaintenanceCompanyMembersIndexComponent } from './views/aircraft-maintenance-company-members-index/aircraft-maintenance-company-members-index.component';
 
 const ROUTES: Routes = [
   {

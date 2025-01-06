@@ -1,10 +1,10 @@
-import * as fromLanguageOptions from './language-options-reducer';
 import {
   Action,
   combineReducers,
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
+import * as fromLanguageOptions from './language-options-reducer';
 
 export interface LanguageOptionsState {
   languageOptions: fromLanguageOptions.State;

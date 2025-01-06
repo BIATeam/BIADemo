@@ -1,6 +1,6 @@
 import { Injectable, Injector } from '@angular/core';
-import { Member } from '../model/member';
 import { AbstractDas } from 'src/app/core/bia-core/services/abstract-das.service';
+import { Member } from '../model/member';
 
 @Injectable({
   providedIn: 'root',

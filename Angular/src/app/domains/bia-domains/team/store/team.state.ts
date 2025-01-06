@@ -1,4 +1,3 @@
-import * as fromTeams from './teams-reducer';
 import {
   Action,
   combineReducers,
@@ -6,6 +5,7 @@ import {
   createSelector,
 } from '@ngrx/store';
 import { storeKey } from '../team.contants';
+import * as fromTeams from './teams-reducer';
 
 export interface TeamsState {
   teams: fromTeams.State;

@@ -1,8 +1,8 @@
 import { Component, Injector } from '@angular/core';
-import { User } from '../../model/user';
-import { userCRUDConfiguration } from '../../user.constants';
 import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
+import { User } from '../../model/user';
 import { UserService } from '../../services/user.service';
+import { userCRUDConfiguration } from '../../user.constants';
 
 @Component({
   selector: 'bia-user-edit',

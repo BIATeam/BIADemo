@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MaintenanceTeamMembersIndexComponent } from './views/maintenance-team-members-index/maintenance-team-members-index.component';
-import { SharedModule } from 'src/app/shared/shared.module';
-import { MaintenanceTeamMemberNewComponent } from './views/maintenance-team-member-new/maintenance-team-member-new.component';
-import { MaintenanceTeamMemberEditComponent } from './views/maintenance-team-member-edit/maintenance-team-member-edit.component';
-import { Permission } from 'src/app/shared/permission';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
-import { MaintenanceTeamMemberItemComponent } from './views/maintenance-team-member-item/maintenance-team-member-item.component';
-import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
 import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
+import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
 import { MemberModule } from 'src/app/shared/bia-shared/feature-templates/members/member.module';
+import { Permission } from 'src/app/shared/permission';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { MaintenanceTeamMemberEditComponent } from './views/maintenance-team-member-edit/maintenance-team-member-edit.component';
+import { MaintenanceTeamMemberItemComponent } from './views/maintenance-team-member-item/maintenance-team-member-item.component';
+import { MaintenanceTeamMemberNewComponent } from './views/maintenance-team-member-new/maintenance-team-member-new.component';
+import { MaintenanceTeamMembersIndexComponent } from './views/maintenance-team-members-index/maintenance-team-members-index.component';
 
 const ROUTES: Routes = [
   {

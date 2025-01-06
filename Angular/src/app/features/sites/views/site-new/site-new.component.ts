@@ -1,9 +1,9 @@
 import { Component, Injector } from '@angular/core';
-import { Site } from '../../model/site';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { CrudItemNewComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-new/crud-item-new.component';
+import { Site } from '../../model/site';
 import { SiteService } from '../../services/site.service';
 import { siteCRUDConfiguration } from '../../site.constants';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 
 @Component({
   selector: 'app-site-new',

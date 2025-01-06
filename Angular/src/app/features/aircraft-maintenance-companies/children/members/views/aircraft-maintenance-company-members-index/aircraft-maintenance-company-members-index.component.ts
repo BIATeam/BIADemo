@@ -1,8 +1,8 @@
 import { Component, Injector, OnInit } from '@angular/core';
-import { AircraftMaintenanceCompanyService } from '../../../../services/aircraft-maintenance-company.service';
 import { MembersIndexComponent } from 'src/app/shared/bia-shared/feature-templates/members/views/members-index/members-index.component';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { Permission } from 'src/app/shared/permission';
+import { AircraftMaintenanceCompanyService } from '../../../../services/aircraft-maintenance-company.service';
 
 @Component({
   selector: 'app-aircraft-maintenance-company-members-index',
@@ -26,6 +26,7 @@ export class AircraftMaintenanceCompanyMembersIndexComponent
   ngOnInit() {
     this.teamTypeId = TeamTypeId.AircraftMaintenanceCompany;
     super.ngOnInit();
+    this.memberService.parentService = this.aircraftMaintenanceCompanyService;
   }
 
   protected setPermissions() {

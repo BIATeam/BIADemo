@@ -1,4 +1,3 @@
-import * as fromTeamOptions from './team-options-reducer';
 import {
   Action,
   combineReducers,
@@ -6,6 +5,7 @@ import {
   createSelector,
 } from '@ngrx/store';
 import { storeKey } from '../team-option.contants';
+import * as fromTeamOptions from './team-options-reducer';
 
 export interface TeamOptionsState {
   teamOptions: fromTeamOptions.State;

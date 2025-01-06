@@ -93,7 +93,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         }
 
         /// <summary>
-        /// Get a plane by its identifier.  
+        /// Get a plane by its identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>The plane.</returns>

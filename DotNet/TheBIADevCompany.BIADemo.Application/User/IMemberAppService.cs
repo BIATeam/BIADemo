@@ -25,6 +25,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
         Task<(IEnumerable<MemberDto> Members, int Total)> GetRangeByTeamAsync(PagingFilterFormatDto filters);
 
         /// <summary>
+        /// Add several members or add only right if user already in list.
+        /// </summary>
+        /// <param name="membersDto">The members DTO.</param>
+        /// <returns>The result of the creation.</returns>
+        Task<IEnumerable<MemberDto>> AddUsers(MembersDto membersDto);
+
+        /// <summary>
         /// Sets the default site.
         /// </summary>
         /// <param name="teamId">The team identifier.</param>

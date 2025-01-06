@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
@@ -23,16 +23,10 @@ export class PlaneService extends CrudItemService<Plane> {
     public dasService: PlaneDas,
     public signalRService: CrudItemSignalRService<Plane>,
     public optionsService: PlaneOptionsService,
-    // requiered only for parent key
+    // required only for parent key
     protected authService: AuthService
   ) {
     super(dasService, signalRService, optionsService);
-  }
-
-  public static getDisplayItemName(plane: Plane) {
-    /// BIAToolKit - Begin Display
-    return plane?.msn;
-    /// BIAToolKit - End Display
   }
 
   public getParentIds(): any[] {
@@ -60,6 +54,13 @@ export class PlaneService extends CrudItemService<Plane> {
   public crudItem$: Observable<Plane> = this.store.select(
     FeaturePlanesStore.getCurrentPlane
   );
+
+  public displayItemName$: Observable<string> = this.crudItem$.pipe(
+    /// BIAToolKit - Begin Display msn
+    map(plane => plane?.msn?.toString() ?? '')
+    /// BIAToolKit - End Display msn
+  );
+
   public loadingGet$: Observable<boolean> = this.store.select(
     FeaturePlanesStore.getPlaneLoadingGet
   );

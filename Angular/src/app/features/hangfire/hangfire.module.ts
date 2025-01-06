@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SharedModule } from 'src/app/shared/shared.module';
-import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
-import { Permission } from 'src/app/shared/permission';
-import { HangfireIndexComponent } from './views/hangfire-index/hangfire-index.component';
-import { reducers } from './store/hangfire.state';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
+import { Permission } from 'src/app/shared/permission';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { HangfireEffects } from './store/hangfire-effects';
+import { reducers } from './store/hangfire.state';
+import { HangfireIndexComponent } from './views/hangfire-index/hangfire-index.component';
 
 const ROUTES: Routes = [
   {

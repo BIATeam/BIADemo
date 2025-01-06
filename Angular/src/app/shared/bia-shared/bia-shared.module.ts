@@ -21,7 +21,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 // import { EditorModule } from 'primeng/editor';
-// Warning it requiered to install Quill package:
+// Warning it required to install Quill package:
 //    - npm install quill
 // And modify angular.json to add quill css and js :
 // "styles": [
@@ -37,7 +37,7 @@ import { DropdownModule } from 'primeng/dropdown';
 
 import { FieldsetModule } from 'primeng/fieldset';
 // import { FullCalendarModule } from 'primeng/fullcalendar';
-// Warning it requiered to install Fullcalandar package:
+// Warning it required to install Fullcalandar package:
 //    - npm install @fullcalendar/core
 //    - npm install @fullcalendar/daygrid
 //    - npm install @fullcalendar/interaction
@@ -108,6 +108,7 @@ import { BiaUltimaLayoutModule } from './components/layout/ultima/ultima-layout.
 import { NotificationTeamWarningModule } from './components/notification-team-warning/notification-team-warning.module';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { BiaCalcTableComponent } from './components/table/bia-calc-table/bia-calc-table.component';
+import { BiaTableBehaviorControllerComponent } from './components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
 import { BiaTableControllerComponent } from './components/table/bia-table-controller/bia-table-controller.component';
 import { BiaTableFilterComponent } from './components/table/bia-table-filter/bia-table-filter.component';
 import { BiaTableFooterControllerComponent } from './components/table/bia-table-footer-controller/bia-table-footer-controller.component';
@@ -215,6 +216,7 @@ const COMPONENTS = [
   BiaTableHeaderComponent,
   BiaTableControllerComponent,
   BiaTableFooterControllerComponent,
+  BiaTableBehaviorControllerComponent,
   LayoutComponent,
   PageLayoutComponent,
   PopupLayoutComponent,

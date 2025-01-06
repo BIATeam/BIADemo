@@ -11,7 +11,7 @@ import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { saveAs } from 'file-saver';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { combineLatest, Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, combineLatest } from 'rxjs';
 import { filter, skip, take, tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
@@ -41,16 +41,17 @@ import { CrudItemService } from '../../services/crud-item.service';
 export class CrudItemsIndexComponent<CrudItem extends BaseDto>
   implements OnInit, OnDestroy
 {
-  public crudConfiguration: CrudConfig;
+  public crudConfiguration: CrudConfig<CrudItem>;
   useRefreshAtLanguageChange = false;
 
   @HostBinding('class') classes = 'bia-flex';
   @ViewChild(BiaTableComponent, { static: false })
-  biaTableComponent: BiaTableComponent;
+  biaTableComponent: BiaTableComponent<CrudItem>;
   @ViewChild(BiaTableControllerComponent, { static: false })
   biaTableControllerComponent: BiaTableControllerComponent;
   @ViewChild(CrudItemTableComponent, { static: false })
   crudItemTableComponent: CrudItemTableComponent<CrudItem>;
+  protected parentDisplayItemName$: Observable<string>;
 
   _showTableController = true;
 
@@ -84,6 +85,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
   canDelete = false;
   canAdd = false;
   canSave = false;
+  canSelect = false;
   columns: KeyValuePair[];
   displayedColumns: KeyValuePair[];
   reorderableColumns = true;
@@ -165,6 +167,10 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     this.initVirtualScroll();
   }
 
+  useResizableColumnChange(e: boolean) {
+    this.crudConfiguration.useResizableColumn = e;
+  }
+
   protected useViewConfig(manualChange: boolean) {
     this.tableStateKey = this.crudConfiguration.useView
       ? this.crudConfiguration.tableStateKey
@@ -221,7 +227,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
       this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
     } else {
       if (manualChange) {
-        this.crudItemService.signalRService.destroy();
+        this.crudItemService.signalRService.destroy(this.crudItemService);
       }
     }
   }
@@ -331,7 +337,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
 
   onHide() {
     if (this.crudConfiguration.useSignalR) {
-      this.crudItemService.signalRService.destroy();
+      this.crudItemService.signalRService.destroy(this.crudItemService);
     }
   }
 
@@ -447,19 +453,23 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
       const columnIdExists = allColumns.some(column => column.field === 'id');
 
       if (columnIdExists !== true) {
-        allColumns.unshift(new BiaFieldConfig('id', 'bia.id'));
+        allColumns.unshift(new BiaFieldConfig<CrudItem>('id', 'bia.id'));
       }
 
       allColumns?.map(
-        (x: BiaFieldConfig) =>
-          (columns[x.field] = this.translateService.instant(x.header))
+        (x: BiaFieldConfig<CrudItem>) =>
+          (columns[x.field.toString()] = this.translateService.instant(
+            x.header
+          ))
       );
     } else {
       this.crudItemListComponent
         .getPrimeNgTable()
         ?.columns?.map(
-          (x: BiaFieldConfig) =>
-            (columns[x.field] = this.translateService.instant(x.header))
+          (x: BiaFieldConfig<CrudItem>) =>
+            (columns[x.field.toString()] = this.translateService.instant(
+              x.header
+            ))
         );
     }
 
@@ -486,7 +496,9 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     this.columns = this.crudConfiguration.fieldsConfig.columns.map(
       col => <KeyValuePair>{ key: col.field, value: col.header }
     );
-    this.displayedColumns = [...this.columns];
+    this.displayedColumns = this.crudConfiguration.fieldsConfig.columns
+      .filter(col => !col.isHideByDefault)
+      .map(col => <KeyValuePair>{ key: col.field, value: col.header });
     this.sortFieldValue = this.columns[0].key;
 
     this.defaultViewPref = <BiaTableState>{
@@ -495,9 +507,9 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
       sortField: this.sortFieldValue,
       sortOrder: 1,
       filters: {},
-      columnOrder: this.crudConfiguration.fieldsConfig.columns.map(
-        x => x.field
-      ),
+      columnOrder: this.crudConfiguration.fieldsConfig.columns
+        .filter(col => !col.isHideByDefault)
+        .map(x => x.field),
       advancedFilter: undefined,
     };
   }
@@ -550,7 +562,10 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
   onClearFilters() {
     const table = this.crudItemListComponent.getPrimeNgTable();
     if (table) {
-      table.clear();
+      Object.keys(table.filters).forEach(key =>
+        this.tableHelperService.clearFilterMetaData(table.filters[key])
+      );
+      table.onLazyLoad.emit(table.createLazyLoadMetadata());
     }
   }
 }

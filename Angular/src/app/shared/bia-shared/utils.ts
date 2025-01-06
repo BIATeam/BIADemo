@@ -31,7 +31,10 @@ export const isObject = (object: any): boolean => {
   );
 };
 
-export const clone = <T>(object: T): T => {
-  // using JSON.parse(JSON.stringify(object)) will lose Date property type
-  return structuredClone(object);
+export const clone = <T>(object: T, useStructured = true): T => {
+  if (useStructured === true) {
+    return structuredClone(object);
+  } else {
+    return JSON.parse(JSON.stringify(object));
+  }
 };

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {
-  combineLatest,
   /* BIAToolKit - Begin Option */
   Observable,
   /* BIAToolKit - End Option */
+  combineLatest,
 } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
@@ -39,7 +39,7 @@ export class PlaneOptionsService extends CrudItemOptionsService {
     /* BIAToolKit - End Option */
   ) {
     super();
-    // TODO after creation of CRUD Plane : get all requiered option dto use in Table calc and create and edit form
+    // TODO after creation of CRUD Plane : get all required option dto use in Table calc and create and edit form
     // BIAToolKit - Begin Option PlaneType
     this.planeTypeOptions$ = this.store.select(getAllPlaneTypeOptions);
     // BIAToolKit - End Option PlaneType

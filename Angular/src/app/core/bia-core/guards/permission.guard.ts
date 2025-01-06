@@ -1,11 +1,11 @@
+import { APP_BASE_HREF } from '@angular/common';
+import { HttpStatusCode } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot } from '@angular/router';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { APP_BASE_HREF } from '@angular/common';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { allEnvironments } from 'src/environments/all-environments';
-import { HttpStatusCode } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',

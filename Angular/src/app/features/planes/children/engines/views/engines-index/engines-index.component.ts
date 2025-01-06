@@ -37,6 +37,8 @@ export class EnginesIndexComponent
 
   ngOnInit(): void {
     super.ngOnInit();
+    this.parentDisplayItemName$ =
+      this.engineService.planeService.displayItemName$;
     // BIAToolKit - Begin Option
     this.sub.add(
       this.biaTranslationService.currentCulture$.subscribe(() => {

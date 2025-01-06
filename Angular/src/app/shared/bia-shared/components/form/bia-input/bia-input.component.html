@@ -33,6 +33,7 @@
           optionLabel="display"
           datakey="id"
           appendTo="body"
+          [showClear]="true"
           [style]="{ width: '100%' }"
           scrollHeight="50vh"></p-multiSelect>
         <label
@@ -56,6 +57,7 @@
           let displayNumberFormat
         ">
         <p-inputNumber
+          [showClear]="true"
           [formControlName]="field.field"
           [mode]="displayNumberFormat.mode"
           [currency]="displayNumberFormat.currency"
@@ -84,7 +86,8 @@
           showButtonBar="true"
           appendTo="body"
           [dateFormat]="displayDateFormat.autoPrimeDateFormat"
-          [inputStyle]="{ width: '100%' }"></p-calendar>
+          [inputStyle]="{ width: '100%' }"
+          [showClear]="true"></p-calendar>
         <label
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
           >{{ field.header | translate }}</label
@@ -107,7 +110,8 @@
           [hourFormat]="'24'"
           placeholder="&nbsp;"
           [inputStyle]="{ width: '100%' }"
-          appendTo="body"></p-calendar
+          appendTo="body"
+          [showClear]="true"></p-calendar
         ><!-- [hourFormat]="field.displayFormat.autoHourFormat" not work for 12 (PrimeNG 13)-->
         <label
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
@@ -126,7 +130,8 @@
           dataType="string"
           [hourFormat]="'24'"
           [inputStyle]="{ width: '100%' }"
-          appendTo="body"></p-calendar
+          appendTo="body"
+          [showClear]="true"></p-calendar
         ><!-- [hourFormat]="field.displayFormat.autoHourFormat" not work for 12 (PrimeNG 13)-->
         <label
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
@@ -145,7 +150,8 @@
           dataType="string"
           [hourFormat]="'24'"
           [inputStyle]="{ width: '100%' }"
-          appendTo="body"></p-calendar
+          appendTo="body"
+          [showClear]="true"></p-calendar
         ><!-- [hourFormat]="field.displayFormat.autoHourFormat" not work for 12 (PrimeNG 13)-->
         <label
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
@@ -168,7 +174,8 @@
           [hourFormat]="displayDateFormat.autoHourFormat.toString()"
           placeholder="&nbsp;"
           [inputStyle]="{ width: '100%' }"
-          appendTo="body"></p-calendar>
+          appendTo="body"
+          [showClear]="true"></p-calendar>
         <label
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
           >{{ field.header | translate }}</label

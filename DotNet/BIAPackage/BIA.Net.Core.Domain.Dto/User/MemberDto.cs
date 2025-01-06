@@ -19,6 +19,26 @@ namespace BIA.Net.Core.Domain.Dto.User
         public OptionDto User { get; set; }
 
         /// <summary>
+        /// Gets or sets the last name.
+        /// </summary>
+        public string LastName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the first name.
+        /// </summary>
+        public string FirstName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the login.
+        /// </summary>
+        public string Login { get; set; }
+
+        /// <summary>
+        /// Gets or sets the IsActive.
+        /// </summary>
+        public bool IsActive { get; set; }
+
+        /// <summary>
         /// Gets or sets the site id.
         /// </summary>
         public int TeamId { get; set; }
