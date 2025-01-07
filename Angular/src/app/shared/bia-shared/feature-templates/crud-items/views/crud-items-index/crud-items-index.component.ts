@@ -145,7 +145,6 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
 
   useCalcModeChange(e: boolean) {
     this.crudConfiguration.useCalcMode = e;
-    this.useCalcModeConfig();
   }
 
   useSignalRChange(e: boolean) {
@@ -190,20 +189,6 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     }
   }
 
-  isLoadAllOptionsSubsribe = false;
-  protected useCalcModeConfig() {
-    if (this.crudConfiguration.useCalcMode && !this.isLoadAllOptionsSubsribe) {
-      this.isLoadAllOptionsSubsribe = true;
-      this.sub.add(
-        this.biaTranslationService.currentCulture$.subscribe(() => {
-          this.crudItemService.optionsService.loadAllOptions(
-            this.crudConfiguration.optionFilter
-          );
-        })
-      );
-    }
-  }
-
   protected usePopupConfig(manualChange: boolean) {
     if (manualChange) {
       this.applyDynamicComponent(this.activatedRoute.routeConfig?.children);
@@ -239,6 +224,15 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     this.sub = new Subscription();
 
     this.initTableConfiguration();
+
+    this.sub.add(
+      this.biaTranslationService.currentCulture$.subscribe(() => {
+        this.crudItemService.optionsService.loadAllOptions(
+          this.crudConfiguration.optionFilter
+        );
+      })
+    );
+
     this.sub.add(
       this.authService.authInfo$.subscribe((authInfo: AuthInfo) => {
         if (authInfo && authInfo.token !== '') {
@@ -330,7 +324,6 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
   onDisplay() {
     this.checkhasAdvancedFilter();
     this.useViewConfig(false);
-    this.useCalcModeConfig();
     this.useSignalRConfig(false);
     this.usePopupConfig(false);
   }

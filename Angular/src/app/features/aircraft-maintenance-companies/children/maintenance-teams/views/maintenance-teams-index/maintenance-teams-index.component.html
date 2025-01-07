@@ -77,6 +77,9 @@
       <bia-table
         *ngIf="!crudConfiguration.useCalcMode"
         [elements]="(crudItems$ | async) ?? []"
+        [dictOptionDtos]="
+          (maintenanceTeamService.optionsService.dictOptionDtos$ | async) ?? []
+        "
         [totalRecord]="(totalCount$ | async) ?? 0"
         [columnToDisplays]="displayedColumns"
         [pageSize]="pageSize"
