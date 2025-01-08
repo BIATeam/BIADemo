@@ -52,5 +52,6 @@ export class EnginesIndexComponent
     this.canEdit = this.authService.hasPermission(Permission.Engine_Update);
     this.canDelete = this.authService.hasPermission(Permission.Engine_Delete);
     this.canAdd = this.authService.hasPermission(Permission.Engine_Create);
+    this.canSave = this.authService.hasPermission(Permission.Engine_Save);
   }
 }

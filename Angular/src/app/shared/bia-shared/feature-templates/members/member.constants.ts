@@ -13,6 +13,11 @@ export const memberCRUDConfiguration: CrudConfig<Member> =
     // useViewTeamWithTypeId: TeamTypeId.Site, // use to filter view by teams => should know the type of team
     usePopup: true,
     useOfflineMode: false,
+    bulkMode: {
+      useInsert: false,
+      useUpdate: false,
+      useDelete: false,
+    },
     showIcons: {
       showCalcMode: true,
     },

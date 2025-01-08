@@ -123,10 +123,104 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
             }
         }
 
+        public override Func<MemberDto, object[]> DtoToRecord(List<string> headerNames = null)
+        {
+            return x =>
+            {
+                List<object> records = new List<object>();
+
+                if (headerNames?.Any() == true)
+                {
+                    foreach (string headerName in headerNames)
+                    {
+                        if (string.Equals(headerName, HeaderName.Id, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVNumber(x.Id));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.User, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVString(x.User?.Display));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.LastName, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVString(x.LastName));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.FirstName, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVString(x.FirstName));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.Login, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVString(x.Login));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.IsActive, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVBool(x.IsActive));
+                        }
+
+                        //if (string.Equals(headerName, HeaderName.TeamId, StringComparison.OrdinalIgnoreCase))
+                        //{
+                        //    records.Add(CSVNumber(x.TeamId));
+                        //}
+
+                        if (string.Equals(headerName, HeaderName.Roles, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVList(x.Roles));
+                        }
+                    }
+                }
+
+                return records.ToArray();
+            };
+        }
+
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesForUpdate"/>
         public override Expression<Func<Member, object>>[] IncludesForUpdate()
         {
             return new Expression<Func<Member, object>>[] { member => member.MemberRoles };
+        }
+
+        public struct HeaderName
+        {
+            /// <summary>
+            /// Header Name Id.
+            /// </summary>
+            public const string Id = "id";
+
+            /// <summary>
+            /// Header Name User.
+            /// </summary>
+            public const string User = "user";
+
+            /// <summary>
+            /// Header Name LastName.
+            /// </summary>
+            public const string LastName = "lastName";
+
+            /// <summary>
+            /// Header Name FirstName.
+            /// </summary>
+            public const string FirstName = "firstName";
+
+            /// <summary>
+            /// Header Name Login.
+            /// </summary>
+            public const string Login = "login";
+
+            /// <summary>
+            /// Header Name IsActive.
+            /// </summary>
+            public const string IsActive = "isActive";
+
+            /// <summary>
+            /// Header Name Roles.
+            /// </summary>
+            public const string Roles = "roles";
         }
     }
 }

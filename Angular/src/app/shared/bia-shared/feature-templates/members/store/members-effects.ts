@@ -179,6 +179,43 @@ export class MembersEffects {
     )
   );
 
+  save$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(FeatureMembersActions.save),
+      map(x => x?.members),
+      concatMap(members =>
+        of(members).pipe(
+          withLatestFrom(
+            this.store.select(FeatureMembersStore.getLastLazyLoadEvent)
+          )
+        )
+      ),
+      switchMap(([members, event]) => {
+        return this.memberDas
+          .save({
+            items: members,
+            offlineMode: memberCRUDConfiguration.useOfflineMode,
+          })
+          .pipe(
+            map(() => {
+              this.biaMessageService.showUpdateSuccess();
+              if (memberCRUDConfiguration.useSignalR) {
+                return biaSuccessWaitRefreshSignalR();
+              } else {
+                return FeatureMembersActions.loadAllByPost({
+                  event: event,
+                });
+              }
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(FeatureMembersActions.failure({ error: err }));
+            })
+          );
+      })
+    )
+  );
+
   destroy$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureMembersActions.remove),

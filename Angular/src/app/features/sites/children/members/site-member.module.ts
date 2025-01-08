@@ -3,7 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
 import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
+import { memberCRUDConfiguration } from 'src/app/shared/bia-shared/feature-templates/members/member.constants';
 import { MemberModule } from 'src/app/shared/bia-shared/feature-templates/members/member.module';
+import { MemberBulkComponent } from 'src/app/shared/bia-shared/feature-templates/members/views/member-bulk/member-bulk.component';
 import { Permission } from 'src/app/shared/permission';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { SiteMemberEditComponent } from './views/site-member-edit/site-member-edit.component';
@@ -34,6 +36,29 @@ const ROUTES: Routes = [
         },
         component: PopupLayoutComponent,
         // component: FullPageLayoutComponent,
+        canActivate: [PermissionGuard],
+      },
+      {
+        path: 'bulk',
+        data: {
+          breadcrumb: 'member.import',
+          canNavigate: false,
+          style: {
+            minWidth: '80vw',
+            maxWidth: '80vw',
+            maxHeight: '80vh',
+          },
+          permission: Permission.Site_Member_Save,
+          title: 'member.import',
+          injectComponent: MemberBulkComponent,
+          dynamicComponent: () =>
+            memberCRUDConfiguration.usePopup
+              ? PopupLayoutComponent
+              : FullPageLayoutComponent,
+        },
+        component: memberCRUDConfiguration.usePopup
+          ? PopupLayoutComponent
+          : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
       },
       {

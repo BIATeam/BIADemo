@@ -63,7 +63,8 @@
     "isToBeMaintained": "Mantenido",
     "isHybrid": "Híbrido",
     "principalPart": "Parte principal",
-    "installedParts": "Partes instaladas"
+    "installedParts": "Partes instaladas",
+    "import": "Importar motors"
   },
   "maintenanceTeam": {
     "add": "Añadir equipo de mantenimiento",
@@ -135,6 +136,7 @@
   "End BIADemo": "To remove in project up to here",
   "member": {
     "add": "Añadir miembro",
+    "import": "Importar miembros",
     "isActive": "Activo",
     "listOf": "Lista de miembros",
     "manage": "Gestionar miembro",

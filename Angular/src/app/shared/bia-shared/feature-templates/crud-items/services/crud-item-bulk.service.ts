@@ -119,14 +119,19 @@ export class CrudItemBulkService<T extends BaseDto> {
     ) {
       allObjs$ = this.crudItemService.lastLazyLoadEvent$.pipe(
         map(event => {
-          if (this.bulkParam.useCurrentView === true) {
-            const customEvent = { ...event };
-            customEvent.first = 0;
-            customEvent.rows = 0;
-            return customEvent;
-          } else {
-            return {};
+          const customEvent = { ...event };
+          customEvent.first = 0;
+          customEvent.rows = 0;
+
+          if (this.bulkParam.useCurrentView !== true) {
+            customEvent.filters = {};
+            customEvent.globalFilter = null;
+            if ('advancedFilter' in customEvent) {
+              customEvent.advancedFilter = null;
+            }
           }
+
+          return customEvent;
         }),
         switchMap(event =>
           this.crudItemService.dasService
