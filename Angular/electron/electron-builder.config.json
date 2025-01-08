@@ -1,17 +1,9 @@
 {
-  "appId": "com.yourdoamnin.yourapp",
+  "appId": "com.bia.biademo",
   "directories": {
     "buildResources": "resources"
   },
-  "files": [
-    "assets/**/*",
-    "build/**/*",
-    "capacitor.config.*",
-    "app/**/*"
-  ],
-  "publish": {
-    "provider": "github"
-  },
+  "files": ["assets/**/*", "build/**/*", "capacitor.config.*", "app/**/*"],
   "nsis": {
     "allowElevation": true,
     "oneClick": false,
