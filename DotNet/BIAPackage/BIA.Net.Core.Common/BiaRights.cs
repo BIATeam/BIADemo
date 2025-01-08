@@ -30,5 +30,16 @@ namespace BIA.Net.Core.Common
             /// </summary>
             public const string Options = "Languages_Options";
         }
+
+        /// <summary>
+        /// The Profile image access rights.
+        /// </summary>
+        public static class ProfileImage
+        {
+            /// <summary>
+            /// The right to get the profile image.
+            /// </summary>
+            public const string Get = "ProfileImage_Get";
+        }
     }
 }

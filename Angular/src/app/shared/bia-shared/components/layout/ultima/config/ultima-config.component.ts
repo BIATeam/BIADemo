@@ -47,7 +47,7 @@ export class BiaUltimaConfigComponent {
       .subscribe();
     this.urlEditAvatar =
       this.appSettingsService.appSettings.profileConfiguration
-        ?.urlEditProfileImage ?? '';
+        ?.editProfileImageUrl ?? '';
   }
 
   get visible(): boolean {
