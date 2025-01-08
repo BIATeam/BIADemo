@@ -645,7 +645,7 @@ export class BiaTableComponent<TDto extends { id: number }>
     const table: Table = this as unknown as Table;
 
     const storage = table.getStorage();
-    let state: TableState = {};
+    const state: TableState = {};
 
     if (table.paginator) {
       state.first = <number>table.first;

@@ -41,8 +41,17 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
                 {
                     { "Id", member => member.Id },
                     {
-                        "Roles", member => member.MemberRoles.Select(x =>
-                        x.Role.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? x.Role.Label).OrderBy(x => x)
+                        "Roles",
+                        member => member.MemberRoles
+                        .SelectMany(
+                            memberRole => memberRole.Role.RoleTranslations
+                            .Where(roleTranslation => roleTranslation.Language.Code == this.UserContext.Language)
+                            .Select(roleTranslation => roleTranslation.Label))
+                        .Union(
+                            member.MemberRoles
+                            .Where(memberRole => !memberRole.Role.RoleTranslations.Any(rt => rt.Language.Code == this.UserContext.Language))
+                            .Select(memberRole => memberRole.Role.Label))
+                        .OrderBy(x => x)
                     },
                     { "User", member => member.User.LastName + " " + member.User.FirstName + " (" + member.User.Login + ")" },
                     { "FirstName", member => member.User.FirstName },

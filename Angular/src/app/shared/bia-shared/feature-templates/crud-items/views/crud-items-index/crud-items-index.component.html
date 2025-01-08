@@ -51,6 +51,9 @@
           : ((crudItems$ | async) ?? [])
       "
       [elements]="(crudItems$ | async) ?? []"
+      [dictOptionDtos]="
+        (crudItemService.optionsService.dictOptionDtos$ | async) ?? []
+      "
       [totalRecord]="(totalCount$ | async) ?? 0"
       [columnToDisplays]="displayedColumns"
       [reorderableColumns]="reorderableColumns"

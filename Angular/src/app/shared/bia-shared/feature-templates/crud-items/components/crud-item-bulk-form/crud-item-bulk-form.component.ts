@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -22,6 +23,11 @@ import { clone } from 'src/app/shared/bia-shared/utils';
 import { CrudConfig } from '../../model/crud-config';
 import { BulkParam } from '../../services/crud-item-bulk.service';
 
+interface FormatExample {
+  format: string;
+  example: string;
+}
+
 @Component({
   selector: 'bia-crud-item-bulk-form',
   templateUrl: './crud-item-bulk-form.component.html',
@@ -36,8 +42,8 @@ export class CrudItemBulkFormComponent<TDto extends { id: number }> {
   insertChecked = false;
   loading = false;
   hasDate = false;
-  dateFormats: string[];
-  timeFormats: string[];
+  dateFormats: FormatExample[];
+  timeFormats: FormatExample[];
   form: UntypedFormGroup;
 
   displayedColumns: KeyValuePair[];
@@ -91,10 +97,13 @@ export class CrudItemBulkFormComponent<TDto extends { id: number }> {
   @Input() canAdd = false;
   @Output() save = new EventEmitter<any[]>();
   @Output() cancel = new EventEmitter<void>();
-  @Output() fileSelected = new EventEmitter<any>();
+  @Output() fileSelected = new EventEmitter<File>();
   @Output() changeBulkParam = new EventEmitter<BulkParam>();
 
-  constructor(public formBuilder: UntypedFormBuilder) {
+  constructor(
+    public formBuilder: UntypedFormBuilder,
+    public datepipe: DatePipe
+  ) {
     this.initForm();
   }
 
@@ -118,12 +127,29 @@ export class CrudItemBulkFormComponent<TDto extends { id: number }> {
 
   initDdlFormatDate() {
     if (this.appSettings && this.appSettings.cultures.length > 0) {
-      this.dateFormats = [
-        ...new Set(this.appSettings.cultures.map(x => x.dateFormat)), // new Set => Distinct()
+      const dateFormatSets = [
+        ...new Set(this.appSettings.cultures.map(x => x.dateFormat)),
       ];
-      this.timeFormats = [
+
+      const timeFormatSets = [
         ...new Set(this.appSettings.cultures.map(x => x.timeFormat)),
       ];
+
+      const exampleDate = new Date(2025, 11, 31, 9, 45);
+
+      this.dateFormats = dateFormatSets.map(dateFormatSet => {
+        return <FormatExample>{
+          format: dateFormatSet,
+          example: this.datepipe.transform(exampleDate, dateFormatSet),
+        };
+      });
+
+      this.timeFormats = timeFormatSets.map(timeFormatSet => {
+        return <FormatExample>{
+          format: timeFormatSet,
+          example: this.datepipe.transform(exampleDate, timeFormatSet),
+        };
+      });
     }
   }
 
@@ -170,9 +196,8 @@ export class CrudItemBulkFormComponent<TDto extends { id: number }> {
     }
   }
 
-  onFileSelected(event: any) {
-    this.loading = true;
-    this.fileSelected.next(event);
+  onFileSelected() {
+    this._bulkData = null;
   }
 
   onCancel() {
@@ -196,6 +221,14 @@ export class CrudItemBulkFormComponent<TDto extends { id: number }> {
 
     if (toSaves.length > 0) {
       this.save.emit(toSaves);
+    }
+  }
+
+  onApply() {
+    const file: File = this.fileUpload.files[0];
+    if (file) {
+      this.loading = true;
+      this.fileSelected.next(file);
     }
   }
 

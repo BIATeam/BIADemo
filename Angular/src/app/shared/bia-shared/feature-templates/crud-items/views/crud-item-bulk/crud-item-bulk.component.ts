@@ -105,9 +105,9 @@ export abstract class CrudItemBulkComponent<CrudItem extends BaseDto>
     });
   }
 
-  protected onFileSelected(event: any) {
+  protected onFileSelected(file: File) {
     this.crudItemBulkService
-      .uploadCsv(event.files)
+      .uploadCsv(file)
       .pipe(take(1)) // auto unsubscribe
       .subscribe((bulkData: BulkData<CrudItem>) => (this.bulkData = bulkData));
   }

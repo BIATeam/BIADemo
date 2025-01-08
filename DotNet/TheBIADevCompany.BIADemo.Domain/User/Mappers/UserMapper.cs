@@ -43,6 +43,19 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
                     { HeaderName.LastName, user => user.LastName },
                     { HeaderName.FirstName, user => user.FirstName },
                     { HeaderName.Login, user => user.Login },
+                    {
+                        HeaderName.Roles,
+                        user => user.Roles
+                        .SelectMany(
+                            role => role.RoleTranslations
+                            .Where(roleTranslation => roleTranslation.Language.Code == this.UserContext.Language)
+                            .Select(roleTranslation => roleTranslation.Label))
+                        .Union(
+                            user.Roles
+                            .Where(role => !role.RoleTranslations.Any(rt => rt.Language.Code == this.UserContext.Language))
+                            .Select(role => role.Label))
+                        .OrderBy(x => x)
+                    },
                 };
             }
         }
