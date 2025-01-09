@@ -4,7 +4,7 @@ import { Component, ElementRef, Input, OnDestroy } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuItem } from 'primeng/api';
-import { catchError, map, Observable, Subscription, take, tap } from 'rxjs';
+import { Observable, Subscription, catchError, map, take, tap } from 'rxjs';
 import { BiaEnvironmentService } from 'src/app/core/bia-core/services/bia-environment.service';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';

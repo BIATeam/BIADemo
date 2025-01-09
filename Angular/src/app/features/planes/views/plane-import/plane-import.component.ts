@@ -1,16 +1,16 @@
 import { Component, Injector } from '@angular/core';
-import { CrudItemBulkComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-bulk/crud-item-bulk.component';
+import { CrudItemImportComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-import/crud-item-import.component';
 import { Permission } from 'src/app/shared/permission';
 import { Plane } from '../../model/plane';
 import { planeCRUDConfiguration } from '../../plane.constants';
 import { PlaneService } from '../../services/plane.service';
 
 @Component({
-  selector: 'app-plane-bulk',
+  selector: 'app-plane-import',
   templateUrl:
-    '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-bulk/crud-item-bulk.component.html',
+    '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
 })
-export class PlaneBulkComponent extends CrudItemBulkComponent<Plane> {
+export class PlaneImportComponent extends CrudItemImportComponent<Plane> {
   constructor(
     protected injector: Injector,
     private planeService: PlaneService

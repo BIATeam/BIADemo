@@ -5,7 +5,7 @@ import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/la
 import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
 import { memberCRUDConfiguration } from 'src/app/shared/bia-shared/feature-templates/members/member.constants';
 import { MemberModule } from 'src/app/shared/bia-shared/feature-templates/members/member.module';
-import { MemberBulkComponent } from 'src/app/shared/bia-shared/feature-templates/members/views/member-bulk/member-bulk.component';
+import { MemberImportComponent } from 'src/app/shared/bia-shared/feature-templates/members/views/member-import/member-import.component';
 import { Permission } from 'src/app/shared/permission';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { SiteMemberEditComponent } from './views/site-member-edit/site-member-edit.component';
@@ -39,7 +39,7 @@ const ROUTES: Routes = [
         canActivate: [PermissionGuard],
       },
       {
-        path: 'bulk',
+        path: 'import',
         data: {
           breadcrumb: 'member.import',
           canNavigate: false,
@@ -50,7 +50,7 @@ const ROUTES: Routes = [
           },
           permission: Permission.Site_Member_Save,
           title: 'member.import',
-          injectComponent: MemberBulkComponent,
+          injectComponent: MemberImportComponent,
           dynamicComponent: () =>
             memberCRUDConfiguration.usePopup
               ? PopupLayoutComponent

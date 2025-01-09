@@ -340,8 +340,8 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     }
   }
 
-  onBulk() {
-    this.router.navigate(['bulk'], { relativeTo: this.activatedRoute });
+  onImport() {
+    this.router.navigate(['import'], { relativeTo: this.activatedRoute });
   }
 
   onClickRow(crudItemId: any) {

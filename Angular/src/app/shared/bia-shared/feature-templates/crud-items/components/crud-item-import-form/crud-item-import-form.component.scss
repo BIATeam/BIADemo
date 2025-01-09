@@ -1,11 +1,11 @@
 @import '../../../../../../../scss/bia/bia-variables';
 
 :host ::ng-deep {
-  .bia-bulk-accordion {
-    .bia-bulk-tab-error .p-accordion-header-link {
+  .bia-import-accordion {
+    .bia-import-tab-error .p-accordion-header-link {
       background-color: rgba($biaRed, 0.5) !important;
     }
-    .bia-bulk-selected .p-accordion-header-link {
+    .bia-import-selected .p-accordion-header-link {
       background-color: rgba($biaGreen, 0.5) !important;
     }
   }

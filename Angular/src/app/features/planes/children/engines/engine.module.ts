@@ -7,7 +7,7 @@ import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { PartOptionModule } from 'src/app/domains/part-option/part-option.module';
 import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
 import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
-import { CrudItemBulkModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item-bulk.module';
+import { CrudItemImportModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item-import.module';
 import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
 import { Permission } from 'src/app/shared/permission';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -16,8 +16,8 @@ import { EngineTableComponent } from './components/engine-table/engine-table.com
 import { engineCRUDConfiguration } from './engine.constants';
 import { FeatureEnginesStore } from './store/engine.state';
 import { EnginesEffects } from './store/engines-effects';
-import { EngineBulkComponent } from './views/engine-bulk/engine-bulk.component';
 import { EngineEditComponent } from './views/engine-edit/engine-edit.component';
+import { EngineImportComponent } from './views/engine-import/engine-import.component';
 import { EngineItemComponent } from './views/engine-item/engine-item.component';
 import { EngineNewComponent } from './views/engine-new/engine-new.component';
 import { EnginesIndexComponent } from './views/engines-index/engines-index.component';
@@ -53,7 +53,7 @@ export const ROUTES: Routes = [
         canActivate: [PermissionGuard],
       },
       {
-        path: 'bulk',
+        path: 'import',
         data: {
           breadcrumb: 'engine.import',
           canNavigate: false,
@@ -64,7 +64,7 @@ export const ROUTES: Routes = [
           },
           permission: Permission.Engine_Save,
           title: 'engine.import',
-          injectComponent: EngineBulkComponent,
+          injectComponent: EngineImportComponent,
           dynamicComponent: () =>
             engineCRUDConfiguration.usePopup
               ? PopupLayoutComponent
@@ -125,12 +125,12 @@ export const ROUTES: Routes = [
     EngineEditComponent,
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     EngineTableComponent,
-    EngineBulkComponent,
+    EngineImportComponent,
   ],
   imports: [
     SharedModule,
     CrudItemModule,
-    CrudItemBulkModule,
+    CrudItemImportModule,
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature(
       engineCRUDConfiguration.storeKey,

@@ -69,17 +69,17 @@
     <button
       type="button"
       pButton
-      *ngIf="displayBulkButton()"
+      *ngIf="displayImportButton()"
       class="p-button-outlined"
       label="{{ 'bia.export' | translate }}"
       (click)="fullExportCSV.emit()"></button>
     <button
       type="button"
       pButton
-      *ngIf="displayBulkButton()"
+      *ngIf="displayImportButton()"
       class="p-button-outlined"
       label="{{ 'bia.import' | translate }}"
-      (click)="bulk.next()"></button>
+      (click)="import.next()"></button>
     <button
       type="button"
       pButton

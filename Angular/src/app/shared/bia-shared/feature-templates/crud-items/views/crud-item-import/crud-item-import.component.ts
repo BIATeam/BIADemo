@@ -12,10 +12,10 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { BiaFormComponent } from 'src/app/shared/bia-shared/components/form/bia-form/bia-form.component';
 import {
-  BulkData,
-  BulkParam,
-  CrudItemBulkService,
-} from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-bulk.service';
+  CrudItemImportService,
+  ImportData,
+  ImportParam,
+} from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-import.service';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import {
   BiaFieldConfig,
@@ -28,13 +28,13 @@ import { CrudItemService } from '../../services/crud-item.service';
 @Component({
   template: '',
 })
-export abstract class CrudItemBulkComponent<CrudItem extends BaseDto>
+export abstract class CrudItemImportComponent<CrudItem extends BaseDto>
   implements OnInit, AfterViewInit, OnDestroy
 {
   protected sub = new Subscription();
   protected crudConfiguration: CrudConfig<CrudItem>;
-  protected bulkData: BulkData<CrudItem>;
-  protected crudItemBulkService: CrudItemBulkService<CrudItem>;
+  protected importData: ImportData<CrudItem>;
+  protected crudItemImportService: CrudItemImportService<CrudItem>;
   protected authService: AuthService;
   protected biaTranslationService: BiaTranslationService;
   protected router: Router;
@@ -51,9 +51,9 @@ export abstract class CrudItemBulkComponent<CrudItem extends BaseDto>
   ) {
     this.router = this.injector.get<Router>(Router);
     this.activatedRoute = this.injector.get<ActivatedRoute>(ActivatedRoute);
-    this.crudItemBulkService = this.injector.get<CrudItemBulkService<CrudItem>>(
-      CrudItemBulkService<CrudItem>
-    );
+    this.crudItemImportService = this.injector.get<
+      CrudItemImportService<CrudItem>
+    >(CrudItemImportService<CrudItem>);
     this.authService = this.injector.get<AuthService>(AuthService);
     this.biaTranslationService = this.injector.get<BiaTranslationService>(
       BiaTranslationService
@@ -71,7 +71,7 @@ export abstract class CrudItemBulkComponent<CrudItem extends BaseDto>
   }
 
   ngAfterViewInit() {
-    this.crudItemBulkService.init(
+    this.crudItemImportService.init(
       this.getForm(),
       this.addColumnId(this.crudConfiguration),
       this.crudItemService
@@ -106,10 +106,12 @@ export abstract class CrudItemBulkComponent<CrudItem extends BaseDto>
   }
 
   protected onFileSelected(file: File) {
-    this.crudItemBulkService
+    this.crudItemImportService
       .uploadCsv(file)
       .pipe(take(1)) // auto unsubscribe
-      .subscribe((bulkData: BulkData<CrudItem>) => (this.bulkData = bulkData));
+      .subscribe(
+        (importData: ImportData<CrudItem>) => (this.importData = importData)
+      );
   }
 
   protected onCancel() {
@@ -132,7 +134,7 @@ export abstract class CrudItemBulkComponent<CrudItem extends BaseDto>
     return this.biaFormComponent;
   }
 
-  protected onChangeBulkParam(bulkParam: BulkParam) {
-    this.crudItemBulkService.bulkParam = bulkParam;
+  protected onChangeImportParam(importParam: ImportParam) {
+    this.crudItemImportService.importParam = importParam;
   }
 }

@@ -1,16 +1,16 @@
 import { Component, Injector } from '@angular/core';
-import { CrudItemBulkComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-bulk/crud-item-bulk.component';
+import { CrudItemImportComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-import/crud-item-import.component';
 import { Permission } from 'src/app/shared/permission';
 import { User } from '../../model/user';
 import { UserService } from '../../services/user.service';
 import { userCRUDConfiguration } from '../../user.constants';
 
 @Component({
-  selector: 'bia-user-bulk',
+  selector: 'bia-user-import',
   templateUrl:
-    '../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-bulk/crud-item-bulk.component.html',
+    '../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
 })
-export class UserBulkComponent extends CrudItemBulkComponent<User> {
+export class UserImportComponent extends CrudItemImportComponent<User> {
   constructor(
     protected injector: Injector,
     protected userService: UserService

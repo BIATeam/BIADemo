@@ -25,11 +25,11 @@ export class CrudConfig<TDto extends { id: number }> {
   fieldsConfig: BiaFieldsConfig<TDto>;
   defaultViewPref: BiaTableState;
   optionFilter: any;
-  useBulk: boolean;
+  useImport: boolean;
   useCompactMode?: boolean;
   useVirtualScroll = false;
   useResizableColumn = false;
-  bulkMode?: {
+  importMode?: {
     useInsert: boolean;
     useUpdate: boolean;
     useDelete: boolean;
@@ -56,7 +56,7 @@ export class CrudConfig<TDto extends { id: number }> {
     usePopup = true,
     useOfflineMode = false,
     optionFilter = undefined,
-    bulkMode,
+    importMode,
     useCompactMode = false,
     useVirtualScroll = false,
     useResizableColumn = false,
@@ -73,7 +73,7 @@ export class CrudConfig<TDto extends { id: number }> {
     usePopup?: boolean;
     useOfflineMode?: boolean;
     optionFilter?: any;
-    bulkMode?: {
+    importMode?: {
       useInsert: boolean;
       useUpdate: boolean;
       useDelete: boolean;
@@ -94,11 +94,11 @@ export class CrudConfig<TDto extends { id: number }> {
     this.usePopup = usePopup;
     this.useOfflineMode = useOfflineMode;
     this.optionFilter = optionFilter;
-    this.bulkMode = bulkMode;
-    this.useBulk =
-      bulkMode?.useDelete === true ||
-      bulkMode?.useInsert === true ||
-      bulkMode?.useUpdate === true;
+    this.importMode = importMode;
+    this.useImport =
+      importMode?.useDelete === true ||
+      importMode?.useInsert === true ||
+      importMode?.useUpdate === true;
     this.useCompactMode = useCompactMode;
     this.useVirtualScroll = !!useVirtualScroll;
     this.useResizableColumn = useResizableColumn;

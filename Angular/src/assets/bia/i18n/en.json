@@ -12,7 +12,6 @@
     "backgroundTaskReadOnly": "View the tasks",
     "backgroundtasks": "Background Tasks",
     "browse": "Browse",
-    "bulk": "Bulk",
     "cancel": "Cancel",
     "close": "Close",
     "confirm": "Confirm",
@@ -140,7 +139,7 @@
     "updateElementSuccess": "Item updated successfully",
     "userAlreadyAssociatedSite": "This user is already associated with this site"
   },
-  "bulk": {
+  "import": {
     "dateFormat": "Date Format",
     "timeFormat": "Time Format",
     "useCurrentView": "Base the import processing on the current filter"

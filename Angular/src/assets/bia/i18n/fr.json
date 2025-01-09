@@ -12,7 +12,6 @@
     "backgroundTaskReadOnly": "Voir les taches",
     "backgroundtasks": "Tâches d'arrière-plan",
     "browse": "Parcourir",
-    "bulk": "En Masse",
     "cancel": "Annuler",
     "close": "Fermer",
     "confirm": "Confirmer",
@@ -140,7 +139,7 @@
     "updateElementSuccess": "Élément mis à jour avec succès",
     "userAlreadyAssociatedSite": "Cet utilisateur est déjà associé à ce site"
   },
-  "bulk": {
+  "import": {
     "dateFormat": "Format Date",
     "timeFormat": "Format Heure",
     "useCurrentView": "Baser le traitement de l'import sur le filtre courant"

@@ -1,16 +1,16 @@
 import { Component, Injector } from '@angular/core';
-import { CrudItemBulkComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-bulk/crud-item-bulk.component';
+import { CrudItemImportComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-import/crud-item-import.component';
 import { Permission } from 'src/app/shared/permission';
 import { engineCRUDConfiguration } from '../../engine.constants';
 import { Engine } from '../../model/engine';
 import { EngineService } from '../../services/engine.service';
 
 @Component({
-  selector: 'app-engine-bulk',
+  selector: 'app-engine-import',
   templateUrl:
-    '../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-bulk/crud-item-bulk.component.html',
+    '../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
 })
-export class EngineBulkComponent extends CrudItemBulkComponent<Engine> {
+export class EngineImportComponent extends CrudItemImportComponent<Engine> {
   constructor(
     protected injector: Injector,
     private engineService: EngineService
