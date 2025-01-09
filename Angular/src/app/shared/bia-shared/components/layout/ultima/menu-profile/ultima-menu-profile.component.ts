@@ -1,8 +1,11 @@
 import { animate, style, transition, trigger } from '@angular/animations';
+import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, Input, OnDestroy } from '@angular/core';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuItem } from 'primeng/api';
-import { Subscription } from 'rxjs';
+import { catchError, map, Observable, Subscription, take, tap } from 'rxjs';
+import { BiaEnvironmentService } from 'src/app/core/bia-core/services/bia-environment.service';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
@@ -48,17 +51,33 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
   }
   @Input() supportedLangs: string[];
   @Input() set login(value: string) {
-    const url =
-      this.appSettingsService.appSettings.profileConfiguration?.urlProfileImage.replace(
-        '{login}',
-        value
-      );
-    this.avatarUrl = url || this.defaultProfileImage;
+    const profile = this.appSettingsService.appSettings.profileConfiguration;
+    this.externalImage = profile?.clientProfileImageGetMode ?? false;
+    if (profile?.profileImageUrlOrPath) {
+      if (!this.externalImage) {
+        this.avatarUrl = this.defaultProfileImage;
+        this.getImage(BiaEnvironmentService.getApiUrl() + '/ProfileImage/get')
+          .pipe(
+            take(1),
+            tap(value => (this.avatarUrl = value)),
+            catchError(() => (this.avatarUrl = this.defaultProfileImage))
+          )
+          .subscribe();
+      } else {
+        this.avatarUrl = profile?.profileImageUrlOrPath.replace(
+          '{login}',
+          value
+        );
+      }
+    } else {
+      this.avatarUrl = this.defaultProfileImage;
+    }
   }
 
   private readonly defaultProfileImage = 'assets/bia/img/PersonPlaceholder.png';
 
-  avatarUrl = this.defaultProfileImage;
+  externalImage = false;
+  avatarUrl: string | SafeUrl = this.defaultProfileImage;
 
   usernameParam?: { name: string };
   displayName: string;
@@ -67,11 +86,13 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
   private sub: Subscription = new Subscription();
 
   constructor(
-    private readonly translateService: TranslateService,
+    protected readonly translateService: TranslateService,
     protected readonly layoutService: BiaLayoutService,
     protected biaTranslation: BiaTranslationService,
     protected biaTheme: BiaThemeService,
     protected readonly appSettingsService: AppSettingsService,
+    protected readonly http: HttpClient,
+    protected readonly sanitizer: DomSanitizer,
     public el: ElementRef
   ) {}
 
@@ -177,5 +198,15 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
 
   onImgError() {
     this.avatarUrl = this.defaultProfileImage;
+  }
+
+  getImage(url: string): Observable<SafeUrl> {
+    return this.http
+      .get(url, { responseType: 'blob' })
+      .pipe(
+        map(val =>
+          this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(val))
+        )
+      );
   }
 }

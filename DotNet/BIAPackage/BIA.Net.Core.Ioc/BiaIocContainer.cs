@@ -7,6 +7,7 @@ namespace BIA.Net.Core.IocContainer
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
     using System.Net.Http;
     using System.Reflection;
     using BIA.Net.Core.Application.Services;
@@ -135,6 +136,7 @@ namespace BIA.Net.Core.IocContainer
             collection.AddTransient<IClientForHubService, ClientForHubService>();
             collection.AddTransient<IBiaClaimsPrincipalService, BiaClaimsPrincipalService>();
             collection.AddTransient<IUserContextService, UserContextService>();
+            collection.AddTransient<IProfileImageService, ProfileImageService>();
         }
 
         private static void ConfigureDomainContainer(IServiceCollection collection)
@@ -188,6 +190,9 @@ namespace BIA.Net.Core.IocContainer
             collection.AddTransient<IBiaHybridCache, BiaHybridCache>();
 
             collection.AddHttpClient<IWakeUpWebApps, WakeUpWebApps>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
+
+            collection.AddTransient<IFileRepository, FileRepository>();
+            collection.AddHttpClient<IImageUrlRepository, ImageUrlRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
         }
     }
 }

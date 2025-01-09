@@ -311,6 +311,11 @@
         "Name": "LdapDomains_List",
         "Roles": [ "Admin", "UserManager", "Site_Admin" ]
       },
+      // ProfileImage
+      {
+        "Name": "ProfileImage_Get",
+        "Roles": [ "User" ]
+      },
       // Site
       {
         "Names": [ "Site_Access_All", "Site_Create", "Site_Update", "Site_Delete", "Site_Save" ],
