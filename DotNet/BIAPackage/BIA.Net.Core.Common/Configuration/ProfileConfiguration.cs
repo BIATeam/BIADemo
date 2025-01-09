@@ -4,21 +4,25 @@
 
 namespace BIA.Net.Core.Common.Configuration
 {
-    using System.Collections.Generic;
-
     /// <summary>
     /// The user profile configuration.
     /// </summary>
     public class ProfileConfiguration
     {
         /// <summary>
+        /// When true, the client will acces the url of the image by itself.
+        /// When false, the client will call the api that will make the call to the image url or path
+        /// </summary>
+        public bool ClientProfileImageGetMode { get; set; }
+
+        /// <summary>
         /// Url to access user profile image.
         /// </summary>
-        public string UrlProfileImage { get; set; }
+        public string ProfileImageUrlOrPath { get; set; }
 
         /// <summary>
         /// Url to access user profile image edit page.
         /// </summary>
-        public string UrlEditProfileImage { get; set; }
+        public string EditProfileImageUrl { get; set; }
     }
 }

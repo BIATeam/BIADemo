@@ -63,6 +63,7 @@ export interface TokenConf {
 }
 
 export interface ProfileConfiguration {
-  urlProfileImage: string;
-  urlEditProfileImage: string;
+  clientProfileImageGetMode: boolean;
+  profileImageUrlOrPath: string;
+  editProfileImageUrl: string;
 }
