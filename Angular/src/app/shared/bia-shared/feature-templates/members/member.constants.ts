@@ -14,8 +14,8 @@ export const memberCRUDConfiguration: CrudConfig<Member> =
     usePopup: true,
     useOfflineMode: false,
     bulkMode: {
-      useInsert: false,
-      useUpdate: false,
+      useInsert: true,
+      useUpdate: true,
       useDelete: false,
     },
     showIcons: {

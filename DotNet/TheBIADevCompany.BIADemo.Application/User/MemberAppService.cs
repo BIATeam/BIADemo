@@ -135,36 +135,10 @@ namespace TheBIADevCompany.BIADemo.Application.User
             }
         }
 
-        /// <inheritdoc cref="IMemberAppService.ExportCSV(PagingFilterFormatDto)"/>
-        public async Task<byte[]> ExportCSV(PagingFilterFormatDto filters)
+        /// <inheritdoc cref="IMemberAppService.GetCsvAsync"/>
+        public async Task<byte[]> GetCsvAsync(PagingFilterFormatDto filters)
         {
-            // We ignore paging to return all records
-            filters.First = 0;
-            filters.Rows = 0;
-
-            var query = await this.GetRangeAsync(filters: filters, specification: MemberSpecification.SearchGetAll(filters));
-
-            List<object[]> records = query.Results.Select(member => new object[]
-            {
-                member.User.Display,
-                string.Join("; ", member.Roles.Select(r => r.Display)),
-            }).ToList();
-
-            List<string> columnHeaders = null;
-            if (filters.Columns != null && filters.Columns.Count > 0)
-            {
-                columnHeaders = filters.Columns.Select(x => x.Value).ToList();
-            }
-
-            StringBuilder csv = new StringBuilder();
-            records.ForEach(line =>
-                    {
-                        csv.AppendLine(string.Join(BiaConstants.Csv.Separator, line));
-                    });
-
-            string csvSep = $"sep={BiaConstants.Csv.Separator}\n";
-            var buffer = Encoding.GetEncoding("iso-8859-1").GetBytes($"{csvSep}{string.Join(BiaConstants.Csv.Separator, columnHeaders ?? new List<string>())}\r\n{csv}");
-            return buffer;
+            return await this.GetCsvAsync<MemberDto, MemberMapper, PagingFilterFormatDto>(filters: filters, specification: MemberSpecification.SearchGetAll(filters));
         }
     }
 }

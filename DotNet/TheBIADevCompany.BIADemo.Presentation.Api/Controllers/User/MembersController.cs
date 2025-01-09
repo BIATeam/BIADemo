@@ -16,6 +16,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.User;
@@ -401,6 +402,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                     {
                         return this.StatusCode(StatusCodes.Status403Forbidden);
                     }
+
+                    // Specific Code to add user if required
+                    var addUserResult = await this.AddUserIfRequired(dto);
+                    if (addUserResult != null)
+                    {
+                        return addUserResult;
+                    }
                 }
 
 #pragma warning disable S1481 // Unused local variables should be removed
@@ -427,22 +435,33 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// <summary>
         /// Generates a csv file according to the filters.
         /// </summary>
-        /// <param name="filters">filters ( <see cref="LazyLoadDto"/>).</param>
+        /// <param name="filters">filters ( <see cref="PagingFilterFormatDto"/>).</param>
         /// <returns>a csv file.</returns>
         [HttpPost("csv")]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public virtual async Task<IActionResult> GetFileCSV([FromBody] PagingFilterFormatDto filters)
+        public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
-            if (!this.IsAuthorizeForTeam(int.Parse(filters.ParentIds[0]), Rights.Members.ListAccessSuffix).Result)
+            if (filters.ParentIds != null && filters.ParentIds.Length > 0 && filters.ParentIds[0] != null)
+            {
+                if (!this.IsAuthorizeForTeam(int.Parse(filters.ParentIds[0]), Rights.Members.ListAccessSuffix).Result)
+                {
+                    return this.StatusCode(StatusCodes.Status403Forbidden);
+                }
+            }
+            else
             {
                 return this.StatusCode(StatusCodes.Status403Forbidden);
             }
 
-            var buffer = await this.memberService.ExportCSV(filters);
-            string fileName = $"Members-{DateTime.Now:MM-dd-yyyy-HH-mm}{BiaConstants.Csv.Extension}";
-            return this.File(buffer, "text/csv;charset=utf-8", fileName);
+            byte[] buffer = await this.memberService.GetCsvAsync(filters);
+            return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Members{BiaConstants.Csv.Extension}");
         }
 
+        /// <summary>
+        /// Adds the user if required.
+        /// </summary>
+        /// <param name="dto">The dto.</param>
+        /// <returns>Return null if no error else return the error.</returns>
         private async Task<IActionResult> AddUserIfRequired(MemberDto dto)
         {
             if (dto.User == null)
