@@ -27,7 +27,7 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="principal">The claims of the current user.</param>
         /// <param name="imageUrlRepository">The repository to access an image from URL.</param>
         /// <param name="fileRepository">The repository to access a file in the system.</param>
-        public ProfileImageService(IPrincipal principal, IImageUrlRepository imageUrlRepository, IFileRepository fileRepository, IWakeUpWebApps wakeUpWebApps)
+        public ProfileImageService(IPrincipal principal, IImageUrlRepository imageUrlRepository, IFileRepository fileRepository)
         {
             this.biaClaimsPrincipal = principal as BiaClaimsPrincipal;
             this.imageUrlRepository = imageUrlRepository;

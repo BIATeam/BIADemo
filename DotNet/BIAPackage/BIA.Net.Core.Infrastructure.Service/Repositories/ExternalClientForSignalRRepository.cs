@@ -29,7 +29,8 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="options">Option for SignalR.</param>
         public ExternalClientForSignalRRepository(IOptions<CommonFeatures> options)
             : base(options)
-        { }
+        {
+        }
 
         /// <summary>
         /// Dispose() calls DisposeAsyncCore().
