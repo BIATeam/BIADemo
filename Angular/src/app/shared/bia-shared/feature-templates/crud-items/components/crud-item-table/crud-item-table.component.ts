@@ -33,6 +33,9 @@ export class CrudItemTableComponent<CrudItem extends BaseDto>
 
   public initForm() {
     this.form = this.formBuilder.group(this.formFields());
+    if (this.configuration.formValidators) {
+      this.form.addValidators(this.configuration.formValidators);
+    }
   }
   protected formFields() {
     const fields: { [key: string]: any } = { id: [this.element.id] };

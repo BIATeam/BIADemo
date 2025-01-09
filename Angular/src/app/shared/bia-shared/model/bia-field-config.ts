@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Validator } from '@angular/forms';
+import { Validator, ValidatorFn } from '@angular/forms';
 
 export enum PrimeNGFiltering {
   StartsWith = 'startsWith',
@@ -175,5 +175,6 @@ export class BiaFieldConfig<TDto> {
 
 export interface BiaFieldsConfig<TDto> {
   columns: BiaFieldConfig<TDto>[];
+  formValidators?: ValidatorFn[];
   advancedFilter?: any;
 }

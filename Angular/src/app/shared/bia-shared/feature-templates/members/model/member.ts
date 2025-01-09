@@ -5,6 +5,7 @@ import {
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+import { FieldValidator } from '../../../validators/field.validator';
 
 // TODO after creation of CRUD Member : adapt the model
 export interface Member extends BaseDto {
@@ -25,6 +26,7 @@ export class Members {
 
 // TODO after creation of CRUD Member : adapt the field configuration
 export const memberFieldsConfiguration: BiaFieldsConfig<Member> = {
+  formValidators: [FieldValidator.atLeastOneFilled(['user', 'login'])],
   columns: [
     Object.assign(new BiaFieldConfig<Member>('user', 'member.user'), {
       //isRequired: true,
