@@ -11,7 +11,7 @@ namespace BIA.Net.Core.Common.Configuration
     {
         /// <summary>
         /// When true, the client will acces the url of the image by itself.
-        /// When false, the client will call the api that will make the call to the image url or path
+        /// When false, the client will call the api that will make the call to the image url or path.
         /// </summary>
         public bool ClientProfileImageGetMode { get; set; }
 

@@ -123,6 +123,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
             }
         }
 
+        /// <inheritdoc/>
         public override Func<MemberDto, object[]> DtoToRecord(List<string> headerNames = null)
         {
             return x =>
@@ -163,11 +164,6 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
                             records.Add(CSVBool(x.IsActive));
                         }
 
-                        //if (string.Equals(headerName, HeaderName.TeamId, StringComparison.OrdinalIgnoreCase))
-                        //{
-                        //    records.Add(CSVNumber(x.TeamId));
-                        //}
-
                         if (string.Equals(headerName, HeaderName.Roles, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVList(x.Roles));
@@ -185,6 +181,9 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
             return new Expression<Func<Member, object>>[] { member => member.MemberRoles };
         }
 
+        /// <summary>
+        /// Header Name.
+        /// </summary>
         public struct HeaderName
         {
             /// <summary>
