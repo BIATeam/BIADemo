@@ -15,6 +15,14 @@ $oldPath = Resolve-Path -Path "$scriptPath\..\..\$oldName\Angular"
 Write-Host "old name: " $oldName
 Write-Host "new name: " $newName
 
+# Deletes comment // Except BIADemo 
+function RemoveCommentExceptBIADemo {
+  param(
+    $Path,
+    $ExcludeDir
+  )
+  ReplaceProjectNameRecurse -oldName "// Except BIADemo " -newName "" -Path $Path  -ExcludeDir $ExcludeDir
+}
 
 # Deletes lines between // Begin BIADemo and // End BIADemo 
 function RemoveCodeExample {
@@ -149,6 +157,9 @@ RemoveEmptyFolder "." -Path $newPath -ExcludeDir ('dist', 'node_modules', '.angu
 
 Write-Host "Remove code example partial files"
 RemoveCodeExample -Path $newPath -ExcludeDir ('dist', 'node_modules', '.angular', $docsFolder, 'scss' )
+
+Write-Host "Remove comment except BIADemo"
+RemoveCommentExceptBIADemo -Path $newPath -ExcludeDir ('dist', 'node_modules', '.angular', $docsFolder, 'scss' )
 
 Write-Host "replace project name"
 ReplaceProjectNameRecurse -oldName $oldName -newName $newName -Path $newPath  -ExcludeDir ('dist', 'node_modules', '.angular', 'scss')
