@@ -225,3 +225,10 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
   padding-top: 0;
   padding-bottom: 0.25rem;
 }
+
+.p-button-label {
+  max-width: 8em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

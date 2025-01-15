@@ -32,7 +32,9 @@
             *ngIf="canEdit"
             class="p-button-outlined"
             label="{{ 'aircraftMaintenanceCompany.edit' | translate }}"
-            (click)="onEdit(selectedCrudItems[0].id)"></button>
+            (click)="onEdit(selectedCrudItems[0].id)"
+            pTooltip="{{ 'aircraftMaintenanceCompany.edit' | translate }}"
+            tooltipPosition="top"></button>
           <!-- // Begin Child MaintenanceTeam -->
           <button
             pButton
@@ -42,7 +44,11 @@
             label="{{
               'aircraftMaintenanceCompany.maintenanceTeams' | translate
             }}"
-            (click)="onViewMaintenanceTeams()"></button>
+            (click)="onViewMaintenanceTeams()"
+            pTooltip="{{
+              'aircraftMaintenanceCompany.maintenanceTeams' | translate
+            }}"
+            tooltipPosition="top"></button>
           <button
             pButton
             [disabled]="

@@ -22,7 +22,9 @@
       pButton
       type="button"
       (click)="randomReviewPlane(team.id)"
-      label="{{ team.title }}"></button>
+      label="{{ team.title }}"
+      pTooltip="{{ team.title }}"
+      tooltipPosition="top"></button>
   </ng-container>
 </div>
 <BR />
@@ -41,7 +43,9 @@
       pButton
       type="button"
       (click)="randomReviewPlane(team.id)"
-      label="{{ team.title }}"></button>
+      label="{{ team.title }}"
+      pTooltip="{{ team.title }}"
+      tooltipPosition="top"></button>
   </ng-container>
 </div>
 <BR />
@@ -60,6 +64,8 @@
       pButton
       type="button"
       (click)="randomReviewPlane(team.id)"
-      label="{{ team.parentTeamTitle }} > {{ team.title }}"></button>
+      label="{{ team.parentTeamTitle }} > {{ team.title }}"
+      pTooltip="{{ team.parentTeamTitle }} > {{ team.title }}"
+      tooltipPosition="top"></button>
   </ng-container>
 </div>
