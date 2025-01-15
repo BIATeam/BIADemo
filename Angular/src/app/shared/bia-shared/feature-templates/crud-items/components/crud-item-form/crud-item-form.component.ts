@@ -23,6 +23,7 @@ export class CrudItemFormComponent<CrudItem extends BaseDto> {
   @Input() fields: BiaFieldConfig<CrudItem>[];
   @Input() formValidators?: ValidatorFn[];
   @Input() dictOptionDtos: DictOptionDto[];
+  @Input() isAdd?: boolean;
 
   @Output() save = new EventEmitter<CrudItem>();
   @Output() cancel = new EventEmitter<void>();

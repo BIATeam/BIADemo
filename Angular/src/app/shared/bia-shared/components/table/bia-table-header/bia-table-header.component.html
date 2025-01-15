@@ -22,7 +22,8 @@
       type="button"
       pButton
       [disabled]="!canDelete || nbSelectedElements === 0"
-      label="{{ 'bia.delete' | translate }}"
+      icon="pi pi-trash"
+      pTooltip="{{ 'bia.delete' | translate }}"
       (click)="onDelete()"></button>
     <ng-container *ngTemplateOutlet="actionOnSelectedTemplate"></ng-container>
   </div>
@@ -60,6 +61,7 @@
       pButton
       *ngIf="canExportCSV"
       class="p-button-outlined"
+      icon="pi pi-download"
       label="CSV"
       (click)="exportCSV.emit()"></button>
     <button
@@ -67,12 +69,14 @@
       pButton
       *ngIf="displayImportButton()"
       class="p-button-outlined"
+      icon="pi pi-download"
       label="{{ 'bia.export' | translate }}"
       (click)="fullExportCSV.emit()"></button>
     <button
       type="button"
       pButton
       *ngIf="displayImportButton()"
+      icon="pi pi-plus"
       class="p-button-outlined"
       label="{{ 'bia.import' | translate }}"
       (click)="import.next()"></button>
@@ -80,7 +84,8 @@
       type="button"
       pButton
       *ngIf="canAdd"
-      label="{{ 'bia.add' | translate }}"
+      icon="pi pi-plus"
+      pTooltip="{{ 'bia.add' | translate }}"
       (click)="onCreate()"></button>
   </div>
 </div>

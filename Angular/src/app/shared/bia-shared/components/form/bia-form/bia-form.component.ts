@@ -44,6 +44,7 @@ export class BiaFormComponent<TDto extends { id: number }>
   @Input() fields: BiaFieldConfig<TDto>[];
   @Input() formValidators?: ValidatorFn[];
   @Input() dictOptionDtos: DictOptionDto[];
+  @Input() isAdd?: boolean;
   @Output() save = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<void>();
 

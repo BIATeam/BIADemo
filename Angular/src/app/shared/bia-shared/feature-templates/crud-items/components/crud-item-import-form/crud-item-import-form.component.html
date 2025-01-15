@@ -3,7 +3,7 @@
     #fileUpload
     mode="basic"
     [chooseLabel]="'bia.browse' | translate"
-    chooseIcon="pi pi-upload"
+    chooseIcon="pi pi-download"
     [customUpload]="true"
     accept="text/csv"
     (onSelect)="onFileSelected()">
@@ -232,6 +232,7 @@
     (click)="onSave()"></button>
   <button
     pButton
+    icon="pi pi-times"
     label="{{ 'bia.cancel' | translate }}"
     type="button"
     class="p-button-outlined"
