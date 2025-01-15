@@ -275,7 +275,7 @@ export class BiaUltimaMenuItemComponent
         this.layoutService.isSlimPlus())
     )
       return this.active ? 'visible' : 'hidden';
-    else return this.root ? 'expanded' : this.active ? 'expanded' : 'collapsed';
+    else return this.active ? 'expanded' : 'collapsed';
   }
 
   get isHorizontal() {
@@ -291,7 +291,7 @@ export class BiaUltimaMenuItemComponent
 
   @HostBinding('class.active-menuitem')
   get activeClass() {
-    return this.active && !this.root;
+    return this.active;
   }
 
   ngOnDestroy() {
