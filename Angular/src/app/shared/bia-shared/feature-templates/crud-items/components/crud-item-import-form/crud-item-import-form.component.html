@@ -224,19 +224,19 @@
 <div class="flex flex-row gap-1 justify-content-end">
   <button
     pButton
+    icon="pi pi-times"
+    label="{{ 'bia.cancel' | translate }}"
+    type="button"
+    class="p-button-outlined"
+    (click)="onCancel()"></button>
+  <button
+    pButton
     [disabled]="
       updateChecked !== true && insertChecked !== true && deleteChecked !== true
     "
     label="{{ 'primeng.apply' | translate }}"
     type="button"
     (click)="onSave()"></button>
-  <button
-    pButton
-    icon="pi pi-times"
-    label="{{ 'bia.cancel' | translate }}"
-    type="button"
-    class="p-button-outlined"
-    (click)="onCancel()"></button>
 </div>
 
 <bia-spinner *ngIf="loading" [overlay]="true"></bia-spinner>
