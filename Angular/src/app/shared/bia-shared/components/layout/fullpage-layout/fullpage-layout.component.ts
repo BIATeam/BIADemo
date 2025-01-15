@@ -21,6 +21,7 @@ import { BiaInjectorService } from 'src/app/core/bia-core/services/bia-injector.
 @Component({
   selector: 'bia-full-page-layout',
   templateUrl: './fullpage-layout.component.html',
+  styleUrls: ['./fullpage-layout.component.scss'],
 })
 export class FullPageLayoutComponent
   implements OnInit, OnDestroy, AfterViewInit
@@ -36,12 +37,15 @@ export class FullPageLayoutComponent
     protected serviceInjector: BiaInjectorService
   ) {}
 
+  pageTitle: string;
   public $displayPageComponent: BehaviorSubject<boolean>;
   public displayPageComponent: boolean;
   protected dynamicComponent: ComponentRef<any>;
   @HostBinding('class.bia-flex') flex = false;
 
   ngOnInit() {
+    const snapshot = this.activatedRoute.snapshot;
+    this.pageTitle = snapshot.data['title'];
     this.$displayPageComponent = new BehaviorSubject<boolean>(true);
     this.displayPageComponent = true;
     this.checkVisibility();
