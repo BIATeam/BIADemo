@@ -50,7 +50,11 @@
           [style.min-width]="col.minWidth"
           [alignFrozen]="col.alignFrozen"
           pFrozenColumn
-          [frozen]="col.isFrozen">
+          [frozen]="col.isFrozen"
+          pTooltip="{{
+            isResizableColumn && !col?.icon ? (col?.header | translate) : ''
+          }}"
+          tooltipPosition="top">
           <span class="nowrap">
             <ng-container *ngIf="!!col?.icon; else HeaderNoIcon">
               <i
@@ -71,7 +75,11 @@
           [style.min-width]="col.minWidth"
           [alignFrozen]="col.alignFrozen"
           pFrozenColumn
-          [frozen]="col.isFrozen">
+          [frozen]="col.isFrozen"
+          pTooltip="{{
+            isResizableColumn && !col?.icon ? (col?.header | translate) : ''
+          }}"
+          tooltipPosition="top">
           <span class="nowrap">
             <ng-container *ngIf="!!col?.icon; else HeaderNoIcon">
               <i
