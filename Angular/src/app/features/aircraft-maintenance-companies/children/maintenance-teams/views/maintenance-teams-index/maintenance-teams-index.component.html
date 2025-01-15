@@ -32,7 +32,9 @@
             *ngIf="canEdit"
             class="p-button-outlined"
             label="{{ 'maintenanceTeam.edit' | translate }}"
-            (click)="onEdit(selectedCrudItems[0].id)"></button>
+            (click)="onEdit(selectedCrudItems[0].id)"
+            pTooltip="{{ 'maintenanceTeam.edit' | translate }}"
+            tooltipPosition="top"></button>
           <button
             pButton
             [disabled]="

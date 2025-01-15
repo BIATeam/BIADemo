@@ -13,7 +13,6 @@
   textarea,
   select,
   button {
-    border-radius: 0 !important;
     color: $biaFgTextColor;
     &.p-button-secondary {
       border-style: solid;
@@ -22,6 +21,12 @@
         background-color: $biaBgColor !important;
       }
     }
+  }
+
+  input,
+  textarea,
+  select {
+    border-radius: 0 !important;
   }
 
   h1 {
