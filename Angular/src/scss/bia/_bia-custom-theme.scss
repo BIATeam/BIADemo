@@ -226,9 +226,27 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
   padding-bottom: 0.25rem;
 }
 
+// button max-width
 .p-button-label {
   max-width: 8em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+// forms button always visible
+.p-dialog {
+  .p-dialog-content {
+    .bia-form-fixed-button {
+      padding-bottom: 20px;
+      div:has(> button) {
+        background: var(--surface-f);
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        padding: 10px;
+      }
+    }
+  }
 }

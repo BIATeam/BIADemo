@@ -1,7 +1,7 @@
 <form
   *ngIf="form"
   (submit)="onSubmit()"
-  class="flex flex-column"
+  class="flex flex-column bia-form-fixed-button"
   [formGroup]="form">
   <ng-container *ngFor="let field of fields">
     <div
