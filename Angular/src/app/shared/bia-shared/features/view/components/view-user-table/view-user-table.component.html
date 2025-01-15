@@ -6,6 +6,7 @@
     [disabled]="viewSelected?.viewType !== 2"
     icon="pi pi-trash"
     pTooltip="{{ 'bia.delete' | translate }}"
+    tooltipPosition="top"
     (click)="onDeleteView(viewSelected?.id)"></button>
   <button
     pButton

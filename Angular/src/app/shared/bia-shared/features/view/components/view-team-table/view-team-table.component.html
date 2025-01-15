@@ -6,6 +6,7 @@
     [disabled]="!viewSelected"
     icon="pi pi-trash"
     pTooltip="{{ 'bia.delete' | translate }}"
+    tooltipPosition="top"
     (click)="onDeleteView(viewSelected?.id)"></button>
   <button
     pButton
@@ -19,6 +20,7 @@
     [disabled]="!viewSelected"
     icon="pi pi-trash"
     pTooltip="{{ 'bia.delete' | translate }}"
+    tooltipPosition="top"
     (click)="onAssignViewToTeamWithDelete(viewSelected?.id, false)"></button>
   <button
     pButton

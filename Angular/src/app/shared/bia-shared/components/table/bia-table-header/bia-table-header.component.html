@@ -24,6 +24,7 @@
       [disabled]="!canDelete || nbSelectedElements === 0"
       icon="pi pi-trash"
       pTooltip="{{ 'bia.delete' | translate }}"
+      tooltipPosition="top"
       (click)="onDelete()"></button>
     <ng-container *ngTemplateOutlet="actionOnSelectedTemplate"></ng-container>
   </div>
@@ -86,6 +87,7 @@
       *ngIf="canAdd"
       icon="pi pi-plus"
       pTooltip="{{ 'bia.add' | translate }}"
+      tooltipPosition="top"
       (click)="onCreate()"></button>
   </div>
 </div>
