@@ -188,6 +188,16 @@ bia-ultima-layout {
   }
 }
 
+bia-ultima-layout bia-table-header {
+  border-bottom: solid 1px black !important;
+  margin-top: -0.75rem;
+  margin-left: -2.5rem;
+  padding-left: 2.5rem;
+  margin-right: -2.5rem;
+  padding-right: 2.5rem;
+  display: block;
+}
+
 .table-compact {
   position: relative;
 
