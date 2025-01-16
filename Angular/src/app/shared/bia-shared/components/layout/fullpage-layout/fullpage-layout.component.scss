@@ -1,5 +1,13 @@
-h1 {
+.BiaPageTitle {
   font-size: 24px;
   font-weight: 400;
   line-height: 24px;
+  text-align: center;
+  margin-top: calc(15px - 0.75rem);
+  border-bottom: solid 1px var(--text-color);
+  margin-left: -2.5rem;
+  padding-left: 2.5rem;
+  margin-right: -2.5rem;
+  padding-right: 2.5rem;
+  padding-bottom: 15px;
 }
