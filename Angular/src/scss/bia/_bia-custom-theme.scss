@@ -248,14 +248,14 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
 .p-dialog {
   .p-dialog-content {
     .bia-form-fixed-button {
-      padding-bottom: 20px;
+      padding-bottom: 1.5rem;
       div:has(> button) {
         background: var(--surface-f);
         position: fixed;
         bottom: 0;
-        right: 0;
+        right: 2rem;
         left: 0;
-        padding: 10px;
+        padding: 0.75rem;
       }
     }
   }
