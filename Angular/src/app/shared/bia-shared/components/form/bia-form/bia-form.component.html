@@ -1,7 +1,7 @@
 <form
   *ngIf="form"
   (submit)="onSubmit()"
-  class="flex flex-column bia-form-fixed-button"
+  class="flex flex-column bia-form"
   [formGroup]="form">
   <ng-container *ngFor="let field of fields">
     <div
@@ -39,7 +39,8 @@
       </div>
     </div>
   </ng-container>
-  <div class="flex flex-row align-content-end justify-content-end gap-3">
+  <div
+    class="flex flex-row align-content-end justify-content-end gap-3 bia-form-fixed-buttons">
     <button
       pButton
       icon="pi pi-times"
