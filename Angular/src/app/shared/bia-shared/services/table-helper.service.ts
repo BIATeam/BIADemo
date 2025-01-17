@@ -130,9 +130,9 @@ export class TableHelperService {
         : '100vh - 460px';
     } else {
       if (layoutService.state.fullscreen) {
-        height = '100vh - 72px - 10.75rem';
+        height = '100vh - 40px - 12.8rem';
       } else {
-        height = '100vh - 69px - 17.417rem';
+        height = '100vh - 38px - 19.5rem';
         height +=
           layoutService._config.footerMode != 'overlay'
             ? ' - var(--footer-height)'
