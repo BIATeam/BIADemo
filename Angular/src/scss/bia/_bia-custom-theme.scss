@@ -1,3 +1,9 @@
+.bia-separator {
+  height: 24px;
+  border-left: 1px solid;
+  margin-right: 5px;
+}
+
 // classic-footer-theme
 bia-classic-footer {
   @if ($is-dark) {
