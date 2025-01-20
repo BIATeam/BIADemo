@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
 import { CrudListAndItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-list-and-item.service';
+import { clone } from 'src/app/shared/bia-shared/utils';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
 import { Plane } from '../model/plane';
@@ -53,9 +54,9 @@ export class PlaneService extends CrudListAndItemService<PlaneSpecific, Plane> {
     FeaturePlanesStore.getLastLazyLoadEvent
   );
 
-  public crudItem$: Observable<PlaneSpecific> = this.store.select(
-    FeaturePlanesStore.getCurrentPlane
-  );
+  public crudItem$: Observable<PlaneSpecific> = this.store
+    .select(FeaturePlanesStore.getCurrentPlane)
+    .pipe(map(plane => clone(plane)));
 
   public loadingGet$: Observable<boolean> = this.store.select(
     FeaturePlanesStore.getPlaneLoadingGet
