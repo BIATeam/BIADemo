@@ -73,7 +73,6 @@ export class PopupLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
         );
         if (maximizeButton) {
           this.renderer.listen(maximizeButton, 'focus', () => {
-            console.log('Focus');
             (maximizeButton as HTMLElement).blur();
           });
         }
