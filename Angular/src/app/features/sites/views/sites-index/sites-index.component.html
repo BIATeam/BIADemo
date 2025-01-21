@@ -28,17 +28,18 @@
         <ng-template pTemplate="actionOnSelected">
           <button
             pButton
-            [disabled]="!canEdit || selectedCrudItems.length !== 1"
+            [disabled]="selectedCrudItems.length !== 1"
+            *ngIf="canEdit"
             class="p-button-outlined"
             label="{{ 'site.edit' | translate }}"
             (click)="onEdit(selectedCrudItems[0].id)"></button>
           <button
             pButton
             [disabled]="
-              !canViewMembers ||
               selectedCrudItems.length !== 1 ||
               !selectedCrudItems[0].canMemberListAccess
             "
+            *ngIf="canViewMembers"
             class="p-button-outlined"
             label="{{ 'app.members' | translate }}"
             (click)="onViewMembers(selectedCrudItems[0].id)"></button>

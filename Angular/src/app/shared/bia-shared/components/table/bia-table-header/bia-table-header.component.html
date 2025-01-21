@@ -21,7 +21,8 @@
     <button
       type="button"
       pButton
-      [disabled]="!canDelete || nbSelectedElements === 0"
+      [disabled]="nbSelectedElements === 0"
+      *ngIf="canDelete"
       icon="pi pi-trash"
       pTooltip="{{ 'bia.delete' | translate }}"
       tooltipPosition="top"
