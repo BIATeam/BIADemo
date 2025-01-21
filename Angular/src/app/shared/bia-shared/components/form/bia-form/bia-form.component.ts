@@ -171,7 +171,6 @@ export class BiaFormComponent<TDto extends { id: number }>
   }
 
   onCancel() {
-    this.form?.reset();
     this.cancel.next();
   }
 
@@ -179,7 +178,6 @@ export class BiaFormComponent<TDto extends { id: number }>
     if (this.form?.valid) {
       const element: any = this.getElement();
       this.save.emit(element);
-      this.form.reset();
     }
   }
 
