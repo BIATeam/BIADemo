@@ -1,7 +1,8 @@
 import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
+import { filter, first, Subscription } from 'rxjs';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { AppState } from 'src/app/store/state';
@@ -23,6 +24,7 @@ export class CrudItemNewComponent<CrudItem extends BaseDto>
   protected router: Router;
   protected activatedRoute: ActivatedRoute;
   protected biaTranslationService: BiaTranslationService;
+  protected actions: Actions;
   constructor(
     protected injector: Injector,
     public crudItemService: CrudItemSingleService<CrudItem>
@@ -33,6 +35,7 @@ export class CrudItemNewComponent<CrudItem extends BaseDto>
     this.biaTranslationService = this.injector.get<BiaTranslationService>(
       BiaTranslationService
     );
+    this.actions = this.injector.get<Actions>(Actions);
   }
 
   ngOnInit() {
@@ -52,8 +55,25 @@ export class CrudItemNewComponent<CrudItem extends BaseDto>
   }
 
   onSubmitted(crudItemToCreate: CrudItem) {
+    if (this.crudItemService.createSuccessActionType) {
+      this.actions
+        .pipe(
+          filter(
+            (action: any) =>
+              action.type === this.crudItemService.createSuccessActionType
+          ),
+          first()
+        )
+        .subscribe(() => {
+          this.router.navigate(['../'], { relativeTo: this.activatedRoute });
+        });
+    }
+
     this.crudItemService.create(crudItemToCreate);
-    this.router.navigate(['../'], { relativeTo: this.activatedRoute });
+
+    if (!this.crudItemService.createSuccessActionType) {
+      this.router.navigate(['../'], { relativeTo: this.activatedRoute });
+    }
   }
 
   onCancelled() {

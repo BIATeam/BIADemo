@@ -85,6 +85,8 @@ export abstract class CrudItemSingleService<CrudItem extends BaseDto> {
   abstract multiRemove(ids: any[]): void;
   abstract clearAll(): void;
   abstract clearCurrent(): void;
+  public updateSuccessActionType: string | undefined;
+  public createSuccessActionType: string | undefined;
 
   protected resetNewItemsIds(dtos: BaseDto[] | undefined): void {
     dtos?.forEach(dto => {
