@@ -64,7 +64,7 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
   }
 
   onSubmitted(crudItemToUpdate: CrudItem) {
-    if (this.crudItemService.createSuccessActionType) {
+    if (this.crudItemService.updateSuccessActionType) {
       this.actions
         .pipe(
           filter(
@@ -80,7 +80,7 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
 
     this.crudItemService.update(crudItemToUpdate);
 
-    if (!this.crudItemService.createSuccessActionType) {
+    if (!this.crudItemService.updateSuccessActionType) {
       this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
     }
   }
