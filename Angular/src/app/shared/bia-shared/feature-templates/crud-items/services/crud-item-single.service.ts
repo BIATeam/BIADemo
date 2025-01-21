@@ -66,8 +66,8 @@ export abstract class CrudItemSingleService<CrudItem extends BaseDto> {
   }
 
   /**
-   * Type of store action called after update action is successful.
-   * See update action in store effects of CRUD item.
+   * Type of store action called after update effect is successful.
+   * See update effect in store effects of CRUD item.
    */
   protected _updateSuccessActionType: string | undefined;
   public get updateSuccessActionType(): string | undefined {
@@ -75,8 +75,8 @@ export abstract class CrudItemSingleService<CrudItem extends BaseDto> {
   }
 
   /**
-   * Type of store action called after create action is successful.
-   * See create action in store effects of CRUD item.
+   * Type of store action called after create effect is successful.
+   * See create effect in store effects of CRUD item.
    */
   protected _createSuccessActionType: string | undefined;
   public get createSuccessActionType(): string | undefined {
