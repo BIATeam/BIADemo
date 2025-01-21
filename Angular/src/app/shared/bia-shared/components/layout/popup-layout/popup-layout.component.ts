@@ -5,13 +5,10 @@ import {
   HostBinding,
   OnDestroy,
   OnInit,
-  Renderer2,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Dialog } from 'primeng/dialog';
-import { Subscription } from 'rxjs';
 import { BiaInjectorService } from 'src/app/core/bia-core/services/bia-injector.service';
 
 @Component({
@@ -23,12 +20,9 @@ export class PopupLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     read: ViewContainerRef,
   })
   viewContainerRef: ViewContainerRef;
-  @ViewChild('dialog', { static: false }) dialog!: Dialog;
-  subs: Subscription = new Subscription();
 
   constructor(
     public activatedRoute: ActivatedRoute,
-    private renderer: Renderer2,
     protected serviceInjector: BiaInjectorService
   ) {}
   protected dynamicComponent: ComponentRef<any>;
@@ -55,46 +49,12 @@ export class PopupLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
         this.viewContainerRef,
         this.activatedRoute.snapshot.data['injectComponent']
       );
-      this.setFocusOnFirstField();
     }, 0);
-
-    const firstField =
-      this.viewContainerRef.element.nativeElement.parentNode.querySelector(
-        'input, select, textarea'
-      );
-    if (firstField) {
-      firstField.focus();
-    }
-
-    this.subs.add(
-      this.dialog.onShow.subscribe(() => {
-        const maximizeButton = document.querySelector(
-          '.p-dialog-header-maximize'
-        );
-        if (maximizeButton) {
-          this.renderer.listen(maximizeButton, 'focus', () => {
-            (maximizeButton as HTMLElement).blur();
-          });
-        }
-      })
-    );
   }
 
   ngOnDestroy() {
     if (this.dynamicComponent !== undefined) {
       this.dynamicComponent.destroy();
-    }
-    this.subs.unsubscribe();
-  }
-
-  private setFocusOnFirstField() {
-    // Attendre que le contenu soit bien rendu dans le DOM
-    const firstField =
-      this.viewContainerRef.element.nativeElement.parentNode.querySelector(
-        'input, select, textarea'
-      );
-    if (firstField) {
-      firstField.focus();
     }
   }
 }
