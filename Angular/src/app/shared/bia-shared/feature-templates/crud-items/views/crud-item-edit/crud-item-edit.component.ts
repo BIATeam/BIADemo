@@ -64,28 +64,31 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
   }
 
   onSubmitted(crudItemToUpdate: CrudItem) {
-    if (this.crudItemService.updateSuccessActionType) {
+    const successActionType = this.crudItemService.updateSuccessActionType;
+
+    if (successActionType) {
       this.actions
         .pipe(
-          filter(
-            (action: any) =>
-              action.type === this.crudItemService.updateSuccessActionType
-          ),
+          filter((action: any) => action.type === successActionType),
           first()
         )
         .subscribe(() => {
-          this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
+          this.navigateBack();
         });
     }
 
     this.crudItemService.update(crudItemToUpdate);
 
-    if (!this.crudItemService.updateSuccessActionType) {
-      this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
+    if (!successActionType) {
+      this.navigateBack();
     }
   }
 
   onCancelled() {
+    this.navigateBack();
+  }
+
+  private navigateBack() {
     this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
   }
 }

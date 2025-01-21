@@ -55,28 +55,31 @@ export class CrudItemNewComponent<CrudItem extends BaseDto>
   }
 
   onSubmitted(crudItemToCreate: CrudItem) {
-    if (this.crudItemService.createSuccessActionType) {
+    const successActionType = this.crudItemService.createSuccessActionType;
+
+    if (successActionType) {
       this.actions
         .pipe(
-          filter(
-            (action: any) =>
-              action.type === this.crudItemService.createSuccessActionType
-          ),
+          filter((action: any) => action.type === successActionType),
           first()
         )
         .subscribe(() => {
-          this.router.navigate(['../'], { relativeTo: this.activatedRoute });
+          this.navigateBack();
         });
     }
 
     this.crudItemService.create(crudItemToCreate);
 
-    if (!this.crudItemService.createSuccessActionType) {
-      this.router.navigate(['../'], { relativeTo: this.activatedRoute });
+    if (!successActionType) {
+      this.navigateBack();
     }
   }
 
   onCancelled() {
+    this.navigateBack();
+  }
+
+  private navigateBack() {
     this.router.navigate(['../'], { relativeTo: this.activatedRoute });
   }
 }
