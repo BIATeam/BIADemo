@@ -146,7 +146,7 @@ export class TableHelperService {
         : '100vh - 460px';
     } else {
       if (layoutService.state.fullscreen) {
-        height = '100vh - 31px - 13.8rem';
+        height = '100vh - 31px - 13.44rem';
       } else {
         height = '100vh - 31px - 19.89rem';
         height +=
