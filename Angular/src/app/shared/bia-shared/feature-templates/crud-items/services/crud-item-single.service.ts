@@ -65,6 +65,24 @@ export abstract class CrudItemSingleService<CrudItem extends BaseDto> {
     this.load(id);
   }
 
+  /**
+   * Type of store action called after update action is successful.
+   * See update action in store effects of CRUD item.
+   */
+  protected _updateSuccessActionType: string | undefined;
+  public get updateSuccessActionType(): string | undefined {
+    return this._updateSuccessActionType;
+  }
+
+  /**
+   * Type of store action called after create action is successful.
+   * See create action in store effects of CRUD item.
+   */
+  protected _createSuccessActionType: string | undefined;
+  public get createSuccessActionType(): string | undefined {
+    return this._createSuccessActionType;
+  }
+
   initSub() {
     this.crudItem$.subscribe(crudItem => {
       if (crudItem) {
@@ -85,8 +103,6 @@ export abstract class CrudItemSingleService<CrudItem extends BaseDto> {
   abstract multiRemove(ids: any[]): void;
   abstract clearAll(): void;
   abstract clearCurrent(): void;
-  public updateSuccessActionType: string | undefined;
-  public createSuccessActionType: string | undefined;
 
   protected resetNewItemsIds(dtos: BaseDto[] | undefined): void {
     dtos?.forEach(dto => {

@@ -19,6 +19,9 @@ import { PlaneOptionsService } from './plane-options.service';
   providedIn: 'root',
 })
 export class PlaneService extends CrudListAndItemService<PlaneSpecific, Plane> {
+  _updateSuccessActionType = FeaturePlanesActions.loadAllByPost.type;
+  _createSuccessActionType = FeaturePlanesActions.loadAllByPost.type;
+
   constructor(
     private store: Store<AppState>,
     public dasService: PlaneDas,

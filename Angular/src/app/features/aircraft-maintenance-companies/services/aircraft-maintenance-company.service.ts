@@ -18,6 +18,11 @@ import { AircraftMaintenanceCompanyOptionsService } from './aircraft-maintenance
   providedIn: 'root',
 })
 export class AircraftMaintenanceCompanyService extends CrudItemService<AircraftMaintenanceCompany> {
+  _updateSuccessActionType =
+    FeatureAircraftMaintenanceCompaniesActions.loadAllByPost.type;
+  _createSuccessActionType =
+    FeatureAircraftMaintenanceCompaniesActions.loadAllByPost.type;
+
   constructor(
     private store: Store<AppState>,
     public dasService: AircraftMaintenanceCompanyDas,

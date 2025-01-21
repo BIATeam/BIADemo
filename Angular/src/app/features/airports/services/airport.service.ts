@@ -17,6 +17,9 @@ import { AirportOptionsService } from './airport-options.service';
   providedIn: 'root',
 })
 export class AirportService extends CrudItemService<Airport> {
+  _updateSuccessActionType = FeatureAirportsActions.loadAllByPost.type;
+  _createSuccessActionType = FeatureAirportsActions.loadAllByPost.type;
+
   constructor(
     private store: Store<AppState>,
     public dasService: AirportDas,
