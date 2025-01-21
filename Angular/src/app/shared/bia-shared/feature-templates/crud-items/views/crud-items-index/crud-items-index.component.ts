@@ -7,12 +7,13 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router, Routes } from '@angular/router';
+import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { saveAs } from 'file-saver';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable, Subscription, combineLatest } from 'rxjs';
-import { filter, skip, take, tap } from 'rxjs/operators';
+import { filter, first, skip, take, tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
@@ -106,6 +107,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
   protected authService: AuthService;
   protected tableHelperService: TableHelperService;
   protected layoutService: BiaLayoutService;
+  protected actions: Actions;
 
   constructor(
     protected injector: Injector,
@@ -123,6 +125,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     this.tableHelperService =
       this.injector.get<TableHelperService>(TableHelperService);
     this.layoutService = this.injector.get<BiaLayoutService>(BiaLayoutService);
+    this.actions = this.injector.get<Actions>(Actions);
   }
 
   toggleTableControllerVisibility() {
@@ -369,17 +372,53 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
   }
 
   onSave(crudItem: CrudItem) {
-    if (this.crudConfiguration.useCalcMode) {
-      if (crudItem.id > 0) {
-        if (this.canEdit) {
-          this.crudItemService.update(crudItem);
-        }
-      } else {
-        if (this.canAdd) {
-          this.crudItemService.create(crudItem);
-        }
-      }
+    if (!this.crudConfiguration.useCalcMode) {
+      return;
     }
+
+    if (crudItem.id > 0 && this.canEdit) {
+      this.handleCrudOperation(
+        crudItem,
+        this.crudItemService.updateSuccessActionType,
+        this.crudItemService.update.bind(this.crudItemService)
+      );
+    }
+
+    if (crudItem.id === 0 && this.canAdd) {
+      this.handleCrudOperation(
+        crudItem,
+        this.crudItemService.createSuccessActionType,
+        this.crudItemService.create.bind(this.crudItemService)
+      );
+    }
+  }
+
+  private handleCrudOperation(
+    crudItem: CrudItem,
+    actionType: string | undefined,
+    crudOperation: (item: CrudItem) => void
+  ) {
+    if (actionType) {
+      this.actions
+        .pipe(
+          filter((action: any) => action.type === actionType),
+          first()
+        )
+        .subscribe(() => {
+          this.resetEditableRow();
+        });
+    }
+
+    crudOperation(crudItem);
+
+    if (!actionType) {
+      this.resetEditableRow();
+    }
+  }
+
+  private resetEditableRow() {
+    this.crudItemTableComponent.hasChanged = false;
+    this.crudItemTableComponent.initEditableRow(null);
   }
 
   onDelete() {
