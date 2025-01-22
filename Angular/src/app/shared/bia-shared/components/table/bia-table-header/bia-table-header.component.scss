@@ -1,11 +1,18 @@
 .header {
-  margin-bottom: 15px;
-  margin-top: 15px;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
   h1 {
-    font-family: 'raleway-thin', serif;
-    font-size: 36px;
+    font-size: 1.75rem;
     font-weight: 200;
     margin: 0px;
-    line-height: 24px;
+    line-height: 1.75rem;
+  }
+
+  .cog {
+    position: absolute;
+    top: 1rem;
+    right: 0.5rem;
+    background: transparent;
+    font-size: 0.7rem;
   }
 }

@@ -7,7 +7,7 @@ import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { RoleOptionModule } from 'src/app/domains/bia-domains/role-option/role-option.module';
 import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
 import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
-import { CrudItemBulkModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item-bulk.module';
+import { CrudItemImportModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item-import.module';
 import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
 import { Permission } from 'src/app/shared/permission';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -17,8 +17,8 @@ import { UserTableComponent } from './components/user-table/user-table.component
 import { FeatureUsersStore } from './store/user.state';
 import { UsersEffects } from './store/users-effects';
 import { userCRUDConfiguration } from './user.constants';
-import { UserBulkComponent } from './views/user-bulk/user-bulk.component';
 import { UserEditComponent } from './views/user-edit/user-edit.component';
+import { UserImportComponent } from './views/user-import/user-import.component';
 import { UserItemComponent } from './views/user-item/user-item.component';
 import { UserNewComponent } from './views/user-new/user-new.component';
 import { UsersIndexComponent } from './views/users-index/users-index.component';
@@ -36,7 +36,7 @@ export const ROUTES: Routes = [
     // [Calc] : The children are not used in calc
     children: [
       {
-        path: 'bulk',
+        path: 'import',
         data: {
           breadcrumb: 'user.import',
           canNavigate: false,
@@ -47,7 +47,7 @@ export const ROUTES: Routes = [
           },
           permission: Permission.User_Save,
           title: 'user.import',
-          injectComponent: UserBulkComponent,
+          injectComponent: UserImportComponent,
           dynamicComponent: () =>
             userCRUDConfiguration.usePopup
               ? PopupLayoutComponent
@@ -126,12 +126,12 @@ export const ROUTES: Routes = [
     UserEditComponent,
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     UserTableComponent,
-    UserBulkComponent,
+    UserImportComponent,
   ],
   imports: [
     SharedModule,
     CrudItemModule,
-    CrudItemBulkModule,
+    CrudItemImportModule,
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature(
       userCRUDConfiguration.storeKey,

@@ -4,7 +4,9 @@
     pButton
     *ngIf="canDelete === true"
     [disabled]="!viewSelected"
-    label="{{ 'bia.delete' | translate }}"
+    icon="pi pi-trash"
+    pTooltip="{{ 'bia.delete' | translate }}"
+    tooltipPosition="top"
     (click)="onDeleteView(viewSelected?.id)"></button>
   <button
     pButton
@@ -16,7 +18,9 @@
     pButton
     *ngIf="showUnLinkWithTeamAsDelete()"
     [disabled]="!viewSelected"
-    label="{{ 'bia.delete' | translate }}"
+    icon="pi pi-trash"
+    pTooltip="{{ 'bia.delete' | translate }}"
+    tooltipPosition="top"
     (click)="onAssignViewToTeamWithDelete(viewSelected?.id, false)"></button>
   <button
     pButton

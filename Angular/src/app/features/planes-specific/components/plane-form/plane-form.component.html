@@ -1,6 +1,7 @@
 <bia-form
   [element]="crudItem"
   [fields]="fields"
+  [formValidators]="formValidators"
   [dictOptionDtos]="dictOptionDtos"
   (save)="onSave($event)"
   (cancel)="onCancel()">
@@ -40,7 +41,7 @@
         [selectedElements]="selectedEngines"></bia-table-header>
       <span class="p-float-label">
         <app-engine-specific-table
-          [elements]="displayedEngines"
+          [elements]="displayedEngines()"
           [configuration]="engineCrudConfig"
           [dictOptionDtos]="[]"
           [totalRecord]="crudItem?.engines?.length ?? 0"

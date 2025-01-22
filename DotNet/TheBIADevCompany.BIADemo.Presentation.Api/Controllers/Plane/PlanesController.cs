@@ -286,7 +286,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
 
             try
             {
-                var saveSafeDtos = await this.planeService.SaveSafeAsync(
+                var savedDtos = await this.planeService.SaveSafeAsync(
                     dtos: dtoList,
                     principal: this.biaClaimsPrincipalService.GetBiaClaimsPrincipal(),
                     rightAdd: Rights.Planes.Create,
@@ -294,7 +294,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
                     rightDelete: Rights.Planes.Delete);
 #if UseHubForClientInPlane
                 // BIAToolKit - Begin Parent siteId
-                saveSafeDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
+                savedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
                 {
                     _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "planes", "refresh-planes");
                 });
@@ -319,41 +319,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         /// <param name="filters">filters ( <see cref="PagingFilterFormatDto"/>).</param>
         /// <returns>a csv file.</returns>
         [HttpPost("csv")]
+        [Authorize(Roles = Rights.Planes.ListAccess)]
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
             byte[] buffer = await this.planeService.GetCsvAsync(filters);
             return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Planes{BiaConstants.Csv.Extension}");
-        }
-
-        /// <summary>
-        /// Adds planes.
-        /// </summary>
-        /// <param name="dtos">List of planes.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        [HttpPost("bulk")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Planes.Create)]
-        public async Task<IActionResult> AddBulkAsync([FromBody] IEnumerable<PlaneDto> dtos)
-        {
-            // JSON test swagger.
-            // [{ "id":0,"msn":"BULK1","isActive":true,"lastFlightDate":"2022-04-17T15:21:28.997Z","deliveryDate":"2021-04-17T15:21:28.997Z","capacity":1,"siteId":1,"planeType":{ "id":1} },{ "id":0,"msn":"BULK2","isActive":true,"lastFlightDate":"2022-04-18T15:21:28.997Z","deliveryDate":"2021-04-18T15:21:28.997Z","capacity":2,"siteId":1,"planeType":{ "id":1} },{ "id":0,"msn":"BULK3","isActive":true,"lastFlightDate":"2022-04-19T15:21:28.997Z","deliveryDate":"2021-04-19T15:21:28.997Z","capacity":3,"siteId":1,"planeType":{ "id":1} },{ "id":0,"msn":"BULK4","isActive":true,"lastFlightDate":"2022-04-20T15:21:28.997Z","deliveryDate":"2021-04-20T15:21:28.997Z","capacity":4,"siteId":1,"planeType":{ "id":1} },{ "id":0,"msn":"BULK5","isActive":true,"lastFlightDate":"2022-04-21T15:21:28.997Z","deliveryDate":"2021-04-21T15:21:28.997Z","capacity":5,"siteId":1,"planeType":{ "id":1} }]
-            var dtoList = dtos.ToList();
-            if (!dtoList.Any())
-            {
-                return this.BadRequest();
-            }
-
-            try
-            {
-                await this.planeService.AddBulkAsync(dtoList);
-                return this.Ok();
-            }
-            catch (ArgumentNullException)
-            {
-                return this.ValidationProblem();
-            }
         }
     }
 }

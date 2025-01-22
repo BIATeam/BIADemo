@@ -1,3 +1,9 @@
+.bia-separator {
+  height: 24px;
+  border-left: 1px solid;
+  margin-right: 5px;
+}
+
 // classic-footer-theme
 bia-classic-footer {
   @if ($is-dark) {
@@ -188,6 +194,16 @@ bia-ultima-layout {
   }
 }
 
+bia-ultima-layout bia-table-header {
+  //border-bottom: solid 1px var(--surface-500);
+  margin-top: -0.75rem;
+  // margin-left: -2.5rem;
+  // padding-left: 2.5rem;
+  // margin-right: -2.5rem;
+  // padding-right: 2.5rem;
+  display: block;
+}
+
 .table-compact {
   position: relative;
 
@@ -224,4 +240,30 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
 .table-compact bia-table-controller {
   padding-top: 0;
   padding-bottom: 0.25rem;
+}
+
+// button max-width
+.p-button-label {
+  max-width: 8em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// forms button always visible
+.p-dialog {
+  .p-dialog-content {
+    .bia-form:has(> .bia-form-fixed-buttons) {
+      padding-bottom: 1.5rem;
+      .bia-form-fixed-buttons:has(> button) {
+        background: var(--surface-f);
+        position: fixed;
+        bottom: 0;
+        right: 1rem;
+        left: 0;
+        padding: 0.75rem;
+        z-index: 5;
+      }
+    }
+  }
 }

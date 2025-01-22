@@ -17,14 +17,14 @@ import { PlaneTypeOptionModule } from 'src/app/domains/plane-type-option/plane-t
 // BIAToolKit - End Option PlaneType
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { CrudItemBulkModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item-bulk.module';
+import { CrudItemImportModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item-import.module';
 import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
 import { PlaneTableComponent } from './components/plane-table/plane-table.component';
 import { planeCRUDConfiguration } from './plane.constants';
 import { FeaturePlanesStore } from './store/plane.state';
 import { PlanesEffects } from './store/planes-effects';
-import { PlaneBulkComponent } from './views/plane-bulk/plane-bulk.component';
 import { PlaneEditComponent } from './views/plane-edit/plane-edit.component';
+import { PlaneImportComponent } from './views/plane-import/plane-import.component';
 import { PlaneNewComponent } from './views/plane-new/plane-new.component';
 
 export const ROUTES: Routes = [
@@ -58,7 +58,7 @@ export const ROUTES: Routes = [
         canActivate: [PermissionGuard],
       },
       {
-        path: 'bulk',
+        path: 'import',
         data: {
           breadcrumb: 'plane.import',
           canNavigate: false,
@@ -69,7 +69,7 @@ export const ROUTES: Routes = [
           },
           permission: Permission.Plane_Save,
           title: 'plane.import',
-          injectComponent: PlaneBulkComponent,
+          injectComponent: PlaneImportComponent,
           dynamicComponent: () =>
             planeCRUDConfiguration.usePopup
               ? PopupLayoutComponent
@@ -146,12 +146,12 @@ export const ROUTES: Routes = [
     PlaneEditComponent,
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     PlaneTableComponent,
-    PlaneBulkComponent,
+    PlaneImportComponent,
   ],
   imports: [
     SharedModule,
     CrudItemModule,
-    CrudItemBulkModule,
+    CrudItemImportModule,
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature(
       planeCRUDConfiguration.storeKey,

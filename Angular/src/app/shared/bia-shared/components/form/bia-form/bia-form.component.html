@@ -1,7 +1,7 @@
 <form
   *ngIf="form"
   (submit)="onSubmit()"
-  class="flex flex-column"
+  class="flex flex-column bia-form"
   [formGroup]="form">
   <ng-container *ngFor="let field of fields">
     <div
@@ -39,17 +39,22 @@
       </div>
     </div>
   </ng-container>
-  <div class="flex flex-row align-content-end justify-content-end gap-3">
+  <div
+    class="flex flex-row align-content-end justify-content-end gap-3 bia-form-fixed-buttons">
     <button
       pButton
-      label="{{ 'bia.save' | translate }}"
-      type="submit"
-      [disabled]="!form.valid"></button>
-    <button
-      pButton
+      icon="pi pi-times"
       label="{{ 'bia.cancel' | translate }}"
       type="button"
       class="p-button-outlined"
       (click)="onCancel()"></button>
+    <button
+      pButton
+      icon="pi {{ isAdd === true ? 'pi-plus' : 'pi-check' }}"
+      label="{{
+        isAdd === true ? ('bia.add' | translate) : ('bia.save' | translate)
+      }}"
+      type="submit"
+      [disabled]="!form.valid"></button>
   </div>
 </form>

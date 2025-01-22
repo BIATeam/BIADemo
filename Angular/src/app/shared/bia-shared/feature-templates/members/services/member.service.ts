@@ -73,6 +73,11 @@ export class MemberService extends CrudItemService<Member> {
     (crudItem.teamId = this.getParentIds()[0]),
       this.store.dispatch(FeatureMembersActions.create({ member: crudItem }));
   }
+  public save(crudItems: Member[]) {
+    // TODO after creation of CRUD Member : map parent Key on the corresponding field
+    crudItems.map(x => (x.teamId = this.getParentIds()[0])),
+      this.store.dispatch(FeatureMembersActions.save({ members: crudItems }));
+  }
   public createMulti(membersToCreate: Members) {
     // TODO after creation of CRUD Member : map parent Key on the corresponding field
     (membersToCreate.teamId = this.getParentIds()[0]),

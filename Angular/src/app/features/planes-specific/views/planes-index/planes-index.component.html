@@ -72,6 +72,7 @@
       [scrollHeightValue]="getFillScrollHeightValue()"
       [isScrollable]="true"
       [virtualScroll]="crudConfiguration.useVirtualScroll"
+      [isResizableColumn]="crudConfiguration.useResizableColumn"
       [rowHeight]="defaultRowHeight">
       <ng-template pTemplate="specificOutput" let-field="field" let-data="data">
         <ng-container [ngSwitch]="field.field">

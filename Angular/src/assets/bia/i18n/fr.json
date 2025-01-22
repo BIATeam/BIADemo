@@ -12,7 +12,6 @@
     "backgroundTaskReadOnly": "Voir les taches",
     "backgroundtasks": "Tâches d'arrière-plan",
     "browse": "Parcourir",
-    "bulk": "En Masse",
     "cancel": "Annuler",
     "close": "Fermer",
     "confirm": "Confirmer",
@@ -23,6 +22,7 @@
     "defineDefault": "Définir par défaut",
     "delete": "Supprimer",
     "deleteFilters": "Effacer les filtres",
+    "detail": "Détail",
     "display": "Afficher :",
     "edit": "Modifier",
     "editProfileImage": "Modifier votre photo de profil",
@@ -140,7 +140,7 @@
     "updateElementSuccess": "Élément mis à jour avec succès",
     "userAlreadyAssociatedSite": "Cet utilisateur est déjà associé à ce site"
   },
-  "bulk": {
+  "import": {
     "dateFormat": "Format Date",
     "timeFormat": "Format Heure",
     "useCurrentView": "Baser le traitement de l'import sur le filtre courant"

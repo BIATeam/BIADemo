@@ -20,7 +20,7 @@ export const planeCRUDConfiguration: CrudConfig<Plane> = new CrudConfig({
   useCompactMode: false,
   useVirtualScroll: false,
   // Begin BIADemo
-  bulkMode: {
+  importMode: {
     useInsert: true,
     useUpdate: true,
     useDelete: true,

@@ -63,7 +63,8 @@
     "isToBeMaintained": "Maintained",
     "isHybrid": "Hybrid",
     "principalPart": "Principal part",
-    "installedParts": "Installed parts"
+    "installedParts": "Installed parts",
+    "import": "Import engines"
   },
   "maintenanceTeam": {
     "add": "Add maintenance team",
@@ -135,6 +136,7 @@
   "End BIADemo": "To remove in project up to here",
   "member": {
     "add": "Add member",
+    "import": "Import members",
     "isActive": "Active",
     "listOf": "List of members",
     "manage": "Manage member",
@@ -199,6 +201,7 @@
       "deprecated:": "transaltion will be done in database in next version",
       "title": "Notification sent successfully",
       "description": "Description to be customised in i18n traductions for each feature"
-    }
+    },
+    "edit": "Edit notification"
   }
 }

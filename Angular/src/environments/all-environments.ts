@@ -9,7 +9,10 @@ export const allEnvironments = {
   urlEnv: '/api/Environment',
   urlAppIcon: 'assets/bia/img/AppIcon.svg',
   urlErrorPage: './assets/bia/html/error.html',
-  version: '0.0.0',
+  // Except BIADemo version: '0.0.0',
+  // Begin BIADemo
+  version: '4.0.0',
+  // End BIADemo
 
   teams: [
     {

@@ -86,6 +86,7 @@ export enum Permission {
   Site_Member_Delete = 'Site_Member_Delete',
   Site_Member_List_Access = 'Site_Member_List_Access',
   Site_Member_Update = 'Site_Member_Update',
+  Site_Member_Save = 'Site_Member_Save',
 
   User_Add = 'User_Add',
   User_Delete = 'User_Delete',

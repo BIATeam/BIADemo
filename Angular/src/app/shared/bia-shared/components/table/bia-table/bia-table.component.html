@@ -50,7 +50,11 @@
           [style.min-width]="col.minWidth"
           [alignFrozen]="col.alignFrozen"
           pFrozenColumn
-          [frozen]="col.isFrozen">
+          [frozen]="col.isFrozen"
+          pTooltip="{{
+            isResizableColumn && !col?.icon ? (col?.header | translate) : ''
+          }}"
+          tooltipPosition="top">
           <span class="nowrap">
             <ng-container *ngIf="!!col?.icon; else HeaderNoIcon">
               <i
@@ -71,7 +75,11 @@
           [style.min-width]="col.minWidth"
           [alignFrozen]="col.alignFrozen"
           pFrozenColumn
-          [frozen]="col.isFrozen">
+          [frozen]="col.isFrozen"
+          pTooltip="{{
+            isResizableColumn && !col?.icon ? (col?.header | translate) : ''
+          }}"
+          tooltipPosition="top">
           <span class="nowrap">
             <ng-container *ngIf="!!col?.icon; else HeaderNoIcon">
               <i
@@ -182,7 +190,7 @@
       </td>
     </tr>
   </ng-template>
-  <ng-container *ngIf="virtualScroll">
+  <ng-container>
     <ng-template pTemplate="summary" let-columns>
       @if (virtualScroll) {
         <bia-table-footer-controller

@@ -25,6 +25,11 @@ export namespace FeatureEnginesActions {
     props<{ engine: Engine }>()
   );
 
+  export const save = createAction(
+    '[' + engineCRUDConfiguration.storeKey + '] Save',
+    props<{ engines: Engine[] }>()
+  );
+
   export const remove = createAction(
     '[' + engineCRUDConfiguration.storeKey + '] Remove',
     props<{ id: number }>()

@@ -32,9 +32,14 @@
   </div>
   <div
     *ngIf="root && item.visible !== false && (!item.routerLink || item.items)"
-    class="layout-menuitem-root-text">
+    (click)="itemClick($event)"
+    (mouseenter)="onMouseEnter()"
+    class="layout-menuitem-root-text layout-menuitem-root-clickable">
     <span>{{ item.label }}</span>
     <i class="layout-menuitem-root-icon pi pi-fw pi-ellipsis-h"></i>
+    <i
+      class="pi pi-fw pi-angle-down layout-submenu-toggler"
+      *ngIf="item.items"></i>
   </div>
   <a
     *ngIf="(!item.routerLink || item.items) && item.visible !== false"
@@ -47,6 +52,7 @@
     pRipple
     [pTooltip]="item.label"
     [tooltipDisabled]="!(isSlim && root && !active)">
+    {{ item.url }}
     <i [ngClass]="item.icon" class="layout-menuitem-icon"></i>
     <span class="layout-menuitem-text">{{ item.label }}</span>
     <i

@@ -52,6 +52,7 @@ foreach ($file in $csprojFiles) {
 <Compile Remove="**\WakeUpTask.cs" />
 <Compile Remove="**\LanguagesController.cs" />
 <Compile Remove="**\LdapDomainsController.cs" />
+<Compile Remove="**\*ProfileImageController*.cs" />
 </ItemGroup>
 '@
 

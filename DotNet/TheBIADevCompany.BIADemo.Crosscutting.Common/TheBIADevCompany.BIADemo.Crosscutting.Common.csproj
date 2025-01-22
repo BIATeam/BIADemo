@@ -2,10 +2,11 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Company>TheBIADevCompany</Company>
-    <Copyright>Copyright © TheBIADevCompany 2024</Copyright>
+    <Copyright>Copyright © TheBIADevCompany 2025</Copyright>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="BIA.Net.Core.Common" Version="4.0.*" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.*" />
     <PackageReference Include="System.Security.Principal.Windows" Version="5.0.*" />
   </ItemGroup>
@@ -59,8 +60,6 @@
     <Compile Remove="**\WakeUpTask.cs" />
     <Compile Remove="**\LanguagesController.cs" />
     <Compile Remove="**\LdapDomainsController.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Common\BIA.Net.Core.Common.csproj" />
+    <Compile Remove="**\*ProfileImageController*.cs" />
   </ItemGroup>
 </Project>

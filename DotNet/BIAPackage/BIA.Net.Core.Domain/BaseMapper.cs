@@ -44,6 +44,16 @@ namespace BIA.Net.Core.Domain
         }
 
         /// <summary>
+        /// CSVs the list.
+        /// </summary>
+        /// <param name="x">The x.</param>
+        /// <returns>A string for a list cell.</returns>
+        public static string CSVList(IEnumerable<OptionDto> x)
+        {
+            return CSVString(string.Join(" - ", x?.Select(ca => ca.Display).ToList()));
+        }
+
+        /// <summary>
         /// CSVs the date.
         /// </summary>
         /// <param name="x">The DateTime.</param>

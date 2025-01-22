@@ -29,6 +29,7 @@ export const planeCRUDConfiguration: CrudConfig<Plane> = new CrudConfig({
     showPopup: true,
     showView: true,
     showCompactMode: true,
+    showResizableColumn: true,
   },
 });
 

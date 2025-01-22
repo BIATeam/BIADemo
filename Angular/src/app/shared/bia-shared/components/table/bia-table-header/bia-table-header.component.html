@@ -3,30 +3,29 @@
   <div
     class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
     <ng-container *ngIf="showBtnFilter">
-      <button
-        type="button"
+      <p-button
+        *ngIf="showFilter === false"
+        [style]="{ overflow: 'visible' }"
         icon="pi pi-filter"
-        class="p-button-outlined flat"
-        *ngIf="showFilter === false && hasFilter === false"
-        pButton
+        styleClass="p-overlay-badge"
+        [text]="true"
         (click)="toggleFilter()"
-        pTooltip="{{ 'msg.showFilters' | translate }}"></button>
-      <button
-        type="button"
-        icon="pi pi-filter"
-        *ngIf="showFilter === false && hasFilter === true"
-        pButton
-        pBadge
-        severity="warning"
-        style="overflow: visible"
-        (click)="toggleFilter()"
-        pTooltip="{{ 'msg.showFilters' | translate }}"></button>
+        pTooltip="{{ 'msg.showFilters' | translate }}"
+        tooltipPosition="top">
+        <span class="cog pi pi-cog"></span>
+        @if (hasFilter) {
+          <span class="p-badge p-component p-badge-dot p-badge-warning"></span>
+        }
+      </p-button>
     </ng-container>
     <button
       type="button"
       pButton
-      [disabled]="!canDelete || nbSelectedElements === 0"
-      label="{{ 'bia.delete' | translate }}"
+      [disabled]="nbSelectedElements === 0"
+      *ngIf="canDelete"
+      icon="pi pi-trash"
+      pTooltip="{{ 'bia.delete' | translate }}"
+      tooltipPosition="top"
       (click)="onDelete()"></button>
     <ng-container *ngTemplateOutlet="actionOnSelectedTemplate"></ng-container>
   </div>
@@ -64,27 +63,32 @@
       pButton
       *ngIf="canExportCSV"
       class="p-button-outlined"
+      icon="pi pi-download"
       label="CSV"
       (click)="exportCSV.emit()"></button>
     <button
       type="button"
       pButton
-      *ngIf="displayBulkButton()"
+      *ngIf="displayImportButton()"
       class="p-button-outlined"
+      icon="pi pi-download"
       label="{{ 'bia.export' | translate }}"
       (click)="fullExportCSV.emit()"></button>
     <button
       type="button"
       pButton
-      *ngIf="displayBulkButton()"
+      *ngIf="displayImportButton()"
+      icon="pi pi-plus"
       class="p-button-outlined"
       label="{{ 'bia.import' | translate }}"
-      (click)="bulk.next()"></button>
+      (click)="import.next()"></button>
     <button
       type="button"
       pButton
       *ngIf="canAdd"
-      label="{{ 'bia.add' | translate }}"
+      icon="pi pi-plus"
+      pTooltip="{{ 'bia.add' | translate }}"
+      tooltipPosition="top"
       (click)="onCreate()"></button>
   </div>
 </div>

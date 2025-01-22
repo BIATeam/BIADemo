@@ -38,5 +38,6 @@ export class SiteMembersIndexComponent
       Permission.Site_Member_Delete
     );
     this.canAdd = this.authService.hasPermission(Permission.Site_Member_Create);
+    this.canSave = this.authService.hasPermission(Permission.Site_Member_Save);
   }
 }

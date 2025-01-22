@@ -4,7 +4,9 @@
     pButton
     *ngIf="canDelete === true"
     [disabled]="viewSelected?.viewType !== 2"
-    label="{{ 'bia.delete' | translate }}"
+    icon="pi pi-trash"
+    pTooltip="{{ 'bia.delete' | translate }}"
+    tooltipPosition="top"
     (click)="onDeleteView(viewSelected?.id)"></button>
   <button
     pButton

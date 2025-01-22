@@ -9,14 +9,16 @@ i {
   margin-right: 8px;
   margin-top: auto;
   margin-bottom: auto;
+  font-size: 1.25rem;
 }
 
 .offline {
   color: $biaRed;
   position: relative;
 
-  .pi-times {
+  .pi-minus {
     position: absolute;
+    font-size: 1.4rem;
     top: -2px;
     left: -8px;
   }
@@ -24,4 +26,8 @@ i {
 
 .online {
   color: $biaGreen;
+}
+
+.rotate-icon {
+  transform: rotate(-45deg);
 }

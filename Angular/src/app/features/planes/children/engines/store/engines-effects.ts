@@ -140,6 +140,43 @@ export class EnginesEffects {
     )
   );
 
+  save$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(FeatureEnginesActions.save),
+      map(x => x?.engines),
+      concatMap(engines =>
+        of(engines).pipe(
+          withLatestFrom(
+            this.store.select(FeatureEnginesStore.getLastLazyLoadEvent)
+          )
+        )
+      ),
+      switchMap(([engines, event]) => {
+        return this.engineDas
+          .save({
+            items: engines,
+            offlineMode: engineCRUDConfiguration.useOfflineMode,
+          })
+          .pipe(
+            map(() => {
+              this.biaMessageService.showUpdateSuccess();
+              if (engineCRUDConfiguration.useSignalR) {
+                return biaSuccessWaitRefreshSignalR();
+              } else {
+                return FeatureEnginesActions.loadAllByPost({
+                  event: event,
+                });
+              }
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(FeatureEnginesActions.failure({ error: err }));
+            })
+          );
+      })
+    )
+  );
+
   destroy$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureEnginesActions.remove),

@@ -18,6 +18,7 @@ import {
 import {
   UntypedFormBuilder,
   UntypedFormGroup,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { PrimeTemplate } from 'primeng/api';
@@ -41,7 +42,9 @@ export class BiaFormComponent<TDto extends { id: number }>
 {
   @Input() element?: TDto;
   @Input() fields: BiaFieldConfig<TDto>[];
+  @Input() formValidators?: ValidatorFn[];
   @Input() dictOptionDtos: DictOptionDto[];
+  @Input() isAdd?: boolean;
   @Output() save = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<void>();
 
@@ -140,6 +143,9 @@ export class BiaFormComponent<TDto extends { id: number }>
 
   protected initForm() {
     this.form = this.formBuilder.group(this.formFields());
+    if (this.formValidators) {
+      this.form.addValidators(this.formValidators);
+    }
   }
 
   protected formFields() {
@@ -176,6 +182,7 @@ export class BiaFormComponent<TDto extends { id: number }>
       this.form.reset();
     }
   }
+
   public getElement() {
     const element: TDto = this.form?.value;
     element.id = element.id > 0 ? element.id : 0;

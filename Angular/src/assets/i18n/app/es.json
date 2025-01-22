@@ -8,12 +8,12 @@
     "engines": "Motor",
     "examples": "Ejemplos",
     "hangfire": "Hangfire",
-    "planes": "Planos",
-    "planesFullCode": "Planos (Full code)",
-    "planesPageMode": "Planos (Página)",
-    "planesOfflineMode": "Planos (Desconectado)",
-    "planesSpecific": "Planos (Specific)",
-    "planesTypes": "Tipos de planos",
+    "planes": "Aviones",
+    "planesFullCode": "Aviones (Full code)",
+    "planesPageMode": "Aviones (Página)",
+    "planesOfflineMode": "Aviones (Desconectado)",
+    "planesSpecific": "Aviones (Specific)",
+    "planesTypes": "Tipos de aviones",
     "airlines": "Aerolíneas",
     "End BIADemo": "To remove in project up to here",
     "teams": "Equipos",
@@ -63,7 +63,8 @@
     "isToBeMaintained": "Mantenido",
     "isHybrid": "Híbrido",
     "principalPart": "Parte principal",
-    "installedParts": "Partes instaladas"
+    "installedParts": "Partes instaladas",
+    "import": "Importar motors"
   },
   "maintenanceTeam": {
     "add": "Añadir equipo de mantenimiento",
@@ -96,23 +97,23 @@
     "operationAirports": "Aeropuertos de operaciones"
   },
   "plane": {
-    "add": "Añadir plano",
+    "add": "Añadir avión",
     "capacity": "Capacidad",
     "connectingAirports": "Aeropuertos de conexión",
     "currentAirport": "Aeropuerto actual",
     "deliveryDate": "Fecha de entrega",
-    "edit": "Editar plano",
+    "edit": "Editar avión",
     "engines": "motors",
     "estimatedPrice": "Precio estimado",
     "fuelLevel": "Nivel de combustible",
     "isActive": "Activo",
-    "import": "Importar planos",
+    "import": "Importar aviones",
     "lastFlightDate": "Última fecha de vuelo",
-    "listOf": "Lista de planos",
+    "listOf": "Lista de aviones",
     "msn": "Msn",
-    "planeType": "Tipos de planos",
+    "planeType": "Tipos de aviones",
     "probability": "Oportunidad",
-    "similarTypes": "Tipos de planos similares",
+    "similarTypes": "Tipos de aviones similares",
     "site": "Aerolínea",
     "syncTime": "Tiempo de sincronización",
     "manufacturer": "Fabricante",
@@ -126,15 +127,16 @@
     "originalPrice": "Precio original"
   },
   "planeType": {
-    "add": "Añadir tipos de planos",
+    "add": "Añadir tipos de aviones",
     "certificationDate": "Fecha de certificación",
-    "edit": "Editar tipos de planos",
-    "listOf": "Lista de tipos de planos",
+    "edit": "Editar tipos de aviones",
+    "listOf": "Lista de tipos de aviones",
     "title": "Título"
   },
   "End BIADemo": "To remove in project up to here",
   "member": {
     "add": "Añadir miembro",
+    "import": "Importar miembros",
     "isActive": "Activo",
     "listOf": "Lista de miembros",
     "manage": "Gestionar miembro",
@@ -160,7 +162,7 @@
     "title": "Title"
   },
   "translation": {
-    "defaultLanguage": "Defecto (Inglesa)"
+    "defaultLanguage": "Defecto (Inglés)"
   },
   "user": {
     "add": "Añadir usuario",
@@ -199,6 +201,7 @@
       "deprecated:": "transaltion will be done in database in next version",
       "title": "Notificación enviada con éxito",
       "description": "Descripción a personalizar en las traducciones i18n para cada función"
-    }
+    },
+    "edit": "Editar notificación"
   }
 }

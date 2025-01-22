@@ -1,20 +1,21 @@
 <bia-form
   [hidden]="true"
   [fields]="crudConfiguration.fieldsConfig.columns"
+  [formValidators]="crudConfiguration.fieldsConfig.formValidators"
   [dictOptionDtos]="
     (crudItemService.optionsService.dictOptionDtos$ | async) ?? []
   "></bia-form>
 
-<bia-crud-item-bulk-form
-  [bulkData]="bulkData"
+<bia-crud-item-import-form
+  [importData]="importData"
   [crudConfiguration]="crudConfiguration"
   [appSettings]="this.biaTranslationService.appSettings$ | async"
   [canAdd]="canAdd"
   [canDelete]="canDelete"
   [canEdit]="canEdit"
-  [bulkParam]="crudItemBulkService.bulkParam"
+  [importParam]="crudItemImportService.importParam"
   (save)="onSave($event)"
   (cancel)="onCancel()"
   (fileSelected)="onFileSelected($event)"
-  (changeBulkParam)="onChangeBulkParam($event)">
-</bia-crud-item-bulk-form>
+  (changeImportParam)="onChangeImportParam($event)">
+</bia-crud-item-import-form>

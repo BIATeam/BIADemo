@@ -54,14 +54,16 @@
   <div class="flex flex-row gap-1 justify-content-end">
     <button
       pButton
-      label="{{ 'bia.save' | translate }}"
-      type="submit"
-      [disabled]="!form.valid"></button>
-    <button
-      pButton
+      icon="pi pi-times"
       label="{{ 'bia.cancel' | translate }}"
       type="button"
       class="p-button-outlined"
       (click)="onCancel()"></button>
+    <button
+      pButton
+      icon="pi pi-plus"
+      label="{{ 'bia.add' | translate }}"
+      type="submit"
+      [disabled]="!form.valid"></button>
   </div>
 </form>

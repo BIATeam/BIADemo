@@ -1,4 +1,5 @@
 <bia-user-form
+  [isAdd]="true"
   [fields]="crudConfiguration.fieldsConfig.columns"
   [dictOptionDtos]="(userService.optionsService.dictOptionDtos$ | async) ?? []"
   (cancel)="onCancelled()"

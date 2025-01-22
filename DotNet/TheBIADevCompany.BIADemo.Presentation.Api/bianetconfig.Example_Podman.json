@@ -84,6 +84,12 @@
         "Names": [ "User_ListAD", "User_Add", "User_Save" ],
         "Roles": [ "Site_Admin" ]
       }
-    ]
+    ],
+    "ProfileConfiguration": {
+      // Determine if the client browser get the profile image from the URL or Path (when true) or if the client calls the api to get the image instead (when false)
+      "ClientProfileImageGetMode": false,
+      "ProfileImageUrlOrPath": "https://mycompany.human-resources.com/Profile/{login}/Picture",
+      "EditProfileImageUrl": "https://mycompany.human-resources.com/Profile/Edit"
+    }
   }
 }

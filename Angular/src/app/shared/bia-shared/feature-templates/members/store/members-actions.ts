@@ -30,6 +30,11 @@ export namespace FeatureMembersActions {
     props<{ member: Member }>()
   );
 
+  export const save = createAction(
+    '[' + memberCRUDConfiguration.storeKey + '] Save',
+    props<{ members: Member[] }>()
+  );
+
   export const remove = createAction(
     '[' + memberCRUDConfiguration.storeKey + '] Remove',
     props<{ id: number }>()

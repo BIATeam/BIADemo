@@ -48,9 +48,10 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
                     { HeaderName.EstimatedPrice, engine => engine.EstimatedPrice },
                     { HeaderName.IsToBeMaintained, engine => engine.IsToBeMaintained },
                     { HeaderName.IsHybrid, engine => engine.IsHybrid },
-                    { HeaderName.PrincipalPart, engine => engine.PrincipalPart },
+                    { HeaderName.PrincipalPart, engine => engine.PrincipalPart != null ? engine.PrincipalPart.SN : null },
+                    { HeaderName.InstalledParts, engine => engine.InstalledParts.Select(x => x.SN).OrderBy(x => x) },
                 };
-            }
+        }
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
@@ -162,6 +163,11 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
                 {
                     foreach (string headerName in headerNames)
                     {
+                        if (string.Equals(headerName, HeaderName.Id, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVNumber(x.Id));
+                        }
+
                         if (string.Equals(headerName, HeaderName.Reference, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVString(x.Reference));
@@ -204,7 +210,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
 
                         if (string.Equals(headerName, HeaderName.Power, StringComparison.OrdinalIgnoreCase))
                         {
-                            records.Add(CSVNumber(x.Power.Value));
+                            records.Add(CSVNumber(x.Power));
                         }
 
                         if (string.Equals(headerName, HeaderName.NoiseLevel, StringComparison.OrdinalIgnoreCase))
@@ -214,7 +220,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
 
                         if (string.Equals(headerName, HeaderName.AverageFlightHours, StringComparison.OrdinalIgnoreCase))
                         {
-                            records.Add(CSVNumber(x.AverageFlightHours.Value));
+                            records.Add(CSVNumber(x.AverageFlightHours));
                         }
 
                         if (string.Equals(headerName, HeaderName.FlightHours, StringComparison.OrdinalIgnoreCase))
@@ -224,7 +230,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
 
                         if (string.Equals(headerName, HeaderName.AverageFuelConsumption, StringComparison.OrdinalIgnoreCase))
                         {
-                            records.Add(CSVNumber(x.AverageFuelConsumption.Value));
+                            records.Add(CSVNumber(x.AverageFuelConsumption));
                         }
 
                         if (string.Equals(headerName, HeaderName.FuelConsumption, StringComparison.OrdinalIgnoreCase))
@@ -234,7 +240,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
 
                         if (string.Equals(headerName, HeaderName.EstimatedPrice, StringComparison.OrdinalIgnoreCase))
                         {
-                            records.Add(CSVNumber(x.EstimatedPrice.Value));
+                            records.Add(CSVNumber(x.EstimatedPrice));
                         }
 
                         if (string.Equals(headerName, HeaderName.OriginalPrice, StringComparison.OrdinalIgnoreCase))
@@ -255,6 +261,11 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
                         if (string.Equals(headerName, HeaderName.PrincipalPart, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVString(x.PrincipalPart?.Display));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.InstalledParts, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVList(x.InstalledParts));
                         }
                     }
                 }
@@ -280,106 +291,111 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
         /// Header Name.
         /// </summary>
         public struct HeaderName
-        {
-            /// <summary>
-            /// Header Name Id.
-            /// </summary>
-            public const string Id = "id";
+    {
+        /// <summary>
+        /// Header Name Id.
+        /// </summary>
+        public const string Id = "id";
 
-            /// <summary>
-            /// Header Name Reference.
-            /// </summary>
-            public const string Reference = "reference";
+        /// <summary>
+        /// Header Name Reference.
+        /// </summary>
+        public const string Reference = "reference";
 
-            /// <summary>
-            /// Header Name Manufacturer.
-            /// </summary>
-            public const string Manufacturer = "manufacturer";
+        /// <summary>
+        /// Header Name Manufacturer.
+        /// </summary>
+        public const string Manufacturer = "manufacturer";
 
-            /// <summary>
-            /// Header Name NextMaintenanceDate.
-            /// </summary>
-            public const string NextMaintenanceDate = "nextMaintenanceDate";
+        /// <summary>
+        /// Header Name NextMaintenanceDate.
+        /// </summary>
+        public const string NextMaintenanceDate = "nextMaintenanceDate";
 
-            /// <summary>
-            /// Header Name LastMaintenanceDate.
-            /// </summary>
-            public const string LastMaintenanceDate = "lastMaintenanceDate";
+        /// <summary>
+        /// Header Name LastMaintenanceDate.
+        /// </summary>
+        public const string LastMaintenanceDate = "lastMaintenanceDate";
 
-            /// <summary>
-            /// Header Name DeliveryDate.
-            /// </summary>
-            public const string DeliveryDate = "deliveryDate";
+        /// <summary>
+        /// Header Name DeliveryDate.
+        /// </summary>
+        public const string DeliveryDate = "deliveryDate";
 
-            /// <summary>
-            /// Header Name ExchangeDate.
-            /// </summary>
-            public const string ExchangeDate = "exchangeDate";
+        /// <summary>
+        /// Header Name ExchangeDate.
+        /// </summary>
+        public const string ExchangeDate = "exchangeDate";
 
-            /// <summary>
-            /// Header Name SyncTime.
-            /// </summary>
-            public const string SyncTime = "syncTime";
+        /// <summary>
+        /// Header Name SyncTime.
+        /// </summary>
+        public const string SyncTime = "syncTime";
 
-            /// <summary>
-            /// Header Name IgnitionTime.
-            /// </summary>
-            public const string IgnitionTime = "ignitionTime";
+        /// <summary>
+        /// Header Name IgnitionTime.
+        /// </summary>
+        public const string IgnitionTime = "ignitionTime";
 
-            /// <summary>
-            /// Header Name Power.
-            /// </summary>
-            public const string Power = "power";
+        /// <summary>
+        /// Header Name Power.
+        /// </summary>
+        public const string Power = "power";
 
-            /// <summary>
-            /// Header Name NoiseLevel.
-            /// </summary>
-            public const string NoiseLevel = "noiseLevel";
+        /// <summary>
+        /// Header Name NoiseLevel.
+        /// </summary>
+        public const string NoiseLevel = "noiseLevel";
 
-            /// <summary>
-            /// Header Name FlightHours.
-            /// </summary>
-            public const string FlightHours = "flightHours";
+        /// <summary>
+        /// Header Name FlightHours.
+        /// </summary>
+        public const string FlightHours = "flightHours";
 
-            /// <summary>
-            /// Header Name AverageFlightHours.
-            /// </summary>
-            public const string AverageFlightHours = "averageFlightHours";
+        /// <summary>
+        /// Header Name AverageFlightHours.
+        /// </summary>
+        public const string AverageFlightHours = "averageFlightHours";
 
-            /// <summary>
-            /// Header Name FuelConsumption.
-            /// </summary>
-            public const string FuelConsumption = "fuelConsumption";
+        /// <summary>
+        /// Header Name FuelConsumption.
+        /// </summary>
+        public const string FuelConsumption = "fuelConsumption";
 
-            /// <summary>
-            /// Header Name AverageFuelConsumption.
-            /// </summary>
-            public const string AverageFuelConsumption = "averageFuelConsumption";
+        /// <summary>
+        /// Header Name AverageFuelConsumption.
+        /// </summary>
+        public const string AverageFuelConsumption = "averageFuelConsumption";
 
-            /// <summary>
-            /// Header Name OriginalPrice.
-            /// </summary>
-            public const string OriginalPrice = "originalPrice";
+        /// <summary>
+        /// Header Name OriginalPrice.
+        /// </summary>
+        public const string OriginalPrice = "originalPrice";
 
-            /// <summary>
-            /// Header Name EstimatedPrice.
-            /// </summary>
-            public const string EstimatedPrice = "estimatedPrice";
+        /// <summary>
+        /// Header Name EstimatedPrice.
+        /// </summary>
+        public const string EstimatedPrice = "estimatedPrice";
 
-            /// <summary>
-            /// Header Name IsToBeMaintained.
-            /// </summary>
-            public const string IsToBeMaintained = "isToBeMaintained";
+        /// <summary>
+        /// Header Name IsToBeMaintained.
+        /// </summary>
+        public const string IsToBeMaintained = "isToBeMaintained";
 
-            /// <summary>
-            /// Header Name IsHybrid.
-            /// </summary>
-            public const string IsHybrid = "isHybrid";
+        /// <summary>
+        /// Header Name IsHybrid.
+        /// </summary>
+        public const string IsHybrid = "isHybrid";
 
-            /// <summary>
-            /// Header Name principalPart.
-            /// </summary>
-            public const string PrincipalPart = "principalPart";
-        }
+        /// <summary>
+        /// Header Name principalPart.
+        /// </summary>
+        public const string PrincipalPart = "principalPart";
+
+        /// <summary>
+        /// Header Name installedParts.
+        /// </summary>
+        public const string InstalledParts = "installedParts";
     }
+}
 }

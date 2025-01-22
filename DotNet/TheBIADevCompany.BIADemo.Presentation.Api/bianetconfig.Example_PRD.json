@@ -81,6 +81,30 @@
           }
         ]
       }
+    ],
+    "ProfileConfiguration": {
+      // Determine if the client browser get the profile image from the URL or Path (when true) or if the client calls the api to get the image instead (when false)
+      "ClientProfileImageGetMode": false,
+      "ProfileImageUrlOrPath": "https://mycompany.human-resources.com/Profile/{login}/Picture",
+      "EditProfileImageUrl": "https://mycompany.human-resources.com/Profile/Edit"
+    },
+    "PermissionsByEnv": [
+      {
+        "Names": [ "User_ListAD", "User_Add", "User_Delete", "User_Save" ],
+        "Roles": [ "Admin" ]
+      },
+      {
+        "Names": [ "User_List_Access", "User_List", "User_Read", "User_Sync", "User_UpdateRoles" ],
+        "Roles": [ "Admin" ]
+      },
+      {
+        "Names": [ "User_UpdateRoles" ],
+        "Roles": [ "Admin" ]
+      },
+      {
+        "Names": [ "User_ListAD", "User_Add", "User_Save" ],
+        "Roles": [ "Site_Admin" ]
+      }
     ]
   }
 }

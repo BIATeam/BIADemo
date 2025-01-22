@@ -12,7 +12,7 @@ export const userCRUDConfiguration: CrudConfig<User> = new CrudConfig({
   // useViewTeamWithTypeId: TeamTypeId.Site, // use to filter view by teams => should know the type of team
   usePopup: true,
   useOfflineMode: false,
-  bulkMode: {
+  importMode: {
     useInsert: true,
     useUpdate: true,
     useDelete: false,

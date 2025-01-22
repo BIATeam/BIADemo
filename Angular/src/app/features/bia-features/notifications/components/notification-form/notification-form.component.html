@@ -42,6 +42,7 @@
               <button
                 pButton
                 type="button"
+                icon="pi pi-plus"
                 label="{{ 'bia.translation.addAll' | translate }}"
                 (click)="addAllTranslation()"
                 [disabled]="!missingTranslation"></button>
@@ -99,6 +100,7 @@
                 <button
                   pButton
                   type="button"
+                  icon="pi pi-trash"
                   label="{{ 'bia.translation.delete' | translate }}"
                   (click)="removeTranslation(i)"></button>
               </div>
@@ -135,6 +137,7 @@
                 class="ui-button-secondary"
                 pButton
                 type="button"
+                icon="pi pi-plus"
                 label="{{ 'bia.translation.add' | translate }}"
                 (click)="addTranslation()"
                 [disabled]="!selectionLanguage"></button>
@@ -297,14 +300,16 @@
   <div class="flex flex-row gap-1 justify-content-end">
     <button
       pButton
-      label="{{ 'bia.save' | translate }}"
-      type="submit"
-      [disabled]="!form.valid"></button>
-    <button
-      pButton
+      icon="pi pi-times"
       label="{{ 'bia.cancel' | translate }}"
       type="button"
       class="p-button-outlined"
       (click)="onCancel()"></button>
+    <button
+      pButton
+      icon="pi pi-check"
+      label="{{ 'bia.save' | translate }}"
+      type="submit"
+      [disabled]="!form.valid"></button>
   </div>
 </form>

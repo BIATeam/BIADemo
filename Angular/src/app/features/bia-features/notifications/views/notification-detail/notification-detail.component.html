@@ -34,11 +34,11 @@
         [notification]="notification"></bia-notification-team-warning>
       <button
         pButton
-        [label]="notification.data.display | translate"
+        icon="pi pi-times"
+        label="{{ 'bia.cancel' | translate }}"
         type="button"
-        class="p-button-primary"
-        (click)="onAction(notification)"
-        *ngIf="canAction(notification)"></button>
+        class="p-button-secondary"
+        (click)="onCancelled()"></button>
       <button
         pButton
         label="{{ 'bia.edit' | translate }}"
@@ -48,10 +48,11 @@
         *ngIf="canEdit"></button>
       <button
         pButton
-        label="{{ 'bia.cancel' | translate }}"
+        [label]="notification.data.display | translate"
         type="button"
-        class="p-button-secondary"
-        (click)="onCancelled()"></button>
+        class="p-button-primary"
+        (click)="onAction(notification)"
+        *ngIf="canAction(notification)"></button>
     </div>
   </div>
 </ng-container>

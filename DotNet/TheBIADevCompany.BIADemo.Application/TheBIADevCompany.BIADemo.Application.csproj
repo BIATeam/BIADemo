@@ -2,14 +2,13 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Company>TheBIADevCompany</Company>
-    <Copyright>Copyright © TheBIADevCompany 2024</Copyright>
+    <Copyright>Copyright © TheBIADevCompany 2025</Copyright>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Crosscutting.Common\TheBIADevCompany.BIADemo.Crosscutting.Common.csproj" />
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Domain.Dto\TheBIADevCompany.BIADemo.Domain.Dto.csproj" />
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Domain\TheBIADevCompany.BIADemo.Domain.csproj" />
-    <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Application\BIA.Net.Core.Application.csproj" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>$(DefineConstants);BIA_BACK_TO_BACK_AUTH;BIA_FRONT_FEATURE</DefineConstants>
@@ -61,5 +60,9 @@
     <Compile Remove="**\WakeUpTask.cs" />
     <Compile Remove="**\LanguagesController.cs" />
     <Compile Remove="**\LdapDomainsController.cs" />
+    <Compile Remove="**\*ProfileImageController*.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="BIA.Net.Core.Application" Version="4.0.*" />
   </ItemGroup>
 </Project>
