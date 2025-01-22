@@ -141,6 +141,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.Airports.Update)]
         public async Task<IActionResult> Update(int id, [FromBody] AirportDto dto)
@@ -165,6 +166,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
+            }
+            catch (OutdateException)
+            {
+                return this.Conflict();
             }
         }
 
