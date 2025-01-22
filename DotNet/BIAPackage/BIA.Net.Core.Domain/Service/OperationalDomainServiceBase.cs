@@ -366,9 +366,9 @@ namespace BIA.Net.Core.Domain.Service
                         throw new ElementNotFoundException();
                     }
 
-                    if (entity is VersionedTable versionedEntity && dto is VersionedDto<TKey> versionedDto
-                    && !string.IsNullOrWhiteSpace(versionedDto.RowVersion)
-                    && !Convert.ToBase64String(versionedEntity.RowVersion).SequenceEqual(versionedDto.RowVersion))
+                    if (entity is VersionedTable versionedEntity
+                    && !string.IsNullOrWhiteSpace(dto.RowVersion)
+                    && !Convert.ToBase64String(versionedEntity.RowVersion).SequenceEqual(dto.RowVersion))
                     {
                         throw new OutdateException();
                     }

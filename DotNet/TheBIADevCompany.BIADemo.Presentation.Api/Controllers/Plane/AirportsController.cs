@@ -156,6 +156,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
                 var updatedDto = await this.airportService.UpdateAsync(dto);
 #if UseHubForClientInAirport
                 await this.clientForHubService.SendTargetedMessage(string.Empty, "airports", "refresh-airports");
+                await this.clientForHubService.SendTargetedMessage(string.Empty, "airports", "update-airport", updatedDto);
 #endif
                 return this.Ok(updatedDto);
             }
