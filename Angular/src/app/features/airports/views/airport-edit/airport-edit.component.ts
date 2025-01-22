@@ -41,7 +41,7 @@ export class AirportEditComponent
           currentCrudItem.id === updatedCrudItem.id &&
           currentCrudItem.rowVersion !== updatedCrudItem.rowVersion
         ) {
-          this.isLocked = true;
+          this.isCrudItemOutdated = true;
         }
       });
     }

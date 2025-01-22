@@ -24,7 +24,7 @@ export class CrudItemFormComponent<CrudItem extends BaseDto> {
   @Input() formValidators?: ValidatorFn[];
   @Input() dictOptionDtos: DictOptionDto[];
   @Input() isAdd?: boolean;
-  @Input() isLocked = false;
+  @Input() isCrudItemOutdated = false;
 
   @Output() save = new EventEmitter<CrudItem>();
   @Output() cancel = new EventEmitter<void>();

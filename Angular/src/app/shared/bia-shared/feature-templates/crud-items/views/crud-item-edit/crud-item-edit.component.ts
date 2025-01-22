@@ -34,7 +34,7 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
   protected activatedRoute: ActivatedRoute;
   protected biaTranslationService: BiaTranslationService;
   protected actions: Actions;
-  protected isLocked: boolean;
+  protected isCrudItemOutdated: boolean;
 
   constructor(
     protected injector: Injector,
@@ -88,7 +88,7 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
         )
         .subscribe(action => {
           if (action.error?.status === HttpStatusCode.Conflict) {
-            this.isLocked = true;
+            this.isCrudItemOutdated = true;
           }
         });
     }

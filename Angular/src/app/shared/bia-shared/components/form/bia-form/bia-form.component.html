@@ -42,7 +42,7 @@
   <div class="footer-container bia-form-fixed-buttons">
     <div class="flex gap-2 align-items-center">
       <button
-        *ngIf="isLocked"
+        *ngIf="isCrudItemOutdated"
         pButton
         class="info-locked-button"
         type="button"
@@ -51,7 +51,9 @@
         severity="danger"
         [outlined]="true"
         size="small"></button>
-      <span *ngIf="isLocked" class="info-locked-label">Outdated data</span>
+      <span *ngIf="isCrudItemOutdated" class="info-locked-label"
+        >Outdated data</span
+      >
     </div>
     <div class="flex gap-3">
       <button
@@ -68,7 +70,7 @@
           isAdd === true ? ('bia.add' | translate) : ('bia.save' | translate)
         }}"
         type="submit"
-        [disabled]="!form.valid || isLocked"></button>
+        [disabled]="!form.valid || isCrudItemOutdated"></button>
     </div>
   </div>
 </form>
