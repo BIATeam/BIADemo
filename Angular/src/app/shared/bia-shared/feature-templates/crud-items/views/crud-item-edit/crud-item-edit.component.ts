@@ -33,6 +33,7 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
   protected activatedRoute: ActivatedRoute;
   protected biaTranslationService: BiaTranslationService;
   protected actions: Actions;
+  protected isLocked: boolean;
 
   constructor(
     protected injector: Injector,
@@ -65,6 +66,7 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
 
   onSubmitted(crudItemToUpdate: CrudItem) {
     const successActionType = this.crudItemService.updateSuccessActionType;
+    const failureActionType = this.crudItemService.updateFailureActionType;
 
     if (successActionType) {
       this.actions
@@ -74,6 +76,15 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
         )
         .subscribe(() => {
           this.navigateBack();
+        });
+
+      this.actions
+        .pipe(
+          filter((action: any) => action.type === failureActionType),
+          first()
+        )
+        .subscribe(() => {
+          this.isLocked = true;
         });
     }
 

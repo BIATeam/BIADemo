@@ -19,6 +19,7 @@ import { AirportOptionsService } from './airport-options.service';
 export class AirportService extends CrudItemService<Airport> {
   _updateSuccessActionType = FeatureAirportsActions.loadAllByPost.type;
   _createSuccessActionType = FeatureAirportsActions.loadAllByPost.type;
+  _updateFailureActionType = FeatureAirportsActions.failure.type;
 
   constructor(
     private store: Store<AppState>,

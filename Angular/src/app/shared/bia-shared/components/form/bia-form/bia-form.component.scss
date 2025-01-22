@@ -2,3 +2,19 @@
   margin-bottom: 20px;
   width: 100%;
 }
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .info-locked-button {
+    height: 1.5rem;
+    width: 1.5rem;
+  }
+
+  .info-locked-label {
+    color: #d32f2f;
+    font-weight: 500;
+  }
+}

@@ -5,6 +5,7 @@
   [dictOptionDtos]="
     (airportService.optionsService.dictOptionDtos$ | async) ?? []
   "
+  [isLocked]="isLocked"
   (cancel)="onCancelled()"
   (save)="onSubmitted($event)"></app-airport-form>
 <bia-spinner

@@ -75,6 +75,15 @@ export abstract class CrudItemSingleService<CrudItem extends BaseDto> {
   }
 
   /**
+   * Type of store action called when update effect has failed.
+   * See update effect in store effects of CRUD item.
+   */
+  protected _updateFailureActionType: string | undefined;
+  public get updateFailureActionType(): string | undefined {
+    return this._updateFailureActionType;
+  }
+
+  /**
    * Type of store action called after create effect is successful.
    * See create effect in store effects of CRUD item.
    */
