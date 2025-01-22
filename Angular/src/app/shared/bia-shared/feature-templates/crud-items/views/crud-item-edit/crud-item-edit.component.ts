@@ -1,3 +1,4 @@
+import { HttpStatusCode } from '@angular/common/http';
 import {
   Component,
   EventEmitter,
@@ -77,14 +78,18 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
         .subscribe(() => {
           this.navigateBack();
         });
+    }
 
+    if (failureActionType) {
       this.actions
         .pipe(
           filter((action: any) => action.type === failureActionType),
           first()
         )
-        .subscribe(() => {
-          this.isLocked = true;
+        .subscribe(action => {
+          if (action.error?.status === HttpStatusCode.Conflict) {
+            this.isLocked = true;
+          }
         });
     }
 
