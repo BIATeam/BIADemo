@@ -201,6 +201,7 @@
       "deprecated:": "translation will be done in database in next version",
       "title": "Succès envoi de notification",
       "description": "Description à customiser dans les traductions i18n pour chaque feature"
-    }
+    },
+    "edit": "Editer notification"
   }
 }

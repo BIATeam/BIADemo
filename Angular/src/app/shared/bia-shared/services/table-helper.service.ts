@@ -124,15 +124,31 @@ export class TableHelperService {
     offset?: string
   ): string {
     let height: string;
+    // topbar = 4rem
+    // breadcrumb = 2.45rem
+    // padding page = 2rem
+    // table header height = 2.14rem
+    // bia-page-margin : 0.75rem
+
+    // Non compact mode :
+    // table header margin = 2rem
+    // controller height is approximately ~= 2.5rem + 31px
+    // paginator = 4.05rem
+
+    // Compact mode :
+    // table header margin = 0.5rem
+    // controller height is approximately ~= 2.75rem + 5px
+    // paginator = 3.3rem
+
     if (layoutService._config.classicStyle) {
       height = layoutService.state.fullscreen
         ? '100vh - 240px'
         : '100vh - 460px';
     } else {
       if (layoutService.state.fullscreen) {
-        height = '100vh - 72px - 10.75rem';
+        height = '100vh - 31px - 13.44rem';
       } else {
-        height = '100vh - 69px - 17.417rem';
+        height = '100vh - 31px - 19.89rem';
         height +=
           layoutService._config.footerMode != 'overlay'
             ? ' - var(--footer-height)'
@@ -143,13 +159,13 @@ export class TableHelperService {
       }
     }
     if (compactMode) {
-      height += ' - 0.208rem + 58px';
+      height += ' + 2rem + 26px';
 
       if (!showTableController) {
-        height += ' + 2.545rem + 10px';
+        height += ' + 2.75rem + 5px';
       }
     } else if (!showTableController) {
-      height += ' + 2.285rem + 35px';
+      height += ' + 2.5rem + 31px';
     }
 
     if (offset) {

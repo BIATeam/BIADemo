@@ -235,7 +235,7 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="queryMode">The query mode.</param>
         /// <param name="mapperMode">The mapper mode.</param>
         /// <returns>SaveSafeReturn struct.</returns>
-        Task<SaveSafeReturn<TDto>> SaveSafeAsync(
+        Task<List<TDto>> SaveSafeAsync(
             IEnumerable<TDto> dtos,
             BiaClaimsPrincipal principal,
             string rightAdd,

@@ -137,6 +137,7 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
       }
     }
   }
+
   public initRowEdit(rowData: any) {
     if (rowData) {
       this.element = rowData;

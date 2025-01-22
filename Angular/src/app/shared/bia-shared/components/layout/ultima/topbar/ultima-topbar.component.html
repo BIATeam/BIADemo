@@ -41,7 +41,9 @@
           let-last="last"
           [ngForOf]="teamTypeSelectors">
           <bia-team-selector [teamType]="teamTypeSelector"></bia-team-selector>
-          <span *ngIf="!last" class="flex align-self-center separator"></span>
+          <span
+            *ngIf="!last"
+            class="flex align-self-center bia-separator"></span>
         </ng-template>
       </div>
       <div class="layout-topbar-actions-end flex flex-0">
