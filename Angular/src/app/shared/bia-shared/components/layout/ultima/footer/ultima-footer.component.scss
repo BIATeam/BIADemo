@@ -11,6 +11,13 @@
   position: relative;
 }
 
+.bia-separator {
+  height: 24px;
+  border-left: 1px solid;
+  font-size: xxx-large;
+  margin-right: 5px;
+}
+
 .layout-footer {
   height: var(--footer-height);
 }

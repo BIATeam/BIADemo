@@ -291,7 +291,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
 
             try
             {
-                var saveSafeDtos = await this.planeService.SaveSafeAsync(
+                var savedDtos = await this.planeService.SaveSafeAsync(
                     dtos: dtoList,
                     principal: this.biaClaimsPrincipalService.GetBiaClaimsPrincipal(),
                     rightAdd: Rights.Planes.Create,
@@ -299,7 +299,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
                     rightDelete: Rights.Planes.Delete);
 #if UseHubForClientInPlane
                 // BIAToolKit - Begin Parent siteId
-                saveSafeDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
+                savedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
                 {
                     _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "planes", "refresh-planes");
                 });

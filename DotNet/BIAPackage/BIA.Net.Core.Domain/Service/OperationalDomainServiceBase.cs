@@ -462,7 +462,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="queryMode">The query mode.</param>
         /// <param name="mapperMode">The mapper mode.</param>
         /// <returns>SaveSafeReturn struct.</returns>
-        protected virtual async Task<SaveSafeReturn<TOtherDto>> SaveSafeAsync<TOtherDto, TOtherMapper>(
+        protected virtual async Task<List<TOtherDto>> SaveSafeAsync<TOtherDto, TOtherMapper>(
             IEnumerable<TOtherDto> dtos,
             BiaClaimsPrincipal principal,
             string rightAdd,
@@ -475,13 +475,12 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherDto : BaseDto<TKey>, new()
         {
             StringBuilder strBldr = new StringBuilder();
-            var exceptions = new List<Exception>();
+            List<Exception> exceptions = new List<Exception>();
 
             int nbAdded = 0;
             int nbUpdated = 0;
             int nbDeleted = 0;
             int nbError = 0;
-            var saveSafeReturn = new SaveSafeReturn<TOtherDto>();
 
             bool canAdd = true;
             bool canUpdate = true;
@@ -512,11 +511,11 @@ namespace BIA.Net.Core.Domain.Service
                 nbError++;
             }
 
-            saveSafeReturn.DtosSaved = new List<TOtherDto>();
-            var dtoList = dtos.ToList();
+            List<TOtherDto> savedDtos = new List<TOtherDto>();
+            List<TOtherDto> dtoList = dtos.ToList();
             if (dtoList.Any())
             {
-                foreach (var dto in dtoList)
+                foreach (TOtherDto dto in dtoList)
                 {
                     try
                     {
@@ -567,12 +566,19 @@ namespace BIA.Net.Core.Domain.Service
 
                         if (returnDto != null)
                         {
-                            saveSafeReturn.DtosSaved.Add(returnDto);
+                            savedDtos.Add(returnDto);
                         }
                     }
                     catch (ElementNotFoundException ex)
                     {
                         strBldr.AppendLine("Element " + dto.Id + " not exist or not authorized.");
+                        exceptions.Add(ex);
+                        this.Repository.UnitOfWork.Reset();
+                        nbError++;
+                    }
+                    catch (FrontUserException ex)
+                    {
+                        strBldr.AppendLine(string.Format(ex.Message, ex.ErrorMessageParameters));
                         exceptions.Add(ex);
                         this.Repository.UnitOfWork.Reset();
                         nbError++;
@@ -589,11 +595,12 @@ namespace BIA.Net.Core.Domain.Service
             if (nbError > 0)
             {
                 strBldr.Insert(0, $"Added: {nbAdded}, Updated: {nbUpdated}, Deleted: {nbDeleted}, Error{(nbError > 1 ? "s" : null)}: {nbError}{Environment.NewLine}");
-                saveSafeReturn.ErrorMessage = strBldr.ToString();
-                saveSafeReturn.AggregateException = new AggregateException(exceptions);
+                string errorMessage = strBldr.ToString();
+                AggregateException aggregateException = new AggregateException(exceptions);
+                throw new FrontUserException(errorMessage, aggregateException);
             }
 
-            return saveSafeReturn;
+            return savedDtos;
         }
 
         /// <summary>

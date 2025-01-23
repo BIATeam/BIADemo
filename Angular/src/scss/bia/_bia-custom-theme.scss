@@ -1,3 +1,9 @@
+.bia-separator {
+  height: 24px;
+  border-left: 1px solid;
+  margin-right: 5px;
+}
+
 // classic-footer-theme
 bia-classic-footer {
   @if ($is-dark) {
@@ -188,15 +194,15 @@ bia-ultima-layout {
   }
 }
 
-// bia-ultima-layout bia-table-header {
-//   border-bottom: solid 1px var(--surface-500);
-//   margin-top: -0.75rem;
-//   margin-left: -2.5rem;
-//   padding-left: 2.5rem;
-//   margin-right: -2.5rem;
-//   padding-right: 2.5rem;
-//   display: block;
-// }
+bia-ultima-layout bia-table-header {
+  //border-bottom: solid 1px var(--surface-500);
+  margin-top: -0.75rem;
+  // margin-left: -2.5rem;
+  // padding-left: 2.5rem;
+  // margin-right: -2.5rem;
+  // padding-right: 2.5rem;
+  display: block;
+}
 
 .table-compact {
   position: relative;
@@ -253,7 +259,7 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
         background: var(--surface-f);
         position: fixed;
         bottom: 0;
-        right: 2rem;
+        right: 1rem;
         left: 0;
         padding: 0.75rem;
         z-index: 5;

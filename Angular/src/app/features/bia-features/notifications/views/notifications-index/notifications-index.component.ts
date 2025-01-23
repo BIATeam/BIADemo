@@ -256,13 +256,12 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
           type: PropType.OneToMany,
         }),
         Object.assign(new BiaFieldConfig('read', 'notification.read'), {
-          isSearchable: false,
           type: PropType.Boolean,
         }),
         Object.assign(
           new BiaFieldConfig('createdDate', 'notification.createdDate'),
           {
-            type: PropType.Date,
+            type: PropType.DateTime,
           }
         ),
         Object.assign(
