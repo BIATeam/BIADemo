@@ -8,13 +8,17 @@
   justify-content: space-between;
   align-items: center;
 
-  .info-locked-button {
-    height: 1.5rem;
-    width: 1.5rem;
-  }
+  .info-locked-container {
+    margin-left: 1rem;
 
-  .info-locked-label {
-    color: #d32f2f;
-    font-weight: 500;
+    .info-locked-button {
+      height: 1.5rem;
+      width: 1.5rem;
+    }
+
+    .info-locked-label {
+      color: #fbc02d;
+      font-weight: 500;
+    }
   }
 }
