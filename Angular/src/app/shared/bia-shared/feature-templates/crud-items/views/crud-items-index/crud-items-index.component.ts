@@ -1,3 +1,4 @@
+import { HttpStatusCode } from '@angular/common/http';
 import {
   Component,
   HostBinding,
@@ -15,6 +16,7 @@ import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable, Subscription, combineLatest } from 'rxjs';
 import { filter, first, skip, take, tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/services/layout.service';
@@ -108,6 +110,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
   protected tableHelperService: TableHelperService;
   protected layoutService: BiaLayoutService;
   protected actions: Actions;
+  protected messageService: BiaMessageService;
 
   constructor(
     protected injector: Injector,
@@ -126,6 +129,8 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
       this.injector.get<TableHelperService>(TableHelperService);
     this.layoutService = this.injector.get<BiaLayoutService>(BiaLayoutService);
     this.actions = this.injector.get<Actions>(Actions);
+    this.messageService =
+      this.injector.get<BiaMessageService>(BiaMessageService);
   }
 
   toggleTableControllerVisibility() {
@@ -380,6 +385,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
       this.handleCrudOperation(
         crudItem,
         this.crudItemService.updateSuccessActionType,
+        this.crudItemService.updateFailureActionType,
         this.crudItemService.update.bind(this.crudItemService)
       );
     }
@@ -388,6 +394,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
       this.handleCrudOperation(
         crudItem,
         this.crudItemService.createSuccessActionType,
+        undefined,
         this.crudItemService.create.bind(this.crudItemService)
       );
     }
@@ -395,13 +402,14 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
 
   private handleCrudOperation(
     crudItem: CrudItem,
-    actionType: string | undefined,
+    successActionType: string | undefined,
+    failureActionType: string | undefined,
     crudOperation: (item: CrudItem) => void
   ) {
-    if (actionType) {
+    if (successActionType) {
       this.actions
         .pipe(
-          filter((action: any) => action.type === actionType),
+          filter((action: any) => action.type === successActionType),
           first()
         )
         .subscribe(() => {
@@ -409,9 +417,24 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
         });
     }
 
+    if (failureActionType) {
+      this.actions
+        .pipe(
+          filter((action: any) => action.type === failureActionType),
+          first()
+        )
+        .subscribe(action => {
+          if (action.error?.status === HttpStatusCode.Conflict) {
+            this.messageService.showWarning(
+              this.translateService.instant('bia.outdatedData')
+            );
+          }
+        });
+    }
+
     crudOperation(crudItem);
 
-    if (!actionType) {
+    if (!successActionType) {
       this.resetEditableRow();
     }
   }
