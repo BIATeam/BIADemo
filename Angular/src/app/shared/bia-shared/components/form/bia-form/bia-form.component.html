@@ -51,9 +51,9 @@
         severity="danger"
         [outlined]="true"
         size="small"></button>
-      <span *ngIf="isCrudItemOutdated" class="info-locked-label"
-        >Outdated data</span
-      >
+      <span *ngIf="isCrudItemOutdated" class="info-locked-label">{{
+        'bia.outdatedData' | translate
+      }}</span>
     </div>
     <div class="flex gap-3">
       <button
