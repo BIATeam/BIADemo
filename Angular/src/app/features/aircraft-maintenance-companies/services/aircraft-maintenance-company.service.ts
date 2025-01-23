@@ -22,6 +22,8 @@ export class AircraftMaintenanceCompanyService extends CrudItemService<AircraftM
     FeatureAircraftMaintenanceCompaniesActions.loadAllByPost.type;
   _createSuccessActionType =
     FeatureAircraftMaintenanceCompaniesActions.loadAllByPost.type;
+  _updateFailureActionType =
+    FeatureAircraftMaintenanceCompaniesActions.failure.type;
 
   constructor(
     private store: Store<AppState>,

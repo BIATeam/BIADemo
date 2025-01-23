@@ -34,5 +34,9 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
       type: PropType.Number,
       filterMode: PrimeNGFiltering.Equals,
     }),
+    Object.assign(new BiaFieldConfig('rowVersion', 'engine.rowVersion'), {
+      isVisible: false,
+      isHideByDefault: true,
+    }),
   ],
 };

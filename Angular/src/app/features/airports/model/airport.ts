@@ -8,7 +8,6 @@ import {
 export interface Airport extends BaseDto {
   name: string;
   city: string;
-  rowVersion: string;
 }
 
 // TODO after creation of CRUD Airport : adapt the field configuration

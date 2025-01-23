@@ -115,6 +115,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
             return entity => new EngineDto
             {
                 Id = entity.Id,
+                RowVersion = Convert.ToBase64String(entity.RowVersion),
                 Reference = entity.Reference,
                 Manufacturer = entity.Manufacturer,
                 NextMaintenanceDate = entity.NextMaintenanceDate,

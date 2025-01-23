@@ -53,6 +53,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
                 Id = entity.Id,
                 Title = entity.Title,
                 CertificationDate = entity.CertificationDate,
+                RowVersion = Convert.ToBase64String(entity.RowVersion),
             };
         }
 
