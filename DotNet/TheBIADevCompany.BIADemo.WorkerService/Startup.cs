@@ -14,6 +14,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Presentation.Common.Features;
     using BIA.Net.Core.WorkerService.Features;
+    using BIA.Net.Core.WorkerService.Features.Archive;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
@@ -86,6 +87,8 @@ namespace TheBIADevCompany.BIADemo.WorkerService
 
             // End BIADemo
 #endif
+
+            services.AddSingleton<IEntityArchiveConfiguration, PlaneArchiveConfiguration>();
 
             // Configure IoC for classes not in the API project.
             IocContainer.ConfigureContainer(services, this.configuration, false);

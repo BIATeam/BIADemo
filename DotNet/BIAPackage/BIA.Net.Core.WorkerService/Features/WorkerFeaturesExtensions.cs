@@ -12,6 +12,7 @@ namespace BIA.Net.Core.WorkerService.Features
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Service;
+    using BIA.Net.Core.WorkerService.Features.Archive;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
     using Hangfire;
     using Hangfire.PerformContextAccessor;
@@ -115,6 +116,11 @@ namespace BIA.Net.Core.WorkerService.Features
                         config.UsePerformContextAccessorFilter(serviceProvider);
                     }
                 });
+            }
+
+            if (workerFeatures.Archive.IsActive)
+            {
+                services.AddHostedService<ArchiveService>();
             }
 
             return services;
