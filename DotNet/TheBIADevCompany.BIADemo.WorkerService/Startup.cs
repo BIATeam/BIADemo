@@ -20,8 +20,8 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using TheBIADevCompany.BIADemo.Application.Plane;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
-    using TheBIADevCompany.BIADemo.WorkerService.ArchiveTasks;
 #if BIA_FRONT_FEATURE
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.WorkerService.Features;
@@ -86,7 +86,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             services.AddSingleton<IDatabaseHandlerRepository, PlaneHandlerRepository>();
             services.AddSingleton<IDatabaseHandlerRepository, AirportHandlerRepository>();
 
-            services.AddScoped<IEntityArchiveTask, PlaneArchiveTask>();
+            services.AddTransient<IArchiveService, PlaneArchiveService>();
 
             // End BIADemo
 #endif

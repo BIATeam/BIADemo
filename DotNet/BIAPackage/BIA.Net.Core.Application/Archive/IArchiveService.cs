@@ -7,8 +7,8 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    public interface IEntityArchiveTask
+    public interface IArchiveService
     {
-        public Task Run();
+        public Task RunAsync();
     }
 }

@@ -14,18 +14,30 @@
 
     public class ArchiveTask : BaseJob
     {
-        private readonly IReadOnlyList<IEntityArchiveTask> entityArchiveTasks;
+        private readonly List<IArchiveService> archiveServices;
 
-        public ArchiveTask(IConfiguration configuration, ILogger<ArchiveTask> logger, IEnumerable<IEntityArchiveTask> entityArchiveTasks) : base(configuration, logger)
+        public ArchiveTask(IConfiguration configuration, ILogger<ArchiveTask> logger, IEnumerable<IArchiveService> archiveServices) : base(configuration, logger)
         {
-            this.entityArchiveTasks = entityArchiveTasks.ToList();
+            this.archiveServices = archiveServices.ToList();
         }
 
         protected override async Task RunMonitoredTask()
         {
-            Logger.Log(LogLevel.Information, "Start Archive Task");
-            await Task.WhenAll(entityArchiveTasks.Select(x => x.Run()));
-            Logger.Log(LogLevel.Information, "End Archive Task");
+            try
+            {
+                if (this.archiveServices.Count == 0)
+                {
+                    Logger.Log(LogLevel.Warning, "No archive service registered");
+                    return;
+                }
+
+                Logger.Log(LogLevel.Information, "Start Archive Task");
+                await Task.WhenAll(archiveServices.Select(x => x.RunAsync()));
+            }
+            finally
+            {
+                Logger.Log(LogLevel.Information, "End Archive Task");
+            }
         }
     }
 }
