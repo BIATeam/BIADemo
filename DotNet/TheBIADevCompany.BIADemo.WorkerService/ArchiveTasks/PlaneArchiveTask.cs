@@ -1,4 +1,4 @@
-﻿namespace TheBIADevCompany.BIADemo.WorkerService.Features
+﻿namespace TheBIADevCompany.BIADemo.WorkerService.ArchiveTasks
 {
     using System;
     using System.Collections.Generic;
