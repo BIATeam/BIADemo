@@ -17,7 +17,5 @@ namespace BIA.Net.Core.Common.Configuration.WorkerFeature
         /// Gets or sets the Hangfire Server feature configuration.
         /// </summary>
         public HangfireServerConfiguration HangfireServer { get; set; }
-
-        public ArchiveConfiguration Archive { get; set; }
     }
 }
