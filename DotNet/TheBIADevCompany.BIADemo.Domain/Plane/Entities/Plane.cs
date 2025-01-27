@@ -9,12 +9,13 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Entities
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
     using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Archive;
     using TheBIADevCompany.BIADemo.Domain.Site.Entities;
 
     /// <summary>
     /// The plane entity.
     /// </summary>
-    public class Plane : VersionedTable, IEntity<int>
+    public class Plane : VersionedTable, IEntityArchivable<int>
     {
         /// <summary>
         /// Gets or sets the id.
@@ -169,5 +170,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Entities
         /// Gets or sets the list of engines for plane.
         /// </summary>
         public ICollection<Engine> Engines { get; set; }
+
+        public ArchiveStateEnum ArchiveState { get; set; }
     }
 }

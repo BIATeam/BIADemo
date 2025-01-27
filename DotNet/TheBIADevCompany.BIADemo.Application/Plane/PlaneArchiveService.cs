@@ -7,6 +7,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Archive;
+    using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain.RepoContract;
     using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
@@ -14,19 +15,17 @@
 
     public class PlaneArchiveService : ArchiveServiceBase<Plane, int>, IArchiveService
     {
-        private readonly ITGenericRepository<Plane, int> planeRepository;
         private readonly ITGenericRepository<Engine, int> engineRepository;
 
-        public PlaneArchiveService(ILogger<PlaneArchiveService> logger, ITGenericRepository<Plane, int> planeRepository, ITGenericRepository<Engine, int> engineRepository) : base(logger)
+        public PlaneArchiveService(ILogger<PlaneArchiveService> logger, ITGenericRepository<Plane, int> planeRepository, ITGenericRepository<Engine, int> engineRepository) : base(planeRepository, logger)
         {
-            this.planeRepository = planeRepository;
             this.engineRepository = engineRepository;
         }
 
-        protected override async Task<IEnumerable<object>> GetStep1ItemsAsync()
+        protected override async Task<IEnumerable<Plane>> GetArchiveStepItemsAsync()
         {
-            var planes = await this.planeRepository.GetAllEntityAsync(
-                filter: Step1Predicate(),
+            var planes = await this.entityRepository.GetAllEntityAsync(
+                filter: ArchiveStepItemsSelector(),
                 includes: [p => p.CurrentAirport, p => p.ConnectingAirports]);
 
             var engines = await this.engineRepository.GetAllEntityAsync(includes: [e => e.InstalledEngineParts, e => e.PrincipalPart]);
@@ -39,9 +38,9 @@
             return planes;
         }
 
-        protected override Expression<Func<Plane, bool>> Step1Predicate()
+        protected override Expression<Func<Plane, bool>> ArchiveStepItemsSelector()
         {
-            return p => p.Id == 9;
+            return base.ArchiveStepItemsSelector().CombineMapping(p => p.Id == 9);
         }
     }
 }
