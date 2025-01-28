@@ -48,7 +48,10 @@
                 }
 
                 Logger.Log(LogLevel.Information, "Start Archive Task");
-                await Task.WhenAll(archiveServices.Select(x => x.RunAsync()));
+                foreach(var archiveService in this.archiveServices)
+                {
+                    await archiveService.RunAsync();
+                }
             }
             finally
             {
