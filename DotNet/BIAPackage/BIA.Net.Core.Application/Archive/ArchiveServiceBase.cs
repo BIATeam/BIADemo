@@ -78,9 +78,18 @@
 
         protected virtual async Task DeleteItemAsync(TEntity item)
         {
-            this.logger.Log(LogLevel.Information, $"Item {item.Id} : deleting");
-            this.entityRepository.Remove(item);
-            await this.entityRepository.UnitOfWork.CommitAsync();
+            try
+            {
+                this.logger.Log(LogLevel.Information, $"Item {item.Id} : deleting");
+                this.entityRepository.Remove(item);
+                await this.entityRepository.UnitOfWork.CommitAsync();
+
+                this.logger.Log(LogLevel.Information, $"Item {item.Id} : deleted successfully");
+            }
+            catch(Exception ex)
+            {
+                this.logger.Log(LogLevel.Error, $"Item {item.Id} : failed to delete : {ex.Message}");
+            }
         }
 
         protected virtual async Task RunArchiveStepAsync()
@@ -117,12 +126,17 @@
             this.logger.Log(LogLevel.Information, $"Item {item.Id} : saving to server");
 
             var targetDirectoryPath = Path.Combine(this.biaNetSection.WorkerFeatures.Archive.TargetDirectoryPath, typeof(TEntity).Name);
-            var targetFileName = $"{item.Id}_{DateTime.Now:DDMMyyHHmmss}.json";
+            var targetFileName = $"{item.Id}_{DateTime.Now:yyyyMMddHHmmss}.json";
             var targetFilePath = Path.Combine(targetDirectoryPath, targetFileName);
             var sourceFilePath = Path.GetRandomFileName();
 
             try
             {
+                if(!Directory.Exists(targetDirectoryPath))
+                {
+                    Directory.CreateDirectory(targetDirectoryPath);
+                }
+
                 var targetDirectoryFiles = Directory.EnumerateFiles(targetDirectoryPath);
                 if (targetDirectoryFiles.Any(f => Path.GetFileNameWithoutExtension(f).Split('_').FirstOrDefault() == item.Id.ToString()))
                 {
@@ -146,6 +160,12 @@
             catch (Exception ex)
             {
                 this.logger.Log(LogLevel.Error, $"Item {item.Id} : failed to save to server : {ex.Message}");
+
+                if (File.Exists(targetFilePath))
+                {
+                    File.Delete(targetFilePath);
+                }
+
                 return false;
             }
             finally
@@ -153,11 +173,6 @@
                 if (File.Exists(sourceFilePath))
                 {
                     File.Delete(sourceFilePath);
-                }
-
-                if (File.Exists(targetFilePath))
-                {
-                    File.Delete(targetFilePath);
                 }
             }
         }

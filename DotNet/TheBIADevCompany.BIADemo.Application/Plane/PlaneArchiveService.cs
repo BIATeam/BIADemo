@@ -27,7 +27,7 @@
         {
             var planes = await this.entityRepository.GetAllEntityAsync(
                 filter: ArchiveStepItemsSelector(),
-                includes: [p => p.CurrentAirport, p => p.ConnectingAirports]);
+                includes: [p => p.CurrentAirport, p => p.ConnectingAirports, p => p.PlaneType, p => p.SimilarPlaneType]);
 
             var engines = await this.engineRepository.GetAllEntityAsync(includes: [e => e.InstalledEngineParts, e => e.PrincipalPart]);
 
@@ -37,11 +37,6 @@
             }
 
             return planes;
-        }
-
-        protected override Expression<Func<Plane, bool>> ArchiveStepItemsSelector()
-        {
-            return base.ArchiveStepItemsSelector().CombineMapping(p => p.Id == 9);
         }
     }
 }

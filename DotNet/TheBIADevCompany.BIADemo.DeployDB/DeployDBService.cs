@@ -72,7 +72,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                         this.logger.LogInformation(message);
                         this.dataContext.Database.SetCommandTimeout(TimeSpan.FromMinutes(timeout));
 
-                        //this.dataContext.Database.Migrate();
+                        this.dataContext.Database.Migrate();
 
                         this.CleanDistCacheAsync().Wait();
                     }
