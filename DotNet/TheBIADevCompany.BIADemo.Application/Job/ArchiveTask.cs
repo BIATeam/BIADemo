@@ -30,13 +30,13 @@
         {
             try
             {
-                if (this.biaNetSection.WorkerFeatures.ArchiveConfiguration is null)
+                if (this.biaNetSection.WorkerFeatures.Archive is null)
                 {
                     Logger.LogWarning("Unable to find archive configuration.");
                     return;
                 }
 
-                if (!this.biaNetSection.WorkerFeatures.ArchiveConfiguration.isActive)
+                if (!this.biaNetSection.WorkerFeatures.Archive.isActive)
                 {
                     return;
                 }

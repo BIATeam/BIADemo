@@ -18,7 +18,7 @@
     {
         private readonly ITGenericRepository<Engine, int> engineRepository;
 
-        public PlaneArchiveService(IConfiguration configuration, ILogger<PlaneArchiveService> logger, ITGenericRepository<Plane, int> planeRepository, ITGenericRepository<Engine, int> engineRepository) : base(planeRepository, logger)
+        public PlaneArchiveService(IConfiguration configuration, ILogger<PlaneArchiveService> logger, ITGenericRepository<Plane, int> planeRepository, ITGenericRepository<Engine, int> engineRepository) : base(configuration, planeRepository, logger)
         {
             this.engineRepository = engineRepository;
         }
