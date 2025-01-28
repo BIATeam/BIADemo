@@ -25,6 +25,10 @@
         // Begin BIADemo
         "IsActive": true
         // End BIADemo
+      },
+      "Archive": {
+        "IsActive": true,
+        "TargetDirectoryPath": "C:\\temp\\archives\\biademo"
       }
     },
 

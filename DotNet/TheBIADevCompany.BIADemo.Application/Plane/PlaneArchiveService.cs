@@ -9,6 +9,7 @@
     using BIA.Net.Core.Application.Archive;
     using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain.RepoContract;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
     using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
@@ -17,7 +18,7 @@
     {
         private readonly ITGenericRepository<Engine, int> engineRepository;
 
-        public PlaneArchiveService(ILogger<PlaneArchiveService> logger, ITGenericRepository<Plane, int> planeRepository, ITGenericRepository<Engine, int> engineRepository) : base(planeRepository, logger)
+        public PlaneArchiveService(IConfiguration configuration, ILogger<PlaneArchiveService> logger, ITGenericRepository<Plane, int> planeRepository, ITGenericRepository<Engine, int> engineRepository) : base(planeRepository, logger)
         {
             this.engineRepository = engineRepository;
         }
