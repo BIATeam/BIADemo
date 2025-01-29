@@ -6,6 +6,7 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
 {
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Exceptions;
     using Microsoft.AspNetCore.Authentication.Negotiate;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.Extensions.Configuration;
@@ -14,8 +15,13 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
     /// <summary>
     /// Authorization policy provider for BIA.
     /// </summary>
-    internal class BiaAuthorizationPolicyProvider : DefaultAuthorizationPolicyProvider
+    public class BiaAuthorizationPolicyProvider : DefaultAuthorizationPolicyProvider
     {
+        /// <summary>
+        /// The default authorization policy name for BIA.
+        /// </summary>
+        public const string DefaultBiaAuthorizationPolicyName = "BiaAuthorizationPolicy";
+
         private readonly BiaNetSection biaNetSection = new ();
 
         /// <summary>
@@ -30,18 +36,27 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
         }
 
         /// <inheritdoc cref="DefaultAuthorizationPolicyProvider.GetPolicyAsync(string)"/>
-        public override Task<AuthorizationPolicy> GetPolicyAsync(string policyName)
+        public override async Task<AuthorizationPolicy> GetPolicyAsync(string policyName)
         {
+            var basePolicy = await base.GetPolicyAsync(policyName);
+            if (basePolicy != null)
+            {
+                return basePolicy;
+            }
+
+            if (!policyName.Equals(DefaultBiaAuthorizationPolicyName))
+            {
+                throw new ElementNotFoundException($"Unable to find policy {policyName}.");
+            }
+
             var authenticationScheme = this.biaNetSection?.Authentication?.Keycloak?.IsActive == true ?
                 AuthenticationConfiguration.JwtBearerIdentityProvider :
                 NegotiateDefaults.AuthenticationScheme;
 
-            var policy = new AuthorizationPolicyBuilder()
+            return new AuthorizationPolicyBuilder()
                 .AddAuthenticationSchemes(authenticationScheme)
                 .RequireAuthenticatedUser()
                 .Build();
-
-            return Task.FromResult(policy);
         }
     }
 }
