@@ -13,6 +13,7 @@ import {
 } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import { PrimeTemplate } from 'primeng/api';
+import { MultiSelect } from 'primeng/multiselect';
 import { Subscription } from 'rxjs';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 import {
@@ -40,7 +41,6 @@ export class BiaTableInputComponent<CrudItem>
   @Output() complexInput = new EventEmitter<boolean>();
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
-  // specificInputTemplate: TemplateRef<any>;
   specificInputTemplate: TemplateRef<any>;
   protected sub = new Subscription();
 
@@ -83,5 +83,10 @@ export class BiaTableInputComponent<CrudItem>
 
   public onComplexInput(isIn: boolean) {
     this.complexInput.emit(isIn);
+  }
+
+  onPanelHide(multiselect: MultiSelect) {
+    this.onComplexInput(false);
+    multiselect.el.nativeElement.querySelector('input')?.focus();
   }
 }
