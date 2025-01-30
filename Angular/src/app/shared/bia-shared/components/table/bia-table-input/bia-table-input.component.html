@@ -24,6 +24,7 @@
     </ng-container>
     <ng-container *ngSwitchCase="'ManyToMany'">
       <p-multiSelect
+        #multiselect
         class="bia-simple-input"
         placeholder="&nbsp;"
         [formControlName]="field.field"
@@ -32,7 +33,7 @@
         datakey="id"
         (onChange)="onChange()"
         (onPanelShow)="onComplexInput(true)"
-        (onPanelHide)="onComplexInput(false)"
+        (onPanelHide)="onPanelHide(multiselect)"
         appendTo="body"
         [style]="{ width: '100%' }"
         scrollHeight="50vh"></p-multiSelect>
