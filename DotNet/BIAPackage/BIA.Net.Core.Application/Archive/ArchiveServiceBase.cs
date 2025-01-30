@@ -18,58 +18,44 @@
     using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
 
-    public abstract class ArchiveServiceBase<TEntity, TKey> where TEntity : class, IEntityArchivable<TKey>
+    public abstract class ArchiveServiceBase<TEntity, TKey> : IArchiveService where TEntity : class, IEntityArchivable<TKey>
     {
         protected readonly BiaNetSection biaNetSection;
-        protected readonly ITGenericRepository<TEntity, TKey> entityRepository;
+        protected readonly ITGenericArchiveRepository<TEntity, TKey> archiveRepository;
         protected readonly ILogger logger;
-
+        private readonly bool enableDeleteStep;
         private readonly JsonSerializerSettings jsonSerializerSettings;
 
-        protected ArchiveServiceBase(IConfiguration configuration, ITGenericRepository<TEntity, TKey> entityRepository, ILogger logger)
+        protected ArchiveServiceBase(IConfiguration configuration, ITGenericArchiveRepository<TEntity, TKey> archiveRepository, ILogger logger, bool enableDeleteStep = true)
         {
             this.biaNetSection = new BiaNetSection();
             configuration?.GetSection("BiaNet").Bind(this.biaNetSection);
 
-            this.entityRepository = entityRepository;
+            this.archiveRepository = archiveRepository;
             this.logger = logger;
+            this.enableDeleteStep = enableDeleteStep;
             this.jsonSerializerSettings = new JsonSerializerSettings
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             };
         }
 
-        protected virtual Expression<Func<TEntity, bool>> ArchiveStepItemsSelector()
-        {
-            return x => x.ArchiveState == ArchiveStateEnum.Undefined;
-        }
-
-        protected virtual Expression<Func<TEntity, bool>> DeleteStepItemsSelector()
-        {
-            return x => x.ArchiveState == ArchiveStateEnum.Archived;
-        }
-
-        protected virtual Task<IEnumerable<TEntity>> GetDeleteStepItemsAsync()
-        {
-            return this.entityRepository.GetAllEntityAsync(filter: DeleteStepItemsSelector());
-        }
-
-        protected virtual Task<IEnumerable<TEntity>> GetArchiveStepItemsAsync()
-        {
-            return this.entityRepository.GetAllEntityAsync(filter: ArchiveStepItemsSelector());
-        }
-
         public async Task RunAsync()
         {
             this.logger.Log(LogLevel.Information, $"Begin archive of {typeof(TEntity).Name} entity");
             await RunArchiveStepAsync();
-            await RunDeleteStepAsync();
+
+            if (enableDeleteStep)
+            {
+                await RunDeleteStepAsync();
+            }
+
             this.logger.Log(LogLevel.Information, $"End archive of {typeof(TEntity).Name} entity");
         }
 
         protected virtual async Task RunDeleteStepAsync()
         {
-            var items = await GetDeleteStepItemsAsync();
+            var items = await this.archiveRepository.GetItemsToDeleteAsync();
             foreach (var item in items)
             {
                 await DeleteItemAsync(item);
@@ -81,8 +67,7 @@
             try
             {
                 this.logger.Log(LogLevel.Information, $"Item {item.Id} : deleting");
-                this.entityRepository.Remove(item);
-                await this.entityRepository.UnitOfWork.CommitAsync();
+                await this.archiveRepository.RemoveAsync(item);
 
                 this.logger.Log(LogLevel.Information, $"Item {item.Id} : deleted successfully");
             }
@@ -94,7 +79,7 @@
 
         protected virtual async Task RunArchiveStepAsync()
         {
-            var items = await GetArchiveStepItemsAsync();
+            var items = await this.archiveRepository.GetItemsToArchiveAsync();
             foreach (var item in items)
             {
                 await ArchiveItemAsync(item);
@@ -109,9 +94,7 @@
             {
                 if (await SaveItemToServerAsync(item))
                 {
-                    item.ArchiveState = ArchiveStateEnum.Archived;
-                    this.entityRepository.SetModified(item);
-                    await this.entityRepository.UnitOfWork.CommitAsync();
+                    await this.archiveRepository.UpdateArchiveStateAsync(item, ArchiveStateEnum.Archived);
                     this.logger.Log(LogLevel.Information, $"Item {item.Id} : archived successfully");
                 }
             }

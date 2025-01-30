@@ -13,30 +13,12 @@
     using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
     using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
+    using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
-    public class PlaneArchiveService : ArchiveServiceBase<Plane, int>, IArchiveService
+    public class PlaneArchiveService : ArchiveServiceBase<Plane, int>
     {
-        private readonly ITGenericRepository<Engine, int> engineRepository;
-
-        public PlaneArchiveService(IConfiguration configuration, ILogger<PlaneArchiveService> logger, ITGenericRepository<Plane, int> planeRepository, ITGenericRepository<Engine, int> engineRepository) : base(configuration, planeRepository, logger)
+        public PlaneArchiveService(IConfiguration configuration, IPlaneArchiveRepository archiveRepository, ILogger<PlaneArchiveService> logger) : base(configuration, archiveRepository, logger, false)
         {
-            this.engineRepository = engineRepository;
-        }
-
-        protected override async Task<IEnumerable<Plane>> GetArchiveStepItemsAsync()
-        {
-            var planes = await this.entityRepository.GetAllEntityAsync(
-                filter: ArchiveStepItemsSelector(),
-                includes: [p => p.CurrentAirport, p => p.ConnectingAirports, p => p.PlaneType, p => p.SimilarPlaneType]);
-
-            var engines = await this.engineRepository.GetAllEntityAsync(includes: [e => e.InstalledEngineParts, e => e.PrincipalPart]);
-
-            foreach(var plane in planes)
-            {
-               plane.Engines = engines.Where(e => e.PlaneId == plane.Id).ToList();
-            }
-
-            return planes;
         }
     }
 }
