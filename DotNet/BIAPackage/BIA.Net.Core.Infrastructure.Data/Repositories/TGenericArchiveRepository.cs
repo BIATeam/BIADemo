@@ -43,12 +43,7 @@
         protected virtual IQueryable<TEntity> GetAllWithIncludes()
         {
             var entityType = dataContext.FindEntityType(typeof(TEntity));
-            var visitedEntityTypes = new HashSet<string>
-            {
-                entityType.ClrType.FullName,
-            };
-
-            return IncludeRecursive(dataContext.RetrieveSet<TEntity>(), entityType, visitedEntityTypes);
+            return IncludeRecursive(dataContext.RetrieveSet<TEntity>(), entityType);
         }
 
         public virtual async Task<IReadOnlyList<TEntity>> GetItemsToArchiveAsync()
@@ -74,12 +69,12 @@
             await dataContext.CommitAsync();
         }
 
-        private static IQueryable<TEntity> IncludeRecursive(IQueryable<TEntity> query, IEntityType entityType, HashSet<Type> visitedEntityTypes, string parentPath = null)
+        private static IQueryable<TEntity> IncludeRecursive(IQueryable<TEntity> query, IEntityType entityType, string parentPath = null, IEntityType parentEntityType = null)
         {
             foreach (var navigation in entityType.GetNavigations())
             {
                 var navigationEntityType = navigation.TargetEntityType;
-                if (visitedEntityTypes.Contains(navigationEntityType.ClrType))
+                if (navigationEntityType == parentEntityType)
                 {
                     continue;
                 }
@@ -91,7 +86,7 @@
 
                 if (navigation.ForeignKey.PrincipalEntityType == entityType && (navigation.ForeignKey.DeleteBehavior == DeleteBehavior.Cascade || navigation.ForeignKey.DeleteBehavior == DeleteBehavior.ClientCascade))
                 {
-                    query = IncludeRecursive(query, navigationEntityType, visitedEntityTypes, navigationPath);
+                    query = IncludeRecursive(query, navigationEntityType, navigationPath, entityType);
                 }
             }
 
