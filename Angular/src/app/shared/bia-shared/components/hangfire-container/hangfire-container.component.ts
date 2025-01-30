@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { BiaLayoutService } from '../layout/services/layout.service';
 
 @Component({
   selector: 'bia-hangfire-container',
@@ -22,7 +23,10 @@ export class HangfireContainerComponent implements OnInit, OnDestroy {
   protected sub = new Subscription();
   public token = '';
 
-  constructor(protected authService: AuthService) {}
+  constructor(
+    protected authService: AuthService,
+    protected readonly layoutService: BiaLayoutService
+  ) {}
 
   ngOnInit() {
     this.sub.add(
@@ -40,5 +44,24 @@ export class HangfireContainerComponent implements OnInit, OnDestroy {
     if (this.sub) {
       this.sub.unsubscribe();
     }
+  }
+
+  getIFrameHeight(): string {
+    let height = '100vh';
+
+    if (this.layoutService.state.fullscreen) {
+      height += ' - 3.95rem';
+    } else {
+      height += ' - 10.40rem';
+      height +=
+        this.layoutService._config.footerMode != 'overlay'
+          ? ' - var(--footer-height)'
+          : '';
+    }
+    if (this.layoutService._config.menuMode === 'horizontal') {
+      height += ' - 3rem';
+    }
+
+    return `calc(${height})`;
   }
 }
