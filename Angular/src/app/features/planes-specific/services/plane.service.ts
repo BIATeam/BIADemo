@@ -4,7 +4,7 @@ import { TableLazyLoadEvent } from 'primeng/table';
 import { map, Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
-import { CrudListAndItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-list-and-item.service';
+import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { clone } from 'src/app/shared/bia-shared/utils';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
@@ -19,7 +19,7 @@ import { PlaneOptionsService } from './plane-options.service';
 @Injectable({
   providedIn: 'root',
 })
-export class PlaneService extends CrudListAndItemService<PlaneSpecific, Plane> {
+export class PlaneService extends CrudItemService<Plane, PlaneSpecific> {
   constructor(
     private store: Store<AppState>,
     public dasService: PlaneDas,

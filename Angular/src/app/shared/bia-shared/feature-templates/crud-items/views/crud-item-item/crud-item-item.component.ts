@@ -9,14 +9,17 @@ import { CrudItemService } from '../../services/crud-item.service';
   templateUrl: './crud-item-item.component.html',
   styleUrls: ['./crud-item-item.component.scss'],
 })
-export class CrudItemItemComponent<CrudItem extends BaseDto>
+export class CrudItemItemComponent<
+    ListCrudItem extends BaseDto,
+    CrudItem extends BaseDto = ListCrudItem,
+  >
   implements OnInit, OnDestroy
 {
   protected sub = new Subscription();
   protected route: ActivatedRoute;
   constructor(
     protected injector: Injector,
-    public crudItemService: CrudItemService<CrudItem>
+    public crudItemService: CrudItemService<ListCrudItem, CrudItem>
   ) {
     this.route = this.injector.get<ActivatedRoute>(ActivatedRoute);
   }
