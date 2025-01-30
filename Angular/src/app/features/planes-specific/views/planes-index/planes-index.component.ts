@@ -4,6 +4,7 @@ import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templ
 import { Permission } from 'src/app/shared/permission';
 import { PlaneTableComponent } from '../../components/plane-table/plane-table.component';
 import { Plane } from '../../model/plane';
+import { PlaneSpecific } from '../../model/plane-specific';
 import { planeCRUDConfiguration } from '../../plane.constants';
 import { PlaneService } from '../../services/plane.service';
 
@@ -12,7 +13,10 @@ import { PlaneService } from '../../services/plane.service';
   templateUrl: './planes-index.component.html',
   styleUrls: ['./planes-index.component.scss'],
 })
-export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
+export class PlanesIndexComponent extends CrudItemsIndexComponent<
+  Plane,
+  PlaneSpecific
+> {
   @ViewChild(PlaneTableComponent, { static: false })
   crudItemTableComponent: PlaneTableComponent;
 
