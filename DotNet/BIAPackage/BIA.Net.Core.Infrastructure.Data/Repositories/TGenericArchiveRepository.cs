@@ -74,21 +74,25 @@
             await dataContext.CommitAsync();
         }
 
-        private static IQueryable<TEntity> IncludeRecursive(IQueryable<TEntity> query, IEntityType entityType, HashSet<string> visitedEntityTypes, string parentPath = null)
+        private static IQueryable<TEntity> IncludeRecursive(IQueryable<TEntity> query, IEntityType entityType, HashSet<Type> visitedEntityTypes, string parentPath = null)
         {
             foreach (var navigation in entityType.GetNavigations())
             {
-                var targetEntityType = navigation.TargetEntityType;
-                if (visitedEntityTypes.Contains(targetEntityType.ClrType.FullName))
+                var navigationEntityType = navigation.TargetEntityType;
+                if (visitedEntityTypes.Contains(navigationEntityType.ClrType))
                 {
                     continue;
                 }
 
-                visitedEntityTypes.Add(targetEntityType.ClrType.FullName);
+                visitedEntityTypes.Add(navigationEntityType.ClrType);
 
                 string navigationPath = string.IsNullOrEmpty(parentPath) ? navigation.Name : $"{parentPath}.{navigation.Name}";
                 query = query.Include(navigationPath);
-                query = IncludeRecursive(query, targetEntityType, visitedEntityTypes, navigationPath);
+
+                if (navigation.ForeignKey.PrincipalEntityType == entityType && (navigation.ForeignKey.DeleteBehavior == DeleteBehavior.Cascade || navigation.ForeignKey.DeleteBehavior == DeleteBehavior.ClientCascade))
+                {
+                    query = IncludeRecursive(query, navigationEntityType, visitedEntityTypes, navigationPath);
+                }
             }
 
             return query;
