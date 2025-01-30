@@ -245,5 +245,9 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       }
     ),
     /// BIAToolKit - End Block connectingAirports
+    Object.assign(new BiaFieldConfig('rowVersion', 'plane.rowVersion'), {
+      isVisible: false,
+      isHideByDefault: true,
+    }),
   ],
 };

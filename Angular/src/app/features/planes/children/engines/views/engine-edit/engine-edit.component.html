@@ -5,6 +5,7 @@
   [dictOptionDtos]="
     (engineService.optionsService.dictOptionDtos$ | async) ?? []
   "
+  [isCrudItemOutdated]="isCrudItemOutdated"
   (cancel)="onCancelled()"
   (save)="onSubmitted($event)"></app-engine-form>
 <bia-spinner

@@ -90,5 +90,9 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
         minWidth: '50px',
       }
     ),
+    Object.assign(new BiaFieldConfig('rowVersion', 'plane.rowVersion'), {
+      isVisible: false,
+      isHideByDefault: true,
+    }),
   ],
 };

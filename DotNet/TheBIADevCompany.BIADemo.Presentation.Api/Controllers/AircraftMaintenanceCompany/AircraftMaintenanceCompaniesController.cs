@@ -145,6 +145,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [Authorize(Roles = Rights.AircraftMaintenanceCompanies.Update)]
         public async Task<IActionResult> Update(int id, [FromBody] AircraftMaintenanceCompanyDto dto)
         {
@@ -168,6 +169,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
+            }
+            catch (OutdateException)
+            {
+                return this.Conflict();
             }
         }
 

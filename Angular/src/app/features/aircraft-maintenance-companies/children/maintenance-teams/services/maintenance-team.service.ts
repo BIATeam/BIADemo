@@ -18,6 +18,10 @@ import { MaintenanceTeamOptionsService } from './maintenance-team-options.servic
   providedIn: 'root',
 })
 export class MaintenanceTeamService extends CrudItemService<MaintenanceTeam> {
+  _updateSuccessActionType = FeatureMaintenanceTeamsActions.loadAllByPost.type;
+  _createSuccessActionType = FeatureMaintenanceTeamsActions.loadAllByPost.type;
+  _updateFailureActionType = FeatureMaintenanceTeamsActions.failure.type;
+
   constructor(
     private store: Store<AppState>,
     public dasService: MaintenanceTeamDas,

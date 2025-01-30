@@ -22,5 +22,15 @@ export const aircraftMaintenanceCompanyFieldsConfiguration: BiaFieldsConfig<Airc
           type: PropType.ManyToMany,
         }
       ),
+      Object.assign(
+        new BiaFieldConfig(
+          'rowVersion',
+          'aircraftMaintenanceCompany.rowVersion'
+        ),
+        {
+          isVisible: false,
+          isHideByDefault: true,
+        }
+      ),
     ],
   };
