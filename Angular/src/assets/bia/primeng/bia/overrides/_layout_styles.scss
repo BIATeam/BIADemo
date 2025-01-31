@@ -273,3 +273,14 @@ body {
     margin-left: 0;
   }
 }
+
+.layout-menu-profile {
+  height: 100%;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.layout-menu-profile-no-fill {
+  max-height: 80%;
+}

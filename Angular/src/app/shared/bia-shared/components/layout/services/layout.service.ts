@@ -58,6 +58,7 @@ interface LayoutState {
   sidebarActive: boolean;
   anchored: boolean;
   fullscreen: boolean;
+  isSmallScreen: boolean;
 }
 
 const DEFAULT_LAYOUT_CONFIG: AppConfig = {
@@ -98,6 +99,7 @@ export class BiaLayoutService {
     anchored: false,
     fullscreen: false,
     menuProfileActive: false,
+    isSmallScreen: false,
   };
 
   config = signal<AppConfig>(this._config);
@@ -143,6 +145,7 @@ export class BiaLayoutService {
       this.onConfigUpdate();
       localStorage.setItem(BIA_USER_CONFIG, JSON.stringify(config));
     });
+    this.checkSmallScreen();
   }
 
   changeTheme() {
@@ -464,5 +467,9 @@ export class BiaLayoutService {
     if (theme !== null) localStorage.setItem(STORAGE_THEME_KEY, theme);
     if (config !== null) localStorage.setItem(BIA_USER_CONFIG, config);
     sessionStorage.clear();
+  }
+
+  checkSmallScreen() {
+    this.state.isSmallScreen = window.matchMedia('(max-width:991px)').matches;
   }
 }
