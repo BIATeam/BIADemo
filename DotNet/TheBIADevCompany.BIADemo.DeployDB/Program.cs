@@ -43,7 +43,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
 
                     services.AddDbContext<DataContext>(options =>
                     {
-                        options.UseSqlServer(configuration.GetConnectionString("BIADemoDatabase"));
+                        options.UseSqlServer(configuration.GetConnectionString("ProjectDatabase"));
                     });
                     services.AddHostedService<DeployDBService>();
 
@@ -55,7 +55,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                     });
                     services.AddHangfire(config =>
                     {
-                        config.UseSqlServerStorage(configuration.GetConnectionString("BIADemoDatabase"));
+                        config.UseSqlServerStorage(configuration.GetConnectionString("ProjectDatabase"));
 
                         // Initialize here the recuring jobs
 #if BIA_FRONT_FEATURE

@@ -38,11 +38,11 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
         public PlaneHandlerRepository(IConfiguration configuration, IClientForHubService clientForHubService, IServiceProvider serviceProvider)
             : base(
                   serviceProvider,
-                  configuration.GetConnectionString("BIADemoDatabase"),
-                  configuration.GetDBEngine("BIADemoDatabase"),
+                  configuration.GetConnectionString("ProjectDatabase"),
+                  configuration.GetDBEngine("ProjectDatabase"),
                   "SELECT Id, SiteId, RowVersion FROM [dbo].[Planes]",
                   "Id",
-                  useSqlDataBroker: configuration.GetSqlDataBroker("BIADemoDatabase"))
+                  useSqlDataBroker: configuration.GetSqlDataBroker("ProjectDatabase"))
         {
             this.clientForHubService = clientForHubService;
         }

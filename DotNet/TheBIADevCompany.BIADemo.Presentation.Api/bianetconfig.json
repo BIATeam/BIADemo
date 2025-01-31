@@ -3,14 +3,14 @@
     "CommonFeatures": {
       "DistributedCache": {
         "IsActive": true,
-        "ConnectionStringName": "BIADemoDatabase"
+        "ConnectionStringName": "ProjectDatabase"
       },
       "ClientForHub": {
         "IsActive": true
       },
       "AuditConfiguration": {
         "IsActive": true,
-        "ConnectionStringName": "BIADemoDatabase"
+        "ConnectionStringName": "ProjectDatabase"
       }
     },
     "ApiFeatures": {
@@ -23,11 +23,11 @@
         "DashboardReadOnly": true,
         "DashboardReadOnlyPermission": "Background_Task_Read_Only",
         "ServerName": "BIADemo",
-        "ConnectionStringName": "BIADemoDatabase"
+        "ConnectionStringName": "ProjectDatabase"
       },
       "DelegateJobToWorker": {
         "IsActive": true,
-        "ConnectionStringName": "BIADemoDatabase"
+        "ConnectionStringName": "ProjectDatabase"
       },
       "HubForClients": {
         "IsActive": true
