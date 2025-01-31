@@ -16,12 +16,18 @@
     <i class="layout-menu-profile-toggler pi pi-fw pi-angle-down"></i>
   </button>
 
-  <div *ngIf="menuProfileActive" [@menu]="isHorizontal ? 'overlay' : 'inline'">
+  <div
+    *ngIf="menuProfileActive"
+    class="overflow-y"
+    [@menu]="
+      isHorizontal && !layoutService.state.isSmallScreen ? 'overlay' : 'inline'
+    ">
     @if (
-      layoutService.isHorizontal() ||
-      layoutService.isSlim() ||
-      layoutService.isSlimPlus() ||
-      layoutService.isDrawer()
+      !layoutService.state.isSmallScreen &&
+      (layoutService.isHorizontal() ||
+        layoutService.isSlim() ||
+        layoutService.isSlimPlus() ||
+        layoutService.isDrawer())
     ) {
       <p-dialog
         [focusOnShow]="false"

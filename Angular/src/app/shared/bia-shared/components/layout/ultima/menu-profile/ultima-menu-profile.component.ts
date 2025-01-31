@@ -1,6 +1,12 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, Input, OnDestroy } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostBinding,
+  Input,
+  OnDestroy,
+} from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuItem } from 'primeng/api';
@@ -19,20 +25,22 @@ import { BiaLayoutService } from '../../services/layout.service';
   animations: [
     trigger('menu', [
       transition('void => inline', [
-        style({ height: 0 }),
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        style({ height: 0, 'overflow-y': 'hidden' }),
         animate(
           '400ms cubic-bezier(0.86, 0, 0.07, 1)',
           style({ opacity: 1, height: '*' })
         ),
       ]),
       transition('inline => void', [
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        style({ 'overflow-y': 'hidden' }),
         animate(
           '400ms cubic-bezier(0.86, 0, 0.07, 1)',
           style({ opacity: 0, height: '0' })
         ),
       ]),
       transition('void => overlay', [
-        style({ opacity: 0, transform: 'scaleY(0.8)' }),
         animate('.12s cubic-bezier(0, 0, 0.2, 1)'),
       ]),
       transition('overlay => void', [
@@ -42,6 +50,13 @@ import { BiaLayoutService } from '../../services/layout.service';
   ],
 })
 export class BiaUltimaMenuProfileComponent implements OnDestroy {
+  @HostBinding('class.layout-menu-profile-no-fill') get noFill() {
+    return (
+      !this.layoutService.isHorizontal() ||
+      this.layoutService.state.isSmallScreen
+    );
+  }
+
   @Input()
   set username(name: string | undefined) {
     if (name) {

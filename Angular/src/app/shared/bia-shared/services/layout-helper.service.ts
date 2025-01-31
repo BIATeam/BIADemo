@@ -28,7 +28,7 @@ export class LayoutHelperService {
       }
       if (
         layoutService._config.menuMode === 'horizontal' &&
-        window.matchMedia('(min-width:992px)').matches
+        !layoutService.state.isSmallScreen
       ) {
         height += ' - 3rem';
       }

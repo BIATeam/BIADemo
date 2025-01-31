@@ -1,7 +1,6 @@
 import {
   Component,
   ElementRef,
-  HostListener,
   Input,
   OnDestroy,
   OnInit,
@@ -19,9 +18,7 @@ import { BiaLayoutService } from '../layout/services/layout.service';
 })
 export class HangfireContainerComponent implements OnInit, OnDestroy {
   @Input() url = '';
-  iFrameHeight: string;
 
-  // @ViewChild('iFrame2', { static: false }) iFrame2: ElementRef;
   @ViewChild('hangfireForm', { static: false }) hangfireForm: ElementRef;
 
   protected sub = new Subscription();
@@ -30,9 +27,7 @@ export class HangfireContainerComponent implements OnInit, OnDestroy {
   constructor(
     protected authService: AuthService,
     protected readonly layoutService: BiaLayoutService
-  ) {
-    this.getIFrameHeight();
-  }
+  ) {}
 
   ngOnInit() {
     this.sub.add(
@@ -52,8 +47,7 @@ export class HangfireContainerComponent implements OnInit, OnDestroy {
     }
   }
 
-  @HostListener('window:resize', ['$event'])
-  getIFrameHeight() {
-    this.iFrameHeight = `calc(${LayoutHelperService.defaultContainerHeight(this.layoutService)})`;
+  getIFrameHeight(): string {
+    return `calc(${LayoutHelperService.defaultContainerHeight(this.layoutService)})`;
   }
 }
