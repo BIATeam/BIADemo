@@ -1,6 +1,7 @@
 import {
   Component,
   ElementRef,
+  HostListener,
   Input,
   OnDestroy,
   OnInit,
@@ -8,14 +9,17 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { LayoutHelperService } from '../../services/layout-helper.service';
 import { BiaLayoutService } from '../layout/services/layout.service';
 
 @Component({
   selector: 'bia-hangfire-container',
   templateUrl: './hangfire-container.component.html',
+  styleUrls: ['./hangfire-container.component.scss'],
 })
 export class HangfireContainerComponent implements OnInit, OnDestroy {
   @Input() url = '';
+  iFrameHeight: string;
 
   // @ViewChild('iFrame2', { static: false }) iFrame2: ElementRef;
   @ViewChild('hangfireForm', { static: false }) hangfireForm: ElementRef;
@@ -26,7 +30,9 @@ export class HangfireContainerComponent implements OnInit, OnDestroy {
   constructor(
     protected authService: AuthService,
     protected readonly layoutService: BiaLayoutService
-  ) {}
+  ) {
+    this.getIFrameHeight();
+  }
 
   ngOnInit() {
     this.sub.add(
@@ -46,22 +52,8 @@ export class HangfireContainerComponent implements OnInit, OnDestroy {
     }
   }
 
-  getIFrameHeight(): string {
-    let height = '100vh';
-
-    if (this.layoutService.state.fullscreen) {
-      height += ' - 3.95rem';
-    } else {
-      height += ' - 10.40rem';
-      height +=
-        this.layoutService._config.footerMode != 'overlay'
-          ? ' - var(--footer-height)'
-          : '';
-    }
-    if (this.layoutService._config.menuMode === 'horizontal') {
-      height += ' - 3rem';
-    }
-
-    return `calc(${height})`;
+  @HostListener('window:resize', ['$event'])
+  getIFrameHeight() {
+    this.iFrameHeight = `calc(${LayoutHelperService.defaultContainerHeight(this.layoutService)})`;
   }
 }

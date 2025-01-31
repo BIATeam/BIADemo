@@ -5,6 +5,7 @@ import { TABLE_FILTER_GLOBAL } from '../../constants';
 import { BiaLayoutService } from '../components/layout/services/layout.service';
 import { BiaTableComponent } from '../components/table/bia-table/bia-table.component';
 import { clone } from '../utils';
+import { LayoutHelperService } from './layout-helper.service';
 
 @Injectable({
   providedIn: 'root',
@@ -123,40 +124,26 @@ export class TableHelperService {
     showTableController: boolean,
     offset?: string
   ): string {
-    let height: string;
-    // topbar = 4rem
-    // breadcrumb = 2.45rem
-    // padding page = 2rem
+    let height: string = LayoutHelperService.defaultContainerHeight(
+      layoutService,
+      offset
+    );
     // table header height = 2.14rem
-    // bia-page-margin : 0.75rem
 
     // Non compact mode :
-    // table header margin = 2rem
+    // table header margin = 1.25rem
     // controller height is approximately ~= 2.5rem + 31px
     // paginator = 4.05rem
 
     // Compact mode :
-    // table header margin = 0.5rem
+    // table header margin = -0.25rem
     // controller height is approximately ~= 2.75rem + 5px
     // paginator = 3.3rem
 
     if (layoutService._config.classicStyle) {
-      height = layoutService.state.fullscreen
-        ? '100vh - 240px'
-        : '100vh - 460px';
+      height += ' - 200px';
     } else {
-      if (layoutService.state.fullscreen) {
-        height = '100vh - 31px - 13.44rem';
-      } else {
-        height = '100vh - 31px - 19.89rem';
-        height +=
-          layoutService._config.footerMode != 'overlay'
-            ? ' - var(--footer-height)'
-            : '';
-      }
-      if (layoutService._config.menuMode === 'horizontal') {
-        height += ' - 3rem';
-      }
+      height += ' - 31px - 9.94rem';
     }
     if (compactMode) {
       height += ' + 2rem + 26px';
@@ -168,9 +155,6 @@ export class TableHelperService {
       height += ' + 2.5rem + 31px';
     }
 
-    if (offset) {
-      height += ` ${offset}`;
-    }
     return `calc(${height})`;
   }
 }
