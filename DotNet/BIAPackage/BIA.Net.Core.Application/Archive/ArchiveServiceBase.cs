@@ -10,6 +10,7 @@
     using System.Threading.Tasks;
     using System.Xml.Linq;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Configuration.WorkerFeature;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Archive;
     using BIA.Net.Core.Domain.RepoContract;
@@ -20,37 +21,51 @@
 
     public abstract class ArchiveServiceBase<TEntity, TKey> : IArchiveService where TEntity : class, IEntityArchivable<TKey>
     {
-        protected readonly BiaNetSection biaNetSection;
+        protected readonly ArchiveEntityConfiguration archiveEntityConfiguration;
         protected readonly ITGenericArchiveRepository<TEntity, TKey> archiveRepository;
         protected readonly ILogger logger;
-        private readonly bool enableDeleteStep;
         private readonly JsonSerializerSettings jsonSerializerSettings;
 
-        protected ArchiveServiceBase(IConfiguration configuration, ITGenericArchiveRepository<TEntity, TKey> archiveRepository, ILogger logger, bool enableDeleteStep = true)
+        protected ArchiveServiceBase(IConfiguration configuration, ITGenericArchiveRepository<TEntity, TKey> archiveRepository, ILogger logger)
         {
-            this.biaNetSection = new BiaNetSection();
-            configuration?.GetSection("BiaNet").Bind(this.biaNetSection);
+            var biaNetSection = new BiaNetSection();
+            configuration?.GetSection("BiaNet").Bind(biaNetSection);
+            this.archiveEntityConfiguration = biaNetSection.WorkerFeatures?.Archive?.ArchiveEntityConfigurations.FirstOrDefault(x => x.IsValid && x.IsMatchingEntityType(typeof(TEntity)));
 
             this.archiveRepository = archiveRepository;
             this.logger = logger;
-            this.enableDeleteStep = enableDeleteStep;
+
             this.jsonSerializerSettings = new JsonSerializerSettings
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             };
         }
 
-        public async Task RunAsync()
+        protected abstract string GetArchiveNameTemplate(TEntity entity);
+
+        public virtual async Task RunAsync()
         {
-            this.logger.Log(LogLevel.Information, $"Begin archive of {typeof(TEntity).Name} entity");
-            await RunArchiveStepAsync();
-
-            if (enableDeleteStep)
+            try
             {
-                await RunDeleteStepAsync();
-            }
+                this.logger.Log(LogLevel.Information, $"Begin archive of {typeof(TEntity).Name} entity");
 
-            this.logger.Log(LogLevel.Information, $"End archive of {typeof(TEntity).Name} entity");
+                if (this.archiveEntityConfiguration is null)
+                {
+                    this.logger.Log(LogLevel.Warning, $"No valid archive configuration found for the entity {typeof(TEntity).Name}.");
+                    return;
+                }
+
+                await RunArchiveStepAsync();
+
+                if (this.archiveEntityConfiguration.EnableDeleteStep)
+                {
+                    await RunDeleteStepAsync();
+                }
+            }
+            finally
+            {
+                this.logger.Log(LogLevel.Information, $"End archive of {typeof(TEntity).Name} entity");
+            }
         }
 
         protected virtual async Task RunDeleteStepAsync()
@@ -108,36 +123,15 @@
         {
             this.logger.Log(LogLevel.Information, $"Item {item.Id} : saving to server");
 
-            var targetDirectoryPath = Path.Combine(this.biaNetSection.WorkerFeatures.Archive.TargetDirectoryPath, typeof(TEntity).Name);
-            var targetFileName = $"{item.Id}_{DateTime.Now:yyyyMMddHHmmss}.json";
-            var targetFilePath = Path.Combine(targetDirectoryPath, targetFileName);
+            var targetFileName = $"{GetArchiveNameTemplate(item)}.json";
+            var targetFilePath = Path.Combine(this.archiveEntityConfiguration.TargetDirectoryPath, targetFileName);
             var sourceFilePath = Path.GetRandomFileName();
 
             try
             {
-                if(!Directory.Exists(targetDirectoryPath))
-                {
-                    Directory.CreateDirectory(targetDirectoryPath);
-                }
+                await CopyToServerAsync(item, targetFilePath, sourceFilePath);
 
-                var targetDirectoryFiles = Directory.EnumerateFiles(targetDirectoryPath);
-                if (targetDirectoryFiles.Any(f => Path.GetFileNameWithoutExtension(f).Split('_').FirstOrDefault() == item.Id.ToString()))
-                {
-                    throw new Exception("archive already exists");
-                }
-
-                await File.WriteAllTextAsync(sourceFilePath, JsonConvert.SerializeObject(item, this.jsonSerializerSettings));
-                var sourceHash = ComputeHash(sourceFilePath);
-
-                File.Copy(sourceFilePath, targetFilePath);
-
-                var targetHash = ComputeHash(targetFilePath);
-                if (targetHash != sourceHash)
-                {
-                    throw new Exception("integrity compromised after copy");
-                }
-
-                this.logger.Log(LogLevel.Information, $"Item {item.Id} : saved to server successfully");
+                this.logger.Log(LogLevel.Information, $"Item {item.Id} : saved to server successfully into {targetFilePath}");
                 return true;
             }
             catch (Exception ex)
@@ -160,7 +154,27 @@
             }
         }
 
-        public static string ComputeHash(string filePath)
+        protected virtual async Task CopyToServerAsync(TEntity item, string targetFilePath, string sourceFilePath)
+        {
+            var targerDirectoryPath = Path.GetDirectoryName(targetFilePath);
+            if (!Directory.Exists(targerDirectoryPath))
+            {
+                Directory.CreateDirectory(targerDirectoryPath);
+            }
+
+            await File.WriteAllTextAsync(sourceFilePath, JsonConvert.SerializeObject(item, this.jsonSerializerSettings));
+            var sourceHash = ComputeHash(sourceFilePath);
+
+            File.Copy(sourceFilePath, targetFilePath, true);
+
+            var targetHash = ComputeHash(targetFilePath);
+            if (targetHash != sourceHash)
+            {
+                throw new Exception("integrity compromised after copy");
+            }
+        }
+
+        private static string ComputeHash(string filePath)
         {
             using var sha256 = SHA256.Create();
             using var stream = File.OpenRead(filePath);

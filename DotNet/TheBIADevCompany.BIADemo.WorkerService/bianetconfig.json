@@ -28,7 +28,13 @@
       },
       "Archive": {
         "IsActive": true,
-        "TargetDirectoryPath": "C:\\temp\\archives\\biademo"
+        "ArchiveEntityConfigurations": [
+          {
+            "EntityName": "Plane",
+            "TargetDirectoryPath": "C:\\temp\\archives\\biademo\\planes",
+            "EnableDeleteStep": false
+          }
+        ]
       }
     },
 

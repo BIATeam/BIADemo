@@ -18,17 +18,17 @@
         {
         }
 
-        //protected override IQueryable<Plane> GetAllWithIncludes()
-        //{
-        //    return this.dataContext.RetrieveSet<Plane>()
-        //        .Include(p => p.ConnectingAirports)
-        //        .Include(p => p.ConnectingPlaneAirports)
-        //        .Include(p => p.PlaneType)
-        //        .Include(p => p.SimilarPlaneType)
-        //        .Include(p => p.Engines)
-        //        .ThenInclude(e => e.InstalledParts)
-        //        .Include(p => p.Engines)
-        //        .ThenInclude(e => e.PrincipalPart);
-        //}
+        protected override IQueryable<Plane> GetAllWithIncludes()
+        {
+            return base.GetAllWithIncludes()
+                .Include(p => p.ConnectingAirports)
+                .Include(p => p.ConnectingPlaneAirports)
+                .Include(p => p.PlaneType)
+                .Include(p => p.SimilarPlaneType)
+                .Include(p => p.Engines)
+                .ThenInclude(e => e.InstalledParts)
+                .Include(p => p.Engines)
+                .ThenInclude(e => e.PrincipalPart);
+        }
     }
 }

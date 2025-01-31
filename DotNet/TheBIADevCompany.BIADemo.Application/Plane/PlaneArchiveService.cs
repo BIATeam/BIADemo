@@ -17,8 +17,13 @@
 
     public class PlaneArchiveService : ArchiveServiceBase<Plane, int>
     {
-        public PlaneArchiveService(IConfiguration configuration, IPlaneArchiveRepository archiveRepository, ILogger<PlaneArchiveService> logger) : base(configuration, archiveRepository, logger, false)
+        public PlaneArchiveService(IConfiguration configuration, IPlaneArchiveRepository archiveRepository, ILogger<PlaneArchiveService> logger) : base(configuration, archiveRepository, logger)
         {
+        }
+
+        protected override string GetArchiveNameTemplate(Plane entity)
+        {
+            return $"plane_{entity.Msn}";
         }
     }
 }

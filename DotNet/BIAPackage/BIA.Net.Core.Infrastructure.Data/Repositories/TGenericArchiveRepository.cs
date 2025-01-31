@@ -32,7 +32,7 @@
 
         protected virtual Expression<Func<TEntity, bool>> ArchiveStep_ItemsSelector()
         {
-            return x => x.ArchiveState == ArchiveStateEnum.Undefined;
+            return x => x.ArchiveState == ArchiveStateEnum.Undefined || x.ArchiveState == ArchiveStateEnum.Archived;
         }
 
         protected virtual Expression<Func<TEntity, bool>> DeleteStep_ItemsSelector()
@@ -78,8 +78,6 @@
                 {
                     continue;
                 }
-
-                visitedEntityTypes.Add(navigationEntityType.ClrType);
 
                 string navigationPath = string.IsNullOrEmpty(parentPath) ? navigation.Name : $"{parentPath}.{navigation.Name}";
                 query = query.Include(navigationPath);
