@@ -29,8 +29,8 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
         public AirportHandlerRepository(IConfiguration configuration, IServiceProvider serviceProvider)
             : base(
                   serviceProvider,
-                  configuration.GetConnectionString("BIADemoDatabase"),
-                  configuration.GetDBEngine("BIADemoDatabase"),
+                  configuration.GetConnectionString("ProjectDatabase"),
+                  configuration.GetDBEngine("ProjectDatabase"),
                   "SELECT Id, Name, City FROM [dbo].[Airports]",
                   "Id",
                   pollingInterval: TimeSpan.FromSeconds(1))
