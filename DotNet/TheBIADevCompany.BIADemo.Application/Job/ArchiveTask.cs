@@ -10,12 +10,14 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     using BIA.Net.Core.Application.Archive;
     using BIA.Net.Core.Application.Job;
     using BIA.Net.Core.Common.Configuration;
+    using Hangfire;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// Archive task.
     /// </summary>
+    [AutomaticRetry(Attempts = 0, LogEvents = true)]
     public class ArchiveTask : BaseJob
     {
         private readonly BiaNetSection biaNetSection;

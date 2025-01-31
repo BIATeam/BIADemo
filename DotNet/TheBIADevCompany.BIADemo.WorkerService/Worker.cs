@@ -65,7 +65,8 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             while (!stoppingToken.IsCancellationRequested)
             {
                 var client = new BackgroundJobClient();
-                client.Create<ExampleTask>(x => x.Run(), new EnqueuedState());
+                //client.Create<ExampleTask>(x => x.Run(), new EnqueuedState());
+                client.Create<ArchiveTask>(x => x.Run(), new EnqueuedState());
 
                 this.logger.LogInformation("Worker is alive");
                 await Task.Delay(600000);

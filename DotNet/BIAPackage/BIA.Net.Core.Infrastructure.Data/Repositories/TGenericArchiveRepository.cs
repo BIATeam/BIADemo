@@ -71,7 +71,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <returns>Selector expression.</returns>
         protected virtual Expression<Func<TEntity, bool>> ArchiveStep_ItemsSelector()
         {
-            return x => x.ArchiveState == ArchiveState.Undefined || x.ArchiveState == ArchiveState.Archived;
+            return x => x.ArchiveState == ArchiveState.Undefined;
         }
 
         /// <summary>
