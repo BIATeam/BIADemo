@@ -6,7 +6,6 @@ namespace TheBIADevCompany.BIADemo.DeployDB
 {
     using System;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Application.Job;
     using Hangfire;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;

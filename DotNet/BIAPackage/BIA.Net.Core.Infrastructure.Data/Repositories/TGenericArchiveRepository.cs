@@ -1,72 +1,96 @@
-﻿namespace BIA.Net.Core.Infrastructure.Data.Repositories
+﻿// <copyright file="TGenericArchiveRepository.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace BIA.Net.Core.Infrastructure.Data.Repositories
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using System.Linq.Expressions;
-    using System.Security.Cryptography;
-    using System.Text;
     using System.Threading.Tasks;
-    using System.Xml.Linq;
-    using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.Common.Configuration.WorkerFeature;
-    using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Archive;
     using BIA.Net.Core.Domain.RepoContract;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
-    using Newtonsoft.Json;
 
-    public abstract class TGenericArchiveRepository<TEntity, TKey> : ITGenericArchiveRepository<TEntity, TKey> where TEntity : class, IEntityArchivable<TKey>
+    /// <summary>
+    /// Generich archive repository of an entity.
+    /// </summary>
+    /// <typeparam name="TEntity">The entity type.</typeparam>
+    /// <typeparam name="TKey">The entity key type.</typeparam>
+    public abstract class TGenericArchiveRepository<TEntity, TKey> : ITGenericArchiveRepository<TEntity, TKey>
+        where TEntity : class, IEntityArchivable<TKey>
     {
+        /// <summary>
+        /// Datacontext.
+        /// </summary>
+#pragma warning disable SA1401 // Fields should be private
         protected readonly IQueryableUnitOfWork dataContext;
+#pragma warning restore SA1401 // Fields should be private
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TGenericArchiveRepository{TEntity, TKey}"/> class.
+        /// </summary>
+        /// <param name="dataContext">The <see cref="IQueryableUnitOfWork"/> context.</param>
         protected TGenericArchiveRepository(IQueryableUnitOfWork dataContext)
         {
             this.dataContext = dataContext;
         }
 
-        protected virtual Expression<Func<TEntity, bool>> ArchiveStep_ItemsSelector()
-        {
-            return x => x.ArchiveState == ArchiveStateEnum.Undefined || x.ArchiveState == ArchiveStateEnum.Archived;
-        }
-
-        protected virtual Expression<Func<TEntity, bool>> DeleteStep_ItemsSelector()
-        {
-            return x => x.ArchiveState == ArchiveStateEnum.Archived;
-        }
-
-        protected virtual IQueryable<TEntity> GetAllWithIncludes()
-        {
-            var entityType = dataContext.FindEntityType(typeof(TEntity));
-            return IncludeRecursive(dataContext.RetrieveSet<TEntity>(), entityType);
-        }
-
+        /// <inheritdoc/>
         public virtual async Task<IReadOnlyList<TEntity>> GetItemsToArchiveAsync()
         {
-            return await GetAllWithIncludes().Where(ArchiveStep_ItemsSelector()).ToListAsync();
+            return await this.GetAllWithIncludes().Where(this.ArchiveStep_ItemsSelector()).ToListAsync();
         }
 
+        /// <inheritdoc/>
         public virtual async Task<IReadOnlyList<TEntity>> GetItemsToDeleteAsync()
         {
-            return await dataContext.RetrieveSet<TEntity>().Where(DeleteStep_ItemsSelector()).ToListAsync();
+            return await this.dataContext.RetrieveSet<TEntity>().Where(this.DeleteStep_ItemsSelector()).ToListAsync();
         }
 
-        public async Task UpdateArchiveStateAsync(TEntity entity, ArchiveStateEnum archiveState)
+        /// <inheritdoc/>
+        public async Task UpdateArchiveStateAsync(TEntity entity, ArchiveState archiveState)
         {
             entity.ArchiveState = archiveState;
-            dataContext.SetModified(entity);
-            await dataContext.CommitAsync();
+            this.dataContext.SetModified(entity);
+            await this.dataContext.CommitAsync();
         }
 
+        /// <inheritdoc/>
         public async Task RemoveAsync(TEntity entity)
         {
-            dataContext.RetrieveSet<TEntity>().Remove(entity);
-            await dataContext.CommitAsync();
+            this.dataContext.RetrieveSet<TEntity>().Remove(entity);
+            await this.dataContext.CommitAsync();
+        }
+
+        /// <summary>
+        /// Selector of items to archive.
+        /// </summary>
+        /// <returns>Selector expression.</returns>
+        protected virtual Expression<Func<TEntity, bool>> ArchiveStep_ItemsSelector()
+        {
+            return x => x.ArchiveState == ArchiveState.Undefined || x.ArchiveState == ArchiveState.Archived;
+        }
+
+        /// <summary>
+        /// Selector of items to delete.
+        /// </summary>
+        /// <returns>Selector expression.</returns>
+        protected virtual Expression<Func<TEntity, bool>> DeleteStep_ItemsSelector()
+        {
+            return x => x.ArchiveState == ArchiveState.Archived;
+        }
+
+        /// <summary>
+        /// Return all the entities with includes.
+        /// </summary>
+        /// <returns><see cref="IQueryable{TEntity}"/>.</returns>
+        protected virtual IQueryable<TEntity> GetAllWithIncludes()
+        {
+            var entityType = this.dataContext.FindEntityType(typeof(TEntity));
+            return IncludeRecursive(this.dataContext.RetrieveSet<TEntity>(), entityType);
         }
 
         private static IQueryable<TEntity> IncludeRecursive(IQueryable<TEntity> query, IEntityType entityType, string parentPath = null, IEntityType parentEntityType = null)

@@ -1,25 +1,58 @@
-﻿namespace BIA.Net.Core.Common.Configuration.WorkerFeature
+﻿// <copyright file="ArchiveConfiguration.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace BIA.Net.Core.Common.Configuration.WorkerFeature
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection.Metadata.Ecma335;
-    using System.Text;
-    using System.Threading.Tasks;
 
+    /// <summary>
+    /// Configuration for archiving.
+    /// </summary>
     public class ArchiveConfiguration
     {
-        public bool isActive { get; set; }
+        /// <summary>
+        /// Indicates wiether archive is active or not.
+        /// </summary>
+        public bool IsActive { get; set; }
+
+        /// <summary>
+        /// The <see cref="List{ArchiveEntityConfiguration}"/> of entities archive configurations.
+        /// </summary>
         public List<ArchiveEntityConfiguration> ArchiveEntityConfigurations { get; set; } = new List<ArchiveEntityConfiguration>();
-    }
 
-    public class ArchiveEntityConfiguration
-    {
-        public string EntityName { get; set; }
-        public string TargetDirectoryPath { get; set; }
-        public bool EnableDeleteStep { get; set; }
+        /// <summary>
+        /// Configuration for entity archiving.
+        /// </summary>
+        public class ArchiveEntityConfiguration
+        {
+            /// <summary>
+            /// Entity name.
+            /// </summary>
+            public string EntityName { get; set; }
 
-        public bool IsMatchingEntityType(Type entityType) => EntityName.Equals(entityType.Name, StringComparison.InvariantCultureIgnoreCase);
-        public bool IsValid => !string.IsNullOrWhiteSpace(EntityName) && !string.IsNullOrWhiteSpace(TargetDirectoryPath);
+            /// <summary>
+            /// Target directory path to store the archives.
+            /// </summary>
+            public string TargetDirectoryPath { get; set; }
+
+            /// <summary>
+            /// INdicates wiether the delete step of archive is enabled or not.
+            /// </summary>
+            public bool EnableDeleteStep { get; set; }
+
+            /// <summary>
+            /// Indicates weither the current entity archive configuration is valid.
+            /// </summary>
+            public bool IsValid => !string.IsNullOrWhiteSpace(this.EntityName) && !string.IsNullOrWhiteSpace(this.TargetDirectoryPath);
+
+            /// <summary>
+            /// Indicates weither the current entity archive configuration match with the provided entity type.
+            /// </summary>
+            /// <param name="entityType">The entity <see cref="Type"/> to compare.</param>
+            /// <returns><see cref="bool"/>.</returns>
+            public bool IsMatchingEntityType(Type entityType) => this.EntityName.Equals(entityType.Name, StringComparison.InvariantCultureIgnoreCase);
+        }
     }
 }

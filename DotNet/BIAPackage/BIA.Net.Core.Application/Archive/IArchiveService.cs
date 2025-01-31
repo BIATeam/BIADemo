@@ -1,14 +1,20 @@
-﻿namespace BIA.Net.Core.Application.Archive
+﻿// <copyright file="IArchiveService.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace BIA.Net.Core.Application.Archive
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Linq.Expressions;
-    using System.Text;
     using System.Threading.Tasks;
 
+    /// <summary>
+    /// The interface for archive service.
+    /// </summary>
     public interface IArchiveService
     {
+        /// <summary>
+        /// Run the service.
+        /// </summary>
+        /// <returns><see cref="Task"/>.</returns>
         public Task RunAsync();
     }
 }

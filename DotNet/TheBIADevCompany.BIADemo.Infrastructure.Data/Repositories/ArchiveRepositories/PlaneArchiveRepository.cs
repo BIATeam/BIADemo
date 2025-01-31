@@ -1,23 +1,31 @@
-﻿namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories.ArchiveRepositories
+﻿// <copyright file="PlaneArchiveRepository.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories.ArchiveRepositories
 {
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using BIA.Net.Core.Infrastructure.Data;
     using BIA.Net.Core.Infrastructure.Data.Repositories;
     using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
+    /// <summary>
+    /// Archive repository for <see cref="Plane"/> entity.
+    /// </summary>
     public class PlaneArchiveRepository : TGenericArchiveRepository<Plane, int>, IPlaneArchiveRepository
     {
-        public PlaneArchiveRepository(IQueryableUnitOfWork dataContext) : base(dataContext)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlaneArchiveRepository"/> class.
+        /// </summary>
+        /// <param name="dataContext">The <see cref="IQueryableUnitOfWork"/> context.</param>
+        public PlaneArchiveRepository(IQueryableUnitOfWork dataContext)
+            : base(dataContext)
         {
         }
 
+        /// <inheritdoc/>
         protected override IQueryable<Plane> GetAllWithIncludes()
         {
             return base.GetAllWithIncludes()

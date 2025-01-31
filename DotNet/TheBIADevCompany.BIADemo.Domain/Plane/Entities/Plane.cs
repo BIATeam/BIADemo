@@ -171,6 +171,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Entities
         /// </summary>
         public ICollection<Engine> Engines { get; set; }
 
-        public ArchiveStateEnum ArchiveState { get; set; }
+        public ArchiveState ArchiveState { get; set; }
     }
 }
