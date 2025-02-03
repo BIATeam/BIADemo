@@ -63,7 +63,6 @@ namespace BIA.Net.Core.Application.Archive
 
             this.jsonSerializerSettings = new JsonSerializerSettings
             {
-                Formatting = Formatting.Indented,
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             };
         }
