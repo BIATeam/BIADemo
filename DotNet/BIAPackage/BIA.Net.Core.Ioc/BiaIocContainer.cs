@@ -160,6 +160,7 @@ namespace BIA.Net.Core.IocContainer
         private static void ConfigureInfrastructureDataContainer(IServiceCollection collection)
         {
             collection.AddScoped(typeof(ITGenericRepository<,>), typeof(TGenericRepositoryEF<,>));
+            collection.AddScoped(typeof(ITGenericArchiveRepository<,>), typeof(TGenericArchiveRepository<,>));
 
             // Infrastructure Data
         }

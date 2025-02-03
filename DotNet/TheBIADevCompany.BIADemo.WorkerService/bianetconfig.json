@@ -33,7 +33,7 @@
             "EntityName": "Plane",
             "TargetDirectoryPath": "C:\\temp\\archives\\biademo\\planes",
             "EnableDeleteStep": false,
-            "EnableBlockArchiveState": false
+            "ArchiveMaxDaysBeforeDelete": 365
           }
         ]
       }

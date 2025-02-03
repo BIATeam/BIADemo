@@ -8,7 +8,7 @@ namespace BIA.Net.Core.Domain.RepoContract
     using System.Collections.Generic;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Domain.Archive;
+    using BIA.Net.Core.Domain;
 
     /// <summary>
     /// Interface for generic archive repository of an entity.
@@ -25,24 +25,18 @@ namespace BIA.Net.Core.Domain.RepoContract
         Task<IReadOnlyList<TEntity>> GetItemsToArchiveAsync();
 
         /// <summary>
-        /// Return the items to block.
-        /// </summary>
-        /// <returns><see cref="Task{IReadOnlyList{TEntity}}"/>.</returns>
-        Task<IReadOnlyList<TEntity>> GetItemsToBlockAsync();
-
-        /// <summary>
         /// Return the items to delete.
         /// </summary>
+        /// <param name="archiveDateMaxDays">The maximum days of archive date of item to delete.</param>
         /// <returns><see cref="IReadOnlyList{TEntity}"/>.</returns>
-        Task<IReadOnlyList<TEntity>> GetItemsToDeleteAsync();
+        Task<IReadOnlyList<TEntity>> GetItemsToDeleteAsync(double? archiveDateMaxDays = 365);
 
         /// <summary>
         /// Update archive state of an entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
-        /// <param name="archiveState">The <see cref="ArchiveState"/>.</param>
         /// <returns><see cref="Task"/>.</returns>
-        Task UpdateArchiveStateAsync(TEntity entity, ArchiveState archiveState);
+        Task SetAsArchivedAsync(TEntity entity);
 
         /// <summary>
         /// Remove an entity.

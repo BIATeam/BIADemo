@@ -9,7 +9,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Domain.Archive;
+    using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.RepoContract;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata;
@@ -19,7 +19,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
     /// </summary>
     /// <typeparam name="TEntity">The entity type.</typeparam>
     /// <typeparam name="TKey">The entity key type.</typeparam>
-    public abstract class TGenericArchiveRepository<TEntity, TKey> : ITGenericArchiveRepository<TEntity, TKey>
+    public class TGenericArchiveRepository<TEntity, TKey> : ITGenericArchiveRepository<TEntity, TKey>
         where TEntity : class, IEntityArchivable<TKey>
     {
         /// <summary>
@@ -33,7 +33,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// Initializes a new instance of the <see cref="TGenericArchiveRepository{TEntity, TKey}"/> class.
         /// </summary>
         /// <param name="dataContext">The <see cref="IQueryableUnitOfWork"/> context.</param>
-        protected TGenericArchiveRepository(IQueryableUnitOfWork dataContext)
+        public TGenericArchiveRepository(IQueryableUnitOfWork dataContext)
         {
             this.dataContext = dataContext;
         }
@@ -41,25 +41,23 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <inheritdoc/>
         public virtual async Task<IReadOnlyList<TEntity>> GetItemsToArchiveAsync()
         {
-            return await this.GetAllWithIncludes().Where(this.ArchiveStep_ItemsSelector()).ToListAsync();
+            var query = this.GetAllWithIncludes().AsSplitQuery().Where(this.ArchiveStep_ItemsSelector());
+            return await query.ToListAsync();
         }
 
         /// <inheritdoc/>
-        public virtual async Task<IReadOnlyList<TEntity>> GetItemsToBlockAsync()
+        public virtual async Task<IReadOnlyList<TEntity>> GetItemsToDeleteAsync(double? archiveDateMaxDays = 365)
         {
-            return await this.GetAllWithIncludes().Where(this.ArchiveStep_BlockedItemsSelector()).ToListAsync();
+            var query = this.GetAllWithIncludes().AsSplitQuery().Where(this.DeleteStep_ItemsSelector(archiveDateMaxDays));
+            return await query.ToListAsync();
         }
 
         /// <inheritdoc/>
-        public virtual async Task<IReadOnlyList<TEntity>> GetItemsToDeleteAsync()
+        public async Task SetAsArchivedAsync(TEntity entity)
         {
-            return await this.GetAllWithIncludes().Where(this.DeleteStep_ItemsSelector()).ToListAsync();
-        }
+            entity.IsArchived = true;
+            entity.ArchivedDate = DateTime.UtcNow;
 
-        /// <inheritdoc/>
-        public async Task UpdateArchiveStateAsync(TEntity entity, ArchiveState archiveState)
-        {
-            entity.ArchiveState = archiveState;
             this.dataContext.SetModified(entity);
             await this.dataContext.CommitAsync();
         }
@@ -77,25 +75,22 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <returns>Selector expression.</returns>
         protected virtual Expression<Func<TEntity, bool>> ArchiveStep_ItemsSelector()
         {
-            return x => x.ArchiveState == ArchiveState.Undefined;
-        }
+            var currentDateTime = DateTime.UtcNow;
 
-        /// <summary>
-        /// Selector of items to set as blocked at archive step.
-        /// </summary>
-        /// <returns>Selector expression.</returns>
-        protected virtual Expression<Func<TEntity, bool>> ArchiveStep_BlockedItemsSelector()
-        {
-            throw new NotImplementedException();
+            return x => x.IsFixed && x.FixedDate != null && (x.ArchivedDate == null || x.FixedDate.Value.AddDays(2) > currentDateTime);
         }
 
         /// <summary>
         /// Selector of items to delete.
         /// </summary>
+        /// <param name="archiveDateMaxDays">The maximum days of archive date of item to select.</param>
         /// <returns>Selector expression.</returns>
-        protected virtual Expression<Func<TEntity, bool>> DeleteStep_ItemsSelector()
+        protected virtual Expression<Func<TEntity, bool>> DeleteStep_ItemsSelector(double? archiveDateMaxDays = 365)
         {
-            return x => x.ArchiveState == ArchiveState.Archived;
+            var currentDateTime = DateTime.UtcNow;
+            var maxDays = archiveDateMaxDays.GetValueOrDefault();
+
+            return x => x.IsArchived && x.ArchivedDate != null && x.ArchivedDate.Value.AddDays(maxDays) > currentDateTime;
         }
 
         /// <summary>

@@ -9,9 +9,10 @@ namespace BIA.Net.Core.Application.Archive
     using System.IO;
     using System.Linq;
     using System.Security.Cryptography;
+    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.Domain.Archive;
+    using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.RepoContract;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -106,7 +107,7 @@ namespace BIA.Net.Core.Application.Archive
         /// <returns><see cref="Task"/>.</returns>
         protected virtual async Task RunDeleteStepAsync()
         {
-            var items = await this.archiveRepository.GetItemsToDeleteAsync();
+            var items = await this.archiveRepository.GetItemsToDeleteAsync(this.archiveEntityConfiguration.ArchiveMaxDaysBeforeDelete);
             foreach (var item in items)
             {
                 await this.DeleteItemAsync(item);
@@ -141,12 +142,10 @@ namespace BIA.Net.Core.Application.Archive
         /// <returns><see cref="Task"/>.</returns>
         protected virtual async Task RunArchiveStepAsync()
         {
-            IReadOnlyList<TEntity> blockedItems = this.archiveEntityConfiguration.EnableBlockArchiveState ? await this.archiveRepository.GetItemsToBlockAsync() : [];
-
             var items = await this.archiveRepository.GetItemsToArchiveAsync();
             foreach (var item in items)
             {
-                await this.ArchiveItemAsync(item, blockedItems);
+                await this.ArchiveItemAsync(item);
             }
         }
 
@@ -154,9 +153,8 @@ namespace BIA.Net.Core.Application.Archive
         /// Archive an entity.
         /// </summary>
         /// <param name="item">The entity to archive.</param>
-        /// <param name="blockedItems">Blocked entities.</param>
         /// <returns><see cref="Task"/>.</returns>
-        protected virtual async Task ArchiveItemAsync(TEntity item, IReadOnlyList<TEntity> blockedItems)
+        protected virtual async Task ArchiveItemAsync(TEntity item)
         {
             this.logger.Log(LogLevel.Information, $"Item {item.Id} : archiving");
 
@@ -164,8 +162,7 @@ namespace BIA.Net.Core.Application.Archive
             {
                 if (await this.SaveItemToServerAsync(item))
                 {
-                    var archiveState = blockedItems.Any(x => x.Id.Equals(item.Id)) ? ArchiveState.ArchivedBlocked : ArchiveState.Archived;
-                    await this.archiveRepository.UpdateArchiveStateAsync(item, archiveState);
+                    await this.archiveRepository.SetAsArchivedAsync(item);
                     this.logger.Log(LogLevel.Information, $"Item {item.Id} : archived successfully");
                 }
             }

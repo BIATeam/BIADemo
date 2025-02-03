@@ -9,7 +9,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Entities
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
     using BIA.Net.Core.Domain;
-    using BIA.Net.Core.Domain.Archive;
     using TheBIADevCompany.BIADemo.Domain.Site.Entities;
 
     /// <summary>
@@ -171,6 +170,9 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Entities
         /// </summary>
         public ICollection<Engine> Engines { get; set; }
 
-        public ArchiveState ArchiveState { get; set; }
+        public bool IsFixed { get; set; }
+        public DateTime? FixedDate { get; set; }
+        public bool IsArchived { get; set; }
+        public DateTime? ArchivedDate { get; set; }
     }
 }

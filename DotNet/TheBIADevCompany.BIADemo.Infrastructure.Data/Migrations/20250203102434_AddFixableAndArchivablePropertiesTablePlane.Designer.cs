@@ -12,8 +12,8 @@ using TheBIADevCompany.BIADemo.Infrastructure.Data;
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250128135708_AddArchiveStateColumnToPlaneTable")]
-    partial class AddArchiveStateColumnToPlaneTable
+    [Migration("20250203102434_AddFixableAndArchivablePropertiesTablePlane")]
+    partial class AddFixableAndArchivablePropertiesTablePlane
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -732,8 +732,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ArchiveState")
-                        .HasColumnType("int");
+                    b.Property<DateTime?>("ArchivedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
@@ -750,6 +750,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<DateTime>("FirstFlightDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("FixedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<float>("FuelCapacity")
                         .HasColumnType("real");
 
@@ -757,6 +760,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .HasColumnType("real");
 
                     b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsFixed")
                         .HasColumnType("bit");
 
                     b.Property<bool?>("IsMaintenance")
