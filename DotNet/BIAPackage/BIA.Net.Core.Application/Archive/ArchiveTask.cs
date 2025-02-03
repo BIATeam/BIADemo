@@ -2,25 +2,23 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Application.Job
+namespace BIA.Net.Core.Application.Archive
 {
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Application.Archive;
     using BIA.Net.Core.Application.Job;
     using BIA.Net.Core.Common.Configuration;
-    using Hangfire;
+    using BIA.Net.Core.Common.Configuration.WorkerFeature;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// Archive task.
     /// </summary>
-    [AutomaticRetry(Attempts = 0, LogEvents = true)]
-    public class ArchiveTask : BaseJob
+    public sealed class ArchiveTask : BaseJob
     {
-        private readonly BiaNetSection biaNetSection;
+        private readonly ArchiveConfiguration archiveConfiguration;
         private readonly List<IArchiveService> archiveServices;
 
         /// <summary>
@@ -32,8 +30,9 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         public ArchiveTask(IConfiguration configuration, ILogger<ArchiveTask> logger, IEnumerable<IArchiveService> archiveServices)
             : base(configuration, logger)
         {
-            this.biaNetSection = new BiaNetSection();
-            configuration?.GetSection("BiaNet").Bind(this.biaNetSection);
+            var biaNetSection = new BiaNetSection();
+            configuration?.GetSection("BiaNet").Bind(biaNetSection);
+            this.archiveConfiguration = biaNetSection.WorkerFeatures?.Archive;
 
             this.archiveServices = archiveServices.ToList();
         }
@@ -45,13 +44,13 @@ namespace TheBIADevCompany.BIADemo.Application.Job
             {
                 this.Logger.LogInformation("Start Archive Task");
 
-                if (this.biaNetSection.WorkerFeatures.Archive is null)
+                if (this.archiveConfiguration is null)
                 {
-                    this.Logger.LogWarning("Unable to find archive configuration.");
+                    this.Logger.LogWarning("Unable to find archive configuration");
                     return;
                 }
 
-                if (!this.biaNetSection.WorkerFeatures.Archive.IsActive)
+                if (!this.archiveConfiguration.IsActive)
                 {
                     return;
                 }

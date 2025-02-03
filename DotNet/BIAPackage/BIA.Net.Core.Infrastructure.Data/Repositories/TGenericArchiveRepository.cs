@@ -77,7 +77,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         {
             var currentDateTime = DateTime.UtcNow;
 
-            return x => x.IsFixed && x.FixedDate != null && (x.ArchivedDate == null || x.FixedDate.Value.AddDays(2) > currentDateTime);
+            return x => x.IsFixed && x.FixedDate != null && (x.ArchivedDate == null || x.FixedDate.Value.AddDays(1) > currentDateTime);
         }
 
         /// <summary>
