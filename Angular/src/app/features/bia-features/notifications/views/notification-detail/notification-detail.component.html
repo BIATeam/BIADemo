@@ -25,7 +25,7 @@
       pButton
       label="{{ 'notification.setUnread' | translate }}"
       type="button"
-      class="p-button-secondary"
+      class="p-button-outlined"
       (click)="onSetUnread(notification.id)"
       *ngIf="notification.read"></button>
     <span></span>
@@ -37,13 +37,13 @@
         icon="pi pi-times"
         label="{{ 'bia.cancel' | translate }}"
         type="button"
-        class="p-button-secondary"
+        class="p-button-outlined"
         (click)="onCancelled()"></button>
       <button
         pButton
         label="{{ 'bia.edit' | translate }}"
         type="button"
-        class="p-button-secondary"
+        class="p-button-outlined"
         (click)="onEdit()"
         *ngIf="canEdit"></button>
       <button
