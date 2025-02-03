@@ -180,7 +180,7 @@ namespace BIA.Net.Core.Application.Archive
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex, "Failed to save to server item {ItemId} : {ExceptionMessage}", item.Id, ex.Message);
+                this.logger.LogError(ex, "Failed to save item {ItemId} : {ExceptionMessage}", item.Id, ex.Message);
 
                 if (File.Exists(targetZipFilePath))
                 {
