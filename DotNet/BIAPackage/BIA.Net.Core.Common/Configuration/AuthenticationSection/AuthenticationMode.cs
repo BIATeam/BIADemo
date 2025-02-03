@@ -1,13 +1,13 @@
-﻿// <copyright file="AuthentMode.cs" company="BIA">
+﻿// <copyright file="AuthenticationMode.cs" company="BIA">
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Common.Configuration
+namespace BIA.Net.Core.Common.Configuration.AuthenticationSection
 {
     /// <summary>
     /// The authentication configuration.
     /// </summary>
-    public enum AuthentMode
+    public enum AuthenticationMode
     {
         /// <summary>
         /// Default authentication (windows).

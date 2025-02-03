@@ -2,8 +2,10 @@
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Common.Configuration
+namespace BIA.Net.Core.Common.Configuration.ProfileSection
 {
+    using BIA.Net.Core.Common.Configuration.AuthenticationSection;
+
     /// <summary>
     /// The user profile configuration.
     /// </summary>
@@ -21,23 +23,14 @@ namespace BIA.Net.Core.Common.Configuration
         public string ProfileImageUrlOrPath { get; set; }
 
         /// <summary>
-        /// Authentication mode for access to ProfileImageUrl.
-        /// </summary>
-        public AuthentMode AuthentMode { get; set; }
-
-        /// <summary>
-        /// Authentication credentials used to access profile image when in AuthentMode Standard = 1.
-        /// </summary>
-        public AuthentCredentials AuthentCredentials { get; set; }
-
-        /// <summary>
-        /// Api key used to access profile image when in AuthenMode ApiKey = 3.
-        /// </summary>
-        public string ApiKey { get; set; }
-
-        /// <summary>
         /// Url to access user profile image edit page.
         /// </summary>
         public string EditProfileImageUrl { get; set; }
+
+        /// <summary>
+        /// Authentication configuration for profile image.
+        /// </summary>
+        public AuthenticationConfiguration AuthenticationConfiguration { get; set; }
+        public object AuthentMode { get; set; }
     }
 }

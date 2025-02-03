@@ -7,6 +7,7 @@ namespace BIA.Net.Core.Common.Configuration
     using System.Collections.Generic;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
+    using BIA.Net.Core.Common.Configuration.ProfileSection;
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
 
     /// <summary>

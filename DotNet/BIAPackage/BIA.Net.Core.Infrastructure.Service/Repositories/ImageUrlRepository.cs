@@ -8,6 +8,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     using System.Net.Http;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Configuration.AuthenticationSection;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using Microsoft.Extensions.Configuration;
@@ -59,13 +60,13 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
             try
             {
-                switch (biaNetSection.ProfileConfiguration.AuthentMode)
+                switch (biaNetSection.ProfileConfiguration.AuthenticationConfiguration.Mode)
                 {
-                    case AuthentMode.Token:
+                    case AuthenticationMode.Token:
                         await this.AddAuthorizationBearerAsync();
                         break;
-                    case AuthentMode.ApiKey:
-                        this.HttpClient.DefaultRequestHeaders.Add("X-API-Key", biaNetSection.ProfileConfiguration.ApiKey);
+                    case AuthenticationMode.ApiKey:
+                        this.HttpClient.DefaultRequestHeaders.Add("X-API-Key", biaNetSection.ProfileConfiguration.AuthenticationConfiguration.ApiKey);
                         break;
                     default:
                         break;
