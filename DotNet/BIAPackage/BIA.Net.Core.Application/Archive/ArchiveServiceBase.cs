@@ -66,8 +66,8 @@ namespace BIA.Net.Core.Application.Archive
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             };
         }
-
 #pragma warning disable S2629 // Logging templates should be constant
+
         /// <inheritdoc/>
         public async Task RunAsync()
         {

@@ -22,8 +22,8 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         /// <param name="configuration">The configuration.</param>
         /// <param name="archiveRepository">The <see cref="ITGenericArchiveRepository{TEntity, TKey}"/> archive repository.</param>
         /// <param name="logger">The logger.</param>
-        //public PlaneArchiveService(IConfiguration configuration, IPlaneArchiveRepository archiveRepository, ILogger<PlaneArchiveService> logger
-        public PlaneArchiveService(IConfiguration configuration, ITGenericArchiveRepository<Plane, int> archiveRepository, ILogger<PlaneArchiveService> logger)
+        public PlaneArchiveService(IConfiguration configuration, IPlaneArchiveRepository archiveRepository, ILogger<PlaneArchiveService> logger)
+        //public PlaneArchiveService(IConfiguration configuration, ITGenericArchiveRepository<Plane, int> archiveRepository, ILogger<PlaneArchiveService> logger)
 
             : base(configuration, archiveRepository, logger)
         {

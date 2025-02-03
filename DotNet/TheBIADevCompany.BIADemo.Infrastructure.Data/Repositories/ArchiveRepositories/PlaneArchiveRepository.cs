@@ -5,7 +5,9 @@
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories.ArchiveRepositories
 {
     using System;
+    using System.Linq;
     using System.Linq.Expressions;
+    using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Infrastructure.Data;
     using BIA.Net.Core.Infrastructure.Data.Repositories;
     using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
@@ -23,6 +25,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories.ArchiveRepos
         public PlaneArchiveRepository(IQueryableUnitOfWork dataContext)
             : base(dataContext)
         {
+        }
+
+        /// <inheritdoc/>
+        protected override Expression<Func<Plane, bool>> ArchiveStepItemsSelector()
+        {
+            return base.ArchiveStepItemsSelector().CombineSelector(x => !x.IsActive);
         }
     }
 }

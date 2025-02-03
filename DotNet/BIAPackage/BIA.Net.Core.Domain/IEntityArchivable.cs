@@ -13,10 +13,13 @@ namespace BIA.Net.Core.Domain
     public interface IEntityArchivable<TKey> : IEntityFixable<TKey>
     {
         /// <summary>
-        /// Gets or sets the <see cref="Archive.ArchiveState"/>.
+        /// Gets or sets the is archived.
         /// </summary>
         public bool IsArchived { get; set; }
 
+        /// <summary>
+        /// Gets or sets the archived date.
+        /// </summary>
         public DateTime? ArchivedDate { get; set; }
     }
 }

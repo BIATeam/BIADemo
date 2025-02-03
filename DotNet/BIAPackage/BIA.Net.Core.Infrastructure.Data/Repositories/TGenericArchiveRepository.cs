@@ -41,14 +41,14 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <inheritdoc/>
         public virtual async Task<IReadOnlyList<TEntity>> GetItemsToArchiveAsync()
         {
-            var query = this.GetAllWithIncludes().AsSplitQuery().Where(this.ArchiveStep_ItemsSelector());
+            var query = this.GetAllQuery().Where(this.ArchiveStepItemsSelector());
             return await query.ToListAsync();
         }
 
         /// <inheritdoc/>
         public virtual async Task<IReadOnlyList<TEntity>> GetItemsToDeleteAsync(double? archiveDateMaxDays = 365)
         {
-            var query = this.GetAllWithIncludes().AsSplitQuery().Where(this.DeleteStep_ItemsSelector(archiveDateMaxDays));
+            var query = this.GetAllQuery().Where(this.DeleteStepItemsSelector(archiveDateMaxDays));
             return await query.ToListAsync();
         }
 
@@ -73,7 +73,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// Selector of items to archive.
         /// </summary>
         /// <returns>Selector expression.</returns>
-        protected virtual Expression<Func<TEntity, bool>> ArchiveStep_ItemsSelector()
+        protected virtual Expression<Func<TEntity, bool>> ArchiveStepItemsSelector()
         {
             var currentDateTime = DateTime.UtcNow;
 
@@ -85,25 +85,33 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// </summary>
         /// <param name="archiveDateMaxDays">The maximum days of archive date of item to select.</param>
         /// <returns>Selector expression.</returns>
-        protected virtual Expression<Func<TEntity, bool>> DeleteStep_ItemsSelector(double? archiveDateMaxDays = 365)
+        protected virtual Expression<Func<TEntity, bool>> DeleteStepItemsSelector(double? archiveDateMaxDays = 365)
         {
             var currentDateTime = DateTime.UtcNow;
             var maxDays = archiveDateMaxDays.GetValueOrDefault();
 
-            return x => x.IsArchived && x.ArchivedDate != null && x.ArchivedDate.Value.AddDays(maxDays) > currentDateTime;
+            return x => x.IsArchived && x.ArchivedDate != null && (archiveDateMaxDays == null || x.ArchivedDate.Value.AddDays(maxDays) > currentDateTime);
         }
 
         /// <summary>
-        /// Return all the entities with includes.
+        /// Return all the entities.
         /// </summary>
         /// <returns><see cref="IQueryable{TEntity}"/>.</returns>
-        protected virtual IQueryable<TEntity> GetAllWithIncludes()
+        protected virtual IQueryable<TEntity> GetAllQuery()
         {
             var entityType = this.dataContext.FindEntityType(typeof(TEntity));
-            return IncludeRecursive(this.dataContext.RetrieveSet<TEntity>(), entityType);
+            return GetQueryWithIncludesRecursive(this.dataContext.RetrieveSet<TEntity>(), entityType).AsSplitQuery();
         }
 
-        private static IQueryable<TEntity> IncludeRecursive(IQueryable<TEntity> query, IEntityType entityType, string parentPath = null, IEntityType parentEntityType = null)
+        /// <summary>
+        /// Automatic add includes of entity's navigations at root level, then all cascade delete navigations recursively.
+        /// </summary>
+        /// <param name="query">Query to add the includes.</param>
+        /// <param name="entityType">Entity type of the query.</param>
+        /// <param name="parentNavigationPath">Include navigation of parent.</param>
+        /// <param name="parentEntityType">Parent entity's type.</param>
+        /// <returns><see cref="IQueryable{TEntity}"/>.</returns>
+        private static IQueryable<TEntity> GetQueryWithIncludesRecursive(IQueryable<TEntity> query, IEntityType entityType, string parentNavigationPath = null, IEntityType parentEntityType = null)
         {
             foreach (var navigation in entityType.GetNavigations())
             {
@@ -113,12 +121,12 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
                     continue;
                 }
 
-                string navigationPath = string.IsNullOrEmpty(parentPath) ? navigation.Name : $"{parentPath}.{navigation.Name}";
+                string navigationPath = string.IsNullOrEmpty(parentNavigationPath) ? navigation.Name : $"{parentNavigationPath}.{navigation.Name}";
                 query = query.Include(navigationPath);
 
                 if (navigation.ForeignKey.PrincipalEntityType == entityType && (navigation.ForeignKey.DeleteBehavior == DeleteBehavior.Cascade || navigation.ForeignKey.DeleteBehavior == DeleteBehavior.ClientCascade))
                 {
-                    query = IncludeRecursive(query, navigationEntityType, navigationPath, entityType);
+                    query = GetQueryWithIncludesRecursive(query, navigationEntityType, navigationPath, entityType);
                 }
             }
 
