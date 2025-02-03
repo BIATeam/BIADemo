@@ -5,6 +5,7 @@
 namespace BIA.Net.Core.Application.Archive
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Security.Cryptography;
@@ -140,19 +141,12 @@ namespace BIA.Net.Core.Application.Archive
         /// <returns><see cref="Task"/>.</returns>
         protected virtual async Task RunArchiveStepAsync()
         {
+            IReadOnlyList<TEntity> blockedItems = this.archiveEntityConfiguration.EnableBlockArchiveState ? await this.archiveRepository.GetItemsToBlockAsync() : [];
+
             var items = await this.archiveRepository.GetItemsToArchiveAsync();
             foreach (var item in items)
             {
-                await this.ArchiveItemAsync(item);
-            }
-
-            if (this.archiveEntityConfiguration.EnableBlockArchiveState)
-            {
-                var blockedItems = await this.archiveRepository.GetItemsToBlockAsync();
-                foreach (var item in blockedItems)
-                {
-                    await this.archiveRepository.UpdateArchiveStateAsync(item, ArchiveState.ArchivedBlocked);
-                }
+                await this.ArchiveItemAsync(item, blockedItems);
             }
         }
 
@@ -160,8 +154,9 @@ namespace BIA.Net.Core.Application.Archive
         /// Archive an entity.
         /// </summary>
         /// <param name="item">The entity to archive.</param>
+        /// <param name="blockedItems">Blocked entities.</param>
         /// <returns><see cref="Task"/>.</returns>
-        protected virtual async Task ArchiveItemAsync(TEntity item)
+        protected virtual async Task ArchiveItemAsync(TEntity item, IReadOnlyList<TEntity> blockedItems)
         {
             this.logger.Log(LogLevel.Information, $"Item {item.Id} : archiving");
 
@@ -169,7 +164,8 @@ namespace BIA.Net.Core.Application.Archive
             {
                 if (await this.SaveItemToServerAsync(item))
                 {
-                    await this.archiveRepository.UpdateArchiveStateAsync(item, ArchiveState.Archived);
+                    var archiveState = blockedItems.Any(x => x.Id.Equals(item.Id)) ? ArchiveState.ArchivedBlocked : ArchiveState.Archived;
+                    await this.archiveRepository.UpdateArchiveStateAsync(item, archiveState);
                     this.logger.Log(LogLevel.Information, $"Item {item.Id} : archived successfully");
                 }
             }
