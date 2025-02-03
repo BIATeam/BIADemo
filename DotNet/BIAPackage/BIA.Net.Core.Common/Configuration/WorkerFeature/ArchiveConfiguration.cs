@@ -38,9 +38,14 @@ namespace BIA.Net.Core.Common.Configuration.WorkerFeature
             public string TargetDirectoryPath { get; set; }
 
             /// <summary>
-            /// INdicates wiether the delete step of archive is enabled or not.
+            /// Indicates weither the delete step of archive is enabled or not.
             /// </summary>
             public bool EnableDeleteStep { get; set; }
+
+            /// <summary>
+            /// Indicates weither some items to archive must be marked as blocked.
+            /// </summary>
+            public bool EnableBlockArchiveState { get; set; }
 
             /// <summary>
             /// Indicates weither the current entity archive configuration is valid.

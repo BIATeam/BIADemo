@@ -43,6 +43,8 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         {
             try
             {
+                this.Logger.Log(LogLevel.Information, "Start Archive Task");
+
                 if (this.biaNetSection.WorkerFeatures.Archive is null)
                 {
                     this.Logger.LogWarning("Unable to find archive configuration.");
@@ -60,7 +62,6 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                     return;
                 }
 
-                this.Logger.Log(LogLevel.Information, "Start Archive Task");
                 foreach (var archiveService in this.archiveServices)
                 {
                     await archiveService.RunAsync();

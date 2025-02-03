@@ -4,7 +4,9 @@
 
 namespace BIA.Net.Core.Domain.RepoContract
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq.Expressions;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Archive;
 
@@ -21,6 +23,12 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// </summary>
         /// <returns><see cref="Task{IReadOnlyList{TEntity}}"/>.</returns>
         Task<IReadOnlyList<TEntity>> GetItemsToArchiveAsync();
+
+        /// <summary>
+        /// Return the items to block.
+        /// </summary>
+        /// <returns><see cref="Task{IReadOnlyList{TEntity}}"/>.</returns>
+        Task<IReadOnlyList<TEntity>> GetItemsToBlockAsync();
 
         /// <summary>
         /// Return the items to delete.

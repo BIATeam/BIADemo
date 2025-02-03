@@ -145,6 +145,15 @@ namespace BIA.Net.Core.Application.Archive
             {
                 await this.ArchiveItemAsync(item);
             }
+
+            if (this.archiveEntityConfiguration.EnableBlockArchiveState)
+            {
+                var blockedItems = await this.archiveRepository.GetItemsToBlockAsync();
+                foreach (var item in blockedItems)
+                {
+                    await this.archiveRepository.UpdateArchiveStateAsync(item, ArchiveState.ArchivedBlocked);
+                }
+            }
         }
 
         /// <summary>

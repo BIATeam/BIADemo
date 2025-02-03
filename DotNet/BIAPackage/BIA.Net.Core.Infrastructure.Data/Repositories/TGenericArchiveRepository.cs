@@ -45,9 +45,15 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         }
 
         /// <inheritdoc/>
+        public virtual async Task<IReadOnlyList<TEntity>> GetItemsToBlockAsync()
+        {
+            return await this.GetAllWithIncludes().Where(this.ArchiveStep_BlockedItemsSelector()).ToListAsync();
+        }
+
+        /// <inheritdoc/>
         public virtual async Task<IReadOnlyList<TEntity>> GetItemsToDeleteAsync()
         {
-            return await this.dataContext.RetrieveSet<TEntity>().Where(this.DeleteStep_ItemsSelector()).ToListAsync();
+            return await this.GetAllWithIncludes().Where(this.DeleteStep_ItemsSelector()).ToListAsync();
         }
 
         /// <inheritdoc/>
@@ -72,6 +78,15 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         protected virtual Expression<Func<TEntity, bool>> ArchiveStep_ItemsSelector()
         {
             return x => x.ArchiveState == ArchiveState.Undefined;
+        }
+
+        /// <summary>
+        /// Selector of items to set as blocked at archive step.
+        /// </summary>
+        /// <returns>Selector expression.</returns>
+        protected virtual Expression<Func<TEntity, bool>> ArchiveStep_BlockedItemsSelector()
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

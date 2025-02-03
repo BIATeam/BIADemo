@@ -4,6 +4,8 @@
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories.ArchiveRepositories
 {
+    using System;
+    using System.Linq.Expressions;
     using BIA.Net.Core.Infrastructure.Data;
     using BIA.Net.Core.Infrastructure.Data.Repositories;
     using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
