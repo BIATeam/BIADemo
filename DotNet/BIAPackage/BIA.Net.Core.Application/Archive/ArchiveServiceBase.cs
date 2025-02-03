@@ -6,7 +6,9 @@ namespace BIA.Net.Core.Application.Archive
 {
     using System;
     using System.IO;
+    using System.IO.Compression;
     using System.Linq;
+    using System.Net.Http.Json;
     using System.Security.Cryptography;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
@@ -100,6 +102,103 @@ namespace BIA.Net.Core.Application.Archive
         protected abstract string GetArchiveNameTemplate(TEntity entity);
 
         /// <summary>
+        /// Run archive step.
+        /// </summary>
+        /// <returns><see cref="Task"/>.</returns>
+        protected virtual async Task RunArchiveStepAsync()
+        {
+            var items = await this.archiveRepository.GetItemsToArchiveAsync();
+            foreach (var item in items)
+            {
+                await this.ArchiveItemAsync(item);
+            }
+        }
+
+        /// <summary>
+        /// Archive an entity.
+        /// </summary>
+        /// <param name="item">The entity to archive.</param>
+        /// <returns><see cref="Task"/>.</returns>
+        protected virtual async Task ArchiveItemAsync(TEntity item)
+        {
+            try
+            {
+                if (await this.SaveItemAsFlatTextCompressedAsync(item, this.archiveEntityConfiguration.TargetDirectoryPath))
+                {
+                    await this.archiveRepository.SetAsArchivedAsync(item);
+                    this.logger.LogInformation("Item {ItemId} archived successfully", item.Id);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, "Failed to archive item {ItemId} : {ExceptionMessage}", item.Id, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Save an entity to the target as flat text JSON into a ZIP archive.
+        /// </summary>
+        /// <param name="item">The entity to save.</param>
+        /// <param name="targetDirectoryPath">Target directory path.</param>
+        /// <returns><see cref="Task{bool}"/> that indicates success.</returns>
+        protected async Task<bool> SaveItemAsFlatTextCompressedAsync(TEntity item, string targetDirectoryPath)
+        {
+            var targetZipFileName = $"{this.GetArchiveNameTemplate(item)}.zip";
+            var targetZipFilePath = Path.Combine(targetDirectoryPath, targetZipFileName);
+            var sourceZipFilePath = Path.GetRandomFileName();
+
+            try
+            {
+                var jsonContent = JsonConvert.SerializeObject(item, this.jsonSerializerSettings);
+
+                var targerDirectoryPath = Path.GetDirectoryName(targetZipFilePath);
+                if (!Directory.Exists(targerDirectoryPath))
+                {
+                    Directory.CreateDirectory(targerDirectoryPath);
+                }
+
+                await using (var zipStream = new FileStream(sourceZipFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                {
+                    using var archive = new ZipArchive(zipStream, ZipArchiveMode.Create, leaveOpen: false);
+                    var jsonEntry = archive.CreateEntry(targetZipFileName.Replace(".zip", ".json"));
+                    await using var entryStream = jsonEntry.Open();
+                    await using var writer = new StreamWriter(entryStream);
+                    await writer.WriteAsync(jsonContent);
+                }
+
+                var sourceHash = ComputeHash(sourceZipFilePath);
+
+                File.Copy(sourceZipFilePath, targetZipFilePath, true);
+
+                var targetHash = ComputeHash(targetZipFilePath);
+                if (targetHash != sourceHash)
+                {
+                    throw new JobException("Integrity compromised after copy");
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, "Failed to save to server item {ItemId} : {ExceptionMessage}", item.Id, ex.Message);
+
+                if (File.Exists(targetZipFilePath))
+                {
+                    File.Delete(targetZipFilePath);
+                }
+
+                return false;
+            }
+            finally
+            {
+                if (File.Exists(sourceZipFilePath))
+                {
+                    File.Delete(sourceZipFilePath);
+                }
+            }
+        }
+
+        /// <summary>
         /// Run delete step.
         /// </summary>
         /// <returns><see cref="Task"/>.</returns>
@@ -127,105 +226,6 @@ namespace BIA.Net.Core.Application.Archive
             catch (Exception ex)
             {
                 this.logger.LogError(ex, "Failed to delete item {ItemId} : {ExceptionMessage}", item.Id, ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// Run archive step.
-        /// </summary>
-        /// <returns><see cref="Task"/>.</returns>
-        protected virtual async Task RunArchiveStepAsync()
-        {
-            var items = await this.archiveRepository.GetItemsToArchiveAsync();
-            foreach (var item in items)
-            {
-                await this.ArchiveItemAsync(item);
-            }
-        }
-
-        /// <summary>
-        /// Archive an entity.
-        /// </summary>
-        /// <param name="item">The entity to archive.</param>
-        /// <returns><see cref="Task"/>.</returns>
-        protected virtual async Task ArchiveItemAsync(TEntity item)
-        {
-            try
-            {
-                if (await this.SaveItemToServerAsync(item))
-                {
-                    await this.archiveRepository.SetAsArchivedAsync(item);
-                    this.logger.LogInformation("Item {ItemId} archived successfully", item.Id);
-                }
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, "Failed to archive item {ItemId} : {ExceptionMessage}", item.Id, ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// Save an entity to the server as plain text.
-        /// </summary>
-        /// <param name="item">The entity to save.</param>
-        /// <returns><see cref="Task{bool}"/> that indicates success.</returns>
-        protected virtual async Task<bool> SaveItemToServerAsync(TEntity item)
-        {
-            var targetFileName = $"{this.GetArchiveNameTemplate(item)}.json";
-            var targetFilePath = Path.Combine(this.archiveEntityConfiguration.TargetDirectoryPath, targetFileName);
-            var sourceFilePath = Path.GetRandomFileName();
-
-            try
-            {
-                var json = JsonConvert.SerializeObject(item, this.jsonSerializerSettings);
-                await this.CopyWithIntegrityControlAsync(json, targetFilePath, sourceFilePath);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, "Failed to save to server item {ItemId} : {ExceptionMessage}", item.Id, ex.Message);
-
-                if (File.Exists(targetFilePath))
-                {
-                    File.Delete(targetFilePath);
-                }
-
-                return false;
-            }
-            finally
-            {
-                if (File.Exists(sourceFilePath))
-                {
-                    File.Delete(sourceFilePath);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Save content to source file then copy into target file and control the integrity of copy between them.
-        /// </summary>
-        /// <param name="content">Content to save.</param>
-        /// <param name="targetFilePath">Path of target file.</param>
-        /// <param name="sourceFilePath">Path of source file.</param>
-        /// <returns><see cref="Task"/>.</returns>
-        /// <exception cref="Exception">.</exception>
-        protected virtual async Task CopyWithIntegrityControlAsync(string content, string targetFilePath, string sourceFilePath)
-        {
-            var targerDirectoryPath = Path.GetDirectoryName(targetFilePath);
-            if (!Directory.Exists(targerDirectoryPath))
-            {
-                Directory.CreateDirectory(targerDirectoryPath);
-            }
-
-            await File.WriteAllTextAsync(sourceFilePath, content);
-            var sourceHash = ComputeHash(sourceFilePath);
-
-            File.Copy(sourceFilePath, targetFilePath, true);
-
-            var targetHash = ComputeHash(targetFilePath);
-            if (targetHash != sourceHash)
-            {
-                throw new JobException("integrity compromised after copy");
             }
         }
 
