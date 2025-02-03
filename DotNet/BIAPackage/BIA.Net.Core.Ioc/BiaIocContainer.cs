@@ -76,6 +76,26 @@ namespace BIA.Net.Core.IocContainer
         }
 
         /// <summary>
+        /// Creates the HTTP client handler for standard authentication.
+        /// </summary>
+        /// <param name="username">username to authenticate on http requests.</param>
+        /// <param name="password">password of the user.</param>
+        /// <returns>
+        /// HttpClientHandler object.
+        /// </returns>
+        public static HttpClientHandler CreateStandardHttpClientHandler(string username, string password)
+        {
+            HttpClientHandler httpClientHandler = new HttpClientHandler
+            {
+                Credentials = new NetworkCredential(username, password),
+                AllowAutoRedirect = false,
+                UseProxy = false,
+            };
+
+            return httpClientHandler;
+        }
+
+        /// <summary>
         /// This method dynamically registers services from an assembly based on provided parameters.
         /// </summary>
         /// <param name="collection">The IServiceCollection to add services to.</param>
@@ -189,10 +209,14 @@ namespace BIA.Net.Core.IocContainer
 
             collection.AddTransient<IBiaHybridCache, BiaHybridCache>();
 
-            collection.AddHttpClient<IWakeUpWebApps, WakeUpWebApps>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
+            collection.AddHttpClient<IWakeUpWebApps, WakeUpWebApps>().ConfigurePrimaryHttpMessageHandler(() =>
+                CreateHttpClientHandler(biaNetSection));
 
             collection.AddTransient<IFileRepository, FileRepository>();
-            collection.AddHttpClient<IImageUrlRepository, ImageUrlRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
+            collection.AddHttpClient<IImageUrlRepository, ImageUrlRepository>().ConfigurePrimaryHttpMessageHandler(() =>
+                biaNetSection.ProfileConfiguration.AuthentMode == AuthentMode.Standard && biaNetSection.ProfileConfiguration.AuthentCredentials != null ?
+                CreateStandardHttpClientHandler(biaNetSection.ProfileConfiguration.AuthentCredentials.Username, biaNetSection.ProfileConfiguration.AuthentCredentials.Password) :
+                CreateHttpClientHandler(biaNetSection, biaNetSection.ProfileConfiguration.AuthentMode == AuthentMode.Default));
         }
     }
 }
