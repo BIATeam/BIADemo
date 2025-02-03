@@ -90,7 +90,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             var currentDateTime = DateTime.UtcNow;
             var maxDays = archiveDateMaxDays.GetValueOrDefault();
 
-            return x => x.IsArchived && x.ArchivedDate != null && (archiveDateMaxDays == null || x.ArchivedDate.Value.AddDays(maxDays) > currentDateTime);
+            return x => x.IsArchived && x.ArchivedDate != null && (archiveDateMaxDays == null || x.ArchivedDate.Value.AddDays(maxDays) < currentDateTime);
         }
 
         /// <summary>
