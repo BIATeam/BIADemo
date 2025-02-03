@@ -5,13 +5,12 @@
 namespace BIA.Net.Core.Application.Archive
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Security.Cryptography;
-    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.RepoContract;
     using Microsoft.Extensions.Configuration;
@@ -66,18 +65,17 @@ namespace BIA.Net.Core.Application.Archive
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             };
         }
-#pragma warning disable S2629 // Logging templates should be constant
 
         /// <inheritdoc/>
         public async Task RunAsync()
         {
             try
             {
-                this.logger.Log(LogLevel.Information, $"Begin archive of {typeof(TEntity).Name} entity");
+                this.logger.LogInformation("Begin archive of {EntityTypeName} entity", typeof(TEntity).Name);
 
                 if (this.archiveEntityConfiguration is null)
                 {
-                    this.logger.Log(LogLevel.Warning, $"No valid archive configuration found for the entity {typeof(TEntity).Name}.");
+                    this.logger.LogWarning("No valid archive configuration found for the entity {EntityTypeName}.", typeof(TEntity).Name);
                     return;
                 }
 
@@ -90,7 +88,7 @@ namespace BIA.Net.Core.Application.Archive
             }
             finally
             {
-                this.logger.Log(LogLevel.Information, $"End archive of {typeof(TEntity).Name} entity");
+                this.logger.LogInformation("End archive of {EntityTypeName} entity", typeof(TEntity).Name);
             }
         }
 
@@ -123,16 +121,12 @@ namespace BIA.Net.Core.Application.Archive
         {
             try
             {
-                this.logger.Log(LogLevel.Information, $"Item {item.Id} : deleting");
                 await this.archiveRepository.RemoveAsync(item);
-
-                this.logger.Log(LogLevel.Information, $"Item {item.Id} : deleted successfully");
+                this.logger.LogInformation("Item {ItemId} deleted successfully", item.Id);
             }
             catch (Exception ex)
             {
-#pragma warning disable S6667 // Logging in a catch clause should pass the caught exception as a parameter.
-                this.logger.Log(LogLevel.Error, $"Item {item.Id} : failed to delete : {ex.Message}");
-#pragma warning restore S6667 // Logging in a catch clause should pass the caught exception as a parameter.
+                this.logger.LogError(ex, "Failed to delete item {ItemId} : {ExceptionMessage}", item.Id, ex.Message);
             }
         }
 
@@ -156,21 +150,17 @@ namespace BIA.Net.Core.Application.Archive
         /// <returns><see cref="Task"/>.</returns>
         protected virtual async Task ArchiveItemAsync(TEntity item)
         {
-            this.logger.Log(LogLevel.Information, $"Item {item.Id} : archiving");
-
             try
             {
                 if (await this.SaveItemToServerAsync(item))
                 {
                     await this.archiveRepository.SetAsArchivedAsync(item);
-                    this.logger.Log(LogLevel.Information, $"Item {item.Id} : archived successfully");
+                    this.logger.LogInformation("Item {ItemId} archived successfully", item.Id);
                 }
             }
             catch (Exception ex)
             {
-#pragma warning disable S6667 // Logging in a catch clause should pass the caught exception as a parameter.
-                this.logger.Log(LogLevel.Error, $"Item {item.Id} : failed to archive : {ex.Message}");
-#pragma warning restore S6667 // Logging in a catch clause should pass the caught exception as a parameter.
+                this.logger.LogError(ex, "Failed to archive item {ItemId} : {ExceptionMessage}", item.Id, ex.Message);
             }
         }
 
@@ -181,8 +171,6 @@ namespace BIA.Net.Core.Application.Archive
         /// <returns><see cref="Task{bool}"/> that indicates success.</returns>
         protected virtual async Task<bool> SaveItemToServerAsync(TEntity item)
         {
-            this.logger.Log(LogLevel.Information, $"Item {item.Id} : saving to server");
-
             var targetFileName = $"{this.GetArchiveNameTemplate(item)}.json";
             var targetFilePath = Path.Combine(this.archiveEntityConfiguration.TargetDirectoryPath, targetFileName);
             var sourceFilePath = Path.GetRandomFileName();
@@ -191,15 +179,11 @@ namespace BIA.Net.Core.Application.Archive
             {
                 var json = JsonConvert.SerializeObject(item, this.jsonSerializerSettings);
                 await this.CopyWithIntegrityControlAsync(json, targetFilePath, sourceFilePath);
-
-                this.logger.Log(LogLevel.Information, $"Item {item.Id} : saved to server successfully into {targetFilePath}");
                 return true;
             }
             catch (Exception ex)
             {
-#pragma warning disable S6667 // Logging in a catch clause should pass the caught exception as a parameter.
-                this.logger.Log(LogLevel.Error, $"Item {item.Id} : failed to save to server : {ex.Message}");
-#pragma warning restore S6667 // Logging in a catch clause should pass the caught exception as a parameter.
+                this.logger.LogError(ex, "Failed to save to server item {ItemId} : {ExceptionMessage}", item.Id, ex.Message);
 
                 if (File.Exists(targetFilePath))
                 {
@@ -241,9 +225,7 @@ namespace BIA.Net.Core.Application.Archive
             var targetHash = ComputeHash(targetFilePath);
             if (targetHash != sourceHash)
             {
-#pragma warning disable S112 // General or reserved exceptions should never be thrown
-                throw new Exception("integrity compromised after copy");
-#pragma warning restore S112 // General or reserved exceptions should never be thrown
+                throw new JobException("integrity compromised after copy");
             }
         }
 
@@ -255,5 +237,4 @@ namespace BIA.Net.Core.Application.Archive
             return BitConverter.ToString(hashBytes);
         }
     }
-#pragma warning restore S2629 // Logging templates should be constant
 }

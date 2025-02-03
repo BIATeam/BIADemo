@@ -43,7 +43,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         {
             try
             {
-                this.Logger.Log(LogLevel.Information, "Start Archive Task");
+                this.Logger.LogInformation("Start Archive Task");
 
                 if (this.biaNetSection.WorkerFeatures.Archive is null)
                 {
@@ -58,7 +58,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
 
                 if (this.archiveServices.Count == 0)
                 {
-                    this.Logger.Log(LogLevel.Warning, "No archive service registered");
+                    this.Logger.LogWarning("No archive service registered");
                     return;
                 }
 
@@ -69,7 +69,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
             }
             finally
             {
-                this.Logger.Log(LogLevel.Information, "End Archive Task");
+                this.Logger.LogInformation("End Archive Task");
             }
         }
     }
