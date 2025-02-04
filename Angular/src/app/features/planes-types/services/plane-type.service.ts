@@ -17,6 +17,10 @@ import { PlaneTypeOptionsService } from './plane-type-options.service';
   providedIn: 'root',
 })
 export class PlaneTypeService extends CrudItemService<PlaneType> {
+  _updateSuccessActionType = FeaturePlanesTypesActions.loadAllByPost.type;
+  _createSuccessActionType = FeaturePlanesTypesActions.loadAllByPost.type;
+  _updateFailureActionType = FeaturePlanesTypesActions.failure.type;
+
   constructor(
     private store: Store<AppState>,
     public dasService: PlaneTypeDas,

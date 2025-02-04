@@ -40,7 +40,7 @@
         "ASPNETCORE_ENVIRONMENT": "Docker",
         "KC_SA_USERNAME": "dmeu-int-keycloak-service-account",
         "KC_SA_PASSWORD": "************",
-        "ConnectionStrings__BIADemoDatabase": "data source=host.docker.internal;initial catalog=BIADemo;integrated security=False;User Id=SQLUser_BIADemo_DEV_RW;Password=SQLUser_BIADemo_DEV_RW;MultipleActiveResultSets=True;Encrypt=False;App=BIADemo"
+        "ConnectionStrings__ProjectDatabase": "data source=host.docker.internal;initial catalog=BIADemo;integrated security=False;User Id=SQLUser_BIADemo_DEV_RW;Password=SQLUser_BIADemo_DEV_RW;MultipleActiveResultSets=True;Encrypt=False;App=BIADemo"
       }
     },
     "Podman": {
@@ -53,7 +53,7 @@
         "ASPNETCORE_ENVIRONMENT": "Podman",
         "KC_SA_USERNAME": "dmeu-int-keycloak-service-account",
         "KC_SA_PASSWORD": "************",
-        "ConnectionStrings__BIADemoDatabase": "data source=mssql_container,14330;initial catalog=BIADemo;integrated security=False;User Id=SQLUser_BIA_DEV_RW;Password=<YourStrong!Passw0rd3>;MultipleActiveResultSets=True;Encrypt=False;App=BIADemo"
+        "ConnectionStrings__ProjectDatabase": "data source=mssql_container,14330;initial catalog=BIADemo;integrated security=False;User Id=SQLUser_BIA_DEV_RW;Password=<YourStrong!Passw0rd3>;MultipleActiveResultSets=True;Encrypt=False;App=BIADemo"
       }
     }
   }

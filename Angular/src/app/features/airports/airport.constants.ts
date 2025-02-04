@@ -7,7 +7,7 @@ export const airportCRUDConfiguration: CrudConfig<Airport> = new CrudConfig({
   featureName: 'airports',
   fieldsConfig: airportFieldsConfiguration,
   useCalcMode: false,
-  useSignalR: false,
+  useSignalR: true,
   useView: false,
   // useViewTeamWithTypeId: TeamTypeId.Site, // use to filter view by teams => should know the type of team
   usePopup: true,
