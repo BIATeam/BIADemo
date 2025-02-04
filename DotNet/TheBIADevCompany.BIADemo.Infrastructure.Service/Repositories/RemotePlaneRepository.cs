@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
 {
     using System.Net.Http;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common.Configuration.AuthenticationSection;
     using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
@@ -61,20 +62,22 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
             // this.urlLogin = configuration["RemoteBIADemoWebApi:urlLogin"];
             this.urlLogin = "/api/Auth/login?lightToken=false";
 
+            this.AuthenticationConfiguration.Mode = AuthenticationMode.Token;
+
 #pragma warning restore S125 // Sections of code should not be commented out
         }
 
         /// <inheritdoc cref="IRemotePlaneRepository.GetAsync"/>
         public async Task<Plane> GetAsync(int id)
         {
-            var result = await this.GetAsync<Plane>($"{this.baseAddress}{this.urlPlane}{id}", true);
+            var result = await this.GetAsync<Plane>($"{this.baseAddress}{this.urlPlane}{id}");
             return result.IsSuccessStatusCode ? result.Result : null;
         }
 
         /// <inheritdoc cref="IRemotePlaneRepository.DeleteAsync"/>
         public async Task<bool> DeleteAsync(int id)
         {
-            var result = await this.DeleteAsync<Plane>($"{this.baseAddress}{this.urlPlane}{id}", true);
+            var result = await this.DeleteAsync<Plane>($"{this.baseAddress}{this.urlPlane}{id}");
             return result.IsSuccessStatusCode;
         }
 
@@ -117,7 +120,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <inheritdoc />
         protected override async Task<string> GetBearerTokenAsync()
         {
-            var result = await this.GetAsync<AuthInfoDto<AdditionalInfoDto>>($"{this.baseAddress}{this.urlLogin}");
+            var result = await this.SendAsync<AuthInfoDto<AdditionalInfoDto>>($"{this.baseAddress}{this.urlLogin}", HttpMethod.Get, skipAuthent: true);
             return result.Result?.Token;
         }
     }

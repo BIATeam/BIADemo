@@ -11,10 +11,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     using System.Runtime.InteropServices;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Configuration.AuthenticationSection;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
-    using Meziantou.Framework.Win32;
-    using Microsoft.Extensions.Caching.Distributed;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
@@ -44,6 +43,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
             : base(httpClient, logger, distributedCache)
         {
             this.configuration = configuration.Value;
+            this.AuthenticationConfiguration.Mode = AuthenticationMode.Token;
         }
 
         /// <inheritdoc cref="IIdentityProviderRepository.FindUserAsync"/>
@@ -80,7 +80,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
                 tokenRequestDto.Username = credential.Login;
                 tokenRequestDto.Password = credential.Password;
 
-                TokenResponseDto tokenResponseDto = (await this.PostAsync<TokenResponseDto, TokenRequestDto>(url: url, body: tokenRequestDto, isFormUrlEncoded: true, useBearerToken: false)).Result;
+                TokenResponseDto tokenResponseDto = (await this.SendAsync<TokenResponseDto, TokenRequestDto>(url: url, httpMethod: HttpMethod.Post, body: tokenRequestDto, isFormUrlEncoded: true)).Result;
 
                 token = tokenResponseDto?.AccessToken;
             }
@@ -102,7 +102,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
 
             string searchUrl = $"{this.configuration.Authentication.Keycloak.BaseUrl}{this.configuration.Authentication.Keycloak.Api.SearchUserRelativeUrl}?{param}";
 
-            List<SearchUserResponseDto> searchUserResponseDtos = (await this.GetAsync<List<SearchUserResponseDto>>(url: searchUrl, useBearerToken: true)).Result;
+            List<SearchUserResponseDto> searchUserResponseDtos = (await this.GetAsync<List<SearchUserResponseDto>>(url: searchUrl)).Result;
             List<UserFromDirectory> userFromDirectories = this.ConvertToUserDirectories(searchUserResponseDtos);
 
             return userFromDirectories;

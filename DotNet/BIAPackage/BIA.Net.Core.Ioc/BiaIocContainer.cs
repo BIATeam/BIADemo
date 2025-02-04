@@ -216,9 +216,15 @@ namespace BIA.Net.Core.IocContainer
 
             collection.AddTransient<IFileRepository, FileRepository>();
             collection.AddHttpClient<IImageUrlRepository, ImageUrlRepository>().ConfigurePrimaryHttpMessageHandler(() =>
-                biaNetSection.ProfileConfiguration.AuthenticationConfiguration.Mode == AuthenticationMode.Standard && biaNetSection.ProfileConfiguration.AuthenticationConfiguration.CredentialSource != null ?
-                CreateStandardHttpClientHandler(biaNetSection.ProfileConfiguration.AuthenticationConfiguration.CredentialSource) :
-                CreateHttpClientHandler(biaNetSection, biaNetSection.ProfileConfiguration.AuthenticationConfiguration.Mode == AuthenticationMode.Default));
+                GetHttpMessagehandler(biaNetSection.ProfileConfiguration.AuthenticationConfiguration, biaNetSection));
+        }
+
+        private static HttpClientHandler GetHttpMessagehandler(AuthenticationConfiguration authenticationConfiguration, BiaNetSection biaNetSection)
+        {
+            return authenticationConfiguration.Mode == AuthenticationMode.Standard
+                                && authenticationConfiguration.CredentialSource != null ?
+                            CreateStandardHttpClientHandler(authenticationConfiguration.CredentialSource) :
+                            CreateHttpClientHandler(biaNetSection, authenticationConfiguration.Mode == AuthenticationMode.Default);
         }
     }
 }

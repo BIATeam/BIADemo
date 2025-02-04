@@ -7,7 +7,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     using System;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.AuthenticationSection;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
@@ -29,9 +28,14 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="configuration">The configuration of the application.</param>
         /// <param name="tokenProvider">The optional token provider for acces to profile image url.</param>
 #pragma warning disable S6672 // Generic logger injection should match enclosing type
-        public ImageUrlRepository(HttpClient httpClient, ILogger<ImageUrlRepository> logger, IBiaDistributedCache distributedCache, IConfiguration configuration, ITokenProvider tokenProvider = null)
+        public ImageUrlRepository(
+            HttpClient httpClient,
+            ILogger<ImageUrlRepository> logger,
+            IBiaDistributedCache distributedCache,
+            IConfiguration configuration,
+            IImageProfileTokenProvider tokenProvider = null)
 #pragma warning restore S6672 // Generic logger injection should match enclosing type
-             : base(httpClient, logger, distributedCache)
+             : base(httpClient, logger, distributedCache, configuration.GetSection("BiaNet.ProfileConfiguration.AuthenticationConfiguration"))
         {
             this.Configuration = configuration;
             this.TokenProvider = tokenProvider;
@@ -45,28 +49,20 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <summary>
         /// The configuration of the application.
         /// </summary>
-        protected ITokenProvider TokenProvider { get; }
+        protected IImageProfileTokenProvider TokenProvider { get; }
 
         /// <inheritdoc/>
         public async Task<byte[]> GetImageBytesAsync(string imageUrl)
         {
-            BiaNetSection biaNetSection = null;
-
-            if (this.Configuration != null)
-            {
-                biaNetSection = new BiaNetSection();
-                this.Configuration.GetSection("BiaNet").Bind(biaNetSection);
-            }
-
             try
             {
-                switch (biaNetSection.ProfileConfiguration.AuthenticationConfiguration.Mode)
+                switch (this.AuthenticationConfiguration.Mode)
                 {
                     case AuthenticationMode.Token:
                         await this.AddAuthorizationBearerAsync();
                         break;
                     case AuthenticationMode.ApiKey:
-                        this.HttpClient.DefaultRequestHeaders.Add("X-API-Key", biaNetSection.ProfileConfiguration.AuthenticationConfiguration.ApiKey);
+                        this.HttpClient.DefaultRequestHeaders.Add("X-API-Key", this.AuthenticationConfiguration.ApiKey);
                         break;
                     default:
                         break;

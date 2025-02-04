@@ -1,4 +1,4 @@
-﻿// <copyright file="ITokenProvider.cs" company="BIA">
+﻿// <copyright file="IImageProfileTokenProvider.cs" company="BIA">
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -9,7 +9,7 @@ namespace BIA.Net.Core.Domain.RepoContract
     /// <summary>
     /// Interface defining how to get token for external source.
     /// </summary>
-    public interface ITokenProvider
+    public interface IImageProfileTokenProvider
     {
         /// <summary>
         /// Get the token from external source.

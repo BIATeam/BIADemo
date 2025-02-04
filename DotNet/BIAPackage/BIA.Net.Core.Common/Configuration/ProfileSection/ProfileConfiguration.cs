@@ -31,6 +31,5 @@ namespace BIA.Net.Core.Common.Configuration.ProfileSection
         /// Authentication configuration for profile image.
         /// </summary>
         public AuthenticationConfiguration AuthenticationConfiguration { get; set; }
-        public object AuthentMode { get; set; }
     }
 }
