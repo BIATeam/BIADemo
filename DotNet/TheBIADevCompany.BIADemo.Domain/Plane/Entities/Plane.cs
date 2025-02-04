@@ -14,7 +14,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Entities
     /// <summary>
     /// The plane entity.
     /// </summary>
-    public class Plane : VersionedTable, IEntityArchivable<int>
+    public class Plane : VersionedTable, IEntity<int>
     {
         /// <summary>
         /// Gets or sets the id.
@@ -169,17 +169,5 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Entities
         /// Gets or sets the list of engines for plane.
         /// </summary>
         public ICollection<Engine> Engines { get; set; }
-
-        /// <inheritdoc/>
-        public bool IsFixed { get; set; }
-
-        /// <inheritdoc/>
-        public DateTime? FixedDate { get; set; }
-
-        /// <inheritdoc/>
-        public bool IsArchived { get; set; }
-
-        /// <inheritdoc/>
-        public DateTime? ArchivedDate { get; set; }
     }
 }
