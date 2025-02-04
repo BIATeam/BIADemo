@@ -27,15 +27,8 @@
         // End BIADemo
       },
       "Archive": {
-        "IsActive": true,
-        "ArchiveEntityConfigurations": [
-          {
-            "EntityName": "Plane",
-            "TargetDirectoryPath": "C:\\temp\\archives\\biademo\\planes",
-            "EnableDeleteStep": true,
-            "ArchiveMaxDaysBeforeDelete": 365
-          }
-        ]
+        "IsActive": false,
+        "ArchiveEntityConfigurations": []
       }
     },
 
