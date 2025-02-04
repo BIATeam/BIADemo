@@ -18,6 +18,10 @@ import { SiteOptionsService } from './site-options.service';
   providedIn: 'root',
 })
 export class SiteService extends CrudItemService<Site> {
+  _updateSuccessActionType = FeatureSitesActions.loadAllByPost.type;
+  _createSuccessActionType = FeatureSitesActions.loadAllByPost.type;
+  _updateFailureActionType = FeatureSitesActions.failure.type;
+
   constructor(
     private store: Store<AppState>,
     public dasService: SiteDas,

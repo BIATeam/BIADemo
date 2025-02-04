@@ -17,6 +17,10 @@ import { UserOptionsService } from './user-options.service';
   providedIn: 'root',
 })
 export class UserService extends CrudItemService<User> {
+  _updateSuccessActionType = FeatureUsersActions.loadAllByPost.type;
+  _createSuccessActionType = FeatureUsersActions.loadAllByPost.type;
+  _updateFailureActionType = FeatureUsersActions.failure.type;
+
   constructor(
     protected store: Store<AppState>,
     public dasService: UserDas,
