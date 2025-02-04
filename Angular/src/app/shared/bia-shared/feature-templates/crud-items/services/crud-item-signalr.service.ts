@@ -5,7 +5,7 @@ import { BiaSignalRService } from 'src/app/core/bia-core/services/bia-signalr.se
 import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
 import { AppState } from 'src/app/store/state';
 import { BaseDto } from '../../../model/base-dto';
-import { CrudListAndItemService } from './crud-list-and-item.service';
+import { CrudItemService } from './crud-item.service';
 
 /**
  * Service managing SignalR events for hangfire jobs.
@@ -16,7 +16,10 @@ import { CrudListAndItemService } from './crud-list-and-item.service';
 @Injectable({
   providedIn: 'root',
 })
-export class CrudItemSignalRService<CrudItem extends BaseDto> {
+export class CrudItemSignalRService<
+  ListCrudItem extends BaseDto,
+  CrudItem extends BaseDto = ListCrudItem,
+> {
   protected targetedFeature: TargetedFeature;
 
   /**
@@ -37,7 +40,7 @@ export class CrudItemSignalRService<CrudItem extends BaseDto> {
    * Initialize SignalR communication.
    * Note: this method has been created so that we have to call one method on this class, otherwise dependency injection is not working.
    */
-  initialize(crudItemService: CrudListAndItemService<CrudItem, CrudItem>) {
+  initialize(crudItemService: CrudItemService<ListCrudItem, CrudItem>) {
     this.targetedFeature = crudItemService.getSignalRTargetedFeature();
 
     console.log(
@@ -62,7 +65,7 @@ export class CrudItemSignalRService<CrudItem extends BaseDto> {
     this.signalRService.joinGroup(this.targetedFeature);
   }
 
-  destroy(crudItemService: CrudListAndItemService<CrudItem, CrudItem>) {
+  destroy(crudItemService: CrudItemService<ListCrudItem, CrudItem>) {
     console.log(
       '%c [' +
         crudItemService.getConsoleLabel() +

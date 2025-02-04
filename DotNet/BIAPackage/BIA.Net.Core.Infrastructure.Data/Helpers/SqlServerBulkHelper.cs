@@ -17,7 +17,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
     /// <summary>
     /// SqlServer Bulk Helper.
     /// </summary>
-    internal static class SqlServerBulkHelper
+    public static class SqlServerBulkHelper
     {
         /// <summary>
         /// Inserts the specified datas.
