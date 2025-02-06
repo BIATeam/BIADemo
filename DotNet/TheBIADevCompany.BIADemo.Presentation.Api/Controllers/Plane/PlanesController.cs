@@ -38,6 +38,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         private readonly IPlaneAppService planeService;
 
         /// <summary>
+        /// The plane application service.
+        /// </summary>
+        private readonly IRemotePlaneAppService remotePlaneService;
+
+        /// <summary>
         /// The BIA claims principal service.
         /// </summary>
         private readonly IBiaClaimsPrincipalService biaClaimsPrincipalService;
@@ -55,6 +60,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         /// <param name="biaClaimsPrincipalService">The BIA claims principal service.</param>
         public PlanesController(
             IPlaneAppService planeService,
+            IRemotePlaneAppService remotePlaneService,
             IClientForHubService clientForHubService,
             IBiaClaimsPrincipalService biaClaimsPrincipalService)
 #else
@@ -72,6 +78,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             this.clientForHubService = clientForHubService;
 #endif
             this.planeService = planeService;
+            this.remotePlaneService = remotePlaneService;
             this.biaClaimsPrincipalService = biaClaimsPrincipalService;
         }
 
@@ -324,6 +331,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         {
             byte[] buffer = await this.planeService.GetCsvAsync(filters);
             return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Planes{BiaConstants.Csv.Extension}");
+        }
+
+        [HttpGet("testRemote")]
+        public async Task<IActionResult> TestRemote()
+        {
+            await this.remotePlaneService.ExampleCallApiAsync();
+            return this.Ok();
         }
     }
 }

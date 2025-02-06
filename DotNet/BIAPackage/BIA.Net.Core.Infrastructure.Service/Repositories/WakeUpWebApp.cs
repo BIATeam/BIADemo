@@ -36,7 +36,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         }
 
         /// <summary>
-        /// Lanch the wakup process.
+        /// Launch the wakup process.
         /// </summary>
         /// <returns>The async task.</returns>
         public virtual async Task<(bool IsSuccessStatusCode, string ReasonPhrase)> WakeUp()

@@ -9,6 +9,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration.AuthenticationSection;
     using BIA.Net.Core.Common.Helpers;
+    using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
@@ -46,7 +48,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <param name="logger">The logger.</param>
         /// <param name="distributedCache">The distributed cache.</param>
         public RemotePlaneRepository(HttpClient httpClient, IConfiguration configuration, ILogger<RemotePlaneRepository> logger, IBiaDistributedCache distributedCache)
-             : base(httpClient, logger, distributedCache)
+             : base(httpClient, logger, distributedCache, new AuthenticationConfiguration() { Mode = AuthenticationMode.Token })
         {
 #pragma warning disable S125 // Sections of code should not be commented out
 
@@ -61,8 +63,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
 
             // this.urlLogin = configuration["RemoteBIADemoWebApi:urlLogin"];
             this.urlLogin = "/api/Auth/login?lightToken=false";
-
-            this.AuthenticationConfiguration.Mode = AuthenticationMode.Token;
 
 #pragma warning restore S125 // Sections of code should not be commented out
         }
@@ -86,7 +86,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         {
             RemotePlaneDto dto = new RemotePlaneDto();
             PropertyMapper.Map(plane, dto);
-            var result = await this.PostAsync<RemotePlaneDto, RemotePlaneDto>($"{this.baseAddress}{this.urlPlane}", dto, true);
+            dto.CurrentAirport = new OptionDto { Id = plane.CurrentAirportId, DtoState = DtoState.Unchanged };
+            var result = await this.PostAsync<RemotePlaneDto, RemotePlaneDto>($"{this.baseAddress}{this.urlPlane}", dto);
 
             if (result.IsSuccessStatusCode)
             {
@@ -104,7 +105,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         {
             RemotePlaneDto dto = new RemotePlaneDto();
             PropertyMapper.Map(plane, dto);
-            var result = await this.PutAsync<RemotePlaneDto, RemotePlaneDto>($"{this.baseAddress}{this.urlPlane}{dto.Id}", dto, true);
+            dto.CurrentAirport = new OptionDto { Id = plane.CurrentAirport.Id, Display = string.Empty, DtoState = DtoState.Unchanged };
+            var result = await this.PutAsync<RemotePlaneDto, RemotePlaneDto>($"{this.baseAddress}{this.urlPlane}{dto.Id}", dto);
 
             if (result.IsSuccessStatusCode)
             {
@@ -120,7 +122,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <inheritdoc />
         protected override async Task<string> GetBearerTokenAsync()
         {
-            var result = await this.SendAsync<AuthInfoDto<AdditionalInfoDto>>($"{this.baseAddress}{this.urlLogin}", HttpMethod.Get, skipAuthent: true);
+            var result = await this.GetAsync<AuthInfoDto<AdditionalInfoDto>>($"{this.baseAddress}{this.urlLogin}");
             return result.Result?.Token;
         }
     }

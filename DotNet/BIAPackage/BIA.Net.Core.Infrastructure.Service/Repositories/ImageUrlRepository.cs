@@ -7,7 +7,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     using System;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Common.Configuration.AuthenticationSection;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using Microsoft.Extensions.Configuration;
@@ -35,7 +34,11 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             IConfiguration configuration,
             IImageProfileTokenProvider tokenProvider = null)
 #pragma warning restore S6672 // Generic logger injection should match enclosing type
-             : base(httpClient, logger, distributedCache, configuration.GetSection("BiaNet.ProfileConfiguration.AuthenticationConfiguration"))
+             : base(
+                   httpClient,
+                   logger,
+                   distributedCache,
+                   GetAuthenticationConfiguration(configuration.GetSection("BiaNet.ProfileConfiguration.AuthenticationConfiguration")))
         {
             this.Configuration = configuration;
             this.TokenProvider = tokenProvider;
@@ -56,18 +59,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         {
             try
             {
-                switch (this.AuthenticationConfiguration.Mode)
-                {
-                    case AuthenticationMode.Token:
-                        await this.AddAuthorizationBearerAsync();
-                        break;
-                    case AuthenticationMode.ApiKey:
-                        this.HttpClient.DefaultRequestHeaders.Add("X-API-Key", this.AuthenticationConfiguration.ApiKey);
-                        break;
-                    default:
-                        break;
-                }
-
                 using (var response = await this.HttpClient.GetAsync(imageUrl))
                 {
                     response.EnsureSuccessStatusCode();

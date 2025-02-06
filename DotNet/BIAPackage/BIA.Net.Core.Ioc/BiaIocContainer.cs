@@ -7,7 +7,6 @@ namespace BIA.Net.Core.IocContainer
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Net;
     using System.Net.Http;
     using System.Reflection;
     using BIA.Net.Core.Application.Services;
@@ -72,27 +71,6 @@ namespace BIA.Net.Core.IocContainer
                 httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
 #pragma warning restore S4830 // Server certificates should be verified during SSL/TLS connections
             }
-
-            return httpClientHandler;
-        }
-
-        /// <summary>
-        /// Creates the HTTP client handler for standard authentication.
-        /// </summary>
-        /// <param name="credentialSource">Credential source configuration for the http requests.</param>
-        /// <returns>
-        /// HttpClientHandler object.
-        /// </returns>
-        public static HttpClientHandler CreateStandardHttpClientHandler(CredentialSource credentialSource)
-        {
-            var credentials = CredentialRepository.RetrieveCredentials(credentialSource);
-
-            HttpClientHandler httpClientHandler = new HttpClientHandler
-            {
-                Credentials = new NetworkCredential(credentials.Login, credentials.Password),
-                AllowAutoRedirect = false,
-                UseProxy = false,
-            };
 
             return httpClientHandler;
         }
@@ -221,10 +199,7 @@ namespace BIA.Net.Core.IocContainer
 
         private static HttpClientHandler GetHttpMessagehandler(AuthenticationConfiguration authenticationConfiguration, BiaNetSection biaNetSection)
         {
-            return authenticationConfiguration.Mode == AuthenticationMode.Standard
-                                && authenticationConfiguration.CredentialSource != null ?
-                            CreateStandardHttpClientHandler(authenticationConfiguration.CredentialSource) :
-                            CreateHttpClientHandler(biaNetSection, authenticationConfiguration.Mode == AuthenticationMode.Default);
+            return CreateHttpClientHandler(biaNetSection, authenticationConfiguration.Mode == AuthenticationMode.Default);
         }
     }
 }

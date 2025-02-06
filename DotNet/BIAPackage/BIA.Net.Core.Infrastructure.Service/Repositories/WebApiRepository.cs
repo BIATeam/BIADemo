@@ -54,28 +54,32 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         private readonly string className;
 
         /// <summary>
+        /// Is httpClient currently being configured.
+        /// </summary>
+        private bool ongoingConfiguration = false;
+
+        /// <summary>
+        /// Is httpClient configured.
+        /// </summary>
+        private bool configuredHttpClient = false;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="WebApiRepository" /> class.
         /// </summary>
         /// <param name="httpClient">The HTTP client.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="distributedCache">The distributed cache.</param>
         /// <param name="configurationSection">The authentication configuration for the API requests.</param>
-        protected WebApiRepository(HttpClient httpClient, ILogger logger, IBiaDistributedCache distributedCache, IConfigurationSection configurationSection = null)
+        protected WebApiRepository(
+            HttpClient httpClient,
+            ILogger logger,
+            IBiaDistributedCache distributedCache,
+            AuthenticationConfiguration configurationSection = null)
         {
             this.httpClient = httpClient;
             this.logger = logger;
             this.distributedCache = distributedCache;
-
-            if (configurationSection != null)
-            {
-                AuthenticationConfiguration authenticationConfiguration = new AuthenticationConfiguration();
-                configurationSection.Bind(authenticationConfiguration);
-                this.AuthenticationConfiguration = authenticationConfiguration;
-            }
-            else
-            {
-                this.AuthenticationConfiguration = new AuthenticationConfiguration { Mode = AuthenticationMode.Default };
-            }
+            this.AuthenticationConfiguration = configurationSection ?? new AuthenticationConfiguration { Mode = AuthenticationMode.Default };
 
             this.className = this.GetType().Name;
         }
@@ -104,6 +108,25 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// The child class name.
         /// </summary>
         protected string ClassName => this.className;
+
+        /// <summary>
+        /// Get the authentication configuration from the configuration section.
+        /// </summary>
+        /// <param name="configurationSection">The authentication configuration from the configuration for the API requests.</param>
+        /// <returns>The authentication configuration for the API requests.</returns>
+        public static AuthenticationConfiguration GetAuthenticationConfiguration(IConfigurationSection configurationSection)
+        {
+            if (configurationSection != null)
+            {
+                AuthenticationConfiguration authenticationConfiguration = new AuthenticationConfiguration();
+                configurationSection.Bind(authenticationConfiguration);
+                return authenticationConfiguration;
+            }
+            else
+            {
+                return new AuthenticationConfiguration { Mode = AuthenticationMode.Default };
+            }
+        }
 
         /// <summary>
         /// Send a GET request to the specified Uri as an asynchronous operation.
@@ -333,14 +356,12 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="url">The url.</param>
         /// <param name="httpMethod">The httpMethod.</param>
         /// <param name="request">The request.</param>
-        /// <param name="skipAuthent">if set to true, ignore authentConfiguration for the request.</param>
         /// <param name="retry">if true it is a retry operation.</param>
         /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
         protected async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase)> SendAsync<T>(
             string url = default,
             HttpMethod httpMethod = default,
             HttpRequestMessage request = default,
-            bool skipAuthent = false,
             bool retry = false)
         {
             if (!string.IsNullOrWhiteSpace(url) || request != default)
@@ -356,9 +377,9 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     this.logger.LogInformation(message);
                 }
 
-                if (!skipAuthent)
+                if (!this.ongoingConfiguration && !this.configuredHttpClient)
                 {
-                    await this.InitAuthentToHttpClient();
+                    await this.ConfigureHttpClientAsync();
                 }
 
                 HttpResponseMessage response = default;
@@ -384,10 +405,11 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 }
                 else
                 {
-                    if (!retry && this.CheckConditionRetry(response))
+                    if (!this.ongoingConfiguration && !retry && this.CheckConditionRetry(response))
                     {
                         await this.SetBearerTokenInCacheAsync(null);
-                        return await this.SendAsync<T>(url: url, httpMethod: httpMethod, request: request, skipAuthent: skipAuthent, retry: true);
+                        await this.ConfigureHttpClientAsync();
+                        return await this.SendAsync<T>(url: url, httpMethod: httpMethod, request: request, retry: true);
                     }
 
                     string message = $"Url:{url} ReasonPhrase:{response.ReasonPhrase}";
@@ -409,7 +431,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="body">The body.</param>
         /// <param name="httpContent">The request.</param>
         /// <param name="isFormUrlEncoded">specify if form url is encoded.</param>
-        /// <param name="skipAuthent">if set to true, ignore authentConfiguration for the request.</param>
         /// <param name="retry">if true it is a retry operation.</param>
         /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
         protected async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase)> SendAsync<TResult, TBody>(
@@ -418,7 +439,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             TBody body = default,
             HttpContent httpContent = default,
             bool isFormUrlEncoded = false,
-            bool skipAuthent = false,
             bool retry = false)
         {
             if (!string.IsNullOrWhiteSpace(url) && (!object.Equals(body, default(TBody)) || httpContent != default))
@@ -426,9 +446,9 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 string message = $"Call WebApi {httpMethod.Method}: {url}";
                 this.logger.LogInformation(message);
 
-                if (!skipAuthent)
+                if (!this.ongoingConfiguration && !this.configuredHttpClient)
                 {
-                    await this.InitAuthentToHttpClient();
+                    await this.ConfigureHttpClientAsync();
                 }
 
                 HttpResponseMessage response = default;
@@ -465,10 +485,11 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 }
                 else
                 {
-                    if (!retry && this.CheckConditionRetry(response))
+                    if (!this.ongoingConfiguration && !retry && this.CheckConditionRetry(response))
                     {
                         await this.SetBearerTokenInCacheAsync(null);
-                        return await this.SendAsync<TResult, TBody>(url: url, httpMethod: httpMethod, body: body, httpContent: httpContent, isFormUrlEncoded: isFormUrlEncoded, skipAuthent: skipAuthent, retry: true);
+                        await this.ConfigureHttpClientAsync();
+                        return await this.SendAsync<TResult, TBody>(url: url, httpMethod: httpMethod, body: body, httpContent: httpContent, isFormUrlEncoded: isFormUrlEncoded, retry: true);
                     }
 
                     string message2 = $"Url:{url} ReasonPhrase:{response.ReasonPhrase}";
@@ -482,22 +503,43 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         }
 
         /// <summary>
+        /// To be called by child constructor.
+        /// Add httpClient authorizations (token or API key).
+        /// </summary>
+        protected void ConfigureHttpClient()
+        {
+            this.ConfigureHttpClientAsync().GetAwaiter().GetResult();
+        }
+
+        /// <summary>
         /// Add httpClient authorizations (token or API key).
         /// </summary>
         /// <returns>Task.</returns>
-        protected async Task InitAuthentToHttpClient()
+        protected async Task ConfigureHttpClientAsync()
         {
+            this.ongoingConfiguration = true;
             switch (this.AuthenticationConfiguration.Mode)
             {
                 case AuthenticationMode.Token:
                     await this.AddAuthorizationBearerAsync();
                     break;
                 case AuthenticationMode.ApiKey:
-                    this.HttpClient.DefaultRequestHeaders.Add("X-API-Key", this.AuthenticationConfiguration.ApiKey);
+                    this.HttpClient.DefaultRequestHeaders.Add(this.AuthenticationConfiguration.ApiKeyName, this.AuthenticationConfiguration.ApiKey);
+                    break;
+                case AuthenticationMode.Standard:
+                    var credentials = CredentialRepository.RetrieveCredentials(this.AuthenticationConfiguration.CredentialSource);
+                    var byteArray = Encoding.ASCII.GetBytes($"{credentials.Login}:{credentials.Password}");
+                    this.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+                    break;
+                case AuthenticationMode.Default:
+                    this.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Negotiate");
                     break;
                 default:
                     break;
             }
+
+            this.configuredHttpClient = true;
+            this.ongoingConfiguration = false;
         }
     }
 }

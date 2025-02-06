@@ -19,8 +19,13 @@ namespace BIA.Net.Core.Common.Configuration.AuthenticationSection
         public CredentialSource CredentialSource { get; set; }
 
         /// <summary>
-        /// Api key used to access profile image when in AuthenMode ApiKey = 3.
+        /// Api key used to access an URL when in AuthenMode ApiKey = 3.
         /// </summary>
         public string ApiKey { get; set; }
+
+        /// <summary>
+        /// Api key name used to access an URL when in AuthenMode ApiKey = 3.
+        /// </summary>
+        public string ApiKeyName { get; set; }
     }
 }
