@@ -17,7 +17,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.11")
+                .HasAnnotation("ProductVersion", "8.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -46,7 +46,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasIndex("ExpiresAtTime")
                         .HasDatabaseName("Index_ExpiresAtTime");
 
-                    b.ToTable("DistCache", (string)null);
+                    b.ToTable("DistCache");
                 });
 
             modelBuilder.Entity("BIA.Net.Core.Domain.Translation.Entities.Language", b =>
@@ -76,7 +76,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasIndex("Code")
                         .IsUnique();
 
-                    b.ToTable("Languages", (string)null);
+                    b.ToTable("Languages");
 
                     b.HasData(
                         new
@@ -254,7 +254,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasIndex("MaintenanceTeamId");
 
-                    b.ToTable("MaintenanceTeamAirport", (string)null);
+                    b.ToTable("MaintenanceTeamAirport");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.MaintenanceTeamCountry", b =>
@@ -274,7 +274,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasIndex("MaintenanceTeamId");
 
-                    b.ToTable("MaintenanceTeamCountry", (string)null);
+                    b.ToTable("MaintenanceTeamCountry");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Audit.Entities.AuditLog", b =>
@@ -312,7 +312,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AuditLogs", (string)null);
+                    b.ToTable("AuditLogs");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.Notification", b =>
@@ -359,7 +359,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasIndex("TypeId");
 
-                    b.ToTable("Notifications", (string)null);
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.NotificationTeam", b =>
@@ -387,7 +387,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("NotificationTeam", (string)null);
+                    b.ToTable("NotificationTeam");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.NotificationTeamRole", b =>
@@ -407,7 +407,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("NotificationTeamRole", (string)null);
+                    b.ToTable("NotificationTeamRole");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.NotificationType", b =>
@@ -435,7 +435,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("NotificationTypes", (string)null);
+                    b.ToTable("NotificationTypes");
 
                     b.HasData(
                         new
@@ -487,7 +487,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasIndex("NotificationId");
 
-                    b.ToTable("NotificationUser", (string)null);
+                    b.ToTable("NotificationUser");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Plane.Entities.Airport", b =>
@@ -515,7 +515,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Airports", (string)null);
+                    b.ToTable("Airports");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Plane.Entities.AirportAudit", b =>
@@ -558,7 +558,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasKey("AuditId");
 
-                    b.ToTable("AirportsAudit", (string)null);
+                    b.ToTable("AirportsAudit");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Plane.Entities.Engine", b =>
@@ -641,7 +641,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasIndex("PrincipalPartId");
 
-                    b.ToTable("Engines", (string)null);
+                    b.ToTable("Engines");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Plane.Entities.EnginePart", b =>
@@ -661,7 +661,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasIndex("PartId");
 
-                    b.ToTable("EnginePart", (string)null);
+                    b.ToTable("EnginePart");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Plane.Entities.Part", b =>
@@ -729,6 +729,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime?>("ArchivedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
 
@@ -744,6 +747,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<DateTime>("FirstFlightDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("FixedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<float>("FuelCapacity")
                         .HasColumnType("real");
 
@@ -751,6 +757,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .HasColumnType("real");
 
                     b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsFixed")
                         .HasColumnType("bit");
 
                     b.Property<bool?>("IsMaintenance")
@@ -808,7 +820,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasIndex("SiteId");
 
-                    b.ToTable("Planes", (string)null);
+                    b.ToTable("Planes");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Plane.Entities.PlaneAirport", b =>
@@ -828,7 +840,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasIndex("PlaneId");
 
-                    b.ToTable("PlaneAirport", (string)null);
+                    b.ToTable("PlaneAirport");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Plane.Entities.PlanePlaneType", b =>
@@ -848,7 +860,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasIndex("PlaneTypeId");
 
-                    b.ToTable("PlanePlaneType", (string)null);
+                    b.ToTable("PlanePlaneType");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Plane.Entities.PlaneType", b =>
@@ -874,7 +886,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PlanesTypes", (string)null);
+                    b.ToTable("PlanesTypes");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Translation.Entities.NotificationTranslation", b =>
@@ -913,7 +925,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasIndex("NotificationId", "LanguageId")
                         .IsUnique();
 
-                    b.ToTable("NotificationTranslations", (string)null);
+                    b.ToTable("NotificationTranslations");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Translation.Entities.NotificationTypeTranslation", b =>
@@ -947,7 +959,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasIndex("NotificationTypeId", "LanguageId")
                         .IsUnique();
 
-                    b.ToTable("NotificationTypeTranslations", (string)null);
+                    b.ToTable("NotificationTypeTranslations");
 
                     b.HasData(
                         new
@@ -1088,7 +1100,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasIndex("RoleId", "LanguageId")
                         .IsUnique();
 
-                    b.ToTable("RoleTranslations", (string)null);
+                    b.ToTable("RoleTranslations");
 
                     b.HasData(
                         new
@@ -1311,7 +1323,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasIndex("TeamId", "UserId")
                         .IsUnique();
 
-                    b.ToTable("Members", (string)null);
+                    b.ToTable("Members");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.MemberRole", b =>
@@ -1334,7 +1346,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("MemberRole", (string)null);
+                    b.ToTable("MemberRole");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.Role", b =>
@@ -1362,7 +1374,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
 
                     b.HasData(
                         new
@@ -1479,7 +1491,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TeamTypes", (string)null);
+                    b.ToTable("TeamTypes");
 
                     b.HasData(
                         new
@@ -1593,7 +1605,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasIndex("Login")
                         .IsUnique();
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.UserAudit", b =>
@@ -1647,7 +1659,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasKey("AuditId");
 
-                    b.ToTable("UsersAudit", (string)null);
+                    b.ToTable("UsersAudit");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.View.Entities.View", b =>
@@ -1686,7 +1698,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Views", (string)null);
+                    b.ToTable("Views");
 
                     b.HasData(
                         new
@@ -1719,7 +1731,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasIndex("ViewId");
 
-                    b.ToTable("ViewTeam", (string)null);
+                    b.ToTable("ViewTeam");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.View.Entities.ViewUser", b =>
@@ -1742,7 +1754,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasIndex("ViewId");
 
-                    b.ToTable("ViewUser", (string)null);
+                    b.ToTable("ViewUser");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.AircraftMaintenanceCompany", b =>
