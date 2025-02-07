@@ -23,7 +23,7 @@
       "DatabaseHandler": {
         // Except BIADemo "IsActive": false
         // Begin BIADemo
-        "IsActive": false
+        "IsActive": true
         // End BIADemo
       },
       "Archive": {
