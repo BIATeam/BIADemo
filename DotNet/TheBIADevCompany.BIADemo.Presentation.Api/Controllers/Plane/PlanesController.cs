@@ -19,7 +19,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Application.Plane;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;

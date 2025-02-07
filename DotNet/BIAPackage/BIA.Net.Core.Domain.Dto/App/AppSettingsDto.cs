@@ -7,6 +7,7 @@ namespace BIA.Net.Core.Domain.Dto.Option
     using System.Collections.Generic;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.Keycloak;
+    using BIA.Net.Core.Common.Configuration.ProfileSection;
     using BIA.Net.Core.Domain.Dto.Base;
 
     /// <summary>

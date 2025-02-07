@@ -2,8 +2,10 @@
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Common.Configuration
+namespace BIA.Net.Core.Common.Configuration.ProfileSection
 {
+    using BIA.Net.Core.Common.Configuration.AuthenticationSection;
+
     /// <summary>
     /// The user profile configuration.
     /// </summary>
@@ -24,5 +26,10 @@ namespace BIA.Net.Core.Common.Configuration
         /// Url to access user profile image edit page.
         /// </summary>
         public string EditProfileImageUrl { get; set; }
+
+        /// <summary>
+        /// Authentication configuration for profile image.
+        /// </summary>
+        public AuthenticationConfiguration AuthenticationConfiguration { get; set; }
     }
 }

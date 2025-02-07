@@ -37,6 +37,9 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
             plane.SiteId = 1;
             plane.Msn = "MSN1";
             plane.IsActive = true;
+            plane.SyncFlightDataTime = new TimeSpan(1, 30, 34);
+            plane.CurrentAirportId = 1;
+            plane.CurrentAirport = new Airport { Id = 1 };
 
             plane = await this.remotePlaneRepository.PostAsync(plane);
 
