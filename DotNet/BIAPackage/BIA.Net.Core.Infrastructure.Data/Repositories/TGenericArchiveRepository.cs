@@ -75,9 +75,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <returns>Selector expression.</returns>
         protected virtual Expression<Func<TEntity, bool>> ArchiveStepItemsSelector()
         {
-            var currentDateTime = DateTime.UtcNow;
-
-            return x => x.IsFixed && x.FixedDate != null && (x.ArchivedDate == null || x.FixedDate.Value.AddDays(1) > currentDateTime);
+            return x => x.IsFixed && x.FixedDate != null && (x.ArchivedDate == null || x.ArchivedDate.Value < x.FixedDate.Value);
         }
 
         /// <summary>
