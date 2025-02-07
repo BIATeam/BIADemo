@@ -6,6 +6,7 @@
 namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Dto
 {
     using System;
+    using BIA.Net.Core.Domain.Dto.Option;
 
     /// <summary>
     /// RemotePlane Dto.
@@ -51,5 +52,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Dto
         /// Gets or sets the site.
         /// </summary>
         public int SiteId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the daily synchronisation hour for flight data.
+        /// </summary>
+        public TimeSpan SyncFlightDataTime { get; set; }
+
+        /// <summary>
+        /// Gets or sets the current airport.
+        /// </summary>
+        public OptionDto CurrentAirport { get; set; }
     }
 }

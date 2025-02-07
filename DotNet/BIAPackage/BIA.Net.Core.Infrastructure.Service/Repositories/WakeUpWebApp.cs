@@ -6,7 +6,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 {
     using System.Net.Http;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using Microsoft.Extensions.Logging;
 
@@ -37,7 +36,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         }
 
         /// <summary>
-        /// Lanch the wakup process.
+        /// Launch the wakup process.
         /// </summary>
         /// <returns>The async task.</returns>
         public virtual async Task<(bool IsSuccessStatusCode, string ReasonPhrase)> WakeUp()

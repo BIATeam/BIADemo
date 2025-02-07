@@ -7,12 +7,12 @@ namespace BIA.Net.Core.IocContainer
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Net;
     using System.Net.Http;
     using System.Reflection;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Application.Translation;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Configuration.AuthenticationSection;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Data.Repositories;
@@ -189,10 +189,17 @@ namespace BIA.Net.Core.IocContainer
 
             collection.AddTransient<IBiaHybridCache, BiaHybridCache>();
 
-            collection.AddHttpClient<IWakeUpWebApps, WakeUpWebApps>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
+            collection.AddHttpClient<IWakeUpWebApps, WakeUpWebApps>().ConfigurePrimaryHttpMessageHandler(() =>
+                CreateHttpClientHandler(biaNetSection));
 
             collection.AddTransient<IFileRepository, FileRepository>();
-            collection.AddHttpClient<IImageUrlRepository, ImageUrlRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
+            collection.AddHttpClient<IImageUrlRepository, ImageUrlRepository>().ConfigurePrimaryHttpMessageHandler(() =>
+                GetHttpMessagehandler(biaNetSection.ProfileConfiguration.AuthenticationConfiguration, biaNetSection));
+        }
+
+        private static HttpClientHandler GetHttpMessagehandler(AuthenticationConfiguration authenticationConfiguration, BiaNetSection biaNetSection)
+        {
+            return CreateHttpClientHandler(biaNetSection, authenticationConfiguration.Mode == AuthenticationMode.Default);
         }
     }
 }
