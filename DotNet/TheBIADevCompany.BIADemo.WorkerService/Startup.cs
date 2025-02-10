@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using System.Collections.Generic;
     using System.Security.Claims;
     using System.Security.Principal;
+    using BIA.Net.Core.Application.Archive;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Authentication;
@@ -19,6 +20,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using TheBIADevCompany.BIADemo.Application.Plane;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
 #if BIA_FRONT_FEATURE
     // Begin BIADemo
@@ -83,6 +85,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             services.AddHostedService<Worker>();
             services.AddSingleton<IDatabaseHandlerRepository, PlaneHandlerRepository>();
             services.AddSingleton<IDatabaseHandlerRepository, AirportHandlerRepository>();
+            services.AddTransient<IArchiveService, PlaneArchiveService>();
 
             // End BIADemo
 #endif

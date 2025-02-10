@@ -4,8 +4,10 @@
 
 namespace BIA.Net.Core.Infrastructure.Data
 {
+    using System;
     using BIA.Net.Core.Common;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata;
 
     /// <summary>
     /// The interface base for Data context.
@@ -27,5 +29,8 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// <typeparam name="TEntity">The entity type of the item.</typeparam>
         void SetModified<TEntity>(TEntity item)
             where TEntity : class;
+
+        /// <inheritdoc cref="IModel.FindEntityType(Type)"/>
+        IEntityType FindEntityType(Type entityType);
     }
 }
