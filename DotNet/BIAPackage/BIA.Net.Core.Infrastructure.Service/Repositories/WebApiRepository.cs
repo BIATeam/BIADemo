@@ -79,7 +79,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             this.httpClient = httpClient;
             this.logger = logger;
             this.distributedCache = distributedCache;
-            this.AuthenticationConfiguration = configurationSection ?? new AuthenticationConfiguration { Mode = AuthenticationMode.Default };
+            this.AuthenticationConfiguration = configurationSection ?? new AuthenticationConfiguration { Mode = AuthenticationMode.Anonymous };
 
             this.className = this.GetType().Name;
         }
@@ -124,7 +124,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             }
             else
             {
-                return new AuthenticationConfiguration { Mode = AuthenticationMode.Default };
+                return new AuthenticationConfiguration { Mode = AuthenticationMode.Anonymous };
             }
         }
 
