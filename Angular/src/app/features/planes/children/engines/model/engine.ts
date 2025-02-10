@@ -217,9 +217,5 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
       }
     ),
     /// BIAToolKit - End Block installedParts
-    Object.assign(new BiaFieldConfig('rowVersion', 'engine.rowVersion'), {
-      isVisible: false,
-      isHideByDefault: true,
-    }),
   ],
 };

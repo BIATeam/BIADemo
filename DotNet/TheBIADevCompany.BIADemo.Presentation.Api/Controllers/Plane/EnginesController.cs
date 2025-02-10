@@ -175,10 +175,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 return this.NotFound();
             }
-            catch (OutdateException)
-            {
-                return this.Conflict();
-            }
         }
 
         /// <summary>

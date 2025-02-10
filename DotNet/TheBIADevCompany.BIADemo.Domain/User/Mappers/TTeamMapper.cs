@@ -14,7 +14,6 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
-    using Microsoft.VisualBasic;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.User;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
@@ -91,7 +90,6 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
             {
                 Id = entity.Id,
                 Title = entity.Title,
-                RowVersion = Convert.ToBase64String(entity.RowVersion),
 
                 Admins = entity.Members
                     .Where(w => w.MemberRoles.Any(a => this.AdminRoleIds.Contains(a.RoleId)))

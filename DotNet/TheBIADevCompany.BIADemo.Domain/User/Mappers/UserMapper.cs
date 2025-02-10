@@ -75,7 +75,6 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
             return entity => new UserDto
             {
                 Id = entity.Id,
-                RowVersion = Convert.ToBase64String(entity.RowVersion),
                 LastName = entity.LastName,
                 FirstName = entity.FirstName,
                 Login = entity.Login,

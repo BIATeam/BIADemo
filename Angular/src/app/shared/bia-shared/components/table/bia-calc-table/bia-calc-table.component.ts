@@ -123,7 +123,9 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
     ) {
       if (this.hasChanged === true) {
         if (this.form.valid) {
-          this.onSubmit();
+          this.onSave();
+          this.cancel();
+          this.initRowEdit(rowData);
         } else {
           this.biaMessageService.showWarning(
             this.translateService.instant('biaMsg.invalidForm')
@@ -151,6 +153,14 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
       }
       this.form.reset();
       this.form.patchValue({ ...rowData });
+    }
+  }
+
+  public onSave() {
+    if (this.hasChanged === true) {
+      this.onSubmit();
+      this.hasChanged = false;
+      setTimeout(() => this.escape(), 0);
     }
   }
 

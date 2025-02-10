@@ -255,7 +255,7 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
   .p-dialog-content {
     .bia-form:has(> .bia-form-fixed-buttons) {
       padding-bottom: 1.5rem;
-      .bia-form-fixed-buttons:has(> div) {
+      .bia-form-fixed-buttons:has(> button) {
         background: var(--surface-f);
         position: fixed;
         bottom: 0;

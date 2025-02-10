@@ -19,9 +19,5 @@ export const airportFieldsConfiguration: BiaFieldsConfig<Airport> = {
     Object.assign(new BiaFieldConfig('city', 'airport.city'), {
       isRequired: true,
     }),
-    Object.assign(new BiaFieldConfig('rowVersion', 'airport.rowVersion'), {
-      isVisible: false,
-      isHideByDefault: true,
-    }),
   ],
 };

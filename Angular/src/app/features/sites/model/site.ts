@@ -19,9 +19,5 @@ export const siteFieldsConfiguration: BiaFieldsConfig<Site> = {
       isVisible: false,
       type: PropType.ManyToMany,
     }),
-    Object.assign(new BiaFieldConfig('rowVersion', 'site.rowVersion'), {
-      isVisible: false,
-      isHideByDefault: true,
-    }),
   ],
 };
