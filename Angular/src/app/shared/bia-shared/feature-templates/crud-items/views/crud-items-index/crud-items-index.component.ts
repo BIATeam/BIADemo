@@ -1,3 +1,4 @@
+import { HttpStatusCode } from '@angular/common/http';
 import {
   Component,
   HostBinding,
@@ -7,13 +8,15 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router, Routes } from '@angular/router';
+import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { saveAs } from 'file-saver';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable, Subscription, combineLatest } from 'rxjs';
-import { filter, skip, take, tap } from 'rxjs/operators';
+import { filter, first, skip, take, tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/services/layout.service';
@@ -38,19 +41,22 @@ import { CrudItemService } from '../../services/crud-item.service';
   templateUrl: './crud-items-index.component.html',
   styleUrls: ['./crud-items-index.component.scss'],
 })
-export class CrudItemsIndexComponent<CrudItem extends BaseDto>
+export class CrudItemsIndexComponent<
+    ListCrudItem extends BaseDto,
+    CrudItem extends BaseDto = ListCrudItem,
+  >
   implements OnInit, OnDestroy
 {
-  public crudConfiguration: CrudConfig<CrudItem>;
+  public crudConfiguration: CrudConfig<ListCrudItem>;
   useRefreshAtLanguageChange = false;
 
   @HostBinding('class') classes = 'bia-flex';
   @ViewChild(BiaTableComponent, { static: false })
-  biaTableComponent: BiaTableComponent<CrudItem>;
+  biaTableComponent: BiaTableComponent<ListCrudItem>;
   @ViewChild(BiaTableControllerComponent, { static: false })
   biaTableControllerComponent: BiaTableControllerComponent;
   @ViewChild(CrudItemTableComponent, { static: false })
-  crudItemTableComponent: CrudItemTableComponent<CrudItem>;
+  crudItemTableComponent: CrudItemTableComponent<ListCrudItem>;
   protected parentDisplayItemName$: Observable<string>;
 
   _showTableController = true;
@@ -75,10 +81,10 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
   defaultPageSize = DEFAULT_PAGE_SIZE;
   pageSize = this.defaultPageSize;
   totalRecords: number;
-  crudItems$: Observable<CrudItem[]>;
+  crudItems$: Observable<ListCrudItem[]>;
   lastLazyLoadEvent$: Observable<TableLazyLoadEvent>;
-  virtualCrudItems: CrudItem[];
-  selectedCrudItems: CrudItem[] = [];
+  virtualCrudItems: ListCrudItem[];
+  selectedCrudItems: ListCrudItem[] = [];
   totalCount$: Observable<number>;
   loading$: Observable<boolean>;
   canEdit = false;
@@ -106,10 +112,12 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
   protected authService: AuthService;
   protected tableHelperService: TableHelperService;
   protected layoutService: BiaLayoutService;
+  protected actions: Actions;
+  protected messageService: BiaMessageService;
 
   constructor(
     protected injector: Injector,
-    public crudItemService: CrudItemService<CrudItem>
+    public crudItemService: CrudItemService<ListCrudItem, CrudItem>
   ) {
     this.store = this.injector.get<Store<AppState>>(Store);
     this.router = this.injector.get<Router>(Router);
@@ -123,6 +131,9 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     this.tableHelperService =
       this.injector.get<TableHelperService>(TableHelperService);
     this.layoutService = this.injector.get<BiaLayoutService>(BiaLayoutService);
+    this.actions = this.injector.get<Actions>(Actions);
+    this.messageService =
+      this.injector.get<BiaMessageService>(BiaMessageService);
   }
 
   toggleTableControllerVisibility() {
@@ -369,17 +380,71 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
   }
 
   onSave(crudItem: CrudItem) {
-    if (this.crudConfiguration.useCalcMode) {
-      if (crudItem.id > 0) {
-        if (this.canEdit) {
-          this.crudItemService.update(crudItem);
-        }
-      } else {
-        if (this.canAdd) {
-          this.crudItemService.create(crudItem);
-        }
-      }
+    if (!this.crudConfiguration.useCalcMode) {
+      return;
     }
+
+    if (crudItem.id > 0 && this.canEdit) {
+      this.handleCrudOperation(
+        crudItem,
+        this.crudItemService.updateSuccessActionType,
+        this.crudItemService.updateFailureActionType,
+        this.crudItemService.update.bind(this.crudItemService)
+      );
+    }
+
+    if (crudItem.id === 0 && this.canAdd) {
+      this.handleCrudOperation(
+        crudItem,
+        this.crudItemService.createSuccessActionType,
+        undefined,
+        this.crudItemService.create.bind(this.crudItemService)
+      );
+    }
+  }
+
+  private handleCrudOperation(
+    crudItem: CrudItem,
+    successActionType: string | undefined,
+    failureActionType: string | undefined,
+    crudOperation: (item: CrudItem) => void
+  ) {
+    if (successActionType) {
+      this.actions
+        .pipe(
+          filter((action: any) => action.type === successActionType),
+          first()
+        )
+        .subscribe(() => {
+          this.resetEditableRow();
+        });
+    }
+
+    if (failureActionType) {
+      this.actions
+        .pipe(
+          filter((action: any) => action.type === failureActionType),
+          first()
+        )
+        .subscribe(action => {
+          if (action.error?.status === HttpStatusCode.Conflict) {
+            this.messageService.showWarning(
+              this.translateService.instant('bia.outdatedData')
+            );
+          }
+        });
+    }
+
+    crudOperation(crudItem);
+
+    if (!successActionType) {
+      this.resetEditableRow();
+    }
+  }
+
+  private resetEditableRow() {
+    this.crudItemTableComponent.hasChanged = false;
+    this.crudItemTableComponent.initEditableRow(null);
   }
 
   onDelete() {
@@ -388,7 +453,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     }
   }
 
-  onSelectedElementsChanged(crudItems: CrudItem[]) {
+  onSelectedElementsChanged(crudItems: ListCrudItem[]) {
     this.selectedCrudItems = crudItems;
   }
 
@@ -446,11 +511,11 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
       const columnIdExists = allColumns.some(column => column.field === 'id');
 
       if (columnIdExists !== true) {
-        allColumns.unshift(new BiaFieldConfig<CrudItem>('id', 'bia.id'));
+        allColumns.unshift(new BiaFieldConfig<ListCrudItem>('id', 'bia.id'));
       }
 
       allColumns?.map(
-        (x: BiaFieldConfig<CrudItem>) =>
+        (x: BiaFieldConfig<ListCrudItem>) =>
           (columns[x.field.toString()] = this.translateService.instant(
             x.header
           ))
@@ -459,7 +524,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
       this.crudItemListComponent
         .getPrimeNgTable()
         ?.columns?.map(
-          (x: BiaFieldConfig<CrudItem>) =>
+          (x: BiaFieldConfig<ListCrudItem>) =>
             (columns[x.field.toString()] = this.translateService.instant(
               x.header
             ))

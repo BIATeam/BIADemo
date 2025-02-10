@@ -5,6 +5,7 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
 {
+    using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.CustomAttribute;
 

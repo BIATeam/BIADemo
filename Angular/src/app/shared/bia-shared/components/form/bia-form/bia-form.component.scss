@@ -2,3 +2,23 @@
   margin-bottom: 20px;
   width: 100%;
 }
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .info-locked-container {
+    margin-left: 1rem;
+
+    .info-locked-button {
+      height: 1.5rem;
+      width: 1.5rem;
+    }
+
+    .info-locked-label {
+      color: #fbc02d;
+      font-weight: 500;
+    }
+  }
+}

@@ -317,6 +317,13 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
           }
         ),
         /// BIAToolKit - End Block operationAirports
+        Object.assign(
+          new BiaFieldConfig('rowVersion', 'maintenanceTeam.rowVersion'),
+          {
+            isVisible: false,
+            isHideByDefault: true,
+          }
+        ),
       ],
     ],
   };
