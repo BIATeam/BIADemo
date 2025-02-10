@@ -5,7 +5,6 @@
   [dictOptionDtos]="
     (airportService.optionsService.dictOptionDtos$ | async) ?? []
   "
-  [isCrudItemOutdated]="isCrudItemOutdated"
   (cancel)="onCancelled()"
   (save)="onSubmitted($event)"></app-airport-form>
 <bia-spinner

@@ -108,6 +108,7 @@ export class CrudItemTableComponent<CrudItem extends BaseDto>
       }
 
       this.save.emit(crudItem);
+      this.form.reset();
     }
   }
 }

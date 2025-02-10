@@ -254,10 +254,6 @@ namespace BIA.Net.Core.Domain
         public virtual void MapEntityKeysInDto(TEntity entity, TDto dto)
         {
             dto.Id = entity.Id;
-            if (entity is VersionedTable versionedEntity)
-            {
-                dto.RowVersion = Convert.ToBase64String(versionedEntity.RowVersion);
-            }
         }
 
         /// <summary>

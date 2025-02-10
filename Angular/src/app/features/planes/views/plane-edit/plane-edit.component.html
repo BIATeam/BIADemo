@@ -3,7 +3,6 @@
   [crudItem]="crudItem"
   [fields]="crudConfiguration.fieldsConfig.columns"
   [dictOptionDtos]="(planeService.optionsService.dictOptionDtos$ | async) ?? []"
-  [isCrudItemOutdated]="isCrudItemOutdated"
   (cancel)="onCancelled()"
   (save)="onSubmitted($event)"></app-plane-form>
 <bia-spinner

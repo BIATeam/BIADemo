@@ -53,7 +53,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
                 Id = entity.Id,
                 Name = entity.Name,
                 City = entity.City,
-                RowVersion = Convert.ToBase64String(entity.RowVersion),
             };
         }
 

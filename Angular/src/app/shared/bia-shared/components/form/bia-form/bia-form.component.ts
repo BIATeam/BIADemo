@@ -45,7 +45,6 @@ export class BiaFormComponent<TDto extends { id: number }>
   @Input() formValidators?: ValidatorFn[];
   @Input() dictOptionDtos: DictOptionDto[];
   @Input() isAdd?: boolean;
-  @Input() isCrudItemOutdated = false;
   @Output() save = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<void>();
 
@@ -172,6 +171,7 @@ export class BiaFormComponent<TDto extends { id: number }>
   }
 
   onCancel() {
+    this.form?.reset();
     this.cancel.next();
   }
 
@@ -179,6 +179,7 @@ export class BiaFormComponent<TDto extends { id: number }>
     if (this.form?.valid) {
       const element: any = this.getElement();
       this.save.emit(element);
+      this.form.reset();
     }
   }
 

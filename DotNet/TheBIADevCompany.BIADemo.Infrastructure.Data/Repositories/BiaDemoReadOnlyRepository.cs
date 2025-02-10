@@ -24,7 +24,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories
         /// <param name="dataContextFactory">The data context factory.</param>
         /// <param name="serviceProvider">The service provider.</param>
         public BiaDemoReadOnlyRepository(DataContextFactory dataContextFactory, IServiceProvider serviceProvider)
-            : base(dataContextFactory, serviceProvider, "ProjectDatabaseReadOnly")
+            : base(dataContextFactory, serviceProvider, "BIADemoDatabaseReadOnly")
         {
         }
     }
