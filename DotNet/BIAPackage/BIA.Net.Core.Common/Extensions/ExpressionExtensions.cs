@@ -1,4 +1,4 @@
-﻿// <copyright file="MapperExtensions.cs" company="PlaceholderCompany">
+﻿// <copyright file="ExpressionExtensions.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
@@ -9,9 +9,9 @@ namespace BIA.Net.Core.Common.Extensions
     using System.Linq.Expressions;
 
     /// <summary>
-    /// Provides extensions for mapper actions.
+    /// Provides extensions for expressions.
     /// </summary>
-    public static class MapperExtensions
+    public static class ExpressionExtensions
     {
         /// <summary>
         /// Produces the combination of two mapping expressions.
@@ -47,6 +47,33 @@ namespace BIA.Net.Core.Common.Extensions
 
             var combinedBody = Expression.MemberInit(Expression.New(typeof(TResult)), combinedBindings);
             return Expression.Lambda<Func<TParam, TResult>>(combinedBody, firstMappingParameterExpression);
+        }
+
+        /// <summary>
+        /// Extend an expression selector with another one.
+        /// </summary>
+        /// <typeparam name="T">Type of object.</typeparam>
+        /// <param name="firstSelector">First selector expression.</param>
+        /// <param name="secondSelector">Second selector expression.</param>
+        /// <returns>Extended <see cref="Expression"/>.</returns>
+        public static Expression<Func<T, bool>> CombineSelector<T>(this Expression<Func<T, bool>> firstSelector, Expression<Func<T, bool>> secondSelector)
+        {
+            if (firstSelector == null)
+            {
+                return secondSelector;
+            }
+
+            if (secondSelector == null)
+            {
+                return firstSelector;
+            }
+
+            var firstSelectorParameter = firstSelector.Parameters[0];
+            var expressionParameterReplacer = new ExpressionParameterReplacer(secondSelector.Parameters[0], firstSelectorParameter);
+            var updatedSecondSelectorBody = expressionParameterReplacer.Visit(secondSelector.Body);
+
+            var combinedBody = Expression.AndAlso(firstSelector.Body, updatedSecondSelectorBody);
+            return Expression.Lambda<Func<T, bool>>(combinedBody, firstSelectorParameter);
         }
 
         /// <summary>

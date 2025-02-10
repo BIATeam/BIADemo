@@ -6,6 +6,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
 {
     using System;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Archive;
     using Hangfire;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
@@ -66,6 +67,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                         // Begin BIADemo
                         RecurringJob.AddOrUpdate<WithPermissionTask>($"{projectName}.{typeof(WithPermissionTask).Name}", t => t.Run(), Cron.Never);
                         RecurringJob.AddOrUpdate<EngineManageTask>($"{projectName}.{typeof(EngineManageTask).Name}", t => t.Run(), Cron.Never);
+                        RecurringJob.AddOrUpdate<ArchiveTask>($"{projectName}.{typeof(ArchiveTask).Name}", t => t.Run(), configuration["Tasks:Archive:CRON"]);
 
                         // End BIADemo
 #endif
