@@ -28,5 +28,10 @@ namespace BIA.Net.Core.Common.Configuration.AuthenticationSection
         /// ApiKey authentication
         /// </summary>
         ApiKey,
+
+        /// <summary>
+        /// Anonymous authentication
+        /// </summary>
+        Anonymous,
     }
 }
