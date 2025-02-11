@@ -1,9 +1,9 @@
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { Calendar } from 'primeng/calendar';
 // import * as deepmerge from 'deepmerge';
 import { PrimeNG } from 'primeng/config';
+import { DatePicker } from 'primeng/datepicker';
 import { BehaviorSubject, Observable, combineLatest, forkJoin, of } from 'rxjs';
 import { distinctUntilChanged, map, skip, tap } from 'rxjs/operators';
 import { AppSettings } from 'src/app/domains/bia-domains/app-settings/model/app-settings';
@@ -98,7 +98,7 @@ export class BiaTranslationService {
     protected authService: AuthService
   ) {
     this.currentCultureDateFormat$.subscribe(dateFormat => {
-      Calendar.prototype.getDateFormat = () => dateFormat.primeDateFormat;
+      DatePicker.prototype.getDateFormat = () => dateFormat.primeDateFormat;
     });
   }
 

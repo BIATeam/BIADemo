@@ -6,7 +6,7 @@
         <div
           *ngIf="useKeycloak !== true && domains.length > 1"
           class="p-float-label">
-          <p-dropdown
+          <p-select
             [options]="domains"
             placeholder="&nbsp;"
             formControlName="domains"
@@ -14,19 +14,19 @@
             showClear="true"
             (onChange)="onDomainChange($event)"
             [style]="{ width: '100%' }"
-            appendTo="body"></p-dropdown>
+            appendTo="body"></p-select>
           <label>LDAP Domain</label>
         </div>
       </div>
       <div class="app-field-container flex-1" style="max-width: 10%"></div>
       <div class="app-field-container flex-1" style="max-width: 30%">
         <div class="p-float-label">
-          <p-dropdown
+          <p-select
             [options]="returnSizeOptions"
             placeholder="&nbsp;"
             formControlName="returnSize"
             [style]="{ width: '100%' }"
-            appendTo="body"></p-dropdown>
+            appendTo="body"></p-select>
           <label>{{ 'bia.itemsBySearch' | translate }}</label>
         </div>
       </div>

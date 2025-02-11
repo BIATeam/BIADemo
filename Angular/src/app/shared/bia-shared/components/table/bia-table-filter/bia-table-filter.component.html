@@ -60,11 +60,11 @@
                 let-value
                 let-filter="filterCallback">
                 @if (columnFilterType === 'date') {
-                  <p-calendar
+                  <p-date-picker
                     [ngModel]="value"
                     (ngModelChange)="
                       filterConstraint.value = $event
-                    "></p-calendar>
+                    "></p-date-picker>
                 }
                 @if (columnFilterType === 'boolean') {
                   <p-checkbox

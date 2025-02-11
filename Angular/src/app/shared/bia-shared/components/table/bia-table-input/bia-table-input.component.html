@@ -8,7 +8,7 @@
   </ng-container>
   <ng-container [ngSwitch]="field.type" *ngIf="field.specificInput !== true">
     <ng-container *ngSwitchCase="'OneToMany'">
-      <p-dropdown
+      <p-select
         class="bia-simple-input"
         placeholder="&nbsp;"
         [formControlName]="field.field"
@@ -20,7 +20,7 @@
         appendTo="body"
         [style]="{ width: '100%' }"
         [editable]="field.isEditableChoice"
-        scrollHeight="50vh"></p-dropdown>
+        scrollHeight="50vh"></p-select>
     </ng-container>
     <ng-container *ngSwitchCase="'ManyToMany'">
       <p-multiSelect
@@ -62,7 +62,7 @@
         [locale]="displayNumberFormat.autoLocale || 'en-US'" />
     </ng-container>
     <ng-container *ngSwitchCase="'Date'">
-      <p-calendar
+      <p-date-picker
         biaLocale
         [formControlName]="field.field"
         placeholder="&nbsp;"
@@ -78,10 +78,10 @@
         [dateFormat]="
           getDisplayDateFormat(field.displayFormat)?.autoPrimeDateFormat ??
           'yy-mm-dd'
-        "></p-calendar>
+        "></p-date-picker>
     </ng-container>
     <ng-container *ngSwitchCase="'Time'">
-      <p-calendar
+      <p-date-picker
         biaLocale
         [formControlName]="field.field"
         placeholder="&nbsp;"
@@ -99,11 +99,11 @@
           getDisplayDateFormat(field.displayFormat)?.autoPrimeDateFormat ??
           'yy-mm-dd'
         "
-        [hourFormat]="'24'"></p-calendar>
+        [hourFormat]="'24'"></p-date-picker>
       <!-- [hourFormat]="field.displayFormat.autoHourFormat?field.displayFormat.autoHourFormat:24" not work for 12 (PrimeNG 13)-->
     </ng-container>
     <ng-container *ngSwitchCase="'TimeOnly'">
-      <p-calendar
+      <p-date-picker
         biaLocale
         [formControlName]="field.field"
         placeholder="&nbsp;"
@@ -118,11 +118,11 @@
         [showTime]="true"
         dataType="string"
         [timeOnly]="true"
-        [hourFormat]="'24'"></p-calendar>
+        [hourFormat]="'24'"></p-date-picker>
       <!-- [hourFormat]="field.displayFormat.autoHourFormat?field.displayFormat.autoHourFormat:24" not work for 12 (PrimeNG 13)-->
     </ng-container>
     <ng-container *ngSwitchCase="'TimeSecOnly'">
-      <p-calendar
+      <p-date-picker
         biaLocale
         [formControlName]="field.field"
         placeholder="&nbsp;"
@@ -138,11 +138,11 @@
         showSeconds="true"
         dataType="string"
         [timeOnly]="true"
-        [hourFormat]="'24'"></p-calendar>
+        [hourFormat]="'24'"></p-date-picker>
       <!-- [hourFormat]="field.displayFormat.autoHourFormat?field.displayFormat.autoHourFormat:24" not work for 12 (PrimeNG 13)-->
     </ng-container>
     <ng-container *ngSwitchCase="'DateTime'">
-      <p-calendar
+      <p-date-picker
         biaLocale
         [formControlName]="field.field.toString()"
         placeholder="&nbsp;"
@@ -164,7 +164,7 @@
           getDisplayDateFormat(
             field.displayFormat
           )?.autoHourFormat?.toString() ?? '24'
-        "></p-calendar>
+        "></p-date-picker>
     </ng-container>
     <ng-container *ngSwitchDefault>
       <input

@@ -9,7 +9,7 @@
   <ng-container [ngSwitch]="field.type" *ngIf="field.specificInput !== true">
     <ng-container *ngSwitchCase="'OneToMany'">
       <span class="p-float-label">
-        <p-dropdown
+        <p-select
           [options]="getOptionDto(field.field)"
           placeholder="&nbsp;"
           [formControlName]="field.field"
@@ -18,7 +18,7 @@
           [style]="{ width: '100%' }"
           [showClear]="true"
           appendTo="body"
-          scrollHeight="50vh"></p-dropdown>
+          scrollHeight="50vh"></p-select>
         <label
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
           >{{ field.header | translate }}</label
@@ -79,7 +79,7 @@
           getDisplayDateFormat(field.displayFormat);
           let displayDateFormat
         ">
-        <p-calendar
+        <p-date-picker
           biaLocale
           [formControlName]="field.field"
           placeholder="&nbsp;"
@@ -87,7 +87,7 @@
           appendTo="body"
           [dateFormat]="displayDateFormat.autoPrimeDateFormat"
           [inputStyle]="{ width: '100%' }"
-          [showClear]="true"></p-calendar>
+          [showClear]="true"></p-date-picker>
         <label
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
           >{{ field.header | translate }}</label
@@ -101,7 +101,7 @@
           getDisplayDateFormat(field.displayFormat);
           let displayDateFormat
         ">
-        <p-calendar
+        <p-date-picker
           [formControlName]="field.field"
           [showTime]="true"
           showSeconds="false"
@@ -111,7 +111,7 @@
           placeholder="&nbsp;"
           [inputStyle]="{ width: '100%' }"
           appendTo="body"
-          [showClear]="true"></p-calendar
+          [showClear]="true"></p-date-picker
         ><!-- [hourFormat]="field.displayFormat.autoHourFormat" not work for 12 (PrimeNG 13)-->
         <label
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
@@ -121,7 +121,7 @@
     </ng-container>
     <ng-container *ngSwitchCase="'TimeOnly'">
       <span class="p-float-label">
-        <p-calendar
+        <p-date-picker
           [formControlName]="field.field"
           [showTime]="true"
           showSeconds="false"
@@ -131,7 +131,7 @@
           [hourFormat]="'24'"
           [inputStyle]="{ width: '100%' }"
           appendTo="body"
-          [showClear]="true"></p-calendar
+          [showClear]="true"></p-date-picker
         ><!-- [hourFormat]="field.displayFormat.autoHourFormat" not work for 12 (PrimeNG 13)-->
         <label
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
@@ -141,7 +141,7 @@
     </ng-container>
     <ng-container *ngSwitchCase="'TimeSecOnly'">
       <span class="p-float-label">
-        <p-calendar
+        <p-date-picker
           [formControlName]="field.field"
           [showTime]="true"
           showSeconds="true"
@@ -151,7 +151,7 @@
           [hourFormat]="'24'"
           [inputStyle]="{ width: '100%' }"
           appendTo="body"
-          [showClear]="true"></p-calendar
+          [showClear]="true"></p-date-picker
         ><!-- [hourFormat]="field.displayFormat.autoHourFormat" not work for 12 (PrimeNG 13)-->
         <label
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
@@ -166,7 +166,7 @@
           getDisplayDateFormat(field.displayFormat);
           let displayDateFormat
         ">
-        <p-calendar
+        <p-date-picker
           biaLocale
           [formControlName]="field.field"
           [showTime]="true"
@@ -175,7 +175,7 @@
           placeholder="&nbsp;"
           [inputStyle]="{ width: '100%' }"
           appendTo="body"
-          [showClear]="true"></p-calendar>
+          [showClear]="true"></p-date-picker>
         <label
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
           >{{ field.header | translate }}</label
