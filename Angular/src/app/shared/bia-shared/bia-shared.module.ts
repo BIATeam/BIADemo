@@ -82,6 +82,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { MessageService } from 'primeng/api';
 
 // Component
+import { RouterModule } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { SkeletonModule } from 'primeng/skeleton';
@@ -198,6 +199,7 @@ const MODULES = [
   BiaOnlineOfflineIconModule,
   NotificationTeamWarningModule,
   BiaUltimaLayoutModule,
+  RouterModule,
 ];
 
 const COMPONENTS = [
