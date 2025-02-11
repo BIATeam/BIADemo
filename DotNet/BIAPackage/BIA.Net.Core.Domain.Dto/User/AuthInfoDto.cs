@@ -11,7 +11,7 @@ namespace BIA.Net.Core.Domain.Dto.User
     /// </summary>
     /// <typeparam name="TAdditionalInfoDto">The additionnal Info type.</typeparam>
     public class AuthInfoDto<TAdditionalInfoDto>
-        where TAdditionalInfoDto : AdditionalInfoDto
+        where TAdditionalInfoDto : BaseAdditionalInfoDto
     {
         /// <summary>
         /// Gets or sets the token.
