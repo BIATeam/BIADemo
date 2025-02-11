@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http;
 // <copyright file="SitesController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
