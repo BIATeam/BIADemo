@@ -67,11 +67,12 @@
                     "></p-calendar>
                 }
                 @if (columnFilterType === 'boolean') {
-                  <p-triStateCheckbox
+                  <p-checkbox
+                    [indeterminate]="true"
                     [ngModel]="value"
                     (ngModelChange)="
                       filterConstraint.value = $event
-                    "></p-triStateCheckbox>
+                    "></p-checkbox>
                 }
               </ng-template>
             }

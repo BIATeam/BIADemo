@@ -1,9 +1,9 @@
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { PrimeNGConfig } from 'primeng/api';
 import { Calendar } from 'primeng/calendar';
 // import * as deepmerge from 'deepmerge';
+import { PrimeNG } from 'primeng/config';
 import { BehaviorSubject, Observable, combineLatest, forkJoin, of } from 'rxjs';
 import { distinctUntilChanged, map, skip, tap } from 'rxjs/operators';
 import { AppSettings } from 'src/app/domains/bia-domains/app-settings/model/app-settings';
@@ -94,7 +94,7 @@ export class BiaTranslationService {
     protected translate: TranslateService,
     @Inject(LOCALE_ID) localeId: string,
     protected store: Store<AppState>,
-    protected primeNgConfig: PrimeNGConfig,
+    protected primeNgConfig: PrimeNG,
     protected authService: AuthService
   ) {
     this.currentCultureDateFormat$.subscribe(dateFormat => {

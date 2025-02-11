@@ -12,6 +12,7 @@ import {
   TranslateStore,
 } from '@ngx-translate/core';
 import { LoggerModule, TOKEN_LOGGER_SERVER_SERVICE } from 'ngx-logger';
+import { providePrimeNG } from 'primeng/config';
 import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -73,6 +74,7 @@ export function createTranslateLoader(http: HttpClient, store: TranslateStore) {
     { provide: LOCALE_ID, useFactory: getCurrentCulture },
     { provide: ErrorHandler, useClass: BiaErrorHandler },
     BiaSignalRService,
+    providePrimeNG(),
   ],
   bootstrap: [AppComponent],
 })

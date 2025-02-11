@@ -49,7 +49,7 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextModule } from 'primeng/inputtext';
-import { InputTextareaModule } from 'primeng/inputtextarea';
+import { Textarea } from 'primeng/inputtextarea';
 import { ListboxModule } from 'primeng/listbox';
 import { MegaMenuModule } from 'primeng/megamenu';
 // import { MenuModule } from 'primeng/menu';
@@ -75,8 +75,8 @@ import { TabViewModule } from 'primeng/tabview';
 import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 // import { ToolbarModule } from 'primeng/toolbar';
-// import { TooltipModule } from 'primeng/tooltip';
 import { FileUploadModule } from 'primeng/fileupload';
+import { TooltipModule } from 'primeng/tooltip';
 
 // PrimeNG Services
 import { MessageService } from 'primeng/api';
@@ -86,7 +86,6 @@ import { RouterModule } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { SkeletonModule } from 'primeng/skeleton';
-import { TriStateCheckboxModule } from 'primeng/tristatecheckbox';
 import { NotificationsEffects } from 'src/app/domains/bia-domains/notification/store/notifications-effects';
 import { TeamModule } from 'src/app/domains/bia-domains/team/team.module';
 import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
@@ -154,7 +153,7 @@ const PRIMENG_MODULES = [
   //  InputMaskModule,
   InputSwitchModule,
   InputTextModule,
-  InputTextareaModule,
+  Textarea,
   InputNumberModule,
   ListboxModule,
   MegaMenuModule,
@@ -181,10 +180,9 @@ const PRIMENG_MODULES = [
   ToastModule,
   ToggleButtonModule,
   //  ToolbarModule,
-  //  TooltipModule,
+  TooltipModule,
   FileUploadModule,
   SkeletonModule,
-  TriStateCheckboxModule,
 ];
 
 const MODULES = [

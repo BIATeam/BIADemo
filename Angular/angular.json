@@ -38,9 +38,7 @@
               "base": "dist/BIADemo"
             },
             "index": "src/index.html",
-            "polyfills": [
-              "src/polyfills.ts"
-            ],
+            "polyfills": ["src/polyfills.ts"],
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
@@ -51,7 +49,6 @@
               "src/ngsw-worker.js"
             ],
             "styles": [
-              "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeicons/primeicons.css",
               "node_modules/primeflex/primeflex.min.css",
               "src/styles.scss"
@@ -62,9 +59,7 @@
             "optimization": false,
             "namedChunks": true,
             "serviceWorker": "ngsw-config.json",
-            "allowedCommonJsDependencies": [
-              "keycloak-js"
-            ],
+            "allowedCommonJsDependencies": ["keycloak-js"],
             "browser": "src/main.ts"
           },
           "configurations": {

@@ -12,7 +12,7 @@ import {
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { MegaMenuItem, MenuItem, Message } from 'primeng/api';
+import { MegaMenuItem, MenuItem, ToastMessageOptions } from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -124,7 +124,7 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  onNotificationClick(message: Message) {
+  onNotificationClick(message: ToastMessageOptions) {
     if (message.data?.notification) {
       const notification: Notification = message.data.notification;
       const data: NotificationData | undefined = notification.data;
@@ -152,11 +152,11 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  onIgnoreClick(message: Message) {
+  onIgnoreClick(message: ToastMessageOptions) {
     this.removeMessage(message, true);
   }
 
-  protected removeMessage(message: Message, setRead = false) {
+  protected removeMessage(message: ToastMessageOptions, setRead = false) {
     this.toast.messages?.splice(this.toast.messages?.indexOf(message), 1);
 
     if (setRead && message.data?.notification?.id > 0) {
