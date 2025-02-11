@@ -83,7 +83,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
             return entity => new PlaneSpecificDto
             {
                 Id = entity.Id,
-                RowVersion = Convert.ToBase64String(entity.RowVersion),
                 Msn = entity.Msn,
                 Manufacturer = entity.Manufacturer,
                 IsActive = entity.IsActive,

@@ -15,7 +15,6 @@ namespace BIA.Net.Core.Domain.Service
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract;
@@ -364,13 +363,6 @@ namespace BIA.Net.Core.Domain.Service
                     if (entity == null)
                     {
                         throw new ElementNotFoundException();
-                    }
-
-                    if (entity is VersionedTable versionedEntity
-                    && !string.IsNullOrWhiteSpace(dto.RowVersion)
-                    && !Convert.ToBase64String(versionedEntity.RowVersion).SequenceEqual(dto.RowVersion))
-                    {
-                        throw new OutdateException();
                     }
 
                     mapper.DtoToEntity(dto, entity, mapperMode, this.Repository.UnitOfWork);

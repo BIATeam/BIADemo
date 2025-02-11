@@ -1,4 +1,3 @@
-import { HttpStatusCode } from '@angular/common/http';
 import {
   Component,
   HostBinding,
@@ -8,15 +7,13 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router, Routes } from '@angular/router';
-import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { saveAs } from 'file-saver';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable, Subscription, combineLatest } from 'rxjs';
-import { filter, first, skip, take, tap } from 'rxjs/operators';
+import { filter, skip, take, tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/services/layout.service';
@@ -112,8 +109,6 @@ export class CrudItemsIndexComponent<
   protected authService: AuthService;
   protected tableHelperService: TableHelperService;
   protected layoutService: BiaLayoutService;
-  protected actions: Actions;
-  protected messageService: BiaMessageService;
 
   constructor(
     protected injector: Injector,
@@ -131,9 +126,6 @@ export class CrudItemsIndexComponent<
     this.tableHelperService =
       this.injector.get<TableHelperService>(TableHelperService);
     this.layoutService = this.injector.get<BiaLayoutService>(BiaLayoutService);
-    this.actions = this.injector.get<Actions>(Actions);
-    this.messageService =
-      this.injector.get<BiaMessageService>(BiaMessageService);
   }
 
   toggleTableControllerVisibility() {
@@ -380,71 +372,17 @@ export class CrudItemsIndexComponent<
   }
 
   onSave(crudItem: CrudItem) {
-    if (!this.crudConfiguration.useCalcMode) {
-      return;
+    if (this.crudConfiguration.useCalcMode) {
+      if (crudItem.id > 0) {
+        if (this.canEdit) {
+          this.crudItemService.update(crudItem);
+        }
+      } else {
+        if (this.canAdd) {
+          this.crudItemService.create(crudItem);
+        }
+      }
     }
-
-    if (crudItem.id > 0 && this.canEdit) {
-      this.handleCrudOperation(
-        crudItem,
-        this.crudItemService.updateSuccessActionType,
-        this.crudItemService.updateFailureActionType,
-        this.crudItemService.update.bind(this.crudItemService)
-      );
-    }
-
-    if (crudItem.id === 0 && this.canAdd) {
-      this.handleCrudOperation(
-        crudItem,
-        this.crudItemService.createSuccessActionType,
-        undefined,
-        this.crudItemService.create.bind(this.crudItemService)
-      );
-    }
-  }
-
-  private handleCrudOperation(
-    crudItem: CrudItem,
-    successActionType: string | undefined,
-    failureActionType: string | undefined,
-    crudOperation: (item: CrudItem) => void
-  ) {
-    if (successActionType) {
-      this.actions
-        .pipe(
-          filter((action: any) => action.type === successActionType),
-          first()
-        )
-        .subscribe(() => {
-          this.resetEditableRow();
-        });
-    }
-
-    if (failureActionType) {
-      this.actions
-        .pipe(
-          filter((action: any) => action.type === failureActionType),
-          first()
-        )
-        .subscribe(action => {
-          if (action.error?.status === HttpStatusCode.Conflict) {
-            this.messageService.showWarning(
-              this.translateService.instant('bia.outdatedData')
-            );
-          }
-        });
-    }
-
-    crudOperation(crudItem);
-
-    if (!successActionType) {
-      this.resetEditableRow();
-    }
-  }
-
-  private resetEditableRow() {
-    this.crudItemTableComponent.hasChanged = false;
-    this.crudItemTableComponent.initEditableRow(null);
   }
 
   onDelete() {

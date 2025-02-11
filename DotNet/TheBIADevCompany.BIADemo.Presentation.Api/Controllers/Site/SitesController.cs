@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http;
 // <copyright file="SitesController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
@@ -131,7 +130,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.Sites.Update)]
         public async Task<IActionResult> Update(int id, [FromBody] SiteDto dto)
@@ -153,10 +151,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
-            }
-            catch (OutdateException)
-            {
-                return this.Conflict();
             }
         }
 

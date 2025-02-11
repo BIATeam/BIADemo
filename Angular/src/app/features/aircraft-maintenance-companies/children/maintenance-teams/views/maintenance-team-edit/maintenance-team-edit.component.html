@@ -5,7 +5,6 @@
   [dictOptionDtos]="
     (maintenanceTeamService.optionsService.dictOptionDtos$ | async) ?? []
   "
-  [isCrudItemOutdated]="isCrudItemOutdated"
   (cancel)="onCancelled()"
   (save)="onSubmitted($event)"></app-maintenance-team-form>
 <bia-spinner
