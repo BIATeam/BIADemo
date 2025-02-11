@@ -1,7 +1,10 @@
 // Modules
 import { PortalModule } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
-import {} from '@angular/common/http';
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -189,7 +192,6 @@ const MODULES = [
   TranslateModule,
   FormsModule,
   ReactiveFormsModule,
-  HttpClientModule,
   TeamModule,
   //BiaLayoutModule,
   BiaTeamSelectorModule,
@@ -274,7 +276,7 @@ const STANDALONE_COMPONENTS = [IeWarningComponent];
     ...VIEW_COMPONENTS,
     ...PIPES,
   ],
-  providers: [...SERVICES],
+  providers: [...SERVICES, provideHttpClient(withInterceptorsFromDi())],
 })
 
 // https://medium.com/@benmohamehdi/angular-best-practices-coremodule-vs-sharedmodule-25f6721aa2ef

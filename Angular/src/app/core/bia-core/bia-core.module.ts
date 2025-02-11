@@ -1,5 +1,8 @@
 // Modules
-import {} from '@angular/common/http';
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { APP_INITIALIZER, NgModule, Optional, SkipSelf } from '@angular/core';
 
 // PrimeNG Services
@@ -29,7 +32,6 @@ export function initializeApp(appInitService: BiaAppInitService) {
 }
 
 const MODULES = [
-  HttpClientModule,
   TeamModule,
   AppSettingsModule,
   ServiceWorkerModule,
@@ -73,6 +75,7 @@ const BASE_HREF = [
       deps: [BiaAppInitService],
       multi: true,
     },
+    provideHttpClient(withInterceptorsFromDi()),
   ],
 })
 
