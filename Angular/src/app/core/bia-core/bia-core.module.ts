@@ -1,5 +1,5 @@
 // Modules
-import { HttpClientModule } from '@angular/common/http';
+import {} from '@angular/common/http';
 import { APP_INITIALIZER, NgModule, Optional, SkipSelf } from '@angular/core';
 
 // PrimeNG Services

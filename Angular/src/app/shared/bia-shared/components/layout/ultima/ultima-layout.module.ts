@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -31,50 +31,44 @@ import { BiaUltimaMenuComponent } from './menu/ultima-menu.component';
 import { BiaUltimaSidebarComponent } from './sidebar/ultima-sidebar.component';
 import { BiaUltimaTopbarComponent } from './topbar/ultima-topbar.component';
 
-@NgModule({
-  declarations: [
-    BiaUltimaLayoutComponent,
-    BiaUltimaTopbarComponent,
-    BiaUltimaMenuComponent,
-    BiaUltimaSidebarComponent,
-    BiaUltimaMenuItemComponent,
-    BiaUltimaFooterComponent,
-    BiaUltimaMenuProfileComponent,
-    BiaUltimaConfigComponent,
-  ],
-  exports: [
-    BiaUltimaLayoutComponent,
-    BiaUltimaTopbarComponent,
-    BiaUltimaMenuComponent,
-    BiaUltimaSidebarComponent,
-    BiaUltimaMenuItemComponent,
-    BiaUltimaFooterComponent,
-    BiaUltimaMenuProfileComponent,
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    HttpClientModule,
-    TranslateModule,
-    StyleClassModule,
-    InputTextModule,
-    SidebarModule,
-    BadgeModule,
-    RadioButtonModule,
-    InputSwitchModule,
-    TooltipModule,
-    MegaMenuModule,
-    RippleModule,
-    RouterModule,
-    ButtonModule,
-    MenuModule,
-    BreadcrumbModule,
-    IeWarningComponent,
-    BiaOnlineOfflineIconModule,
-    BiaTeamSelectorModule,
-    ToastModule,
-    NotificationTeamWarningModule,
-    DialogModule,
-  ],
-})
+@NgModule({ declarations: [
+        BiaUltimaLayoutComponent,
+        BiaUltimaTopbarComponent,
+        BiaUltimaMenuComponent,
+        BiaUltimaSidebarComponent,
+        BiaUltimaMenuItemComponent,
+        BiaUltimaFooterComponent,
+        BiaUltimaMenuProfileComponent,
+        BiaUltimaConfigComponent,
+    ],
+    exports: [
+        BiaUltimaLayoutComponent,
+        BiaUltimaTopbarComponent,
+        BiaUltimaMenuComponent,
+        BiaUltimaSidebarComponent,
+        BiaUltimaMenuItemComponent,
+        BiaUltimaFooterComponent,
+        BiaUltimaMenuProfileComponent,
+    ], imports: [CommonModule,
+        FormsModule,
+        TranslateModule,
+        StyleClassModule,
+        InputTextModule,
+        SidebarModule,
+        BadgeModule,
+        RadioButtonModule,
+        InputSwitchModule,
+        TooltipModule,
+        MegaMenuModule,
+        RippleModule,
+        RouterModule,
+        ButtonModule,
+        MenuModule,
+        BreadcrumbModule,
+        IeWarningComponent,
+        BiaOnlineOfflineIconModule,
+        BiaTeamSelectorModule,
+        ToastModule,
+        NotificationTeamWarningModule,
+        DialogModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class BiaUltimaLayoutModule {}
