@@ -40,6 +40,7 @@ import { DialogModule } from 'primeng/dialog';
 // ],
 
 import { FieldsetModule } from 'primeng/fieldset';
+import { FluidModule } from 'primeng/fluid';
 // import { FullCalendarModule } from 'primeng/fullcalendar';
 // Warning it required to install Fullcalandar package:
 //    - npm install @fullcalendar/core
@@ -154,6 +155,7 @@ const PRIMENG_MODULES = [
   //  DropdownModule,
   //  EditorModule,
   FieldsetModule,
+  FluidModule,
   //  FullCalendarModule,
   //  InputMaskModule,
   //  InputSwitchModule,
