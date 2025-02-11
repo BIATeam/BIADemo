@@ -6,14 +6,17 @@
       <p-fieldset legend="{{ 'bia.translation.translatedFields' | translate }}">
         <p-tabs>
           <p-tablist>
-            <p-tab value="0">{{
-              'translation.defaultLanguage' | translate
-            }}</p-tab>
-            <p-tab value="1">labelTranslation(item.value.languageId)</p-tab>
-            <p-tab value="2">+</p-tab>
+            <p-tab>{{ 'translation.defaultLanguage' | translate }}</p-tab>
+            @for (
+              item of notificationTranslations['controls'];
+              track item.value
+            ) {
+              <p-tab>{{ labelTranslation(item.value.languageId) }}</p-tab>
+            }
+            <p-tab>+</p-tab>
           </p-tablist>
           <p-tabpanels>
-            <p-tabpanel value="0">
+            <p-tabpanel>
               <div class="flex flex-row justify-content-center">
                 <div class="app-field-container flex-1" style="max-width: 90%">
                   <span class="p-float-label">
@@ -62,7 +65,7 @@
                 let item of notificationTranslations['controls'];
                 let i = index
               ">
-              <p-tabpanel value="1">
+              <p-tabpanel>
                 <div [formGroupName]="i">
                   <input formControlName="languageId" type="hidden" />
                   <div class="flex flex-row justify-content-center">
@@ -114,9 +117,7 @@
                 </div>
               </p-tabpanel>
             </ng-container>
-            <p-tabpanel
-              value="2"
-              *ngIf="(missingLanguageOptions?.length ?? 0) > 0">
+            <p-tabpanel *ngIf="(missingLanguageOptions?.length ?? 0) > 0">
               <ng-template pTemplate="header">
                 <i class="pi pi-plus"></i>
               </ng-template>

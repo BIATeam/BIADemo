@@ -14,14 +14,14 @@
   </p-header>
   <p-tabs *ngIf="display">
     <p-tablist>
-      <p-tab value="0">{{ 'bia.views.user' | translate | uppercase }}</p-tab>
-      <p-tab value="1"
+      <p-tab>{{ 'bia.views.user' | translate | uppercase }}</p-tab>
+      <p-tab
         >{{ 'bia.views.team' | translate | uppercase }}
         {{ (teams$ | async)?.length === 1 ? teamSelected.title : '' }}</p-tab
       >
     </p-tablist>
     <p-tabpanels>
-      <p-tabpanel value="0" *ngIf="canSetUserView()">
+      <p-tabpanel *ngIf="canSetUserView()">
         <div
           class="app-div-view-form"
           *ngIf="canAddUserView === true || canUpdateUserView === true">
@@ -40,7 +40,6 @@
           (viewSelect)="onUserViewSelected($event)"></bia-view-user-table>
       </p-tabpanel>
       <p-tabpanel
-        value="1"
         *ngIf="canSetTeamView() && ((teams$ | async) ?? []).length > 0">
         <div class="app-div-select-team">
           <p-select
