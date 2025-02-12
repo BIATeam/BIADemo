@@ -11,7 +11,6 @@ import { standardEncodeHttpParamsInterceptor } from './interceptors/standard-enc
 import { biaTokenInterceptor } from './interceptors/token.interceptor';
 
 // Services
-import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { KeycloakAngularModule } from 'keycloak-angular';
 import { AppSettingsModule } from 'src/app/domains/bia-domains/app-settings/app-settings.module';
@@ -52,21 +51,12 @@ const SERVICES = [
   NotificationSignalRService,
 ];
 
-const BASE_HREF = [
-  {
-    provide: APP_BASE_HREF,
-    useFactory: (s: PlatformLocation) => s.getBaseHrefFromDOM(),
-    deps: [PlatformLocation],
-  },
-];
-
 @NgModule({
   imports: [...MODULES],
   exports: [...MODULES],
   providers: [
     ...INTERCEPTORS,
     ...SERVICES,
-    ...BASE_HREF,
     {
       provide: APP_INITIALIZER,
       useFactory: initializeApp,

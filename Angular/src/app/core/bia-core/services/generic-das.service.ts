@@ -1,4 +1,3 @@
-import { APP_BASE_HREF } from '@angular/common';
 import {
   HttpClient,
   HttpHeaders,
@@ -26,10 +25,12 @@ import { BiaEnvironmentService } from './bia-environment.service';
 import { BiaOnlineOfflineService } from './bia-online-offline.service';
 import { DateHelperService } from './date-helper.service';
 import { MatomoTracker } from './matomo/matomo-tracker.service';
+import { Router } from '@angular/router';
 
 export abstract class GenericDas {
   public http: HttpClient;
   public route: string;
+  protected router: Router;
   protected matomoTracker: MatomoTracker;
   protected db: AppDB;
   protected baseHref: string;
@@ -38,9 +39,10 @@ export abstract class GenericDas {
     protected injector: Injector,
     protected endpoint: string
   ) {
-    this.baseHref = this.injector.get(APP_BASE_HREF);
+    //this.baseHref = this.injector.get(APP_BASE_HREF);
     this.http = injector.get<HttpClient>(HttpClient);
     this.route = GenericDas.buildRoute(endpoint);
+    this.router = injector.get<Router>(Router);
     this.matomoTracker = injector.get<MatomoTracker>(MatomoTracker);
     if (BiaOnlineOfflineService.isModeEnabled === true) {
       this.db = injector.get<AppDB>(AppDB);
@@ -78,7 +80,8 @@ export abstract class GenericDas {
           error.status === HttpStatusCode.Forbidden ||
           error.status == HttpStatusCode.NotFound
         ) {
-          location.assign(this.baseHref);
+          this.router.navigate(['/']);
+          //location.assign(this.baseHref);
         }
         return throwError(() => error);
       })

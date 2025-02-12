@@ -1,5 +1,4 @@
-import { APP_BASE_HREF } from '@angular/common';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
@@ -19,6 +18,7 @@ import { Engine } from '../model/engine';
 import { EngineDas } from '../services/engine-das.service';
 import { FeatureEnginesStore } from './engine.state';
 import { FeatureEnginesActions } from './engines-actions';
+import { Router } from '@angular/router';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -57,7 +57,7 @@ export class EnginesEffects {
           map(engine => FeatureEnginesActions.loadSuccess({ engine })),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
-            location.assign(this.baseHref);
+            this.router.navigate(['/']);
             return of(FeatureEnginesActions.failure({ error: err }));
           })
         );
@@ -256,6 +256,6 @@ export class EnginesEffects {
     private engineDas: EngineDas,
     private biaMessageService: BiaMessageService,
     private store: Store<AppState>,
-    @Inject(APP_BASE_HREF) public baseHref: string
+    private router: Router
   ) {}
 }

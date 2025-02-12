@@ -1,5 +1,4 @@
-import { APP_BASE_HREF } from '@angular/common';
-import { Component, HostBinding, Inject, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { tap } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -43,9 +42,8 @@ export class LayoutComponent implements OnInit {
     protected navigationService: NavigationService,
     protected authService: AuthService,
     protected readonly layoutService: BiaLayoutService,
-    protected readonly store: Store,
+    protected readonly store: Store
     // protected notificationSignalRService: NotificationSignalRService,
-    @Inject(APP_BASE_HREF) public baseHref: string
   ) {
     this.classicStyle = layoutService.config().classicStyle;
     this.layoutService.configUpdate$

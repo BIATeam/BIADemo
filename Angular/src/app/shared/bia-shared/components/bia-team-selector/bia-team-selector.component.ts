@@ -1,8 +1,6 @@
-import { APP_BASE_HREF } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  Inject,
   Input,
   OnDestroy,
   OnInit,
@@ -58,8 +56,7 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
     public translateService: TranslateService,
     public biaTranslationService: BiaTranslationService,
     protected authService: AuthService,
-    protected store: Store<AppState>,
-    @Inject(APP_BASE_HREF) public baseHref: string
+    protected store: Store<AppState>
   ) {}
 
   ngOnInit() {
