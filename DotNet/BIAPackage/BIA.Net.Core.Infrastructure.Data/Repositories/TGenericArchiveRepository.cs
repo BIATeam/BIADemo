@@ -46,26 +46,12 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         }
 
         /// <inheritdoc/>
-        public virtual async Task<IReadOnlyList<TEntity>> GetItemsToDeleteAsync(double? archiveDateMaxDays = 365)
-        {
-            var query = this.GetAllQuery().Where(this.DeleteStepItemsSelector(archiveDateMaxDays));
-            return await query.ToListAsync();
-        }
-
-        /// <inheritdoc/>
         public async Task SetAsArchivedAsync(TEntity entity)
         {
             entity.IsArchived = true;
             entity.ArchivedDate = DateTime.UtcNow;
 
             this.dataContext.SetModified(entity);
-            await this.dataContext.CommitAsync();
-        }
-
-        /// <inheritdoc/>
-        public async Task RemoveAsync(TEntity entity)
-        {
-            this.dataContext.RetrieveSet<TEntity>().Remove(entity);
             await this.dataContext.CommitAsync();
         }
 
@@ -76,19 +62,6 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         protected virtual Expression<Func<TEntity, bool>> ArchiveStepItemsSelector()
         {
             return x => x.IsFixed && x.FixedDate != null && (x.ArchivedDate == null || x.ArchivedDate.Value < x.FixedDate.Value);
-        }
-
-        /// <summary>
-        /// Selector of items to delete.
-        /// </summary>
-        /// <param name="archiveDateMaxDays">The maximum days of archive date of item to select.</param>
-        /// <returns>Selector expression.</returns>
-        protected virtual Expression<Func<TEntity, bool>> DeleteStepItemsSelector(double? archiveDateMaxDays = 365)
-        {
-            var currentDateTime = DateTime.UtcNow;
-            var maxDays = archiveDateMaxDays.GetValueOrDefault();
-
-            return x => x.IsArchived && x.ArchivedDate != null && (archiveDateMaxDays == null || x.ArchivedDate.Value.AddDays(maxDays) < currentDateTime);
         }
 
         /// <summary>

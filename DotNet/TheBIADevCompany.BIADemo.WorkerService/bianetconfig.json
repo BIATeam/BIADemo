@@ -33,9 +33,7 @@
         "ArchiveEntityConfigurations": [
           {
             "EntityName": "Plane",
-            "TargetDirectoryPath": "C:\\temp\\archives\\biademo\\planes",
-            "EnableDeleteStep": false,
-            "ArchiveMaxDaysBeforeDelete": 365
+            "TargetDirectoryPath": "C:\\temp\\archives\\biademo\\planes"
           }
         ]
         // End BIADemo

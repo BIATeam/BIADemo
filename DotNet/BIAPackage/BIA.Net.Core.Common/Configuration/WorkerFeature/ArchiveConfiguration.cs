@@ -38,16 +38,6 @@ namespace BIA.Net.Core.Common.Configuration.WorkerFeature
             public string TargetDirectoryPath { get; set; }
 
             /// <summary>
-            /// Indicates weither the delete step of archive is enabled or not.
-            /// </summary>
-            public bool EnableDeleteStep { get; set; }
-
-            /// <summary>
-            /// The maximum days since archiving before deleting the items in database.
-            /// </summary>
-            public double? ArchiveMaxDaysBeforeDelete { get; set; }
-
-            /// <summary>
             /// Indicates weither the current entity archive configuration is valid.
             /// </summary>
             public bool IsValid => !string.IsNullOrWhiteSpace(this.EntityName) && !string.IsNullOrWhiteSpace(this.TargetDirectoryPath);

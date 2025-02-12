@@ -8,7 +8,6 @@ namespace BIA.Net.Core.Application.Archive
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
-    using System.Net.Http.Json;
     using System.Security.Cryptography;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
@@ -82,11 +81,6 @@ namespace BIA.Net.Core.Application.Archive
                 }
 
                 await this.RunArchiveStepAsync();
-
-                if (this.archiveEntityConfiguration.EnableDeleteStep)
-                {
-                    await this.RunDeleteStepAsync();
-                }
             }
             finally
             {
@@ -195,37 +189,6 @@ namespace BIA.Net.Core.Application.Archive
                 {
                     File.Delete(sourceZipFilePath);
                 }
-            }
-        }
-
-        /// <summary>
-        /// Run delete step.
-        /// </summary>
-        /// <returns><see cref="Task"/>.</returns>
-        protected virtual async Task RunDeleteStepAsync()
-        {
-            var items = await this.archiveRepository.GetItemsToDeleteAsync(this.archiveEntityConfiguration.ArchiveMaxDaysBeforeDelete);
-            foreach (var item in items)
-            {
-                await this.DeleteItemAsync(item);
-            }
-        }
-
-        /// <summary>
-        /// Delete an entity.
-        /// </summary>
-        /// <param name="item">The entity to delete.</param>
-        /// <returns><see cref="Task"/>.</returns>
-        protected virtual async Task DeleteItemAsync(TEntity item)
-        {
-            try
-            {
-                await this.archiveRepository.RemoveAsync(item);
-                this.logger.LogInformation("Item {ItemId} deleted successfully", item.Id);
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, "Failed to delete item {ItemId} : {ExceptionMessage}", item.Id, ex.Message);
             }
         }
 
