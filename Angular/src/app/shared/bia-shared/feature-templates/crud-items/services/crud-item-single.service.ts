@@ -65,6 +65,33 @@ export abstract class CrudItemSingleService<CrudItem extends BaseDto> {
     this.load(id);
   }
 
+  /**
+   * Type of store action called after update effect is successful.
+   * See update effect in store effects of CRUD item.
+   */
+  protected _updateSuccessActionType: string | undefined;
+  public get updateSuccessActionType(): string | undefined {
+    return this._updateSuccessActionType;
+  }
+
+  /**
+   * Type of store action called when update effect has failed.
+   * See update effect in store effects of CRUD item.
+   */
+  protected _updateFailureActionType: string | undefined;
+  public get updateFailureActionType(): string | undefined {
+    return this._updateFailureActionType;
+  }
+
+  /**
+   * Type of store action called after create effect is successful.
+   * See create effect in store effects of CRUD item.
+   */
+  protected _createSuccessActionType: string | undefined;
+  public get createSuccessActionType(): string | undefined {
+    return this._createSuccessActionType;
+  }
+
   initSub() {
     this.crudItem$.subscribe(crudItem => {
       if (crudItem) {

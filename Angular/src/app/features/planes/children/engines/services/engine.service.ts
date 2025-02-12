@@ -17,6 +17,10 @@ import { EngineOptionsService } from './engine-options.service';
   providedIn: 'root',
 })
 export class EngineService extends CrudItemService<Engine> {
+  _updateSuccessActionType = FeatureEnginesActions.loadAllByPost.type;
+  _createSuccessActionType = FeatureEnginesActions.loadAllByPost.type;
+  _updateFailureActionType = FeatureEnginesActions.failure.type;
+
   constructor(
     private store: Store<AppState>,
     public dasService: EngineDas,

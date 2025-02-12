@@ -24,5 +24,9 @@ export const planeTypeFieldsConfiguration: BiaFieldsConfig<PlaneType> = {
         isRequired: true,
       }
     ),
+    Object.assign(new BiaFieldConfig('rowVersion', 'planeType.rowVersion'), {
+      isVisible: false,
+      isHideByDefault: true,
+    }),
   ],
 };
