@@ -12,16 +12,19 @@
   <p-header>
     {{ 'bia.views.manageViews' | translate }}
   </p-header>
-  <p-tabs *ngIf="display">
+  <p-tabs *ngIf="display" value="0">
+    @let teams = teams$ | async;
     <p-tablist>
-      <p-tab>{{ 'bia.views.user' | translate | uppercase }}</p-tab>
-      <p-tab
+      <p-tab *ngIf="canSetUserView" value="0">{{
+        'bia.views.user' | translate | uppercase
+      }}</p-tab>
+      <p-tab *ngIf="canSetTeamView && (teams ?? []).length > 0" value="1"
         >{{ 'bia.views.team' | translate | uppercase }}
-        {{ (teams$ | async)?.length === 1 ? teamSelected.title : '' }}</p-tab
+        {{ teams?.length === 1 ? teamSelected.title : '' }}</p-tab
       >
     </p-tablist>
     <p-tabpanels>
-      <p-tabpanel *ngIf="canSetUserView()">
+      <p-tabpanel *ngIf="canSetUserView" value="0">
         <div
           class="app-div-view-form"
           *ngIf="canAddUserView === true || canUpdateUserView === true">
@@ -39,14 +42,13 @@
           (setDefault)="onSetDefaultUserView($event)"
           (viewSelect)="onUserViewSelected($event)"></bia-view-user-table>
       </p-tabpanel>
-      <p-tabpanel
-        *ngIf="canSetTeamView() && ((teams$ | async) ?? []).length > 0">
+      <p-tabpanel *ngIf="canSetTeamView && (teams ?? []).length > 0" value="1">
         <div class="app-div-select-team">
           <p-select
-            *ngIf="((teams$ | async) ?? []).length > 1"
+            *ngIf="(teams ?? []).length > 1"
             optionLabel="title"
             placeholder="{{ 'bia.views.selectTeam' | translate }}"
-            [options]="(teams$ | async) ?? []"
+            [options]="teams ?? []"
             [(ngModel)]="teamSelected"></p-select>
         </div>
         <ng-container *ngIf="teamSelected">

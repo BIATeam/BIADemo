@@ -247,7 +247,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
     return stateString;
   }
 
-  canSetUserView() {
+  get canSetUserView(): boolean {
     return (
       this.canAddUserView ||
       this.canDeleteUserView ||
@@ -256,7 +256,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
     );
   }
 
-  canSetTeamView() {
+  get canSetTeamView(): boolean {
     return (
       this.canAddTeamView ||
       this.canSetDefaultTeamView ||

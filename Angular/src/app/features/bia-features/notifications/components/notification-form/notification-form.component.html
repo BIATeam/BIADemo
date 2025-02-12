@@ -4,19 +4,27 @@
     style="max-width: 100%">
     <div class="flex flex-column flex-1" style="max-width: 50%">
       <p-fieldset legend="{{ 'bia.translation.translatedFields' | translate }}">
-        <p-tabs>
+        <p-tabs value="0">
           <p-tablist>
-            <p-tab>{{ 'translation.defaultLanguage' | translate }}</p-tab>
-            @for (
-              item of notificationTranslations['controls'];
-              track item.value
-            ) {
-              <p-tab>{{ labelTranslation(item.value.languageId) }}</p-tab>
-            }
-            <p-tab>+</p-tab>
+            <p-tab value="0">{{
+              'translation.defaultLanguage' | translate
+            }}</p-tab>
+            <p-tab
+              *ngFor="
+                let item of notificationTranslations['controls'];
+                let i = index
+              "
+              [value]="i + 1"
+              >{{ labelTranslation(item.value.languageId) }}</p-tab
+            >
+            <p-tab
+              *ngIf="hasMissingLanguageOptions"
+              [value]="notificationTranslations['controls'].length + 1"
+              >+</p-tab
+            >
           </p-tablist>
           <p-tabpanels>
-            <p-tabpanel>
+            <p-tabpanel value="0">
               <div class="flex flex-row justify-content-center">
                 <div class="app-field-container flex-1" style="max-width: 90%">
                   <span class="p-float-label">
@@ -65,7 +73,7 @@
                 let item of notificationTranslations['controls'];
                 let i = index
               ">
-              <p-tabpanel>
+              <p-tabpanel [value]="i + 1">
                 <div [formGroupName]="i">
                   <input formControlName="languageId" type="hidden" />
                   <div class="flex flex-row justify-content-center">
@@ -117,7 +125,9 @@
                 </div>
               </p-tabpanel>
             </ng-container>
-            <p-tabpanel *ngIf="(missingLanguageOptions?.length ?? 0) > 0">
+            <p-tabpanel
+              *ngIf="hasMissingLanguageOptions"
+              [value]="notificationTranslations['controls'].length + 1">
               <ng-template pTemplate="header">
                 <i class="pi pi-plus"></i>
               </ng-template>
