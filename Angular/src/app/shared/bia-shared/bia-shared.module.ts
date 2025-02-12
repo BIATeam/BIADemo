@@ -1,7 +1,10 @@
 // Modules
 import { PortalModule } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -79,6 +82,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { MessageService } from 'primeng/api';
 
 // Component
+import { RouterModule } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { SkeletonModule } from 'primeng/skeleton';
@@ -189,13 +193,13 @@ const MODULES = [
   TranslateModule,
   FormsModule,
   ReactiveFormsModule,
-  HttpClientModule,
   TeamModule,
   //BiaLayoutModule,
   BiaTeamSelectorModule,
   BiaOnlineOfflineIconModule,
   NotificationTeamWarningModule,
   BiaUltimaLayoutModule,
+  RouterModule,
 ];
 
 const COMPONENTS = [
@@ -274,7 +278,7 @@ const STANDALONE_COMPONENTS = [IeWarningComponent];
     ...VIEW_COMPONENTS,
     ...PIPES,
   ],
-  providers: [...SERVICES],
+  providers: [...SERVICES, provideHttpClient(withInterceptorsFromDi())],
 })
 
 // https://medium.com/@benmohamehdi/angular-best-practices-coremodule-vs-sharedmodule-25f6721aa2ef
