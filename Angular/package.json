@@ -45,6 +45,7 @@
     "@ngrx/operators": "^18.0.0",
     "@ngrx/store": "~18.1.1",
     "@ngx-translate/core": "~15.0.0",
+    "@primeng/themes": "^18.0.2",
     "@types/file-saver": "~2.0.7",
     "date-fns": "~3.6.0",
     "deepmerge": "~4.3.1",

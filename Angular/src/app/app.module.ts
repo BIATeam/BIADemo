@@ -11,6 +11,7 @@ import {
   TranslateModule,
   TranslateStore,
 } from '@ngx-translate/core';
+import Material from '@primeng/themes/material';
 import { LoggerModule, TOKEN_LOGGER_SERVER_SERVICE } from 'ngx-logger';
 import { providePrimeNG } from 'primeng/config';
 import { environment } from 'src/environments/environment';
@@ -74,7 +75,11 @@ export function createTranslateLoader(http: HttpClient, store: TranslateStore) {
     { provide: LOCALE_ID, useFactory: getCurrentCulture },
     { provide: ErrorHandler, useClass: BiaErrorHandler },
     BiaSignalRService,
-    providePrimeNG(),
+    providePrimeNG({
+      theme: {
+        preset: Material,
+      },
+    }),
   ],
   bootstrap: [AppComponent],
 })
