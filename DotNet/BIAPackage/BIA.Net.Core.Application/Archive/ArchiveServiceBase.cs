@@ -8,6 +8,7 @@ namespace BIA.Net.Core.Application.Archive
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Security.Cryptography;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
@@ -28,22 +29,6 @@ namespace BIA.Net.Core.Application.Archive
     public abstract class ArchiveServiceBase<TEntity, TKey> : IArchiveService
         where TEntity : class, IEntityArchivable<TKey>
     {
-#pragma warning disable SA1401 // Fields should be private
-        /// <summary>
-        /// The entity archive configuration.
-        /// </summary>
-        protected readonly ArchiveEntityConfiguration archiveEntityConfiguration;
-
-        /// <summary>
-        /// The entity archive repository.
-        /// </summary>
-        protected readonly ITGenericArchiveRepository<TEntity, TKey> archiveRepository;
-
-        /// <summary>
-        /// The logger.
-        /// </summary>
-        protected readonly ILogger logger;
-#pragma warning restore SA1401 // Fields should be private
         private readonly JsonSerializerSettings jsonSerializerSettings;
 
         /// <summary>
@@ -56,10 +41,10 @@ namespace BIA.Net.Core.Application.Archive
         {
             var biaNetSection = new BiaNetSection();
             configuration?.GetSection("BiaNet").Bind(biaNetSection);
-            this.archiveEntityConfiguration = biaNetSection.WorkerFeatures?.Archive?.ArchiveEntityConfigurations.FirstOrDefault(x => x.IsValid && x.IsMatchingEntityType(typeof(TEntity)));
+            this.ArchiveEntityConfiguration = biaNetSection.WorkerFeatures?.Archive?.ArchiveEntityConfigurations.FirstOrDefault(x => x.IsValid && x.IsMatchingEntityType(typeof(TEntity)));
 
-            this.archiveRepository = archiveRepository;
-            this.logger = logger;
+            this.ArchiveRepository = archiveRepository;
+            this.Logger = logger;
 
             this.jsonSerializerSettings = new JsonSerializerSettings
             {
@@ -67,24 +52,43 @@ namespace BIA.Net.Core.Application.Archive
             };
         }
 
+        /// <summary>
+        /// The entity archive configuration.
+        /// </summary>
+        protected ArchiveEntityConfiguration ArchiveEntityConfiguration { get; }
+
+        /// <summary>
+        /// The entity archive repository.
+        /// </summary>
+        protected ITGenericArchiveRepository<TEntity, TKey> ArchiveRepository { get; }
+
+        /// <summary>
+        /// The logger.
+        /// </summary>
+        protected ILogger Logger { get; }
+
         /// <inheritdoc/>
         public async Task RunAsync()
         {
             try
             {
-                this.logger.LogInformation("Begin archive of {EntityTypeName} entity", typeof(TEntity).Name);
+                this.Logger.LogInformation("Begin archive of {EntityTypeName} entity", typeof(TEntity).Name);
 
-                if (this.archiveEntityConfiguration is null)
+                if (this.ArchiveEntityConfiguration is null)
                 {
-                    this.logger.LogWarning("No valid archive configuration found for the entity {EntityTypeName}.", typeof(TEntity).Name);
+                    this.Logger.LogWarning("No valid archive configuration found for the entity {EntityTypeName}.", typeof(TEntity).Name);
                     return;
                 }
 
-                await this.RunArchiveStepAsync();
+                var items = await this.ArchiveRepository.GetAllAsync(this.ArchiveFilerRule());
+                foreach (var item in items)
+                {
+                    await this.ArchiveItemAsync(item);
+                }
             }
             finally
             {
-                this.logger.LogInformation("End archive of {EntityTypeName} entity", typeof(TEntity).Name);
+                this.Logger.LogInformation("End archive of {EntityTypeName} entity", typeof(TEntity).Name);
             }
         }
 
@@ -96,16 +100,12 @@ namespace BIA.Net.Core.Application.Archive
         protected abstract string GetArchiveNameTemplate(TEntity entity);
 
         /// <summary>
-        /// Run archive step.
+        /// The rule to filter the entities to archive.
         /// </summary>
-        /// <returns><see cref="Task"/>.</returns>
-        protected virtual async Task RunArchiveStepAsync()
+        /// <returns><see cref="Expression"/>.</returns>
+        protected virtual Expression<Func<TEntity, bool>> ArchiveFilerRule()
         {
-            var items = await this.archiveRepository.GetItemsToArchiveAsync();
-            foreach (var item in items)
-            {
-                await this.ArchiveItemAsync(item);
-            }
+            return x => x.IsFixed && x.FixedDate != null && (x.ArchivedDate == null || x.ArchivedDate.Value < x.FixedDate.Value);
         }
 
         /// <summary>
@@ -117,15 +117,15 @@ namespace BIA.Net.Core.Application.Archive
         {
             try
             {
-                if (await this.SaveItemAsFlatTextCompressedAsync(item, this.archiveEntityConfiguration.TargetDirectoryPath))
+                if (await this.SaveItemAsFlatTextCompressedAsync(item, this.ArchiveEntityConfiguration.TargetDirectoryPath))
                 {
-                    await this.archiveRepository.SetAsArchivedAsync(item);
-                    this.logger.LogInformation("Item {ItemId} archived successfully", item.Id);
+                    await this.ArchiveRepository.SetAsArchivedAsync(item);
+                    this.Logger.LogInformation("Item {ItemId} archived successfully", item.Id);
                 }
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex, "Failed to archive item {ItemId} : {ExceptionMessage}", item.Id, ex.Message);
+                this.Logger.LogError(ex, "Failed to archive item {ItemId} : {ExceptionMessage}", item.Id, ex.Message);
             }
         }
 
@@ -174,7 +174,7 @@ namespace BIA.Net.Core.Application.Archive
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex, "Failed to save item {ItemId} : {ExceptionMessage}", item.Id, ex.Message);
+                this.Logger.LogError(ex, "Failed to save item {ItemId} : {ExceptionMessage}", item.Id, ex.Message);
 
                 if (File.Exists(targetZipFilePath))
                 {
