@@ -80,7 +80,7 @@ namespace BIA.Net.Core.Application.Archive
                     return;
                 }
 
-                var items = await this.ArchiveRepository.GetAllAsync(this.ArchiveFilerRule());
+                var items = await this.ArchiveRepository.GetAllAsync(this.ArchiveFilterRule());
                 foreach (var item in items)
                 {
                     await this.ArchiveItemAsync(item);
@@ -103,7 +103,7 @@ namespace BIA.Net.Core.Application.Archive
         /// The rule to filter the entities to archive.
         /// </summary>
         /// <returns><see cref="Expression"/>.</returns>
-        protected virtual Expression<Func<TEntity, bool>> ArchiveFilerRule()
+        protected virtual Expression<Func<TEntity, bool>> ArchiveFilterRule()
         {
             return x => x.IsFixed && x.FixedDate != null && (x.ArchivedDate == null || x.ArchivedDate.Value < x.FixedDate.Value);
         }
