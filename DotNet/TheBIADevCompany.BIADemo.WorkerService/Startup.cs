@@ -9,6 +9,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using System.Security.Claims;
     using System.Security.Principal;
     using BIA.Net.Core.Application.Archive;
+    using BIA.Net.Core.Application.Clean;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Authentication;
@@ -86,6 +87,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             services.AddSingleton<IDatabaseHandlerRepository, PlaneHandlerRepository>();
             services.AddSingleton<IDatabaseHandlerRepository, AirportHandlerRepository>();
             services.AddTransient<IArchiveService, PlaneArchiveService>();
+            services.AddTransient<ICleanService, PlaneCleanService>();
 
             // End BIADemo
 #endif

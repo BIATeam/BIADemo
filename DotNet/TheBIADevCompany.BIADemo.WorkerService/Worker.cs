@@ -13,6 +13,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     // End BIADemo
     using System.Threading;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Clean;
     using BIA.Net.Core.WorkerService;
     using Hangfire;
 

@@ -23,45 +23,33 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         where TEntity : class, IEntityArchivable<TKey>
     {
         /// <summary>
-        /// Datacontext.
-        /// </summary>
-#pragma warning disable SA1401 // Fields should be private
-        protected readonly IQueryableUnitOfWork dataContext;
-#pragma warning restore SA1401 // Fields should be private
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="TGenericArchiveRepository{TEntity, TKey}"/> class.
         /// </summary>
-        /// <param name="dataContext">The <see cref="IQueryableUnitOfWork"/> context.</param>
-        public TGenericArchiveRepository(IQueryableUnitOfWork dataContext)
+        /// <param name="context">The <see cref="IQueryableUnitOfWork"/> context.</param>
+        public TGenericArchiveRepository(IQueryableUnitOfWork context)
         {
-            this.dataContext = dataContext;
+            this.Context = context;
+        }
+
+        /// <summary>
+        /// The context.
+        /// </summary>
+        protected IQueryableUnitOfWork Context { get; }
+
+        /// <inheritdoc/>
+        public virtual async Task<IReadOnlyList<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> rule)
+        {
+            return await this.GetAllQuery().Where(rule).ToListAsync();
         }
 
         /// <inheritdoc/>
-        public virtual async Task<IReadOnlyList<TEntity>> GetItemsToArchiveAsync()
-        {
-            var query = this.GetAllQuery().Where(this.ArchiveStepItemsSelector());
-            return await query.ToListAsync();
-        }
-
-        /// <inheritdoc/>
-        public async Task SetAsArchivedAsync(TEntity entity)
+        public virtual async Task SetAsArchivedAsync(TEntity entity)
         {
             entity.IsArchived = true;
             entity.ArchivedDate = DateTime.UtcNow;
 
-            this.dataContext.SetModified(entity);
-            await this.dataContext.CommitAsync();
-        }
-
-        /// <summary>
-        /// Selector of items to archive.
-        /// </summary>
-        /// <returns>Selector expression.</returns>
-        protected virtual Expression<Func<TEntity, bool>> ArchiveStepItemsSelector()
-        {
-            return x => x.IsFixed && x.FixedDate != null && (x.ArchivedDate == null || x.ArchivedDate.Value < x.FixedDate.Value);
+            this.Context.SetModified(entity);
+            await this.Context.CommitAsync();
         }
 
         /// <summary>
@@ -70,8 +58,8 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <returns><see cref="IQueryable{TEntity}"/>.</returns>
         protected virtual IQueryable<TEntity> GetAllQuery()
         {
-            var entityType = this.dataContext.FindEntityType(typeof(TEntity));
-            return GetQueryWithIncludesRecursive(this.dataContext.RetrieveSet<TEntity>(), entityType).AsSplitQuery();
+            var entityType = this.Context.FindEntityType(typeof(TEntity));
+            return SetIncludesRecursive(this.Context.RetrieveSet<TEntity>(), entityType).AsSplitQuery();
         }
 
         /// <summary>
@@ -82,7 +70,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="parentNavigationPath">Include navigation of parent.</param>
         /// <param name="parentEntityType">Parent entity's type.</param>
         /// <returns><see cref="IQueryable{TEntity}"/>.</returns>
-        private static IQueryable<TEntity> GetQueryWithIncludesRecursive(IQueryable<TEntity> query, IEntityType entityType, string parentNavigationPath = null, IEntityType parentEntityType = null)
+        private static IQueryable<TEntity> SetIncludesRecursive(IQueryable<TEntity> query, IEntityType entityType, string parentNavigationPath = null, IEntityType parentEntityType = null)
         {
             foreach (var navigation in entityType.GetNavigations())
             {
@@ -97,7 +85,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
 
                 if (navigation.ForeignKey.PrincipalEntityType == entityType && (navigation.ForeignKey.DeleteBehavior == DeleteBehavior.Cascade || navigation.ForeignKey.DeleteBehavior == DeleteBehavior.ClientCascade))
                 {
-                    query = GetQueryWithIncludesRecursive(query, navigationEntityType, navigationPath, entityType);
+                    query = SetIncludesRecursive(query, navigationEntityType, navigationPath, entityType);
                 }
             }
 
