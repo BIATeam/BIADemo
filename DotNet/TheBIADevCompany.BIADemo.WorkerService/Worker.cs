@@ -13,6 +13,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     // End BIADemo
     using System.Threading;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Clean;
     using BIA.Net.Core.WorkerService;
     using Hangfire;
 
@@ -65,7 +66,8 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             while (!stoppingToken.IsCancellationRequested)
             {
                 var client = new BackgroundJobClient();
-                client.Create<ExampleTask>(x => x.Run(), new EnqueuedState());
+                //client.Create<ExampleTask>(x => x.Run(), new EnqueuedState());
+                client.Create<CleanTask>(x => x.Run(), new EnqueuedState());
 
                 this.logger.LogInformation("Worker is alive");
                 await Task.Delay(600000);

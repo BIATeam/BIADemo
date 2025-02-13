@@ -10,9 +10,9 @@
     using BIA.Net.Core.Domain.RepoContract;
     using Microsoft.EntityFrameworkCore;
 
-    public abstract class TGenericCleanRepository<TEntity, TKey> : ITGenericCleanRepository<TEntity, TKey> where TEntity : class, IEntity<TKey>
+    public class TGenericCleanRepository<TEntity, TKey> : ITGenericCleanRepository<TEntity, TKey> where TEntity : class, IEntity<TKey>
     {
-        protected TGenericCleanRepository(IQueryableUnitOfWork context)
+        public TGenericCleanRepository(IQueryableUnitOfWork context)
         {
             this.Context = context;
         }

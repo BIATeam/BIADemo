@@ -34,7 +34,7 @@
                     return;
                 }
 
-                this.Logger.LogInformation("Successfully clean {CleandItemCount} {EntityName} entities...", cleanedItemCount, typeof(TEntity).Name);
+                this.Logger.LogInformation("Successfully clean {CleandItemCount} {EntityName} entities !", cleanedItemCount, typeof(TEntity).Name);
             }
             catch (Exception ex)
             {
