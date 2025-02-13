@@ -1,15 +1,20 @@
-﻿namespace BIA.Net.Core.Application.Clean
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Domain;
+﻿// <copyright file="ICleanService.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
+namespace BIA.Net.Core.Application.Clean
+{
+    using System.Threading.Tasks;
+
+    /// <summary>
+    /// Interface for clean services.
+    /// </summary>
     public interface ICleanService
     {
+        /// <summary>
+        /// Run the clean service.
+        /// </summary>
+        /// <returns><see cref="Task"/>.</returns>
         public Task RunAsync();
     }
 }

@@ -1,33 +1,52 @@
-﻿namespace BIA.Net.Core.Application.Clean
+﻿// <copyright file="CleanServiceBase.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace BIA.Net.Core.Application.Clean
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
-    using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.RepoContract;
     using Microsoft.Extensions.Logging;
 
-    public abstract class CleanServiceBase<TEntity, TKey> : ICleanService where TEntity : class, IEntity<TKey>
+    /// <summary>
+    /// Abstract class for all clean services of an entity.
+    /// </summary>
+    /// <typeparam name="TEntity">Entity type.</typeparam>
+    /// <typeparam name="TKey">Entity key type.</typeparam>
+    public abstract class CleanServiceBase<TEntity, TKey> : ICleanService
+        where TEntity : class, IEntity<TKey>
     {
-        private readonly ITGenericCleanRepository<TEntity, TKey> repository;
-
-        protected CleanServiceBase(ITGenericCleanRepository<TEntity, TKey> repository, ILogger logger)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CleanServiceBase{TEntity, TKey}"/> class.
+        /// </summary>
+        /// <param name="cleanRepository">The clean repository.</param>
+        /// <param name="logger">The logger.</param>
+        protected CleanServiceBase(ITGenericCleanRepository<TEntity, TKey> cleanRepository, ILogger logger)
         {
-            this.repository = repository;
+            this.CleanRepository = cleanRepository;
             this.Logger = logger;
         }
 
+        /// <summary>
+        /// The clean repository.
+        /// </summary>
+        protected ITGenericCleanRepository<TEntity, TKey> CleanRepository { get; }
+
+        /// <summary>
+        /// Logger.
+        /// </summary>
         protected ILogger Logger { get; }
 
+        /// <inheritdoc/>
         public async Task RunAsync()
         {
             try
             {
                 this.Logger.LogInformation("Cleaning {EntityName} entities...", typeof(TEntity).Name);
-                var cleanedItemCount = await this.repository.RemoveAll(this.CleanRuleFilter());
+                var cleanedItemCount = await this.CleanRepository.RemoveAll(this.CleanRuleFilter());
                 if (cleanedItemCount == 0)
                 {
                     this.Logger.LogInformation("No {EntityName} entities to clean", typeof(TEntity).Name);
@@ -42,6 +61,10 @@
             }
         }
 
+        /// <summary>
+        /// The rule to filter the entities to clean.
+        /// </summary>
+        /// <returns><see cref="Expression"/>.</returns>
         protected abstract Expression<Func<TEntity, bool>> CleanRuleFilter();
     }
 }
