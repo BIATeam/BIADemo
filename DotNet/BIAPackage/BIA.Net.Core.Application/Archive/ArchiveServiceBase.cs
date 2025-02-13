@@ -68,7 +68,7 @@ namespace BIA.Net.Core.Application.Archive
         protected ILogger Logger { get; }
 
         /// <inheritdoc/>
-        public async Task RunAsync()
+        public virtual async Task RunAsync()
         {
             try
             {

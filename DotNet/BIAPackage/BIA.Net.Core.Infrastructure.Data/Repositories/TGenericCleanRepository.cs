@@ -35,7 +35,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         protected IQueryableUnitOfWork Context { get; }
 
         /// <inheritdoc/>
-        public async Task<int> RemoveAll(Expression<Func<TEntity, bool>> rule)
+        public virtual async Task<int> RemoveAll(Expression<Func<TEntity, bool>> rule)
         {
             var set = this.Context.RetrieveSet<TEntity>();
             var setWithIncludes = this.SetIncludes(set);
