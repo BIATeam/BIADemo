@@ -8,17 +8,18 @@
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Clean;
     using BIA.Net.Core.Domain.RepoContract;
+    using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
 
-    public class PlaneCleanService : CleanServiceBase<Plane, int>
+    public class AirportCleanService : CleanServiceBase<Airport, int>
     {
-        public PlaneCleanService(ITGenericRepository<Plane, int> repository) : base(repository)
+        public AirportCleanService(ITGenericCleanRepository<Airport, int> repository, ILogger<AirportCleanService> logger) : base(repository, logger)
         {
         }
 
-        protected override Expression<Func<Plane, bool>> CleanRuleFilter()
+        protected override Expression<Func<Airport, bool>> CleanRuleFilter()
         {
-            return x => x.IsArchived == true;
+            return x => x.Name == "TLS";
         }
     }
 }

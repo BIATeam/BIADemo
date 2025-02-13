@@ -20,10 +20,13 @@
 
         protected override async Task RunMonitoredTask()
         {
-            foreach(var cleanService in cleanServices)
+            this.Logger.LogInformation("Start Clean Task");
+            foreach(var cleanService in this.cleanServices)
             {
                 await cleanService.RunAsync();
             }
+
+            this.Logger.LogInformation("End Clean Task");
         }
     }
 }

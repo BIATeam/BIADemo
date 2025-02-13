@@ -8,24 +8,38 @@
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.RepoContract;
+    using Microsoft.Extensions.Logging;
 
     public abstract class CleanServiceBase<TEntity, TKey> : ICleanService where TEntity : class, IEntity<TKey>
     {
-        private readonly ITGenericRepository<TEntity, TKey> repository;
+        private readonly ITGenericCleanRepository<TEntity, TKey> repository;
 
-        protected CleanServiceBase(ITGenericRepository<TEntity, TKey> repository)
+        protected CleanServiceBase(ITGenericCleanRepository<TEntity, TKey> repository, ILogger logger)
         {
             this.repository = repository;
+            this.Logger = logger;
         }
+
+        protected ILogger Logger { get; }
 
         public async Task RunAsync()
         {
-            var items = await this.repository.GetAllEntityAsync(filter: CleanRuleFilter());
-            foreach(var item in items)
+            try
             {
-                this.repository.Remove(item);
+                this.Logger.LogInformation("Cleaning {EntityName} entities...", typeof(TEntity).Name);
+                var cleanedItemCount = await this.repository.RemoveAll(this.CleanRuleFilter());
+                if (cleanedItemCount == 0)
+                {
+                    this.Logger.LogInformation("No {EntityName} entities to clean", typeof(TEntity).Name);
+                    return;
+                }
+
+                this.Logger.LogInformation("Successfully clean {CleandItemCount} {EntityName} entities...", cleanedItemCount, typeof(TEntity).Name);
             }
-            await this.repository.UnitOfWork.CommitAsync();
+            catch (Exception ex)
+            {
+                this.Logger.LogError(ex, "Fail to clean {EntityName} entities : {Error}", typeof(TEntity).Name, ex.Message);
+            }
         }
 
         protected abstract Expression<Func<TEntity, bool>> CleanRuleFilter();
