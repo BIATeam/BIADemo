@@ -87,7 +87,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             services.AddSingleton<IDatabaseHandlerRepository, PlaneHandlerRepository>();
             services.AddSingleton<IDatabaseHandlerRepository, AirportHandlerRepository>();
             services.AddTransient<IArchiveService, PlaneArchiveService>();
-            services.AddTransient<ICleanService, AirportCleanService>();
+            services.AddTransient<ICleanService, PlaneCleanService>();
 
             // End BIADemo
 #endif
