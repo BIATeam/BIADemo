@@ -3,7 +3,7 @@ import { createReducer, on } from '@ngrx/store';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { clone } from 'src/app/shared/bia-shared/utils';
 import { Notification } from '../model/notification';
-import { NotificationListItem } from '../model/notificationListItem';
+import { NotificationListItem } from '../model/notification-list-item';
 import { FeatureNotificationsActions } from './notifications-actions';
 
 // This adapter will allow is to manipulate notifications (mostly CRUD operations)

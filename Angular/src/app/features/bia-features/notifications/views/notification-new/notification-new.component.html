@@ -1,12 +1,6 @@
 <bia-notification-form
-  [notificationTypeOptions]="
-    (notificationOptionsService.notificationTypeOptions$ | async) ?? []
-  "
-  [roleOptions]="(notificationOptionsService.roleOptions$ | async) ?? []"
-  [userOptions]="(notificationOptionsService.userOptions$ | async) ?? []"
-  [teamOptions]="(notificationOptionsService.teamOptions$ | async) ?? []"
-  [languageOptions]="
-    (notificationOptionsService.languageOptions$ | async) ?? []
+  [dictOptionDtos]="
+    (crudItemService.optionsService.dictOptionDtos$ | async) ?? []
   "
   (cancel)="onCancelled()"
   (save)="onSubmitted($event)"></bia-notification-form>
