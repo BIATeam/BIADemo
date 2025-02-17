@@ -12,6 +12,7 @@ import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { saveAs } from 'file-saver';
+import { MenuItem } from 'primeng/api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable, Subscription, combineLatest } from 'rxjs';
 import { filter, first, skip, take, tap } from 'rxjs/operators';
@@ -250,6 +251,7 @@ export class CrudItemsIndexComponent<
       this.authService.authInfo$.subscribe((authInfo: AuthInfo) => {
         if (authInfo && authInfo.token !== '') {
           this.setPermissions();
+          this.initSelectedActions();
         }
       })
     );
@@ -457,6 +459,7 @@ export class CrudItemsIndexComponent<
 
   onSelectedElementsChanged(crudItems: ListCrudItem[]) {
     this.selectedCrudItems = crudItems;
+    this.initSelectedActions();
   }
 
   onPageSizeChange(pageSize: number) {
@@ -627,5 +630,11 @@ export class CrudItemsIndexComponent<
       );
       table.onLazyLoad.emit(table.createLazyLoadMetadata());
     }
+  }
+
+  protected selectedActions: MenuItem[];
+
+  protected initSelectedActions() {
+    this.selectedActions = [];
   }
 }

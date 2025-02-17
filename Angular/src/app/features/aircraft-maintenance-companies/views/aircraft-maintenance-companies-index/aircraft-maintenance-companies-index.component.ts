@@ -66,6 +66,42 @@ export class AircraftMaintenanceCompaniesIndexComponent extends CrudItemsIndexCo
       this.canDelete;
   }
 
+  protected initSelectedActions() {
+    this.selectedActions = [
+      {
+        label: this.translateService.instant('aircraftMaintenanceCompany.edit'),
+        tooltip: this.translateService.instant(
+          'aircraftMaintenanceCompany.edit'
+        ),
+        command: () => this.onEdit(this.selectedCrudItems[0].id),
+        visible: this.canEdit,
+        disabled: this.selectedCrudItems.length !== 1,
+      },
+      // Begin Child MaintenanceTeam
+      {
+        label: this.translateService.instant(
+          'aircraftMaintenanceCompany.maintenanceTeams'
+        ),
+        tooltip: this.translateService.instant(
+          'aircraftMaintenanceCompany.maintenanceTeams'
+        ),
+        command: () => this.onViewMaintenanceTeams(),
+        visible: this.canViewMaintenanceTeams,
+        disabled: this.selectedCrudItems.length !== 1,
+      },
+      {
+        label: this.translateService.instant('app.members'),
+        tooltip: this.translateService.instant('app.members'),
+        command: () => this.onViewMembers(this.selectedCrudItems[0].id),
+        visible: this.canViewMembers,
+        disabled:
+          this.selectedCrudItems.length !== 1 ||
+          !this.selectedCrudItems[0].canMemberListAccess,
+      },
+      // End Child MaintenanceTeam
+    ];
+  }
+
   onClickRowData(crudItem: AircraftMaintenanceCompany) {
     if (crudItem.canMemberListAccess) {
       this.onViewMembers(crudItem.id);

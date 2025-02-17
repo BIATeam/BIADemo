@@ -26,40 +26,19 @@
         (toggleTableControllerVisibility)="toggleTableControllerVisibility()">
         <!-- // Custo for teams -->
         <ng-template pTemplate="actionOnSelected">
-          <button
-            pButton
-            [disabled]="selectedCrudItems.length !== 1"
-            *ngIf="canEdit"
-            class="p-button-outlined"
-            label="{{ 'aircraftMaintenanceCompany.edit' | translate }}"
-            (click)="onEdit(selectedCrudItems[0].id)"
-            pTooltip="{{ 'aircraftMaintenanceCompany.edit' | translate }}"
-            tooltipPosition="top"></button>
-          <!-- // Begin Child MaintenanceTeam -->
-          <button
-            pButton
-            [disabled]="selectedCrudItems.length !== 1"
-            *ngIf="canViewMaintenanceTeams"
-            class="p-button-outlined"
-            label="{{
-              'aircraftMaintenanceCompany.maintenanceTeams' | translate
-            }}"
-            (click)="onViewMaintenanceTeams()"
-            pTooltip="{{
-              'aircraftMaintenanceCompany.maintenanceTeams' | translate
-            }}"
-            tooltipPosition="top"></button>
-          <button
-            pButton
-            [disabled]="
-              selectedCrudItems.length !== 1 ||
-              !selectedCrudItems[0].canMemberListAccess
-            "
-            *ngIf="canViewMembers"
-            class="p-button-outlined"
-            label="{{ 'app.members' | translate }}"
-            (click)="onViewMembers(selectedCrudItems[0].id)"></button>
-          <!-- // End Child MaintenanceTeam -->
+          <p-menubar [model]="selectedActions">
+            <ng-template pTemplate="item" let-item>
+              <button
+                pButton
+                [disabled]="item.disabled"
+                *ngIf="item.visible"
+                class="p-button-outlined"
+                [label]="item.label"
+                (click)="item.command($event)"
+                [pTooltip]="item.tooltip"
+                tooltipPosition="top"></button>
+            </ng-template>
+          </p-menubar>
         </ng-template>
       </bia-table-header>
       <bia-table-controller

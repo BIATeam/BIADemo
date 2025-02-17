@@ -267,3 +267,19 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
     }
   }
 }
+
+p-menubar div {
+  padding: 0.1rem;
+  border: none;
+  .p-menuitem {
+    cursor: pointer;
+    margin: 0.15rem;
+  }
+  .p-menubar-root-list {
+    width: auto;
+    border-radius: 4px;
+    .p-menuitem-content:hover {
+      background: transparent;
+    }
+  }
+}
