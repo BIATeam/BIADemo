@@ -26,19 +26,7 @@
         (toggleTableControllerVisibility)="toggleTableControllerVisibility()">
         <!-- // Custo for teams -->
         <ng-template pTemplate="actionOnSelected">
-          <p-menubar [model]="selectedActions">
-            <ng-template pTemplate="item" let-item>
-              <button
-                pButton
-                [disabled]="item.disabled"
-                *ngIf="item.visible"
-                class="p-button-outlined"
-                [label]="item.label"
-                (click)="item.command($event)"
-                [pTooltip]="item.tooltip"
-                tooltipPosition="top"></button>
-            </ng-template>
-          </p-menubar>
+          <bia-button-group [buttons]="selectedActions"></bia-button-group>
         </ng-template>
       </bia-table-header>
       <bia-table-controller

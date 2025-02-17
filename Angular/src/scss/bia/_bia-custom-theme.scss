@@ -268,20 +268,22 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
   }
 }
 
-p-menubar div {
+.bia-button-group div {
   padding: 0rem;
   border: none;
   margin-left: -0.2rem;
-  .p-menubar-root-list {
-    width: auto;
-    border-radius: 4px;
-    flex-wrap: nowrap;
-    padding: 0.2rem;
-    .p-menuitem-content {
-      padding: 0rem 0.3rem;
-    }
-    .p-menuitem-content:hover {
-      background: transparent;
+  p-menubarsub {
+    .p-menubar-root-list {
+      width: auto;
+      border-radius: 4px;
+      flex-wrap: nowrap;
+      padding: 0.2rem;
+      .p-menuitem-content {
+        padding: 0.15rem 0.3rem;
+      }
+      .p-menuitem-content:hover {
+        background: transparent;
+      }
     }
   }
 }
