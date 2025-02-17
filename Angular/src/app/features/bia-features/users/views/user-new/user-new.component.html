@@ -2,5 +2,5 @@
   [isAdd]="true"
   [fields]="crudConfiguration.fieldsConfig.columns"
   [dictOptionDtos]="(userService.optionsService.dictOptionDtos$ | async) ?? []"
-  (cancel)="onCancelled()"
+  (cancelled)="onCancelled()"
   (save)="onSubmitted($event)"></bia-user-form>

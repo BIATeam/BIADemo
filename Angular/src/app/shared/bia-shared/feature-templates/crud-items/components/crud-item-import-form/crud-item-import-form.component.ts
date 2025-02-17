@@ -96,7 +96,7 @@ export class CrudItemImportFormComponent<TDto extends { id: number }> {
   @Input() canDelete = false;
   @Input() canAdd = false;
   @Output() save = new EventEmitter<any[]>();
-  @Output() cancel = new EventEmitter<void>();
+  @Output() cancelled = new EventEmitter<void>();
   @Output() fileSelected = new EventEmitter<File>();
   @Output() changeImportParam = new EventEmitter<ImportParam>();
 
@@ -201,7 +201,7 @@ export class CrudItemImportFormComponent<TDto extends { id: number }> {
   }
 
   onCancel() {
-    this.cancel.next();
+    this.cancelled.next();
   }
 
   onSave() {

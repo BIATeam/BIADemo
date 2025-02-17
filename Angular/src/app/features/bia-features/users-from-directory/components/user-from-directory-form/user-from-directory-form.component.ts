@@ -26,7 +26,7 @@ import { UserFromDirectory } from '../../model/user-from-directory';
 export class UserFromLdapFormComponent implements OnChanges {
   @Output() searchUsers = new EventEmitter<UserFilter>();
   @Output() save = new EventEmitter<UserFromDirectory[]>();
-  @Output() cancel = new EventEmitter<void>();
+  @Output() cancelled = new EventEmitter<void>();
   @Input() users: UserFromDirectory[];
   @Input() domains: LdapDomain[];
   @Input() returnSizeOptions: number[] = [10, 25, 50, 100];
@@ -62,7 +62,7 @@ export class UserFromLdapFormComponent implements OnChanges {
 
   onCancel() {
     this.reset();
-    this.cancel.next();
+    this.cancelled.next();
   }
 
   onSubmit() {

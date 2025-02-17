@@ -7,7 +7,7 @@
       | async) ?? []
   "
   [isCrudItemOutdated]="isCrudItemOutdated"
-  (cancel)="onCancelled()"
+  (cancelled)="onCancelled()"
   (save)="onSubmitted($event)"></app-aircraft-maintenance-company-form>
 <bia-spinner
   *ngIf="aircraftMaintenanceCompanyService.loadingGet$ | async"

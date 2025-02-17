@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { skip } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
@@ -13,10 +13,10 @@ import { NotificationService } from '../../services/notification.service';
   templateUrl: './notifications-index.component.html',
   styleUrls: ['./notifications-index.component.scss'],
 })
-export class NotificationsIndexComponent extends CrudItemsIndexComponent<
-  NotificationListItem,
-  Notification
-> {
+export class NotificationsIndexComponent
+  extends CrudItemsIndexComponent
+  implements OnInit<NotificationListItem, Notification>
+{
   canRead = false;
   useRefreshAtLanguageChange = true;
 

@@ -1,5 +1,11 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpRequest, HttpStatusCode } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+  HttpRequest,
+  HttpStatusCode,
+} from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {

@@ -47,7 +47,7 @@ export class BiaFormComponent<TDto extends { id: number }>
   @Input() isAdd?: boolean;
   @Input() isCrudItemOutdated = false;
   @Output() save = new EventEmitter<any>();
-  @Output() cancel = new EventEmitter<void>();
+  @Output() cancelled = new EventEmitter<void>();
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   specificInputTemplate: TemplateRef<any>;
@@ -172,7 +172,7 @@ export class BiaFormComponent<TDto extends { id: number }>
   }
 
   onCancel() {
-    this.cancel.next();
+    this.cancelled.next();
   }
 
   onSubmit() {

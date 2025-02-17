@@ -2,5 +2,5 @@
   [isAdd]="true"
   [fields]="crudConfiguration.fieldsConfig.columns"
   [dictOptionDtos]="(planeService.optionsService.dictOptionDtos$ | async) ?? []"
-  (cancel)="onCancelled()"
+  (cancelled)="onCancelled()"
   (save)="onSubmitted($event)"></app-plane-form>

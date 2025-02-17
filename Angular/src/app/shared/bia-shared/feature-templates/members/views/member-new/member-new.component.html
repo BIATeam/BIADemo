@@ -3,5 +3,5 @@
   [roleOptions]="(memberService.optionsService.roleOptions$ | async) ?? []"
   [userOptions]="(memberService.optionsService.userOptions$ | async) ?? []"
   [canAddFromDirectory]="canAddFromDirectory"
-  (cancel)="onCancelled()"
+  (cancelled)="onCancelled()"
   (save)="onSubmittedMulti($event)"></bia-member-form-new>

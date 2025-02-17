@@ -29,7 +29,7 @@ export class MemberFormEditComponent implements OnChanges {
   @Input() canAddFromDirectory = false;
 
   @Output() save = new EventEmitter<Member>();
-  @Output() cancel = new EventEmitter<void>();
+  @Output() cancelled = new EventEmitter<void>();
 
   form: UntypedFormGroup;
   displayUserAddFromDirectoryDialog = false;
@@ -61,7 +61,7 @@ export class MemberFormEditComponent implements OnChanges {
 
   onCancel() {
     this.form.reset();
-    this.cancel.next();
+    this.cancelled.next();
   }
 
   addUserFromDirectory() {

@@ -2,5 +2,5 @@
   [dictOptionDtos]="
     (crudItemService.optionsService.dictOptionDtos$ | async) ?? []
   "
-  (cancel)="onCancelled()"
+  (cancelled)="onCancelled()"
   (save)="onSubmitted($event)"></bia-notification-form>
