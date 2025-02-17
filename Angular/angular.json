@@ -35,12 +35,11 @@
           "builder": "@angular/build:application",
           "options": {
             "outputPath": {
-              "base": "dist/BIADemo"
+              "base": "dist/BIADemo",
+              "browser": ""
             },
             "index": "src/index.html",
-            "polyfills": [
-              "src/polyfills.ts"
-            ],
+            "polyfills": ["src/polyfills.ts"],
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
@@ -62,9 +61,7 @@
             "optimization": false,
             "namedChunks": true,
             "serviceWorker": "ngsw-config.json",
-            "allowedCommonJsDependencies": [
-              "keycloak-js"
-            ],
+            "allowedCommonJsDependencies": ["keycloak-js"],
             "browser": "src/main.ts"
           },
           "configurations": {
