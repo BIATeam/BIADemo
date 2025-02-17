@@ -13,9 +13,10 @@ import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.se
 import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
-import { NotificationListItem } from '../model/notificationListItem';
+import { NotificationListItem } from '../model/notification-list-item';
+import { notificationCRUDConfiguration } from '../notification.constants';
 import { NotificationDas } from '../services/notification-das.service';
-import { getLastLazyLoadEvent } from './notification.state';
+import { FeatureNotificationsStore } from './notification.state';
 import { FeatureNotificationsActions } from './notifications-actions';
 
 /**
@@ -25,7 +26,6 @@ import { FeatureNotificationsActions } from './notifications-actions';
 
 @Injectable()
 export class NotificationsEffects {
-  static useSignalR = false;
   loadAllByPost$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureNotificationsActions.loadAllByPost),
@@ -91,14 +91,16 @@ export class NotificationsEffects {
       map(x => x?.notification),
       concatMap(notification =>
         of(notification).pipe(
-          withLatestFrom(this.store.select(getLastLazyLoadEvent))
+          withLatestFrom(
+            this.store.select(FeatureNotificationsStore.getLastLazyLoadEvent)
+          )
         )
       ),
       switchMap(([notification, event]) => {
         return this.notificationDas.post({ item: notification }).pipe(
           map(() => {
             this.biaMessageService.showAddSuccess();
-            if (NotificationsEffects.useSignalR) {
+            if (notificationCRUDConfiguration.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeatureNotificationsActions.loadAllByPost({
@@ -121,7 +123,9 @@ export class NotificationsEffects {
       map(x => x?.notification),
       concatMap(notification =>
         of(notification).pipe(
-          withLatestFrom(this.store.select(getLastLazyLoadEvent))
+          withLatestFrom(
+            this.store.select(FeatureNotificationsStore.getLastLazyLoadEvent)
+          )
         )
       ),
       switchMap(([notification, event]) => {
@@ -130,7 +134,7 @@ export class NotificationsEffects {
           .pipe(
             map(() => {
               this.biaMessageService.showUpdateSuccess();
-              if (NotificationsEffects.useSignalR) {
+              if (notificationCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureNotificationsActions.loadAllByPost({
@@ -152,13 +156,17 @@ export class NotificationsEffects {
       ofType(FeatureNotificationsActions.remove),
       map(x => x?.id),
       concatMap((id: number) =>
-        of(id).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))
+        of(id).pipe(
+          withLatestFrom(
+            this.store.select(FeatureNotificationsStore.getLastLazyLoadEvent)
+          )
+        )
       ),
       switchMap(([id, event]) => {
         return this.notificationDas.delete({ id: id }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
-            if (NotificationsEffects.useSignalR) {
+            if (notificationCRUDConfiguration.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeatureNotificationsActions.loadAllByPost({
@@ -180,13 +188,17 @@ export class NotificationsEffects {
       ofType(FeatureNotificationsActions.multiRemove),
       map(x => x?.ids),
       concatMap((ids: number[]) =>
-        of(ids).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))
+        of(ids).pipe(
+          withLatestFrom(
+            this.store.select(FeatureNotificationsStore.getLastLazyLoadEvent)
+          )
+        )
       ),
       switchMap(([ids, event]) => {
         return this.notificationDas.deletes({ ids: ids }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
-            if (NotificationsEffects.useSignalR) {
+            if (notificationCRUDConfiguration.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeatureNotificationsActions.loadAllByPost({
