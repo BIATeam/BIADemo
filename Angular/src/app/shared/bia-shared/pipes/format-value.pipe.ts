@@ -1,4 +1,4 @@
-import { CurrencyPipe, DatePipe, DecimalPipe, Time } from '@angular/common';
+import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
 import {
   BiaFieldConfig,
@@ -48,12 +48,7 @@ export class FormatValuePipe implements PipeTransform {
     if (col.isDate && col.displayFormat instanceof BiaFieldDateFormat) {
       if (value instanceof Date) {
         return this.datePipe.transform(value, col.displayFormat.autoFormatDate);
-      } else if (this.isTime(value)) {
-        return this.datePipe.transform(
-          '1990-10-10 ' + value.hours + ':' + value.minutes,
-          col.displayFormat.autoFormatDate
-        );
-      } else if (col.type === PropType.Time) {
+      } else if (this.isTime(value) || col.type === PropType.Time) {
         return this.datePipe.transform(
           '1990-10-10 ' + value,
           col.displayFormat.autoFormatDate
@@ -64,9 +59,11 @@ export class FormatValuePipe implements PipeTransform {
     return value;
   }
 
-  isTime(value: Time | any): value is Time {
-    return (
-      (<Time>value).hours !== undefined && (<Time>value).minutes !== undefined
-    );
+  isTime(value: any) {
+    if (!value) {
+      return false;
+    }
+
+    return /^\d{1,2}:\d{2}$/.test(value.toString());
   }
 }
