@@ -220,7 +220,9 @@ export class CrudItemsIndexComponent<
   protected useSignalRConfig(manualChange: boolean) {
     if (this.crudConfiguration.useSignalR) {
       this.crudItemService.signalRService.initialize(this.crudItemService);
-      this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
+      if (this.crudItemListComponent) {
+        this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
+      }
     } else {
       if (manualChange) {
         this.crudItemService.signalRService.destroy(this.crudItemService);

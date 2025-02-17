@@ -13,6 +13,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
+import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
@@ -32,11 +33,7 @@ import {
 })
 export class NotificationFormComponent implements OnChanges {
   @Input() notification: Notification = <Notification>{};
-  @Input() teamOptions: OptionDto[];
-  @Input() userOptions: OptionDto[];
-  @Input() roleOptions: OptionDto[];
-  @Input() notificationTypeOptions: OptionDto[];
-  @Input() languageOptions: OptionDto[];
+  @Input() dictOptionDtos: DictOptionDto[];
 
   @Output() save = new EventEmitter<Notification>();
   @Output() cancel = new EventEmitter<void>();
@@ -195,12 +192,14 @@ export class NotificationFormComponent implements OnChanges {
   }
 
   protected computeMissingTranslation() {
-    this.missingLanguageOptions = this.languageOptions.filter(
+    console.error('computeMissingTranslation');
+    this.missingLanguageOptions = this.getOptionDto('language').filter(
       lo =>
         !this.notificationTranslations.value.find(
           (nt: { languageId: number }) => nt.languageId === lo.id
         ) && !APP_TANSLATION_IDS_TO_NOT_ADD_MANUALY.find(nta => nta === lo.id)
     );
+    console.error(this.missingLanguageOptions, this.getOptionDto('language'));
     if (this.missingLanguageOptions.length > 0) {
       this.missingTranslation = true;
     } else {
@@ -209,7 +208,9 @@ export class NotificationFormComponent implements OnChanges {
   }
 
   labelTranslation(id: number): string {
-    return this.languageOptions.find(lo => lo.id === id)?.display ?? '';
+    return (
+      this.getOptionDto('language').find(lo => lo.id === id)?.display ?? ''
+    );
   }
 
   onCancel() {
@@ -347,5 +348,9 @@ export class NotificationFormComponent implements OnChanges {
     }
 
     return differential;
+  }
+
+  public getOptionDto(key: string) {
+    return this.dictOptionDtos?.filter(x => x.key === key)[0]?.value;
   }
 }

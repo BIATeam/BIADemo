@@ -8,7 +8,7 @@ import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/se
 import { AppState } from 'src/app/store/state';
 import { Notification } from '../../model/notification';
 import { NotificationService } from '../../services/notification.service';
-import { getCurrentNotification } from '../../store/notification.state';
+import { FeatureNotificationsStore } from '../../store/notification.state';
 
 @Component({
   selector: 'bia-notifications-item',
@@ -30,20 +30,22 @@ export class NotificationItemComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.sub.add(
       this.biaTranslationService.currentCulture$.subscribe(() => {
-        this.notificationService.currentNotificationId =
+        this.notificationService.currentCrudItemId =
           this.route.snapshot.params.notificationId;
       })
     );
 
     this.sub.add(
-      this.store.select(getCurrentNotification).subscribe(notification => {
-        if (notification?.title) {
-          this.route.data.pipe(first()).subscribe(routeData => {
-            (routeData as any)['breadcrumb'] = notification.title;
-          });
-          this.layoutService.refreshBreadcrumb();
-        }
-      })
+      this.store
+        .select(FeatureNotificationsStore.getCurrentNotification)
+        .subscribe(notification => {
+          if (notification?.title) {
+            this.route.data.pipe(first()).subscribe(routeData => {
+              (routeData as any)['breadcrumb'] = notification.title;
+            });
+            this.layoutService.refreshBreadcrumb();
+          }
+        })
     );
   }
 
