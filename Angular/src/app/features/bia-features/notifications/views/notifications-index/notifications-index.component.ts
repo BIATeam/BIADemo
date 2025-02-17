@@ -14,8 +14,8 @@ import { NotificationService } from '../../services/notification.service';
   styleUrls: ['./notifications-index.component.scss'],
 })
 export class NotificationsIndexComponent
-  extends CrudItemsIndexComponent
-  implements OnInit<NotificationListItem, Notification>
+  extends CrudItemsIndexComponent<NotificationListItem, Notification>
+  implements OnInit
 {
   canRead = false;
   useRefreshAtLanguageChange = true;
