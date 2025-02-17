@@ -15,7 +15,7 @@
   [canEdit]="canEdit"
   [importParam]="crudItemImportService.importParam"
   (save)="onSave($event)"
-  (cancel)="onCancel()"
+  (cancelled)="onCancel()"
   (fileSelected)="onFileSelected($event)"
   (changeImportParam)="onChangeImportParam($event)">
 </bia-crud-item-import-form>

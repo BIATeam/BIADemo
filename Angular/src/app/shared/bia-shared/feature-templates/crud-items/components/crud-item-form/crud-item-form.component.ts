@@ -27,12 +27,12 @@ export class CrudItemFormComponent<CrudItem extends BaseDto> {
   @Input() isCrudItemOutdated = false;
 
   @Output() save = new EventEmitter<CrudItem>();
-  @Output() cancel = new EventEmitter<void>();
+  @Output() cancelled = new EventEmitter<void>();
 
   @ViewChild(BiaFormComponent) biaFormComponent: BiaFormComponent<CrudItem>;
 
   onCancel() {
-    this.cancel.next();
+    this.cancelled.next();
   }
 
   onSave(crudItem: any) {

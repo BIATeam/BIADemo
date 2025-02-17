@@ -4,7 +4,7 @@
   [fields]="crudConfiguration.fieldsConfig.columns"
   [dictOptionDtos]="(userService.optionsService.dictOptionDtos$ | async) ?? []"
   [isCrudItemOutdated]="isCrudItemOutdated"
-  (cancel)="onCancelled()"
+  (cancelled)="onCancelled()"
   (save)="onSubmitted($event)"></bia-user-form>
 <bia-spinner
   *ngIf="userService.loadingGet$ | async"

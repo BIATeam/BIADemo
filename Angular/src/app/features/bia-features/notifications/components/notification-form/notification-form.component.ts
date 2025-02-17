@@ -36,7 +36,7 @@ export class NotificationFormComponent implements OnChanges {
   @Input() dictOptionDtos: DictOptionDto[];
 
   @Output() save = new EventEmitter<Notification>();
-  @Output() cancel = new EventEmitter<void>();
+  @Output() cancelled = new EventEmitter<void>();
 
   form: UntypedFormGroup;
   notificationTranslations: UntypedFormArray;
@@ -215,7 +215,7 @@ export class NotificationFormComponent implements OnChanges {
 
   onCancel() {
     this.form.reset();
-    this.cancel.next();
+    this.cancelled.next();
   }
 
   onSubmit() {

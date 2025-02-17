@@ -3,5 +3,5 @@
   [dictOptionDtos]="
     (planeTypeService.optionsService.dictOptionDtos$ | async) ?? []
   "
-  (cancel)="onCancelled()"
+  (cancelled)="onCancelled()"
   (save)="onSubmitted($event)"></app-plane-type-form>

@@ -4,7 +4,7 @@
   [fields]="crudConfiguration.fieldsConfig.columns"
   [dictOptionDtos]="(planeService.optionsService.dictOptionDtos$ | async) ?? []"
   [isCrudItemOutdated]="isCrudItemOutdated"
-  (cancel)="onCancelled()"
+  (cancelled)="onCancelled()"
   (save)="onSubmitted($event)"></app-plane-specific-form>
 <bia-spinner
   *ngIf="planeService.loadingGet$ | async"

@@ -3,7 +3,7 @@
   [roleOptions]="(memberService.optionsService.roleOptions$ | async) ?? []"
   [userOptions]="(memberService.optionsService.userOptions$ | async) ?? []"
   [canAddFromDirectory]="canAddFromDirectory"
-  (cancel)="onCancelled()"
+  (cancelled)="onCancelled()"
   (save)="onSubmitted($event)"></bia-member-form-edit>
 <bia-spinner
   *ngIf="memberService.loadingGet$ | async"

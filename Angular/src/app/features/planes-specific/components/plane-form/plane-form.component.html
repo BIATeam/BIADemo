@@ -4,7 +4,7 @@
   [formValidators]="formValidators"
   [dictOptionDtos]="dictOptionDtos"
   (save)="onSave($event)"
-  (cancel)="onCancel()">
+  (cancelled)="onCancel()">
   <ng-template pTemplate="specificInput" let-field="field" let-form="form">
     <div [formGroup]="form">
       <ng-container [ngSwitch]="field.field">
