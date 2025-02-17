@@ -64,7 +64,7 @@ export class NotificationService extends CrudItemService<
   );
 
   public displayItemName$: Observable<string> = this.crudItem$.pipe(
-    map(notification => notification?.description?.toString() ?? '')
+    map(notification => notification?.title?.toString() ?? '')
   );
 
   public loadingGet$: Observable<boolean> = this.store.select(

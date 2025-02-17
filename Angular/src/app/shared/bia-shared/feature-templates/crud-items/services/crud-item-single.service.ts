@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { BaseDto } from '../../../model/base-dto';
 import { DtoState } from '../../../model/dto-state.enum';
 import { CrudItemOptionsService } from './crud-item-options.service';
@@ -103,6 +103,7 @@ export abstract class CrudItemSingleService<CrudItem extends BaseDto> {
   abstract lastLazyLoadEvent$: Observable<TableLazyLoadEvent>;
 
   abstract crudItem$: Observable<CrudItem>;
+  displayItemName$: Observable<string> = of('');
   abstract loadingGet$: Observable<boolean>;
 
   abstract load(id: any): void;
