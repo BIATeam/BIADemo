@@ -269,14 +269,17 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
 }
 
 p-menubar div {
-  padding: 0.1rem;
+  padding: 0rem;
   border: none;
-  .p-menuitem {
-    margin: 0.15rem;
-  }
+  margin-left: -0.2rem;
   .p-menubar-root-list {
     width: auto;
     border-radius: 4px;
+    flex-wrap: nowrap;
+    padding: 0.2rem;
+    .p-menuitem-content {
+      padding: 0rem 0.3rem;
+    }
     .p-menuitem-content:hover {
       background: transparent;
     }
