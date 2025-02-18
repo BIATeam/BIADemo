@@ -19,7 +19,7 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
-import { ButtonGroupItem } from 'src/app/shared/bia-shared/components/bia-button-group/bia-button-group.component';
+import { BiaButtonGroupItem } from 'src/app/shared/bia-shared/components/bia-button-group/bia-button-group.component';
 import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/services/layout.service';
 import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
@@ -115,9 +115,9 @@ export class CrudItemsIndexComponent<
   protected layoutService: BiaLayoutService;
   protected actions: Actions;
   protected messageService: BiaMessageService;
-  protected selectedButtonGroup: ButtonGroupItem[];
-  protected listButtonGroup: ButtonGroupItem[];
-  protected customButtonGroup: ButtonGroupItem[];
+  protected selectedButtonGroup: BiaButtonGroupItem[];
+  protected listButtonGroup: BiaButtonGroupItem[];
+  protected customButtonGroup: BiaButtonGroupItem[];
 
   constructor(
     protected injector: Injector,

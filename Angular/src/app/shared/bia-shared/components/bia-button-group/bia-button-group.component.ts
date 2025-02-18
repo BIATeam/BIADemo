@@ -5,7 +5,7 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MenuItemCommandEvent } from 'primeng/api';
 import { Menubar } from 'primeng/menubar';
 
 @Component({
@@ -15,7 +15,7 @@ import { Menubar } from 'primeng/menubar';
 })
 export class BiaButtonGroupComponent implements AfterViewInit, OnDestroy {
   @ViewChild(Menubar) menubar: Menubar;
-  @Input() buttons: ButtonGroupItem[];
+  @Input() buttons: BiaButtonGroupItem[];
   @Input() compact = false;
   @Input() autoCompact = true;
 
@@ -109,5 +109,30 @@ export class BiaButtonGroupComponent implements AfterViewInit, OnDestroy {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ButtonGroupItem extends MenuItem {}
+export class BiaButtonGroupItem implements MenuItem {
+  label?: string | undefined;
+  tooltipPosition?: string | undefined;
+  tooltip?: string | undefined;
+  visible?: boolean | undefined;
+  disabled?: boolean | undefined;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
+  command(event: MenuItemCommandEvent): void {}
+
+  constructor(
+    label: string,
+    command: (event: MenuItemCommandEvent) => void,
+    visible?: boolean | undefined,
+    disabled?: boolean | undefined,
+    tooltip?: string | undefined,
+    tooltipPosition?: string | undefined
+  ) {
+    this.label = label;
+    this.command = command;
+    this.visible = visible ?? true;
+    this.disabled = disabled ?? false;
+    this.tooltip = tooltip;
+    if (this.tooltip) {
+      this.tooltipPosition = tooltipPosition ?? 'top';
+    }
+  }
+}
