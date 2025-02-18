@@ -12,7 +12,6 @@ import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { saveAs } from 'file-saver';
-import { MenuItem } from 'primeng/api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable, Subscription, combineLatest } from 'rxjs';
 import { filter, first, skip, take, tap } from 'rxjs/operators';
@@ -20,6 +19,7 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+import { ButtonGroupItem } from 'src/app/shared/bia-shared/components/bia-button-group/bia-button-group.component';
 import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/services/layout.service';
 import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
@@ -115,6 +115,9 @@ export class CrudItemsIndexComponent<
   protected layoutService: BiaLayoutService;
   protected actions: Actions;
   protected messageService: BiaMessageService;
+  protected selectedButtonGroup: ButtonGroupItem[];
+  protected listButtonGroup: ButtonGroupItem[];
+  protected customButtonGroup: ButtonGroupItem[];
 
   constructor(
     protected injector: Injector,
@@ -251,7 +254,7 @@ export class CrudItemsIndexComponent<
       this.authService.authInfo$.subscribe((authInfo: AuthInfo) => {
         if (authInfo && authInfo.token !== '') {
           this.setPermissions();
-          this.initSelectedActions();
+          this.initButtonGroups();
         }
       })
     );
@@ -459,7 +462,7 @@ export class CrudItemsIndexComponent<
 
   onSelectedElementsChanged(crudItems: ListCrudItem[]) {
     this.selectedCrudItems = crudItems;
-    this.initSelectedActions();
+    this.initButtonGroups();
   }
 
   onPageSizeChange(pageSize: number) {
@@ -632,9 +635,21 @@ export class CrudItemsIndexComponent<
     }
   }
 
-  protected selectedActions: MenuItem[];
+  protected initButtonGroups() {
+    this.initSelectedButtonGroup();
+    this.initListButtonGroup();
+    this.initCustomButtonGroup();
+  }
 
-  protected initSelectedActions() {
-    this.selectedActions = [];
+  protected initSelectedButtonGroup() {
+    this.selectedButtonGroup = [];
+  }
+
+  protected initListButtonGroup() {
+    this.listButtonGroup = [];
+  }
+
+  protected initCustomButtonGroup() {
+    this.customButtonGroup = [];
   }
 }

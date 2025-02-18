@@ -8,7 +8,7 @@ import { MenuItem } from 'primeng/api';
 })
 export class BiaButtonGroupComponent {
   @ViewChild('menubar') menubar: any;
-  @Input() buttons: MenuItem[];
+  @Input() buttons: ButtonGroupItem[];
 
   onMenubarClick() {
     this.setMenubarsubZIndex();
@@ -27,3 +27,6 @@ export class BiaButtonGroupComponent {
     }
   }
 }
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface ButtonGroupItem extends MenuItem {}

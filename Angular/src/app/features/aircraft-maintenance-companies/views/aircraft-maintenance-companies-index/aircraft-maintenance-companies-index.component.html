@@ -23,11 +23,8 @@
         (openFilter)="onOpenFilter()"
         [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
         [tableControllerVisible]="showTableController"
-        (toggleTableControllerVisibility)="toggleTableControllerVisibility()">
-        <!-- // Custo for teams -->
-        <ng-template pTemplate="actionOnSelected">
-          <bia-button-group [buttons]="selectedActions"></bia-button-group>
-        </ng-template>
+        (toggleTableControllerVisibility)="toggleTableControllerVisibility()"
+        [leftButtonGroup]="selectedButtonGroup">
       </bia-table-header>
       <bia-table-controller
         [ngClass]="{ 'table-controller-hidden': !showTableController }"

@@ -27,6 +27,9 @@
       pTooltip="{{ 'bia.delete' | translate }}"
       tooltipPosition="top"
       (click)="onDelete()"></button>
+    <bia-button-group
+      *ngIf="leftButtonGroup.length > 0"
+      [buttons]="leftButtonGroup"></bia-button-group>
     <ng-container *ngTemplateOutlet="actionOnSelectedTemplate"></ng-container>
   </div>
   <div
@@ -46,6 +49,9 @@
         (tableControllerVisible ? 'bia.hideController' : 'bia.showController')
           | translate
       }}"></p-button>
+    <bia-button-group
+      *ngIf="centerButtonGroup.length > 0"
+      [buttons]="centerButtonGroup"></bia-button-group>
     <ng-container *ngTemplateOutlet="customControlTemplate"></ng-container>
   </div>
   <div
@@ -57,6 +63,9 @@
       label="{{ 'bia.back' | translate }}"
       (click)="onBack()"
       *ngIf="canBack"></button>
+    <bia-button-group
+      *ngIf="rightButtonGroup.length > 0"
+      [buttons]="rightButtonGroup"></bia-button-group>
     <ng-container *ngTemplateOutlet="actionOnListTemplate"></ng-container>
     <button
       type="button"

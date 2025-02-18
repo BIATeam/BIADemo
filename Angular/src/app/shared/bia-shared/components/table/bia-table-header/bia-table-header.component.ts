@@ -15,6 +15,7 @@ import {
 import { Router } from '@angular/router';
 import { Confirmation, ConfirmationService, PrimeTemplate } from 'primeng/api';
 import { BiaDialogService } from 'src/app/core/bia-core/services/bia-dialog.service';
+import { ButtonGroupItem } from '../../bia-button-group/bia-button-group.component';
 
 @Component({
   selector: 'bia-table-header',
@@ -38,6 +39,9 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   @Input() selectedElements: any[];
   @Input() showTableControllerButton = false;
   @Input() tableControllerVisible = false;
+  @Input() leftButtonGroup: ButtonGroupItem[] = [];
+  @Input() rightButtonGroup: ButtonGroupItem[] = [];
+  @Input() centerButtonGroup: ButtonGroupItem[] = [];
   @Output() create = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
   @Output() openFilter = new EventEmitter<void>();

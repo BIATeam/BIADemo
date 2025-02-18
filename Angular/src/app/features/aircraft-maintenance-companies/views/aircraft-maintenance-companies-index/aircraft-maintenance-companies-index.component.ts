@@ -66,8 +66,8 @@ export class AircraftMaintenanceCompaniesIndexComponent extends CrudItemsIndexCo
       this.canDelete;
   }
 
-  protected initSelectedActions() {
-    this.selectedActions = [
+  protected initSelectedButtonGroup() {
+    this.selectedButtonGroup = [
       {
         label: this.translateService.instant('aircraftMaintenanceCompany.edit'),
         tooltip: this.translateService.instant(
