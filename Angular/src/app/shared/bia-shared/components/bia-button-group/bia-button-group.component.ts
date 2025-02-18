@@ -17,83 +17,77 @@ export class BiaButtonGroupComponent implements AfterViewInit, OnDestroy {
   @ViewChild(Menubar) menubar: Menubar;
   @Input() buttons: ButtonGroupItem[];
   @Input() compact = false;
+  @Input() autoCompact = true;
 
-  private resizeObserver!: ResizeObserver;
-  private containerRect: DOMRect;
+  private parentContainerResizeObserver!: ResizeObserver;
+  private containerWidth: number;
 
   private get menubarNativeElement(): HTMLElement {
     return this.menubar.el.nativeElement as HTMLElement;
   }
 
   ngAfterViewInit() {
-    if (!this.compact) {
+    if (this.autoCompact && !this.compact) {
       setTimeout(() => {
-        this.observeResize();
+        this.initParentContainerResizeObserver();
       }, 1000);
     }
   }
 
   ngOnDestroy(): void {
-    this.resizeObserver.disconnect();
+    if (this.parentContainerResizeObserver) {
+      this.parentContainerResizeObserver.disconnect();
+    }
   }
 
-  private observeResize() {
+  private initParentContainerResizeObserver() {
+    // Container -> BiaButtonGroup -> Menubar
     const container = this.menubarNativeElement.parentElement?.parentElement;
-    console.log('Container', container);
     if (!container) {
       return;
     }
 
-    const nextSibling = container.nextElementSibling;
-    console.log('Next Sibling', nextSibling);
-
-    const previousSibling = container.previousElementSibling;
-    console.log('Previous Sibling', previousSibling);
-
-    if (!nextSibling && !previousSibling) {
-      return;
-    }
-
     const parentContainer = container.parentElement;
-    if (!parentContainer) {
+    if (!parentContainer || parentContainer.children.length === 1) {
       return;
     }
 
-    this.resizeObserver = new ResizeObserver(() =>
-      this.checkSize(container, nextSibling, previousSibling)
+    this.parentContainerResizeObserver = new ResizeObserver(() =>
+      this.onParentContainerResized(container)
     );
-
-    this.resizeObserver.observe(parentContainer);
+    this.parentContainerResizeObserver.observe(parentContainer);
   }
 
-  private checkSize(
-    container: Element,
-    nextSibling: Element | null,
-    previousSibling: Element | null
-  ) {
-    const offset = 20;
-    console.log('Check size');
+  private onParentContainerResized(container: Element) {
+    const offset = 10;
 
-    const containerRect = this.compact
-      ? this.containerRect
-      : container.getBoundingClientRect();
-
-    if (nextSibling) {
-      const mustCompact =
-        containerRect.right + offset >=
-        nextSibling.getBoundingClientRect().left;
-      if (!this.compact && mustCompact) {
-        this.containerRect = containerRect;
+    // Handle case when burger button is displayed by native primeng menubar
+    if (!this.compact) {
+      const burgerButton =
+        this.menubarNativeElement.querySelector('.p-menubar-button');
+      if (burgerButton) {
+        const burgerButtonStyle = window.getComputedStyle(burgerButton);
+        if (burgerButtonStyle.display === 'flex') {
+          return;
+        }
       }
-      this.compact = mustCompact;
+    }
+
+    if (!this.containerWidth) {
+      this.containerWidth = container.getBoundingClientRect().width;
+    }
+
+    if (container.nextElementSibling) {
+      this.compact =
+        container.getBoundingClientRect().left + this.containerWidth + offset >=
+        container.nextElementSibling.getBoundingClientRect().left;
       return;
     }
 
-    if (previousSibling) {
-      const previousSiblingRect = previousSibling.getBoundingClientRect();
+    if (container.previousElementSibling) {
       this.compact =
-        previousSiblingRect.right + offset >= this.containerRect.left;
-      return;
+        container.previousElementSibling.getBoundingClientRect().right >=
+        container.getBoundingClientRect().right + this.containerWidth + offset;
     }
   }
 
