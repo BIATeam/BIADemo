@@ -279,6 +279,7 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
         width: auto;
         border-radius: 4px;
         padding: 0.2rem 0.2rem 0.2rem 0.3rem;
+        flex-wrap: nowrap;
         .p-menuitem-content {
           padding: 0.15rem 0.3rem;
         }
