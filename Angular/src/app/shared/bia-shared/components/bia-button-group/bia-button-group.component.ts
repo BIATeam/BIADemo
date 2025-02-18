@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Menubar } from 'primeng/menubar';
 
@@ -7,24 +7,13 @@ import { Menubar } from 'primeng/menubar';
   templateUrl: './bia-button-group.component.html',
   styleUrl: './bia-button-group.component.scss',
 })
-export class BiaButtonGroupComponent implements AfterViewInit {
+export class BiaButtonGroupComponent {
   @ViewChild(Menubar) menubar: Menubar | undefined;
   @Input() buttons: ButtonGroupItem[];
-  @Input() alwaysCompact = false;
+  @Input() compact = false;
 
   private get menubarNativeElement(): HTMLElement | undefined {
     return this.menubar?.el?.nativeElement as HTMLElement;
-  }
-
-  ngAfterViewInit(): void {
-    if (this.alwaysCompact === true) {
-      this.compactButtons();
-    }
-  }
-
-  private compactButtons() {
-    this.menubarNativeElement?.classList.remove('bia-button-group');
-    this.menubarNativeElement?.classList.add('bia-button-group-compact');
   }
 
   onMenubarClick() {

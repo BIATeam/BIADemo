@@ -1,6 +1,7 @@
 <p-menubar
   #menubar
   class="bia-button-group"
+  [ngClass]="{ 'bia-button-group-compact': compact }"
   [model]="buttons"
   (click)="onMenubarClick()">
   <ng-template pTemplate="item" let-item>
