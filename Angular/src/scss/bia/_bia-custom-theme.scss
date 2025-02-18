@@ -268,22 +268,174 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
   }
 }
 
-.bia-button-group div {
-  padding: 0rem;
-  border: none;
-  margin-left: -0.2rem;
-  p-menubarsub {
+@mixin bia-button-group-style {
+  div {
+    padding: 0rem;
+    border: none;
+    margin-left: -0.2rem;
+    p-menubarsub {
+      .p-menubar-root-list {
+        width: auto;
+        border-radius: 4px;
+        padding: 0.2rem 0.2rem 0.2rem 0.3rem;
+        .p-menuitem-content {
+          padding: 0.15rem 0.3rem;
+        }
+        .p-menuitem-content:hover {
+          background: transparent;
+        }
+      }
+    }
+  }
+}
+
+.bia-button-group {
+  @include bia-button-group-style;
+
+  &-compact {
+    @include bia-button-group-style;
+    position: relative;
+    .p-menubar-button {
+      display: flex;
+      width: 2rem;
+      height: 2rem;
+      color: rgba(0, 0, 0, 0.6);
+      border-radius: 50%;
+      transition:
+        background-color 0.2s,
+        color 0.2s,
+        box-shadow 0.2s;
+    }
+    .p-menubar-button:hover {
+      color: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.04);
+    }
+    .p-menubar-button:focus {
+      outline: 0 none;
+      outline-offset: 0;
+      box-shadow: none;
+    }
     .p-menubar-root-list {
-      width: auto;
-      border-radius: 4px;
-      //flex-wrap: nowrap;
-      padding: 0.2rem 0.2rem 0.2rem 0.3rem;
-      .p-menuitem-content {
-        padding: 0.15rem 0.3rem;
-      }
-      .p-menuitem-content:hover {
-        background: transparent;
-      }
+      position: absolute;
+      display: none;
+      padding: 0.5rem 0;
+      background: #ffffff;
+      border: 0 none;
+      box-shadow:
+        0 2px 4px -1px rgba(0, 0, 0, 0.2),
+        0 4px 5px 0 rgba(0, 0, 0, 0.14),
+        0 1px 10px 0 rgba(0, 0, 0, 0.12);
+      width: 100%;
+    }
+    .p-menubar-root-list .p-menuitem-separator {
+      border-top: 1px solid rgba(0, 0, 0, 0.12);
+      margin: 0.5rem 0;
+    }
+    .p-menubar-root-list .p-submenu-icon {
+      font-size: 0.875rem;
+    }
+    .p-menubar-root-list .p-menuitem {
+      width: 100%;
+      position: static;
+    }
+    .p-menubar-root-list
+      .p-menuitem
+      .p-menuitem-content
+      .p-menuitem-link
+      .p-submenu-icon {
+      margin-left: auto;
+      transition: transform 0.2s;
+    }
+    .p-menubar-root-list
+      .p-menuitem.p-menuitem-active
+      > .p-menuitem-content
+      > .p-menuitem-link
+      > .p-submenu-icon {
+      transform: rotate(-180deg);
+    }
+    .p-menubar-root-list .p-submenu-list {
+      width: 100%;
+      position: static;
+      box-shadow: none;
+      border: 0 none;
+    }
+    .p-menubar-root-list .p-submenu-list .p-submenu-icon {
+      transition: transform 0.2s;
+      transform: rotate(90deg);
+    }
+    .p-menubar-root-list
+      .p-submenu-list
+      .p-menuitem-active
+      > .p-menuitem-content
+      > .p-menuitem-link
+      > .p-submenu-icon {
+      transform: rotate(-90deg);
+    }
+    .p-menubar-root-list .p-menuitem {
+      width: 100%;
+      position: static;
+    }
+    .p-menubar-root-list
+      .p-submenu-list
+      .p-menuitem
+      .p-menuitem-content
+      .p-menuitem-link {
+      padding-left: 2.25rem;
+    }
+    .p-menubar-root-list
+      .p-submenu-list
+      .p-menuitem
+      .p-submenu-list
+      .p-menuitem
+      .p-menuitem-content
+      .p-menuitem-link {
+      padding-left: 3.75rem;
+    }
+    .p-menubar-root-list
+      .p-submenu-list
+      .p-menuitem
+      .p-submenu-list
+      .p-menuitem
+      .p-submenu-list
+      .p-menuitem
+      .p-menuitem-content
+      .p-menuitem-link {
+      padding-left: 5.25rem;
+    }
+    .p-menubar-root-list
+      .p-submenu-list
+      .p-menuitem
+      .p-submenu-list
+      .p-menuitem
+      .p-submenu-list
+      .p-menuitem
+      .p-submenu-list
+      .p-menuitem
+      .p-menuitem-content
+      .p-menuitem-link {
+      padding-left: 6.75rem;
+    }
+    .p-menubar-root-list
+      .p-submenu-list
+      .p-menuitem
+      .p-submenu-list
+      .p-menuitem
+      .p-submenu-list
+      .p-menuitem
+      .p-submenu-list
+      .p-menuitem
+      .p-submenu-list
+      .p-menuitem
+      .p-menuitem-content
+      .p-menuitem-link {
+      padding-left: 8.25rem;
+    }
+    .p-menubar.p-menubar-mobile-active .p-menubar-root-list {
+      display: flex;
+      flex-direction: column;
+      top: 100%;
+      left: 0;
+      z-index: 1;
     }
   }
 }
