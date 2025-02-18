@@ -451,8 +451,7 @@ export class CrudItemsIndexComponent<
   }
 
   private resetEditableRow() {
-    this.crudItemTableComponent.hasChanged = false;
-    this.crudItemTableComponent.initEditableRow(null);
+    this.crudItemTableComponent.resetEditableRow();
   }
 
   onDelete() {

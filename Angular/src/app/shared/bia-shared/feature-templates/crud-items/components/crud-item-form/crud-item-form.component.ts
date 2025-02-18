@@ -35,7 +35,7 @@ export class CrudItemFormComponent<CrudItem extends BaseDto> {
     this.cancelled.next();
   }
 
-  onSave(crudItem: any) {
+  onSave(crudItem: CrudItem) {
     this.save.emit(crudItem);
   }
 }

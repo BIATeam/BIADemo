@@ -43,6 +43,7 @@
         <app-engine-specific-table
           [elements]="displayedEngines()"
           [configuration]="engineCrudConfig"
+          [columnToDisplays]="engineColumnsToDisplay"
           [dictOptionDtos]="[]"
           [totalRecord]="crudItem?.engines?.length ?? 0"
           [paginator]="false"
