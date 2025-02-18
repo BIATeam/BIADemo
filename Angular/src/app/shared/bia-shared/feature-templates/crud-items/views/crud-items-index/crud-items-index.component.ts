@@ -240,6 +240,7 @@ export class CrudItemsIndexComponent<
     */
     this.sub = new Subscription();
 
+    this.initButtonGroups();
     this.initTableConfiguration();
 
     this.sub.add(
