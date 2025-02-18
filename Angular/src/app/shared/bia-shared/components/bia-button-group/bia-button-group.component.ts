@@ -87,7 +87,7 @@ export class BiaButtonGroupComponent implements AfterViewInit, OnDestroy {
     if (container.previousElementSibling) {
       this.compact =
         container.previousElementSibling.getBoundingClientRect().right >=
-        container.getBoundingClientRect().right + this.containerWidth + offset;
+        container.getBoundingClientRect().right - this.containerWidth - offset;
     }
   }
 
