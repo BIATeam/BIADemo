@@ -30,7 +30,7 @@ export class BiaButtonGroupComponent implements AfterViewInit, OnDestroy {
     if (this.autoCompact && !this.compact) {
       setTimeout(() => {
         this.initParentContainerResizeObserver();
-      }, 1000);
+      }, 500);
     }
   }
 
