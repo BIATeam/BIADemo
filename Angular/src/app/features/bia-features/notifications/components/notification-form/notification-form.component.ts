@@ -192,14 +192,12 @@ export class NotificationFormComponent implements OnChanges {
   }
 
   protected computeMissingTranslation() {
-    console.error('computeMissingTranslation');
     this.missingLanguageOptions = this.getOptionDto('language').filter(
       lo =>
         !this.notificationTranslations.value.find(
           (nt: { languageId: number }) => nt.languageId === lo.id
         ) && !APP_TANSLATION_IDS_TO_NOT_ADD_MANUALY.find(nta => nta === lo.id)
     );
-    console.error(this.missingLanguageOptions, this.getOptionDto('language'));
     if (this.missingLanguageOptions.length > 0) {
       this.missingTranslation = true;
     } else {

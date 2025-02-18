@@ -53,6 +53,10 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
     super(authService, translateService);
   }
 
+  get isInEditing() {
+    return this.hasChanged || this.editFooter;
+  }
+
   ngAfterContentInit() {
     this.templates.forEach(item => {
       switch (item.getType()) {
@@ -165,6 +169,11 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
 
   public escape() {
     this.cancel();
+    this.initEditableRow(null);
+  }
+
+  public resetEditableRow() {
+    this.hasChanged = false;
     this.initEditableRow(null);
   }
 
