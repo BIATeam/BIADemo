@@ -35,53 +35,53 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         where TUserFromDirectory : class, IUserFromDirectory, new()
     {
 
-        private const string KeyPrefixCacheGroup = "BIAGroupSid:";
+        protected const string KeyPrefixCacheGroup = "BIAGroupSid:";
 
-        private const string KeyPrefixCacheUserSid = "BIAUserSid:";
+        protected const string KeyPrefixCacheUserSid = "BIAUserSid:";
 
-        private const string KeyPrefixCacheUserIdentityKey = "BIAUserIdentityKey:";
+        protected const string KeyPrefixCacheUserIdentityKey = "BIAUserIdentityKey:";
 
-        private const string KeyPrefixCacheUserSidHistory = "BIAUsersidHistory:";
+        protected const string KeyPrefixCacheUserSidHistory = "BIAUsersidHistory:";
 
         /// <summary>
         /// Groups cached.
         /// </summary>
-        private static readonly Dictionary<string, string> CacheGroupName = new Dictionary<string, string>();
+        protected static readonly Dictionary<string, string> CacheGroupName = new Dictionary<string, string>();
 
         /// <summary>
         /// The logger.
         /// </summary>
-        private readonly ILogger<GenericLdapRepository<TUserFromDirectory>> logger;
+        protected readonly ILogger<GenericLdapRepository<TUserFromDirectory>> logger;
 
         /// <summary>
         /// The configuration of the BiaNet section.
         /// </summary>
-        private readonly BiaNetSection configuration;
+        protected readonly BiaNetSection configuration;
 
         /// <summary>
         /// The configuration of the BiaNet section.
         /// </summary>
-        private readonly IEnumerable<LdapDomain> ldapDomains;
+        protected readonly IEnumerable<LdapDomain> ldapDomains;
 
         /// <summary>
         /// The configuration of the BiaNet section.
         /// </summary>
-        private readonly IEnumerable<LdapDomain> ldapDomainsUsers;
+        protected readonly IEnumerable<LdapDomain> ldapDomainsUsers;
 
         /// <summary>
         /// The sidResolver.
         /// </summary>
-        private readonly LdapRepositoryHelper ldapRepositoryHelper;
+        protected readonly LdapRepositoryHelper ldapRepositoryHelper;
 
         /// <summary>
         /// Duration of the cache for ldap Group Member List in ldap.
         /// </summary>
-        private readonly int LdapCacheGroupDuration;
+        protected readonly int LdapCacheGroupDuration;
 
         /// <summary>
         /// Duration of the cache for user property in ldap.
         /// </summary>
-        private readonly int LdapCacheUserDuration;
+        protected readonly int LdapCacheUserDuration;
 
 
         /// <summary>
@@ -240,22 +240,37 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             {
                 if (PrepareCredential(domain))
                 {
-                    string ldapPath = $"LDAP://{domain.LdapName}";
-                    if (!string.IsNullOrEmpty(domain.Filter))
+                    if (this.ldapRepositoryHelper.IsLocalMachineDomain(domain.LdapName))
                     {
-                        ldapPath = $"LDAP://{domain.Filter}";
+                        using (DirectoryEntry localMachine = new DirectoryEntry("WinNT://" + Environment.MachineName))
+                        {
+                            foreach (DirectoryEntry child in localMachine.Children)
+                            {
+                                if (child.SchemaClassName == "User" && child.Name.Contains(search, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    usersMatches.Add(child);
+                                }
+                            }
+                        }
                     }
-
-                    using var entry = new DirectoryEntry(ldapPath, domain.LdapServiceAccount, domain.LdapServicePass);
-                    using var searcher = new DirectorySearcher(entry)
+                    else
                     {
-                        SearchScope = SearchScope.Subtree,
-                        Filter = $"(&(objectCategory=person)(objectClass=user)(|(givenname=*{search}*)(sn=*{search}*)(SAMAccountName=*{search}*)(cn=*{search}*)))",
-                        SizeLimit = max
-                    };
-                    usersMatches.AddRange(searcher.FindAll().Cast<SearchResult>().Select(s => s.GetDirectoryEntry()).ToList());
-                }
+                        string ldapPath = $"LDAP://{domain.LdapName}";
+                        if (!string.IsNullOrEmpty(domain.Filter))
+                        {
+                            ldapPath = $"LDAP://{domain.Filter}";
+                        }
 
+                        using var entry = new DirectoryEntry(ldapPath, domain.LdapServiceAccount, domain.LdapServicePass);
+                        using var searcher = new DirectorySearcher(entry)
+                        {
+                            SearchScope = SearchScope.Subtree,
+                            Filter = $"(&(objectCategory=person)(objectClass=user)(|(givenname=*{search}*)(sn=*{search}*)(SAMAccountName=*{search}*)(cn=*{search}*)))",
+                            SizeLimit = max
+                        };
+                        usersMatches.AddRange(searcher.FindAll().Cast<SearchResult>().Select(s => s.GetDirectoryEntry()).ToList());
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -338,7 +353,16 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
         private async Task<UserPrincipal> ResolveUserPrincipal(string domain, string identityKey)
         {
-            PrincipalContext contextUser = await PrepareDomainContext(domain);
+            PrincipalContext contextUser;
+            if (this.ldapRepositoryHelper.IsLocalMachineDomain(domain))
+            {
+                contextUser = new PrincipalContext(ContextType.Machine);
+            }
+            else
+            {
+                contextUser = await PrepareDomainContext(domain);
+            }
+
             UserPrincipal userToAdd = null;
 
             if (contextUser != null)

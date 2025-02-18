@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     using System;
     using System.DirectoryServices;
     using System.DirectoryServices.AccountManagement;
+    using System.DirectoryServices.ActiveDirectory;
     using System.Runtime.InteropServices;
     using System.Runtime.Versioning;
     using System.Security.Principal;
@@ -24,7 +25,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     /// </summary>
     public class LdapRepository : GenericLdapRepository<UserFromDirectory>
     {
-        private readonly IUserIdentityKeyDomainService userIdentityKeyDomainService;
+        protected readonly IUserIdentityKeyDomainService userIdentityKeyDomainService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LdapRepository"/> class.
@@ -53,51 +54,64 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         protected override UserFromDirectory ConvertToUserDirectory(DirectoryEntry entry, string domainKey)
         {
             var sid = new SecurityIdentifier((byte[])entry.Properties["objectSid"].Value, 0).ToString();
-            var user = new UserFromDirectory
+            UserFromDirectory user;
+            if (this.ldapRepositoryHelper.IsLocalMachineDomain(domainKey))
             {
-                FirstName = entry.Properties["GivenName"].Value?.ToString(),
-                LastName = entry.Properties["sn"].Value?.ToString(),
-                Login = entry.Properties["SAMAccountName"].Value?.ToString(),
-                Domain = domainKey,
-                Sid = sid,
-                Guid = (byte[])entry.Properties["objectGuid"].Value != null ? new Guid((byte[])entry.Properties["objectGuid"].Value) : Guid.NewGuid(),
-                Country = entry.Properties["c"].Value?.ToString(),
-                Company = entry.Properties["company"].Value?.ToString(),
-                Department = entry.Properties["department"].Value?.ToString(),
-                DistinguishedName = entry.Properties["distinguishedName"].Value?.ToString(),
-                Email = entry.Properties["mail"].Value?.ToString(),
-                IsEmployee = true,
-                Manager = entry.Properties["manager"].Value?.ToString(),
-                Office = entry.Properties["physicalDeliveryOfficeName"].Value?.ToString(),
-                Site = domainKey == "CORP" ? entry.Properties["physicalDeliveryOfficeName"].Value?.ToString() : entry.Properties["description"].Value?.ToString(),
-            };
-
-            // Set external company
-            var jobTitle = entry.Properties["title"].Value?.ToString();
-
-            if (!string.IsNullOrEmpty(jobTitle) && jobTitle.IndexOf(':') <= 0)
-            {
-                string[] extInfo = jobTitle.Split(':');
-                if (extInfo[0] == "EXT" && extInfo.Length != 2)
+                user = new UserFromDirectory
                 {
-                    user.IsEmployee = false;
-                    user.IsExternal = true;
-                    user.ExternalCompany = extInfo[1];
+                    FirstName = entry.Name,
+                    Login = entry.Name,
+                    Domain = domainKey,
+                    Sid = sid,
+                };
+            }
+            else
+            {
+                user = new UserFromDirectory
+                {
+                    FirstName = entry.Properties["GivenName"].Value?.ToString(),
+                    LastName = entry.Properties["sn"].Value?.ToString(),
+                    Login = entry.Properties["SAMAccountName"].Value?.ToString(),
+                    Domain = domainKey,
+                    Sid = sid,
+                    Guid = (byte[])entry.Properties["objectGuid"].Value != null ? new Guid((byte[])entry.Properties["objectGuid"].Value) : Guid.NewGuid(),
+                    Country = entry.Properties["c"].Value?.ToString(),
+                    Company = entry.Properties["company"].Value?.ToString(),
+                    Department = entry.Properties["department"].Value?.ToString(),
+                    DistinguishedName = entry.Properties["distinguishedName"].Value?.ToString(),
+                    Email = entry.Properties["mail"].Value?.ToString(),
+                    IsEmployee = true,
+                    Manager = entry.Properties["manager"].Value?.ToString(),
+                    Office = entry.Properties["physicalDeliveryOfficeName"].Value?.ToString(),
+                    Site = domainKey == "CORP" ? entry.Properties["physicalDeliveryOfficeName"].Value?.ToString() : entry.Properties["description"].Value?.ToString(),
+                };
+
+                // Set external company
+                var jobTitle = entry.Properties["title"].Value?.ToString();
+
+                if (!string.IsNullOrEmpty(jobTitle) && jobTitle.IndexOf(':') <= 0)
+                {
+                    string[] extInfo = jobTitle.Split(':');
+                    if (extInfo[0] == "EXT" && extInfo.Length != 2)
+                    {
+                        user.IsEmployee = false;
+                        user.IsExternal = true;
+                        user.ExternalCompany = extInfo[1];
+                    }
+                }
+
+                // Set sub department
+                string fullDepartment = user.Department;
+                int zero = 0;
+                if (!string.IsNullOrWhiteSpace(fullDepartment) && (fullDepartment.IndexOf('-') > zero))
+                {
+                    user.Department = fullDepartment.Substring(0, fullDepartment.IndexOf('-') - 1);
+                    if (fullDepartment.Length > fullDepartment.IndexOf('-') + 2)
+                    {
+                        user.SubDepartment = fullDepartment.Substring(fullDepartment.IndexOf('-') + 3);
+                    }
                 }
             }
-
-            // Set sub department
-            string fullDepartment = user.Department;
-            int zero = 0;
-            if (!string.IsNullOrWhiteSpace(fullDepartment) && (fullDepartment.IndexOf('-') > zero))
-            {
-                user.Department = fullDepartment.Substring(0, fullDepartment.IndexOf('-') - 1);
-                if (fullDepartment.Length > fullDepartment.IndexOf('-') + 2)
-                {
-                    user.SubDepartment = fullDepartment.Substring(fullDepartment.IndexOf('-') + 3);
-                }
-            }
-
             return user;
         }
 

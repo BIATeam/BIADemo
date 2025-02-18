@@ -9,5 +9,6 @@ namespace BIA.Net.Core.Domain.RepoContract
     /// </summary>
     public interface ILdapRepositoryHelper
     {
+        public bool IsLocalMachineDomain(string domain) { return false; }
     }
 }
