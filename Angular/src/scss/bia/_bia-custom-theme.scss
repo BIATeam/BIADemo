@@ -268,6 +268,7 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
   }
 }
 
+// button group using menubar
 @mixin bia-button-group-style {
   div {
     padding: 0rem;
@@ -292,6 +293,7 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
 .bia-button-group {
   @include bia-button-group-style;
 
+  // same style as @media screen and (max-width: 960px) of primeng theme
   &-compact {
     @include bia-button-group-style;
     position: relative;
