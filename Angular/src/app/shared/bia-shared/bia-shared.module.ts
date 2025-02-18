@@ -91,6 +91,7 @@ import { NotificationsEffects } from 'src/app/domains/bia-domains/notification/s
 import { TeamModule } from 'src/app/domains/bia-domains/team/team.module';
 import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
 import { reducers as notificationReducers } from '../../domains/bia-domains/notification/store/notification.state';
+import { BiaButtonGroupComponent } from './components/bia-button-group/bia-button-group.component';
 import { BiaOnlineOfflineIconModule } from './components/bia-online-offline-icon/bia-online-offline-icon.module';
 import { BiaTeamSelectorModule } from './components/bia-team-selector/bia-team-selector.module';
 import { BiaFieldBaseComponent } from './components/form/bia-field-base/bia-field-base.component';
@@ -228,6 +229,7 @@ const COMPONENTS = [
   HangfireContainerComponent,
   TeamAdvancedFilterComponent,
   BiaScrollingNotificationComponent,
+  BiaButtonGroupComponent,
 ];
 
 const VIEW_COMPONENTS = [

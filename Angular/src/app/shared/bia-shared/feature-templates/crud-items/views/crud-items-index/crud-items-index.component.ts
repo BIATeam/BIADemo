@@ -19,6 +19,7 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+import { BiaButtonGroupItem } from 'src/app/shared/bia-shared/components/bia-button-group/bia-button-group.component';
 import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/services/layout.service';
 import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
@@ -114,6 +115,9 @@ export class CrudItemsIndexComponent<
   protected layoutService: BiaLayoutService;
   protected actions: Actions;
   protected messageService: BiaMessageService;
+  protected selectedButtonGroup: BiaButtonGroupItem[];
+  protected listButtonGroup: BiaButtonGroupItem[];
+  protected customButtonGroup: BiaButtonGroupItem[];
 
   constructor(
     protected injector: Injector,
@@ -236,6 +240,7 @@ export class CrudItemsIndexComponent<
     */
     this.sub = new Subscription();
 
+    this.initButtonGroups();
     this.initTableConfiguration();
 
     this.sub.add(
@@ -250,6 +255,7 @@ export class CrudItemsIndexComponent<
       this.authService.authInfo$.subscribe((authInfo: AuthInfo) => {
         if (authInfo && authInfo.token !== '') {
           this.setPermissions();
+          this.initButtonGroups();
         }
       })
     );
@@ -457,6 +463,7 @@ export class CrudItemsIndexComponent<
 
   onSelectedElementsChanged(crudItems: ListCrudItem[]) {
     this.selectedCrudItems = crudItems;
+    this.initButtonGroups();
   }
 
   onPageSizeChange(pageSize: number) {
@@ -627,5 +634,23 @@ export class CrudItemsIndexComponent<
       );
       table.onLazyLoad.emit(table.createLazyLoadMetadata());
     }
+  }
+
+  protected initButtonGroups() {
+    this.initSelectedButtonGroup();
+    this.initListButtonGroup();
+    this.initCustomButtonGroup();
+  }
+
+  protected initSelectedButtonGroup() {
+    this.selectedButtonGroup = [];
+  }
+
+  protected initListButtonGroup() {
+    this.listButtonGroup = [];
+  }
+
+  protected initCustomButtonGroup() {
+    this.customButtonGroup = [];
   }
 }

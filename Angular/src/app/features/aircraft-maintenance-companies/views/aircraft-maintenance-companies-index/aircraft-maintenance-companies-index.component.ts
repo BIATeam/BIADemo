@@ -1,5 +1,6 @@
 import { Component, Injector, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { BiaButtonGroupItem } from 'src/app/shared/bia-shared/components/bia-button-group/bia-button-group.component';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
 import { TeamAdvancedFilterDto } from 'src/app/shared/bia-shared/model/team-advanced-filter-dto';
 import { Permission } from 'src/app/shared/permission';
@@ -64,6 +65,39 @@ export class AircraftMaintenanceCompaniesIndexComponent extends CrudItemsIndexCo
       // End Child MaintenanceTeam
       this.canViewMembers ||
       this.canDelete;
+  }
+
+  protected initSelectedButtonGroup() {
+    this.selectedButtonGroup = [
+      new BiaButtonGroupItem(
+        this.translateService.instant('aircraftMaintenanceCompany.edit'),
+        () => this.onEdit(this.selectedCrudItems[0].id),
+        this.canEdit,
+        this.selectedCrudItems.length !== 1,
+        this.translateService.instant('aircraftMaintenanceCompany.edit')
+      ),
+      // Begin Child MaintenanceTeam
+      new BiaButtonGroupItem(
+        this.translateService.instant(
+          'aircraftMaintenanceCompany.maintenanceTeams'
+        ),
+        () => this.onViewMaintenanceTeams(),
+        this.canViewMaintenanceTeams,
+        this.selectedCrudItems.length !== 1,
+        this.translateService.instant(
+          'aircraftMaintenanceCompany.maintenanceTeams'
+        )
+      ),
+      new BiaButtonGroupItem(
+        this.translateService.instant('app.members'),
+        () => this.onViewMembers(this.selectedCrudItems[0].id),
+        this.canViewMembers,
+        this.selectedCrudItems.length !== 1 ||
+          !this.selectedCrudItems[0].canMemberListAccess,
+        this.translateService.instant('app.members')
+      ),
+      // End Child MaintenanceTeam
+    ];
   }
 
   onClickRowData(crudItem: AircraftMaintenanceCompany) {
