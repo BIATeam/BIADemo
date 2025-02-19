@@ -26,5 +26,31 @@
             using var reader = new StreamReader(stream, Encoding.UTF8);
             return await reader.ReadToEndAsync();
         }
+
+        /// <summary>
+        /// Retrive all the embedded resources path from an assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
+        /// <param name="relativeResourcesFolderPath">Optionnal relative folder path to search the embedded resources.</param>
+        /// <param name="fileExtensionPattern">Optional file extension pattern of the embedded resources to search.</param>
+        /// <returns><see cref="List{T}"/>.</returns>
+        public static List<string> GetEmbeddedResourcesPath(Assembly assembly, string relativeResourcesFolderPath = null, string fileExtensionPattern = null)
+        {
+            var resourcesFolderPath = string.Join('.', assembly.GetName().Name, relativeResourcesFolderPath);
+            var resourcesPath = assembly.GetManifestResourceNames().AsEnumerable();
+
+            if (!string.IsNullOrWhiteSpace(relativeResourcesFolderPath))
+            {
+                resourcesPath = resourcesPath.Where(r => r.StartsWith(resourcesFolderPath, StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (!string.IsNullOrWhiteSpace(fileExtensionPattern))
+            {
+                var fileExtension = $".{fileExtensionPattern}";
+                resourcesPath = resourcesPath.Where(r => r.EndsWith(fileExtension, StringComparison.OrdinalIgnoreCase));
+            }
+
+            return resourcesPath.ToList();
+        }
     }
 }

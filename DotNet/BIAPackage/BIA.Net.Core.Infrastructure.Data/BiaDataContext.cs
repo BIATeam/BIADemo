@@ -234,28 +234,23 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// <summary>
         /// Run SQL scripts stored in an assembly embedded resources folder.
         /// </summary>
-        /// <param name="targetAssembly">Assembly that contains the embedded resources.</param>
+        /// <param name="assembly">Assembly that contains the embedded resources.</param>
         /// <param name="relativeResourcesFolderPath">Relative path to SQL scripts folder in embedded resources.</param>
         /// <returns><see cref="Task"/>.</returns>
-        public async Task RunScriptsFromAssemblyEmbeddedResourcesFolder(Assembly targetAssembly, string relativeResourcesFolderPath)
+        public async Task RunScriptsFromAssemblyEmbeddedResourcesFolder(Assembly assembly, string relativeResourcesFolderPath)
         {
-            var resourcesFolderPath = string.Join('.', targetAssembly.GetName().Name, relativeResourcesFolderPath);
-            var sqlResourcesPath = targetAssembly.GetManifestResourceNames()
-                                     .Where(r => r.StartsWith(resourcesFolderPath, StringComparison.OrdinalIgnoreCase) && r.EndsWith(".sql", StringComparison.OrdinalIgnoreCase))
-                                     .ToList();
-
-            foreach (var sqlResourcePath in sqlResourcesPath)
+            foreach (var scriptPath in EmbeddedResourceHelper.GetEmbeddedResourcesPath(assembly, relativeResourcesFolderPath, "sql"))
             {
-                var sqlScript = await EmbeddedResourceHelper.ReadEmbeddedResourceAsync(targetAssembly, sqlResourcePath);
-                if (!string.IsNullOrWhiteSpace(sqlScript))
+                var script = await EmbeddedResourceHelper.ReadEmbeddedResourceAsync(assembly, scriptPath);
+                if (!string.IsNullOrWhiteSpace(script))
                 {
                     try
                     {
-                        await this.Database.ExecuteSqlRawAsync(sqlScript);
+                        await this.Database.ExecuteSqlRawAsync(script);
                     }
                     catch (Exception ex)
                     {
-                        this.logger.LogError(ex, "Error while executing script {ScriptPath}", sqlResourcePath);
+                        this.logger.LogError(ex, "Error while executing script {ScriptPath}", scriptPath);
                     }
                 }
             }
