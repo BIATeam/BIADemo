@@ -55,7 +55,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
 
             this.appLifetime.ApplicationStarted.Register(() =>
             {
-                Task.Run(() =>
+                Task.Run(async () =>
                 {
                     try
                     {
@@ -74,7 +74,9 @@ namespace TheBIADevCompany.BIADemo.DeployDB
 
                         this.dataContext.Database.Migrate();
 
-                        this.CleanDistCacheAsync().Wait();
+                        await this.dataContext.RunScriptsFromAssemblyEmbeddedResourcesFolder(typeof(DataContext).Assembly, "Scripts.PostDeployment");
+
+                        await this.CleanDistCacheAsync();
                     }
                     catch (Exception ex)
                     {
