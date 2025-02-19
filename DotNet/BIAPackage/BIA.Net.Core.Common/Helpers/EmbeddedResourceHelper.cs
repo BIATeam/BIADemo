@@ -1,4 +1,8 @@
-﻿namespace BIA.Net.Core.Common.Helpers
+﻿// <copyright file="EmbeddedResourceHelper.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace BIA.Net.Core.Common.Helpers
 {
     using System;
     using System.Collections.Generic;
