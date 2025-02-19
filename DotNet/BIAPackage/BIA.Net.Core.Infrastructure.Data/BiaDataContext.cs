@@ -15,6 +15,7 @@ namespace BIA.Net.Core.Infrastructure.Data
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain.DistCache.Entities;
     using BIA.Net.Core.Domain.Translation.Entities;
     using BIA.Net.Core.Infrastructure.Data.Helpers;
@@ -228,6 +229,36 @@ namespace BIA.Net.Core.Infrastructure.Data
         public IEntityType FindEntityType(Type entityType)
         {
             return this.Model.FindEntityType(entityType);
+        }
+
+        /// <summary>
+        /// Run SQL scripts stored in an assembly embedded resources folder.
+        /// </summary>
+        /// <param name="targetAssembly">Assembly that contains the embedded resources.</param>
+        /// <param name="relativeResourcesFolderPath">Relative path to SQL scripts folder in embedded resources.</param>
+        /// <returns><see cref="Task"/>.</returns>
+        public async Task RunScriptsFromAssemblyEmbeddedResourcesFolder(Assembly targetAssembly, string relativeResourcesFolderPath)
+        {
+            var resourcesFolderPath = string.Join('.', targetAssembly.GetName().Name, relativeResourcesFolderPath);
+            var sqlResourcesPath = targetAssembly.GetManifestResourceNames()
+                                     .Where(r => r.StartsWith(resourcesFolderPath, StringComparison.OrdinalIgnoreCase) && r.EndsWith(".sql", StringComparison.OrdinalIgnoreCase))
+                                     .ToList();
+
+            foreach (var sqlResourcePath in sqlResourcesPath)
+            {
+                var sqlScript = await EmbeddedResourceHelper.ReadEmbeddedResourceAsync(targetAssembly, sqlResourcePath);
+                if (!string.IsNullOrWhiteSpace(sqlScript))
+                {
+                    try
+                    {
+                        await this.Database.ExecuteSqlRawAsync(sqlScript);
+                    }
+                    catch (Exception ex)
+                    {
+                        this.logger.LogError(ex, "Error while executing script {ScriptPath}", sqlResourcePath);
+                    }
+                }
+            }
         }
 
         /// <summary>
