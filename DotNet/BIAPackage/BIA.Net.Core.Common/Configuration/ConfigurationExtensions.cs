@@ -16,7 +16,7 @@ namespace BIA.Net.Core.Common.Configuration
         /// Gets the database engine.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
-        /// <param name="key">The name.</param>
+        /// <param name="key">The database key.</param>
         /// <returns>The database engine.</returns>
         public static string GetDBEngine(this IConfiguration configuration, string key)
         {
@@ -25,6 +25,12 @@ namespace BIA.Net.Core.Common.Configuration
             return bianetSection.DatabaseConfigurations.FirstOrDefault(x => x.Key == key)?.Provider;
         }
 
+        /// <summary>
+        /// Gets the connection string of a database.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="key">The database key.</param>
+        /// <returns>The database engine.</returns>
         public static string GetDatabaseConnectionString(this IConfiguration configuration, string key)
         {
             var bianetSection = new BiaNetSection();

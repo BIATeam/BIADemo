@@ -15,6 +15,9 @@ namespace BIA.Net.Core.Common.Configuration
     /// </summary>
     public class BiaNetSection
     {
+        /// <summary>
+        /// List of database configurations.
+        /// </summary>
         public List<DatabaseConfiguration> DatabaseConfigurations { get; set; }
 
         /// <summary>
