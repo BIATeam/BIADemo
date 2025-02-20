@@ -17,6 +17,7 @@
     "build:prod": "ng build --configuration production --base-href /BIADemo/App/",
     "build:prod2": "ng build --configuration production --base-href /BIADemo2/App/ --output-path dist/BIADemo2",
     "build:ocp": "ng build --configuration production,ocp",
+    "build:rosa": "ng build --configuration production,rosa",
     "build:docker": "ng build --configuration docker",
     "deploy": "ng deploy --base-href=/BIADemo/",
     "styles-theme-dark": "dart compile-sass.dart ./src/assets/bia/primeng/bia/theme-dark.scss ./src/assets/bia/primeng/layout/styles/theme/theme-dark/theme-dark.css",
