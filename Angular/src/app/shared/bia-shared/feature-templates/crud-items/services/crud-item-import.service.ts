@@ -162,7 +162,7 @@ export class CrudItemImportService<T extends BaseDto> {
         csvObjs.map(csvObj => {
           this.crudConfig.fieldsConfig.columns.map(column => {
             const csvValue: any = csvObj[column.field];
-            if (csvValue != null) {
+            if (csvValue !== undefined) {
               if (column.type === PropType.String) {
                 this.parseCSVString(csvObj, column);
               } else if (

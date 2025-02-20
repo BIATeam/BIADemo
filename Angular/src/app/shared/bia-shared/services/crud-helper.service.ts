@@ -13,7 +13,7 @@ export class CrudHelperService {
       embeddedItem.dtoState = DtoState.Modified;
       embeddedItemArray[
         embeddedItemArray.findIndex(
-          oldEmbeddedItem => embeddedItem.id == oldEmbeddedItem.id
+          oldEmbeddedItem => embeddedItem.id === oldEmbeddedItem.id
         )
       ] = embeddedItem;
     } else {

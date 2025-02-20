@@ -53,7 +53,7 @@ export class BiaMessageService {
   }
 
   showErrorHttpResponse(err: HttpErrorResponse) {
-    if (err.status == HttpStatusCode.UnprocessableEntity) {
+    if (err.status === HttpStatusCode.UnprocessableEntity) {
       this.showErrorDetail(err.error);
     } else {
       this.showError();

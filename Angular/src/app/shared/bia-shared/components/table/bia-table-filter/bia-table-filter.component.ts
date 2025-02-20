@@ -134,21 +134,21 @@ export class BiaTableFilterComponent<CrudItem>
 
   protected initFiterConfiguration() {
     this.initFieldConfiguration();
-    if (this.field.type == PropType.Number) {
+    if (this.field.type === PropType.Number) {
       this.columnFilterType = 'numeric';
       this.generateMatchModeOptions(this.filterMatchModeOptions.numeric);
-    } else if (this.field.type == PropType.Boolean) {
+    } else if (this.field.type === PropType.Boolean) {
       this.columnFilterType = 'boolean';
     } else if (
-      this.field.type == PropType.DateTime ||
-      this.field.type == PropType.Date
+      this.field.type === PropType.DateTime ||
+      this.field.type === PropType.Date
     ) {
       this.generateMatchModeOptions(this.filterMatchModeOptions.date);
       this.columnFilterType = 'date';
     } else if (
-      this.field.type == PropType.Time ||
-      this.field.type == PropType.TimeOnly ||
-      this.field.type == PropType.TimeSecOnly
+      this.field.type === PropType.Time ||
+      this.field.type === PropType.TimeOnly ||
+      this.field.type === PropType.TimeSecOnly
     ) {
       this.generateMatchModeOptions(this.filterMatchModeOptions.date);
       this.columnFilterType = 'text';

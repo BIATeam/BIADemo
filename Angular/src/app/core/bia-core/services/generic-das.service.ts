@@ -76,7 +76,7 @@ export abstract class GenericDas {
         if (
           error.status === HttpStatusCode.Unauthorized ||
           error.status === HttpStatusCode.Forbidden ||
-          error.status == HttpStatusCode.NotFound
+          error.status === HttpStatusCode.NotFound
         ) {
           location.assign(this.baseHref);
         }

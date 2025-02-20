@@ -93,8 +93,8 @@ export class TableHelperService {
       obj === null ||
       obj === undefined ||
       (this.isNullUndefEmptyStr(obj.value) &&
-        obj.matchMode != 'empty' &&
-        obj.matchMode != 'notEmpty')
+        obj.matchMode !== 'empty' &&
+        obj.matchMode !== 'notEmpty')
     );
   }
 

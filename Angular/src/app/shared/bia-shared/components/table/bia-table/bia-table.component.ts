@@ -381,9 +381,9 @@ export class BiaTableComponent<TDto extends { id: number }>
       if (this.table.sortMode === 'multiple') {
         if (
           viewPreference.multiSortMeta === undefined &&
-          viewPreference.sortField != null &&
-          viewPreference.sortField != '' &&
-          viewPreference.sortOrder != null
+          viewPreference.sortField !== undefined &&
+          viewPreference.sortField !== '' &&
+          viewPreference.sortOrder !== undefined
         ) {
           viewPreference.multiSortMeta = [
             {
@@ -625,7 +625,7 @@ export class BiaTableComponent<TDto extends { id: number }>
     const nestedProperties: string[] = col.field.split('.');
     let value: any = rowData;
     for (const prop of nestedProperties) {
-      if (value == null) {
+      if (!value) {
         return null;
       }
 
