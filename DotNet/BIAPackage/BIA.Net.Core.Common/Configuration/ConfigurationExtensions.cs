@@ -28,7 +28,7 @@ namespace BIA.Net.Core.Common.Configuration
 
             var bianetSection = new BiaNetSection();
             configuration.GetSection("BiaNet").Bind(bianetSection);
-            return bianetSection.DatabaseConfigurations.FirstOrDefault(x => x.Key == key)?.Provider;
+            return bianetSection.DatabaseConfigurations?.FirstOrDefault(x => x.Key == key)?.Provider;
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace BIA.Net.Core.Common.Configuration
 
             var bianetSection = new BiaNetSection();
             configuration.GetSection("BiaNet").Bind(bianetSection);
-            return bianetSection.DatabaseConfigurations.FirstOrDefault(x => x.Key == key)?.ConnectionString;
+            return bianetSection.DatabaseConfigurations?.FirstOrDefault(x => x.Key == key)?.ConnectionString;
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace BIA.Net.Core.Common.Configuration
 
             var bianetSection = new BiaNetSection();
             configuration.GetSection("BiaNet").Bind(bianetSection);
-            return bianetSection.DatabaseConfigurations.FirstOrDefault(x => x.Key == key)?.SQLDataBroker;
+            return bianetSection.DatabaseConfigurations?.FirstOrDefault(x => x.Key == key)?.SQLDataBroker;
         }
 
         /// <summary>
