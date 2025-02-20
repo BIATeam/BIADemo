@@ -3,42 +3,44 @@
   (submit)="onSubmit()"
   class="flex flex-column bia-form"
   [formGroup]="form">
-  <ng-container *ngFor="let field of fields">
-    <div
-      *ngIf="field.isVisible === true"
-      class="flex flex-row align-items-center"
-      #refFormField>
-      <div class="app-field-container">
-        <ng-template
-          [ngIf]="field.isEditable === true"
-          [ngIfElse]="isNotEditable">
-          <bia-input
-            [field]="field"
-            [form]="form"
-            [dictOptionDtos]="dictOptionDtos">
-            <ng-template pTemplate="specificInput">
-              <ng-container
-                *ngTemplateOutlet="
-                  specificInputTemplate;
-                  context: { field: field, form: form }
-                "></ng-container>
-            </ng-template>
-          </bia-input>
-        </ng-template>
-        <ng-template #isNotEditable>
-          <bia-output [field]="field" [data]="getCellData(field)">
-            <ng-template pTemplate="specificOutput">
-              <ng-container
-                *ngTemplateOutlet="
-                  specificOutputTemplate;
-                  context: { field: field, data: getCellData(field) }
-                "></ng-container>
-            </ng-template>
-          </bia-output>
-        </ng-template>
+  <div class="grid formgrid">
+    <ng-container *ngFor="let field of fields">
+      <div
+        *ngIf="field.isVisible === true"
+        class="col-2 flex flex-row align-items-center"
+        #refFormField>
+        <div class="app-field-container">
+          <ng-template
+            [ngIf]="field.isEditable === true"
+            [ngIfElse]="isNotEditable">
+            <bia-input
+              [field]="field"
+              [form]="form"
+              [dictOptionDtos]="dictOptionDtos">
+              <ng-template pTemplate="specificInput">
+                <ng-container
+                  *ngTemplateOutlet="
+                    specificInputTemplate;
+                    context: { field: field, form: form }
+                  "></ng-container>
+              </ng-template>
+            </bia-input>
+          </ng-template>
+          <ng-template #isNotEditable>
+            <bia-output [field]="field" [data]="getCellData(field)">
+              <ng-template pTemplate="specificOutput">
+                <ng-container
+                  *ngTemplateOutlet="
+                    specificOutputTemplate;
+                    context: { field: field, data: getCellData(field) }
+                  "></ng-container>
+              </ng-template>
+            </bia-output>
+          </ng-template>
+        </div>
       </div>
-    </div>
-  </ng-container>
+    </ng-container>
+  </div>
   <div class="footer-container bia-form-fixed-buttons">
     <div class="flex gap-2 align-items-center info-locked-container">
       <button
