@@ -129,7 +129,7 @@ export class AircraftMaintenanceCompaniesIndexComponent extends CrudItemsIndexCo
 
   // Begin Child MaintenanceTeam
   onViewMaintenanceTeams() {
-    if (this.selectedCrudItems.length == 1) {
+    if (this.selectedCrudItems.length === 1) {
       this.router.navigate(
         [this.selectedCrudItems[0].id, 'maintenance-teams'],
         { relativeTo: this.activatedRoute }

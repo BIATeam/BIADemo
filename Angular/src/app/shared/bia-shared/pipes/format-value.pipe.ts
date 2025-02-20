@@ -22,13 +22,13 @@ export class FormatValuePipe implements PipeTransform {
     if (value === null || value === undefined) {
       return null;
     }
-    if (col.type == PropType.Number) {
+    if (col.type === PropType.Number) {
       if (
-        col.displayFormat == null ||
+        col.displayFormat === null ||
         !(col.displayFormat instanceof BiaFieldNumberFormat)
       ) {
         return this.decimalPipe.transform(value);
-      } else if (col.displayFormat.mode == NumberMode.Currency) {
+      } else if (col.displayFormat.mode === NumberMode.Currency) {
         return this.currencyPipe.transform(
           value,
           col.displayFormat.currency,

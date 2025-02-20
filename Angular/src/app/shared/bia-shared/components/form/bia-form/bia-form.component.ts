@@ -131,7 +131,7 @@ export class BiaFormComponent<TDto extends { id: number }>
       if (this.form.invalid) {
         Object.keys(form.controls).forEach(controlName => {
           const controlErrors = form.controls[controlName].errors;
-          if (controlErrors != null) {
+          if (controlErrors) {
             errorMessages.push(
               `${controlName}: ${JSON.stringify(controlErrors)}`
             );
@@ -223,7 +223,7 @@ export class BiaFormComponent<TDto extends { id: number }>
     const nestedProperties: string[] = field.field.split('.');
     let value: any = this.element;
     for (const prop of nestedProperties) {
-      if (value == null) {
+      if (value === undefined) {
         return null;
       }
 

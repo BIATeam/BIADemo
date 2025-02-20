@@ -318,14 +318,14 @@ export class NotificationFormComponent implements OnChanges {
       // TODO set to modified when role change
 
       const toCheckModified = newList
-        .filter(newNT => oldList.some(oldNT => oldNT.team.id == newNT.team.id))
+        .filter(newNT => oldList.some(oldNT => oldNT.team.id === newNT.team.id))
         .map(
           s =>
             <NotificationTeam>{
               ...s,
               roles: BiaOptionService.differential(
                 s.roles,
-                oldList.filter(oldNT => oldNT.team.id == s.team.id)[0].roles
+                oldList.filter(oldNT => oldNT.team.id === s.team.id)[0].roles
               ),
             }
         );

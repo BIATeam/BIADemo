@@ -56,7 +56,7 @@ export class DateHelperService {
     dateString = dateString.replace('  ', ' ').trim();
 
     // Handle custom format if provided
-    if (dateFormat != null) {
+    if (dateFormat !== null) {
       let format = dateFormat;
       if (timePattern.test(dateString)) {
         format = dateFormat + ' ' + timeFormat;

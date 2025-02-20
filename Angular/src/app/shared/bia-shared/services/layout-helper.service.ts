@@ -22,7 +22,7 @@ export class LayoutHelperService {
       } else {
         height = '100vh - 9.95rem';
         height +=
-          layoutService._config.footerMode != 'overlay'
+          layoutService._config.footerMode !== 'overlay'
             ? ' - var(--footer-height)'
             : '';
       }
