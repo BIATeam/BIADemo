@@ -20,6 +20,12 @@ namespace BIA.Net.Core.Common.Configuration
         /// <returns>The database engine.</returns>
         public static string GetDBEngine(this IConfiguration configuration, string key)
         {
+            var appSettingsValue = configuration["DBEngine:" + key];
+            if (!string.IsNullOrWhiteSpace(appSettingsValue))
+            {
+                return appSettingsValue;
+            }
+
             var bianetSection = new BiaNetSection();
             configuration.GetSection("BiaNet").Bind(bianetSection);
             return bianetSection.DatabaseConfigurations.FirstOrDefault(x => x.Key == key)?.Provider;
@@ -33,6 +39,12 @@ namespace BIA.Net.Core.Common.Configuration
         /// <returns>The database engine.</returns>
         public static string GetDatabaseConnectionString(this IConfiguration configuration, string key)
         {
+            var appSettingsValue = configuration["ConnectionStrings:" + key];
+            if (!string.IsNullOrWhiteSpace(appSettingsValue))
+            {
+                return appSettingsValue;
+            }
+
             var bianetSection = new BiaNetSection();
             configuration.GetSection("BiaNet").Bind(bianetSection);
             return bianetSection.DatabaseConfigurations.FirstOrDefault(x => x.Key == key)?.ConnectionString;
@@ -46,6 +58,12 @@ namespace BIA.Net.Core.Common.Configuration
         /// <returns>The database engine.</returns>
         public static bool? GetSqlDataBroker(this IConfiguration configuration, string key)
         {
+            var appSettingsValue = configuration["SQLDataBroker:" + key];
+            if (!string.IsNullOrWhiteSpace(appSettingsValue))
+            {
+                return bool.Parse(appSettingsValue);
+            }
+
             var bianetSection = new BiaNetSection();
             configuration.GetSection("BiaNet").Bind(bianetSection);
             return bianetSection.DatabaseConfigurations.FirstOrDefault(x => x.Key == key)?.SQLDataBroker;
