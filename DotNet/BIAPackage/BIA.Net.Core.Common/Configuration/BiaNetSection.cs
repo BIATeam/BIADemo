@@ -18,7 +18,7 @@ namespace BIA.Net.Core.Common.Configuration
         /// <summary>
         /// List of database configurations.
         /// </summary>
-        public List<DatabaseConfiguration> DatabaseConfigurations { get; set; };
+        public List<DatabaseConfiguration> DatabaseConfigurations { get; set; }
 
         /// <summary>
         /// Configure the activation of common feature (worker and webApi).
