@@ -4,6 +4,7 @@
 
 namespace BIA.Net.Core.Common.Configuration
 {
+    using System.Linq;
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
@@ -15,23 +16,33 @@ namespace BIA.Net.Core.Common.Configuration
         /// Gets the database engine.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
-        /// <param name="name">The name.</param>
+        /// <param name="key">The name.</param>
         /// <returns>The database engine.</returns>
-        public static string GetDBEngine(this IConfiguration configuration, string name)
+        public static string GetDBEngine(this IConfiguration configuration, string key)
         {
-            return configuration["DBEngine:" + name];
+            var bianetSection = new BiaNetSection();
+            configuration.GetSection("BiaNet").Bind(bianetSection);
+            return bianetSection.DatabaseConfigurations.FirstOrDefault(x => x.Key == key)?.Provider;
+        }
+
+        public static string GetDatabaseConnectionString(this IConfiguration configuration, string key)
+        {
+            var bianetSection = new BiaNetSection();
+            configuration.GetSection("BiaNet").Bind(bianetSection);
+            return bianetSection.DatabaseConfigurations.FirstOrDefault(x => x.Key == key)?.ConnectionString;
         }
 
         /// <summary>
         /// Gets the SQL data broker mode.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
-        /// <param name="name">The name.</param>
+        /// <param name="key">The name.</param>
         /// <returns>The database engine.</returns>
-        public static bool GetSqlDataBroker(this IConfiguration configuration, string name)
+        public static bool? GetSqlDataBroker(this IConfiguration configuration, string key)
         {
-            var value = configuration["SQLDataBroker:" + name];
-            return !string.IsNullOrEmpty(value) && bool.Parse(configuration["SQLDataBroker:" + name]);
+            var bianetSection = new BiaNetSection();
+            configuration.GetSection("BiaNet").Bind(bianetSection);
+            return bianetSection.DatabaseConfigurations.FirstOrDefault(x => x.Key == key)?.SQLDataBroker;
         }
 
         /// <summary>

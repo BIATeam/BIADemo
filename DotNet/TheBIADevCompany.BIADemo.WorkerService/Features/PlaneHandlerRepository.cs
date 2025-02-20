@@ -38,7 +38,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
         public PlaneHandlerRepository(IConfiguration configuration, IClientForHubService clientForHubService, IServiceProvider serviceProvider)
             : base(
                   serviceProvider,
-                  configuration.GetConnectionString("ProjectDatabase"),
+                  configuration.GetDatabaseConnectionString("ProjectDatabase"),
                   configuration.GetDBEngine("ProjectDatabase"),
                   "SELECT Id, SiteId, RowVersion FROM [dbo].[Planes]",
                   "Id",

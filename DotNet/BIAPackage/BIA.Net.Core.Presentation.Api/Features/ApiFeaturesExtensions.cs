@@ -124,7 +124,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
 
                 if (dbEngine.ToLower().Equals("sqlserver"))
                 {
-                    JobStorage.Current = new SqlServerStorage(configuration.GetConnectionString(apiFeatures.DelegateJobToWorker.ConnectionStringName));
+                    JobStorage.Current = new SqlServerStorage(configuration.GetDatabaseConnectionString(apiFeatures.DelegateJobToWorker.ConnectionStringName));
                 }
                 else if (dbEngine.ToLower().Equals("postgresql"))
                 {
@@ -133,7 +133,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
                         InvisibilityTimeout = TimeSpan.FromDays(5),
                     };
 
-                    JobStorage.Current = new PostgreSqlStorage(new NpgsqlConnectionFactory(configuration.GetConnectionString(apiFeatures.DelegateJobToWorker.ConnectionStringName), optionsTime, null), optionsTime);
+                    JobStorage.Current = new PostgreSqlStorage(new NpgsqlConnectionFactory(configuration.GetDatabaseConnectionString(apiFeatures.DelegateJobToWorker.ConnectionStringName), optionsTime, null), optionsTime);
                 }
             }
 
@@ -146,7 +146,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
                     {
                         config.UseSimpleAssemblyNameTypeSerializer()
                               .UseRecommendedSerializerSettings()
-                              .UseSqlServerStorage(configuration.GetConnectionString(apiFeatures.HangfireDashboard.ConnectionStringName));
+                              .UseSqlServerStorage(configuration.GetDatabaseConnectionString(apiFeatures.HangfireDashboard.ConnectionStringName));
                     }
                     else if (dbEngine.ToLower().Equals("postgresql"))
                     {
@@ -157,7 +157,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
 
                         config.UseSimpleAssemblyNameTypeSerializer()
                               .UseRecommendedSerializerSettings()
-                              .UsePostgreSqlStorage(options => options.UseNpgsqlConnection(configuration.GetConnectionString(apiFeatures.HangfireDashboard.ConnectionStringName)), optionsTime);
+                              .UsePostgreSqlStorage(options => options.UseNpgsqlConnection(configuration.GetDatabaseConnectionString(apiFeatures.HangfireDashboard.ConnectionStringName)), optionsTime);
                     }
 
                     if (apiFeatures.HangfireDashboard.LogsVisibleInDashboard)

@@ -15,6 +15,8 @@ namespace BIA.Net.Core.Common.Configuration
     /// </summary>
     public class BiaNetSection
     {
+        public List<DatabaseConfiguration> DatabaseConfigurations { get; set; }
+
         /// <summary>
         /// Configure the activation of common feature (worker and webApi).
         /// </summary>

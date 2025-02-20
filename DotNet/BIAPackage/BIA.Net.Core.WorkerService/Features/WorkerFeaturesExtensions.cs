@@ -95,7 +95,7 @@ namespace BIA.Net.Core.WorkerService.Features
                     {
                         config.UseSimpleAssemblyNameTypeSerializer()
                               .UseRecommendedSerializerSettings()
-                              .UseSqlServerStorage(configuration.GetConnectionString(workerFeatures.HangfireServer.ConnectionStringName));
+                              .UseSqlServerStorage(configuration.GetDatabaseConnectionString(workerFeatures.HangfireServer.ConnectionStringName));
                     }
                     else if (dbEngine.ToLower().Equals("postgresql"))
                     {
@@ -106,7 +106,7 @@ namespace BIA.Net.Core.WorkerService.Features
 
                         config.UseSimpleAssemblyNameTypeSerializer()
                               .UseRecommendedSerializerSettings()
-                              .UsePostgreSqlStorage(options => options.UseNpgsqlConnection(configuration.GetConnectionString(workerFeatures.HangfireServer.ConnectionStringName)), optionsTime);
+                              .UsePostgreSqlStorage(options => options.UseNpgsqlConnection(configuration.GetDatabaseConnectionString(workerFeatures.HangfireServer.ConnectionStringName)), optionsTime);
                     }
 
                     // Log in hangfire dashboard
