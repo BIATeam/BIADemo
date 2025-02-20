@@ -1,5 +1,13 @@
 {
   "BiaNet": {
+    "DatabaseConfigurations": [
+      {
+        "Key": "ProjectDatabase",
+        "Provider": "SQLServer",
+        "ConnectionString": "data source=localhost;initial catalog=BIADemo;integrated security=True;MultipleActiveResultSets=True;Encrypt=False;App=BIADemo",
+        "SQLDataBroker": "true"
+      }
+    ],
     "CommonFeatures": {
       "ClientForHub": {
         "SignalRUrl": "http://localhost/BIADemo/WebApi/HubForClients"

@@ -1,5 +1,12 @@
 {
   "BiaNet": {
+    "DatabaseConfigurations": [
+      {
+        "Key": "ProjectDatabase",
+        "Provider": "SQLServer",
+        "ConnectionString": "data source=the-bia-dev-team-db-int.the-deploy-domain-name.bia\\SEPDMAPPINT;initial catalog=BIADemo_INT;integrated security=True;MultipleActiveResultSets=True;Encrypt=False;App=BIADemo"
+      }
+    ],
     "Environment": {
       "Type": "INT",
       // UrlMatomo shoulld now contain the name of the php and js (originaly matomo.js & matomo.php) => rename to bypass ublock

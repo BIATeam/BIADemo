@@ -1,5 +1,17 @@
 {
   "BiaNet": {
+    "DatabaseConfigurations": [
+      {
+        "Key": "ProjectDatabase",
+        "Provider": "SQLServer",
+        "ConnectionString": "data source=localhost;initial catalog=BIADemo;integrated security=True;MultipleActiveResultSets=True;Encrypt=False;App=BIADemo"
+      },
+      {
+        "Key": "ProjectDatabaseReadOnly",
+        "Provider": "SQLServer",
+        "ConnectionString": "data source=localhost;initial catalog=BIADemoReadOnly;integrated security=True;MultipleActiveResultSets=True;Encrypt=False;App=BIADemo"
+      }
+    ],
     "Environment": {
       "Type": "DEV",
       // UrlMatomo shoulld now contain the name of the php and js (originaly matomo.js & matomo.php) => rename to bypass ublock

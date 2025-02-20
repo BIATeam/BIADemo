@@ -30,7 +30,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
             where T : class
         {
             IEntityType entityType = dbContext.Model.FindEntityType(typeof(T));
-            string connectionString = dbContext.Database.GetDatabaseConnectionString();
+            string connectionString = dbContext.Database.GetConnectionString();
             string tableName = entityType.GetTableName();
 
             if (datas?.Count > 0 && !string.IsNullOrWhiteSpace(connectionString) && !string.IsNullOrWhiteSpace(tableName))
