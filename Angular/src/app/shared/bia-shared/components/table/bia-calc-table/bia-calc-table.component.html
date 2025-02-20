@@ -272,61 +272,64 @@
           [frozen]="isSelectFrozen">
           <i class="pi pi-plus"></i>
         </td>
-        <td
-          (click)="initEditableRow(footerRowData)"
-          *ngFor="let col of columns"
-          [style.min-width]="col.minWidth"
-          [alignFrozen]="col.alignFrozen"
-          pFrozenColumn
-          [frozen]="col.isFrozen">
-          <!-- <p-cellEditor> -->
-          <ng-container *ngIf="editFooter === true">
-            <ng-template
-              [ngIf]="
-                col.isEditable === true || col.isOnlyInitializable === true
-              "
-              [ngIfElse]="isNotEditable">
-              <bia-table-input
-                [field]="col"
-                [form]="form"
-                [dictOptionDtos]="dictOptionDtos"
-                (valueChange)="onChange()"
-                (complexInput)="onComplexInput($event)">
-                <ng-template pTemplate="specificInput">
-                  <ng-container
-                    *ngTemplateOutlet="
-                      specificInputTemplate;
-                      context: { field: col, form: form }
-                    "></ng-container>
-                </ng-template>
-              </bia-table-input>
-            </ng-template>
-            <ng-template #isNotEditable>
-              <ng-container>
-                <bia-table-output
+        @let firstEditableFieldIndex = firstEditableField(columns);
+        @for (col of columns; track col; let i = $index) {
+          <td
+            (click)="initEditableRow(footerRowData)"
+            [style.min-width]="col.minWidth"
+            [alignFrozen]="col.alignFrozen"
+            pFrozenColumn
+            [frozen]="col.isFrozen">
+            <!-- <p-cellEditor> -->
+            <ng-container *ngIf="editFooter === true">
+              <ng-template
+                [ngIf]="
+                  col.isEditable === true || col.isOnlyInitializable === true
+                "
+                [ngIfElse]="isNotEditable">
+                <bia-table-input
                   [field]="col"
-                  [data]="getCellData(footerRowData, col)">
-                  <ng-template pTemplate="specificOutput">
+                  [form]="form"
+                  [dictOptionDtos]="dictOptionDtos"
+                  [focusByDefault]="i === firstEditableFieldIndex"
+                  (valueChange)="onChange()"
+                  (complexInput)="onComplexInput($event)">
+                  <ng-template pTemplate="specificInput">
                     <ng-container
                       *ngTemplateOutlet="
-                        specificOutputTemplate;
-                        context: {
-                          rowData: footerRowData,
-                          field: col,
-                          data: getCellData(footerRowData, col),
-                        }
+                        specificInputTemplate;
+                        context: { field: col, form: form }
                       "></ng-container>
                   </ng-template>
-                </bia-table-output>
-              </ng-container>
-            </ng-template>
-          </ng-container>
-          <!-- OUTPUT -->
-          <ng-container *ngIf="editFooter !== true">
-            <label *ngIf="col.isEditable === true">-</label>
-          </ng-container>
-          <!-- </p-cellEditor> -->
-        </td>
+                </bia-table-input>
+              </ng-template>
+              <ng-template #isNotEditable>
+                <ng-container>
+                  <bia-table-output
+                    [field]="col"
+                    [data]="getCellData(footerRowData, col)">
+                    <ng-template pTemplate="specificOutput">
+                      <ng-container
+                        *ngTemplateOutlet="
+                          specificOutputTemplate;
+                          context: {
+                            rowData: footerRowData,
+                            field: col,
+                            data: getCellData(footerRowData, col),
+                          }
+                        "></ng-container>
+                    </ng-template>
+                  </bia-table-output>
+                </ng-container>
+              </ng-template>
+            </ng-container>
+            <!-- OUTPUT -->
+            <ng-container *ngIf="editFooter !== true">
+              <label *ngIf="col.isEditable === true">-</label>
+            </ng-container>
+            <!-- </p-cellEditor> -->
+          </td>
+        }
       </tr>
     </ng-template>
     <ng-template pTemplate="summary" let-columns>

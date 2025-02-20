@@ -70,7 +70,7 @@
           isAdd === true ? ('bia.add' | translate) : ('bia.save' | translate)
         }}"
         type="submit"
-        [disabled]="!form.valid || isCrudItemOutdated"></button>
+        [disabled]="disableSave || !form.valid || isCrudItemOutdated"></button>
     </div>
   </div>
 </form>

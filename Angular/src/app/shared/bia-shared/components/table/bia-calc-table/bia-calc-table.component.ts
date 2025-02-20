@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
+import { BiaFieldConfig } from '../../../model/bia-field-config';
 import { DictOptionDto } from '../bia-table/dict-option-dto';
 
 @Component({
@@ -28,8 +29,9 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
 {
   @Input() canAdd = true;
   @Input() canEdit = true;
-  @Output() save = new EventEmitter<any>();
   @Input() dictOptionDtos: DictOptionDto[];
+  @Output() save = new EventEmitter<any>();
+  @Output() isEditing = new EventEmitter<boolean>();
 
   public formId: string;
   public form: UntypedFormGroup;
@@ -73,6 +75,12 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
   ngOnInit() {
     this.initForm();
     this.addFooterEmptyObject();
+  }
+
+  firstEditableField(columns: BiaFieldConfig<TDto>[]): number {
+    return columns.findIndex(
+      col => col.isEditable === true || col.isOnlyInitializable === true
+    );
   }
 
   public getOptionDto(key: string) {
@@ -146,11 +154,15 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
       if (rowData.id === 0) {
         if (this.canAdd === true) {
           this.editFooter = true;
+          this.isEditing.emit(true);
         }
       } else {
         this.editFooter = false;
         if (this.canEdit === true) {
           this.table?.initRowEdit(rowData);
+          this.isEditing.emit(true);
+        } else {
+          this.isEditing.emit(false);
         }
       }
       this.form.reset();
@@ -165,6 +177,7 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
       this.table.editingRowKeys = {};
     }
     this.editFooter = false;
+    this.isEditing.emit(false);
   }
 
   public escape() {

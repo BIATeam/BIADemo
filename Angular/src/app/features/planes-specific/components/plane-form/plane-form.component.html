@@ -3,6 +3,7 @@
   [fields]="fields"
   [formValidators]="formValidators"
   [dictOptionDtos]="dictOptionDtos"
+  [disableSave]="isEditingEngines"
   (save)="onSave($event)"
   (cancelled)="onCancel()">
   <ng-template pTemplate="specificInput" let-field="field" let-form="form">
@@ -53,7 +54,8 @@
           [canSelectElement]="true"
           [loading]="false"
           (selectedElementsChanged)="onSelectedEnginesChanged($event)"
-          (save)="onEngineSave($event)" />
+          (save)="onEngineSave($event)"
+          (isEditing)="onIsEditingChange($event)" />
       </span>
     </ng-container>
   </ng-template>

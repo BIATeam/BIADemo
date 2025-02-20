@@ -37,6 +37,7 @@ export class CrudItemTableComponent<CrudItem extends BaseDto>
       this.form.addValidators(this.configuration.formValidators);
     }
   }
+
   protected formFields() {
     const fields: { [key: string]: any } = { id: [this.element.id] };
     for (const col of this.configuration.columns) {

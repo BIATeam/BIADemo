@@ -46,6 +46,7 @@ export class BiaFormComponent<TDto extends { id: number }>
   @Input() dictOptionDtos: DictOptionDto[];
   @Input() isAdd?: boolean;
   @Input() isCrudItemOutdated = false;
+  @Input() disableSave = false;
   @Output() save = new EventEmitter<any>();
   @Output() cancelled = new EventEmitter<void>();
 
