@@ -35,6 +35,7 @@ export class PlaneFormComponent
   newId: number = CrudHelperService.newIdStartingValue;
   selectedEngines: Engine[] = [];
   displayedEngines: WritableSignal<Engine[]> = signal([]);
+  isEditingEngines = false;
 
   constructor() {
     super();
@@ -47,6 +48,10 @@ export class PlaneFormComponent
     if (changes.crudItem) {
       this.setDisplayedEngines();
     }
+  }
+
+  onIsEditingChange(isEditing: boolean) {
+    this.isEditingEngines = isEditing;
   }
 
   setDisplayedEngines() {
@@ -76,16 +81,5 @@ export class PlaneFormComponent
   onDeleteEngines() {
     this.selectedEngines.forEach(e => (e.dtoState = DtoState.Deleted));
     this.setDisplayedEngines();
-  }
-
-  onSave(crudItem: PlaneSpecific) {
-    if (this.engineTableComponent.isInEditing) {
-      setTimeout(() => {
-        this.onSave(crudItem);
-      }, 100);
-    } else {
-      crudItem.engines = this.crudItem?.engines ?? [];
-      this.save.emit(crudItem);
-    }
   }
 }
