@@ -1,0 +1,10 @@
+{
+  "BiaNet": {
+    "DatabaseConfigurations": [
+      {
+        "Key": "ProjectDatabase",
+        "Provider": "SQLServer"
+      }
+    ]
+  }
+}
