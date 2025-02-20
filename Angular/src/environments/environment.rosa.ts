@@ -9,7 +9,6 @@ export const environment = {
     newValue: '',
   },
   hubUrl: '/HubForClients',
-  urlErrorPage: 'https://dmeu.electrical-power.safran/static/error.htm',
   useXhrWithCred: false,
   production: true,
   logging: {
