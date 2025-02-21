@@ -11,6 +11,7 @@ import { BiaFormComponent } from 'src/app/shared/bia-shared/components/form/bia-
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { BiaFieldConfig } from 'src/app/shared/bia-shared/model/bia-field-config';
+import { BiaFormConfig } from 'src/app/shared/bia-shared/model/bia-form-config';
 
 @Component({
   selector: 'bia-crud-item-form',
@@ -21,6 +22,7 @@ import { BiaFieldConfig } from 'src/app/shared/bia-shared/model/bia-field-config
 export class CrudItemFormComponent<CrudItem extends BaseDto> {
   @Input() crudItem?: CrudItem;
   @Input() fields: BiaFieldConfig<CrudItem>[];
+  @Input() formConfig?: BiaFormConfig<CrudItem>;
   @Input() formValidators?: ValidatorFn[];
   @Input() dictOptionDtos: DictOptionDto[];
   @Input() isAdd?: boolean;

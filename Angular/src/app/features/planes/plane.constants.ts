@@ -2,13 +2,18 @@ import { CrudConfig } from 'src/app/shared/bia-shared/feature-templates/crud-ite
 /// BIAToolKit - Begin AncestorTeam
 import { TeamTypeId } from 'src/app/shared/constants';
 /// BIAToolKit - End AncestorTeam
-import { Plane, planeFieldsConfiguration } from './model/plane';
+import {
+  Plane,
+  planeFieldsConfiguration,
+  planeFormConfiguration,
+} from './model/plane';
 
 // TODO after creation of CRUD Plane : adapt the global configuration
 export const planeCRUDConfiguration: CrudConfig<Plane> = new CrudConfig({
   // IMPORTANT: this key should be unique in all the application.
   featureName: 'planes',
   fieldsConfig: planeFieldsConfiguration,
+  formConfig: planeFormConfiguration,
   useCalcMode: true,
   useSignalR: false,
   useView: true,

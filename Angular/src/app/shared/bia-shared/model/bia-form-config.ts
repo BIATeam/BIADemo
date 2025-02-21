@@ -1,17 +1,19 @@
-export class BiaFormConfig<TDto> {
-  groups: BiaFormConfigGroup<TDto>[];
-  rows: BiaFormConfigRow<TDto>[];
+export interface BiaFormConfig<TDto> {
+  groups?: BiaFormConfigGroup<TDto>[];
+  rows?: BiaFormConfigRow<TDto>[];
 }
 
 export class BiaFormConfigGroup<TDto> {
-  name: string;
-  rows: BiaFormConfigRow<TDto>[];
+  constructor(
+    public name: string,
+    public rows: BiaFormConfigRow<TDto>[]
+  ) {}
 }
 
 export class BiaFormConfigRow<TDto> {
-  columns: BiaFormConfigColumn<TDto>[];
+  constructor(public columns: BiaFormConfigColumn<TDto>[]) {}
 }
 
 export class BiaFormConfigColumn<TDto> {
-  field: keyof TDto & string;
+  constructor(public field: keyof TDto & string) {}
 }

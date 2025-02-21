@@ -8,6 +8,12 @@ import {
   PrimeNGFiltering,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
+import {
+  BiaFormConfig,
+  BiaFormConfigColumn,
+  BiaFormConfigGroup,
+  BiaFormConfigRow,
+} from 'src/app/shared/bia-shared/model/bia-form-config';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 // TODO after creation of CRUD Plane : adapt the model
@@ -38,6 +44,17 @@ export class Plane extends BaseDto {
   currentAirport: OptionDto;
   /// BIAToolKit - End Properties
 }
+
+export const planeFormConfiguration: BiaFormConfig<Plane> = {
+  groups: [
+    new BiaFormConfigGroup('Group1', [
+      new BiaFormConfigRow([
+        new BiaFormConfigColumn('msn'),
+        new BiaFormConfigColumn('manufacturer'),
+      ]),
+    ]),
+  ],
+};
 
 // TODO after creation of CRUD Plane : adapt the field configuration
 export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {

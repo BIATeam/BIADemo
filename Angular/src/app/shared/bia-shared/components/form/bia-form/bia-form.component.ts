@@ -30,6 +30,7 @@ import {
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { BaseDto } from '../../../model/base-dto';
+import { BiaFormConfig } from '../../../model/bia-form-config';
 
 @Component({
   selector: 'bia-form',
@@ -42,6 +43,7 @@ export class BiaFormComponent<TDto extends { id: number }>
 {
   @Input() element?: TDto;
   @Input() fields: BiaFieldConfig<TDto>[];
+  @Input() formConfig?: BiaFormConfig<TDto>;
   @Input() formValidators?: ValidatorFn[];
   @Input() dictOptionDtos: DictOptionDto[];
   @Input() isAdd?: boolean;
