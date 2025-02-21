@@ -1,7 +1,7 @@
 import { BiaFieldConfig } from './bia-field-config';
 
 export class BiaFormConfig<TDto> {
-  constructor(public config: BiaFormConfigItem<TDto>[] = []) {}
+  constructor(public items: BiaFormConfigItem<TDto>[] = []) {}
 }
 
 export type BiaFormConfigItem<TDto> =

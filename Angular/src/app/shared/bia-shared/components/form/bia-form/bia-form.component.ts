@@ -172,7 +172,7 @@ export class BiaFormComponent<TDto extends { id: number }>
     ): BiaFormConfigColumn<TDto>[] =>
       rows.flatMap(row => getColumnsFromRow(row));
 
-    const columns: BiaFormConfigColumn<TDto>[] = this.formConfig.config.flatMap(
+    const columns: BiaFormConfigColumn<TDto>[] = this.formConfig.items.flatMap(
       item => {
         if (item.type === 'group') {
           return getColumnsFromRows(item.rows);
@@ -183,7 +183,6 @@ export class BiaFormComponent<TDto extends { id: number }>
       }
     );
 
-    // Association des fieldConfig aux colonnes en fonction du field
     columns.forEach(column => {
       const fieldIndex = this.fields.findIndex(x => x.field === column.field);
       if (fieldIndex !== -1) {
