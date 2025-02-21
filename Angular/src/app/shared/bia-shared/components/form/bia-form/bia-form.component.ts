@@ -155,10 +155,10 @@ export class BiaFormComponent<TDto extends { id: number }>
       this.form.addValidators(this.formValidators);
     }
 
-    this.initFieldsFromFormConfig();
+    this.initFormConfigFields();
   }
 
-  private initFieldsFromFormConfig() {
+  private initFormConfigFields() {
     if (!this.formConfig) {
       return;
     }
