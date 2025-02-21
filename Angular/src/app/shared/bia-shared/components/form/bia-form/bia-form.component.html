@@ -3,35 +3,37 @@
   (submit)="onSubmit()"
   class="flex flex-column bia-form"
   [formGroup]="form">
-  <ng-container *ngIf="formConfig?.groups && formConfig!.groups!.length > 0">
-    <div *ngFor="let group of formConfig!.groups" class="bia-form-group">
-      <h6>{{ group.name }}</h6>
+  <ng-container *ngIf="formConfig">
+    <ng-container *ngIf="formConfig.groups">
+      <div *ngFor="let group of formConfig.groups" class="bia-form-group">
+        <h6>{{ group.name }}</h6>
+        <ng-container
+          *ngTemplateOutlet="
+            rowsTemplate;
+            context: { rows: group.rows }
+          "></ng-container>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="formConfig.rows">
       <ng-container
         *ngTemplateOutlet="
           rowsTemplate;
-          context: { rows: group.rows }
+          context: { rows: formConfig.rows }
         "></ng-container>
-    </div>
-  </ng-container>
-  <ng-container *ngIf="formConfig?.rows && formConfig!.rows!.length > 0">
-    <ng-container
-      *ngTemplateOutlet="
-        rowsTemplate;
-        context: { rows: formConfig!.rows }
-      "></ng-container>
-  </ng-container>
+    </ng-container>
 
-  <ng-template #rowsTemplate let-rows="rows">
-    <div *ngFor="let row of rows" class="grid formgrid bia-form-row">
-      <div *ngFor="let column of row.columns" [class]="row.columnClass">
-        <ng-container
-          *ngTemplateOutlet="
-            fieldTemplate;
-            context: { field: column.fieldConfig }
-          "></ng-container>
+    <ng-template #rowsTemplate let-rows="rows">
+      <div *ngFor="let row of rows" class="grid formgrid bia-form-row">
+        <div *ngFor="let column of row.columns" [class]="row.columnClass">
+          <ng-container
+            *ngTemplateOutlet="
+              fieldTemplate;
+              context: { field: column.fieldConfig }
+            "></ng-container>
+        </div>
       </div>
-    </div>
-  </ng-template>
+    </ng-template>
+  </ng-container>
 
   <ng-container *ngFor="let field of fields">
     <ng-container
