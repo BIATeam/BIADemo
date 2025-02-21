@@ -1,11 +1,15 @@
 import { BiaFieldConfig } from './bia-field-config';
 
-export interface BiaFormConfig<TDto> {
-  groups?: BiaFormConfigGroup<TDto>[];
-  rows?: BiaFormConfigRow<TDto>[];
+export class BiaFormConfig<TDto> {
+  constructor(public config: BiaFormConfigItem<TDto>[] = []) {}
 }
 
+export type BiaFormConfigItem<TDto> =
+  | BiaFormConfigGroup<TDto>
+  | BiaFormConfigRow<TDto>;
+
 export class BiaFormConfigGroup<TDto> {
+  readonly type = 'group';
   constructor(
     public name: string,
     public rows: BiaFormConfigRow<TDto>[]
@@ -13,6 +17,7 @@ export class BiaFormConfigGroup<TDto> {
 }
 
 export class BiaFormConfigRow<TDto> {
+  readonly type = 'row';
   constructor(public columns: BiaFormConfigColumn<TDto>[]) {}
 
   get columnClass(): string {

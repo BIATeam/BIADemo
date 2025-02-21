@@ -4,8 +4,27 @@
   class="flex flex-column bia-form"
   [formGroup]="form">
   <ng-container *ngIf="formConfig">
-    <ng-container *ngIf="formConfig.groups">
-      <div *ngFor="let group of formConfig.groups" class="bia-form-group">
+    <ng-container *ngFor="let item of formConfig.config">
+      <ng-container [ngSwitch]="item.type">
+        <ng-container *ngSwitchCase="'group'">
+          <ng-container
+            *ngTemplateOutlet="
+              groupTemplate;
+              context: { group: item }
+            "></ng-container>
+        </ng-container>
+        <ng-container *ngSwitchCase="'row'">
+          <ng-container
+            *ngTemplateOutlet="
+              rowTemplate;
+              context: { row: item }
+            "></ng-container>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+
+    <ng-template #groupTemplate let-group="group">
+      <div class="bia-form-group">
         <h6>{{ group.name }}</h6>
         <ng-container
           *ngTemplateOutlet="
@@ -13,17 +32,17 @@
             context: { rows: group.rows }
           "></ng-container>
       </div>
-    </ng-container>
-    <ng-container *ngIf="formConfig.rows">
-      <ng-container
-        *ngTemplateOutlet="
-          rowsTemplate;
-          context: { rows: formConfig.rows }
-        "></ng-container>
-    </ng-container>
+    </ng-template>
 
     <ng-template #rowsTemplate let-rows="rows">
-      <div *ngFor="let row of rows" class="grid formgrid bia-form-row">
+      <ng-container *ngFor="let row of rows">
+        <ng-container
+          *ngTemplateOutlet="rowTemplate; context: { row: row }"></ng-container>
+      </ng-container>
+    </ng-template>
+
+    <ng-template #rowTemplate let-row="row">
+      <div class="grid formgrid bia-form-row">
         <div *ngFor="let column of row.columns" [class]="row.columnClass">
           <ng-container
             *ngTemplateOutlet="

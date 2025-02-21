@@ -33,6 +33,7 @@ import { BaseDto } from '../../../model/base-dto';
 import {
   BiaFormConfig,
   BiaFormConfigColumn,
+  BiaFormConfigRow,
 } from '../../../model/bia-form-config';
 
 @Component({
@@ -162,20 +163,27 @@ export class BiaFormComponent<TDto extends { id: number }>
       return;
     }
 
+    const getColumnsFromRow = (
+      row: BiaFormConfigRow<TDto>
+    ): BiaFormConfigColumn<TDto>[] => row.columns;
+
     const getColumnsFromRows = (
-      rows: { columns: BiaFormConfigColumn<TDto>[] }[] = []
-    ) => rows.flatMap(row => row.columns);
+      rows: BiaFormConfigRow<TDto>[] = []
+    ): BiaFormConfigColumn<TDto>[] =>
+      rows.flatMap(row => getColumnsFromRow(row));
 
-    const groupColumns = this.formConfig.groups
-      ? this.formConfig.groups.flatMap(g => getColumnsFromRows(g.rows))
-      : [];
-    const rowColumns = getColumnsFromRows(this.formConfig.rows);
+    const columns: BiaFormConfigColumn<TDto>[] = this.formConfig.config.flatMap(
+      item => {
+        if (item.type === 'group') {
+          return getColumnsFromRows(item.rows);
+        } else if (item.type === 'row') {
+          return getColumnsFromRow(item);
+        }
+        return [];
+      }
+    );
 
-    const columns: BiaFormConfigColumn<TDto>[] = [
-      ...groupColumns,
-      ...rowColumns,
-    ];
-
+    // Association des fieldConfig aux colonnes en fonction du field
     columns.forEach(column => {
       const fieldIndex = this.fields.findIndex(x => x.field === column.field);
       if (fieldIndex !== -1) {
