@@ -3,44 +3,44 @@
   (submit)="onSubmit()"
   class="flex flex-column bia-form"
   [formGroup]="form">
-  <div class="grid formgrid">
-    <ng-container *ngFor="let field of fields">
-      <div
-        *ngIf="field.isVisible === true"
-        class="col-2 flex flex-row align-items-center"
-        #refFormField>
-        <div class="app-field-container">
-          <ng-template
-            [ngIf]="field.isEditable === true"
-            [ngIfElse]="isNotEditable">
-            <bia-input
-              [field]="field"
-              [form]="form"
-              [dictOptionDtos]="dictOptionDtos">
-              <ng-template pTemplate="specificInput">
-                <ng-container
-                  *ngTemplateOutlet="
-                    specificInputTemplate;
-                    context: { field: field, form: form }
-                  "></ng-container>
-              </ng-template>
-            </bia-input>
-          </ng-template>
-          <ng-template #isNotEditable>
-            <bia-output [field]="field" [data]="getCellData(field)">
-              <ng-template pTemplate="specificOutput">
-                <ng-container
-                  *ngTemplateOutlet="
-                    specificOutputTemplate;
-                    context: { field: field, data: getCellData(field) }
-                  "></ng-container>
-              </ng-template>
-            </bia-output>
-          </ng-template>
+  <div *ngIf="formConfig">
+    <ng-template *ngIf="formConfig.groups">
+      <div *ngFor="let group of formConfig.groups">
+        <h5>{{ group.name }}</h5>
+        <ng-container
+          *ngTemplateOutlet="
+            rowsTemplate;
+            context: { rows: group.rows }
+          "></ng-container>
+      </div>
+    </ng-template>
+    <ng-template *ngIf="formConfig.rows">
+      <ng-container
+        *ngTemplateOutlet="
+          rowsTemplate;
+          context: { rows: formConfig.rows }
+        "></ng-container>
+    </ng-template>
+
+    <ng-template #rowsTemplate let-rows="rows">
+      <div *ngFor="let row of rows" class="grid formgrid">
+        <div *ngFor="let column of row.columns" [class]="row.columnClass">
+          <ng-container
+            *ngTemplateOutlet="
+              fieldTemplate;
+              context: { field: column.fieldConfig }
+            "></ng-container>
         </div>
       </div>
-    </ng-container>
+    </ng-template>
   </div>
+  <ng-container *ngFor="let field of fields">
+    <ng-container
+      *ngTemplateOutlet="
+        fieldTemplate;
+        context: { field: field }
+      "></ng-container>
+  </ng-container>
   <div class="footer-container bia-form-fixed-buttons">
     <div class="flex gap-2 align-items-center info-locked-container">
       <button
@@ -75,4 +75,41 @@
         [disabled]="disableSave || !form.valid || isCrudItemOutdated"></button>
     </div>
   </div>
+
+  <ng-template #fieldTemplate let-field="field">
+    <div
+      *ngIf="field.isVisible === true"
+      class="flex flex-row align-items-center"
+      #refFormField>
+      <div class="app-field-container">
+        <ng-template
+          [ngIf]="field.isEditable === true"
+          [ngIfElse]="isNotEditable">
+          <bia-input
+            [field]="field"
+            [form]="form"
+            [dictOptionDtos]="dictOptionDtos">
+            <ng-template pTemplate="specificInput">
+              <ng-container
+                *ngTemplateOutlet="
+                  specificInputTemplate;
+                  context: { field: field, form: form }
+                "></ng-container>
+            </ng-template>
+          </bia-input>
+        </ng-template>
+        <ng-template #isNotEditable>
+          <bia-output [field]="field" [data]="getCellData(field)">
+            <ng-template pTemplate="specificOutput">
+              <ng-container
+                *ngTemplateOutlet="
+                  specificOutputTemplate;
+                  context: { field: field, data: getCellData(field) }
+                "></ng-container>
+            </ng-template>
+          </bia-output>
+        </ng-template>
+      </div>
+    </div>
+  </ng-template>
 </form>
