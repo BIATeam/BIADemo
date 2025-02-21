@@ -99,8 +99,6 @@ export class BiaFormComponent<TDto extends { id: number }>
         this.form.patchValue({ ...this.element });
       }
     }
-
-    this.initFieldsFromFormConfig();
   }
 
   ngAfterViewInit() {
@@ -160,30 +158,31 @@ export class BiaFormComponent<TDto extends { id: number }>
   }
 
   private initFieldsFromFormConfig() {
-    if (this.formConfig) {
-      console.log('FormConfig', this.formConfig);
-      const getColumnsFromRows = (
-        rows: { columns: BiaFormConfigColumn<TDto>[] }[] = []
-      ) => rows.flatMap(row => row.columns);
-
-      const groupColumns = this.formConfig.groups
-        ? this.formConfig.groups.flatMap(g => getColumnsFromRows(g.rows))
-        : [];
-      const rowColumns = getColumnsFromRows(this.formConfig.rows);
-
-      const columns: BiaFormConfigColumn<TDto>[] = [
-        ...groupColumns,
-        ...rowColumns,
-      ];
-
-      columns.forEach(column => {
-        const fieldIndex = this.fields.findIndex(x => x.field === column.field);
-        if (fieldIndex !== -1) {
-          column.fieldConfig = this.fields[fieldIndex];
-          this.fields.splice(fieldIndex, 1);
-        }
-      });
+    if (!this.formConfig) {
+      return;
     }
+
+    const getColumnsFromRows = (
+      rows: { columns: BiaFormConfigColumn<TDto>[] }[] = []
+    ) => rows.flatMap(row => row.columns);
+
+    const groupColumns = this.formConfig.groups
+      ? this.formConfig.groups.flatMap(g => getColumnsFromRows(g.rows))
+      : [];
+    const rowColumns = getColumnsFromRows(this.formConfig.rows);
+
+    const columns: BiaFormConfigColumn<TDto>[] = [
+      ...groupColumns,
+      ...rowColumns,
+    ];
+
+    columns.forEach(column => {
+      const fieldIndex = this.fields.findIndex(x => x.field === column.field);
+      if (fieldIndex !== -1) {
+        column.fieldConfig = this.fields[fieldIndex];
+        this.fields.splice(fieldIndex, 1);
+      }
+    });
   }
 
   protected formFields() {

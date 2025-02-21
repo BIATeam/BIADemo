@@ -47,11 +47,34 @@ export class Plane extends BaseDto {
 
 export const planeFormConfiguration: BiaFormConfig<Plane> = {
   groups: [
-    new BiaFormConfigGroup('Group1', [
+    new BiaFormConfigGroup('Identification', [
       new BiaFormConfigRow([
         new BiaFormConfigColumn('msn'),
         new BiaFormConfigColumn('manufacturer'),
       ]),
+    ]),
+    new BiaFormConfigGroup('Status', [
+      new BiaFormConfigRow([
+        new BiaFormConfigColumn('isActive'),
+        new BiaFormConfigColumn('isMaintenance'),
+      ]),
+    ]),
+    new BiaFormConfigGroup('Tracking', [
+      new BiaFormConfigRow([
+        new BiaFormConfigColumn('firstFlightDate'),
+        new BiaFormConfigColumn('lastFlightDate'),
+      ]),
+      new BiaFormConfigRow([
+        new BiaFormConfigColumn('deliveryDate'),
+        new BiaFormConfigColumn('nextMaintenanceDate'),
+      ]),
+    ]),
+  ],
+  rows: [
+    new BiaFormConfigRow([
+      new BiaFormConfigColumn('syncTime'),
+      new BiaFormConfigColumn('syncFlightDataTime'),
+      new BiaFormConfigColumn('capacity'),
     ]),
   ],
 };
