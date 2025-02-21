@@ -168,18 +168,20 @@ export class BiaFormComponent<TDto extends { id: number }>
     ): BiaFormConfigColumn<TDto>[] => row.columns;
 
     const getColumnsFromRows = (
-      rows: BiaFormConfigRow<TDto>[] = []
+      rows: BiaFormConfigRow<TDto>[]
     ): BiaFormConfigColumn<TDto>[] =>
       rows.flatMap(row => getColumnsFromRow(row));
 
     const columns: BiaFormConfigColumn<TDto>[] = this.formConfig.items.flatMap(
       item => {
-        if (item.type === 'group') {
-          return getColumnsFromRows(item.rows);
-        } else if (item.type === 'row') {
-          return getColumnsFromRow(item);
+        switch (item.type) {
+          case 'group':
+            return getColumnsFromRows(item.rows);
+          case 'row':
+            return getColumnsFromRow(item);
+          default:
+            return [];
         }
-        return [];
       }
     );
 
