@@ -2,6 +2,7 @@
   *ngIf="aircraftMaintenanceCompanyService.crudItem$ | async; let crudItem"
   [crudItem]="crudItem"
   [fields]="crudConfiguration.fieldsConfig.columns"
+  [formConfig]="crudConfiguration.formConfig"
   [dictOptionDtos]="
     (aircraftMaintenanceCompanyService.optionsService.dictOptionDtos$
       | async) ?? []

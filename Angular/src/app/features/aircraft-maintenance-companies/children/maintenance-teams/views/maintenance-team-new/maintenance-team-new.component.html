@@ -1,5 +1,6 @@
 <app-maintenance-team-form
   [fields]="crudConfiguration.fieldsConfig.columns"
+  [formConfig]="crudConfiguration.formConfig"
   [dictOptionDtos]="
     (maintenanceTeamService.optionsService.dictOptionDtos$ | async) ?? []
   "

@@ -1,5 +1,6 @@
 <app-plane-type-form
   [fields]="crudConfiguration.fieldsConfig.columns"
+  [formConfig]="crudConfiguration.formConfig"
   [dictOptionDtos]="
     (planeTypeService.optionsService.dictOptionDtos$ | async) ?? []
   "
