@@ -45,34 +45,34 @@ export class Plane extends BaseDto {
   /// BIAToolKit - End Properties
 }
 
-export const planeFormConfiguration: BiaFormConfig<Plane> =
-  new BiaFormConfig<Plane>([
-    new BiaFormConfigGroup('Identification', [
-      new BiaFormConfigRow([
-        new BiaFormConfigColumn('msn'),
-        new BiaFormConfigColumn('manufacturer'),
-      ]),
-    ]),
-    new BiaFormConfigGroup('Status', [
-      new BiaFormConfigRow([
-        new BiaFormConfigColumn('isActive'),
-        new BiaFormConfigColumn('isMaintenance'),
-      ]),
-    ]),
-    new BiaFormConfigGroup('Tracking', [
-      new BiaFormConfigRow([
-        new BiaFormConfigColumn('deliveryDate'),
-        new BiaFormConfigColumn('firstFlightDate'),
-        new BiaFormConfigColumn('lastFlightDate'),
-        new BiaFormConfigColumn('nextMaintenanceDate'),
-      ]),
-    ]),
+// TODO after creation of CRUD Plane : adapt the form configuration
+export const planeFormConfiguration: BiaFormConfig<Plane> = new BiaFormConfig([
+  new BiaFormConfigGroup('Identification', [
     new BiaFormConfigRow([
-      new BiaFormConfigColumn('syncTime'),
-      new BiaFormConfigColumn('syncFlightDataTime'),
-      new BiaFormConfigColumn('capacity'),
+      new BiaFormConfigColumn('msn'),
+      new BiaFormConfigColumn('manufacturer'),
     ]),
-  ]);
+  ]),
+  new BiaFormConfigGroup('Status', [
+    new BiaFormConfigRow([
+      new BiaFormConfigColumn('isActive'),
+      new BiaFormConfigColumn('isMaintenance'),
+    ]),
+  ]),
+  new BiaFormConfigGroup('Tracking', [
+    new BiaFormConfigRow([
+      new BiaFormConfigColumn('deliveryDate'),
+      new BiaFormConfigColumn('firstFlightDate'),
+      new BiaFormConfigColumn('lastFlightDate'),
+      new BiaFormConfigColumn('nextMaintenanceDate'),
+    ]),
+  ]),
+  new BiaFormConfigRow([
+    new BiaFormConfigColumn('syncTime'),
+    new BiaFormConfigColumn('syncFlightDataTime'),
+    new BiaFormConfigColumn('capacity'),
+  ]),
+]);
 
 // TODO after creation of CRUD Plane : adapt the field configuration
 export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
