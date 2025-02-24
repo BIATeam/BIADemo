@@ -1,6 +1,6 @@
 <app-aircraft-maintenance-company-form
   [fields]="crudConfiguration.fieldsConfig.columns"
-  [formConfig]="crudConfiguration.formConfig"
+  [formLayoutConfig]="crudConfiguration.formLayoutConfig"
   [dictOptionDtos]="
     (aircraftMaintenanceCompanyService.optionsService.dictOptionDtos$
       | async) ?? []

@@ -1,7 +1,7 @@
 <bia-form
   [hidden]="true"
   [fields]="crudConfiguration.fieldsConfig.columns"
-  [formConfig]="crudConfiguration.formConfig"
+  [formLayoutConfig]="crudConfiguration.formLayoutConfig"
   [formValidators]="crudConfiguration.fieldsConfig.formValidators"
   [dictOptionDtos]="
     (crudItemService.optionsService.dictOptionDtos$ | async) ?? []

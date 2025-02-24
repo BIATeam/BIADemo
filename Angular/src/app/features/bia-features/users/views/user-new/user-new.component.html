@@ -1,7 +1,7 @@
 <bia-user-form
   [isAdd]="true"
   [fields]="crudConfiguration.fieldsConfig.columns"
-  [formConfig]="crudConfiguration.formConfig"
+  [formLayoutConfig]="crudConfiguration.formLayoutConfig"
   [dictOptionDtos]="(userService.optionsService.dictOptionDtos$ | async) ?? []"
   (cancelled)="onCancelled()"
   (save)="onSubmitted($event)"></bia-user-form>

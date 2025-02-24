@@ -5,7 +5,7 @@ import { TeamTypeId } from 'src/app/shared/constants';
 import {
   Plane,
   planeFieldsConfiguration,
-  planeFormConfiguration,
+  planeFormLayoutConfiguration,
 } from './model/plane';
 
 // TODO after creation of CRUD Plane : adapt the global configuration
@@ -13,7 +13,7 @@ export const planeCRUDConfiguration: CrudConfig<Plane> = new CrudConfig({
   // IMPORTANT: this key should be unique in all the application.
   featureName: 'planes',
   fieldsConfig: planeFieldsConfiguration,
-  formConfig: planeFormConfiguration,
+  formLayoutConfig: planeFormLayoutConfiguration,
   useCalcMode: true,
   useSignalR: false,
   useView: true,

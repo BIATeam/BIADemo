@@ -31,10 +31,10 @@ import {
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { BaseDto } from '../../../model/base-dto';
 import {
-  BiaFormConfig,
-  BiaFormConfigColumn,
-  BiaFormConfigRow,
-} from '../../../model/bia-form-config';
+  BiaFormLayoutConfig,
+  BiaFormLayoutConfigColumn,
+  BiaFormLayoutConfigRow,
+} from '../../../model/bia-form-layout-config';
 
 @Component({
   selector: 'bia-form',
@@ -47,7 +47,7 @@ export class BiaFormComponent<TDto extends { id: number }>
 {
   @Input() element?: TDto;
   @Input() fields: BiaFieldConfig<TDto>[];
-  @Input() formConfig?: BiaFormConfig<TDto>;
+  @Input() formLayoutConfig?: BiaFormLayoutConfig<TDto>;
   @Input() formValidators?: ValidatorFn[];
   @Input() dictOptionDtos: DictOptionDto[];
   @Input() isAdd?: boolean;
@@ -159,21 +159,21 @@ export class BiaFormComponent<TDto extends { id: number }>
   }
 
   private initFormConfigFields() {
-    if (!this.formConfig) {
+    if (!this.formLayoutConfig) {
       return;
     }
 
     const getColumnsFromRow = (
-      row: BiaFormConfigRow<TDto>
-    ): BiaFormConfigColumn<TDto>[] => row.columns;
+      row: BiaFormLayoutConfigRow<TDto>
+    ): BiaFormLayoutConfigColumn<TDto>[] => row.columns;
 
     const getColumnsFromRows = (
-      rows: BiaFormConfigRow<TDto>[]
-    ): BiaFormConfigColumn<TDto>[] =>
+      rows: BiaFormLayoutConfigRow<TDto>[]
+    ): BiaFormLayoutConfigColumn<TDto>[] =>
       rows.flatMap(row => getColumnsFromRow(row));
 
-    const columns: BiaFormConfigColumn<TDto>[] = this.formConfig.items.flatMap(
-      item => {
+    const columns: BiaFormLayoutConfigColumn<TDto>[] =
+      this.formLayoutConfig.items.flatMap(item => {
         switch (item.type) {
           case 'group':
             return getColumnsFromRows(item.rows);
@@ -182,8 +182,7 @@ export class BiaFormComponent<TDto extends { id: number }>
           default:
             return [];
         }
-      }
-    );
+      });
 
     columns.forEach(column => {
       const fieldIndex = this.fields.findIndex(x => x.field === column.field);

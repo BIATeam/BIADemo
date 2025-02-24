@@ -2,7 +2,7 @@
   *ngIf="userService.crudItem$ | async; let crudItem"
   [crudItem]="crudItem"
   [fields]="crudConfiguration.fieldsConfig.columns"
-  [formConfig]="crudConfiguration.formConfig"
+  [formLayoutConfig]="crudConfiguration.formLayoutConfig"
   [dictOptionDtos]="(userService.optionsService.dictOptionDtos$ | async) ?? []"
   [isCrudItemOutdated]="isCrudItemOutdated"
   (cancelled)="onCancelled()"

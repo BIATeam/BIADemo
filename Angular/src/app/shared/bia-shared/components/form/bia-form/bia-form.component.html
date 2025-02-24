@@ -3,8 +3,8 @@
   (submit)="onSubmit()"
   class="flex flex-column bia-form"
   [formGroup]="form">
-  <ng-container *ngIf="formConfig">
-    <ng-container *ngFor="let item of formConfig.items">
+  <ng-container *ngIf="formLayoutConfig">
+    <ng-container *ngFor="let item of formLayoutConfig.items">
       <ng-container [ngSwitch]="item.type">
         <ng-container *ngSwitchCase="'group'">
           <ng-container

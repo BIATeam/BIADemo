@@ -9,11 +9,11 @@ import {
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import {
-  BiaFormConfig,
-  BiaFormConfigColumn,
-  BiaFormConfigGroup,
-  BiaFormConfigRow,
-} from 'src/app/shared/bia-shared/model/bia-form-config';
+  BiaFormLayoutConfig,
+  BiaFormLayoutConfigColumn,
+  BiaFormLayoutConfigGroup,
+  BiaFormLayoutConfigRow,
+} from 'src/app/shared/bia-shared/model/bia-form-layout-config';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 // TODO after creation of CRUD Plane : adapt the model
@@ -45,34 +45,35 @@ export class Plane extends BaseDto {
   /// BIAToolKit - End Properties
 }
 
-// TODO after creation of CRUD Plane : adapt the form configuration
-export const planeFormConfiguration: BiaFormConfig<Plane> = new BiaFormConfig([
-  new BiaFormConfigGroup('Identification', [
-    new BiaFormConfigRow([
-      new BiaFormConfigColumn('msn'),
-      new BiaFormConfigColumn('manufacturer'),
+// TODO after creation of CRUD Plane : adapt the form layout configuration
+export const planeFormLayoutConfiguration: BiaFormLayoutConfig<Plane> =
+  new BiaFormLayoutConfig([
+    new BiaFormLayoutConfigGroup('Identification', [
+      new BiaFormLayoutConfigRow([
+        new BiaFormLayoutConfigColumn('msn'),
+        new BiaFormLayoutConfigColumn('manufacturer'),
+      ]),
     ]),
-  ]),
-  new BiaFormConfigGroup('Status', [
-    new BiaFormConfigRow([
-      new BiaFormConfigColumn('isActive'),
-      new BiaFormConfigColumn('isMaintenance'),
+    new BiaFormLayoutConfigGroup('Status', [
+      new BiaFormLayoutConfigRow([
+        new BiaFormLayoutConfigColumn('isActive'),
+        new BiaFormLayoutConfigColumn('isMaintenance'),
+      ]),
     ]),
-  ]),
-  new BiaFormConfigGroup('Tracking', [
-    new BiaFormConfigRow([
-      new BiaFormConfigColumn('deliveryDate'),
-      new BiaFormConfigColumn('firstFlightDate'),
-      new BiaFormConfigColumn('lastFlightDate'),
-      new BiaFormConfigColumn('nextMaintenanceDate'),
+    new BiaFormLayoutConfigGroup('Tracking', [
+      new BiaFormLayoutConfigRow([
+        new BiaFormLayoutConfigColumn('deliveryDate'),
+        new BiaFormLayoutConfigColumn('firstFlightDate'),
+        new BiaFormLayoutConfigColumn('lastFlightDate'),
+        new BiaFormLayoutConfigColumn('nextMaintenanceDate'),
+      ]),
     ]),
-  ]),
-  new BiaFormConfigRow([
-    new BiaFormConfigColumn('syncTime'),
-    new BiaFormConfigColumn('syncFlightDataTime'),
-    new BiaFormConfigColumn('capacity'),
-  ]),
-]);
+    new BiaFormLayoutConfigRow([
+      new BiaFormLayoutConfigColumn('syncTime'),
+      new BiaFormLayoutConfigColumn('syncFlightDataTime'),
+      new BiaFormLayoutConfigColumn('capacity'),
+    ]),
+  ]);
 
 // TODO after creation of CRUD Plane : adapt the field configuration
 export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
