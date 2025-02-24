@@ -166,3 +166,16 @@ bia-notification-team-warning {
     }
   }
 }
+
+.clear-button {
+  right: -100%;
+  transform: translateX(-100%);
+  z-index: 1000;
+  background: #b3e5fc;
+  display: none;
+  margin-bottom: 1rem;
+}
+
+.clear-button:hover {
+  background: #a5d2e8;
+}
