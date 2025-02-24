@@ -45,36 +45,6 @@ export class Plane extends BaseDto {
   /// BIAToolKit - End Properties
 }
 
-// TODO after creation of CRUD Plane : adapt the form layout configuration
-export const planeFormLayoutConfiguration: BiaFormLayoutConfig<Plane> =
-  new BiaFormLayoutConfig([
-    new BiaFormLayoutConfigGroup('Identification', [
-      new BiaFormLayoutConfigRow([
-        new BiaFormLayoutConfigColumn('msn'),
-        new BiaFormLayoutConfigColumn('manufacturer'),
-      ]),
-    ]),
-    new BiaFormLayoutConfigGroup('Status', [
-      new BiaFormLayoutConfigRow([
-        new BiaFormLayoutConfigColumn('isActive'),
-        new BiaFormLayoutConfigColumn('isMaintenance'),
-      ]),
-    ]),
-    new BiaFormLayoutConfigGroup('Tracking', [
-      new BiaFormLayoutConfigRow([
-        new BiaFormLayoutConfigColumn('deliveryDate'),
-        new BiaFormLayoutConfigColumn('firstFlightDate'),
-        new BiaFormLayoutConfigColumn('lastFlightDate'),
-        new BiaFormLayoutConfigColumn('nextMaintenanceDate'),
-      ]),
-    ]),
-    new BiaFormLayoutConfigRow([
-      new BiaFormLayoutConfigColumn('syncTime'),
-      new BiaFormLayoutConfigColumn('syncFlightDataTime'),
-      new BiaFormLayoutConfigColumn('capacity'),
-    ]),
-  ]);
-
 // TODO after creation of CRUD Plane : adapt the field configuration
 export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
   columns: [
@@ -287,3 +257,35 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
     }),
   ],
 };
+
+// TODO after creation of CRUD Plane : adapt the form layout configuration
+export const planeFormLayoutConfiguration: BiaFormLayoutConfig<Plane> =
+  new BiaFormLayoutConfig([
+    //Begin BIADemo
+    new BiaFormLayoutConfigGroup('Identification', [
+      new BiaFormLayoutConfigRow([
+        new BiaFormLayoutConfigColumn('msn'),
+        new BiaFormLayoutConfigColumn('manufacturer'),
+      ]),
+    ]),
+    new BiaFormLayoutConfigGroup('Status', [
+      new BiaFormLayoutConfigRow([
+        new BiaFormLayoutConfigColumn('isActive'),
+        new BiaFormLayoutConfigColumn('isMaintenance'),
+      ]),
+    ]),
+    new BiaFormLayoutConfigGroup('Tracking', [
+      new BiaFormLayoutConfigRow([
+        new BiaFormLayoutConfigColumn('deliveryDate'),
+        new BiaFormLayoutConfigColumn('firstFlightDate'),
+        new BiaFormLayoutConfigColumn('lastFlightDate'),
+        new BiaFormLayoutConfigColumn('nextMaintenanceDate'),
+      ]),
+    ]),
+    new BiaFormLayoutConfigRow([
+      new BiaFormLayoutConfigColumn('syncTime'),
+      new BiaFormLayoutConfigColumn('syncFlightDataTime'),
+      new BiaFormLayoutConfigColumn('capacity'),
+    ]),
+    //End BIADemo
+  ]);
