@@ -89,9 +89,7 @@ export class CrudConfig<TDto extends { id: number }> {
   }) {
     this.featureName = featureName;
     this.fieldsConfig = fieldsConfig;
-    if (formLayoutConfig) {
-      this.formLayoutConfig = formLayoutConfig;
-    }
+    this.formLayoutConfig = formLayoutConfig;
     this.storeKey = storeKey;
     this.useCalcMode = useCalcMode;
     this.useSignalR = useSignalR;
