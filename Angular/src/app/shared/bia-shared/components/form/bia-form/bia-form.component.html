@@ -42,7 +42,7 @@
     </ng-template>
 
     <ng-template #rowTemplate let-row="row">
-      <div class="grid formgrid bia-form-row">
+      <div class="grid bia-form-row">
         <div *ngFor="let column of row.columns" [class]="row.columnClass">
           <ng-container
             *ngTemplateOutlet="
