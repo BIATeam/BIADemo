@@ -54,7 +54,7 @@
     </ng-template>
   </ng-container>
 
-  <ng-container *ngFor="let field of fields">
+  <ng-container *ngFor="let field of fieldsWithoutLayoutConfig">
     <ng-container
       *ngTemplateOutlet="
         fieldTemplate;

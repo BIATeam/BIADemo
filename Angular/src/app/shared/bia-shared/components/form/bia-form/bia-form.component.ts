@@ -62,6 +62,7 @@ export class BiaFormComponent<TDto extends { id: number }>
 
   form?: UntypedFormGroup;
   protected sub = new Subscription();
+  fieldsWithoutLayoutConfig: BiaFieldConfig<TDto>[] = [];
 
   @ViewChildren('refFormField', { read: ElementRef })
   formElements: QueryList<ElementRef>;
@@ -150,15 +151,16 @@ export class BiaFormComponent<TDto extends { id: number }>
   }
 
   protected initForm() {
+    this.fieldsWithoutLayoutConfig = [...this.fields];
+    this.initFieldsWithLayoutConfig();
+
     this.form = this.formBuilder.group(this.formFields());
     if (this.formValidators) {
       this.form.addValidators(this.formValidators);
     }
-
-    this.initFormConfigFields();
   }
 
-  private initFormConfigFields() {
+  private initFieldsWithLayoutConfig() {
     if (!this.formLayoutConfig) {
       return;
     }
@@ -188,7 +190,7 @@ export class BiaFormComponent<TDto extends { id: number }>
       const fieldIndex = this.fields.findIndex(x => x.field === column.field);
       if (fieldIndex !== -1) {
         column.fieldConfig = this.fields[fieldIndex];
-        this.fields.splice(fieldIndex, 1);
+        this.fieldsWithoutLayoutConfig.splice(fieldIndex, 1);
       }
     });
   }
