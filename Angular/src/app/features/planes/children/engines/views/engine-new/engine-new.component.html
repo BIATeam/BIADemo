@@ -1,5 +1,6 @@
 <app-engine-form
   [fields]="crudConfiguration.fieldsConfig.columns"
+  [formLayoutConfig]="crudConfiguration.formLayoutConfig"
   [dictOptionDtos]="
     (engineService.optionsService.dictOptionDtos$ | async) ?? []
   "

@@ -1,5 +1,6 @@
 import { TeamTypeId } from 'src/app/shared/constants';
 import { BiaFieldsConfig } from '../../../model/bia-field-config';
+import { BiaFormLayoutConfig } from '../../../model/bia-form-layout-config';
 import { BiaTableState } from '../../../model/bia-table-state';
 
 export interface ShowIconsConfig {
@@ -23,6 +24,7 @@ export class CrudConfig<TDto extends { id: number }> {
   usePopup: boolean;
   useOfflineMode: boolean;
   fieldsConfig: BiaFieldsConfig<TDto>;
+  formLayoutConfig: BiaFormLayoutConfig<TDto> | undefined;
   defaultViewPref: BiaTableState;
   optionFilter: any;
   useImport: boolean;
@@ -47,6 +49,7 @@ export class CrudConfig<TDto extends { id: number }> {
   constructor({
     featureName,
     fieldsConfig,
+    formLayoutConfig = undefined,
     storeKey = 'feature-' + featureName,
     useCalcMode = false,
     useSignalR = false,
@@ -64,6 +67,7 @@ export class CrudConfig<TDto extends { id: number }> {
   }: {
     featureName: string;
     fieldsConfig: BiaFieldsConfig<TDto>;
+    formLayoutConfig?: BiaFormLayoutConfig<TDto> | undefined;
     storeKey?: string;
     useCalcMode?: boolean;
     useSignalR?: boolean;
@@ -85,6 +89,7 @@ export class CrudConfig<TDto extends { id: number }> {
   }) {
     this.featureName = featureName;
     this.fieldsConfig = fieldsConfig;
+    this.formLayoutConfig = formLayoutConfig;
     this.storeKey = storeKey;
     this.useCalcMode = useCalcMode;
     this.useSignalR = useSignalR;

@@ -30,6 +30,11 @@ import {
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { BaseDto } from '../../../model/base-dto';
+import {
+  BiaFormLayoutConfig,
+  BiaFormLayoutConfigColumn,
+  BiaFormLayoutConfigRow,
+} from '../../../model/bia-form-layout-config';
 
 @Component({
   selector: 'bia-form',
@@ -42,6 +47,7 @@ export class BiaFormComponent<TDto extends { id: number }>
 {
   @Input() element?: TDto;
   @Input() fields: BiaFieldConfig<TDto>[];
+  @Input() formLayoutConfig?: BiaFormLayoutConfig<TDto>;
   @Input() formValidators?: ValidatorFn[];
   @Input() dictOptionDtos: DictOptionDto[];
   @Input() isAdd?: boolean;
@@ -148,6 +154,43 @@ export class BiaFormComponent<TDto extends { id: number }>
     if (this.formValidators) {
       this.form.addValidators(this.formValidators);
     }
+
+    this.initFormConfigFields();
+  }
+
+  private initFormConfigFields() {
+    if (!this.formLayoutConfig) {
+      return;
+    }
+
+    const getColumnsFromRow = (
+      row: BiaFormLayoutConfigRow<TDto>
+    ): BiaFormLayoutConfigColumn<TDto>[] => row.columns;
+
+    const getColumnsFromRows = (
+      rows: BiaFormLayoutConfigRow<TDto>[]
+    ): BiaFormLayoutConfigColumn<TDto>[] =>
+      rows.flatMap(row => getColumnsFromRow(row));
+
+    const columns: BiaFormLayoutConfigColumn<TDto>[] =
+      this.formLayoutConfig.items.flatMap(item => {
+        switch (item.type) {
+          case 'group':
+            return getColumnsFromRows(item.rows);
+          case 'row':
+            return getColumnsFromRow(item);
+          default:
+            return [];
+        }
+      });
+
+    columns.forEach(column => {
+      const fieldIndex = this.fields.findIndex(x => x.field === column.field);
+      if (fieldIndex !== -1) {
+        column.fieldConfig = this.fields[fieldIndex];
+        this.fields.splice(fieldIndex, 1);
+      }
+    });
   }
 
   protected formFields() {
