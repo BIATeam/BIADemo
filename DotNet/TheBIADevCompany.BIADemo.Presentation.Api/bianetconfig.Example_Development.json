@@ -32,7 +32,7 @@
         "IsActive": false,
         "BaseUrl": "http://localhost:8080",
         "Configuration": {
-          "idpHint": "darwin",
+          "idpHint": "",
           "realm": "BIA-Realm",
           "Authority": "/realms/BIA-Realm",
           "RequireHttpsMetadata": false,
@@ -41,7 +41,7 @@
         "Api": {
           "TokenConf": {
             "RelativeUrl": "/realms/BIA-Realm/protocol/openid-connect/token",
-            "ClientId": "biademo",
+            "ClientId": "biaapp",
             "GrantType": "password",
             "CredentialSource": {
               "VaultCredentialsKey": "BIA:KeycloakSearchUserAccount",
@@ -58,13 +58,15 @@
           "LdapName": ".",
           "ContainsGroup": false,
           "ContainsUser": true
-        } //,
+        }
+        //,
         //{
         //  "Name": "DOMAIN_BIA_2",
         //  "LdapName": "the-user-domain2-name.bia",
         //  "ContainsGroup": true,
         //  "ContainsUser": true
-        //},
+        //}
+        //,
         //{
         //  "Name": "DOMAIN_BIA_3",
         //  "LdapName": "the-user-domain3-name.bia",
