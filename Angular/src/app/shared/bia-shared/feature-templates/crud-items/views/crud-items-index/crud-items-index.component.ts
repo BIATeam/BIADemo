@@ -172,6 +172,11 @@ export class CrudItemsIndexComponent<
     this.usePopupConfig(true);
   }
 
+  useSplitChange(e: boolean) {
+    this.crudConfiguration.useSplit = e;
+    this.useSplitConfig(true);
+  }
+
   useCompactModeChange(e: boolean) {
     this.crudConfiguration.useCompactMode = e;
   }
@@ -208,6 +213,10 @@ export class CrudItemsIndexComponent<
     if (manualChange) {
       this.applyDynamicComponent(this.activatedRoute.routeConfig?.children);
     }
+  }
+
+  protected useSplitConfig(manualChange: boolean) {
+    this.router.navigate([this.router.url]);
   }
 
   protected applyDynamicComponent(routes: Routes | undefined) {

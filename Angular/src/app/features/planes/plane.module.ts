@@ -17,6 +17,7 @@ import { PlaneTypeOptionModule } from 'src/app/domains/plane-type-option/plane-t
 // BIAToolKit - End Option PlaneType
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { DynamicLayoutComponent } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { CrudItemImportModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item-import.module';
 import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
 import { PlaneTableComponent } from './components/plane-table/plane-table.component';
@@ -34,8 +35,10 @@ export const ROUTES: Routes = [
       breadcrumb: null,
       permission: Permission.Plane_List_Access,
       injectComponent: PlanesIndexComponent,
+      leftWidth: 75,
+      configuration: planeCRUDConfiguration,
     },
-    component: FullPageLayoutComponent,
+    component: DynamicLayoutComponent,
     canActivate: [PermissionGuard],
     // [Calc] : The children are not used in calc
     children: [
@@ -113,22 +116,32 @@ export const ROUTES: Routes = [
             redirectTo: 'edit',
           },
           /// BIAToolKit - Begin Partial PlaneModuleChildPath Engine
-          {
-            path: 'engines',
-            data: {
-              breadcrumb: 'app.engines',
-              canNavigate: true,
-              permission: Permission.Engine_List_Access,
-            },
-            loadChildren: () =>
-              import('./children/engines/engine.module').then(
-                m => m.EngineModule
-              ),
-          },
           /// BIAToolKit - End Partial PlaneModuleChildPath Engine
           // BIAToolKit - Begin PlaneModuleChildPath
           // BIAToolKit - End PlaneModuleChildPath
         ],
+      },
+    ],
+  },
+  {
+    path: ':crudItemId',
+    data: {
+      breadcrumb: '',
+      canNavigate: true,
+    },
+    component: PlaneItemComponent,
+    canActivate: [PermissionGuard],
+    children: [
+      /// BIAToolKit - Begin Partial PlaneModuleChildPath Engine
+      {
+        path: 'engines',
+        data: {
+          breadcrumb: 'app.engines',
+          canNavigate: true,
+          permission: Permission.Engine_List_Access,
+        },
+        loadChildren: () =>
+          import('./children/engines/engine.module').then(m => m.EngineModule),
       },
     ],
   },

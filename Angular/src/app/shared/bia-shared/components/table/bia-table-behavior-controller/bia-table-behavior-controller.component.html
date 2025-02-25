@@ -8,12 +8,25 @@
     tooltipPosition="top"></i>
   <i
     *ngIf="
-      crudConfiguration.showIcons.showPopup && !crudConfiguration.useCalcMode
+      crudConfiguration.showIcons.showPopup &&
+      !crudConfiguration.useCalcMode &&
+      !crudConfiguration.useSplit
     "
     class="pi pi-clone bia-pointer"
     [class]="crudConfiguration.usePopup ? 'enable' : 'disabled'"
     (click)="usePopupChanged.emit(!crudConfiguration.usePopup)"
     pTooltip="{{ 'bia.usePopup' | translate }}"
+    tooltipPosition="top"></i>
+  <i
+    *ngIf="
+      crudConfiguration.showIcons.showSplit &&
+      !crudConfiguration.useCalcMode &&
+      !crudConfiguration.usePopup
+    "
+    class="pi pi-book bia-pointer"
+    [class]="crudConfiguration.useSplit ? 'enable' : 'disabled'"
+    (click)="useSplitChanged.emit(!crudConfiguration.useSplit)"
+    pTooltip="{{ 'bia.useSplit' | translate }}"
     tooltipPosition="top"></i>
   <i
     *ngIf="crudConfiguration.showIcons.showView"

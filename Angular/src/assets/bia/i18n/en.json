@@ -99,6 +99,7 @@
     "usePopup": "Use popups",
     "useResizableColumn": "Resizable column",
     "useSignalR": "Live data update",
+    "useSplit": "Use split screen",
     "useView": "Display and use views",
     "useVirtualScroll": "Inifinite scroll",
     "validate": "Validate",

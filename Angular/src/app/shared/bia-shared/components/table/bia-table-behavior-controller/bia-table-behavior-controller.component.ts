@@ -11,6 +11,7 @@ export class BiaTableBehaviorControllerComponent<TDto extends { id: number }> {
 
   @Output() useCalcModeChanged = new EventEmitter<boolean>();
   @Output() usePopupChanged = new EventEmitter<boolean>();
+  @Output() useSplitChanged = new EventEmitter<boolean>();
   @Output() useSignalRChanged = new EventEmitter<boolean>();
   @Output() useViewChanged = new EventEmitter<boolean>();
   @Output() useCompactModeChanged = new EventEmitter<boolean>();

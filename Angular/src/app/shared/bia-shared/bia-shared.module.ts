@@ -103,12 +103,14 @@ import { ClassicFooterComponent } from './components/layout/classic-footer/class
 import { ClassicHeaderComponent } from './components/layout/classic-header/classic-header.component';
 import { ClassicLayoutComponent } from './components/layout/classic-layout/classic-layout.component';
 import { ClassicPageLayoutComponent } from './components/layout/classic-page-layout/classic-page-layout.component';
+import { DynamicLayoutComponent } from './components/layout/dynamic-layout/dynamic-layout.component';
 import { FullPageLayoutComponent } from './components/layout/fullpage-layout/fullpage-layout.component';
 import { IeWarningComponent } from './components/layout/ie-warning/ie-warning.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { PageLayoutComponent } from './components/layout/page-layout.component';
 import { PopupLayoutComponent } from './components/layout/popup-layout/popup-layout.component';
 import { BiaScrollingNotificationComponent } from './components/layout/scrolling-notification/scrolling-notification.component';
+import { SplitPageLayoutComponent } from './components/layout/split-page-layout/split-page-layout.component';
 import { BiaUltimaLayoutModule } from './components/layout/ultima/ultima-layout.module';
 import { NotificationTeamWarningModule } from './components/notification-team-warning/notification-team-warning.module';
 import { SpinnerComponent } from './components/spinner/spinner.component';
@@ -226,6 +228,8 @@ const COMPONENTS = [
   PageLayoutComponent,
   PopupLayoutComponent,
   FullPageLayoutComponent,
+  SplitPageLayoutComponent,
+  DynamicLayoutComponent,
   HangfireContainerComponent,
   TeamAdvancedFilterComponent,
   BiaScrollingNotificationComponent,
