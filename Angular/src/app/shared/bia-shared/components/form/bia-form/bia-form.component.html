@@ -43,7 +43,9 @@
 
     <ng-template #rowTemplate let-row="row">
       <div class="grid bia-form-row">
-        <div *ngFor="let column of row.columns" [class]="row.columnClass">
+        <div
+          *ngFor="let column of row.columns"
+          [class]="column.columnClass ?? row.defaultColumnClass">
           <ng-container
             *ngTemplateOutlet="
               fieldTemplate;

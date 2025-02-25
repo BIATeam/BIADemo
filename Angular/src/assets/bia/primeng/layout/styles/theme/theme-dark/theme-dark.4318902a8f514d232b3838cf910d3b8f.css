@@ -9964,6 +9964,10 @@ p-breadcrumb .p-breadcrumb .p-menuitem-link {
   .p-input-filled .p-float-label .p-inputtext {
     padding-bottom: 2px;
   }
+
+  .p-inputnumber-input {
+    width: 100%;
+  }
 }
 @layer primeng {
   p-paginator .p-paginator {

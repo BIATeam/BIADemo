@@ -283,9 +283,10 @@ export const planeFormLayoutConfiguration: BiaFormLayoutConfig<Plane> =
       ]),
     ]),
     new BiaFormLayoutConfigRow([
-      new BiaFormLayoutConfigColumn('syncTime'),
-      new BiaFormLayoutConfigColumn('syncFlightDataTime'),
+      new BiaFormLayoutConfigColumn('probability'),
+      new BiaFormLayoutConfigColumn('syncFlightDataTime', 6),
       new BiaFormLayoutConfigColumn('capacity'),
     ]),
+    new BiaFormLayoutConfigRow([new BiaFormLayoutConfigColumn('syncTime', 3)]),
     //End BIADemo
   ]);
