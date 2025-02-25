@@ -190,7 +190,13 @@ export class BiaFormComponent<TDto extends { id: number }>
       const fieldIndex = this.fields.findIndex(x => x.field === column.field);
       if (fieldIndex !== -1) {
         column.fieldConfig = this.fields[fieldIndex];
-        this.fieldsWithoutLayoutConfig.splice(fieldIndex, 1);
+
+        const fieldToRemoveIndex = this.fieldsWithoutLayoutConfig.findIndex(
+          x => x.field === column.field
+        );
+        if (fieldToRemoveIndex !== -1) {
+          this.fieldsWithoutLayoutConfig.splice(fieldToRemoveIndex, 1);
+        }
       }
     });
   }
