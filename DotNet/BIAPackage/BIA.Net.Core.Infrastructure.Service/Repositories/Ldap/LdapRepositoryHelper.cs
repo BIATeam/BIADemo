@@ -9,6 +9,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Ldap
     using Microsoft.Extensions.Caching.Distributed;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.Options;
+    using System;
 
     /// <summary>
     /// Ldap Repository Helper.
@@ -36,5 +37,15 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Ldap
         /// The cache for user.
         /// </summary>
         public IBiaLocalCache LocalCache { get; set; }
+
+        /// <summary>
+        /// Tets if Is Local Machine domain
+        /// </summary>
+        /// <param name="domain">The domain.</param>
+        /// <returns>True if it is a local domain.</returns>
+        public bool IsLocalMachineDomain(string domain)
+        {
+            return domain == "." || domain.ToLower() == Environment.MachineName.ToLower();
+        }
     }
 }

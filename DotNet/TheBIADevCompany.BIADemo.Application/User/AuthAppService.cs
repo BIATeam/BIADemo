@@ -84,6 +84,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// The role application service.
         /// </summary>
         private readonly IRoleAppService roleAppService;
+
+        /// <summary>
+        /// The ldap repository service.
+        /// </summary>
+        private readonly ILdapRepositoryHelper ldapRepositoryHelper;
 #endif
 
         /// <summary>
@@ -113,7 +118,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
             ILogger<AuthAppService> logger,
             IConfiguration configuration,
             IOptions<BiaNetSection> biaNetconfiguration,
-            IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper)
+            IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
+            ILdapRepositoryHelper ldapRepositoryHelper)
         {
 #if BIA_FRONT_FEATURE
             this.userAppService = userAppService;
@@ -128,6 +134,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             this.logger = logger;
             this.userDirectoryHelper = userDirectoryHelper;
             this.ldapDomains = biaNetconfiguration.Value.Authentication.LdapDomains;
+            this.ldapRepositoryHelper = ldapRepositoryHelper;
         }
 #if BIA_BACK_TO_BACK_AUTH
 
@@ -363,7 +370,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
             if (this.claimsPrincipal.Identity.Name?.Contains('\\') == true)
             {
                 domain = this.claimsPrincipal.Identity.Name.Split('\\').FirstOrDefault();
-                if (!this.ldapDomains.Any(ld => ld.Name.Equals(domain)))
+                if (
+                        !this.ldapDomains.Any(ld => ld.Name.Equals(domain))
+                        &&
+                        !(
+                            this.ldapRepositoryHelper.IsLocalMachineDomain(domain)
+                            &&
+                            this.ldapDomains.Any(ld => this.ldapRepositoryHelper.IsLocalMachineDomain(ld.Name))))
                 {
                     this.logger.LogInformation("Unauthorized because bad domain");
                     throw new UnauthorizedException();
