@@ -3,11 +3,17 @@
   font-weight: 400;
   line-height: 1.75rem;
   margin-top: 0.25rem;
-  // text-align: center;
-  // border-bottom: solid 1px var(--surface-500);
-  // margin-left: -2.5rem;
-  // padding-left: 2.5rem;
-  // margin-right: -2.5rem;
-  // padding-right: 2.5rem;
-  // padding-bottom: 1rem;
+}
+
+.right-container {
+  padding-bottom: 1rem;
+  flex: 0 0 auto;
+  overflow: auto;
+}
+
+.handle {
+  width: 1rem;
+  background-color: transparent;
+  cursor: col-resize;
+  user-select: none; /* Prevent text selection */
 }

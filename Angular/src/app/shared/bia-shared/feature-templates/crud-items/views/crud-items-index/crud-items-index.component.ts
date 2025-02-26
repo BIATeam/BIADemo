@@ -216,7 +216,9 @@ export class CrudItemsIndexComponent<
   }
 
   protected useSplitConfig(manualChange: boolean) {
-    this.router.navigate([this.router.url]);
+    if (manualChange) {
+      this.applyDynamicComponent(this.activatedRoute.routeConfig?.children);
+    }
   }
 
   protected applyDynamicComponent(routes: Routes | undefined) {

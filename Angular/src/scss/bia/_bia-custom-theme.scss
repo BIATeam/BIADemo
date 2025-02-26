@@ -83,7 +83,7 @@ bia-ultima-layout {
   }
 }
 
-.bia-classic-page-margin:not(:has(bia-split-page-layout)) {
+.bia-classic-page-margin:not(:has(.bia-split-page-layout)) {
   background-color: $biaBgColor;
 }
 

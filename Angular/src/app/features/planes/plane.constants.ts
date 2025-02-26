@@ -21,7 +21,7 @@ export const planeCRUDConfiguration: CrudConfig<Plane> = new CrudConfig({
   useViewTeamWithTypeId: TeamTypeId.Site, // use to filter view by teams => should know the type of team
   /// BIAToolKit - End AncestorTeam Site
   usePopup: false,
-  useSplit: true,
+  useSplit: false,
   useOfflineMode: false,
   useCompactMode: false,
   useVirtualScroll: false,

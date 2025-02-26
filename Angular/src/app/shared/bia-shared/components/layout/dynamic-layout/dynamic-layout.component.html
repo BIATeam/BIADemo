@@ -1,5 +1,45 @@
-@if (configuration?.useSplit) {
-  <bia-split-page-layout></bia-split-page-layout>
+<h1 *ngIf="this.pageTitle && this.pageTitle.length > 0" class="BiaPageTitle">
+  {{ this.pageTitle | translate }}
+</h1>
+<div
+  #leftContainer
+  [hidden]="!this.displayPageComponent"
+  [ngClass]="{ 'left-container': isSplit, 'bia-classic-page-margin': isSplit }"
+  [ngStyle]="{
+    width: hasChildren && isSplit ? leftWidth + '%' : '100%',
+  }">
+  <ng-template #dynamic></ng-template>
+</div>
+
+@if (isSplit) {
+  @if (outlet.isActivated) {
+    <div class="handle" (mousedown)="startResize($event)"></div>
+  }
+  <div
+    #rightContainer
+    [hidden]="!outlet.isActivated"
+    class="right-container bia-classic-page-margin"
+    [ngStyle]="{
+      height: defaultContainerHeight,
+      width: 100 - leftWidth + '%',
+    }">
+    <router-outlet #outlet="outlet"></router-outlet>
+  </div>
+} @else if (isPopup) {
+  <p-dialog
+    [hidden]="!outlet.isActivated"
+    [focusOnShow]="true"
+    [visible]="true"
+    [modal]="true"
+    [closable]="false"
+    [maximizable]="maximizable"
+    [style]="style"
+    [contentStyle]="{ overflow: 'auto' }">
+    <p-header>
+      {{ popupTitle | translate }}
+    </p-header>
+    <router-outlet #outlet="outlet"></router-outlet>
+  </p-dialog>
 } @else {
-  <bia-full-page-layout></bia-full-page-layout>
+  <router-outlet #outlet="outlet"></router-outlet>
 }

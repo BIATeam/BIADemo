@@ -37,7 +37,11 @@ bia-ultima-layout .bia-page-margin {
   }
 }
 
-.bia-classic-page-margin:not(:has(bia-split-page-layout)) {
+.bia-split-page-layout {
+  display: flex;
+}
+
+.bia-classic-page-margin:not(:has(.bia-split-page-layout)) {
   padding-left: 35px;
   padding-right: 35px;
   padding-top: 10px;
@@ -50,7 +54,7 @@ bia-ultima-layout .bia-page-margin {
   left: calc(2.5vw);
 }
 
-bia-ultima-layout .bia-classic-page-margin:not(:has(bia-split-page-layout)) {
+bia-ultima-layout .bia-classic-page-margin:not(:has(.bia-split-page-layout)) {
   padding: 0.75rem 2.5rem;
 }
 

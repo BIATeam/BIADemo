@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // import { ReducerManager, StoreModule } from '@ngrx/store';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
-import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
-import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
 import { Permission } from 'src/app/shared/permission';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { PlaneFormComponent } from './components/plane-form/plane-form.component';
@@ -17,7 +15,10 @@ import { PlaneTypeOptionModule } from 'src/app/domains/plane-type-option/plane-t
 // BIAToolKit - End Option PlaneType
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { DynamicLayoutComponent } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
+import {
+  DynamicLayoutComponent,
+  LayoutMode,
+} from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { CrudItemImportModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item-import.module';
 import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
 import { PlaneTableComponent } from './components/plane-table/plane-table.component';
@@ -49,15 +50,8 @@ export const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.Plane_Create,
           title: 'plane.add',
-          injectComponent: PlaneNewComponent,
-          dynamicComponent: () =>
-            planeCRUDConfiguration.usePopup
-              ? PopupLayoutComponent
-              : FullPageLayoutComponent,
         },
-        component: planeCRUDConfiguration.usePopup
-          ? PopupLayoutComponent
-          : FullPageLayoutComponent,
+        component: PlaneNewComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -65,6 +59,7 @@ export const ROUTES: Routes = [
         data: {
           breadcrumb: 'plane.import',
           canNavigate: false,
+          layoutMode: LayoutMode.Popup,
           style: {
             minWidth: '80vw',
             maxWidth: '80vw',
@@ -72,15 +67,8 @@ export const ROUTES: Routes = [
           },
           permission: Permission.Plane_Save,
           title: 'plane.import',
-          injectComponent: PlaneImportComponent,
-          dynamicComponent: () =>
-            planeCRUDConfiguration.usePopup
-              ? PopupLayoutComponent
-              : FullPageLayoutComponent,
         },
-        component: planeCRUDConfiguration.usePopup
-          ? PopupLayoutComponent
-          : FullPageLayoutComponent,
+        component: PlaneImportComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -99,15 +87,8 @@ export const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.Plane_Update,
               title: 'plane.edit',
-              injectComponent: PlaneEditComponent,
-              dynamicComponent: () =>
-                planeCRUDConfiguration.usePopup
-                  ? PopupLayoutComponent
-                  : FullPageLayoutComponent,
             },
-            component: planeCRUDConfiguration.usePopup
-              ? PopupLayoutComponent
-              : FullPageLayoutComponent,
+            component: PlaneEditComponent,
             canActivate: [PermissionGuard],
           },
           {
@@ -116,32 +97,24 @@ export const ROUTES: Routes = [
             redirectTo: 'edit',
           },
           /// BIAToolKit - Begin Partial PlaneModuleChildPath Engine
+          /// BIAToolKit - Begin Partial PlaneModuleChildPath Engine
+          {
+            path: 'engines',
+            data: {
+              breadcrumb: 'app.engines',
+              canNavigate: true,
+              permission: Permission.Engine_List_Access,
+              layoutMode: LayoutMode.FullPage,
+            },
+            loadChildren: () =>
+              import('./children/engines/engine.module').then(
+                m => m.EngineModule
+              ),
+          },
           /// BIAToolKit - End Partial PlaneModuleChildPath Engine
           // BIAToolKit - Begin PlaneModuleChildPath
           // BIAToolKit - End PlaneModuleChildPath
         ],
-      },
-    ],
-  },
-  {
-    path: ':crudItemId',
-    data: {
-      breadcrumb: '',
-      canNavigate: true,
-    },
-    component: PlaneItemComponent,
-    canActivate: [PermissionGuard],
-    children: [
-      /// BIAToolKit - Begin Partial PlaneModuleChildPath Engine
-      {
-        path: 'engines',
-        data: {
-          breadcrumb: 'app.engines',
-          canNavigate: true,
-          permission: Permission.Engine_List_Access,
-        },
-        loadChildren: () =>
-          import('./children/engines/engine.module').then(m => m.EngineModule),
       },
     ],
   },
