@@ -21,16 +21,18 @@ export class BiaFormLayoutConfigRow<TDto> {
   constructor(public columns: BiaFormLayoutConfigColumn<TDto>[]) {}
 
   get defaultColumnClass(): string {
-    const definedSizes = this.columns
-      .filter(c => c.isColumnSizeValid)
-      .map(c => c.columnSize as number);
-    const totalDefinedSize = definedSizes.reduce((acc, size) => acc + size, 0);
-    const remainingSize = 12 - totalDefinedSize;
+    const definedLgSizes = this.columns
+      .filter(c => c.isLgSizeValid)
+      .map(c => c.lgSize as number);
+    const totalDefinedLgSize = definedLgSizes.reduce(
+      (acc, size) => acc + size,
+      0
+    );
+    const remainingLgSize = 12 - totalDefinedLgSize;
 
-    const undefinedSizeColumns = this.columns.length - definedSizes.length;
-    const defaultSize = Math.floor(remainingSize / undefinedSizeColumns);
-
-    return `col-${defaultSize}`;
+    const undefinedLgSizeColumns = this.columns.length - definedLgSizes.length;
+    const lgSize = Math.floor(remainingLgSize / undefinedLgSizeColumns);
+    return generateColumnClass(lgSize);
   }
 }
 
@@ -39,18 +41,24 @@ export class BiaFormLayoutConfigColumn<TDto> {
 
   constructor(
     public field: keyof TDto & string,
-    public columnSize?: number | undefined
+    public lgSize?: number | undefined
   ) {}
 
-  get isColumnSizeValid(): boolean {
-    return (
-      this.columnSize !== undefined &&
-      this.columnSize >= 1 &&
-      this.columnSize <= 12
-    );
+  get isLgSizeValid(): boolean {
+    return this.lgSize !== undefined && this.lgSize >= 1 && this.lgSize <= 12;
   }
 
   get columnClass(): string | undefined {
-    return this.isColumnSizeValid ? `col-${this.columnSize}` : undefined;
+    if (this.isLgSizeValid) {
+      return generateColumnClass(this.lgSize as number);
+    }
+
+    return undefined;
   }
+}
+
+function generateColumnClass(lgSize: number): string {
+  const mdSize = Math.min(12, Math.ceil(lgSize * 1.5));
+  const smSize = Math.min(12, Math.ceil(lgSize * 2));
+  return `col-12 lg:col-${lgSize} md:col-${mdSize} sm:col-${smSize}`;
 }

@@ -270,8 +270,8 @@ export const planeFormLayoutConfiguration: BiaFormLayoutConfig<Plane> =
     ]),
     new BiaFormLayoutConfigGroup('Status', [
       new BiaFormLayoutConfigRow([
-        new BiaFormLayoutConfigColumn('isActive'),
-        new BiaFormLayoutConfigColumn('isMaintenance'),
+        new BiaFormLayoutConfigColumn('isActive', 2),
+        new BiaFormLayoutConfigColumn('isMaintenance', 2),
       ]),
     ]),
     new BiaFormLayoutConfigGroup('Tracking', [
