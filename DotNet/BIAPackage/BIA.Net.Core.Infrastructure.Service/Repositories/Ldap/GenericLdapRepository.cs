@@ -194,7 +194,8 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
             // Sanitize unsafe characters from search value to avoid LDAP injections
             // See : https://cheatsheetseries.owasp.org/cheatsheets/LDAP_Injection_Prevention_Cheat_Sheet.html
-            const string rgxPattern = @"[\\ #+<>,;""=*()]";
+            // Space are remove to search by FirstName LastName or LastName FirstName (coded in SearchUsersInDomain)
+            const string rgxPattern = @"[\\#+<>,;""=*()]";
             search = Regex.Replace(search, rgxPattern, string.Empty);
 
             if (string.IsNullOrEmpty(search))
@@ -261,11 +262,20 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                             ldapPath = $"LDAP://{domain.Filter}";
                         }
 
+                        var cnSearch = "(&";
+                        foreach (var searchPart in search.Split(" "))
+                        {
+                            if (!String.IsNullOrEmpty(searchPart))
+                                cnSearch += $"(cn=*{searchPart}*)";
+                        }
+                        cnSearch += ")";
+
                         using var entry = new DirectoryEntry(ldapPath, domain.LdapServiceAccount, domain.LdapServicePass);
                         using var searcher = new DirectorySearcher(entry)
                         {
                             SearchScope = SearchScope.Subtree,
-                            Filter = $"(&(objectCategory=person)(objectClass=user)(|(givenname=*{search}*)(sn=*{search}*)(SAMAccountName=*{search}*)(cn=*{search}*)))",
+                            Filter = $"(&(objectCategory=person)(objectClass=user){cnSearch})",
+                            //Filter = $"(&(objectCategory=person)(objectClass=user)(cn=*{search}*))",
                             SizeLimit = max
                         };
                         usersMatches.AddRange(searcher.FindAll().Cast<SearchResult>().Select(s => s.GetDirectoryEntry()).ToList());

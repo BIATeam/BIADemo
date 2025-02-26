@@ -83,21 +83,21 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
                     IsEmployee = true,
                     Manager = entry.Properties["manager"].Value?.ToString(),
                     Office = entry.Properties["physicalDeliveryOfficeName"].Value?.ToString(),
-                    Site = domainKey == "CORP" ? entry.Properties["physicalDeliveryOfficeName"].Value?.ToString() : entry.Properties["description"].Value?.ToString(),
+                    Site = entry.Properties["description"].Value?.ToString(),
                 };
 
                 // Set external company
-                var jobTitle = entry.Properties["title"].Value?.ToString();
+                var name = entry.Properties["cn"].Value?.ToString();
 
-                if (!string.IsNullOrEmpty(jobTitle) && jobTitle.IndexOf(':') <= 0)
+                if (!string.IsNullOrEmpty(name)
+                    && name.IndexOf('[') > -1
+                    && name.IndexOf(']') > -1
+                    && name.IndexOf('[') < name.IndexOf(']')
+                    && name.Split('[')[1].Split(']')[0] == "EXT")
                 {
-                    string[] extInfo = jobTitle.Split(':');
-                    if (extInfo[0] == "EXT" && extInfo.Length != 2)
-                    {
                         user.IsEmployee = false;
                         user.IsExternal = true;
-                        user.ExternalCompany = extInfo[1];
-                    }
+                        //user.ExternalCompany = extInfo[1];
                 }
 
                 // Set sub department
