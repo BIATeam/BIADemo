@@ -46,11 +46,22 @@
         <div
           *ngFor="let column of row.columns"
           [class]="column.columnClass ?? row.computedColumnClass">
-          <ng-container
-            *ngTemplateOutlet="
-              fieldTemplate;
-              context: { field: column.fieldConfig }
-            "></ng-container>
+          <ng-container [ngSwitch]="column.type">
+            <ng-container *ngSwitchCase="'group'">
+              <ng-container
+                *ngTemplateOutlet="
+                  groupTemplate;
+                  context: { group: column }
+                "></ng-container>
+            </ng-container>
+            <ng-container *ngSwitchCase="'field'">
+              <ng-container
+                *ngTemplateOutlet="
+                  fieldTemplate;
+                  context: { field: column.fieldConfig }
+                "></ng-container>
+            </ng-container>
+          </ng-container>
         </div>
       </div>
     </ng-template>

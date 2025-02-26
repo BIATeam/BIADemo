@@ -10,8 +10,8 @@ import {
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import {
   BiaFormLayoutConfig,
-  BiaFormLayoutConfigColumn,
   BiaFormLayoutConfigColumnSize,
+  BiaFormLayoutConfigField,
   BiaFormLayoutConfigGroup,
   BiaFormLayoutConfigRow,
 } from 'src/app/shared/bia-shared/model/bia-form-layout-config';
@@ -261,35 +261,37 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
 
 // TODO after creation of CRUD Plane : adapt the form layout configuration
 export const planeFormLayoutConfiguration: BiaFormLayoutConfig<Plane> =
-  new BiaFormLayoutConfig([
+  new BiaFormLayoutConfig<Plane>([
     //Begin BIADemo
-    new BiaFormLayoutConfigGroup('Identification', [
-      new BiaFormLayoutConfigRow([
-        new BiaFormLayoutConfigColumn('msn'),
-        new BiaFormLayoutConfigColumn('manufacturer'),
+    new BiaFormLayoutConfigRow<Plane>([
+      new BiaFormLayoutConfigGroup<Plane>('Identification', [
+        new BiaFormLayoutConfigRow<Plane>([
+          new BiaFormLayoutConfigField<Plane>('msn'),
+          new BiaFormLayoutConfigField<Plane>('manufacturer'),
+        ]),
+      ]),
+      new BiaFormLayoutConfigGroup<Plane>('Status', [
+        new BiaFormLayoutConfigRow<Plane>([
+          new BiaFormLayoutConfigField<Plane>('isActive', 2),
+          new BiaFormLayoutConfigField<Plane>('isMaintenance', 2),
+        ]),
       ]),
     ]),
-    new BiaFormLayoutConfigGroup('Status', [
-      new BiaFormLayoutConfigRow([
-        new BiaFormLayoutConfigColumn('isActive', 2),
-        new BiaFormLayoutConfigColumn('isMaintenance', 2),
+    new BiaFormLayoutConfigGroup<Plane>('Tracking', [
+      new BiaFormLayoutConfigRow<Plane>([
+        new BiaFormLayoutConfigField<Plane>('deliveryDate'),
+        new BiaFormLayoutConfigField<Plane>('firstFlightDate'),
+        new BiaFormLayoutConfigField<Plane>('lastFlightDate'),
+        new BiaFormLayoutConfigField<Plane>('nextMaintenanceDate'),
       ]),
     ]),
-    new BiaFormLayoutConfigGroup('Tracking', [
-      new BiaFormLayoutConfigRow([
-        new BiaFormLayoutConfigColumn('deliveryDate'),
-        new BiaFormLayoutConfigColumn('firstFlightDate'),
-        new BiaFormLayoutConfigColumn('lastFlightDate'),
-        new BiaFormLayoutConfigColumn('nextMaintenanceDate'),
-      ]),
+    new BiaFormLayoutConfigRow<Plane>([
+      new BiaFormLayoutConfigField<Plane>('probability'),
+      new BiaFormLayoutConfigField<Plane>('syncFlightDataTime', 6),
+      new BiaFormLayoutConfigField<Plane>('capacity'),
     ]),
-    new BiaFormLayoutConfigRow([
-      new BiaFormLayoutConfigColumn('probability'),
-      new BiaFormLayoutConfigColumn('syncFlightDataTime', 6),
-      new BiaFormLayoutConfigColumn('capacity'),
-    ]),
-    new BiaFormLayoutConfigRow([
-      new BiaFormLayoutConfigColumn(
+    new BiaFormLayoutConfigRow<Plane>([
+      new BiaFormLayoutConfigField<Plane>(
         'syncTime',
         new BiaFormLayoutConfigColumnSize(3, 6, 9, 12)
       ),

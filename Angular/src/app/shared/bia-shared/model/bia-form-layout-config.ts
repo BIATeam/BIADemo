@@ -8,14 +8,6 @@ export type BiaFormLayoutConfigItem<TDto> =
   | BiaFormLayoutConfigGroup<TDto>
   | BiaFormLayoutConfigRow<TDto>;
 
-export class BiaFormLayoutConfigGroup<TDto> {
-  readonly type = 'group';
-  constructor(
-    public name: string,
-    public rows: BiaFormLayoutConfigRow<TDto>[]
-  ) {}
-}
-
 export class BiaFormLayoutConfigRow<TDto> {
   readonly type = 'row';
   constructor(public columns: BiaFormLayoutConfigColumn<TDto>[]) {}
@@ -36,13 +28,25 @@ export class BiaFormLayoutConfigRow<TDto> {
   }
 }
 
-export class BiaFormLayoutConfigColumn<TDto> {
-  fieldConfig: BiaFieldConfig<TDto>;
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export abstract class BiaFormLayoutConfigColumn<TDto> {
   constructor(
-    public field: keyof TDto & string,
     public columnSize?: number | BiaFormLayoutConfigColumnSize | undefined
   ) {}
+
+  get columnClass(): string | undefined {
+    if (this.columnSize && this.isLgSizeValid) {
+      if (this.columnSize instanceof BiaFormLayoutConfigColumnSize) {
+        return generateColumnClassFromColumnSize(
+          this.columnSize as BiaFormLayoutConfigColumnSize
+        );
+      }
+
+      return generateColumnClassFromLgSize(this.columnSize as number);
+    }
+
+    return undefined;
+  }
 
   get isLgSizeValid(): boolean {
     return this.lgSize !== undefined && this.lgSize >= 1 && this.lgSize <= 12;
@@ -59,19 +63,32 @@ export class BiaFormLayoutConfigColumn<TDto> {
 
     return this.columnSize as number;
   }
+}
 
-  get columnClass(): string | undefined {
-    if (this.columnSize && this.isLgSizeValid) {
-      if (this.columnSize instanceof BiaFormLayoutConfigColumnSize) {
-        return generateColumnClassFromColumnSize(
-          this.columnSize as BiaFormLayoutConfigColumnSize
-        );
-      }
+export class BiaFormLayoutConfigGroup<
+  TDto,
+> extends BiaFormLayoutConfigColumn<TDto> {
+  readonly type = 'group';
+  constructor(
+    public name: string,
+    public rows: BiaFormLayoutConfigRow<TDto>[],
+    public columnSize?: number | BiaFormLayoutConfigColumnSize | undefined
+  ) {
+    super(columnSize);
+  }
+}
 
-      return generateColumnClassFromLgSize(this.columnSize as number);
-    }
+export class BiaFormLayoutConfigField<
+  TDto,
+> extends BiaFormLayoutConfigColumn<TDto> {
+  readonly type = 'field';
+  fieldConfig: BiaFieldConfig<TDto>;
 
-    return undefined;
+  constructor(
+    public field: keyof TDto & string,
+    public columnSize?: number | BiaFormLayoutConfigColumnSize | undefined
+  ) {
+    super(columnSize);
   }
 }
 

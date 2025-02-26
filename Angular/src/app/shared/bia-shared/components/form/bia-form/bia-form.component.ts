@@ -32,7 +32,8 @@ import {
 import { BaseDto } from '../../../model/base-dto';
 import {
   BiaFormLayoutConfig,
-  BiaFormLayoutConfigColumn,
+  BiaFormLayoutConfigField,
+  BiaFormLayoutConfigGroup,
   BiaFormLayoutConfigRow,
 } from '../../../model/bia-form-layout-config';
 
@@ -165,34 +166,57 @@ export class BiaFormComponent<TDto extends { id: number }>
       return;
     }
 
-    const getColumnsFromRow = (
+    const getFieldsFromRow = (
       row: BiaFormLayoutConfigRow<TDto>
-    ): BiaFormLayoutConfigColumn<TDto>[] => row.columns;
+    ): BiaFormLayoutConfigField<TDto>[] => {
+      const fields = row.columns
+        .filter(
+          (c): c is BiaFormLayoutConfigField<TDto> =>
+            c instanceof BiaFormLayoutConfigField
+        )
+        .flatMap(c => c as BiaFormLayoutConfigField<TDto>);
 
-    const getColumnsFromRows = (
+      const groups = row.columns
+        .filter(
+          (c): c is BiaFormLayoutConfigGroup<TDto> =>
+            c instanceof BiaFormLayoutConfigGroup
+        )
+        .flatMap(c => c as BiaFormLayoutConfigGroup<TDto>);
+
+      groups.forEach(g => {
+        const groupFields = getFieldsFromRows(g.rows);
+        groupFields.forEach(gf => fields.push(gf));
+      });
+
+      return fields;
+    };
+
+    const getFieldsFromRows = (
       rows: BiaFormLayoutConfigRow<TDto>[]
-    ): BiaFormLayoutConfigColumn<TDto>[] =>
-      rows.flatMap(row => getColumnsFromRow(row));
+    ): BiaFormLayoutConfigField<TDto>[] =>
+      rows.flatMap(row => getFieldsFromRow(row));
 
-    const columns: BiaFormLayoutConfigColumn<TDto>[] =
+    const columnFields: BiaFormLayoutConfigField<TDto>[] =
       this.formLayoutConfig.items.flatMap(item => {
         switch (item.type) {
           case 'group':
-            return getColumnsFromRows(item.rows);
+            return getFieldsFromRows(item.rows);
           case 'row':
-            return getColumnsFromRow(item);
+            return getFieldsFromRow(item);
           default:
             return [];
         }
       });
 
-    columns.forEach(column => {
-      const fieldIndex = this.fields.findIndex(x => x.field === column.field);
+    columnFields.forEach(columnField => {
+      const fieldIndex = this.fields.findIndex(
+        x => x.field === columnField.field
+      );
       if (fieldIndex !== -1) {
-        column.fieldConfig = this.fields[fieldIndex];
+        columnField.fieldConfig = this.fields[fieldIndex];
 
         const fieldToRemoveIndex = this.fieldsWithoutLayoutConfig.findIndex(
-          x => x.field === column.field
+          x => x.field === columnField.field
         );
         if (fieldToRemoveIndex !== -1) {
           this.fieldsWithoutLayoutConfig.splice(fieldToRemoveIndex, 1);
