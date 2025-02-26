@@ -261,37 +261,37 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
 
 // TODO after creation of CRUD Plane : adapt the form layout configuration
 export const planeFormLayoutConfiguration: BiaFormLayoutConfig<Plane> =
-  new BiaFormLayoutConfig<Plane>([
+  new BiaFormLayoutConfig([
     //Begin BIADemo
-    new BiaFormLayoutConfigRow<Plane>([
-      new BiaFormLayoutConfigGroup<Plane>('Identification', [
-        new BiaFormLayoutConfigRow<Plane>([
-          new BiaFormLayoutConfigField<Plane>('msn'),
-          new BiaFormLayoutConfigField<Plane>('manufacturer'),
+    new BiaFormLayoutConfigRow([
+      new BiaFormLayoutConfigGroup('Identification', [
+        new BiaFormLayoutConfigRow([
+          new BiaFormLayoutConfigField('msn'),
+          new BiaFormLayoutConfigField('manufacturer'),
         ]),
       ]),
-      new BiaFormLayoutConfigGroup<Plane>('Status', [
-        new BiaFormLayoutConfigRow<Plane>([
-          new BiaFormLayoutConfigField<Plane>('isActive', 2),
-          new BiaFormLayoutConfigField<Plane>('isMaintenance', 2),
+      new BiaFormLayoutConfigGroup('Status', [
+        new BiaFormLayoutConfigRow([
+          new BiaFormLayoutConfigField('isActive', 2),
+          new BiaFormLayoutConfigField('isMaintenance', 2),
         ]),
       ]),
     ]),
-    new BiaFormLayoutConfigGroup<Plane>('Tracking', [
-      new BiaFormLayoutConfigRow<Plane>([
-        new BiaFormLayoutConfigField<Plane>('deliveryDate'),
-        new BiaFormLayoutConfigField<Plane>('firstFlightDate'),
-        new BiaFormLayoutConfigField<Plane>('lastFlightDate'),
-        new BiaFormLayoutConfigField<Plane>('nextMaintenanceDate'),
+    new BiaFormLayoutConfigGroup('Tracking', [
+      new BiaFormLayoutConfigRow([
+        new BiaFormLayoutConfigField('deliveryDate'),
+        new BiaFormLayoutConfigField('firstFlightDate'),
+        new BiaFormLayoutConfigField('lastFlightDate'),
+        new BiaFormLayoutConfigField('nextMaintenanceDate'),
       ]),
     ]),
-    new BiaFormLayoutConfigRow<Plane>([
-      new BiaFormLayoutConfigField<Plane>('probability'),
-      new BiaFormLayoutConfigField<Plane>('syncFlightDataTime', 6),
-      new BiaFormLayoutConfigField<Plane>('capacity'),
+    new BiaFormLayoutConfigRow([
+      new BiaFormLayoutConfigField('probability'),
+      new BiaFormLayoutConfigField('syncFlightDataTime', 6),
+      new BiaFormLayoutConfigField('capacity'),
     ]),
-    new BiaFormLayoutConfigRow<Plane>([
-      new BiaFormLayoutConfigField<Plane>(
+    new BiaFormLayoutConfigRow([
+      new BiaFormLayoutConfigField(
         'syncTime',
         new BiaFormLayoutConfigColumnSize(3, 6, 9, 12)
       ),

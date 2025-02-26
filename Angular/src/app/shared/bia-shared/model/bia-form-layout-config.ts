@@ -28,8 +28,9 @@ export class BiaFormLayoutConfigRow<TDto> {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export abstract class BiaFormLayoutConfigColumn<TDto> {
+  _element: keyof TDto;
+
   constructor(
     public columnSize?: number | BiaFormLayoutConfigColumnSize | undefined
   ) {}
@@ -81,7 +82,6 @@ export class BiaFormLayoutConfigGroup<
 export class BiaFormLayoutConfigField<
   TDto,
 > extends BiaFormLayoutConfigColumn<TDto> {
-  readonly type = 'field';
   fieldConfig: BiaFieldConfig<TDto>;
 
   constructor(
