@@ -11,6 +11,7 @@ import {
 import {
   BiaFormLayoutConfig,
   BiaFormLayoutConfigColumn,
+  BiaFormLayoutConfigColumnSize,
   BiaFormLayoutConfigGroup,
   BiaFormLayoutConfigRow,
 } from 'src/app/shared/bia-shared/model/bia-form-layout-config';
@@ -287,6 +288,11 @@ export const planeFormLayoutConfiguration: BiaFormLayoutConfig<Plane> =
       new BiaFormLayoutConfigColumn('syncFlightDataTime', 6),
       new BiaFormLayoutConfigColumn('capacity'),
     ]),
-    new BiaFormLayoutConfigRow([new BiaFormLayoutConfigColumn('syncTime', 3)]),
+    new BiaFormLayoutConfigRow([
+      new BiaFormLayoutConfigColumn(
+        'syncTime',
+        new BiaFormLayoutConfigColumnSize(3, 6, 9, 12)
+      ),
+    ]),
     //End BIADemo
   ]);

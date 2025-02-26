@@ -20,7 +20,7 @@ export class BiaFormLayoutConfigRow<TDto> {
   readonly type = 'row';
   constructor(public columns: BiaFormLayoutConfigColumn<TDto>[]) {}
 
-  get defaultColumnClass(): string {
+  get computedColumnClass(): string {
     const definedLgSizes = this.columns
       .filter(c => c.isLgSizeValid)
       .map(c => c.lgSize as number);
@@ -32,7 +32,7 @@ export class BiaFormLayoutConfigRow<TDto> {
 
     const undefinedLgSizeColumns = this.columns.length - definedLgSizes.length;
     const lgSize = Math.floor(remainingLgSize / undefinedLgSizeColumns);
-    return generateColumnClass(lgSize);
+    return generateColumnClassFromLgSize(lgSize);
   }
 }
 
@@ -41,24 +41,57 @@ export class BiaFormLayoutConfigColumn<TDto> {
 
   constructor(
     public field: keyof TDto & string,
-    public lgSize?: number | undefined
+    public columnSize?: number | BiaFormLayoutConfigColumnSize | undefined
   ) {}
 
   get isLgSizeValid(): boolean {
     return this.lgSize !== undefined && this.lgSize >= 1 && this.lgSize <= 12;
   }
 
+  get lgSize(): number | undefined {
+    if (!this.columnSize) {
+      return undefined;
+    }
+
+    if (this.columnSize instanceof BiaFormLayoutConfigColumnSize) {
+      return (this.columnSize as BiaFormLayoutConfigColumnSize).lgSize;
+    }
+
+    return this.columnSize as number;
+  }
+
   get columnClass(): string | undefined {
-    if (this.isLgSizeValid) {
-      return generateColumnClass(this.lgSize as number);
+    if (this.columnSize && this.isLgSizeValid) {
+      if (this.columnSize instanceof BiaFormLayoutConfigColumnSize) {
+        return generateColumnClassFromColumnSize(
+          this.columnSize as BiaFormLayoutConfigColumnSize
+        );
+      }
+
+      return generateColumnClassFromLgSize(this.columnSize as number);
     }
 
     return undefined;
   }
 }
 
-function generateColumnClass(lgSize: number): string {
+export class BiaFormLayoutConfigColumnSize {
+  constructor(
+    public lgSize: number,
+    public mdSize: number,
+    public smSize: number,
+    public mobileFirstSize: number
+  ) {}
+}
+
+function generateColumnClassFromLgSize(lgSize: number): string {
   const mdSize = Math.min(12, Math.ceil(lgSize * 1.5));
   const smSize = Math.min(12, Math.ceil(lgSize * 2));
   return `col-12 lg:col-${lgSize} md:col-${mdSize} sm:col-${smSize}`;
+}
+
+function generateColumnClassFromColumnSize(
+  columnSize: BiaFormLayoutConfigColumnSize
+): string {
+  return `col-${columnSize.mobileFirstSize} lg:col-${columnSize.lgSize} md:col-${columnSize.mdSize} sm:col-${columnSize.smSize}`;
 }

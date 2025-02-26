@@ -45,7 +45,7 @@
       <div class="grid bia-form-row">
         <div
           *ngFor="let column of row.columns"
-          [class]="column.columnClass ?? row.defaultColumnClass">
+          [class]="column.columnClass ?? row.computedColumnClass">
           <ng-container
             *ngTemplateOutlet="
               fieldTemplate;
