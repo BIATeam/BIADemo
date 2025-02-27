@@ -29,6 +29,7 @@ import {
   BiaFieldConfig,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
+import { FormReadOnlyMode } from '../../../feature-templates/crud-items/model/crud-config';
 import { BaseDto } from '../../../model/base-dto';
 import {
   BiaFormLayoutConfig,
@@ -50,6 +51,7 @@ export class BiaFormComponent<TDto extends { id: number }>
   @Input() fields: BiaFieldConfig<TDto>[];
   @Input() formLayoutConfig?: BiaFormLayoutConfig<TDto>;
   @Input() formValidators?: ValidatorFn[];
+  @Input() formReadOnlyMode: FormReadOnlyMode;
   @Input() dictOptionDtos: DictOptionDto[];
   @Input() isAdd?: boolean;
   @Input() isCrudItemOutdated = false;
@@ -62,6 +64,7 @@ export class BiaFormComponent<TDto extends { id: number }>
   specificOutputTemplate: TemplateRef<any>;
 
   form?: UntypedFormGroup;
+  readOnly = false;
   protected sub = new Subscription();
   fieldsWithoutLayoutConfig: BiaFieldConfig<TDto>[] = [];
 
@@ -74,6 +77,10 @@ export class BiaFormComponent<TDto extends { id: number }>
   ) {}
 
   ngOnInit() {
+    if (this.formReadOnlyMode !== FormReadOnlyMode.off) {
+      this.readOnly = true;
+    }
+
     this.initForm();
   }
 
@@ -117,7 +124,7 @@ export class BiaFormComponent<TDto extends { id: number }>
     const formElement = 'input, textarea, select';
     const firstActiveField = this.formElements.find(field => {
       const element = field.nativeElement.querySelector(formElement);
-      return element && !element.disabled;
+      return this.readOnly ? element : element && !element.disabled;
     });
     if (firstActiveField) {
       const element = firstActiveField.nativeElement.querySelector(formElement);
@@ -158,6 +165,10 @@ export class BiaFormComponent<TDto extends { id: number }>
     this.form = this.formBuilder.group(this.formFields());
     if (this.formValidators) {
       this.form.addValidators(this.formValidators);
+    }
+
+    if (this.readOnly) {
+      this.form.disable();
     }
   }
 

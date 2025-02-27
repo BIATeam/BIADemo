@@ -12,6 +12,7 @@ import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-ta
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { BiaFieldConfig } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { BiaFormLayoutConfig } from 'src/app/shared/bia-shared/model/bia-form-layout-config';
+import { FormReadOnlyMode } from '../../model/crud-config';
 
 @Component({
   selector: 'bia-crud-item-form',
@@ -24,6 +25,7 @@ export class CrudItemFormComponent<CrudItem extends BaseDto> {
   @Input() fields: BiaFieldConfig<CrudItem>[];
   @Input() formLayoutConfig?: BiaFormLayoutConfig<CrudItem>;
   @Input() formValidators?: ValidatorFn[];
+  @Input() formReadOnlyMode: FormReadOnlyMode = FormReadOnlyMode.off;
   @Input() dictOptionDtos: DictOptionDto[];
   @Input() isAdd?: boolean;
   @Input() isCrudItemOutdated = false;

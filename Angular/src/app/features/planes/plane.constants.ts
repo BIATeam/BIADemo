@@ -1,4 +1,7 @@
-import { CrudConfig } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
+import {
+  CrudConfig,
+  FormReadOnlyMode,
+} from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
 /// BIAToolKit - Begin AncestorTeam
 import { TeamTypeId } from 'src/app/shared/constants';
 /// BIAToolKit - End AncestorTeam
@@ -14,6 +17,7 @@ export const planeCRUDConfiguration: CrudConfig<Plane> = new CrudConfig({
   featureName: 'planes',
   fieldsConfig: planeFieldsConfiguration,
   formLayoutConfig: planeFormLayoutConfiguration,
+  formEditReadOnlyMode: FormReadOnlyMode.on,
   useCalcMode: true,
   useSignalR: false,
   useView: true,

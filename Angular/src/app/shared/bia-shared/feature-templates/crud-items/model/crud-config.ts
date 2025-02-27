@@ -3,6 +3,12 @@ import { BiaFieldsConfig } from '../../../model/bia-field-config';
 import { BiaFormLayoutConfig } from '../../../model/bia-form-layout-config';
 import { BiaTableState } from '../../../model/bia-table-state';
 
+export enum FormReadOnlyMode {
+  off,
+  clickToEdit,
+  on,
+}
+
 export interface ShowIconsConfig {
   showCalcMode: boolean;
   showPopup: boolean;
@@ -45,11 +51,13 @@ export class CrudConfig<TDto extends { id: number }> {
     showVirtualScroll: false,
     showResizableColumn: false,
   };
+  formEditReadOnlyMode: FormReadOnlyMode;
 
   constructor({
     featureName,
     fieldsConfig,
     formLayoutConfig = undefined,
+    formEditReadOnlyMode = FormReadOnlyMode.off,
     storeKey = 'feature-' + featureName,
     useCalcMode = false,
     useSignalR = false,
@@ -68,6 +76,7 @@ export class CrudConfig<TDto extends { id: number }> {
     featureName: string;
     fieldsConfig: BiaFieldsConfig<TDto>;
     formLayoutConfig?: BiaFormLayoutConfig<TDto> | undefined;
+    formEditReadOnlyMode?: FormReadOnlyMode;
     storeKey?: string;
     useCalcMode?: boolean;
     useSignalR?: boolean;
@@ -90,6 +99,7 @@ export class CrudConfig<TDto extends { id: number }> {
     this.featureName = featureName;
     this.fieldsConfig = fieldsConfig;
     this.formLayoutConfig = formLayoutConfig;
+    this.formEditReadOnlyMode = formEditReadOnlyMode;
     this.storeKey = storeKey;
     this.useCalcMode = useCalcMode;
     this.useSignalR = useSignalR;
