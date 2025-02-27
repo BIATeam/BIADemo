@@ -82,6 +82,7 @@ export class BiaFormLayoutConfigGroup<
 export class BiaFormLayoutConfigField<
   TDto,
 > extends BiaFormLayoutConfigColumn<TDto> {
+  readonly type = 'field';
   fieldConfig: BiaFieldConfig<TDto>;
 
   constructor(
