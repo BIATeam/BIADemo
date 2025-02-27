@@ -117,6 +117,46 @@ export class BiaFormComponent<TDto extends { id: number }>
     });
   }
 
+  get submitInputLabel(): string {
+    if (this.isAdd) {
+      return 'bia.add';
+    }
+    switch (this.formReadOnlyMode) {
+      case FormReadOnlyMode.off:
+      case FormReadOnlyMode.on:
+        return 'bia.save';
+      case FormReadOnlyMode.clickToEdit:
+        return this.readOnly ? 'bia.edit' : 'bia.save';
+    }
+  }
+
+  get submitInputIcon(): string {
+    if (this.isAdd) {
+      return 'pi-plus';
+    }
+    switch (this.formReadOnlyMode) {
+      case FormReadOnlyMode.off:
+      case FormReadOnlyMode.on:
+        return 'pi-check';
+      case FormReadOnlyMode.clickToEdit:
+        return this.readOnly ? 'pi-pencil' : 'pi-check';
+    }
+  }
+
+  get submitInputDisable(): boolean {
+    const readOnlyModeOn = this.formReadOnlyMode === FormReadOnlyMode.on;
+    const clickToEdit =
+      this.formReadOnlyMode === FormReadOnlyMode.clickToEdit && this.readOnly;
+    const invalidForm = !clickToEdit && this.form && !this.form.valid;
+
+    return (
+      this.disableSave ||
+      readOnlyModeOn ||
+      invalidForm ||
+      this.isCrudItemOutdated
+    );
+  }
+
   /**
    * Find the first active form element and set the focus on it.
    */
@@ -263,6 +303,16 @@ export class BiaFormComponent<TDto extends { id: number }>
   }
 
   onSubmit() {
+    if (
+      this.formReadOnlyMode === FormReadOnlyMode.clickToEdit &&
+      this.readOnly
+    ) {
+      this.readOnly = false;
+      this.form?.enable();
+      this.setFocus();
+      return;
+    }
+
     if (this.form?.valid) {
       const element: any = this.getElement();
       this.save.emit(element);

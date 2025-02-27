@@ -100,12 +100,10 @@
         (click)="onCancel()"></button>
       <button
         pButton
-        icon="pi {{ isAdd === true ? 'pi-plus' : 'pi-check' }}"
-        label="{{
-          isAdd === true ? ('bia.add' | translate) : ('bia.save' | translate)
-        }}"
+        icon="pi {{ submitInputIcon }}"
+        label="{{ submitInputLabel | translate }}"
         type="submit"
-        [disabled]="disableSave || !form.valid || isCrudItemOutdated"></button>
+        [disabled]="submitInputDisable"></button>
     </div>
   </div>
 
