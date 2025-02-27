@@ -37,6 +37,7 @@ export class PlaneFormComponent
   displayedEngines: WritableSignal<Engine[]> = signal([]);
   isEditingEngines = false;
   canEditEnginesTable = true;
+  isEngineTableVisible = true;
 
   constructor() {
     super();
@@ -85,6 +86,10 @@ export class PlaneFormComponent
   }
 
   onFormReadOnlyChanged(readOnly: boolean) {
+    this.isEngineTableVisible = false;
     this.canEditEnginesTable = !readOnly;
+    setTimeout(() => {
+      this.isEngineTableVisible = true;
+    });
   }
 }

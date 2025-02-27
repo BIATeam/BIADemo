@@ -35,7 +35,7 @@
         <!-- capacity -->
       </ng-container>
     </div>
-    <ng-container *ngIf="field.field === 'engines'">
+    <ng-container *ngIf="field.field === 'engines' && isEngineTableVisible">
       <bia-table-header
         [headerTitle]="field.header | translate"
         [canAdd]="false"
