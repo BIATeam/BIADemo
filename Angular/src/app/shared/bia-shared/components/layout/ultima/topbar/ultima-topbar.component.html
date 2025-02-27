@@ -117,10 +117,13 @@
     (click)="toggleFullscreenMode()"></i>
 </a>
 
-<div *ngIf="fullscreenMode" class="layout-topbar invisible">
+<div
+  *ngIf="fullscreenMode"
+  class="layout-topbar invisible"
+  style="z-index: 1000">
   <div class="layout-topbar-start">
     <a
-      #menuButton
+      #menuButtonFullscreen
       class="layout-menu-button visible"
       (click)="onMenuButtonClick()"
       pRipple>
