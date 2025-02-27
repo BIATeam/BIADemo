@@ -284,17 +284,20 @@ export const planeFormLayoutConfiguration: BiaFormLayoutConfig<Plane> =
         new BiaFormLayoutConfigField('lastFlightDate'),
         new BiaFormLayoutConfigField('nextMaintenanceDate'),
       ]),
-    ]),
-    new BiaFormLayoutConfigRow([
-      new BiaFormLayoutConfigField('probability'),
-      new BiaFormLayoutConfigField('syncFlightDataTime', 6),
-      new BiaFormLayoutConfigField('capacity'),
+      new BiaFormLayoutConfigRow([
+        new BiaFormLayoutConfigField('syncFlightDataTime'),
+        new BiaFormLayoutConfigField('syncTime'),
+      ]),
     ]),
     new BiaFormLayoutConfigRow([
       new BiaFormLayoutConfigField(
-        'syncTime',
-        new BiaFormLayoutConfigColumnSize(3, 6, 9, 12)
+        'motorsCount',
+        new BiaFormLayoutConfigColumnSize(6, 6, 6, 6)
       ),
+    ]),
+    new BiaFormLayoutConfigRow([
+      new BiaFormLayoutConfigField('probability'),
+      new BiaFormLayoutConfigField('capacity'),
     ]),
     //End BIADemo
   ]);
