@@ -264,20 +264,20 @@ export const planeFormLayoutConfiguration: BiaFormLayoutConfig<Plane> =
   new BiaFormLayoutConfig([
     //Begin BIADemo
     new BiaFormLayoutConfigRow([
-      new BiaFormLayoutConfigGroup('Identification', [
+      new BiaFormLayoutConfigGroup('plane.groupIdentification', [
         new BiaFormLayoutConfigRow([
           new BiaFormLayoutConfigField('msn'),
           new BiaFormLayoutConfigField('manufacturer'),
         ]),
       ]),
-      new BiaFormLayoutConfigGroup('Status', [
+      new BiaFormLayoutConfigGroup('plane.groupStatus', [
         new BiaFormLayoutConfigRow([
           new BiaFormLayoutConfigField('isActive', 2),
           new BiaFormLayoutConfigField('isMaintenance', 2),
         ]),
       ]),
     ]),
-    new BiaFormLayoutConfigGroup('Tracking', [
+    new BiaFormLayoutConfigGroup('plane.groupTracking', [
       new BiaFormLayoutConfigRow([
         new BiaFormLayoutConfigField('deliveryDate'),
         new BiaFormLayoutConfigField('firstFlightDate'),

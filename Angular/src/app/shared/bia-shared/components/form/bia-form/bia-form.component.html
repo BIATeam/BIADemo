@@ -25,7 +25,7 @@
 
     <ng-template #groupTemplate let-group="group">
       <div class="bia-form-group">
-        <h6>{{ group.name }}</h6>
+        <h6>{{ group.name | translate }}</h6>
         <ng-container
           *ngTemplateOutlet="
             rowsTemplate;

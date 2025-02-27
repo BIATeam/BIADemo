@@ -122,7 +122,10 @@
     "motorsCount": "Número de motores",
     "totalFlightHours": "Horas totales de vuelo",
     "fuelCapacity": "Capacidad de combustible",
-    "originalPrice": "Precio original"
+    "originalPrice": "Precio original",
+    "groupIdentification": "Identificación",
+    "groupStatus": "Estado",
+    "groupTracking": "Seguimiento"
   },
   "planeType": {
     "add": "Añadir tipos de aviones",
