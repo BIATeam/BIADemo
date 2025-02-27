@@ -210,7 +210,15 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
                 this.appTopbar.menuButton.nativeElement.isSameNode(
                   event.target
                 ) ||
-                this.appTopbar.menuButton.nativeElement.contains(event.target)
+                this.appTopbar.menuButton.nativeElement.contains(
+                  event.target
+                ) ||
+                this.appTopbar.menuButtonFullScreen?.nativeElement.isSameNode(
+                  event.target
+                ) ||
+                this.appTopbar.menuButtonFullScreen?.nativeElement.contains(
+                  event.target
+                )
               );
               if (isOutsideClicked) {
                 this.hideMenu();
