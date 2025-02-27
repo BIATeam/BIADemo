@@ -4,8 +4,10 @@
   [formValidators]="formValidators"
   [dictOptionDtos]="dictOptionDtos"
   [disableSave]="isEditingEngines"
+  [formReadOnlyMode]="formReadOnlyMode"
   (save)="onSave($event)"
-  (cancelled)="onCancel()">
+  (cancelled)="onCancel()"
+  (readOnlyChanged)="onFormReadOnlyChanged($event)">
   <ng-template pTemplate="specificInput" let-field="field" let-form="form">
     <div [formGroup]="form">
       <ng-container [ngSwitch]="field.field">
@@ -49,8 +51,8 @@
           [totalRecord]="crudItem?.engines?.length ?? 0"
           [paginator]="false"
           [showColSearch]="false"
-          [canEdit]="true"
-          [canAdd]="true"
+          [canEdit]="canEditEnginesTable"
+          [canAdd]="canEditEnginesTable"
           [canSelectElement]="true"
           [loading]="false"
           (selectedElementsChanged)="onSelectedEnginesChanged($event)"

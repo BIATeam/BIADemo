@@ -58,23 +58,30 @@ export class BiaFormComponent<TDto extends { id: number }>
   @Input() disableSave = false;
   @Output() save = new EventEmitter<any>();
   @Output() cancelled = new EventEmitter<void>();
+  @Output() readOnlyChanged = new EventEmitter<boolean>();
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   specificInputTemplate: TemplateRef<any>;
   specificOutputTemplate: TemplateRef<any>;
 
   form?: UntypedFormGroup;
-  readOnly = false;
+  private _readOnly = false;
   protected sub = new Subscription();
   fieldsWithoutLayoutConfig: BiaFieldConfig<TDto>[] = [];
 
   @ViewChildren('refFormField', { read: ElementRef })
   formElements: QueryList<ElementRef>;
 
-  constructor(
-    public formBuilder: UntypedFormBuilder
-    // protected authService: AuthService
-  ) {}
+  constructor(public formBuilder: UntypedFormBuilder) {}
+
+  get readOnly(): boolean {
+    return this._readOnly;
+  }
+
+  set readOnly(value: boolean) {
+    this._readOnly = value;
+    this.readOnlyChanged.emit(value);
+  }
 
   ngOnInit() {
     if (this.formReadOnlyMode !== FormReadOnlyMode.off) {

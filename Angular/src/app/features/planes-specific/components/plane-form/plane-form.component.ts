@@ -36,6 +36,7 @@ export class PlaneFormComponent
   selectedEngines: Engine[] = [];
   displayedEngines: WritableSignal<Engine[]> = signal([]);
   isEditingEngines = false;
+  canEditEnginesTable = true;
 
   constructor() {
     super();
@@ -81,5 +82,9 @@ export class PlaneFormComponent
   onDeleteEngines() {
     this.selectedEngines.forEach(e => (e.dtoState = DtoState.Deleted));
     this.setDisplayedEngines();
+  }
+
+  onFormReadOnlyChanged(readOnly: boolean) {
+    this.canEditEnginesTable = !readOnly;
   }
 }
