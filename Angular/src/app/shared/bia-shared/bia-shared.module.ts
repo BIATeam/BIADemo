@@ -85,6 +85,7 @@ import { MessageService } from 'primeng/api';
 import { RouterModule } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TriStateCheckboxModule } from 'primeng/tristatecheckbox';
 import { NotificationsEffects } from 'src/app/domains/bia-domains/notification/store/notifications-effects';
@@ -103,6 +104,7 @@ import { ClassicFooterComponent } from './components/layout/classic-footer/class
 import { ClassicHeaderComponent } from './components/layout/classic-header/classic-header.component';
 import { ClassicLayoutComponent } from './components/layout/classic-layout/classic-layout.component';
 import { ClassicPageLayoutComponent } from './components/layout/classic-page-layout/classic-page-layout.component';
+import { DynamicLayoutComponent } from './components/layout/dynamic-layout/dynamic-layout.component';
 import { FullPageLayoutComponent } from './components/layout/fullpage-layout/fullpage-layout.component';
 import { IeWarningComponent } from './components/layout/ie-warning/ie-warning.component';
 import { LayoutComponent } from './components/layout/layout.component';
@@ -186,6 +188,7 @@ const PRIMENG_MODULES = [
   FileUploadModule,
   SkeletonModule,
   TriStateCheckboxModule,
+  OverlayPanelModule,
 ];
 
 const MODULES = [
@@ -226,6 +229,7 @@ const COMPONENTS = [
   PageLayoutComponent,
   PopupLayoutComponent,
   FullPageLayoutComponent,
+  DynamicLayoutComponent,
   HangfireContainerComponent,
   TeamAdvancedFilterComponent,
   BiaScrollingNotificationComponent,

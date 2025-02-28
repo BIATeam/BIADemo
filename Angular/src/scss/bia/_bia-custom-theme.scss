@@ -69,8 +69,7 @@ bia-ultima-layout {
     section.content {
       display: flex;
       flex-flow: column;
-      bia-classic-page-layout,
-      bia-ultima-page-layout {
+      bia-classic-page-layout {
         align-items: stretch;
 
         div.mat-elevation-z2 {
@@ -83,12 +82,9 @@ bia-ultima-layout {
     }
   }
 }
-// classic-page-layout-theme
-bia-classic-page-layout,
-bia-ultima-page-layout {
-  > div {
-    background-color: $biaBgColor;
-  }
+
+.bia-classic-page-margin:not(:has(.bia-split-page-layout)) {
+  background-color: $biaBgColor;
 }
 
 // search-filter
