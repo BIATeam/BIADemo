@@ -1,32 +1,13 @@
 <div class="flex flex-row gap-3 bia-table-controller-container">
   <i
-    *ngIf="crudConfiguration.showIcons.showCalcMode"
-    class="pi pi-table bia-pointer"
-    [class]="crudConfiguration.useCalcMode ? 'enable' : 'disabled'"
-    (click)="useCalcModeChanged.emit(!crudConfiguration.useCalcMode)"
-    pTooltip="{{ 'bia.useCalcMode' | translate }}"
-    tooltipPosition="top"></i>
-  <i
-    *ngIf="
-      crudConfiguration.showIcons.showPopup &&
-      !crudConfiguration.useCalcMode &&
-      !crudConfiguration.useSplit
+    class="pi bia-pointer"
+    [class]="
+      (!selectedLayout?.disabled ? 'enable' : 'disabled') +
+      ' ' +
+      selectedLayout?.icon
     "
-    class="pi pi-clone bia-pointer"
-    [class]="crudConfiguration.usePopup ? 'enable' : 'disabled'"
-    (click)="usePopupChanged.emit(!crudConfiguration.usePopup)"
-    pTooltip="{{ 'bia.usePopup' | translate }}"
-    tooltipPosition="top"></i>
-  <i
-    *ngIf="
-      crudConfiguration.showIcons.showSplit &&
-      !crudConfiguration.useCalcMode &&
-      !crudConfiguration.usePopup
-    "
-    class="pi pi-book bia-pointer"
-    [class]="crudConfiguration.useSplit ? 'enable' : 'disabled'"
-    (click)="useSplitChanged.emit(!crudConfiguration.useSplit)"
-    pTooltip="{{ 'bia.useSplit' | translate }}"
+    (click)="op.toggle($event)"
+    [pTooltip]="selectedLayout?.tooltip"
     tooltipPosition="top"></i>
   <i
     *ngIf="crudConfiguration.showIcons.showView"
@@ -66,3 +47,16 @@
     pTooltip="{{ 'bia.useResizableColumn' | translate }}"
     tooltipPosition="top"></i>
 </div>
+<p-overlayPanel #op styleClass="bia-behavior-icon-overlay">
+  <div class="bia-table-controller-container flex flex-column gap-3">
+    <div *ngFor="let item of visibleLayouts">
+      <i
+        class="pi bia-pointer"
+        [class]="(!item.disabled ? 'enable' : 'disabled') + ' ' + item.icon"
+        (click)="item.command(item)"></i>
+      <span class="icon-label" (click)="item.command(item)">{{
+        item.tooltip
+      }}</span>
+    </div>
+  </div>
+</p-overlayPanel>

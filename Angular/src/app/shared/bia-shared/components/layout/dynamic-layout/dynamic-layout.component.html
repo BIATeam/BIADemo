@@ -11,7 +11,7 @@
   <ng-template #dynamic></ng-template>
 </div>
 
-@if (isSplit) {
+@if (isSplitWithVisibilityCheck) {
   @if (outlet.isActivated) {
     <div class="handle" (mousedown)="startResize($event)"></div>
   }

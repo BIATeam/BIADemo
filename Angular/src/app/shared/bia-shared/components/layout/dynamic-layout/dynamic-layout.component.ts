@@ -78,6 +78,18 @@ export class DynamicLayoutComponent<TDto extends { id: number }> {
     );
   }
 
+  previousIsSplit = false;
+  get isSplitWithVisibilityCheck(): boolean {
+    const isSplit =
+      (this.configuration?.useSplit && this.layoutMode === undefined) ||
+      this.layoutMode === LayoutMode.SplitPage;
+    if (this.previousIsSplit !== isSplit) {
+      this.checkChildrenRules();
+    }
+    this.previousIsSplit = isSplit;
+    return isSplit;
+  }
+
   get isPopup(): boolean {
     return (
       (this.configuration?.usePopup && this.layoutMode === undefined) ||
@@ -99,6 +111,7 @@ export class DynamicLayoutComponent<TDto extends { id: number }> {
     this.$displayPageComponent = new BehaviorSubject<boolean>(true);
     this.displayPageComponent = true;
     this.configuration = snapshot.data['configuration'];
+    this.previousIsSplit = this.configuration?.useSplit ?? false;
     this.maxScanDepth = snapshot.data['maxScanDepth'] ?? this.maxScanDepth;
     this.checkChildrenRules();
     this.router.events

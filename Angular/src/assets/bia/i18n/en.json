@@ -96,6 +96,7 @@
     "true": "true",
     "useCalcMode": "Edit in table",
     "useCompactMode": "Compact display",
+    "useFullPage": "Use full page",
     "usePopup": "Use popups",
     "useResizableColumn": "Resizable column",
     "useSignalR": "Live data update",

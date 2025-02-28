@@ -133,3 +133,7 @@ i.bia-pointer:before {
     flex-wrap: wrap;
   }
 }
+
+.bia-behavior-icon-overlay {
+  transform: translateX(-0.75rem) !important;
+}

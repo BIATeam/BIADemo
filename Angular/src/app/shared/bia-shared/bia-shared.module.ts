@@ -85,6 +85,7 @@ import { MessageService } from 'primeng/api';
 import { RouterModule } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TriStateCheckboxModule } from 'primeng/tristatecheckbox';
 import { NotificationsEffects } from 'src/app/domains/bia-domains/notification/store/notifications-effects';
@@ -187,6 +188,7 @@ const PRIMENG_MODULES = [
   FileUploadModule,
   SkeletonModule,
   TriStateCheckboxModule,
+  OverlayPanelModule,
 ];
 
 const MODULES = [

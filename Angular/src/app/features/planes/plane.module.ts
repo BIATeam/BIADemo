@@ -36,7 +36,6 @@ export const ROUTES: Routes = [
       breadcrumb: null,
       permission: Permission.Plane_List_Access,
       injectComponent: PlanesIndexComponent,
-      leftWidth: 75,
       configuration: planeCRUDConfiguration,
     },
     component: DynamicLayoutComponent,
