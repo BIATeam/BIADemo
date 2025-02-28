@@ -77,6 +77,7 @@ export class BiaTableComponent<TDto extends { id: number }>
   @Input() rowHeight = 33.56;
   @Input() virtualScrollPageSize = 100;
   @Input() dictOptionDtos: DictOptionDto[] = [];
+  @Input() readOnly = false;
 
   protected isSelectFrozen = false;
   protected widthSelect: string;
@@ -421,13 +422,13 @@ export class BiaTableComponent<TDto extends { id: number }>
   }
 
   clickElementId(itemId: number) {
-    if (this.canClickRow === true) {
+    if (this.canClickRow === true && !this.readOnly) {
       this.clickRowId.emit(itemId);
     }
   }
 
   clickElementData(rowData: any) {
-    if (this.canClickRow === true) {
+    if (this.canClickRow === true && !this.readOnly) {
       this.clickRowData.emit(rowData);
       if (
         rowData &&

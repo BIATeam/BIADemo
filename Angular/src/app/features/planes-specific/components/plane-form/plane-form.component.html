@@ -51,10 +51,11 @@
           [totalRecord]="crudItem?.engines?.length ?? 0"
           [paginator]="false"
           [showColSearch]="false"
-          [canEdit]="canEditEnginesTable"
-          [canAdd]="canEditEnginesTable"
+          [canEdit]="true"
+          [canAdd]="true"
           [canSelectElement]="true"
           [loading]="false"
+          [readOnly]="isEngineTableReadOnly"
           (selectedElementsChanged)="onSelectedEnginesChanged($event)"
           (save)="onEngineSave($event)"
           (isEditing)="onIsEditingChange($event)" />
