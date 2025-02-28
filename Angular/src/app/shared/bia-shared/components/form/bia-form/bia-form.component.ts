@@ -164,6 +164,21 @@ export class BiaFormComponent<TDto extends { id: number }>
     );
   }
 
+  get showSubmitButton(): boolean {
+    return !this.disableSave && this.formReadOnlyMode !== FormReadOnlyMode.on;
+  }
+
+  get cancelButtonLabel(): string {
+    switch (this.formReadOnlyMode) {
+      case FormReadOnlyMode.off:
+        return 'bia.cancel';
+      case FormReadOnlyMode.on:
+        return 'bia.close';
+      case FormReadOnlyMode.clickToEdit:
+        return this.readOnly ? 'bia.close' : 'bia.cancel';
+    }
+  }
+
   /**
    * Find the first active form element and set the focus on it.
    */
