@@ -55,7 +55,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         {
             var sid = new SecurityIdentifier((byte[])entry.Properties["objectSid"].Value, 0).ToString();
             UserFromDirectory user;
-            if (this.ldapRepositoryHelper.IsLocalMachineDomain(domainKey))
+            string localDomain;
+            if (!this.ldapRepositoryHelper.IsLocalServerOnADomain(out localDomain))
             {
                 user = new UserFromDirectory
                 {
@@ -67,6 +68,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
             }
             else
             {
+                if (domainKey == ".")
+                {
+                    domainKey = this.ldapRepositoryHelper.ConvertToNetBiosName(localDomain);
+                }
+
                 user = new UserFromDirectory
                 {
                     FirstName = entry.Properties["GivenName"].Value?.ToString(),
