@@ -241,7 +241,8 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             {
                 if (PrepareCredential(domain))
                 {
-                    if (this.ldapRepositoryHelper.IsLocalMachineDomain(domain.LdapName))
+                    string localDomain;
+                    if (!this.ldapRepositoryHelper.IsLocalServerOnADomain(out localDomain))
                     {
                         using (DirectoryEntry localMachine = new DirectoryEntry("WinNT://" + Environment.MachineName))
                         {
@@ -257,6 +258,11 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     else
                     {
                         string ldapPath = $"LDAP://{domain.LdapName}";
+                        if (domain.LdapName == ".")
+                        {
+                            ldapPath = $"LDAP://{localDomain}";
+                        }
+
                         if (!string.IsNullOrEmpty(domain.Filter))
                         {
                             ldapPath = $"LDAP://{domain.Filter}";
@@ -364,7 +370,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         private async Task<UserPrincipal> ResolveUserPrincipal(string domain, string identityKey)
         {
             PrincipalContext contextUser;
-            if (this.ldapRepositoryHelper.IsLocalMachineDomain(domain))
+            if (this.ldapRepositoryHelper.IsLocalMachineName(domain, true))
             {
                 contextUser = new PrincipalContext(ContextType.Machine);
             }

@@ -374,9 +374,14 @@ namespace TheBIADevCompany.BIADemo.Application.User
                         !this.ldapDomains.Any(ld => ld.Name.Equals(domain))
                         &&
                         !(
-                            this.ldapRepositoryHelper.IsLocalMachineDomain(domain)
+                            this.ldapDomains.Any(ld => this.ldapRepositoryHelper.IsLocalMachineName(ld.Name, true))
                             &&
-                            this.ldapDomains.Any(ld => this.ldapRepositoryHelper.IsLocalMachineDomain(ld.Name))))
+                            this.ldapRepositoryHelper.IsLocalMachineName(domain, false))
+                        &&
+                        !(
+                            this.ldapDomains.Any(ld => this.ldapRepositoryHelper.IsServerDomain(ld.Name, true))
+                            &&
+                            this.ldapRepositoryHelper.IsServerDomain(domain, false)))
                 {
                     this.logger.LogInformation("Unauthorized because bad domain");
                     throw new UnauthorizedException();
