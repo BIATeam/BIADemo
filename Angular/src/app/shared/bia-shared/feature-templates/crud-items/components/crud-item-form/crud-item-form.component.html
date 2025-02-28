@@ -8,5 +8,6 @@
   [dictOptionDtos]="dictOptionDtos"
   [isCrudItemOutdated]="isCrudItemOutdated"
   (save)="onSave($event)"
-  (cancelled)="onCancel()">
+  (cancelled)="onCancel()"
+  (readOnlyChanged)="onFormReadOnlyChanged($event)">
 </bia-form>

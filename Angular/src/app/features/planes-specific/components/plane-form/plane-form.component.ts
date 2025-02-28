@@ -6,6 +6,7 @@ import {
   ViewChild,
   WritableSignal,
 } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CrudItemFormComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component';
 import { BiaFieldsConfig } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
@@ -39,7 +40,10 @@ export class PlaneFormComponent
   isEngineTableVisible = true;
   isEngineTableReadOnly = false;
 
-  constructor() {
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {
     super();
     this.engineColumnsToDisplay = this.engineCrudConfig.columns
       .filter(col => !col.isHideByDefault)
@@ -87,5 +91,8 @@ export class PlaneFormComponent
 
   onFormReadOnlyChanged(readOnly: boolean) {
     this.isEngineTableReadOnly = readOnly;
+    if (!readOnly) {
+      this.router.navigate(['../edit'], { relativeTo: this.activatedRoute });
+    }
   }
 }

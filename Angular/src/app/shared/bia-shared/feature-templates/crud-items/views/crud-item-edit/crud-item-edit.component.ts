@@ -14,7 +14,7 @@ import { Subscription, filter, first } from 'rxjs';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { AppState } from 'src/app/store/state';
-import { CrudConfig } from '../../model/crud-config';
+import { CrudConfig, FormReadOnlyMode } from '../../model/crud-config';
 import { CrudItemSingleService } from '../../services/crud-item-single.service';
 
 @Component({
@@ -50,6 +50,10 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
   }
 
   ngOnInit() {
+    const snapshot = this.activatedRoute.snapshot;
+    this.crudConfiguration.formEditReadOnlyMode =
+      snapshot.data['readOnlyMode'] ?? FormReadOnlyMode.off;
+
     this.sub.add(
       this.biaTranslationService.currentCulture$.subscribe(() => {
         this.crudItemService.optionsService.loadAllOptions(

@@ -32,6 +32,7 @@ export class CrudItemFormComponent<CrudItem extends BaseDto> {
 
   @Output() save = new EventEmitter<CrudItem>();
   @Output() cancelled = new EventEmitter<void>();
+  @Output() readOnlyChanged = new EventEmitter<boolean>();
 
   @ViewChild(BiaFormComponent) biaFormComponent: BiaFormComponent<CrudItem>;
 
@@ -41,5 +42,9 @@ export class CrudItemFormComponent<CrudItem extends BaseDto> {
 
   onSave(crudItem: CrudItem) {
     this.save.emit(crudItem);
+  }
+
+  onFormReadOnlyChanged(readOnly: boolean) {
+    this.readOnlyChanged.emit(readOnly);
   }
 }
