@@ -16,7 +16,8 @@ export const engineCRUDConfiguration: CrudConfig<Engine> = new CrudConfig({
   useSignalR: false,
   useView: true,
   useViewTeamWithTypeId: TeamTypeId.Site, // use to filter view by teams => should know the type of team
-  usePopup: true,
+  usePopup: false,
+  useSplit: false,
   useOfflineMode: false,
   importMode: {
     useInsert: true,

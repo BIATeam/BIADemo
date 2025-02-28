@@ -12,6 +12,7 @@ export enum FormReadOnlyMode {
 export interface ShowIconsConfig {
   showCalcMode: boolean;
   showPopup: boolean;
+  showSplit: boolean;
   showView: boolean;
   showSignalR: boolean;
   showCompactMode: boolean;
@@ -28,6 +29,7 @@ export class CrudConfig<TDto extends { id: number }> {
   tableStateKey: string;
   useViewTeamWithTypeId: TeamTypeId | null;
   usePopup: boolean;
+  useSplit: boolean;
   useOfflineMode: boolean;
   fieldsConfig: BiaFieldsConfig<TDto>;
   formLayoutConfig: BiaFormLayoutConfig<TDto> | undefined;
@@ -45,6 +47,7 @@ export class CrudConfig<TDto extends { id: number }> {
   showIcons: ShowIconsConfig = {
     showCalcMode: false,
     showPopup: false,
+    showSplit: false,
     showView: false,
     showSignalR: false,
     showCompactMode: false,
@@ -65,6 +68,7 @@ export class CrudConfig<TDto extends { id: number }> {
     tableStateKey = featureName + 'Grid',
     useViewTeamWithTypeId = null,
     usePopup = true,
+    useSplit = false,
     useOfflineMode = false,
     optionFilter = undefined,
     importMode,
@@ -84,6 +88,7 @@ export class CrudConfig<TDto extends { id: number }> {
     tableStateKey?: string;
     useViewTeamWithTypeId?: TeamTypeId | null;
     usePopup?: boolean;
+    useSplit?: boolean;
     useOfflineMode?: boolean;
     optionFilter?: any;
     importMode?: {
@@ -107,6 +112,7 @@ export class CrudConfig<TDto extends { id: number }> {
     this.tableStateKey = tableStateKey;
     this.useViewTeamWithTypeId = useViewTeamWithTypeId;
     this.usePopup = usePopup;
+    this.useSplit = useSplit;
     this.useOfflineMode = useOfflineMode;
     this.optionFilter = optionFilter;
     this.importMode = importMode;

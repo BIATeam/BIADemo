@@ -24,7 +24,8 @@ export const planeCRUDConfiguration: CrudConfig<Plane> = new CrudConfig({
   /// BIAToolKit - Begin AncestorTeam Site
   useViewTeamWithTypeId: TeamTypeId.Site, // use to filter view by teams => should know the type of team
   /// BIAToolKit - End AncestorTeam Site
-  usePopup: true,
+  usePopup: false,
+  useSplit: false,
   useOfflineMode: false,
   useCompactMode: false,
   useVirtualScroll: false,
@@ -37,12 +38,14 @@ export const planeCRUDConfiguration: CrudConfig<Plane> = new CrudConfig({
   showIcons: {
     showCalcMode: true,
     showPopup: true,
+    showSplit: true,
     showView: true,
     showSignalR: true,
     showCompactMode: true,
     showVirtualScroll: true,
     showResizableColumn: true,
   },
+
   // End BIADemo
   // IMPORTANT: this key should be unique in all the application.
   // storeKey: 'feature-' + featureName,
