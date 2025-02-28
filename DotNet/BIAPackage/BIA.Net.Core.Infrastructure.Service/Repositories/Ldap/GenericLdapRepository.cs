@@ -241,8 +241,8 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             {
                 if (PrepareCredential(domain))
                 {
-                    string localDomain;
-                    if (!this.ldapRepositoryHelper.IsLocalServerOnADomain(out localDomain))
+                    string localLdapName;
+                    if (!this.ldapRepositoryHelper.IsLocalServerOnADomain(out localLdapName))
                     {
                         using (DirectoryEntry localMachine = new DirectoryEntry("WinNT://" + Environment.MachineName))
                         {
@@ -260,7 +260,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                         string ldapPath = $"LDAP://{domain.LdapName}";
                         if (domain.LdapName == ".")
                         {
-                            ldapPath = $"LDAP://{localDomain}";
+                            ldapPath = $"LDAP://{localLdapName}";
                         }
 
                         if (!string.IsNullOrEmpty(domain.Filter))
@@ -370,14 +370,8 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         private async Task<UserPrincipal> ResolveUserPrincipal(string domain, string identityKey)
         {
             PrincipalContext contextUser;
-            if (this.ldapRepositoryHelper.IsLocalMachineName(domain, true))
-            {
-                contextUser = new PrincipalContext(ContextType.Machine);
-            }
-            else
-            {
-                contextUser = await PrepareDomainContext(domain);
-            }
+
+            contextUser = await PrepareDomainContext(domain);
 
             UserPrincipal userToAdd = null;
 
@@ -447,6 +441,10 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         {
 
             LdapDomain adDomain = ldapDomains.Where(d => d.Name == domain).FirstOrDefault();
+            if (adDomain == null && this.ldapRepositoryHelper.IsServerDomain(domain, false))
+            {
+                adDomain = ldapDomains.Where(d => d.Name == ".").FirstOrDefault();
+            }
             PrincipalContext pc = await PrepareDomainContext(adDomain);
             return pc;
         }
@@ -466,7 +464,23 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     {
                         return new PrincipalContext(ContextType.Domain, domain.LdapName, domain.LdapServiceAccount, domain.LdapServicePass);
                     }
-                    PrincipalContext pc = new PrincipalContext(ContextType.Domain, domain.LdapName);
+                    PrincipalContext pc;
+                    if (domain.LdapName == ".")
+                    {
+                        string localLdapName;
+                        if (this.ldapRepositoryHelper.IsLocalServerOnADomain(out localLdapName))
+                        {
+                            pc = new PrincipalContext(ContextType.Domain, localLdapName);
+                        }
+                        else
+                        {
+                            pc = new PrincipalContext(ContextType.Machine);
+                        }
+                    }
+                    else
+                    {
+                        pc = new PrincipalContext(ContextType.Domain, domain.LdapName);
+                    }
                     PrincipalContextCache.Add(domain, pc);
                     return pc;
                 }
