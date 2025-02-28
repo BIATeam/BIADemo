@@ -17,7 +17,7 @@
   }
   <div
     #rightContainer
-    [hidden]="!outlet.isActivated"
+    [hidden]="!hasChildren"
     class="right-container bia-classic-page-margin"
     [ngStyle]="{
       height: defaultContainerHeight,
@@ -27,7 +27,7 @@
   </div>
 } @else if (isPopup) {
   <p-dialog
-    [hidden]="!outlet.isActivated"
+    [hidden]="!hasChildren"
     [focusOnShow]="true"
     [visible]="true"
     [modal]="true"
