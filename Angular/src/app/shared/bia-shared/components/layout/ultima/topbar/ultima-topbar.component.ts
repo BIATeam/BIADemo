@@ -55,6 +55,8 @@ export class BiaUltimaTopbarComponent implements OnInit, OnDestroy {
   teamTypeSelectors: any[];
 
   @ViewChild('menuButton') menuButton: ElementRef;
+  @ViewChild('menuButtonFullscreen', { static: false })
+  menuButtonFullScreen: ElementRef;
 
   @ViewChild('mobileMenuButton') mobileMenuButton!: ElementRef;
 

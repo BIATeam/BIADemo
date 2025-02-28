@@ -18,7 +18,8 @@
   p-multiselect {
     .p-multiselect {
       min-width: 12.5em;
-      background-image: linear-gradient(to bottom, white, white),
+      background-image:
+        linear-gradient(to bottom, white, white),
         linear-gradient(to bottom, white, white);
       padding-bottom: 2px;
       .p-multiselect-label {
@@ -38,7 +39,8 @@
     }
     .p-multiselect:not(.p-disabled) {
       &:hover {
-        background-image: linear-gradient(to bottom, white, white),
+        background-image:
+          linear-gradient(to bottom, white, white),
           linear-gradient(to bottom, white, white) !important;
       }
     }
@@ -52,7 +54,8 @@
   p-dropdown {
     .p-dropdown {
       min-width: 12.5em;
-      background-image: linear-gradient(to bottom, white, white),
+      background-image:
+        linear-gradient(to bottom, white, white),
         linear-gradient(to bottom, white, white);
       padding-bottom: 2px;
       .p-dropdown-label {
@@ -72,7 +75,8 @@
     }
     .p-dropdown:not(.p-disabled) {
       &:hover {
-        background-image: linear-gradient(to bottom, white, white),
+        background-image:
+          linear-gradient(to bottom, white, white),
           linear-gradient(to bottom, white, white) !important;
       }
     }
