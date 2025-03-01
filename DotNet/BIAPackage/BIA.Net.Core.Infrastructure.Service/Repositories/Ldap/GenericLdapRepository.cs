@@ -1041,6 +1041,11 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             if (PrepareCredential(adDomain))
             {
                 string ldapPath = $"LDAP://{adDomain.LdapName}/" + sDN;
+                string localLdapName;
+                if ((adDomain.LdapName == ".") && (this.ldapRepositoryHelper.IsLocalServerOnADomain(out localLdapName)))
+                {
+                    ldapPath = $"LDAP://{localLdapName}/" + sDN;
+                }
 
                 if (!string.IsNullOrEmpty(adDomain.LdapServiceAccount))
                 {
