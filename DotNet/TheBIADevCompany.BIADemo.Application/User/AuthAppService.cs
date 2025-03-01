@@ -195,7 +195,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
             // Get Global Roles
             List<string> globalRoles = await this.GetGlobalRolesAsync(sid: sid, domain: domain, userInfo: userInfo);
-            List<int> roleIds = GetRoleIds(globalRoles);
 
             // Fill UserInfo
             userInfo = await this.CreateOrUpdateUserInDatabase(sid, identityKey, userInfo, globalRoles);
@@ -207,6 +206,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 IEnumerable<string> userAppRootRoles = await this.roleAppService.GetUserRolesAsync(userInfo.Id);
                 globalRoles.AddRange(userAppRootRoles);
             }
+
+            List<int> roleIds = GetRoleIds(globalRoles);
 
             // Get Permissions
             List<string> userPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(globalRoles, loginParam.LightToken);
