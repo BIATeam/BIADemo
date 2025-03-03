@@ -105,7 +105,7 @@ export const ROUTES: Routes = [
           {
             path: '',
             pathMatch: 'full',
-            redirectTo: 'edit',
+            redirectTo: 'read',
           },
           /// BIAToolKit - Begin Partial PlaneModuleChildPath Engine
           /// BIAToolKit - Begin Partial PlaneModuleChildPath Engine
