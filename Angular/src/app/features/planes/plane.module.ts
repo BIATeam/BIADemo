@@ -21,6 +21,7 @@ import {
 } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { CrudItemImportModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item-import.module';
 import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
+import { PlaneReadComponent } from '../planes/views/plane-read/plane-read.component';
 import { PlaneTableComponent } from './components/plane-table/plane-table.component';
 import { planeCRUDConfiguration } from './plane.constants';
 import { FeaturePlanesStore } from './store/plane.state';
@@ -88,7 +89,7 @@ export const ROUTES: Routes = [
               readOnlyMode: planeCRUDConfiguration.formEditReadOnlyMode,
               title: 'plane.read',
             },
-            component: PlaneEditComponent,
+            component: PlaneReadComponent,
             canActivate: [PermissionGuard],
           },
           {
@@ -141,6 +142,7 @@ export const ROUTES: Routes = [
     PlaneFormComponent,
     PlaneNewComponent,
     PlaneEditComponent,
+    PlaneReadComponent,
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     PlaneTableComponent,
     PlaneImportComponent,

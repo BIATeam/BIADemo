@@ -19,6 +19,7 @@ import { PlanesEffects } from './store/planes-effects';
 import { PlaneEditComponent } from './views/plane-edit/plane-edit.component';
 import { PlaneItemComponent } from './views/plane-item/plane-item.component';
 import { PlaneNewComponent } from './views/plane-new/plane-new.component';
+import { PlaneReadComponent } from './views/plane-read/plane-read.component';
 import { PlanesIndexComponent } from './views/planes-index/planes-index.component';
 
 export const ROUTES: Routes = [
@@ -63,7 +64,7 @@ export const ROUTES: Routes = [
               title: 'plane.read',
               readOnlyMode: planeCRUDConfiguration.formEditReadOnlyMode,
             },
-            component: PlaneEditComponent,
+            component: PlaneReadComponent,
             canActivate: [PermissionGuard],
           },
           {
@@ -98,6 +99,7 @@ export const ROUTES: Routes = [
     PlaneFormComponent,
     PlaneNewComponent,
     PlaneEditComponent,
+    PlaneReadComponent,
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     PlaneTableComponent,
     EngineTableComponent,
