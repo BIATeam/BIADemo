@@ -23,7 +23,6 @@ export class PlaneFormComponent extends CrudItemFormComponent<Plane> {
     if (!readOnly) {
       this.router.navigate(['../edit'], {
         relativeTo: this.activatedRoute,
-        state: { hasClickedToEdit: true },
       });
     }
   }
