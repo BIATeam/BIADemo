@@ -3,7 +3,7 @@
   [fields]="fields"
   [formValidators]="formValidators"
   [dictOptionDtos]="dictOptionDtos"
-  [disableSave]="isEditingEngines"
+  [disableSave]="isEditingEngines || !showSubmitButton"
   [formReadOnlyMode]="formReadOnlyMode"
   (save)="onSave($event)"
   (cancelled)="onCancel()"

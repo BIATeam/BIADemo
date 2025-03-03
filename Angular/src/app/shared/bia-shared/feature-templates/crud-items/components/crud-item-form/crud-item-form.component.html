@@ -7,6 +7,7 @@
   [formReadOnlyMode]="formReadOnlyMode"
   [dictOptionDtos]="dictOptionDtos"
   [isCrudItemOutdated]="isCrudItemOutdated"
+  [disableSave]="!showSubmitButton"
   (save)="onSave($event)"
   (cancelled)="onCancel()"
   (readOnlyChanged)="onReadOnlyChanged($event)">

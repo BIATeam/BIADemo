@@ -6,6 +6,7 @@
   [formReadOnlyMode]="formReadOnlyMode"
   [dictOptionDtos]="(planeService.optionsService.dictOptionDtos$ | async) ?? []"
   [isCrudItemOutdated]="isCrudItemOutdated"
+  [showSubmitButton]="canEdit"
   (cancelled)="onCancelled()"
   (save)="onSubmitted($event)"></app-plane-form>
 <bia-spinner

@@ -29,6 +29,7 @@ export class CrudItemFormComponent<CrudItem extends BaseDto> {
   @Input() dictOptionDtos: DictOptionDto[];
   @Input() isAdd?: boolean;
   @Input() isCrudItemOutdated = false;
+  @Input() showSubmitButton = true;
 
   @Output() save = new EventEmitter<CrudItem>();
   @Output() cancelled = new EventEmitter<void>();
