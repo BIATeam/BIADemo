@@ -124,7 +124,7 @@ export class BiaFormComponent<TDto extends { id: number }>
     });
   }
 
-  get submitInputLabel(): string {
+  get submitButtonLabel(): string {
     if (this.isAdd) {
       return 'bia.add';
     }
@@ -137,7 +137,7 @@ export class BiaFormComponent<TDto extends { id: number }>
     }
   }
 
-  get submitInputIcon(): string {
+  get submitButtonIcon(): string {
     if (this.isAdd) {
       return 'pi-plus';
     }
@@ -150,7 +150,7 @@ export class BiaFormComponent<TDto extends { id: number }>
     }
   }
 
-  get submitInputDisable(): boolean {
+  get submitButtonDisable(): boolean {
     const readOnlyModeOn = this.formReadOnlyMode === FormReadOnlyMode.on;
     const clickToEdit =
       this.formReadOnlyMode === FormReadOnlyMode.clickToEdit && this.readOnly;

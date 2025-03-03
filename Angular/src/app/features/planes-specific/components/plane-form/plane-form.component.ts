@@ -37,7 +37,6 @@ export class PlaneFormComponent
   selectedEngines: Engine[] = [];
   displayedEngines: WritableSignal<Engine[]> = signal([]);
   isEditingEngines = false;
-  isEngineTableVisible = true;
   isEngineTableReadOnly = false;
 
   constructor(
