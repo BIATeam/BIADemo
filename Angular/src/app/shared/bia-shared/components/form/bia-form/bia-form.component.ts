@@ -29,6 +29,7 @@ import {
   BiaFieldConfig,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
+import { FormReadOnlyMode } from '../../../feature-templates/crud-items/model/crud-config';
 import { BaseDto } from '../../../model/base-dto';
 import {
   BiaFormLayoutConfig,
@@ -50,30 +51,44 @@ export class BiaFormComponent<TDto extends { id: number }>
   @Input() fields: BiaFieldConfig<TDto>[];
   @Input() formLayoutConfig?: BiaFormLayoutConfig<TDto>;
   @Input() formValidators?: ValidatorFn[];
+  @Input() formReadOnlyMode: FormReadOnlyMode;
   @Input() dictOptionDtos: DictOptionDto[];
   @Input() isAdd?: boolean;
   @Input() isCrudItemOutdated = false;
-  @Input() disableSave = false;
+  @Input() disableSubmitButton = false;
+  @Input() showSubmitButton = true;
   @Output() save = new EventEmitter<any>();
   @Output() cancelled = new EventEmitter<void>();
+  @Output() readOnlyChanged = new EventEmitter<boolean>();
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   specificInputTemplate: TemplateRef<any>;
   specificOutputTemplate: TemplateRef<any>;
 
   form?: UntypedFormGroup;
+  private _readOnly = false;
   protected sub = new Subscription();
   fieldsWithoutLayoutConfig: BiaFieldConfig<TDto>[] = [];
 
   @ViewChildren('refFormField', { read: ElementRef })
   formElements: QueryList<ElementRef>;
 
-  constructor(
-    public formBuilder: UntypedFormBuilder
-    // protected authService: AuthService
-  ) {}
+  constructor(public formBuilder: UntypedFormBuilder) {}
+
+  get readOnly(): boolean {
+    return this._readOnly;
+  }
+
+  set readOnly(value: boolean) {
+    this._readOnly = value;
+    this.readOnlyChanged.emit(value);
+  }
 
   ngOnInit() {
+    if (this.formReadOnlyMode !== FormReadOnlyMode.off) {
+      this.readOnly = true;
+    }
+
     this.initForm();
   }
 
@@ -110,6 +125,65 @@ export class BiaFormComponent<TDto extends { id: number }>
     });
   }
 
+  get submitButtonLabel(): string {
+    if (this.isAdd === true) {
+      return 'bia.add';
+    }
+    switch (this.formReadOnlyMode) {
+      case FormReadOnlyMode.off:
+      case FormReadOnlyMode.on:
+        return 'bia.save';
+      case FormReadOnlyMode.clickToEdit:
+        return this.readOnly === true ? 'bia.edit' : 'bia.save';
+    }
+  }
+
+  get submitButtonIcon(): string {
+    if (this.isAdd === true) {
+      return 'pi-plus';
+    }
+    switch (this.formReadOnlyMode) {
+      case FormReadOnlyMode.off:
+      case FormReadOnlyMode.on:
+        return 'pi-check';
+      case FormReadOnlyMode.clickToEdit:
+        return this.readOnly === true ? 'pi-pencil' : 'pi-check';
+    }
+  }
+
+  get isSubmitButtonDisabled(): boolean {
+    const readOnlyModeOn = this.formReadOnlyMode === FormReadOnlyMode.on;
+    const clickToEdit =
+      this.formReadOnlyMode === FormReadOnlyMode.clickToEdit &&
+      this.readOnly === true;
+    const invalidForm = clickToEdit === false && this.form?.valid === false;
+
+    return (
+      this.disableSubmitButton ||
+      readOnlyModeOn ||
+      invalidForm ||
+      this.isCrudItemOutdated
+    );
+  }
+
+  get isSubmitButtonVisible(): boolean {
+    return (
+      this.showSubmitButton === true &&
+      this.formReadOnlyMode !== FormReadOnlyMode.on
+    );
+  }
+
+  get cancelButtonLabel(): string {
+    switch (this.formReadOnlyMode) {
+      case FormReadOnlyMode.off:
+        return 'bia.cancel';
+      case FormReadOnlyMode.on:
+        return 'bia.close';
+      case FormReadOnlyMode.clickToEdit:
+        return this.readOnly === true ? 'bia.close' : 'bia.cancel';
+    }
+  }
+
   /**
    * Find the first active form element and set the focus on it.
    */
@@ -117,7 +191,7 @@ export class BiaFormComponent<TDto extends { id: number }>
     const formElement = 'input, textarea, select';
     const firstActiveField = this.formElements.find(field => {
       const element = field.nativeElement.querySelector(formElement);
-      return element && !element.disabled;
+      return this.readOnly ? element : element && !element.disabled;
     });
     if (firstActiveField) {
       const element = firstActiveField.nativeElement.querySelector(formElement);
@@ -158,6 +232,10 @@ export class BiaFormComponent<TDto extends { id: number }>
     this.form = this.formBuilder.group(this.formFields());
     if (this.formValidators) {
       this.form.addValidators(this.formValidators);
+    }
+
+    if (this.readOnly) {
+      this.form.disable();
     }
   }
 
@@ -252,6 +330,14 @@ export class BiaFormComponent<TDto extends { id: number }>
   }
 
   onSubmit() {
+    if (
+      this.formReadOnlyMode === FormReadOnlyMode.clickToEdit &&
+      this.readOnly === true
+    ) {
+      this.readOnly = false;
+      return;
+    }
+
     if (this.form?.valid) {
       const element: any = this.getElement();
       this.save.emit(element);

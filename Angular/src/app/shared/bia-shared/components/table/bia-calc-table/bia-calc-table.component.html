@@ -35,7 +35,7 @@
       <tr>
         <th
           class="bia-table-select-col"
-          *ngIf="canSelectElement === true"
+          *ngIf="canSelectElement === true && !readOnly"
           [style.width]="widthSelect"
           [alignFrozen]="alignFrozenSelect"
           pFrozenColumn
@@ -98,7 +98,7 @@
       </tr>
       <tr *ngIf="showColSearch === true" class="searchTR">
         <th
-          *ngIf="canSelectElement === true"
+          *ngIf="canSelectElement === true && !readOnly"
           [style.width]="widthSelect"
           [alignFrozen]="alignFrozenSelect"
           pFrozenColumn
@@ -137,7 +137,7 @@
         (keyup.escape)="escape()">
         <!-- FIRST COLUMN WITH CHECKBOX OR RADIOBUTTON -->
         <td
-          *ngIf="canSelectElement === true"
+          *ngIf="canSelectElement === true && !readOnly"
           [style.width]="widthSelect"
           [alignFrozen]="alignFrozenSelect"
           pFrozenColumn
@@ -238,7 +238,7 @@
         [style]="'height: ' + rowHeight + 'px'"
         [ngClass]="{ 'p-even-row': ri % 2 !== 0 }">
         <td
-          *ngIf="canSelectElement === true"
+          *ngIf="canSelectElement === true && !readOnly"
           [style.width]="widthSelect"
           [alignFrozen]="alignFrozenSelect"
           pFrozenColumn
@@ -258,14 +258,14 @@
     </ng-template>
     <ng-template pTemplate="footer" let-columns>
       <tr
-        *ngIf="canAdd === true"
+        *ngIf="canAdd === true && !readOnly"
         class="bia-selectable-row"
         (focusout)="onFocusout()"
         (keyup.enter)="initEditableRow(null)"
         (keyup.escape)="escape()">
         <td
           (click)="initEditableRow(footerRowData)"
-          *ngIf="canSelectElement === true"
+          *ngIf="canSelectElement === true && !readOnly"
           [style.width]="widthSelect"
           [alignFrozen]="alignFrozenSelect"
           pFrozenColumn

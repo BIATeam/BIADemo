@@ -33,7 +33,7 @@
     <tr>
       <th
         class="bia-table-select-col"
-        *ngIf="canSelectElement === true"
+        *ngIf="canSelectElement === true && !readOnly"
         [style.width]="widthSelect"
         [alignFrozen]="alignFrozenSelect"
         pFrozenColumn
@@ -96,7 +96,7 @@
     </tr>
     <tr *ngIf="showColSearch === true" class="searchTR">
       <th
-        *ngIf="canSelectElement === true"
+        *ngIf="canSelectElement === true && !readOnly"
         [style.width]="widthSelect"
         [alignFrozen]="alignFrozenSelect"
         pFrozenColumn
@@ -126,7 +126,7 @@
     let-ri="rowIndex">
     <tr [pSelectableRow]="rowData" [ngClass]="{ 'p-even-row': ri % 2 === 0 }">
       <td
-        *ngIf="canSelectElement === true"
+        *ngIf="canSelectElement === true && !readOnly"
         [style.width]="widthSelect"
         [alignFrozen]="alignFrozenSelect"
         pFrozenColumn
@@ -172,7 +172,7 @@
       [style]="'height: ' + rowHeight + 'px'"
       [ngClass]="{ 'p-even-row': ri % 2 !== 0 }">
       <td
-        *ngIf="canSelectElement === true"
+        *ngIf="canSelectElement === true && !readOnly"
         [style.width]="widthSelect"
         [alignFrozen]="alignFrozenSelect"
         pFrozenColumn

@@ -113,6 +113,10 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
   }
 
   public initEditableRowAndFocus(rowData: any, event: MouseEvent) {
+    if (this.readOnly) {
+      return;
+    }
+
     if (this.canSelectElement && !this.canSelectMultipleElement) {
       this.selectedElements = rowData;
       this.onSelectionChange();

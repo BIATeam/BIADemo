@@ -3,9 +3,12 @@
   [fields]="fields"
   [formValidators]="formValidators"
   [dictOptionDtos]="dictOptionDtos"
-  [disableSave]="isEditingEngines"
+  [disableSubmitButton]="isEditingEngines"
+  [showSubmitButton]="showSubmitButton"
+  [formReadOnlyMode]="formReadOnlyMode"
   (save)="onSave($event)"
-  (cancelled)="onCancel()">
+  (cancelled)="onCancel()"
+  (readOnlyChanged)="onReadOnlyChanged($event)">
   <ng-template pTemplate="specificInput" let-field="field" let-form="form">
     <div [formGroup]="form">
       <ng-container [ngSwitch]="field.field">
@@ -53,6 +56,7 @@
           [canAdd]="true"
           [canSelectElement]="true"
           [loading]="false"
+          [readOnly]="isEngineTableReadOnly"
           (selectedElementsChanged)="onSelectedEnginesChanged($event)"
           (save)="onEngineSave($event)"
           (isEditing)="onIsEditingChange($event)" />

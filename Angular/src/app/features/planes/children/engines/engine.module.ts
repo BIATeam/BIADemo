@@ -53,7 +53,7 @@ export const ROUTES: Routes = [
         data: {
           breadcrumb: 'engine.import',
           canNavigate: false,
-          layoutMode: LayoutMode.Popup,
+          layoutMode: LayoutMode.popup,
           style: {
             minWidth: '80vw',
             maxWidth: '80vw',

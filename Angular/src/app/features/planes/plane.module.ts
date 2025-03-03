@@ -21,6 +21,7 @@ import {
 } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { CrudItemImportModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item-import.module';
 import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
+import { PlaneReadComponent } from '../planes/views/plane-read/plane-read.component';
 import { PlaneTableComponent } from './components/plane-table/plane-table.component';
 import { planeCRUDConfiguration } from './plane.constants';
 import { FeaturePlanesStore } from './store/plane.state';
@@ -58,7 +59,7 @@ export const ROUTES: Routes = [
         data: {
           breadcrumb: 'plane.import',
           canNavigate: false,
-          layoutMode: LayoutMode.Popup,
+          layoutMode: LayoutMode.popup,
           style: {
             minWidth: '80vw',
             maxWidth: '80vw',
@@ -80,6 +81,18 @@ export const ROUTES: Routes = [
         canActivate: [PermissionGuard],
         children: [
           {
+            path: 'read',
+            data: {
+              breadcrumb: 'bia.read',
+              canNavigate: true,
+              permission: Permission.Plane_Read,
+              readOnlyMode: planeCRUDConfiguration.formEditReadOnlyMode,
+              title: 'plane.read',
+            },
+            component: PlaneReadComponent,
+            canActivate: [PermissionGuard],
+          },
+          {
             path: 'edit',
             data: {
               breadcrumb: 'bia.edit',
@@ -93,7 +106,7 @@ export const ROUTES: Routes = [
           {
             path: '',
             pathMatch: 'full',
-            redirectTo: 'edit',
+            redirectTo: 'read',
           },
           /// BIAToolKit - Begin Partial PlaneModuleChildPath Engine
           /// BIAToolKit - Begin Partial PlaneModuleChildPath Engine
@@ -103,7 +116,7 @@ export const ROUTES: Routes = [
               breadcrumb: 'app.engines',
               canNavigate: true,
               permission: Permission.Engine_List_Access,
-              layoutMode: LayoutMode.FullPage,
+              layoutMode: LayoutMode.fullPage,
             },
             loadChildren: () =>
               import('./children/engines/engine.module').then(
@@ -129,6 +142,7 @@ export const ROUTES: Routes = [
     PlaneFormComponent,
     PlaneNewComponent,
     PlaneEditComponent,
+    PlaneReadComponent,
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     PlaneTableComponent,
     PlaneImportComponent,

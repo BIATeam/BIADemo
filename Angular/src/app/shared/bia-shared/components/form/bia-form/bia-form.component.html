@@ -94,18 +94,17 @@
       <button
         pButton
         icon="pi pi-times"
-        label="{{ 'bia.cancel' | translate }}"
+        label="{{ cancelButtonLabel | translate }}"
         type="button"
         class="p-button-outlined"
         (click)="onCancel()"></button>
       <button
+        *ngIf="isSubmitButtonVisible"
         pButton
-        icon="pi {{ isAdd === true ? 'pi-plus' : 'pi-check' }}"
-        label="{{
-          isAdd === true ? ('bia.add' | translate) : ('bia.save' | translate)
-        }}"
+        icon="pi {{ submitButtonIcon }}"
+        label="{{ submitButtonLabel | translate }}"
         type="submit"
-        [disabled]="disableSave || !form.valid || isCrudItemOutdated"></button>
+        [disabled]="isSubmitButtonDisabled"></button>
     </div>
   </div>
 
@@ -121,7 +120,8 @@
           <bia-input
             [field]="field"
             [form]="form"
-            [dictOptionDtos]="dictOptionDtos">
+            [dictOptionDtos]="dictOptionDtos"
+            [readOnly]="readOnly">
             <ng-template pTemplate="specificInput">
               <ng-container
                 *ngTemplateOutlet="

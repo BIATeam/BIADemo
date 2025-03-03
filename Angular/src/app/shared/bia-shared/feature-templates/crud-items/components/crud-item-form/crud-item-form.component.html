@@ -4,8 +4,11 @@
   [fields]="fields"
   [formLayoutConfig]="formLayoutConfig"
   [formValidators]="formValidators"
+  [formReadOnlyMode]="formReadOnlyMode"
   [dictOptionDtos]="dictOptionDtos"
   [isCrudItemOutdated]="isCrudItemOutdated"
+  [showSubmitButton]="showSubmitButton"
   (save)="onSave($event)"
-  (cancelled)="onCancel()">
+  (cancelled)="onCancel()"
+  (readOnlyChanged)="onReadOnlyChanged($event)">
 </bia-form>

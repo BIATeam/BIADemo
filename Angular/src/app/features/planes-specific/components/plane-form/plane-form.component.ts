@@ -6,6 +6,7 @@ import {
   ViewChild,
   WritableSignal,
 } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CrudItemFormComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component';
 import { BiaFieldsConfig } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
@@ -36,9 +37,13 @@ export class PlaneFormComponent
   selectedEngines: Engine[] = [];
   displayedEngines: WritableSignal<Engine[]> = signal([]);
   isEditingEngines = false;
+  isEngineTableReadOnly = false;
 
-  constructor() {
-    super();
+  constructor(
+    protected router: Router,
+    protected activatedRoute: ActivatedRoute
+  ) {
+    super(router, activatedRoute);
     this.engineColumnsToDisplay = this.engineCrudConfig.columns
       .filter(col => !col.isHideByDefault)
       .map(col => <KeyValuePair>{ key: col.field, value: col.header });
@@ -81,5 +86,10 @@ export class PlaneFormComponent
   onDeleteEngines() {
     this.selectedEngines.forEach(e => (e.dtoState = DtoState.Deleted));
     this.setDisplayedEngines();
+  }
+
+  onReadOnlyChanged(readOnly: boolean): void {
+    super.onReadOnlyChanged(readOnly);
+    this.isEngineTableReadOnly = readOnly;
   }
 }

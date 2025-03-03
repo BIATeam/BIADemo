@@ -30,6 +30,7 @@ export class BiaInputComponent<CrudItem>
   implements OnInit, OnDestroy, AfterContentInit
 {
   @Input() field: BiaFieldConfig<CrudItem>;
+  @Input() readOnly: boolean;
   @Input() form: UntypedFormGroup;
   @Input() dictOptionDtos: DictOptionDto[];
 

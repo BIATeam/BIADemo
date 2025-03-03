@@ -34,7 +34,7 @@ import { TableHelperService } from 'src/app/shared/bia-shared/services/table-hel
 import { DEFAULT_PAGE_SIZE, TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
 import { CrudItemTableComponent } from '../../components/crud-item-table/crud-item-table.component';
-import { CrudConfig } from '../../model/crud-config';
+import { CrudConfig, FormReadOnlyMode } from '../../model/crud-config';
 import { CrudItemService } from '../../services/crud-item.service';
 
 @Component({
@@ -380,7 +380,11 @@ export class CrudItemsIndexComponent<
 
   onEdit(crudItemId: any) {
     if (!this.crudConfiguration.useCalcMode) {
-      this.router.navigate([crudItemId, 'edit'], {
+      const target =
+        this.crudConfiguration.formEditReadOnlyMode !== FormReadOnlyMode.off
+          ? 'read'
+          : 'edit';
+      this.router.navigate([crudItemId, target], {
         relativeTo: this.activatedRoute,
       });
     }
