@@ -84,7 +84,7 @@ export const ROUTES: Routes = [
             data: {
               breadcrumb: 'bia.read',
               canNavigate: true,
-              permission: Permission.Plane_Update,
+              permission: Permission.Plane_Read,
               readOnlyMode: planeCRUDConfiguration.formEditReadOnlyMode,
               title: 'plane.read',
             },
