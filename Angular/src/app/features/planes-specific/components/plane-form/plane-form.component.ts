@@ -93,7 +93,7 @@ export class PlaneFormComponent
     if (!readOnly) {
       this.router.navigate(['../edit'], {
         relativeTo: this.activatedRoute,
-        state: { hasClickToEdit: true },
+        state: { hasClickedToEdit: true },
       });
     }
   }

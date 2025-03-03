@@ -60,10 +60,10 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
         FormReadOnlyMode.clickToEdit &&
       this.formReadOnlyMode === FormReadOnlyMode.off
     ) {
-      const hasClickToEdit = history.state.hasClickToEdit as
+      const hasClickedToEdit = history.state.hasClickedToEdit as
         | boolean
         | undefined;
-      if (hasClickToEdit !== true) {
+      if (hasClickedToEdit !== true) {
         this.router.navigate(['../read'], {
           relativeTo: this.activatedRoute,
         });
