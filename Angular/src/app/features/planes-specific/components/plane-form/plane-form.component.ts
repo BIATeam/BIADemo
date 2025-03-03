@@ -91,7 +91,10 @@ export class PlaneFormComponent
   onFormReadOnlyChanged(readOnly: boolean) {
     this.isEngineTableReadOnly = readOnly;
     if (!readOnly) {
-      this.router.navigate(['../edit'], { relativeTo: this.activatedRoute });
+      this.router.navigate(['../edit'], {
+        relativeTo: this.activatedRoute,
+        state: { hasClickToEdit: true },
+      });
     }
   }
 }

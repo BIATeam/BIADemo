@@ -55,6 +55,22 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
     this.formReadOnlyMode =
       snapshot.data['readOnlyMode'] ?? FormReadOnlyMode.off;
 
+    if (
+      this.crudConfiguration.formEditReadOnlyMode ===
+        FormReadOnlyMode.clickToEdit &&
+      this.formReadOnlyMode === FormReadOnlyMode.off
+    ) {
+      const hasClickToEdit = history.state.hasClickToEdit as
+        | boolean
+        | undefined;
+      if (hasClickToEdit !== true) {
+        this.router.navigate(['../read'], {
+          relativeTo: this.activatedRoute,
+        });
+        return;
+      }
+    }
+
     this.sub.add(
       this.biaTranslationService.currentCulture$.subscribe(() => {
         this.crudItemService.optionsService.loadAllOptions(
