@@ -40,10 +40,10 @@ export class PlaneFormComponent
   isEngineTableReadOnly = false;
 
   constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute
+    protected router: Router,
+    protected activatedRoute: ActivatedRoute
   ) {
-    super();
+    super(router, activatedRoute);
     this.engineColumnsToDisplay = this.engineCrudConfig.columns
       .filter(col => !col.isHideByDefault)
       .map(col => <KeyValuePair>{ key: col.field, value: col.header });
@@ -88,12 +88,8 @@ export class PlaneFormComponent
     this.setDisplayedEngines();
   }
 
-  onFormReadOnlyChanged(readOnly: boolean) {
+  onReadOnlyChanged(readOnly: boolean): void {
+    super.onReadOnlyChanged(readOnly);
     this.isEngineTableReadOnly = readOnly;
-    if (!readOnly) {
-      this.router.navigate(['../edit'], {
-        relativeTo: this.activatedRoute,
-      });
-    }
   }
 }

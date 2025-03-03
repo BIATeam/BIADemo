@@ -8,7 +8,7 @@
   [formReadOnlyMode]="formReadOnlyMode"
   (save)="onSave($event)"
   (cancelled)="onCancel()"
-  (readOnlyChanged)="onFormReadOnlyChanged($event)">
+  (readOnlyChanged)="onReadOnlyChanged($event)">
   <ng-template pTemplate="specificInput" let-field="field" let-form="form">
     <div [formGroup]="form">
       <ng-container [ngSwitch]="field.field">

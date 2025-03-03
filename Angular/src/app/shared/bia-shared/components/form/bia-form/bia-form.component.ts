@@ -126,7 +126,7 @@ export class BiaFormComponent<TDto extends { id: number }>
   }
 
   get submitButtonLabel(): string {
-    if (this.isAdd) {
+    if (this.isAdd === true) {
       return 'bia.add';
     }
     switch (this.formReadOnlyMode) {
@@ -134,12 +134,12 @@ export class BiaFormComponent<TDto extends { id: number }>
       case FormReadOnlyMode.on:
         return 'bia.save';
       case FormReadOnlyMode.clickToEdit:
-        return this.readOnly ? 'bia.edit' : 'bia.save';
+        return this.readOnly === true ? 'bia.edit' : 'bia.save';
     }
   }
 
   get submitButtonIcon(): string {
-    if (this.isAdd) {
+    if (this.isAdd === true) {
       return 'pi-plus';
     }
     switch (this.formReadOnlyMode) {
@@ -147,15 +147,16 @@ export class BiaFormComponent<TDto extends { id: number }>
       case FormReadOnlyMode.on:
         return 'pi-check';
       case FormReadOnlyMode.clickToEdit:
-        return this.readOnly ? 'pi-pencil' : 'pi-check';
+        return this.readOnly === true ? 'pi-pencil' : 'pi-check';
     }
   }
 
   get isSubmitButtonDisabled(): boolean {
     const readOnlyModeOn = this.formReadOnlyMode === FormReadOnlyMode.on;
     const clickToEdit =
-      this.formReadOnlyMode === FormReadOnlyMode.clickToEdit && this.readOnly;
-    const invalidForm = !clickToEdit && this.form && !this.form.valid;
+      this.formReadOnlyMode === FormReadOnlyMode.clickToEdit &&
+      this.readOnly === true;
+    const invalidForm = clickToEdit === false && this.form?.valid === false;
 
     return (
       this.disableSubmitButton ||
@@ -167,7 +168,8 @@ export class BiaFormComponent<TDto extends { id: number }>
 
   get isSubmitButtonVisible(): boolean {
     return (
-      this.showSubmitButton && this.formReadOnlyMode !== FormReadOnlyMode.on
+      this.showSubmitButton === true &&
+      this.formReadOnlyMode !== FormReadOnlyMode.on
     );
   }
 
@@ -178,7 +180,7 @@ export class BiaFormComponent<TDto extends { id: number }>
       case FormReadOnlyMode.on:
         return 'bia.close';
       case FormReadOnlyMode.clickToEdit:
-        return this.readOnly ? 'bia.close' : 'bia.cancel';
+        return this.readOnly === true ? 'bia.close' : 'bia.cancel';
     }
   }
 
@@ -330,11 +332,9 @@ export class BiaFormComponent<TDto extends { id: number }>
   onSubmit() {
     if (
       this.formReadOnlyMode === FormReadOnlyMode.clickToEdit &&
-      this.readOnly
+      this.readOnly === true
     ) {
       this.readOnly = false;
-      this.form?.enable();
-      this.setFocus();
       return;
     }
 

@@ -13,17 +13,9 @@ import { Plane } from '../../model/plane';
 })
 export class PlaneFormComponent extends CrudItemFormComponent<Plane> {
   constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute
+    protected router: Router,
+    protected activatedRoute: ActivatedRoute
   ) {
-    super();
-  }
-
-  onFormReadOnlyChanged(readOnly: boolean) {
-    if (!readOnly) {
-      this.router.navigate(['../edit'], {
-        relativeTo: this.activatedRoute,
-      });
-    }
+    super(router, activatedRoute);
   }
 }

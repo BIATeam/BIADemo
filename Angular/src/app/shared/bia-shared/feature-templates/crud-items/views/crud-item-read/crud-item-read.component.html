@@ -4,6 +4,7 @@
   [fields]="crudConfiguration.fieldsConfig.columns"
   [formLayoutConfig]="crudConfiguration.formLayoutConfig"
   [formReadOnlyMode]="formReadOnlyMode"
+  [showSubmitButton]="canEdit"
   [dictOptionDtos]="
     (crudItemService.optionsService.dictOptionDtos$ | async) ?? []
   "
