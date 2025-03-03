@@ -28,6 +28,7 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
   @Output() displayChange = new EventEmitter<boolean>();
   protected sub = new Subscription();
   public crudConfiguration: CrudConfig<CrudItem>;
+  public formReadOnlyMode: FormReadOnlyMode;
 
   protected store: Store<AppState>;
   protected router: Router;
@@ -51,7 +52,7 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
 
   ngOnInit() {
     const snapshot = this.activatedRoute.snapshot;
-    this.crudConfiguration.formEditReadOnlyMode =
+    this.formReadOnlyMode =
       snapshot.data['readOnlyMode'] ?? FormReadOnlyMode.off;
 
     this.sub.add(

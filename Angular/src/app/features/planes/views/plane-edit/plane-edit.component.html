@@ -3,7 +3,7 @@
   [crudItem]="crudItem"
   [fields]="crudConfiguration.fieldsConfig.columns"
   [formLayoutConfig]="crudConfiguration.formLayoutConfig"
-  [formReadOnlyMode]="crudConfiguration.formEditReadOnlyMode"
+  [formReadOnlyMode]="formReadOnlyMode"
   [dictOptionDtos]="(planeService.optionsService.dictOptionDtos$ | async) ?? []"
   [isCrudItemOutdated]="isCrudItemOutdated"
   (cancelled)="onCancelled()"

@@ -8,7 +8,6 @@ import { AirportOptionModule } from 'src/app/domains/airport-option/airport-opti
 import { PlaneTypeOptionModule } from 'src/app/domains/plane-type-option/plane-type-option.module';
 import { DynamicLayoutComponent } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
-import { FormReadOnlyMode } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
 import { Permission } from 'src/app/shared/permission';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { EngineTableComponent } from './children/engines/components/engine-table/engine-table.component';
@@ -62,7 +61,7 @@ export const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.Plane_Read,
               title: 'plane.read',
-              readOnlyMode: FormReadOnlyMode.clickToEdit,
+              readOnlyMode: planeCRUDConfiguration.formEditReadOnlyMode,
             },
             component: PlaneEditComponent,
             canActivate: [PermissionGuard],

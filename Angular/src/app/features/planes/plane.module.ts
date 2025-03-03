@@ -21,7 +21,6 @@ import {
 } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { CrudItemImportModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item-import.module';
 import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
-import { FormReadOnlyMode } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
 import { PlaneTableComponent } from './components/plane-table/plane-table.component';
 import { planeCRUDConfiguration } from './plane.constants';
 import { FeaturePlanesStore } from './store/plane.state';
@@ -86,7 +85,7 @@ export const ROUTES: Routes = [
               breadcrumb: 'bia.read',
               canNavigate: true,
               permission: Permission.Plane_Update,
-              readOnlyMode: FormReadOnlyMode.clickToEdit,
+              readOnlyMode: planeCRUDConfiguration.formEditReadOnlyMode,
               title: 'plane.read',
             },
             component: PlaneEditComponent,
