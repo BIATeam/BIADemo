@@ -44,7 +44,7 @@ export class CrudItemFormComponent<CrudItem extends BaseDto> {
     this.save.emit(crudItem);
   }
 
-  onFormReadOnlyChanged(readOnly: boolean) {
+  onReadOnlyChanged(readOnly: boolean) {
     this.readOnlyChanged.emit(readOnly);
   }
 }
