@@ -99,12 +99,12 @@
         class="p-button-outlined"
         (click)="onCancel()"></button>
       <button
-        *ngIf="showSubmitButton"
+        *ngIf="isSubmitButtonVisible"
         pButton
         icon="pi {{ submitButtonIcon }}"
         label="{{ submitButtonLabel | translate }}"
         type="submit"
-        [disabled]="submitButtonDisable"></button>
+        [disabled]="isSubmitButtonDisabled"></button>
     </div>
   </div>
 

@@ -55,7 +55,8 @@ export class BiaFormComponent<TDto extends { id: number }>
   @Input() dictOptionDtos: DictOptionDto[];
   @Input() isAdd?: boolean;
   @Input() isCrudItemOutdated = false;
-  @Input() disableSave = false;
+  @Input() disableSubmitButton = false;
+  @Input() showSubmitButton = true;
   @Output() save = new EventEmitter<any>();
   @Output() cancelled = new EventEmitter<void>();
   @Output() readOnlyChanged = new EventEmitter<boolean>();
@@ -150,22 +151,24 @@ export class BiaFormComponent<TDto extends { id: number }>
     }
   }
 
-  get submitButtonDisable(): boolean {
+  get isSubmitButtonDisabled(): boolean {
     const readOnlyModeOn = this.formReadOnlyMode === FormReadOnlyMode.on;
     const clickToEdit =
       this.formReadOnlyMode === FormReadOnlyMode.clickToEdit && this.readOnly;
     const invalidForm = !clickToEdit && this.form && !this.form.valid;
 
     return (
-      this.disableSave ||
+      this.disableSubmitButton ||
       readOnlyModeOn ||
       invalidForm ||
       this.isCrudItemOutdated
     );
   }
 
-  get showSubmitButton(): boolean {
-    return !this.disableSave && this.formReadOnlyMode !== FormReadOnlyMode.on;
+  get isSubmitButtonVisible(): boolean {
+    return (
+      this.showSubmitButton && this.formReadOnlyMode !== FormReadOnlyMode.on
+    );
   }
 
   get cancelButtonLabel(): string {
