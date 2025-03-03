@@ -1,9 +1,12 @@
 import {
+  AfterViewInit,
   Component,
   ComponentRef,
   ElementRef,
   HostBinding,
   HostListener,
+  OnDestroy,
+  OnInit,
   Renderer2,
   ViewChild,
   ViewContainerRef,
@@ -21,9 +24,9 @@ import { LayoutHelperService } from '../../../services/layout-helper.service';
 import { BiaLayoutService } from '../services/layout.service';
 
 export enum LayoutMode {
-  Popup,
-  FullPage,
-  SplitPage,
+  popup,
+  fullPage,
+  splitPage,
 }
 
 @Component({
@@ -31,7 +34,9 @@ export enum LayoutMode {
   templateUrl: './dynamic-layout.component.html',
   styleUrls: ['./dynamic-layout.component.scss'],
 })
-export class DynamicLayoutComponent<TDto extends { id: number }> {
+export class DynamicLayoutComponent<TDto extends { id: number }>
+  implements OnInit, AfterViewInit, OnDestroy
+{
   @ViewChild('dynamic', {
     read: ViewContainerRef,
   })
@@ -44,7 +49,6 @@ export class DynamicLayoutComponent<TDto extends { id: number }> {
   layoutMode?: LayoutMode;
   forceSplitPage = false;
   forcePopup = false;
-  LayoutMode = LayoutMode;
   pageTitle: string;
   $displayPageComponent: BehaviorSubject<boolean>;
   displayPageComponent: boolean;
@@ -74,7 +78,7 @@ export class DynamicLayoutComponent<TDto extends { id: number }> {
   @HostBinding('class.bia-split-page-layout') get isSplit(): boolean {
     return (
       (this.configuration?.useSplit && this.layoutMode === undefined) ||
-      this.layoutMode === LayoutMode.SplitPage
+      this.layoutMode === LayoutMode.splitPage
     );
   }
 
@@ -82,7 +86,7 @@ export class DynamicLayoutComponent<TDto extends { id: number }> {
   get isSplitWithVisibilityCheck(): boolean {
     const isSplit =
       (this.configuration?.useSplit && this.layoutMode === undefined) ||
-      this.layoutMode === LayoutMode.SplitPage;
+      this.layoutMode === LayoutMode.splitPage;
     if (this.previousIsSplit !== isSplit) {
       this.checkChildrenRules();
     }
@@ -93,7 +97,7 @@ export class DynamicLayoutComponent<TDto extends { id: number }> {
   get isPopup(): boolean {
     return (
       (this.configuration?.usePopup && this.layoutMode === undefined) ||
-      this.layoutMode === LayoutMode.Popup
+      this.layoutMode === LayoutMode.popup
     );
   }
 

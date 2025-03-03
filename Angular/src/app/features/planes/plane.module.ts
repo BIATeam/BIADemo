@@ -58,7 +58,7 @@ export const ROUTES: Routes = [
         data: {
           breadcrumb: 'plane.import',
           canNavigate: false,
-          layoutMode: LayoutMode.Popup,
+          layoutMode: LayoutMode.popup,
           style: {
             minWidth: '80vw',
             maxWidth: '80vw',
@@ -115,7 +115,7 @@ export const ROUTES: Routes = [
               breadcrumb: 'app.engines',
               canNavigate: true,
               permission: Permission.Engine_List_Access,
-              layoutMode: LayoutMode.FullPage,
+              layoutMode: LayoutMode.fullPage,
             },
             loadChildren: () =>
               import('./children/engines/engine.module').then(
