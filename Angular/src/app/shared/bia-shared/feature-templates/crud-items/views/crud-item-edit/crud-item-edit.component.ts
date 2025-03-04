@@ -10,7 +10,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { Subscription, filter, first } from 'rxjs';
+import { Subscription, filter, first, firstValueFrom } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
@@ -128,5 +128,14 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
 
   protected setPermissions(): void {
     this.canFix = false;
+  }
+
+  async onFixedChanged(fixed: boolean): Promise<void> {
+    const crudItem = await firstValueFrom(this.crudItemService.crudItem$);
+    const updatedCrudItem = Object.assign({}, crudItem);
+    updatedCrudItem.isFixed = fixed;
+    updatedCrudItem.fixedDate = fixed ? new Date() : undefined;
+    this.crudItemService.update(updatedCrudItem);
+    this.crudItemService.load(updatedCrudItem.id);
   }
 }

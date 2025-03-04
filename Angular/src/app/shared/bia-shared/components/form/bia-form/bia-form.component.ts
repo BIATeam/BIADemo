@@ -58,10 +58,12 @@ export class BiaFormComponent<TDto extends { id: number }>
   @Input() disableSubmitButton = false;
   @Input() showSubmitButton = true;
   @Input() showFixableState? = false;
-  @Input() canFix? = false;
+  @Input() canFix = false;
+  @Input() isFixed? = false;
   @Output() save = new EventEmitter<any>();
   @Output() cancelled = new EventEmitter<void>();
   @Output() readOnlyChanged = new EventEmitter<boolean>();
+  @Output() fixableStateChanged = new EventEmitter<boolean>();
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   specificInputTemplate: TemplateRef<any>;
@@ -415,8 +417,19 @@ export class BiaFormComponent<TDto extends { id: number }>
   }
 
   get isFixableButtonVisible(): boolean {
-    return this.showFixableState && this.canFix
-      ? true
-      : this.form?.get('isFixed')?.value === true;
+    return this.showFixableState && this.canFix ? true : this.isFixed === true;
+  }
+
+  get fixableButtonLabel(): string {
+    return this.isFixed ? 'bia.fixed' : 'bia.unfixed';
+  }
+
+  get fixableButtonIcon(): string {
+    return this.isFixed ? 'pi pi-lock' : 'pi pi-lock-open';
+  }
+
+  onFixableButtonClicked(): void {
+    console.log('Emit from BiaForm', !this.isFixed);
+    this.fixableStateChanged.emit(!this.isFixed);
   }
 }

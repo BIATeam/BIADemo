@@ -10,7 +10,9 @@
   [showSubmitButton]="showSubmitButton"
   [showFixableState]="showFixableState"
   [canFix]="canFix"
+  [isFixed]="crudItem?.isFixed"
   (save)="onSave($event)"
   (cancelled)="onCancel()"
-  (readOnlyChanged)="onReadOnlyChanged($event)">
+  (readOnlyChanged)="onReadOnlyChanged($event)"
+  (fixableStateChanged)="onFixableStateChanged($event)">
 </bia-form>

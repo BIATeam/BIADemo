@@ -36,6 +36,7 @@ export class CrudItemFormComponent<CrudItem extends BaseDto> {
 
   @Output() save = new EventEmitter<CrudItem>();
   @Output() cancelled = new EventEmitter<void>();
+  @Output() fixedChanged = new EventEmitter<boolean>();
 
   @ViewChild(BiaFormComponent) biaFormComponent: BiaFormComponent<CrudItem>;
 
@@ -61,5 +62,10 @@ export class CrudItemFormComponent<CrudItem extends BaseDto> {
         relativeTo: this.activatedRoute,
       });
     }
+  }
+
+  onFixableStateChanged(fixed: boolean) {
+    console.log('Emit from CrudItemForm', fixed);
+    this.fixedChanged.emit(fixed);
   }
 }

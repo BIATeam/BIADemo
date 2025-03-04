@@ -5,12 +5,13 @@
   [formGroup]="form">
   <div class="bia-form-header">
     <div class="fixed-state" *ngIf="isFixableButtonVisible">
-      <p-toggleButton
-        formControlName="isFixed"
-        onLabel="{{ 'bia.fixed' | translate }}"
-        offLabel="{{ 'bia.unfixed' | translate }}"
-        onIcon="pi pi-lock"
-        offIcon="pi pi-lock-open" />
+      <button
+        pButton
+        icon="pi {{ fixableButtonIcon }}"
+        label="{{ fixableButtonLabel | translate }}"
+        type="button"
+        [ngClass]="{ 'p-button-outlined': !isFixed }"
+        (click)="onFixableButtonClicked()"></button>
     </div>
   </div>
 
