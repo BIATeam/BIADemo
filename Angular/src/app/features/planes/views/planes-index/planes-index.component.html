@@ -13,11 +13,11 @@
       (fullExportCSV)="onExportCSV('plane.listOf', true)"
       (delete)="onDelete()"
       (import)="onImport()"
-      (fixedChanged)="onFixedChanged($event)"
       [selectedElements]="selectedCrudItems"
       [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
       [tableControllerVisible]="showTableController"
-      (toggleTableControllerVisibility)="toggleTableControllerVisibility()">
+      (toggleTableControllerVisibility)="toggleTableControllerVisibility()"
+      (crudItemFixedChanged)="crudItemService.onCrudItemFixedChanged($event)">
       <!-- BIAToolKit - Begin Partial PlaneIndexHtml Engine -->
       <ng-template pTemplate="actionOnSelected">
         <button

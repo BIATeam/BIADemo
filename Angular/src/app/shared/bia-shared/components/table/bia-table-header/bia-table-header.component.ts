@@ -41,7 +41,10 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   @Input() tableControllerVisible = false;
   @Output() create = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
-  @Output() fixedChanged = new EventEmitter<boolean>();
+  @Output() crudItemFixedChanged = new EventEmitter<{
+    crudItemId: any;
+    fixed: boolean;
+  }>();
   @Output() openFilter = new EventEmitter<void>();
   @Output() exportCSV = new EventEmitter<void>();
   @Output() fullExportCSV = new EventEmitter<void>();
@@ -140,6 +143,9 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   }
 
   onFixedChanged(fixed: boolean): void {
-    this.fixedChanged.emit(fixed);
+    this.crudItemFixedChanged.emit({
+      crudItemId: this.selectedElements[0].id,
+      fixed: fixed,
+    });
   }
 }

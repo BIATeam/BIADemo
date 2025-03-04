@@ -36,4 +36,17 @@ export abstract class CrudItemService<
       .pipe(first())
       .subscribe(event => this.loadAllByPost(event));
   }
+
+  public onCrudItemFixedChanged(event: { crudItemId: any; fixed: boolean }) {
+    this.dasService
+      .get({ id: event.crudItemId })
+      .pipe(first())
+      .subscribe(crudItem => {
+        if (crudItem.isFixed !== event.fixed) {
+          crudItem.isFixed = event.fixed;
+          crudItem.fixedDate = event.fixed ? new Date() : undefined;
+          this.update(crudItem);
+        }
+      });
+  }
 }

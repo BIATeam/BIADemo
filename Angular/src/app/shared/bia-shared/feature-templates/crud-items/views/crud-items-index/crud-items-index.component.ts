@@ -669,17 +669,4 @@ export class CrudItemsIndexComponent<
   protected initCustomButtonGroup() {
     this.customButtonGroup = [];
   }
-
-  onFixedChanged(fixed: boolean) {
-    this.crudItemService.dasService
-      .get({ id: this.selectedCrudItems[0].id })
-      .pipe(first())
-      .subscribe(crudItem => {
-        if (crudItem.isFixed !== fixed) {
-          crudItem.isFixed = fixed;
-          crudItem.fixedDate = fixed ? new Date() : undefined;
-          this.crudItemService.update(crudItem);
-        }
-      });
-  }
 }
