@@ -17,7 +17,9 @@
       [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
       [tableControllerVisible]="showTableController"
       (toggleTableControllerVisibility)="toggleTableControllerVisibility()"
-      (crudItemFixedChanged)="crudItemService.onCrudItemFixedChanged($event)">
+      (crudItemFixedChanged)="
+        crudItemService.updateFixedStatus($event.crudItemId, $event.fixed)
+      ">
       <!-- BIAToolKit - Begin Partial PlaneIndexHtml Engine -->
       <ng-template pTemplate="actionOnSelected">
         <button
