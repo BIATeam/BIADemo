@@ -41,6 +41,14 @@ export const INIT_STATE: State = usersAdapter.getInitialState({
 
 export const userReducers = createReducer<State>(
   INIT_STATE,
+  on(FeatureUsersActions.clearAll, state => {
+    const stateUpdated = usersAdapter.removeAll(state);
+    stateUpdated.totalCount = 0;
+    return stateUpdated;
+  }),
+  on(FeatureUsersActions.clearCurrent, state => {
+    return { ...state, currentUser: <User>{} };
+  }),
   on(FeatureUsersActions.loadAllByPost, state => {
     return { ...state, loadingGetAll: true };
   }),

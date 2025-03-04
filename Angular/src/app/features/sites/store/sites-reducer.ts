@@ -41,6 +41,14 @@ export const INIT_STATE: State = sitesAdapter.getInitialState({
 
 export const siteReducers = createReducer<State>(
   INIT_STATE,
+  on(FeatureSitesActions.clearAll, state => {
+    const stateUpdated = sitesAdapter.removeAll(state);
+    stateUpdated.totalCount = 0;
+    return stateUpdated;
+  }),
+  on(FeatureSitesActions.clearCurrent, state => {
+    return { ...state, currentSite: <Site>{} };
+  }),
   on(FeatureSitesActions.loadAllByPost, state => {
     return { ...state, loadingGetAll: true };
   }),

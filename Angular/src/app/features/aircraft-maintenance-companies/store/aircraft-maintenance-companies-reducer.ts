@@ -44,6 +44,17 @@ export const INIT_STATE: State =
 
 export const aircraftMaintenanceCompanyReducers = createReducer<State>(
   INIT_STATE,
+  on(FeatureAircraftMaintenanceCompaniesActions.clearAll, state => {
+    const stateUpdated = aircraftMaintenanceCompaniesAdapter.removeAll(state);
+    stateUpdated.totalCount = 0;
+    return stateUpdated;
+  }),
+  on(FeatureAircraftMaintenanceCompaniesActions.clearCurrent, state => {
+    return {
+      ...state,
+      currentAircraftMaintenanceCompany: <AircraftMaintenanceCompany>{},
+    };
+  }),
   on(FeatureAircraftMaintenanceCompaniesActions.loadAllByPost, state => {
     return { ...state, loadingGetAll: true };
   }),

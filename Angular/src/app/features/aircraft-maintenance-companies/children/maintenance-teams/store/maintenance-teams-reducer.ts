@@ -41,6 +41,14 @@ export const INIT_STATE: State = maintenanceTeamsAdapter.getInitialState({
 
 export const maintenanceTeamReducers = createReducer<State>(
   INIT_STATE,
+  on(FeatureMaintenanceTeamsActions.clearAll, state => {
+    const stateUpdated = maintenanceTeamsAdapter.removeAll(state);
+    stateUpdated.totalCount = 0;
+    return stateUpdated;
+  }),
+  on(FeatureMaintenanceTeamsActions.clearCurrent, state => {
+    return { ...state, currentMaintenanceTeam: <MaintenanceTeam>{} };
+  }),
   on(FeatureMaintenanceTeamsActions.loadAllByPost, state => {
     return { ...state, loadingGetAll: true };
   }),
