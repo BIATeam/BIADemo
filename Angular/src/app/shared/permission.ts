@@ -53,6 +53,7 @@ export enum Permission {
   Plane_Read = 'Plane_Read',
   Plane_Save = 'Plane_Save',
   Plane_Update = 'Plane_Update',
+  Plane_Fix = 'Plane_Fix',
   /// BIAToolKit - End Partial Permission Plane
   Airport_Create = 'Airport_Create',
   Airport_Delete = 'Airport_Delete',

@@ -85,10 +85,6 @@ export class BiaFormComponent<TDto extends { id: number }>
   }
 
   ngOnInit() {
-    if (this.formReadOnlyMode !== FormReadOnlyMode.off) {
-      this.readOnly = true;
-    }
-
     this.initForm();
   }
 
@@ -234,9 +230,29 @@ export class BiaFormComponent<TDto extends { id: number }>
       this.form.addValidators(this.formValidators);
     }
 
-    if (this.readOnly) {
-      this.form.disable();
+    this.applyFormReadOnlyMode();
+  }
+
+  private applyFormReadOnlyMode() {
+    if (!this.form) {
+      return;
     }
+
+    switch (this.formReadOnlyMode) {
+      case FormReadOnlyMode.off:
+        this.readOnly = false;
+        this.form.enable();
+        break;
+      case FormReadOnlyMode.clickToEdit:
+      case FormReadOnlyMode.on:
+        this.readOnly = true;
+        this.form.disable();
+        break;
+    }
+
+    setTimeout(() => {
+      this.setFocus();
+    });
   }
 
   private initFieldsWithLayoutConfig() {

@@ -1,5 +1,4 @@
 import { Validators } from '@angular/forms';
-import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import {
   BiaFieldConfig,
   BiaFieldNumberFormat,
@@ -15,10 +14,11 @@ import {
   BiaFormLayoutConfigGroup,
   BiaFormLayoutConfigRow,
 } from 'src/app/shared/bia-shared/model/bia-form-layout-config';
+import { FixableDto } from 'src/app/shared/bia-shared/model/fixable-dto';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 // TODO after creation of CRUD Plane : adapt the model
-export class Plane extends BaseDto {
+export class Plane extends FixableDto {
   /// BIAToolKit - Begin Properties
   msn: string;
   manufacturer: string;
@@ -253,6 +253,14 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
     ),
     /// BIAToolKit - End Block connectingAirports
     Object.assign(new BiaFieldConfig('rowVersion', 'plane.rowVersion'), {
+      isVisible: false,
+      isHideByDefault: true,
+    }),
+    Object.assign(new BiaFieldConfig('isFixed', 'plane.isFixed'), {
+      isVisible: false,
+      isHideByDefault: true,
+    }),
+    Object.assign(new BiaFieldConfig('fixedDate', 'plane.fixedDate'), {
       isVisible: false,
       isHideByDefault: true,
     }),

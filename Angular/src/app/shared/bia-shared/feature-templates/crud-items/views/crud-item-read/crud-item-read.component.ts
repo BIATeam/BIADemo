@@ -22,7 +22,6 @@ export class CrudItemReadComponent<CrudItem extends BaseDto>
     protected authService: AuthService
   ) {
     super(injector, crudItemService);
-    this.setPermissions();
   }
 
   ngOnInit(): void {
