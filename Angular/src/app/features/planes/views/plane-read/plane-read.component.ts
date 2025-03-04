@@ -35,12 +35,12 @@ export class PlaneReadComponent
         .pipe(filter(plane => !!plane && Object.keys(plane).length > 0))
         .subscribe(plane => {
           this.canEdit =
-            plane?.isFixed === true
+            plane.isFixed === true
               ? this.authService.hasPermission(Permission.Plane_Fix)
               : this.authService.hasPermission(Permission.Plane_Update);
 
           this.formReadOnlyMode =
-            plane?.isFixed === true
+            plane.isFixed === true
               ? this.canEdit
                 ? this.formReadOnlyMode
                 : FormReadOnlyMode.on

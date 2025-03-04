@@ -57,6 +57,8 @@ export class BiaFormComponent<TDto extends { id: number }>
   @Input() isCrudItemOutdated = false;
   @Input() disableSubmitButton = false;
   @Input() showSubmitButton = true;
+  @Input() showFixableState? = false;
+  @Input() canFix? = false;
   @Output() save = new EventEmitter<any>();
   @Output() cancelled = new EventEmitter<void>();
   @Output() readOnlyChanged = new EventEmitter<boolean>();
@@ -113,6 +115,8 @@ export class BiaFormComponent<TDto extends { id: number }>
         this.form.patchValue({ ...this.element });
       }
     }
+
+    this.applyFormReadOnlyMode();
   }
 
   ngAfterViewInit() {
@@ -408,5 +412,11 @@ export class BiaFormComponent<TDto extends { id: number }>
     }
 
     return value;
+  }
+
+  get isFixableButtonVisible(): boolean {
+    return this.showFixableState && this.canFix
+      ? true
+      : this.form?.get('isFixed')?.value === true;
   }
 }

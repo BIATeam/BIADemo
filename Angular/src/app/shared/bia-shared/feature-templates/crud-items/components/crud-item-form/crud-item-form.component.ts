@@ -31,6 +31,8 @@ export class CrudItemFormComponent<CrudItem extends BaseDto> {
   @Input() isAdd?: boolean;
   @Input() isCrudItemOutdated = false;
   @Input() showSubmitButton = true;
+  @Input() showFixableState?: boolean;
+  @Input() canFix = false;
 
   @Output() save = new EventEmitter<CrudItem>();
   @Output() cancelled = new EventEmitter<void>();
