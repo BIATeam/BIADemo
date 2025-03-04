@@ -27,6 +27,25 @@
       pTooltip="{{ 'bia.delete' | translate }}"
       tooltipPosition="top"
       (click)="onDelete()"></button>
+    <ng-container *ngIf="canFix">
+      <button
+        type="button"
+        pButton
+        [disabled]="nbSelectedElements !== 1 || isSelectedElementFixed"
+        icon="pi pi-lock"
+        pTooltip="{{ 'bia.fix' | translate }}"
+        tooltipPosition="top"
+        (click)="onFixedChanged(true)"></button>
+      <button
+        type="button"
+        pButton
+        [disabled]="nbSelectedElements !== 1 || !isSelectedElementFixed"
+        icon="pi pi-unlock"
+        pTooltip="{{ 'bia.unfix' | translate }}"
+        tooltipPosition="top"
+        (click)="onFixedChanged(false)"></button>
+    </ng-container>
+
     <ng-container *ngTemplateOutlet="actionOnSelectedTemplate"></ng-container>
   </div>
   <div

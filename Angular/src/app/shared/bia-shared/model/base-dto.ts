@@ -4,6 +4,8 @@ export class BaseDto {
   id: any; // the id could be a number, a string or a GUID
   dtoState: DtoState;
   rowVersion: string;
+  isFixed: boolean;
+  fixedDate: Date | undefined;
 
   constructor(id: AnalyserNode, dtoState: DtoState) {
     this.id = id;

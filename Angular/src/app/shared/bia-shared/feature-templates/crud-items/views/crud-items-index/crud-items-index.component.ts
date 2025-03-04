@@ -93,6 +93,7 @@ export class CrudItemsIndexComponent<
   canAdd = false;
   canSave = false;
   canSelect = false;
+  canFix = false;
   columns: KeyValuePair[];
   displayedColumns: KeyValuePair[];
   reorderableColumns = true;
@@ -572,6 +573,7 @@ export class CrudItemsIndexComponent<
     this.canEdit = true;
     this.canDelete = true;
     this.canAdd = true;
+    this.canFix = false;
   }
   protected initTableConfiguration() {
     this.columns = this.crudConfiguration.fieldsConfig.columns.map(
@@ -666,5 +668,18 @@ export class CrudItemsIndexComponent<
 
   protected initCustomButtonGroup() {
     this.customButtonGroup = [];
+  }
+
+  onFixedChanged(fixed: boolean) {
+    this.crudItemService.dasService
+      .get({ id: this.selectedCrudItems[0].id })
+      .pipe(first())
+      .subscribe(crudItem => {
+        if (crudItem.isFixed !== fixed) {
+          crudItem.isFixed = fixed;
+          crudItem.fixedDate = fixed ? new Date() : undefined;
+          this.crudItemService.update(crudItem);
+        }
+      });
   }
 }

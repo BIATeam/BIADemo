@@ -1,4 +1,5 @@
 import { Validators } from '@angular/forms';
+import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import {
   BiaFieldConfig,
   BiaFieldNumberFormat,
@@ -14,11 +15,10 @@ import {
   BiaFormLayoutConfigGroup,
   BiaFormLayoutConfigRow,
 } from 'src/app/shared/bia-shared/model/bia-form-layout-config';
-import { FixableDto } from 'src/app/shared/bia-shared/model/fixable-dto';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 // TODO after creation of CRUD Plane : adapt the model
-export class Plane extends FixableDto {
+export class Plane extends BaseDto {
   /// BIAToolKit - Begin Properties
   msn: string;
   manufacturer: string;
