@@ -55,7 +55,9 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
             // BIAToolKit - End AncestorTeam Site
             if (!(principal as BiaClaimsPrincipal).IsInRole(Rights.Planes.Fix))
             {
-                this.FiltersContext.Add(AccessMode.Update, new DirectSpecification<Plane>(p => !p.IsFixed));
+                var specification = new DirectSpecification<Plane>(p => !p.IsFixed);
+                this.FiltersContext.Add(AccessMode.Update, specification);
+                this.FiltersContext.Add(AccessMode.Delete, specification);
             }
         }
     }
