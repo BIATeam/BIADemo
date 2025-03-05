@@ -485,9 +485,10 @@ export class BiaTableComponent<TDto extends { id: number }>
 
   onSelectionChange() {
     setTimeout(() => {
-      let selectedElements = this.showFixableState
-        ? this.selectedElements.filter(e => (e as any).isFixed !== true)
-        : this.selectedElements;
+      let selectedElements =
+        this.showFixableState && this.canFix === true
+          ? this.selectedElements.filter(e => (e as any).isFixed !== true)
+          : this.selectedElements;
       if (
         this.canSelectMultipleElement === false &&
         !(selectedElements instanceof Array)
