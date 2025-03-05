@@ -132,10 +132,22 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
 
   async onFixedChanged(fixed: boolean): Promise<void> {
     const crudItem = await firstValueFrom(this.crudItemService.crudItem$);
+
+    const successActionType = this.crudItemService.updateSuccessActionType;
+    if (successActionType) {
+      this.actions
+        .pipe(
+          filter((action: any) => action.type === successActionType),
+          first()
+        )
+        .subscribe(() => {
+          this.crudItemService.load(crudItem.id);
+        });
+    }
+
     const updatedCrudItem = Object.assign({}, crudItem);
     updatedCrudItem.isFixed = fixed;
     updatedCrudItem.fixedDate = fixed ? new Date() : undefined;
     this.crudItemService.update(updatedCrudItem);
-    this.crudItemService.load(updatedCrudItem.id);
   }
 }

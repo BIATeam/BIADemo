@@ -12,6 +12,7 @@ import {
   OnInit,
   Output,
   QueryList,
+  SimpleChanges,
   TemplateRef,
   ViewChildren,
 } from '@angular/core';
@@ -59,7 +60,6 @@ export class BiaFormComponent<TDto extends { id: number }>
   @Input() showSubmitButton = true;
   @Input() showFixableState?: boolean;
   @Input() canFix?: boolean;
-  @Input() isFixed?: boolean;
   @Output() save = new EventEmitter<any>();
   @Output() cancelled = new EventEmitter<void>();
   @Output() readOnlyChanged = new EventEmitter<boolean>();
@@ -73,6 +73,7 @@ export class BiaFormComponent<TDto extends { id: number }>
   private _readOnly = false;
   protected sub = new Subscription();
   fieldsWithoutLayoutConfig: BiaFieldConfig<TDto>[] = [];
+  isFixed = false;
 
   @ViewChildren('refFormField', { read: ElementRef })
   formElements: QueryList<ElementRef>;
@@ -90,6 +91,8 @@ export class BiaFormComponent<TDto extends { id: number }>
 
   ngOnInit() {
     this.initForm();
+    this.applyFormReadOnlyMode();
+    this.applyFixedState();
   }
 
   ngOnDestroy() {
@@ -110,15 +113,18 @@ export class BiaFormComponent<TDto extends { id: number }>
     });
   }
 
-  ngOnChanges() {
-    if (this.element && this.form) {
-      this.form.reset();
-      if (this.element) {
-        this.form.patchValue({ ...this.element });
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.element) {
+      if (this.element && this.form) {
+        this.form.reset();
+        if (this.element) {
+          this.form.patchValue({ ...this.element });
+        }
       }
-    }
 
-    this.applyFormReadOnlyMode();
+      this.applyFormReadOnlyMode();
+      this.applyFixedState();
+    }
   }
 
   ngAfterViewInit() {
@@ -235,8 +241,6 @@ export class BiaFormComponent<TDto extends { id: number }>
     if (this.formValidators) {
       this.form.addValidators(this.formValidators);
     }
-
-    this.applyFormReadOnlyMode();
   }
 
   private applyFormReadOnlyMode() {
@@ -420,6 +424,10 @@ export class BiaFormComponent<TDto extends { id: number }>
     return this.isFixableButtonVisible;
   }
 
+  private applyFixedState(): void {
+    this.isFixed = (this.element as any)?.isFixed === true;
+  }
+
   get isFixableButtonVisible(): boolean {
     return (
       this.showFixableState === true &&
@@ -428,15 +436,14 @@ export class BiaFormComponent<TDto extends { id: number }>
   }
 
   get fixableButtonLabel(): string {
-    return this.isFixed ? 'bia.fixed' : 'bia.unfixed';
+    return this.isFixed === true ? 'bia.fixed' : 'bia.unfixed';
   }
 
   get fixableButtonIcon(): string {
-    return this.isFixed ? 'pi pi-lock' : 'pi pi-lock-open';
+    return this.isFixed === true ? 'pi pi-lock' : 'pi pi-lock-open';
   }
 
   onFixableButtonClicked(): void {
-    console.log('Emit from BiaForm', !this.isFixed);
     this.fixableStateChanged.emit(!this.isFixed);
   }
 }

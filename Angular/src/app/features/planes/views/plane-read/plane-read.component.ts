@@ -31,7 +31,6 @@ export class PlaneReadComponent
 
   protected setPermissions(): void {
     this.canFix = this.authService.hasPermission(Permission.Plane_Fix);
-    console.log('canFix', this.canFix);
     this.sub.add(
       this.planeService.crudItem$
         .pipe(filter(plane => !!plane && Object.keys(plane).length > 0))

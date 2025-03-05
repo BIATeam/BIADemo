@@ -65,7 +65,6 @@ export class CrudItemFormComponent<CrudItem extends BaseDto> {
   }
 
   onFixableStateChanged(fixed: boolean) {
-    console.log('Emit from CrudItemForm', fixed);
     this.fixedChanged.emit(fixed);
   }
 }
