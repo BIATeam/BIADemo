@@ -17,6 +17,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
     using Microsoft.AspNetCore.Http;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
     using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
@@ -52,6 +53,10 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
             this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<Plane>(p => p.SiteId == this.currentTeamId));
 
             // BIAToolKit - End AncestorTeam Site
+            if (!(principal as BiaClaimsPrincipal).IsInRole(Rights.Planes.Fix))
+            {
+                this.FiltersContext.Add(AccessMode.Update, new DirectSpecification<Plane>(p => !p.IsFixed));
+            }
         }
     }
 }
