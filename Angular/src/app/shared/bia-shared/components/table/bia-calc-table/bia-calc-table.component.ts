@@ -29,6 +29,7 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
 {
   @Input() canAdd = true;
   @Input() canEdit = true;
+  @Input() canFix = false;
   @Input() dictOptionDtos: DictOptionDto[];
   @Output() save = new EventEmitter<any>();
   @Output() isEditing = new EventEmitter<boolean>();
@@ -134,7 +135,8 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
       (!rowData ||
         (rowData &&
           ((rowData.id !== 0 &&
-            this.table?.editingRowKeys[rowData.id] !== true) ||
+            this.table?.editingRowKeys[rowData.id] !== true &&
+            (rowData.isFixed !== true || this.canFix)) ||
             (rowData.id === 0 && this.editFooter !== true))))
     ) {
       if (this.hasChanged === true) {
