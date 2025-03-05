@@ -146,7 +146,7 @@
           <ng-container *ngIf="rowData.id !== 0">
             <ng-container
               *ngIf="
-                rowData.isFixed === true && !canFix;
+                showFixableState && rowData.isFixed === true && !canFix;
                 else selectMultipleElement
               ">
               <div class="flex justify-content-center">
