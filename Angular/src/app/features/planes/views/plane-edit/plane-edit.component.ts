@@ -22,12 +22,15 @@ export class PlaneEditComponent extends CrudItemEditComponent<Plane> {
 
   protected setPermissions(): void {
     this.canFix = this.authService.hasPermission(Permission.Plane_Fix);
-
     this.sub.add(
       this.crudItemService.crudItem$
         .pipe(filter(plane => !!plane && Object.keys(plane).length > 0))
         .subscribe(plane => {
-          if (this.canFix !== true && plane.isFixed === true) {
+          if (
+            this.crudConfiguration.isFixable === true &&
+            this.canFix !== true &&
+            plane.isFixed === true
+          ) {
             this.formReadOnlyMode = FormReadOnlyMode.on;
           }
         })
