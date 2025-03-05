@@ -29,14 +29,16 @@ export class PlaneReadComponent
     super.ngOnInit();
   }
 
-  setPermissions(): void {
+  protected setPermissions(): void {
+    this.canFix = this.authService.hasPermission(Permission.Plane_Fix);
+    console.log('canFix', this.canFix);
     this.sub.add(
       this.planeService.crudItem$
         .pipe(filter(plane => !!plane && Object.keys(plane).length > 0))
         .subscribe(plane => {
           this.canEdit =
             plane.isFixed === true
-              ? this.authService.hasPermission(Permission.Plane_Fix)
+              ? this.canFix
               : this.authService.hasPermission(Permission.Plane_Update);
 
           this.formReadOnlyMode =

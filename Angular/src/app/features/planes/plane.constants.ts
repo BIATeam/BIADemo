@@ -17,7 +17,7 @@ export const planeCRUDConfiguration: CrudConfig<Plane> = new CrudConfig({
   featureName: 'planes',
   fieldsConfig: planeFieldsConfiguration,
   formLayoutConfig: planeFormLayoutConfiguration,
-  formEditReadOnlyMode: FormReadOnlyMode.off,
+  formEditReadOnlyMode: FormReadOnlyMode.clickToEdit,
   isFixable: true,
   useCalcMode: true,
   useSignalR: false,

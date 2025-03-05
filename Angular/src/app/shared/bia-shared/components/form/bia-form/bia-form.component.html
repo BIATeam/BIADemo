@@ -3,13 +3,14 @@
   (submit)="onSubmit()"
   class="flex flex-column bia-form"
   [formGroup]="form">
-  <div class="bia-form-header">
+  <div class="header-container bia-form-header" *ngIf="showHeaderContainer">
     <div class="fixed-state" *ngIf="isFixableButtonVisible">
       <button
         pButton
         icon="pi {{ fixableButtonIcon }}"
         label="{{ fixableButtonLabel | translate }}"
         type="button"
+        [disabled]="!canFix"
         [ngClass]="{ 'p-button-outlined': !isFixed }"
         (click)="onFixableButtonClicked()"></button>
     </div>

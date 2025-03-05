@@ -27,7 +27,7 @@
       pTooltip="{{ 'bia.delete' | translate }}"
       tooltipPosition="top"
       (click)="onDelete()"></button>
-    <ng-container *ngIf="canFix">
+    <ng-container *ngIf="showFixedButtons && canFix">
       <button
         type="button"
         pButton
@@ -43,6 +43,7 @@
         icon="pi pi-unlock"
         pTooltip="{{ 'bia.unfix' | translate }}"
         tooltipPosition="top"
+        class="p-button-outlined"
         (click)="onFixedChanged(false)"></button>
     </ng-container>
 

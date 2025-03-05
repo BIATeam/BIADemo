@@ -39,6 +39,7 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   @Input() selectedElements: any[];
   @Input() showTableControllerButton = false;
   @Input() tableControllerVisible = false;
+  @Input() showFixedButtons = false;
   @Output() create = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
   @Output() crudItemFixedChanged = new EventEmitter<{

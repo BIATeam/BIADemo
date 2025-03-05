@@ -262,7 +262,7 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
       }
     }
     // forms header always visible
-    .bia-form:has(> .bia-form-header:has(> div)) {
+    .bia-form:has(> .bia-form-header) {
       padding-top: 1.5rem;
       .bia-form-header:has(> div) {
         background: var(--surface-f);

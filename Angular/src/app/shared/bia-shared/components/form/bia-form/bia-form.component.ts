@@ -57,9 +57,9 @@ export class BiaFormComponent<TDto extends { id: number }>
   @Input() isCrudItemOutdated = false;
   @Input() disableSubmitButton = false;
   @Input() showSubmitButton = true;
-  @Input() showFixableState? = false;
-  @Input() canFix = false;
-  @Input() isFixed? = false;
+  @Input() showFixableState?: boolean;
+  @Input() canFix?: boolean;
+  @Input() isFixed?: boolean;
   @Output() save = new EventEmitter<any>();
   @Output() cancelled = new EventEmitter<void>();
   @Output() readOnlyChanged = new EventEmitter<boolean>();
@@ -416,8 +416,15 @@ export class BiaFormComponent<TDto extends { id: number }>
     return value;
   }
 
+  get showHeaderContainer(): boolean {
+    return this.isFixableButtonVisible;
+  }
+
   get isFixableButtonVisible(): boolean {
-    return this.showFixableState && this.canFix ? true : this.isFixed === true;
+    return (
+      this.showFixableState === true &&
+      (this.canFix === true || this.isFixed === true)
+    );
   }
 
   get fixableButtonLabel(): string {
