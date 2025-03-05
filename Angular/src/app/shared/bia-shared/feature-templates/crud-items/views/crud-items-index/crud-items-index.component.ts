@@ -472,7 +472,12 @@ export class CrudItemsIndexComponent<
 
   onDelete() {
     if (this.canDelete) {
-      this.crudItemService.multiRemove(this.selectedCrudItems.map(x => x.id));
+      const itemsToDelete =
+        this.crudConfiguration.isFixable && this.canFix !== true
+          ? this.selectedCrudItems.filter(x => x.isFixed === false)
+          : this.selectedCrudItems;
+
+      this.crudItemService.multiRemove(itemsToDelete.map(x => x.id));
     }
   }
 
