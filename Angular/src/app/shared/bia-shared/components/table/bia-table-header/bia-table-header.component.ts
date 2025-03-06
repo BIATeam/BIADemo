@@ -149,4 +149,12 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
       fixed: fixed,
     });
   }
+
+  get isDeleteButtonDisabled(): boolean {
+    const selectedElements =
+      this.showFixedButtons === true && this.canFix !== true
+        ? this.selectedElements.filter(e => e.isFixed !== true)
+        : this.selectedElements;
+    return selectedElements.length === 0;
+  }
 }

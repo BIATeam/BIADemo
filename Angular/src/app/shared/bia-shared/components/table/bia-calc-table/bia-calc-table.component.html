@@ -295,6 +295,12 @@
           [frozen]="isSelectFrozen">
           <i class="pi pi-plus"></i>
         </td>
+        <td
+          *ngIf="showFixableState"
+          [style.width]="widthSelect"
+          [alignFrozen]="alignFrozenSelect"
+          pFrozenColumn
+          [frozen]="isSelectFrozen"></td>
         @let firstEditableFieldIndex = firstEditableField(columns);
         @for (col of columns; track col; let i = $index) {
           <td
