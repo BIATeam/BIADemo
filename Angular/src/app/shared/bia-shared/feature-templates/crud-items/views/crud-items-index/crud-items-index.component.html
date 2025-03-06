@@ -4,15 +4,18 @@
       [headerTitle]="'crudItem.listOf' | translate"
       [canAdd]="canAdd && !crudConfiguration.useCalcMode"
       [canDelete]="canDelete"
+      [canFix]="canFix"
       [canExportCSV]="true"
       (create)="onCreate()"
       (exportCSV)="onExportCSV('bia.crud.listOf')"
       (delete)="onDelete()"
       [selectedElements]="selectedCrudItems"
       [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
+      [showFixedButtons]="crudConfiguration.isFixable"
       [tableControllerVisible]="showTableController"
-      (toggleTableControllerVisibility)="
-        toggleTableControllerVisibility()
+      (toggleTableControllerVisibility)="toggleTableControllerVisibility()"
+      (crudItemFixedChanged)="
+        crudItemService.updateFixedStatus($event.crudItemId, $event.fixed)
       "></bia-table-header>
     <bia-table-controller
       [ngClass]="{ 'table-controller-hidden': !showTableController }"
@@ -64,6 +67,7 @@
       [globalSearchValue]="globalSearchValue"
       [canClickRow]="canEdit"
       [canSelectElement]="canDelete"
+      [canFix]="canFix"
       [loading]="(loading$ | async) ?? false"
       (clickRowId)="onClickRow($event)"
       (loadLazy)="onLoadLazy($event)"
@@ -75,7 +79,8 @@
       (stateSave)="onStateSave($event)"
       [virtualScroll]="crudConfiguration.useVirtualScroll"
       [isResizableColumn]="crudConfiguration.useResizableColumn"
-      [rowHeight]="defaultRowHeight"></bia-table>
+      [rowHeight]="defaultRowHeight"
+      [showFixableState]="crudConfiguration.isFixable"></bia-table>
     <bia-crud-item-table
       *ngIf="crudConfiguration.useCalcMode"
       [elements]="
@@ -97,6 +102,7 @@
       [canEdit]="canEdit"
       [canAdd]="canAdd"
       [canSelectElement]="canDelete"
+      [canFix]="canFix"
       [loading]="(loading$ | async) ?? false"
       (loadLazy)="onLoadLazy($event)"
       [viewPreference]="viewPreference"
@@ -107,6 +113,7 @@
       (save)="onSave($event)"
       [virtualScroll]="crudConfiguration.useVirtualScroll"
       [rowHeight]="defaultRowHeight"
-      [scrollHeightValue]="getFillScrollHeightValue()"></bia-crud-item-table>
+      [scrollHeightValue]="getFillScrollHeightValue()"
+      [showFixableState]="crudConfiguration.isFixable"></bia-crud-item-table>
   </div>
 </div>
