@@ -32,7 +32,7 @@ export class PlaneReadComponent
   protected setPermissions(): void {
     this.canFix = this.authService.hasPermission(Permission.Plane_Fix);
     this.sub.add(
-      this.planeService.crudItem$
+      this.crudItemService.crudItem$
         .pipe(filter(plane => !!plane && Object.keys(plane).length > 0))
         .subscribe(plane => {
           this.canEdit =
