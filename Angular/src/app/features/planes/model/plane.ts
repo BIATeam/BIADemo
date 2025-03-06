@@ -256,14 +256,6 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       isVisible: false,
       isHideByDefault: true,
     }),
-    Object.assign(new BiaFieldConfig('isFixed', 'plane.isFixed'), {
-      isVisible: false,
-      isHideByDefault: true,
-    }),
-    Object.assign(new BiaFieldConfig('fixedDate', 'plane.fixedDate'), {
-      isVisible: false,
-      isHideByDefault: true,
-    }),
   ],
 };
 
