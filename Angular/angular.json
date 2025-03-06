@@ -116,6 +116,14 @@
                 }
               ]
             },
+            "rosa": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.rosa.ts"
+                }
+              ]
+            },
             "docker": {
               "fileReplacements": [
                 {

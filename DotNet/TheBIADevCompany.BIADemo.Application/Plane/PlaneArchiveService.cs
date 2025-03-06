@@ -1,10 +1,9 @@
-﻿namespace TheBIADevCompany.BIADemo.Application.Plane
+﻿// <copyright file="PlaneArchiveService.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace TheBIADevCompany.BIADemo.Application.Plane
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using BIA.Net.Core.Application.Archive;
     using BIA.Net.Core.Domain.RepoContract;
     using Microsoft.Extensions.Configuration;

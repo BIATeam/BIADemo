@@ -19,10 +19,11 @@ namespace BIA.Net.Core.Domain.RepoContract
         where TEntity : class, IEntityArchivable<TKey>
     {
         /// <summary>
-        /// Return the items to archive.
+        /// Return the items to archive according to the filter rule.
         /// </summary>
+        /// <param name="rule">Filter rule.</param>
         /// <returns><see cref="Task{IReadOnlyList{TEntity}}"/>.</returns>
-        Task<IReadOnlyList<TEntity>> GetItemsToArchiveAsync();
+        Task<IReadOnlyList<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> rule);
 
         /// <summary>
         /// Update archive state of an entity.

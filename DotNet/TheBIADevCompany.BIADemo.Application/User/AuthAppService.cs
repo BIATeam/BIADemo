@@ -85,6 +85,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// The role application service.
         /// </summary>
         private readonly IRoleAppService roleAppService;
+
+        /// <summary>
+        /// The ldap repository service.
+        /// </summary>
+        private readonly ILdapRepositoryHelper ldapRepositoryHelper;
 #endif
 
         /// <summary>
@@ -114,7 +119,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
             ILogger<AuthAppService> logger,
             IConfiguration configuration,
             IOptions<BiaNetSection> biaNetconfiguration,
-            IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper)
+            IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
+            ILdapRepositoryHelper ldapRepositoryHelper)
         {
 #if BIA_FRONT_FEATURE
             this.userAppService = userAppService;
@@ -129,6 +135,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             this.logger = logger;
             this.userDirectoryHelper = userDirectoryHelper;
             this.ldapDomains = biaNetconfiguration.Value.Authentication.LdapDomains;
+            this.ldapRepositoryHelper = ldapRepositoryHelper;
         }
 #if BIA_BACK_TO_BACK_AUTH
 
@@ -189,7 +196,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
             // Get Global Roles
             List<string> globalRoles = await this.GetGlobalRolesAsync(sid: sid, domain: domain, userInfo: userInfo);
-            List<int> roleIds = GetRoleIds(globalRoles);
 
             // Fill UserInfo
             userInfo = await this.CreateOrUpdateUserInDatabase(sid, identityKey, userInfo, globalRoles);
@@ -201,6 +207,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 IEnumerable<string> userAppRootRoles = await this.roleAppService.GetUserRolesAsync(userInfo.Id);
                 globalRoles.AddRange(userAppRootRoles);
             }
+
+            List<int> roleIds = GetRoleIds(globalRoles);
 
             // Get Permissions
             List<string> userPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(globalRoles, loginParam.LightToken);
@@ -364,7 +372,18 @@ namespace TheBIADevCompany.BIADemo.Application.User
             if (this.claimsPrincipal.Identity.Name?.Contains('\\') == true)
             {
                 domain = this.claimsPrincipal.Identity.Name.Split('\\').FirstOrDefault();
-                if (!this.ldapDomains.Any(ld => ld.Name.Equals(domain)))
+                if (
+                        !this.ldapDomains.Any(ld => ld.Name.Equals(domain))
+                        &&
+                        !(
+                            this.ldapDomains.Any(ld => this.ldapRepositoryHelper.IsLocalMachineName(ld.Name, true))
+                            &&
+                            this.ldapRepositoryHelper.IsLocalMachineName(domain, false))
+                        &&
+                        !(
+                            this.ldapDomains.Any(ld => this.ldapRepositoryHelper.IsServerDomain(ld.Name, true))
+                            &&
+                            this.ldapRepositoryHelper.IsServerDomain(domain, false)))
                 {
                     this.logger.LogInformation("Unauthorized because bad domain");
                     throw new UnauthorizedException();

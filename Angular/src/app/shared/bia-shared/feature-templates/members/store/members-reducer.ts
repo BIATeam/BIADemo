@@ -41,6 +41,14 @@ export const INIT_STATE: State = membersAdapter.getInitialState({
 
 export const memberReducers = createReducer<State>(
   INIT_STATE,
+  on(FeatureMembersActions.clearAll, state => {
+    const stateUpdated = membersAdapter.removeAll(state);
+    stateUpdated.totalCount = 0;
+    return stateUpdated;
+  }),
+  on(FeatureMembersActions.clearCurrent, state => {
+    return { ...state, currentMember: <Member>{} };
+  }),
   on(FeatureMembersActions.loadAllByPost, state => {
     return { ...state, loadingGetAll: true };
   }),

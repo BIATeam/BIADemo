@@ -41,6 +41,14 @@ export const INIT_STATE: State = planesTypesAdapter.getInitialState({
 
 export const planeTypeReducers = createReducer<State>(
   INIT_STATE,
+  on(FeaturePlanesTypesActions.clearAll, state => {
+    const stateUpdated = planesTypesAdapter.removeAll(state);
+    stateUpdated.totalCount = 0;
+    return stateUpdated;
+  }),
+  on(FeaturePlanesTypesActions.clearCurrent, state => {
+    return { ...state, currentPlaneType: <PlaneType>{} };
+  }),
   on(FeaturePlanesTypesActions.loadAllByPost, state => {
     return { ...state, loadingGetAll: true };
   }),

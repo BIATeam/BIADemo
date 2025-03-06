@@ -41,6 +41,14 @@ export const INIT_STATE: State = airportsAdapter.getInitialState({
 
 export const airportReducers = createReducer<State>(
   INIT_STATE,
+  on(FeatureAirportsActions.clearAll, state => {
+    const stateUpdated = airportsAdapter.removeAll(state);
+    stateUpdated.totalCount = 0;
+    return stateUpdated;
+  }),
+  on(FeatureAirportsActions.clearCurrent, state => {
+    return { ...state, currentAirport: <Airport>{} };
+  }),
   on(FeatureAirportsActions.loadAllByPost, state => {
     return { ...state, loadingGetAll: true };
   }),

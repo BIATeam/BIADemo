@@ -35,53 +35,53 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         where TUserFromDirectory : class, IUserFromDirectory, new()
     {
 
-        private const string KeyPrefixCacheGroup = "BIAGroupSid:";
+        protected const string KeyPrefixCacheGroup = "BIAGroupSid:";
 
-        private const string KeyPrefixCacheUserSid = "BIAUserSid:";
+        protected const string KeyPrefixCacheUserSid = "BIAUserSid:";
 
-        private const string KeyPrefixCacheUserIdentityKey = "BIAUserIdentityKey:";
+        protected const string KeyPrefixCacheUserIdentityKey = "BIAUserIdentityKey:";
 
-        private const string KeyPrefixCacheUserSidHistory = "BIAUsersidHistory:";
+        protected const string KeyPrefixCacheUserSidHistory = "BIAUsersidHistory:";
 
         /// <summary>
         /// Groups cached.
         /// </summary>
-        private static readonly Dictionary<string, string> CacheGroupName = new Dictionary<string, string>();
+        protected static readonly Dictionary<string, string> CacheGroupName = new Dictionary<string, string>();
 
         /// <summary>
         /// The logger.
         /// </summary>
-        private readonly ILogger<GenericLdapRepository<TUserFromDirectory>> logger;
+        protected readonly ILogger<GenericLdapRepository<TUserFromDirectory>> logger;
 
         /// <summary>
         /// The configuration of the BiaNet section.
         /// </summary>
-        private readonly BiaNetSection configuration;
+        protected readonly BiaNetSection configuration;
 
         /// <summary>
         /// The configuration of the BiaNet section.
         /// </summary>
-        private readonly IEnumerable<LdapDomain> ldapDomains;
+        protected readonly IEnumerable<LdapDomain> ldapDomains;
 
         /// <summary>
         /// The configuration of the BiaNet section.
         /// </summary>
-        private readonly IEnumerable<LdapDomain> ldapDomainsUsers;
+        protected readonly IEnumerable<LdapDomain> ldapDomainsUsers;
 
         /// <summary>
         /// The sidResolver.
         /// </summary>
-        private readonly LdapRepositoryHelper ldapRepositoryHelper;
+        protected readonly LdapRepositoryHelper ldapRepositoryHelper;
 
         /// <summary>
         /// Duration of the cache for ldap Group Member List in ldap.
         /// </summary>
-        private readonly int LdapCacheGroupDuration;
+        protected readonly int LdapCacheGroupDuration;
 
         /// <summary>
         /// Duration of the cache for user property in ldap.
         /// </summary>
-        private readonly int LdapCacheUserDuration;
+        protected readonly int LdapCacheUserDuration;
 
 
         /// <summary>
@@ -194,7 +194,8 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
             // Sanitize unsafe characters from search value to avoid LDAP injections
             // See : https://cheatsheetseries.owasp.org/cheatsheets/LDAP_Injection_Prevention_Cheat_Sheet.html
-            const string rgxPattern = @"[\\ #+<>,;""=*()]";
+            // Space are remove to search by FirstName LastName or LastName FirstName (coded in SearchUsersInDomain)
+            const string rgxPattern = @"[\\#+<>,;""=*()]";
             search = Regex.Replace(search, rgxPattern, string.Empty);
 
             if (string.IsNullOrEmpty(search))
@@ -240,22 +241,52 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             {
                 if (PrepareCredential(domain))
                 {
-                    string ldapPath = $"LDAP://{domain.LdapName}";
-                    if (!string.IsNullOrEmpty(domain.Filter))
+                    string localLdapName;
+                    if (!this.ldapRepositoryHelper.IsLocalServerOnADomain(out localLdapName))
                     {
-                        ldapPath = $"LDAP://{domain.Filter}";
+                        using (DirectoryEntry localMachine = new DirectoryEntry("WinNT://" + Environment.MachineName))
+                        {
+                            foreach (DirectoryEntry child in localMachine.Children)
+                            {
+                                if (child.SchemaClassName == "User" && child.Name.Contains(search, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    usersMatches.Add(child);
+                                }
+                            }
+                        }
                     }
-
-                    using var entry = new DirectoryEntry(ldapPath, domain.LdapServiceAccount, domain.LdapServicePass);
-                    using var searcher = new DirectorySearcher(entry)
+                    else
                     {
-                        SearchScope = SearchScope.Subtree,
-                        Filter = $"(&(objectCategory=person)(objectClass=user)(|(givenname=*{search}*)(sn=*{search}*)(SAMAccountName=*{search}*)(cn=*{search}*)))",
-                        SizeLimit = max
-                    };
-                    usersMatches.AddRange(searcher.FindAll().Cast<SearchResult>().Select(s => s.GetDirectoryEntry()).ToList());
-                }
+                        string ldapPath = $"LDAP://{domain.LdapName}";
+                        if (domain.LdapName == ".")
+                        {
+                            ldapPath = $"LDAP://{localLdapName}";
+                        }
 
+                        if (!string.IsNullOrEmpty(domain.Filter))
+                        {
+                            ldapPath = $"LDAP://{domain.Filter}";
+                        }
+
+                        var cnSearch = "(&";
+                        foreach (var searchPart in search.Split(" "))
+                        {
+                            if (!String.IsNullOrEmpty(searchPart))
+                                cnSearch += $"(cn=*{searchPart}*)";
+                        }
+                        cnSearch += ")";
+
+                        using var entry = new DirectoryEntry(ldapPath, domain.LdapServiceAccount, domain.LdapServicePass);
+                        using var searcher = new DirectorySearcher(entry)
+                        {
+                            SearchScope = SearchScope.Subtree,
+                            Filter = $"(&(objectCategory=person)(objectClass=user){cnSearch})",
+                            //Filter = $"(&(objectCategory=person)(objectClass=user)(cn=*{search}*))",
+                            SizeLimit = max
+                        };
+                        usersMatches.AddRange(searcher.FindAll().Cast<SearchResult>().Select(s => s.GetDirectoryEntry()).ToList());
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -338,7 +369,10 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
         private async Task<UserPrincipal> ResolveUserPrincipal(string domain, string identityKey)
         {
-            PrincipalContext contextUser = await PrepareDomainContext(domain);
+            PrincipalContext contextUser;
+
+            contextUser = await PrepareDomainContext(domain);
+
             UserPrincipal userToAdd = null;
 
             if (contextUser != null)
@@ -407,6 +441,10 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         {
 
             LdapDomain adDomain = ldapDomains.Where(d => d.Name == domain).FirstOrDefault();
+            if (adDomain == null && this.ldapRepositoryHelper.IsServerDomain(domain, false))
+            {
+                adDomain = ldapDomains.Where(d => d.Name == ".").FirstOrDefault();
+            }
             PrincipalContext pc = await PrepareDomainContext(adDomain);
             return pc;
         }
@@ -426,7 +464,23 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     {
                         return new PrincipalContext(ContextType.Domain, domain.LdapName, domain.LdapServiceAccount, domain.LdapServicePass);
                     }
-                    PrincipalContext pc = new PrincipalContext(ContextType.Domain, domain.LdapName);
+                    PrincipalContext pc;
+                    if (domain.LdapName == ".")
+                    {
+                        string localLdapName;
+                        if (this.ldapRepositoryHelper.IsLocalServerOnADomain(out localLdapName))
+                        {
+                            pc = new PrincipalContext(ContextType.Domain, localLdapName);
+                        }
+                        else
+                        {
+                            pc = new PrincipalContext(ContextType.Machine);
+                        }
+                    }
+                    else
+                    {
+                        pc = new PrincipalContext(ContextType.Domain, domain.LdapName);
+                    }
                     PrincipalContextCache.Add(domain, pc);
                     return pc;
                 }
@@ -987,6 +1041,11 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             if (PrepareCredential(adDomain))
             {
                 string ldapPath = $"LDAP://{adDomain.LdapName}/" + sDN;
+                string localLdapName;
+                if ((adDomain.LdapName == ".") && (this.ldapRepositoryHelper.IsLocalServerOnADomain(out localLdapName)))
+                {
+                    ldapPath = $"LDAP://{localLdapName}/" + sDN;
+                }
 
                 if (!string.IsNullOrEmpty(adDomain.LdapServiceAccount))
                 {
