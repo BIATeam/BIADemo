@@ -12,6 +12,7 @@ export const engineCRUDConfiguration: CrudConfig<Engine> = new CrudConfig({
   featureName: 'engines',
   fieldsConfig: engineFieldsConfiguration,
   formLayoutConfig: engineFormLayoutConfiguration,
+  isFixable: true,
   useCalcMode: true,
   useSignalR: false,
   useView: true,

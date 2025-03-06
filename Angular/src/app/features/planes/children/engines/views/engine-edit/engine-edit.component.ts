@@ -4,6 +4,8 @@ import { engineCRUDConfiguration } from '../../engine.constants';
 import { Engine } from '../../model/engine';
 import { EngineService } from '../../services/engine.service';
 // BIAToolKit - Begin Option
+import { filter } from 'rxjs';
+import { FormReadOnlyMode } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
 import { EngineOptionsService } from '../../services/engine-options.service';
 // BIAToolKit - End Option
 
@@ -35,5 +37,21 @@ export class EngineEditComponent
       })
     );
     // BIAToolKit - End Option
+  }
+
+  protected setPermissions(): void {
+    this.sub.add(
+      this.crudItemService.crudItem$
+        .pipe(filter(engine => !!engine && Object.keys(engine).length > 0))
+        .subscribe(engine => {
+          if (
+            this.crudConfiguration.isFixable === true &&
+            this.canFix !== true &&
+            engine.isFixed === true
+          ) {
+            this.formReadOnlyMode = FormReadOnlyMode.on;
+          }
+        })
+    );
   }
 }

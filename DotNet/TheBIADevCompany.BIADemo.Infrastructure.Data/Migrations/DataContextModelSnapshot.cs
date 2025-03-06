@@ -17,7 +17,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.12")
+                .HasAnnotation("ProductVersion", "8.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -584,6 +584,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<DateTime?>("ExchangeDate")
                         .HasColumnType("date");
 
+                    b.Property<DateTime?>("FixedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<double>("FlightHours")
                         .HasColumnType("float");
 
@@ -592,6 +595,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.Property<TimeSpan?>("IgnitionTime")
                         .HasColumnType("time");
+
+                    b.Property<bool>("IsFixed")
+                        .HasColumnType("bit");
 
                     b.Property<bool?>("IsHybrid")
                         .HasColumnType("bit");

@@ -7,6 +7,7 @@ import { engineCRUDConfiguration } from '../../engine.constants';
 import { Engine } from '../../model/engine';
 import { EngineService } from '../../services/engine.service';
 // BIAToolKit - Begin Option
+import { filter } from 'rxjs';
 import { EngineOptionsService } from '../../services/engine-options.service';
 // BIAToolKit - End Option
 
@@ -21,6 +22,7 @@ export class EnginesIndexComponent
 {
   @ViewChild(EngineTableComponent, { static: false })
   crudItemTableComponent: EngineTableComponent;
+  isTableReadOnly = false;
 
   constructor(
     protected injector: Injector,
@@ -48,10 +50,26 @@ export class EnginesIndexComponent
     // BIAToolKit - End Option
   }
 
-  protected setPermissions() {
-    this.canEdit = this.authService.hasPermission(Permission.Engine_Update);
-    this.canDelete = this.authService.hasPermission(Permission.Engine_Delete);
-    this.canAdd = this.authService.hasPermission(Permission.Engine_Create);
-    this.canSave = this.authService.hasPermission(Permission.Engine_Save);
+  protected async setPermissions() {
+    this.sub.add(
+      this.engineService.planeService.crudItem$
+        .pipe(filter(plane => !!plane && Object.keys(plane).length > 0))
+        .subscribe(plane => {
+          this.isTableReadOnly = plane.isFixed === true;
+
+          this.canEdit =
+            plane.isFixed === false &&
+            this.authService.hasPermission(Permission.Engine_Update);
+          this.canDelete =
+            plane.isFixed === false &&
+            this.authService.hasPermission(Permission.Engine_Delete);
+          this.canAdd =
+            plane.isFixed === false &&
+            this.authService.hasPermission(Permission.Engine_Create);
+          this.canSave =
+            plane.isFixed === false &&
+            this.authService.hasPermission(Permission.Engine_Save);
+        })
+    );
   }
 }

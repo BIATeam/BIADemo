@@ -11,9 +11,11 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
     using Hangfire;
@@ -49,6 +51,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         /// The repository.
         /// </summary>
         private readonly IEngineRepository repository;
+        private readonly ITGenericRepository<Plane, int> planeRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EngineAppService"/> class.
@@ -56,10 +59,11 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The claims principal.</param>
         /// <param name="configuration">The configuration.</param>
-        public EngineAppService(IEngineRepository repository, IPrincipal principal, IConfiguration configuration)
+        public EngineAppService(IEngineRepository repository, ITGenericRepository<Plane, int> planeRepository, IPrincipal principal, IConfiguration configuration)
             : base(repository)
         {
             this.repository = repository;
+            this.planeRepository = planeRepository;
             this.configuration = configuration;
 
             // BIAToolKit - Begin AncestorTeam Site
@@ -70,6 +74,10 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
             this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<Engine>(p => p.Plane.SiteId == this.currentTeamId));
 
             // BIAToolKit - End AncestorTeam Site
+
+            var notFixedspecification = new DirectSpecification<Engine>(p => !p.IsFixed);
+            this.FiltersContext.Add(AccessMode.Update, notFixedspecification);
+            this.FiltersContext.Add(AccessMode.Delete, notFixedspecification);
         }
 
         // Begin BIADemo
@@ -105,6 +113,17 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         {
             specification ??= EngineSpecification.SearchGetAll(filters);
             return base.GetCsvAsync(filters, id, specification, filter, accessMode, queryMode, mapperMode, isReadOnlyMode);
+        }
+
+        public override async Task<EngineDto> AddAsync(EngineDto dto, string mapperMode = null)
+        {
+            var planeParent = await this.planeRepository.GetEntityAsync(dto.PlaneId);
+            if (planeParent.IsFixed)
+            {
+                throw new FrontUserException("Plane parent is fixed");
+            }
+
+            return await base.AddAsync(dto, mapperMode);
         }
     }
 }
