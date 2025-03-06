@@ -44,7 +44,6 @@ export abstract class CrudItemService<
       .subscribe(crudItem => {
         if (crudItem.isFixed !== fixed) {
           crudItem.isFixed = fixed;
-          crudItem.fixedDate = fixed ? new Date() : undefined;
           this.update(crudItem);
         }
       });

@@ -147,7 +147,6 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
 
     const updatedCrudItem = Object.assign({}, crudItem);
     updatedCrudItem.isFixed = fixed;
-    updatedCrudItem.fixedDate = fixed ? new Date() : undefined;
     this.crudItemService.update(updatedCrudItem);
   }
 }

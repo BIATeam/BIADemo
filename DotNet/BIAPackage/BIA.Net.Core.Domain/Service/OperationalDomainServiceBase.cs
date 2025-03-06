@@ -373,6 +373,11 @@ namespace BIA.Net.Core.Domain.Service
                         throw new OutdateException();
                     }
 
+                    if (dto is FixableDto<TKey> fixableDto)
+                    {
+                        fixableDto.FixedDate = fixableDto.IsFixed ? DateTime.Now : null;
+                    }
+
                     mapper.DtoToEntity(dto, entity, mapperMode, this.Repository.UnitOfWork);
 
                     await this.Repository.UnitOfWork.CommitAsync();

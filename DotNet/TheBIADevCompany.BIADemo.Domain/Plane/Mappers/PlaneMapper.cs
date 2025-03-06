@@ -145,7 +145,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
             {
                 Id = entity.Id,
                 IsFixed = entity.IsFixed,
-                FixedDate = entity.FixedDate,
                 RowVersion = Convert.ToBase64String(entity.RowVersion),
                 Msn = entity.Msn,
                 Manufacturer = entity.Manufacturer,

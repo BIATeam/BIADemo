@@ -5,7 +5,6 @@ export class BaseDto {
   dtoState: DtoState;
   rowVersion: string | undefined;
   isFixed: boolean | undefined;
-  fixedDate: Date | undefined;
 
   constructor(id: AnalyserNode, dtoState: DtoState) {
     this.id = id;
