@@ -90,6 +90,9 @@ export class BiaTranslationService {
     .pipe(distinctUntilChanged())
     .pipe(skip(1));
 
+  protected currentCulture = 'None';
+  protected currentLanguage = 'None';
+
   constructor(
     protected translate: TranslateService,
     @Inject(LOCALE_ID) localeId: string,
@@ -97,6 +100,8 @@ export class BiaTranslationService {
     protected primeNgConfig: PrimeNGConfig,
     protected authService: AuthService
   ) {
+    // force language initialization to avoid double authentication.
+    this.loadAndChangeLanguage(getCurrentCulture(), false);
     this.currentCultureDateFormat$.subscribe(dateFormat => {
       Calendar.prototype.getDateFormat = () => dateFormat.primeDateFormat;
     });
@@ -110,12 +115,10 @@ export class BiaTranslationService {
     this.translate.setTranslation(data[TRANSLATION_LANG_KEY], data, true);
   }
 
-  protected currentCulture = 'None';
-  protected currentLanguage = 'None';
   // Because we add some translations (registerLocaleData), ngx-translate doesn't modules translations
   // So we need to call getTranslation manually
   // NOTE: Check if it's still usefull
-  loadAndChangeLanguage(culture: string, defaultLang?: string) {
+  loadAndChangeLanguage(culture: string, reLoginIfRequiered = true) {
     if (this.currentCulture !== culture) {
       const lang = culture.split('-')[0];
       this.currentCulture = culture;
@@ -126,26 +129,12 @@ export class BiaTranslationService {
           translationLoaders$.push(translateService.getTranslation(lang));
         }
       }
-      if (
-        defaultLang &&
-        defaultLang !== lang &&
-        !this.translationsLoaded[defaultLang]
-      ) {
-        for (const translateService2 of translateServices) {
-          translationLoaders$.push(
-            translateService2.getTranslation(defaultLang)
-          );
-        }
-      }
       let lang$: Observable<any> = of(undefined);
       if (translationLoaders$.length) {
-        lang$ = this.loadTranslations(translationLoaders$, lang, defaultLang);
+        lang$ = this.loadTranslations(translationLoaders$, lang);
       }
       lang$.subscribe(() => {
         this.translate.use(lang);
-        if (defaultLang) {
-          this.translate.setDefaultLang(defaultLang);
-        }
         try {
           localStorage.setItem(STORAGE_CULTURE_KEY, culture);
         } catch (err) {
@@ -158,7 +147,7 @@ export class BiaTranslationService {
         .subscribe(res => this.primeNgConfig.setTranslation(res));
       if (this.currentLanguage !== lang) {
         this.currentLanguage = lang;
-        this.authService.reLogin();
+        if (reLoginIfRequiered) this.authService.reLogin();
       }
     }
   }
