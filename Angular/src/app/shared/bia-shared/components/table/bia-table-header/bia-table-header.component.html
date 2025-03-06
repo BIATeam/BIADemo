@@ -28,6 +28,7 @@
       tooltipPosition="top"
       (click)="onDelete()"></button>
     <ng-container *ngIf="showFixedButtons && canFix">
+      <p-divider class="fixed-buttons-separator" layout="vertical" />
       <button
         type="button"
         pButton
@@ -45,6 +46,7 @@
         tooltipPosition="top"
         class="p-button-outlined"
         (click)="onFixedChanged(false)"></button>
+      <p-divider class="fixed-buttons-separator" layout="vertical" />
     </ng-container>
 
     <ng-container *ngTemplateOutlet="actionOnSelectedTemplate"></ng-container>

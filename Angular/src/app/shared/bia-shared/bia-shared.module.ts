@@ -22,6 +22,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 // import { ContextMenuModule } from 'primeng/contextmenu';
 import { DialogModule } from 'primeng/dialog';
+import { DividerModule } from 'primeng/divider';
 import { DropdownModule } from 'primeng/dropdown';
 // import { EditorModule } from 'primeng/editor';
 // Warning it required to install Quill package:
@@ -150,6 +151,7 @@ const PRIMENG_MODULES = [
   ConfirmDialogModule,
   //  ContextMenuModule,
   DialogModule,
+  DividerModule,
   DropdownModule,
   //  EditorModule,
   FieldsetModule,
