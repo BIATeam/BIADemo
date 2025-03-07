@@ -11,6 +11,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
     using System.Linq.Expressions;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract;
@@ -352,9 +353,10 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             return result;
         }
 
+        /// <inheritdoc/>
         public async Task UpdateFixedAsync(TKey id, bool isFixed)
         {
-            var entity = await this.GetEntityAsync(id) ?? throw new KeyNotFoundException();
+            var entity = await this.GetEntityAsync(id) ?? throw new ElementNotFoundException();
             if (entity is not IEntityFixable<TKey> fixableEntity)
             {
                 throw new Common.Exceptions.BadBiaFrameworkUsageException($"Entity {entity.GetType()} is not a fixable entity");
@@ -374,7 +376,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         {
             if (this.unitOfWork == null)
             {
-                throw new DataException("The context must not be null");
+                throw new Common.Exceptions.DataException("The context must not be null");
             }
 
             return this.unitOfWork.RetrieveSet<TEntity>();

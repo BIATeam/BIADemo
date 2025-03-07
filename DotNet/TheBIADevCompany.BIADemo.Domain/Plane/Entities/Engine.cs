@@ -143,7 +143,11 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Entities
         /// Gets or sets the installed parts. Via jointure table.
         /// </summary>
         public ICollection<EnginePart> InstalledEngineParts { get; set; }
-        public bool IsFixed { get ; set ; }
-        public DateTime? FixedDate { get ; set ; }
+
+        /// <inheritdoc/>
+        public bool IsFixed { get; set; }
+
+        /// <inheritdoc/>
+        public DateTime? FixedDate { get; set; }
     }
 }

@@ -360,7 +360,7 @@ namespace BIA.Net.Core.Domain.Service
                 {
                     TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
 
-                    var entity = await this.Repository.GetEntityAsync(id: dto.Id, specification: this.GetFilterSpecification(accessMode, this.FiltersContext), includes: mapper.IncludesForUpdate(mapperMode), queryMode: queryMode) 
+                    var entity = await this.Repository.GetEntityAsync(id: dto.Id, specification: this.GetFilterSpecification(accessMode, this.FiltersContext), includes: mapper.IncludesForUpdate(mapperMode), queryMode: queryMode)
                         ?? throw new ElementNotFoundException();
 
                     if (entity is IEntityFixable<TKey> entityFixable && entityFixable.IsFixed)
@@ -846,15 +846,6 @@ namespace BIA.Net.Core.Domain.Service
             }
 
             return null;
-        }
-
-        protected virtual async Task UpdateFixedAsync(TKey id, bool isFixed)
-        {
-            await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
-            {
-                await this.Repository.UpdateFixedAsync(id, isFixed);
-                return Task.CompletedTask;
-            });
         }
 
         /// <summary>

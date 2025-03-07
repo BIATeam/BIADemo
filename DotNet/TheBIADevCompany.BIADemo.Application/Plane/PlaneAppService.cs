@@ -26,7 +26,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     /// <summary>
     /// The application service used for plane.
     /// </summary>
-    public class PlaneAppService : CrudAppServiceBase<PlaneDto, Plane, int, PagingFilterFormatDto, PlaneMapper>, IPlaneAppService
+    public class PlaneAppService : FixableCrudAppServiceBase<PlaneDto, Plane, int, PagingFilterFormatDto, PlaneMapper>, IPlaneAppService
     {
         // BIAToolKit - Begin AncestorTeam Site
 
@@ -42,6 +42,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         /// Initializes a new instance of the <see cref="PlaneAppService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
+        /// <param name="engineAppService">The engine app service.</param>
         /// <param name="principal">The claims principal.</param>
         public PlaneAppService(ITGenericRepository<Plane, int> repository, IEngineAppService engineAppService, IPrincipal principal)
             : base(repository)
@@ -57,6 +58,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
             this.engineAppService = engineAppService;
         }
 
+        /// <inheritdoc/>
         public override async Task<PlaneDto> UpdateFixedAsync(int id, bool isFixed)
         {
             var engines = await this.engineAppService.GetAllAsync(filter: x => x.PlaneId == id);

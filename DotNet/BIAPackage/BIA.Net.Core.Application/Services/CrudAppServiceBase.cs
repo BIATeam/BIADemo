@@ -325,11 +325,5 @@ namespace BIA.Net.Core.Application.Services
         {
             return await this.SaveAsync<TDto, TMapper>(dtos, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
         }
-
-        public virtual async Task<TDto> UpdateFixedAsync(TKey id, bool isFixed)
-        {
-            await base.UpdateFixedAsync(id, isFixed);
-            return await this.GetAsync(id);
-        }
     }
 }

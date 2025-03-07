@@ -31,7 +31,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     /// <summary>
     /// The application service used for plane.
     /// </summary>
-    public class EngineAppService : CrudAppServiceBase<EngineDto, Engine, int, PagingFilterFormatDto, EngineMapper>, IEngineAppService
+    public class EngineAppService : FixableCrudAppServiceBase<EngineDto, Engine, int, PagingFilterFormatDto, EngineMapper>, IEngineAppService
     {
         // BIAToolKit - Begin AncestorTeam Site
 
@@ -51,12 +51,17 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         /// The repository.
         /// </summary>
         private readonly IEngineRepository repository;
+
+        /// <summary>
+        /// The plane repository.
+        /// </summary>
         private readonly ITGenericRepository<Plane, int> planeRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EngineAppService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
+        /// <param name="planeRepository">The plane repository.</param>
         /// <param name="principal">The claims principal.</param>
         /// <param name="configuration">The configuration.</param>
         public EngineAppService(IEngineRepository repository, ITGenericRepository<Plane, int> planeRepository, IPrincipal principal, IConfiguration configuration)
@@ -74,10 +79,6 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
             this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<Engine>(p => p.Plane.SiteId == this.currentTeamId));
 
             // BIAToolKit - End AncestorTeam Site
-
-            var notFixedspecification = new DirectSpecification<Engine>(p => !p.IsFixed);
-            this.FiltersContext.Add(AccessMode.Update, notFixedspecification);
-            this.FiltersContext.Add(AccessMode.Delete, notFixedspecification);
         }
 
         // Begin BIADemo
@@ -115,6 +116,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
             return base.GetCsvAsync(filters, id, specification, filter, accessMode, queryMode, mapperMode, isReadOnlyMode);
         }
 
+        /// <inheritdoc/>
         public override async Task<EngineDto> AddAsync(EngineDto dto, string mapperMode = null)
         {
             var planeParent = await this.planeRepository.GetEntityAsync(dto.PlaneId);

@@ -180,6 +180,12 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="item">The item.</param>
         void SetModified(TEntity item);
 
+        /// <summary>
+        /// Update the fixed status of an <see cref="IEntityFixable{TKey}"/>.
+        /// </summary>
+        /// <param name="id">ID of the entity.</param>
+        /// <param name="isFixed">Fixed status.</param>
+        /// <returns><see cref="Task"/>.</returns>
         Task UpdateFixedAsync(TKey id, bool isFixed);
     }
 }
