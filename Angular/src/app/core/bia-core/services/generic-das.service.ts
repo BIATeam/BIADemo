@@ -256,7 +256,7 @@ export abstract class GenericDas {
     return item;
   }
 
-  updateFixableItem<TOut>(param: UpdateFixedStatusParam) {
+  protected updateFixedStatusItem<TOut>(param: UpdateFixedStatusParam) {
     param.endpoint = param.endpoint ?? '';
 
     const url = `${this.route}${param.endpoint}${param.id}/fix`;

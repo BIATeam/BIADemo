@@ -60,7 +60,7 @@ export abstract class AbstractDas<
     return this.getItemFile(event, endpoint);
   }
 
-  updateFixedStatus(param: UpdateFixedStatusParam) {
-    return this.updateFixableItem<TOut>(param);
+  updateFixedStatus(param: UpdateFixedStatusParam): Observable<TOut> {
+    return this.updateFixedStatusItem<TOut>(param);
   }
 }
