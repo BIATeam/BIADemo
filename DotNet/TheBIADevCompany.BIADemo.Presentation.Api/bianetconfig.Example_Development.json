@@ -3,12 +3,12 @@
     "Environment": {
       "Type": "DEV",
       // UrlMatomo shoulld now contain the name of the php and js (originaly matomo.js & matomo.php) => rename to bypass ublock
-      "UrlMatomo": "https://matomo-int.the-shared-tools-domain-name.bia/matomo(torename)",
+      "UrlMatomo": "",
       "SiteIdMatomo": "1"
     },
     "CommonFeatures": {
       "ClientForHub": {
-        "SignalRUrl": "http://localhost/BIADemo/WebApi/HubForClients"
+        "SignalRUrl": "http://localhost:32128/BIADemo/WebApi/HubForClients"
       }
     },
     "ApiFeatures": {
@@ -16,11 +16,11 @@
         "IsActive": true
       },
       "DelegateJobToWorker": {
-        "MonitoringUrl": "http://localhost/BIADemo/WebApi/hangfire"
+        "MonitoringUrl": "http://localhost:32128/BIADemo/WebApi/hangfire"
       }
     },
     "Security": {
-      "Audience": "http://localhost:4200"
+      "Audience": "http://localhost:4200,http://localhost:4201"
     },
     "EmailConfiguration": {
       "From": "noreply-BIADemo@the-mail-domain.bia",
@@ -135,20 +135,45 @@
     },
     "PermissionsByEnv": [
       {
-        "Names": [ "User_ListAD", "User_Add", "User_Delete", "User_Save" ],
-        "Roles": [ "Admin" ]
+        "Names": [
+          "User_ListAD",
+          "User_Add",
+          "User_Delete",
+          "User_Save"
+        ],
+        "Roles": [
+          "Admin"
+        ]
       },
       {
-        "Names": [ "User_List_Access", "User_List", "User_Read", "User_Sync", "User_UpdateRoles" ],
-        "Roles": [ "Admin" ]
+        "Names": [
+          "User_List_Access",
+          "User_List",
+          "User_Read",
+          "User_Sync",
+          "User_UpdateRoles"
+        ],
+        "Roles": [
+          "Admin"
+        ]
       },
       {
-        "Names": [ "User_UpdateRoles" ],
-        "Roles": [ "Admin" ]
+        "Names": [
+          "User_UpdateRoles"
+        ],
+        "Roles": [
+          "Admin"
+        ]
       },
       {
-        "Names": [ "User_ListAD", "User_Add", "User_Save" ],
-        "Roles": [ "Site_Admin" ]
+        "Names": [
+          "User_ListAD",
+          "User_Add",
+          "User_Save"
+        ],
+        "Roles": [
+          "Site_Admin"
+        ]
       }
     ]
   }
