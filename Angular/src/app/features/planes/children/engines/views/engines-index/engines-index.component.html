@@ -16,9 +16,16 @@
       [selectedElements]="selectedCrudItems"
       [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
       [tableControllerVisible]="showTableController"
-      (toggleTableControllerVisibility)="
-        toggleTableControllerVisibility()
-      "></bia-table-header>
+      (toggleTableControllerVisibility)="toggleTableControllerVisibility()">
+      <ng-template pTemplate="customControl">
+        <button
+          *ngIf="isFixed"
+          pButton
+          icon="pi pi-lock"
+          label="{{ 'bia.fixed' | translate }}"
+          type="button"
+          [disabled]="true"></button> </ng-template
+    ></bia-table-header>
     <bia-table-controller
       [ngClass]="{ 'table-controller-hidden': !showTableController }"
       [defaultPageSize]="defaultPageSize"
@@ -73,7 +80,7 @@
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
       [scrollHeightValue]="getFillScrollHeightValue()"
-      [readOnly]="isTableReadOnly"></bia-table>
+      [readOnly]="isFixed"></bia-table>
     <app-engine-table
       *ngIf="crudConfiguration.useCalcMode"
       [elements]="(crudItems$ | async) ?? []"
@@ -100,6 +107,6 @@
       (stateSave)="onStateSave($event)"
       (save)="onSave($event)"
       [scrollHeightValue]="getFillScrollHeightValue()"
-      [readOnly]="isTableReadOnly"></app-engine-table>
+      [readOnly]="isFixed"></app-engine-table>
   </div>
 </div>

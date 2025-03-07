@@ -22,7 +22,7 @@ export class EnginesIndexComponent
 {
   @ViewChild(EngineTableComponent, { static: false })
   crudItemTableComponent: EngineTableComponent;
-  isTableReadOnly = false;
+  isFixed = false;
 
   constructor(
     protected injector: Injector,
@@ -57,7 +57,7 @@ export class EnginesIndexComponent
       this.engineService.planeService.crudItem$
         .pipe(filter(plane => !!plane && Object.keys(plane).length > 0))
         .subscribe(plane => {
-          this.isTableReadOnly = plane.isFixed === true;
+          this.isFixed = plane.isFixed === true;
 
           this.canEdit =
             plane.isFixed === false &&
