@@ -35,6 +35,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         /// </summary>
         private readonly int currentTeamId;
         private readonly ITGenericRepository<Engine, int> enginesRepository;
+        private readonly IEngineAppService engineAppService;
 
         // BIAToolKit - End AncestorTeam Site
 
@@ -43,7 +44,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The claims principal.</param>
-        public PlaneAppService(ITGenericRepository<Plane, int> repository, ITGenericRepository<Engine, int> enginesRepository, IPrincipal principal)
+        public PlaneAppService(ITGenericRepository<Plane, int> repository, ITGenericRepository<Engine, int> enginesRepository, IEngineAppService engineAppService, IPrincipal principal)
             : base(repository)
         {
             // BIAToolKit - Begin AncestorTeam Site
@@ -62,22 +63,18 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
             }
 
             this.enginesRepository = enginesRepository;
+            this.engineAppService = engineAppService;
         }
 
-        public override async Task<PlaneDto> UpdateAsync(PlaneDto dto, string accessMode = "Update", string queryMode = "Update", string mapperMode = null)
+        public override async Task<PlaneDto> UpdateFixedAsync(int id, bool isFixed)
         {
-            var updatedDto = await base.UpdateAsync(dto, accessMode, queryMode, mapperMode);
-            var engines = await this.enginesRepository.GetAllEntityAsync(filter: x => x.PlaneId == updatedDto.Id);
+            var engines = await this.engineAppService.GetAllAsync(filter: x => x.PlaneId == id);
             foreach (var engine in engines)
             {
-                engine.IsFixed = updatedDto.IsFixed;
-                engine.FixedDate = updatedDto.FixedDate;
-                this.enginesRepository.SetModified(engine);
+                await this.engineAppService.UpdateFixedAsync(engine.Id, isFixed);
             }
 
-            await this.enginesRepository.UnitOfWork.CommitAsync();
-
-            return updatedDto;
+            return await base.UpdateFixedAsync(id, isFixed);
         }
     }
 }

@@ -114,4 +114,9 @@ export class PlaneService extends CrudItemService<Plane> {
     this._currentCrudItemId = 0;
     this.store.dispatch(FeaturePlanesActions.clearCurrent());
   }
+  public async updateFixedStatus(id: any, isFixed: boolean): Promise<void> {
+    this.store.dispatch(
+      FeaturePlanesActions.updateFixedStatus({ id: id, isFixed: isFixed })
+    );
+  }
 }

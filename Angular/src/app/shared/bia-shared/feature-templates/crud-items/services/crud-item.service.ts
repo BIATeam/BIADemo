@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { first, Observable } from 'rxjs';
+import { first, firstValueFrom, Observable } from 'rxjs';
 import { AbstractDas } from 'src/app/core/bia-core/services/abstract-das.service';
 import { BaseDto } from '../../../model/base-dto';
 import { TargetedFeature } from '../../../model/signalR';
@@ -37,15 +37,14 @@ export abstract class CrudItemService<
       .subscribe(event => this.loadAllByPost(event));
   }
 
-  public updateFixedStatus(crudItemId: any, fixed: boolean) {
-    this.dasService
-      .get({ id: crudItemId })
-      .pipe(first())
-      .subscribe(crudItem => {
-        if (crudItem.isFixed !== fixed) {
-          crudItem.isFixed = fixed;
-          this.update(crudItem);
-        }
-      });
+  public async updateFixedStatus(
+    crudItemId: any,
+    fixed: boolean
+  ): Promise<void> {
+    console.log('Update fixed status');
+    await firstValueFrom(
+      this.dasService.updateFixedStatus({ id: crudItemId, fixed: fixed })
+    );
+    this.refreshList();
   }
 }

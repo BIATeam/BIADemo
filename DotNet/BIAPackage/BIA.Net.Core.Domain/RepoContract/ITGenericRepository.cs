@@ -179,5 +179,7 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="item">The item.</param>
         void SetModified(TEntity item);
+
+        Task UpdateFixedAsync(TKey id, bool isFixed);
     }
 }

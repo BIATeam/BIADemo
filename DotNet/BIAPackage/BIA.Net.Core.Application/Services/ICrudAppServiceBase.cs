@@ -295,5 +295,7 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="dtos">The dto list.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task RemoveBulkAsync(IEnumerable<TDto> dtos);
+
+        Task<TDto> UpdateFixedAsync(TKey id, bool isFixed);
     }
 }

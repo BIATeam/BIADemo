@@ -329,5 +329,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             byte[] buffer = await this.planeService.GetCsvAsync(filters);
             return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Planes{BiaConstants.Csv.Extension}");
         }
+
+        [HttpPut("{id}/[action]")]
+        [Authorize(Roles = Rights.Planes.Fix)]
+        public virtual async Task<IActionResult> Fix(int id, [FromBody] bool isFixed)
+        {
+            var dto = await this.planeService.UpdateFixedAsync(id, isFixed);
+            return this.Ok(dto);
+        }
     }
 }

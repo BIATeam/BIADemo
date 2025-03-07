@@ -846,6 +846,15 @@ namespace BIA.Net.Core.Domain.Service
             return null;
         }
 
+        protected virtual async Task UpdateFixedAsync(TKey id, bool isFixed)
+        {
+            await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
+            {
+                await this.Repository.UpdateFixedAsync(id, isFixed);
+                return Task.CompletedTask;
+            });
+        }
+
         /// <summary>
         /// Execute the <paramref name="action"/> and handling <see cref="FrontUserException"/>.
         /// </summary>
