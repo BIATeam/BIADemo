@@ -23,8 +23,10 @@ export class PlaneReadComponent extends CrudItemReadComponent<Plane> {
   }
 
   protected setPermissions(): void {
+    super.setPermissions();
+    console.log('SetPermissions');
     this.canFix = this.authService.hasPermission(Permission.Plane_Fix);
-    this.sub.add(
+    this.permissionSub.add(
       this.crudItemService.crudItem$
         .pipe(filter(plane => !!plane && Object.keys(plane).length > 0))
         .subscribe(plane => {
@@ -33,6 +35,7 @@ export class PlaneReadComponent extends CrudItemReadComponent<Plane> {
               ? false
               : this.authService.hasPermission(Permission.Plane_Update);
 
+          console.log('InitialFormReadOnlyMode', this.initialFormReadOnlyMode);
           this.formReadOnlyMode =
             this.canEdit === false &&
             this.crudConfiguration.isFixable === true &&

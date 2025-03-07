@@ -31,7 +31,7 @@ export class CrudItemReadComponent<CrudItem extends BaseDto>
   }
 
   protected setPermissions(): void {
-    this.canFix = false;
+    super.setPermissions();
     this.canEdit = true;
   }
 }

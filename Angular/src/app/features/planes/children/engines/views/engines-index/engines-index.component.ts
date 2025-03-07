@@ -51,7 +51,9 @@ export class EnginesIndexComponent
   }
 
   protected async setPermissions() {
-    this.sub.add(
+    super.setPermissions();
+
+    this.permissionSub.add(
       this.engineService.planeService.crudItem$
         .pipe(filter(plane => !!plane && Object.keys(plane).length > 0))
         .subscribe(plane => {

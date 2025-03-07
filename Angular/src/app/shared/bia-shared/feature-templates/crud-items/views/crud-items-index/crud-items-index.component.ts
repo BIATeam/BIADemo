@@ -77,6 +77,7 @@ export class CrudItemsIndexComponent<
   }
 
   protected sub = new Subscription();
+  protected permissionSub = new Subscription();
   showColSearch = false;
   globalSearchValue = '';
   defaultPageSize = DEFAULT_PAGE_SIZE;
@@ -349,6 +350,7 @@ export class CrudItemsIndexComponent<
     if (this.sub) {
       this.sub.unsubscribe();
     }
+    this.permissionSub.unsubscribe();
     this.onHide();
   }
 
@@ -574,7 +576,9 @@ export class CrudItemsIndexComponent<
   }
 
   protected setPermissions() {
-    // TODO redefine in plane
+    this.permissionSub.unsubscribe();
+    this.permissionSub = new Subscription();
+
     this.canEdit = true;
     this.canDelete = true;
     this.canAdd = true;

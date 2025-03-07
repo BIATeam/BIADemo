@@ -40,7 +40,9 @@ export class EngineEditComponent
   }
 
   protected setPermissions(): void {
-    this.sub.add(
+    super.setPermissions();
+
+    this.permissionSub.add(
       this.crudItemService.crudItem$
         .pipe(filter(engine => !!engine && Object.keys(engine).length > 0))
         .subscribe(engine => {

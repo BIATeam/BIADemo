@@ -21,8 +21,10 @@ export class PlaneEditComponent extends CrudItemEditComponent<Plane> {
   }
 
   protected setPermissions(): void {
+    super.setPermissions();
+
     this.canFix = this.authService.hasPermission(Permission.Plane_Fix);
-    this.sub.add(
+    this.permissionSub.add(
       this.crudItemService.crudItem$
         .pipe(filter(plane => !!plane && Object.keys(plane).length > 0))
         .subscribe(plane => {
