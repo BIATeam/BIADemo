@@ -13,7 +13,9 @@
   [canFix]="canFix"
   (cancelled)="onCancelled()"
   (save)="onSubmitted($event)"
-  (fixedChanged)="onFixedChanged($event)"></bia-crud-item-form>
+  (fixedChanged)="
+    crudItemService.updateFixedStatus(crudItem.id, $event)
+  "></bia-crud-item-form>
 <bia-spinner
   *ngIf="crudItemService.loadingGet$ | async"
   [overlay]="true"></bia-spinner>
