@@ -359,7 +359,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             var entity = await this.GetEntityAsync(id) ?? throw new ElementNotFoundException();
             if (entity is not IEntityFixable<TKey> fixableEntity)
             {
-                throw new Common.Exceptions.BadBiaFrameworkUsageException($"Entity {entity.GetType()} is not a fixable entity");
+                throw new BadBiaFrameworkUsageException($"Entity {entity.GetType()} is not a fixable entity");
             }
 
             fixableEntity.IsFixed = isFixed;

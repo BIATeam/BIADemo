@@ -34,6 +34,10 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         /// The current TeamId.
         /// </summary>
         private readonly int currentTeamId;
+
+        /// <summary>
+        /// The engine app service.
+        /// </summary>
         private readonly IEngineAppService engineAppService;
 
         // BIAToolKit - End AncestorTeam Site

@@ -34,7 +34,7 @@ namespace BIA.Net.Core.Application.Services
         /// </summary>
         /// <param name="id">ID of the entity.</param>
         /// <param name="isFixed">Fixed status.</param>
-        /// <returns><see cref="Task"/>.</returns>
+        /// <returns>Updated DTO.</returns>
         Task<TDto> UpdateFixedAsync(TKey id, bool isFixed);
     }
 }
