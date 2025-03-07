@@ -34,7 +34,6 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         /// The current TeamId.
         /// </summary>
         private readonly int currentTeamId;
-        private readonly ITGenericRepository<Engine, int> enginesRepository;
         private readonly IEngineAppService engineAppService;
 
         // BIAToolKit - End AncestorTeam Site
@@ -44,7 +43,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The claims principal.</param>
-        public PlaneAppService(ITGenericRepository<Plane, int> repository, ITGenericRepository<Engine, int> enginesRepository, IEngineAppService engineAppService, IPrincipal principal)
+        public PlaneAppService(ITGenericRepository<Plane, int> repository, IEngineAppService engineAppService, IPrincipal principal)
             : base(repository)
         {
             // BIAToolKit - Begin AncestorTeam Site
@@ -55,14 +54,6 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
             this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<Plane>(p => p.SiteId == this.currentTeamId));
 
             // BIAToolKit - End AncestorTeam Site
-            if (!(principal as BiaClaimsPrincipal).IsInRole(Rights.Planes.Fix))
-            {
-                var specification = new DirectSpecification<Plane>(p => !p.IsFixed);
-                this.FiltersContext.Add(AccessMode.Update, specification);
-                this.FiltersContext.Add(AccessMode.Delete, specification);
-            }
-
-            this.enginesRepository = enginesRepository;
             this.engineAppService = engineAppService;
         }
 

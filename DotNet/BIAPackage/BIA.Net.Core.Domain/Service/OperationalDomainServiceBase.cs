@@ -360,10 +360,12 @@ namespace BIA.Net.Core.Domain.Service
                 {
                     TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
 
-                    var entity = await this.Repository.GetEntityAsync(id: dto.Id, specification: this.GetFilterSpecification(accessMode, this.FiltersContext), includes: mapper.IncludesForUpdate(mapperMode), queryMode: queryMode);
-                    if (entity == null)
+                    var entity = await this.Repository.GetEntityAsync(id: dto.Id, specification: this.GetFilterSpecification(accessMode, this.FiltersContext), includes: mapper.IncludesForUpdate(mapperMode), queryMode: queryMode) 
+                        ?? throw new ElementNotFoundException();
+
+                    if (entity is IEntityFixable<TKey> entityFixable && entityFixable.IsFixed)
                     {
-                        throw new ElementNotFoundException();
+                        throw new FrontUserException("Item is fixed and cannot be edited.");
                     }
 
                     if (entity is VersionedTable versionedEntity
@@ -371,11 +373,6 @@ namespace BIA.Net.Core.Domain.Service
                     && !Convert.ToBase64String(versionedEntity.RowVersion).SequenceEqual(dto.RowVersion))
                     {
                         throw new OutdateException();
-                    }
-
-                    if (dto is FixableDto<TKey> fixableDto)
-                    {
-                        fixableDto.FixedDate = fixableDto.IsFixed ? DateTime.Now : null;
                     }
 
                     mapper.DtoToEntity(dto, entity, mapperMode, this.Repository.UnitOfWork);
@@ -415,6 +412,11 @@ namespace BIA.Net.Core.Domain.Service
                 if (entity == null)
                 {
                     throw new ElementNotFoundException();
+                }
+
+                if (entity is IEntityFixable<TKey> entityFixable && entityFixable.IsFixed)
+                {
+                    throw new FrontUserException("Item is fixed and cannot be edited.");
                 }
 
                 var dto = new TOtherDto();
