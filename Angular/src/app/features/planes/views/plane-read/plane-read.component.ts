@@ -1,4 +1,4 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { filter } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { FormReadOnlyMode } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
@@ -12,10 +12,7 @@ import { PlaneService } from '../../services/plane.service';
   selector: 'app-plane-read',
   templateUrl: './plane-read.component.html',
 })
-export class PlaneReadComponent
-  extends CrudItemReadComponent<Plane>
-  implements OnInit
-{
+export class PlaneReadComponent extends CrudItemReadComponent<Plane> {
   constructor(
     protected injector: Injector,
     public planeService: PlaneService,
@@ -23,10 +20,6 @@ export class PlaneReadComponent
   ) {
     super(injector, planeService, authService);
     this.crudConfiguration = planeCRUDConfiguration;
-  }
-
-  ngOnInit(): void {
-    super.ngOnInit();
   }
 
   protected setPermissions(): void {
@@ -37,15 +30,15 @@ export class PlaneReadComponent
         .subscribe(plane => {
           this.canEdit =
             this.crudConfiguration.isFixable === true && plane.isFixed === true
-              ? this.canFix
+              ? false
               : this.authService.hasPermission(Permission.Plane_Update);
 
           this.formReadOnlyMode =
-            this.crudConfiguration.isFixable === true && plane.isFixed === true
-              ? this.canEdit
-                ? this.formReadOnlyMode
-                : FormReadOnlyMode.on
-              : this.formReadOnlyMode;
+            this.canEdit === false &&
+            this.crudConfiguration.isFixable === true &&
+            plane.isFixed === true
+              ? FormReadOnlyMode.on
+              : this.initialFormReadOnlyMode;
         })
     );
   }

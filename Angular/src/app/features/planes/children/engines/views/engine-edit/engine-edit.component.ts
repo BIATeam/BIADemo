@@ -46,7 +46,6 @@ export class EngineEditComponent
         .subscribe(engine => {
           if (
             this.crudConfiguration.isFixable === true &&
-            this.canFix !== true &&
             engine.isFixed === true
           ) {
             this.formReadOnlyMode = FormReadOnlyMode.on;

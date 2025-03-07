@@ -26,13 +26,10 @@ export class PlaneEditComponent extends CrudItemEditComponent<Plane> {
       this.crudItemService.crudItem$
         .pipe(filter(plane => !!plane && Object.keys(plane).length > 0))
         .subscribe(plane => {
-          if (
-            this.crudConfiguration.isFixable === true &&
-            this.canFix !== true &&
-            plane.isFixed === true
-          ) {
-            this.formReadOnlyMode = FormReadOnlyMode.on;
-          }
+          this.formReadOnlyMode =
+            this.crudConfiguration.isFixable === true && plane.isFixed === true
+              ? FormReadOnlyMode.on
+              : FormReadOnlyMode.off;
         })
     );
   }

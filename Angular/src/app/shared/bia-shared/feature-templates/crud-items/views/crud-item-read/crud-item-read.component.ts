@@ -1,6 +1,7 @@
-import { Component, Injector } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
+import { FormReadOnlyMode } from '../../model/crud-config';
 import { CrudItemSingleService } from '../../services/crud-item-single.service';
 import { CrudItemEditComponent } from '../crud-item-edit/crud-item-edit.component';
 
@@ -9,10 +10,12 @@ import { CrudItemEditComponent } from '../crud-item-edit/crud-item-edit.componen
   templateUrl: './crud-item-read.component.html',
   styleUrls: ['./crud-item-read.component.scss'],
 })
-export class CrudItemReadComponent<
-  CrudItem extends BaseDto,
-> extends CrudItemEditComponent<CrudItem> {
+export class CrudItemReadComponent<CrudItem extends BaseDto>
+  extends CrudItemEditComponent<CrudItem>
+  implements OnInit
+{
   public canEdit: boolean;
+  protected initialFormReadOnlyMode: FormReadOnlyMode;
 
   constructor(
     protected injector: Injector,
@@ -20,6 +23,11 @@ export class CrudItemReadComponent<
     protected authService: AuthService
   ) {
     super(injector, crudItemService);
+  }
+
+  ngOnInit(): void {
+    super.ngOnInit();
+    this.initialFormReadOnlyMode = this.formReadOnlyMode;
   }
 
   protected setPermissions(): void {

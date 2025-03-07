@@ -78,7 +78,6 @@ export class BiaTableComponent<TDto extends { id: number }>
   @Input() virtualScrollPageSize = 100;
   @Input() dictOptionDtos: DictOptionDto[] = [];
   @Input() readOnly = false;
-  @Input() canFix = false;
   @Input() showFixableState = false;
 
   protected isSelectFrozen = false;
