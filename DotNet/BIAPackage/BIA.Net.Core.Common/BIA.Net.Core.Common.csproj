@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<Version>4.0.1</Version>
+		<Version>4.0.2</Version>
 		<Description>Common classes for BIA.Net Core Framework</Description>
 		<Copyright>Copyright © BIA 2025</Copyright>
 		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>

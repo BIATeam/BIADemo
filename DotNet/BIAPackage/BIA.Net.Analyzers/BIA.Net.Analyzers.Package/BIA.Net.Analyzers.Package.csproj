@@ -9,7 +9,7 @@
 
 	<PropertyGroup>
 		<PackageId>BIA.Net.Analyzers</PackageId>
-		<PackageVersion>4.0.1.0</PackageVersion>
+		<PackageVersion>4.0.2.0</PackageVersion>
 		<Company>BIA</Company>
 		<Authors>BIA Team</Authors>
 		<Description>Analyzers for BIA.Net Core Framework</Description>

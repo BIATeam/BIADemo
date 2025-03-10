@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Version>4.0.1</Version>
+    <Version>4.0.2</Version>
     <Company>BIA</Company>
     <Description>Application layer classes for BIA.Net Core Framework</Description>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>

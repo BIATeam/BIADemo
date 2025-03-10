@@ -1,4 +1,5 @@
-﻿// <copyright file="PlaneArchiveService.cs" company="PlaceholderCompany">
+﻿// BIADemo only
+// <copyright file="PlaneArchiveService.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
