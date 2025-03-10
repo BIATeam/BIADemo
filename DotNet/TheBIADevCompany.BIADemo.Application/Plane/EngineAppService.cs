@@ -119,7 +119,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         /// <inheritdoc/>
         public override async Task<EngineDto> AddAsync(EngineDto dto, string mapperMode = null)
         {
-            var planeParent = await this.planeRepository.GetEntityAsync(dto.PlaneId);
+            var planeParent = await this.planeRepository.GetEntityAsync(dto.PlaneId, isReadOnlyMode: true);
             if (planeParent.IsFixed)
             {
                 throw new FrontUserException("Plane parent is fixed");
