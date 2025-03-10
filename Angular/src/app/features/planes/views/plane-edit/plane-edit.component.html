@@ -6,8 +6,13 @@
   [formReadOnlyMode]="formReadOnlyMode"
   [dictOptionDtos]="(planeService.optionsService.dictOptionDtos$ | async) ?? []"
   [isCrudItemOutdated]="isCrudItemOutdated"
+  [showFixableState]="crudConfiguration.isFixable"
+  [canFix]="canFix"
   (cancelled)="onCancelled()"
-  (save)="onSubmitted($event)"></app-plane-form>
+  (save)="onSubmitted($event)"
+  (fixedChanged)="
+    crudItemService.updateFixedStatus(crudItem.id, $event)
+  "></app-plane-form>
 <bia-spinner
   *ngIf="planeService.loadingGet$ | async"
   [overlay]="true"></bia-spinner>

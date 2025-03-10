@@ -12,6 +12,7 @@ import {
   OnInit,
   Output,
   QueryList,
+  SimpleChanges,
   TemplateRef,
   ViewChildren,
 } from '@angular/core';
@@ -57,9 +58,12 @@ export class BiaFormComponent<TDto extends { id: number }>
   @Input() isCrudItemOutdated = false;
   @Input() disableSubmitButton = false;
   @Input() showSubmitButton = true;
+  @Input() showFixableState?: boolean;
+  @Input() canFix?: boolean;
   @Output() save = new EventEmitter<any>();
   @Output() cancelled = new EventEmitter<void>();
   @Output() readOnlyChanged = new EventEmitter<boolean>();
+  @Output() fixableStateChanged = new EventEmitter<boolean>();
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   specificInputTemplate: TemplateRef<any>;
@@ -69,6 +73,7 @@ export class BiaFormComponent<TDto extends { id: number }>
   private _readOnly = false;
   protected sub = new Subscription();
   fieldsWithoutLayoutConfig: BiaFieldConfig<TDto>[] = [];
+  isFixed = false;
 
   @ViewChildren('refFormField', { read: ElementRef })
   formElements: QueryList<ElementRef>;
@@ -85,11 +90,9 @@ export class BiaFormComponent<TDto extends { id: number }>
   }
 
   ngOnInit() {
-    if (this.formReadOnlyMode !== FormReadOnlyMode.off) {
-      this.readOnly = true;
-    }
-
     this.initForm();
+    this.applyFormReadOnlyMode();
+    this.applyFixedState();
   }
 
   ngOnDestroy() {
@@ -110,12 +113,17 @@ export class BiaFormComponent<TDto extends { id: number }>
     });
   }
 
-  ngOnChanges() {
-    if (this.element && this.form) {
-      this.form.reset();
-      if (this.element) {
-        this.form.patchValue({ ...this.element });
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.element) {
+      if (this.element && this.form) {
+        this.form.reset();
+        if (this.element) {
+          this.form.patchValue({ ...this.element });
+        }
       }
+
+      this.applyFormReadOnlyMode();
+      this.applyFixedState();
     }
   }
 
@@ -233,10 +241,28 @@ export class BiaFormComponent<TDto extends { id: number }>
     if (this.formValidators) {
       this.form.addValidators(this.formValidators);
     }
+  }
 
-    if (this.readOnly) {
-      this.form.disable();
+  private applyFormReadOnlyMode() {
+    if (!this.form) {
+      return;
     }
+
+    switch (this.formReadOnlyMode) {
+      case FormReadOnlyMode.off:
+        this.readOnly = false;
+        this.form.enable();
+        break;
+      case FormReadOnlyMode.clickToEdit:
+      case FormReadOnlyMode.on:
+        this.readOnly = true;
+        this.form.disable();
+        break;
+    }
+
+    setTimeout(() => {
+      this.setFocus();
+    });
   }
 
   private initFieldsWithLayoutConfig() {
@@ -392,5 +418,32 @@ export class BiaFormComponent<TDto extends { id: number }>
     }
 
     return value;
+  }
+
+  get showHeaderContainer(): boolean {
+    return this.isFixableButtonVisible;
+  }
+
+  private applyFixedState(): void {
+    this.isFixed = (this.element as any)?.isFixed === true;
+  }
+
+  get isFixableButtonVisible(): boolean {
+    return (
+      this.showFixableState === true &&
+      (this.canFix === true || this.isFixed === true)
+    );
+  }
+
+  get fixableButtonLabel(): string {
+    return this.isFixed === true ? 'bia.fixed' : 'bia.unfixed';
+  }
+
+  get fixableButtonIcon(): string {
+    return this.isFixed === true ? 'pi pi-lock' : 'pi pi-lock-open';
+  }
+
+  onFixableButtonClicked(): void {
+    this.fixableStateChanged.emit(!this.isFixed);
   }
 }

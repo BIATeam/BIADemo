@@ -41,6 +41,14 @@
         <p-tableHeaderCheckbox
           *ngIf="canSelectMultipleElement"></p-tableHeaderCheckbox>
       </th>
+      <th
+        *ngIf="showFixableState"
+        [style.width]="widthSelect"
+        [alignFrozen]="alignFrozenSelect"
+        pFrozenColumn
+        [frozen]="isSelectFrozen">
+        {{ 'bia.fixed' | translate }}
+      </th>
       <ng-container *ngFor="let col of columns">
         <th
           *ngIf="col?.isSortable === true"
@@ -132,15 +140,26 @@
         pFrozenColumn
         [frozen]="isSelectFrozen">
         <ng-container *ngIf="rowData.id > 0">
-          <ng-template
-            #selectMultipleElement
-            [ngIf]="canSelectMultipleElement === true"
-            [ngIfElse]="selectSingleElement">
+          <ng-container
+            *ngIf="canSelectMultipleElement === true; else selectSingleElement">
             <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
-          </ng-template>
+          </ng-container>
+
           <ng-template #selectSingleElement>
             <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
           </ng-template>
+        </ng-container>
+      </td>
+      <td
+        *ngIf="showFixableState"
+        [style.width]="widthSelect"
+        [alignFrozen]="alignFrozenSelect"
+        pFrozenColumn
+        [frozen]="isSelectFrozen">
+        <ng-container *ngIf="rowData.isFixed === true">
+          <div class="flex justify-content-center">
+            <i class="pi pi-lock"></i>
+          </div>
         </ng-container>
       </td>
       <td

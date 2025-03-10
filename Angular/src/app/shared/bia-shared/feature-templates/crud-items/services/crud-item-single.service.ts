@@ -113,6 +113,8 @@ export abstract class CrudItemSingleService<CrudItem extends BaseDto> {
   abstract multiRemove(ids: any[]): void;
   abstract clearAll(): void;
   abstract clearCurrent(): void;
+  // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
+  updateFixedStatus(id: any, isFixed: boolean): void {}
 
   protected resetNewItemsIds(dtos: BaseDto[] | undefined): void {
     dtos?.forEach(dto => {

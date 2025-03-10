@@ -31,9 +31,12 @@ export class CrudItemFormComponent<CrudItem extends BaseDto> {
   @Input() isAdd?: boolean;
   @Input() isCrudItemOutdated = false;
   @Input() showSubmitButton = true;
+  @Input() showFixableState?: boolean;
+  @Input() canFix = false;
 
   @Output() save = new EventEmitter<CrudItem>();
   @Output() cancelled = new EventEmitter<void>();
+  @Output() fixedChanged = new EventEmitter<boolean>();
 
   @ViewChild(BiaFormComponent) biaFormComponent: BiaFormComponent<CrudItem>;
 
@@ -59,5 +62,9 @@ export class CrudItemFormComponent<CrudItem extends BaseDto> {
         relativeTo: this.activatedRoute,
       });
     }
+  }
+
+  onFixableStateChanged(fixed: boolean) {
+    this.fixedChanged.emit(fixed);
   }
 }

@@ -244,9 +244,9 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
   text-overflow: ellipsis;
 }
 
-// forms button always visible
 .p-dialog {
   .p-dialog-content {
+    // forms button always visible
     .bia-form:has(> .bia-form-fixed-buttons) {
       padding-bottom: 1.5rem;
       .bia-form-fixed-buttons:has(> div) {
@@ -256,6 +256,19 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
         right: 1rem;
         left: 0;
         padding: 0.75rem;
+        z-index: 5;
+      }
+    }
+    // forms header always visible
+    .bia-form:has(> .bia-form-header) {
+      padding-top: 1.5rem;
+      .bia-form-header:has(> div) {
+        background: var(--surface-f);
+        position: fixed;
+        top: 3rem;
+        right: 1rem;
+        left: 0;
+        margin: 0.75rem;
         z-index: 5;
       }
     }

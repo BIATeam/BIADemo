@@ -30,6 +30,7 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   @Input() canAdd = true;
   @Input() canDelete = true;
   @Input() canEdit = true;
+  @Input() canFix = false;
   @Input() canImport = false;
   @Input() canBack = false;
   @Input() canExportCSV = false;
@@ -38,8 +39,13 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   @Input() selectedElements: any[];
   @Input() showTableControllerButton = false;
   @Input() tableControllerVisible = false;
+  @Input() showFixedButtons = false;
   @Output() create = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
+  @Output() crudItemFixedChanged = new EventEmitter<{
+    crudItemId: any;
+    fixed: boolean;
+  }>();
   @Output() openFilter = new EventEmitter<void>();
   @Output() exportCSV = new EventEmitter<void>();
   @Output() fullExportCSV = new EventEmitter<void>();
@@ -128,5 +134,27 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
       this.canImport === true &&
       (this.canDelete === true || this.canAdd === true || this.canEdit === true)
     );
+  }
+
+  get isSelectedElementFixed(): boolean {
+    return (
+      this.selectedElements.length === 1 &&
+      this.selectedElements[0].isFixed === true
+    );
+  }
+
+  onFixedChanged(fixed: boolean): void {
+    this.crudItemFixedChanged.emit({
+      crudItemId: this.selectedElements[0].id,
+      fixed: fixed,
+    });
+  }
+
+  get isDeleteButtonDisabled(): boolean {
+    const selectedElements =
+      this.showFixedButtons === true
+        ? this.selectedElements.filter(e => e.isFixed !== true)
+        : this.selectedElements;
+    return selectedElements.length === 0;
   }
 }

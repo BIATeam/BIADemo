@@ -35,6 +35,8 @@
     "filter": "Filtrer",
     "filterMember": "Utilisateur membre",
     "filters": "Filtres",
+    "fix": "Figer",
+    "fixed": "Figé",
     "footerMode": "Style de pied de page",
     "fullscreen": "Plein écran",
     "greetings": "Bonjour",
@@ -95,6 +97,8 @@
       "translatedFields": "Champs traduits"
     },
     "true": "vrai",
+    "unfix": "Défiger",
+    "unfixed": "Non figé",
     "useCalcMode": "Édition dans le tableau",
     "useCompactMode": "Affichage compact",
     "useFullPage": "Utiliser la pleine page",

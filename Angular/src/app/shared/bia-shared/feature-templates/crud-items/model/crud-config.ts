@@ -55,6 +55,7 @@ export class CrudConfig<TDto extends { id: number }> {
     showResizableColumn: false,
   };
   formEditReadOnlyMode: FormReadOnlyMode;
+  isFixable: boolean;
 
   constructor({
     featureName,
@@ -76,6 +77,7 @@ export class CrudConfig<TDto extends { id: number }> {
     useVirtualScroll = false,
     useResizableColumn = false,
     showIcons,
+    isFixable = false,
   }: {
     featureName: string;
     fieldsConfig: BiaFieldsConfig<TDto>;
@@ -100,6 +102,7 @@ export class CrudConfig<TDto extends { id: number }> {
     useVirtualScroll?: boolean;
     useResizableColumn?: boolean;
     showIcons?: Partial<ShowIconsConfig>;
+    isFixable?: boolean;
   }) {
     this.featureName = featureName;
     this.fieldsConfig = fieldsConfig;
@@ -126,5 +129,6 @@ export class CrudConfig<TDto extends { id: number }> {
     if (showIcons) {
       this.showIcons = { ...this.showIcons, ...showIcons };
     }
+    this.isFixable = isFixable ?? false;
   }
 }

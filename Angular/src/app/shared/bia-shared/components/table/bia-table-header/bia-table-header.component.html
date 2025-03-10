@@ -21,12 +21,34 @@
     <button
       type="button"
       pButton
-      [disabled]="nbSelectedElements === 0"
+      [disabled]="isDeleteButtonDisabled"
       *ngIf="canDelete"
       icon="pi pi-trash"
       pTooltip="{{ 'bia.delete' | translate }}"
       tooltipPosition="top"
       (click)="onDelete()"></button>
+    <ng-container *ngIf="showFixedButtons && canFix">
+      <p-divider class="fixed-buttons-separator" layout="vertical" />
+      <button
+        type="button"
+        pButton
+        [disabled]="nbSelectedElements !== 1 || isSelectedElementFixed"
+        icon="pi pi-lock"
+        pTooltip="{{ 'bia.fix' | translate }}"
+        tooltipPosition="top"
+        (click)="onFixedChanged(true)"></button>
+      <button
+        type="button"
+        pButton
+        [disabled]="nbSelectedElements !== 1 || !isSelectedElementFixed"
+        icon="pi pi-unlock"
+        pTooltip="{{ 'bia.unfix' | translate }}"
+        tooltipPosition="top"
+        class="p-button-outlined"
+        (click)="onFixedChanged(false)"></button>
+      <p-divider class="fixed-buttons-separator" layout="vertical" />
+    </ng-container>
+
     <ng-container *ngTemplateOutlet="actionOnSelectedTemplate"></ng-container>
   </div>
   <div

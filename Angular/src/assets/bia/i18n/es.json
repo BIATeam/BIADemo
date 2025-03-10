@@ -35,6 +35,8 @@
     "filter": "Filtro",
     "filterMember": "Usuario miembro",
     "filters": "Filtros",
+    "fix": "Fijar",
+    "fixed": "Fijo",
     "footerMode": "Estilo de pie de página",
     "fullscreen": "Pantalla completa",
     "greetings": "¡Hola!",
@@ -95,6 +97,8 @@
       "translatedFields": "Campos traducidos"
     },
     "true": "verdadero",
+    "unfix": "Desfijar",
+    "unfixed": "No fijo",
     "useCalcMode": "Editando en la tabla",
     "useCompactMode": "Pantalla compacta",
     "useFullPage": "Utilizar página completa",

@@ -15,7 +15,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     /// <summary>
     /// The interface defining the application service for plane.
     /// </summary>
-    public interface IEngineAppService : ICrudAppServiceBase<EngineDto, Engine, int, PagingFilterFormatDto>
+    public interface IEngineAppService : IFixableCrudAppServiceBase<EngineDto, Engine, int, PagingFilterFormatDto>
     {
         // Begin BIADemo
 

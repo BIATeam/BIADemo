@@ -11,9 +11,11 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
     using Hangfire;
@@ -29,7 +31,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     /// <summary>
     /// The application service used for plane.
     /// </summary>
-    public class EngineAppService : CrudAppServiceBase<EngineDto, Engine, int, PagingFilterFormatDto, EngineMapper>, IEngineAppService
+    public class EngineAppService : FixableCrudAppServiceBase<EngineDto, Engine, int, PagingFilterFormatDto, EngineMapper>, IEngineAppService
     {
         // BIAToolKit - Begin AncestorTeam Site
 
@@ -51,15 +53,22 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         private readonly IEngineRepository repository;
 
         /// <summary>
+        /// The plane repository.
+        /// </summary>
+        private readonly ITGenericRepository<Plane, int> planeRepository;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="EngineAppService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
+        /// <param name="planeRepository">The plane repository.</param>
         /// <param name="principal">The claims principal.</param>
         /// <param name="configuration">The configuration.</param>
-        public EngineAppService(IEngineRepository repository, IPrincipal principal, IConfiguration configuration)
+        public EngineAppService(IEngineRepository repository, ITGenericRepository<Plane, int> planeRepository, IPrincipal principal, IConfiguration configuration)
             : base(repository)
         {
             this.repository = repository;
+            this.planeRepository = planeRepository;
             this.configuration = configuration;
 
             // BIAToolKit - Begin AncestorTeam Site
@@ -105,6 +114,18 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         {
             specification ??= EngineSpecification.SearchGetAll(filters);
             return base.GetCsvAsync(filters, id, specification, filter, accessMode, queryMode, mapperMode, isReadOnlyMode);
+        }
+
+        /// <inheritdoc/>
+        public override async Task<EngineDto> AddAsync(EngineDto dto, string mapperMode = null)
+        {
+            var planeParent = await this.planeRepository.GetEntityAsync(dto.PlaneId, isReadOnlyMode: true);
+            if (planeParent.IsFixed)
+            {
+                throw new FrontUserException("Plane parent is fixed");
+            }
+
+            return await base.AddAsync(dto, mapperMode);
         }
     }
 }

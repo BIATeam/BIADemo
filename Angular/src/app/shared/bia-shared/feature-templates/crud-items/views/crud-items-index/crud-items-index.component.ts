@@ -77,6 +77,7 @@ export class CrudItemsIndexComponent<
   }
 
   protected sub = new Subscription();
+  protected permissionSub = new Subscription();
   showColSearch = false;
   globalSearchValue = '';
   defaultPageSize = DEFAULT_PAGE_SIZE;
@@ -93,6 +94,7 @@ export class CrudItemsIndexComponent<
   canAdd = false;
   canSave = false;
   canSelect = false;
+  canFix = false;
   columns: KeyValuePair[];
   displayedColumns: KeyValuePair[];
   reorderableColumns = true;
@@ -348,6 +350,7 @@ export class CrudItemsIndexComponent<
     if (this.sub) {
       this.sub.unsubscribe();
     }
+    this.permissionSub.unsubscribe();
     this.onHide();
   }
 
@@ -471,7 +474,12 @@ export class CrudItemsIndexComponent<
 
   onDelete() {
     if (this.canDelete) {
-      this.crudItemService.multiRemove(this.selectedCrudItems.map(x => x.id));
+      const itemsToDelete =
+        this.crudConfiguration.isFixable && this.canFix !== true
+          ? this.selectedCrudItems.filter(x => x.isFixed === false)
+          : this.selectedCrudItems;
+
+      this.crudItemService.multiRemove(itemsToDelete.map(x => x.id));
     }
   }
 
@@ -568,10 +576,13 @@ export class CrudItemsIndexComponent<
   }
 
   protected setPermissions() {
-    // TODO redefine in plane
+    this.permissionSub.unsubscribe();
+    this.permissionSub = new Subscription();
+
     this.canEdit = true;
     this.canDelete = true;
     this.canAdd = true;
+    this.canFix = false;
   }
   protected initTableConfiguration() {
     this.columns = this.crudConfiguration.fieldsConfig.columns.map(

@@ -35,6 +35,8 @@
     "filter": "Filter",
     "filterMember": "Member user",
     "filters": "Filters",
+    "fix": "Fix",
+    "fixed": "Fixed",
     "footerMode": "Footer style",
     "fullscreen": "Full Screen",
     "greetings": "Hello",
@@ -95,6 +97,8 @@
       "translatedFields": "Translated fields"
     },
     "true": "true",
+    "unfix": "Unfix",
+    "unfixed": "Unfixed",
     "useCalcMode": "Edit in table",
     "useCompactMode": "Compact display",
     "useFullPage": "Use full page",

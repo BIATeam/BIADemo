@@ -65,6 +65,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
             }
 
             entity.Id = dto.Id;
+            entity.IsFixed = dto.IsFixed;
             entity.Msn = dto.Msn;
             entity.Manufacturer = dto.Manufacturer;
             entity.IsActive = dto.IsActive;
@@ -142,6 +143,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
             return entity => new PlaneDto
             {
                 Id = entity.Id,
+                IsFixed = entity.IsFixed,
                 RowVersion = Convert.ToBase64String(entity.RowVersion),
                 Msn = entity.Msn,
                 Manufacturer = entity.Manufacturer,

@@ -134,7 +134,8 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
       (!rowData ||
         (rowData &&
           ((rowData.id !== 0 &&
-            this.table?.editingRowKeys[rowData.id] !== true) ||
+            this.table?.editingRowKeys[rowData.id] !== true &&
+            rowData.isFixed !== true) ||
             (rowData.id === 0 && this.editFooter !== true))))
     ) {
       if (this.hasChanged === true) {

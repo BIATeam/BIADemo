@@ -3,77 +3,95 @@
   (submit)="onSubmit()"
   class="flex flex-column bia-form"
   [formGroup]="form">
-  <ng-container *ngIf="formLayoutConfig">
-    <ng-container *ngFor="let item of formLayoutConfig.items">
-      <ng-container [ngSwitch]="item.type">
-        <ng-container *ngSwitchCase="'group'">
+  <div class="header-container bia-form-header" *ngIf="showHeaderContainer">
+    <div class="fixed-state" *ngIf="isFixableButtonVisible">
+      <button
+        pButton
+        icon="pi {{ fixableButtonIcon }}"
+        label="{{ fixableButtonLabel | translate }}"
+        type="button"
+        [disabled]="!canFix"
+        [ngClass]="{ 'p-button-outlined': !isFixed }"
+        (click)="onFixableButtonClicked()"></button>
+    </div>
+  </div>
+
+  <div class="bia-form-fields">
+    <ng-container *ngIf="formLayoutConfig">
+      <ng-container *ngFor="let item of formLayoutConfig.items">
+        <ng-container [ngSwitch]="item.type">
+          <ng-container *ngSwitchCase="'group'">
+            <ng-container
+              *ngTemplateOutlet="
+                groupTemplate;
+                context: { group: item }
+              "></ng-container>
+          </ng-container>
+          <ng-container *ngSwitchCase="'row'">
+            <ng-container
+              *ngTemplateOutlet="
+                rowTemplate;
+                context: { row: item }
+              "></ng-container>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+
+      <ng-template #groupTemplate let-group="group">
+        <div class="bia-form-group">
+          <h6>{{ group.name | translate }}</h6>
           <ng-container
             *ngTemplateOutlet="
-              groupTemplate;
-              context: { group: item }
+              rowsTemplate;
+              context: { rows: group.rows }
             "></ng-container>
-        </ng-container>
-        <ng-container *ngSwitchCase="'row'">
+        </div>
+      </ng-template>
+
+      <ng-template #rowsTemplate let-rows="rows">
+        <ng-container *ngFor="let row of rows">
           <ng-container
             *ngTemplateOutlet="
               rowTemplate;
-              context: { row: item }
+              context: { row: row }
             "></ng-container>
         </ng-container>
-      </ng-container>
+      </ng-template>
+
+      <ng-template #rowTemplate let-row="row">
+        <div class="grid bia-form-row">
+          <div
+            *ngFor="let column of row.columns"
+            [class]="column.columnClass ?? row.computedColumnClass">
+            <ng-container [ngSwitch]="column.type">
+              <ng-container *ngSwitchCase="'group'">
+                <ng-container
+                  *ngTemplateOutlet="
+                    groupTemplate;
+                    context: { group: column }
+                  "></ng-container>
+              </ng-container>
+              <ng-container *ngSwitchCase="'field'">
+                <ng-container
+                  *ngTemplateOutlet="
+                    fieldTemplate;
+                    context: { field: column.fieldConfig }
+                  "></ng-container>
+              </ng-container>
+            </ng-container>
+          </div>
+        </div>
+      </ng-template>
     </ng-container>
 
-    <ng-template #groupTemplate let-group="group">
-      <div class="bia-form-group">
-        <h6>{{ group.name | translate }}</h6>
-        <ng-container
-          *ngTemplateOutlet="
-            rowsTemplate;
-            context: { rows: group.rows }
-          "></ng-container>
-      </div>
-    </ng-template>
-
-    <ng-template #rowsTemplate let-rows="rows">
-      <ng-container *ngFor="let row of rows">
-        <ng-container
-          *ngTemplateOutlet="rowTemplate; context: { row: row }"></ng-container>
-      </ng-container>
-    </ng-template>
-
-    <ng-template #rowTemplate let-row="row">
-      <div class="grid bia-form-row">
-        <div
-          *ngFor="let column of row.columns"
-          [class]="column.columnClass ?? row.computedColumnClass">
-          <ng-container [ngSwitch]="column.type">
-            <ng-container *ngSwitchCase="'group'">
-              <ng-container
-                *ngTemplateOutlet="
-                  groupTemplate;
-                  context: { group: column }
-                "></ng-container>
-            </ng-container>
-            <ng-container *ngSwitchCase="'field'">
-              <ng-container
-                *ngTemplateOutlet="
-                  fieldTemplate;
-                  context: { field: column.fieldConfig }
-                "></ng-container>
-            </ng-container>
-          </ng-container>
-        </div>
-      </div>
-    </ng-template>
-  </ng-container>
-
-  <ng-container *ngFor="let field of fieldsWithoutLayoutConfig">
-    <ng-container
-      *ngTemplateOutlet="
-        fieldTemplate;
-        context: { field: field }
-      "></ng-container>
-  </ng-container>
+    <ng-container *ngFor="let field of fieldsWithoutLayoutConfig">
+      <ng-container
+        *ngTemplateOutlet="
+          fieldTemplate;
+          context: { field: field }
+        "></ng-container>
+    </ng-container>
+  </div>
   <div class="footer-container bia-form-fixed-buttons">
     <div class="flex gap-2 align-items-center info-locked-container">
       <button

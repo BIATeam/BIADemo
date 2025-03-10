@@ -17,7 +17,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
     /// The DTO used to represent a Engine.
     /// </summary>
     [BiaDtoClass(AncestorTeam = "Site")]
-    public class EngineDto : BaseDto<int>
+    public class EngineDto : FixableDto<int>
     {
         /// <summary>
         /// Gets or sets the Manufacturer's Serial Number.

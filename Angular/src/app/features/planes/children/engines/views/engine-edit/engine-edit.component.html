@@ -7,6 +7,8 @@
     (engineService.optionsService.dictOptionDtos$ | async) ?? []
   "
   [isCrudItemOutdated]="isCrudItemOutdated"
+  [showFixableState]="crudConfiguration.isFixable"
+  [formReadOnlyMode]="formReadOnlyMode"
   (cancelled)="onCancelled()"
   (save)="onSubmitted($event)"></app-engine-form>
 <bia-spinner

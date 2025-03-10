@@ -11,6 +11,7 @@ import {
   PostParam,
   PutParam,
   SaveParam,
+  UpdateFixedStatusParam,
 } from '../models/http-params';
 import { GenericDas } from './generic-das.service';
 
@@ -57,5 +58,9 @@ export abstract class AbstractDas<
 
   getFile(event: TableLazyLoadEvent, endpoint = 'csv'): Observable<any> {
     return this.getItemFile(event, endpoint);
+  }
+
+  updateFixedStatus(param: UpdateFixedStatusParam): Observable<TOut> {
+    return this.updateFixedStatusItem<TOut>(param);
   }
 }
