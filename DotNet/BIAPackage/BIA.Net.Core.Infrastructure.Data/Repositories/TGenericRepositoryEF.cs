@@ -354,18 +354,16 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         }
 
         /// <inheritdoc/>
-        public async Task UpdateFixedAsync(TKey id, bool isFixed)
+        public void UpdateFixedAsync(TEntity item, bool isFixed)
         {
-            var entity = await this.GetEntityAsync(id) ?? throw new ElementNotFoundException();
-            if (entity is not IEntityFixable<TKey> fixableEntity)
+            if (item is not IEntityFixable<TKey> fixableEntity)
             {
-                throw new BadBiaFrameworkUsageException($"Entity {entity.GetType()} is not a fixable entity");
+                throw new BadBiaFrameworkUsageException($"Entity {item.GetType()} is not a fixable entity");
             }
 
             fixableEntity.IsFixed = isFixed;
             fixableEntity.FixedDate = isFixed ? DateTime.UtcNow : null;
             this.SetModified(fixableEntity as TEntity);
-            await this.UnitOfWork.CommitAsync();
         }
 
         /// <summary>

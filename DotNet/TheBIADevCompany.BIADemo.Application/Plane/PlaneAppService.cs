@@ -22,6 +22,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
     using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
     using TheBIADevCompany.BIADemo.Domain.Plane.Mappers;
+    using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
     /// <summary>
     /// The application service used for plane.
@@ -36,9 +37,9 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         private readonly int currentTeamId;
 
         /// <summary>
-        /// The engine app service.
+        /// The engine app repository.
         /// </summary>
-        private readonly IEngineAppService engineAppService;
+        private readonly IEngineRepository engineRepository;
 
         // BIAToolKit - End AncestorTeam Site
 
@@ -46,9 +47,9 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         /// Initializes a new instance of the <see cref="PlaneAppService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
-        /// <param name="engineAppService">The engine app service.</param>
+        /// <param name="engineRepository">The engine app service.</param>
         /// <param name="principal">The claims principal.</param>
-        public PlaneAppService(ITGenericRepository<Plane, int> repository, IEngineAppService engineAppService, IPrincipal principal)
+        public PlaneAppService(ITGenericRepository<Plane, int> repository, IEngineRepository engineRepository, IPrincipal principal)
             : base(repository)
         {
             // BIAToolKit - Begin AncestorTeam Site
@@ -59,19 +60,28 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
             this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<Plane>(p => p.SiteId == this.currentTeamId));
 
             // BIAToolKit - End AncestorTeam Site
-            this.engineAppService = engineAppService;
+            this.engineRepository = engineRepository;
         }
 
         /// <inheritdoc/>
         public override async Task<PlaneDto> UpdateFixedAsync(int id, bool isFixed)
         {
-            var engines = await this.engineAppService.GetAllAsync(filter: x => x.PlaneId == id);
-            foreach (var engine in engines)
+            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
             {
-                await this.engineAppService.UpdateFixedAsync(engine.Id, isFixed);
-            }
+                // Update entity fixed status
+                var entity = await this.Repository.GetEntityAsync(id) ?? throw new ElementNotFoundException();
+                this.Repository.UpdateFixedAsync(entity, isFixed);
 
-            return await base.UpdateFixedAsync(id, isFixed);
+                // Update children fixed status
+                var engines = await this.engineRepository.GetAllEntityAsync(filter: x => x.PlaneId == id);
+                foreach (var engine in engines)
+                {
+                    this.engineRepository.UpdateFixedAsync(engine, isFixed);
+                }
+
+                await this.Repository.UnitOfWork.CommitAsync();
+                return await this.GetAsync(id);
+            });
         }
     }
 }

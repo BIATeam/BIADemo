@@ -183,9 +183,8 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <summary>
         /// Update the fixed status of an <see cref="IEntityFixable{TKey}"/>.
         /// </summary>
-        /// <param name="id">ID of the entity.</param>
+        /// <param name="item">The entity.</param>
         /// <param name="isFixed">Fixed status.</param>
-        /// <returns><see cref="Task"/>.</returns>
-        Task UpdateFixedAsync(TKey id, bool isFixed);
+        void UpdateFixedAsync(TEntity item, bool isFixed);
     }
 }

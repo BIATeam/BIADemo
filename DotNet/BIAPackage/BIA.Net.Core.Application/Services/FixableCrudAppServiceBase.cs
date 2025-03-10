@@ -5,6 +5,7 @@
 namespace BIA.Net.Core.Application.Services
 {
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.RepoContract;
@@ -35,13 +36,13 @@ namespace BIA.Net.Core.Application.Services
         /// <inheritdoc/>
         public virtual async Task<TDto> UpdateFixedAsync(TKey id, bool isFixed)
         {
-            await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
+            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
             {
-                await this.Repository.UpdateFixedAsync(id, isFixed);
-                return Task.CompletedTask;
+                var entity = await this.Repository.GetEntityAsync(id) ?? throw new ElementNotFoundException();
+                this.Repository.UpdateFixedAsync(entity, isFixed);
+                await this.Repository.UnitOfWork.CommitAsync();
+                return await this.GetAsync(id);
             });
-
-            return await this.GetAsync(id);
         }
     }
 }
