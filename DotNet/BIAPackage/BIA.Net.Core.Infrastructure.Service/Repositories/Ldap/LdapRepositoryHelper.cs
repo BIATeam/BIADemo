@@ -5,7 +5,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Ldap
 {
     using System;
     using System.Collections.Generic;
-    using System.DirectoryServices.ActiveDirectory;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
 

@@ -137,7 +137,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         {
             if (searchUserResponseDto != null)
             {
-
                 UserFromDirectory userFromDirectory = new UserFromDirectory
                 {
                     FirstName = searchUserResponseDto.FirstName,
@@ -196,7 +195,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
                     }
                 }
 
-                if (userFromDirectory.Guid == default && Guid.TryParse(searchUserResponseDto.Id, out Guid resultId))
+                if (userFromDirectory.Guid == Guid.Empty && Guid.TryParse(searchUserResponseDto.Id, out Guid resultId))
                 {
                     userFromDirectory.Guid = resultId;
                 }

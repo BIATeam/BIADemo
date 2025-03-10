@@ -15,7 +15,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Ldap
         private const int ERROR_SUCCESS = 0;
 
         [Flags]
-        private enum DSGETDCNAME_FLAGS : uint
+        private enum DSGETDCNAME : uint
         {
             DS_FORCE_REDISCOVERY = 0x00000001,
             DS_DIRECTORY_SERVICE_REQUIRED = 0x00000010,
@@ -40,7 +40,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Ldap
         /// Gets the netbios name for domain.
         /// </summary>
         /// <param name="dns">The DNS.</param>
-        /// <returns>the netbios name domain</returns>
+        /// <returns>the netbios name domain.</returns>
         /// <exception cref="System.ComponentModel.Win32Exception">if error.</exception>
         internal static string GetNetbiosNameForDomain(string dns)
         {
@@ -50,7 +50,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Ldap
                 dns,
                 IntPtr.Zero,
                 null,
-                DSGETDCNAME_FLAGS.DS_IS_DNS_NAME | DSGETDCNAME_FLAGS.DS_RETURN_FLAT_NAME,
+                DSGETDCNAME.DS_IS_DNS_NAME | DSGETDCNAME.DS_RETURN_FLAT_NAME,
                 out pDomainInfo);
             try
             {
@@ -79,7 +79,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Ldap
             [In] string domainName,
             [In] IntPtr domainGuid,
             [In] string siteName,
-            [In] DSGETDCNAME_FLAGS flags,
+            [In] DSGETDCNAME flags,
             [Out] out IntPtr domainControllerInfo);
 
         [DllImport("Netapi32.dll")]
@@ -87,8 +87,9 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Ldap
             [In] IntPtr buffer);
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-        private class DomainControllerInfo
+        private sealed class DomainControllerInfo
         {
+#pragma warning disable S1144 // Unused private types or members should be removed
             public string DomainControllerName { get; set; }
 
             public string DomainControllerAddress { get; set; }
@@ -106,6 +107,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Ldap
             public string DcSiteName { get; set; }
 
             public string ClientSiteName { get; set; }
+#pragma warning restore S1144 // Unused private types or members should be removed
         }
     }
 }

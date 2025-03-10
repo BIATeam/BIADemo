@@ -12,9 +12,9 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <summary>
         /// Test if Is Local server is connected on a domain.
         /// </summary>
-        /// <param name="domain">The connected domain.</param>
+        /// <param name="localLdapName">The connected domain.</param>
         /// <returns>True if server is on a domain.</returns>
-        public bool IsLocalServerOnADomain(out string domain);
+        public bool IsLocalServerOnADomain(out string localLdapName);
 
         /// <summary>
         /// Test if Is Local Machine domain.

@@ -25,7 +25,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     /// </summary>
     public class LdapRepository : GenericLdapRepository<UserFromDirectory>
     {
-        protected readonly IUserIdentityKeyDomainService userIdentityKeyDomainService;
+        /// <summary>
+        /// The user identity key domain service.
+        /// </summary>
+        private readonly IUserIdentityKeyDomainService userIdentityKeyDomainService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LdapRepository"/> class.
@@ -43,6 +46,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         {
             this.userIdentityKeyDomainService = userIdentityKeyDomainService;
         }
+
+        /// <summary>
+        /// Gets the user identity key domain service.
+        /// </summary>
+        protected IUserIdentityKeyDomainService UserIdentityKeyDomainService => this.userIdentityKeyDomainService;
 
         /// <summary>
         /// Convert the Ad entry in a UserInfoDirectory Object.
@@ -103,7 +111,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
                 {
                         user.IsEmployee = false;
                         user.IsExternal = true;
-                        //user.ExternalCompany = extInfo[1];
                 }
 
                 // Set sub department
@@ -118,6 +125,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
                     }
                 }
             }
+
             return user;
         }
 

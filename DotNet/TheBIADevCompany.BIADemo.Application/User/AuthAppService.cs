@@ -92,7 +92,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 #endif
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AuthAppService"/> class.
+        /// Initializes a new instance of the <see cref="AuthAppService" /> class.
         /// </summary>
         /// <param name="userAppService">The user application service.</param>
         /// <param name="teamAppService">The team application service.</param>
@@ -105,6 +105,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="configuration">The configuration.</param>
         /// <param name="biaNetconfiguration">The bia netconfiguration.</param>
         /// <param name="userDirectoryHelper">The user directory helper.</param>
+        /// <param name="ldapRepositoryHelper">The LDAP repository helper.</param>
         public AuthAppService(
 #if BIA_FRONT_FEATURE
             IUserAppService userAppService,
