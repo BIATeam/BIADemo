@@ -19,7 +19,7 @@
       (toggleTableControllerVisibility)="toggleTableControllerVisibility()">
       <ng-template pTemplate="customControl">
         <button
-          *ngIf="isFixed"
+          *ngIf="isParentFixed"
           pButton
           icon="pi pi-lock"
           label="{{ 'bia.fixed' | translate }}"
@@ -80,7 +80,7 @@
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
       [scrollHeightValue]="getFillScrollHeightValue()"
-      [readOnly]="isFixed"></bia-table>
+      [readOnly]="isParentFixed"></bia-table>
     <app-engine-table
       *ngIf="crudConfiguration.useCalcMode"
       [elements]="(crudItems$ | async) ?? []"
@@ -107,6 +107,6 @@
       (stateSave)="onStateSave($event)"
       (save)="onSave($event)"
       [scrollHeightValue]="getFillScrollHeightValue()"
-      [readOnly]="isFixed"></app-engine-table>
+      [readOnly]="isParentFixed"></app-engine-table>
   </div>
 </div>
