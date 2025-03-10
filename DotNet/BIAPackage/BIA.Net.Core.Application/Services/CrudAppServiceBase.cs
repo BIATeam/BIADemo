@@ -6,16 +6,11 @@ namespace BIA.Net.Core.Application.Services
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
-    using System.Text;
     using System.Threading.Tasks;
-    using System.Transactions;
-    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract;
@@ -326,6 +321,18 @@ namespace BIA.Net.Core.Application.Services
             string mapperMode = null)
         {
             return await this.SaveAsync<TDto, TMapper>(dtos, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
+        }
+
+        /// <inheritdoc/>
+        public virtual async Task<TDto> UpdateFixedAsync(TKey id, bool isFixed)
+        {
+            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
+            {
+                var entity = await this.Repository.GetEntityAsync(id) ?? throw new ElementNotFoundException();
+                this.Repository.UpdateFixedAsync(entity, isFixed);
+                await this.Repository.UnitOfWork.CommitAsync();
+                return await this.GetAsync(id);
+            });
         }
     }
 }

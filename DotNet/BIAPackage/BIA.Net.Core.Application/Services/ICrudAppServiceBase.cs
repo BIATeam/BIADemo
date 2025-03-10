@@ -12,7 +12,6 @@ namespace BIA.Net.Core.Application.Services
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.QueryOrder;
-    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
@@ -297,5 +296,13 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="dtos">The dto list.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task RemoveBulkAsync(IEnumerable<TDto> dtos);
+
+        /// <summary>
+        /// Update the fixed status of an <see cref="IEntityFixable{TKey}"/>.
+        /// </summary>
+        /// <param name="id">ID of the entity.</param>
+        /// <param name="isFixed">Fixed status.</param>
+        /// <returns>Updated DTO.</returns>
+        Task<TDto> UpdateFixedAsync(TKey id, bool isFixed);
     }
 }

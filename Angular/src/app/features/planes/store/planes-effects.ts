@@ -248,7 +248,7 @@ export class PlanesEffects {
       })
     )
   );
-
+  // Begin BIADemo
   updateFixedStatus$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeaturePlanesActions.updateFixedStatus),
@@ -279,6 +279,7 @@ export class PlanesEffects {
       })
     )
   );
+  // End BIADemo
 
   constructor(
     private actions$: Actions,

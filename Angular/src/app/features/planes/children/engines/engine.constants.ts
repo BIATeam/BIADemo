@@ -12,7 +12,9 @@ export const engineCRUDConfiguration: CrudConfig<Engine> = new CrudConfig({
   featureName: 'engines',
   fieldsConfig: engineFieldsConfiguration,
   formLayoutConfig: engineFormLayoutConfiguration,
+  // Begin BIADemo
   isFixable: true,
+  // End BIADemo
   useCalcMode: true,
   useSignalR: false,
   useView: true,

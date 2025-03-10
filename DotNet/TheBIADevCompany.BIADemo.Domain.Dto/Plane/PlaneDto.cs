@@ -15,7 +15,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
     /// The DTO used to represent a plane.
     /// </summary>
     [BiaDtoClass(AncestorTeam = "Site")]
-    public class PlaneDto : FixableDto<int>
+    public class PlaneDto : BaseDto<int>
     {
         /// <summary>
         /// Gets or sets the Manufacturer's Serial Number.

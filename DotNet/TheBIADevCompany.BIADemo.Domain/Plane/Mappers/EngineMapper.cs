@@ -63,7 +63,11 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
             }
 
             entity.Id = dto.Id;
+
+            // Begin BIADemo
             entity.IsFixed = dto.IsFixed;
+
+            // End BIADemo
             entity.Reference = dto.Reference;
             entity.Manufacturer = dto.Manufacturer;
             entity.NextMaintenanceDate = dto.NextMaintenanceDate;
@@ -116,7 +120,11 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
             return entity => new EngineDto
             {
                 Id = entity.Id,
+
+                // Begin BIADemo
                 IsFixed = entity.IsFixed,
+
+                // End BIADemo
                 RowVersion = Convert.ToBase64String(entity.RowVersion),
                 Reference = entity.Reference,
                 Manufacturer = entity.Manufacturer,

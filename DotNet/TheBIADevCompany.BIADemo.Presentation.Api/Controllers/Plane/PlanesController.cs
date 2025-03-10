@@ -330,6 +330,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Planes{BiaConstants.Csv.Extension}");
         }
 
+        // Begin BIADemo
+
         /// <summary>
         /// Update the fixed status of an item by its id.
         /// </summary>
@@ -353,5 +355,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
                 return this.NotFound();
             }
         }
+
+        // End BIADemo
     }
 }

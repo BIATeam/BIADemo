@@ -1,13 +1,17 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
+// Begin BIADemo
 import { Permission } from 'src/app/shared/permission';
+// End BIADemo
 import { EngineTableComponent } from '../../components/engine-table/engine-table.component';
 import { engineCRUDConfiguration } from '../../engine.constants';
 import { Engine } from '../../model/engine';
 import { EngineService } from '../../services/engine.service';
-// BIAToolKit - Begin Option
+// Begin BIADemo
 import { filter } from 'rxjs';
+// End BIADemo
+// BIAToolKit - Begin Option
 import { EngineOptionsService } from '../../services/engine-options.service';
 // BIAToolKit - End Option
 
@@ -49,7 +53,7 @@ export class EnginesIndexComponent
     );
     // BIAToolKit - End Option
   }
-
+  // Begin BIADemo
   protected async setPermissions() {
     super.setPermissions();
 
@@ -74,4 +78,5 @@ export class EnginesIndexComponent
         })
     );
   }
+  // End BIADemo
 }

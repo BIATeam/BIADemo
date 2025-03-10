@@ -3,9 +3,11 @@ import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templat
 import { engineCRUDConfiguration } from '../../engine.constants';
 import { Engine } from '../../model/engine';
 import { EngineService } from '../../services/engine.service';
-// BIAToolKit - Begin Option
+// Begin BIADemo
 import { filter } from 'rxjs';
 import { FormReadOnlyMode } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
+// End BIADemo
+// BIAToolKit - Begin Option
 import { EngineOptionsService } from '../../services/engine-options.service';
 // BIAToolKit - End Option
 
@@ -38,7 +40,7 @@ export class EngineEditComponent
     );
     // BIAToolKit - End Option
   }
-
+  // Begin BIADemo
   protected setPermissions(): void {
     super.setPermissions();
 
@@ -55,4 +57,5 @@ export class EngineEditComponent
         })
     );
   }
+  // End BIADemo
 }
