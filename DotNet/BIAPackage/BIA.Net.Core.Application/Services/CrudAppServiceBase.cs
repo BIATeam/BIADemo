@@ -217,9 +217,10 @@ namespace BIA.Net.Core.Application.Services
             TKey id,
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,
-            string mapperMode = null)
+            string mapperMode = null,
+            bool bypassFixed = false)
         {
-            return await this.RemoveAsync<TDto, TMapper>(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
+            return await this.RemoveAsync<TDto, TMapper>(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, bypassFixed: bypassFixed);
         }
 
         /// <inheritdoc cref="ICrudAppServiceBase{TDto,TFilterDto}.RemoveAsync"/>
@@ -227,9 +228,10 @@ namespace BIA.Net.Core.Application.Services
             List<TKey> ids,
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,
-            string mapperMode = null)
+            string mapperMode = null,
+            bool bypassFixed = false)
         {
-            return await this.RemoveAsync<TDto, TMapper>(ids, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
+            return await this.RemoveAsync<TDto, TMapper>(ids, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, bypassFixed: bypassFixed);
         }
 
         /// <inheritdoc cref="ICrudAppServiceBase{TDto,TEntity,TFilterDto}.BulkAddAsync"/>

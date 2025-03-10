@@ -395,12 +395,14 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="bypassFixed">Indicates weither the fixed security should be bypassed or not.</param>
         /// <returns>The deleted DTO.</returns>
         protected virtual async Task<TOtherDto> RemoveAsync<TOtherDto, TOtherMapper>(
             TKey id,
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,
-            string mapperMode = null)
+            string mapperMode = null,
+            bool bypassFixed = false)
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
@@ -414,9 +416,9 @@ namespace BIA.Net.Core.Domain.Service
                     throw new ElementNotFoundException();
                 }
 
-                if (entity is IEntityFixable<TKey> entityFixable && entityFixable.IsFixed)
+                if (!bypassFixed && entity is IEntityFixable<TKey> entityFixable && entityFixable.IsFixed)
                 {
-                    throw new FrontUserException("Item is fixed and cannot be edited.");
+                    throw new FrontUserException("Item is fixed and cannot be deleted.");
                 }
 
                 var dto = new TOtherDto();
@@ -437,12 +439,14 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="bypassFixed">Indicates weither the fixed security should be bypassed or not.</param>
         /// <returns>The deleted DTOs.</returns>
         protected virtual async Task<List<TOtherDto>> RemoveAsync<TOtherDto, TOtherMapper>(
             List<TKey> ids,
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,
-            string mapperMode = null)
+            string mapperMode = null,
+            bool bypassFixed = false)
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
