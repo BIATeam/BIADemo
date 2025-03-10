@@ -16,10 +16,5 @@ namespace BIA.Net.Core.Domain.Dto.Base
         /// Gets or sets the IsFixed.
         /// </summary>
         public bool IsFixed { get; set; }
-
-        /// <summary>
-        /// Gets or sets the FixedDate.
-        /// </summary>
-        public DateTime? FixedDate { get; set; }
     }
 }

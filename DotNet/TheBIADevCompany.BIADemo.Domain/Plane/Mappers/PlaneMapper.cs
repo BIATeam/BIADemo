@@ -66,7 +66,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
 
             entity.Id = dto.Id;
             entity.IsFixed = dto.IsFixed;
-            entity.FixedDate = dto.FixedDate;
             entity.Msn = dto.Msn;
             entity.Manufacturer = dto.Manufacturer;
             entity.IsActive = dto.IsActive;
