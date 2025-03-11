@@ -1,13 +1,13 @@
-@import '../../../../../scss/bia/bia-variables';
+@use '../../../../../scss/bia/bia-variables';
 
 :host {
   flex-direction: column;
 }
 
 .bia-is-active {
-  color: $biaGreen;
+  color: bia-variables.$biaGreen;
 }
 
 .bia-is-not-active {
-  color: $biaRed;
+  color: bia-variables.$biaRed;
 }
