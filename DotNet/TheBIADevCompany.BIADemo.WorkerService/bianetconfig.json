@@ -3,14 +3,14 @@
     "CommonFeatures": {
       "DistributedCache": {
         "IsActive": true,
-        "ConnectionStringName": "BIADemoDatabase"
+        "ConnectionStringName": "ProjectDatabase"
       },
       "ClientForHub": {
         "IsActive": true
       },
       "AuditConfiguration": {
         "IsActive": true,
-        "ConnectionStringName": "BIADemoDatabase"
+        "ConnectionStringName": "ProjectDatabase"
       }
     },
     "WorkerFeatures": {
@@ -18,12 +18,24 @@
         "IsActive": true,
         "LogsVisibleInDashboard": true,
         "ServerName": "BIADemo",
-        "ConnectionStringName": "BIADemoDatabase"
+        "ConnectionStringName": "ProjectDatabase"
       },
       "DatabaseHandler": {
         // Except BIADemo "IsActive": false
         // Begin BIADemo
         "IsActive": true
+        // End BIADemo
+      },
+      "Archive": {
+        // Except BIADemo "IsActive": false
+        // Begin BIADemo
+        "IsActive": true,
+        "ArchiveEntityConfigurations": [
+          {
+            "EntityName": "Plane",
+            "TargetDirectoryPath": "C:\\temp\\archives\\biademo\\planes"
+          }
+        ]
         // End BIADemo
       }
     },

@@ -21,6 +21,7 @@ namespace BIA.Net.Core.Infrastructure.Data
     using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
     using Microsoft.Data.SqlClient;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
 
@@ -221,6 +222,12 @@ namespace BIA.Net.Core.Infrastructure.Data
             where TEntity : class
         {
             this.Entry(item).State = EntityState.Modified;
+        }
+
+        /// <inheritdoc/>
+        public IEntityType FindEntityType(Type entityType)
+        {
+            return this.Model.FindEntityType(entityType);
         }
 
         /// <summary>

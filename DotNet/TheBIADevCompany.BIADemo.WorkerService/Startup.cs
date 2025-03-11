@@ -4,18 +4,13 @@
 
 namespace TheBIADevCompany.BIADemo.WorkerService
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Security.Claims;
-    using System.Security.Principal;
+    using BIA.Net.Core.Application.Archive;
+    using BIA.Net.Core.Application.Clean;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Presentation.Common.Features;
     using BIA.Net.Core.WorkerService.Features;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -83,6 +78,8 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             services.AddHostedService<Worker>();
             services.AddSingleton<IDatabaseHandlerRepository, PlaneHandlerRepository>();
             services.AddSingleton<IDatabaseHandlerRepository, AirportHandlerRepository>();
+            services.AddTransient<IArchiveService, Application.Plane.PlaneArchiveService>();
+            services.AddTransient<ICleanService, Application.Plane.PlaneCleanService>();
 
             // End BIADemo
 #endif

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { PrimeNGConfig } from 'primeng/api';
 import { BiaInjectExternalService } from './core/bia-core/services/bia-inject-external.service';
@@ -37,5 +37,11 @@ export class AppComponent implements OnInit {
     this.translateService
       .get('primeng')
       .subscribe(res => this.primeNgConfig.setTranslation(res));
+    this.checkSmallScreen();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  checkSmallScreen() {
+    this.layoutService.checkSmallScreen();
   }
 }

@@ -8,21 +8,26 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { LayoutHelperService } from '../../services/layout-helper.service';
+import { BiaLayoutService } from '../layout/services/layout.service';
 
 @Component({
   selector: 'bia-hangfire-container',
   templateUrl: './hangfire-container.component.html',
+  styleUrls: ['./hangfire-container.component.scss'],
 })
 export class HangfireContainerComponent implements OnInit, OnDestroy {
   @Input() url = '';
 
-  // @ViewChild('iFrame2', { static: false }) iFrame2: ElementRef;
   @ViewChild('hangfireForm', { static: false }) hangfireForm: ElementRef;
 
   protected sub = new Subscription();
   public token = '';
 
-  constructor(protected authService: AuthService) {}
+  constructor(
+    protected authService: AuthService,
+    protected readonly layoutService: BiaLayoutService
+  ) {}
 
   ngOnInit() {
     this.sub.add(
@@ -40,5 +45,9 @@ export class HangfireContainerComponent implements OnInit, OnDestroy {
     if (this.sub) {
       this.sub.unsubscribe();
     }
+  }
+
+  getIFrameHeight(): string {
+    return `calc(${LayoutHelperService.defaultContainerHeight(this.layoutService)})`;
   }
 }

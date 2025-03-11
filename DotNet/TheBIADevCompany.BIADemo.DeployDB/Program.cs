@@ -6,6 +6,8 @@ namespace TheBIADevCompany.BIADemo.DeployDB
 {
     using System;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Archive;
+    using BIA.Net.Core.Application.Clean;
     using Hangfire;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
@@ -43,7 +45,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
 
                     services.AddDbContext<DataContext>(options =>
                     {
-                        options.UseSqlServer(configuration.GetConnectionString("BIADemoDatabase"));
+                        options.UseSqlServer(configuration.GetConnectionString("ProjectDatabase"));
                     });
                     services.AddHostedService<DeployDBService>();
 
@@ -55,7 +57,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                     });
                     services.AddHangfire(config =>
                     {
-                        config.UseSqlServerStorage(configuration.GetConnectionString("BIADemoDatabase"));
+                        config.UseSqlServerStorage(configuration.GetConnectionString("ProjectDatabase"));
 
                         // Initialize here the recuring jobs
 #if BIA_FRONT_FEATURE
@@ -66,6 +68,8 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                         // Begin BIADemo
                         RecurringJob.AddOrUpdate<WithPermissionTask>($"{projectName}.{typeof(WithPermissionTask).Name}", t => t.Run(), Cron.Never);
                         RecurringJob.AddOrUpdate<EngineManageTask>($"{projectName}.{typeof(EngineManageTask).Name}", t => t.Run(), Cron.Never);
+                        RecurringJob.AddOrUpdate<ArchiveTask>($"{projectName}.{typeof(ArchiveTask).Name}", t => t.Run(), configuration["Tasks:Archive:CRON"]);
+                        RecurringJob.AddOrUpdate<CleanTask>($"{projectName}.{typeof(CleanTask).Name}", t => t.Run(), configuration["Tasks:Clean:CRON"]);
 
                         // End BIADemo
 #endif

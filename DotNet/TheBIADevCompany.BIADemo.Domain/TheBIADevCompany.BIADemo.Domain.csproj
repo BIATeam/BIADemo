@@ -6,7 +6,7 @@
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Audit.EntityFramework.Abstractions" Version="27.3.*" />
+    <PackageReference Include="Audit.EntityFramework.Abstractions" Version="27.5.*" />
     <PackageReference Include="BIA.Net.Core.Domain" Version="4.0.*" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="[8.0.*,9.0.0)" />
   </ItemGroup>
