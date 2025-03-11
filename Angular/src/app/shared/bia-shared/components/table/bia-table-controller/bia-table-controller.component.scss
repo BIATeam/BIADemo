@@ -12,8 +12,8 @@
 }
 
 :host ::ng-deep {
-  p-dropdown {
-    .p-dropdown-label {
+  p-select {
+    .p-select-label {
       padding: 0.125rem !important;
     }
   }
@@ -73,7 +73,7 @@ label {
   margin-bottom: 10px;
 }
 
-.p-dropdown-label {
+.p-select-label {
   padding: 0.125rem !important;
 }
 

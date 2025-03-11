@@ -6,8 +6,8 @@ import {
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { DropdownModule } from 'primeng/dropdown';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { SelectModule } from 'primeng/select';
 import { TooltipModule } from 'primeng/tooltip';
 import { BiaTeamSelectorComponent } from './bia-team-selector.component';
 
@@ -17,7 +17,7 @@ import { BiaTeamSelectorComponent } from './bia-team-selector.component';
   imports: [
     CommonModule,
     FormsModule,
-    DropdownModule,
+    SelectModule,
     MultiSelectModule,
     TooltipModule,
     TranslateModule,

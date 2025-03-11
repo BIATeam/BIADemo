@@ -15,15 +15,16 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { BadgeModule } from 'primeng/badge';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ButtonModule } from 'primeng/button';
-import { CalendarModule } from 'primeng/calendar';
+// import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
 // import { ChipsModule } from 'primeng/chips';
 // import { CodeHighlighterModule } from 'primeng/codehighlighter';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 // import { ContextMenuModule } from 'primeng/contextmenu';
+import { DatePickerModule } from 'primeng/datepicker';
 import { DialogModule } from 'primeng/dialog';
 import { DividerModule } from 'primeng/divider';
-import { DropdownModule } from 'primeng/dropdown';
+// import { DropdownModule } from 'primeng/dropdown';
 // import { EditorModule } from 'primeng/editor';
 // Warning it required to install Quill package:
 //    - npm install quill
@@ -40,6 +41,7 @@ import { DropdownModule } from 'primeng/dropdown';
 // ],
 
 import { FieldsetModule } from 'primeng/fieldset';
+import { FluidModule } from 'primeng/fluid';
 // import { FullCalendarModule } from 'primeng/fullcalendar';
 // Warning it required to install Fullcalandar package:
 //    - npm install @fullcalendar/core
@@ -48,9 +50,9 @@ import { FieldsetModule } from 'primeng/fieldset';
 //    - npm install @fullcalendar/timegrid
 // import { InputMaskModule } from 'primeng/inputmask';
 import { InputNumberModule } from 'primeng/inputnumber';
-import { InputSwitchModule } from 'primeng/inputswitch';
+// import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextModule } from 'primeng/inputtext';
-import { InputTextareaModule } from 'primeng/inputtextarea';
+import { Textarea } from 'primeng/inputtextarea';
 import { ListboxModule } from 'primeng/listbox';
 import { MegaMenuModule } from 'primeng/megamenu';
 // import { MenuModule } from 'primeng/menu';
@@ -64,6 +66,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 // import { ProgressBarModule } from 'primeng/progressbar';
 import { RadioButtonModule } from 'primeng/radiobutton';
 // import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { SelectModule } from 'primeng/select';
 // import { SelectButtonModule } from 'primeng/selectbutton';
 // import { SlideMenuModule } from 'primeng/slidemenu';
 // import { SliderModule } from 'primeng/slider';
@@ -71,13 +74,15 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 // import { SplitButtonModule } from 'primeng/splitbutton';
 // import { TabMenuModule } from 'primeng/tabmenu';
 import { TableModule } from 'primeng/table';
-import { TabViewModule } from 'primeng/tabview';
+import { TabsModule } from 'primeng/tabs';
+// import { TabViewModule } from 'primeng/tabview';
 // import { TieredMenuModule } from 'primeng/tieredmenu';
 import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
 // import { ToolbarModule } from 'primeng/toolbar';
-// import { TooltipModule } from 'primeng/tooltip';
 import { FileUploadModule } from 'primeng/fileupload';
+import { TooltipModule } from 'primeng/tooltip';
 
 // PrimeNG Services
 import { MessageService } from 'primeng/api';
@@ -88,7 +93,6 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { SkeletonModule } from 'primeng/skeleton';
-import { TriStateCheckboxModule } from 'primeng/tristatecheckbox';
 import { NotificationsEffects } from 'src/app/domains/bia-domains/notification/store/notifications-effects';
 import { TeamModule } from 'src/app/domains/bia-domains/team/team.module';
 import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
@@ -144,22 +148,24 @@ const PRIMENG_MODULES = [
   BadgeModule,
   BreadcrumbModule,
   ButtonModule,
-  CalendarModule,
+  //  CalendarModule,
   CheckboxModule,
   //  ChipsModule,
   //  CodeHighlighterModule,
   ConfirmDialogModule,
   //  ContextMenuModule,
+  DatePickerModule,
   DialogModule,
   DividerModule,
-  DropdownModule,
+  //  DropdownModule,
   //  EditorModule,
   FieldsetModule,
+  FluidModule,
   //  FullCalendarModule,
   //  InputMaskModule,
-  InputSwitchModule,
+  //  InputSwitchModule,
   InputTextModule,
-  InputTextareaModule,
+  Textarea,
   InputNumberModule,
   ListboxModule,
   MegaMenuModule,
@@ -174,6 +180,7 @@ const PRIMENG_MODULES = [
   //  ProgressBarModule,
   RadioButtonModule,
   //  ScrollPanelModule,
+  SelectModule,
   //  SelectButtonModule,
   //  SlideMenuModule,
   //  SliderModule,
@@ -181,15 +188,16 @@ const PRIMENG_MODULES = [
   //  SplitButtonModule,
   TableModule,
   //  TabMenuModule,
-  TabViewModule,
+  TabsModule,
+  //  TabViewModule,
   //  TieredMenuModule,
   ToastModule,
+  ToggleSwitchModule,
   ToggleButtonModule,
   //  ToolbarModule,
-  //  TooltipModule,
+  TooltipModule,
   FileUploadModule,
   SkeletonModule,
-  TriStateCheckboxModule,
   OverlayPanelModule,
 ];
 

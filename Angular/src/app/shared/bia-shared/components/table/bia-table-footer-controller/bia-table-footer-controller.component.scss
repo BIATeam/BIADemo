@@ -18,12 +18,12 @@
 }
 
 :host ::ng-deep {
-  p-dropdown {
-    .p-dropdown {
+  p-select {
+    .p-select {
       height: auto;
     }
 
-    .p-dropdown-label {
+    .p-select-label {
       padding: 0.125rem !important;
     }
   }

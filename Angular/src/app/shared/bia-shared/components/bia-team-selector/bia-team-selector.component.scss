@@ -51,14 +51,14 @@
       color: rgba(255, 255, 255, 0.6);
     }
   }
-  p-dropdown {
-    .p-dropdown {
+  p-select {
+    .p-select {
       min-width: 12.5em;
       background-image:
         linear-gradient(to bottom, white, white),
         linear-gradient(to bottom, white, white);
       padding-bottom: 2px;
-      .p-dropdown-label {
+      .p-select-label {
         padding-top: 2px;
         padding-bottom: 2px;
         padding-left: 2px;
@@ -73,14 +73,14 @@
         color: white !important;
       }
     }
-    .p-dropdown:not(.p-disabled) {
+    .p-select:not(.p-disabled) {
       &:hover {
         background-image:
           linear-gradient(to bottom, white, white),
           linear-gradient(to bottom, white, white) !important;
       }
     }
-    .p-dropdown-trigger-icon {
+    .p-select-trigger-icon {
       color: white !important;
     }
   }

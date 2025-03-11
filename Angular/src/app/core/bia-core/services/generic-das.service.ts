@@ -1,10 +1,5 @@
 import { APP_BASE_HREF } from '@angular/common';
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpResponse,
-  HttpStatusCode,
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse, HttpStatusCode } from '@angular/common/http';
 import { Injector } from '@angular/core';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { NEVER, Observable, from, of, throwError } from 'rxjs';

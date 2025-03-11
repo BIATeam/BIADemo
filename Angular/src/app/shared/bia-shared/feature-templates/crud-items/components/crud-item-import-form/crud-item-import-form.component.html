@@ -16,7 +16,7 @@
     (click)="onApply()"></button>
   <ng-container *ngIf="hasDate === true">
     <span class="p-float-label">
-      <p-dropdown
+      <p-select
         formControlName="dateFormat"
         [options]="dateFormats"
         (ngModelChange)="onSubmit()"
@@ -24,12 +24,12 @@
         optionLabel="example"
         optionValue="format"
         placeholder="Select Date Format">
-      </p-dropdown>
+      </p-select>
       <label>{{ 'import.dateFormat' | translate }}</label>
     </span>
 
     <span class="p-float-label">
-      <p-dropdown
+      <p-select
         formControlName="timeFormat"
         [options]="timeFormats"
         (ngModelChange)="onSubmit()"
@@ -37,7 +37,7 @@
         optionLabel="example"
         optionValue="format"
         placeholder="Select Time Format">
-      </p-dropdown>
+      </p-select>
       <label>{{ 'import.timeFormat' | translate }}</label>
     </span>
   </ng-container>
@@ -62,8 +62,8 @@
   <p-accordion
     *ngIf="importData.errorToSaves.length > 0"
     class="w-full bia-import-accordion">
-    <p-accordionTab class="bia-import-tab-error">
-      <ng-template pTemplate="header">
+    <p-accordion-panel class="bia-import-tab-error">
+      <p-accordion-header>
         <div class="flex align-items-center">
           <i class="pi pi-exclamation-triangle mr-2"></i>
           <span class="vertical-align-middle"
@@ -72,8 +72,8 @@
             }})</span
           >
         </div>
-      </ng-template>
-      <ng-template pTemplate="content">
+      </p-accordion-header>
+      <p-accordion-content>
         <p class="m-0">
           <bia-table
             [elements]="importData.errorToSaves"
@@ -90,16 +90,16 @@
             scrollHeightValue="calc( 100vh - 440px)"
             [isScrollable]="true"></bia-table>
         </p>
-      </ng-template>
-    </p-accordionTab>
+      </p-accordion-content>
+    </p-accordion-panel>
   </p-accordion>
   <br />
   <p-accordion class="w-full bia-import-accordion">
-    <p-accordionTab
+    <p-accordion-panel
       [ngClass]="{ 'bia-import-selected': insertChecked === true }"
       [disabled]="importData.toInserts.length === 0"
       *ngIf="canUseInsert() === true">
-      <ng-template pTemplate="header">
+      <p-accordion-header>
         <div class="flex align-items-center">
           <p-checkbox
             [(ngModel)]="insertChecked"
@@ -115,8 +115,8 @@
             }})</span
           >
         </div>
-      </ng-template>
-      <ng-template pTemplate="content">
+      </p-accordion-header>
+      <p-accordion-content>
         <p class="m-0">
           <bia-table
             *ngIf="importData.toInserts.length > 0"
@@ -134,13 +134,13 @@
             scrollHeightValue="calc( 100vh - 440px)"
             [isScrollable]="true"></bia-table>
         </p>
-      </ng-template>
-    </p-accordionTab>
-    <p-accordionTab
+      </p-accordion-content>
+    </p-accordion-panel>
+    <p-accordion-panel
       [ngClass]="{ 'bia-import-selected': updateChecked === true }"
       [disabled]="importData.toUpdates.length === 0"
       *ngIf="canUseUpdate() === true">
-      <ng-template pTemplate="header">
+      <p-accordion-header>
         <div class="flex align-items-center">
           <p-checkbox
             [(ngModel)]="updateChecked"
@@ -156,8 +156,8 @@
             }})</span
           >
         </div>
-      </ng-template>
-      <ng-template pTemplate="content">
+      </p-accordion-header>
+      <p-accordion-content>
         <p class="m-0">
           <bia-table
             *ngIf="importData.toUpdates.length > 0"
@@ -175,13 +175,13 @@
             scrollHeightValue="calc( 100vh - 440px)"
             [isScrollable]="true"></bia-table>
         </p>
-      </ng-template>
-    </p-accordionTab>
-    <p-accordionTab
+      </p-accordion-content>
+    </p-accordion-panel>
+    <p-accordion-panel
       [ngClass]="{ 'bia-import-selected': deleteChecked === true }"
       [disabled]="importData.toDeletes.length === 0"
       *ngIf="canUseDelete() === true">
-      <ng-template pTemplate="header">
+      <p-accordion-header>
         <div class="flex align-items-center">
           <p-checkbox
             [(ngModel)]="deleteChecked"
@@ -197,8 +197,8 @@
             }})</span
           >
         </div>
-      </ng-template>
-      <ng-template pTemplate="content">
+      </p-accordion-header>
+      <p-accordion-content>
         <p class="m-0">
           <bia-table
             *ngIf="importData.toDeletes.length > 0"
@@ -216,8 +216,8 @@
             scrollHeightValue="calc( 100vh - 440px)"
             [isScrollable]="true"></bia-table>
         </p>
-      </ng-template>
-    </p-accordionTab>
+      </p-accordion-content>
+    </p-accordion-panel>
   </p-accordion>
 </ng-container>
 <br />

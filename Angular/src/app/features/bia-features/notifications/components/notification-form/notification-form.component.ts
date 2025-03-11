@@ -120,6 +120,10 @@ export class NotificationFormComponent implements OnChanges {
     return this.form.get('notifiedTeams') as UntypedFormArray;
   }
 
+  get hasMissingLanguageOptions(): boolean {
+    return (this.missingLanguageOptions?.length ?? 0) > 0;
+  }
+
   addNewRow(): void {
     this.notifiedTeams.push(this.createNotifiedTeams());
   }

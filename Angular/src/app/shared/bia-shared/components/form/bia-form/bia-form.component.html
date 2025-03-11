@@ -163,4 +163,38 @@
       </div>
     </div>
   </ng-template>
+  <div class="footer-container bia-form-fixed-buttons">
+    <div class="flex gap-2 align-items-center info-locked-container">
+      <button
+        *ngIf="isCrudItemOutdated"
+        pButton
+        class="info-locked-button"
+        type="button"
+        icon="pi pi-info"
+        [rounded]="true"
+        severity="warn"
+        [outlined]="true"
+        size="small"></button>
+      <span *ngIf="isCrudItemOutdated" class="info-locked-label">{{
+        'bia.outdatedData' | translate
+      }}</span>
+    </div>
+    <div class="flex gap-3">
+      <button
+        pButton
+        icon="pi pi-times"
+        label="{{ 'bia.cancel' | translate }}"
+        type="button"
+        class="p-button-outlined"
+        (click)="onCancel()"></button>
+      <button
+        pButton
+        icon="pi {{ isAdd === true ? 'pi-plus' : 'pi-check' }}"
+        label="{{
+          isAdd === true ? ('bia.add' | translate) : ('bia.save' | translate)
+        }}"
+        type="submit"
+        [disabled]="!form.valid || isCrudItemOutdated"></button>
+    </div>
+  </div>
 </form>

@@ -6,26 +6,13 @@
     "BIADemo": {
       "projectType": "application",
       "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss",
-          "skipTests": true
-        },
-        "@schematics/angular:class": {
-          "skipTests": true
-        },
-        "@schematics/angular:directive": {
-          "skipTests": true
-        },
-        "@schematics/angular:guard": {
-          "skipTests": true
-        },
+        "@schematics/angular:component": { "style": "scss", "skipTests": true },
+        "@schematics/angular:class": { "skipTests": true },
+        "@schematics/angular:directive": { "skipTests": true },
+        "@schematics/angular:guard": { "skipTests": true },
         "@schematics/angular:module": {},
-        "@schematics/angular:pipe": {
-          "skipTests": true
-        },
-        "@schematics/angular:service": {
-          "skipTests": true
-        }
+        "@schematics/angular:pipe": { "skipTests": true },
+        "@schematics/angular:service": { "skipTests": true }
       },
       "root": "",
       "sourceRoot": "src",
@@ -34,10 +21,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "outputPath": {
-              "base": "dist/BIADemo",
-              "browser": ""
-            },
+            "outputPath": { "base": "dist/BIADemo", "browser": "" },
             "index": "src/index.html",
             "polyfills": ["src/polyfills.ts"],
             "tsConfig": "tsconfig.app.json",
@@ -50,7 +34,6 @@
               "src/ngsw-worker.js"
             ],
             "styles": [
-              "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeicons/primeicons.css",
               "node_modules/primeflex/primeflex.min.css",
               "src/styles.scss"
@@ -90,10 +73,7 @@
               ],
               "optimization": {
                 "scripts": true,
-                "styles": {
-                  "minify": true,
-                  "inlineCritical": false
-                },
+                "styles": { "minify": true, "inlineCritical": false },
                 "fonts": false
               },
               "outputHashing": "all",
@@ -132,51 +112,30 @@
                 }
               ]
             },
-            "es5": {
-              "tsConfig": "tsconfig.es5.json"
-            }
+            "es5": { "tsConfig": "tsconfig.es5.json" }
           },
           "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular/build:dev-server",
-          "options": {
-            "buildTarget": "BIADemo:build"
-          },
+          "options": { "buildTarget": "BIADemo:build" },
           "configurations": {
-            "iis": {
-              "buildTarget": "BIADemo:build:iis"
-            },
-            "production": {
-              "buildTarget": "BIADemo:build:production"
-            },
-            "es5": {
-              "buildTarget": "BIADemo:build:es5"
-            },
-            "ocp": {
-              "buildTarget": "BIADemo:build:ocp"
-            },
-            "docker": {
-              "buildTarget": "BIADemo:build:docker"
-            }
+            "iis": { "buildTarget": "BIADemo:build:iis" },
+            "production": { "buildTarget": "BIADemo:build:production" },
+            "es5": { "buildTarget": "BIADemo:build:es5" },
+            "ocp": { "buildTarget": "BIADemo:build:ocp" },
+            "docker": { "buildTarget": "BIADemo:build:docker" }
           }
         },
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n",
-          "options": {
-            "buildTarget": "BIADemo:build"
-          }
+          "options": { "buildTarget": "BIADemo:build" }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
-          }
+          "options": { "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"] }
         },
-        "deploy": {
-          "builder": "angular-cli-ghpages:deploy",
-          "options": {}
-        }
+        "deploy": { "builder": "angular-cli-ghpages:deploy", "options": {} }
       }
     }
   },
@@ -188,8 +147,6 @@
     "@angular-eslint/schematics:application": {
       "setParserOptionsProject": true
     },
-    "@angular-eslint/schematics:library": {
-      "setParserOptionsProject": true
-    }
+    "@angular-eslint/schematics:library": { "setParserOptionsProject": true }
   }
 }

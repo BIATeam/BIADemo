@@ -1,4 +1,4 @@
-<p-dropdown
+<p-select
   [options]="groupedViews"
   [(ngModel)]="selectedView"
   [style]="{ 'min-width': '150px' }"
@@ -13,7 +13,7 @@
     <span>{{ object.label }}</span>
     <i *ngIf="defaultView === object.value" class="pi pi-star"></i>
   </ng-template>
-</p-dropdown>
+</p-select>
 <i
   *ngIf="showEditButton() === true"
   class="pi pi-user-edit bia-pointer"
