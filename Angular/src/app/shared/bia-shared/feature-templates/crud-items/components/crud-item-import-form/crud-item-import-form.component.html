@@ -64,9 +64,9 @@
     class="w-full bia-import-accordion">
     <p-accordion-panel class="bia-import-tab-error">
       <p-accordion-header>
-        <div class="flex items-center">
+        <div class="flex align-items-center">
           <i class="pi pi-exclamation-triangle mr-2"></i>
-          <span class="align-middle"
+          <span class="vertical-align-middle"
             >{{ 'bia.errors' | translate }}({{
               importData.errorToSaves.length
             }})</span
@@ -100,7 +100,7 @@
       [disabled]="importData.toInserts.length === 0"
       *ngIf="canUseInsert() === true">
       <p-accordion-header>
-        <div class="flex items-center">
+        <div class="flex align-items-center">
           <p-checkbox
             [(ngModel)]="insertChecked"
             [binary]="true"
@@ -109,7 +109,7 @@
             (click)="$event.stopPropagation()"
             class="mr-2"></p-checkbox>
           <i class="pi pi-plus mr-2"></i>
-          <span class="align-middle"
+          <span class="vertical-align-middle"
             >{{ 'bia.toAdd' | translate }}({{
               importData.toInserts.length
             }})</span
@@ -141,7 +141,7 @@
       [disabled]="importData.toUpdates.length === 0"
       *ngIf="canUseUpdate() === true">
       <p-accordion-header>
-        <div class="flex items-center">
+        <div class="flex align-items-center">
           <p-checkbox
             [(ngModel)]="updateChecked"
             [binary]="true"
@@ -150,7 +150,7 @@
             (click)="$event.stopPropagation()"
             class="mr-2"></p-checkbox>
           <i class="pi pi-sync mr-2"></i>
-          <span class="align-middle"
+          <span class="vertical-align-middle"
             >{{ 'bia.toModify' | translate }}({{
               importData.toUpdates.length
             }})</span
@@ -182,7 +182,7 @@
       [disabled]="importData.toDeletes.length === 0"
       *ngIf="canUseDelete() === true">
       <p-accordion-header>
-        <div class="flex items-center">
+        <div class="flex align-items-center">
           <p-checkbox
             [(ngModel)]="deleteChecked"
             [binary]="true"
@@ -191,7 +191,7 @@
             (click)="$event.stopPropagation()"
             class="mr-2"></p-checkbox>
           <i class="pi pi-trash mr-2"></i>
-          <span class="mr-2 align-middle"
+          <span class="mr-2 vertical-align-middle"
             >{{ 'bia.toDelete' | translate }}({{
               importData.toDeletes.length
             }})</span
@@ -221,7 +221,7 @@
   </p-accordion>
 </ng-container>
 <br />
-<div class="flex flex-row gap-1 justify-end">
+<div class="flex flex-row gap-1 justify-content-end">
   <button
     pButton
     icon="pi pi-times"

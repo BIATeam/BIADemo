@@ -105,7 +105,7 @@ export class BiaFormLayoutConfigColumnSize {
 function generateColumnClassFromLgSize(lgSize: number): string {
   const mdSize = Math.min(12, Math.ceil(lgSize * 1.5));
   const smSize = Math.min(12, Math.ceil(lgSize * 2));
-  return `col-span-12 lg:col-${lgSize} md:col-${mdSize} sm:col-${smSize}`;
+  return `col-12 lg:col-${lgSize} md:col-${mdSize} sm:col-${smSize}`;
 }
 
 function generateColumnClassFromColumnSize(

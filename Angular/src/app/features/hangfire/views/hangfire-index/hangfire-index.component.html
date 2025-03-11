@@ -1,12 +1,12 @@
-<div class="header flex flex-row justify-between content-between">
+<div class="header flex flex-row justify-content-between align-content-between">
   <div
-    class="flex flex-row gap-2 items-center content-center self-stretch"></div>
+    class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch"></div>
   <div
-    class="flex flex-row gap-2 items-center content-center self-stretch">
+    class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
     <h1>Launch random review plane in hangfire job.</h1>
   </div>
   <div
-    class="flex flex-row gap-2 items-center content-center self-stretch"></div>
+    class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch"></div>
 </div>
 <BR />
 <BR />
@@ -15,7 +15,7 @@
 </div>
 <BR />
 <div
-  class="flex flex-row flex-wrap justify-around content-around">
+  class="flex flex-row flex-wrap justify-content-around align-content-around">
   <ng-container *ngFor="let team of allTeams$ | async">
     <button
       *ngIf="team.teamTypeId === teamTypeId.Site"
@@ -36,7 +36,7 @@
 </div>
 <BR />
 <div
-  class="flex flex-row flex-wrap justify-around content-around">
+  class="flex flex-row flex-wrap justify-content-around align-content-around">
   <ng-container *ngFor="let team of allTeams$ | async">
     <button
       *ngIf="team.teamTypeId === teamTypeId.AircraftMaintenanceCompany"
@@ -57,7 +57,7 @@
 </div>
 <BR />
 <div
-  class="flex flex-row flex-wrap justify-around content-around">
+  class="flex flex-row flex-wrap justify-content-around align-content-around">
   <ng-container *ngFor="let team of allTeams$ | async">
     <button
       *ngIf="team.teamTypeId === teamTypeId.MaintenanceTeam"

@@ -1,14 +1,14 @@
 <div
-  class="flex-1 flex-col"
+  class="flex-1 flex-column"
   [style.display]="fullscreenMode ? 'none' : 'flex'"
   style="width: calc(100vw)">
   <!-- topbar -->
   <div
-    class="topbar flex justify-between content-between flex-wrap">
-    <div class="logos flex justify-center">
+    class="topbar flex justify-content-between align-content-between flex-wrap">
+    <div class="logos flex justify-content-center">
       <ng-template ngFor let-logo let-first="first" [ngForOf]="logos">
-        <span *ngIf="!first" class="flex self-center separator"></span>
-        <img alt="logo" class="flex self-center" src="{{ logo }}" />
+        <span *ngIf="!first" class="flex align-self-center separator"></span>
+        <img alt="logo" class="flex align-self-center" src="{{ logo }}" />
       </ng-template>
     </div>
     <bia-ie-warning *ngIf="isIE"></bia-ie-warning>
@@ -19,7 +19,7 @@
         let-last="last"
         [ngForOf]="teamTypeSelectors">
         <bia-team-selector [teamType]="teamTypeSelector"></bia-team-selector>
-        <span *ngIf="!last" class="flex self-center separator"></span>
+        <span *ngIf="!last" class="flex align-self-center separator"></span>
       </ng-template>
     </div>
     <div class="controls flex flex-row">
@@ -66,7 +66,7 @@
     <ng-template pTemplate="start">
       <a class="project-title" routerLink="/">
         <div
-          class="flex flex-row items-center content-center self-stretch">
+          class="flex flex-row align-items-center align-content-center align-self-stretch">
           <img alt="appicon" class="app-logo" src="{{ urlAppIcon }}" />
           <span
             >{{ appTitle
@@ -76,7 +76,7 @@
       </a>
     </ng-template>
     <ng-template pTemplate="end">
-      <div class="action flex flex-row gap-4" style="display: inline-flex">
+      <div class="action flex flex-row gap-3" style="display: inline-flex">
         <ng-container *ngIf="enableNotifications">
           <span class="notifications">
             <i
@@ -114,7 +114,7 @@
 
 <p-toast key="bia" #toast>
   <ng-template let-message pTemplate="message">
-    <div class="flex flex-col flex-1" style="max-width: 100%">
+    <div class="flex flex-column flex-1" style="max-width: 100%">
       <div class="flex flex-row">
         <ng-container [ngSwitch]="message.severity">
           <ng-container *ngSwitchCase="'success'">
@@ -150,7 +150,7 @@
       </div>
       <div
         *ngIf="message.data?.notification?.type?.id === notificationType.Task"
-        class="notification-actions flex flex-row justify-between content-between">
+        class="notification-actions flex flex-row justify-content-between align-content-between">
         <button
           pButton
           [label]="message.data?.notification?.data.display | translate"

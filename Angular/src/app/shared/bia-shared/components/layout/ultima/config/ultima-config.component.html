@@ -1,4 +1,4 @@
-<div class="p-4">
+<div class="p-3">
   <small *ngIf="layoutService.configDisplay().showEditAvatar && urlEditAvatar">
     <i class="pi pi-pencil"></i
     ><a class="edit-avatar" [href]="urlEditAvatar" target="_blank">{{
@@ -7,9 +7,9 @@
   </small>
   <ng-container *ngIf="layoutService.configDisplay().showLang">
     <h5>{{ 'bia.language' | translate }}</h5>
-    <div class="flex flex-wrap gap-y-4">
+    <div class="flex flex-wrap row-gap-3">
       <div
-        class="flex items-center gap-2 w-6/12"
+        class="flex align-items-center gap-2 w-6"
         *ngFor="let lang of getSupportedLangsSorted()">
         <p-radioButton
           name="lang"
@@ -24,17 +24,17 @@
   </ng-container>
   <ng-container *ngIf="layoutService.configDisplay().showScale">
     <h5>{{ 'bia.layoutScale' | translate }}</h5>
-    <div class="flex items-center">
+    <div class="flex align-items-center">
       <button
         icon="pi pi-minus"
         type="button"
         pButton
         (click)="decrementScale()"
-        class="p-button-text p-button-rounded w-8 h-8 mr-2"
+        class="p-button-text p-button-rounded w-2rem h-2rem mr-2"
         [disabled]="scale === scales[0]"></button>
-      <div class="flex gap-2 items-center">
+      <div class="flex gap-2 align-items-center">
         <i
-          class="pi pi-circle-fill text-surface-300 dark:text-surface-500"
+          class="pi pi-circle-fill text-300"
           style="font-size: 0.9rem"
           *ngFor="let s of scales"
           [ngClass]="{ 'text-primary-500': s === scale }"></i>
@@ -44,12 +44,12 @@
         type="button"
         pButton
         (click)="incrementScale()"
-        class="p-button-text p-button-rounded w-8 h-8 ml-2"
+        class="p-button-text p-button-rounded w-2rem h-2rem ml-2"
         [disabled]="scale === scales[scales.length - 1]"></button></div
   ></ng-container>
   <ng-container *ngIf="layoutService.configDisplay().showTheme">
     <h5>{{ 'bia.theme' | translate }}</h5>
-    <div class="flex gap-6">
+    <div class="flex gap-4">
       <div class="field-radiobutton flex-1">
         <p-radioButton
           name="colorScheme"
@@ -70,8 +70,8 @@
   </ng-container>
   <ng-container *ngIf="layoutService.configDisplay().showMenuStyle">
     <h5>{{ 'bia.menuMode' | translate }}</h5>
-    <div class="flex flex-wrap gap-y-4">
-      <div class="flex items-center gap-2 w-6/12">
+    <div class="flex flex-wrap row-gap-3">
+      <div class="flex align-items-center gap-2 w-6">
         <p-radioButton
           name="menuMode"
           value="static"
@@ -79,7 +79,7 @@
           inputId="mode1"></p-radioButton>
         <label for="mode1">Static</label>
       </div>
-      <div class="flex items-center gap-2 w-6/12">
+      <div class="flex align-items-center gap-2 w-6">
         <p-radioButton
           name="menuMode"
           value="overlay"
@@ -87,7 +87,7 @@
           inputId="mode2"></p-radioButton>
         <label for="mode2">Overlay</label>
       </div>
-      <div class="flex items-center gap-2 w-6/12">
+      <div class="flex align-items-center gap-2 w-6">
         <p-radioButton
           name="menuMode"
           value="slim"
@@ -95,7 +95,7 @@
           inputId="mode3"></p-radioButton>
         <label for="mode3">Slim</label>
       </div>
-      <div class="flex items-center gap-2 w-6/12">
+      <div class="flex align-items-center gap-2 w-6">
         <p-radioButton
           name="menuMode"
           value="slim-plus"
@@ -103,7 +103,7 @@
           inputId="mode4"></p-radioButton>
         <label for="mode4">Slim +</label>
       </div>
-      <div class="flex items-center gap-2 w-6/12">
+      <div class="flex align-items-center gap-2 w-6">
         <p-radioButton
           name="menuMode"
           value="reveal"
@@ -111,7 +111,7 @@
           inputId="mode6"></p-radioButton>
         <label for="mode6">Reveal</label>
       </div>
-      <div class="flex items-center gap-2 w-6/12">
+      <div class="flex align-items-center gap-2 w-6">
         <p-radioButton
           name="menuMode"
           value="drawer"
@@ -119,7 +119,7 @@
           inputId="mode7"></p-radioButton>
         <label for="mode7">Drawer</label>
       </div>
-      <div class="flex items-center gap-2 w-6/12">
+      <div class="flex align-items-center gap-2 w-6">
         <p-radioButton
           name="menuMode"
           value="horizontal"
@@ -132,8 +132,8 @@
 
   <ng-container *ngIf="layoutService.configDisplay().showFooterStyle">
     <h5>{{ 'bia.footerMode' | translate }}</h5>
-    <div class="flex flex-wrap gap-y-4">
-      <div class="flex items-center gap-2 w-6/12">
+    <div class="flex flex-wrap row-gap-3">
+      <div class="flex align-items-center gap-2 w-6">
         <p-radioButton
           name="footerMode"
           value="bottom"
@@ -141,7 +141,7 @@
           inputId="footerMode1"></p-radioButton>
         <label for="footerMode1">Bottom</label>
       </div>
-      <div class="flex items-center gap-2 w-6/12">
+      <div class="flex align-items-center gap-2 w-6">
         <p-radioButton
           name="footerMode"
           value="overlay"

@@ -1,8 +1,8 @@
-<form (submit)="onSubmit()" class="flex flex-col" [formGroup]="form">
+<form (submit)="onSubmit()" class="flex flex-column" [formGroup]="form">
   <div
-    class="flex flex-row justify-center flex-1"
+    class="flex flex-row justify-content-center flex-1"
     style="max-width: 100%">
-    <div class="flex flex-col flex-1" style="max-width: 50%">
+    <div class="flex flex-column flex-1" style="max-width: 50%">
       <p-fieldset legend="{{ 'bia.translation.translatedFields' | translate }}">
         <p-tabs value="0">
           <p-tablist>
@@ -25,7 +25,7 @@
           </p-tablist>
           <p-tabpanels>
             <p-tabpanel value="0">
-              <div class="flex flex-row justify-center">
+              <div class="flex flex-row justify-content-center">
                 <div class="app-field-container flex-1" style="max-width: 90%">
                   <span class="p-float-label">
                     <input
@@ -41,7 +41,7 @@
                   </span>
                 </div>
               </div>
-              <div class="flex flex-row justify-center">
+              <div class="flex flex-row justify-content-center">
                 <div class="app-field-container flex-1" style="max-width: 90%">
                   <span class="p-float-label">
                     <input
@@ -57,7 +57,7 @@
                   </span>
                 </div>
               </div>
-              <div class="flex flex-row gap-1 justify-end">
+              <div class="flex flex-row gap-1 justify-content-end">
                 <button
                   pButton
                   type="button"
@@ -76,7 +76,7 @@
               <p-tabpanel [value]="i + 1">
                 <div [formGroupName]="i">
                   <input formControlName="languageId" type="hidden" />
-                  <div class="flex flex-row justify-center">
+                  <div class="flex flex-row justify-content-center">
                     <div
                       class="app-field-container flex-1"
                       style="max-width: 90%">
@@ -95,7 +95,7 @@
                       </span>
                     </div>
                   </div>
-                  <div class="flex flex-row justify-center">
+                  <div class="flex flex-row justify-content-center">
                     <div
                       class="app-field-container flex-1"
                       style="max-width: 90%">
@@ -115,7 +115,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="flex flex-row gap-1 justify-end">
+                <div class="flex flex-row gap-1 justify-content-end">
                   <button
                     pButton
                     type="button"
@@ -131,7 +131,7 @@
               <ng-template pTemplate="header">
                 <i class="pi pi-plus"></i>
               </ng-template>
-              <div class="flex flex-row justify-center">
+              <div class="flex flex-row justify-content-center">
                 <div class="app-field-container flex-1" style="max-width: 90%">
                   <span class="p-float-label">
                     <p-select
@@ -151,7 +151,7 @@
                 </div>
               </div>
 
-              <div class="flex flex-row gap-1 justify-end">
+              <div class="flex flex-row gap-1 justify-content-end">
                 <button
                   class="ui-button-secondary"
                   pButton
@@ -166,7 +166,7 @@
         </p-tabs>
       </p-fieldset>
 
-      <div class="flex flex-row justify-center">
+      <div class="flex flex-row justify-content-center">
         <div class="app-field-container flex-1" style="max-width: 90%">
           <span class="p-float-label">
             <p-select
@@ -184,7 +184,7 @@
           </span>
         </div>
       </div>
-      <div class="flex flex-row justify-center">
+      <div class="flex flex-row justify-content-center">
         <div class="app-field-container flex-1" style="max-width: 90%">
           <p-checkbox
             binary="true"
@@ -192,7 +192,7 @@
             ariaLabel="{{ 'notification.read' | translate }}"></p-checkbox>
         </div>
       </div>
-      <div class="flex flex-row justify-center">
+      <div class="flex flex-row justify-content-center">
         <div class="app-field-container flex-1" style="max-width: 90%">
           <span class="p-float-label">
             <p-date-picker
@@ -211,8 +211,8 @@
         </div>
       </div>
     </div>
-    <div class="flex flex-col flex-1" style="max-width: 50%">
-      <div class="flex flex-row justify-center">
+    <div class="flex flex-column flex-1" style="max-width: 50%">
+      <div class="flex flex-row justify-content-center">
         <div class="flex-1" style="max-width: 100%">
           <p-fieldset legend="{{ 'notification.notifiedTeams' | translate }}">
             <p-table
@@ -269,7 +269,7 @@
           </p-fieldset>
         </div>
       </div>
-      <div class="flex flex-row justify-center">
+      <div class="flex flex-row justify-content-center">
         <div class="app-field-container flex-1" style="max-width: 90%">
           <span class="p-float-label">
             <p-select
@@ -284,7 +284,7 @@
           </span>
         </div>
       </div>
-      <div class="flex flex-row justify-center">
+      <div class="flex flex-row justify-content-center">
         <div class="app-field-container flex-1" style="max-width: 90%">
           <span class="p-float-label">
             <p-multiSelect
@@ -297,7 +297,7 @@
           </span>
         </div>
       </div>
-      <div class="flex flex-row justify-center">
+      <div class="flex flex-row justify-content-center">
         <div class="flex-1" style="max-width: 90%">
           <span
             style="left: 5px; top: -20px; font-size: 12px; color: #00839b"
@@ -317,7 +317,7 @@
     </div>
   </div>
 
-  <div class="flex flex-row gap-1 justify-end">
+  <div class="flex flex-row gap-1 justify-content-end">
     <button
       pButton
       icon="pi pi-times"
