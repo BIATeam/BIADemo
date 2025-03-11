@@ -9,9 +9,10 @@ import { notificationCRUDConfiguration } from '../../notification.constants';
 import { NotificationService } from '../../services/notification.service';
 
 @Component({
-  selector: 'bia-notifications-index',
-  templateUrl: './notifications-index.component.html',
-  styleUrls: ['./notifications-index.component.scss'],
+    selector: 'bia-notifications-index',
+    templateUrl: './notifications-index.component.html',
+    styleUrls: ['./notifications-index.component.scss'],
+    standalone: false
 })
 export class NotificationsIndexComponent
   extends CrudItemsIndexComponent<NotificationListItem, Notification>

@@ -6,12 +6,12 @@ import { Member } from '../../model/member';
 import { MemberService } from '../../services/member.service';
 
 @Component({
-  selector: 'bia-members-item',
-  templateUrl:
-    '../../../crud-items/views/crud-item-item/crud-item-item.component.html',
-  styleUrls: [
-    '../../../crud-items/views/crud-item-item/crud-item-item.component.scss',
-  ],
+    selector: 'bia-members-item',
+    templateUrl: '../../../crud-items/views/crud-item-item/crud-item-item.component.html',
+    styleUrls: [
+        '../../../crud-items/views/crud-item-item/crud-item-item.component.scss',
+    ],
+    standalone: false
 })
 export class MemberItemComponent
   extends CrudItemItemComponent<Member>

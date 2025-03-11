@@ -9,8 +9,9 @@ import { Member, Members } from '../../model/member';
 import { MemberService } from '../../services/member.service';
 
 @Component({
-  selector: 'bia-member-new',
-  templateUrl: './member-new.component.html',
+    selector: 'bia-member-new',
+    templateUrl: './member-new.component.html',
+    standalone: false
 })
 export class MemberNewComponent
   extends CrudItemNewComponent<Member>

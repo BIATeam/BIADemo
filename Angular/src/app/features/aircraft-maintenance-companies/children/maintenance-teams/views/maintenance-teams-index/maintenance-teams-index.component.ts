@@ -12,9 +12,10 @@ import { MaintenanceTeamOptionsService } from '../../services/maintenance-team-o
 import { MaintenanceTeamService } from '../../services/maintenance-team.service';
 
 @Component({
-  selector: 'app-maintenance-teams-index',
-  templateUrl: './maintenance-teams-index.component.html',
-  styleUrls: ['./maintenance-teams-index.component.scss'],
+    selector: 'app-maintenance-teams-index',
+    templateUrl: './maintenance-teams-index.component.html',
+    styleUrls: ['./maintenance-teams-index.component.scss'],
+    standalone: false
 })
 export class MaintenanceTeamsIndexComponent
   extends CrudItemsIndexComponent<MaintenanceTeam>

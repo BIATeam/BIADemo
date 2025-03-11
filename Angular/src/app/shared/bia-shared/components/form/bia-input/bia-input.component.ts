@@ -20,10 +20,11 @@ import {
 import { BiaFieldBaseComponent } from '../bia-field-base/bia-field-base.component';
 
 @Component({
-  selector: 'bia-input',
-  templateUrl: './bia-input.component.html',
-  styleUrls: ['./bia-input.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+    selector: 'bia-input',
+    templateUrl: './bia-input.component.html',
+    styleUrls: ['./bia-input.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Default,
+    standalone: false
 })
 export class BiaInputComponent<CrudItem>
   extends BiaFieldBaseComponent<CrudItem>

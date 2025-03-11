@@ -17,9 +17,10 @@ import { NotificationService } from '../../services/notification.service';
 import { FeatureNotificationsActions } from '../../store/notifications-actions';
 
 @Component({
-  selector: 'bia-notification-detail',
-  templateUrl: './notification-detail.component.html',
-  styleUrls: ['./notification-detail.component.scss'],
+    selector: 'bia-notification-detail',
+    templateUrl: './notification-detail.component.html',
+    styleUrls: ['./notification-detail.component.scss'],
+    standalone: false
 })
 export class NotificationDetailComponent implements OnInit, OnDestroy {
   @Output() displayChange = new EventEmitter<boolean>();

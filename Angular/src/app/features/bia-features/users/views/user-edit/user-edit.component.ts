@@ -5,8 +5,9 @@ import { UserService } from '../../services/user.service';
 import { userCRUDConfiguration } from '../../user.constants';
 
 @Component({
-  selector: 'bia-user-edit',
-  templateUrl: './user-edit.component.html',
+    selector: 'bia-user-edit',
+    templateUrl: './user-edit.component.html',
+    standalone: false
 })
 export class UserEditComponent extends CrudItemEditComponent<User> {
   constructor(

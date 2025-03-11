@@ -9,9 +9,10 @@ import { MenuItem, MenuItemCommandEvent } from 'primeng/api';
 import { Menubar } from 'primeng/menubar';
 
 @Component({
-  selector: 'bia-button-group',
-  templateUrl: './bia-button-group.component.html',
-  styleUrl: './bia-button-group.component.scss',
+    selector: 'bia-button-group',
+    templateUrl: './bia-button-group.component.html',
+    styleUrl: './bia-button-group.component.scss',
+    standalone: false
 })
 export class BiaButtonGroupComponent implements AfterViewInit, OnDestroy {
   @ViewChild(Menubar) menubar: Menubar;

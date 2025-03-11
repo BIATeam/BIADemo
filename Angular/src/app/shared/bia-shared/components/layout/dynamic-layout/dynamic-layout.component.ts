@@ -30,9 +30,10 @@ export enum LayoutMode {
 }
 
 @Component({
-  selector: 'bia-dynamic-layout',
-  templateUrl: './dynamic-layout.component.html',
-  styleUrls: ['./dynamic-layout.component.scss'],
+    selector: 'bia-dynamic-layout',
+    templateUrl: './dynamic-layout.component.html',
+    styleUrls: ['./dynamic-layout.component.scss'],
+    standalone: false
 })
 export class DynamicLayoutComponent<TDto extends { id: number }>
   implements OnInit, AfterViewInit, OnDestroy

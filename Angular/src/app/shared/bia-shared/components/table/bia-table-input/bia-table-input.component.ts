@@ -24,10 +24,11 @@ import {
 import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.component';
 
 @Component({
-  selector: 'bia-table-input',
-  templateUrl: './bia-table-input.component.html',
-  styleUrls: ['./bia-table-input.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+    selector: 'bia-table-input',
+    templateUrl: './bia-table-input.component.html',
+    styleUrls: ['./bia-table-input.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Default,
+    standalone: false
 })
 export class BiaTableInputComponent<CrudItem>
   extends BiaFieldBaseComponent<CrudItem>

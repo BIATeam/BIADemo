@@ -16,9 +16,10 @@ import { EngineOptionsService } from '../../services/engine-options.service';
 // BIAToolKit - End Option
 
 @Component({
-  selector: 'app-engines-index',
-  templateUrl: './engines-index.component.html',
-  styleUrls: ['./engines-index.component.scss'],
+    selector: 'app-engines-index',
+    templateUrl: './engines-index.component.html',
+    styleUrls: ['./engines-index.component.scss'],
+    standalone: false
 })
 export class EnginesIndexComponent
   extends CrudItemsIndexComponent<Engine>

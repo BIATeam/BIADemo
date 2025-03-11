@@ -8,9 +8,10 @@ import { AppState } from 'src/app/store/state';
 import { randomReviewPlane } from '../../store/hangfire-actions';
 
 @Component({
-  selector: 'app-hangfire-index',
-  templateUrl: './hangfire-index.component.html',
-  styleUrls: ['./hangfire-index.component.scss'],
+    selector: 'app-hangfire-index',
+    templateUrl: './hangfire-index.component.html',
+    styleUrls: ['./hangfire-index.component.scss'],
+    standalone: false
 })
 export class HangfireIndexComponent {
   @HostBinding('class') classes = 'bia-flex';

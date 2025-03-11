@@ -8,8 +8,9 @@ import { EngineOptionsService } from '../../services/engine-options.service';
 // BIAToolKit - End Option
 
 @Component({
-  selector: 'app-engine-new',
-  templateUrl: './engine-new.component.html',
+    selector: 'app-engine-new',
+    templateUrl: './engine-new.component.html',
+    standalone: false
 })
 export class EngineNewComponent
   extends CrudItemNewComponent<Engine>

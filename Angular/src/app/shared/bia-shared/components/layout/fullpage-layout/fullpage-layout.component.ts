@@ -19,9 +19,10 @@ import { filter } from 'rxjs/operators';
 import { BiaInjectorService } from 'src/app/core/bia-core/services/bia-injector.service';
 
 @Component({
-  selector: 'bia-full-page-layout',
-  templateUrl: './fullpage-layout.component.html',
-  styleUrls: ['./fullpage-layout.component.scss'],
+    selector: 'bia-full-page-layout',
+    templateUrl: './fullpage-layout.component.html',
+    styleUrls: ['./fullpage-layout.component.scss'],
+    standalone: false
 })
 export class FullPageLayoutComponent
   implements OnInit, OnDestroy, AfterViewInit

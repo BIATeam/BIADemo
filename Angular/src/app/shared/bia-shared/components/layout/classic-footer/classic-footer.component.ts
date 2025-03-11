@@ -3,10 +3,11 @@ import { FRAMEWORK_VERSION } from '../../../framework-version';
 import { BiaLayoutService } from '../services/layout.service';
 
 @Component({
-  selector: 'bia-classic-footer',
-  templateUrl: './classic-footer.component.html',
-  styleUrls: ['./classic-footer.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+    selector: 'bia-classic-footer',
+    templateUrl: './classic-footer.component.html',
+    styleUrls: ['./classic-footer.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Default,
+    standalone: false
 })
 export class ClassicFooterComponent {
   @Input() companyName: string;

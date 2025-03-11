@@ -18,10 +18,11 @@ import { UserFilter } from '../../model/user-filter';
 import { UserFromDirectory } from '../../model/user-from-directory';
 
 @Component({
-  selector: 'bia-user-from-directory-form',
-  templateUrl: './user-from-directory-form.component.html',
-  styleUrls: ['./user-from-directory-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bia-user-from-directory-form',
+    templateUrl: './user-from-directory-form.component.html',
+    styleUrls: ['./user-from-directory-form.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UserFromLdapFormComponent implements OnChanges {
   @Output() searchUsers = new EventEmitter<UserFilter>();

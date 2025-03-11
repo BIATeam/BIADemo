@@ -19,35 +19,30 @@ import { THEME_DARK, THEME_LIGHT } from 'src/app/shared/constants';
 import { BiaLayoutService } from '../../services/layout.service';
 
 @Component({
-  selector: 'bia-ultima-menu-profile',
-  templateUrl: './ultima-menu-profile.component.html',
-  styleUrls: ['./ultima-menu-profile.component.scss'],
-  animations: [
-    trigger('menu', [
-      transition('void => inline', [
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        style({ height: 0, 'overflow-y': 'hidden' }),
-        animate(
-          '400ms cubic-bezier(0.86, 0, 0.07, 1)',
-          style({ opacity: 1, height: '*' })
-        ),
-      ]),
-      transition('inline => void', [
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        style({ 'overflow-y': 'hidden' }),
-        animate(
-          '400ms cubic-bezier(0.86, 0, 0.07, 1)',
-          style({ opacity: 0, height: '0' })
-        ),
-      ]),
-      transition('void => overlay', [
-        animate('.12s cubic-bezier(0, 0, 0.2, 1)'),
-      ]),
-      transition('overlay => void', [
-        animate('.1s linear', style({ opacity: 0 })),
-      ]),
-    ]),
-  ],
+    selector: 'bia-ultima-menu-profile',
+    templateUrl: './ultima-menu-profile.component.html',
+    styleUrls: ['./ultima-menu-profile.component.scss'],
+    animations: [
+        trigger('menu', [
+            transition('void => inline', [
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                style({ height: 0, 'overflow-y': 'hidden' }),
+                animate('400ms cubic-bezier(0.86, 0, 0.07, 1)', style({ opacity: 1, height: '*' })),
+            ]),
+            transition('inline => void', [
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                style({ 'overflow-y': 'hidden' }),
+                animate('400ms cubic-bezier(0.86, 0, 0.07, 1)', style({ opacity: 0, height: '0' })),
+            ]),
+            transition('void => overlay', [
+                animate('.12s cubic-bezier(0, 0, 0.2, 1)'),
+            ]),
+            transition('overlay => void', [
+                animate('.1s linear', style({ opacity: 0 })),
+            ]),
+        ]),
+    ],
+    standalone: false
 })
 export class BiaUltimaMenuProfileComponent implements OnDestroy {
   @HostBinding('class.layout-menu-profile-no-fill') get noFill() {

@@ -47,9 +47,10 @@ import {
 import { FeaturePlanesActions } from '../../store/planes-actions';
 
 @Component({
-  selector: 'app-planes-index',
-  templateUrl: './planes-index.component.html',
-  styleUrls: ['./planes-index.component.scss'],
+    selector: 'app-planes-index',
+    templateUrl: './planes-index.component.html',
+    styleUrls: ['./planes-index.component.scss'],
+    standalone: false
 })
 export class PlanesIndexComponent implements OnInit, OnDestroy {
   useCalcMode = useCalcMode;

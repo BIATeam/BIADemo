@@ -18,10 +18,11 @@ import { TeamTypeId } from 'src/app/shared/constants';
 import { Plane } from '../../model/plane';
 
 @Component({
-  selector: 'app-plane-form',
-  templateUrl: './plane-form.component.html',
-  styleUrls: ['./plane-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+    selector: 'app-plane-form',
+    templateUrl: './plane-form.component.html',
+    styleUrls: ['./plane-form.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Default,
+    standalone: false
 })
 export class PlaneFormComponent implements OnChanges {
   @Input() plane: Plane = <Plane>{};

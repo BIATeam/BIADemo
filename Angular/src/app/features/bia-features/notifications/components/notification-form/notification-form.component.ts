@@ -26,10 +26,11 @@ import {
 } from '../../model/notification';
 
 @Component({
-  selector: 'bia-notification-form',
-  templateUrl: './notification-form.component.html',
-  styleUrls: ['./notification-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+    selector: 'bia-notification-form',
+    templateUrl: './notification-form.component.html',
+    styleUrls: ['./notification-form.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Default,
+    standalone: false
 })
 export class NotificationFormComponent implements OnChanges {
   @Input() notification: Notification = <Notification>{};

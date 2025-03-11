@@ -23,11 +23,12 @@ import { BiaNavigation } from '../../../model/bia-navigation';
 import { BiaLayoutService } from '../services/layout.service';
 
 @Component({
-  selector: 'bia-classic-layout',
-  templateUrl: './classic-layout.component.html',
-  styleUrls: ['./classic-layout.component.scss'],
-  // In order to avoid change detections issues in custom footer / mainBar, stay default here
-  changeDetection: ChangeDetectionStrategy.Default,
+    selector: 'bia-classic-layout',
+    templateUrl: './classic-layout.component.html',
+    styleUrls: ['./classic-layout.component.scss'],
+    // In order to avoid change detections issues in custom footer / mainBar, stay default here
+    changeDetection: ChangeDetectionStrategy.Default,
+    standalone: false
 })
 export class ClassicLayoutComponent implements OnInit, OnDestroy {
   @HostBinding('class.no-margin') noMargin = false;

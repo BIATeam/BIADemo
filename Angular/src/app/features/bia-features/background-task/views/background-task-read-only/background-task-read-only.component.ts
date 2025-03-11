@@ -3,9 +3,10 @@ import { Subscription } from 'rxjs';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 
 @Component({
-  selector: 'bia-background-task-read-only',
-  templateUrl: './background-task-read-only.component.html',
-  styleUrls: ['./background-task-read-only.component.scss'],
+    selector: 'bia-background-task-read-only',
+    templateUrl: './background-task-read-only.component.html',
+    styleUrls: ['./background-task-read-only.component.scss'],
+    standalone: false
 })
 export class BackgroundTaskReadOnlyComponent implements OnInit, OnDestroy {
   @HostBinding('class') classes = 'bia-flex';

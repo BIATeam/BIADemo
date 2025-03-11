@@ -9,9 +9,10 @@ import { planeCRUDConfiguration } from '../../plane.constants';
 import { PlaneService } from '../../services/plane.service';
 
 @Component({
-  selector: 'app-planes-specific-index',
-  templateUrl: './planes-index.component.html',
-  styleUrls: ['./planes-index.component.scss'],
+    selector: 'app-planes-specific-index',
+    templateUrl: './planes-index.component.html',
+    styleUrls: ['./planes-index.component.scss'],
+    standalone: false
 })
 export class PlanesIndexComponent extends CrudItemsIndexComponent<
   Plane,

@@ -5,8 +5,9 @@ import { SiteService } from '../../services/site.service';
 import { siteCRUDConfiguration } from '../../site.constants';
 
 @Component({
-  selector: 'app-site-edit',
-  templateUrl: './site-edit.component.html',
+    selector: 'app-site-edit',
+    templateUrl: './site-edit.component.html',
+    standalone: false
 })
 export class SiteEditComponent extends CrudItemEditComponent<Site> {
   constructor(

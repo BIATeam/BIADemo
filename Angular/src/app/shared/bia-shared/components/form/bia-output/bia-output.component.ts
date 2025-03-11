@@ -15,10 +15,11 @@ import { BiaFieldConfig } from 'src/app/shared/bia-shared/model/bia-field-config
 import { BiaFieldBaseComponent } from '../bia-field-base/bia-field-base.component';
 
 @Component({
-  selector: 'bia-output',
-  templateUrl: './bia-output.component.html',
-  styleUrls: ['./bia-output.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+    selector: 'bia-output',
+    templateUrl: './bia-output.component.html',
+    styleUrls: ['./bia-output.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Default,
+    standalone: false
 })
 export class BiaOutputComponent<CrudItem>
   extends BiaFieldBaseComponent<CrudItem>

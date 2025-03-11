@@ -6,9 +6,9 @@ import { planeCRUDConfiguration } from '../../plane.constants';
 import { PlaneService } from '../../services/plane.service';
 
 @Component({
-  selector: 'app-plane-import',
-  templateUrl:
-    '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
+    selector: 'app-plane-import',
+    templateUrl: '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
+    standalone: false
 })
 export class PlaneImportComponent extends CrudItemImportComponent<Plane> {
   constructor(

@@ -3,9 +3,10 @@ import { Observable } from 'rxjs';
 import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
 
 @Component({
-  selector: 'bia-online-offline-icon',
-  templateUrl: './bia-online-offline-icon.component.html',
-  styleUrls: ['./bia-online-offline-icon.component.scss'],
+    selector: 'bia-online-offline-icon',
+    templateUrl: './bia-online-offline-icon.component.html',
+    styleUrls: ['./bia-online-offline-icon.component.scss'],
+    standalone: false
 })
 export class BiaOnlineOfflineIconComponent implements OnInit {
   public biaOnlineOfflineService: BiaOnlineOfflineService;

@@ -23,10 +23,11 @@ import { RoleDto } from '../../model/role';
 import { BiaLayoutService } from '../layout/services/layout.service';
 
 @Component({
-  selector: 'bia-team-selector',
-  templateUrl: './bia-team-selector.component.html',
-  styleUrls: ['./bia-team-selector.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+    selector: 'bia-team-selector',
+    templateUrl: './bia-team-selector.component.html',
+    styleUrls: ['./bia-team-selector.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Default,
+    standalone: false
 })
 export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
   @Input() teamType: any;

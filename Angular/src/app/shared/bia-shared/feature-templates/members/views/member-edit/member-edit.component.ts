@@ -7,8 +7,9 @@ import { Member } from '../../model/member';
 import { MemberService } from '../../services/member.service';
 
 @Component({
-  selector: 'bia-member-edit',
-  templateUrl: './member-edit.component.html',
+    selector: 'bia-member-edit',
+    templateUrl: './member-edit.component.html',
+    standalone: false
 })
 export class MemberEditComponent
   extends CrudItemEditComponent<Member>

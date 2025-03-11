@@ -42,9 +42,10 @@ const arraysEqual = (a1: any, a2: any) =>
     a1.every((o: any, idx: any) => objectsEqual(o, a2[idx])));
 
 @Component({
-  selector: 'bia-table',
-  templateUrl: './bia-table.component.html',
-  styleUrls: ['./bia-table.component.scss'],
+    selector: 'bia-table',
+    templateUrl: './bia-table.component.html',
+    styleUrls: ['./bia-table.component.scss'],
+    standalone: false
 })
 export class BiaTableComponent<TDto extends { id: number }>
   implements OnChanges, AfterContentInit, AfterViewInit

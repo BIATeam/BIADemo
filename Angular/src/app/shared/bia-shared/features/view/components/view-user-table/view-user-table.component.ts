@@ -13,9 +13,10 @@ import { BiaDialogService } from 'src/app/core/bia-core/services/bia-dialog.serv
 import { View } from '../../model/view';
 
 @Component({
-  selector: 'bia-view-user-table',
-  templateUrl: './view-user-table.component.html',
-  styleUrls: ['./view-user-table.component.scss'],
+    selector: 'bia-view-user-table',
+    templateUrl: './view-user-table.component.html',
+    styleUrls: ['./view-user-table.component.scss'],
+    standalone: false
 })
 export class ViewUserTableComponent implements OnChanges {
   @Input() views: View[];

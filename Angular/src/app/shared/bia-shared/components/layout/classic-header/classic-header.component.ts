@@ -32,10 +32,11 @@ import { BiaNavigation } from '../../../model/bia-navigation';
 import { BiaLayoutService } from '../services/layout.service';
 
 @Component({
-  selector: 'bia-classic-header',
-  templateUrl: './classic-header.component.html',
-  styleUrls: ['./classic-header.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+    selector: 'bia-classic-header',
+    templateUrl: './classic-header.component.html',
+    styleUrls: ['./classic-header.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Default,
+    standalone: false
 })
 export class ClassicHeaderComponent implements OnInit, OnDestroy {
   @Input()

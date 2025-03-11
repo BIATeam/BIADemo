@@ -4,9 +4,9 @@ import { TeamTypeId } from 'src/app/shared/constants';
 import { MaintenanceTeamService } from '../../../../services/maintenance-team.service';
 
 @Component({
-  selector: 'app-maintenance-team-member-edit',
-  templateUrl:
-    '../../../../../../../../shared/bia-shared/feature-templates/members/views/member-edit/member-edit.component.html',
+    selector: 'app-maintenance-team-member-edit',
+    templateUrl: '../../../../../../../../shared/bia-shared/feature-templates/members/views/member-edit/member-edit.component.html',
+    standalone: false
 })
 export class MaintenanceTeamMemberEditComponent
   extends MemberEditComponent

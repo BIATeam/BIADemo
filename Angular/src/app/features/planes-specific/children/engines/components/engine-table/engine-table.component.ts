@@ -7,12 +7,12 @@ import { Engine } from 'src/app/features/planes-specific/model/engine';
 import { CrudItemTableComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-table/crud-item-table.component';
 
 @Component({
-  selector: 'app-engine-specific-table',
-  templateUrl:
-    '/src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
-  styleUrls: [
-    '/src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss',
-  ],
+    selector: 'app-engine-specific-table',
+    templateUrl: '/src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
+    styleUrls: [
+        '/src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss',
+    ],
+    standalone: false
 })
 export class EngineTableComponent extends CrudItemTableComponent<Engine> {
   constructor(

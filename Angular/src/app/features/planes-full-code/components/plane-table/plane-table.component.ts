@@ -9,12 +9,12 @@ import { TeamTypeId } from 'src/app/shared/constants';
 import { Plane } from '../../model/plane';
 
 @Component({
-  selector: 'app-plane-table',
-  templateUrl:
-    '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
-  styleUrls: [
-    '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss',
-  ],
+    selector: 'app-plane-table',
+    templateUrl: '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
+    styleUrls: [
+        '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss',
+    ],
+    standalone: false
 })
 export class PlaneTableComponent
   extends BiaCalcTableComponent<Plane>

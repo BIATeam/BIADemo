@@ -18,11 +18,12 @@ import { Engine } from '../../model/engine';
 import { PlaneSpecific } from '../../model/plane-specific';
 
 @Component({
-  selector: 'app-plane-specific-form',
-  templateUrl: 'plane-form.component.html',
-  styleUrls: [
-    '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
-  ],
+    selector: 'app-plane-specific-form',
+    templateUrl: 'plane-form.component.html',
+    styleUrls: [
+        '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
+    ],
+    standalone: false
 })
 export class PlaneFormComponent
   extends CrudItemFormComponent<PlaneSpecific>

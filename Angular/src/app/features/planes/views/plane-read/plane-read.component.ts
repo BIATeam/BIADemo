@@ -15,8 +15,9 @@ import { planeCRUDConfiguration } from '../../plane.constants';
 import { PlaneService } from '../../services/plane.service';
 
 @Component({
-  selector: 'app-plane-read',
-  templateUrl: './plane-read.component.html',
+    selector: 'app-plane-read',
+    templateUrl: './plane-read.component.html',
+    standalone: false
 })
 export class PlaneReadComponent extends CrudItemReadComponent<Plane> {
   constructor(

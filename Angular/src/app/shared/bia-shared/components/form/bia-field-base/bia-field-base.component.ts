@@ -9,8 +9,9 @@ import {
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 
 @Component({
-  selector: 'bia-field-base',
-  template: '',
+    selector: 'bia-field-base',
+    template: '',
+    standalone: false
 })
 export class BiaFieldBaseComponent<CrudItem> implements OnInit, OnDestroy {
   @Input() field: BiaFieldConfig<CrudItem>;

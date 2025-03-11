@@ -20,9 +20,10 @@ import { AppState } from 'src/app/store/state';
 import { TeamAdvancedFilterDto } from '../../model/team-advanced-filter-dto';
 
 @Component({
-  selector: 'bia-team-advanced-filter',
-  templateUrl: './team-advanced-filter.component.html',
-  styleUrls: ['./team-advanced-filter.component.scss'],
+    selector: 'bia-team-advanced-filter',
+    templateUrl: './team-advanced-filter.component.html',
+    styleUrls: ['./team-advanced-filter.component.scss'],
+    standalone: false
 })
 export class TeamAdvancedFilterComponent implements OnInit, OnChanges {
   @ViewChild('template', { static: true }) template: TemplateRef<HTMLElement>;

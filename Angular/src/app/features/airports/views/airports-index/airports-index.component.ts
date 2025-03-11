@@ -8,9 +8,10 @@ import { Airport } from '../../model/airport';
 import { AirportService } from '../../services/airport.service';
 
 @Component({
-  selector: 'app-airports-index',
-  templateUrl: './airports-index.component.html',
-  styleUrls: ['./airports-index.component.scss'],
+    selector: 'app-airports-index',
+    templateUrl: './airports-index.component.html',
+    styleUrls: ['./airports-index.component.scss'],
+    standalone: false
 })
 export class AirportsIndexComponent extends CrudItemsIndexComponent<Airport> {
   @ViewChild(AirportTableComponent, { static: false })

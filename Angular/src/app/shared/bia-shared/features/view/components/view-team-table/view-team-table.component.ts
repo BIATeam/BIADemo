@@ -16,9 +16,10 @@ import { TeamView } from '../../model/team-view';
 import { ViewTeam } from '../../model/view-team';
 
 @Component({
-  selector: 'bia-view-team-table',
-  templateUrl: './view-team-table.component.html',
-  styleUrls: ['./view-team-table.component.scss'],
+    selector: 'bia-view-team-table',
+    templateUrl: './view-team-table.component.html',
+    styleUrls: ['./view-team-table.component.scss'],
+    standalone: false
 })
 export class ViewTeamTableComponent implements OnChanges {
   @Input() views: TeamView[];

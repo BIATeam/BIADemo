@@ -12,9 +12,10 @@ import { LayoutHelperService } from '../../services/layout-helper.service';
 import { BiaLayoutService } from '../layout/services/layout.service';
 
 @Component({
-  selector: 'bia-hangfire-container',
-  templateUrl: './hangfire-container.component.html',
-  styleUrls: ['./hangfire-container.component.scss'],
+    selector: 'bia-hangfire-container',
+    templateUrl: './hangfire-container.component.html',
+    styleUrls: ['./hangfire-container.component.scss'],
+    standalone: false
 })
 export class HangfireContainerComponent implements OnInit, OnDestroy {
   @Input() url = '';

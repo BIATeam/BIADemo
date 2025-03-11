@@ -4,12 +4,12 @@ import { Engine } from '../../model/engine';
 import { EngineService } from '../../services/engine.service';
 
 @Component({
-  selector: 'app-engines-item',
-  templateUrl:
-    '../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
-  styleUrls: [
-    '../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
-  ],
+    selector: 'app-engines-item',
+    templateUrl: '../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
+    styleUrls: [
+        '../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
+    ],
+    standalone: false
 })
 export class EngineItemComponent
   extends CrudItemItemComponent<Engine>

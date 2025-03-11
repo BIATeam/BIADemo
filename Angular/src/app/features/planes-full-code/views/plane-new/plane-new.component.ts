@@ -9,9 +9,10 @@ import { PlaneOptionsService } from '../../services/plane-options.service';
 import { FeaturePlanesActions } from '../../store/planes-actions';
 
 @Component({
-  selector: 'app-plane-new',
-  templateUrl: './plane-new.component.html',
-  styleUrls: ['./plane-new.component.scss'],
+    selector: 'app-plane-new',
+    templateUrl: './plane-new.component.html',
+    styleUrls: ['./plane-new.component.scss'],
+    standalone: false
 })
 export class PlaneNewComponent implements OnInit, OnDestroy {
   private sub = new Subscription();

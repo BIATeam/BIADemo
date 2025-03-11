@@ -8,12 +8,12 @@ import { AircraftMaintenanceCompany } from '../../model/aircraft-maintenance-com
 import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maintenance-company.service';
 
 @Component({
-  selector: 'app-aircraft-maintenance-companies-item',
-  templateUrl:
-    '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
-  styleUrls: [
-    '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
-  ],
+    selector: 'app-aircraft-maintenance-companies-item',
+    templateUrl: '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
+    styleUrls: [
+        '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
+    ],
+    standalone: false
 })
 export class AircraftMaintenanceCompanyItemComponent
   extends CrudItemItemComponent<AircraftMaintenanceCompany>

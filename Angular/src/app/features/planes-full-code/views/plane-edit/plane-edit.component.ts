@@ -16,9 +16,10 @@ import { PlaneService } from '../../services/plane.service';
 import { FeaturePlanesActions } from '../../store/planes-actions';
 
 @Component({
-  selector: 'app-plane-edit',
-  templateUrl: './plane-edit.component.html',
-  styleUrls: ['./plane-edit.component.scss'],
+    selector: 'app-plane-edit',
+    templateUrl: './plane-edit.component.html',
+    styleUrls: ['./plane-edit.component.scss'],
+    standalone: false
 })
 export class PlaneEditComponent implements OnInit, OnDestroy {
   @Output() displayChange = new EventEmitter<boolean>();

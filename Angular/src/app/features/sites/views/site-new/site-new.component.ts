@@ -6,8 +6,9 @@ import { SiteService } from '../../services/site.service';
 import { siteCRUDConfiguration } from '../../site.constants';
 
 @Component({
-  selector: 'app-site-new',
-  templateUrl: './site-new.component.html',
+    selector: 'app-site-new',
+    templateUrl: './site-new.component.html',
+    standalone: false
 })
 export class SiteNewComponent extends CrudItemNewComponent<Site> {
   constructor(

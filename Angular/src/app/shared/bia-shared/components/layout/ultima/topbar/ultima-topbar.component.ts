@@ -32,9 +32,10 @@ import { allEnvironments } from 'src/environments/all-environments';
 import { BiaLayoutService } from '../../services/layout.service';
 
 @Component({
-  selector: 'bia-ultima-topbar',
-  templateUrl: './ultima-topbar.component.html',
-  styleUrls: ['./ultima-topbar.component.scss'],
+    selector: 'bia-ultima-topbar',
+    templateUrl: './ultima-topbar.component.html',
+    styleUrls: ['./ultima-topbar.component.scss'],
+    standalone: false
 })
 export class BiaUltimaTopbarComponent implements OnInit, OnDestroy {
   @Input() appTitle: string;

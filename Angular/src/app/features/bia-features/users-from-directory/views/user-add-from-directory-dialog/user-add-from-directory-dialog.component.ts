@@ -11,9 +11,10 @@ import { getAllUsersFromDirectory } from '../../store/user-from-directory.state'
 import { FeatureUsersFromDirectoryActions } from '../../store/users-from-directory-actions';
 
 @Component({
-  selector: 'bia-user-add-from-directory-dialog',
-  templateUrl: './user-add-from-directory-dialog.component.html',
-  styleUrls: ['./user-add-from-directory-dialog.component.scss'],
+    selector: 'bia-user-add-from-directory-dialog',
+    templateUrl: './user-add-from-directory-dialog.component.html',
+    styleUrls: ['./user-add-from-directory-dialog.component.scss'],
+    standalone: false
 })
 export class UserAddFromLdapComponent implements OnInit {
   _display = false;

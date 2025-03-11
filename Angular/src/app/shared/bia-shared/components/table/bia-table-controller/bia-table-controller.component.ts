@@ -24,21 +24,22 @@ import { BiaTableState } from '../../../model/bia-table-state';
 import { KeyValuePair } from '../../../model/key-value-pair';
 
 @Component({
-  selector: 'bia-table-controller',
-  templateUrl: './bia-table-controller.component.html',
-  styleUrls: ['./bia-table-controller.component.scss'],
-  animations: [
-    trigger('options', [
-      transition(':enter', [
-        style({ height: 0 }),
-        animate('200ms ease-out', style({ height: '*' })),
-      ]),
-      transition(':leave', [
-        style({ height: '*' }),
-        animate('200ms ease-out', style({ height: 0 })),
-      ]),
-    ]),
-  ],
+    selector: 'bia-table-controller',
+    templateUrl: './bia-table-controller.component.html',
+    styleUrls: ['./bia-table-controller.component.scss'],
+    animations: [
+        trigger('options', [
+            transition(':enter', [
+                style({ height: 0 }),
+                animate('200ms ease-out', style({ height: '*' })),
+            ]),
+            transition(':leave', [
+                style({ height: '*' }),
+                animate('200ms ease-out', style({ height: 0 })),
+            ]),
+        ]),
+    ],
+    standalone: false
 })
 export class BiaTableControllerComponent
   implements OnChanges, OnInit, OnDestroy, AfterContentInit
