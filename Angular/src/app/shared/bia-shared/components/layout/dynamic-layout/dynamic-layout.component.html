@@ -12,7 +12,7 @@
 </div>
 
 @if (isSplitWithVisibilityCheck) {
-  @if (outlet.isActivated) {
+  @if (hasChildren) {
     <div class="handle" (mousedown)="startResize($event)"></div>
   }
   <div

@@ -115,6 +115,7 @@ export class DynamicLayoutComponent<TDto extends { id: number }>
     this.$displayPageComponent = new BehaviorSubject<boolean>(true);
     this.displayPageComponent = true;
     this.configuration = snapshot.data['configuration'];
+    this.leftWidth = snapshot.data['leftWidth'] ?? this.leftWidth;
     this.previousIsSplit = this.configuration?.useSplit ?? false;
     this.maxScanDepth = snapshot.data['maxScanDepth'] ?? this.maxScanDepth;
     this.checkChildrenRules();
