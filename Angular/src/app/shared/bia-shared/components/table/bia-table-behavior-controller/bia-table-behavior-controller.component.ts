@@ -1,5 +1,14 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
+import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { CrudConfig } from '../../../feature-templates/crud-items/model/crud-config';
 
 export interface BiaBehaviorIcon {
@@ -15,7 +24,7 @@ export interface BiaBehaviorIcon {
   styleUrls: ['./bia-table-behavior-controller.component.scss'],
 })
 export class BiaTableBehaviorControllerComponent<TDto extends { id: number }>
-  implements OnInit
+  implements OnInit, OnDestroy
 {
   selectedLayout?: BiaBehaviorIcon;
   visibleLayouts: BiaBehaviorIcon[];
@@ -31,9 +40,28 @@ export class BiaTableBehaviorControllerComponent<TDto extends { id: number }>
   @Output() useVirtualScrollChanged = new EventEmitter<boolean>();
   @Output() useResizableColumnChanged = new EventEmitter<boolean>();
 
-  constructor(private readonly translateService: TranslateService) {}
+  private sub = new Subscription();
+
+  constructor(
+    protected readonly translateService: TranslateService,
+    protected readonly biaTranslationService: BiaTranslationService
+  ) {}
 
   ngOnInit(): void {
+    this.loadActions();
+
+    this.sub.add(
+      this.biaTranslationService.currentCulture$.subscribe(() => {
+        this.loadActions();
+      })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
+  }
+
+  private loadActions() {
     this.visibleLayouts = [];
     this.addButtonIfVisible(
       'showCalcMode',

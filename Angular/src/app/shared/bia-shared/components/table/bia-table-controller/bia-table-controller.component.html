@@ -1,18 +1,8 @@
-<div class="bia-table-controller-container">
-  <div>
-    <span>{{ 'bia.display' | translate }} </span>
-    <p-multiSelect
-      [options]="listedColumns"
-      optionLabel="label"
-      optionValue="value"
-      [(ngModel)]="displayedColumns"
-      (onChange)="onChangeSelectColumn()"
-      autoWidth="false"
-      [style]="{ width: '300px' }"
-      scrollHeight="50vh"></p-multiSelect>
-  </div>
+<div
+  #contentContainer
+  class="bia-table-controller-container"
+  [ngClass]="overflowingClass">
   <div *ngIf="tableStateKey">
-    <span>{{ 'bia.views.view' | translate }} : </span>
     <bia-view-list
       [tableStateKey]="tableStateKey"
       [tableState]="tableState"
@@ -22,20 +12,51 @@
       [columns]="columns"
       (viewChange)="onViewChange($event)"></bia-view-list>
   </div>
-  <div>
-    <ng-container *ngTemplateOutlet="customControlTemplate"></ng-container>
+  <div #overflowingContent class="bia-overflow-hidden">
+    <div class="bia-overflow-hidden-container">
+      <div>
+        <span class="p-float-label">
+          <p-multiSelect
+            [options]="listedColumns"
+            optionLabel="label"
+            optionValue="value"
+            [(ngModel)]="displayedColumns"
+            (onChange)="onChangeSelectColumn()"
+            autoWidth="false"
+            [style]="{ width: '17rem' }"
+            scrollHeight="50vh"></p-multiSelect>
+          <label>{{ 'bia.display' | translate }}</label></span
+        >
+      </div>
+      <div class="flex align-items-center">
+        <ng-container *ngTemplateOutlet="customControlTemplate"></ng-container>
+      </div>
+      <div class="flex align-items-center">
+        <div class="p-float-label">
+          <input
+            id="bia-input-search"
+            pInputText
+            type="text"
+            [formControl]="filterCtrl"
+            [value]="globalFilter" />
+          <label for="name">{{ 'bia.search' | translate }}</label>
+        </div>
+        <i class="pi pi-search bia-pointer"></i>
+      </div>
+    </div>
   </div>
-  <div class="p-float-label" style="margin-top: -15px">
-    <input
-      id="bia-input-search"
-      pInputText
-      type="text"
-      [formControl]="filterCtrl"
-      [value]="globalFilter" />
-    <label for="name">{{ 'bia.search' | translate }}</label>
-    <i class="pi pi-search bia-pointer"></i>
-  </div>
-  <div class="flex gap-3">
+  <div class="flex align-items-center ml-auto">
+    <div class="bia-overflow-visible">
+      <p-button
+        #overflowingContentButton
+        [style]="{ overflow: 'visible' }"
+        icon="pi pi-ellipsis-v"
+        [text]="true"
+        (click)="toggleOverflowingContent()"
+        pTooltip="{{ 'bia.openMoreOptions' | translate }}"
+        tooltipPosition="top">
+      </p-button>
+    </div>
     <p-button
       [style]="{ overflow: 'visible' }"
       icon="pi pi-filter"
