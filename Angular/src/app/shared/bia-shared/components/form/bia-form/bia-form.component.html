@@ -1,7 +1,7 @@
 <form
   *ngIf="form"
   (submit)="onSubmit()"
-  class="flex flex-column bia-form"
+  class="flex flex-col bia-form"
   [formGroup]="form">
   <div class="header-container bia-form-header" *ngIf="showHeaderContainer">
     <div class="fixed-state" *ngIf="isFixableButtonVisible">
@@ -59,7 +59,7 @@
       </ng-template>
 
       <ng-template #rowTemplate let-row="row">
-        <div class="grid bia-form-row">
+        <div class="grid grid-cols-12 gap-4 bia-form-row">
           <div
             *ngFor="let column of row.columns"
             [class]="column.columnClass ?? row.computedColumnClass">
@@ -93,7 +93,7 @@
     </ng-container>
   </div>
   <div class="footer-container bia-form-fixed-buttons">
-    <div class="flex gap-2 align-items-center info-locked-container">
+    <div class="flex gap-2 items-center info-locked-container">
       <button
         *ngIf="isCrudItemOutdated"
         pButton
@@ -108,7 +108,7 @@
         'bia.outdatedData' | translate
       }}</span>
     </div>
-    <div class="flex gap-3">
+    <div class="flex gap-4">
       <button
         pButton
         icon="pi pi-times"
@@ -129,7 +129,7 @@
   <ng-template #fieldTemplate let-field="field">
     <div
       *ngIf="field.isVisible === true"
-      class="flex flex-row align-items-center"
+      class="flex flex-row items-center"
       #refFormField>
       <div class="app-field-container">
         <ng-template
@@ -164,7 +164,7 @@
     </div>
   </ng-template>
   <div class="footer-container bia-form-fixed-buttons">
-    <div class="flex gap-2 align-items-center info-locked-container">
+    <div class="flex gap-2 items-center info-locked-container">
       <button
         *ngIf="isCrudItemOutdated"
         pButton
@@ -179,7 +179,7 @@
         'bia.outdatedData' | translate
       }}</span>
     </div>
-    <div class="flex gap-3">
+    <div class="flex gap-4">
       <button
         pButton
         icon="pi pi-times"

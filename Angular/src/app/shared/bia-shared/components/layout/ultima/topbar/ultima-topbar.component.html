@@ -1,11 +1,11 @@
 <div
-  class="flex-1 flex-column"
+  class="flex-1 flex-col"
   [style.display]="fullscreenMode ? 'none' : 'flex'"
   style="width: calc(100vw)">
   <!-- topbar -->
   <div class="layout-topbar">
     <div class="layout-topbar-start">
-      <div class="logos flex justify-content-center">
+      <div class="logos flex justify-center">
         <a class="project-title" routerLink="/">
           <img alt="appicon" class="app-logo" [src]="urlAppIcon" />
           <div class="app-title">
@@ -33,7 +33,7 @@
     </div>
     <div class="layout-topbar-end">
       <div
-        class="layout-topbar-actions-start flex flex-1 justify-content-center">
+        class="layout-topbar-actions-start flex flex-1 justify-center">
         <bia-ie-warning *ngIf="isIE"></bia-ie-warning>
         <ng-template
           ngFor
@@ -43,7 +43,7 @@
           <bia-team-selector [teamType]="teamTypeSelector"></bia-team-selector>
           <span
             *ngIf="!last"
-            class="flex align-self-center bia-separator"></span>
+            class="flex self-center bia-separator"></span>
         </ng-template>
       </div>
       <div class="layout-topbar-actions-end flex flex-0">
@@ -134,7 +134,7 @@
 
 <p-toast key="bia" #toast id="toast">
   <ng-template let-message pTemplate="message">
-    <div class="flex flex-column flex-1" style="max-width: 100%">
+    <div class="flex flex-col flex-1" style="max-width: 100%">
       <div class="flex flex-row">
         <ng-container [ngSwitch]="message.severity">
           <ng-container *ngSwitchCase="'success'">
@@ -170,7 +170,7 @@
       </div>
       <div
         *ngIf="message.data?.notification?.type?.id === notificationType.Task"
-        class="notification-actions flex flex-row justify-content-between align-content-between">
+        class="notification-actions flex flex-row justify-between content-between">
         <button
           pButton
           [label]="message.data?.notification?.data.display | translate"
