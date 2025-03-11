@@ -73,7 +73,7 @@
     "@angular/cli": "~18.2.14",
     "@angular/compiler-cli": "~18.2.13",
     "@angular/language-service": "~18.2.13",
-    "@ngrx/store-devtools": "~17.2.0",
+    "@ngrx/store-devtools": "~18.1.1",
     "@types/node": "~20.17.19",
     "@types/papaparse": "~5.3.15",
     "@typescript-eslint/eslint-plugin": "~5.62.0",
