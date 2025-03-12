@@ -1,8 +1,8 @@
 import { Injectable, isDevMode, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
-  KeycloakEvent,
-  KeycloakEventType,
+  KeycloakEventLegacy,
+  KeycloakEventTypeLegacy,
   KeycloakService,
 } from 'keycloak-angular';
 import { Observable, Subscription, throwError } from 'rxjs';
@@ -92,9 +92,9 @@ export class BiaAppInitService implements OnDestroy {
   protected initEventKeycloakSuccess(): Observable<AuthInfo> {
     return this.keycloakService.keycloakEvents$.asObservable().pipe(
       filter(
-        (keycloakEvent: KeycloakEvent) =>
-          keycloakEvent?.type === KeycloakEventType.OnAuthSuccess ||
-          keycloakEvent?.type === KeycloakEventType.OnAuthRefreshSuccess
+        (keycloakEvent: KeycloakEventLegacy) =>
+          keycloakEvent?.type === KeycloakEventTypeLegacy.OnAuthSuccess ||
+          keycloakEvent?.type === KeycloakEventTypeLegacy.OnAuthRefreshSuccess
       ),
       first(),
       switchMap(() => {
@@ -107,11 +107,11 @@ export class BiaAppInitService implements OnDestroy {
     this.sub.add(
       this.keycloakService.keycloakEvents$
         .asObservable()
-        .subscribe(async (keycloakEvent: KeycloakEvent) => {
+        .subscribe(async (keycloakEvent: KeycloakEventLegacy) => {
           if (
-            keycloakEvent?.type === KeycloakEventType.OnAuthLogout ||
-            keycloakEvent?.type === KeycloakEventType.OnReady ||
-            keycloakEvent?.type === KeycloakEventType.OnTokenExpired
+            keycloakEvent?.type === KeycloakEventTypeLegacy.OnAuthLogout ||
+            keycloakEvent?.type === KeycloakEventTypeLegacy.OnReady ||
+            keycloakEvent?.type === KeycloakEventTypeLegacy.OnTokenExpired
           ) {
             if (this.keycloakService.isLoggedIn() !== true) {
               this.keycloakService.login({
