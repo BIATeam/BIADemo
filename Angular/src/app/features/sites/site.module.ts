@@ -6,9 +6,9 @@ import { StoreModule } from '@ngrx/store';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
 import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
-import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
+
 import { Permission } from 'src/app/shared/permission';
-import { SharedModule } from 'src/app/shared/shared.module';
+
 import { SiteFormComponent } from './components/site-form/site-form.component';
 import { SiteTableComponent } from './components/site-table/site-table.component';
 import { siteCRUDConfiguration } from './site.constants';
@@ -103,20 +103,18 @@ export const ROUTES: Routes = [
 
 @NgModule({
     imports: [
-        SharedModule,
-        CrudItemModule,
-        RouterModule.forChild(ROUTES),
-        StoreModule.forFeature(siteCRUDConfiguration.storeKey, FeatureSitesStore.reducers),
-        EffectsModule.forFeature([SitesEffects]),
-        SiteItemComponent,
-        SitesIndexComponent,
-        // [Calc] : NOT used for calc (3 lines).
-        // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-        SiteFormComponent,
-        SiteNewComponent,
-        SiteEditComponent,
-        // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-        SiteTableComponent,
-    ],
+    RouterModule.forChild(ROUTES),
+    StoreModule.forFeature(siteCRUDConfiguration.storeKey, FeatureSitesStore.reducers),
+    EffectsModule.forFeature([SitesEffects]),
+    SiteItemComponent,
+    SitesIndexComponent,
+    // [Calc] : NOT used for calc (3 lines).
+    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
+    SiteFormComponent,
+    SiteNewComponent,
+    SiteEditComponent,
+    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
+    SiteTableComponent,
+],
 })
 export class SiteModule {}

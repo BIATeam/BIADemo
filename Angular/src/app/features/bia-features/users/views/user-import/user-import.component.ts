@@ -5,13 +5,14 @@ import { User } from '../../model/user';
 import { UserService } from '../../services/user.service';
 import { userCRUDConfiguration } from '../../user.constants';
 import { BiaSharedModule } from '../../../../../shared/bia-shared/bia-shared.module';
-import { CrudItemImportModule } from '../../../../../shared/bia-shared/feature-templates/crud-items/crud-item-import.module';
+
 import { AsyncPipe } from '@angular/common';
+import { CrudItemImportFormComponent } from '../../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-import-form/crud-item-import-form.component';
 
 @Component({
     selector: 'bia-user-import',
     templateUrl: '../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
-    imports: [BiaSharedModule, CrudItemImportModule, AsyncPipe]
+    imports: [BiaSharedModule, CrudItemImportFormComponent, AsyncPipe]
 })
 export class UserImportComponent extends CrudItemImportComponent<User> {
   constructor(

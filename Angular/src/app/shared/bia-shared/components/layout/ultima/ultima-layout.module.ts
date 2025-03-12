@@ -21,9 +21,9 @@ import { StyleClassModule } from 'primeng/styleclass';
 import { ToastModule } from 'primeng/toast';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { TooltipModule } from 'primeng/tooltip';
-import { BiaOnlineOfflineIconModule } from '../../bia-online-offline-icon/bia-online-offline-icon.module';
+
 import { BiaTeamSelectorModule } from '../../bia-team-selector/bia-team-selector.module';
-import { NotificationTeamWarningModule } from '../../notification-team-warning/notification-team-warning.module';
+
 import { IeWarningComponent } from '../ie-warning/ie-warning.component';
 
 @NgModule({
@@ -45,12 +45,10 @@ import { IeWarningComponent } from '../ie-warning/ie-warning.component';
     MenuModule,
     BreadcrumbModule,
     IeWarningComponent,
-    BiaOnlineOfflineIconModule,
     BiaTeamSelectorModule,
     ToastModule,
-    NotificationTeamWarningModule,
     DialogModule,
-  ],
+],
   providers: [provideHttpClient(withInterceptorsFromDi())],
 })
 export class BiaUltimaLayoutModule {}

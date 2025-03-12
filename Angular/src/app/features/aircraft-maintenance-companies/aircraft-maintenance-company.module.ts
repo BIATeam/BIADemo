@@ -6,9 +6,9 @@ import { StoreModule } from '@ngrx/store';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
 import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
-import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
+
 import { Permission } from 'src/app/shared/permission';
-import { SharedModule } from 'src/app/shared/shared.module';
+
 import { aircraftMaintenanceCompanyCRUDConfiguration } from './aircraft-maintenance-company.constants';
 import { AircraftMaintenanceCompanyFormComponent } from './components/aircraft-maintenance-company-form/aircraft-maintenance-company-form.component';
 import { AircraftMaintenanceCompanyTableComponent } from './components/aircraft-maintenance-company-table/aircraft-maintenance-company-table.component';
@@ -117,20 +117,18 @@ export const ROUTES: Routes = [
 
 @NgModule({
     imports: [
-        SharedModule,
-        CrudItemModule,
-        RouterModule.forChild(ROUTES),
-        StoreModule.forFeature(aircraftMaintenanceCompanyCRUDConfiguration.storeKey, FeatureAircraftMaintenanceCompaniesStore.reducers),
-        EffectsModule.forFeature([AircraftMaintenanceCompaniesEffects]),
-        AircraftMaintenanceCompanyItemComponent,
-        AircraftMaintenanceCompaniesIndexComponent,
-        // [Calc] : NOT used for calc (3 lines).
-        // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-        AircraftMaintenanceCompanyFormComponent,
-        AircraftMaintenanceCompanyNewComponent,
-        AircraftMaintenanceCompanyEditComponent,
-        // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-        AircraftMaintenanceCompanyTableComponent,
-    ],
+    RouterModule.forChild(ROUTES),
+    StoreModule.forFeature(aircraftMaintenanceCompanyCRUDConfiguration.storeKey, FeatureAircraftMaintenanceCompaniesStore.reducers),
+    EffectsModule.forFeature([AircraftMaintenanceCompaniesEffects]),
+    AircraftMaintenanceCompanyItemComponent,
+    AircraftMaintenanceCompaniesIndexComponent,
+    // [Calc] : NOT used for calc (3 lines).
+    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
+    AircraftMaintenanceCompanyFormComponent,
+    AircraftMaintenanceCompanyNewComponent,
+    AircraftMaintenanceCompanyEditComponent,
+    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
+    AircraftMaintenanceCompanyTableComponent,
+],
 })
 export class AircraftMaintenanceCompanyModule {}

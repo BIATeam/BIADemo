@@ -4,7 +4,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { Permission } from 'src/app/shared/permission';
-import { SharedModule } from 'src/app/shared/shared.module';
+
 import { HangfireEffects } from './store/hangfire-effects';
 import { reducers } from './store/hangfire.state';
 import { HangfireIndexComponent } from './views/hangfire-index/hangfire-index.component';
@@ -24,12 +24,11 @@ const ROUTES: Routes = [
 
 @NgModule({
     imports: [
-        SharedModule,
-        RouterModule.forChild(ROUTES),
-        StoreModule.forFeature('hangfire', reducers),
-        EffectsModule.forFeature([HangfireEffects]),
-        HangfireIndexComponent,
-    ],
+    RouterModule.forChild(ROUTES),
+    StoreModule.forFeature('hangfire', reducers),
+    EffectsModule.forFeature([HangfireEffects]),
+    HangfireIndexComponent,
+],
     providers: [],
 })
 export class HangfireModule {}

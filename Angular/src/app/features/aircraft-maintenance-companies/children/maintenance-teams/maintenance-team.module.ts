@@ -12,9 +12,9 @@ import { CountryOptionModule } from 'src/app/domains/country-option/country-opti
 // BIAToolKit - End Option Country
 import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
 import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
-import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
+
 import { Permission } from 'src/app/shared/permission';
-import { SharedModule } from 'src/app/shared/shared.module';
+
 import { MaintenanceTeamFormComponent } from './components/maintenance-team-form/maintenance-team-form.component';
 import { MaintenanceTeamTableComponent } from './components/maintenance-team-table/maintenance-team-table.component';
 import { maintenanceTeamCRUDConfiguration } from './maintenance-team.constants';
@@ -108,27 +108,25 @@ export const ROUTES: Routes = [
 
 @NgModule({
     imports: [
-        SharedModule,
-        CrudItemModule,
-        RouterModule.forChild(ROUTES),
-        StoreModule.forFeature(maintenanceTeamCRUDConfiguration.storeKey, FeatureMaintenanceTeamsStore.reducers),
-        EffectsModule.forFeature([MaintenanceTeamsEffects]),
-        // TODO after creation of CRUD Team MaintenanceTeam : select the optioDto dommain module required for link
-        // Domain Modules:
-        // BIAToolKit - Begin Option Airport
-        AirportOptionModule,
-        // BIAToolKit - End Option Airport
-        // BIAToolKit - Begin Option Country
-        CountryOptionModule,
-        MaintenanceTeamItemComponent,
-        MaintenanceTeamsIndexComponent,
-        // [Calc] : NOT used for calc (3 lines).
-        // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-        MaintenanceTeamFormComponent,
-        MaintenanceTeamNewComponent,
-        MaintenanceTeamEditComponent,
-        // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-        MaintenanceTeamTableComponent,
-    ],
+    RouterModule.forChild(ROUTES),
+    StoreModule.forFeature(maintenanceTeamCRUDConfiguration.storeKey, FeatureMaintenanceTeamsStore.reducers),
+    EffectsModule.forFeature([MaintenanceTeamsEffects]),
+    // TODO after creation of CRUD Team MaintenanceTeam : select the optioDto dommain module required for link
+    // Domain Modules:
+    // BIAToolKit - Begin Option Airport
+    AirportOptionModule,
+    // BIAToolKit - End Option Airport
+    // BIAToolKit - Begin Option Country
+    CountryOptionModule,
+    MaintenanceTeamItemComponent,
+    MaintenanceTeamsIndexComponent,
+    // [Calc] : NOT used for calc (3 lines).
+    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
+    MaintenanceTeamFormComponent,
+    MaintenanceTeamNewComponent,
+    MaintenanceTeamEditComponent,
+    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
+    MaintenanceTeamTableComponent,
+],
 })
 export class MaintenanceTeamModule {}

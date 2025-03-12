@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { SharedModule } from 'src/app/shared/shared.module';
+
 import { HomeIndexComponent } from './home-index.component';
 
 export const HOME_ROUTES: Routes = [
@@ -13,6 +13,6 @@ export const HOME_ROUTES: Routes = [
 ];
 
 @NgModule({
-    imports: [SharedModule, TranslateModule.forChild(), RouterModule, HomeIndexComponent],
+    imports: [TranslateModule.forChild(), RouterModule, HomeIndexComponent],
 })
 export class HomeModule {}

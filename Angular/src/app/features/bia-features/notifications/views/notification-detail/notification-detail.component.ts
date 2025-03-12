@@ -17,15 +17,16 @@ import { NotificationService } from '../../services/notification.service';
 import { FeatureNotificationsActions } from '../../store/notifications-actions';
 import { NgIf, AsyncPipe, DatePipe } from '@angular/common';
 import { ButtonDirective } from 'primeng/button';
-import { NotificationTeamWarningModule } from '../../../../../shared/bia-shared/components/notification-team-warning/notification-team-warning.module';
+
 import { BiaSharedModule } from '../../../../../shared/bia-shared/bia-shared.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { NotificationTeamWarningComponent } from '../../../../../shared/bia-shared/components/notification-team-warning/notification-team-warning.component';
 
 @Component({
     selector: 'bia-notification-detail',
     templateUrl: './notification-detail.component.html',
     styleUrls: ['./notification-detail.component.scss'],
-    imports: [NgIf, ButtonDirective, NotificationTeamWarningModule, BiaSharedModule, AsyncPipe, DatePipe, TranslateModule]
+    imports: [NgIf, ButtonDirective, NotificationTeamWarningComponent, BiaSharedModule, AsyncPipe, DatePipe, TranslateModule]
 })
 export class NotificationDetailComponent implements OnInit, OnDestroy {
   @Output() displayChange = new EventEmitter<boolean>();

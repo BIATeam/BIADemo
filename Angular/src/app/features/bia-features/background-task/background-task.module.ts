@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { Permission } from 'src/app/shared/permission';
-import { SharedModule } from 'src/app/shared/shared.module';
+
 import { BackgroundTaskAdminComponent } from './views/background-task-admin/background-task-admin.component';
 import { BackgroundTaskReadOnlyComponent } from './views/background-task-read-only/background-task-read-only.component';
 
@@ -29,7 +29,7 @@ const ROUTES: Routes = [
 ];
 
 @NgModule({
-    imports: [SharedModule, RouterModule.forChild(ROUTES), BackgroundTaskAdminComponent, BackgroundTaskReadOnlyComponent],
+    imports: [RouterModule.forChild(ROUTES), BackgroundTaskAdminComponent, BackgroundTaskReadOnlyComponent],
     providers: [],
 })
 export class BackgroundTaskModule {}

@@ -5,7 +5,7 @@ import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/la
 import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
 import { MemberModule } from 'src/app/shared/bia-shared/feature-templates/members/member.module';
 import { Permission } from 'src/app/shared/permission';
-import { SharedModule } from 'src/app/shared/shared.module';
+
 import { MaintenanceTeamMemberEditComponent } from './views/maintenance-team-member-edit/maintenance-team-member-edit.component';
 import { MaintenanceTeamMemberItemComponent } from './views/maintenance-team-member-item/maintenance-team-member-item.component';
 import { MaintenanceTeamMemberNewComponent } from './views/maintenance-team-member-new/maintenance-team-member-new.component';
@@ -71,9 +71,9 @@ const ROUTES: Routes = [
 ];
 
 @NgModule({
-    imports: [SharedModule, RouterModule.forChild(ROUTES), MemberModule, MaintenanceTeamMemberItemComponent,
-        MaintenanceTeamMembersIndexComponent,
-        MaintenanceTeamMemberNewComponent,
-        MaintenanceTeamMemberEditComponent],
+    imports: [RouterModule.forChild(ROUTES), MemberModule, MaintenanceTeamMemberItemComponent,
+    MaintenanceTeamMembersIndexComponent,
+    MaintenanceTeamMemberNewComponent,
+    MaintenanceTeamMemberEditComponent],
 })
 export class MaintenanceTeamMemberModule {}

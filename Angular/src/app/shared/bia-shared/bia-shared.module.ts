@@ -98,7 +98,7 @@ import { TeamModule } from 'src/app/domains/bia-domains/team/team.module';
 import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
 import { reducers as notificationReducers } from '../../domains/bia-domains/notification/store/notification.state';
 import { BiaButtonGroupComponent } from './components/bia-button-group/bia-button-group.component';
-import { BiaOnlineOfflineIconModule } from './components/bia-online-offline-icon/bia-online-offline-icon.module';
+
 import { BiaTeamSelectorModule } from './components/bia-team-selector/bia-team-selector.module';
 import { BiaFieldBaseComponent } from './components/form/bia-field-base/bia-field-base.component';
 import { BiaFormComponent } from './components/form/bia-form/bia-form.component';
@@ -117,7 +117,7 @@ import { PageLayoutComponent } from './components/layout/page-layout.component';
 import { PopupLayoutComponent } from './components/layout/popup-layout/popup-layout.component';
 import { BiaScrollingNotificationComponent } from './components/layout/scrolling-notification/scrolling-notification.component';
 import { BiaUltimaLayoutModule } from './components/layout/ultima/ultima-layout.module';
-import { NotificationTeamWarningModule } from './components/notification-team-warning/notification-team-warning.module';
+
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { BiaCalcTableComponent } from './components/table/bia-calc-table/bia-calc-table.component';
 import { BiaTableBehaviorControllerComponent } from './components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
@@ -202,18 +202,16 @@ const PRIMENG_MODULES = [
 ];
 
 const MODULES = [
-  CommonModule,
-  PortalModule,
-  TranslateModule,
-  FormsModule,
-  ReactiveFormsModule,
-  TeamModule,
-  //BiaLayoutModule,
-  BiaTeamSelectorModule,
-  BiaOnlineOfflineIconModule,
-  NotificationTeamWarningModule,
-  BiaUltimaLayoutModule,
-  RouterModule,
+    CommonModule,
+    PortalModule,
+    TranslateModule,
+    FormsModule,
+    ReactiveFormsModule,
+    TeamModule,
+    //BiaLayoutModule,
+    BiaTeamSelectorModule,
+    BiaUltimaLayoutModule,
+    RouterModule,
 ];
 
 const COMPONENTS = [

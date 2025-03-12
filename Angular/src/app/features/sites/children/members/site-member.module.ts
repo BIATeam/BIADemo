@@ -7,7 +7,7 @@ import { memberCRUDConfiguration } from 'src/app/shared/bia-shared/feature-templ
 import { MemberModule } from 'src/app/shared/bia-shared/feature-templates/members/member.module';
 import { MemberImportComponent } from 'src/app/shared/bia-shared/feature-templates/members/views/member-import/member-import.component';
 import { Permission } from 'src/app/shared/permission';
-import { SharedModule } from 'src/app/shared/shared.module';
+
 import { SiteMemberEditComponent } from './views/site-member-edit/site-member-edit.component';
 import { SiteMemberItemComponent } from './views/site-member-item/site-member-item.component';
 import { SiteMemberNewComponent } from './views/site-member-new/site-member-new.component';
@@ -96,9 +96,9 @@ const ROUTES: Routes = [
 ];
 
 @NgModule({
-    imports: [SharedModule, RouterModule.forChild(ROUTES), MemberModule, SiteMemberItemComponent,
-        SiteMembersIndexComponent,
-        SiteMemberNewComponent,
-        SiteMemberEditComponent],
+    imports: [RouterModule.forChild(ROUTES), MemberModule, SiteMemberItemComponent,
+    SiteMembersIndexComponent,
+    SiteMemberNewComponent,
+    SiteMemberEditComponent],
 })
 export class SiteMemberModule {}

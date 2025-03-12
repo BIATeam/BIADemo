@@ -7,10 +7,10 @@ import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { RoleOptionModule } from 'src/app/domains/bia-domains/role-option/role-option.module';
 import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
 import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
-import { CrudItemImportModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item-import.module';
-import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
+
+
 import { Permission } from 'src/app/shared/permission';
-import { SharedModule } from 'src/app/shared/shared.module';
+
 import { UserFromDirectoryModule } from '../users-from-directory/user-from-directory.module';
 import { UserFormComponent } from './components/user-form/user-form.component';
 import { UserTableComponent } from './components/user-table/user-table.component';
@@ -117,26 +117,23 @@ export const ROUTES: Routes = [
 
 @NgModule({
     imports: [
-        SharedModule,
-        CrudItemModule,
-        CrudItemImportModule,
-        RouterModule.forChild(ROUTES),
-        StoreModule.forFeature(userCRUDConfiguration.storeKey, FeatureUsersStore.reducers),
-        EffectsModule.forFeature([UsersEffects]),
-        // TODO after creation of CRUD User : select the optioDto dommain module required for link
-        // Domain Modules:
-        RoleOptionModule,
-        UserFromDirectoryModule,
-        UserItemComponent,
-        UsersIndexComponent,
-        // [Calc] : NOT used for calc (3 lines).
-        // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-        UserFormComponent,
-        UserNewComponent,
-        UserEditComponent,
-        // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-        UserTableComponent,
-        UserImportComponent,
-    ],
+    RouterModule.forChild(ROUTES),
+    StoreModule.forFeature(userCRUDConfiguration.storeKey, FeatureUsersStore.reducers),
+    EffectsModule.forFeature([UsersEffects]),
+    // TODO after creation of CRUD User : select the optioDto dommain module required for link
+    // Domain Modules:
+    RoleOptionModule,
+    UserFromDirectoryModule,
+    UserItemComponent,
+    UsersIndexComponent,
+    // [Calc] : NOT used for calc (3 lines).
+    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
+    UserFormComponent,
+    UserNewComponent,
+    UserEditComponent,
+    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
+    UserTableComponent,
+    UserImportComponent,
+],
 })
 export class UserModule {}
