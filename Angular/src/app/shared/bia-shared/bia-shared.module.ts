@@ -1,7 +1,10 @@
 // Modules
 import { PortalModule } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -19,6 +22,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 // import { ContextMenuModule } from 'primeng/contextmenu';
 import { DialogModule } from 'primeng/dialog';
+import { DividerModule } from 'primeng/divider';
 import { DropdownModule } from 'primeng/dropdown';
 // import { EditorModule } from 'primeng/editor';
 // Warning it required to install Quill package:
@@ -79,14 +83,17 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { MessageService } from 'primeng/api';
 
 // Component
+import { RouterModule } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TriStateCheckboxModule } from 'primeng/tristatecheckbox';
 import { NotificationsEffects } from 'src/app/domains/bia-domains/notification/store/notifications-effects';
 import { TeamModule } from 'src/app/domains/bia-domains/team/team.module';
 import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
 import { reducers as notificationReducers } from '../../domains/bia-domains/notification/store/notification.state';
+import { BiaButtonGroupComponent } from './components/bia-button-group/bia-button-group.component';
 import { BiaOnlineOfflineIconModule } from './components/bia-online-offline-icon/bia-online-offline-icon.module';
 import { BiaTeamSelectorModule } from './components/bia-team-selector/bia-team-selector.module';
 import { BiaFieldBaseComponent } from './components/form/bia-field-base/bia-field-base.component';
@@ -98,6 +105,7 @@ import { ClassicFooterComponent } from './components/layout/classic-footer/class
 import { ClassicHeaderComponent } from './components/layout/classic-header/classic-header.component';
 import { ClassicLayoutComponent } from './components/layout/classic-layout/classic-layout.component';
 import { ClassicPageLayoutComponent } from './components/layout/classic-page-layout/classic-page-layout.component';
+import { DynamicLayoutComponent } from './components/layout/dynamic-layout/dynamic-layout.component';
 import { FullPageLayoutComponent } from './components/layout/fullpage-layout/fullpage-layout.component';
 import { IeWarningComponent } from './components/layout/ie-warning/ie-warning.component';
 import { LayoutComponent } from './components/layout/layout.component';
@@ -143,6 +151,7 @@ const PRIMENG_MODULES = [
   ConfirmDialogModule,
   //  ContextMenuModule,
   DialogModule,
+  DividerModule,
   DropdownModule,
   //  EditorModule,
   FieldsetModule,
@@ -181,6 +190,7 @@ const PRIMENG_MODULES = [
   FileUploadModule,
   SkeletonModule,
   TriStateCheckboxModule,
+  OverlayPanelModule,
 ];
 
 const MODULES = [
@@ -189,13 +199,13 @@ const MODULES = [
   TranslateModule,
   FormsModule,
   ReactiveFormsModule,
-  HttpClientModule,
   TeamModule,
   //BiaLayoutModule,
   BiaTeamSelectorModule,
   BiaOnlineOfflineIconModule,
   NotificationTeamWarningModule,
   BiaUltimaLayoutModule,
+  RouterModule,
 ];
 
 const COMPONENTS = [
@@ -221,9 +231,11 @@ const COMPONENTS = [
   PageLayoutComponent,
   PopupLayoutComponent,
   FullPageLayoutComponent,
+  DynamicLayoutComponent,
   HangfireContainerComponent,
   TeamAdvancedFilterComponent,
   BiaScrollingNotificationComponent,
+  BiaButtonGroupComponent,
 ];
 
 const VIEW_COMPONENTS = [
@@ -274,7 +286,7 @@ const STANDALONE_COMPONENTS = [IeWarningComponent];
     ...VIEW_COMPONENTS,
     ...PIPES,
   ],
-  providers: [...SERVICES],
+  providers: [...SERVICES, provideHttpClient(withInterceptorsFromDi())],
 })
 
 // https://medium.com/@benmohamehdi/angular-best-practices-coremodule-vs-sharedmodule-25f6721aa2ef

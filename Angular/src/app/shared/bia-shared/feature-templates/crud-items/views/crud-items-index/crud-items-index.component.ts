@@ -1,3 +1,4 @@
+import { HttpStatusCode } from '@angular/common/http';
 import {
   Component,
   HostBinding,
@@ -7,15 +8,18 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router, Routes } from '@angular/router';
+import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { saveAs } from 'file-saver';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable, Subscription, combineLatest } from 'rxjs';
-import { filter, skip, take, tap } from 'rxjs/operators';
+import { filter, first, skip, take, tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+import { BiaButtonGroupItem } from 'src/app/shared/bia-shared/components/bia-button-group/bia-button-group.component';
 import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/services/layout.service';
 import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
@@ -30,7 +34,7 @@ import { TableHelperService } from 'src/app/shared/bia-shared/services/table-hel
 import { DEFAULT_PAGE_SIZE, TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
 import { CrudItemTableComponent } from '../../components/crud-item-table/crud-item-table.component';
-import { CrudConfig } from '../../model/crud-config';
+import { CrudConfig, FormReadOnlyMode } from '../../model/crud-config';
 import { CrudItemService } from '../../services/crud-item.service';
 
 @Component({
@@ -73,6 +77,7 @@ export class CrudItemsIndexComponent<
   }
 
   protected sub = new Subscription();
+  protected permissionSub = new Subscription();
   showColSearch = false;
   globalSearchValue = '';
   defaultPageSize = DEFAULT_PAGE_SIZE;
@@ -89,6 +94,7 @@ export class CrudItemsIndexComponent<
   canAdd = false;
   canSave = false;
   canSelect = false;
+  canFix = false;
   columns: KeyValuePair[];
   displayedColumns: KeyValuePair[];
   reorderableColumns = true;
@@ -109,6 +115,11 @@ export class CrudItemsIndexComponent<
   protected authService: AuthService;
   protected tableHelperService: TableHelperService;
   protected layoutService: BiaLayoutService;
+  protected actions: Actions;
+  protected messageService: BiaMessageService;
+  protected selectedButtonGroup: BiaButtonGroupItem[];
+  protected listButtonGroup: BiaButtonGroupItem[];
+  protected customButtonGroup: BiaButtonGroupItem[];
 
   constructor(
     protected injector: Injector,
@@ -126,6 +137,9 @@ export class CrudItemsIndexComponent<
     this.tableHelperService =
       this.injector.get<TableHelperService>(TableHelperService);
     this.layoutService = this.injector.get<BiaLayoutService>(BiaLayoutService);
+    this.actions = this.injector.get<Actions>(Actions);
+    this.messageService =
+      this.injector.get<BiaMessageService>(BiaMessageService);
   }
 
   toggleTableControllerVisibility() {
@@ -158,6 +172,11 @@ export class CrudItemsIndexComponent<
   usePopupChange(e: boolean) {
     this.crudConfiguration.usePopup = e;
     this.usePopupConfig(true);
+  }
+
+  useSplitChange(e: boolean) {
+    this.crudConfiguration.useSplit = e;
+    this.useSplitConfig(true);
   }
 
   useCompactModeChange(e: boolean) {
@@ -198,6 +217,12 @@ export class CrudItemsIndexComponent<
     }
   }
 
+  protected useSplitConfig(manualChange: boolean) {
+    if (manualChange) {
+      this.applyDynamicComponent(this.activatedRoute.routeConfig?.children);
+    }
+  }
+
   protected applyDynamicComponent(routes: Routes | undefined) {
     if (routes) {
       routes.forEach(route => {
@@ -212,7 +237,9 @@ export class CrudItemsIndexComponent<
   protected useSignalRConfig(manualChange: boolean) {
     if (this.crudConfiguration.useSignalR) {
       this.crudItemService.signalRService.initialize(this.crudItemService);
-      this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
+      if (this.crudItemListComponent) {
+        this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
+      }
     } else {
       if (manualChange) {
         this.crudItemService.signalRService.destroy(this.crudItemService);
@@ -226,6 +253,7 @@ export class CrudItemsIndexComponent<
     */
     this.sub = new Subscription();
 
+    this.initButtonGroups();
     this.initTableConfiguration();
 
     this.sub.add(
@@ -240,6 +268,7 @@ export class CrudItemsIndexComponent<
       this.authService.authInfo$.subscribe((authInfo: AuthInfo) => {
         if (authInfo && authInfo.token !== '') {
           this.setPermissions();
+          this.initButtonGroups();
         }
       })
     );
@@ -321,6 +350,7 @@ export class CrudItemsIndexComponent<
     if (this.sub) {
       this.sub.unsubscribe();
     }
+    this.permissionSub.unsubscribe();
     this.onHide();
   }
 
@@ -353,7 +383,11 @@ export class CrudItemsIndexComponent<
 
   onEdit(crudItemId: any) {
     if (!this.crudConfiguration.useCalcMode) {
-      this.router.navigate([crudItemId, 'edit'], {
+      const target =
+        this.crudConfiguration.formEditReadOnlyMode !== FormReadOnlyMode.off
+          ? 'read'
+          : 'edit';
+      this.router.navigate([crudItemId, target], {
         relativeTo: this.activatedRoute,
       });
     }
@@ -372,27 +406,86 @@ export class CrudItemsIndexComponent<
   }
 
   onSave(crudItem: CrudItem) {
-    if (this.crudConfiguration.useCalcMode) {
-      if (crudItem.id > 0) {
-        if (this.canEdit) {
-          this.crudItemService.update(crudItem);
-        }
-      } else {
-        if (this.canAdd) {
-          this.crudItemService.create(crudItem);
-        }
-      }
+    if (!this.crudConfiguration.useCalcMode) {
+      return;
     }
+
+    if (crudItem.id > 0 && this.canEdit) {
+      this.handleCrudOperation(
+        crudItem,
+        this.crudItemService.updateSuccessActionType,
+        this.crudItemService.updateFailureActionType,
+        this.crudItemService.update.bind(this.crudItemService)
+      );
+    }
+
+    if (crudItem.id === 0 && this.canAdd) {
+      this.handleCrudOperation(
+        crudItem,
+        this.crudItemService.createSuccessActionType,
+        undefined,
+        this.crudItemService.create.bind(this.crudItemService)
+      );
+    }
+  }
+
+  private handleCrudOperation(
+    crudItem: CrudItem,
+    successActionType: string | undefined,
+    failureActionType: string | undefined,
+    crudOperation: (item: CrudItem) => void
+  ) {
+    if (successActionType) {
+      this.actions
+        .pipe(
+          filter((action: any) => action.type === successActionType),
+          first()
+        )
+        .subscribe(() => {
+          this.resetEditableRow();
+        });
+    }
+
+    if (failureActionType) {
+      this.actions
+        .pipe(
+          filter((action: any) => action.type === failureActionType),
+          first()
+        )
+        .subscribe(action => {
+          if (action.error?.status === HttpStatusCode.Conflict) {
+            this.messageService.showWarning(
+              this.translateService.instant('bia.outdatedData')
+            );
+          }
+        });
+    }
+
+    crudOperation(crudItem);
+
+    if (!successActionType) {
+      this.resetEditableRow();
+    }
+  }
+
+  private resetEditableRow() {
+    this.crudItemTableComponent.resetEditableRow();
   }
 
   onDelete() {
     if (this.canDelete) {
-      this.crudItemService.multiRemove(this.selectedCrudItems.map(x => x.id));
+      const itemsToDelete =
+        this.crudConfiguration.isFixable && this.canFix !== true
+          ? this.selectedCrudItems.filter(x => x.isFixed === false)
+          : this.selectedCrudItems;
+
+      this.crudItemService.multiRemove(itemsToDelete.map(x => x.id));
     }
   }
 
   onSelectedElementsChanged(crudItems: ListCrudItem[]) {
     this.selectedCrudItems = crudItems;
+    this.initButtonGroups();
   }
 
   onPageSizeChange(pageSize: number) {
@@ -483,10 +576,13 @@ export class CrudItemsIndexComponent<
   }
 
   protected setPermissions() {
-    // TODO redefine in plane
+    this.permissionSub.unsubscribe();
+    this.permissionSub = new Subscription();
+
     this.canEdit = true;
     this.canDelete = true;
     this.canAdd = true;
+    this.canFix = false;
   }
   protected initTableConfiguration() {
     this.columns = this.crudConfiguration.fieldsConfig.columns.map(
@@ -563,5 +659,23 @@ export class CrudItemsIndexComponent<
       );
       table.onLazyLoad.emit(table.createLazyLoadMetadata());
     }
+  }
+
+  protected initButtonGroups() {
+    this.initSelectedButtonGroup();
+    this.initListButtonGroup();
+    this.initCustomButtonGroup();
+  }
+
+  protected initSelectedButtonGroup() {
+    this.selectedButtonGroup = [];
+  }
+
+  protected initListButtonGroup() {
+    this.listButtonGroup = [];
+  }
+
+  protected initCustomButtonGroup() {
+    this.customButtonGroup = [];
   }
 }

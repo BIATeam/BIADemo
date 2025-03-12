@@ -35,8 +35,8 @@ export class BiaOptionService {
 
     if (oldList && newList) {
       // Other Items
-      const unchangeds = newList.filter(n =>
-        oldList.map(o => o.id).includes(n.id)
+      const unchangeds = oldList.filter(n =>
+        newList.map(o => o.id).includes(n.id)
       );
 
       if (unchangeds) {

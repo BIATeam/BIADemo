@@ -4,6 +4,7 @@ import {
   BiaFieldsConfig,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
+import { BiaFormLayoutConfig } from 'src/app/shared/bia-shared/model/bia-form-layout-config';
 
 // TODO after creation of CRUD Team AircraftMaintenanceCompany : adapt the model
 export type AircraftMaintenanceCompany = BaseTeamDto;
@@ -22,5 +23,19 @@ export const aircraftMaintenanceCompanyFieldsConfiguration: BiaFieldsConfig<Airc
           type: PropType.ManyToMany,
         }
       ),
+      Object.assign(
+        new BiaFieldConfig(
+          'rowVersion',
+          'aircraftMaintenanceCompany.rowVersion'
+        ),
+        {
+          isVisible: false,
+          isHideByDefault: true,
+        }
+      ),
     ],
   };
+
+// TODO after creation of CRUD Team AircraftMaintenanceCompany : adapt the form layout configuration
+export const aircraftMaintenanceCompanyFormLayoutConfiguration: BiaFormLayoutConfig<AircraftMaintenanceCompany> =
+  new BiaFormLayoutConfig([]);

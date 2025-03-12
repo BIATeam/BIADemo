@@ -7,12 +7,16 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
 {
     using System.Net.Http;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common.Configuration.AuthenticationSection;
     using BIA.Net.Core.Common.Helpers;
+    using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
+    using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Dto;
@@ -45,7 +49,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <param name="logger">The logger.</param>
         /// <param name="distributedCache">The distributed cache.</param>
         public RemotePlaneRepository(HttpClient httpClient, IConfiguration configuration, ILogger<RemotePlaneRepository> logger, IBiaDistributedCache distributedCache)
-             : base(httpClient, logger, distributedCache)
+             : base(httpClient, logger, distributedCache, new AuthenticationConfiguration() { Mode = AuthenticationMode.Token })
         {
 #pragma warning disable S125 // Sections of code should not be commented out
 
@@ -67,14 +71,14 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <inheritdoc cref="IRemotePlaneRepository.GetAsync"/>
         public async Task<Plane> GetAsync(int id)
         {
-            var result = await this.GetAsync<Plane>($"{this.baseAddress}{this.urlPlane}{id}", true);
+            var result = await this.GetAsync<Plane>($"{this.baseAddress}{this.urlPlane}{id}");
             return result.IsSuccessStatusCode ? result.Result : null;
         }
 
         /// <inheritdoc cref="IRemotePlaneRepository.DeleteAsync"/>
         public async Task<bool> DeleteAsync(int id)
         {
-            var result = await this.DeleteAsync<Plane>($"{this.baseAddress}{this.urlPlane}{id}", true);
+            var result = await this.DeleteAsync<Plane>($"{this.baseAddress}{this.urlPlane}{id}");
             return result.IsSuccessStatusCode;
         }
 
@@ -83,7 +87,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         {
             RemotePlaneDto dto = new RemotePlaneDto();
             PropertyMapper.Map(plane, dto);
-            var result = await this.PostAsync<RemotePlaneDto, RemotePlaneDto>($"{this.baseAddress}{this.urlPlane}", dto, true);
+            dto.CurrentAirport = new OptionDto { Id = plane.CurrentAirportId, DtoState = DtoState.Unchanged };
+            var result = await this.PostAsync<RemotePlaneDto, RemotePlaneDto>($"{this.baseAddress}{this.urlPlane}", dto);
 
             if (result.IsSuccessStatusCode)
             {
@@ -101,7 +106,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         {
             RemotePlaneDto dto = new RemotePlaneDto();
             PropertyMapper.Map(plane, dto);
-            var result = await this.PutAsync<RemotePlaneDto, RemotePlaneDto>($"{this.baseAddress}{this.urlPlane}{dto.Id}", dto, true);
+            dto.CurrentAirport = new OptionDto { Id = plane.CurrentAirport.Id, Display = string.Empty, DtoState = DtoState.Unchanged };
+            var result = await this.PutAsync<RemotePlaneDto, RemotePlaneDto>($"{this.baseAddress}{this.urlPlane}{dto.Id}", dto);
 
             if (result.IsSuccessStatusCode)
             {

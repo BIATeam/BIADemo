@@ -7,6 +7,7 @@ namespace BIA.Net.Core.Common.Configuration
     using System.Collections.Generic;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
+    using BIA.Net.Core.Common.Configuration.ProfileSection;
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
 
     /// <summary>
@@ -14,6 +15,11 @@ namespace BIA.Net.Core.Common.Configuration
     /// </summary>
     public class BiaNetSection
     {
+        /// <summary>
+        /// List of database configurations.
+        /// </summary>
+        public List<DatabaseConfiguration> DatabaseConfigurations { get; set; }
+
         /// <summary>
         /// Configure the activation of common feature (worker and webApi).
         /// </summary>

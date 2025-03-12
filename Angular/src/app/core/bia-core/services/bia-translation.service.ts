@@ -25,7 +25,7 @@ export const getCurrentCulture = () => {
     console.error(err);
   }
   if (!culture) {
-    if (navigator.languages != undefined) {
+    if (navigator.languages) {
       culture = navigator.languages[0];
       for (let i = 0; i < navigator.languages.length; i++) {
         if (APP_SUPPORTED_TRANSLATIONS.indexOf(navigator.languages[i]) !== -1) {
@@ -36,7 +36,7 @@ export const getCurrentCulture = () => {
     } else {
       culture = navigator.language;
     }
-    if (culture.length == 2) culture = culture + '-' + culture.toUpperCase();
+    if (culture.length === 2) culture = culture + '-' + culture.toUpperCase();
   }
   if (APP_SUPPORTED_TRANSLATIONS.indexOf(culture) !== -1) {
     localStorage.setItem(STORAGE_CULTURE_KEY, culture);
@@ -182,15 +182,15 @@ export class BiaTranslationService {
     let dateFormat = 'yyyy-MM-dd';
     let timeFormat = 'HH:mm';
     let timeFormatSec = 'HH:mm:ss';
-    if (appSettings != null) {
+    if (appSettings) {
       let culture;
 
-      if (code == null) {
+      if (code === null) {
         culture = appSettings.cultures.filter(
           c => c.acceptedCodes.indexOf('default') > -1
         )[0];
       }
-      if (culture == null) {
+      if (culture === null) {
         culture = appSettings.cultures.filter(c => c.code === code)[0];
       }
 
@@ -222,16 +222,16 @@ export class BiaTranslationService {
     appSettings: AppSettings | null
   ): number {
     let languageId = 0;
-    if (appSettings != null) {
+    if (appSettings) {
       let culture;
 
-      if (code == null) {
+      if (code === null) {
         culture = appSettings.cultures.filter(
           c => c.acceptedCodes.indexOf('default') > -1
         )[0];
       }
 
-      if (culture == null) {
+      if (culture === null) {
         culture = appSettings.cultures.filter(c => c.code === code)[0];
       }
 

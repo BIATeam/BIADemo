@@ -1,4 +1,7 @@
-import { CrudConfig } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
+import {
+  CrudConfig,
+  FormReadOnlyMode,
+} from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { Plane, planeFieldsConfiguration } from './model/plane';
 import {
@@ -13,6 +16,7 @@ export const featureName = 'planes-specific';
 export const planeCRUDConfiguration: CrudConfig<Plane> = new CrudConfig({
   featureName: 'planes-specific',
   fieldsConfig: planeFieldsConfiguration,
+  formEditReadOnlyMode: FormReadOnlyMode.clickToEdit,
   useCalcMode: false,
   useSignalR: false,
   useView: false,

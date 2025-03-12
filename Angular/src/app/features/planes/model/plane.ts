@@ -8,6 +8,13 @@ import {
   PrimeNGFiltering,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
+import {
+  BiaFormLayoutConfig,
+  BiaFormLayoutConfigColumnSize,
+  BiaFormLayoutConfigField,
+  BiaFormLayoutConfigGroup,
+  BiaFormLayoutConfigRow,
+} from 'src/app/shared/bia-shared/model/bia-form-layout-config';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 // TODO after creation of CRUD Plane : adapt the model
@@ -245,5 +252,52 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       }
     ),
     /// BIAToolKit - End Block connectingAirports
+    Object.assign(new BiaFieldConfig('rowVersion', 'plane.rowVersion'), {
+      isVisible: false,
+      isHideByDefault: true,
+    }),
   ],
 };
+
+// TODO after creation of CRUD Plane : adapt the form layout configuration
+export const planeFormLayoutConfiguration: BiaFormLayoutConfig<Plane> =
+  new BiaFormLayoutConfig([
+    //Begin BIADemo
+    new BiaFormLayoutConfigRow([
+      new BiaFormLayoutConfigGroup('plane.groupIdentification', [
+        new BiaFormLayoutConfigRow([
+          new BiaFormLayoutConfigField('msn'),
+          new BiaFormLayoutConfigField('manufacturer'),
+        ]),
+      ]),
+      new BiaFormLayoutConfigGroup('plane.groupStatus', [
+        new BiaFormLayoutConfigRow([
+          new BiaFormLayoutConfigField('isActive', 2),
+          new BiaFormLayoutConfigField('isMaintenance', 2),
+        ]),
+      ]),
+    ]),
+    new BiaFormLayoutConfigGroup('plane.groupTracking', [
+      new BiaFormLayoutConfigRow([
+        new BiaFormLayoutConfigField('deliveryDate'),
+        new BiaFormLayoutConfigField('firstFlightDate'),
+        new BiaFormLayoutConfigField('lastFlightDate'),
+        new BiaFormLayoutConfigField('nextMaintenanceDate'),
+      ]),
+      new BiaFormLayoutConfigRow([
+        new BiaFormLayoutConfigField('syncFlightDataTime'),
+        new BiaFormLayoutConfigField('syncTime'),
+      ]),
+    ]),
+    new BiaFormLayoutConfigRow([
+      new BiaFormLayoutConfigField(
+        'motorsCount',
+        new BiaFormLayoutConfigColumnSize(6, 6, 6, 6)
+      ),
+    ]),
+    new BiaFormLayoutConfigRow([
+      new BiaFormLayoutConfigField('probability'),
+      new BiaFormLayoutConfigField('capacity'),
+    ]),
+    //End BIADemo
+  ]);

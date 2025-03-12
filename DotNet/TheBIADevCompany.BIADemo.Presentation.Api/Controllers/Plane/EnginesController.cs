@@ -149,6 +149,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.Engines.Update)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> Update(int id, [FromBody] EngineDto dto)
         {
             if (id == 0 || dto == null || dto.Id != id)
@@ -174,6 +175,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
+            }
+            catch (OutdateException)
+            {
+                return this.Conflict();
             }
         }
 

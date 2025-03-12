@@ -77,6 +77,8 @@ export class BiaTableComponent<TDto extends { id: number }>
   @Input() rowHeight = 33.56;
   @Input() virtualScrollPageSize = 100;
   @Input() dictOptionDtos: DictOptionDto[] = [];
+  @Input() readOnly = false;
+  @Input() showFixableState = false;
 
   protected isSelectFrozen = false;
   protected widthSelect: string;
@@ -381,9 +383,9 @@ export class BiaTableComponent<TDto extends { id: number }>
       if (this.table.sortMode === 'multiple') {
         if (
           viewPreference.multiSortMeta === undefined &&
-          viewPreference.sortField != null &&
-          viewPreference.sortField != '' &&
-          viewPreference.sortOrder != null
+          viewPreference.sortField !== undefined &&
+          viewPreference.sortField !== '' &&
+          viewPreference.sortOrder !== undefined
         ) {
           viewPreference.multiSortMeta = [
             {
@@ -421,13 +423,13 @@ export class BiaTableComponent<TDto extends { id: number }>
   }
 
   clickElementId(itemId: number) {
-    if (this.canClickRow === true) {
+    if (this.canClickRow === true && !this.readOnly) {
       this.clickRowId.emit(itemId);
     }
   }
 
   clickElementData(rowData: any) {
-    if (this.canClickRow === true) {
+    if (this.canClickRow === true && !this.readOnly) {
       this.clickRowData.emit(rowData);
       if (
         rowData &&
@@ -625,7 +627,7 @@ export class BiaTableComponent<TDto extends { id: number }>
     const nestedProperties: string[] = col.field.split('.');
     let value: any = rowData;
     for (const prop of nestedProperties) {
-      if (value == null) {
+      if (!value) {
         return null;
       }
 

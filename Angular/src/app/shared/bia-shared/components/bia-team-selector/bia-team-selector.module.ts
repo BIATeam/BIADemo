@@ -1,5 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -14,11 +17,11 @@ import { BiaTeamSelectorComponent } from './bia-team-selector.component';
   imports: [
     CommonModule,
     FormsModule,
-    HttpClientModule,
     DropdownModule,
     MultiSelectModule,
     TooltipModule,
     TranslateModule,
   ],
+  providers: [provideHttpClient(withInterceptorsFromDi())],
 })
 export class BiaTeamSelectorModule {}

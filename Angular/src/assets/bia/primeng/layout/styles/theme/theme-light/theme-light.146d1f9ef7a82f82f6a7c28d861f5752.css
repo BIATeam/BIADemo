@@ -9905,7 +9905,6 @@ p-multiselect.ng-dirty.ng-invalid .p-multiselect:not(.p-disabled).p-focus {
     transform: translate(-50%, 50%);
   }
   .bia-table-controller-container {
-    padding-top: 10px;
     white-space: nowrap;
   }
   .bia-table-controller-container .pi.disabled {
@@ -9979,6 +9978,10 @@ p-breadcrumb .p-breadcrumb .p-menuitem-link {
 @layer primeng {
   .p-input-filled .p-float-label .p-inputtext {
     padding-bottom: 2px;
+  }
+
+  .p-inputnumber-input {
+    width: 100%;
   }
 }
 @layer primeng {

@@ -1,5 +1,11 @@
 {
   "BiaNet": {
+    "DatabaseConfigurations": [
+      {
+        "Key": "ProjectDatabase",
+        "Provider": "SQLServer"
+      }
+    ],
     "CommonFeatures": {
       "ClientForHub": {
         "SignalRUrl": "http://localhost:8080/HubForClients"

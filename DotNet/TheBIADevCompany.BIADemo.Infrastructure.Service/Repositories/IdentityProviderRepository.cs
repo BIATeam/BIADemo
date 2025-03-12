@@ -11,10 +11,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     using System.Runtime.InteropServices;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Configuration.AuthenticationSection;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
-    using Meziantou.Framework.Win32;
-    using Microsoft.Extensions.Caching.Distributed;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
@@ -25,7 +24,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     /// <summary>
     /// WorkInstruction Repository.
     /// </summary>
-    /// <seealso cref="TheBIADevCompany.BIADemo.Domain.RepoContract.IWorkInstructionRepository" />
+    /// <seealso cref="Domain.RepoContract.IWorkInstructionRepository" />
     public class IdentityProviderRepository : WebApiRepository, IIdentityProviderRepository
     {
         /// <summary>
@@ -41,7 +40,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <param name="logger">The logger.</param>
         /// <param name="distributedCache">The distributed cache.</param>
         public IdentityProviderRepository(HttpClient httpClient, IOptions<BiaNetSection> configuration, ILogger<IdentityProviderRepository> logger, IBiaDistributedCache distributedCache)
-            : base(httpClient, logger, distributedCache)
+            : base(httpClient, logger, distributedCache, new AuthenticationConfiguration() { Mode = AuthenticationMode.Token })
         {
             this.configuration = configuration.Value;
         }
@@ -65,7 +64,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         {
             string token = null;
 
-            if (!string.IsNullOrWhiteSpace(this.configuration.Authentication.Keycloak.BaseUrl))
+            if (this.configuration.Authentication.Keycloak.IsActive && !string.IsNullOrWhiteSpace(this.configuration.Authentication.Keycloak.BaseUrl))
             {
                 string url = $"{this.configuration.Authentication.Keycloak.BaseUrl}{this.configuration.Authentication.Keycloak.Api.TokenConf.RelativeUrl}";
 
@@ -80,7 +79,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
                 tokenRequestDto.Username = credential.Login;
                 tokenRequestDto.Password = credential.Password;
 
-                TokenResponseDto tokenResponseDto = (await this.PostAsync<TokenResponseDto, TokenRequestDto>(url: url, body: tokenRequestDto, isFormUrlEncoded: true, useBearerToken: false)).Result;
+                TokenResponseDto tokenResponseDto = (await this.PostAsync<TokenResponseDto, TokenRequestDto>(url: url, body: tokenRequestDto, isFormUrlEncoded: true)).Result;
 
                 token = tokenResponseDto?.AccessToken;
             }
@@ -102,7 +101,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
 
             string searchUrl = $"{this.configuration.Authentication.Keycloak.BaseUrl}{this.configuration.Authentication.Keycloak.Api.SearchUserRelativeUrl}?{param}";
 
-            List<SearchUserResponseDto> searchUserResponseDtos = (await this.GetAsync<List<SearchUserResponseDto>>(url: searchUrl, useBearerToken: true)).Result;
+            List<SearchUserResponseDto> searchUserResponseDtos = (await this.GetAsync<List<SearchUserResponseDto>>(url: searchUrl)).Result;
             List<UserFromDirectory> userFromDirectories = this.ConvertToUserDirectories(searchUserResponseDtos);
 
             return userFromDirectories;

@@ -186,11 +186,11 @@ export class BiaOnlineOfflineService implements OnDestroy {
    */
   protected async sendHttpRequest(httpRequestItem: HttpRequestItem | null) {
     if (httpRequestItem) {
-      if (httpRequestItem.httpRequest.method == HTTPMethod.POST) {
+      if (httpRequestItem.httpRequest.method === HTTPMethod.POST) {
         this.httpRequestPost(httpRequestItem);
-      } else if (httpRequestItem.httpRequest.method == HTTPMethod.PUT) {
+      } else if (httpRequestItem.httpRequest.method === HTTPMethod.PUT) {
         this.httpRequestPut(httpRequestItem);
-      } else if (httpRequestItem.httpRequest.method == HTTPMethod.DELETE) {
+      } else if (httpRequestItem.httpRequest.method === HTTPMethod.DELETE) {
         this.httpRequestDelete(httpRequestItem);
       }
     }

@@ -31,7 +31,7 @@ namespace BIA.Net.Core.Application.Authentication
         /// The identity.
         /// </returns>
         ClaimsIdentity GenerateClaimsIdentity<TUserDataDto>(TokenDto<TUserDataDto> tokenDto)
-            where TUserDataDto : UserDataDto;
+            where TUserDataDto : BaseUserDataDto;
 
         /// <summary>
         /// Generate an encoded JWT.
@@ -52,7 +52,7 @@ namespace BIA.Net.Core.Application.Authentication
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns></param>
         /// <returns>The JWT as string.</returns>
         Task<AuthInfoDto<TAdditionalInfoDto>> GenerateAuthInfoAsync<TUserDataDto, TAdditionalInfoDto>(TokenDto<TUserDataDto> tokenDto, TAdditionalInfoDto additionalInfos, LoginParamDto loginParam)
-            where TUserDataDto : UserDataDto
-            where TAdditionalInfoDto : AdditionalInfoDto;
+            where TUserDataDto : BaseUserDataDto
+            where TAdditionalInfoDto : BaseAdditionalInfoDto;
     }
 }

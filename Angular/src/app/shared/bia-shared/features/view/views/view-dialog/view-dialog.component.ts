@@ -106,7 +106,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
 
   protected initViewUsers() {
     const currentTeamId =
-      this.useViewTeamWithTypeId == null
+      this.useViewTeamWithTypeId === null
         ? -1
         : this.authService.getCurrentTeamId(this.useViewTeamWithTypeId);
     this.viewUsers$ = this.views$.pipe(
@@ -115,7 +115,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
           view =>
             view.viewType === ViewType.User ||
             (view.viewType === ViewType.Team &&
-              view.viewTeams.some(t => t.teamId == currentTeamId))
+              view.viewTeams.some(t => t.teamId === currentTeamId))
         )
       )
     );
@@ -129,11 +129,11 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
 
   initTeams() {
     const currentTeamId =
-      this.useViewTeamWithTypeId == null
+      this.useViewTeamWithTypeId === null
         ? -1
         : this.authService.getCurrentTeamId(this.useViewTeamWithTypeId);
     this.teams$ = this.store.select(getAllTeams).pipe(
-      map(teams => teams.filter(team => currentTeamId == team.id)),
+      map(teams => teams.filter(team => currentTeamId === team.id)),
       tap(teams => {
         if (teams.length === 1) {
           this.teamSelected = teams[0];
@@ -266,9 +266,9 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
   }
 
   protected setPermissions() {
-    if (this.useViewTeamWithTypeId != null) {
+    if (this.useViewTeamWithTypeId !== null) {
       const teamTypeRightPrefix = TeamTypeRightPrefix.find(
-        t => t.key == this.useViewTeamWithTypeId
+        t => t.key === this.useViewTeamWithTypeId
       )?.value;
       this.canAddTeamView = this.authService.hasPermission(
         teamTypeRightPrefix + Permission.View_AddTeamViewSuffix

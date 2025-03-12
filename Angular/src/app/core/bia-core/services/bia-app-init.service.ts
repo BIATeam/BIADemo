@@ -93,8 +93,8 @@ export class BiaAppInitService implements OnDestroy {
     return this.keycloakService.keycloakEvents$.asObservable().pipe(
       filter(
         (keycloakEvent: KeycloakEvent) =>
-          keycloakEvent?.type == KeycloakEventType.OnAuthSuccess ||
-          keycloakEvent?.type == KeycloakEventType.OnAuthRefreshSuccess
+          keycloakEvent?.type === KeycloakEventType.OnAuthSuccess ||
+          keycloakEvent?.type === KeycloakEventType.OnAuthRefreshSuccess
       ),
       first(),
       switchMap(() => {
@@ -109,9 +109,9 @@ export class BiaAppInitService implements OnDestroy {
         .asObservable()
         .subscribe(async (keycloakEvent: KeycloakEvent) => {
           if (
-            keycloakEvent?.type == KeycloakEventType.OnAuthLogout ||
-            keycloakEvent?.type == KeycloakEventType.OnReady ||
-            keycloakEvent?.type == KeycloakEventType.OnTokenExpired
+            keycloakEvent?.type === KeycloakEventType.OnAuthLogout ||
+            keycloakEvent?.type === KeycloakEventType.OnReady ||
+            keycloakEvent?.type === KeycloakEventType.OnTokenExpired
           ) {
             if (this.keycloakService.isLoggedIn() !== true) {
               this.keycloakService.login({

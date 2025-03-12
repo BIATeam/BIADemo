@@ -2,11 +2,13 @@
   *ngIf="aircraftMaintenanceCompanyService.crudItem$ | async; let crudItem"
   [crudItem]="crudItem"
   [fields]="crudConfiguration.fieldsConfig.columns"
+  [formLayoutConfig]="crudConfiguration.formLayoutConfig"
   [dictOptionDtos]="
     (aircraftMaintenanceCompanyService.optionsService.dictOptionDtos$
       | async) ?? []
   "
-  (cancel)="onCancelled()"
+  [isCrudItemOutdated]="isCrudItemOutdated"
+  (cancelled)="onCancelled()"
   (save)="onSubmitted($event)"></app-aircraft-maintenance-company-form>
 <bia-spinner
   *ngIf="aircraftMaintenanceCompanyService.loadingGet$ | async"

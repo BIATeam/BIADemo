@@ -37,3 +37,8 @@ export interface DeleteParam extends HttpParam {
 export interface DeletesParam extends HttpParam {
   ids: string[] | number[];
 }
+
+export interface UpdateFixedStatusParam extends HttpParam {
+  id: string | number;
+  fixed: boolean;
+}

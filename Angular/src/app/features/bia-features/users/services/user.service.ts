@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
@@ -17,6 +17,10 @@ import { UserOptionsService } from './user-options.service';
   providedIn: 'root',
 })
 export class UserService extends CrudItemService<User> {
+  _updateSuccessActionType = FeatureUsersActions.loadAllByPost.type;
+  _createSuccessActionType = FeatureUsersActions.loadAllByPost.type;
+  _updateFailureActionType = FeatureUsersActions.failure.type;
+
   constructor(
     protected store: Store<AppState>,
     public dasService: UserDas,
@@ -53,6 +57,9 @@ export class UserService extends CrudItemService<User> {
 
   public crudItem$: Observable<User> = this.store.select(
     FeatureUsersStore.getCurrentUser
+  );
+  public displayItemName$: Observable<string> = this.crudItem$.pipe(
+    map(user => user?.displayName)
   );
   public loadingGet$: Observable<boolean> = this.store.select(
     FeatureUsersStore.getUserLoadingGet

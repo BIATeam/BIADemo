@@ -18,6 +18,10 @@ import { PlaneOptionsService } from './plane-options.service';
   providedIn: 'root',
 })
 export class PlaneService extends CrudItemService<Plane> {
+  _updateSuccessActionType = FeaturePlanesActions.loadAllByPost.type;
+  _createSuccessActionType = FeaturePlanesActions.loadAllByPost.type;
+  _updateFailureActionType = FeaturePlanesActions.failure.type;
+
   constructor(
     private store: Store<AppState>,
     public dasService: PlaneDas,
@@ -110,4 +114,11 @@ export class PlaneService extends CrudItemService<Plane> {
     this._currentCrudItemId = 0;
     this.store.dispatch(FeaturePlanesActions.clearCurrent());
   }
+  // Begin BIADemo
+  public updateFixedStatus(id: any, isFixed: boolean): void {
+    this.store.dispatch(
+      FeaturePlanesActions.updateFixedStatus({ id: id, isFixed: isFixed })
+    );
+  }
+  // End BIADemo
 }

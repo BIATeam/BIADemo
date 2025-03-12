@@ -13,6 +13,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
+import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
@@ -32,14 +33,10 @@ import {
 })
 export class NotificationFormComponent implements OnChanges {
   @Input() notification: Notification = <Notification>{};
-  @Input() teamOptions: OptionDto[];
-  @Input() userOptions: OptionDto[];
-  @Input() roleOptions: OptionDto[];
-  @Input() notificationTypeOptions: OptionDto[];
-  @Input() languageOptions: OptionDto[];
+  @Input() dictOptionDtos: DictOptionDto[];
 
   @Output() save = new EventEmitter<Notification>();
-  @Output() cancel = new EventEmitter<void>();
+  @Output() cancelled = new EventEmitter<void>();
 
   form: UntypedFormGroup;
   notificationTranslations: UntypedFormArray;
@@ -195,7 +192,7 @@ export class NotificationFormComponent implements OnChanges {
   }
 
   protected computeMissingTranslation() {
-    this.missingLanguageOptions = this.languageOptions.filter(
+    this.missingLanguageOptions = this.getOptionDto('language').filter(
       lo =>
         !this.notificationTranslations.value.find(
           (nt: { languageId: number }) => nt.languageId === lo.id
@@ -209,12 +206,14 @@ export class NotificationFormComponent implements OnChanges {
   }
 
   labelTranslation(id: number): string {
-    return this.languageOptions.find(lo => lo.id === id)?.display ?? '';
+    return (
+      this.getOptionDto('language').find(lo => lo.id === id)?.display ?? ''
+    );
   }
 
   onCancel() {
     this.form.reset();
-    this.cancel.next();
+    this.cancelled.next();
   }
 
   onSubmit() {
@@ -319,14 +318,14 @@ export class NotificationFormComponent implements OnChanges {
       // TODO set to modified when role change
 
       const toCheckModified = newList
-        .filter(newNT => oldList.some(oldNT => oldNT.team.id == newNT.team.id))
+        .filter(newNT => oldList.some(oldNT => oldNT.team.id === newNT.team.id))
         .map(
           s =>
             <NotificationTeam>{
               ...s,
               roles: BiaOptionService.differential(
                 s.roles,
-                oldList.filter(oldNT => oldNT.team.id == s.team.id)[0].roles
+                oldList.filter(oldNT => oldNT.team.id === s.team.id)[0].roles
               ),
             }
         );
@@ -347,5 +346,9 @@ export class NotificationFormComponent implements OnChanges {
     }
 
     return differential;
+  }
+
+  public getOptionDto(key: string) {
+    return this.dictOptionDtos?.filter(x => x.key === key)[0]?.value;
   }
 }

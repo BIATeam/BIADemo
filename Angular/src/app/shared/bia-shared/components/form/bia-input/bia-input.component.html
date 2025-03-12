@@ -57,7 +57,7 @@
           let displayNumberFormat
         ">
         <p-inputNumber
-          [showClear]="true"
+          [showClear]="!readOnly"
           [formControlName]="field.field"
           [mode]="displayNumberFormat.mode"
           [currency]="displayNumberFormat.currency"

@@ -179,5 +179,12 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="item">The item.</param>
         void SetModified(TEntity item);
+
+        /// <summary>
+        /// Update the fixed status of an <see cref="IEntityFixable{TKey}"/>.
+        /// </summary>
+        /// <param name="item">The entity.</param>
+        /// <param name="isFixed">Fixed status.</param>
+        void UpdateFixedAsync(TEntity item, bool isFixed);
     }
 }

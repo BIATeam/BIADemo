@@ -5,8 +5,10 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { PartOptionModule } from 'src/app/domains/part-option/part-option.module';
-import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
-import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
+import {
+  DynamicLayoutComponent,
+  LayoutMode,
+} from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { CrudItemImportModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item-import.module';
 import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
 import { Permission } from 'src/app/shared/permission';
@@ -29,8 +31,9 @@ export const ROUTES: Routes = [
       breadcrumb: null,
       permission: Permission.Engine_List_Access,
       injectComponent: EnginesIndexComponent,
+      configuration: engineCRUDConfiguration,
     },
-    component: FullPageLayoutComponent,
+    component: DynamicLayoutComponent,
     canActivate: [PermissionGuard],
     // [Calc] : The children are not used in calc
     children: [
@@ -41,15 +44,8 @@ export const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.Engine_Create,
           title: 'engine.add',
-          injectComponent: EngineNewComponent,
-          dynamicComponent: () =>
-            engineCRUDConfiguration.usePopup
-              ? PopupLayoutComponent
-              : FullPageLayoutComponent,
         },
-        component: engineCRUDConfiguration.usePopup
-          ? PopupLayoutComponent
-          : FullPageLayoutComponent,
+        component: EngineNewComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -57,6 +53,7 @@ export const ROUTES: Routes = [
         data: {
           breadcrumb: 'engine.import',
           canNavigate: false,
+          layoutMode: LayoutMode.popup,
           style: {
             minWidth: '80vw',
             maxWidth: '80vw',
@@ -64,15 +61,8 @@ export const ROUTES: Routes = [
           },
           permission: Permission.Engine_Save,
           title: 'engine.import',
-          injectComponent: EngineImportComponent,
-          dynamicComponent: () =>
-            engineCRUDConfiguration.usePopup
-              ? PopupLayoutComponent
-              : FullPageLayoutComponent,
         },
-        component: engineCRUDConfiguration.usePopup
-          ? PopupLayoutComponent
-          : FullPageLayoutComponent,
+        component: EngineImportComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -91,15 +81,8 @@ export const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.Engine_Update,
               title: 'engine.edit',
-              injectComponent: EngineEditComponent,
-              dynamicComponent: () =>
-                engineCRUDConfiguration.usePopup
-                  ? PopupLayoutComponent
-                  : FullPageLayoutComponent,
             },
-            component: engineCRUDConfiguration.usePopup
-              ? PopupLayoutComponent
-              : FullPageLayoutComponent,
+            component: EngineEditComponent,
             canActivate: [PermissionGuard],
           },
           {

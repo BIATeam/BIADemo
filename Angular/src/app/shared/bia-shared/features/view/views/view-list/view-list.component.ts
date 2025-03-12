@@ -88,7 +88,10 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
         .pipe(skip(1))
         .subscribe(([dataLoaded, views, view]) => {
           if (dataLoaded === true && views && view) {
-            if (this.views === undefined || this.views.length != views.length) {
+            if (
+              this.views === undefined ||
+              this.views.length !== views.length
+            ) {
               // the list of view change, so we reset the view selection.
               this.selectedView = undefinedView;
             }
@@ -165,7 +168,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   protected getCorrespondingViewId(preference: string): number {
     const pref: BiaTableState = JSON.parse(preference);
     pref.columnWidths = undefined;
-    if (this.defaultViewPref != undefined) {
+    if (this.defaultViewPref !== undefined) {
       if (this.areViewsEgals(pref, this.defaultViewPref)) {
         return 0;
       }
@@ -254,9 +257,9 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
       }
     }
     for (const key in filters2) {
-      if (filters1 == undefined || !(key in filters1)) {
+      if (filters1 === undefined || !(key in filters1)) {
         if (
-          JSON.stringify(this.standardizeFilterMetadata(filters2[key])) !=
+          JSON.stringify(this.standardizeFilterMetadata(filters2[key])) !==
           JSON.stringify([])
         ) {
           return false;
@@ -335,14 +338,14 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
 
     let defaultView = 0;
     const currentTeamId =
-      this.useViewTeamWithTypeId == null
+      this.useViewTeamWithTypeId === null
         ? -1
         : this.authService.getCurrentTeamId(this.useViewTeamWithTypeId);
     const systemViews = this.views.filter(v => v.viewType === ViewType.System);
     const teamViews = this.views.filter(
       v =>
         v.viewType === ViewType.Team &&
-        v.viewTeams.some(vs => currentTeamId == vs.teamId)
+        v.viewTeams.some(vs => currentTeamId === vs.teamId)
     );
     const userViews = this.views.filter(v => v.viewType === ViewType.User);
     if (systemViews.length > 0) {
@@ -378,7 +381,9 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
       });
 
       const teamDefault = teamViews.filter(v =>
-        v.viewTeams.some(y => currentTeamId == y.teamId && y.isDefault === true)
+        v.viewTeams.some(
+          y => currentTeamId === y.teamId && y.isDefault === true
+        )
       )[0];
       if (teamDefault) {
         defaultView = teamDefault.id;
@@ -438,7 +443,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
         });
       }
     } else {
-      if (this.selectedView == undefinedView) {
+      if (this.selectedView === undefinedView) {
         this.selectedView = this.defaultView;
       }
       if (this.selectedView !== 0) {
@@ -481,9 +486,9 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
 
   showEditButton() {
     let canSetTeamView = false;
-    if (this.useViewTeamWithTypeId != null) {
+    if (this.useViewTeamWithTypeId !== null) {
       const teamTypeRightPrefix = TeamTypeRightPrefix.find(
-        t => t.key == this.useViewTeamWithTypeId
+        t => t.key === this.useViewTeamWithTypeId
       )?.value;
       canSetTeamView =
         this.authService.hasPermission(

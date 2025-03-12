@@ -2,8 +2,16 @@
   [element]="crudItem"
   [isAdd]="isAdd"
   [fields]="fields"
+  [formLayoutConfig]="formLayoutConfig"
   [formValidators]="formValidators"
+  [formReadOnlyMode]="formReadOnlyMode"
   [dictOptionDtos]="dictOptionDtos"
+  [isCrudItemOutdated]="isCrudItemOutdated"
+  [showSubmitButton]="showSubmitButton"
+  [showFixableState]="showFixableState"
+  [canFix]="canFix"
   (save)="onSave($event)"
-  (cancel)="onCancel()">
+  (cancelled)="onCancel()"
+  (readOnlyChanged)="onReadOnlyChanged($event)"
+  (fixableStateChanged)="onFixableStateChanged($event)">
 </bia-form>

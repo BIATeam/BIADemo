@@ -19,7 +19,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Application.Plane;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
@@ -160,6 +159,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.Planes.Update)]
         public async Task<IActionResult> Update(int id, [FromBody] PlaneDto dto)
@@ -187,6 +187,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
+            }
+            catch (OutdateException)
+            {
+                return this.Conflict();
             }
         }
 
@@ -325,5 +329,33 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             byte[] buffer = await this.planeService.GetCsvAsync(filters);
             return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Planes{BiaConstants.Csv.Extension}");
         }
+
+        // Begin BIADemo
+
+        /// <summary>
+        /// Update the fixed status of an item by its id.
+        /// </summary>
+        /// <param name="id">ID of the item to update.</param>
+        /// <param name="isFixed">Fixed status.</param>
+        /// <returns>Updated item.</returns>
+        [HttpPut("{id}/[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = Rights.Planes.Fix)]
+        public virtual async Task<IActionResult> Fix(int id, [FromBody] bool isFixed)
+        {
+            try
+            {
+                var dto = await this.planeService.UpdateFixedAsync(id, isFixed);
+                return this.Ok(dto);
+            }
+            catch (ElementNotFoundException)
+            {
+                return this.NotFound();
+            }
+        }
+
+        // End BIADemo
     }
 }

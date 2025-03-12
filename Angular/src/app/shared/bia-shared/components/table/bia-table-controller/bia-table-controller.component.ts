@@ -1,15 +1,19 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import {
   AfterContentInit,
+  AfterViewInit,
   Component,
   ContentChildren,
+  ElementRef,
   EventEmitter,
+  HostListener,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   Output,
   QueryList,
+  Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewChild,
@@ -17,6 +21,7 @@ import {
 import { UntypedFormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { FilterMetadata, PrimeTemplate, SelectItem } from 'primeng/api';
+import { Button } from 'primeng/button';
 import { Subscription } from 'rxjs';
 import { TABLE_FILTER_GLOBAL, TeamTypeId } from 'src/app/shared/constants';
 import { ViewListComponent } from '../../../features/view/views/view-list/view-list.component';
@@ -41,7 +46,7 @@ import { KeyValuePair } from '../../../model/key-value-pair';
   ],
 })
 export class BiaTableControllerComponent
-  implements OnChanges, OnInit, OnDestroy, AfterContentInit
+  implements OnChanges, OnInit, OnDestroy, AfterContentInit, AfterViewInit
 {
   @Input() defaultPageSize: number;
   @Input() columns: KeyValuePair[];
@@ -62,6 +67,11 @@ export class BiaTableControllerComponent
   @ViewChild(ViewListComponent, { static: false })
   viewListComponent: ViewListComponent;
 
+  @ViewChild('contentContainer') contentContainer: ElementRef;
+  @ViewChild('overflowingContent') overflowingContent: ElementRef;
+  @ViewChild('overflowingContentButton', { static: false })
+  overflowingContentButton: Button;
+
   customControlTemplate: TemplateRef<any>;
   selectedViewName: string | null;
   listedColumns: SelectItem[];
@@ -72,8 +82,16 @@ export class BiaTableControllerComponent
   firstChange = true;
 
   protected sub = new Subscription();
+  isOverflowing: boolean;
+  overflowingContentActive: boolean = false;
+  resizeObserver: ResizeObserver;
+  overflowingWidth: number;
+  overflowingContentOutsideClickListener: any;
 
-  constructor(public translateService: TranslateService) {}
+  constructor(
+    public translateService: TranslateService,
+    private renderer: Renderer2
+  ) {}
 
   ngAfterContentInit() {
     this.templates.forEach(item => {
@@ -105,10 +123,32 @@ export class BiaTableControllerComponent
     this.onColumnsChange(changes);
   }
 
+  ngAfterViewInit() {
+    this.resizeObserver = new ResizeObserver(() => {
+      this.checkOverflow();
+    });
+
+    this.resizeObserver.observe(this.contentContainer.nativeElement);
+  }
+
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
     }
+
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
+  }
+
+  get overflowingClass() {
+    const styleClass: { [key: string]: any } = {
+      /* eslint-disable @typescript-eslint/naming-convention */
+      'bia-overflowing-content': this.isOverflowing,
+      'bia-overflowing-content-active': this.overflowingContentActive,
+    };
+    /* eslint-enable @typescript-eslint/naming-convention */
+    return styleClass;
   }
 
   onChangeSelectColumn() {
@@ -188,5 +228,58 @@ export class BiaTableControllerComponent
         break;
       }
     }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.checkOverflow();
+  }
+
+  checkOverflow() {
+    const container = this.contentContainer.nativeElement;
+    if (!this.isOverflowing) {
+      this.overflowingWidth = container.scrollWidth;
+    }
+
+    if (this.overflowingWidth > container.clientWidth) {
+      this.isOverflowing = true;
+    } else {
+      this.isOverflowing = false;
+    }
+  }
+
+  toggleOverflowingContent() {
+    this.overflowingContentActive = !this.overflowingContentActive;
+    if (this.overflowingContentActive) {
+      this.overflowingContentSubscription();
+    }
+  }
+
+  hideOverflowingContent() {
+    this.overflowingContentActive = false;
+    if (this.overflowingContentOutsideClickListener) {
+      this.overflowingContentOutsideClickListener();
+      this.overflowingContentOutsideClickListener = null;
+    }
+  }
+
+  private overflowingContentSubscription() {
+    this.overflowingContentOutsideClickListener = this.renderer.listen(
+      'document',
+      'click',
+      event => {
+        const isOutsideClicked = !(
+          this.overflowingContent.nativeElement.isSameNode(event.target) ||
+          this.overflowingContent.nativeElement.contains(event.target) ||
+          this.overflowingContentButton.el.nativeElement.isSameNode(
+            event.target
+          ) ||
+          this.overflowingContentButton.el.nativeElement.contains(event.target)
+        );
+        if (isOutsideClicked) {
+          this.hideOverflowingContent();
+        }
+      }
+    );
   }
 }

@@ -1,14 +1,16 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { first } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaSignalRService } from 'src/app/core/bia-core/services/bia-signalr.service';
 import { Team } from 'src/app/domains/bia-domains/team/model/team';
 import { getAllTeams } from 'src/app/domains/bia-domains/team/store/team.state';
+import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
 import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
 import { AppState } from 'src/app/store/state';
 import { Notification } from '../model/notification';
-import { getLastLazyLoadEvent } from '../store/notification.state';
+import { NotificationListItem } from '../model/notification-list-item';
+import { FeatureNotificationsStore } from '../store/notification.state';
 import { FeatureNotificationsActions } from '../store/notifications-actions';
 
 /**
@@ -20,7 +22,10 @@ import { FeatureNotificationsActions } from '../store/notifications-actions';
 @Injectable({
   providedIn: 'root',
 })
-export class NotificationsSignalRService {
+export class NotificationsSignalRService extends CrudItemSignalRService<
+  NotificationListItem,
+  Notification
+> {
   protected targetedFeature: TargetedFeature;
   protected myTeams: Team[];
 
@@ -32,8 +37,10 @@ export class NotificationsSignalRService {
   constructor(
     protected store: Store<AppState>,
     protected signalRService: BiaSignalRService,
-    protected authService: AuthService
+    protected authService: AuthService,
+    protected injector: Injector
   ) {
+    super(injector);
     // Do nothing.
   }
 
@@ -54,7 +61,7 @@ export class NotificationsSignalRService {
       const notification: Notification = JSON.parse(args);
       if (this.isInMyDisplay(notification)) {
         this.store
-          .select(getLastLazyLoadEvent)
+          .select(FeatureNotificationsStore.getLastLazyLoadEvent)
           .pipe(first())
           .subscribe(event => {
             console.log(
@@ -75,7 +82,7 @@ export class NotificationsSignalRService {
         notifications.some(notification => this.isInMyDisplay(notification))
       ) {
         this.store
-          .select(getLastLazyLoadEvent)
+          .select(FeatureNotificationsStore.getLastLazyLoadEvent)
           .pipe(first())
           .subscribe(event => {
             console.log(
@@ -110,7 +117,10 @@ export class NotificationsSignalRService {
       notification.notifiedTeams.length === 0 ||
       notification.notifiedTeams.some(notifiedTeam =>
         this.myTeams.some(myTeam => {
-          if (myTeam.id === notifiedTeam.team.id || notifiedTeam.team.id == 0) {
+          if (
+            myTeam.id === notifiedTeam.team.id ||
+            notifiedTeam.team.id === 0
+          ) {
             if (notifiedTeam.roles && notifiedTeam.roles.length > 0) {
               return notifiedTeam.roles.some(notifiedRole =>
                 myTeam.roles.some(myRole => myRole.id === notifiedRole.id)

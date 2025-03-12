@@ -11,6 +11,7 @@ import {
   PrimeNGFiltering,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
+import { BiaFormLayoutConfig } from 'src/app/shared/bia-shared/model/bia-form-layout-config';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 // TODO after creation of CRUD Team MaintenanceTeam : adapt the model
@@ -317,6 +318,17 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
           }
         ),
         /// BIAToolKit - End Block operationAirports
+        Object.assign(
+          new BiaFieldConfig('rowVersion', 'maintenanceTeam.rowVersion'),
+          {
+            isVisible: false,
+            isHideByDefault: true,
+          }
+        ),
       ],
     ],
   };
+
+// TODO after creation of CRUD Team MaintenanceTeam : adapt the form layout configuration
+export const maintenanceTeamFormLayoutConfiguration: BiaFormLayoutConfig<MaintenanceTeam> =
+  new BiaFormLayoutConfig([]);

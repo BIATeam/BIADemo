@@ -2780,3 +2780,7 @@ body {
 .layout-menu-profile-no-fill {
   max-height: 80%;
 }
+
+.p-toast.p-toast-top-right {
+  top: 4.5rem;
+}

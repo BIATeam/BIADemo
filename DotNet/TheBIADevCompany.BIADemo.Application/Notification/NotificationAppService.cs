@@ -136,18 +136,19 @@ namespace TheBIADevCompany.BIADemo.Application.Notification
             int id,
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,
-            string mapperMode = null)
+            string mapperMode = null,
+            bool bypassFixed = false)
         {
-            var notification = await base.RemoveAsync(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
+            var notification = await base.RemoveAsync(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, bypassFixed: bypassFixed);
             _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notification-domain" }, "notification-removeUnread", notification.Id);
             _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notification", notification);
             return notification;
         }
 
         /// <inheritdoc/>
-        public override async Task<List<NotificationDto>> RemoveAsync(List<int> ids, string accessMode = "Delete", string queryMode = "Delete", string mapperMode = null)
+        public override async Task<List<NotificationDto>> RemoveAsync(List<int> ids, string accessMode = "Delete", string queryMode = "Delete", string mapperMode = null, bool bypassFixed = false)
         {
-            var deletedDtos = await base.RemoveAsync(ids, accessMode, queryMode, mapperMode);
+            var deletedDtos = await base.RemoveAsync(ids, accessMode, queryMode, mapperMode, bypassFixed: bypassFixed);
 
             _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notification-domain" }, "notification-removeSeveralUnread", deletedDtos.Select(s => s.Id).ToList());
             _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notifications-several", deletedDtos);

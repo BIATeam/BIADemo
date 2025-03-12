@@ -8,6 +8,7 @@ import {
   PrimeNGFiltering,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
+import { BiaFormLayoutConfig } from 'src/app/shared/bia-shared/model/bia-form-layout-config';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 // TODO after creation of CRUD Engine : adapt the model
@@ -217,5 +218,13 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
       }
     ),
     /// BIAToolKit - End Block installedParts
+    Object.assign(new BiaFieldConfig('rowVersion', 'engine.rowVersion'), {
+      isVisible: false,
+      isHideByDefault: true,
+    }),
   ],
 };
+
+// TODO after creation of CRUD Engine : adapt the form layout configuration
+export const engineFormLayoutConfiguration: BiaFormLayoutConfig<Engine> =
+  new BiaFormLayoutConfig([]);

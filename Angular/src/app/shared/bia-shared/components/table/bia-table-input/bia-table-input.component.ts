@@ -36,6 +36,7 @@ export class BiaTableInputComponent<CrudItem>
   @Input() field: BiaFieldConfig<CrudItem>;
   @Input() form: UntypedFormGroup;
   @Input() dictOptionDtos: DictOptionDto[];
+  @Input() focusByDefault = false;
 
   @Output() valueChange = new EventEmitter<void>();
   @Output() complexInput = new EventEmitter<boolean>();
@@ -71,6 +72,7 @@ export class BiaTableInputComponent<CrudItem>
           break;
       }
     });
+    this.focusByDefault;
   }
 
   public onChange() {

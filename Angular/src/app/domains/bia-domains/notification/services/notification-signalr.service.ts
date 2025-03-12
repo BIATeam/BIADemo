@@ -99,7 +99,10 @@ export class NotificationSignalRService {
       notification.notifiedTeams.length === 0 ||
       notification.notifiedTeams.some(notifiedTeam =>
         this.myTeams.some(myTeam => {
-          if (myTeam.id === notifiedTeam.team.id || notifiedTeam.team.id == 0) {
+          if (
+            myTeam.id === notifiedTeam.team.id ||
+            notifiedTeam.team.id === 0
+          ) {
             if (notifiedTeam.roles && notifiedTeam.roles.length > 0) {
               return notifiedTeam.roles.some(notifiedRole =>
                 myTeam.roles.some(myRole => myRole.id === notifiedRole.id)

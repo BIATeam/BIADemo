@@ -139,7 +139,7 @@
         "Roles": [ "Admin", "Site_Member" ]
       },
       {
-        "Names": [ "Plane_Update", "Plane_Save" ],
+        "Names": [ "Plane_Update", "Plane_Save", "Plane_Fix" ],
         "Roles": [ "Site_Admin" ]
       },
       {
