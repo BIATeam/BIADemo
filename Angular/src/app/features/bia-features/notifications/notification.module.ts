@@ -91,26 +91,24 @@ const ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    NotificationItemComponent,
-    NotificationFormComponent,
-    NotificationsIndexComponent,
-    NotificationNewComponent,
-    NotificationEditComponent,
-    NotificationDetailComponent,
-  ],
-  imports: [
-    SharedModule,
-    ReactiveFormsModule,
-    RouterModule.forChild(ROUTES),
-    StoreModule.forFeature('notifications', FeatureNotificationsStore.reducers),
-    EffectsModule.forFeature([NotificationsEffects]),
-    // Domain Modules:
-    NotificationTypeOptionModule,
-    UserOptionModule,
-    LanguageOptionModule,
-    RoleOptionModule,
-    TeamOptionModule,
-  ],
+    imports: [
+        SharedModule,
+        ReactiveFormsModule,
+        RouterModule.forChild(ROUTES),
+        StoreModule.forFeature('notifications', FeatureNotificationsStore.reducers),
+        EffectsModule.forFeature([NotificationsEffects]),
+        // Domain Modules:
+        NotificationTypeOptionModule,
+        UserOptionModule,
+        LanguageOptionModule,
+        RoleOptionModule,
+        TeamOptionModule,
+        NotificationItemComponent,
+        NotificationFormComponent,
+        NotificationsIndexComponent,
+        NotificationNewComponent,
+        NotificationEditComponent,
+        NotificationDetailComponent,
+    ],
 })
 export class NotificationModule {}

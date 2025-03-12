@@ -16,6 +16,14 @@ import { EngineTableComponent } from '../../children/engines/components/engine-t
 import { engineCRUDConfiguration } from '../../children/engines/engine.constants';
 import { Engine } from '../../model/engine';
 import { PlaneSpecific } from '../../model/plane-specific';
+import { BiaFormComponent } from '../../../../shared/bia-shared/components/form/bia-form/bia-form.component';
+import { PrimeTemplate } from 'primeng/api';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgSwitch, NgSwitchCase, NgIf } from '@angular/common';
+import { Checkbox } from 'primeng/checkbox';
+import { InputText } from 'primeng/inputtext';
+import { BiaTableHeaderComponent } from '../../../../shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-plane-specific-form',
@@ -23,7 +31,7 @@ import { PlaneSpecific } from '../../model/plane-specific';
     styleUrls: [
         '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
     ],
-    standalone: false
+    imports: [BiaFormComponent, PrimeTemplate, FormsModule, ReactiveFormsModule, NgSwitch, NgSwitchCase, Checkbox, InputText, NgIf, BiaTableHeaderComponent, EngineTableComponent, TranslateModule]
 })
 export class PlaneFormComponent
   extends CrudItemFormComponent<PlaneSpecific>

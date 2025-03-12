@@ -278,23 +278,23 @@ const SERVICES = [MessageService];
 const STANDALONE_COMPONENTS = [IeWarningComponent];
 
 @NgModule({
-  imports: [
-    ...PRIMENG_MODULES,
-    ...MODULES,
-    ...VIEW_IMPORTS,
-    ...NOTIFICATION_IMPORTS,
-    ...TEAM_ADVANCED_FILTER_IMPORTS,
-    ...STANDALONE_COMPONENTS,
-  ],
-  declarations: [...COMPONENTS, ...VIEW_COMPONENTS, ...PIPES],
-  exports: [
-    ...PRIMENG_MODULES,
-    ...MODULES,
-    ...COMPONENTS,
-    ...VIEW_COMPONENTS,
-    ...PIPES,
-  ],
-  providers: [...SERVICES, provideHttpClient(withInterceptorsFromDi())],
+    imports: [
+        ...PRIMENG_MODULES,
+        ...MODULES,
+        ...VIEW_IMPORTS,
+        ...NOTIFICATION_IMPORTS,
+        ...TEAM_ADVANCED_FILTER_IMPORTS,
+        ...STANDALONE_COMPONENTS,
+        ...COMPONENTS, ...VIEW_COMPONENTS, ...PIPES,
+    ],
+    exports: [
+        ...PRIMENG_MODULES,
+        ...MODULES,
+        ...COMPONENTS,
+        ...VIEW_COMPONENTS,
+        ...PIPES,
+    ],
+    providers: [...SERVICES, provideHttpClient(withInterceptorsFromDi())],
 })
 
 // https://medium.com/@benmohamehdi/angular-best-practices-coremodule-vs-sharedmodule-25f6721aa2ef

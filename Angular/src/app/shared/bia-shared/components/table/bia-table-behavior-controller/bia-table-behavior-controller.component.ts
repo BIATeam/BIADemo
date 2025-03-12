@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { CrudConfig } from '../../../feature-templates/crud-items/model/crud-config';
+import { Tooltip } from 'primeng/tooltip';
+import { NgIf, NgFor } from '@angular/common';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 export interface BiaBehaviorIcon {
   tooltip: string;
@@ -13,7 +16,7 @@ export interface BiaBehaviorIcon {
     selector: 'bia-table-behavior-controller',
     templateUrl: './bia-table-behavior-controller.component.html',
     styleUrls: ['./bia-table-behavior-controller.component.scss'],
-    standalone: false
+    imports: [Tooltip, NgIf, OverlayPanelModule, NgFor, TranslateModule]
 })
 export class BiaTableBehaviorControllerComponent<TDto extends { id: number }>
   implements OnInit

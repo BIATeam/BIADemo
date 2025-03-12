@@ -1,15 +1,17 @@
 import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { first, Subscription } from 'rxjs';
 import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/services/layout.service';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { CrudItemService } from '../../services/crud-item.service';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
 
 @Component({
     selector: 'bia-cruditem-item',
     templateUrl: './crud-item-item.component.html',
     styleUrls: ['./crud-item-item.component.scss'],
-    standalone: false
+    imports: [RouterOutlet, NgIf, SpinnerComponent, AsyncPipe]
 })
 export class CrudItemItemComponent<
     ListCrudItem extends BaseDto,

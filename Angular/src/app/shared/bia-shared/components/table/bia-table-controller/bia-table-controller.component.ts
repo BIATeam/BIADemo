@@ -14,14 +14,19 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+import { UntypedFormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { FilterMetadata, PrimeTemplate, SelectItem } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { TABLE_FILTER_GLOBAL, TeamTypeId } from 'src/app/shared/constants';
 import { ViewListComponent } from '../../../features/view/views/view-list/view-list.component';
 import { BiaTableState } from '../../../model/bia-table-state';
 import { KeyValuePair } from '../../../model/key-value-pair';
+import { MultiSelect } from 'primeng/multiselect';
+import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { InputText } from 'primeng/inputtext';
+import { Button } from 'primeng/button';
+import { Tooltip } from 'primeng/tooltip';
 
 @Component({
     selector: 'bia-table-controller',
@@ -39,7 +44,7 @@ import { KeyValuePair } from '../../../model/key-value-pair';
             ]),
         ]),
     ],
-    standalone: false
+    imports: [MultiSelect, FormsModule, NgIf, ViewListComponent, NgTemplateOutlet, InputText, ReactiveFormsModule, Button, Tooltip, TranslateModule]
 })
 export class BiaTableControllerComponent
   implements OnChanges, OnInit, OnDestroy, AfterContentInit

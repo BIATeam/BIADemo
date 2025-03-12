@@ -6,12 +6,7 @@ import {
   OnChanges,
   Output,
 } from '@angular/core';
-import {
-  UntypedFormArray,
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
@@ -24,13 +19,28 @@ import {
   NotificationTeam,
   NotificationTranslation,
 } from '../../model/notification';
+import { Fieldset } from 'primeng/fieldset';
+import { Tabs, TabList, Tab, TabPanels, TabPanel } from 'primeng/tabs';
+import { Ripple } from 'primeng/ripple';
+import { NgFor, NgIf } from '@angular/common';
+import { InputText } from 'primeng/inputtext';
+import { ButtonDirective } from 'primeng/button';
+import { PrimeTemplate } from 'primeng/api';
+import { Select } from 'primeng/select';
+import { Checkbox } from 'primeng/checkbox';
+import { DatePicker } from 'primeng/datepicker';
+import { TableModule } from 'primeng/table';
+import { Tooltip } from 'primeng/tooltip';
+import { MultiSelect } from 'primeng/multiselect';
+import { InputTextarea } from 'primeng/inputtextarea';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'bia-notification-form',
     templateUrl: './notification-form.component.html',
     styleUrls: ['./notification-form.component.scss'],
     changeDetection: ChangeDetectionStrategy.Default,
-    standalone: false
+    imports: [FormsModule, ReactiveFormsModule, Fieldset, Tabs, TabList, Ripple, Tab, NgFor, NgIf, TabPanels, TabPanel, InputText, ButtonDirective, PrimeTemplate, Select, Checkbox, DatePicker, TableModule, Tooltip, MultiSelect, InputTextarea, TranslateModule]
 })
 export class NotificationFormComponent implements OnChanges {
   @Input() notification: Notification = <Notification>{};

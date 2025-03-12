@@ -10,12 +10,21 @@ import { User } from '../../model/user';
 import { UserService } from '../../services/user.service';
 import { FeatureUsersActions } from '../../store/users-actions';
 import { userCRUDConfiguration } from '../../user.constants';
+import { NgClass, NgIf, AsyncPipe } from '@angular/common';
+import { BiaTableHeaderComponent } from '../../../../../shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
+import { PrimeTemplate } from 'primeng/api';
+import { ButtonDirective } from 'primeng/button';
+import { BiaTableControllerComponent } from '../../../../../shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
+import { BiaTableBehaviorControllerComponent } from '../../../../../shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
+import { BiaTableComponent } from '../../../../../shared/bia-shared/components/table/bia-table/bia-table.component';
+import { UserAddFromLdapComponent } from '../../../users-from-directory/views/user-add-from-directory-dialog/user-add-from-directory-dialog.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'bia-users-index',
     templateUrl: './users-index.component.html',
     styleUrls: ['./users-index.component.scss'],
-    standalone: false
+    imports: [NgClass, BiaTableHeaderComponent, PrimeTemplate, NgIf, ButtonDirective, BiaTableControllerComponent, BiaTableBehaviorControllerComponent, BiaTableComponent, UserTableComponent, UserAddFromLdapComponent, AsyncPipe, TranslateModule]
 })
 export class UsersIndexComponent
   extends CrudItemsIndexComponent<User>

@@ -4,6 +4,9 @@ import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/se
 import { CrudItemItemComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component';
 import { Member } from '../../model/member';
 import { MemberService } from '../../services/member.service';
+import { RouterOutlet } from '@angular/router';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
 
 @Component({
     selector: 'bia-members-item',
@@ -11,7 +14,7 @@ import { MemberService } from '../../services/member.service';
     styleUrls: [
         '../../../crud-items/views/crud-item-item/crud-item-item.component.scss',
     ],
-    standalone: false
+    imports: [RouterOutlet, NgIf, SpinnerComponent, AsyncPipe]
 })
 export class MemberItemComponent
   extends CrudItemItemComponent<Member>

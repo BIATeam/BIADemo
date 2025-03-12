@@ -3,11 +3,14 @@ import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templat
 import { PlaneType } from '../../model/plane-type';
 import { planeTypeCRUDConfiguration } from '../../plane-type.constants';
 import { PlaneTypeService } from '../../services/plane-type.service';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { PlaneTypeFormComponent } from '../../components/plane-type-form/plane-type-form.component';
+import { SpinnerComponent } from '../../../../shared/bia-shared/components/spinner/spinner.component';
 
 @Component({
     selector: 'app-plane-type-edit',
     templateUrl: './plane-type-edit.component.html',
-    standalone: false
+    imports: [NgIf, PlaneTypeFormComponent, SpinnerComponent, AsyncPipe]
 })
 export class PlaneTypeEditComponent extends CrudItemEditComponent<PlaneType> {
   constructor(

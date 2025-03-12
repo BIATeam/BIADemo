@@ -3,12 +3,15 @@ import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templat
 import { Notification } from '../../model/notification';
 import { notificationCRUDConfiguration } from '../../notification.constants';
 import { NotificationService } from '../../services/notification.service';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { NotificationFormComponent } from '../../components/notification-form/notification-form.component';
+import { SpinnerComponent } from '../../../../../shared/bia-shared/components/spinner/spinner.component';
 
 @Component({
     selector: 'bia-notification-edit',
     templateUrl: './notification-edit.component.html',
     styleUrls: ['./notification-edit.component.scss'],
-    standalone: false
+    imports: [NgIf, NotificationFormComponent, SpinnerComponent, AsyncPipe]
 })
 export class NotificationEditComponent extends CrudItemEditComponent<Notification> {
   constructor(

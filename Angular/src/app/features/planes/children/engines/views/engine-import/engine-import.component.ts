@@ -4,11 +4,14 @@ import { Permission } from 'src/app/shared/permission';
 import { engineCRUDConfiguration } from '../../engine.constants';
 import { Engine } from '../../model/engine';
 import { EngineService } from '../../services/engine.service';
+import { BiaFormComponent } from '../../../../../../shared/bia-shared/components/form/bia-form/bia-form.component';
+import { CrudItemImportFormComponent } from '../../../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-import-form/crud-item-import-form.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'app-engine-import',
     templateUrl: '../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
-    standalone: false
+    imports: [BiaFormComponent, CrudItemImportFormComponent, AsyncPipe]
 })
 export class EngineImportComponent extends CrudItemImportComponent<Engine> {
   constructor(

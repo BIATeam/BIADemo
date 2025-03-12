@@ -6,18 +6,17 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { View } from '../../model/view';
+import { InputText } from 'primeng/inputtext';
+import { ButtonDirective } from 'primeng/button';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'bia-view-form',
     templateUrl: './view-form.component.html',
     styleUrls: ['./view-form.component.scss'],
-    standalone: false
+    imports: [FormsModule, ReactiveFormsModule, InputText, ButtonDirective, TranslateModule]
 })
 export class ViewFormComponent<T extends View> implements OnChanges {
   @Input() view: T | undefined;

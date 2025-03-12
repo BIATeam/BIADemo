@@ -7,12 +7,19 @@ import { Plane } from '../../model/plane';
 import { PlaneSpecific } from '../../model/plane-specific';
 import { planeCRUDConfiguration } from '../../plane.constants';
 import { PlaneService } from '../../services/plane.service';
+import { NgClass, NgSwitch, NgSwitchCase, NgIf, AsyncPipe } from '@angular/common';
+import { BiaTableHeaderComponent } from '../../../../shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
+import { BiaTableControllerComponent } from '../../../../shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
+import { PrimeTemplate } from 'primeng/api';
+import { BiaTableBehaviorControllerComponent } from '../../../../shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
+import { BiaTableComponent } from '../../../../shared/bia-shared/components/table/bia-table/bia-table.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-planes-specific-index',
     templateUrl: './planes-index.component.html',
     styleUrls: ['./planes-index.component.scss'],
-    standalone: false
+    imports: [NgClass, BiaTableHeaderComponent, BiaTableControllerComponent, PrimeTemplate, BiaTableBehaviorControllerComponent, BiaTableComponent, NgSwitch, NgSwitchCase, NgIf, AsyncPipe, TranslateModule]
 })
 export class PlanesIndexComponent extends CrudItemsIndexComponent<
   Plane,

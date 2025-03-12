@@ -7,9 +7,9 @@ import {
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { FilterMatchMode, FilterMetadata, SelectItem } from 'primeng/api';
-import { Table } from 'primeng/table';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { FilterMatchMode, FilterMetadata, SelectItem, PrimeTemplate } from 'primeng/api';
+import { Table, TableModule } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import {
@@ -22,6 +22,13 @@ import {
 import { OptionDto } from '../../../model/option-dto';
 import { TableHelperService } from '../../../services/table-helper.service';
 import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.component';
+import { NgIf, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, NgClass } from '@angular/common';
+import { MultiSelect } from 'primeng/multiselect';
+import { FormsModule } from '@angular/forms';
+import { DatePicker } from 'primeng/datepicker';
+import { Checkbox } from 'primeng/checkbox';
+import { InputText } from 'primeng/inputtext';
+import { FormatValuePipe } from '../../../pipes/format-value.pipe';
 
 @Component({
     selector: 'bia-table-filter',
@@ -29,7 +36,7 @@ import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.
     styleUrls: ['./bia-table-filter.component.scss'],
     changeDetection: ChangeDetectionStrategy.Default,
     encapsulation: ViewEncapsulation.None,
-    standalone: false
+    imports: [NgIf, TableModule, PrimeTemplate, MultiSelect, FormsModule, DatePicker, Checkbox, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, InputText, NgClass, TranslateModule, FormatValuePipe]
 })
 export class BiaTableFilterComponent<CrudItem>
   extends BiaFieldBaseComponent<CrudItem>

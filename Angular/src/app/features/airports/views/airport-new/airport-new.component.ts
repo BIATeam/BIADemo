@@ -3,11 +3,13 @@ import { CrudItemNewComponent } from 'src/app/shared/bia-shared/feature-template
 import { airportCRUDConfiguration } from '../../airport.constants';
 import { Airport } from '../../model/airport';
 import { AirportService } from '../../services/airport.service';
+import { AirportFormComponent } from '../../components/airport-form/airport-form.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'app-airport-new',
     templateUrl: './airport-new.component.html',
-    standalone: false
+    imports: [AirportFormComponent, AsyncPipe]
 })
 export class AirportNewComponent extends CrudItemNewComponent<Airport> {
   constructor(

@@ -134,37 +134,31 @@ export const ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    PlaneItemComponent,
-    PlanesIndexComponent,
-    // [Calc] : NOT used for calc (3 lines).
-    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-    PlaneFormComponent,
-    PlaneNewComponent,
-    PlaneEditComponent,
-    PlaneReadComponent,
-    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-    PlaneTableComponent,
-    PlaneImportComponent,
-  ],
-  imports: [
-    SharedModule,
-    CrudItemModule,
-    CrudItemImportModule,
-    RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(
-      planeCRUDConfiguration.storeKey,
-      FeaturePlanesStore.reducers
-    ),
-    EffectsModule.forFeature([PlanesEffects]),
-    // TODO after creation of CRUD Plane : select the optioDto dommain module required for link
-    // Domain Modules:
-    // BIAToolKit - Begin Option Airport
-    AirportOptionModule,
-    // BIAToolKit - End Option Airport
-    // BIAToolKit - Begin Option PlaneType
-    PlaneTypeOptionModule,
-    // BIAToolKit - End Option PlaneType
-  ],
+    imports: [
+        SharedModule,
+        CrudItemModule,
+        CrudItemImportModule,
+        RouterModule.forChild(ROUTES),
+        StoreModule.forFeature(planeCRUDConfiguration.storeKey, FeaturePlanesStore.reducers),
+        EffectsModule.forFeature([PlanesEffects]),
+        // TODO after creation of CRUD Plane : select the optioDto dommain module required for link
+        // Domain Modules:
+        // BIAToolKit - Begin Option Airport
+        AirportOptionModule,
+        // BIAToolKit - End Option Airport
+        // BIAToolKit - Begin Option PlaneType
+        PlaneTypeOptionModule,
+        PlaneItemComponent,
+        PlanesIndexComponent,
+        // [Calc] : NOT used for calc (3 lines).
+        // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
+        PlaneFormComponent,
+        PlaneNewComponent,
+        PlaneEditComponent,
+        PlaneReadComponent,
+        // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
+        PlaneTableComponent,
+        PlaneImportComponent,
+    ],
 })
 export class PlaneModule {}

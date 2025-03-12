@@ -1,5 +1,5 @@
 import { Platform } from '@angular/cdk/platform';
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, NgIf, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, NgClass, AsyncPipe } from '@angular/common';
 import {
   Component,
   ElementRef,
@@ -10,10 +10,10 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
-import { ToastMessageOptions } from 'primeng/api';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { ToastMessageOptions, PrimeTemplate } from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -30,12 +30,19 @@ import { BiaNavigation } from 'src/app/shared/bia-shared/model/bia-navigation';
 import { AppState } from 'src/app/store/state';
 import { allEnvironments } from 'src/environments/all-environments';
 import { BiaLayoutService } from '../../services/layout.service';
+import { Ripple } from 'primeng/ripple';
+import { IeWarningComponent } from '../../ie-warning/ie-warning.component';
+import { BiaTeamSelectorComponent } from '../../../bia-team-selector/bia-team-selector.component';
+import { Tooltip } from 'primeng/tooltip';
+import { BiaOnlineOfflineIconComponent } from '../../../bia-online-offline-icon/bia-online-offline-icon.component';
+import { ButtonDirective } from 'primeng/button';
+import { NotificationTeamWarningComponent } from '../../../notification-team-warning/notification-team-warning.component';
 
 @Component({
     selector: 'bia-ultima-topbar',
     templateUrl: './ultima-topbar.component.html',
     styleUrls: ['./ultima-topbar.component.scss'],
-    standalone: false
+    imports: [RouterLink, Ripple, NgIf, IeWarningComponent, NgFor, BiaTeamSelectorComponent, Tooltip, BiaOnlineOfflineIconComponent, Toast, PrimeTemplate, NgSwitch, NgSwitchCase, NgSwitchDefault, ButtonDirective, NotificationTeamWarningComponent, NgClass, AsyncPipe, TranslateModule]
 })
 export class BiaUltimaTopbarComponent implements OnInit, OnDestroy {
   @Input() appTitle: string;

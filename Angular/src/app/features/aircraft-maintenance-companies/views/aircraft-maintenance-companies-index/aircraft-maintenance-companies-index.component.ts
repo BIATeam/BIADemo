@@ -8,12 +8,21 @@ import { aircraftMaintenanceCompanyCRUDConfiguration } from '../../aircraft-main
 import { AircraftMaintenanceCompanyTableComponent } from '../../components/aircraft-maintenance-company-table/aircraft-maintenance-company-table.component';
 import { AircraftMaintenanceCompany } from '../../model/aircraft-maintenance-company';
 import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maintenance-company.service';
+import { NgIf, NgClass, AsyncPipe } from '@angular/common';
+import { TeamAdvancedFilterComponent } from '../../../../shared/bia-shared/components/team-advanced-filter/team-advanced-filter.component';
+import { BiaTableHeaderComponent } from '../../../../shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
+import { PrimeTemplate } from 'primeng/api';
+import { BiaButtonGroupComponent } from '../../../../shared/bia-shared/components/bia-button-group/bia-button-group.component';
+import { BiaTableControllerComponent } from '../../../../shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
+import { BiaTableBehaviorControllerComponent } from '../../../../shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
+import { BiaTableComponent } from '../../../../shared/bia-shared/components/table/bia-table/bia-table.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-aircraft-maintenance-companies-index',
     templateUrl: './aircraft-maintenance-companies-index.component.html',
     styleUrls: ['./aircraft-maintenance-companies-index.component.scss'],
-    standalone: false
+    imports: [NgIf, TeamAdvancedFilterComponent, NgClass, BiaTableHeaderComponent, PrimeTemplate, BiaButtonGroupComponent, BiaTableControllerComponent, BiaTableBehaviorControllerComponent, BiaTableComponent, AircraftMaintenanceCompanyTableComponent, AsyncPipe, TranslateModule]
 })
 export class AircraftMaintenanceCompaniesIndexComponent extends CrudItemsIndexComponent<AircraftMaintenanceCompany> {
   // Custo for teams

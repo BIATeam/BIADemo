@@ -16,13 +16,17 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router, RouterLinkActive, RouterLink } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { DomHandler } from 'primeng/dom';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { BiaLayoutService } from '../../services/layout.service';
 import { MenuService } from '../../services/menu.service';
+import { NgIf, NgClass, NgFor } from '@angular/common';
+import { Ripple } from 'primeng/ripple';
+import { Tooltip } from 'primeng/tooltip';
+import { BiaUltimaLayoutModule } from '../ultima-layout.module';
 
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
@@ -45,7 +49,7 @@ import { MenuService } from '../../services/menu.service';
             transition('collapsed <=> expanded', animate('400ms cubic-bezier(0.86, 0, 0.07, 1)')),
         ]),
     ],
-    standalone: false
+    imports: [NgIf, RouterLinkActive, Ripple, NgClass, RouterLink, Tooltip, NgFor, BiaUltimaLayoutModule]
 })
 export class BiaUltimaMenuItemComponent
   implements OnInit, OnDestroy, AfterViewChecked

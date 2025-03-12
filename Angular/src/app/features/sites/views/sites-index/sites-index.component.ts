@@ -7,12 +7,21 @@ import { SiteTableComponent } from '../../components/site-table/site-table.compo
 import { Site } from '../../model/site';
 import { SiteService } from '../../services/site.service';
 import { siteCRUDConfiguration } from '../../site.constants';
+import { NgIf, NgClass, AsyncPipe } from '@angular/common';
+import { TeamAdvancedFilterComponent } from '../../../../shared/bia-shared/components/team-advanced-filter/team-advanced-filter.component';
+import { BiaTableHeaderComponent } from '../../../../shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
+import { PrimeTemplate } from 'primeng/api';
+import { ButtonDirective } from 'primeng/button';
+import { BiaTableControllerComponent } from '../../../../shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
+import { BiaTableBehaviorControllerComponent } from '../../../../shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
+import { BiaTableComponent } from '../../../../shared/bia-shared/components/table/bia-table/bia-table.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-sites-index',
     templateUrl: './sites-index.component.html',
     styleUrls: ['./sites-index.component.scss'],
-    standalone: false
+    imports: [NgIf, TeamAdvancedFilterComponent, NgClass, BiaTableHeaderComponent, PrimeTemplate, ButtonDirective, BiaTableControllerComponent, BiaTableBehaviorControllerComponent, BiaTableComponent, SiteTableComponent, AsyncPipe, TranslateModule]
 })
 export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
   // Custo for teams

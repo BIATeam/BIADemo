@@ -6,12 +6,19 @@ import { airportCRUDConfiguration } from '../../airport.constants';
 import { AirportTableComponent } from '../../components/airport-table/airport-table.component';
 import { Airport } from '../../model/airport';
 import { AirportService } from '../../services/airport.service';
+import { NgClass, NgIf, AsyncPipe } from '@angular/common';
+import { BiaTableHeaderComponent } from '../../../../shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
+import { BiaTableControllerComponent } from '../../../../shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
+import { PrimeTemplate } from 'primeng/api';
+import { BiaTableBehaviorControllerComponent } from '../../../../shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
+import { BiaTableComponent } from '../../../../shared/bia-shared/components/table/bia-table/bia-table.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-airports-index',
     templateUrl: './airports-index.component.html',
     styleUrls: ['./airports-index.component.scss'],
-    standalone: false
+    imports: [NgClass, BiaTableHeaderComponent, BiaTableControllerComponent, PrimeTemplate, BiaTableBehaviorControllerComponent, NgIf, BiaTableComponent, AirportTableComponent, AsyncPipe, TranslateModule]
 })
 export class AirportsIndexComponent extends CrudItemsIndexComponent<Airport> {
   @ViewChild(AirportTableComponent, { static: false })

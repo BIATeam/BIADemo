@@ -11,17 +11,16 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import {
-  ActivatedRoute,
-  ActivatedRouteSnapshot,
-  NavigationEnd,
-  Router,
-} from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { BehaviorSubject, filter } from 'rxjs';
 import { BiaInjectorService } from 'src/app/core/bia-core/services/bia-injector.service';
 import { CrudConfig } from '../../../feature-templates/crud-items/model/crud-config';
 import { LayoutHelperService } from '../../../services/layout-helper.service';
 import { BiaLayoutService } from '../services/layout.service';
+import { NgIf, NgClass, NgStyle } from '@angular/common';
+import { Dialog } from 'primeng/dialog';
+import { SharedModule } from 'primeng/api';
+import { TranslateModule } from '@ngx-translate/core';
 
 export enum LayoutMode {
   popup,
@@ -33,7 +32,7 @@ export enum LayoutMode {
     selector: 'bia-dynamic-layout',
     templateUrl: './dynamic-layout.component.html',
     styleUrls: ['./dynamic-layout.component.scss'],
-    standalone: false
+    imports: [NgIf, NgClass, NgStyle, RouterOutlet, Dialog, SharedModule, TranslateModule]
 })
 export class DynamicLayoutComponent<TDto extends { id: number }>
   implements OnInit, AfterViewInit, OnDestroy

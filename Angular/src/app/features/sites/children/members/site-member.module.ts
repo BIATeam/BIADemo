@@ -96,12 +96,9 @@ const ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    SiteMemberItemComponent,
-    SiteMembersIndexComponent,
-    SiteMemberNewComponent,
-    SiteMemberEditComponent,
-  ],
-  imports: [SharedModule, RouterModule.forChild(ROUTES), MemberModule],
+    imports: [SharedModule, RouterModule.forChild(ROUTES), MemberModule, SiteMemberItemComponent,
+        SiteMembersIndexComponent,
+        SiteMemberNewComponent,
+        SiteMemberEditComponent],
 })
 export class SiteMemberModule {}

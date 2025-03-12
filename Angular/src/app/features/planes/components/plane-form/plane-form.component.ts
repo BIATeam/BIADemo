@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CrudItemFormComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component';
 import { Plane } from '../../model/plane';
+import { BiaFormComponent } from '../../../../shared/bia-shared/components/form/bia-form/bia-form.component';
 
 @Component({
     selector: 'app-plane-form',
@@ -9,7 +10,7 @@ import { Plane } from '../../model/plane';
     styleUrls: [
         '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
     ],
-    standalone: false
+    imports: [BiaFormComponent]
 })
 export class PlaneFormComponent extends CrudItemFormComponent<Plane> {
   constructor(

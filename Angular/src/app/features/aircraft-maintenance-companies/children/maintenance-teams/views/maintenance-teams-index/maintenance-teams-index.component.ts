@@ -10,12 +10,22 @@ import { MaintenanceTeam } from '../../model/maintenance-team';
 import { MaintenanceTeamOptionsService } from '../../services/maintenance-team-options.service';
 // BIAToolKit - End Option
 import { MaintenanceTeamService } from '../../services/maintenance-team.service';
+import { NgIf, NgClass, AsyncPipe } from '@angular/common';
+import { TeamAdvancedFilterComponent } from '../../../../../../shared/bia-shared/components/team-advanced-filter/team-advanced-filter.component';
+import { BiaTableHeaderComponent } from '../../../../../../shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
+import { PrimeTemplate } from 'primeng/api';
+import { ButtonDirective } from 'primeng/button';
+import { Tooltip } from 'primeng/tooltip';
+import { BiaTableControllerComponent } from '../../../../../../shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
+import { BiaTableBehaviorControllerComponent } from '../../../../../../shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
+import { BiaTableComponent } from '../../../../../../shared/bia-shared/components/table/bia-table/bia-table.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-maintenance-teams-index',
     templateUrl: './maintenance-teams-index.component.html',
     styleUrls: ['./maintenance-teams-index.component.scss'],
-    standalone: false
+    imports: [NgIf, TeamAdvancedFilterComponent, NgClass, BiaTableHeaderComponent, PrimeTemplate, ButtonDirective, Tooltip, BiaTableControllerComponent, BiaTableBehaviorControllerComponent, BiaTableComponent, MaintenanceTeamTableComponent, AsyncPipe, TranslateModule]
 })
 export class MaintenanceTeamsIndexComponent
   extends CrudItemsIndexComponent<MaintenanceTeam>

@@ -8,7 +8,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     </div>
   `,
     styleUrls: ['./classic-page-layout.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ClassicPageLayoutComponent {}

@@ -6,6 +6,9 @@ import { CrudItemItemComponent } from 'src/app/shared/bia-shared/feature-templat
 import { AppState } from 'src/app/store/state';
 import { Airport } from '../../model/airport';
 import { AirportService } from '../../services/airport.service';
+import { RouterOutlet } from '@angular/router';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { SpinnerComponent } from '../../../../shared/bia-shared/components/spinner/spinner.component';
 
 @Component({
     selector: 'app-airports-item',
@@ -13,7 +16,7 @@ import { AirportService } from '../../services/airport.service';
     styleUrls: [
         '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
     ],
-    standalone: false
+    imports: [RouterOutlet, NgIf, SpinnerComponent, AsyncPipe]
 })
 export class AirportItemComponent
   extends CrudItemItemComponent<Airport>

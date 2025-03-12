@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CrudItemFormComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component';
 import { Engine } from '../../model/engine';
+import { BiaFormComponent } from '../../../../../../shared/bia-shared/components/form/bia-form/bia-form.component';
 
 @Component({
     selector: 'app-engine-form',
@@ -8,6 +9,6 @@ import { Engine } from '../../model/engine';
     styleUrls: [
         '../../../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
     ],
-    standalone: false
+    imports: [BiaFormComponent]
 })
 export class EngineFormComponent extends CrudItemFormComponent<Engine> {}

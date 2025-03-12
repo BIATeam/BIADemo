@@ -10,7 +10,7 @@ import {
 import { ActivatedRoute, Router, Routes } from '@angular/router';
 import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { saveAs } from 'file-saver';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable, Subscription, combineLatest } from 'rxjs';
@@ -36,12 +36,18 @@ import { AppState } from 'src/app/store/state';
 import { CrudItemTableComponent } from '../../components/crud-item-table/crud-item-table.component';
 import { CrudConfig, FormReadOnlyMode } from '../../model/crud-config';
 import { CrudItemService } from '../../services/crud-item.service';
+import { NgClass, NgIf, AsyncPipe } from '@angular/common';
+import { BiaTableHeaderComponent } from '../../../../components/table/bia-table-header/bia-table-header.component';
+import { BiaTableControllerComponent as BiaTableControllerComponent_1 } from '../../../../components/table/bia-table-controller/bia-table-controller.component';
+import { PrimeTemplate } from 'primeng/api';
+import { BiaTableBehaviorControllerComponent } from '../../../../components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
+import { BiaTableComponent as BiaTableComponent_1 } from '../../../../components/table/bia-table/bia-table.component';
 
 @Component({
     selector: 'bia-crud-items-index',
     templateUrl: './crud-items-index.component.html',
     styleUrls: ['./crud-items-index.component.scss'],
-    standalone: false
+    imports: [NgClass, BiaTableHeaderComponent, BiaTableControllerComponent_1, PrimeTemplate, BiaTableBehaviorControllerComponent, NgIf, BiaTableComponent_1, CrudItemTableComponent, AsyncPipe, TranslateModule]
 })
 export class CrudItemsIndexComponent<
     ListCrudItem extends BaseDto,

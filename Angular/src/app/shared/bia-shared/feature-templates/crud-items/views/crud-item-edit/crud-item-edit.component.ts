@@ -18,12 +18,15 @@ import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { AppState } from 'src/app/store/state';
 import { CrudConfig, FormReadOnlyMode } from '../../model/crud-config';
 import { CrudItemSingleService } from '../../services/crud-item-single.service';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { CrudItemFormComponent } from '../../components/crud-item-form/crud-item-form.component';
+import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
 
 @Component({
     selector: 'bia-crud-item-edit',
     templateUrl: './crud-item-edit.component.html',
     styleUrls: ['./crud-item-edit.component.scss'],
-    standalone: false
+    imports: [NgIf, CrudItemFormComponent, SpinnerComponent, AsyncPipe]
 })
 export class CrudItemEditComponent<CrudItem extends BaseDto>
   implements OnInit, OnDestroy

@@ -81,45 +81,40 @@ import { MembersIndexComponent } from './views/members-index/members-index.compo
 // ];
 
 @NgModule({
-  declarations: [
-    MemberItemComponent,
-    MembersIndexComponent,
-    // [Calc] : NOT used for calc (3 lines).
-    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-    MemberFormComponent,
-    MemberFormEditComponent,
-    MemberFormNewComponent,
-    MemberNewComponent,
-    MemberEditComponent,
-    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-    MemberTableComponent,
-    MemberImportComponent,
-  ],
-  imports: [
-    SharedModule,
-    CrudItemModule,
-    CrudItemImportModule,
-    // RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(
-      memberCRUDConfiguration.storeKey,
-      FeatureMembersStore.reducers
-    ),
-    EffectsModule.forFeature([MembersEffects]),
-    // TODO after creation of CRUD Member : select the optioDto dommain module required for link
-    // Domain Modules:
-    UserOptionModule,
-    RoleOptionModule,
-    UserFromDirectoryModule, // required for the add user from directory feature
-  ],
-  exports: [
-    MemberItemComponent,
-    MemberFormComponent,
-    MemberFormEditComponent,
-    MemberFormNewComponent,
-    MembersIndexComponent,
-    MemberNewComponent,
-    MemberEditComponent,
-    MemberTableComponent,
-  ],
+    imports: [
+        SharedModule,
+        CrudItemModule,
+        CrudItemImportModule,
+        // RouterModule.forChild(ROUTES),
+        StoreModule.forFeature(memberCRUDConfiguration.storeKey, FeatureMembersStore.reducers),
+        EffectsModule.forFeature([MembersEffects]),
+        // TODO after creation of CRUD Member : select the optioDto dommain module required for link
+        // Domain Modules:
+        UserOptionModule,
+        RoleOptionModule,
+        UserFromDirectoryModule,
+        MemberItemComponent,
+        MembersIndexComponent,
+        // [Calc] : NOT used for calc (3 lines).
+        // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
+        MemberFormComponent,
+        MemberFormEditComponent,
+        MemberFormNewComponent,
+        MemberNewComponent,
+        MemberEditComponent,
+        // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
+        MemberTableComponent,
+        MemberImportComponent,
+    ],
+    exports: [
+        MemberItemComponent,
+        MemberFormComponent,
+        MemberFormEditComponent,
+        MemberFormNewComponent,
+        MembersIndexComponent,
+        MemberNewComponent,
+        MemberEditComponent,
+        MemberTableComponent,
+    ],
 })
 export class MemberModule {}

@@ -14,12 +14,15 @@ import { Plane } from '../../model/plane';
 import { PlaneOptionsService } from '../../services/plane-options.service';
 import { PlaneService } from '../../services/plane.service';
 import { FeaturePlanesActions } from '../../store/planes-actions';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { PlaneFormComponent } from '../../components/plane-form/plane-form.component';
+import { SpinnerComponent } from '../../../../shared/bia-shared/components/spinner/spinner.component';
 
 @Component({
     selector: 'app-plane-edit',
     templateUrl: './plane-edit.component.html',
     styleUrls: ['./plane-edit.component.scss'],
-    standalone: false
+    imports: [NgIf, PlaneFormComponent, SpinnerComponent, AsyncPipe]
 })
 export class PlaneEditComponent implements OnInit, OnDestroy {
   @Output() displayChange = new EventEmitter<boolean>();

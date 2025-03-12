@@ -10,7 +10,7 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { getAllUserOptions } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
@@ -18,12 +18,17 @@ import { DomainUserOptionsActions } from 'src/app/domains/bia-domains/user-optio
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { AppState } from 'src/app/store/state';
 import { TeamAdvancedFilterDto } from '../../model/team-advanced-filter-dto';
+import { ButtonDirective } from 'primeng/button';
+import { Tooltip } from 'primeng/tooltip';
+import { Select } from 'primeng/select';
+import { AsyncPipe } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'bia-team-advanced-filter',
     templateUrl: './team-advanced-filter.component.html',
     styleUrls: ['./team-advanced-filter.component.scss'],
-    standalone: false
+    imports: [ButtonDirective, Tooltip, FormsModule, ReactiveFormsModule, Select, AsyncPipe, TranslateModule]
 })
 export class TeamAdvancedFilterComponent implements OnInit, OnChanges {
   @ViewChild('template', { static: true }) template: TemplateRef<HTMLElement>;

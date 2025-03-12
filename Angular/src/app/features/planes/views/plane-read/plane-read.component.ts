@@ -13,11 +13,14 @@ import { Permission } from 'src/app/shared/permission';
 import { Plane } from '../../model/plane';
 import { planeCRUDConfiguration } from '../../plane.constants';
 import { PlaneService } from '../../services/plane.service';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { PlaneFormComponent } from '../../components/plane-form/plane-form.component';
+import { SpinnerComponent } from '../../../../shared/bia-shared/components/spinner/spinner.component';
 
 @Component({
     selector: 'app-plane-read',
     templateUrl: './plane-read.component.html',
-    standalone: false
+    imports: [NgIf, PlaneFormComponent, SpinnerComponent, AsyncPipe]
 })
 export class PlaneReadComponent extends CrudItemReadComponent<Plane> {
   constructor(

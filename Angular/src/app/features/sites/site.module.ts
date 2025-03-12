@@ -102,27 +102,21 @@ export const ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    SiteItemComponent,
-    SitesIndexComponent,
-    // [Calc] : NOT used for calc (3 lines).
-    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-    SiteFormComponent,
-    SiteNewComponent,
-    SiteEditComponent,
-    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-    SiteTableComponent,
-  ],
-  imports: [
-    SharedModule,
-    CrudItemModule,
-    RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(
-      siteCRUDConfiguration.storeKey,
-      FeatureSitesStore.reducers
-    ),
-    EffectsModule.forFeature([SitesEffects]),
-    // Domain Modules:
-  ],
+    imports: [
+        SharedModule,
+        CrudItemModule,
+        RouterModule.forChild(ROUTES),
+        StoreModule.forFeature(siteCRUDConfiguration.storeKey, FeatureSitesStore.reducers),
+        EffectsModule.forFeature([SitesEffects]),
+        SiteItemComponent,
+        SitesIndexComponent,
+        // [Calc] : NOT used for calc (3 lines).
+        // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
+        SiteFormComponent,
+        SiteNewComponent,
+        SiteEditComponent,
+        // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
+        SiteTableComponent,
+    ],
 })
 export class SiteModule {}

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { take, tap } from 'rxjs';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
@@ -11,12 +11,16 @@ import {
   MenuMode,
 } from '../../services/layout.service';
 import { MenuService } from '../../services/menu.service';
+import { NgIf, NgFor, NgClass } from '@angular/common';
+import { RadioButton } from 'primeng/radiobutton';
+import { FormsModule } from '@angular/forms';
+import { ButtonDirective } from 'primeng/button';
 
 @Component({
     selector: 'bia-ultima-config',
     templateUrl: './ultima-config.component.html',
     styleUrls: ['./ultima-config.component.scss'],
-    standalone: false
+    imports: [NgIf, NgFor, RadioButton, FormsModule, ButtonDirective, NgClass, TranslateModule]
 })
 export class BiaUltimaConfigComponent {
   @Input() minimal = false;

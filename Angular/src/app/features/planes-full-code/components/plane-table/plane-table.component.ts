@@ -1,12 +1,21 @@
 import { Component, OnChanges } from '@angular/core';
-import { UntypedFormBuilder, Validators } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+import { UntypedFormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { BiaCalcTableComponent } from 'src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { Plane } from '../../model/plane';
+import { NgIf, NgFor, NgSwitch, NgClass, NgTemplateOutlet, NgStyle, AsyncPipe } from '@angular/common';
+import { TableModule } from 'primeng/table';
+import { PrimeTemplate } from 'primeng/api';
+import { Tooltip } from 'primeng/tooltip';
+import { BiaTableFilterComponent } from '../../../../shared/bia-shared/components/table/bia-table-filter/bia-table-filter.component';
+import { BiaTableInputComponent } from '../../../../shared/bia-shared/components/table/bia-table-input/bia-table-input.component';
+import { BiaTableOutputComponent } from '../../../../shared/bia-shared/components/table/bia-table-output/bia-table-output.component';
+import { Skeleton } from 'primeng/skeleton';
+import { BiaTableFooterControllerComponent } from '../../../../shared/bia-shared/components/table/bia-table-footer-controller/bia-table-footer-controller.component';
 
 @Component({
     selector: 'app-plane-table',
@@ -14,7 +23,7 @@ import { Plane } from '../../model/plane';
     styleUrls: [
         '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss',
     ],
-    standalone: false
+    imports: [FormsModule, ReactiveFormsModule, NgIf, TableModule, PrimeTemplate, NgFor, Tooltip, NgSwitch, BiaTableFilterComponent, NgClass, BiaTableInputComponent, NgTemplateOutlet, BiaTableOutputComponent, Skeleton, NgStyle, BiaTableFooterControllerComponent, AsyncPipe, TranslateModule]
 })
 export class PlaneTableComponent
   extends BiaCalcTableComponent<Plane>

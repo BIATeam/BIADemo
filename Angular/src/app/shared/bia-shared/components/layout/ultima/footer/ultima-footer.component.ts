@@ -6,13 +6,15 @@ import {
 } from '@angular/core';
 import { FRAMEWORK_VERSION } from 'src/app/shared/bia-shared/framework-version';
 import { BiaLayoutService } from '../../services/layout.service';
+import { NgIf, NgClass, NgFor, AsyncPipe } from '@angular/common';
+import { Ripple } from 'primeng/ripple';
 
 @Component({
     selector: 'bia-ultima-footer',
     templateUrl: './ultima-footer.component.html',
     styleUrls: ['./ultima-footer.component.scss'],
     changeDetection: ChangeDetectionStrategy.Default,
-    standalone: false
+    imports: [NgIf, NgClass, Ripple, NgFor, AsyncPipe]
 })
 export class BiaUltimaFooterComponent {
   @Input() companyName: string;

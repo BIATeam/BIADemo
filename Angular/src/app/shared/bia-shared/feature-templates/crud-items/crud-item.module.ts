@@ -9,24 +9,18 @@ import { CrudItemReadComponent } from './views/crud-item-read/crud-item-read.com
 import { CrudItemsIndexComponent } from './views/crud-items-index/crud-items-index.component';
 
 @NgModule({
-  declarations: [
-    CrudItemItemComponent,
-    CrudItemsIndexComponent,
-    // [Calc] : NOT used for calc (3 lines).
-    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-    CrudItemFormComponent,
-    CrudItemNewComponent,
-    CrudItemEditComponent,
-    CrudItemReadComponent,
-    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-    CrudItemTableComponent,
-  ],
-  imports: [
-    SharedModule,
-    // TODO redefine in plane
-    /*
-    StoreModule.forFeature(storeKey, reducers),
-    EffectsModule.forFeature([CrudItemsEffects]),*/
-  ],
+    imports: [
+        SharedModule,
+        CrudItemItemComponent,
+        CrudItemsIndexComponent,
+        // [Calc] : NOT used for calc (3 lines).
+        // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
+        CrudItemFormComponent,
+        CrudItemNewComponent,
+        CrudItemEditComponent,
+        CrudItemReadComponent,
+        // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
+        CrudItemTableComponent,
+    ],
 })
 export class CrudItemModule {}

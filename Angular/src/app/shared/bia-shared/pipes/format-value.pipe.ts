@@ -8,10 +8,7 @@ import {
   PropType,
 } from '../model/bia-field-config';
 
-@Pipe({
-    name: 'formatValue',
-    standalone: false
-})
+@Pipe({ name: 'formatValue' })
 export class FormatValuePipe implements PipeTransform {
   constructor(
     protected datePipe: DatePipe,

@@ -79,25 +79,23 @@ const ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    PlaneItemComponent,
-    PlanesIndexComponent,
-    // [Calc] : NOT used for calc (3 lines).
-    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-    PlaneFormComponent,
-    PlaneNewComponent,
-    PlaneEditComponent,
-    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-    PlaneTableComponent,
-  ],
-  imports: [
-    SharedModule,
-    RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(storeKey, reducers),
-    EffectsModule.forFeature([PlanesEffects]),
-    // Domain Modules:
-    AirportOptionModule,
-    PlaneTypeOptionModule,
-  ],
+    imports: [
+        SharedModule,
+        RouterModule.forChild(ROUTES),
+        StoreModule.forFeature(storeKey, reducers),
+        EffectsModule.forFeature([PlanesEffects]),
+        // Domain Modules:
+        AirportOptionModule,
+        PlaneTypeOptionModule,
+        PlaneItemComponent,
+        PlanesIndexComponent,
+        // [Calc] : NOT used for calc (3 lines).
+        // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
+        PlaneFormComponent,
+        PlaneNewComponent,
+        PlaneEditComponent,
+        // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
+        PlaneTableComponent,
+    ],
 })
 export class PlaneModule {}

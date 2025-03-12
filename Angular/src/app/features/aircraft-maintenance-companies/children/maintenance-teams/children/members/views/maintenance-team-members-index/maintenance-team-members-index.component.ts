@@ -3,6 +3,14 @@ import { MembersIndexComponent } from 'src/app/shared/bia-shared/feature-templat
 import { TeamTypeId } from 'src/app/shared/constants';
 import { Permission } from 'src/app/shared/permission';
 import { MaintenanceTeamService } from '../../../../services/maintenance-team.service';
+import { NgClass, NgIf, AsyncPipe } from '@angular/common';
+import { BiaTableHeaderComponent } from '../../../../../../../../shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
+import { BiaTableControllerComponent } from '../../../../../../../../shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
+import { PrimeTemplate } from 'primeng/api';
+import { BiaTableBehaviorControllerComponent } from '../../../../../../../../shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
+import { BiaTableComponent } from '../../../../../../../../shared/bia-shared/components/table/bia-table/bia-table.component';
+import { MemberTableComponent } from '../../../../../../../../shared/bia-shared/feature-templates/members/components/member-table/member-table.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-maintenance-team-members-index',
@@ -10,7 +18,7 @@ import { MaintenanceTeamService } from '../../../../services/maintenance-team.se
     styleUrls: [
         '../../../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component.scss',
     ],
-    standalone: false
+    imports: [NgClass, BiaTableHeaderComponent, BiaTableControllerComponent, PrimeTemplate, BiaTableBehaviorControllerComponent, NgIf, BiaTableComponent, MemberTableComponent, AsyncPipe, TranslateModule]
 })
 export class MaintenanceTeamMembersIndexComponent
   extends MembersIndexComponent

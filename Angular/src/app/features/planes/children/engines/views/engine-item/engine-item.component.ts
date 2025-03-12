@@ -2,6 +2,9 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { CrudItemItemComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component';
 import { Engine } from '../../model/engine';
 import { EngineService } from '../../services/engine.service';
+import { RouterOutlet } from '@angular/router';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { SpinnerComponent } from '../../../../../../shared/bia-shared/components/spinner/spinner.component';
 
 @Component({
     selector: 'app-engines-item',
@@ -9,7 +12,7 @@ import { EngineService } from '../../services/engine.service';
     styleUrls: [
         '../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
     ],
-    standalone: false
+    imports: [RouterOutlet, NgIf, SpinnerComponent, AsyncPipe]
 })
 export class EngineItemComponent
   extends CrudItemItemComponent<Engine>

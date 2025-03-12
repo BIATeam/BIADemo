@@ -6,12 +6,19 @@ import { PlaneTypeTableComponent } from '../../components/plane-type-table/plane
 import { PlaneType } from '../../model/plane-type';
 import { planeTypeCRUDConfiguration } from '../../plane-type.constants';
 import { PlaneTypeService } from '../../services/plane-type.service';
+import { NgClass, NgIf, AsyncPipe } from '@angular/common';
+import { BiaTableHeaderComponent } from '../../../../shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
+import { BiaTableControllerComponent } from '../../../../shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
+import { PrimeTemplate } from 'primeng/api';
+import { BiaTableBehaviorControllerComponent } from '../../../../shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
+import { BiaTableComponent } from '../../../../shared/bia-shared/components/table/bia-table/bia-table.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-planes-types-index',
     templateUrl: './planes-types-index.component.html',
     styleUrls: ['./planes-types-index.component.scss'],
-    standalone: false
+    imports: [NgClass, BiaTableHeaderComponent, BiaTableControllerComponent, PrimeTemplate, BiaTableBehaviorControllerComponent, NgIf, BiaTableComponent, PlaneTypeTableComponent, AsyncPipe, TranslateModule]
 })
 export class PlanesTypesIndexComponent extends CrudItemsIndexComponent<PlaneType> {
   @ViewChild(PlaneTypeTableComponent, { static: false })

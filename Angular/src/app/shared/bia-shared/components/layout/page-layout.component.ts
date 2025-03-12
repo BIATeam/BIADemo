@@ -1,4 +1,6 @@
 import { Component, HostBinding } from '@angular/core';
+import { ClassicPageLayoutComponent } from './classic-page-layout/classic-page-layout.component';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
     selector: 'bia-page-layout',
@@ -7,7 +9,7 @@ import { Component, HostBinding } from '@angular/core';
       <router-outlet></router-outlet>
     </bia-classic-page-layout>
   `,
-    standalone: false
+    imports: [ClassicPageLayoutComponent, RouterOutlet]
 })
 export class PageLayoutComponent {
   @HostBinding('class') classes = 'bia-flex';

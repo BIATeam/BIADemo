@@ -9,12 +9,15 @@ import { FormReadOnlyMode } from 'src/app/shared/bia-shared/feature-templates/cr
 // End BIADemo
 // BIAToolKit - Begin Option
 import { EngineOptionsService } from '../../services/engine-options.service';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { EngineFormComponent } from '../../components/engine-form/engine-form.component';
+import { SpinnerComponent } from '../../../../../../shared/bia-shared/components/spinner/spinner.component';
 // BIAToolKit - End Option
 
 @Component({
     selector: 'app-engine-edit',
     templateUrl: './engine-edit.component.html',
-    standalone: false
+    imports: [NgIf, EngineFormComponent, SpinnerComponent, AsyncPipe]
 })
 export class EngineEditComponent
   extends CrudItemEditComponent<Engine>
