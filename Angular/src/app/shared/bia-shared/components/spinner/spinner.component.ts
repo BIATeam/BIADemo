@@ -9,8 +9,8 @@ import { Observable, timer } from 'rxjs';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
 
 @Component({
-  selector: 'bia-spinner',
-  template: `
+    selector: 'bia-spinner',
+    template: `
     <div *ngIf="overlay; else picture" class="overlay">
       <ng-template [ngTemplateOutlet]="picture"></ng-template>
     </div>
@@ -31,8 +31,9 @@ import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.servic
       </ng-container>
     </ng-template>
   `,
-  styleUrls: ['./spinner.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    styleUrls: ['./spinner.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpinnerComponent implements OnInit {
   @Input()

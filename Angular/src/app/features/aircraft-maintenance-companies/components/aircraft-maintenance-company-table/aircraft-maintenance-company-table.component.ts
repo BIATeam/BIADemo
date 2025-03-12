@@ -7,12 +7,12 @@ import { CrudItemTableComponent } from 'src/app/shared/bia-shared/feature-templa
 import { AircraftMaintenanceCompany } from '../../model/aircraft-maintenance-company';
 
 @Component({
-  selector: 'app-aircraft-maintenance-company-table',
-  templateUrl:
-    '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
-  styleUrls: [
-    '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss',
-  ],
+    selector: 'app-aircraft-maintenance-company-table',
+    templateUrl: '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
+    styleUrls: [
+        '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss',
+    ],
+    standalone: false
 })
 export class AircraftMaintenanceCompanyTableComponent extends CrudItemTableComponent<AircraftMaintenanceCompany> {
   constructor(

@@ -3,11 +3,11 @@ import { CrudItemFormComponent } from 'src/app/shared/bia-shared/feature-templat
 import { AircraftMaintenanceCompany } from '../../model/aircraft-maintenance-company';
 
 @Component({
-  selector: 'app-aircraft-maintenance-company-form',
-  templateUrl:
-    '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.html',
-  styleUrls: [
-    '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
-  ],
+    selector: 'app-aircraft-maintenance-company-form',
+    templateUrl: '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.html',
+    styleUrls: [
+        '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
+    ],
+    standalone: false
 })
 export class AircraftMaintenanceCompanyFormComponent extends CrudItemFormComponent<AircraftMaintenanceCompany> {}

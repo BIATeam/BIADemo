@@ -10,9 +10,10 @@ import { CrudConfig } from '../../model/crud-config';
 import { CrudItemSingleService } from '../../services/crud-item-single.service';
 
 @Component({
-  selector: 'bia-crud-item-new',
-  templateUrl: './crud-item-new.component.html',
-  styleUrls: ['./crud-item-new.component.scss'],
+    selector: 'bia-crud-item-new',
+    templateUrl: './crud-item-new.component.html',
+    styleUrls: ['./crud-item-new.component.scss'],
+    standalone: false
 })
 export class CrudItemNewComponent<CrudItem extends BaseDto>
   implements OnInit, OnDestroy

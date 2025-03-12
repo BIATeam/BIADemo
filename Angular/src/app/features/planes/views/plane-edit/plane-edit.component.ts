@@ -12,8 +12,9 @@ import { planeCRUDConfiguration } from '../../plane.constants';
 import { PlaneService } from '../../services/plane.service';
 
 @Component({
-  selector: 'app-plane-edit',
-  templateUrl: './plane-edit.component.html',
+    selector: 'app-plane-edit',
+    templateUrl: './plane-edit.component.html',
+    standalone: false
 })
 export class PlaneEditComponent extends CrudItemEditComponent<Plane> {
   constructor(

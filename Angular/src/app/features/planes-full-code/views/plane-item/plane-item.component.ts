@@ -10,9 +10,10 @@ import { PlaneService } from '../../services/plane.service';
 import { getCurrentPlane } from '../../store/plane.state';
 
 @Component({
-  selector: 'app-planes-item',
-  templateUrl: './plane-item.component.html',
-  styleUrls: ['./plane-item.component.scss'],
+    selector: 'app-planes-item',
+    templateUrl: './plane-item.component.html',
+    styleUrls: ['./plane-item.component.scss'],
+    standalone: false
 })
 export class PlaneItemComponent implements OnInit, OnDestroy {
   plane$: Observable<Plane>;

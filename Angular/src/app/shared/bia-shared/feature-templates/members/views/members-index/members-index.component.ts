@@ -6,9 +6,10 @@ import { Member } from '../../model/member';
 import { MemberService } from '../../services/member.service';
 
 @Component({
-  selector: 'bia-members-index',
-  templateUrl: './members-index.component.html',
-  styleUrls: ['./members-index.component.scss'],
+    selector: 'bia-members-index',
+    templateUrl: './members-index.component.html',
+    styleUrls: ['./members-index.component.scss'],
+    standalone: false
 })
 export class MembersIndexComponent
   extends CrudItemsIndexComponent<Member>

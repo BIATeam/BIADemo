@@ -3,9 +3,10 @@ import { Subscription } from 'rxjs';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 
 @Component({
-  selector: 'bia-background-task-admin',
-  templateUrl: './background-task-admin.component.html',
-  styleUrls: ['./background-task-admin.component.scss'],
+    selector: 'bia-background-task-admin',
+    templateUrl: './background-task-admin.component.html',
+    styleUrls: ['./background-task-admin.component.scss'],
+    standalone: false
 })
 export class BackgroundTaskAdminComponent implements OnInit, OnDestroy {
   @HostBinding('class') classes = 'bia-flex';

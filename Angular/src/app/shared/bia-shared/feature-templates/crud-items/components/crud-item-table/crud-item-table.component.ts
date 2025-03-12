@@ -11,12 +11,12 @@ import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 @Component({
-  selector: 'bia-crud-item-table',
-  templateUrl:
-    '../../../../components/table/bia-calc-table/bia-calc-table.component.html',
-  styleUrls: [
-    '../../../../components/table/bia-calc-table/bia-calc-table.component.scss',
-  ],
+    selector: 'bia-crud-item-table',
+    templateUrl: '../../../../components/table/bia-calc-table/bia-calc-table.component.html',
+    styleUrls: [
+        '../../../../components/table/bia-calc-table/bia-calc-table.component.scss',
+    ],
+    standalone: false
 })
 export class CrudItemTableComponent<CrudItem extends BaseDto>
   extends BiaCalcTableComponent<CrudItem>

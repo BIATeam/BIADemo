@@ -6,9 +6,10 @@ import { CrudItemSingleService } from '../../services/crud-item-single.service';
 import { CrudItemEditComponent } from '../crud-item-edit/crud-item-edit.component';
 
 @Component({
-  selector: 'bia-crud-item-read',
-  templateUrl: './crud-item-read.component.html',
-  styleUrls: ['./crud-item-read.component.scss'],
+    selector: 'bia-crud-item-read',
+    templateUrl: './crud-item-read.component.html',
+    styleUrls: ['./crud-item-read.component.scss'],
+    standalone: false
 })
 export class CrudItemReadComponent<CrudItem extends BaseDto>
   extends CrudItemEditComponent<CrudItem>

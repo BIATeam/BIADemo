@@ -6,9 +6,9 @@ import { Member } from '../../model/member';
 import { MemberService } from '../../services/member.service';
 
 @Component({
-  selector: 'bia-member-import',
-  templateUrl:
-    '../../../crud-items/views/crud-item-import/crud-item-import.component.html',
+    selector: 'bia-member-import',
+    templateUrl: '../../../crud-items/views/crud-item-import/crud-item-import.component.html',
+    standalone: false
 })
 export class MemberImportComponent extends CrudItemImportComponent<Member> {
   constructor(

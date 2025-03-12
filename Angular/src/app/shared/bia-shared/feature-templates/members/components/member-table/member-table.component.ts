@@ -7,12 +7,12 @@ import { CrudItemTableComponent } from 'src/app/shared/bia-shared/feature-templa
 import { Member } from '../../model/member';
 
 @Component({
-  selector: 'bia-member-table',
-  templateUrl:
-    '../../../../components/table/bia-calc-table/bia-calc-table.component.html',
-  styleUrls: [
-    '../../../../components/table/bia-calc-table/bia-calc-table.component.scss',
-  ],
+    selector: 'bia-member-table',
+    templateUrl: '../../../../components/table/bia-calc-table/bia-calc-table.component.html',
+    styleUrls: [
+        '../../../../components/table/bia-calc-table/bia-calc-table.component.scss',
+    ],
+    standalone: false
 })
 export class MemberTableComponent extends CrudItemTableComponent<Member> {
   constructor(

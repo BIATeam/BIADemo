@@ -14,9 +14,10 @@ import {
 import { View } from '../../model/view';
 
 @Component({
-  selector: 'bia-view-form',
-  templateUrl: './view-form.component.html',
-  styleUrls: ['./view-form.component.scss'],
+    selector: 'bia-view-form',
+    templateUrl: './view-form.component.html',
+    styleUrls: ['./view-form.component.scss'],
+    standalone: false
 })
 export class ViewFormComponent<T extends View> implements OnChanges {
   @Input() view: T | undefined;

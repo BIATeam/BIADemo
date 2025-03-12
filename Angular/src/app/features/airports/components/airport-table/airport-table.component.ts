@@ -7,12 +7,12 @@ import { CrudItemTableComponent } from 'src/app/shared/bia-shared/feature-templa
 import { Airport } from '../../model/airport';
 
 @Component({
-  selector: 'app-airport-table',
-  templateUrl:
-    '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
-  styleUrls: [
-    '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss',
-  ],
+    selector: 'app-airport-table',
+    templateUrl: '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
+    styleUrls: [
+        '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss',
+    ],
+    standalone: false
 })
 export class AirportTableComponent extends CrudItemTableComponent<Airport> {
   constructor(

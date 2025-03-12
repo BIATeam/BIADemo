@@ -8,8 +8,9 @@ import { MaintenanceTeamOptionsService } from '../../services/maintenance-team-o
 import { MaintenanceTeamService } from '../../services/maintenance-team.service';
 
 @Component({
-  selector: 'app-maintenance-team-edit',
-  templateUrl: './maintenance-team-edit.component.html',
+    selector: 'app-maintenance-team-edit',
+    templateUrl: './maintenance-team-edit.component.html',
+    standalone: false
 })
 export class MaintenanceTeamEditComponent
   extends CrudItemEditComponent<MaintenanceTeam>

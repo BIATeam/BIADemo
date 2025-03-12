@@ -3,11 +3,11 @@ import { CrudItemFormComponent } from 'src/app/shared/bia-shared/feature-templat
 import { Member } from '../../model/member';
 
 @Component({
-  selector: 'bia-member-form',
-  templateUrl:
-    '../../../crud-items/components/crud-item-form/crud-item-form.component.html',
-  styleUrls: [
-    '../../../crud-items/components/crud-item-form/crud-item-form.component.scss',
-  ],
+    selector: 'bia-member-form',
+    templateUrl: '../../../crud-items/components/crud-item-form/crud-item-form.component.html',
+    styleUrls: [
+        '../../../crud-items/components/crud-item-form/crud-item-form.component.scss',
+    ],
+    standalone: false
 })
 export class MemberFormComponent extends CrudItemFormComponent<Member> {}

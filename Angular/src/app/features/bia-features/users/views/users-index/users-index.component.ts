@@ -12,9 +12,10 @@ import { FeatureUsersActions } from '../../store/users-actions';
 import { userCRUDConfiguration } from '../../user.constants';
 
 @Component({
-  selector: 'bia-users-index',
-  templateUrl: './users-index.component.html',
-  styleUrls: ['./users-index.component.scss'],
+    selector: 'bia-users-index',
+    templateUrl: './users-index.component.html',
+    styleUrls: ['./users-index.component.scss'],
+    standalone: false
 })
 export class UsersIndexComponent
   extends CrudItemsIndexComponent<User>

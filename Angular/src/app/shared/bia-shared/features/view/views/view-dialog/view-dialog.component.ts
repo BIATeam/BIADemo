@@ -34,10 +34,11 @@ import {
 } from '../../store/views-actions';
 
 @Component({
-  selector: 'bia-view-dialog',
-  templateUrl: './view-dialog.component.html',
-  styleUrls: ['./view-dialog.component.scss'],
-  providers: [ConfirmationService],
+    selector: 'bia-view-dialog',
+    templateUrl: './view-dialog.component.html',
+    styleUrls: ['./view-dialog.component.scss'],
+    providers: [ConfirmationService],
+    standalone: false
 })
 export class ViewDialogComponent implements OnInit, OnDestroy {
   display = false;

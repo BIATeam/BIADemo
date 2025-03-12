@@ -38,9 +38,10 @@ const currentView = -1;
 const undefinedView = -2;
 
 @Component({
-  selector: 'bia-view-list',
-  templateUrl: './view-list.component.html',
-  styleUrls: ['./view-list.component.scss'],
+    selector: 'bia-view-list',
+    templateUrl: './view-list.component.html',
+    styleUrls: ['./view-list.component.scss'],
+    standalone: false
 })
 export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   groupedViews: SelectItemGroup[];

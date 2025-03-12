@@ -4,9 +4,9 @@ import { TeamTypeId } from 'src/app/shared/constants';
 import { MaintenanceTeamService } from '../../../../services/maintenance-team.service';
 
 @Component({
-  selector: 'app-maintenance-team-member-new',
-  templateUrl:
-    '../../../../../../../../shared/bia-shared/feature-templates/members/views/member-new/member-new.component.html',
+    selector: 'app-maintenance-team-member-new',
+    templateUrl: '../../../../../../../../shared/bia-shared/feature-templates/members/views/member-new/member-new.component.html',
+    standalone: false
 })
 export class MaintenanceTeamMemberNewComponent
   extends MemberNewComponent

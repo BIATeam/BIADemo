@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Pipe({
-  name: 'translateField',
+    name: 'translateField',
+    standalone: false
 })
 export class TranslateFieldPipe extends TranslatePipe implements PipeTransform {
   transform(

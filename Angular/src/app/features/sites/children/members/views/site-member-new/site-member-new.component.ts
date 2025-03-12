@@ -4,9 +4,9 @@ import { MemberNewComponent } from 'src/app/shared/bia-shared/feature-templates/
 import { TeamTypeId } from 'src/app/shared/constants';
 
 @Component({
-  selector: 'app-site-member-new',
-  templateUrl:
-    '../../../../../../shared/bia-shared/feature-templates/members/views/member-new/member-new.component.html',
+    selector: 'app-site-member-new',
+    templateUrl: '../../../../../../shared/bia-shared/feature-templates/members/views/member-new/member-new.component.html',
+    standalone: false
 })
 export class SiteMemberNewComponent
   extends MemberNewComponent

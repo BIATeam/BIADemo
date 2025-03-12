@@ -5,8 +5,9 @@ import { Airport } from '../../model/airport';
 import { AirportService } from '../../services/airport.service';
 
 @Component({
-  selector: 'app-airport-new',
-  templateUrl: './airport-new.component.html',
+    selector: 'app-airport-new',
+    templateUrl: './airport-new.component.html',
+    standalone: false
 })
 export class AirportNewComponent extends CrudItemNewComponent<Airport> {
   constructor(

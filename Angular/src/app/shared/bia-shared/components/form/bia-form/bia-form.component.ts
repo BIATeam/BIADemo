@@ -40,10 +40,11 @@ import {
 } from '../../../model/bia-form-layout-config';
 
 @Component({
-  selector: 'bia-form',
-  templateUrl: './bia-form.component.html',
-  styleUrls: ['./bia-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+    selector: 'bia-form',
+    templateUrl: './bia-form.component.html',
+    styleUrls: ['./bia-form.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Default,
+    standalone: false
 })
 export class BiaFormComponent<TDto extends { id: number }>
   implements OnInit, OnDestroy, OnChanges, AfterContentInit, AfterViewInit

@@ -10,9 +10,10 @@ import { AircraftMaintenanceCompany } from '../../model/aircraft-maintenance-com
 import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maintenance-company.service';
 
 @Component({
-  selector: 'app-aircraft-maintenance-companies-index',
-  templateUrl: './aircraft-maintenance-companies-index.component.html',
-  styleUrls: ['./aircraft-maintenance-companies-index.component.scss'],
+    selector: 'app-aircraft-maintenance-companies-index',
+    templateUrl: './aircraft-maintenance-companies-index.component.html',
+    styleUrls: ['./aircraft-maintenance-companies-index.component.scss'],
+    standalone: false
 })
 export class AircraftMaintenanceCompaniesIndexComponent extends CrudItemsIndexComponent<AircraftMaintenanceCompany> {
   // Custo for teams

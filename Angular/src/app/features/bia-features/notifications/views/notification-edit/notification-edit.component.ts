@@ -5,9 +5,10 @@ import { notificationCRUDConfiguration } from '../../notification.constants';
 import { NotificationService } from '../../services/notification.service';
 
 @Component({
-  selector: 'bia-notification-edit',
-  templateUrl: './notification-edit.component.html',
-  styleUrls: ['./notification-edit.component.scss'],
+    selector: 'bia-notification-edit',
+    templateUrl: './notification-edit.component.html',
+    styleUrls: ['./notification-edit.component.scss'],
+    standalone: false
 })
 export class NotificationEditComponent extends CrudItemEditComponent<Notification> {
   constructor(

@@ -19,9 +19,10 @@ import { BiaFieldConfig } from '../../../model/bia-field-config';
 import { DictOptionDto } from '../bia-table/dict-option-dto';
 
 @Component({
-  selector: 'bia-calc-table',
-  templateUrl: './bia-calc-table.component.html',
-  styleUrls: ['../bia-table/bia-table.component.scss'],
+    selector: 'bia-calc-table',
+    templateUrl: './bia-calc-table.component.html',
+    styleUrls: ['../bia-table/bia-table.component.scss'],
+    standalone: false
 })
 export class BiaCalcTableComponent<TDto extends { id: number }>
   extends BiaTableComponent<TDto>

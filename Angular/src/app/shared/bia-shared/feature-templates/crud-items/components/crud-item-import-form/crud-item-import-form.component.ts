@@ -29,9 +29,10 @@ interface FormatExample {
 }
 
 @Component({
-  selector: 'bia-crud-item-import-form',
-  templateUrl: './crud-item-import-form.component.html',
-  styleUrls: ['./crud-item-import-form.component.scss'],
+    selector: 'bia-crud-item-import-form',
+    templateUrl: './crud-item-import-form.component.html',
+    styleUrls: ['./crud-item-import-form.component.scss'],
+    standalone: false
 })
 export class CrudItemImportFormComponent<TDto extends { id: number }> {
   @ViewChild('fileUpload') fileUpload: FileUpload;

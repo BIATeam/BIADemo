@@ -15,9 +15,10 @@ import { BiaLayoutService } from '../../services/layout.service';
 import { BiaUltimaMenuProfileComponent } from '../menu-profile/ultima-menu-profile.component';
 
 @Component({
-  selector: 'bia-ultima-sidebar',
-  templateUrl: './ultima-sidebar.component.html',
-  styleUrls: ['./ultima-sidebar.component.scss'],
+    selector: 'bia-ultima-sidebar',
+    templateUrl: './ultima-sidebar.component.html',
+    styleUrls: ['./ultima-sidebar.component.scss'],
+    standalone: false
 })
 export class BiaUltimaSidebarComponent implements OnDestroy {
   timeout: any = null;

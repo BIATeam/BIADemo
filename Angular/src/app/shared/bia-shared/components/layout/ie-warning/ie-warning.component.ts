@@ -9,14 +9,14 @@ import {
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-  selector: 'bia-ie-warning',
-  template: `
+    selector: 'bia-ie-warning',
+    template: `
     <ng-container *ngIf="showIEWarning">
       {{ 'biaMsg.ieWarning' | translate }}
     </ng-container>
   `,
-  styles: [
-    `
+    styles: [
+        `
       :host {
         display: flex;
         justify-content: center;
@@ -24,10 +24,9 @@ import { TranslateModule } from '@ngx-translate/core';
         cursor: pointer;
       }
     `,
-  ],
-  standalone: true,
-  imports: [CommonModule, TranslateModule],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    ],
+    imports: [CommonModule, TranslateModule],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IeWarningComponent implements OnInit {
   @HostBinding('class.mat-caption') c = true;

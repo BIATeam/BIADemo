@@ -19,9 +19,10 @@ export interface BiaBehaviorIcon {
 }
 
 @Component({
-  selector: 'bia-table-behavior-controller',
-  templateUrl: './bia-table-behavior-controller.component.html',
-  styleUrls: ['./bia-table-behavior-controller.component.scss'],
+    selector: 'bia-table-behavior-controller',
+    templateUrl: './bia-table-behavior-controller.component.html',
+    styleUrls: ['./bia-table-behavior-controller.component.scss'],
+    standalone: false
 })
 export class BiaTableBehaviorControllerComponent<TDto extends { id: number }>
   implements OnInit, OnDestroy

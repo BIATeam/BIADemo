@@ -8,9 +8,10 @@ import { planeTypeCRUDConfiguration } from '../../plane-type.constants';
 import { PlaneTypeService } from '../../services/plane-type.service';
 
 @Component({
-  selector: 'app-planes-types-index',
-  templateUrl: './planes-types-index.component.html',
-  styleUrls: ['./planes-types-index.component.scss'],
+    selector: 'app-planes-types-index',
+    templateUrl: './planes-types-index.component.html',
+    styleUrls: ['./planes-types-index.component.scss'],
+    standalone: false
 })
 export class PlanesTypesIndexComponent extends CrudItemsIndexComponent<PlaneType> {
   @ViewChild(PlaneTypeTableComponent, { static: false })

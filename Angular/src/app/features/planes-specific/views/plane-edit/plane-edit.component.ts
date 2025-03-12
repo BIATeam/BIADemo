@@ -5,8 +5,9 @@ import { planeSpecificCRUDConfiguration } from '../../plane.constants';
 import { PlaneService } from '../../services/plane.service';
 
 @Component({
-  selector: 'app-plane-specific-edit',
-  templateUrl: './plane-edit.component.html',
+    selector: 'app-plane-specific-edit',
+    templateUrl: './plane-edit.component.html',
+    standalone: false
 })
 export class PlaneEditComponent extends CrudItemEditComponent<PlaneSpecific> {
   constructor(

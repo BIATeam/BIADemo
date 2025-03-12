@@ -8,10 +8,11 @@ import { FRAMEWORK_VERSION } from 'src/app/shared/bia-shared/framework-version';
 import { BiaLayoutService } from '../../services/layout.service';
 
 @Component({
-  selector: 'bia-ultima-footer',
-  templateUrl: './ultima-footer.component.html',
-  styleUrls: ['./ultima-footer.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+    selector: 'bia-ultima-footer',
+    templateUrl: './ultima-footer.component.html',
+    styleUrls: ['./ultima-footer.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Default,
+    standalone: false
 })
 export class BiaUltimaFooterComponent {
   @Input() companyName: string;

@@ -6,11 +6,12 @@ import { BiaMatomoService } from './core/bia-core/services/matomo/bia-matomo.ser
 import { BiaLayoutService } from './shared/bia-shared/components/layout/services/layout.service';
 
 @Component({
-  selector: 'app-root',
-  template: '<router-outlet></router-outlet>',
-  styles: [
-    ':host { min-height: 100vh; display: flex; flex-direction: column; }',
-  ],
+    selector: 'app-root',
+    template: '<router-outlet></router-outlet>',
+    styles: [
+        ':host { min-height: 100vh; display: flex; flex-direction: column; }',
+    ],
+    standalone: false
 })
 export class AppComponent implements OnInit {
   constructor(

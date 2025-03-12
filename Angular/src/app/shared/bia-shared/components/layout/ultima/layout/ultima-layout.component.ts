@@ -31,9 +31,10 @@ import { BiaUltimaSidebarComponent } from '../sidebar/ultima-sidebar.component';
 import { BiaUltimaTopbarComponent } from '../topbar/ultima-topbar.component';
 
 @Component({
-  selector: 'bia-ultima-layout',
-  templateUrl: './ultima-layout.component.html',
-  styleUrls: ['./ultima-layout.component.scss'],
+    selector: 'bia-ultima-layout',
+    templateUrl: './ultima-layout.component.html',
+    styleUrls: ['./ultima-layout.component.scss'],
+    standalone: false
 })
 export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
   @HostBinding('class.no-margin') noMargin = false;

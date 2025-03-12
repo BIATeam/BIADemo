@@ -8,12 +8,12 @@ import { MaintenanceTeam } from '../../model/maintenance-team';
 import { MaintenanceTeamService } from '../../services/maintenance-team.service';
 
 @Component({
-  selector: 'app-maintenance-teams-item',
-  templateUrl:
-    '../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
-  styleUrls: [
-    '../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
-  ],
+    selector: 'app-maintenance-teams-item',
+    templateUrl: '../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
+    styleUrls: [
+        '../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
+    ],
+    standalone: false
 })
 export class MaintenanceTeamItemComponent
   extends CrudItemItemComponent<MaintenanceTeam>

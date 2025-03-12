@@ -9,7 +9,8 @@ import {
 } from '../model/bia-field-config';
 
 @Pipe({
-  name: 'formatValue',
+    name: 'formatValue',
+    standalone: false
 })
 export class FormatValuePipe implements PipeTransform {
   constructor(

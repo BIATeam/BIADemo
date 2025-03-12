@@ -13,9 +13,10 @@ import {
 import { MenuService } from '../../services/menu.service';
 
 @Component({
-  selector: 'bia-ultima-config',
-  templateUrl: './ultima-config.component.html',
-  styleUrls: ['./ultima-config.component.scss'],
+    selector: 'bia-ultima-config',
+    templateUrl: './ultima-config.component.html',
+    styleUrls: ['./ultima-config.component.scss'],
+    standalone: false
 })
 export class BiaUltimaConfigComponent {
   @Input() minimal = false;

@@ -7,12 +7,12 @@ import { CrudItemTableComponent } from 'src/app/shared/bia-shared/feature-templa
 import { MaintenanceTeam } from '../../model/maintenance-team';
 
 @Component({
-  selector: 'app-maintenance-team-table',
-  templateUrl:
-    '../../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
-  styleUrls: [
-    '../../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss',
-  ],
+    selector: 'app-maintenance-team-table',
+    templateUrl: '../../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
+    styleUrls: [
+        '../../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss',
+    ],
+    standalone: false
 })
 export class MaintenanceTeamTableComponent extends CrudItemTableComponent<MaintenanceTeam> {
   constructor(

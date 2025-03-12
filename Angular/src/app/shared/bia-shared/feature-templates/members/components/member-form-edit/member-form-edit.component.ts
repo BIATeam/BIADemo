@@ -17,10 +17,11 @@ import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { Member } from '../../model/member';
 
 @Component({
-  selector: 'bia-member-form-edit',
-  templateUrl: './member-form-edit.component.html',
-  styleUrls: ['./member-form-edit.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+    selector: 'bia-member-form-edit',
+    templateUrl: './member-form-edit.component.html',
+    styleUrls: ['./member-form-edit.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Default,
+    standalone: false
 })
 export class MemberFormEditComponent implements OnChanges {
   @Input() member: Member | null = null;

@@ -12,8 +12,9 @@ import { ActivatedRoute } from '@angular/router';
 import { BiaInjectorService } from 'src/app/core/bia-core/services/bia-injector.service';
 
 @Component({
-  selector: 'bia-popup-layout',
-  templateUrl: './popup-layout.component.html',
+    selector: 'bia-popup-layout',
+    templateUrl: './popup-layout.component.html',
+    standalone: false
 })
 export class PopupLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('dynamic', {

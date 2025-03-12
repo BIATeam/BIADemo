@@ -38,9 +38,10 @@ import { CrudConfig, FormReadOnlyMode } from '../../model/crud-config';
 import { CrudItemService } from '../../services/crud-item.service';
 
 @Component({
-  selector: 'bia-crud-items-index',
-  templateUrl: './crud-items-index.component.html',
-  styleUrls: ['./crud-items-index.component.scss'],
+    selector: 'bia-crud-items-index',
+    templateUrl: './crud-items-index.component.html',
+    styleUrls: ['./crud-items-index.component.scss'],
+    standalone: false
 })
 export class CrudItemsIndexComponent<
     ListCrudItem extends BaseDto,

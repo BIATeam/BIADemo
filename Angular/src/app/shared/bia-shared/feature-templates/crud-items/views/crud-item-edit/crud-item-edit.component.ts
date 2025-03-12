@@ -20,9 +20,10 @@ import { CrudConfig, FormReadOnlyMode } from '../../model/crud-config';
 import { CrudItemSingleService } from '../../services/crud-item-single.service';
 
 @Component({
-  selector: 'bia-crud-item-edit',
-  templateUrl: './crud-item-edit.component.html',
-  styleUrls: ['./crud-item-edit.component.scss'],
+    selector: 'bia-crud-item-edit',
+    templateUrl: './crud-item-edit.component.html',
+    styleUrls: ['./crud-item-edit.component.scss'],
+    standalone: false
 })
 export class CrudItemEditComponent<CrudItem extends BaseDto>
   implements OnInit, OnDestroy

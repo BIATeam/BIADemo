@@ -17,11 +17,12 @@ import { Confirmation, ConfirmationService, PrimeTemplate } from 'primeng/api';
 import { BiaDialogService } from 'src/app/core/bia-core/services/bia-dialog.service';
 
 @Component({
-  selector: 'bia-table-header',
-  templateUrl: './bia-table-header.component.html',
-  styleUrls: ['./bia-table-header.component.scss'],
-  providers: [ConfirmationService],
-  changeDetection: ChangeDetectionStrategy.Default,
+    selector: 'bia-table-header',
+    templateUrl: './bia-table-header.component.html',
+    styleUrls: ['./bia-table-header.component.scss'],
+    providers: [ConfirmationService],
+    changeDetection: ChangeDetectionStrategy.Default,
+    standalone: false
 })
 export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   @Input() hasFilter = false;

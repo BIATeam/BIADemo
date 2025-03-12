@@ -5,9 +5,10 @@ import { notificationCRUDConfiguration } from '../../notification.constants';
 import { NotificationService } from '../../services/notification.service';
 
 @Component({
-  selector: 'bia-notification-new',
-  templateUrl: './notification-new.component.html',
-  styleUrls: ['./notification-new.component.scss'],
+    selector: 'bia-notification-new',
+    templateUrl: './notification-new.component.html',
+    styleUrls: ['./notification-new.component.scss'],
+    standalone: false
 })
 export class NotificationNewComponent extends CrudItemNewComponent<Notification> {
   constructor(

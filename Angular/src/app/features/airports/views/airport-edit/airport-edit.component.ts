@@ -7,8 +7,9 @@ import { AirportSignalRService } from '../../services/airport-signalr.service';
 import { AirportService } from '../../services/airport.service';
 
 @Component({
-  selector: 'app-airport-edit',
-  templateUrl: './airport-edit.component.html',
+    selector: 'app-airport-edit',
+    templateUrl: './airport-edit.component.html',
+    standalone: false
 })
 export class AirportEditComponent
   extends CrudItemEditComponent<Airport>

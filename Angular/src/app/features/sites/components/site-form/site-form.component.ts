@@ -3,11 +3,11 @@ import { CrudItemFormComponent } from 'src/app/shared/bia-shared/feature-templat
 import { Site } from '../../model/site';
 
 @Component({
-  selector: 'app-site-form',
-  templateUrl:
-    '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.html',
-  styleUrls: [
-    '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
-  ],
+    selector: 'app-site-form',
+    templateUrl: '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.html',
+    styleUrls: [
+        '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
+    ],
+    standalone: false
 })
 export class SiteFormComponent extends CrudItemFormComponent<Site> {}

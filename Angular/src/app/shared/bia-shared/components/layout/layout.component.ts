@@ -18,8 +18,9 @@ import { BiaNavigation } from '../../model/bia-navigation';
 import { BiaLayoutService } from './services/layout.service';
 
 @Component({
-  selector: 'bia-layout',
-  templateUrl: './layout.component.html',
+    selector: 'bia-layout',
+    templateUrl: './layout.component.html',
+    standalone: false
 })
 export class LayoutComponent implements OnInit {
   @HostBinding('class.bia-flex') classicStyle = false;

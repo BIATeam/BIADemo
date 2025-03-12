@@ -4,12 +4,12 @@ import { CrudItemFormComponent } from 'src/app/shared/bia-shared/feature-templat
 import { Plane } from '../../model/plane';
 
 @Component({
-  selector: 'app-plane-form',
-  templateUrl:
-    '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.html',
-  styleUrls: [
-    '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
-  ],
+    selector: 'app-plane-form',
+    templateUrl: '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.html',
+    styleUrls: [
+        '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
+    ],
+    standalone: false
 })
 export class PlaneFormComponent extends CrudItemFormComponent<Plane> {
   constructor(

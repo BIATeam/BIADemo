@@ -24,11 +24,12 @@ import { TableHelperService } from '../../../services/table-helper.service';
 import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.component';
 
 @Component({
-  selector: 'bia-table-filter',
-  templateUrl: './bia-table-filter.component.html',
-  styleUrls: ['./bia-table-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
-  encapsulation: ViewEncapsulation.None,
+    selector: 'bia-table-filter',
+    templateUrl: './bia-table-filter.component.html',
+    styleUrls: ['./bia-table-filter.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Default,
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class BiaTableFilterComponent<CrudItem>
   extends BiaFieldBaseComponent<CrudItem>

@@ -9,9 +9,10 @@ import { SiteService } from '../../services/site.service';
 import { siteCRUDConfiguration } from '../../site.constants';
 
 @Component({
-  selector: 'app-sites-index',
-  templateUrl: './sites-index.component.html',
-  styleUrls: ['./sites-index.component.scss'],
+    selector: 'app-sites-index',
+    templateUrl: './sites-index.component.html',
+    styleUrls: ['./sites-index.component.scss'],
+    standalone: false
 })
 export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
   // Custo for teams

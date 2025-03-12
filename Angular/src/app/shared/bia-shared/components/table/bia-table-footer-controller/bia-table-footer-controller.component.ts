@@ -11,9 +11,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { SelectItem } from 'primeng/api';
 
 @Component({
-  selector: 'bia-table-footer-controller',
-  templateUrl: './bia-table-footer-controller.component.html',
-  styleUrls: ['./bia-table-footer-controller.component.scss'],
+    selector: 'bia-table-footer-controller',
+    templateUrl: './bia-table-footer-controller.component.html',
+    styleUrls: ['./bia-table-footer-controller.component.scss'],
+    standalone: false
 })
 export class BiaTableFooterControllerComponent implements OnInit, OnChanges {
   @Input() pageSizeOptions: number[] = [10, 25, 50, 100];

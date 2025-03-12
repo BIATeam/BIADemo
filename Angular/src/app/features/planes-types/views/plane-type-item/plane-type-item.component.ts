@@ -8,12 +8,12 @@ import { PlaneType } from '../../model/plane-type';
 import { PlaneTypeService } from '../../services/plane-type.service';
 
 @Component({
-  selector: 'app-planes-types-item',
-  templateUrl:
-    '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
-  styleUrls: [
-    '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
-  ],
+    selector: 'app-planes-types-item',
+    templateUrl: '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
+    styleUrls: [
+        '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
+    ],
+    standalone: false
 })
 export class PlaneTypeItemComponent
   extends CrudItemItemComponent<PlaneType>

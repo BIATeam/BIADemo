@@ -5,8 +5,9 @@ import { AircraftMaintenanceCompany } from '../../model/aircraft-maintenance-com
 import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maintenance-company.service';
 
 @Component({
-  selector: 'app-aircraft-maintenance-company-new',
-  templateUrl: './aircraft-maintenance-company-new.component.html',
+    selector: 'app-aircraft-maintenance-company-new',
+    templateUrl: './aircraft-maintenance-company-new.component.html',
+    standalone: false
 })
 export class AircraftMaintenanceCompanyNewComponent extends CrudItemNewComponent<AircraftMaintenanceCompany> {
   constructor(

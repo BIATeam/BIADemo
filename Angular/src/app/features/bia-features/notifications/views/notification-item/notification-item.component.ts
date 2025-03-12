@@ -11,9 +11,10 @@ import { NotificationService } from '../../services/notification.service';
 import { FeatureNotificationsStore } from '../../store/notification.state';
 
 @Component({
-  selector: 'bia-notifications-item',
-  templateUrl: './notification-item.component.html',
-  styleUrls: ['./notification-item.component.scss'],
+    selector: 'bia-notifications-item',
+    templateUrl: './notification-item.component.html',
+    styleUrls: ['./notification-item.component.scss'],
+    standalone: false
 })
 export class NotificationItemComponent implements OnInit, OnDestroy {
   notification$: Observable<Notification>;
