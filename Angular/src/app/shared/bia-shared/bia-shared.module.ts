@@ -63,6 +63,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 // import { PaginatorModule } from 'primeng/paginator';
 // import { PanelModule } from 'primeng/panel';
 // import { PanelMenuModule } from 'primeng/panelmenu';
+import { PopoverModule } from 'primeng/popover';
 // import { ProgressBarModule } from 'primeng/progressbar';
 import { RadioButtonModule } from 'primeng/radiobutton';
 // import { ScrollPanelModule } from 'primeng/scrollpanel';
@@ -176,6 +177,7 @@ const PRIMENG_MODULES = [
   //  PaginatorModule,
   //  PanelModule,
   //  PanelMenuModule,
+  PopoverModule,
   //  ProgressBarModule,
   RadioButtonModule,
   //  ScrollPanelModule,
