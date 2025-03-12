@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -8,12 +8,14 @@ import { AppState } from 'src/app/store/state';
 import { Plane } from '../../model/plane';
 import { PlaneService } from '../../services/plane.service';
 import { getCurrentPlane } from '../../store/plane.state';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
     selector: 'app-planes-item',
     templateUrl: './plane-item.component.html',
     styleUrls: ['./plane-item.component.scss'],
-    standalone: false
+    imports: [RouterOutlet, NgIf, BiaSharedModule, AsyncPipe]
 })
 export class PlaneItemComponent implements OnInit, OnDestroy {
   plane$: Observable<Plane>;

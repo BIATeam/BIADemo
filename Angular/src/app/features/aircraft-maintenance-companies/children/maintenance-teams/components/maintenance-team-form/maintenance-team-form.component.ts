@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CrudItemFormComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component';
 import { MaintenanceTeam } from '../../model/maintenance-team';
+import { BiaSharedModule } from '../../../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
     selector: 'app-maintenance-team-form',
@@ -8,6 +9,6 @@ import { MaintenanceTeam } from '../../model/maintenance-team';
     styleUrls: [
         '../../../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
     ],
-    standalone: false
+    imports: [BiaSharedModule]
 })
 export class MaintenanceTeamFormComponent extends CrudItemFormComponent<MaintenanceTeam> {}

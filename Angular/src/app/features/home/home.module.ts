@@ -13,7 +13,6 @@ export const HOME_ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [HomeIndexComponent],
-  imports: [SharedModule, TranslateModule.forChild(), RouterModule],
+    imports: [SharedModule, TranslateModule.forChild(), RouterModule, HomeIndexComponent],
 })
 export class HomeModule {}

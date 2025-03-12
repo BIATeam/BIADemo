@@ -116,28 +116,21 @@ export const ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    AircraftMaintenanceCompanyItemComponent,
-    AircraftMaintenanceCompaniesIndexComponent,
-    // [Calc] : NOT used for calc (3 lines).
-    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-    AircraftMaintenanceCompanyFormComponent,
-    AircraftMaintenanceCompanyNewComponent,
-    AircraftMaintenanceCompanyEditComponent,
-    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-    AircraftMaintenanceCompanyTableComponent,
-  ],
-  imports: [
-    SharedModule,
-    CrudItemModule,
-    RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(
-      aircraftMaintenanceCompanyCRUDConfiguration.storeKey,
-      FeatureAircraftMaintenanceCompaniesStore.reducers
-    ),
-    EffectsModule.forFeature([AircraftMaintenanceCompaniesEffects]),
-    // TODO after creation of CRUD Team AircraftMaintenanceCompany : select the optioDto dommain module required for link
-    // Domain Modules:
-  ],
+    imports: [
+        SharedModule,
+        CrudItemModule,
+        RouterModule.forChild(ROUTES),
+        StoreModule.forFeature(aircraftMaintenanceCompanyCRUDConfiguration.storeKey, FeatureAircraftMaintenanceCompaniesStore.reducers),
+        EffectsModule.forFeature([AircraftMaintenanceCompaniesEffects]),
+        AircraftMaintenanceCompanyItemComponent,
+        AircraftMaintenanceCompaniesIndexComponent,
+        // [Calc] : NOT used for calc (3 lines).
+        // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
+        AircraftMaintenanceCompanyFormComponent,
+        AircraftMaintenanceCompanyNewComponent,
+        AircraftMaintenanceCompanyEditComponent,
+        // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
+        AircraftMaintenanceCompanyTableComponent,
+    ],
 })
 export class AircraftMaintenanceCompanyModule {}

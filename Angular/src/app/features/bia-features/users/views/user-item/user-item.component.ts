@@ -2,6 +2,9 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { CrudItemItemComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component';
 import { User } from '../../model/user';
 import { UserService } from '../../services/user.service';
+import { RouterOutlet } from '@angular/router';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { BiaSharedModule } from '../../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
     selector: 'bia-users-item',
@@ -9,7 +12,7 @@ import { UserService } from '../../services/user.service';
     styleUrls: [
         '../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
     ],
-    standalone: false
+    imports: [RouterOutlet, NgIf, BiaSharedModule, AsyncPipe]
 })
 export class UserItemComponent
   extends CrudItemItemComponent<User>

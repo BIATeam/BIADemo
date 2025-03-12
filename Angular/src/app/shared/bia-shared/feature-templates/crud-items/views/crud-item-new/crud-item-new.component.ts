@@ -8,12 +8,14 @@ import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { AppState } from 'src/app/store/state';
 import { CrudConfig } from '../../model/crud-config';
 import { CrudItemSingleService } from '../../services/crud-item-single.service';
+import { CrudItemFormComponent } from '../../components/crud-item-form/crud-item-form.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'bia-crud-item-new',
     templateUrl: './crud-item-new.component.html',
     styleUrls: ['./crud-item-new.component.scss'],
-    standalone: false
+    imports: [CrudItemFormComponent, AsyncPipe]
 })
 export class CrudItemNewComponent<CrudItem extends BaseDto>
   implements OnInit, OnDestroy

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CrudItemFormComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component';
 import { Airport } from '../../model/airport';
+import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
     selector: 'app-airport-form',
@@ -8,6 +9,6 @@ import { Airport } from '../../model/airport';
     styleUrls: [
         '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
     ],
-    standalone: false
+    imports: [BiaSharedModule]
 })
 export class AirportFormComponent extends CrudItemFormComponent<Airport> {}

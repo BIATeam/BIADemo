@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CrudItemFormComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component';
 import { PlaneType } from '../../model/plane-type';
+import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
     selector: 'app-plane-type-form',
@@ -8,6 +9,6 @@ import { PlaneType } from '../../model/plane-type';
     styleUrls: [
         '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
     ],
-    standalone: false
+    imports: [BiaSharedModule]
 })
 export class PlaneTypeFormComponent extends CrudItemFormComponent<PlaneType> {}

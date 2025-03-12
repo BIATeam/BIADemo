@@ -1,4 +1,4 @@
-import { Location } from '@angular/common';
+import { Location, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -15,6 +15,11 @@ import {
 import { Router } from '@angular/router';
 import { Confirmation, ConfirmationService, PrimeTemplate } from 'primeng/api';
 import { BiaDialogService } from 'src/app/core/bia-core/services/bia-dialog.service';
+import { Button, ButtonDirective } from 'primeng/button';
+import { Tooltip } from 'primeng/tooltip';
+import { Divider } from 'primeng/divider';
+import { ConfirmDialog } from 'primeng/confirmdialog';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'bia-table-header',
@@ -22,7 +27,7 @@ import { BiaDialogService } from 'src/app/core/bia-core/services/bia-dialog.serv
     styleUrls: ['./bia-table-header.component.scss'],
     providers: [ConfirmationService],
     changeDetection: ChangeDetectionStrategy.Default,
-    standalone: false
+    imports: [NgIf, Button, Tooltip, ButtonDirective, Divider, NgTemplateOutlet, ConfirmDialog, TranslateModule]
 })
 export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   @Input() hasFilter = false;

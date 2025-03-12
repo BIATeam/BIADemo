@@ -6,6 +6,9 @@ import { CrudItemItemComponent } from 'src/app/shared/bia-shared/feature-templat
 import { AppState } from 'src/app/store/state';
 import { PlaneType } from '../../model/plane-type';
 import { PlaneTypeService } from '../../services/plane-type.service';
+import { RouterOutlet } from '@angular/router';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
     selector: 'app-planes-types-item',
@@ -13,7 +16,7 @@ import { PlaneTypeService } from '../../services/plane-type.service';
     styleUrls: [
         '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
     ],
-    standalone: false
+    imports: [RouterOutlet, NgIf, BiaSharedModule, AsyncPipe]
 })
 export class PlaneTypeItemComponent
   extends CrudItemItemComponent<PlaneType>

@@ -116,32 +116,27 @@ export const ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    UserItemComponent,
-    UsersIndexComponent,
-    // [Calc] : NOT used for calc (3 lines).
-    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-    UserFormComponent,
-    UserNewComponent,
-    UserEditComponent,
-    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-    UserTableComponent,
-    UserImportComponent,
-  ],
-  imports: [
-    SharedModule,
-    CrudItemModule,
-    CrudItemImportModule,
-    RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(
-      userCRUDConfiguration.storeKey,
-      FeatureUsersStore.reducers
-    ),
-    EffectsModule.forFeature([UsersEffects]),
-    // TODO after creation of CRUD User : select the optioDto dommain module required for link
-    // Domain Modules:
-    RoleOptionModule,
-    UserFromDirectoryModule, // required for the add user from directory feature
-  ],
+    imports: [
+        SharedModule,
+        CrudItemModule,
+        CrudItemImportModule,
+        RouterModule.forChild(ROUTES),
+        StoreModule.forFeature(userCRUDConfiguration.storeKey, FeatureUsersStore.reducers),
+        EffectsModule.forFeature([UsersEffects]),
+        // TODO after creation of CRUD User : select the optioDto dommain module required for link
+        // Domain Modules:
+        RoleOptionModule,
+        UserFromDirectoryModule,
+        UserItemComponent,
+        UsersIndexComponent,
+        // [Calc] : NOT used for calc (3 lines).
+        // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
+        UserFormComponent,
+        UserNewComponent,
+        UserEditComponent,
+        // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
+        UserTableComponent,
+        UserImportComponent,
+    ],
 })
 export class UserModule {}

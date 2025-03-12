@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/services/layout.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-home-index',
     templateUrl: './home-index.component.html',
     styleUrls: ['./home-index.component.scss'],
-    standalone: false
+    imports: [TranslateModule]
 })
 export class HomeIndexComponent implements OnInit, OnDestroy {
   constructor(private layoutService: BiaLayoutService) {}

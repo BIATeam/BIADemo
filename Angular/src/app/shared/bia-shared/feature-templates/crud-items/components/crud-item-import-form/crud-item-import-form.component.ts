@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgIf, NgClass } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -6,11 +6,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FileUpload } from 'primeng/fileupload';
 import { AppSettings } from 'src/app/domains/bia-domains/app-settings/model/app-settings';
 import {
@@ -22,6 +18,14 @@ import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
 import { clone } from 'src/app/shared/bia-shared/utils';
 import { CrudConfig } from '../../model/crud-config';
 import { ImportParam } from '../../services/crud-item-import.service';
+import { ButtonDirective } from 'primeng/button';
+import { Select } from 'primeng/select';
+import { Checkbox } from 'primeng/checkbox';
+import { Accordion, AccordionPanel, AccordionHeader, AccordionContent } from 'primeng/accordion';
+import { Ripple } from 'primeng/ripple';
+import { BiaTableComponent } from '../../../../components/table/bia-table/bia-table.component';
+import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface FormatExample {
   format: string;
@@ -32,7 +36,7 @@ interface FormatExample {
     selector: 'bia-crud-item-import-form',
     templateUrl: './crud-item-import-form.component.html',
     styleUrls: ['./crud-item-import-form.component.scss'],
-    standalone: false
+    imports: [FormsModule, ReactiveFormsModule, FileUpload, ButtonDirective, NgIf, Select, Checkbox, Accordion, AccordionPanel, Ripple, AccordionHeader, AccordionContent, BiaTableComponent, NgClass, SpinnerComponent, TranslateModule]
 })
 export class CrudItemImportFormComponent<TDto extends { id: number }> {
   @ViewChild('fileUpload') fileUpload: FileUpload;

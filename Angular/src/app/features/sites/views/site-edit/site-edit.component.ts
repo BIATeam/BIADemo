@@ -3,11 +3,14 @@ import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templat
 import { Site } from '../../model/site';
 import { SiteService } from '../../services/site.service';
 import { siteCRUDConfiguration } from '../../site.constants';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { SiteFormComponent } from '../../components/site-form/site-form.component';
+import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
     selector: 'app-site-edit',
     templateUrl: './site-edit.component.html',
-    standalone: false
+    imports: [NgIf, SiteFormComponent, BiaSharedModule, AsyncPipe]
 })
 export class SiteEditComponent extends CrudItemEditComponent<Site> {
   constructor(

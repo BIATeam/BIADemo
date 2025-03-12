@@ -6,6 +6,7 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import {
   AfterViewChecked,
   Component,
@@ -16,36 +17,68 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import {
+  NavigationEnd,
+  Router,
+  RouterLink,
+  RouterLinkActive,
+} from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { DomHandler } from 'primeng/dom';
+import { Ripple } from 'primeng/ripple';
+import { Tooltip } from 'primeng/tooltip';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { BiaLayoutService } from '../../services/layout.service';
 import { MenuService } from '../../services/menu.service';
+import { BiaUltimaLayoutModule } from '../ultima-layout.module';
 
 @Component({
-    // eslint-disable-next-line @angular-eslint/component-selector
-    selector: '[bia-ultima-menu-item]',
-    templateUrl: './ultima-menu-item.component.html',
-    animations: [
-        trigger('children', [
-            state('collapsed', style({
-                height: '0',
-            })),
-            state('expanded', style({
-                height: '*',
-            })),
-            state('hidden', style({
-                display: 'none',
-            })),
-            state('visible', style({
-                display: 'block',
-            })),
-            transition('collapsed <=> expanded', animate('400ms cubic-bezier(0.86, 0, 0.07, 1)')),
-        ]),
-    ],
-    standalone: false
+  // eslint-disable-next-line @angular-eslint/component-selector
+  selector: '[bia-ultima-menu-item]',
+  templateUrl: './ultima-menu-item.component.html',
+  animations: [
+    trigger('children', [
+      state(
+        'collapsed',
+        style({
+          height: '0',
+        })
+      ),
+      state(
+        'expanded',
+        style({
+          height: '*',
+        })
+      ),
+      state(
+        'hidden',
+        style({
+          display: 'none',
+        })
+      ),
+      state(
+        'visible',
+        style({
+          display: 'block',
+        })
+      ),
+      transition(
+        'collapsed <=> expanded',
+        animate('400ms cubic-bezier(0.86, 0, 0.07, 1)')
+      ),
+    ]),
+  ],
+  imports: [
+    NgIf,
+    RouterLinkActive,
+    Ripple,
+    NgClass,
+    RouterLink,
+    Tooltip,
+    NgFor,
+    BiaUltimaLayoutModule,
+  ],
 })
 export class BiaUltimaMenuItemComponent
   implements OnInit, OnDestroy, AfterViewChecked

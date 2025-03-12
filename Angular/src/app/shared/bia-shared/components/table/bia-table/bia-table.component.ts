@@ -12,9 +12,9 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { PrimeTemplate, TableState } from 'primeng/api';
-import { Table, TableLazyLoadEvent } from 'primeng/table';
+import { Table, TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { Observable, of, timer } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import {
@@ -30,6 +30,12 @@ import { BiaTableState } from '../../../model/bia-table-state';
 import { KeyValuePair } from '../../../model/key-value-pair';
 import { TableHelperService } from '../../../services/table-helper.service';
 import { DictOptionDto } from './dict-option-dto';
+import { NgIf, NgFor, NgSwitch, NgClass, NgTemplateOutlet, NgStyle, AsyncPipe } from '@angular/common';
+import { Tooltip } from 'primeng/tooltip';
+import { BiaTableFilterComponent } from '../bia-table-filter/bia-table-filter.component';
+import { BiaTableOutputComponent } from '../bia-table-output/bia-table-output.component';
+import { Skeleton } from 'primeng/skeleton';
+import { BiaTableFooterControllerComponent } from '../bia-table-footer-controller/bia-table-footer-controller.component';
 
 const objectsEqual = (o1: any, o2: any) =>
   Object.keys(o1).length === Object.keys(o2).length &&
@@ -45,7 +51,7 @@ const arraysEqual = (a1: any, a2: any) =>
     selector: 'bia-table',
     templateUrl: './bia-table.component.html',
     styleUrls: ['./bia-table.component.scss'],
-    standalone: false
+    imports: [NgIf, TableModule, PrimeTemplate, NgFor, Tooltip, NgSwitch, BiaTableFilterComponent, NgClass, BiaTableOutputComponent, NgTemplateOutlet, Skeleton, NgStyle, BiaTableFooterControllerComponent, AsyncPipe, TranslateModule]
 })
 export class BiaTableComponent<TDto extends { id: number }>
   implements OnChanges, AfterContentInit, AfterViewInit

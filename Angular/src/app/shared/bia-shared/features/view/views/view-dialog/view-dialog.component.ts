@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, SharedModule } from 'primeng/api';
 import { Dialog } from 'primeng/dialog';
 import { Observable, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -32,13 +32,24 @@ import {
   updateTeamView,
   updateUserView,
 } from '../../store/views-actions';
+import { NgIf, AsyncPipe, UpperCasePipe } from '@angular/common';
+import { Tabs, TabList, Tab, TabPanels, TabPanel } from 'primeng/tabs';
+import { Ripple } from 'primeng/ripple';
+import { ViewFormComponent } from '../../components/view-form/view-form.component';
+import { ViewUserTableComponent } from '../../components/view-user-table/view-user-table.component';
+import { Select } from 'primeng/select';
+import { FormsModule } from '@angular/forms';
+import { ViewTeamTableComponent } from '../../components/view-team-table/view-team-table.component';
+import { ButtonDirective } from 'primeng/button';
+import { ConfirmDialog } from 'primeng/confirmdialog';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'bia-view-dialog',
     templateUrl: './view-dialog.component.html',
     styleUrls: ['./view-dialog.component.scss'],
     providers: [ConfirmationService],
-    standalone: false
+    imports: [Dialog, SharedModule, NgIf, Tabs, TabList, Ripple, Tab, TabPanels, TabPanel, ViewFormComponent, ViewUserTableComponent, Select, FormsModule, ViewTeamTableComponent, ButtonDirective, ConfirmDialog, AsyncPipe, UpperCasePipe, TranslateModule]
 })
 export class ViewDialogComponent implements OnInit, OnDestroy {
   display = false;

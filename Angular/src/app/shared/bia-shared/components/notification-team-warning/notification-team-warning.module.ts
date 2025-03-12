@@ -6,16 +6,13 @@ import { NotificationTeamWarningComponent } from './notification-team-warning.co
 import { TeamListPipe } from './team-list/team-list.pipe';
 
 @NgModule({
-  declarations: [
-    NotificationTeamWarningComponent,
-    IsNotCurrentTeamPipe,
-    TeamListPipe,
-  ],
-  exports: [
-    NotificationTeamWarningComponent,
-    IsNotCurrentTeamPipe,
-    TeamListPipe,
-  ],
-  imports: [CommonModule, TranslateModule],
+    exports: [
+        NotificationTeamWarningComponent,
+        IsNotCurrentTeamPipe,
+        TeamListPipe,
+    ],
+    imports: [CommonModule, TranslateModule, NotificationTeamWarningComponent,
+        IsNotCurrentTeamPipe,
+        TeamListPipe],
 })
 export class NotificationTeamWarningModule {}

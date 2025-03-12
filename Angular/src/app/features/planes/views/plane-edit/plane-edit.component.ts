@@ -10,11 +10,14 @@ import { Permission } from 'src/app/shared/permission';
 import { Plane } from '../../model/plane';
 import { planeCRUDConfiguration } from '../../plane.constants';
 import { PlaneService } from '../../services/plane.service';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { PlaneFormComponent } from '../../components/plane-form/plane-form.component';
+import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
     selector: 'app-plane-edit',
     templateUrl: './plane-edit.component.html',
-    standalone: false
+    imports: [NgIf, PlaneFormComponent, BiaSharedModule, AsyncPipe]
 })
 export class PlaneEditComponent extends CrudItemEditComponent<Plane> {
   constructor(

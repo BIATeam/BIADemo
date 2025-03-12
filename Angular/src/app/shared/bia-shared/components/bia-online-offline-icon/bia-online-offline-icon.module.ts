@@ -5,8 +5,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { BiaOnlineOfflineIconComponent } from './bia-online-offline-icon.component';
 
 @NgModule({
-  declarations: [BiaOnlineOfflineIconComponent],
-  exports: [BiaOnlineOfflineIconComponent],
-  imports: [CommonModule, TranslateModule, TooltipModule],
+    exports: [BiaOnlineOfflineIconComponent],
+    imports: [CommonModule, TranslateModule, TooltipModule, BiaOnlineOfflineIconComponent],
 })
 export class BiaOnlineOfflineIconModule {}

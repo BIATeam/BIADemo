@@ -13,13 +13,18 @@ import { filter } from 'rxjs';
 // End BIADemo
 // BIAToolKit - Begin Option
 import { EngineOptionsService } from '../../services/engine-options.service';
+import { NgClass, NgIf, AsyncPipe } from '@angular/common';
+import { BiaSharedModule } from '../../../../../../shared/bia-shared/bia-shared.module';
+import { PrimeTemplate } from 'primeng/api';
+import { ButtonDirective } from 'primeng/button';
+import { TranslateModule } from '@ngx-translate/core';
 // BIAToolKit - End Option
 
 @Component({
     selector: 'app-engines-index',
     templateUrl: './engines-index.component.html',
     styleUrls: ['./engines-index.component.scss'],
-    standalone: false
+    imports: [NgClass, BiaSharedModule, PrimeTemplate, NgIf, ButtonDirective, EngineTableComponent, AsyncPipe, TranslateModule]
 })
 export class EnginesIndexComponent
   extends CrudItemsIndexComponent<Engine>

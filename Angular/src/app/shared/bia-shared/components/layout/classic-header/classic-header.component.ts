@@ -9,10 +9,10 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
-import { MegaMenuItem, MenuItem, ToastMessageOptions } from 'primeng/api';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { MegaMenuItem, MenuItem, ToastMessageOptions, PrimeTemplate } from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -30,13 +30,23 @@ import { AppState } from 'src/app/store/state';
 import { allEnvironments } from 'src/environments/all-environments';
 import { BiaNavigation } from '../../../model/bia-navigation';
 import { BiaLayoutService } from '../services/layout.service';
+import { NgFor, NgIf, NgClass, NgSwitch, NgSwitchCase, NgSwitchDefault, AsyncPipe } from '@angular/common';
+import { IeWarningComponent } from '../ie-warning/ie-warning.component';
+import { BiaTeamSelectorComponent } from '../../bia-team-selector/bia-team-selector.component';
+import { MegaMenu } from 'primeng/megamenu';
+import { Tooltip } from 'primeng/tooltip';
+import { BiaOnlineOfflineIconComponent } from '../../bia-online-offline-icon/bia-online-offline-icon.component';
+import { CdkPortalOutlet } from '@angular/cdk/portal';
+import { Menubar } from 'primeng/menubar';
+import { ButtonDirective } from 'primeng/button';
+import { NotificationTeamWarningComponent } from '../../notification-team-warning/notification-team-warning.component';
 
 @Component({
     selector: 'bia-classic-header',
     templateUrl: './classic-header.component.html',
     styleUrls: ['./classic-header.component.scss'],
     changeDetection: ChangeDetectionStrategy.Default,
-    standalone: false
+    imports: [NgFor, NgIf, IeWarningComponent, BiaTeamSelectorComponent, MegaMenu, Tooltip, BiaOnlineOfflineIconComponent, NgClass, CdkPortalOutlet, Menubar, PrimeTemplate, RouterLink, Toast, NgSwitch, NgSwitchCase, NgSwitchDefault, ButtonDirective, NotificationTeamWarningComponent, AsyncPipe, TranslateModule]
 })
 export class ClassicHeaderComponent implements OnInit, OnDestroy {
   @Input()

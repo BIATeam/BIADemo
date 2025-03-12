@@ -9,12 +9,17 @@ import { UserFilter } from '../../model/user-filter';
 import { UserFromDirectory } from '../../model/user-from-directory';
 import { getAllUsersFromDirectory } from '../../store/user-from-directory.state';
 import { FeatureUsersFromDirectoryActions } from '../../store/users-from-directory-actions';
+import { Dialog } from 'primeng/dialog';
+import { SharedModule } from 'primeng/api';
+import { UserFromLdapFormComponent } from '../../components/user-from-directory-form/user-from-directory-form.component';
+import { AsyncPipe } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'bia-user-add-from-directory-dialog',
     templateUrl: './user-add-from-directory-dialog.component.html',
     styleUrls: ['./user-add-from-directory-dialog.component.scss'],
-    standalone: false
+    imports: [Dialog, SharedModule, UserFromLdapFormComponent, AsyncPipe, TranslateModule]
 })
 export class UserAddFromLdapComponent implements OnInit {
   _display = false;

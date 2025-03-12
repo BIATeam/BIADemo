@@ -8,12 +8,16 @@ import { aircraftMaintenanceCompanyCRUDConfiguration } from '../../aircraft-main
 import { AircraftMaintenanceCompanyTableComponent } from '../../components/aircraft-maintenance-company-table/aircraft-maintenance-company-table.component';
 import { AircraftMaintenanceCompany } from '../../model/aircraft-maintenance-company';
 import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maintenance-company.service';
+import { NgIf, NgClass, AsyncPipe } from '@angular/common';
+import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
+import { PrimeTemplate } from 'primeng/api';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-aircraft-maintenance-companies-index',
     templateUrl: './aircraft-maintenance-companies-index.component.html',
     styleUrls: ['./aircraft-maintenance-companies-index.component.scss'],
-    standalone: false
+    imports: [NgIf, BiaSharedModule, NgClass, PrimeTemplate, AircraftMaintenanceCompanyTableComponent, AsyncPipe, TranslateModule]
 })
 export class AircraftMaintenanceCompaniesIndexComponent extends CrudItemsIndexComponent<AircraftMaintenanceCompany> {
   // Custo for teams

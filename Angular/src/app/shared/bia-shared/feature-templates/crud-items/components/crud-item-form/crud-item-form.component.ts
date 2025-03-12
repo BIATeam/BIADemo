@@ -14,13 +14,14 @@ import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { BiaFieldConfig } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { BiaFormLayoutConfig } from 'src/app/shared/bia-shared/model/bia-form-layout-config';
 import { FormReadOnlyMode } from '../../model/crud-config';
+import { BiaFormComponent as BiaFormComponent_1 } from '../../../../components/form/bia-form/bia-form.component';
 
 @Component({
     selector: 'bia-crud-item-form',
     templateUrl: './crud-item-form.component.html',
     styleUrls: ['./crud-item-form.component.scss'],
     changeDetection: ChangeDetectionStrategy.Default,
-    standalone: false
+    imports: [BiaFormComponent_1]
 })
 export class CrudItemFormComponent<CrudItem extends BaseDto> {
   @Input() crudItem?: CrudItem;

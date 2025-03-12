@@ -3,6 +3,11 @@ import { SiteService } from 'src/app/features/sites/services/site.service';
 import { MembersIndexComponent } from 'src/app/shared/bia-shared/feature-templates/members/views/members-index/members-index.component';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { Permission } from 'src/app/shared/permission';
+import { NgClass, NgIf, AsyncPipe } from '@angular/common';
+import { BiaSharedModule } from '../../../../../../shared/bia-shared/bia-shared.module';
+import { PrimeTemplate } from 'primeng/api';
+import { MemberModule } from '../../../../../../shared/bia-shared/feature-templates/members/member.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-site-members-index',
@@ -10,7 +15,7 @@ import { Permission } from 'src/app/shared/permission';
     styleUrls: [
         '../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component.scss',
     ],
-    standalone: false
+    imports: [NgClass, BiaSharedModule, PrimeTemplate, NgIf, MemberModule, AsyncPipe, TranslateModule]
 })
 export class SiteMembersIndexComponent
   extends MembersIndexComponent

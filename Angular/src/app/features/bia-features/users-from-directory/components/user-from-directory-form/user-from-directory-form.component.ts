@@ -7,22 +7,24 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
 import { LdapDomain } from 'src/app/domains/bia-domains/ldap-domain/model/ldap-domain';
 import { UserFilter } from '../../model/user-filter';
 import { UserFromDirectory } from '../../model/user-from-directory';
+import { Fluid } from 'primeng/fluid';
+import { NgIf } from '@angular/common';
+import { Select } from 'primeng/select';
+import { AutoComplete } from 'primeng/autocomplete';
+import { ButtonDirective } from 'primeng/button';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'bia-user-from-directory-form',
     templateUrl: './user-from-directory-form.component.html',
     styleUrls: ['./user-from-directory-form.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [FormsModule, ReactiveFormsModule, Fluid, NgIf, Select, AutoComplete, ButtonDirective, TranslateModule]
 })
 export class UserFromLdapFormComponent implements OnChanges {
   @Output() searchUsers = new EventEmitter<UserFilter>();

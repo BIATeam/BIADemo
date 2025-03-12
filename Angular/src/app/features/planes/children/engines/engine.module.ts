@@ -98,31 +98,26 @@ export const ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    EngineItemComponent,
-    EnginesIndexComponent,
-    // [Calc] : NOT used for calc (3 lines).
-    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-    EngineFormComponent,
-    EngineNewComponent,
-    EngineEditComponent,
-    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-    EngineTableComponent,
-    EngineImportComponent,
-  ],
-  imports: [
-    SharedModule,
-    CrudItemModule,
-    CrudItemImportModule,
-    RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(
-      engineCRUDConfiguration.storeKey,
-      FeatureEnginesStore.reducers
-    ),
-    EffectsModule.forFeature([EnginesEffects]),
-    // TODO after creation of CRUD Engine : select the optioDto dommain module required for link
-    // Domain Modules:
-    PartOptionModule,
-  ],
+    imports: [
+        SharedModule,
+        CrudItemModule,
+        CrudItemImportModule,
+        RouterModule.forChild(ROUTES),
+        StoreModule.forFeature(engineCRUDConfiguration.storeKey, FeatureEnginesStore.reducers),
+        EffectsModule.forFeature([EnginesEffects]),
+        // TODO after creation of CRUD Engine : select the optioDto dommain module required for link
+        // Domain Modules:
+        PartOptionModule,
+        EngineItemComponent,
+        EnginesIndexComponent,
+        // [Calc] : NOT used for calc (3 lines).
+        // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
+        EngineFormComponent,
+        EngineNewComponent,
+        EngineEditComponent,
+        // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
+        EngineTableComponent,
+        EngineImportComponent,
+    ],
 })
 export class EngineModule {}

@@ -8,8 +8,8 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { TranslateService } from '@ngx-translate/core';
-import { MenuItem } from 'primeng/api';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { MenuItem, SharedModule } from 'primeng/api';
 import { Observable, Subscription, catchError, map, take, tap } from 'rxjs';
 import { BiaEnvironmentService } from 'src/app/core/bia-core/services/bia-environment.service';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
@@ -17,6 +17,11 @@ import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-transl
 import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
 import { THEME_DARK, THEME_LIGHT } from 'src/app/shared/constants';
 import { BiaLayoutService } from '../../services/layout.service';
+import { Button } from 'primeng/button';
+import { Tooltip } from 'primeng/tooltip';
+import { NgIf } from '@angular/common';
+import { Dialog } from 'primeng/dialog';
+import { BiaUltimaConfigComponent } from '../config/ultima-config.component';
 
 @Component({
     selector: 'bia-ultima-menu-profile',
@@ -42,7 +47,7 @@ import { BiaLayoutService } from '../../services/layout.service';
             ]),
         ]),
     ],
-    standalone: false
+    imports: [Button, Tooltip, NgIf, Dialog, SharedModule, BiaUltimaConfigComponent, TranslateModule]
 })
 export class BiaUltimaMenuProfileComponent implements OnDestroy {
   @HostBinding('class.layout-menu-profile-no-fill') get noFill() {

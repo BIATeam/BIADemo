@@ -5,11 +5,14 @@ import { airportCRUDConfiguration } from '../../airport.constants';
 import { Airport } from '../../model/airport';
 import { AirportSignalRService } from '../../services/airport-signalr.service';
 import { AirportService } from '../../services/airport.service';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { AirportFormComponent } from '../../components/airport-form/airport-form.component';
+import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
     selector: 'app-airport-edit',
     templateUrl: './airport-edit.component.html',
-    standalone: false
+    imports: [NgIf, AirportFormComponent, BiaSharedModule, AsyncPipe]
 })
 export class AirportEditComponent
   extends CrudItemEditComponent<Airport>

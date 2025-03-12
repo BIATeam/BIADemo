@@ -10,12 +10,18 @@ import { MaintenanceTeam } from '../../model/maintenance-team';
 import { MaintenanceTeamOptionsService } from '../../services/maintenance-team-options.service';
 // BIAToolKit - End Option
 import { MaintenanceTeamService } from '../../services/maintenance-team.service';
+import { NgIf, NgClass, AsyncPipe } from '@angular/common';
+import { BiaSharedModule } from '../../../../../../shared/bia-shared/bia-shared.module';
+import { PrimeTemplate } from 'primeng/api';
+import { ButtonDirective } from 'primeng/button';
+import { Tooltip } from 'primeng/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-maintenance-teams-index',
     templateUrl: './maintenance-teams-index.component.html',
     styleUrls: ['./maintenance-teams-index.component.scss'],
-    standalone: false
+    imports: [NgIf, BiaSharedModule, NgClass, PrimeTemplate, ButtonDirective, Tooltip, MaintenanceTeamTableComponent, AsyncPipe, TranslateModule]
 })
 export class MaintenanceTeamsIndexComponent
   extends CrudItemsIndexComponent<MaintenanceTeam>

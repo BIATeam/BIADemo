@@ -1,10 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
-@Pipe({
-    name: 'translateField',
-    standalone: false
-})
+@Pipe({ name: 'translateField' })
 export class TranslateFieldPipe extends TranslatePipe implements PipeTransform {
   transform(
     input: any,

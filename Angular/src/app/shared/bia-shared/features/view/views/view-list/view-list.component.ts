@@ -10,8 +10,8 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
-import { FilterMetadata, SelectItemGroup } from 'primeng/api';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { FilterMetadata, SelectItemGroup, PrimeTemplate } from 'primeng/api';
 import { Subscription, combineLatest } from 'rxjs';
 import { map, skip } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -33,6 +33,10 @@ import {
   getLastViewChanged,
 } from '../../store/view.state';
 import { openViewDialog } from '../../store/views-actions';
+import { Select } from 'primeng/select';
+import { FormsModule } from '@angular/forms';
+import { NgIf } from '@angular/common';
+import { ViewDialogComponent } from '../view-dialog/view-dialog.component';
 
 const currentView = -1;
 const undefinedView = -2;
@@ -41,7 +45,7 @@ const undefinedView = -2;
     selector: 'bia-view-list',
     templateUrl: './view-list.component.html',
     styleUrls: ['./view-list.component.scss'],
-    standalone: false
+    imports: [Select, FormsModule, PrimeTemplate, NgIf, ViewDialogComponent, TranslateModule]
 })
 export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   groupedViews: SelectItemGroup[];

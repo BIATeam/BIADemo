@@ -89,28 +89,21 @@ export const ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    AirportItemComponent,
-    AirportsIndexComponent,
-    // [Calc] : NOT used for calc (3 lines).
-    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-    AirportFormComponent,
-    AirportNewComponent,
-    AirportEditComponent,
-    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-    AirportTableComponent,
-  ],
-  imports: [
-    SharedModule,
-    CrudItemModule,
-    RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(
-      airportCRUDConfiguration.storeKey,
-      FeatureAirportsStore.reducers
-    ),
-    EffectsModule.forFeature([AirportsEffects]),
-    // TODO after creation of CRUD Airport : select the optioDto dommain module required for link
-    // Domain Modules:
-  ],
+    imports: [
+        SharedModule,
+        CrudItemModule,
+        RouterModule.forChild(ROUTES),
+        StoreModule.forFeature(airportCRUDConfiguration.storeKey, FeatureAirportsStore.reducers),
+        EffectsModule.forFeature([AirportsEffects]),
+        AirportItemComponent,
+        AirportsIndexComponent,
+        // [Calc] : NOT used for calc (3 lines).
+        // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
+        AirportFormComponent,
+        AirportNewComponent,
+        AirportEditComponent,
+        // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
+        AirportTableComponent,
+    ],
 })
 export class AirportModule {}

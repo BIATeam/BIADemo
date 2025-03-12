@@ -6,12 +6,16 @@ import { airportCRUDConfiguration } from '../../airport.constants';
 import { AirportTableComponent } from '../../components/airport-table/airport-table.component';
 import { Airport } from '../../model/airport';
 import { AirportService } from '../../services/airport.service';
+import { NgClass, NgIf, AsyncPipe } from '@angular/common';
+import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
+import { PrimeTemplate } from 'primeng/api';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-airports-index',
     templateUrl: './airports-index.component.html',
     styleUrls: ['./airports-index.component.scss'],
-    standalone: false
+    imports: [NgClass, BiaSharedModule, PrimeTemplate, NgIf, AirportTableComponent, AsyncPipe, TranslateModule]
 })
 export class AirportsIndexComponent extends CrudItemsIndexComponent<Airport> {
   @ViewChild(AirportTableComponent, { static: false })

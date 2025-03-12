@@ -17,14 +17,14 @@ const USER_FROM_DIRECTORY_COMPONENTS = [
 ];
 
 @NgModule({
-  imports: [
-    SharedModule,
-    StoreModule.forFeature('users-from-directory', reducers),
-    EffectsModule.forFeature([UsersFromDirectoryEffects]),
-    UserOptionModule, // required for synchronization when user added
-    LdapDomainModule,
-  ],
-  declarations: [...USER_FROM_DIRECTORY_COMPONENTS],
-  exports: [...FEATURES],
+    imports: [
+        SharedModule,
+        StoreModule.forFeature('users-from-directory', reducers),
+        EffectsModule.forFeature([UsersFromDirectoryEffects]),
+        UserOptionModule, // required for synchronization when user added
+        LdapDomainModule,
+        ...USER_FROM_DIRECTORY_COMPONENTS,
+    ],
+    exports: [...FEATURES],
 })
 export class UserFromDirectoryModule {}

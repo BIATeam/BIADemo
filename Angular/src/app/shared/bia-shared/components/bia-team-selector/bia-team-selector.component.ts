@@ -1,4 +1,4 @@
-import { APP_BASE_HREF } from '@angular/common';
+import { APP_BASE_HREF, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -8,7 +8,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
@@ -21,13 +21,17 @@ import { allEnvironments } from 'src/environments/all-environments';
 import { AuthInfo } from '../../model/auth-info';
 import { RoleDto } from '../../model/role';
 import { BiaLayoutService } from '../layout/services/layout.service';
+import { Select } from 'primeng/select';
+import { FormsModule } from '@angular/forms';
+import { Tooltip } from 'primeng/tooltip';
+import { MultiSelect } from 'primeng/multiselect';
 
 @Component({
     selector: 'bia-team-selector',
     templateUrl: './bia-team-selector.component.html',
     styleUrls: ['./bia-team-selector.component.scss'],
     changeDetection: ChangeDetectionStrategy.Default,
-    standalone: false
+    imports: [NgIf, Select, FormsModule, Tooltip, MultiSelect, TranslateModule]
 })
 export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
   @Input() teamType: any;

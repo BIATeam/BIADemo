@@ -7,12 +7,17 @@ import { SiteTableComponent } from '../../components/site-table/site-table.compo
 import { Site } from '../../model/site';
 import { SiteService } from '../../services/site.service';
 import { siteCRUDConfiguration } from '../../site.constants';
+import { NgIf, NgClass, AsyncPipe } from '@angular/common';
+import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
+import { PrimeTemplate } from 'primeng/api';
+import { ButtonDirective } from 'primeng/button';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-sites-index',
     templateUrl: './sites-index.component.html',
     styleUrls: ['./sites-index.component.scss'],
-    standalone: false
+    imports: [NgIf, BiaSharedModule, NgClass, PrimeTemplate, ButtonDirective, SiteTableComponent, AsyncPipe, TranslateModule]
 })
 export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
   // Custo for teams

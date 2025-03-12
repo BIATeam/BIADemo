@@ -4,11 +4,14 @@ import { Permission } from 'src/app/shared/permission';
 import { Plane } from '../../model/plane';
 import { planeCRUDConfiguration } from '../../plane.constants';
 import { PlaneService } from '../../services/plane.service';
+import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
+import { CrudItemImportModule } from '../../../../shared/bia-shared/feature-templates/crud-items/crud-item-import.module';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'app-plane-import',
     templateUrl: '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
-    standalone: false
+    imports: [BiaSharedModule, CrudItemImportModule, AsyncPipe]
 })
 export class PlaneImportComponent extends CrudItemImportComponent<Plane> {
   constructor(

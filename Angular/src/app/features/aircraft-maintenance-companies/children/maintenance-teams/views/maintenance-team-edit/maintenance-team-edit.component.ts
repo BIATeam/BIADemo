@@ -6,11 +6,14 @@ import { MaintenanceTeam } from '../../model/maintenance-team';
 import { MaintenanceTeamOptionsService } from '../../services/maintenance-team-options.service';
 // BIAToolKit - End Option
 import { MaintenanceTeamService } from '../../services/maintenance-team.service';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { MaintenanceTeamFormComponent } from '../../components/maintenance-team-form/maintenance-team-form.component';
+import { BiaSharedModule } from '../../../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
     selector: 'app-maintenance-team-edit',
     templateUrl: './maintenance-team-edit.component.html',
-    standalone: false
+    imports: [NgIf, MaintenanceTeamFormComponent, BiaSharedModule, AsyncPipe]
 })
 export class MaintenanceTeamEditComponent
   extends CrudItemEditComponent<MaintenanceTeam>

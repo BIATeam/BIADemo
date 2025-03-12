@@ -7,12 +7,16 @@ import { Notification } from '../../model/notification';
 import { NotificationListItem } from '../../model/notification-list-item';
 import { notificationCRUDConfiguration } from '../../notification.constants';
 import { NotificationService } from '../../services/notification.service';
+import { NgClass, AsyncPipe } from '@angular/common';
+import { BiaSharedModule } from '../../../../../shared/bia-shared/bia-shared.module';
+import { PrimeTemplate } from 'primeng/api';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'bia-notifications-index',
     templateUrl: './notifications-index.component.html',
     styleUrls: ['./notifications-index.component.scss'],
-    standalone: false
+    imports: [NgClass, BiaSharedModule, PrimeTemplate, AsyncPipe, TranslateModule]
 })
 export class NotificationsIndexComponent
   extends CrudItemsIndexComponent<NotificationListItem, Notification>

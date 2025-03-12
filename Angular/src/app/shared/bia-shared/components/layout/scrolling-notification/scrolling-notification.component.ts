@@ -20,8 +20,7 @@ import { Component, HostBinding, Input } from '@angular/core';
                 animate(20000, style({ left: '-24rem' })),
             ]),
         ]),
-    ],
-    standalone: false
+    ]
 })
 export class BiaScrollingNotificationComponent {
   @HostBinding('class') classes = 'scrolling-notification';

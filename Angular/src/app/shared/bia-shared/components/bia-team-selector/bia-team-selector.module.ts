@@ -12,16 +12,16 @@ import { TooltipModule } from 'primeng/tooltip';
 import { BiaTeamSelectorComponent } from './bia-team-selector.component';
 
 @NgModule({
-  declarations: [BiaTeamSelectorComponent],
-  exports: [BiaTeamSelectorComponent],
-  imports: [
-    CommonModule,
-    FormsModule,
-    SelectModule,
-    MultiSelectModule,
-    TooltipModule,
-    TranslateModule,
-  ],
-  providers: [provideHttpClient(withInterceptorsFromDi())],
+    exports: [BiaTeamSelectorComponent],
+    imports: [
+        CommonModule,
+        FormsModule,
+        SelectModule,
+        MultiSelectModule,
+        TooltipModule,
+        TranslateModule,
+        BiaTeamSelectorComponent,
+    ],
+    providers: [provideHttpClient(withInterceptorsFromDi())],
 })
 export class BiaTeamSelectorModule {}

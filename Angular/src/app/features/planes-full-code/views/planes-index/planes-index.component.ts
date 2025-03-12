@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { saveAs } from 'file-saver';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable, Subscription } from 'rxjs';
@@ -45,12 +45,14 @@ import {
   getPlanesTotalCount,
 } from '../../store/plane.state';
 import { FeaturePlanesActions } from '../../store/planes-actions';
+import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
+import { NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'app-planes-index',
     templateUrl: './planes-index.component.html',
     styleUrls: ['./planes-index.component.scss'],
-    standalone: false
+    imports: [BiaSharedModule, NgIf, PlaneTableComponent, AsyncPipe, TranslateModule]
 })
 export class PlanesIndexComponent implements OnInit, OnDestroy {
   useCalcMode = useCalcMode;

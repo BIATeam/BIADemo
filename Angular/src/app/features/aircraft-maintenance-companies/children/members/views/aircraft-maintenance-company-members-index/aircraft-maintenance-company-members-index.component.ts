@@ -3,6 +3,11 @@ import { MembersIndexComponent } from 'src/app/shared/bia-shared/feature-templat
 import { TeamTypeId } from 'src/app/shared/constants';
 import { Permission } from 'src/app/shared/permission';
 import { AircraftMaintenanceCompanyService } from '../../../../services/aircraft-maintenance-company.service';
+import { NgClass, NgIf, AsyncPipe } from '@angular/common';
+import { BiaSharedModule } from '../../../../../../shared/bia-shared/bia-shared.module';
+import { PrimeTemplate } from 'primeng/api';
+import { MemberModule } from '../../../../../../shared/bia-shared/feature-templates/members/member.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-aircraft-maintenance-company-members-index',
@@ -10,7 +15,7 @@ import { AircraftMaintenanceCompanyService } from '../../../../services/aircraft
     styleUrls: [
         '../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component.scss',
     ],
-    standalone: false
+    imports: [NgClass, BiaSharedModule, PrimeTemplate, NgIf, MemberModule, AsyncPipe, TranslateModule]
 })
 export class AircraftMaintenanceCompanyMembersIndexComponent
   extends MembersIndexComponent

@@ -89,28 +89,21 @@ export const ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    PlaneTypeItemComponent,
-    PlanesTypesIndexComponent,
-    // [Calc] : NOT used for calc (3 lines).
-    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-    PlaneTypeFormComponent,
-    PlaneTypeNewComponent,
-    PlaneTypeEditComponent,
-    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-    PlaneTypeTableComponent,
-  ],
-  imports: [
-    SharedModule,
-    CrudItemModule,
-    RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(
-      planeTypeCRUDConfiguration.storeKey,
-      FeaturePlanesTypesStore.reducers
-    ),
-    EffectsModule.forFeature([PlanesTypesEffects]),
-    // TODO after creation of CRUD PlaneType : select the optioDto dommain module required for link
-    // Domain Modules:
-  ],
+    imports: [
+        SharedModule,
+        CrudItemModule,
+        RouterModule.forChild(ROUTES),
+        StoreModule.forFeature(planeTypeCRUDConfiguration.storeKey, FeaturePlanesTypesStore.reducers),
+        EffectsModule.forFeature([PlanesTypesEffects]),
+        PlaneTypeItemComponent,
+        PlanesTypesIndexComponent,
+        // [Calc] : NOT used for calc (3 lines).
+        // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
+        PlaneTypeFormComponent,
+        PlaneTypeNewComponent,
+        PlaneTypeEditComponent,
+        // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
+        PlaneTypeTableComponent,
+    ],
 })
 export class PlaneTypeModule {}

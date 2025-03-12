@@ -25,35 +25,8 @@ import { BiaOnlineOfflineIconModule } from '../../bia-online-offline-icon/bia-on
 import { BiaTeamSelectorModule } from '../../bia-team-selector/bia-team-selector.module';
 import { NotificationTeamWarningModule } from '../../notification-team-warning/notification-team-warning.module';
 import { IeWarningComponent } from '../ie-warning/ie-warning.component';
-import { BiaUltimaConfigComponent } from './config/ultima-config.component';
-import { BiaUltimaFooterComponent } from './footer/ultima-footer.component';
-import { BiaUltimaLayoutComponent } from './layout/ultima-layout.component';
-import { BiaUltimaMenuItemComponent } from './menu-item/ultima-menu-item.component';
-import { BiaUltimaMenuProfileComponent } from './menu-profile/ultima-menu-profile.component';
-import { BiaUltimaMenuComponent } from './menu/ultima-menu.component';
-import { BiaUltimaSidebarComponent } from './sidebar/ultima-sidebar.component';
-import { BiaUltimaTopbarComponent } from './topbar/ultima-topbar.component';
 
 @NgModule({
-  declarations: [
-    BiaUltimaLayoutComponent,
-    BiaUltimaTopbarComponent,
-    BiaUltimaMenuComponent,
-    BiaUltimaSidebarComponent,
-    BiaUltimaMenuItemComponent,
-    BiaUltimaFooterComponent,
-    BiaUltimaMenuProfileComponent,
-    BiaUltimaConfigComponent,
-  ],
-  exports: [
-    BiaUltimaLayoutComponent,
-    BiaUltimaTopbarComponent,
-    BiaUltimaMenuComponent,
-    BiaUltimaSidebarComponent,
-    BiaUltimaMenuItemComponent,
-    BiaUltimaFooterComponent,
-    BiaUltimaMenuProfileComponent,
-  ],
   imports: [
     CommonModule,
     FormsModule,

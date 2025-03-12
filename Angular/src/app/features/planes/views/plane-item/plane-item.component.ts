@@ -2,6 +2,9 @@ import { Component, Injector } from '@angular/core';
 import { CrudItemItemComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component';
 import { Plane } from '../../model/plane';
 import { PlaneService } from '../../services/plane.service';
+import { RouterOutlet } from '@angular/router';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
     selector: 'app-planes-item',
@@ -9,7 +12,7 @@ import { PlaneService } from '../../services/plane.service';
     styleUrls: [
         '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
     ],
-    standalone: false
+    imports: [RouterOutlet, NgIf, BiaSharedModule, AsyncPipe]
 })
 export class PlaneItemComponent extends CrudItemItemComponent<Plane> {
   constructor(

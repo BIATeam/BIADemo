@@ -6,11 +6,13 @@ import { MaintenanceTeam } from '../../model/maintenance-team';
 import { MaintenanceTeamOptionsService } from '../../services/maintenance-team-options.service';
 // BIAToolKit - End Option
 import { MaintenanceTeamService } from '../../services/maintenance-team.service';
+import { MaintenanceTeamFormComponent } from '../../components/maintenance-team-form/maintenance-team-form.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'app-maintenance-team-new',
     templateUrl: './maintenance-team-new.component.html',
-    standalone: false
+    imports: [MaintenanceTeamFormComponent, AsyncPipe]
 })
 export class MaintenanceTeamNewComponent
   extends CrudItemNewComponent<MaintenanceTeam>

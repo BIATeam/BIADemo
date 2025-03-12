@@ -1,12 +1,13 @@
 import { Component, HostBinding, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+import { BiaSharedModule } from '../../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
     selector: 'bia-background-task-read-only',
     templateUrl: './background-task-read-only.component.html',
     styleUrls: ['./background-task-read-only.component.scss'],
-    standalone: false
+    imports: [BiaSharedModule]
 })
 export class BackgroundTaskReadOnlyComponent implements OnInit, OnDestroy {
   @HostBinding('class') classes = 'bia-flex';

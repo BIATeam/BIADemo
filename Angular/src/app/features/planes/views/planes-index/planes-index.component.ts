@@ -6,12 +6,17 @@ import { PlaneTableComponent } from '../../components/plane-table/plane-table.co
 import { Plane } from '../../model/plane';
 import { planeCRUDConfiguration } from '../../plane.constants';
 import { PlaneService } from '../../services/plane.service';
+import { NgClass, NgIf, AsyncPipe } from '@angular/common';
+import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
+import { PrimeTemplate } from 'primeng/api';
+import { ButtonDirective } from 'primeng/button';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-planes-index',
     templateUrl: './planes-index.component.html',
     styleUrls: ['./planes-index.component.scss'],
-    standalone: false
+    imports: [NgClass, BiaSharedModule, PrimeTemplate, NgIf, ButtonDirective, PlaneTableComponent, AsyncPipe, TranslateModule]
 })
 export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
   @ViewChild(PlaneTableComponent, { static: false })

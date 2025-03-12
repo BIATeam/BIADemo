@@ -5,14 +5,17 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
-import { MenuItem, MenuItemCommandEvent } from 'primeng/api';
+import { MenuItem, MenuItemCommandEvent, PrimeTemplate } from 'primeng/api';
 import { Menubar } from 'primeng/menubar';
+import { NgClass, NgIf } from '@angular/common';
+import { ButtonDirective } from 'primeng/button';
+import { Tooltip } from 'primeng/tooltip';
 
 @Component({
     selector: 'bia-button-group',
     templateUrl: './bia-button-group.component.html',
     styleUrl: './bia-button-group.component.scss',
-    standalone: false
+    imports: [Menubar, NgClass, PrimeTemplate, NgIf, ButtonDirective, Tooltip]
 })
 export class BiaButtonGroupComponent implements AfterViewInit, OnDestroy {
   @ViewChild(Menubar) menubar: Menubar;

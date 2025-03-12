@@ -16,12 +16,7 @@ import {
   TemplateRef,
   ViewChildren,
 } from '@angular/core';
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, ValidatorFn, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PrimeTemplate } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
@@ -38,13 +33,18 @@ import {
   BiaFormLayoutConfigGroup,
   BiaFormLayoutConfigRow,
 } from '../../../model/bia-form-layout-config';
+import { NgIf, NgClass, NgFor, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
+import { ButtonDirective } from 'primeng/button';
+import { BiaInputComponent } from '../bia-input/bia-input.component';
+import { BiaOutputComponent } from '../bia-output/bia-output.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'bia-form',
     templateUrl: './bia-form.component.html',
     styleUrls: ['./bia-form.component.scss'],
     changeDetection: ChangeDetectionStrategy.Default,
-    standalone: false
+    imports: [NgIf, FormsModule, ReactiveFormsModule, ButtonDirective, NgClass, NgFor, NgSwitch, NgSwitchCase, NgTemplateOutlet, BiaInputComponent, PrimeTemplate, BiaOutputComponent, TranslateModule]
 })
 export class BiaFormComponent<TDto extends { id: number }>
   implements OnInit, OnDestroy, OnChanges, AfterContentInit, AfterViewInit

@@ -3,11 +3,14 @@ import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templat
 import { PlaneSpecific } from '../../model/plane-specific';
 import { planeSpecificCRUDConfiguration } from '../../plane.constants';
 import { PlaneService } from '../../services/plane.service';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { PlaneFormComponent } from '../../components/plane-form/plane-form.component';
+import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
     selector: 'app-plane-specific-edit',
     templateUrl: './plane-edit.component.html',
-    standalone: false
+    imports: [NgIf, PlaneFormComponent, BiaSharedModule, AsyncPipe]
 })
 export class PlaneEditComponent extends CrudItemEditComponent<PlaneSpecific> {
   constructor(
