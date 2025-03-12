@@ -1,24 +1,31 @@
 import { Component } from '@angular/core';
-import { UntypedFormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  UntypedFormBuilder,
+} from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TableModule } from 'primeng/table';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { Engine } from 'src/app/features/planes-specific/model/engine';
 import { CrudItemTableComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-table/crud-item-table.component';
-import { NgIf, NgFor, NgSwitch, NgClass, NgTemplateOutlet, NgStyle, AsyncPipe } from '@angular/common';
-import { TableModule } from 'primeng/table';
-import { PrimeTemplate } from 'primeng/api';
-import { Tooltip } from 'primeng/tooltip';
 import { BiaSharedModule } from '../../../../../../shared/bia-shared/bia-shared.module';
-import { Skeleton } from 'primeng/skeleton';
 
 @Component({
-    selector: 'app-engine-specific-table',
-    templateUrl: '/src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
-    styleUrls: [
-        '/src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss',
-    ],
-    imports: [FormsModule, ReactiveFormsModule, NgIf, TableModule, PrimeTemplate, NgFor, Tooltip, NgSwitch, BiaSharedModule, NgClass, NgTemplateOutlet, Skeleton, NgStyle, AsyncPipe, TranslateModule]
+  selector: 'app-engine-specific-table',
+  templateUrl:
+    '/src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
+  styleUrls: [
+    '/src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss',
+  ],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    TableModule,
+    BiaSharedModule,
+    TranslateModule,
+  ],
 })
 export class EngineTableComponent extends CrudItemTableComponent<Engine> {
   constructor(
