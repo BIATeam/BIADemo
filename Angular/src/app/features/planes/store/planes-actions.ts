@@ -62,4 +62,10 @@ export namespace FeaturePlanesActions {
   export const clearCurrent = createAction(
     '[' + planeCRUDConfiguration.storeKey + '] Clear current'
   );
+  // Begin BIADemo
+  export const updateFixedStatus = createAction(
+    '[' + planeCRUDConfiguration.storeKey + '] Update fixed status',
+    props<{ id: number; isFixed: boolean }>()
+  );
+  // End BIADemo
 }

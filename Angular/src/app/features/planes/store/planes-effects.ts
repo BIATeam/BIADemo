@@ -248,6 +248,38 @@ export class PlanesEffects {
       })
     )
   );
+  // Begin BIADemo
+  updateFixedStatus$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(FeaturePlanesActions.updateFixedStatus),
+      map(x => x),
+      concatMap(x =>
+        of(x).pipe(
+          withLatestFrom(
+            this.store.select(FeaturePlanesStore.getLastLazyLoadEvent)
+          )
+        )
+      ),
+      switchMap(([x, event]) => {
+        return this.planeDas
+          .updateFixedStatus({ id: x.id, fixed: x.isFixed })
+          .pipe(
+            map(plane => {
+              this.biaMessageService.showUpdateSuccess();
+              this.store.dispatch(
+                FeaturePlanesActions.loadAllByPost({ event: event })
+              );
+              return FeaturePlanesActions.loadSuccess({ plane });
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(FeaturePlanesActions.failure({ error: err }));
+            })
+          );
+      })
+    )
+  );
+  // End BIADemo
 
   constructor(
     private actions$: Actions,

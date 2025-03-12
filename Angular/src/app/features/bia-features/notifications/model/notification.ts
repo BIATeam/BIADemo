@@ -3,7 +3,6 @@ import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 export interface Notification extends BaseDto {
-  // id: number;
   title: string;
   titleTranslated: string;
   description: string;

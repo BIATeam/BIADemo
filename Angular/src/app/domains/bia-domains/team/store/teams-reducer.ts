@@ -38,8 +38,8 @@ export const teamReducers = createReducer<State>(
       for (const key in state.entities) {
         const value = state.entities[key];
         // Use `key` and `value`
-        if (value?.teamTypeId == teamTypeId) {
-          if (value.id == teamId) {
+        if (value?.teamTypeId === teamTypeId) {
+          if (value.id === teamId) {
             updates.push({ id: key, changes: { isDefault: true } });
           } else if (value.isDefault) {
             updates.push({ id: key, changes: { isDefault: false } });
@@ -55,7 +55,7 @@ export const teamReducers = createReducer<State>(
       for (const key in state.entities) {
         const value = state.entities[key];
         // Use `key` and `value`
-        if (value?.id == teamId) {
+        if (value?.id === teamId) {
           //let roles = value.roles.map(role => ({role, isDefault: roleIds.indexOf(role.id) > -1}));
           const roles = [...value.roles];
           roles.forEach(

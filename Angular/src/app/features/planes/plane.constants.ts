@@ -2,20 +2,29 @@ import { CrudConfig } from 'src/app/shared/bia-shared/feature-templates/crud-ite
 /// BIAToolKit - Begin AncestorTeam
 import { TeamTypeId } from 'src/app/shared/constants';
 /// BIAToolKit - End AncestorTeam
-import { Plane, planeFieldsConfiguration } from './model/plane';
+import {
+  Plane,
+  planeFieldsConfiguration,
+  planeFormLayoutConfiguration,
+} from './model/plane';
 
 // TODO after creation of CRUD Plane : adapt the global configuration
 export const planeCRUDConfiguration: CrudConfig<Plane> = new CrudConfig({
   // IMPORTANT: this key should be unique in all the application.
   featureName: 'planes',
   fieldsConfig: planeFieldsConfiguration,
+  formLayoutConfig: planeFormLayoutConfiguration,
+  // Begin BIADemo
+  isFixable: true,
+  // End BIADemo
   useCalcMode: true,
   useSignalR: false,
   useView: true,
   /// BIAToolKit - Begin AncestorTeam Site
   useViewTeamWithTypeId: TeamTypeId.Site, // use to filter view by teams => should know the type of team
   /// BIAToolKit - End AncestorTeam Site
-  usePopup: true,
+  usePopup: false,
+  useSplit: false,
   useOfflineMode: false,
   useCompactMode: false,
   useVirtualScroll: false,
@@ -28,12 +37,14 @@ export const planeCRUDConfiguration: CrudConfig<Plane> = new CrudConfig({
   showIcons: {
     showCalcMode: true,
     showPopup: true,
+    showSplit: true,
     showView: true,
     showSignalR: true,
     showCompactMode: true,
     showVirtualScroll: true,
     showResizableColumn: true,
   },
+
   // End BIADemo
   // IMPORTANT: this key should be unique in all the application.
   // storeKey: 'feature-' + featureName,

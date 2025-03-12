@@ -23,5 +23,10 @@ namespace BIA.Net.Core.Common.Configuration
         /// The database connection string.
         /// </summary>
         public string ConnectionString { get; set; }
+
+        /// <summary>
+        /// The use of SQL Data broker.
+        /// </summary>
+        public bool SQLDataBroker { get; set; }
     }
 }

@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // import { ReducerManager, StoreModule } from '@ngrx/store';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
-import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
-import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
 import { Permission } from 'src/app/shared/permission';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { PlaneFormComponent } from './components/plane-form/plane-form.component';
@@ -17,8 +15,13 @@ import { PlaneTypeOptionModule } from 'src/app/domains/plane-type-option/plane-t
 // BIAToolKit - End Option PlaneType
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import {
+  DynamicLayoutComponent,
+  LayoutMode,
+} from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { CrudItemImportModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item-import.module';
 import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
+import { PlaneReadComponent } from '../planes/views/plane-read/plane-read.component';
 import { PlaneTableComponent } from './components/plane-table/plane-table.component';
 import { planeCRUDConfiguration } from './plane.constants';
 import { FeaturePlanesStore } from './store/plane.state';
@@ -34,8 +37,9 @@ export const ROUTES: Routes = [
       breadcrumb: null,
       permission: Permission.Plane_List_Access,
       injectComponent: PlanesIndexComponent,
+      configuration: planeCRUDConfiguration,
     },
-    component: FullPageLayoutComponent,
+    component: DynamicLayoutComponent,
     canActivate: [PermissionGuard],
     // [Calc] : The children are not used in calc
     children: [
@@ -46,15 +50,8 @@ export const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.Plane_Create,
           title: 'plane.add',
-          injectComponent: PlaneNewComponent,
-          dynamicComponent: () =>
-            planeCRUDConfiguration.usePopup
-              ? PopupLayoutComponent
-              : FullPageLayoutComponent,
         },
-        component: planeCRUDConfiguration.usePopup
-          ? PopupLayoutComponent
-          : FullPageLayoutComponent,
+        component: PlaneNewComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -62,6 +59,7 @@ export const ROUTES: Routes = [
         data: {
           breadcrumb: 'plane.import',
           canNavigate: false,
+          layoutMode: LayoutMode.popup,
           style: {
             minWidth: '80vw',
             maxWidth: '80vw',
@@ -69,15 +67,8 @@ export const ROUTES: Routes = [
           },
           permission: Permission.Plane_Save,
           title: 'plane.import',
-          injectComponent: PlaneImportComponent,
-          dynamicComponent: () =>
-            planeCRUDConfiguration.usePopup
-              ? PopupLayoutComponent
-              : FullPageLayoutComponent,
         },
-        component: planeCRUDConfiguration.usePopup
-          ? PopupLayoutComponent
-          : FullPageLayoutComponent,
+        component: PlaneImportComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -90,28 +81,34 @@ export const ROUTES: Routes = [
         canActivate: [PermissionGuard],
         children: [
           {
+            path: 'read',
+            data: {
+              breadcrumb: 'bia.read',
+              canNavigate: true,
+              permission: Permission.Plane_Read,
+              readOnlyMode: planeCRUDConfiguration.formEditReadOnlyMode,
+              title: 'plane.read',
+            },
+            component: PlaneReadComponent,
+            canActivate: [PermissionGuard],
+          },
+          {
             path: 'edit',
             data: {
               breadcrumb: 'bia.edit',
               canNavigate: true,
               permission: Permission.Plane_Update,
               title: 'plane.edit',
-              injectComponent: PlaneEditComponent,
-              dynamicComponent: () =>
-                planeCRUDConfiguration.usePopup
-                  ? PopupLayoutComponent
-                  : FullPageLayoutComponent,
             },
-            component: planeCRUDConfiguration.usePopup
-              ? PopupLayoutComponent
-              : FullPageLayoutComponent,
+            component: PlaneEditComponent,
             canActivate: [PermissionGuard],
           },
           {
             path: '',
             pathMatch: 'full',
-            redirectTo: 'edit',
+            redirectTo: 'read',
           },
+          /// BIAToolKit - Begin Partial PlaneModuleChildPath Engine
           /// BIAToolKit - Begin Partial PlaneModuleChildPath Engine
           {
             path: 'engines',
@@ -119,6 +116,7 @@ export const ROUTES: Routes = [
               breadcrumb: 'app.engines',
               canNavigate: true,
               permission: Permission.Engine_List_Access,
+              layoutMode: LayoutMode.fullPage,
             },
             loadChildren: () =>
               import('./children/engines/engine.module').then(
@@ -144,6 +142,7 @@ export const ROUTES: Routes = [
     PlaneFormComponent,
     PlaneNewComponent,
     PlaneEditComponent,
+    PlaneReadComponent,
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     PlaneTableComponent,
     PlaneImportComponent,

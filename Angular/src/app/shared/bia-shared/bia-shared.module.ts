@@ -23,6 +23,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 // import { ContextMenuModule } from 'primeng/contextmenu';
 import { DatePickerModule } from 'primeng/datepicker';
 import { DialogModule } from 'primeng/dialog';
+import { DividerModule } from 'primeng/divider';
 // import { DropdownModule } from 'primeng/dropdown';
 // import { EditorModule } from 'primeng/editor';
 // Warning it required to install Quill package:
@@ -95,6 +96,7 @@ import { NotificationsEffects } from 'src/app/domains/bia-domains/notification/s
 import { TeamModule } from 'src/app/domains/bia-domains/team/team.module';
 import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
 import { reducers as notificationReducers } from '../../domains/bia-domains/notification/store/notification.state';
+import { BiaButtonGroupComponent } from './components/bia-button-group/bia-button-group.component';
 import { BiaOnlineOfflineIconModule } from './components/bia-online-offline-icon/bia-online-offline-icon.module';
 import { BiaTeamSelectorModule } from './components/bia-team-selector/bia-team-selector.module';
 import { BiaFieldBaseComponent } from './components/form/bia-field-base/bia-field-base.component';
@@ -106,6 +108,7 @@ import { ClassicFooterComponent } from './components/layout/classic-footer/class
 import { ClassicHeaderComponent } from './components/layout/classic-header/classic-header.component';
 import { ClassicLayoutComponent } from './components/layout/classic-layout/classic-layout.component';
 import { ClassicPageLayoutComponent } from './components/layout/classic-page-layout/classic-page-layout.component';
+import { DynamicLayoutComponent } from './components/layout/dynamic-layout/dynamic-layout.component';
 import { FullPageLayoutComponent } from './components/layout/fullpage-layout/fullpage-layout.component';
 import { IeWarningComponent } from './components/layout/ie-warning/ie-warning.component';
 import { LayoutComponent } from './components/layout/layout.component';
@@ -152,6 +155,7 @@ const PRIMENG_MODULES = [
   //  ContextMenuModule,
   DatePickerModule,
   DialogModule,
+  DividerModule,
   //  DropdownModule,
   //  EditorModule,
   FieldsetModule,
@@ -233,9 +237,11 @@ const COMPONENTS = [
   PageLayoutComponent,
   PopupLayoutComponent,
   FullPageLayoutComponent,
+  DynamicLayoutComponent,
   HangfireContainerComponent,
   TeamAdvancedFilterComponent,
   BiaScrollingNotificationComponent,
+  BiaButtonGroupComponent,
 ];
 
 const VIEW_COMPONENTS = [

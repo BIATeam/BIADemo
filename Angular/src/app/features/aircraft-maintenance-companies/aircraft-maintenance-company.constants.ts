@@ -2,6 +2,7 @@ import { CrudConfig } from 'src/app/shared/bia-shared/feature-templates/crud-ite
 import {
   AircraftMaintenanceCompany,
   aircraftMaintenanceCompanyFieldsConfiguration,
+  aircraftMaintenanceCompanyFormLayoutConfiguration,
 } from './model/aircraft-maintenance-company';
 
 // TODO after creation of CRUD Team AircraftMaintenanceCompany : adapt the global configuration
@@ -10,6 +11,7 @@ export const aircraftMaintenanceCompanyCRUDConfiguration: CrudConfig<AircraftMai
     // IMPORTANT: this key should be unique in all the application.
     featureName: 'aircraft-maintenance-companies',
     fieldsConfig: aircraftMaintenanceCompanyFieldsConfiguration,
+    formLayoutConfig: aircraftMaintenanceCompanyFormLayoutConfiguration,
     useCalcMode: false,
     useSignalR: false,
     useView: false,

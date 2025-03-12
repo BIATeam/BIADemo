@@ -10,7 +10,7 @@ namespace BIA.Net.Core.Domain.Dto.User
     /// </summary>
     /// <typeparam name="TUserDataDto">The type of the user data dto.</typeparam>
     public class TokenDto<TUserDataDto>
-        where TUserDataDto : UserDataDto
+        where TUserDataDto : BaseUserDataDto
     {
         /// <summary>
         /// Gets or sets the login.

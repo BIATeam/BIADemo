@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { BaseDto } from '../../../model/base-dto';
 import { DtoState } from '../../../model/dto-state.enum';
 import { CrudItemOptionsService } from './crud-item-options.service';
@@ -103,6 +103,7 @@ export abstract class CrudItemSingleService<CrudItem extends BaseDto> {
   abstract lastLazyLoadEvent$: Observable<TableLazyLoadEvent>;
 
   abstract crudItem$: Observable<CrudItem>;
+  displayItemName$: Observable<string> = of('');
   abstract loadingGet$: Observable<boolean>;
 
   abstract load(id: any): void;
@@ -112,6 +113,8 @@ export abstract class CrudItemSingleService<CrudItem extends BaseDto> {
   abstract multiRemove(ids: any[]): void;
   abstract clearAll(): void;
   abstract clearCurrent(): void;
+  // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
+  updateFixedStatus(id: any, isFixed: boolean): void {}
 
   protected resetNewItemsIds(dtos: BaseDto[] | undefined): void {
     dtos?.forEach(dto => {

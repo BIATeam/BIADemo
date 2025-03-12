@@ -66,15 +66,15 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
     this.singleRoleMode =
       allEnvironments.teams.find(
         t =>
-          t.teamTypeId == this.teamType.teamTypeId &&
-          t.roleMode == RoleMode.SingleRole
-      ) != undefined;
+          t.teamTypeId === this.teamType.teamTypeId &&
+          t.roleMode === RoleMode.SingleRole
+      ) !== undefined;
     this.multiRoleMode =
       allEnvironments.teams.find(
         t =>
-          t.teamTypeId == this.teamType.teamTypeId &&
-          t.roleMode == RoleMode.MultiRoles
-      ) != undefined;
+          t.teamTypeId === this.teamType.teamTypeId &&
+          t.roleMode === RoleMode.MultiRoles
+      ) !== undefined;
     this.teams$ = this.store.select(
       getAllTeamsOfType(this.teamType.teamTypeId)
     );
@@ -131,7 +131,7 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
     const currentTeamId = this.authService
       .getUncryptedToken()
       ?.userData?.currentTeams?.find(
-        t => t.teamTypeId == this.teamType.teamTypeId
+        t => t.teamTypeId === this.teamType.teamTypeId
       )?.teamId;
     const defaultTeamId = this.teams.find(t => t.isDefault)?.id;
     if (currentTeamId && currentTeamId > 0) {
@@ -188,9 +188,9 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
       const currentRoleIds = this.authService
         .getUncryptedToken()
         ?.userData?.currentTeams?.find(
-          t => t.teamTypeId == this.teamType.teamTypeId
+          t => t.teamTypeId === this.teamType.teamTypeId
         )?.currentRoleIds;
-      let roles = this.teams.find(t => t.id == this.currentTeam?.id)?.roles;
+      let roles = this.teams.find(t => t.id === this.currentTeam?.id)?.roles;
       roles = roles ? [...roles] : roles;
       const defaultRoleIds = roles?.filter(r => r.isDefault).map(r => r.id);
       if (roles && (this.multiRoleMode || roles.length > 1)) {

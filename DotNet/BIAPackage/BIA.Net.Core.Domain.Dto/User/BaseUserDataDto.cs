@@ -1,4 +1,4 @@
-// <copyright file="UserDataDto.cs" company="BIA">
+// <copyright file="BaseUserDataDto.cs" company="BIA">
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -6,18 +6,17 @@ namespace BIA.Net.Core.Domain.Dto.User
 {
     using System.Collections.Generic;
     using System.Linq;
-    using BIA.Net.Core.Domain.Dto.Option;
     using Newtonsoft.Json;
 
     /// <summary>
     /// UserData Dto.
     /// </summary>
-    public class UserDataDto
+    public class BaseUserDataDto
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UserDataDto"/> class.
+        /// Initializes a new instance of the <see cref="BaseUserDataDto"/> class.
         /// </summary>
-        public UserDataDto()
+        public BaseUserDataDto()
         {
             this.CurrentTeams = new List<CurrentTeamDto>();
         }

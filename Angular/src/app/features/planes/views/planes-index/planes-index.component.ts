@@ -35,6 +35,9 @@ export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
     this.canDelete = this.authService.hasPermission(Permission.Plane_Delete);
     this.canAdd = this.authService.hasPermission(Permission.Plane_Create);
     this.canSave = this.authService.hasPermission(Permission.Plane_Save);
+    // Begin BIADemo
+    this.canFix = this.authService.hasPermission(Permission.Plane_Fix);
+    // End BIADemo
     this.canSelect = this.canDelete;
     /// BIAToolKit - Begin Partial PlaneIndexTsCanViewChildSet Engine
     this.canViewEngines = this.authService.hasPermission(

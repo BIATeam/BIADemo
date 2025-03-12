@@ -29,7 +29,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
         public AirportHandlerRepository(IConfiguration configuration, IServiceProvider serviceProvider)
             : base(
                   serviceProvider,
-                  configuration.GetConnectionString("ProjectDatabase"),
+                  configuration.GetDatabaseConnectionString("ProjectDatabase"),
                   configuration.GetDBEngine("ProjectDatabase"),
                   "SELECT Id, Name, City FROM [dbo].[Airports]",
                   "Id",

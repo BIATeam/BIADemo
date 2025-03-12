@@ -170,7 +170,7 @@
         <div class="app-field-container flex-1" style="max-width: 90%">
           <span class="p-float-label">
             <p-select
-              [options]="notificationTypeOptions"
+              [options]="getOptionDto('type')"
               placeholder="&nbsp;"
               formControlName="type"
               optionLabel="display"
@@ -237,7 +237,7 @@
                   <tr [formGroupName]="rowIndex">
                     <td>
                       <p-select
-                        [options]="teamOptions"
+                        [options]="getOptionDto('team')"
                         placeholder="&nbsp;"
                         formControlName="team"
                         optionLabel="display"
@@ -248,7 +248,7 @@
                     </td>
                     <td>
                       <p-multiSelect
-                        [options]="roleOptions"
+                        [options]="getOptionDto('notifiedRoles')"
                         formControlName="roles"
                         optionLabel="display"
                         datakey="id"
@@ -273,7 +273,7 @@
         <div class="app-field-container flex-1" style="max-width: 90%">
           <span class="p-float-label">
             <p-select
-              [options]="userOptions"
+              [options]="getOptionDto('createdBy')"
               placeholder="&nbsp;"
               formControlName="createdBy"
               optionLabel="display"
@@ -288,7 +288,7 @@
         <div class="app-field-container flex-1" style="max-width: 90%">
           <span class="p-float-label">
             <p-multiSelect
-              [options]="userOptions"
+              [options]="getOptionDto('notifiedUsers')"
               formControlName="notifiedUsers"
               optionLabel="display"
               datakey="id"

@@ -7,6 +7,7 @@ import {
   Input,
   OnDestroy,
   OnInit,
+  Renderer2,
   ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
@@ -16,6 +17,7 @@ import { ToastMessageOptions } from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import {
   Notification,
@@ -55,6 +57,8 @@ export class BiaUltimaTopbarComponent implements OnInit, OnDestroy {
   teamTypeSelectors: any[];
 
   @ViewChild('menuButton') menuButton: ElementRef;
+  @ViewChild('menuButtonFullscreen', { static: false })
+  menuButtonFullScreen: ElementRef;
 
   @ViewChild('mobileMenuButton') mobileMenuButton!: ElementRef;
 
@@ -70,7 +74,9 @@ export class BiaUltimaTopbarComponent implements OnInit, OnDestroy {
     public biaTranslationService: BiaTranslationService,
     protected router: Router,
     @Inject(DOCUMENT) private document: Document,
-    public el: ElementRef
+    public el: ElementRef,
+    private readonly biaMessageService: BiaMessageService,
+    private renderer: Renderer2
   ) {}
 
   ngOnInit() {
@@ -86,6 +92,8 @@ export class BiaUltimaTopbarComponent implements OnInit, OnDestroy {
         DomainNotificationsActions.loadUnreadNotificationIds()
       );
     }
+
+    this.positionClearButton();
   }
 
   ngOnDestroy() {
@@ -136,6 +144,10 @@ export class BiaUltimaTopbarComponent implements OnInit, OnDestroy {
         })
       );
     }
+  }
+
+  clearAllMessages() {
+    this.biaMessageService.clear('bia');
   }
 
   toggleFullscreenMode() {
@@ -196,5 +208,20 @@ export class BiaUltimaTopbarComponent implements OnInit, OnDestroy {
 
   toggleStyle() {
     this.layoutService.toggleStyle();
+  }
+
+  positionClearButton() {
+    const parentElement = document
+      .getElementById('toast')
+      ?.querySelector('.p-toast.p-component');
+
+    if (parentElement) {
+      const clearButton = document.getElementById('clearButton');
+      this.renderer.insertBefore(
+        parentElement,
+        clearButton,
+        parentElement.firstChild
+      );
+    }
   }
 }

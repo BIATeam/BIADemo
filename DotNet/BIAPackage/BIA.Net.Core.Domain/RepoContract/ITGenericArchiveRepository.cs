@@ -19,17 +19,11 @@ namespace BIA.Net.Core.Domain.RepoContract
         where TEntity : class, IEntityArchivable<TKey>
     {
         /// <summary>
-        /// Return the items to archive.
+        /// Return the items to archive according to the filter rule.
         /// </summary>
+        /// <param name="rule">Filter rule.</param>
         /// <returns><see cref="Task{IReadOnlyList{TEntity}}"/>.</returns>
-        Task<IReadOnlyList<TEntity>> GetItemsToArchiveAsync();
-
-        /// <summary>
-        /// Return the items to delete.
-        /// </summary>
-        /// <param name="archiveDateMaxDays">The maximum days of archive date of item to delete.</param>
-        /// <returns><see cref="IReadOnlyList{TEntity}"/>.</returns>
-        Task<IReadOnlyList<TEntity>> GetItemsToDeleteAsync(double? archiveDateMaxDays = 365);
+        Task<IReadOnlyList<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> rule);
 
         /// <summary>
         /// Update archive state of an entity.
@@ -37,12 +31,5 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="entity">The entity.</param>
         /// <returns><see cref="Task"/>.</returns>
         Task SetAsArchivedAsync(TEntity entity);
-
-        /// <summary>
-        /// Remove an entity.
-        /// </summary>
-        /// <param name="entity">The entity.</param>
-        /// <returns><see cref="Task"/>.</returns>
-        Task RemoveAsync(TEntity entity);
     }
 }

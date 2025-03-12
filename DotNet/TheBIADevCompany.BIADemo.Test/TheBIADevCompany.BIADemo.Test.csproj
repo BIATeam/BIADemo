@@ -74,10 +74,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.*" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.*" />
 		<PackageReference Include="Moq" Version="4.20.*" />
-		<PackageReference Include="MSTest.TestAdapter" Version="3.6.*" />
-		<PackageReference Include="MSTest.TestFramework" Version="3.6.*" />
+		<PackageReference Include="MSTest.TestAdapter" Version="3.8.*" />
 		<PackageReference Include="coverlet.collector" Version="6.0.*">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

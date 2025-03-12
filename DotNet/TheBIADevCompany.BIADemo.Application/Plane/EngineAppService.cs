@@ -11,9 +11,11 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
     using Hangfire;
@@ -50,16 +52,37 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         /// </summary>
         private readonly IEngineRepository repository;
 
+        // Begin BIADemo
+
+        /// <summary>
+        /// The plane repository.
+        /// </summary>
+        private readonly ITGenericRepository<Plane, int> planeRepository;
+
+#pragma warning disable SA1515 // Single-line comment should be preceded by blank line
+#pragma warning disable SA1611 // Element parameters should be documented
+        // End BIADemo
+
         /// <summary>
         /// Initializes a new instance of the <see cref="EngineAppService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
+        // Begin BIADemo
+        /// <param name="planeRepository">The plane repository.</param>
+        // End BIADemo
         /// <param name="principal">The claims principal.</param>
         /// <param name="configuration">The configuration.</param>
-        public EngineAppService(IEngineRepository repository, IPrincipal principal, IConfiguration configuration)
+        public EngineAppService(
+            IEngineRepository repository,
+            // Begin BIADemo
+            ITGenericRepository<Plane, int> planeRepository,
+            // End BIADemo
+            IPrincipal principal,
+            IConfiguration configuration)
             : base(repository)
         {
             this.repository = repository;
+            this.planeRepository = planeRepository;
             this.configuration = configuration;
 
             // BIAToolKit - Begin AncestorTeam Site
@@ -73,6 +96,8 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         }
 
         // Begin BIADemo
+#pragma warning restore SA1611 // Element parameters should be documented
+#pragma warning restore SA1515 // Single-line comment should be preceded by blank line
 
         /// <inheritdoc cref="IEngineAppService.CheckToBeMaintainedAsync"/>
         public async Task CheckToBeMaintainedAsync()
@@ -85,6 +110,18 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         {
             string projectName = this.configuration["Project:Name"];
             RecurringJob.TriggerJob($"{projectName}.{typeof(EngineManageTask).Name}");
+        }
+
+        /// <inheritdoc/>
+        public override async Task<EngineDto> AddAsync(EngineDto dto, string mapperMode = null)
+        {
+            var planeParent = await this.planeRepository.GetEntityAsync(dto.PlaneId, isReadOnlyMode: true);
+            if (planeParent.IsFixed)
+            {
+                throw new FrontUserException("Plane parent is fixed");
+            }
+
+            return await base.AddAsync(dto, mapperMode);
         }
 
         // End BIADemo

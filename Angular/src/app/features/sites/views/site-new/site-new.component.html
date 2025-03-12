@@ -1,5 +1,6 @@
 <app-site-form
   [fields]="crudConfiguration.fieldsConfig.columns"
+  [formLayoutConfig]="crudConfiguration.formLayoutConfig"
   [dictOptionDtos]="(siteService.optionsService.dictOptionDtos$ | async) ?? []"
-  (cancel)="onCancelled()"
+  (cancelled)="onCancelled()"
   (save)="onSubmitted($event)"></app-site-form>

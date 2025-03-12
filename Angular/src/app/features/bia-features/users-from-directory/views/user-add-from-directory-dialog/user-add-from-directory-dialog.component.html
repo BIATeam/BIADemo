@@ -15,6 +15,6 @@
     [users]="(usersFromDirectory$ | async) ?? []"
     [domains]="(ldapDomains$ | async) ?? []"
     (searchUsers)="onSearchUsers($event)"
-    (cancel)="onCancelled()"
+    (cancelled)="onCancelled()"
     (save)="onSubmitted($event)"></bia-user-from-directory-form>
 </p-dialog>

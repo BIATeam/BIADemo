@@ -91,10 +91,20 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 {
                     if (user.IsActive)
                     {
-                        var userFromDirectory = await this.userDirectoryHelper.ResolveUserByIdentityKey(this.userIdentityKeyDomainService.GetDatabaseIdentityKey(user), fullSynchro);
-                        if (userFromDirectory != null)
+                        try
                         {
-                            this.ResynchronizeUser(user, userFromDirectory);
+                            var userFromDirectory = await this.userDirectoryHelper.ResolveUserByIdentityKey(this.userIdentityKeyDomainService.GetDatabaseIdentityKey(user), fullSynchro);
+                            if (userFromDirectory != null)
+                            {
+                                this.ResynchronizeUser(user, userFromDirectory);
+                            }
+                        }
+                        catch (System.Runtime.InteropServices.COMException exception)
+                        {
+                            if (exception.ErrorCode == -2147023570)
+                            {
+                                this.DeactivateUser(user);
+                            }
                         }
                     }
                 }

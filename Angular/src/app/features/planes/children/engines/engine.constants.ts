@@ -1,17 +1,26 @@
 import { CrudConfig } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
 import { TeamTypeId } from 'src/app/shared/constants';
-import { Engine, engineFieldsConfiguration } from './model/engine';
+import {
+  Engine,
+  engineFieldsConfiguration,
+  engineFormLayoutConfiguration,
+} from './model/engine';
 
 // TODO after creation of CRUD Engine : adapt the global configuration
 export const engineCRUDConfiguration: CrudConfig<Engine> = new CrudConfig({
   // IMPORTANT: this key should be unique in all the application.
   featureName: 'engines',
   fieldsConfig: engineFieldsConfiguration,
+  formLayoutConfig: engineFormLayoutConfiguration,
+  // Begin BIADemo
+  isFixable: true,
+  // End BIADemo
   useCalcMode: true,
   useSignalR: false,
   useView: true,
   useViewTeamWithTypeId: TeamTypeId.Site, // use to filter view by teams => should know the type of team
-  usePopup: true,
+  usePopup: false,
+  useSplit: false,
   useOfflineMode: false,
   importMode: {
     useInsert: true,

@@ -37,7 +37,7 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.notification$ = this.notificationService.notification$;
+    this.notification$ = this.notificationService.crudItem$;
     this.sub.add(
       this.authService.authInfo$.subscribe((authInfo: AuthInfo) => {
         if (authInfo && authInfo.token !== '') {
@@ -100,6 +100,7 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
       }
     }
   }
+
   onSetUnread(id: number) {
     this.store.dispatch(FeatureNotificationsActions.setUnread({ id }));
   }

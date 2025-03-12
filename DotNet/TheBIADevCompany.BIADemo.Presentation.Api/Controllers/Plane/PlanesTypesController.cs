@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http;
 // BIADemo only
 // <copyright file="PlanesTypesController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.

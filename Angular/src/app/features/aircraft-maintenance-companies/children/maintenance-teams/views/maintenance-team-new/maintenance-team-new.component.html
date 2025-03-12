@@ -1,7 +1,8 @@
 <app-maintenance-team-form
   [fields]="crudConfiguration.fieldsConfig.columns"
+  [formLayoutConfig]="crudConfiguration.formLayoutConfig"
   [dictOptionDtos]="
     (maintenanceTeamService.optionsService.dictOptionDtos$ | async) ?? []
   "
-  (cancel)="onCancelled()"
+  (cancelled)="onCancelled()"
   (save)="onSubmitted($event)"></app-maintenance-team-form>

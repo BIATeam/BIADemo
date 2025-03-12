@@ -5,6 +5,7 @@ import { CrudItemTableComponent } from './components/crud-item-table/crud-item-t
 import { CrudItemEditComponent } from './views/crud-item-edit/crud-item-edit.component';
 import { CrudItemItemComponent } from './views/crud-item-item/crud-item-item.component';
 import { CrudItemNewComponent } from './views/crud-item-new/crud-item-new.component';
+import { CrudItemReadComponent } from './views/crud-item-read/crud-item-read.component';
 import { CrudItemsIndexComponent } from './views/crud-items-index/crud-items-index.component';
 
 @NgModule({
@@ -16,6 +17,7 @@ import { CrudItemsIndexComponent } from './views/crud-items-index/crud-items-ind
     CrudItemFormComponent,
     CrudItemNewComponent,
     CrudItemEditComponent,
+    CrudItemReadComponent,
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     CrudItemTableComponent,
   ],

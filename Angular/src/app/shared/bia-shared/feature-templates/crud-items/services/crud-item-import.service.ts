@@ -162,7 +162,7 @@ export class CrudItemImportService<T extends BaseDto> {
         csvObjs.map(csvObj => {
           this.crudConfig.fieldsConfig.columns.map(column => {
             const csvValue: any = csvObj[column.field];
-            if (csvValue != null) {
+            if (csvValue !== undefined) {
               if (column.type === PropType.String) {
                 this.parseCSVString(csvObj, column);
               } else if (
@@ -359,6 +359,8 @@ export class CrudItemImportService<T extends BaseDto> {
   ): Observable<ImportData<T>> {
     return combineLatest([csvObjs$, oldObjs$]).pipe(
       map(([csvObjs, oldObjs]) => {
+        this.checkDuplicateIdObjects(csvObjs);
+
         // Remove objects in error.
         csvObjs = csvObjs.filter(
           x => !this.tmpImportDataErrors.map(y => y.obj).includes(x)
@@ -503,5 +505,21 @@ export class CrudItemImportService<T extends BaseDto> {
         sErrors: tmp.errors.join(', '),
       };
     });
+  }
+
+  protected checkDuplicateIdObjects(arr: T[]): void {
+    const idCount = new Map<any, number>();
+
+    arr.forEach(obj => {
+      idCount.set(obj.id, (idCount.get(obj.id) || 0) + 1);
+    });
+
+    arr
+      .filter(obj => (idCount.get(obj.id) || 0) > 1)
+      .forEach(obj => {
+        this.addErrorsToSave(obj, [
+          'This Id appears multiple times in the imported file: ' + obj.id,
+        ]);
+      });
   }
 }

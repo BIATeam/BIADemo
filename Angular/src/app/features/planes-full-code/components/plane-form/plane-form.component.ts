@@ -29,7 +29,7 @@ export class PlaneFormComponent implements OnChanges {
   @Input() planeTypeOptions: OptionDto[];
 
   @Output() save = new EventEmitter<Plane>();
-  @Output() cancel = new EventEmitter<void>();
+  @Output() cancelled = new EventEmitter<void>();
 
   form: UntypedFormGroup;
 
@@ -65,7 +65,7 @@ export class PlaneFormComponent implements OnChanges {
 
   onCancel() {
     this.form.reset();
-    this.cancel.next();
+    this.cancelled.next();
   }
 
   onSubmit() {

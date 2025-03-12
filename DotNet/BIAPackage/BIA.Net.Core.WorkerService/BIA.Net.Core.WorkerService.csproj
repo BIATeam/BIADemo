@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Copyright>Copyright © BIA 2025</Copyright>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-    <Version>4.0.1</Version>
+    <Version>4.0.2</Version>
     <PackageIcon>LogoBIA.png</PackageIcon>
     <PackageIconUrl />
     <Authors>BIA Team</Authors>
@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <PackageReference Include="Bonura.Hangfire.PerformContextAccessor" Version="1.3.*" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.*" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.*" />
   </ItemGroup>
 
   <ItemGroup>

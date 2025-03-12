@@ -156,7 +156,7 @@ export class BiaLayoutService {
       const newHref = themeLinkHref
         .split('/')
         .map(el =>
-          el == `theme-${this._config.colorScheme}`
+          el === `theme-${this._config.colorScheme}`
             ? (el = `theme-${colorScheme}`)
             : el
         )
@@ -334,7 +334,7 @@ export class BiaLayoutService {
   processMenuTranslation(children: MenuItem[], translations: any) {
     for (const item of children) {
       if (item.separator) continue;
-      item.label = item.id == undefined ? '---' : translations[item.id];
+      item.label = item.id === undefined ? '---' : translations[item.id];
       if (item.items) {
         this.processMenuTranslation(item.items, translations);
       }

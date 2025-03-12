@@ -25,7 +25,7 @@ export const getCurrentCulture = () => {
     console.error(err);
   }
   if (!culture) {
-    if (navigator.languages != undefined) {
+    if (navigator.languages) {
       culture = navigator.languages[0];
       for (let i = 0; i < navigator.languages.length; i++) {
         if (APP_SUPPORTED_TRANSLATIONS.indexOf(navigator.languages[i]) !== -1) {
@@ -36,7 +36,7 @@ export const getCurrentCulture = () => {
     } else {
       culture = navigator.language;
     }
-    if (culture.length == 2) culture = culture + '-' + culture.toUpperCase();
+    if (culture.length === 2) culture = culture + '-' + culture.toUpperCase();
   }
   if (APP_SUPPORTED_TRANSLATIONS.indexOf(culture) !== -1) {
     localStorage.setItem(STORAGE_CULTURE_KEY, culture);
@@ -90,6 +90,9 @@ export class BiaTranslationService {
     .pipe(distinctUntilChanged())
     .pipe(skip(1));
 
+  protected currentCulture = 'None';
+  protected currentLanguage = 'None';
+
   constructor(
     protected translate: TranslateService,
     @Inject(LOCALE_ID) localeId: string,
@@ -97,6 +100,8 @@ export class BiaTranslationService {
     protected primeNgConfig: PrimeNG,
     protected authService: AuthService
   ) {
+    // force language initialization to avoid double authentication.
+    this.loadAndChangeLanguage(getCurrentCulture(), false);
     this.currentCultureDateFormat$.subscribe(dateFormat => {
       DatePicker.prototype.getDateFormat = () => dateFormat.primeDateFormat;
     });
@@ -110,12 +115,10 @@ export class BiaTranslationService {
     this.translate.setTranslation(data[TRANSLATION_LANG_KEY], data, true);
   }
 
-  protected currentCulture = 'None';
-  protected currentLanguage = 'None';
   // Because we add some translations (registerLocaleData), ngx-translate doesn't modules translations
   // So we need to call getTranslation manually
   // NOTE: Check if it's still usefull
-  loadAndChangeLanguage(culture: string, defaultLang?: string) {
+  loadAndChangeLanguage(culture: string, reLoginIfRequiered = true) {
     if (this.currentCulture !== culture) {
       const lang = culture.split('-')[0];
       this.currentCulture = culture;
@@ -126,26 +129,12 @@ export class BiaTranslationService {
           translationLoaders$.push(translateService.getTranslation(lang));
         }
       }
-      if (
-        defaultLang &&
-        defaultLang !== lang &&
-        !this.translationsLoaded[defaultLang]
-      ) {
-        for (const translateService2 of translateServices) {
-          translationLoaders$.push(
-            translateService2.getTranslation(defaultLang)
-          );
-        }
-      }
       let lang$: Observable<any> = of(undefined);
       if (translationLoaders$.length) {
-        lang$ = this.loadTranslations(translationLoaders$, lang, defaultLang);
+        lang$ = this.loadTranslations(translationLoaders$, lang);
       }
       lang$.subscribe(() => {
         this.translate.use(lang);
-        if (defaultLang) {
-          this.translate.setDefaultLang(defaultLang);
-        }
         try {
           localStorage.setItem(STORAGE_CULTURE_KEY, culture);
         } catch (err) {
@@ -158,7 +147,7 @@ export class BiaTranslationService {
         .subscribe(res => this.primeNgConfig.setTranslation(res));
       if (this.currentLanguage !== lang) {
         this.currentLanguage = lang;
-        this.authService.reLogin();
+        if (reLoginIfRequiered) this.authService.reLogin();
       }
     }
   }
@@ -193,15 +182,15 @@ export class BiaTranslationService {
     let dateFormat = 'yyyy-MM-dd';
     let timeFormat = 'HH:mm';
     let timeFormatSec = 'HH:mm:ss';
-    if (appSettings != null) {
+    if (appSettings) {
       let culture;
 
-      if (code == null) {
+      if (code === null) {
         culture = appSettings.cultures.filter(
           c => c.acceptedCodes.indexOf('default') > -1
         )[0];
       }
-      if (culture == null) {
+      if (culture === null) {
         culture = appSettings.cultures.filter(c => c.code === code)[0];
       }
 
@@ -233,16 +222,16 @@ export class BiaTranslationService {
     appSettings: AppSettings | null
   ): number {
     let languageId = 0;
-    if (appSettings != null) {
+    if (appSettings) {
       let culture;
 
-      if (code == null) {
+      if (code === null) {
         culture = appSettings.cultures.filter(
           c => c.acceptedCodes.indexOf('default') > -1
         )[0];
       }
 
-      if (culture == null) {
+      if (culture === null) {
         culture = appSettings.cultures.filter(c => c.code === code)[0];
       }
 

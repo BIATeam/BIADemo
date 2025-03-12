@@ -251,6 +251,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// The right to save planes.
             /// </summary>
             public const string Save = "Plane_Save";
+
+            /// <summary>
+            /// The right to fixe planes.
+            /// </summary>
+            public const string Fix = "Plane_Fix";
         }
 
         // BIAToolKit - End Partial Rights Plane

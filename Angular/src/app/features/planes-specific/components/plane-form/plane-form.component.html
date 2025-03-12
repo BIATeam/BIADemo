@@ -3,8 +3,12 @@
   [fields]="fields"
   [formValidators]="formValidators"
   [dictOptionDtos]="dictOptionDtos"
+  [disableSubmitButton]="isEditingEngines"
+  [showSubmitButton]="showSubmitButton"
+  [formReadOnlyMode]="formReadOnlyMode"
   (save)="onSave($event)"
-  (cancel)="onCancel()">
+  (cancelled)="onCancel()"
+  (readOnlyChanged)="onReadOnlyChanged($event)">
   <ng-template pTemplate="specificInput" let-field="field" let-form="form">
     <div [formGroup]="form">
       <ng-container [ngSwitch]="field.field">
@@ -43,6 +47,7 @@
         <app-engine-specific-table
           [elements]="displayedEngines()"
           [configuration]="engineCrudConfig"
+          [columnToDisplays]="engineColumnsToDisplay"
           [dictOptionDtos]="[]"
           [totalRecord]="crudItem?.engines?.length ?? 0"
           [paginator]="false"
@@ -51,8 +56,10 @@
           [canAdd]="true"
           [canSelectElement]="true"
           [loading]="false"
+          [readOnly]="isEngineTableReadOnly"
           (selectedElementsChanged)="onSelectedEnginesChanged($event)"
-          (save)="onEngineSave($event)" />
+          (save)="onEngineSave($event)"
+          (isEditing)="onIsEditingChange($event)" />
       </span>
     </ng-container>
   </ng-template>

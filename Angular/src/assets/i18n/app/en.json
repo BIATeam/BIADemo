@@ -111,6 +111,7 @@
     "msn": "Msn",
     "planeType": "Plane Type",
     "probability": "Probability",
+    "read": "Plane details",
     "similarTypes": "Similar Planes Types",
     "site": "Airline",
     "syncTime": "Synchronization time",
@@ -122,7 +123,10 @@
     "motorsCount": "Motors count",
     "totalFlightHours": "Total flight hours",
     "fuelCapacity": "Fuel capacity",
-    "originalPrice": "Original price"
+    "originalPrice": "Original price",
+    "groupIdentification": "Identification",
+    "groupStatus": "Status",
+    "groupTracking": "Tracking"
   },
   "planeType": {
     "add": "Add type of planes",

@@ -1,11 +1,16 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
+// Begin BIADemo
 import { Permission } from 'src/app/shared/permission';
+// End BIADemo
 import { EngineTableComponent } from '../../components/engine-table/engine-table.component';
 import { engineCRUDConfiguration } from '../../engine.constants';
 import { Engine } from '../../model/engine';
 import { EngineService } from '../../services/engine.service';
+// Begin BIADemo
+import { filter } from 'rxjs';
+// End BIADemo
 // BIAToolKit - Begin Option
 import { EngineOptionsService } from '../../services/engine-options.service';
 // BIAToolKit - End Option
@@ -21,6 +26,7 @@ export class EnginesIndexComponent
 {
   @ViewChild(EngineTableComponent, { static: false })
   crudItemTableComponent: EngineTableComponent;
+  isParentFixed = false;
 
   constructor(
     protected injector: Injector,
@@ -47,11 +53,30 @@ export class EnginesIndexComponent
     );
     // BIAToolKit - End Option
   }
+  // Begin BIADemo
+  protected async setPermissions() {
+    super.setPermissions();
 
-  protected setPermissions() {
-    this.canEdit = this.authService.hasPermission(Permission.Engine_Update);
-    this.canDelete = this.authService.hasPermission(Permission.Engine_Delete);
-    this.canAdd = this.authService.hasPermission(Permission.Engine_Create);
-    this.canSave = this.authService.hasPermission(Permission.Engine_Save);
+    this.permissionSub.add(
+      this.engineService.planeService.crudItem$
+        .pipe(filter(plane => !!plane && Object.keys(plane).length > 0))
+        .subscribe(plane => {
+          this.isParentFixed = plane.isFixed === true;
+
+          this.canEdit =
+            plane.isFixed === false &&
+            this.authService.hasPermission(Permission.Engine_Update);
+          this.canDelete =
+            plane.isFixed === false &&
+            this.authService.hasPermission(Permission.Engine_Delete);
+          this.canAdd =
+            plane.isFixed === false &&
+            this.authService.hasPermission(Permission.Engine_Create);
+          this.canSave =
+            plane.isFixed === false &&
+            this.authService.hasPermission(Permission.Engine_Save);
+        })
+    );
   }
+  // End BIADemo
 }
