@@ -12,6 +12,18 @@
 }
 
 :host ::ng-deep {
+  p-select {
+    .p-select-label {
+      padding: 0.125rem !important;
+    }
+  }
+
+  p-multiselect {
+    .p-multiselect-label {
+      padding: 0.125rem !important;
+    }
+  }
+
   .bia-btn-del-filter {
     color: $biaRed !important;
   }
@@ -54,7 +66,7 @@ label {
   margin-bottom: 10px;
 }
 
-.p-dropdown-label {
+.p-select-label {
   padding: 0.125rem !important;
 }
 

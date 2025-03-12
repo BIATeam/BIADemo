@@ -11,15 +11,15 @@ import { BadgeModule } from 'primeng/badge';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
-import { InputSwitchModule } from 'primeng/inputswitch';
+import { DrawerModule } from 'primeng/drawer';
 import { InputTextModule } from 'primeng/inputtext';
 import { MegaMenuModule } from 'primeng/megamenu';
 import { MenuModule } from 'primeng/menu';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { RippleModule } from 'primeng/ripple';
-import { SidebarModule } from 'primeng/sidebar';
 import { StyleClassModule } from 'primeng/styleclass';
 import { ToastModule } from 'primeng/toast';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { TooltipModule } from 'primeng/tooltip';
 import { BiaOnlineOfflineIconModule } from '../../bia-online-offline-icon/bia-online-offline-icon.module';
 import { BiaTeamSelectorModule } from '../../bia-team-selector/bia-team-selector.module';
@@ -60,10 +60,10 @@ import { BiaUltimaTopbarComponent } from './topbar/ultima-topbar.component';
     TranslateModule,
     StyleClassModule,
     InputTextModule,
-    SidebarModule,
     BadgeModule,
+    DrawerModule,
     RadioButtonModule,
-    InputSwitchModule,
+    ToggleSwitchModule,
     TooltipModule,
     MegaMenuModule,
     RippleModule,

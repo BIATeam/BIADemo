@@ -212,7 +212,7 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
           this.isInComplexInput !== true &&
           this.getParentComponent(document.activeElement, 'bia-calc-form') ===
             null &&
-          !document.activeElement?.className?.includes('p-dropdown') /*&&
+          !document.activeElement?.className?.includes('p-select') /*&&
           this.getParentComponent(document.activeElement, 'p-datepicker') === null*/
         ) {
           this.initEditableRow(null);

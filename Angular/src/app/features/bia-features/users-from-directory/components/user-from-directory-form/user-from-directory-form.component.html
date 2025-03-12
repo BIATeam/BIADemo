@@ -1,12 +1,11 @@
 <form (submit)="onSubmit()" class="flex flex-column" [formGroup]="form">
-  <div
-    class="p-fluid app-field-container flex flex-column justify-content-start">
+  <p-fluid class="app-field-container flex flex-column justify-content-start">
     <div class="flex flex-row justify-content-center">
       <div class="app-field-container flex-1" style="max-width: 50%">
         <div
           *ngIf="useKeycloak !== true && domains.length > 1"
           class="p-float-label">
-          <p-dropdown
+          <p-select
             [options]="domains"
             placeholder="&nbsp;"
             formControlName="domains"
@@ -14,19 +13,19 @@
             showClear="true"
             (onChange)="onDomainChange($event)"
             [style]="{ width: '100%' }"
-            appendTo="body"></p-dropdown>
+            appendTo="body"></p-select>
           <label>LDAP Domain</label>
         </div>
       </div>
       <div class="app-field-container flex-1" style="max-width: 10%"></div>
       <div class="app-field-container flex-1" style="max-width: 30%">
         <div class="p-float-label">
-          <p-dropdown
+          <p-select
             [options]="returnSizeOptions"
             placeholder="&nbsp;"
             formControlName="returnSize"
             [style]="{ width: '100%' }"
-            appendTo="body"></p-dropdown>
+            appendTo="body"></p-select>
           <label>{{ 'bia.itemsBySearch' | translate }}</label>
         </div>
       </div>
@@ -40,7 +39,7 @@
             [suggestions]="users"
             [delay]="700"
             (completeMethod)="onSearchUsers($event)"
-            [size]="30"
+            size="small"
             [minLength]="3"
             field="displayName"
             [style]="{ width: '100%' }"
@@ -50,7 +49,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </p-fluid>
   <div class="flex flex-row gap-1 justify-content-end">
     <button
       pButton

@@ -1,6 +1,6 @@
 <div class="layout-menu-profile">
-  <button
-    class="p-link"
+  <p-button
+    [link]="true"
     (click)="toggleMenu()"
     pTooltip="Profile"
     [tooltipDisabled]="isTooltipDisabled">
@@ -14,7 +14,7 @@
       <strong>{{ displayName }}</strong>
     </span>
     <i class="layout-menu-profile-toggler pi pi-fw pi-angle-down"></i>
-  </button>
+  </p-button>
 
   <div
     *ngIf="menuProfileActive"
