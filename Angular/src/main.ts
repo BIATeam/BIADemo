@@ -23,17 +23,21 @@ import { LoggerModule, TOKEN_LOGGER_SERVER_SERVICE } from 'ngx-logger';
 import { providePrimeNG } from 'primeng/config';
 import { AppRoutingModule } from './app/app-routing.module';
 import { AppComponent } from './app/app.component';
-import { createTranslateLoader } from './app/app.module';
 import { buildSpecificModules } from './app/build-specifics/bia-build-specifics';
 import { BiaEnvironmentService } from './app/core/bia-core/services/bia-environment.service';
 import { BiaNgxLoggerServerService } from './app/core/bia-core/services/bia-ngx-logger-server.service';
 import { BiaSignalRService } from './app/core/bia-core/services/bia-signalr.service';
+import { BiaTranslateHttpLoader } from './app/core/bia-core/services/bia-translate-http-loader';
 import { getCurrentCulture } from './app/core/bia-core/services/bia-translation.service';
 import { BiaErrorHandler } from './app/core/bia-core/shared/bia-error-handler';
 import { CoreModule } from './app/core/core.module';
 import { HomeModule } from './app/features/home/home.module';
 import { ROOT_REDUCERS, metaReducers } from './app/store/state';
 import { environment } from './environments/environment';
+
+export function createTranslateLoader(http: HttpClient, store: TranslateStore) {
+  return new BiaTranslateHttpLoader(http, store, './assets/i18n/app/');
+}
 
 if (environment.production) {
   enableProdMode();
