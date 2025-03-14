@@ -27,12 +27,26 @@ import { InputText } from 'primeng/inputtext';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-plane-specific-form',
-    templateUrl: 'plane-form.component.html',
-    styleUrls: [
-        '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
-    ],
-    imports: [BiaSharedModule, PrimeTemplate, FormsModule, ReactiveFormsModule, NgSwitch, NgSwitchCase, Checkbox, InputText, NgIf, EngineTableComponent, TranslateModule, BiaFormComponent, BiaTableHeaderComponent]
+  selector: 'app-plane-specific-form',
+  templateUrl: 'plane-form.component.html',
+  styleUrls: [
+    '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
+  ],
+  imports: [
+    BiaSharedModule,
+    PrimeTemplate,
+    FormsModule,
+    ReactiveFormsModule,
+    NgSwitch,
+    NgSwitchCase,
+    Checkbox,
+    InputText,
+    NgIf,
+    EngineTableComponent,
+    TranslateModule,
+    BiaFormComponent,
+    BiaTableHeaderComponent,
+  ],
 })
 export class PlaneFormComponent
   extends CrudItemFormComponent<PlaneSpecific>

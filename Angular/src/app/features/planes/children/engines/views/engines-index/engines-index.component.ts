@@ -25,10 +25,23 @@ import { TranslateModule } from '@ngx-translate/core';
 // BIAToolKit - End Option
 
 @Component({
-    selector: 'app-engines-index',
-    templateUrl: './engines-index.component.html',
-    styleUrls: ['./engines-index.component.scss'],
-    imports: [NgClass, BiaSharedModule, PrimeTemplate, NgIf, ButtonDirective, EngineTableComponent, AsyncPipe, TranslateModule, BiaTableHeaderComponent, BiaTableControllerComponent, BiaTableBehaviorControllerComponent, BiaTableComponent]
+  selector: 'app-engines-index',
+  templateUrl: './engines-index.component.html',
+  styleUrls: ['./engines-index.component.scss'],
+  imports: [
+    NgClass,
+    BiaSharedModule,
+    PrimeTemplate,
+    NgIf,
+    ButtonDirective,
+    EngineTableComponent,
+    AsyncPipe,
+    TranslateModule,
+    BiaTableHeaderComponent,
+    BiaTableControllerComponent,
+    BiaTableBehaviorControllerComponent,
+    BiaTableComponent,
+  ],
 })
 export class EnginesIndexComponent
   extends CrudItemsIndexComponent<Engine>

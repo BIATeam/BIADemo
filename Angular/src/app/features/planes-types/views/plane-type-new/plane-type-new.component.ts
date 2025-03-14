@@ -7,9 +7,9 @@ import { PlaneTypeFormComponent } from '../../components/plane-type-form/plane-t
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'app-plane-type-new',
-    templateUrl: './plane-type-new.component.html',
-    imports: [PlaneTypeFormComponent, AsyncPipe]
+  selector: 'app-plane-type-new',
+  templateUrl: './plane-type-new.component.html',
+  imports: [PlaneTypeFormComponent, AsyncPipe],
 })
 export class PlaneTypeNewComponent extends CrudItemNewComponent<PlaneType> {
   constructor(

@@ -5,11 +5,12 @@ import { Airport } from '../../model/airport';
 import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
-    selector: 'app-airport-form',
-    templateUrl: '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.html',
-    styleUrls: [
-        '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
-    ],
-    imports: [BiaSharedModule, BiaFormComponent]
+  selector: 'app-airport-form',
+  templateUrl:
+    '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.html',
+  styleUrls: [
+    '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
+  ],
+  imports: [BiaSharedModule, BiaFormComponent],
 })
 export class AirportFormComponent extends CrudItemFormComponent<Airport> {}

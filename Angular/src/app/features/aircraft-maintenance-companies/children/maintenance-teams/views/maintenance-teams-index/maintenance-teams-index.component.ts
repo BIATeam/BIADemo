@@ -23,10 +23,25 @@ import { Tooltip } from 'primeng/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-maintenance-teams-index',
-    templateUrl: './maintenance-teams-index.component.html',
-    styleUrls: ['./maintenance-teams-index.component.scss'],
-    imports: [NgIf, BiaSharedModule, NgClass, PrimeTemplate, ButtonDirective, Tooltip, MaintenanceTeamTableComponent, AsyncPipe, TranslateModule, TeamAdvancedFilterComponent, BiaTableHeaderComponent, BiaTableControllerComponent, BiaTableBehaviorControllerComponent, BiaTableComponent]
+  selector: 'app-maintenance-teams-index',
+  templateUrl: './maintenance-teams-index.component.html',
+  styleUrls: ['./maintenance-teams-index.component.scss'],
+  imports: [
+    NgIf,
+    BiaSharedModule,
+    NgClass,
+    PrimeTemplate,
+    ButtonDirective,
+    Tooltip,
+    MaintenanceTeamTableComponent,
+    AsyncPipe,
+    TranslateModule,
+    TeamAdvancedFilterComponent,
+    BiaTableHeaderComponent,
+    BiaTableControllerComponent,
+    BiaTableBehaviorControllerComponent,
+    BiaTableComponent,
+  ],
 })
 export class MaintenanceTeamsIndexComponent
   extends CrudItemsIndexComponent<MaintenanceTeam>

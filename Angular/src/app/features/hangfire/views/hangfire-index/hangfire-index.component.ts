@@ -11,10 +11,10 @@ import { ButtonDirective } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';
 
 @Component({
-    selector: 'app-hangfire-index',
-    templateUrl: './hangfire-index.component.html',
-    styleUrls: ['./hangfire-index.component.scss'],
-    imports: [NgFor, NgIf, ButtonDirective, Tooltip, AsyncPipe]
+  selector: 'app-hangfire-index',
+  templateUrl: './hangfire-index.component.html',
+  styleUrls: ['./hangfire-index.component.scss'],
+  imports: [NgFor, NgIf, ButtonDirective, Tooltip, AsyncPipe],
 })
 export class HangfireIndexComponent {
   @HostBinding('class') classes = 'bia-flex';

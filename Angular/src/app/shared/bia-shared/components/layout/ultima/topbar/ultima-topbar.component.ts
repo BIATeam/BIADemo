@@ -1,5 +1,14 @@
 import { Platform } from '@angular/cdk/platform';
-import { DOCUMENT, NgIf, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, NgClass, AsyncPipe } from '@angular/common';
+import {
+  DOCUMENT,
+  NgIf,
+  NgFor,
+  NgSwitch,
+  NgSwitchCase,
+  NgSwitchDefault,
+  NgClass,
+  AsyncPipe,
+} from '@angular/common';
 import {
   Component,
   ElementRef,
@@ -39,10 +48,29 @@ import { ButtonDirective } from 'primeng/button';
 import { NotificationTeamWarningComponent } from '../../../notification-team-warning/notification-team-warning.component';
 
 @Component({
-    selector: 'bia-ultima-topbar',
-    templateUrl: './ultima-topbar.component.html',
-    styleUrls: ['./ultima-topbar.component.scss'],
-    imports: [RouterLink, Ripple, NgIf, IeWarningComponent, NgFor, BiaTeamSelectorComponent, Tooltip, BiaOnlineOfflineIconComponent, Toast, PrimeTemplate, NgSwitch, NgSwitchCase, NgSwitchDefault, ButtonDirective, NotificationTeamWarningComponent, NgClass, AsyncPipe, TranslateModule]
+  selector: 'bia-ultima-topbar',
+  templateUrl: './ultima-topbar.component.html',
+  styleUrls: ['./ultima-topbar.component.scss'],
+  imports: [
+    RouterLink,
+    Ripple,
+    NgIf,
+    IeWarningComponent,
+    NgFor,
+    BiaTeamSelectorComponent,
+    Tooltip,
+    BiaOnlineOfflineIconComponent,
+    Toast,
+    PrimeTemplate,
+    NgSwitch,
+    NgSwitchCase,
+    NgSwitchDefault,
+    ButtonDirective,
+    NotificationTeamWarningComponent,
+    NgClass,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class BiaUltimaTopbarComponent implements OnInit, OnDestroy {
   @Input() appTitle: string;

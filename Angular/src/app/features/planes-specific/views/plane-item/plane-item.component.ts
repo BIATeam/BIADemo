@@ -12,12 +12,13 @@ import { NgIf, AsyncPipe } from '@angular/common';
 import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
-    selector: 'app-planes-specific-item',
-    templateUrl: '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
-    styleUrls: [
-        '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
-    ],
-    imports: [RouterOutlet, NgIf, BiaSharedModule, AsyncPipe, SpinnerComponent]
+  selector: 'app-planes-specific-item',
+  templateUrl:
+    '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
+  styleUrls: [
+    '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
+  ],
+  imports: [RouterOutlet, NgIf, BiaSharedModule, AsyncPipe, SpinnerComponent],
 })
 export class PlaneItemComponent
   extends CrudItemItemComponent<Plane>

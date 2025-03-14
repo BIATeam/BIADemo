@@ -9,9 +9,15 @@ import { SiteFormComponent } from '../../components/site-form/site-form.componen
 import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
-    selector: 'app-site-edit',
-    templateUrl: './site-edit.component.html',
-    imports: [NgIf, SiteFormComponent, BiaSharedModule, AsyncPipe, SpinnerComponent]
+  selector: 'app-site-edit',
+  templateUrl: './site-edit.component.html',
+  imports: [
+    NgIf,
+    SiteFormComponent,
+    BiaSharedModule,
+    AsyncPipe,
+    SpinnerComponent,
+  ],
 })
 export class SiteEditComponent extends CrudItemEditComponent<Site> {
   constructor(

@@ -6,7 +6,13 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { FileUpload } from 'primeng/fileupload';
 import { AppSettings } from 'src/app/domains/bia-domains/app-settings/model/app-settings';
 import {
@@ -21,7 +27,12 @@ import { ImportParam } from '../../services/crud-item-import.service';
 import { ButtonDirective } from 'primeng/button';
 import { Select } from 'primeng/select';
 import { Checkbox } from 'primeng/checkbox';
-import { Accordion, AccordionPanel, AccordionHeader, AccordionContent } from 'primeng/accordion';
+import {
+  Accordion,
+  AccordionPanel,
+  AccordionHeader,
+  AccordionContent,
+} from 'primeng/accordion';
 import { Ripple } from 'primeng/ripple';
 import { BiaTableComponent } from '../../../../components/table/bia-table/bia-table.component';
 import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
@@ -33,10 +44,27 @@ interface FormatExample {
 }
 
 @Component({
-    selector: 'bia-crud-item-import-form',
-    templateUrl: './crud-item-import-form.component.html',
-    styleUrls: ['./crud-item-import-form.component.scss'],
-    imports: [FormsModule, ReactiveFormsModule, FileUpload, ButtonDirective, NgIf, Select, Checkbox, Accordion, AccordionPanel, Ripple, AccordionHeader, AccordionContent, BiaTableComponent, NgClass, SpinnerComponent, TranslateModule]
+  selector: 'bia-crud-item-import-form',
+  templateUrl: './crud-item-import-form.component.html',
+  styleUrls: ['./crud-item-import-form.component.scss'],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    FileUpload,
+    ButtonDirective,
+    NgIf,
+    Select,
+    Checkbox,
+    Accordion,
+    AccordionPanel,
+    Ripple,
+    AccordionHeader,
+    AccordionContent,
+    BiaTableComponent,
+    NgClass,
+    SpinnerComponent,
+    TranslateModule,
+  ],
 })
 export class CrudItemImportFormComponent<TDto extends { id: number }> {
   @ViewChild('fileUpload') fileUpload: FileUpload;

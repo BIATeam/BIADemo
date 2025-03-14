@@ -7,10 +7,10 @@ import { NotificationFormComponent } from '../../components/notification-form/no
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'bia-notification-new',
-    templateUrl: './notification-new.component.html',
-    styleUrls: ['./notification-new.component.scss'],
-    imports: [NotificationFormComponent, AsyncPipe]
+  selector: 'bia-notification-new',
+  templateUrl: './notification-new.component.html',
+  styleUrls: ['./notification-new.component.scss'],
+  imports: [NotificationFormComponent, AsyncPipe],
 })
 export class NotificationNewComponent extends CrudItemNewComponent<Notification> {
   constructor(

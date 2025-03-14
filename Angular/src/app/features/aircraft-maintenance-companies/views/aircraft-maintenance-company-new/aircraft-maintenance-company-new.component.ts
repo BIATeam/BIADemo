@@ -7,9 +7,9 @@ import { AircraftMaintenanceCompanyFormComponent } from '../../components/aircra
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'app-aircraft-maintenance-company-new',
-    templateUrl: './aircraft-maintenance-company-new.component.html',
-    imports: [AircraftMaintenanceCompanyFormComponent, AsyncPipe]
+  selector: 'app-aircraft-maintenance-company-new',
+  templateUrl: './aircraft-maintenance-company-new.component.html',
+  imports: [AircraftMaintenanceCompanyFormComponent, AsyncPipe],
 })
 export class AircraftMaintenanceCompanyNewComponent extends CrudItemNewComponent<AircraftMaintenanceCompany> {
   constructor(

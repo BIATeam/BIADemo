@@ -15,9 +15,9 @@ import { SharedModule } from 'primeng/api';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-    selector: 'bia-popup-layout',
-    templateUrl: './popup-layout.component.html',
-    imports: [Dialog, SharedModule, RouterOutlet, TranslateModule]
+  selector: 'bia-popup-layout',
+  templateUrl: './popup-layout.component.html',
+  imports: [Dialog, SharedModule, RouterOutlet, TranslateModule],
 })
 export class PopupLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('dynamic', {

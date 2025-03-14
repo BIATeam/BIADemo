@@ -9,9 +9,10 @@ import { CrudItemImportFormComponent } from '../../../crud-items/components/crud
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'bia-member-import',
-    templateUrl: '../../../crud-items/views/crud-item-import/crud-item-import.component.html',
-    imports: [BiaFormComponent, CrudItemImportFormComponent, AsyncPipe]
+  selector: 'bia-member-import',
+  templateUrl:
+    '../../../crud-items/views/crud-item-import/crud-item-import.component.html',
+  imports: [BiaFormComponent, CrudItemImportFormComponent, AsyncPipe],
 })
 export class MemberImportComponent extends CrudItemImportComponent<Member> {
   constructor(

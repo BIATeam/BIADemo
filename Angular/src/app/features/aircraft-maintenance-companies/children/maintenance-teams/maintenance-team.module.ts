@@ -107,9 +107,12 @@ export const ROUTES: Routes = [
 ];
 
 @NgModule({
-    imports: [
+  imports: [
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(maintenanceTeamCRUDConfiguration.storeKey, FeatureMaintenanceTeamsStore.reducers),
+    StoreModule.forFeature(
+      maintenanceTeamCRUDConfiguration.storeKey,
+      FeatureMaintenanceTeamsStore.reducers
+    ),
     EffectsModule.forFeature([MaintenanceTeamsEffects]),
     // TODO after creation of CRUD Team MaintenanceTeam : select the optioDto dommain module required for link
     // Domain Modules:
@@ -127,6 +130,6 @@ export const ROUTES: Routes = [
     MaintenanceTeamEditComponent,
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     MaintenanceTeamTableComponent,
-],
+  ],
 })
 export class MaintenanceTeamModule {}

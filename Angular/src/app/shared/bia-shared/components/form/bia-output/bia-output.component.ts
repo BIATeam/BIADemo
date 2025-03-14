@@ -13,7 +13,13 @@ import { PrimeTemplate } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { BiaFieldConfig } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { BiaFieldBaseComponent } from '../bia-field-base/bia-field-base.component';
-import { NgIf, NgTemplateOutlet, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
+import {
+  NgIf,
+  NgTemplateOutlet,
+  NgSwitch,
+  NgSwitchCase,
+  NgSwitchDefault,
+} from '@angular/common';
 import { InputText } from 'primeng/inputtext';
 import { TranslateModule } from '@ngx-translate/core';
 import { PluckPipe } from '../../../pipes/pluck.pipe';
@@ -21,11 +27,22 @@ import { JoinPipe } from '../../../pipes/join.pipe';
 import { FormatValuePipe } from '../../../pipes/format-value.pipe';
 
 @Component({
-    selector: 'bia-output',
-    templateUrl: './bia-output.component.html',
-    styleUrls: ['./bia-output.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Default,
-    imports: [NgIf, NgTemplateOutlet, NgSwitch, InputText, NgSwitchCase, NgSwitchDefault, TranslateModule, PluckPipe, JoinPipe, FormatValuePipe]
+  selector: 'bia-output',
+  templateUrl: './bia-output.component.html',
+  styleUrls: ['./bia-output.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
+  imports: [
+    NgIf,
+    NgTemplateOutlet,
+    NgSwitch,
+    InputText,
+    NgSwitchCase,
+    NgSwitchDefault,
+    TranslateModule,
+    PluckPipe,
+    JoinPipe,
+    FormatValuePipe,
+  ],
 })
 export class BiaOutputComponent<CrudItem>
   extends BiaFieldBaseComponent<CrudItem>

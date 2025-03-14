@@ -22,10 +22,10 @@ export interface BiaBehaviorIcon {
 }
 
 @Component({
-    selector: 'bia-table-behavior-controller',
-    templateUrl: './bia-table-behavior-controller.component.html',
-    styleUrls: ['./bia-table-behavior-controller.component.scss'],
-    imports: [Tooltip, NgIf, Popover, NgFor, TranslateModule]
+  selector: 'bia-table-behavior-controller',
+  templateUrl: './bia-table-behavior-controller.component.html',
+  styleUrls: ['./bia-table-behavior-controller.component.scss'],
+  imports: [Tooltip, NgIf, Popover, NgFor, TranslateModule],
 })
 export class BiaTableBehaviorControllerComponent<TDto extends { id: number }>
   implements OnInit, OnDestroy

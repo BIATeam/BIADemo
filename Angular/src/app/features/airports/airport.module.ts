@@ -89,9 +89,12 @@ export const ROUTES: Routes = [
 ];
 
 @NgModule({
-    imports: [
+  imports: [
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(airportCRUDConfiguration.storeKey, FeatureAirportsStore.reducers),
+    StoreModule.forFeature(
+      airportCRUDConfiguration.storeKey,
+      FeatureAirportsStore.reducers
+    ),
     EffectsModule.forFeature([AirportsEffects]),
     AirportItemComponent,
     AirportsIndexComponent,
@@ -102,6 +105,6 @@ export const ROUTES: Routes = [
     AirportEditComponent,
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     AirportTableComponent,
-],
+  ],
 })
 export class AirportModule {}

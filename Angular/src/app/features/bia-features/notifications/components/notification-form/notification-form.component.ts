@@ -6,7 +6,14 @@ import {
   OnChanges,
   Output,
 } from '@angular/core';
-import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
@@ -36,11 +43,34 @@ import { InputTextarea } from 'primeng/inputtextarea';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-    selector: 'bia-notification-form',
-    templateUrl: './notification-form.component.html',
-    styleUrls: ['./notification-form.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Default,
-    imports: [FormsModule, ReactiveFormsModule, Fieldset, Tabs, TabList, Ripple, Tab, NgFor, NgIf, TabPanels, TabPanel, InputText, ButtonDirective, PrimeTemplate, Select, Checkbox, DatePicker, TableModule, Tooltip, MultiSelect, InputTextarea, TranslateModule]
+  selector: 'bia-notification-form',
+  templateUrl: './notification-form.component.html',
+  styleUrls: ['./notification-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    Fieldset,
+    Tabs,
+    TabList,
+    Ripple,
+    Tab,
+    NgFor,
+    NgIf,
+    TabPanels,
+    TabPanel,
+    InputText,
+    ButtonDirective,
+    PrimeTemplate,
+    Select,
+    Checkbox,
+    DatePicker,
+    TableModule,
+    Tooltip,
+    MultiSelect,
+    InputTextarea,
+    TranslateModule,
+  ],
 })
 export class NotificationFormComponent implements OnChanges {
   @Input() notification: Notification = <Notification>{};

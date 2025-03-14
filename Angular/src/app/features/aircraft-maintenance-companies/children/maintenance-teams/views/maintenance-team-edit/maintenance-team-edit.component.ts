@@ -12,9 +12,15 @@ import { MaintenanceTeamFormComponent } from '../../components/maintenance-team-
 import { BiaSharedModule } from '../../../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
-    selector: 'app-maintenance-team-edit',
-    templateUrl: './maintenance-team-edit.component.html',
-    imports: [NgIf, MaintenanceTeamFormComponent, BiaSharedModule, AsyncPipe, SpinnerComponent]
+  selector: 'app-maintenance-team-edit',
+  templateUrl: './maintenance-team-edit.component.html',
+  imports: [
+    NgIf,
+    MaintenanceTeamFormComponent,
+    BiaSharedModule,
+    AsyncPipe,
+    SpinnerComponent,
+  ],
 })
 export class MaintenanceTeamEditComponent
   extends CrudItemEditComponent<MaintenanceTeam>

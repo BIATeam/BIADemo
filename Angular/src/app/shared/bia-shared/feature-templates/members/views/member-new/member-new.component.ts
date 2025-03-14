@@ -11,9 +11,9 @@ import { MemberFormNewComponent } from '../../components/member-form-new/member-
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'bia-member-new',
-    templateUrl: './member-new.component.html',
-    imports: [MemberFormNewComponent, AsyncPipe]
+  selector: 'bia-member-new',
+  templateUrl: './member-new.component.html',
+  imports: [MemberFormNewComponent, AsyncPipe],
 })
 export class MemberNewComponent
   extends CrudItemNewComponent<Member>

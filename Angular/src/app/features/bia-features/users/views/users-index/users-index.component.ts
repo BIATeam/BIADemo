@@ -22,10 +22,24 @@ import { UserAddFromLdapComponent } from '../../../users-from-directory/views/us
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-    selector: 'bia-users-index',
-    templateUrl: './users-index.component.html',
-    styleUrls: ['./users-index.component.scss'],
-    imports: [NgClass, BiaSharedModule, PrimeTemplate, NgIf, ButtonDirective, UserTableComponent, UserAddFromLdapComponent, AsyncPipe, TranslateModule, BiaTableHeaderComponent, BiaTableControllerComponent, BiaTableBehaviorControllerComponent, BiaTableComponent]
+  selector: 'bia-users-index',
+  templateUrl: './users-index.component.html',
+  styleUrls: ['./users-index.component.scss'],
+  imports: [
+    NgClass,
+    BiaSharedModule,
+    PrimeTemplate,
+    NgIf,
+    ButtonDirective,
+    UserTableComponent,
+    UserAddFromLdapComponent,
+    AsyncPipe,
+    TranslateModule,
+    BiaTableHeaderComponent,
+    BiaTableControllerComponent,
+    BiaTableBehaviorControllerComponent,
+    BiaTableComponent,
+  ],
 })
 export class UsersIndexComponent
   extends CrudItemsIndexComponent<User>

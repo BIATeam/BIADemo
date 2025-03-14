@@ -1,5 +1,10 @@
 import { Component, OnChanges } from '@angular/core';
-import { UntypedFormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
@@ -9,7 +14,15 @@ import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { PropType } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
-import { NgIf, NgFor, NgSwitch, NgClass, NgTemplateOutlet, NgStyle, AsyncPipe } from '@angular/common';
+import {
+  NgIf,
+  NgFor,
+  NgSwitch,
+  NgClass,
+  NgTemplateOutlet,
+  NgStyle,
+  AsyncPipe,
+} from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { PrimeTemplate } from 'primeng/api';
 import { Tooltip } from 'primeng/tooltip';
@@ -20,12 +33,32 @@ import { Skeleton } from 'primeng/skeleton';
 import { BiaTableFooterControllerComponent } from '../../../../components/table/bia-table-footer-controller/bia-table-footer-controller.component';
 
 @Component({
-    selector: 'bia-crud-item-table',
-    templateUrl: '../../../../components/table/bia-calc-table/bia-calc-table.component.html',
-    styleUrls: [
-        '../../../../components/table/bia-calc-table/bia-calc-table.component.scss',
-    ],
-    imports: [FormsModule, ReactiveFormsModule, NgIf, TableModule, PrimeTemplate, NgFor, Tooltip, NgSwitch, BiaTableFilterComponent, NgClass, BiaTableInputComponent, NgTemplateOutlet, BiaTableOutputComponent, Skeleton, NgStyle, BiaTableFooterControllerComponent, AsyncPipe, TranslateModule]
+  selector: 'bia-crud-item-table',
+  templateUrl:
+    '../../../../components/table/bia-calc-table/bia-calc-table.component.html',
+  styleUrls: [
+    '../../../../components/table/bia-calc-table/bia-calc-table.component.scss',
+  ],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    NgIf,
+    TableModule,
+    PrimeTemplate,
+    NgFor,
+    Tooltip,
+    NgSwitch,
+    BiaTableFilterComponent,
+    NgClass,
+    BiaTableInputComponent,
+    NgTemplateOutlet,
+    BiaTableOutputComponent,
+    Skeleton,
+    NgStyle,
+    BiaTableFooterControllerComponent,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class CrudItemTableComponent<CrudItem extends BaseDto>
   extends BiaCalcTableComponent<CrudItem>

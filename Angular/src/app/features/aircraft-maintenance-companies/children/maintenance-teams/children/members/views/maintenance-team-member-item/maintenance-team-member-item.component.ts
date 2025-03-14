@@ -6,12 +6,13 @@ import { NgIf, AsyncPipe } from '@angular/common';
 import { BiaSharedModule } from '../../../../../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
-    selector: 'app-maintenance-team-members-item',
-    templateUrl: '../../../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
-    styleUrls: [
-        '../../../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
-    ],
-    imports: [RouterOutlet, NgIf, BiaSharedModule, AsyncPipe, SpinnerComponent]
+  selector: 'app-maintenance-team-members-item',
+  templateUrl:
+    '../../../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
+  styleUrls: [
+    '../../../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
+  ],
+  imports: [RouterOutlet, NgIf, BiaSharedModule, AsyncPipe, SpinnerComponent],
 })
 export class MaintenanceTeamMemberItemComponent extends MemberItemComponent {
   constructor(injector: Injector) {

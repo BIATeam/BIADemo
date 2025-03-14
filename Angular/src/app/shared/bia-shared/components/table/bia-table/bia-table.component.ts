@@ -30,7 +30,15 @@ import { BiaTableState } from '../../../model/bia-table-state';
 import { KeyValuePair } from '../../../model/key-value-pair';
 import { TableHelperService } from '../../../services/table-helper.service';
 import { DictOptionDto } from './dict-option-dto';
-import { NgIf, NgFor, NgSwitch, NgClass, NgTemplateOutlet, NgStyle, AsyncPipe } from '@angular/common';
+import {
+  NgIf,
+  NgFor,
+  NgSwitch,
+  NgClass,
+  NgTemplateOutlet,
+  NgStyle,
+  AsyncPipe,
+} from '@angular/common';
 import { Tooltip } from 'primeng/tooltip';
 import { BiaTableFilterComponent } from '../bia-table-filter/bia-table-filter.component';
 import { BiaTableOutputComponent } from '../bia-table-output/bia-table-output.component';
@@ -48,10 +56,26 @@ const arraysEqual = (a1: any, a2: any) =>
     a1.every((o: any, idx: any) => objectsEqual(o, a2[idx])));
 
 @Component({
-    selector: 'bia-table',
-    templateUrl: './bia-table.component.html',
-    styleUrls: ['./bia-table.component.scss'],
-    imports: [NgIf, TableModule, PrimeTemplate, NgFor, Tooltip, NgSwitch, BiaTableFilterComponent, NgClass, BiaTableOutputComponent, NgTemplateOutlet, Skeleton, NgStyle, BiaTableFooterControllerComponent, AsyncPipe, TranslateModule]
+  selector: 'bia-table',
+  templateUrl: './bia-table.component.html',
+  styleUrls: ['./bia-table.component.scss'],
+  imports: [
+    NgIf,
+    TableModule,
+    PrimeTemplate,
+    NgFor,
+    Tooltip,
+    NgSwitch,
+    BiaTableFilterComponent,
+    NgClass,
+    BiaTableOutputComponent,
+    NgTemplateOutlet,
+    Skeleton,
+    NgStyle,
+    BiaTableFooterControllerComponent,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class BiaTableComponent<TDto extends { id: number }>
   implements OnChanges, AfterContentInit, AfterViewInit

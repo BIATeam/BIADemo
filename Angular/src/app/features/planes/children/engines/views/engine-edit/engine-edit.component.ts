@@ -16,9 +16,15 @@ import { BiaSharedModule } from '../../../../../../shared/bia-shared/bia-shared.
 // BIAToolKit - End Option
 
 @Component({
-    selector: 'app-engine-edit',
-    templateUrl: './engine-edit.component.html',
-    imports: [NgIf, EngineFormComponent, BiaSharedModule, AsyncPipe, SpinnerComponent]
+  selector: 'app-engine-edit',
+  templateUrl: './engine-edit.component.html',
+  imports: [
+    NgIf,
+    EngineFormComponent,
+    BiaSharedModule,
+    AsyncPipe,
+    SpinnerComponent,
+  ],
 })
 export class EngineEditComponent
   extends CrudItemEditComponent<Engine>

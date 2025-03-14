@@ -3,7 +3,13 @@ import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
-import { NgModule, Optional, SkipSelf, inject, provideAppInitializer } from '@angular/core';
+import {
+  NgModule,
+  Optional,
+  SkipSelf,
+  inject,
+  provideAppInitializer,
+} from '@angular/core';
 
 // PrimeNG Services
 import { MessageService } from 'primeng/api';
@@ -70,9 +76,9 @@ const BASE_HREF = [
     ...SERVICES,
     ...BASE_HREF,
     provideAppInitializer(() => {
-        const initializerFn = (initializeApp)(inject(BiaAppInitService));
-        return initializerFn();
-      }),
+      const initializerFn = initializeApp(inject(BiaAppInitService));
+      return initializerFn();
+    }),
     provideHttpClient(withInterceptorsFromDi()),
   ],
 })

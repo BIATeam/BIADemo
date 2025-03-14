@@ -26,8 +26,8 @@ import { CrudConfig } from '../../model/crud-config';
 import { CrudItemService } from '../../services/crud-item.service';
 
 @Component({
-    template: '',
-    standalone: false
+  template: '',
+  standalone: false,
 })
 export abstract class CrudItemImportComponent<CrudItem extends BaseDto>
   implements OnInit, AfterViewInit, OnDestroy

@@ -19,10 +19,24 @@ import { ButtonDirective } from 'primeng/button';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-sites-index',
-    templateUrl: './sites-index.component.html',
-    styleUrls: ['./sites-index.component.scss'],
-    imports: [NgIf, BiaSharedModule, NgClass, PrimeTemplate, ButtonDirective, SiteTableComponent, AsyncPipe, TranslateModule, TeamAdvancedFilterComponent, BiaTableHeaderComponent, BiaTableControllerComponent, BiaTableBehaviorControllerComponent, BiaTableComponent]
+  selector: 'app-sites-index',
+  templateUrl: './sites-index.component.html',
+  styleUrls: ['./sites-index.component.scss'],
+  imports: [
+    NgIf,
+    BiaSharedModule,
+    NgClass,
+    PrimeTemplate,
+    ButtonDirective,
+    SiteTableComponent,
+    AsyncPipe,
+    TranslateModule,
+    TeamAdvancedFilterComponent,
+    BiaTableHeaderComponent,
+    BiaTableControllerComponent,
+    BiaTableBehaviorControllerComponent,
+    BiaTableComponent,
+  ],
 })
 export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
   // Custo for teams

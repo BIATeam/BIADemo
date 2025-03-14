@@ -91,9 +91,12 @@ export const ROUTES: Routes = [
 ];
 
 @NgModule({
-    imports: [
+  imports: [
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(planeCRUDConfiguration.storeKey, FeaturePlanesStore.reducers),
+    StoreModule.forFeature(
+      planeCRUDConfiguration.storeKey,
+      FeaturePlanesStore.reducers
+    ),
     EffectsModule.forFeature([PlanesEffects]),
     // Domain Modules:
     AirportOptionModule,
@@ -109,6 +112,6 @@ export const ROUTES: Routes = [
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     PlaneTableComponent,
     EngineTableComponent,
-],
+  ],
 })
 export class PlaneModule {}

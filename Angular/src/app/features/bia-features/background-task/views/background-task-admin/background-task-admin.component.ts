@@ -5,10 +5,10 @@ import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-transl
 import { BiaSharedModule } from '../../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
-    selector: 'bia-background-task-admin',
-    templateUrl: './background-task-admin.component.html',
-    styleUrls: ['./background-task-admin.component.scss'],
-    imports: [BiaSharedModule, HangfireContainerComponent]
+  selector: 'bia-background-task-admin',
+  templateUrl: './background-task-admin.component.html',
+  styleUrls: ['./background-task-admin.component.scss'],
+  imports: [BiaSharedModule, HangfireContainerComponent],
 })
 export class BackgroundTaskAdminComponent implements OnInit, OnDestroy {
   @HostBinding('class') classes = 'bia-flex';

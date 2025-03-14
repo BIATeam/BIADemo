@@ -9,10 +9,16 @@ import { NotificationFormComponent } from '../../components/notification-form/no
 import { BiaSharedModule } from '../../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
-    selector: 'bia-notification-edit',
-    templateUrl: './notification-edit.component.html',
-    styleUrls: ['./notification-edit.component.scss'],
-    imports: [NgIf, NotificationFormComponent, BiaSharedModule, AsyncPipe, SpinnerComponent]
+  selector: 'bia-notification-edit',
+  templateUrl: './notification-edit.component.html',
+  styleUrls: ['./notification-edit.component.scss'],
+  imports: [
+    NgIf,
+    NotificationFormComponent,
+    BiaSharedModule,
+    AsyncPipe,
+    SpinnerComponent,
+  ],
 })
 export class NotificationEditComponent extends CrudItemEditComponent<Notification> {
   constructor(

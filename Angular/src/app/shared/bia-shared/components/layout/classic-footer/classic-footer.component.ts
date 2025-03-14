@@ -5,11 +5,11 @@ import { NgIf, AsyncPipe } from '@angular/common';
 import { CdkPortalOutlet } from '@angular/cdk/portal';
 
 @Component({
-    selector: 'bia-classic-footer',
-    templateUrl: './classic-footer.component.html',
-    styleUrls: ['./classic-footer.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Default,
-    imports: [NgIf, CdkPortalOutlet, AsyncPipe]
+  selector: 'bia-classic-footer',
+  templateUrl: './classic-footer.component.html',
+  styleUrls: ['./classic-footer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
+  imports: [NgIf, CdkPortalOutlet, AsyncPipe],
 })
 export class ClassicFooterComponent {
   @Input() companyName: string;

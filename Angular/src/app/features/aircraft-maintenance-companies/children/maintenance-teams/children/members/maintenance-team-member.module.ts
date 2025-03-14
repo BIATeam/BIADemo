@@ -71,9 +71,13 @@ const ROUTES: Routes = [
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(ROUTES), MemberModule, MaintenanceTeamMemberItemComponent,
+  imports: [
+    RouterModule.forChild(ROUTES),
+    MemberModule,
+    MaintenanceTeamMemberItemComponent,
     MaintenanceTeamMembersIndexComponent,
     MaintenanceTeamMemberNewComponent,
-    MaintenanceTeamMemberEditComponent],
+    MaintenanceTeamMemberEditComponent,
+  ],
 })
 export class MaintenanceTeamMemberModule {}

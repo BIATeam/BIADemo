@@ -8,9 +8,9 @@ import { SiteFormComponent } from '../../components/site-form/site-form.componen
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'app-site-new',
-    templateUrl: './site-new.component.html',
-    imports: [SiteFormComponent, AsyncPipe]
+  selector: 'app-site-new',
+  templateUrl: './site-new.component.html',
+  imports: [SiteFormComponent, AsyncPipe],
 })
 export class SiteNewComponent extends CrudItemNewComponent<Site> {
   constructor(

@@ -18,10 +18,18 @@ import { ConfirmDialog } from 'primeng/confirmdialog';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-    selector: 'bia-view-user-table',
-    templateUrl: './view-user-table.component.html',
-    styleUrls: ['./view-user-table.component.scss'],
-    imports: [NgIf, ButtonDirective, Tooltip, TableModule, PrimeTemplate, ConfirmDialog, TranslateModule]
+  selector: 'bia-view-user-table',
+  templateUrl: './view-user-table.component.html',
+  styleUrls: ['./view-user-table.component.scss'],
+  imports: [
+    NgIf,
+    ButtonDirective,
+    Tooltip,
+    TableModule,
+    PrimeTemplate,
+    ConfirmDialog,
+    TranslateModule,
+  ],
 })
 export class ViewUserTableComponent implements OnChanges {
   @Input() views: View[];

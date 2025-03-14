@@ -12,10 +12,10 @@ import { CrudItemFormComponent } from '../../components/crud-item-form/crud-item
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'bia-crud-item-new',
-    templateUrl: './crud-item-new.component.html',
-    styleUrls: ['./crud-item-new.component.scss'],
-    imports: [CrudItemFormComponent, AsyncPipe]
+  selector: 'bia-crud-item-new',
+  templateUrl: './crud-item-new.component.html',
+  styleUrls: ['./crud-item-new.component.scss'],
+  imports: [CrudItemFormComponent, AsyncPipe],
 })
 export class CrudItemNewComponent<CrudItem extends BaseDto>
   implements OnInit, OnDestroy

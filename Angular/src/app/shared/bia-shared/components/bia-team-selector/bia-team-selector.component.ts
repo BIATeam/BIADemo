@@ -27,11 +27,11 @@ import { Tooltip } from 'primeng/tooltip';
 import { MultiSelect } from 'primeng/multiselect';
 
 @Component({
-    selector: 'bia-team-selector',
-    templateUrl: './bia-team-selector.component.html',
-    styleUrls: ['./bia-team-selector.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Default,
-    imports: [NgIf, Select, FormsModule, Tooltip, MultiSelect, TranslateModule]
+  selector: 'bia-team-selector',
+  templateUrl: './bia-team-selector.component.html',
+  styleUrls: ['./bia-team-selector.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
+  imports: [NgIf, Select, FormsModule, Tooltip, MultiSelect, TranslateModule],
 })
 export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
   @Input() teamType: any;

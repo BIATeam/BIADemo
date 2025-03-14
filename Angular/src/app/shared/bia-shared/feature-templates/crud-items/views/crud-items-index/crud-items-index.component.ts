@@ -45,14 +45,18 @@ import { CrudItemService } from '../../services/crud-item.service';
   selector: 'bia-crud-items-index',
   templateUrl: './crud-items-index.component.html',
   styleUrls: ['./crud-items-index.component.scss'],
-  imports: [NgClass,
+  imports: [
+    NgClass,
     BiaTableHeaderComponent,
     PrimeTemplate,
     BiaTableBehaviorControllerComponent,
     NgIf,
     CrudItemTableComponent,
     AsyncPipe,
-    TranslateModule, BiaTableControllerComponent, BiaTableComponent],
+    TranslateModule,
+    BiaTableControllerComponent,
+    BiaTableComponent,
+  ],
 })
 export class CrudItemsIndexComponent<
     ListCrudItem extends BaseDto,

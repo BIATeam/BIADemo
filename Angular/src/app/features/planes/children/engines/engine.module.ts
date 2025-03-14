@@ -10,7 +10,6 @@ import {
   LayoutMode,
 } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 
-
 import { Permission } from 'src/app/shared/permission';
 
 import { EngineFormComponent } from './components/engine-form/engine-form.component';
@@ -98,9 +97,12 @@ export const ROUTES: Routes = [
 ];
 
 @NgModule({
-    imports: [
+  imports: [
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(engineCRUDConfiguration.storeKey, FeatureEnginesStore.reducers),
+    StoreModule.forFeature(
+      engineCRUDConfiguration.storeKey,
+      FeatureEnginesStore.reducers
+    ),
     EffectsModule.forFeature([EnginesEffects]),
     // TODO after creation of CRUD Engine : select the optioDto dommain module required for link
     // Domain Modules:
@@ -115,6 +117,6 @@ export const ROUTES: Routes = [
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     EngineTableComponent,
     EngineImportComponent,
-],
+  ],
 })
 export class EngineModule {}

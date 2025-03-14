@@ -7,7 +7,12 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  Router,
+  RouterOutlet,
+} from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { MenuItem } from 'primeng/api';
@@ -33,10 +38,20 @@ import { NgClass, NgIf, AsyncPipe } from '@angular/common';
 import { Breadcrumb } from 'primeng/breadcrumb';
 
 @Component({
-    selector: 'bia-ultima-layout',
-    templateUrl: './ultima-layout.component.html',
-    styleUrls: ['./ultima-layout.component.scss'],
-    imports: [NgClass, BiaUltimaTopbarComponent, BiaUltimaSidebarComponent, NgIf, Breadcrumb, RouterOutlet, BiaUltimaFooterComponent, AsyncPipe, TranslateModule]
+  selector: 'bia-ultima-layout',
+  templateUrl: './ultima-layout.component.html',
+  styleUrls: ['./ultima-layout.component.scss'],
+  imports: [
+    NgClass,
+    BiaUltimaTopbarComponent,
+    BiaUltimaSidebarComponent,
+    NgIf,
+    Breadcrumb,
+    RouterOutlet,
+    BiaUltimaFooterComponent,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
   @HostBinding('class.no-margin') noMargin = false;

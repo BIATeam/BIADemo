@@ -13,10 +13,10 @@ import { NgIf, AsyncPipe } from '@angular/common';
 import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
-    selector: 'app-planes-item',
-    templateUrl: './plane-item.component.html',
-    styleUrls: ['./plane-item.component.scss'],
-    imports: [RouterOutlet, NgIf, BiaSharedModule, AsyncPipe, SpinnerComponent]
+  selector: 'app-planes-item',
+  templateUrl: './plane-item.component.html',
+  styleUrls: ['./plane-item.component.scss'],
+  imports: [RouterOutlet, NgIf, BiaSharedModule, AsyncPipe, SpinnerComponent],
 })
 export class PlaneItemComponent implements OnInit, OnDestroy {
   plane$: Observable<Plane>;

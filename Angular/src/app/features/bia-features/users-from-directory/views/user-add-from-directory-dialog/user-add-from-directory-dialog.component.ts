@@ -16,10 +16,16 @@ import { AsyncPipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-    selector: 'bia-user-add-from-directory-dialog',
-    templateUrl: './user-add-from-directory-dialog.component.html',
-    styleUrls: ['./user-add-from-directory-dialog.component.scss'],
-    imports: [Dialog, SharedModule, UserFromLdapFormComponent, AsyncPipe, TranslateModule]
+  selector: 'bia-user-add-from-directory-dialog',
+  templateUrl: './user-add-from-directory-dialog.component.html',
+  styleUrls: ['./user-add-from-directory-dialog.component.scss'],
+  imports: [
+    Dialog,
+    SharedModule,
+    UserFromLdapFormComponent,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class UserAddFromLdapComponent implements OnInit {
   _display = false;

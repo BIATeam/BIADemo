@@ -102,9 +102,12 @@ export const ROUTES: Routes = [
 ];
 
 @NgModule({
-    imports: [
+  imports: [
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(siteCRUDConfiguration.storeKey, FeatureSitesStore.reducers),
+    StoreModule.forFeature(
+      siteCRUDConfiguration.storeKey,
+      FeatureSitesStore.reducers
+    ),
     EffectsModule.forFeature([SitesEffects]),
     SiteItemComponent,
     SitesIndexComponent,
@@ -115,6 +118,6 @@ export const ROUTES: Routes = [
     SiteEditComponent,
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     SiteTableComponent,
-],
+  ],
 })
 export class SiteModule {}

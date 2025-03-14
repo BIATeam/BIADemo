@@ -14,10 +14,17 @@ import { Select } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'bia-table-footer-controller',
-    templateUrl: './bia-table-footer-controller.component.html',
-    styleUrls: ['./bia-table-footer-controller.component.scss'],
-    imports: [NgIf, Select, FormsModule, DecimalPipe, I18nPluralPipe, TranslateModule]
+  selector: 'bia-table-footer-controller',
+  templateUrl: './bia-table-footer-controller.component.html',
+  styleUrls: ['./bia-table-footer-controller.component.scss'],
+  imports: [
+    NgIf,
+    Select,
+    FormsModule,
+    DecimalPipe,
+    I18nPluralPipe,
+    TranslateModule,
+  ],
 })
 export class BiaTableFooterControllerComponent implements OnInit, OnChanges {
   @Input() pageSizeOptions: number[] = [10, 25, 50, 100];

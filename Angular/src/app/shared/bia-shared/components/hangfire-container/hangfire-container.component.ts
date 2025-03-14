@@ -13,10 +13,10 @@ import { BiaLayoutService } from '../layout/services/layout.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'bia-hangfire-container',
-    templateUrl: './hangfire-container.component.html',
-    styleUrls: ['./hangfire-container.component.scss'],
-    imports: [FormsModule]
+  selector: 'bia-hangfire-container',
+  templateUrl: './hangfire-container.component.html',
+  styleUrls: ['./hangfire-container.component.scss'],
+  imports: [FormsModule],
 })
 export class HangfireContainerComponent implements OnInit, OnDestroy {
   @Input() url = '';

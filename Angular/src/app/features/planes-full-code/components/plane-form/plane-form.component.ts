@@ -6,7 +6,13 @@ import {
   OnChanges,
   Output,
 } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
@@ -21,11 +27,21 @@ import { ButtonDirective } from 'primeng/button';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-plane-form',
-    templateUrl: './plane-form.component.html',
-    styleUrls: ['./plane-form.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Default,
-    imports: [FormsModule, ReactiveFormsModule, InputText, Checkbox, DatePicker, Select, MultiSelect, ButtonDirective, TranslateModule]
+  selector: 'app-plane-form',
+  templateUrl: './plane-form.component.html',
+  styleUrls: ['./plane-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    InputText,
+    Checkbox,
+    DatePicker,
+    Select,
+    MultiSelect,
+    ButtonDirective,
+    TranslateModule,
+  ],
 })
 export class PlaneFormComponent implements OnChanges {
   @Input() plane: Plane = <Plane>{};

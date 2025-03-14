@@ -20,7 +20,6 @@ import {
   LayoutMode,
 } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 
-
 import { PlaneReadComponent } from '../planes/views/plane-read/plane-read.component';
 import { PlaneTableComponent } from './components/plane-table/plane-table.component';
 import { planeCRUDConfiguration } from './plane.constants';
@@ -134,9 +133,12 @@ export const ROUTES: Routes = [
 ];
 
 @NgModule({
-    imports: [
+  imports: [
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(planeCRUDConfiguration.storeKey, FeaturePlanesStore.reducers),
+    StoreModule.forFeature(
+      planeCRUDConfiguration.storeKey,
+      FeaturePlanesStore.reducers
+    ),
     EffectsModule.forFeature([PlanesEffects]),
     // TODO after creation of CRUD Plane : select the optioDto dommain module required for link
     // Domain Modules:
@@ -156,6 +158,6 @@ export const ROUTES: Routes = [
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     PlaneTableComponent,
     PlaneImportComponent,
-],
+  ],
 })
 export class PlaneModule {}

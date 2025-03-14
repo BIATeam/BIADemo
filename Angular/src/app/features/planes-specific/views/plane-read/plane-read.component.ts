@@ -11,9 +11,15 @@ import { PlaneFormComponent } from '../../components/plane-form/plane-form.compo
 import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
-    selector: 'app-plane-specific-read',
-    templateUrl: './plane-read.component.html',
-    imports: [NgIf, PlaneFormComponent, BiaSharedModule, AsyncPipe, SpinnerComponent]
+  selector: 'app-plane-specific-read',
+  templateUrl: './plane-read.component.html',
+  imports: [
+    NgIf,
+    PlaneFormComponent,
+    BiaSharedModule,
+    AsyncPipe,
+    SpinnerComponent,
+  ],
 })
 export class PlaneReadComponent extends CrudItemReadComponent<PlaneSpecific> {
   constructor(

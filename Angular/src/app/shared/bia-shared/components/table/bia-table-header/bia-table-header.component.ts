@@ -22,12 +22,21 @@ import { ConfirmDialog } from 'primeng/confirmdialog';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-    selector: 'bia-table-header',
-    templateUrl: './bia-table-header.component.html',
-    styleUrls: ['./bia-table-header.component.scss'],
-    providers: [ConfirmationService],
-    changeDetection: ChangeDetectionStrategy.Default,
-    imports: [NgIf, Button, Tooltip, ButtonDirective, Divider, NgTemplateOutlet, ConfirmDialog, TranslateModule]
+  selector: 'bia-table-header',
+  templateUrl: './bia-table-header.component.html',
+  styleUrls: ['./bia-table-header.component.scss'],
+  providers: [ConfirmationService],
+  changeDetection: ChangeDetectionStrategy.Default,
+  imports: [
+    NgIf,
+    Button,
+    Tooltip,
+    ButtonDirective,
+    Divider,
+    NgTemplateOutlet,
+    ConfirmDialog,
+    TranslateModule,
+  ],
 })
 export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   @Input() hasFilter = false;

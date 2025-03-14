@@ -6,10 +6,10 @@ import { IsNotCurrentTeamPipe } from './is-not-current-team/is-not-current-team.
 import { TeamListPipe } from './team-list/team-list.pipe';
 
 @Component({
-    selector: 'bia-notification-team-warning',
-    templateUrl: './notification-team-warning.component.html',
-    styleUrls: ['./notification-team-warning.component.scss'],
-    imports: [NgIf, TranslateModule, IsNotCurrentTeamPipe, TeamListPipe]
+  selector: 'bia-notification-team-warning',
+  templateUrl: './notification-team-warning.component.html',
+  styleUrls: ['./notification-team-warning.component.scss'],
+  imports: [NgIf, TranslateModule, IsNotCurrentTeamPipe, TeamListPipe],
 })
 export class NotificationTeamWarningComponent {
   @Input() notification: Notification;

@@ -10,9 +10,9 @@ import { AsyncPipe } from '@angular/common';
 // BIAToolKit - End Option
 
 @Component({
-    selector: 'app-engine-new',
-    templateUrl: './engine-new.component.html',
-    imports: [EngineFormComponent, AsyncPipe]
+  selector: 'app-engine-new',
+  templateUrl: './engine-new.component.html',
+  imports: [EngineFormComponent, AsyncPipe],
 })
 export class EngineNewComponent
   extends CrudItemNewComponent<Engine>

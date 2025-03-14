@@ -14,10 +14,10 @@ import { NgIf, AsyncPipe } from '@angular/common';
 import { BiaSharedModule } from '../../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
-    selector: 'bia-notifications-item',
-    templateUrl: './notification-item.component.html',
-    styleUrls: ['./notification-item.component.scss'],
-    imports: [RouterOutlet, NgIf, BiaSharedModule, AsyncPipe, SpinnerComponent]
+  selector: 'bia-notifications-item',
+  templateUrl: './notification-item.component.html',
+  styleUrls: ['./notification-item.component.scss'],
+  imports: [RouterOutlet, NgIf, BiaSharedModule, AsyncPipe, SpinnerComponent],
 })
 export class NotificationItemComponent implements OnInit, OnDestroy {
   notification$: Observable<Notification>;

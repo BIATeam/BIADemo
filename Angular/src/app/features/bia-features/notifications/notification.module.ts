@@ -91,7 +91,7 @@ const ROUTES: Routes = [
 ];
 
 @NgModule({
-    imports: [
+  imports: [
     ReactiveFormsModule,
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature('notifications', FeatureNotificationsStore.reducers),
@@ -108,6 +108,6 @@ const ROUTES: Routes = [
     NotificationNewComponent,
     NotificationEditComponent,
     NotificationDetailComponent,
-],
+  ],
 })
 export class NotificationModule {}

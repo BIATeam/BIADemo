@@ -14,12 +14,25 @@ import { MemberModule } from '../../../../../../shared/bia-shared/feature-templa
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-aircraft-maintenance-company-members-index',
-    templateUrl: '../../../../../../shared/bia-shared/feature-templates/members/views/members-index/members-index.component.html',
-    styleUrls: [
-        '../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component.scss',
-    ],
-    imports: [NgClass, BiaSharedModule, PrimeTemplate, NgIf, MemberModule, AsyncPipe, TranslateModule, BiaTableHeaderComponent, BiaTableControllerComponent, BiaTableBehaviorControllerComponent, BiaTableComponent]
+  selector: 'app-aircraft-maintenance-company-members-index',
+  templateUrl:
+    '../../../../../../shared/bia-shared/feature-templates/members/views/members-index/members-index.component.html',
+  styleUrls: [
+    '../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component.scss',
+  ],
+  imports: [
+    NgClass,
+    BiaSharedModule,
+    PrimeTemplate,
+    NgIf,
+    MemberModule,
+    AsyncPipe,
+    TranslateModule,
+    BiaTableHeaderComponent,
+    BiaTableControllerComponent,
+    BiaTableBehaviorControllerComponent,
+    BiaTableComponent,
+  ],
 })
 export class AircraftMaintenanceCompanyMembersIndexComponent
   extends MembersIndexComponent

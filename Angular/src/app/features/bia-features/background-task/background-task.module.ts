@@ -29,7 +29,11 @@ const ROUTES: Routes = [
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(ROUTES), BackgroundTaskAdminComponent, BackgroundTaskReadOnlyComponent],
-    providers: [],
+  imports: [
+    RouterModule.forChild(ROUTES),
+    BackgroundTaskAdminComponent,
+    BackgroundTaskReadOnlyComponent,
+  ],
+  providers: [],
 })
 export class BackgroundTaskModule {}

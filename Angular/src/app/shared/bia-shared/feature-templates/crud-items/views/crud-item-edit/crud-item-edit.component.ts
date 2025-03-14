@@ -23,10 +23,10 @@ import { CrudItemFormComponent } from '../../components/crud-item-form/crud-item
 import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
 
 @Component({
-    selector: 'bia-crud-item-edit',
-    templateUrl: './crud-item-edit.component.html',
-    styleUrls: ['./crud-item-edit.component.scss'],
-    imports: [NgIf, CrudItemFormComponent, SpinnerComponent, AsyncPipe]
+  selector: 'bia-crud-item-edit',
+  templateUrl: './crud-item-edit.component.html',
+  styleUrls: ['./crud-item-edit.component.scss'],
+  imports: [NgIf, CrudItemFormComponent, SpinnerComponent, AsyncPipe],
 })
 export class CrudItemEditComponent<CrudItem extends BaseDto>
   implements OnInit, OnDestroy

@@ -9,12 +9,13 @@ import { NgIf, AsyncPipe } from '@angular/common';
 import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
 
 @Component({
-    selector: 'bia-members-item',
-    templateUrl: '../../../crud-items/views/crud-item-item/crud-item-item.component.html',
-    styleUrls: [
-        '../../../crud-items/views/crud-item-item/crud-item-item.component.scss',
-    ],
-    imports: [RouterOutlet, NgIf, SpinnerComponent, AsyncPipe]
+  selector: 'bia-members-item',
+  templateUrl:
+    '../../../crud-items/views/crud-item-item/crud-item-item.component.html',
+  styleUrls: [
+    '../../../crud-items/views/crud-item-item/crud-item-item.component.scss',
+  ],
+  imports: [RouterOutlet, NgIf, SpinnerComponent, AsyncPipe],
 })
 export class MemberItemComponent
   extends CrudItemItemComponent<Member>

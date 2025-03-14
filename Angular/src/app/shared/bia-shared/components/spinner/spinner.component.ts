@@ -7,11 +7,17 @@ import {
 } from '@angular/core';
 import { Observable, timer } from 'rxjs';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
-import { NgIf, NgTemplateOutlet, NgSwitch, NgSwitchCase, AsyncPipe } from '@angular/common';
+import {
+  NgIf,
+  NgTemplateOutlet,
+  NgSwitch,
+  NgSwitchCase,
+  AsyncPipe,
+} from '@angular/common';
 
 @Component({
-    selector: 'bia-spinner',
-    template: `
+  selector: 'bia-spinner',
+  template: `
     <div *ngIf="overlay; else picture" class="overlay">
       <ng-template [ngTemplateOutlet]="picture"></ng-template>
     </div>
@@ -32,9 +38,9 @@ import { NgIf, NgTemplateOutlet, NgSwitch, NgSwitchCase, AsyncPipe } from '@angu
       </ng-container>
     </ng-template>
   `,
-    styleUrls: ['./spinner.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgIf, NgTemplateOutlet, NgSwitch, NgSwitchCase, AsyncPipe]
+  styleUrls: ['./spinner.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgIf, NgTemplateOutlet, NgSwitch, NgSwitchCase, AsyncPipe],
 })
 export class SpinnerComponent implements OnInit {
   @Input()

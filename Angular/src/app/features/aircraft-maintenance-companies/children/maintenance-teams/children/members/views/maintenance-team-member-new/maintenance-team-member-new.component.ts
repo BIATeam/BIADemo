@@ -6,9 +6,10 @@ import { MemberModule } from '../../../../../../../../shared/bia-shared/feature-
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'app-maintenance-team-member-new',
-    templateUrl: '../../../../../../../../shared/bia-shared/feature-templates/members/views/member-new/member-new.component.html',
-    imports: [MemberModule, AsyncPipe]
+  selector: 'app-maintenance-team-member-new',
+  templateUrl:
+    '../../../../../../../../shared/bia-shared/feature-templates/members/views/member-new/member-new.component.html',
+  imports: [MemberModule, AsyncPipe],
 })
 export class MaintenanceTeamMemberNewComponent
   extends MemberNewComponent

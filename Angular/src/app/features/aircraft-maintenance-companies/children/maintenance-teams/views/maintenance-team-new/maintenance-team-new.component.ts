@@ -10,9 +10,9 @@ import { MaintenanceTeamFormComponent } from '../../components/maintenance-team-
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'app-maintenance-team-new',
-    templateUrl: './maintenance-team-new.component.html',
-    imports: [MaintenanceTeamFormComponent, AsyncPipe]
+  selector: 'app-maintenance-team-new',
+  templateUrl: './maintenance-team-new.component.html',
+  imports: [MaintenanceTeamFormComponent, AsyncPipe],
 })
 export class MaintenanceTeamNewComponent
   extends CrudItemNewComponent<MaintenanceTeam>

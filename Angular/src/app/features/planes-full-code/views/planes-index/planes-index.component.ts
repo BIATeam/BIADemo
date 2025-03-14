@@ -51,10 +51,19 @@ import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module
 import { NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'app-planes-index',
-    templateUrl: './planes-index.component.html',
-    styleUrls: ['./planes-index.component.scss'],
-    imports: [BiaSharedModule, NgIf, PlaneTableComponent, AsyncPipe, TranslateModule, BiaTableHeaderComponent, BiaTableControllerComponent, BiaTableComponent]
+  selector: 'app-planes-index',
+  templateUrl: './planes-index.component.html',
+  styleUrls: ['./planes-index.component.scss'],
+  imports: [
+    BiaSharedModule,
+    NgIf,
+    PlaneTableComponent,
+    AsyncPipe,
+    TranslateModule,
+    BiaTableHeaderComponent,
+    BiaTableControllerComponent,
+    BiaTableComponent,
+  ],
 })
 export class PlanesIndexComponent implements OnInit, OnDestroy {
   useCalcMode = useCalcMode;

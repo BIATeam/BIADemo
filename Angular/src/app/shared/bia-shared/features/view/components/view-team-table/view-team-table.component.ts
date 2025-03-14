@@ -21,10 +21,18 @@ import { ConfirmDialog } from 'primeng/confirmdialog';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-    selector: 'bia-view-team-table',
-    templateUrl: './view-team-table.component.html',
-    styleUrls: ['./view-team-table.component.scss'],
-    imports: [NgIf, ButtonDirective, Tooltip, TableModule, PrimeTemplate, ConfirmDialog, TranslateModule]
+  selector: 'bia-view-team-table',
+  templateUrl: './view-team-table.component.html',
+  styleUrls: ['./view-team-table.component.scss'],
+  imports: [
+    NgIf,
+    ButtonDirective,
+    Tooltip,
+    TableModule,
+    PrimeTemplate,
+    ConfirmDialog,
+    TranslateModule,
+  ],
 })
 export class ViewTeamTableComponent implements OnChanges {
   @Input() views: TeamView[];

@@ -20,10 +20,16 @@ import { PlaneFormComponent } from '../../components/plane-form/plane-form.compo
 import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
-    selector: 'app-plane-edit',
-    templateUrl: './plane-edit.component.html',
-    styleUrls: ['./plane-edit.component.scss'],
-    imports: [NgIf, PlaneFormComponent, BiaSharedModule, AsyncPipe, SpinnerComponent]
+  selector: 'app-plane-edit',
+  templateUrl: './plane-edit.component.html',
+  styleUrls: ['./plane-edit.component.scss'],
+  imports: [
+    NgIf,
+    PlaneFormComponent,
+    BiaSharedModule,
+    AsyncPipe,
+    SpinnerComponent,
+  ],
 })
 export class PlaneEditComponent implements OnInit, OnDestroy {
   @Output() displayChange = new EventEmitter<boolean>();

@@ -11,9 +11,15 @@ import { AirportFormComponent } from '../../components/airport-form/airport-form
 import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
-    selector: 'app-airport-edit',
-    templateUrl: './airport-edit.component.html',
-    imports: [NgIf, AirportFormComponent, BiaSharedModule, AsyncPipe, SpinnerComponent]
+  selector: 'app-airport-edit',
+  templateUrl: './airport-edit.component.html',
+  imports: [
+    NgIf,
+    AirportFormComponent,
+    BiaSharedModule,
+    AsyncPipe,
+    SpinnerComponent,
+  ],
 })
 export class AirportEditComponent
   extends CrudItemEditComponent<Airport>

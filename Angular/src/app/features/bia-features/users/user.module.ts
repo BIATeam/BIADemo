@@ -8,7 +8,6 @@ import { RoleOptionModule } from 'src/app/domains/bia-domains/role-option/role-o
 import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
 import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
 
-
 import { Permission } from 'src/app/shared/permission';
 
 import { UserFromDirectoryModule } from '../users-from-directory/user-from-directory.module';
@@ -116,9 +115,12 @@ export const ROUTES: Routes = [
 ];
 
 @NgModule({
-    imports: [
+  imports: [
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(userCRUDConfiguration.storeKey, FeatureUsersStore.reducers),
+    StoreModule.forFeature(
+      userCRUDConfiguration.storeKey,
+      FeatureUsersStore.reducers
+    ),
     EffectsModule.forFeature([UsersEffects]),
     // TODO after creation of CRUD User : select the optioDto dommain module required for link
     // Domain Modules:
@@ -134,6 +136,6 @@ export const ROUTES: Routes = [
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     UserTableComponent,
     UserImportComponent,
-],
+  ],
 })
 export class UserModule {}

@@ -9,9 +9,15 @@ import { UserFormComponent } from '../../components/user-form/user-form.componen
 import { BiaSharedModule } from '../../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
-    selector: 'bia-user-edit',
-    templateUrl: './user-edit.component.html',
-    imports: [NgIf, UserFormComponent, BiaSharedModule, AsyncPipe, SpinnerComponent]
+  selector: 'bia-user-edit',
+  templateUrl: './user-edit.component.html',
+  imports: [
+    NgIf,
+    UserFormComponent,
+    BiaSharedModule,
+    AsyncPipe,
+    SpinnerComponent,
+  ],
 })
 export class UserEditComponent extends CrudItemEditComponent<User> {
   constructor(

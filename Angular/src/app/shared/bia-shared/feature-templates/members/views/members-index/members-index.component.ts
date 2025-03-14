@@ -13,10 +13,21 @@ import { BiaTableComponent } from '../../../../components/table/bia-table/bia-ta
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-    selector: 'bia-members-index',
-    templateUrl: './members-index.component.html',
-    styleUrls: ['./members-index.component.scss'],
-    imports: [NgClass, BiaTableHeaderComponent, BiaTableControllerComponent, PrimeTemplate, BiaTableBehaviorControllerComponent, NgIf, BiaTableComponent, MemberTableComponent, AsyncPipe, TranslateModule]
+  selector: 'bia-members-index',
+  templateUrl: './members-index.component.html',
+  styleUrls: ['./members-index.component.scss'],
+  imports: [
+    NgClass,
+    BiaTableHeaderComponent,
+    BiaTableControllerComponent,
+    PrimeTemplate,
+    BiaTableBehaviorControllerComponent,
+    NgIf,
+    BiaTableComponent,
+    MemberTableComponent,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class MembersIndexComponent
   extends CrudItemsIndexComponent<Member>

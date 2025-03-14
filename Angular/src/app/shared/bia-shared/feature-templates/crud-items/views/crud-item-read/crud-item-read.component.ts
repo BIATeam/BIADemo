@@ -9,10 +9,10 @@ import { CrudItemFormComponent } from '../../components/crud-item-form/crud-item
 import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
 
 @Component({
-    selector: 'bia-crud-item-read',
-    templateUrl: './crud-item-read.component.html',
-    styleUrls: ['./crud-item-read.component.scss'],
-    imports: [NgIf, CrudItemFormComponent, SpinnerComponent, AsyncPipe]
+  selector: 'bia-crud-item-read',
+  templateUrl: './crud-item-read.component.html',
+  styleUrls: ['./crud-item-read.component.scss'],
+  imports: [NgIf, CrudItemFormComponent, SpinnerComponent, AsyncPipe],
 })
 export class CrudItemReadComponent<CrudItem extends BaseDto>
   extends CrudItemEditComponent<CrudItem>

@@ -16,10 +16,22 @@ import { PrimeTemplate } from 'primeng/api';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-airports-index',
-    templateUrl: './airports-index.component.html',
-    styleUrls: ['./airports-index.component.scss'],
-    imports: [NgClass, BiaSharedModule, PrimeTemplate, NgIf, AirportTableComponent, AsyncPipe, TranslateModule, BiaTableHeaderComponent, BiaTableControllerComponent, BiaTableBehaviorControllerComponent, BiaTableComponent]
+  selector: 'app-airports-index',
+  templateUrl: './airports-index.component.html',
+  styleUrls: ['./airports-index.component.scss'],
+  imports: [
+    NgClass,
+    BiaSharedModule,
+    PrimeTemplate,
+    NgIf,
+    AirportTableComponent,
+    AsyncPipe,
+    TranslateModule,
+    BiaTableHeaderComponent,
+    BiaTableControllerComponent,
+    BiaTableBehaviorControllerComponent,
+    BiaTableComponent,
+  ],
 })
 export class AirportsIndexComponent extends CrudItemsIndexComponent<Airport> {
   @ViewChild(AirportTableComponent, { static: false })

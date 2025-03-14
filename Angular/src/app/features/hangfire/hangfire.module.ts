@@ -23,12 +23,12 @@ const ROUTES: Routes = [
 ];
 
 @NgModule({
-    imports: [
+  imports: [
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature('hangfire', reducers),
     EffectsModule.forFeature([HangfireEffects]),
     HangfireIndexComponent,
-],
-    providers: [],
+  ],
+  providers: [],
 })
 export class HangfireModule {}

@@ -8,10 +8,10 @@ import { NgIf, AsyncPipe } from '@angular/common';
 import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
 
 @Component({
-    selector: 'bia-cruditem-item',
-    templateUrl: './crud-item-item.component.html',
-    styleUrls: ['./crud-item-item.component.scss'],
-    imports: [RouterOutlet, NgIf, SpinnerComponent, AsyncPipe]
+  selector: 'bia-cruditem-item',
+  templateUrl: './crud-item-item.component.html',
+  styleUrls: ['./crud-item-item.component.scss'],
+  imports: [RouterOutlet, NgIf, SpinnerComponent, AsyncPipe],
 })
 export class CrudItemItemComponent<
     ListCrudItem extends BaseDto,

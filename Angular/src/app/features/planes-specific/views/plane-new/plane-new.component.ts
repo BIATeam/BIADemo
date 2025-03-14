@@ -7,9 +7,9 @@ import { PlaneFormComponent } from '../../components/plane-form/plane-form.compo
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'app-plane-specific-new',
-    templateUrl: './plane-new.component.html',
-    imports: [PlaneFormComponent, AsyncPipe]
+  selector: 'app-plane-specific-new',
+  templateUrl: './plane-new.component.html',
+  imports: [PlaneFormComponent, AsyncPipe],
 })
 export class PlaneNewComponent extends CrudItemNewComponent<PlaneSpecific> {
   newPlane: PlaneSpecific = { engines: [] } as unknown as PlaneSpecific;

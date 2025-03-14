@@ -7,9 +7,9 @@ import { UserFormComponent } from '../../components/user-form/user-form.componen
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'bia-user-new',
-    templateUrl: './user-new.component.html',
-    imports: [UserFormComponent, AsyncPipe]
+  selector: 'bia-user-new',
+  templateUrl: './user-new.component.html',
+  imports: [UserFormComponent, AsyncPipe],
 })
 export class UserNewComponent extends CrudItemNewComponent<User> {
   constructor(

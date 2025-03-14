@@ -11,10 +11,10 @@ import { PlaneFormComponent } from '../../components/plane-form/plane-form.compo
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'app-plane-new',
-    templateUrl: './plane-new.component.html',
-    styleUrls: ['./plane-new.component.scss'],
-    imports: [PlaneFormComponent, AsyncPipe]
+  selector: 'app-plane-new',
+  templateUrl: './plane-new.component.html',
+  styleUrls: ['./plane-new.component.scss'],
+  imports: [PlaneFormComponent, AsyncPipe],
 })
 export class PlaneNewComponent implements OnInit, OnDestroy {
   private sub = new Subscription();

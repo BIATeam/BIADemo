@@ -22,9 +22,15 @@ import { RouterOutlet } from '@angular/router';
 import { BiaUltimaLayoutComponent } from './ultima/layout/ultima-layout.component';
 
 @Component({
-    selector: 'bia-layout',
-    templateUrl: './layout.component.html',
-    imports: [NgIf, SpinnerComponent, ClassicLayoutComponent, RouterOutlet, BiaUltimaLayoutComponent]
+  selector: 'bia-layout',
+  templateUrl: './layout.component.html',
+  imports: [
+    NgIf,
+    SpinnerComponent,
+    ClassicLayoutComponent,
+    RouterOutlet,
+    BiaUltimaLayoutComponent,
+  ],
 })
 export class LayoutComponent implements OnInit {
   @HostBinding('class.bia-flex') classicStyle = false;

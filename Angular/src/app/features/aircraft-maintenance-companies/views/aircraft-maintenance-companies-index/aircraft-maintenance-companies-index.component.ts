@@ -20,10 +20,24 @@ import { PrimeTemplate } from 'primeng/api';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-aircraft-maintenance-companies-index',
-    templateUrl: './aircraft-maintenance-companies-index.component.html',
-    styleUrls: ['./aircraft-maintenance-companies-index.component.scss'],
-    imports: [NgIf, BiaSharedModule, NgClass, PrimeTemplate, AircraftMaintenanceCompanyTableComponent, AsyncPipe, TranslateModule, TeamAdvancedFilterComponent, BiaTableHeaderComponent, BiaButtonGroupComponent, BiaTableControllerComponent, BiaTableBehaviorControllerComponent, BiaTableComponent]
+  selector: 'app-aircraft-maintenance-companies-index',
+  templateUrl: './aircraft-maintenance-companies-index.component.html',
+  styleUrls: ['./aircraft-maintenance-companies-index.component.scss'],
+  imports: [
+    NgIf,
+    BiaSharedModule,
+    NgClass,
+    PrimeTemplate,
+    AircraftMaintenanceCompanyTableComponent,
+    AsyncPipe,
+    TranslateModule,
+    TeamAdvancedFilterComponent,
+    BiaTableHeaderComponent,
+    BiaButtonGroupComponent,
+    BiaTableControllerComponent,
+    BiaTableBehaviorControllerComponent,
+    BiaTableComponent,
+  ],
 })
 export class AircraftMaintenanceCompaniesIndexComponent extends CrudItemsIndexComponent<AircraftMaintenanceCompany> {
   // Custo for teams

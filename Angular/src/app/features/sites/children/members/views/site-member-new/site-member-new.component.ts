@@ -6,9 +6,10 @@ import { MemberModule } from '../../../../../../shared/bia-shared/feature-templa
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'app-site-member-new',
-    templateUrl: '../../../../../../shared/bia-shared/feature-templates/members/views/member-new/member-new.component.html',
-    imports: [MemberModule, AsyncPipe]
+  selector: 'app-site-member-new',
+  templateUrl:
+    '../../../../../../shared/bia-shared/feature-templates/members/views/member-new/member-new.component.html',
+  imports: [MemberModule, AsyncPipe],
 })
 export class SiteMemberNewComponent
   extends MemberNewComponent

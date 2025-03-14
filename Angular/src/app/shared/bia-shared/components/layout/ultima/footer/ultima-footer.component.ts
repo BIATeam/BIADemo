@@ -10,11 +10,11 @@ import { NgIf, NgClass, NgFor, AsyncPipe } from '@angular/common';
 import { Ripple } from 'primeng/ripple';
 
 @Component({
-    selector: 'bia-ultima-footer',
-    templateUrl: './ultima-footer.component.html',
-    styleUrls: ['./ultima-footer.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Default,
-    imports: [NgIf, NgClass, Ripple, NgFor, AsyncPipe]
+  selector: 'bia-ultima-footer',
+  templateUrl: './ultima-footer.component.html',
+  styleUrls: ['./ultima-footer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
+  imports: [NgIf, NgClass, Ripple, NgFor, AsyncPipe],
 })
 export class BiaUltimaFooterComponent {
   @Input() companyName: string;

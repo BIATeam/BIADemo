@@ -9,9 +9,15 @@ import { AircraftMaintenanceCompanyFormComponent } from '../../components/aircra
 import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
-    selector: 'app-aircraft-maintenance-company-edit',
-    templateUrl: './aircraft-maintenance-company-edit.component.html',
-    imports: [NgIf, AircraftMaintenanceCompanyFormComponent, BiaSharedModule, AsyncPipe, SpinnerComponent]
+  selector: 'app-aircraft-maintenance-company-edit',
+  templateUrl: './aircraft-maintenance-company-edit.component.html',
+  imports: [
+    NgIf,
+    AircraftMaintenanceCompanyFormComponent,
+    BiaSharedModule,
+    AsyncPipe,
+    SpinnerComponent,
+  ],
 })
 export class AircraftMaintenanceCompanyEditComponent extends CrudItemEditComponent<AircraftMaintenanceCompany> {
   constructor(

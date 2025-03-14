@@ -6,8 +6,6 @@ import { RoleOptionModule } from 'src/app/domains/bia-domains/role-option/role-o
 import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
 import { UserFromDirectoryModule } from 'src/app/features/bia-features/users-from-directory/user-from-directory.module';
 
-
-
 import { MemberFormEditComponent } from './components/member-form-edit/member-form-edit.component';
 import { MemberFormNewComponent } from './components/member-form-new/member-form-new.component';
 import { MemberFormComponent } from './components/member-form/member-form.component';
@@ -81,9 +79,12 @@ import { MembersIndexComponent } from './views/members-index/members-index.compo
 // ];
 
 @NgModule({
-    imports: [
+  imports: [
     // RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(memberCRUDConfiguration.storeKey, FeatureMembersStore.reducers),
+    StoreModule.forFeature(
+      memberCRUDConfiguration.storeKey,
+      FeatureMembersStore.reducers
+    ),
     EffectsModule.forFeature([MembersEffects]),
     // TODO after creation of CRUD Member : select the optioDto dommain module required for link
     // Domain Modules:
@@ -102,16 +103,16 @@ import { MembersIndexComponent } from './views/members-index/members-index.compo
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     MemberTableComponent,
     MemberImportComponent,
-],
-    exports: [
-        MemberItemComponent,
-        MemberFormComponent,
-        MemberFormEditComponent,
-        MemberFormNewComponent,
-        MembersIndexComponent,
-        MemberNewComponent,
-        MemberEditComponent,
-        MemberTableComponent,
-    ],
+  ],
+  exports: [
+    MemberItemComponent,
+    MemberFormComponent,
+    MemberFormEditComponent,
+    MemberFormNewComponent,
+    MembersIndexComponent,
+    MemberNewComponent,
+    MemberEditComponent,
+    MemberTableComponent,
+  ],
 })
 export class MemberModule {}

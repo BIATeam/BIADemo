@@ -9,9 +9,15 @@ import { PlaneTypeFormComponent } from '../../components/plane-type-form/plane-t
 import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
-    selector: 'app-plane-type-edit',
-    templateUrl: './plane-type-edit.component.html',
-    imports: [NgIf, PlaneTypeFormComponent, BiaSharedModule, AsyncPipe, SpinnerComponent]
+  selector: 'app-plane-type-edit',
+  templateUrl: './plane-type-edit.component.html',
+  imports: [
+    NgIf,
+    PlaneTypeFormComponent,
+    BiaSharedModule,
+    AsyncPipe,
+    SpinnerComponent,
+  ],
 })
 export class PlaneTypeEditComponent extends CrudItemEditComponent<PlaneType> {
   constructor(

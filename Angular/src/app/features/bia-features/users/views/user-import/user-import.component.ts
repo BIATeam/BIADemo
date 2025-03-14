@@ -11,9 +11,15 @@ import { AsyncPipe } from '@angular/common';
 import { CrudItemImportFormComponent } from '../../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-import-form/crud-item-import-form.component';
 
 @Component({
-    selector: 'bia-user-import',
-    templateUrl: '../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
-    imports: [BiaSharedModule, CrudItemImportFormComponent, AsyncPipe, BiaFormComponent]
+  selector: 'bia-user-import',
+  templateUrl:
+    '../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
+  imports: [
+    BiaSharedModule,
+    CrudItemImportFormComponent,
+    AsyncPipe,
+    BiaFormComponent,
+  ],
 })
 export class UserImportComponent extends CrudItemImportComponent<User> {
   constructor(

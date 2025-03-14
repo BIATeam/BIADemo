@@ -17,11 +17,11 @@ import { FormReadOnlyMode } from '../../model/crud-config';
 import { BiaFormComponent as BiaFormComponent_1 } from '../../../../components/form/bia-form/bia-form.component';
 
 @Component({
-    selector: 'bia-crud-item-form',
-    templateUrl: './crud-item-form.component.html',
-    styleUrls: ['./crud-item-form.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Default,
-    imports: [BiaFormComponent_1, BiaFormComponent]
+  selector: 'bia-crud-item-form',
+  templateUrl: './crud-item-form.component.html',
+  styleUrls: ['./crud-item-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
+  imports: [BiaFormComponent_1, BiaFormComponent],
 })
 export class CrudItemFormComponent<CrudItem extends BaseDto> {
   @Input() crudItem?: CrudItem;

@@ -8,9 +8,10 @@ import { NgIf, AsyncPipe } from '@angular/common';
 import { BiaSharedModule } from '../../../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
-    selector: 'app-site-member-edit',
-    templateUrl: '../../../../../../shared/bia-shared/feature-templates/members/views/member-edit/member-edit.component.html',
-    imports: [MemberModule, NgIf, BiaSharedModule, AsyncPipe, SpinnerComponent]
+  selector: 'app-site-member-edit',
+  templateUrl:
+    '../../../../../../shared/bia-shared/feature-templates/members/views/member-edit/member-edit.component.html',
+  imports: [MemberModule, NgIf, BiaSharedModule, AsyncPipe, SpinnerComponent],
 })
 export class SiteMemberEditComponent
   extends MemberEditComponent

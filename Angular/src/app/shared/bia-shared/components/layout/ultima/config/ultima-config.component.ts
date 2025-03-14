@@ -17,10 +17,18 @@ import { FormsModule } from '@angular/forms';
 import { ButtonDirective } from 'primeng/button';
 
 @Component({
-    selector: 'bia-ultima-config',
-    templateUrl: './ultima-config.component.html',
-    styleUrls: ['./ultima-config.component.scss'],
-    imports: [NgIf, NgFor, RadioButton, FormsModule, ButtonDirective, NgClass, TranslateModule]
+  selector: 'bia-ultima-config',
+  templateUrl: './ultima-config.component.html',
+  styleUrls: ['./ultima-config.component.scss'],
+  imports: [
+    NgIf,
+    NgFor,
+    RadioButton,
+    FormsModule,
+    ButtonDirective,
+    NgClass,
+    TranslateModule,
+  ],
 })
 export class BiaUltimaConfigComponent {
   @Input() minimal = false;

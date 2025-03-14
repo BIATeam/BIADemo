@@ -116,9 +116,12 @@ export const ROUTES: Routes = [
 ];
 
 @NgModule({
-    imports: [
+  imports: [
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(aircraftMaintenanceCompanyCRUDConfiguration.storeKey, FeatureAircraftMaintenanceCompaniesStore.reducers),
+    StoreModule.forFeature(
+      aircraftMaintenanceCompanyCRUDConfiguration.storeKey,
+      FeatureAircraftMaintenanceCompaniesStore.reducers
+    ),
     EffectsModule.forFeature([AircraftMaintenanceCompaniesEffects]),
     AircraftMaintenanceCompanyItemComponent,
     AircraftMaintenanceCompaniesIndexComponent,
@@ -129,6 +132,6 @@ export const ROUTES: Routes = [
     AircraftMaintenanceCompanyEditComponent,
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     AircraftMaintenanceCompanyTableComponent,
-],
+  ],
 })
 export class AircraftMaintenanceCompanyModule {}

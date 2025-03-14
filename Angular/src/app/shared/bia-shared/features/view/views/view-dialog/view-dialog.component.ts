@@ -45,11 +45,31 @@ import { ConfirmDialog } from 'primeng/confirmdialog';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-    selector: 'bia-view-dialog',
-    templateUrl: './view-dialog.component.html',
-    styleUrls: ['./view-dialog.component.scss'],
-    providers: [ConfirmationService],
-    imports: [Dialog, SharedModule, NgIf, Tabs, TabList, Ripple, Tab, TabPanels, TabPanel, ViewFormComponent, ViewUserTableComponent, Select, FormsModule, ViewTeamTableComponent, ButtonDirective, ConfirmDialog, AsyncPipe, UpperCasePipe, TranslateModule]
+  selector: 'bia-view-dialog',
+  templateUrl: './view-dialog.component.html',
+  styleUrls: ['./view-dialog.component.scss'],
+  providers: [ConfirmationService],
+  imports: [
+    Dialog,
+    SharedModule,
+    NgIf,
+    Tabs,
+    TabList,
+    Ripple,
+    Tab,
+    TabPanels,
+    TabPanel,
+    ViewFormComponent,
+    ViewUserTableComponent,
+    Select,
+    FormsModule,
+    ViewTeamTableComponent,
+    ButtonDirective,
+    ConfirmDialog,
+    AsyncPipe,
+    UpperCasePipe,
+    TranslateModule,
+  ],
 })
 export class ViewDialogComponent implements OnInit, OnDestroy {
   display = false;

@@ -7,9 +7,9 @@ import { AirportFormComponent } from '../../components/airport-form/airport-form
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'app-airport-new',
-    templateUrl: './airport-new.component.html',
-    imports: [AirportFormComponent, AsyncPipe]
+  selector: 'app-airport-new',
+  templateUrl: './airport-new.component.html',
+  imports: [AirportFormComponent, AsyncPipe],
 })
 export class AirportNewComponent extends CrudItemNewComponent<Airport> {
   constructor(

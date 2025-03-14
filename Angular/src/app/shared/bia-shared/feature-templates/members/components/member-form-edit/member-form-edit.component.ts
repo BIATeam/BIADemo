@@ -6,7 +6,13 @@ import {
   OnChanges,
   Output,
 } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
@@ -18,11 +24,20 @@ import { Listbox } from 'primeng/listbox';
 import { UserAddFromLdapComponent } from '../../../../../../features/bia-features/users-from-directory/views/user-add-from-directory-dialog/user-add-from-directory-dialog.component';
 
 @Component({
-    selector: 'bia-member-form-edit',
-    templateUrl: './member-form-edit.component.html',
-    styleUrls: ['./member-form-edit.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Default,
-    imports: [FormsModule, ReactiveFormsModule, Select, NgIf, ButtonDirective, Listbox, UserAddFromLdapComponent, TranslateModule]
+  selector: 'bia-member-form-edit',
+  templateUrl: './member-form-edit.component.html',
+  styleUrls: ['./member-form-edit.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    Select,
+    NgIf,
+    ButtonDirective,
+    Listbox,
+    UserAddFromLdapComponent,
+    TranslateModule,
+  ],
 })
 export class MemberFormEditComponent implements OnChanges {
   @Input() member: Member | null = null;

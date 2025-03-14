@@ -18,7 +18,11 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { UntypedFormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  UntypedFormControl,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { FilterMetadata, PrimeTemplate, SelectItem } from 'primeng/api';
 import { Button } from 'primeng/button';
@@ -33,22 +37,34 @@ import { InputText } from 'primeng/inputtext';
 import { Tooltip } from 'primeng/tooltip';
 
 @Component({
-    selector: 'bia-table-controller',
-    templateUrl: './bia-table-controller.component.html',
-    styleUrls: ['./bia-table-controller.component.scss'],
-    animations: [
-        trigger('options', [
-            transition(':enter', [
-                style({ height: 0 }),
-                animate('200ms ease-out', style({ height: '*' })),
-            ]),
-            transition(':leave', [
-                style({ height: '*' }),
-                animate('200ms ease-out', style({ height: 0 })),
-            ]),
-        ]),
-    ],
-    imports: [NgClass, NgIf, ViewListComponent, MultiSelect, FormsModule, NgTemplateOutlet, InputText, ReactiveFormsModule, Button, Tooltip, TranslateModule]
+  selector: 'bia-table-controller',
+  templateUrl: './bia-table-controller.component.html',
+  styleUrls: ['./bia-table-controller.component.scss'],
+  animations: [
+    trigger('options', [
+      transition(':enter', [
+        style({ height: 0 }),
+        animate('200ms ease-out', style({ height: '*' })),
+      ]),
+      transition(':leave', [
+        style({ height: '*' }),
+        animate('200ms ease-out', style({ height: 0 })),
+      ]),
+    ]),
+  ],
+  imports: [
+    NgClass,
+    NgIf,
+    ViewListComponent,
+    MultiSelect,
+    FormsModule,
+    NgTemplateOutlet,
+    InputText,
+    ReactiveFormsModule,
+    Button,
+    Tooltip,
+    TranslateModule,
+  ],
 })
 export class BiaTableControllerComponent
   implements OnChanges, OnInit, OnDestroy, AfterContentInit, AfterViewInit

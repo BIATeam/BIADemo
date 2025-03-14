@@ -11,7 +11,11 @@ import {
   QueryList,
   TemplateRef,
 } from '@angular/core';
-import { UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  UntypedFormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { PrimeTemplate } from 'primeng/api';
 import { MultiSelect } from 'primeng/multiselect';
 import { Subscription } from 'rxjs';
@@ -22,7 +26,13 @@ import {
   BiaFieldNumberFormat,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.component';
-import { NgIf, NgTemplateOutlet, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
+import {
+  NgIf,
+  NgTemplateOutlet,
+  NgSwitch,
+  NgSwitchCase,
+  NgSwitchDefault,
+} from '@angular/common';
 import { Select } from 'primeng/select';
 import { Checkbox } from 'primeng/checkbox';
 import { InputNumber } from 'primeng/inputnumber';
@@ -30,11 +40,25 @@ import { DatePicker } from 'primeng/datepicker';
 import { InputText } from 'primeng/inputtext';
 
 @Component({
-    selector: 'bia-table-input',
-    templateUrl: './bia-table-input.component.html',
-    styleUrls: ['./bia-table-input.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Default,
-    imports: [FormsModule, ReactiveFormsModule, NgIf, NgTemplateOutlet, NgSwitch, NgSwitchCase, Select, MultiSelect, Checkbox, InputNumber, DatePicker, NgSwitchDefault, InputText]
+  selector: 'bia-table-input',
+  templateUrl: './bia-table-input.component.html',
+  styleUrls: ['./bia-table-input.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    NgIf,
+    NgTemplateOutlet,
+    NgSwitch,
+    NgSwitchCase,
+    Select,
+    MultiSelect,
+    Checkbox,
+    InputNumber,
+    DatePicker,
+    NgSwitchDefault,
+    InputText,
+  ],
 })
 export class BiaTableInputComponent<CrudItem>
   extends BiaFieldBaseComponent<CrudItem>

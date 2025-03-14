@@ -17,10 +17,20 @@ import { PrimeTemplate } from 'primeng/api';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-    selector: 'bia-notifications-index',
-    templateUrl: './notifications-index.component.html',
-    styleUrls: ['./notifications-index.component.scss'],
-    imports: [NgClass, BiaSharedModule, PrimeTemplate, AsyncPipe, TranslateModule, BiaTableHeaderComponent, BiaTableControllerComponent, BiaTableBehaviorControllerComponent, BiaTableComponent]
+  selector: 'bia-notifications-index',
+  templateUrl: './notifications-index.component.html',
+  styleUrls: ['./notifications-index.component.scss'],
+  imports: [
+    NgClass,
+    BiaSharedModule,
+    PrimeTemplate,
+    AsyncPipe,
+    TranslateModule,
+    BiaTableHeaderComponent,
+    BiaTableControllerComponent,
+    BiaTableBehaviorControllerComponent,
+    BiaTableComponent,
+  ],
 })
 export class NotificationsIndexComponent
   extends CrudItemsIndexComponent<NotificationListItem, Notification>

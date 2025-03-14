@@ -17,10 +17,23 @@ import { ButtonDirective } from 'primeng/button';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-planes-index',
-    templateUrl: './planes-index.component.html',
-    styleUrls: ['./planes-index.component.scss'],
-    imports: [NgClass, BiaSharedModule, PrimeTemplate, NgIf, ButtonDirective, PlaneTableComponent, AsyncPipe, TranslateModule, BiaTableHeaderComponent, BiaTableControllerComponent, BiaTableBehaviorControllerComponent, BiaTableComponent]
+  selector: 'app-planes-index',
+  templateUrl: './planes-index.component.html',
+  styleUrls: ['./planes-index.component.scss'],
+  imports: [
+    NgClass,
+    BiaSharedModule,
+    PrimeTemplate,
+    NgIf,
+    ButtonDirective,
+    PlaneTableComponent,
+    AsyncPipe,
+    TranslateModule,
+    BiaTableHeaderComponent,
+    BiaTableControllerComponent,
+    BiaTableBehaviorControllerComponent,
+    BiaTableComponent,
+  ],
 })
 export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
   @ViewChild(PlaneTableComponent, { static: false })
