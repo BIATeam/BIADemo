@@ -3,27 +3,6 @@
   width: 100%;
 }
 
-.footer-container {
-  padding: 0.75rem 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  .info-locked-container {
-    margin-left: 1rem;
-
-    .info-locked-button {
-      height: 1.5rem;
-      width: 1.5rem;
-    }
-
-    .info-locked-label {
-      color: #fbc02d;
-      font-weight: 500;
-    }
-  }
-}
-
 .bia-form-fields {
   .bia-form-group {
     margin-bottom: 0.5rem;

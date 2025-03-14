@@ -47,8 +47,6 @@ export class PlaneFormComponent
     this.engineColumnsToDisplay = this.engineCrudConfig.columns
       .filter(col => !col.isHideByDefault)
       .map(col => <KeyValuePair>{ key: col.field, value: col.header });
-
-    console.log('Ctor');
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -78,7 +76,7 @@ export class PlaneFormComponent
     this.crudItem.engines ??= [];
     this.newId = CrudHelperService.onEmbeddedItemSave(
       engine,
-      this.crudItem?.engines ?? [],
+      this.crudItem.engines,
       this.newId
     );
     this.setDisplayedEngines();
@@ -91,7 +89,6 @@ export class PlaneFormComponent
   }
 
   onReadOnlyChanged(readOnly: boolean): void {
-    console.log('isReadOnly', readOnly);
     this.isEngineTableReadOnly = readOnly;
     super.onReadOnlyChanged(readOnly);
   }
