@@ -1,3 +1,4 @@
+import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { Component, Injector } from '@angular/core';
 // Begin BIADemo
 import { filter } from 'rxjs';
@@ -20,7 +21,7 @@ import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module
 @Component({
     selector: 'app-plane-read',
     templateUrl: './plane-read.component.html',
-    imports: [NgIf, PlaneFormComponent, BiaSharedModule, AsyncPipe]
+    imports: [NgIf, PlaneFormComponent, BiaSharedModule, AsyncPipe, SpinnerComponent]
 })
 export class PlaneReadComponent extends CrudItemReadComponent<Plane> {
   constructor(

@@ -1,3 +1,4 @@
+import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { Component, Injector } from '@angular/core';
 import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
 import { aircraftMaintenanceCompanyCRUDConfiguration } from '../../aircraft-maintenance-company.constants';
@@ -10,7 +11,7 @@ import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module
 @Component({
     selector: 'app-aircraft-maintenance-company-edit',
     templateUrl: './aircraft-maintenance-company-edit.component.html',
-    imports: [NgIf, AircraftMaintenanceCompanyFormComponent, BiaSharedModule, AsyncPipe]
+    imports: [NgIf, AircraftMaintenanceCompanyFormComponent, BiaSharedModule, AsyncPipe, SpinnerComponent]
 })
 export class AircraftMaintenanceCompanyEditComponent extends CrudItemEditComponent<AircraftMaintenanceCompany> {
   constructor(

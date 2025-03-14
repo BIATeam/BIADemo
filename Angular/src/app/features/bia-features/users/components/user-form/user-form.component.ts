@@ -1,3 +1,4 @@
+import { BiaFormComponent } from 'src/app/shared/bia-shared/components/form/bia-form/bia-form.component';
 import { Component } from '@angular/core';
 import { CrudItemFormComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component';
 import { User } from '../../model/user';
@@ -9,6 +10,6 @@ import { BiaSharedModule } from '../../../../../shared/bia-shared/bia-shared.mod
     styleUrls: [
         '../../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
     ],
-    imports: [BiaSharedModule]
+    imports: [BiaSharedModule, BiaFormComponent]
 })
 export class UserFormComponent extends CrudItemFormComponent<User> {}

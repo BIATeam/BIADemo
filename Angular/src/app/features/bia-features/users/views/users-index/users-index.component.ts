@@ -1,3 +1,7 @@
+import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
+import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
+import { BiaTableBehaviorControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
+import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { skip } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -21,7 +25,7 @@ import { TranslateModule } from '@ngx-translate/core';
     selector: 'bia-users-index',
     templateUrl: './users-index.component.html',
     styleUrls: ['./users-index.component.scss'],
-    imports: [NgClass, BiaSharedModule, PrimeTemplate, NgIf, ButtonDirective, UserTableComponent, UserAddFromLdapComponent, AsyncPipe, TranslateModule]
+    imports: [NgClass, BiaSharedModule, PrimeTemplate, NgIf, ButtonDirective, UserTableComponent, UserAddFromLdapComponent, AsyncPipe, TranslateModule, BiaTableHeaderComponent, BiaTableControllerComponent, BiaTableBehaviorControllerComponent, BiaTableComponent]
 })
 export class UsersIndexComponent
   extends CrudItemsIndexComponent<User>

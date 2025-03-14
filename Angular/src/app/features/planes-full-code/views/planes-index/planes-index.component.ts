@@ -1,3 +1,5 @@
+import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
+import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
 import {
   Component,
   HostBinding,
@@ -52,7 +54,7 @@ import { NgIf, AsyncPipe } from '@angular/common';
     selector: 'app-planes-index',
     templateUrl: './planes-index.component.html',
     styleUrls: ['./planes-index.component.scss'],
-    imports: [BiaSharedModule, NgIf, PlaneTableComponent, AsyncPipe, TranslateModule]
+    imports: [BiaSharedModule, NgIf, PlaneTableComponent, AsyncPipe, TranslateModule, BiaTableHeaderComponent, BiaTableControllerComponent, BiaTableComponent]
 })
 export class PlanesIndexComponent implements OnInit, OnDestroy {
   useCalcMode = useCalcMode;

@@ -1,3 +1,4 @@
+import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -15,7 +16,7 @@ import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module
     selector: 'app-planes-item',
     templateUrl: './plane-item.component.html',
     styleUrls: ['./plane-item.component.scss'],
-    imports: [RouterOutlet, NgIf, BiaSharedModule, AsyncPipe]
+    imports: [RouterOutlet, NgIf, BiaSharedModule, AsyncPipe, SpinnerComponent]
 })
 export class PlaneItemComponent implements OnInit, OnDestroy {
   plane$: Observable<Plane>;

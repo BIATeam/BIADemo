@@ -1,3 +1,4 @@
+import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { Component, Injector, OnInit } from '@angular/core';
 import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
 import { engineCRUDConfiguration } from '../../engine.constants';
@@ -17,7 +18,7 @@ import { BiaSharedModule } from '../../../../../../shared/bia-shared/bia-shared.
 @Component({
     selector: 'app-engine-edit',
     templateUrl: './engine-edit.component.html',
-    imports: [NgIf, EngineFormComponent, BiaSharedModule, AsyncPipe]
+    imports: [NgIf, EngineFormComponent, BiaSharedModule, AsyncPipe, SpinnerComponent]
 })
 export class EngineEditComponent
   extends CrudItemEditComponent<Engine>

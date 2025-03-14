@@ -1,3 +1,4 @@
+import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -16,7 +17,7 @@ import { BiaSharedModule } from '../../../../../shared/bia-shared/bia-shared.mod
     selector: 'bia-notifications-item',
     templateUrl: './notification-item.component.html',
     styleUrls: ['./notification-item.component.scss'],
-    imports: [RouterOutlet, NgIf, BiaSharedModule, AsyncPipe]
+    imports: [RouterOutlet, NgIf, BiaSharedModule, AsyncPipe, SpinnerComponent]
 })
 export class NotificationItemComponent implements OnInit, OnDestroy {
   notification$: Observable<Notification>;

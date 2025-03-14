@@ -1,3 +1,7 @@
+import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
+import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
+import { BiaTableBehaviorControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
+import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import { Component, Injector, OnInit } from '@angular/core';
 import { skip } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -16,7 +20,7 @@ import { TranslateModule } from '@ngx-translate/core';
     selector: 'bia-notifications-index',
     templateUrl: './notifications-index.component.html',
     styleUrls: ['./notifications-index.component.scss'],
-    imports: [NgClass, BiaSharedModule, PrimeTemplate, AsyncPipe, TranslateModule]
+    imports: [NgClass, BiaSharedModule, PrimeTemplate, AsyncPipe, TranslateModule, BiaTableHeaderComponent, BiaTableControllerComponent, BiaTableBehaviorControllerComponent, BiaTableComponent]
 })
 export class NotificationsIndexComponent
   extends CrudItemsIndexComponent<NotificationListItem, Notification>

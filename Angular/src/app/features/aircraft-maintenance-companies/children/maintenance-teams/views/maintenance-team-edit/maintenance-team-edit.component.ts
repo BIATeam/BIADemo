@@ -1,3 +1,4 @@
+import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { Component, Injector, OnInit } from '@angular/core';
 import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
 import { maintenanceTeamCRUDConfiguration } from '../../maintenance-team.constants';
@@ -13,7 +14,7 @@ import { BiaSharedModule } from '../../../../../../shared/bia-shared/bia-shared.
 @Component({
     selector: 'app-maintenance-team-edit',
     templateUrl: './maintenance-team-edit.component.html',
-    imports: [NgIf, MaintenanceTeamFormComponent, BiaSharedModule, AsyncPipe]
+    imports: [NgIf, MaintenanceTeamFormComponent, BiaSharedModule, AsyncPipe, SpinnerComponent]
 })
 export class MaintenanceTeamEditComponent
   extends CrudItemEditComponent<MaintenanceTeam>

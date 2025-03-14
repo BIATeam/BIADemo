@@ -1,3 +1,4 @@
+import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { Component, Injector } from '@angular/core';
 import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
 import { Site } from '../../model/site';
@@ -10,7 +11,7 @@ import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module
 @Component({
     selector: 'app-site-edit',
     templateUrl: './site-edit.component.html',
-    imports: [NgIf, SiteFormComponent, BiaSharedModule, AsyncPipe]
+    imports: [NgIf, SiteFormComponent, BiaSharedModule, AsyncPipe, SpinnerComponent]
 })
 export class SiteEditComponent extends CrudItemEditComponent<Site> {
   constructor(

@@ -1,3 +1,4 @@
+import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { Component, Injector } from '@angular/core';
 import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
 import { PlaneSpecific } from '../../model/plane-specific';
@@ -10,7 +11,7 @@ import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module
 @Component({
     selector: 'app-plane-specific-edit',
     templateUrl: './plane-edit.component.html',
-    imports: [NgIf, PlaneFormComponent, BiaSharedModule, AsyncPipe]
+    imports: [NgIf, PlaneFormComponent, BiaSharedModule, AsyncPipe, SpinnerComponent]
 })
 export class PlaneEditComponent extends CrudItemEditComponent<PlaneSpecific> {
   constructor(

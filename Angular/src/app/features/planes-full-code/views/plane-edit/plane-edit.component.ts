@@ -1,3 +1,4 @@
+import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import {
   Component,
   EventEmitter,
@@ -22,7 +23,7 @@ import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module
     selector: 'app-plane-edit',
     templateUrl: './plane-edit.component.html',
     styleUrls: ['./plane-edit.component.scss'],
-    imports: [NgIf, PlaneFormComponent, BiaSharedModule, AsyncPipe]
+    imports: [NgIf, PlaneFormComponent, BiaSharedModule, AsyncPipe, SpinnerComponent]
 })
 export class PlaneEditComponent implements OnInit, OnDestroy {
   @Output() displayChange = new EventEmitter<boolean>();

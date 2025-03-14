@@ -1,3 +1,4 @@
+import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { Component, Injector, OnInit } from '@angular/core';
 import { MemberEditComponent } from 'src/app/shared/bia-shared/feature-templates/members/views/member-edit/member-edit.component';
 import { TeamTypeId } from 'src/app/shared/constants';
@@ -9,7 +10,7 @@ import { BiaSharedModule } from '../../../../../../shared/bia-shared/bia-shared.
 @Component({
     selector: 'app-aircraft-maintenance-company-member-edit',
     templateUrl: '../../../../../../shared/bia-shared/feature-templates/members/views/member-edit/member-edit.component.html',
-    imports: [MemberModule, NgIf, BiaSharedModule, AsyncPipe]
+    imports: [MemberModule, NgIf, BiaSharedModule, AsyncPipe, SpinnerComponent]
 })
 export class AircraftMaintenanceCompanyMemberEditComponent
   extends MemberEditComponent

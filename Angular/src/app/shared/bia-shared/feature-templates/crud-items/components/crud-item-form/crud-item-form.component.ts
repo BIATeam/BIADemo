@@ -21,7 +21,7 @@ import { BiaFormComponent as BiaFormComponent_1 } from '../../../../components/f
     templateUrl: './crud-item-form.component.html',
     styleUrls: ['./crud-item-form.component.scss'],
     changeDetection: ChangeDetectionStrategy.Default,
-    imports: [BiaFormComponent_1]
+    imports: [BiaFormComponent_1, BiaFormComponent]
 })
 export class CrudItemFormComponent<CrudItem extends BaseDto> {
   @Input() crudItem?: CrudItem;

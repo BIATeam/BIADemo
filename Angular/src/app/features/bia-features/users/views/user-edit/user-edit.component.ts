@@ -1,3 +1,4 @@
+import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { Component, Injector } from '@angular/core';
 import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
 import { User } from '../../model/user';
@@ -10,7 +11,7 @@ import { BiaSharedModule } from '../../../../../shared/bia-shared/bia-shared.mod
 @Component({
     selector: 'bia-user-edit',
     templateUrl: './user-edit.component.html',
-    imports: [NgIf, UserFormComponent, BiaSharedModule, AsyncPipe]
+    imports: [NgIf, UserFormComponent, BiaSharedModule, AsyncPipe, SpinnerComponent]
 })
 export class UserEditComponent extends CrudItemEditComponent<User> {
   constructor(

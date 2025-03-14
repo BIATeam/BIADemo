@@ -1,3 +1,4 @@
+import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import {
   Component,
   EventEmitter,
@@ -26,7 +27,7 @@ import { NotificationTeamWarningComponent } from '../../../../../shared/bia-shar
     selector: 'bia-notification-detail',
     templateUrl: './notification-detail.component.html',
     styleUrls: ['./notification-detail.component.scss'],
-    imports: [NgIf, ButtonDirective, NotificationTeamWarningComponent, BiaSharedModule, AsyncPipe, DatePipe, TranslateModule]
+    imports: [NgIf, ButtonDirective, NotificationTeamWarningComponent, BiaSharedModule, AsyncPipe, DatePipe, TranslateModule, SpinnerComponent]
 })
 export class NotificationDetailComponent implements OnInit, OnDestroy {
   @Output() displayChange = new EventEmitter<boolean>();

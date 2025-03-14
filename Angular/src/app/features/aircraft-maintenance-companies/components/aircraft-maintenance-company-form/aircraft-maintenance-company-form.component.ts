@@ -1,3 +1,4 @@
+import { BiaFormComponent } from 'src/app/shared/bia-shared/components/form/bia-form/bia-form.component';
 import { Component } from '@angular/core';
 import { CrudItemFormComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component';
 import { AircraftMaintenanceCompany } from '../../model/aircraft-maintenance-company';
@@ -9,6 +10,6 @@ import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module
     styleUrls: [
         '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
     ],
-    imports: [BiaSharedModule]
+    imports: [BiaSharedModule, BiaFormComponent]
 })
 export class AircraftMaintenanceCompanyFormComponent extends CrudItemFormComponent<AircraftMaintenanceCompany> {}

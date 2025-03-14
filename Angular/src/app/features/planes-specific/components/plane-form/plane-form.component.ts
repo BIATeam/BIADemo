@@ -1,3 +1,5 @@
+import { BiaFormComponent } from 'src/app/shared/bia-shared/components/form/bia-form/bia-form.component';
+import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
 import {
   Component,
   OnChanges,
@@ -30,7 +32,7 @@ import { TranslateModule } from '@ngx-translate/core';
     styleUrls: [
         '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
     ],
-    imports: [BiaSharedModule, PrimeTemplate, FormsModule, ReactiveFormsModule, NgSwitch, NgSwitchCase, Checkbox, InputText, NgIf, EngineTableComponent, TranslateModule]
+    imports: [BiaSharedModule, PrimeTemplate, FormsModule, ReactiveFormsModule, NgSwitch, NgSwitchCase, Checkbox, InputText, NgIf, EngineTableComponent, TranslateModule, BiaFormComponent, BiaTableHeaderComponent]
 })
 export class PlaneFormComponent
   extends CrudItemFormComponent<PlaneSpecific>

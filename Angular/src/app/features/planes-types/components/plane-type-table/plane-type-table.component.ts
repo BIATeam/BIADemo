@@ -1,3 +1,7 @@
+import { BiaTableFilterComponent } from 'src/app/shared/bia-shared/components/table/bia-table-filter/bia-table-filter.component';
+import { BiaTableInputComponent } from 'src/app/shared/bia-shared/components/table/bia-table-input/bia-table-input.component';
+import { BiaTableOutputComponent } from 'src/app/shared/bia-shared/components/table/bia-table-output/bia-table-output.component';
+import { BiaTableFooterControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-footer-controller/bia-table-footer-controller.component';
 import { Component } from '@angular/core';
 import { UntypedFormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
@@ -18,7 +22,7 @@ import { Skeleton } from 'primeng/skeleton';
     styleUrls: [
         '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss',
     ],
-    imports: [FormsModule, ReactiveFormsModule, NgIf, TableModule, PrimeTemplate, NgFor, Tooltip, NgSwitch, BiaSharedModule, NgClass, NgTemplateOutlet, Skeleton, NgStyle, AsyncPipe, TranslateModule]
+    imports: [FormsModule, ReactiveFormsModule, NgIf, TableModule, PrimeTemplate, NgFor, Tooltip, NgSwitch, BiaSharedModule, NgClass, NgTemplateOutlet, Skeleton, NgStyle, AsyncPipe, TranslateModule, BiaTableFilterComponent, BiaTableInputComponent, BiaTableOutputComponent, BiaTableFooterControllerComponent]
 })
 export class PlaneTypeTableComponent extends CrudItemTableComponent<PlaneType> {
   constructor(

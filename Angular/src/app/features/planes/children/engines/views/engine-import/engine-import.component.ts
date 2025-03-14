@@ -1,3 +1,4 @@
+import { BiaFormComponent } from 'src/app/shared/bia-shared/components/form/bia-form/bia-form.component';
 import { Component, Injector } from '@angular/core';
 import { CrudItemImportComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-import/crud-item-import.component';
 import { Permission } from 'src/app/shared/permission';
@@ -12,7 +13,7 @@ import { CrudItemImportFormComponent } from '../../../../../../shared/bia-shared
 @Component({
     selector: 'app-engine-import',
     templateUrl: '../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
-    imports: [BiaSharedModule, CrudItemImportFormComponent, AsyncPipe]
+    imports: [BiaSharedModule, CrudItemImportFormComponent, AsyncPipe, BiaFormComponent]
 })
 export class EngineImportComponent extends CrudItemImportComponent<Engine> {
   constructor(

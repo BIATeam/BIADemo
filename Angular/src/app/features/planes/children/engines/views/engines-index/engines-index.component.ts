@@ -1,3 +1,7 @@
+import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
+import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
+import { BiaTableBehaviorControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
+import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
@@ -24,7 +28,7 @@ import { TranslateModule } from '@ngx-translate/core';
     selector: 'app-engines-index',
     templateUrl: './engines-index.component.html',
     styleUrls: ['./engines-index.component.scss'],
-    imports: [NgClass, BiaSharedModule, PrimeTemplate, NgIf, ButtonDirective, EngineTableComponent, AsyncPipe, TranslateModule]
+    imports: [NgClass, BiaSharedModule, PrimeTemplate, NgIf, ButtonDirective, EngineTableComponent, AsyncPipe, TranslateModule, BiaTableHeaderComponent, BiaTableControllerComponent, BiaTableBehaviorControllerComponent, BiaTableComponent]
 })
 export class EnginesIndexComponent
   extends CrudItemsIndexComponent<Engine>

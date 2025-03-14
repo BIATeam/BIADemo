@@ -1,3 +1,4 @@
+import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { Component, Injector } from '@angular/core';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { CrudItemReadComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-read/crud-item-read.component';
@@ -12,7 +13,7 @@ import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module
 @Component({
     selector: 'app-plane-specific-read',
     templateUrl: './plane-read.component.html',
-    imports: [NgIf, PlaneFormComponent, BiaSharedModule, AsyncPipe]
+    imports: [NgIf, PlaneFormComponent, BiaSharedModule, AsyncPipe, SpinnerComponent]
 })
 export class PlaneReadComponent extends CrudItemReadComponent<PlaneSpecific> {
   constructor(
