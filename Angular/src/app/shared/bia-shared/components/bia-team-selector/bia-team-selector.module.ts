@@ -6,22 +6,9 @@ import {
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { SelectModule } from 'primeng/select';
-import { TooltipModule } from 'primeng/tooltip';
-import { BiaTeamSelectorComponent } from './bia-team-selector.component';
 
 @NgModule({
-    exports: [BiaTeamSelectorComponent],
-    imports: [
-        CommonModule,
-        FormsModule,
-        SelectModule,
-        MultiSelectModule,
-        TooltipModule,
-        TranslateModule,
-        BiaTeamSelectorComponent,
-    ],
-    providers: [provideHttpClient(withInterceptorsFromDi())],
+  imports: [CommonModule, FormsModule, TranslateModule],
+  providers: [provideHttpClient(withInterceptorsFromDi())],
 })
 export class BiaTeamSelectorModule {}

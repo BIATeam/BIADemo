@@ -7,48 +7,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { BadgeModule } from 'primeng/badge';
-import { BreadcrumbModule } from 'primeng/breadcrumb';
-import { ButtonModule } from 'primeng/button';
-import { DialogModule } from 'primeng/dialog';
-import { DrawerModule } from 'primeng/drawer';
-import { InputTextModule } from 'primeng/inputtext';
-import { MegaMenuModule } from 'primeng/megamenu';
-import { MenuModule } from 'primeng/menu';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { RippleModule } from 'primeng/ripple';
-import { StyleClassModule } from 'primeng/styleclass';
-import { ToastModule } from 'primeng/toast';
-import { ToggleSwitchModule } from 'primeng/toggleswitch';
-import { TooltipModule } from 'primeng/tooltip';
-
-import { BiaTeamSelectorModule } from '../../bia-team-selector/bia-team-selector.module';
-
-import { IeWarningComponent } from '../ie-warning/ie-warning.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    TranslateModule,
-    StyleClassModule,
-    InputTextModule,
-    BadgeModule,
-    DrawerModule,
-    RadioButtonModule,
-    ToggleSwitchModule,
-    TooltipModule,
-    MegaMenuModule,
-    RippleModule,
-    RouterModule,
-    ButtonModule,
-    MenuModule,
-    BreadcrumbModule,
-    IeWarningComponent,
-    BiaTeamSelectorModule,
-    ToastModule,
-    DialogModule,
-],
+  imports: [CommonModule, FormsModule, TranslateModule, RouterModule],
   providers: [provideHttpClient(withInterceptorsFromDi())],
 })
 export class BiaUltimaLayoutModule {}
