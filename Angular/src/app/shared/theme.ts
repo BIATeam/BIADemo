@@ -684,6 +684,9 @@ const MyPreset = definePreset(Material, {
         },
       },
     },
+    icon: {
+      size: '1.1rem',
+    },
   },
   components: {
     accordion: {
@@ -985,9 +988,9 @@ const MyPreset = definePreset(Material, {
     },
     breadcrumb: {
       root: {
-        padding: '0.5rem',
+        padding: '0.45rem',
         background: '{content.background}',
-        gap: '0.7rem',
+        gap: '1rem',
         transitionDuration: '{transition.duration}',
       },
       item: {
