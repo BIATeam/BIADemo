@@ -454,8 +454,8 @@ const MyPreset = definePreset(Material, {
           background: 'color-mix(in srgb, {primary.color}, transparent 88%)',
           focusBackground:
             'color-mix(in srgb, {primary.color}, transparent 76%)',
-          color: '{primary.700}',
-          focusColor: '{primary.800}',
+          color: '{primary.500}',
+          focusColor: '{primary.600}',
         },
         mask: {
           background: 'rgba(0,0,0,0.32)',
