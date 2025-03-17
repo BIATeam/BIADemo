@@ -464,9 +464,9 @@ const MyPreset = definePreset(Material, {
         formField: {
           background: '{surface.0}',
           disabledBackground: '{surface.300}',
-          filledBackground: '{surface.100}',
-          filledHoverBackground: '{surface.200}',
-          filledFocusBackground: '{surface.100}',
+          filledBackground: 'transparent',
+          filledHoverBackground: 'transparent',
+          filledFocusBackground: 'transparent',
           borderColor: '{surface.400}',
           hoverBorderColor: '{surface.900}',
           focusBorderColor: '{primary.color}',
