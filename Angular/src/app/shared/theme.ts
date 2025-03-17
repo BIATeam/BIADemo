@@ -582,8 +582,8 @@ const MyPreset = definePreset(Material, {
         highlight: {
           background: 'color-mix(in srgb, {primary.400}, transparent 84%)',
           focusBackground: 'color-mix(in srgb, {primary.400}, transparent 76%)',
-          color: 'rgba(255,255,255,.87)',
-          focusColor: 'rgba(255,255,255,.87)',
+          color: '{primary.color}',
+          focusColor: '{primary.color}',
         },
         mask: {
           background: 'rgba(0,0,0,0.6)',
@@ -592,9 +592,9 @@ const MyPreset = definePreset(Material, {
         formField: {
           background: '{surface.950}',
           disabledBackground: '{surface.700}',
-          filledBackground: '{surface.800}',
-          filledHoverBackground: '{surface.700}',
-          filledFocusBackground: '{surface.800}',
+          filledBackground: 'transparent',
+          filledHoverBackground: 'transparent',
+          filledFocusBackground: 'transparent',
           borderColor: '{surface.600}',
           hoverBorderColor: '{surface.400}',
           focusBorderColor: '{primary.color}',
