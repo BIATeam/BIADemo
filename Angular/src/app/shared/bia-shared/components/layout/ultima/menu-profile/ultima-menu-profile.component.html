@@ -10,9 +10,7 @@
       (error)="onImgError()"
       alt="avatar"
       class="avatar" />
-    <span>
-      <strong>{{ displayName }}</strong>
-    </span>
+    <span [innerHTML]="menuProfileHtml"></span>
     <i class="layout-menu-profile-toggler pi pi-fw pi-angle-down"></i>
   </button>
 
