@@ -15,74 +15,70 @@
 }
 
 :host ::ng-deep {
-  p-multiselect {
-    .p-multiselect {
-      min-width: 12.5em;
-      background-image:
-        linear-gradient(to bottom, white, white),
-        linear-gradient(to bottom, white, white);
+  .p-multiselect {
+    min-width: 12.5em;
+    background-image:
+      linear-gradient(to bottom, white, white),
+      linear-gradient(to bottom, white, white);
+    padding-bottom: 2px;
+    .p-multiselect-label {
+      padding-top: 2px;
       padding-bottom: 2px;
-      .p-multiselect-label {
-        padding-top: 2px;
-        padding-bottom: 2px;
-        padding-left: 2px;
-        padding-right: 2px;
-        width: 157px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      background-color: transparent;
-      .p-inputtext {
-        color: white !important;
-      }
+      padding-left: 2px;
+      padding-right: 2px;
+      width: 157px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-    .p-multiselect:not(.p-disabled) {
-      &:hover {
-        background-image:
-          linear-gradient(to bottom, white, white),
-          linear-gradient(to bottom, white, white) !important;
-      }
-    }
-    .p-multiselect-trigger-icon {
+    background-color: transparent;
+    .p-inputtext {
       color: white !important;
-    }
-    .p-multiselect-label.p-placeholder {
-      color: rgba(255, 255, 255, 0.6);
     }
   }
-  p-select {
-    .p-select {
-      min-width: 12.5em;
+  .p-multiselect:not(.p-disabled) {
+    &:hover {
       background-image:
         linear-gradient(to bottom, white, white),
-        linear-gradient(to bottom, white, white);
+        linear-gradient(to bottom, white, white) !important;
+    }
+  }
+  .p-multiselect-trigger-icon {
+    color: white !important;
+  }
+  .p-multiselect-label.p-placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+  .p-select {
+    min-width: 12.5em;
+    background-image:
+      linear-gradient(to bottom, white, white),
+      linear-gradient(to bottom, white, white);
+    padding-bottom: 2px;
+    .p-select-label {
+      padding-top: 2px;
       padding-bottom: 2px;
-      .p-select-label {
-        padding-top: 2px;
-        padding-bottom: 2px;
-        padding-left: 2px;
-        padding-right: 2px;
-        width: 157px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      background-color: transparent;
-      .p-inputtext {
-        color: white !important;
-      }
+      padding-left: 2px;
+      padding-right: 2px;
+      width: 157px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-    .p-select:not(.p-disabled) {
-      &:hover {
-        background-image:
-          linear-gradient(to bottom, white, white),
-          linear-gradient(to bottom, white, white) !important;
-      }
-    }
-    .p-select-trigger-icon {
+    background-color: transparent;
+    .p-inputtext {
       color: white !important;
     }
+  }
+  .p-select:not(.p-disabled) {
+    &:hover {
+      background-image:
+        linear-gradient(to bottom, white, white),
+        linear-gradient(to bottom, white, white) !important;
+    }
+  }
+  .p-select-trigger-icon {
+    color: white !important;
   }
   label {
     text-wrap: nowrap;
