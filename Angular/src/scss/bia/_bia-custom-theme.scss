@@ -442,3 +442,18 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
     }
   }
 }
+
+.p-breadcrumb {
+  font-size: small;
+}
+p-breadcrumb .p-breadcrumb-separator .p-icon {
+  width: 0.6rem;
+  height: 0.6rem;
+}
+.p-breadcrumb .p-breadcrumb-list li:last-child .p-breadcrumb-item-label {
+  color: var(--primary-color);
+  font-weight: bold;
+}
+.p-breadcrumb .p-breadcrumb-list li:last-child .p-breadcrumb-item-icon {
+  color: var(--p-primary-400);
+}
