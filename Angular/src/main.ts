@@ -17,10 +17,7 @@ import {
   TranslateModule,
   TranslateStore,
 } from '@ngx-translate/core';
-import { definePreset } from '@primeng/themes';
-import Material from '@primeng/themes/material';
 import { LoggerModule, TOKEN_LOGGER_SERVER_SERVICE } from 'ngx-logger';
-import { providePrimeNG } from 'primeng/config';
 import { AppRoutingModule } from './app/app-routing.module';
 import { AppComponent } from './app/app.component';
 import { buildSpecificModules } from './app/build-specifics/bia-build-specifics';
@@ -32,6 +29,7 @@ import { getCurrentCulture } from './app/core/bia-core/services/bia-translation.
 import { BiaErrorHandler } from './app/core/bia-core/shared/bia-error-handler';
 import { CoreModule } from './app/core/core.module';
 import { HomeModule } from './app/features/home/home.module';
+import { appConfig } from './app/shared/theme';
 import { ROOT_REDUCERS, metaReducers } from './app/store/state';
 import { environment } from './environments/environment';
 
@@ -84,30 +82,7 @@ bootstrapApplication(AppComponent, {
     { provide: LOCALE_ID, useFactory: getCurrentCulture },
     { provide: ErrorHandler, useClass: BiaErrorHandler },
     BiaSignalRService,
-    providePrimeNG({
-      ripple: true,
-      inputStyle: 'filled',
-      theme: {
-        preset: definePreset(Material, {
-          semantic: {
-            primary: {
-              50: '{slate.50}',
-              100: '{slate.100}',
-              200: '{slate.200}',
-              300: '{slate.300}',
-              400: '{slate.400}',
-              500: '{slate.500}',
-              600: '{slate.600}',
-              700: '{slate.700}',
-              800: '{slate.800}',
-              900: '{slate.900}',
-              950: '{slate.950}',
-            },
-          },
-        }),
-        options: { darkModeSelector: '.app-dark' },
-      },
-    }),
     provideAnimations(),
+    ...appConfig.providers,
   ],
 }).catch(err => console.error(err));
