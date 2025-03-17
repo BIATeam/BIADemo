@@ -34,10 +34,10 @@
         [disabled]="scale === scales[0]"></button>
       <div class="flex gap-2 align-items-center">
         <i
-          class="pi pi-circle-fill text-300"
+          class="pi pi-circle-fill scale-icon"
           style="font-size: 0.9rem"
           *ngFor="let s of scales"
-          [ngClass]="{ 'text-primary-500': s === scale }"></i>
+          [ngClass]="{ 'selected-scale-icon': s === scale }"></i>
       </div>
       <button
         icon="pi pi-plus"
