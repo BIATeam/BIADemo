@@ -236,12 +236,16 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
   padding-bottom: 0.25rem;
 }
 
-// button max-width
+.p-button.p-button-icon-only {
+  padding: 0.465rem;
+}
+
 .p-button-label {
   max-width: 8em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-family: 'oswald-light';
 }
 
 .p-dialog {
@@ -444,7 +448,7 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
 }
 
 .p-breadcrumb {
-  font-size: small;
+  font-size: 0.9em;
 }
 p-breadcrumb .p-breadcrumb-separator .p-icon {
   width: 0.6rem;
