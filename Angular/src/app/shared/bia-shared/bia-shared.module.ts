@@ -97,6 +97,7 @@ import { BiaButtonGroupComponent } from './components/bia-button-group/bia-butto
 import { BiaOnlineOfflineIconModule } from './components/bia-online-offline-icon/bia-online-offline-icon.module';
 import { BiaTeamSelectorModule } from './components/bia-team-selector/bia-team-selector.module';
 import { BiaFieldBaseComponent } from './components/form/bia-field-base/bia-field-base.component';
+import { BiaFormLayoutComponent } from './components/form/bia-form-layout/bia-form-layout.component';
 import { BiaFormComponent } from './components/form/bia-form/bia-form.component';
 import { BiaInputComponent } from './components/form/bia-input/bia-input.component';
 import { BiaOutputComponent } from './components/form/bia-output/bia-output.component';
@@ -217,6 +218,7 @@ const COMPONENTS = [
   BiaTableComponent,
   BiaTableFilterComponent,
   BiaFieldBaseComponent,
+  BiaFormLayoutComponent,
   BiaFormComponent,
   BiaInputComponent,
   BiaOutputComponent,
