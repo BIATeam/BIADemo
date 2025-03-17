@@ -29,4 +29,9 @@ body {
 
 .layout-menu-dark {
   --menu-bg: #{$biaPrimaryDisplayColor};
+  --active-menuitem-text-color: var(--primary-color);
+}
+
+.layout-menu-light {
+  --active-menuitem-text-color: var(--primary-color);
 }
