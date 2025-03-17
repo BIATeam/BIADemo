@@ -126,7 +126,7 @@ bia-table-controller {
         position: absolute;
       }
     }
-    td:not(.p-frozen-column) {
+    td:not(.p-datatable-frozen-column) {
       position: relative;
     }
   }
