@@ -250,7 +250,7 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
     .bia-form:has(> .bia-form-fixed-buttons) {
       padding-bottom: 1.5rem;
       .bia-form-fixed-buttons:has(> div) {
-        background: var(--surface-f);
+        background: var(--p-dialog-background);
         position: fixed;
         bottom: 0;
         right: 1rem;
@@ -263,7 +263,7 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
     .bia-form:has(> .bia-form-header) {
       padding-top: 1.5rem;
       .bia-form-header:has(> div) {
-        background: var(--surface-f);
+        background: var(--p-dialog-background);
         position: fixed;
         top: 3rem;
         right: 1rem;
