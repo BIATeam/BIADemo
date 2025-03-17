@@ -1404,7 +1404,7 @@ const MyPreset = definePreset(Material, {
                 'color-mix(in srgb, {primary.color}, transparent 96%)',
               activeBackground:
                 'color-mix(in srgb, {primary.color}, transparent 84%)',
-              borderColor: '{primary.700}',
+              borderColor: '{primary.color}',
               color: '{primary.color}',
             },
             secondary: {
