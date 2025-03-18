@@ -6,7 +6,7 @@
     }}</a>
   </small>
   <ng-container *ngIf="layoutService.configDisplay().showLang">
-    <h5>{{ 'bia.language' | translate }}</h5>
+    <h3>{{ 'bia.language' | translate }}</h3>
     <div class="flex flex-wrap row-gap-3">
       <div
         class="flex align-items-center gap-2 w-6"
@@ -23,7 +23,7 @@
     </div>
   </ng-container>
   <ng-container *ngIf="layoutService.configDisplay().showScale">
-    <h5>{{ 'bia.layoutScale' | translate }}</h5>
+    <h3>{{ 'bia.layoutScale' | translate }}</h3>
     <div class="flex align-items-center">
       <button
         icon="pi pi-minus"
@@ -48,7 +48,7 @@
         [disabled]="scale === scales[scales.length - 1]"></button></div
   ></ng-container>
   <ng-container *ngIf="layoutService.configDisplay().showTheme">
-    <h5>{{ 'bia.theme' | translate }}</h5>
+    <h3>{{ 'bia.theme' | translate }}</h3>
     <div class="flex gap-4">
       <div class="field-radiobutton flex-1">
         <p-radioButton
@@ -69,7 +69,7 @@
     </div>
   </ng-container>
   <ng-container *ngIf="layoutService.configDisplay().showMenuStyle">
-    <h5>{{ 'bia.menuMode' | translate }}</h5>
+    <h3>{{ 'bia.menuMode' | translate }}</h3>
     <div class="flex flex-wrap row-gap-3">
       <div class="flex align-items-center gap-2 w-6">
         <p-radioButton
@@ -131,7 +131,7 @@
   </ng-container>
 
   <ng-container *ngIf="layoutService.configDisplay().showFooterStyle">
-    <h5>{{ 'bia.footerMode' | translate }}</h5>
+    <h3>{{ 'bia.footerMode' | translate }}</h3>
     <div class="flex flex-wrap row-gap-3">
       <div class="flex align-items-center gap-2 w-6">
         <p-radioButton
