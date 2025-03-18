@@ -22,6 +22,7 @@
       linear-gradient(to bottom, white, white);
     padding-bottom: 2px;
     .p-multiselect-label {
+      color: var(--topbar-item-text-color);
       padding-top: 2px;
       padding-bottom: 2px;
       padding-left: 2px;
@@ -56,6 +57,7 @@
       linear-gradient(to bottom, white, white);
     padding-bottom: 2px;
     .p-select-label {
+      color: var(--topbar-item-text-color);
       padding-top: 2px;
       padding-bottom: 2px;
       padding-left: 2px;
