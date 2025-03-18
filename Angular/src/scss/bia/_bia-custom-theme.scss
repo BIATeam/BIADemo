@@ -454,6 +454,12 @@ p-breadcrumb .p-breadcrumb-separator .p-icon {
   width: 0.6rem;
   height: 0.6rem;
 }
+.p-breadcrumb .p-breadcrumb-list li:first-child {
+  margin-left: 0.5rem;
+}
+.p-breadcrumb .p-breadcrumb-list li:last-child .p-breadcrumb-item-label {
+  color: var(--primary-color);
+}
 .p-breadcrumb .p-breadcrumb-list li:last-child .p-breadcrumb-item-label {
   color: var(--primary-color);
 }
