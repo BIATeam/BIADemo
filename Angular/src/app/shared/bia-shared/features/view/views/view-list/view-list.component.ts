@@ -1,3 +1,4 @@
+import { NgIf } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -8,10 +9,13 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
-import { FilterMetadata, SelectItemGroup, PrimeTemplate } from 'primeng/api';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { FilterMetadata, PrimeTemplate, SelectItemGroup } from 'primeng/api';
+import { FloatLabel } from 'primeng/floatlabel';
+import { Select } from 'primeng/select';
 import { Subscription, combineLatest } from 'rxjs';
 import { map, skip } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -33,9 +37,6 @@ import {
   getLastViewChanged,
 } from '../../store/view.state';
 import { openViewDialog } from '../../store/views-actions';
-import { Select } from 'primeng/select';
-import { FormsModule } from '@angular/forms';
-import { NgIf } from '@angular/common';
 import { ViewDialogComponent } from '../view-dialog/view-dialog.component';
 
 const currentView = -1;
@@ -52,6 +53,7 @@ const undefinedView = -2;
     NgIf,
     ViewDialogComponent,
     TranslateModule,
+    FloatLabel,
   ],
 })
 export class ViewListComponent implements OnInit, OnChanges, OnDestroy {

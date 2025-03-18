@@ -20,7 +20,7 @@
         </ng-container>
         <!-- isActive -->
         <ng-container *ngSwitchCase="'capacity'">
-          <span class="p-float-label">
+          <p-floatlabel variant="in">
             <input
               [formControlName]="field.field"
               type="number"
@@ -30,7 +30,7 @@
               ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
               >{{ field.header | translate }}</label
             >
-          </span>
+          </p-floatlabel>
         </ng-container>
 
         <!-- capacity -->
@@ -43,7 +43,7 @@
         [canDelete]="true"
         (delete)="onDeleteEngines()"
         [selectedElements]="selectedEngines"></bia-table-header>
-      <span class="p-float-label">
+      <p-floatlabel variant="in">
         <app-engine-specific-table
           [elements]="displayedEngines()"
           [configuration]="engineCrudConfig"
@@ -60,7 +60,7 @@
           (selectedElementsChanged)="onSelectedEnginesChanged($event)"
           (save)="onEngineSave($event)"
           (isEditing)="onIsEditingChange($event)" />
-      </span>
+      </p-floatlabel>
     </ng-container>
   </ng-template>
 </bia-form>

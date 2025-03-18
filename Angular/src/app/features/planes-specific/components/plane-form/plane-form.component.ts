@@ -1,5 +1,4 @@
-import { BiaFormComponent } from 'src/app/shared/bia-shared/components/form/bia-form/bia-form.component';
-import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
+import { NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
 import {
   Component,
   OnChanges,
@@ -8,23 +7,25 @@ import {
   ViewChild,
   WritableSignal,
 } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { PrimeTemplate } from 'primeng/api';
+import { Checkbox } from 'primeng/checkbox';
+import { FloatLabel } from 'primeng/floatlabel';
+import { InputText } from 'primeng/inputtext';
+import { BiaFormComponent } from 'src/app/shared/bia-shared/components/form/bia-form/bia-form.component';
+import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
 import { CrudItemFormComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component';
 import { BiaFieldsConfig } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
 import { CrudHelperService } from 'src/app/shared/bia-shared/services/crud-helper.service';
+import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
 import { EngineTableComponent } from '../../children/engines/components/engine-table/engine-table.component';
 import { engineCRUDConfiguration } from '../../children/engines/engine.constants';
 import { Engine } from '../../model/engine';
 import { PlaneSpecific } from '../../model/plane-specific';
-import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
-import { PrimeTemplate } from 'primeng/api';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgSwitch, NgSwitchCase, NgIf } from '@angular/common';
-import { Checkbox } from 'primeng/checkbox';
-import { InputText } from 'primeng/inputtext';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-plane-specific-form',
@@ -46,6 +47,7 @@ import { TranslateModule } from '@ngx-translate/core';
     TranslateModule,
     BiaFormComponent,
     BiaTableHeaderComponent,
+    FloatLabel,
   ],
 })
 export class PlaneFormComponent

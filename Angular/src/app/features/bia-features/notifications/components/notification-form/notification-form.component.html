@@ -27,7 +27,7 @@
             <p-tabpanel value="0">
               <div class="flex flex-row justify-content-center">
                 <div class="app-field-container flex-1" style="max-width: 90%">
-                  <span class="p-float-label">
+                  <p-floatlabel variant="in">
                     <input
                       formControlName="title"
                       type="text"
@@ -38,12 +38,12 @@
                       ><span class="bia-star-mandatory">*</span
                       >{{ 'notification.title' | translate }}</label
                     >
-                  </span>
+                  </p-floatlabel>
                 </div>
               </div>
               <div class="flex flex-row justify-content-center">
                 <div class="app-field-container flex-1" style="max-width: 90%">
-                  <span class="p-float-label">
+                  <p-floatlabel variant="in">
                     <input
                       formControlName="description"
                       type="text"
@@ -54,7 +54,7 @@
                       ><span class="bia-star-mandatory">*</span
                       >{{ 'notification.description' | translate }}</label
                     >
-                  </span>
+                  </p-floatlabel>
                 </div>
               </div>
               <div class="flex flex-row gap-1 justify-content-end">
@@ -80,7 +80,7 @@
                     <div
                       class="app-field-container flex-1"
                       style="max-width: 90%">
-                      <span class="p-float-label">
+                      <p-floatlabel variant="in">
                         <input
                           formControlName="title"
                           type="text"
@@ -92,14 +92,14 @@
                           ><span class="bia-star-mandatory">*</span
                           >{{ 'notification.title' | translate }}</label
                         >
-                      </span>
+                      </p-floatlabel>
                     </div>
                   </div>
                   <div class="flex flex-row justify-content-center">
                     <div
                       class="app-field-container flex-1"
                       style="max-width: 90%">
-                      <span class="p-float-label">
+                      <p-floatlabel variant="in">
                         <input
                           formControlName="description"
                           type="text"
@@ -111,7 +111,7 @@
                           ><span class="bia-star-mandatory">*</span
                           >{{ 'notification.description' | translate }}</label
                         >
-                      </span>
+                      </p-floatlabel>
                     </div>
                   </div>
                 </div>
@@ -133,7 +133,7 @@
               </ng-template>
               <div class="flex flex-row justify-content-center">
                 <div class="app-field-container flex-1" style="max-width: 90%">
-                  <span class="p-float-label">
+                  <p-floatlabel variant="in">
                     <p-select
                       [options]="missingLanguageOptions"
                       placeholder="&nbsp;"
@@ -147,7 +147,7 @@
                       ><span class="bia-star-mandatory">*</span
                       >{{ 'bia.translation.language' | translate }}</label
                     >
-                  </span>
+                  </p-floatlabel>
                 </div>
               </div>
 
@@ -168,7 +168,7 @@
 
       <div class="flex flex-row justify-content-center">
         <div class="app-field-container flex-1" style="max-width: 90%">
-          <span class="p-float-label">
+          <p-floatlabel variant="in">
             <p-select
               [options]="getOptionDto('type')"
               placeholder="&nbsp;"
@@ -181,7 +181,7 @@
               ><span class="bia-star-mandatory">*</span
               >{{ 'notification.type.title' | translate }}</label
             >
-          </span>
+          </p-floatlabel>
         </div>
       </div>
       <div class="flex flex-row justify-content-center">
@@ -194,7 +194,7 @@
       </div>
       <div class="flex flex-row justify-content-center">
         <div class="app-field-container flex-1" style="max-width: 90%">
-          <span class="p-float-label">
+          <p-floatlabel variant="in">
             <p-date-picker
               biaLocale
               formControlName="createdDate"
@@ -207,7 +207,7 @@
               ><span class="bia-star-mandatory">*</span
               >{{ 'notification.createdDate' | translate }}</label
             >
-          </span>
+          </p-floatlabel>
         </div>
       </div>
     </div>
@@ -271,7 +271,7 @@
       </div>
       <div class="flex flex-row justify-content-center">
         <div class="app-field-container flex-1" style="max-width: 90%">
-          <span class="p-float-label">
+          <p-floatlabel variant="in">
             <p-select
               [options]="getOptionDto('createdBy')"
               placeholder="&nbsp;"
@@ -281,12 +281,12 @@
               [style]="{ width: '100%' }"
               [showClear]="true"></p-select>
             <label>{{ 'notification.createdBy' | translate }}</label>
-          </span>
+          </p-floatlabel>
         </div>
       </div>
       <div class="flex flex-row justify-content-center">
         <div class="app-field-container flex-1" style="max-width: 90%">
-          <span class="p-float-label">
+          <p-floatlabel variant="in">
             <p-multiSelect
               [options]="getOptionDto('notifiedUsers')"
               formControlName="notifiedUsers"
@@ -294,7 +294,7 @@
               datakey="id"
               [style]="{ width: '100%' }"></p-multiSelect>
             <label>{{ 'notification.notifiedUsers' | translate }}</label>
-          </span>
+          </p-floatlabel>
         </div>
       </div>
       <div class="flex flex-row justify-content-center">
@@ -303,7 +303,7 @@
             style="left: 5px; top: -20px; font-size: 12px; color: #00839b"
             >{{ 'notification.jData' | translate }}</span
           >
-          <span class="p-float-label">
+          <p-floatlabel variant="in">
             <textarea
               formControlName="jData"
               rows="5"
@@ -311,7 +311,7 @@
               autoResize="autoResize"
               pInputTextarea
               style="width: 100%"></textarea>
-          </span>
+          </p-floatlabel>
         </div>
       </div>
     </div>

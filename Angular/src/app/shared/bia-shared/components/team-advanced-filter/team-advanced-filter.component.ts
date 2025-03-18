@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -11,23 +12,23 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
   FormsModule,
   ReactiveFormsModule,
+  UntypedFormBuilder,
+  UntypedFormGroup,
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { ButtonDirective } from 'primeng/button';
+import { FloatLabel } from 'primeng/floatlabel';
+import { Select } from 'primeng/select';
+import { Tooltip } from 'primeng/tooltip';
 import { Observable } from 'rxjs';
 import { getAllUserOptions } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
 import { DomainUserOptionsActions } from 'src/app/domains/bia-domains/user-option/store/user-options-actions';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { AppState } from 'src/app/store/state';
 import { TeamAdvancedFilterDto } from '../../model/team-advanced-filter-dto';
-import { ButtonDirective } from 'primeng/button';
-import { Tooltip } from 'primeng/tooltip';
-import { Select } from 'primeng/select';
-import { AsyncPipe } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'bia-team-advanced-filter',
@@ -41,6 +42,7 @@ import { TranslateModule } from '@ngx-translate/core';
     Select,
     AsyncPipe,
     TranslateModule,
+    FloatLabel,
   ],
 })
 export class TeamAdvancedFilterComponent implements OnInit, OnChanges {

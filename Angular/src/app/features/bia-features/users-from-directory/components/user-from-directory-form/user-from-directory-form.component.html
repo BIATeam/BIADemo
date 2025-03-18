@@ -2,9 +2,9 @@
   <p-fluid class="app-field-container flex flex-column justify-content-start">
     <div class="flex flex-row justify-content-center">
       <div class="app-field-container flex-1" style="max-width: 50%">
-        <div
-          *ngIf="useKeycloak !== true && domains.length > 1"
-          class="p-float-label">
+        <p-floatlabel
+          variant="in"
+          *ngIf="useKeycloak !== true && domains.length > 1">
           <p-select
             [options]="domains"
             placeholder="&nbsp;"
@@ -15,11 +15,11 @@
             [style]="{ width: '100%' }"
             appendTo="body"></p-select>
           <label>LDAP Domain</label>
-        </div>
+        </p-floatlabel>
       </div>
       <div class="app-field-container flex-1" style="max-width: 10%"></div>
       <div class="app-field-container flex-1" style="max-width: 30%">
-        <div class="p-float-label">
+        <p-floatlabel variant="in">
           <p-select
             [options]="returnSizeOptions"
             placeholder="&nbsp;"
@@ -27,12 +27,12 @@
             [style]="{ width: '100%' }"
             appendTo="body"></p-select>
           <label>{{ 'bia.itemsBySearch' | translate }}</label>
-        </div>
+        </p-floatlabel>
       </div>
     </div>
     <div class="flex flex-row justify-content-center">
       <div class="app-field-container flex-1" style="max-width: 90%">
-        <div class="p-float-label">
+        <p-floatlabel variant="in">
           <p-autoComplete
             [multiple]="true"
             formControlName="selectedUsers"
@@ -46,7 +46,7 @@
             [inputStyle]="{ width: '100%' }"
             appendTo="body"></p-autoComplete>
           <label>{{ 'bia.select' | translate }}</label>
-        </div>
+        </p-floatlabel>
       </div>
     </div>
   </p-fluid>

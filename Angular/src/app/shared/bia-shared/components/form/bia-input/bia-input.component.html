@@ -8,7 +8,7 @@
   </ng-container>
   <ng-container [ngSwitch]="field.type" *ngIf="field.specificInput !== true">
     <ng-container *ngSwitchCase="'OneToMany'">
-      <span class="p-float-label">
+      <p-floatlabel variant="in">
         <p-select
           [options]="getOptionDto(field.field)"
           placeholder="&nbsp;"
@@ -23,10 +23,10 @@
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
           >{{ field.header | translate }}</label
         >
-      </span>
+      </p-floatlabel>
     </ng-container>
     <ng-container *ngSwitchCase="'ManyToMany'">
-      <span class="p-float-label">
+      <p-floatlabel variant="in">
         <p-multiSelect
           [formControlName]="field.field"
           [options]="getOptionDto(field.field)"
@@ -40,7 +40,7 @@
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
           >{{ field.header | translate }}</label
         >
-      </span>
+      </p-floatlabel>
     </ng-container>
     <ng-container *ngSwitchCase="'Boolean'">
       <p-checkbox binary="true" [formControlName]="field.field"></p-checkbox>
@@ -50,8 +50,8 @@
       </label>
     </ng-container>
     <ng-container *ngSwitchCase="'Number'">
-      <span
-        class="p-float-label"
+      <p-floatlabel
+        variant="in"
         *ngIf="
           getDisplayNumberFormat(field.displayFormat);
           let displayNumberFormat
@@ -70,11 +70,11 @@
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
           >{{ field.header | translate }}</label
         >
-      </span>
+      </p-floatlabel>
     </ng-container>
     <ng-container *ngSwitchCase="'Date'">
-      <span
-        class="p-float-label"
+      <p-floatlabel
+        variant="in"
         *ngIf="
           getDisplayDateFormat(field.displayFormat);
           let displayDateFormat
@@ -92,11 +92,11 @@
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
           >{{ field.header | translate }}</label
         >
-      </span>
+      </p-floatlabel>
     </ng-container>
     <ng-container *ngSwitchCase="'Time'">
-      <span
-        class="p-float-label"
+      <p-floatlabel
+        variant="in"
         *ngIf="
           getDisplayDateFormat(field.displayFormat);
           let displayDateFormat
@@ -117,10 +117,10 @@
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
           >{{ field.header | translate }}</label
         >
-      </span>
+      </p-floatlabel>
     </ng-container>
     <ng-container *ngSwitchCase="'TimeOnly'">
-      <span class="p-float-label">
+      <p-floatlabel variant="in">
         <p-date-picker
           [formControlName]="field.field"
           [showTime]="true"
@@ -137,10 +137,10 @@
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
           >{{ field.header | translate }}</label
         >
-      </span>
+      </p-floatlabel>
     </ng-container>
     <ng-container *ngSwitchCase="'TimeSecOnly'">
-      <span class="p-float-label">
+      <p-floatlabel variant="in">
         <p-date-picker
           [formControlName]="field.field"
           [showTime]="true"
@@ -157,11 +157,12 @@
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
           >{{ field.header | translate }}</label
         >
-      </span>
+      </p-floatlabel>
     </ng-container>
     <ng-container *ngSwitchCase="'DateTime'">
-      <span
-        class="p-float-label"
+      <p-floatlabel
+        variant="in"
+        variant="in"
         *ngIf="
           getDisplayDateFormat(field.displayFormat);
           let displayDateFormat
@@ -180,10 +181,10 @@
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
           >{{ field.header | translate }}</label
         >
-      </span>
+      </p-floatlabel>
     </ng-container>
     <ng-container *ngSwitchDefault>
-      <span class="p-float-label">
+      <p-floatlabel variant="in">
         <input
           [formControlName]="field.field"
           type="text"
@@ -194,7 +195,7 @@
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
           >{{ field.header | translate }}</label
         >
-      </span>
+      </p-floatlabel>
     </ng-container>
   </ng-container>
 </div>

@@ -1,4 +1,4 @@
-<span *ngIf="field.isSearchable === true" class="p-float-label">
+<p-floatlabel variant="in" *ngIf="field.isSearchable === true">
   <div class="flex flex-row">
     <div class="app-field-container flex-1" style="max-width: 18px">
       <ng-container *ngIf="!isArraySimple(field) && showColumnFilter">
@@ -183,4 +183,4 @@
       </ng-container>
     </div>
   </div>
-</span>
+</p-floatlabel>

@@ -1,4 +1,4 @@
-<span class="p-float-label">
+<p-floatlabel variant="in">
   <p-select
     [options]="groupedViews"
     [(ngModel)]="selectedView"
@@ -16,7 +16,7 @@
     </ng-template>
   </p-select>
   <label>{{ 'bia.views.view' | translate }}</label>
-</span>
+</p-floatlabel>
 <i
   *ngIf="showEditButton() === true"
   class="pi pi-user-edit bia-pointer"

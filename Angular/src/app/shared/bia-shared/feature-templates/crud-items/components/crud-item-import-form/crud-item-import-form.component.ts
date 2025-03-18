@@ -1,4 +1,4 @@
-import { DatePipe, NgIf, NgClass } from '@angular/common';
+import { DatePipe, NgClass, NgIf } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -7,13 +7,25 @@ import {
   ViewChild,
 } from '@angular/core';
 import {
+  FormsModule,
+  ReactiveFormsModule,
   UntypedFormBuilder,
   UntypedFormGroup,
   Validators,
-  FormsModule,
-  ReactiveFormsModule,
 } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionHeader,
+  AccordionPanel,
+} from 'primeng/accordion';
+import { ButtonDirective } from 'primeng/button';
+import { Checkbox } from 'primeng/checkbox';
 import { FileUpload } from 'primeng/fileupload';
+import { FloatLabel } from 'primeng/floatlabel';
+import { Ripple } from 'primeng/ripple';
+import { Select } from 'primeng/select';
 import { AppSettings } from 'src/app/domains/bia-domains/app-settings/model/app-settings';
 import {
   BiaFieldConfig,
@@ -22,21 +34,10 @@ import {
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
 import { clone } from 'src/app/shared/bia-shared/utils';
+import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
+import { BiaTableComponent } from '../../../../components/table/bia-table/bia-table.component';
 import { CrudConfig } from '../../model/crud-config';
 import { ImportParam } from '../../services/crud-item-import.service';
-import { ButtonDirective } from 'primeng/button';
-import { Select } from 'primeng/select';
-import { Checkbox } from 'primeng/checkbox';
-import {
-  Accordion,
-  AccordionPanel,
-  AccordionHeader,
-  AccordionContent,
-} from 'primeng/accordion';
-import { Ripple } from 'primeng/ripple';
-import { BiaTableComponent } from '../../../../components/table/bia-table/bia-table.component';
-import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
-import { TranslateModule } from '@ngx-translate/core';
 
 interface FormatExample {
   format: string;
@@ -64,6 +65,7 @@ interface FormatExample {
     NgClass,
     SpinnerComponent,
     TranslateModule,
+    FloatLabel,
   ],
 })
 export class CrudItemImportFormComponent<TDto extends { id: number }> {

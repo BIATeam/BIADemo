@@ -1,3 +1,4 @@
+import { NgFor, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,13 +8,28 @@ import {
   Output,
 } from '@angular/core';
 import {
+  FormsModule,
+  ReactiveFormsModule,
   UntypedFormArray,
   UntypedFormBuilder,
   UntypedFormGroup,
   Validators,
-  FormsModule,
-  ReactiveFormsModule,
 } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
+import { PrimeTemplate } from 'primeng/api';
+import { ButtonDirective } from 'primeng/button';
+import { Checkbox } from 'primeng/checkbox';
+import { DatePicker } from 'primeng/datepicker';
+import { Fieldset } from 'primeng/fieldset';
+import { FloatLabel } from 'primeng/floatlabel';
+import { InputText } from 'primeng/inputtext';
+import { InputTextarea } from 'primeng/inputtextarea';
+import { MultiSelect } from 'primeng/multiselect';
+import { Ripple } from 'primeng/ripple';
+import { Select } from 'primeng/select';
+import { TableModule } from 'primeng/table';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
+import { Tooltip } from 'primeng/tooltip';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
@@ -26,21 +42,6 @@ import {
   NotificationTeam,
   NotificationTranslation,
 } from '../../model/notification';
-import { Fieldset } from 'primeng/fieldset';
-import { Tabs, TabList, Tab, TabPanels, TabPanel } from 'primeng/tabs';
-import { Ripple } from 'primeng/ripple';
-import { NgFor, NgIf } from '@angular/common';
-import { InputText } from 'primeng/inputtext';
-import { ButtonDirective } from 'primeng/button';
-import { PrimeTemplate } from 'primeng/api';
-import { Select } from 'primeng/select';
-import { Checkbox } from 'primeng/checkbox';
-import { DatePicker } from 'primeng/datepicker';
-import { TableModule } from 'primeng/table';
-import { Tooltip } from 'primeng/tooltip';
-import { MultiSelect } from 'primeng/multiselect';
-import { InputTextarea } from 'primeng/inputtextarea';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'bia-notification-form',
@@ -70,6 +71,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MultiSelect,
     InputTextarea,
     TranslateModule,
+    FloatLabel,
   ],
 })
 export class NotificationFormComponent implements OnChanges {

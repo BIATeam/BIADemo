@@ -1,3 +1,4 @@
+import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,21 +8,21 @@ import {
   Output,
 } from '@angular/core';
 import {
+  FormsModule,
+  ReactiveFormsModule,
   UntypedFormBuilder,
   UntypedFormGroup,
   Validators,
-  FormsModule,
-  ReactiveFormsModule,
 } from '@angular/forms';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ButtonDirective } from 'primeng/button';
+import { FloatLabel } from 'primeng/floatlabel';
+import { Listbox } from 'primeng/listbox';
+import { MultiSelect } from 'primeng/multiselect';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
-import { Members } from '../../model/member';
-import { MultiSelect } from 'primeng/multiselect';
-import { NgIf } from '@angular/common';
-import { ButtonDirective } from 'primeng/button';
-import { Listbox } from 'primeng/listbox';
 import { UserAddFromLdapComponent } from '../../../../../../features/bia-features/users-from-directory/views/user-add-from-directory-dialog/user-add-from-directory-dialog.component';
+import { Members } from '../../model/member';
 
 @Component({
   selector: 'bia-member-form-new',
@@ -37,6 +38,7 @@ import { UserAddFromLdapComponent } from '../../../../../../features/bia-feature
     Listbox,
     UserAddFromLdapComponent,
     TranslateModule,
+    FloatLabel,
   ],
 })
 export class MemberFormNewComponent implements OnChanges {

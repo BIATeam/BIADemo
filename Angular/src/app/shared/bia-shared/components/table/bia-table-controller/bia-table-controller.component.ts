@@ -1,4 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
+import { NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -19,22 +20,22 @@ import {
   ViewChild,
 } from '@angular/core';
 import {
-  UntypedFormControl,
   FormsModule,
   ReactiveFormsModule,
+  UntypedFormControl,
 } from '@angular/forms';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { FilterMetadata, PrimeTemplate, SelectItem } from 'primeng/api';
 import { Button } from 'primeng/button';
+import { FloatLabel } from 'primeng/floatlabel';
+import { InputText } from 'primeng/inputtext';
+import { MultiSelect } from 'primeng/multiselect';
+import { Tooltip } from 'primeng/tooltip';
 import { Subscription } from 'rxjs';
 import { TABLE_FILTER_GLOBAL, TeamTypeId } from 'src/app/shared/constants';
 import { ViewListComponent } from '../../../features/view/views/view-list/view-list.component';
 import { BiaTableState } from '../../../model/bia-table-state';
 import { KeyValuePair } from '../../../model/key-value-pair';
-import { NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
-import { MultiSelect } from 'primeng/multiselect';
-import { InputText } from 'primeng/inputtext';
-import { Tooltip } from 'primeng/tooltip';
 
 @Component({
   selector: 'bia-table-controller',
@@ -64,6 +65,7 @@ import { Tooltip } from 'primeng/tooltip';
     Button,
     Tooltip,
     TranslateModule,
+    FloatLabel,
   ],
 })
 export class BiaTableControllerComponent
