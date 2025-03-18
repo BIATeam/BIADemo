@@ -300,7 +300,7 @@ body {
     font-family: var(--font-family);
     font-size: 1rem;
     background: var(--p-content-background);
-    color: var(--text-color-secondary);
+    color: var(--root-menuitem-text-color);
     border: none;
     &:not(:disabled):hover {
       background: var(--menuitem-hover-bg);
@@ -313,8 +313,8 @@ body {
   .layout-menu-profile > button {
     font-family: var(--font-family);
     font-size: 1rem;
-    background: var(--p-primary-800);
-    color: var(--text-color-secondary);
+    background: var(--p-content-background);
+    color: var(--root-menuitem-text-color);
     border: none;
     &:not(:disabled):hover {
       background: var(--menuitem-hover-bg);
