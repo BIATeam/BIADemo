@@ -325,7 +325,7 @@ const MyPreset = definePreset(Material, {
       offset: '0',
     },
     disabledOpacity: '0.38',
-    iconSize: '1rem',
+    iconSize: '1.1rem',
     anchorGutter: '0',
     primary: {
       50: '#f4f7f9',
@@ -683,9 +683,6 @@ const MyPreset = definePreset(Material, {
           },
         },
       },
-    },
-    icon: {
-      size: '1.1rem',
     },
   },
   components: {
