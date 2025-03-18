@@ -7,3 +7,11 @@
   height: 3rem;
   align-items: center;
 }
+
+.pi.enable {
+  color: var(--primary-color);
+}
+
+.pi.disabled {
+  opacity: var(--p-disabled-opacity);
+}
