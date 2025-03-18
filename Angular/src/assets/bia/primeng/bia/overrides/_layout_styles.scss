@@ -228,6 +228,10 @@ body {
 
 .layout-sidebar {
   width: var(--sidebar-width);
+  box-shadow:
+    2px 0 4px -1px rgba(0, 0, 0, 0.2),
+    4px 0 5px 0 rgba(0, 0, 0, 0.14),
+    1px 0 10px 0 rgba(0, 0, 0, 0.12);
 }
 
 .layout-sidebar .layout-menu {
