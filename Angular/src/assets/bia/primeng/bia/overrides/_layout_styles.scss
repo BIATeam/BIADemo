@@ -296,6 +296,9 @@ body {
 }
 
 .layout-menu-profile {
+  :not(:disabled):hover {
+    cursor: pointer;
+  }
   button {
     font-family: var(--font-family);
     font-size: 1rem;
@@ -304,7 +307,6 @@ body {
     border: none;
     :not(:disabled):hover {
       background: var(--menuitem-hover-bg);
-      cursor: pointer;
     }
   }
 }
