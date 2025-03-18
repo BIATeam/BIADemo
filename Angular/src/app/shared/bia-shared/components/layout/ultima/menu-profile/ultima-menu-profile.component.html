@@ -30,6 +30,7 @@
         layoutService.isDrawer())
     ) {
       <p-dialog
+        header="{{ 'bia.settings' | translate }}"
         [focusOnShow]="false"
         [(visible)]="menuProfileActive"
         [modal]="true"
@@ -38,9 +39,6 @@
         [maximizable]="false"
         [closeOnEscape]="true"
         [contentStyle]="{ overflow: 'auto' }">
-        <p-header>
-          {{ 'bia.settings' | translate }}
-        </p-header>
         <bia-ultima-config
           [supportedLangs]="supportedLangs"></bia-ultima-config>
       </p-dialog>

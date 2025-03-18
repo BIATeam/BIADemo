@@ -1,5 +1,6 @@
 <p-dialog
   #viewDialog
+  header="{{ 'bia.views.manageViews' | translate }}"
   [focusOnShow]="true"
   [(visible)]="display"
   [modal]="true"
@@ -9,9 +10,6 @@
   [contentStyle]="{ overflow: 'auto' }"
   (onHide)="onClose()"
   (onShow)="showDialogMaximized(viewDialog)">
-  <p-header>
-    {{ 'bia.views.manageViews' | translate }}
-  </p-header>
   <p-tabs *ngIf="display" value="0">
     @let teams = teams$ | async;
     <p-tablist>
