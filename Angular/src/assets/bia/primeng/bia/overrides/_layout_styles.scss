@@ -295,18 +295,30 @@ body {
   top: 4.5rem;
 }
 
-.layout-menu-profile {
-  :not(:disabled):hover {
-    cursor: pointer;
-  }
-  button {
+.layout-menu-light {
+  .layout-menu-profile > button {
     font-family: var(--font-family);
     font-size: 1rem;
     background: var(--p-content-background);
     color: var(--text-color-secondary);
     border: none;
-    :not(:disabled):hover {
+    &:not(:disabled):hover {
       background: var(--menuitem-hover-bg);
+      cursor: pointer;
+    }
+  }
+}
+
+.layout-menu-dark {
+  .layout-menu-profile > button {
+    font-family: var(--font-family);
+    font-size: 1rem;
+    background: var(--p-primary-800);
+    color: var(--text-color-secondary);
+    border: none;
+    &:not(:disabled):hover {
+      background: var(--menuitem-hover-bg);
+      cursor: pointer;
     }
   }
 }
