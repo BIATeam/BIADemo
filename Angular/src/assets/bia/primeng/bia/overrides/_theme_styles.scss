@@ -13,22 +13,29 @@
 // @import './customs/table';
 // @import './customs/calendar';
 
-body {
-  --menu-bg: #{$biaPrimaryDisplayColor};
-  --topbar-bg: #{$biaPrimaryDisplayColor};
-  --topbar-start-bg: #{$biaPrimaryDarkDisplayColor};
+$biaPrimaryDarkDisplayColor: #02143a;
+$biaPrimaryDisplayColor: #112753;
+$biaSurfaceGroundSomber: #f0f0f0;
+$accentDarkColor: #020f21;
+$accentTextColor: #ffffff;
+
+:root {
+  --menu-bg: var(--p-primary-800);
+  --topbar-bg: var(--p-primary-800);
+  --topbar-start-bg: var(--p-primary-900);
   --topbar-menu-button-bg: #f7a92a;
   --topbar-menu-button-hover-bg: #cc8108;
   --topbar-menu-button-text-color: #{$accentDarkColor};
   --topbar-item-text-color: #{$accentTextColor};
-  --footer-bg: #{$biaPrimaryDisplayColor};
-  --footer-hover-bg: #{$biaPrimaryDarkDisplayColor};
+  --footer-bg: var(--p-primary-800);
+  --footer-hover-bg: var(--p-primary-900);
   --footer-item-text-color: #{$accentTextColor};
   --surface-ground-somber: #{$biaSurfaceGroundSomber};
+  --active-menuitem-text-color: var(--p-primary-color);
 }
 
 .layout-menu-dark {
-  --menu-bg: #{$biaPrimaryDisplayColor};
+  --menu-bg: var(--p-primary-800);
   --active-menuitem-text-color: var(--primary-color);
 }
 

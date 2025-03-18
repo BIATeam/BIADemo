@@ -69,7 +69,7 @@ export class BiaThemeService {
     } else if (theme !== DEFAULT_THEME) {
       this.renderer.addClass(this.document.documentElement, `${theme}-theme`);
     }
-    this.applyPrimeNgTheme(theme);
+    //this.applyPrimeNgTheme(theme);
     this.currentTheme.next(theme);
     this.layoutService.config().colorScheme = theme as ColorScheme;
   }
