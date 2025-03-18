@@ -291,17 +291,20 @@ body {
   }
 }
 
-.layout-menu-profile {
-  height: 100%;
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
-}
-
-.layout-menu-profile-no-fill {
-  max-height: 80%;
-}
-
 .p-toast.p-toast-top-right {
   top: 4.5rem;
+}
+
+.layout-menu-profile {
+  button {
+    font-family: var(--font-family);
+    font-size: 1rem;
+    background: var(--p-content-background);
+    color: var(--text-color-secondary);
+    border: none;
+    :not(:disabled):hover {
+      background: var(--menuitem-hover-bg);
+      cursor: pointer;
+    }
+  }
 }

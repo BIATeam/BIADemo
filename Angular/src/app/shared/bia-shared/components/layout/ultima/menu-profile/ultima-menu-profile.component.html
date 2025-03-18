@@ -1,6 +1,5 @@
 <div class="layout-menu-profile">
-  <p-button
-    [link]="true"
+  <button
     (click)="toggleMenu()"
     pTooltip="Profile"
     [tooltipDisabled]="isTooltipDisabled">
@@ -10,11 +9,11 @@
       (error)="onImgError()"
       alt="avatar"
       class="avatar" />
-    <span>
+    <span class="text-start">
       <strong>{{ displayName }}</strong>
     </span>
     <i class="layout-menu-profile-toggler pi pi-fw pi-angle-down"></i>
-  </p-button>
+  </button>
 
   <div
     *ngIf="menuProfileActive"
