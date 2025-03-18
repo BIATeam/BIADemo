@@ -342,7 +342,7 @@ const MyPreset = definePreset(Material, {
     },
     formField: {
       paddingX: '0.75rem',
-      paddingY: '0.75rem',
+      paddingY: '0.5rem',
       sm: {
         fontSize: '0.875rem',
         paddingX: '0.625rem',
