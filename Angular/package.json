@@ -20,10 +20,7 @@
     "build:rosa": "ng build --configuration production,rosa",
     "build:docker": "ng build --configuration docker",
     "deploy": "ng deploy --base-href=/BIADemo/",
-    "styles-theme-dark": "dart compile-sass.dart ./src/assets/bia/primeng/bia/theme-dark.scss ./src/assets/bia/primeng/layout/styles/theme/theme-dark/theme-dark.css",
-    "styles-theme-light": "dart compile-sass.dart ./src/assets/bia/primeng/bia/theme-light.scss ./src/assets/bia/primeng/layout/styles/theme/theme-light/theme-light.css",
-    "styles-layout": "dart compile-sass.dart ./src/assets/bia/primeng/bia/layout-primeng-bia.scss ./src/assets/bia/primeng/layout/styles/layout/layout.css --output-style compressed",
-    "styles": "npm run styles-theme-dark && npm run styles-theme-light && npm run styles-layout",
+    "styles": "dart compile-sass.dart ./src/assets/bia/primeng/bia/layout-primeng-bia.scss ./src/assets/bia/primeng/layout/styles/layout/layout.css --output-style compressed",
     "stats-compute": "ng build --configuration production --base-href /BIADemo/App/ --stats-json",
     "stats-display": "webpack-bundle-analyzer --port 4299 dist/BIADemo/stats.json",
     "stats": "npm run stats-compute && npm run stats-display"
