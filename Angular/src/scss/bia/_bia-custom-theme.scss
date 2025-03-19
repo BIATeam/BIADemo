@@ -285,8 +285,8 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
         gap: 0.5rem;
         padding-left: 0.5rem;
         padding-right: 0.5rem;
-        .p-menuitem-content:hover {
-          background: transparent;
+        .p-menubar-item {
+          opacity: 100%;
         }
       }
     }

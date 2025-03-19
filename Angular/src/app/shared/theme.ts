@@ -311,7 +311,7 @@ const MyPreset = definePreset(Material, {
       offset: '2px',
       shadow: 'none',
     },
-    disabledOpacity: '0.3',
+    disabledOpacity: '0.5',
     iconSize: '1.1rem',
     anchorGutter: '2px',
     primary: {
@@ -554,10 +554,10 @@ const MyPreset = definePreset(Material, {
           950: '#09090b',
         },
         primary: {
-          color: '{primary.400}',
+          color: '{primary.300}',
           contrastColor: '{surface.900}',
-          hoverColor: '{primary.300}',
-          activeColor: '{primary.200}',
+          hoverColor: '{primary.200}',
+          activeColor: '{primary.100}',
         },
         highlight: {
           background: 'color-mix(in srgb, {primary.400}, transparent 84%)',
@@ -1380,8 +1380,7 @@ const MyPreset = definePreset(Material, {
           },
           outlined: {
             primary: {
-              hoverBackground:
-                'color-mix(in srgb, {primary.color}, transparent 96%)',
+              hoverBackground: '{surface-800}',
               activeBackground:
                 'color-mix(in srgb, {primary.color}, transparent 84%)',
               borderColor: '{primary.color}',
