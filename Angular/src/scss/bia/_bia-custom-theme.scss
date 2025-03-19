@@ -338,3 +338,9 @@ p-breadcrumb .p-breadcrumb-separator .p-icon {
 .p-breadcrumb .p-breadcrumb-list li:last-child .p-breadcrumb-item-icon {
   color: var(--primary-color);
 }
+
+p-table {
+  .p-sortable-column-icon {
+    margin-left: 0.5rem;
+  }
+}
