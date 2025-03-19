@@ -435,8 +435,8 @@ const MyPreset = definePreset(Material, {
           activeColor: '{primary.700}',
         },
         highlight: {
-          background: '{primary.50}',
-          focusBackground: '{primary.100}',
+          background: '{surface.200}',
+          focusBackground: '{surface.300}',
           color: '{primary.700}',
           focusColor: '{primary.800}',
         },
@@ -560,9 +560,9 @@ const MyPreset = definePreset(Material, {
           activeColor: '{primary.100}',
         },
         highlight: {
-          background: 'color-mix(in srgb, {primary.400}, transparent 84%)',
-          focusBackground: 'color-mix(in srgb, {primary.400}, transparent 76%)',
-          color: '{primary.color}',
+          background: '{surface.600}',
+          focusBackground: '{surface.700}',
+          color: '{text.color}',
           focusColor: '{primary.color}',
         },
         mask: {
