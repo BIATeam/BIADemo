@@ -1,37 +1,20 @@
-/* Add your customizations of the theme here */
-// @import './customs/forms';
-// @import './customs/data';
-// @import './customs/panel';
-// @import './customs/menubar';
-// @import './customs/button';
-// @import './customs/megamenu';
-// @import './customs/breadcrumb';
-// @import './customs/float_label';
-// @import './customs/input';
-// @import './customs/paginator';
-// @import './customs/badge';
-// @import './customs/table';
-// @import './customs/calendar';
-
-$biaPrimaryDarkDisplayColor: #02143a;
-$biaPrimaryDisplayColor: #112753;
-$biaSurfaceGroundSomber: #f0f0f0;
-$accentDarkColor: #020f21;
-$accentTextColor: #ffffff;
-
 :root {
   --menu-bg: var(--p-primary-800);
   --topbar-bg: var(--p-primary-800);
   --topbar-start-bg: var(--p-primary-900);
-  --topbar-menu-button-bg: #f7a92a;
-  --topbar-menu-button-hover-bg: #cc8108;
-  --topbar-menu-button-text-color: #{$accentDarkColor};
-  --topbar-item-text-color: #{$accentTextColor};
+  --topbar-menu-button-bg: var(--p-primary-300);
+  --topbar-menu-button-hover-bg: var(--p-primary-400);
+  --topbar-menu-button-text-color: var(--p-primary-900);
+  --topbar-item-text-color: var(--p-surface-0);
   --footer-bg: var(--p-primary-800);
   --footer-hover-bg: var(--p-primary-900);
-  --footer-item-text-color: #{$accentTextColor};
-  --surface-ground-somber: #{$biaSurfaceGroundSomber};
+  --footer-item-text-color: var(--p-surface-0);
   --active-menuitem-text-color: var(--p-primary-color);
+  --surface-ground: var(--p-surface-50);
+}
+
+:root[class*='dark-theme'] {
+  --surface-ground: var(--p-surface-950);
 }
 
 .layout-menu-dark {

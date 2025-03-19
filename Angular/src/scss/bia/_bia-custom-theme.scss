@@ -6,13 +6,7 @@
 
 // classic-footer-theme
 bia-classic-footer {
-  @if ($is-dark) {
-    background-color: $biaMainBarColor;
-  } @else {
-    background-color: $biaAccentColor;
-  }
-
-  color: $biaColorOnBgAccentColor;
+  color: var(--p-surface-0);
 }
 
 bia-ultima-sidebar .layout-sidebar-top .project-title {
@@ -22,35 +16,28 @@ bia-ultima-sidebar .layout-sidebar-top .project-title {
 // classic-header-theme
 bia-classic-header {
   .topbar {
-    background-color: $biaAccentColor;
+    background-color: var(--p-primary-800);
     color: white;
   }
 
   .mainbar {
-    background-color: $biaMainBarColor;
+    background-color: var(--p-primary-700);
   }
 
   .mainbar {
-    .project-title {
-      @if ($is-dark) {
-        color: white;
-      } @else {
-        color: $biaAccentColor;
-      }
-    }
-
     .p-menubar-root-list .p-state-active {
       text-decoration: underline;
     }
 
     .p-menubar {
       padding: 0px;
+      background-color: inherit;
     }
   }
 }
 
 .layout-topbar .layout-topbar-start .project-title {
-  color: $biaColorOnBgAccentColor;
+  color: var(--p-surface-0);
 }
 
 // classic-layout-theme
@@ -59,7 +46,10 @@ bia-ultima-layout {
   .content,
   .layout-content {
     background-image:
-      linear-gradient(rgba($biaBgColor, 0.6), rgba($biaBgColor, 0.6)),
+      linear-gradient(
+        rgba(var(--p-content-background), 0.6),
+        rgba(var(--p-content-background), 0.6)
+      ),
       url('../../assets/bia/img/bg-default.jpg');
   }
 
@@ -82,17 +72,17 @@ bia-ultima-layout {
 }
 
 .bia-classic-page-margin:not(:has(.bia-split-page-layout)) {
-  background-color: $biaBgColor;
+  background-color: var(--p-content-background);
 }
 
 // search-filter
 .bia-advanced-filter {
-  background-color: $biaBgHoverColor;
+  background-color: var(--active-menuitem-bg);
 }
 
 // bia-table-controller-theme
 bia-table-controller {
-  background-color: $biaBgHoverColor; // Same color in table
+  background-color: var(--active-menuitem-bg); // Same color in table
 }
 
 .bia-star-mandatory {
@@ -154,35 +144,35 @@ bia-ultima-layout {
   &.env-dev {
     --environment-color: #{color-mix(
         in srgb,
-        $biaMainBarColor 100%,
+        var(--p-primary-800) 100%,
         $biaBlue 100%
       )};
   }
   &.env-int {
     --environment-color: #{color-mix(
         in srgb,
-        $biaMainBarColor 100%,
+        var(--p-primary-800) 100%,
         $biaGreen 100%
       )};
   }
   &.env-uat {
     --environment-color: #{color-mix(
         in srgb,
-        $biaMainBarColor 100%,
+        var(--p-primary-800) 100%,
         $biaOrange 100%
       )};
   }
   &.env-pra {
     --environment-color: #{color-mix(
         in srgb,
-        $biaMainBarColor 100%,
+        var(--p-primary-800) 100%,
         $biaRed 100%
       )};
   }
   &.env-ppd {
     --environment-color: #{color-mix(
         in srgb,
-        $biaMainBarColor 100%,
+        var(--p-primary-800) 100%,
         $biaYellow 100%
       )};
   }
@@ -311,7 +301,7 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
       position: absolute;
       display: none;
       padding: 0.5rem 0;
-      background: $biaBgColor;
+      background: var(--p-content-background);
       border: 0 none;
       box-shadow:
         0 2px 4px -1px rgba(0, 0, 0, 0.2),
@@ -347,8 +337,4 @@ p-breadcrumb .p-breadcrumb-separator .p-icon {
 }
 .p-breadcrumb .p-breadcrumb-list li:last-child .p-breadcrumb-item-icon {
   color: var(--primary-color);
-}
-
-.p-paginator {
-  background: $biaBgColor;
 }
