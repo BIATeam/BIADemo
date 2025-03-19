@@ -5,7 +5,7 @@
   (click)="onMenubarClick()"
   [autoDisplay]="true"
   [autoHide]="true">
-  <ng-template pTemplate="item" let-item>
+  <ng-template #item let-item>
     <button
       pButton
       [disabled]="item.disabled"
