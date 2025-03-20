@@ -1,15 +1,16 @@
 import { Platform } from '@angular/cdk/platform';
 import {
+  AsyncPipe,
   DOCUMENT,
-  NgIf,
+  NgClass,
   NgFor,
+  NgIf,
   NgSwitch,
   NgSwitchCase,
   NgSwitchDefault,
-  NgClass,
-  AsyncPipe,
 } from '@angular/common';
 import {
+  AfterViewInit,
   Component,
   ElementRef,
   Inject,
@@ -21,9 +22,12 @@ import {
 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
-import { ToastMessageOptions, PrimeTemplate } from 'primeng/api';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { PrimeTemplate, ToastMessageOptions } from 'primeng/api';
+import { ButtonDirective } from 'primeng/button';
+import { Ripple } from 'primeng/ripple';
 import { Toast } from 'primeng/toast';
+import { Tooltip } from 'primeng/tooltip';
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
@@ -38,14 +42,11 @@ import { DomainNotificationsActions } from 'src/app/domains/bia-domains/notifica
 import { BiaNavigation } from 'src/app/shared/bia-shared/model/bia-navigation';
 import { AppState } from 'src/app/store/state';
 import { allEnvironments } from 'src/environments/all-environments';
-import { BiaLayoutService } from '../../services/layout.service';
-import { Ripple } from 'primeng/ripple';
-import { IeWarningComponent } from '../../ie-warning/ie-warning.component';
-import { BiaTeamSelectorComponent } from '../../../bia-team-selector/bia-team-selector.component';
-import { Tooltip } from 'primeng/tooltip';
 import { BiaOnlineOfflineIconComponent } from '../../../bia-online-offline-icon/bia-online-offline-icon.component';
-import { ButtonDirective } from 'primeng/button';
+import { BiaTeamSelectorComponent } from '../../../bia-team-selector/bia-team-selector.component';
 import { NotificationTeamWarningComponent } from '../../../notification-team-warning/notification-team-warning.component';
+import { IeWarningComponent } from '../../ie-warning/ie-warning.component';
+import { BiaLayoutService } from '../../services/layout.service';
 
 @Component({
   selector: 'bia-ultima-topbar',
@@ -72,7 +73,9 @@ import { NotificationTeamWarningComponent } from '../../../notification-team-war
     TranslateModule,
   ],
 })
-export class BiaUltimaTopbarComponent implements OnInit, OnDestroy {
+export class BiaUltimaTopbarComponent
+  implements OnInit, OnDestroy, AfterViewInit
+{
   @Input() appTitle: string;
   @Input() version: string;
   @Input() helpUrl?: string;
@@ -128,7 +131,9 @@ export class BiaUltimaTopbarComponent implements OnInit, OnDestroy {
         DomainNotificationsActions.loadUnreadNotificationIds()
       );
     }
+  }
 
+  ngAfterViewInit(): void {
     this.positionClearButton();
   }
 
@@ -252,6 +257,8 @@ export class BiaUltimaTopbarComponent implements OnInit, OnDestroy {
       ?.querySelector('.p-toast.p-component');
 
     if (parentElement) {
+      console.log('parentElement', parentElement);
+      console.log('firstChild', parentElement.firstChild);
       const clearButton = document.getElementById('clearButton');
       this.renderer.insertBefore(
         parentElement,
