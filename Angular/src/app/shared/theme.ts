@@ -1219,9 +1219,9 @@ const MyPreset = definePreset(Material, {
               color: '{green.500}',
             },
             info: {
-              hoverBackground: '{sky.50}',
-              activeBackground: '{sky.100}',
-              color: '{sky.500}',
+              hoverBackground: '{primary.50}',
+              activeBackground: '{primary.100}',
+              color: '{primary.500}',
             },
             warn: {
               hoverBackground: '{orange.50}',
@@ -1464,10 +1464,11 @@ const MyPreset = definePreset(Material, {
               color: '{green.400}',
             },
             info: {
-              hoverBackground: 'color-mix(in srgb, {sky.400}, transparent 96%)',
+              hoverBackground:
+                'color-mix(in srgb, {primary.200}, transparent 96%)',
               activeBackground:
-                'color-mix(in srgb, {sky.400}, transparent 84%)',
-              color: '{sky.400}',
+                'color-mix(in srgb, {primary.200}, transparent 84%)',
+              color: '{primary.200}',
             },
             warn: {
               hoverBackground:
