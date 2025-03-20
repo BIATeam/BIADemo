@@ -95,33 +95,6 @@ bia-table-controller {
   fill: $biaOrange;
 }
 
-// For table calc mode
-.bia-calc-form {
-  p-celleditor,
-  tfoot {
-    input {
-      width: 100%;
-    }
-    .p-inputtext {
-      padding: 0 !important;
-    }
-    .p-multiselect-label {
-      padding: 0 !important;
-    }
-  }
-  .p-datatable-tbody,
-  .p-datatable-tfoot {
-    td {
-      .bia-star-mandatory {
-        position: absolute;
-      }
-    }
-    td:not(.p-datatable-frozen-column) {
-      position: relative;
-    }
-  }
-}
-
 // For view
 bia-view-list {
   .pi-star {
@@ -342,5 +315,39 @@ p-breadcrumb .p-breadcrumb-separator .p-icon {
 p-table {
   .p-sortable-column-icon {
     margin-left: 0.5rem;
+  }
+}
+
+.bia-calc-form {
+  p-celleditor,
+  tfoot {
+    input {
+      width: 100%;
+    }
+    .p-inputtext {
+      padding: 0 !important;
+    }
+    .p-multiselect-label {
+      padding: 0 !important;
+    }
+  }
+  .p-datatable-tbody,
+  .p-datatable-tfoot {
+    td {
+      .bia-star-mandatory {
+        position: absolute;
+      }
+    }
+    td:not(.p-datatable-frozen-column) {
+      position: relative;
+    }
+  }
+
+  .p-select,
+  .p-multiselect {
+    bottom: 0.15rem;
+  }
+  .p-select-label {
+    padding: 0rem var(--p-select-padding-x);
   }
 }
