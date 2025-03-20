@@ -351,3 +351,22 @@ p-table {
     padding: 0rem var(--p-select-padding-x);
   }
 }
+
+p-date-picker.ng-invalid.ng-dirty .p-inputtext,
+.p-inputnumber.ng-invalid.ng-dirty .p-inputtext,
+.p-select.ng-invalid.ng-dirty,
+.p-multiselect.ng-invalid.ng-dirty,
+.p-inputtext.ng-invalid.ng-dirty {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--p-inputtext-invalid-border-color);
+  border-radius: 0;
+  &:hover,
+  &:focus {
+    border-color: var(--p-inputtext-invalid-border-color) !important;
+    background-image: none !important;
+  }
+}
