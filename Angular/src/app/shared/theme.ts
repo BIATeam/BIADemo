@@ -3542,7 +3542,7 @@ const MyPreset = definePreset(Material, {
         invalidPlaceholderColor: '{form.field.invalid.placeholder.color}',
         shadow: '{form.field.shadow}',
         paddingX: '{form.field.padding.x}',
-        paddingY: '{form.field.padding.y}',
+        paddingY: '0.1rem',
         borderRadius: '{form.field.border.radius}',
         focusRing: {
           width: '{form.field.focus.ring.width}',

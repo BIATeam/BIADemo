@@ -12,17 +12,17 @@
 }
 
 :host ::ng-deep {
-  p-select {
-    .p-select-label {
-      padding: 0.125rem !important;
-    }
-  }
+  // p-select {
+  //   .p-select-label {
+  //     padding: 0.125rem !important;
+  //   }
+  // }
 
-  p-multiselect {
-    .p-multiselect-label {
-      padding: 0.125rem !important;
-    }
-  }
+  // p-multiselect {
+  //   .p-multiselect-label {
+  //     padding: 0.125rem !important;
+  //   }
+  // }
 
   .bia-btn-del-filter {
     color: $biaRed !important;
@@ -31,18 +31,17 @@
 
 .bia-table-controller-container {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  gap: 2rem;
 }
 
 .bia-column-filter-icon {
   margin-top: 5px;
 }
 
-.bia-table-controller-container > div {
-  padding-left: 5px;
-  padding-right: 5px;
-}
+// .bia-table-controller-container > div {
+//   padding-left: 5px;
+//   padding-right: 5px;
+// }
 
 .options {
   padding-top: 20px;

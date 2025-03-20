@@ -2,16 +2,15 @@
   #contentContainer
   class="bia-table-controller-container"
   [ngClass]="overflowingClass">
-  <div *ngIf="tableStateKey">
-    <bia-view-list
-      [tableStateKey]="tableStateKey"
-      [tableState]="tableState"
-      [defaultViewPref]="defaultViewPref"
-      [useViewTeamWithTypeId]="useViewTeamWithTypeId"
-      [displayedColumns]="displayedColumns"
-      [columns]="columns"
-      (viewChange)="onViewChange($event)"></bia-view-list>
-  </div>
+  <bia-view-list
+    *ngIf="tableStateKey"
+    [tableStateKey]="tableStateKey"
+    [tableState]="tableState"
+    [defaultViewPref]="defaultViewPref"
+    [useViewTeamWithTypeId]="useViewTeamWithTypeId"
+    [displayedColumns]="displayedColumns"
+    [columns]="columns"
+    (viewChange)="onViewChange($event)"></bia-view-list>
   <div #overflowingContent class="bia-overflow-hidden">
     <div class="bia-overflow-hidden-container">
       <div>
