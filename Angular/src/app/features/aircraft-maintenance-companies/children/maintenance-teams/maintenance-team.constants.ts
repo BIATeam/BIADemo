@@ -17,7 +17,7 @@ export const maintenanceTeamCRUDConfiguration: CrudConfig<MaintenanceTeam> =
     formLayoutConfig: maintenanceTeamFormLayoutConfiguration,
     useCalcMode: false,
     useSignalR: false,
-    useView: false,
+    useView: true,
     // BIAToolKit - Begin AncestorTeam AircraftMaintenanceCompany
     useViewTeamWithTypeId: TeamTypeId.AircraftMaintenanceCompany, // use to filter view by teams => should know the type of team
     // BIAToolKit - End AncestorTeam AircraftMaintenanceCompany

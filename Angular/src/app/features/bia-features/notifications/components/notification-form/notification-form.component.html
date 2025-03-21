@@ -151,6 +151,7 @@
           <span class="p-float-label">
             <p-dropdown
               [options]="getOptionDto('type')"
+              appendTo="body"
               placeholder="&nbsp;"
               formControlName="type"
               optionLabel="display"
@@ -178,6 +179,7 @@
             <p-calendar
               biaLocale
               formControlName="createdDate"
+              appendTo="body"
               placeholder="&nbsp;"
               [showButtonBar]="true"
               dateFormat="yy-mm-dd"
@@ -254,6 +256,7 @@
           <span class="p-float-label">
             <p-dropdown
               [options]="getOptionDto('createdBy')"
+              appendTo="body"
               placeholder="&nbsp;"
               formControlName="createdBy"
               optionLabel="display"
@@ -269,6 +272,7 @@
           <span class="p-float-label">
             <p-multiSelect
               [options]="getOptionDto('notifiedUsers')"
+              appendTo="body"
               formControlName="notifiedUsers"
               optionLabel="display"
               datakey="id"

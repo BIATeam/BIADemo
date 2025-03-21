@@ -207,14 +207,14 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     return (
       view1.first === view2.first &&
       this.areFilterEgals(view1.filters, view2.filters) &&
+      ((this.isNullUndefEmptyStr(view1.advancedFilter) &&
+        this.isNullUndefEmptyStr(view2.advancedFilter)) ||
+        JSON.stringify(view1.advancedFilter) ===
+          JSON.stringify(view2.advancedFilter)) &&
       JSON.stringify(view1.columnOrder) === JSON.stringify(view2.columnOrder) &&
       view1.rows === view2.rows &&
       ((view1.sortField === view2.sortField &&
         view1.sortOrder === view2.sortOrder &&
-        ((this.isNullUndefEmptyStr(view1.advancedFilter) &&
-          this.isNullUndefEmptyStr(view2.advancedFilter)) ||
-          JSON.stringify(view1.advancedFilter) ===
-            JSON.stringify(view2.advancedFilter)) &&
         ((this.isNullUndefEmptyStr(view1.multiSortMeta) &&
           this.isNullUndefEmptyStr(view2.multiSortMeta)) ||
           JSON.stringify(view1.multiSortMeta) ===

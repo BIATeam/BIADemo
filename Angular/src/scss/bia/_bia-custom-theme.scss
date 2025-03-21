@@ -58,8 +58,10 @@ bia-classic-layout,
 bia-ultima-layout {
   .content,
   .layout-content {
-    background-image:
-      linear-gradient(rgba($biaBgColor, 0.6), rgba($biaBgColor, 0.6)),
+    background-image: linear-gradient(
+        rgba($biaBgColor, 0.6),
+        rgba($biaBgColor, 0.6)
+      ),
       url('../../assets/bia/img/bg-default.jpg');
   }
 
@@ -245,6 +247,8 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
 }
 
 .p-dialog {
+  max-width: 100%;
+
   .p-dialog-content {
     // forms button always visible
     .bia-form:has(> .bia-form-fixed-buttons) {

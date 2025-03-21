@@ -36,7 +36,9 @@ import {
   BiaFormLayoutConfig,
   BiaFormLayoutConfigField,
   BiaFormLayoutConfigGroup,
+  BiaFormLayoutConfigItem,
   BiaFormLayoutConfigRow,
+  BiaFormLayoutConfigTabGroup,
 } from '../../../model/bia-form-layout-config';
 
 @Component({
@@ -118,7 +120,9 @@ export class BiaFormComponent<TDto extends { id: number }>
       if (this.element && this.form) {
         this.form.reset();
         if (this.element) {
-          this.form.patchValue({ ...this.element });
+          //this.form.patchValue({ ...this.element });
+          //this.initForm();
+          this.updateFormGroup(this.form, this.element);
         }
       }
 
@@ -192,6 +196,28 @@ export class BiaFormComponent<TDto extends { id: number }>
     }
   }
 
+  updateFormGroup(
+    formGroup: UntypedFormGroup,
+    crudItem: { [key: string]: any }
+  ) {
+    for (const key in crudItem) {
+      if (crudItem.hasOwnProperty(key)) {
+        const control = formGroup.get(key);
+
+        if (control && !(control instanceof UntypedFormGroup)) {
+          control.setValue(crudItem[key]);
+        }
+      }
+    }
+
+    Object.keys(formGroup.controls).forEach(controlKey => {
+      const control = formGroup.get(controlKey);
+      if (control instanceof UntypedFormGroup) {
+        this.updateFormGroup(control, crudItem);
+      }
+    });
+  }
+
   /**
    * Find the first active form element and set the focus on it.
    */
@@ -229,16 +255,15 @@ export class BiaFormComponent<TDto extends { id: number }>
         });
       }
     }
-    const element = this.getElement();
+    const element = this.form ? this.getElement(this.form) : {};
     return { element, errorMessages };
   }
 
   protected initForm() {
     this.fieldsWithoutLayoutConfig = [...this.fields];
-    this.initFieldsWithLayoutConfig();
+    this.initFieldsWithLayoutConfig(this.formLayoutConfig);
 
-    this.form = this.formBuilder.group(this.formFields());
-    if (this.formValidators) {
+    if (this.form && this.formValidators) {
       this.form.addValidators(this.formValidators);
     }
   }
@@ -265,90 +290,157 @@ export class BiaFormComponent<TDto extends { id: number }>
     });
   }
 
-  private initFieldsWithLayoutConfig() {
-    if (!this.formLayoutConfig) {
-      return;
-    }
+  private initFieldsWithLayoutConfig(
+    formLayoutConfig?: BiaFormLayoutConfig<TDto>
+  ) {
+    const formFields: { [key: string]: any } = { id: [this.element?.id] };
 
-    const getFieldsFromRow = (
-      row: BiaFormLayoutConfigRow<TDto>
-    ): BiaFormLayoutConfigField<TDto>[] => {
-      const fields = row.columns
-        .filter(
-          (c): c is BiaFormLayoutConfigField<TDto> =>
-            c instanceof BiaFormLayoutConfigField
-        )
-        .flatMap(c => c as BiaFormLayoutConfigField<TDto>);
+    if (formLayoutConfig) {
+      const columnFields: BiaFormLayoutConfigField<TDto>[] =
+        this.getFieldsFromItems(formLayoutConfig.items, formFields);
 
-      const groups = row.columns
-        .filter(
-          (c): c is BiaFormLayoutConfigGroup<TDto> =>
-            c instanceof BiaFormLayoutConfigGroup
-        )
-        .flatMap(c => c as BiaFormLayoutConfigGroup<TDto>);
-
-      groups.forEach(g => {
-        const groupFields = getFieldsFromRows(g.rows);
-        groupFields.forEach(gf => fields.push(gf));
-      });
-
-      return fields;
-    };
-
-    const getFieldsFromRows = (
-      rows: BiaFormLayoutConfigRow<TDto>[]
-    ): BiaFormLayoutConfigField<TDto>[] =>
-      rows.flatMap(row => getFieldsFromRow(row));
-
-    const columnFields: BiaFormLayoutConfigField<TDto>[] =
-      this.formLayoutConfig.items.flatMap(item => {
-        switch (item.type) {
-          case 'group':
-            return getFieldsFromRows(item.rows);
-          case 'row':
-            return getFieldsFromRow(item);
-          default:
-            return [];
+      columnFields.forEach(columnField => {
+        const fieldIndex = this.fields.findIndex(
+          x => x.field === columnField.field
+        );
+        if (fieldIndex !== -1) {
+          const fieldToRemoveIndex = this.fieldsWithoutLayoutConfig.findIndex(
+            x => x.field === columnField.field
+          );
+          if (fieldToRemoveIndex !== -1) {
+            this.fieldsWithoutLayoutConfig.splice(fieldToRemoveIndex, 1);
+          }
         }
       });
+    }
+    this.buildFormFields(formFields, this.fieldsWithoutLayoutConfig);
 
-    columnFields.forEach(columnField => {
+    this.form = this.formBuilder.group(formFields);
+  }
+
+  private getFieldsFromRow(
+    row: BiaFormLayoutConfigRow<TDto>,
+    formFields: { [key: string]: any }
+  ): BiaFormLayoutConfigField<TDto>[] {
+    const fields = row.columns
+      .filter(
+        (c): c is BiaFormLayoutConfigField<TDto> =>
+          c instanceof BiaFormLayoutConfigField
+      )
+      .flatMap(c => c as BiaFormLayoutConfigField<TDto>);
+
+    const groups = row.columns
+      .filter(
+        (c): c is BiaFormLayoutConfigGroup<TDto> =>
+          c instanceof BiaFormLayoutConfigGroup
+      )
+      .flatMap(c => c as BiaFormLayoutConfigGroup<TDto>);
+
+    groups.forEach(g => {
+      const groupFields = this.getFieldsFromRows(g.rows, formFields);
+      groupFields.forEach(gf => fields.push(gf));
+    });
+
+    fields.forEach(columnField => {
       const fieldIndex = this.fields.findIndex(
         x => x.field === columnField.field
       );
+
       if (fieldIndex !== -1) {
         columnField.fieldConfig = this.fields[fieldIndex];
+        this.buildFormField(formFields, columnField.fieldConfig);
+      }
+    });
 
-        const fieldToRemoveIndex = this.fieldsWithoutLayoutConfig.findIndex(
-          x => x.field === columnField.field
-        );
-        if (fieldToRemoveIndex !== -1) {
-          this.fieldsWithoutLayoutConfig.splice(fieldToRemoveIndex, 1);
-        }
+    const tabGroups = row.columns
+      .filter(
+        (c): c is BiaFormLayoutConfigTabGroup<TDto> =>
+          c instanceof BiaFormLayoutConfigTabGroup
+      )
+      .flatMap(c => c as BiaFormLayoutConfigTabGroup<TDto>);
+
+    tabGroups.forEach(g => {
+      const tabFields = this.getFieldsFromTab(g, formFields);
+      tabFields.forEach(tf => fields.push(tf));
+    });
+
+    return fields;
+  }
+
+  private getFieldsFromRows(
+    rows: BiaFormLayoutConfigRow<TDto>[],
+    formFields: { [key: string]: any }
+  ): BiaFormLayoutConfigField<TDto>[] {
+    return rows.flatMap(row => this.getFieldsFromRow(row, formFields));
+  }
+
+  private getFieldsFromTab(
+    tabGroup: BiaFormLayoutConfigTabGroup<TDto>,
+    formFields: { [key: string]: any }
+  ): BiaFormLayoutConfigField<TDto>[] {
+    const tabConfigFields = tabGroup.tabs.flatMap(tab => {
+      const tabFields: { [key: string]: any } = {};
+      const f = this.getFieldsFromItems(tab.items, tabFields);
+      formFields[tab.id] = this.formBuilder.group(tabFields);
+      return f;
+    });
+
+    return tabConfigFields;
+  }
+
+  private getFieldsFromItems(
+    items: BiaFormLayoutConfigItem<TDto>[],
+    formFields: { [key: string]: any }
+  ): BiaFormLayoutConfigField<TDto>[] {
+    return items.flatMap(item => {
+      switch (item.type) {
+        case 'tab':
+          return this.getFieldsFromTab(item, formFields);
+        case 'group':
+          return this.getFieldsFromRows(item.rows, formFields);
+        case 'row':
+          return this.getFieldsFromRow(item, formFields);
+        default:
+          return [];
       }
     });
   }
 
-  protected formFields() {
-    const fields: { [key: string]: any } = { id: [this.element?.id] };
-    for (const col of this.fields) {
-      if (col.validators && col.validators.length > 0) {
-        fields[col.field as string] = [
-          this.element ? this.element[col.field] : null,
-          col.validators,
-        ];
-      } else if (col.isRequired) {
-        fields[col.field as string] = [
-          this.element ? this.element[col.field] : null,
-          Validators.required,
-        ];
-      } else {
-        fields[col.field as string] = [
-          this.element ? this.element[col.field] : null,
-        ];
-      }
+  protected buildFormField(
+    fields: { [key: string]: any },
+    formField: BiaFieldConfig<TDto>
+  ) {
+    if (formField.validators && formField.validators.length > 0) {
+      fields[formField.field as string] = [
+        this.element ? this.element[formField.field] : null,
+        formField.validators,
+      ];
+    } else if (formField.isRequired) {
+      fields[formField.field as string] = [
+        this.element ? this.element[formField.field] : null,
+        Validators.required,
+      ];
+    } else {
+      fields[formField.field as string] = [
+        this.element ? this.element[formField.field] : null,
+      ];
     }
+  }
+
+  protected formFields() {
+    const fields: { [key: string]: any } = {};
+    this.buildFormFields(fields, this.fields);
+    fields['id'] = [this.element?.id];
     return fields;
+  }
+
+  protected buildFormFields(
+    fields: { [key: string]: any },
+    formFields: BiaFieldConfig<TDto>[]
+  ) {
+    for (const col of formFields) {
+      this.buildFormField(fields, col);
+    }
   }
 
   onCancel() {
@@ -365,13 +457,13 @@ export class BiaFormComponent<TDto extends { id: number }>
     }
 
     if (this.form?.valid) {
-      const element: any = this.getElement();
+      const element: any = this.getElement(this.form);
       this.save.emit(element);
     }
   }
 
-  public getElement() {
-    const element: TDto = this.form?.value;
+  public getElement(form: UntypedFormGroup) {
+    const element: TDto = this.flattenFormGroup(form) as TDto;
     element.id = element.id > 0 ? element.id : 0;
     for (const col of this.fields) {
       switch (col.type) {
@@ -404,6 +496,26 @@ export class BiaFormComponent<TDto extends { id: number }>
       }
     }
     return element;
+  }
+
+  flattenFormGroup(
+    formGroup: UntypedFormGroup,
+    parentKey?: string,
+    result: { [key: string]: any } = {}
+  ): { [key: string]: any } {
+    for (const key in formGroup.controls) {
+      if (formGroup.controls.hasOwnProperty(key)) {
+        const control = formGroup.controls[key];
+        const newKey = parentKey ? `${parentKey}.${key}` : key;
+
+        if (control instanceof UntypedFormGroup) {
+          this.flattenFormGroup(control, newKey, result);
+        } else {
+          result[key] = control.value;
+        }
+      }
+    }
+    return result;
   }
 
   getCellData(field: any): any {
