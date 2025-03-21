@@ -120,7 +120,17 @@ namespace BIA.Net.Core.Domain
         /// <returns>A string for a bool cell.</returns>
         public static string CSVBool(bool x)
         {
-            return x ? "X" : string.Empty;
+            return x.ToString().ToLower();
+        }
+
+        /// <summary>
+        /// CSVs the bool.
+        /// </summary>
+        /// <param name="x">if set to <c>true</c> [x].</param>
+        /// <returns>A string for a bool cell.</returns>
+        public static string CSVBool(bool? x)
+        {
+            return x.HasValue ? x.Value.ToString().ToLower() : string.Empty;
         }
 
         /// <summary>

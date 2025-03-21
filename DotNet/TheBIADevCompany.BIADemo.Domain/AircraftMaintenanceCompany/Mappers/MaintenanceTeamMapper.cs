@@ -203,7 +203,7 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Mappers
                 CSVString(x.Title),
                 CSVString(x.Code),
                 CSVBool(x.IsActive),
-                CSVBool(x.IsApproved.GetValueOrDefault()),
+                CSVBool(x.IsApproved),
                 CSVDateTime(x.FirstOperation),
                 CSVDateTime(x.LastOperation),
                 CSVDate(x.ApprovedDate),

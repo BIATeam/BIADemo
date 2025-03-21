@@ -22,6 +22,7 @@ export const siteFieldsConfiguration: BiaFieldsConfig<Site> = {
     Object.assign(new BiaFieldConfig('rowVersion', 'site.rowVersion'), {
       isVisible: false,
       isHideByDefault: true,
+      isVisibleInTable: false,
     }),
   ],
 };

@@ -159,10 +159,10 @@ export class CrudItemImportService<T extends BaseDto> {
   protected parseCSVBia(csvObjs: T[]): Observable<T[]> {
     return this.crudItemService.optionsService.dictOptionDtos$.pipe(
       map((dictOptionDtos: DictOptionDto[]) => {
-        csvObjs.map(csvObj => {
+        csvObjs.forEach(csvObj => {
           this.crudConfig.fieldsConfig.columns.map(column => {
             const csvValue: any = csvObj[column.field];
-            if (csvValue !== undefined) {
+            if (csvValue !== undefined && csvValue !== null) {
               if (column.type === PropType.String) {
                 this.parseCSVString(csvObj, column);
               } else if (
@@ -271,9 +271,11 @@ export class CrudItemImportService<T extends BaseDto> {
     const csvValue = csvObj[column.field]?.toString().trim();
 
     if (isEmpty(csvValue)) {
-      csvObj[column.field] = <any>false;
-    } else if (csvValue?.toUpperCase() === 'X') {
+      csvObj[column.field] = <any>null;
+    } else if (csvValue?.toUpperCase() === 'TRUE') {
       csvObj[column.field] = <any>true;
+    } else if (csvValue?.toUpperCase() === 'FALSE') {
+      csvObj[column.field] = <any>false;
     } else {
       this.addErrorToSave(
         csvObj,
@@ -423,10 +425,7 @@ export class CrudItemImportService<T extends BaseDto> {
       if (Object.prototype.hasOwnProperty.call(csvObj, prop)) {
         Object.assign(newObj, { [prop]: csvObj[prop] });
 
-        if (
-          (isEmpty(newObj[prop]) || newObj[prop] === false) &&
-          (isEmpty(oldObj[prop]) || oldObj[prop] === false)
-        ) {
+        if (isEmpty(newObj[prop]) && isEmpty(oldObj[prop])) {
           // Example: if newObj[prop] = null and oldObj[prop] = [] (Array empty)
           // For our comparison, it is the same thing so we enter one of the values
           // to facilitate comparison with JSON.stringify
