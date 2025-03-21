@@ -444,3 +444,24 @@ bia-team-selector {
     padding: 5px 5px 5px 0px;
   }
 }
+
+.p-datatable-filter-overlay {
+  .p-datatable-filter-operator {
+    border-bottom: 1px solid var(--p-content-border-color);
+    padding-bottom: 0.5rem;
+  }
+  p-columnfilterformelement .p-variant-filled {
+    border-radius: 0px !important;
+  }
+  .p-variant-filled:not(.p-datepicker, .p-checkbox) {
+    border-color: 1px solid var(--p-select-border-color) !important;
+    padding: 0.5rem;
+    border-radius: var(--p-inputtext-border-radius);
+    &:hover,
+    &.p-focus,
+    &:focus {
+      border: 1px solid var(--p-select-focus-border-color) !important;
+      background-image: none !important;
+    }
+  }
+}
