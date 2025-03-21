@@ -221,6 +221,7 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
     Object.assign(new BiaFieldConfig('rowVersion', 'engine.rowVersion'), {
       isVisible: false,
       isHideByDefault: true,
+      isVisibleInTable: false,
     }),
   ],
 };

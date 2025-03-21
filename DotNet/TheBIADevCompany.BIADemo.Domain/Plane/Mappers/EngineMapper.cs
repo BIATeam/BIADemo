@@ -266,7 +266,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
 
                         if (string.Equals(headerName, HeaderName.IsHybrid, StringComparison.OrdinalIgnoreCase))
                         {
-                            records.Add(CSVBool(x.IsHybrid.GetValueOrDefault()));
+                            records.Add(CSVBool(x.IsHybrid));
                         }
 
                         if (string.Equals(headerName, HeaderName.PrincipalPart, StringComparison.OrdinalIgnoreCase))

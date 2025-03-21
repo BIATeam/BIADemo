@@ -164,8 +164,8 @@ export class CrudItemImportFormComponent<TDto extends { id: number }> {
 
   initTableParam() {
     if (this.crudConfiguration) {
-      this.displayedColumns = this.crudConfiguration.fieldsConfig.columns.map(
-        col => <KeyValuePair>{ key: col.field, value: col.header }
+      this.displayedColumns = this.getVisibleColumnsFromFieldsConfig(
+        this.crudConfiguration.fieldsConfig
       );
       this.sortFieldValue = this.displayedColumns[0].key;
 
@@ -176,7 +176,8 @@ export class CrudItemImportFormComponent<TDto extends { id: number }> {
   initTableErrorParam() {
     if (this.crudConfiguration) {
       this.crudConfigurationError = clone(this.crudConfiguration, false);
-      this.crudConfigurationError.fieldsConfig.columns.push(
+      this.crudConfigurationError.fieldsConfig.columns = [
+        ...this.crudConfiguration.fieldsConfig.columns,
         Object.assign(
           new BiaFieldConfig<TDto>(
             <keyof TDto & string>'sErrors',
@@ -186,14 +187,21 @@ export class CrudItemImportFormComponent<TDto extends { id: number }> {
             isEditable: false,
             type: PropType.String,
           }
-        )
-      );
+        ),
+      ];
 
-      this.displayedColumnErrors =
-        this.crudConfigurationError.fieldsConfig.columns.map(
-          col => <KeyValuePair>{ key: col.field, value: col.header }
-        );
+      this.displayedColumnErrors = this.getVisibleColumnsFromFieldsConfig(
+        this.crudConfigurationError.fieldsConfig
+      );
     }
+  }
+
+  private getVisibleColumnsFromFieldsConfig(
+    fields: BiaFieldsConfig<TDto>
+  ): KeyValuePair[] {
+    return fields.columns
+      .filter(col => col.isVisibleInTable)
+      .map(col => <KeyValuePair>{ key: col.field, value: col.header });
   }
 
   onFileSelected() {

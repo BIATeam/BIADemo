@@ -93,6 +93,7 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
     Object.assign(new BiaFieldConfig('rowVersion', 'plane.rowVersion'), {
       isVisible: false,
       isHideByDefault: true,
+      isVisibleInTable: false,
     }),
   ],
 };
