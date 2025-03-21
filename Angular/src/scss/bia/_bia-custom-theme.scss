@@ -47,8 +47,8 @@ bia-ultima-layout {
   .layout-content {
     background-image:
       linear-gradient(
-        rgba(var(--p-content-background), 0.6),
-        rgba(var(--p-content-background), 0.6)
+        color-mix(in srgb, var(--p-content-background) 60%, transparent),
+        color-mix(in srgb, var(--p-content-background) 60%, transparent)
       ),
       url('../../assets/bia/img/bg-default.jpg');
   }
