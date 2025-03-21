@@ -4020,7 +4020,7 @@ const MyPreset = definePreset(Material, {
         color: '{list.option.color}',
         focusColor: '{list.option.focus.color}',
         selectedColor: '{list.option.selected.color}',
-        selectedFocusColor: '{list.option.selected.focus.color}',
+        selectedFocusColor: '{list.option.selected.color}',
         padding: '{list.option.padding}',
         borderRadius: '{list.option.border.radius}',
       },
