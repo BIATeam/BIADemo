@@ -322,3 +322,8 @@ body {
     }
   }
 }
+
+.p-multiselect-overlay,
+.p-select-overlay {
+  border: none !important;
+}

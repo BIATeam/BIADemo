@@ -351,14 +351,14 @@ const MyPreset = definePreset(Material, {
       transitionDuration: '{transition.duration}',
     },
     list: {
-      padding: '0.25rem 0.25rem',
-      gap: '2px',
+      padding: '0rem',
+      gap: '0',
       header: {
         padding: '0.5rem 1rem 0.25rem 1rem',
       },
       option: {
         padding: '0.5rem 0.75rem',
-        borderRadius: '{border.radius.sm}',
+        borderRadius: '0',
       },
       optionGroup: {
         padding: '0.5rem 0.75rem',
@@ -393,13 +393,13 @@ const MyPreset = definePreset(Material, {
       select: {
         borderRadius: '{border.radius.sm}',
         shadow:
-          '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
+          'rgba(0, 0, 0, 0.2) 0px 5px 5px -3px, rgba(0, 0, 0, 0.14) 0px 8px 10px 1px, rgba(0, 0, 0, 0.12) 0px 3px 14px 2px',
       },
       popover: {
         borderRadius: '{border.radius.sm}',
         padding: '0.75rem',
         shadow:
-          '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
+          'rgba(0, 0, 0, 0.2) 0px 5px 5px -3px, rgba(0, 0, 0, 0.14) 0px 8px 10px 1px, rgba(0, 0, 0, 0.12) 0px 3px 14px 2px',
       },
       modal: {
         borderRadius: '{border.radius.sm}',
