@@ -205,7 +205,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         /// <summary>
         /// The countries rights.
         /// </summary>
-        public static class Countries
+        public static class CountryOptions
         {
             /// <summary>
             /// The right to access to the list of countries (options only).
