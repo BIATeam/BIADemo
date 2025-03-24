@@ -1,3 +1,5 @@
+@use 'bia-variables';
+
 .bia-separator {
   height: 24px;
   border-left: 1px solid;
@@ -86,13 +88,13 @@ bia-table-controller {
 }
 
 .bia-star-mandatory {
-  color: $biaRed;
+  color: bia-variables.$biaRed;
   margin-right: 5px;
   font-weight: bold;
 }
 
 .logo svg {
-  fill: $biaOrange;
+  fill: bia-variables.$biaOrange;
 }
 
 // For view
@@ -118,35 +120,35 @@ bia-ultima-layout {
     --environment-color: #{color-mix(
         in srgb,
         var(--p-primary-800) 100%,
-        $biaBlue 100%
+        bia-variables.$biaBlue 100%
       )};
   }
   &.env-int {
     --environment-color: #{color-mix(
         in srgb,
         var(--p-primary-800) 100%,
-        $biaGreen 100%
+        bia-variables.$biaGreen 100%
       )};
   }
   &.env-uat {
     --environment-color: #{color-mix(
         in srgb,
         var(--p-primary-800) 100%,
-        $biaOrange 100%
+        bia-variables.$biaOrange 100%
       )};
   }
   &.env-pra {
     --environment-color: #{color-mix(
         in srgb,
         var(--p-primary-800) 100%,
-        $biaRed 100%
+        bia-variables.$biaRed 100%
       )};
   }
   &.env-ppd {
     --environment-color: #{color-mix(
         in srgb,
         var(--p-primary-800) 100%,
-        $biaYellow 100%
+        bia-variables.$biaYellow 100%
       )};
   }
 }

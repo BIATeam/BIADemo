@@ -1,4 +1,4 @@
-@import '../../../../../../scss/bia/bia-variables';
+@use '../../../../../../scss/bia/bia-variables';
 
 :host {
   display: block;
@@ -25,7 +25,7 @@
   // }
 
   .bia-btn-del-filter {
-    color: $biaRed !important;
+    color: bia-variables.$biaRed !important;
   }
 }
 
