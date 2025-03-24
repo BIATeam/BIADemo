@@ -13,13 +13,14 @@ import {
   TemplateRef,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { Confirmation, ConfirmationService, PrimeTemplate } from 'primeng/api';
-import { BiaDialogService } from 'src/app/core/bia-core/services/bia-dialog.service';
-import { Button, ButtonDirective } from 'primeng/button';
-import { Tooltip } from 'primeng/tooltip';
-import { Divider } from 'primeng/divider';
-import { ConfirmDialog } from 'primeng/confirmdialog';
 import { TranslateModule } from '@ngx-translate/core';
+import { Confirmation, ConfirmationService, PrimeTemplate } from 'primeng/api';
+import { Badge } from 'primeng/badge';
+import { Button, ButtonDirective } from 'primeng/button';
+import { ConfirmDialog } from 'primeng/confirmdialog';
+import { Divider } from 'primeng/divider';
+import { Tooltip } from 'primeng/tooltip';
+import { BiaDialogService } from 'src/app/core/bia-core/services/bia-dialog.service';
 
 @Component({
   selector: 'bia-table-header',
@@ -36,6 +37,7 @@ import { TranslateModule } from '@ngx-translate/core';
     NgTemplateOutlet,
     ConfirmDialog,
     TranslateModule,
+    Badge,
   ],
 })
 export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {

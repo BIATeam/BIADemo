@@ -26,6 +26,7 @@ import {
 } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { FilterMetadata, PrimeTemplate, SelectItem } from 'primeng/api';
+import { Badge } from 'primeng/badge';
 import { Button } from 'primeng/button';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
@@ -66,6 +67,7 @@ import { KeyValuePair } from '../../../model/key-value-pair';
     Tooltip,
     TranslateModule,
     FloatLabel,
+    Badge,
   ],
 })
 export class BiaTableControllerComponent

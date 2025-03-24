@@ -1019,7 +1019,7 @@ const MyPreset = definePreset(Material, {
           style: '{focus.ring.style}',
           offset: '{focus.ring.offset}',
         },
-        badgeSize: '1rem',
+        badgeSize: '0.5rem',
         transitionDuration: '{form.field.transition.duration}',
       },
       colorScheme: {
