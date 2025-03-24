@@ -442,7 +442,7 @@ const MyPreset = definePreset(Material, {
         },
         mask: {
           background: 'rgba(0,0,0,0.4)',
-          color: '{surface.200}',
+          color: '{primary.500}',
         },
         formField: {
           background: '{surface.0}',
@@ -567,7 +567,7 @@ const MyPreset = definePreset(Material, {
         },
         mask: {
           background: 'rgba(0,0,0,0.6)',
-          color: '{surface.200}',
+          color: '{primary.300}',
         },
         formField: {
           background: '{surface.950}',
