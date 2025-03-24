@@ -1,4 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
+import { NgIf } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import {
   Component,
@@ -8,8 +9,10 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MenuItem, SharedModule } from 'primeng/api';
+import { Dialog } from 'primeng/dialog';
+import { Tooltip } from 'primeng/tooltip';
 import { Observable, Subscription, catchError, map, take, tap } from 'rxjs';
 import { BiaEnvironmentService } from 'src/app/core/bia-core/services/bia-environment.service';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
@@ -17,10 +20,6 @@ import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-transl
 import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
 import { THEME_DARK, THEME_LIGHT } from 'src/app/shared/constants';
 import { BiaLayoutService } from '../../services/layout.service';
-import { Button } from 'primeng/button';
-import { Tooltip } from 'primeng/tooltip';
-import { NgIf } from '@angular/common';
-import { Dialog } from 'primeng/dialog';
 import { BiaUltimaConfigComponent } from '../config/ultima-config.component';
 
 @Component({
@@ -54,7 +53,6 @@ import { BiaUltimaConfigComponent } from '../config/ultima-config.component';
     ]),
   ],
   imports: [
-    Button,
     Tooltip,
     NgIf,
     Dialog,
