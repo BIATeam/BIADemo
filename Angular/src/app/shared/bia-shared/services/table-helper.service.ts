@@ -128,31 +128,31 @@ export class TableHelperService {
       layoutService,
       offset
     );
-    // table header height = 2.14rem
+    // table header height = 2.24rem
 
     // Non compact mode :
     // table header margin = 1.25rem
-    // controller height = 4.5rem + 2px
-    // paginator = 4.05rem
+    // controller height = 4.5rem
+    // paginator = 3.6rem
 
     // Compact mode :
     // table header margin = -0.25rem
-    // controller height = 3.25rem + 2px
-    // paginator = 3.3rem
+    // controller height = 3.25rem
+    // paginator = 2.6rem
 
     if (layoutService._config.classicStyle) {
       height += ' - 200px';
     } else {
-      height += ' - 2px - 11.94rem';
+      height += ' - 11.59rem';
     }
     if (compactMode) {
-      height += ' + 3.5rem';
+      height += ' + 3.75rem';
 
       if (!showTableController) {
-        height += ' + 3.25rem + 2px';
+        height += ' + 3.25rem';
       }
     } else if (!showTableController) {
-      height += ' + 4.5rem + 2px';
+      height += ' + 4.5rem';
     }
 
     return `calc(${height})`;

@@ -965,7 +965,7 @@ const MyPreset = definePreset(Material, {
     },
     breadcrumb: {
       root: {
-        padding: '0.45rem',
+        padding: '0.5rem',
         background: '{content.background}',
         gap: '1rem',
         transitionDuration: '{transition.duration}',
