@@ -108,7 +108,6 @@ export const ROUTES: Routes = [
             redirectTo: 'read',
           },
           /// BIAToolKit - Begin Partial PlaneModuleChildPath Engine
-          /// BIAToolKit - Begin Partial PlaneModuleChildPath Engine
           {
             path: 'engines',
             data: {
@@ -147,6 +146,7 @@ export const ROUTES: Routes = [
     // BIAToolKit - End Option Airport
     // BIAToolKit - Begin Option PlaneType
     PlaneTypeOptionModule,
+    // BIAToolKit - End Option PlaneType
     PlaneItemComponent,
     PlanesIndexComponent,
     // [Calc] : NOT used for calc (3 lines).
