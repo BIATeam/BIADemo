@@ -210,7 +210,7 @@ export class BiaTableControllerComponent
   protected initFilterCtrl() {
     this.sub.add(
       this.filterCtrl.valueChanges.subscribe(filterValue => {
-        this.filter.emit(filterValue.trim().toLowerCase());
+        this.filter.emit(filterValue.trim());
       })
     );
   }

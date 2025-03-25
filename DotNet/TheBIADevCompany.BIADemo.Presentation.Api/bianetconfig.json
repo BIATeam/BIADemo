@@ -127,6 +127,42 @@
       // BIAToolKit - Begin Config
       // BIAToolKit - End Config
       // Begin BIADemo
+      // BIAToolKit - Begin Partial Config Site
+      // Site
+      {
+          "Name": "Site_Options",
+          "Roles": [ "Admin", "Site_Member" ]
+      },
+      // BIAToolKit - End Partial Config Site
+      // BIAToolKit - Begin Partial Config AircraftMaintenanceCompany
+      // AircraftMaintenanceCompany
+      {
+          "Name": "AircraftMaintenanceCompany_Options",
+          "Roles": [ "Admin", "Site_Member" ]
+      },
+      // BIAToolKit - End Partial Config AircraftMaintenanceCompany
+      // BIAToolKit - Begin Partial Config Plane
+      // Plane
+      {
+          "Name": "Plane_Options",
+          "Roles": [ "Admin", "Site_Member" ]
+      },
+      // BIAToolKit - End Partial Config Plane
+      // BIAToolKit - Begin Partial Config MaintenanceContract
+      // MaintenanceContract
+      {
+        "Names": [ "MaintenanceContract_List_Access", "MaintenanceContract_Read" ],
+        "Roles": [ "Admin", "Site_Member" ]
+      },
+      {
+        "Names": [ "MaintenanceContract_Update", "MaintenanceContract_Save" ],
+        "Roles": [ "Site_Admin" ]
+      },
+      {
+        "Names": [ "MaintenanceContract_Create", "MaintenanceContract_Delete" ],
+        "Roles": [ "Site_Admin" ]
+      },
+      // BIAToolKit - End Partial Config MaintenanceContract
       // Hangfire
       {
         "Names": [ "Hangfire_Run_Worker", "Hangfire_Access" ],

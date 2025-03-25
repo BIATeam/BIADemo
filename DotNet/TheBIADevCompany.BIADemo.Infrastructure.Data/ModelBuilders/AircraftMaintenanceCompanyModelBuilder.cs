@@ -23,6 +23,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             CreateAircraftMaintenanceCompanyModel(modelBuilder);
             CreateMaintenanceTeamModel(modelBuilder);
             CreateCountryModel(modelBuilder);
+            CreateMaintenanceContractModel(modelBuilder);
         }
 
         /// <summary>
@@ -80,6 +81,27 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<Country>().HasData(new Country { Id = (int)CountryId.Mexico, Name = "Mexico" });
             modelBuilder.Entity<Country>().HasData(new Country { Id = (int)CountryId.China, Name = "China" });
             modelBuilder.Entity<Country>().HasData(new Country { Id = (int)CountryId.Spain, Name = "Spain" });
+        }
+
+        /// <summary>
+        /// Create the model for countries.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        private static void CreateMaintenanceContractModel(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<MaintenanceContract>()
+                .HasMany(p => p.Planes)
+                .WithMany()
+                .UsingEntity<MaintenanceContractPlane>();
+            modelBuilder.Entity<MaintenanceContract>().Property(p => p.ContractNumber).IsRequired().HasMaxLength(64).UseCollation("SQL_Latin1_General_CP1_CS_AS");
+            modelBuilder.Entity<MaintenanceContract>()
+                .HasOne(x => x.Site)
+                .WithMany()
+                .HasForeignKey(x => x.SiteId);
+            modelBuilder.Entity<MaintenanceContract>()
+                .HasOne(x => x.AircraftMaintenanceCompany)
+                .WithMany()
+                .HasForeignKey(x => x.AircraftMaintenanceCompanyId);
         }
     }
 }

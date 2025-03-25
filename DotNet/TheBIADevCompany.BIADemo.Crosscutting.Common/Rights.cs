@@ -103,6 +103,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// The right to save aircraft maintenance companies.
             /// </summary>
             public const string Save = "AircraftMaintenanceCompany_Save";
+
+            /// <summary>
+            /// The right to access to the list of aircraftMaintenanceCompanies (options only).
+            /// </summary>
+            public const string Options = "AircraftMaintenanceCompany_Options";
         }
 
         // BIAToolKit - Begin Partial Rights Engine
@@ -256,6 +261,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// The right to fixe planes.
             /// </summary>
             public const string Fix = "Plane_Fix";
+
+            /// <summary>
+            /// The right to access to the list of planes (options only).
+            /// </summary>
+            public const string Options = "Plane_Options";
         }
 
         // BIAToolKit - End Partial Rights Plane
@@ -431,6 +441,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// The right to save sites.
             /// </summary>
             public const string Save = "Site_Save";
+
+            /// <summary>
+            /// The right to access to the list of sites (options only).
+            /// </summary>
+            public const string Options = "Site_Options";
         }
 
         /// <summary>
@@ -619,6 +634,45 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         }
 
         // BIAToolKit - Begin Rights
+        // BIAToolKit - Begin Partial Rights MaintenanceContract
+
+        /// <summary>
+        /// The maintenanceContracts rights.
+        /// </summary>
+        public static class MaintenanceContracts
+        {
+            /// <summary>
+            /// The right to access to the list of maintenanceContracts.
+            /// </summary>
+            public const string ListAccess = "MaintenanceContract_List_Access";
+
+            /// <summary>
+            /// The right to create maintenanceContracts.
+            /// </summary>
+            public const string Create = "MaintenanceContract_Create";
+
+            /// <summary>
+            /// The right to read maintenanceContracts.
+            /// </summary>
+            public const string Read = "MaintenanceContract_Read";
+
+            /// <summary>
+            /// The right to update maintenanceContracts.
+            /// </summary>
+            public const string Update = "MaintenanceContract_Update";
+
+            /// <summary>
+            /// The right to delete maintenanceContracts.
+            /// </summary>
+            public const string Delete = "MaintenanceContract_Delete";
+
+            /// <summary>
+            /// The right to save maintenanceContracts.
+            /// </summary>
+            public const string Save = "MaintenanceContract_Save";
+        }
+
+        // BIAToolKit - End Partial Rights MaintenanceContract
         // BIAToolKit - End Rights
     }
 }

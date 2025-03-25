@@ -1,0 +1,10 @@
+<app-maintenance-contract-form
+  *ngIf="crudItemService.crudItem$ | async; let crudItem"
+  [crudItem]="crudItem"
+  [fields]="crudConfiguration.fieldsConfig.columns"
+  [dictOptionDtos]="(maintenanceContractService.optionsService.dictOptionDtos$ | async) ?? []"
+  (cancel)="onCancelled()"
+  (save)="onSubmitted($event)"></app-maintenance-contract-form>
+<bia-spinner
+  *ngIf="maintenanceContractService.loadingGet$ | async"
+  [overlay]="true"></bia-spinner>
