@@ -48,7 +48,19 @@ const routes: Routes = [
                   ).then(m => m.MaintenanceTeamModule),
               },
               /// BIAToolKit - End Partial Routing MaintenanceTeam
-
+              /// BIAToolKit - Begin Partial Routing MaintenanceContract
+              {
+                path: 'maintenance-contracts',
+                data: {
+                  breadcrumb: 'app.maintenanceContracts',
+                  canNavigate: true,
+                },
+                loadChildren: () =>
+                  import(
+                    './features/maintenance-contracts/maintenance-contract.module'
+                  ).then(m => m.MaintenanceContractModule),
+              },
+              /// BIAToolKit - End Partial Routing MaintenanceContract
               /// BIAToolKit - Begin Partial Routing Plane
               {
                 path: 'planes',

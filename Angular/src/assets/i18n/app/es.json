@@ -19,7 +19,8 @@
     "teams": "Equipos",
     "users": "Usuarios",
     "notifications": "Notificaciones",
-    "maintenance-teams": "Mantenimiento equipos"
+    "maintenance-teams": "Mantenimiento equipos",
+    "maintenanceContracts": "Contratos de mantenimiento"
   },
   "Begin BIADemo": "To remove in project from here",
   "aircraftMaintenanceCompany": {
@@ -64,6 +65,14 @@
     "principalPart": "Parte principal",
     "installedParts": "Partes instaladas",
     "import": "Importar motors"
+  },
+  "maintenanceContract": {
+    "listOf": "Listado de contratos de mantenimiento",
+    "contractNumber": "Número de contrato",
+    "description": "Descripción",
+    "site": "Aerolínea",
+    "aircraftMaintenanceCompany": "Empresa de mantenimiento de aeronaves",
+    "planes": "Aviones"
   },
   "maintenanceTeam": {
     "add": "Añadir equipo de mantenimiento",

@@ -15,6 +15,14 @@ export enum Permission {
   Notification_Update = 'Notification_Update',
 
   /// BIAToolKit - Begin Permission
+  /// BIAToolKit - Begin Partial Permission MaintenanceContract
+  MaintenanceContract_Create = 'MaintenanceContract_Create',
+  MaintenanceContract_Delete = 'MaintenanceContract_Delete',
+  MaintenanceContract_List_Access = 'MaintenanceContract_List_Access',
+  MaintenanceContract_Read = 'MaintenanceContract_Read',
+  MaintenanceContract_Save = 'MaintenanceContract_Save',
+  MaintenanceContract_Update = 'MaintenanceContract_Update',
+  /// BIAToolKit - End Partial Permission MaintenanceContract
   /// BIAToolKit - End Permission
 
   // Begin BIADemo

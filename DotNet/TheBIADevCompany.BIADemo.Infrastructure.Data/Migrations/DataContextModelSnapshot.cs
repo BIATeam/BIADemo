@@ -17,7 +17,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.13")
+                .HasAnnotation("ProductVersion", "8.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -235,6 +235,75 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                             Id = 4,
                             Name = "Spain"
                         });
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.MaintenanceContract", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("AircraftMaintenanceCompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ArchivedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ContractNumber")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .UseCollation("SQL_Latin1_General_CP1_CS_AS");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("FixedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsFixed")
+                        .HasColumnType("bit");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("SiteId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AircraftMaintenanceCompanyId");
+
+                    b.HasIndex("SiteId");
+
+                    b.ToTable("MaintenanceContract");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.MaintenanceContractPlane", b =>
+                {
+                    b.Property<int>("MaintenanceContractId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlaneId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("MaintenanceContractId", "PlaneId");
+
+                    b.HasIndex("PlaneId");
+
+                    b.ToTable("MaintenanceContractPlane");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.MaintenanceTeamAirport", b =>
@@ -1899,6 +1968,40 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.MaintenanceContract", b =>
+                {
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.AircraftMaintenanceCompany", "AircraftMaintenanceCompany")
+                        .WithMany()
+                        .HasForeignKey("AircraftMaintenanceCompanyId");
+
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Site.Entities.Site", "Site")
+                        .WithMany()
+                        .HasForeignKey("SiteId");
+
+                    b.Navigation("AircraftMaintenanceCompany");
+
+                    b.Navigation("Site");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.MaintenanceContractPlane", b =>
+                {
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.MaintenanceContract", "MaintenanceContract")
+                        .WithMany("MaintenanceContractPlanes")
+                        .HasForeignKey("MaintenanceContractId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Plane.Entities.Plane", "Plane")
+                        .WithMany()
+                        .HasForeignKey("PlaneId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MaintenanceContract");
+
+                    b.Navigation("Plane");
+                });
+
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.MaintenanceTeamAirport", b =>
                 {
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.Plane.Entities.Airport", "Airport")
@@ -2301,6 +2404,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .HasForeignKey("TheBIADevCompany.BIADemo.Domain.Site.Entities.Site", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.MaintenanceContract", b =>
+                {
+                    b.Navigation("MaintenanceContractPlanes");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.Notification", b =>
