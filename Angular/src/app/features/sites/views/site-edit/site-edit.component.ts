@@ -1,23 +1,16 @@
-import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, Injector } from '@angular/core';
+import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
+import { SiteFormComponent } from '../../components/site-form/site-form.component';
 import { Site } from '../../model/site';
 import { SiteService } from '../../services/site.service';
 import { siteCRUDConfiguration } from '../../site.constants';
-import { NgIf, AsyncPipe } from '@angular/common';
-import { SiteFormComponent } from '../../components/site-form/site-form.component';
-import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
   selector: 'app-site-edit',
   templateUrl: './site-edit.component.html',
-  imports: [
-    NgIf,
-    SiteFormComponent,
-    BiaSharedModule,
-    AsyncPipe,
-    SpinnerComponent,
-  ],
+  imports: [NgIf, SiteFormComponent, AsyncPipe, SpinnerComponent],
 })
 export class SiteEditComponent extends CrudItemEditComponent<Site> {
   constructor(

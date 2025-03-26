@@ -1,12 +1,17 @@
-import { TeamAdvancedFilterComponent } from 'src/app/shared/bia-shared/components/team-advanced-filter/team-advanced-filter.component';
-import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
-import { BiaButtonGroupComponent } from 'src/app/shared/bia-shared/components/bia-button-group/bia-button-group.component';
-import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
-import { BiaTableBehaviorControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
-import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { Component, Injector, ViewChild } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { PrimeTemplate } from 'primeng/api';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { BiaButtonGroupItem } from 'src/app/shared/bia-shared/components/bia-button-group/bia-button-group.component';
+import {
+  BiaButtonGroupComponent,
+  BiaButtonGroupItem,
+} from 'src/app/shared/bia-shared/components/bia-button-group/bia-button-group.component';
+import { BiaTableBehaviorControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
+import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
+import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
+import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
+import { TeamAdvancedFilterComponent } from 'src/app/shared/bia-shared/components/team-advanced-filter/team-advanced-filter.component';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
 import { TeamAdvancedFilterDto } from 'src/app/shared/bia-shared/model/team-advanced-filter-dto';
 import { Permission } from 'src/app/shared/permission';
@@ -14,10 +19,6 @@ import { aircraftMaintenanceCompanyCRUDConfiguration } from '../../aircraft-main
 import { AircraftMaintenanceCompanyTableComponent } from '../../components/aircraft-maintenance-company-table/aircraft-maintenance-company-table.component';
 import { AircraftMaintenanceCompany } from '../../model/aircraft-maintenance-company';
 import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maintenance-company.service';
-import { NgIf, NgClass, AsyncPipe } from '@angular/common';
-import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
-import { PrimeTemplate } from 'primeng/api';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-aircraft-maintenance-companies-index',
@@ -25,7 +26,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./aircraft-maintenance-companies-index.component.scss'],
   imports: [
     NgIf,
-    BiaSharedModule,
+
     NgClass,
     PrimeTemplate,
     AircraftMaintenanceCompanyTableComponent,

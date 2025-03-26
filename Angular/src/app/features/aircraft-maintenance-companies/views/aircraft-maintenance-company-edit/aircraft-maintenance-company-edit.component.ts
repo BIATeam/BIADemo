@@ -1,12 +1,11 @@
-import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, Injector } from '@angular/core';
+import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
 import { aircraftMaintenanceCompanyCRUDConfiguration } from '../../aircraft-maintenance-company.constants';
+import { AircraftMaintenanceCompanyFormComponent } from '../../components/aircraft-maintenance-company-form/aircraft-maintenance-company-form.component';
 import { AircraftMaintenanceCompany } from '../../model/aircraft-maintenance-company';
 import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maintenance-company.service';
-import { NgIf, AsyncPipe } from '@angular/common';
-import { AircraftMaintenanceCompanyFormComponent } from '../../components/aircraft-maintenance-company-form/aircraft-maintenance-company-form.component';
-import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
   selector: 'app-aircraft-maintenance-company-edit',
@@ -14,7 +13,7 @@ import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module
   imports: [
     NgIf,
     AircraftMaintenanceCompanyFormComponent,
-    BiaSharedModule,
+
     AsyncPipe,
     SpinnerComponent,
   ],

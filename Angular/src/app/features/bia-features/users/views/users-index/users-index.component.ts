@@ -1,25 +1,24 @@
-import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
-import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
-import { BiaTableBehaviorControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
-import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { PrimeTemplate } from 'primeng/api';
+import { ButtonDirective } from 'primeng/button';
 import { skip } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
 import { getLastUsersAdded } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
+import { BiaTableBehaviorControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
+import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
+import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
+import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
 import { Permission } from 'src/app/shared/permission';
+import { UserAddFromLdapComponent } from '../../../users-from-directory/views/user-add-from-directory-dialog/user-add-from-directory-dialog.component';
 import { UserTableComponent } from '../../components/user-table/user-table.component';
 import { User } from '../../model/user';
 import { UserService } from '../../services/user.service';
 import { FeatureUsersActions } from '../../store/users-actions';
 import { userCRUDConfiguration } from '../../user.constants';
-import { NgClass, NgIf, AsyncPipe } from '@angular/common';
-import { BiaSharedModule } from '../../../../../shared/bia-shared/bia-shared.module';
-import { PrimeTemplate } from 'primeng/api';
-import { ButtonDirective } from 'primeng/button';
-import { UserAddFromLdapComponent } from '../../../users-from-directory/views/user-add-from-directory-dialog/user-add-from-directory-dialog.component';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'bia-users-index',
@@ -27,7 +26,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./users-index.component.scss'],
   imports: [
     NgClass,
-    BiaSharedModule,
+
     PrimeTemplate,
     NgIf,
     ButtonDirective,

@@ -1,5 +1,5 @@
-import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { Component, Injector, OnInit } from '@angular/core';
+import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
 import { engineCRUDConfiguration } from '../../engine.constants';
 import { Engine } from '../../model/engine';
@@ -9,22 +9,15 @@ import { filter } from 'rxjs';
 import { FormReadOnlyMode } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
 // End BIADemo
 // BIAToolKit - Begin Option
-import { EngineOptionsService } from '../../services/engine-options.service';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { EngineFormComponent } from '../../components/engine-form/engine-form.component';
-import { BiaSharedModule } from '../../../../../../shared/bia-shared/bia-shared.module';
+import { EngineOptionsService } from '../../services/engine-options.service';
 // BIAToolKit - End Option
 
 @Component({
   selector: 'app-engine-edit',
   templateUrl: './engine-edit.component.html',
-  imports: [
-    NgIf,
-    EngineFormComponent,
-    BiaSharedModule,
-    AsyncPipe,
-    SpinnerComponent,
-  ],
+  imports: [NgIf, EngineFormComponent, AsyncPipe, SpinnerComponent],
 })
 export class EngineEditComponent
   extends CrudItemEditComponent<Engine>

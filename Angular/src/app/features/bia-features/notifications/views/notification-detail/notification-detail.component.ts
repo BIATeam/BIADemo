@@ -1,4 +1,4 @@
-import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
+import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -8,18 +8,17 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { ButtonDirective } from 'primeng/button';
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
 import { Permission } from 'src/app/shared/permission';
 import { AppState } from 'src/app/store/state';
 import { Notification, NotificationData } from '../../model/notification';
 import { NotificationService } from '../../services/notification.service';
 import { FeatureNotificationsActions } from '../../store/notifications-actions';
-import { NgIf, AsyncPipe, DatePipe } from '@angular/common';
-import { ButtonDirective } from 'primeng/button';
 
-import { BiaSharedModule } from '../../../../../shared/bia-shared/bia-shared.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { NotificationTeamWarningComponent } from '../../../../../shared/bia-shared/components/notification-team-warning/notification-team-warning.component';
 
@@ -31,7 +30,7 @@ import { NotificationTeamWarningComponent } from '../../../../../shared/bia-shar
     NgIf,
     ButtonDirective,
     NotificationTeamWarningComponent,
-    BiaSharedModule,
+
     AsyncPipe,
     DatePipe,
     TranslateModule,

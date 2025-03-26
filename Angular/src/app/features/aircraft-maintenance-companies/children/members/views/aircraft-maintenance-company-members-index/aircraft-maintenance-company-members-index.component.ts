@@ -1,17 +1,16 @@
-import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
-import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
-import { BiaTableBehaviorControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
-import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { PrimeTemplate } from 'primeng/api';
+import { BiaTableBehaviorControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
+import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
+import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
+import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import { MembersIndexComponent } from 'src/app/shared/bia-shared/feature-templates/members/views/members-index/members-index.component';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { Permission } from 'src/app/shared/permission';
-import { AircraftMaintenanceCompanyService } from '../../../../services/aircraft-maintenance-company.service';
-import { NgClass, NgIf, AsyncPipe } from '@angular/common';
-import { BiaSharedModule } from '../../../../../../shared/bia-shared/bia-shared.module';
-import { PrimeTemplate } from 'primeng/api';
 import { MemberModule } from '../../../../../../shared/bia-shared/feature-templates/members/member.module';
-import { TranslateModule } from '@ngx-translate/core';
+import { AircraftMaintenanceCompanyService } from '../../../../services/aircraft-maintenance-company.service';
 
 @Component({
   selector: 'app-aircraft-maintenance-company-members-index',
@@ -22,7 +21,7 @@ import { TranslateModule } from '@ngx-translate/core';
   ],
   imports: [
     NgClass,
-    BiaSharedModule,
+
     PrimeTemplate,
     NgIf,
     MemberModule,

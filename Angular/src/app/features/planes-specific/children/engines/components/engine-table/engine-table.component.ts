@@ -10,7 +10,6 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { Engine } from 'src/app/features/planes-specific/model/engine';
 import { CrudItemTableComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-table/crud-item-table.component';
-import { BiaSharedModule } from '../../../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
   selector: 'app-engine-specific-table',
@@ -19,13 +18,7 @@ import { BiaSharedModule } from '../../../../../../shared/bia-shared/bia-shared.
   styleUrls: [
     '/src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss',
   ],
-  imports: [
-    FormsModule,
-    ReactiveFormsModule,
-    TableModule,
-    BiaSharedModule,
-    TranslateModule,
-  ],
+  imports: [FormsModule, ReactiveFormsModule, TableModule, TranslateModule],
 })
 export class EngineTableComponent extends CrudItemTableComponent<Engine> {
   constructor(

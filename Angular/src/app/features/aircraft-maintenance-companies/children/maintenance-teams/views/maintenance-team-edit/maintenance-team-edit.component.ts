@@ -1,26 +1,19 @@
-import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { Component, Injector, OnInit } from '@angular/core';
+import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
 import { maintenanceTeamCRUDConfiguration } from '../../maintenance-team.constants';
 import { MaintenanceTeam } from '../../model/maintenance-team';
 // BIAToolKit - Begin Option
 import { MaintenanceTeamOptionsService } from '../../services/maintenance-team-options.service';
 // BIAToolKit - End Option
-import { MaintenanceTeamService } from '../../services/maintenance-team.service';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { MaintenanceTeamFormComponent } from '../../components/maintenance-team-form/maintenance-team-form.component';
-import { BiaSharedModule } from '../../../../../../shared/bia-shared/bia-shared.module';
+import { MaintenanceTeamService } from '../../services/maintenance-team.service';
 
 @Component({
   selector: 'app-maintenance-team-edit',
   templateUrl: './maintenance-team-edit.component.html',
-  imports: [
-    NgIf,
-    MaintenanceTeamFormComponent,
-    BiaSharedModule,
-    AsyncPipe,
-    SpinnerComponent,
-  ],
+  imports: [NgIf, MaintenanceTeamFormComponent, AsyncPipe, SpinnerComponent],
 })
 export class MaintenanceTeamEditComponent
   extends CrudItemEditComponent<MaintenanceTeam>

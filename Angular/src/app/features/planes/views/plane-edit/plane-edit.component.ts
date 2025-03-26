@@ -1,5 +1,5 @@
-import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { Component, Injector } from '@angular/core';
+import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 // Begin BIADemo
 import { filter } from 'rxjs';
 import { FormReadOnlyMode } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
@@ -8,23 +8,16 @@ import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templat
 // Begin BIADemo
 import { Permission } from 'src/app/shared/permission';
 // End BIADemo
+import { AsyncPipe, NgIf } from '@angular/common';
+import { PlaneFormComponent } from '../../components/plane-form/plane-form.component';
 import { Plane } from '../../model/plane';
 import { planeCRUDConfiguration } from '../../plane.constants';
 import { PlaneService } from '../../services/plane.service';
-import { NgIf, AsyncPipe } from '@angular/common';
-import { PlaneFormComponent } from '../../components/plane-form/plane-form.component';
-import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
 
 @Component({
   selector: 'app-plane-edit',
   templateUrl: './plane-edit.component.html',
-  imports: [
-    NgIf,
-    PlaneFormComponent,
-    BiaSharedModule,
-    AsyncPipe,
-    SpinnerComponent,
-  ],
+  imports: [NgIf, PlaneFormComponent, AsyncPipe, SpinnerComponent],
 })
 export class PlaneEditComponent extends CrudItemEditComponent<Plane> {
   constructor(

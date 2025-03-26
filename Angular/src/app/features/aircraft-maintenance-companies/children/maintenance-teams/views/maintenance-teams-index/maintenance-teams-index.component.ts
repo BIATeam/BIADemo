@@ -1,10 +1,10 @@
-import { TeamAdvancedFilterComponent } from 'src/app/shared/bia-shared/components/team-advanced-filter/team-advanced-filter.component';
-import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
-import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
-import { BiaTableBehaviorControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
-import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { BiaTableBehaviorControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
+import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
+import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
+import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
+import { TeamAdvancedFilterComponent } from 'src/app/shared/bia-shared/components/team-advanced-filter/team-advanced-filter.component';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
 import { TeamAdvancedFilterDto } from 'src/app/shared/bia-shared/model/team-advanced-filter-dto';
 import { Permission } from 'src/app/shared/permission';
@@ -14,13 +14,12 @@ import { MaintenanceTeam } from '../../model/maintenance-team';
 // BIAToolKit - Begin Option
 import { MaintenanceTeamOptionsService } from '../../services/maintenance-team-options.service';
 // BIAToolKit - End Option
-import { MaintenanceTeamService } from '../../services/maintenance-team.service';
-import { NgIf, NgClass, AsyncPipe } from '@angular/common';
-import { BiaSharedModule } from '../../../../../../shared/bia-shared/bia-shared.module';
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';
-import { TranslateModule } from '@ngx-translate/core';
+import { MaintenanceTeamService } from '../../services/maintenance-team.service';
 
 @Component({
   selector: 'app-maintenance-teams-index',
@@ -28,7 +27,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./maintenance-teams-index.component.scss'],
   imports: [
     NgIf,
-    BiaSharedModule,
+
     NgClass,
     PrimeTemplate,
     ButtonDirective,

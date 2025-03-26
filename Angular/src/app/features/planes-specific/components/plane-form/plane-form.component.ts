@@ -21,7 +21,6 @@ import { BiaFieldsConfig } from 'src/app/shared/bia-shared/model/bia-field-confi
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
 import { CrudHelperService } from 'src/app/shared/bia-shared/services/crud-helper.service';
-import { BiaSharedModule } from '../../../../shared/bia-shared/bia-shared.module';
 import { EngineTableComponent } from '../../children/engines/components/engine-table/engine-table.component';
 import { engineCRUDConfiguration } from '../../children/engines/engine.constants';
 import { Engine } from '../../model/engine';
@@ -34,7 +33,6 @@ import { PlaneSpecific } from '../../model/plane-specific';
     '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
   ],
   imports: [
-    BiaSharedModule,
     PrimeTemplate,
     FormsModule,
     ReactiveFormsModule,
