@@ -84,11 +84,7 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.selectedElements) {
-      this.nbSelectedElements = this.selectedElements.length;
-    } else {
-      this.nbSelectedElements = 0;
-    }
+    this.nbSelectedElements = this.selectedElements?.length ?? 0;
 
     if (changes.parentDisplayName || changes.headerTitle) {
       this.updateHeaderTitle();
@@ -138,23 +134,25 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
 
   get isSelectedElementFixed(): boolean {
     return (
-      this.selectedElements.length === 1 &&
+      this.selectedElements?.length === 1 &&
       this.selectedElements[0].isFixed === true
     );
   }
 
   onFixedChanged(fixed: boolean): void {
     this.crudItemFixedChanged.emit({
-      crudItemId: this.selectedElements[0].id,
+      crudItemId: this.selectedElements
+        ? this.selectedElements[0].id
+        : undefined,
       fixed: fixed,
     });
   }
 
   get isDeleteButtonDisabled(): boolean {
     const selectedElements =
-      this.showFixedButtons === true
-        ? this.selectedElements.filter(e => e.isFixed !== true)
-        : this.selectedElements;
+      (this.showFixedButtons === true
+        ? this.selectedElements?.filter(e => e.isFixed !== true)
+        : this.selectedElements) ?? [];
     return selectedElements.length === 0;
   }
 }

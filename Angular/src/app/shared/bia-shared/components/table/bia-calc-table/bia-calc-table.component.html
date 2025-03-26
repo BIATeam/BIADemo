@@ -1,3 +1,4 @@
+toto {{ multiSortMeta | json }}
 <form [formGroup]="form" class="bia-calc-form">
   <p-table
     *ngIf="configuration"
@@ -23,7 +24,8 @@
     (onStateSave)="onStateSave($event)"
     (selectionChange)="onSelectionChange()"
     [styleClass]="'p-datatable-striped'"
-    sortMode="multiple"
+    [sortMode]="sortMode"
+    [multiSortMeta]="multiSortMeta"
     [scrollHeight]="scrollHeightValue"
     [scrollable]="isScrollable"
     editMode="row"
