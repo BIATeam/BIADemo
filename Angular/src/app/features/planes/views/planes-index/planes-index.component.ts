@@ -22,7 +22,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./planes-index.component.scss'],
   imports: [
     NgClass,
-    BiaSharedModule,
+    ViewModule,
     PrimeTemplate,
     NgIf,
     ButtonDirective,
