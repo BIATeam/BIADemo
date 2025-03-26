@@ -5,9 +5,9 @@ import { MaintenanceContract } from '../../model/maintenance-contract';
 @Component({
   selector: 'app-maintenance-contract-form',
   templateUrl:
-    '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.html',
+    '/src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.html',
   styleUrls: [
-    '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
+    '/src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
   ],
 })
 export class MaintenanceContractFormComponent extends CrudItemFormComponent<MaintenanceContract> {}

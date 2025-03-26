@@ -7,9 +7,9 @@ import { Permission } from 'src/app/shared/permission';
 @Component({
   selector: 'app-site-members-index',
   templateUrl:
-    '../../../../../../shared/bia-shared/feature-templates/members/views/members-index/members-index.component.html',
+    '/src/app/shared/bia-shared/feature-templates/members/views/members-index/members-index.component.html',
   styleUrls: [
-    '../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component.scss',
+    '/src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component.scss',
   ],
 })
 export class SiteMembersIndexComponent

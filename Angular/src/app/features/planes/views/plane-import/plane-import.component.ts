@@ -8,7 +8,7 @@ import { PlaneService } from '../../services/plane.service';
 @Component({
   selector: 'app-plane-import',
   templateUrl:
-    '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
+    '/src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
 })
 export class PlaneImportComponent extends CrudItemImportComponent<Plane> {
   constructor(

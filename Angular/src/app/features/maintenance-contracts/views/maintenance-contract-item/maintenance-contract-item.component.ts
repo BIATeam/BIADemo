@@ -10,9 +10,9 @@ import { MaintenanceContractService } from '../../services/maintenance-contract.
 @Component({
   selector: 'app-maintenance-contracts-item',
   templateUrl:
-    '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
+    '/src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
   styleUrls: [
-    '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
+    '/src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
   ],
 })
 export class MaintenanceContractItemComponent
@@ -31,14 +31,16 @@ export class MaintenanceContractItemComponent
   ngOnInit() {
     super.ngOnInit();
     this.sub.add(
-      this.maintenanceContractService.displayItemName$.subscribe(displayItemName => {
-        if (displayItemName) {
-          this.route.data.pipe(first()).subscribe(routeData => {
-            (routeData as any)['breadcrumb'] = displayItemName;
-          });
-          this.layoutService.refreshBreadcrumb();
+      this.maintenanceContractService.displayItemName$.subscribe(
+        displayItemName => {
+          if (displayItemName) {
+            this.route.data.pipe(first()).subscribe(routeData => {
+              (routeData as any)['breadcrumb'] = displayItemName;
+            });
+            this.layoutService.refreshBreadcrumb();
+          }
         }
-      })
+      )
     );
   }
 }

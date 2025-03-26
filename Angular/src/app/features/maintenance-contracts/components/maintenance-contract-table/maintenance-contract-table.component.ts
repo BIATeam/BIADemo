@@ -9,9 +9,9 @@ import { MaintenanceContract } from '../../model/maintenance-contract';
 @Component({
   selector: 'app-maintenance-contract-table',
   templateUrl:
-    '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
+    '/src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
   styleUrls: [
-    '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss',
+    '/src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss',
   ],
 })
 export class MaintenanceContractTableComponent extends CrudItemTableComponent<MaintenanceContract> {

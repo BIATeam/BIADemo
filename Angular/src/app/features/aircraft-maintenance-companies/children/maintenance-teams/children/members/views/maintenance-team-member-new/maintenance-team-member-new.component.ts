@@ -6,7 +6,7 @@ import { MaintenanceTeamService } from '../../../../services/maintenance-team.se
 @Component({
   selector: 'app-maintenance-team-member-new',
   templateUrl:
-    '../../../../../../../../shared/bia-shared/feature-templates/members/views/member-new/member-new.component.html',
+    '/src/app/shared/bia-shared/feature-templates/members/views/member-new/member-new.component.html',
 })
 export class MaintenanceTeamMemberNewComponent
   extends MemberNewComponent

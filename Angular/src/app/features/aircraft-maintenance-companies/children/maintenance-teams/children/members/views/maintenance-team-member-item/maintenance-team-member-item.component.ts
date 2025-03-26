@@ -4,9 +4,9 @@ import { MemberItemComponent } from 'src/app/shared/bia-shared/feature-templates
 @Component({
   selector: 'app-maintenance-team-members-item',
   templateUrl:
-    '../../../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
+    '/src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
   styleUrls: [
-    '../../../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
+    '/src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
   ],
 })
 export class MaintenanceTeamMemberItemComponent extends MemberItemComponent {

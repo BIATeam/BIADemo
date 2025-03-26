@@ -8,7 +8,7 @@ import { EngineService } from '../../services/engine.service';
 @Component({
   selector: 'app-engine-import',
   templateUrl:
-    '../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
+    '/src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
 })
 export class EngineImportComponent extends CrudItemImportComponent<Engine> {
   constructor(
