@@ -24,9 +24,6 @@ import { BiaDialogService } from 'src/app/core/bia-core/services/bia-dialog.serv
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
-  @Input() hasFilter = false;
-  @Input() showFilter = false;
-  @Input() showBtnFilter = false;
   @Input() canAdd = true;
   @Input() canDelete = true;
   @Input() canEdit = true;
@@ -46,7 +43,6 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
     crudItemId: any;
     fixed: boolean;
   }>();
-  @Output() openFilter = new EventEmitter<void>();
   @Output() exportCSV = new EventEmitter<void>();
   @Output() fullExportCSV = new EventEmitter<void>();
   @Output() import = new EventEmitter<void>();
@@ -116,13 +112,6 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
       },
     };
     this.confirmationService.confirm(confirmation);
-  }
-
-  toggleFilter() {
-    this.showFilter = !this.showFilter;
-    if (this.showFilter === true) {
-      this.openFilter.emit();
-    }
   }
 
   displayImportButton(): boolean {

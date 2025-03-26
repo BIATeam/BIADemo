@@ -58,6 +58,13 @@
       </p-button>
     </div>
     <p-button
+      styleClass="bia-btn-del-filter"
+      icon="pi pi-filter-slash"
+      [text]="true"
+      (onClick)="onClearFilters()"
+      pTooltip="{{ 'bia.deleteFilters' | translate }}"
+      tooltipPosition="top" />
+    <p-button
       [style]="{ overflow: 'visible' }"
       icon="pi pi-filter"
       styleClass="p-overlay-badge"
@@ -69,12 +76,21 @@
         <span class="p-badge p-component p-badge-dot p-badge-warning"></span>
       }
     </p-button>
-    <p-button
-      styleClass="bia-btn-del-filter"
-      icon="pi pi-filter-slash"
-      [text]="true"
-      (onClick)="onClearFilters()"
-      pTooltip="{{ 'bia.deleteFilters' | translate }}"
-      tooltipPosition="top" />
+    <ng-container *ngIf="showBtnFilter">
+      <p-button
+        *ngIf="showFilter === false"
+        [style]="{ overflow: 'visible' }"
+        icon="pi pi-filter"
+        styleClass="p-overlay-badge"
+        [text]="true"
+        (click)="toggleFilter()"
+        pTooltip="{{ 'bia.showAdvancedFilters' | translate }}"
+        tooltipPosition="top">
+        <div class="cog pi pi-cog"></div>
+        @if (hasFilter) {
+          <span class="p-badge p-component p-badge-dot p-badge-warning"></span>
+        }
+      </p-button>
+    </ng-container>
   </div>
 </div>

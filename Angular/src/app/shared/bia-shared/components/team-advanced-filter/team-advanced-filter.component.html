@@ -9,11 +9,10 @@
       class="p-button-rounded p-button-text flat"
       pButton
       (click)="onClose()"
-      pTooltip="{{ 'msg.showFilters' | translate }}"></button>
+      pTooltip="{{ 'bia.hideAdvancedFilters' | translate }}"></button>
     <form (submit)="onFilter()" class="flex flex-column" [formGroup]="form">
       <div
         class="header flex flex-row align-items-center align-content-center align-self-stretch">
-        <!--  <i class="pi pi-times bia-pointer" (click)="onClose()" pTooltip="{{ 'msg.hideFilters' | translate }}"></i> -->
         <h1>{{ 'bia.filters' | translate }}</h1>
       </div>
       <div class="flex flex-row justify-content-center">
