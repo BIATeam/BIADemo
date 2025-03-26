@@ -21,6 +21,14 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
+  .cog {
+    position: absolute;
+    top: 1rem;
+    right: 0.5rem;
+    background: transparent;
+    font-size: 0.7rem;
+  }
 }
 
 .bia-column-filter-icon {
