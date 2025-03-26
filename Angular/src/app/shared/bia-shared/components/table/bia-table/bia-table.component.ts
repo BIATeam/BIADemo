@@ -13,7 +13,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { PrimeTemplate, TableState } from 'primeng/api';
+import { PrimeTemplate, SortMeta, TableState } from 'primeng/api';
 import { Table, TableLazyLoadEvent } from 'primeng/table';
 import { Observable, of, timer } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -79,6 +79,8 @@ export class BiaTableComponent<TDto extends { id: number }>
   @Input() dictOptionDtos: DictOptionDto[] = [];
   @Input() readOnly = false;
   @Input() showFixableState = false;
+  @Input() sortMode: 'single' | 'multiple' = 'multiple';
+  @Input() multiSortMeta?: SortMeta[] | null;
 
   protected isSelectFrozen = false;
   protected widthSelect: string;
