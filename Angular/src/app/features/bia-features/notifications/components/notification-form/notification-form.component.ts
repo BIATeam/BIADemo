@@ -23,7 +23,7 @@ import { DatePicker } from 'primeng/datepicker';
 import { Fieldset } from 'primeng/fieldset';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
-import { InputTextarea } from 'primeng/inputtextarea';
+import { Textarea } from 'primeng/inputtextarea';
 import { MultiSelect } from 'primeng/multiselect';
 import { Ripple } from 'primeng/ripple';
 import { Select } from 'primeng/select';
@@ -69,7 +69,7 @@ import {
     TableModule,
     Tooltip,
     MultiSelect,
-    InputTextarea,
+    Textarea,
     TranslateModule,
     FloatLabel,
   ],
