@@ -12,12 +12,12 @@
   <ng-template pTemplate="specificInput" let-field="field" let-form="form">
     <div [formGroup]="form">
       <ng-container [ngSwitch]="field.field">
-        <ng-container *ngSwitchCase="'isActive'">
-          <p-checkbox
-            binary="true"
-            [formControlName]="field.field"
-            ariaLabel="{{ field.header | translate }}"></p-checkbox>
-        </ng-container>
+        <div *ngSwitchCase="'isActive'" class="flex items-center">
+          <p-checkbox binary="true"></p-checkbox>
+          <label [for]="field.field" class="ml-2">{{
+            field.header | translate
+          }}</label>
+        </div>
         <!-- isActive -->
         <ng-container *ngSwitchCase="'capacity'">
           <p-floatlabel variant="in">

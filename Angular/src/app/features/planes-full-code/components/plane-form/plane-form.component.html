@@ -16,11 +16,13 @@
     </div>
   </div>
   <div class="flex flex-row justify-content-center">
-    <div class="app-field-container flex-1" style="max-width: 90%">
-      <p-checkbox
-        binary="true"
-        formControlName="isActive"
-        ariaLabel="{{ 'plane.isActive' | translate }}"></p-checkbox>
+    <div
+      class="app-field-container flex-1 flex items-center"
+      style="max-width: 90%">
+      <p-checkbox binary="true" formControlName="isActive"></p-checkbox>
+      <label for="isActive" class="ml-2">{{
+        'plane.isActive' | translate
+      }}</label>
     </div>
   </div>
   <div class="flex flex-row justify-content-center">
