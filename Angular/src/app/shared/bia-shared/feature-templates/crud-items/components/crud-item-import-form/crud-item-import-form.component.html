@@ -43,16 +43,14 @@
   </ng-container>
 
   <ng-container *ngIf="crudConfiguration.importMode?.useDelete === true">
-    <div>
+    <div class="flex items-center">
       <p-checkbox
         formControlName="useCurrentView"
         class="mr-2"
         (onChange)="onSubmit()"
         [binary]="true"
         inputId="chkUseCurrentView"></p-checkbox>
-      <label for="chkUseCurrentView">{{
-        'import.useCurrentView' | translate
-      }}</label>
+      <label class="ml-2">{{ 'import.useCurrentView' | translate }}</label>
     </div>
   </ng-container>
 </form>
