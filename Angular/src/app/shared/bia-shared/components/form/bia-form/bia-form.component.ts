@@ -1,3 +1,4 @@
+import { NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -17,14 +18,16 @@ import {
   ViewChildren,
 } from '@angular/core';
 import {
+  FormsModule,
+  ReactiveFormsModule,
   UntypedFormBuilder,
   UntypedFormGroup,
   ValidatorFn,
   Validators,
-  FormsModule,
-  ReactiveFormsModule,
 } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
+import { ButtonDirective } from 'primeng/button';
 import { Subscription } from 'rxjs';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
@@ -42,18 +45,9 @@ import {
   BiaFormLayoutConfigRow,
   BiaFormLayoutConfigTabGroup,
 } from '../../../model/bia-form-layout-config';
-import {
-  NgIf,
-  NgClass,
-  NgFor,
-  NgSwitch,
-  NgSwitchCase,
-  NgTemplateOutlet,
-} from '@angular/common';
-import { ButtonDirective } from 'primeng/button';
+import { BiaFormLayoutComponent } from '../bia-form-layout/bia-form-layout.component';
 import { BiaInputComponent } from '../bia-input/bia-input.component';
 import { BiaOutputComponent } from '../bia-output/bia-output.component';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'bia-form',
@@ -67,13 +61,12 @@ import { TranslateModule } from '@ngx-translate/core';
     ButtonDirective,
     NgClass,
     NgFor,
-    NgSwitch,
-    NgSwitchCase,
     NgTemplateOutlet,
     BiaInputComponent,
     PrimeTemplate,
     BiaOutputComponent,
     TranslateModule,
+    BiaFormLayoutComponent,
   ],
 })
 export class BiaFormComponent<TDto extends { id: number }>
@@ -230,7 +223,7 @@ export class BiaFormComponent<TDto extends { id: number }>
     crudItem: { [key: string]: any }
   ) {
     for (const key in crudItem) {
-      if (crudItem.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(crudItem, key)) {
         const control = formGroup.get(key);
 
         if (control && !(control instanceof UntypedFormGroup)) {
@@ -533,7 +526,7 @@ export class BiaFormComponent<TDto extends { id: number }>
     result: { [key: string]: any } = {}
   ): { [key: string]: any } {
     for (const key in formGroup.controls) {
-      if (formGroup.controls.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(formGroup.controls, key)) {
         const control = formGroup.controls[key];
         const newKey = parentKey ? `${parentKey}.${key}` : key;
 

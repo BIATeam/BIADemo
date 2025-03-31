@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
 import { BiaTableBehaviorControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
 import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
 import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
@@ -35,6 +36,7 @@ import { siteCRUDConfiguration } from '../../site.constants';
     BiaTableControllerComponent,
     BiaTableBehaviorControllerComponent,
     BiaTableComponent,
+    UserOptionModule,
   ],
 })
 export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
