@@ -40,7 +40,9 @@ export class MaintenanceContractsEffects {
           ),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
-            return of(FeatureMaintenanceContractsActions.failure({ error: err }));
+            return of(
+              FeatureMaintenanceContractsActions.failure({ error: err })
+            );
           })
         )
       )
@@ -53,10 +55,16 @@ export class MaintenanceContractsEffects {
       map(x => x?.id),
       switchMap(id => {
         return this.maintenanceContractDas.get({ id: id }).pipe(
-          map(maintenanceContract => FeatureMaintenanceContractsActions.loadSuccess({ maintenanceContract })),
+          map(maintenanceContract =>
+            FeatureMaintenanceContractsActions.loadSuccess({
+              maintenanceContract,
+            })
+          ),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
-            return of(FeatureMaintenanceContractsActions.failure({ error: err }));
+            return of(
+              FeatureMaintenanceContractsActions.failure({ error: err })
+            );
           })
         );
       })
@@ -70,7 +78,9 @@ export class MaintenanceContractsEffects {
       concatMap(maintenanceContract =>
         of(maintenanceContract).pipe(
           withLatestFrom(
-            this.store.select(FeatureMaintenanceContractsStore.getLastLazyLoadEvent)
+            this.store.select(
+              FeatureMaintenanceContractsStore.getLastLazyLoadEvent
+            )
           )
         )
       ),
@@ -93,7 +103,9 @@ export class MaintenanceContractsEffects {
             }),
             catchError(err => {
               this.biaMessageService.showErrorHttpResponse(err);
-              return of(FeatureMaintenanceContractsActions.failure({ error: err }));
+              return of(
+                FeatureMaintenanceContractsActions.failure({ error: err })
+              );
             })
           );
       })
@@ -107,7 +119,9 @@ export class MaintenanceContractsEffects {
       concatMap(maintenanceContract =>
         of(maintenanceContract).pipe(
           withLatestFrom(
-            this.store.select(FeatureMaintenanceContractsStore.getLastLazyLoadEvent)
+            this.store.select(
+              FeatureMaintenanceContractsStore.getLastLazyLoadEvent
+            )
           )
         )
       ),
@@ -131,7 +145,9 @@ export class MaintenanceContractsEffects {
             }),
             catchError(err => {
               this.biaMessageService.showErrorHttpResponse(err);
-              return of(FeatureMaintenanceContractsActions.failure({ error: err }));
+              return of(
+                FeatureMaintenanceContractsActions.failure({ error: err })
+              );
             })
           );
       })
@@ -145,7 +161,9 @@ export class MaintenanceContractsEffects {
       concatMap(maintenanceContracts =>
         of(maintenanceContracts).pipe(
           withLatestFrom(
-            this.store.select(FeatureMaintenanceContractsStore.getLastLazyLoadEvent)
+            this.store.select(
+              FeatureMaintenanceContractsStore.getLastLazyLoadEvent
+            )
           )
         )
       ),
@@ -168,7 +186,9 @@ export class MaintenanceContractsEffects {
             }),
             catchError(err => {
               this.biaMessageService.showErrorHttpResponse(err);
-              return of(FeatureMaintenanceContractsActions.failure({ error: err }));
+              return of(
+                FeatureMaintenanceContractsActions.failure({ error: err })
+              );
             })
           );
       })
@@ -182,7 +202,9 @@ export class MaintenanceContractsEffects {
       concatMap((id: number) =>
         of(id).pipe(
           withLatestFrom(
-            this.store.select(FeatureMaintenanceContractsStore.getLastLazyLoadEvent)
+            this.store.select(
+              FeatureMaintenanceContractsStore.getLastLazyLoadEvent
+            )
           )
         )
       ),
@@ -205,7 +227,9 @@ export class MaintenanceContractsEffects {
             }),
             catchError(err => {
               this.biaMessageService.showErrorHttpResponse(err);
-              return of(FeatureMaintenanceContractsActions.failure({ error: err }));
+              return of(
+                FeatureMaintenanceContractsActions.failure({ error: err })
+              );
             })
           );
       })
@@ -219,7 +243,9 @@ export class MaintenanceContractsEffects {
       concatMap((ids: number[]) =>
         of(ids).pipe(
           withLatestFrom(
-            this.store.select(FeatureMaintenanceContractsStore.getLastLazyLoadEvent)
+            this.store.select(
+              FeatureMaintenanceContractsStore.getLastLazyLoadEvent
+            )
           )
         )
       ),
@@ -242,7 +268,9 @@ export class MaintenanceContractsEffects {
             }),
             catchError(err => {
               this.biaMessageService.showErrorHttpResponse(err);
-              return of(FeatureMaintenanceContractsActions.failure({ error: err }));
+              return of(
+                FeatureMaintenanceContractsActions.failure({ error: err })
+              );
             })
           );
       })

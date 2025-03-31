@@ -35,14 +35,16 @@ export class MaintenanceContractItemComponent
   ngOnInit() {
     super.ngOnInit();
     this.sub.add(
-      this.maintenanceContractService.displayItemName$.subscribe(displayItemName => {
-        if (displayItemName) {
-          this.route.data.pipe(first()).subscribe(routeData => {
-            (routeData as any)['breadcrumb'] = displayItemName;
-          });
-          this.layoutService.refreshBreadcrumb();
+      this.maintenanceContractService.displayItemName$.subscribe(
+        displayItemName => {
+          if (displayItemName) {
+            this.route.data.pipe(first()).subscribe(routeData => {
+              (routeData as any)['breadcrumb'] = displayItemName;
+            });
+            this.layoutService.refreshBreadcrumb();
+          }
         }
-      })
+      )
     );
   }
 }

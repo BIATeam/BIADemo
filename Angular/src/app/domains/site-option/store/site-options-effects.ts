@@ -15,9 +15,7 @@ import { DomainSiteOptionsActions } from './site-options-actions';
 export class SiteOptionsEffects {
   loadAll$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(
-        DomainSiteOptionsActions.loadAll
-      ) /* When action is dispatched */,
+      ofType(DomainSiteOptionsActions.loadAll) /* When action is dispatched */,
       /* startWith(loadAll()), */
       /* Hit the Sites Index endpoint of our REST API */
       /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/

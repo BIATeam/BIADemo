@@ -17,7 +17,8 @@ export function reducers(
   action: Action
 ) {
   return combineReducers({
-    aircraftMaintenanceCompanyOptions: fromAircraftMaintenanceCompanyOptions.aircraftMaintenanceCompanyOptionReducers,
+    aircraftMaintenanceCompanyOptions:
+      fromAircraftMaintenanceCompanyOptions.aircraftMaintenanceCompanyOptionReducers,
   })(state, action);
 }
 
@@ -42,5 +43,7 @@ export const { selectAll: getAllAircraftMaintenanceCompanyOptions } =
 export const getAircraftMaintenanceCompanyOptionById = (id: number) =>
   createSelector(
     getAircraftMaintenanceCompanyOptionsEntitiesState,
-    fromAircraftMaintenanceCompanyOptions.getAircraftMaintenanceCompanyOptionById(id)
+    fromAircraftMaintenanceCompanyOptions.getAircraftMaintenanceCompanyOptionById(
+      id
+    )
   );

@@ -46,10 +46,18 @@ export class MaintenanceContractsIndexComponent extends CrudItemsIndexComponent<
   }
 
   protected setPermissions() {
-    this.canEdit = this.authService.hasPermission(Permission.MaintenanceContract_Update);
-    this.canDelete = this.authService.hasPermission(Permission.MaintenanceContract_Delete);
-    this.canAdd = this.authService.hasPermission(Permission.MaintenanceContract_Create);
-    this.canSave = this.authService.hasPermission(Permission.MaintenanceContract_Save);
+    this.canEdit = this.authService.hasPermission(
+      Permission.MaintenanceContract_Update
+    );
+    this.canDelete = this.authService.hasPermission(
+      Permission.MaintenanceContract_Delete
+    );
+    this.canAdd = this.authService.hasPermission(
+      Permission.MaintenanceContract_Create
+    );
+    this.canSave = this.authService.hasPermission(
+      Permission.MaintenanceContract_Save
+    );
     this.canSelect = this.canDelete;
     // BIAToolKit - Begin PlaneIndexTsCanViewChildSet
     // BIAToolKit - End PlaneIndexTsCanViewChildSet

@@ -1,3 +1,4 @@
+import { NgFor, NgIf } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -6,13 +7,12 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { Popover } from 'primeng/popover';
+import { Tooltip } from 'primeng/tooltip';
 import { Subscription } from 'rxjs';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { CrudConfig } from '../../../feature-templates/crud-items/model/crud-config';
-import { Tooltip } from 'primeng/tooltip';
-import { NgIf, NgFor } from '@angular/common';
-import { Popover } from 'primeng/popover';
 
 export interface BiaBehaviorIcon {
   name: 'CalcMode' | 'Popup' | 'Split' | 'FullPage';
@@ -106,7 +106,7 @@ export class BiaTableBehaviorControllerComponent<TDto extends { id: number }>
         this.crudConfiguration.usePopup ||
         this.crudConfiguration.useSplit;
       const button = {
-        name: 'FullPage' as 'FullPage',
+        name: 'FullPage' as const,
         tooltip: this.translateService.instant('bia.useFullPage'),
         command: (button: BiaBehaviorIcon) =>
           this.setActiveLayout(null, button),
