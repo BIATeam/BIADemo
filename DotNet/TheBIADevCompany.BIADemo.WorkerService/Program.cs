@@ -36,7 +36,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                 IHost host = builder.ConfigureAppConfiguration((hostingContext, config) =>
                 {
                     string environment = Environment.GetEnvironmentVariable(Constants.Application.Environment);
-                    config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                    config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
                     config.AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true);
                     config.AddJsonFile("bianetconfig.json", optional: false, reloadOnChange: true);
                     config.AddJsonFile($"bianetconfig.{environment}.json", optional: true, reloadOnChange: true);
