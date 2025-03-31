@@ -1,32 +1,26 @@
-/* Add your customizations of the theme here */
-@import './customs/forms';
-@import './customs/data';
-@import './customs/panel';
-@import './customs/menubar';
-@import './customs/button';
-@import './customs/megamenu';
-@import './customs/breadcrumb';
-@import './customs/float_label';
-@import './customs/input';
-@import './customs/paginator';
-@import './customs/badge';
-@import './customs/table';
-@import './customs/calendar';
+:root {
+  --menu-bg: var(--p-primary-800);
+  --topbar-bg: var(--p-primary-800);
+  --topbar-start-bg: var(--p-primary-900);
+  --topbar-menu-button-bg: var(--p-primary-300);
+  --topbar-menu-button-hover-bg: var(--p-primary-200);
+  --topbar-menu-button-text-color: var(--p-primary-900);
+  --topbar-item-text-color: var(--p-surface-0);
+  --footer-bg: var(--p-primary-800);
+  --footer-hover-bg: var(--p-primary-900);
+  --footer-item-text-color: var(--p-surface-0);
+  --active-menuitem-text-color: var(--p-primary-color);
+  --surface-ground: var(--p-surface-50);
+}
 
-body {
-  --menu-bg: #{$biaPrimaryDisplayColor};
-  --topbar-bg: #{$biaPrimaryDisplayColor};
-  --topbar-start-bg: #{$biaPrimaryDarkDisplayColor};
-  --topbar-menu-button-bg: #f7a92a;
-  --topbar-menu-button-hover-bg: #cc8108;
-  --topbar-menu-button-text-color: #{$accentDarkColor};
-  --topbar-item-text-color: #{$accentTextColor};
-  --footer-bg: #{$biaPrimaryDisplayColor};
-  --footer-hover-bg: #{$biaPrimaryDarkDisplayColor};
-  --footer-item-text-color: #{$accentTextColor};
-  --surface-ground-somber: #{$biaSurfaceGroundSomber};
+:root[class*='dark-theme'] {
+  --surface-ground: var(--p-surface-950);
 }
 
 .layout-menu-dark {
-  --menu-bg: #{$biaPrimaryDisplayColor};
+  --active-menuitem-text-color: var(--primary-color);
+}
+
+.layout-menu-light {
+  --active-menuitem-text-color: var(--primary-color);
 }

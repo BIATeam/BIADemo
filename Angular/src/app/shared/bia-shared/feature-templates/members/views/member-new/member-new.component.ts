@@ -7,10 +7,13 @@ import { Permission } from 'src/app/shared/permission';
 import { memberCRUDConfiguration } from '../../member.constants';
 import { Member, Members } from '../../model/member';
 import { MemberService } from '../../services/member.service';
+import { MemberFormNewComponent } from '../../components/member-form-new/member-form-new.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'bia-member-new',
   templateUrl: './member-new.component.html',
+  imports: [MemberFormNewComponent, AsyncPipe],
 })
 export class MemberNewComponent
   extends CrudItemNewComponent<Member>

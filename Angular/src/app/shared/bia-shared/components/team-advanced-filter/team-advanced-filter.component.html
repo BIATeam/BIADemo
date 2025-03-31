@@ -17,8 +17,8 @@
       </div>
       <div class="flex flex-row justify-content-center">
         <div class="app-filter-container flex-1" style="max-width: 90%">
-          <span class="p-float-label">
-            <p-dropdown
+          <p-floatlabel variant="in">
+            <p-select
               [options]="(userOptions$ | async) ?? []"
               placeholder="&nbsp;"
               formControlName="userSelected"
@@ -28,9 +28,9 @@
               [style]="{ width: '100%' }"
               [showClear]="true"
               appendTo="body"
-              filter="true"></p-dropdown>
+              filter="true"></p-select>
             <label>{{ 'bia.filterMember' | translate }}</label>
-          </span>
+          </p-floatlabel>
         </div>
       </div>
 

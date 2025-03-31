@@ -51,7 +51,7 @@
     pTooltip="{{ 'bia.useResizableColumn' | translate }}"
     tooltipPosition="top"></i>
 </div>
-<p-overlayPanel #op styleClass="bia-behavior-icon-overlay">
+<p-popover #op styleClass="bia-behavior-icon-overlay">
   <div class="bia-table-controller-container flex flex-column gap-3">
     <div *ngFor="let item of visibleLayouts">
       <i
@@ -65,4 +65,4 @@
       }}</span>
     </div>
   </div>
-</p-overlayPanel>
+</p-popover>

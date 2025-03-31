@@ -37,10 +37,10 @@ namespace TheBIADevCompany.BIADemo.DeployDB
             await new HostBuilder()
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
-                    config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                    config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
                     config.AddJsonFile($"appsettings.{env}.json", optional: true, reloadOnChange: true);
                     config.AddJsonFile("bianetconfig.json", optional: false, reloadOnChange: true);
-                    config.AddJsonFile($"bianetconfig.{env}.json", optional: false, reloadOnChange: true);
+                    config.AddJsonFile($"bianetconfig.{env}.json", optional: true, reloadOnChange: true);
                     config.AddEnvironmentVariables();
                 })
                 .ConfigureServices((hostingContext, services) =>

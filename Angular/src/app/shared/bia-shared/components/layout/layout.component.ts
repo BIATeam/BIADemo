@@ -1,4 +1,4 @@
-import { APP_BASE_HREF } from '@angular/common';
+import { APP_BASE_HREF, NgIf } from '@angular/common';
 import { Component, HostBinding, Inject, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { tap } from 'rxjs';
@@ -16,10 +16,21 @@ import { APP_SUPPORTED_TRANSLATIONS } from '../../../constants';
 import { AuthInfo } from '../../model/auth-info';
 import { BiaNavigation } from '../../model/bia-navigation';
 import { BiaLayoutService } from './services/layout.service';
+import { SpinnerComponent } from '../spinner/spinner.component';
+import { ClassicLayoutComponent } from './classic-layout/classic-layout.component';
+import { RouterOutlet } from '@angular/router';
+import { BiaUltimaLayoutComponent } from './ultima/layout/ultima-layout.component';
 
 @Component({
   selector: 'bia-layout',
   templateUrl: './layout.component.html',
+  imports: [
+    NgIf,
+    SpinnerComponent,
+    ClassicLayoutComponent,
+    RouterOutlet,
+    BiaUltimaLayoutComponent,
+  ],
 })
 export class LayoutComponent implements OnInit {
   @HostBinding('class.bia-flex') classicStyle = false;

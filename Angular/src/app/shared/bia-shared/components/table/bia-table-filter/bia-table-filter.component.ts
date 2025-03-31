@@ -1,4 +1,12 @@
 import {
+  NgClass,
+  NgFor,
+  NgIf,
+  NgSwitch,
+  NgSwitchCase,
+  NgSwitchDefault,
+} from '@angular/common';
+import {
   ChangeDetectionStrategy,
   Component,
   // EventEmitter,
@@ -7,9 +15,18 @@ import {
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { FilterMatchMode, FilterMetadata, SelectItem } from 'primeng/api';
-import { Table } from 'primeng/table';
+import { FormsModule } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import {
+  FilterMatchMode,
+  FilterMetadata,
+  PrimeTemplate,
+  SelectItem,
+} from 'primeng/api';
+import { FloatLabel } from 'primeng/floatlabel';
+import { InputText } from 'primeng/inputtext';
+import { MultiSelect } from 'primeng/multiselect';
+import { Table, TableModule } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import {
@@ -20,6 +37,7 @@ import {
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { OptionDto } from '../../../model/option-dto';
+import { FormatValuePipe } from '../../../pipes/format-value.pipe';
 import { TableHelperService } from '../../../services/table-helper.service';
 import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.component';
 
@@ -29,6 +47,22 @@ import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.
   styleUrls: ['./bia-table-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
   encapsulation: ViewEncapsulation.None,
+  imports: [
+    NgIf,
+    TableModule,
+    PrimeTemplate,
+    MultiSelect,
+    FormsModule,
+    NgFor,
+    NgSwitch,
+    NgSwitchCase,
+    NgSwitchDefault,
+    InputText,
+    NgClass,
+    TranslateModule,
+    FormatValuePipe,
+    FloatLabel,
+  ],
 })
 export class BiaTableFilterComponent<CrudItem>
   extends BiaFieldBaseComponent<CrudItem>

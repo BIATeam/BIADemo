@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
-import { UntypedFormBuilder } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  UntypedFormBuilder,
+} from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TableModule } from 'primeng/table';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { Engine } from 'src/app/features/planes-specific/model/engine';
@@ -13,6 +18,7 @@ import { CrudItemTableComponent } from 'src/app/shared/bia-shared/feature-templa
   styleUrls: [
     '/src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss',
   ],
+  imports: [FormsModule, ReactiveFormsModule, TableModule, TranslateModule],
 })
 export class EngineTableComponent extends CrudItemTableComponent<Engine> {
   constructor(

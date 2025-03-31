@@ -22,7 +22,7 @@
     [sortOrder]="sortOrderValue"
     (onStateSave)="onStateSave($event)"
     (selectionChange)="onSelectionChange()"
-    [styleClass]="'p-datatable-striped'"
+    stripedRows
     [sortMode]="sortMode"
     [multiSortMeta]="multiSortMeta"
     [scrollHeight]="scrollHeightValue"
@@ -111,6 +111,13 @@
           [style.width]="widthSelect"
           [alignFrozen]="alignFrozenSelect"
           pFrozenColumn
+          [frozen]="isSelectFrozen"></th>
+        <th
+          *ngIf="showFixableState"
+          [style.width]="widthSelect"
+          [alignFrozen]="alignFrozenSelect"
+          pFrozenColumn
+          pResizableColumn
           [frozen]="isSelectFrozen"></th>
         <th
           *ngFor="let col of columns"

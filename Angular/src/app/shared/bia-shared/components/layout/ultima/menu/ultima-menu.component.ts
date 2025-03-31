@@ -1,6 +1,8 @@
 import { animate, style, transition, trigger } from '@angular/animations';
+import { NgFor, NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { BiaUltimaMenuItemComponent } from '../menu-item/ultima-menu-item.component';
 
 @Component({
   selector: 'bia-ultima-menu',
@@ -29,6 +31,7 @@ import { MenuItem } from 'primeng/api';
       ]),
     ]),
   ],
+  imports: [NgFor, NgIf, BiaUltimaMenuItemComponent],
 })
 export class BiaUltimaMenuComponent {
   @Input() menuItems: MenuItem[] = [];

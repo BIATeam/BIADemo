@@ -1,3 +1,4 @@
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { HttpStatusCode } from '@angular/common/http';
 import {
   Component,
@@ -10,8 +11,9 @@ import {
 import { ActivatedRoute, Router, Routes } from '@angular/router';
 import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { saveAs } from 'file-saver';
+import { PrimeTemplate } from 'primeng/api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable, Subscription, combineLatest } from 'rxjs';
 import { filter, first, skip, take, tap } from 'rxjs/operators';
@@ -33,6 +35,8 @@ import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-fi
 import { TableHelperService } from 'src/app/shared/bia-shared/services/table-helper.service';
 import { DEFAULT_PAGE_SIZE, TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
+import { BiaTableBehaviorControllerComponent } from '../../../../components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
+import { BiaTableHeaderComponent } from '../../../../components/table/bia-table-header/bia-table-header.component';
 import { CrudItemTableComponent } from '../../components/crud-item-table/crud-item-table.component';
 import { CrudConfig, FormReadOnlyMode } from '../../model/crud-config';
 import { CrudItemService } from '../../services/crud-item.service';
@@ -41,6 +45,18 @@ import { CrudItemService } from '../../services/crud-item.service';
   selector: 'bia-crud-items-index',
   templateUrl: './crud-items-index.component.html',
   styleUrls: ['./crud-items-index.component.scss'],
+  imports: [
+    NgClass,
+    BiaTableHeaderComponent,
+    PrimeTemplate,
+    BiaTableBehaviorControllerComponent,
+    NgIf,
+    CrudItemTableComponent,
+    AsyncPipe,
+    TranslateModule,
+    BiaTableControllerComponent,
+    BiaTableComponent,
+  ],
 })
 export class CrudItemsIndexComponent<
     ListCrudItem extends BaseDto,

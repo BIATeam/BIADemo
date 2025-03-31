@@ -1,4 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
+import { NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -18,10 +19,19 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  UntypedFormControl,
+} from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { FilterMetadata, PrimeTemplate, SelectItem } from 'primeng/api';
+import { Badge } from 'primeng/badge';
 import { Button } from 'primeng/button';
+import { FloatLabel } from 'primeng/floatlabel';
+import { InputText } from 'primeng/inputtext';
+import { MultiSelect } from 'primeng/multiselect';
+import { Tooltip } from 'primeng/tooltip';
 import { Subscription } from 'rxjs';
 import { TABLE_FILTER_GLOBAL, TeamTypeId } from 'src/app/shared/constants';
 import { ViewListComponent } from '../../../features/view/views/view-list/view-list.component';
@@ -43,6 +53,21 @@ import { KeyValuePair } from '../../../model/key-value-pair';
         animate('200ms ease-out', style({ height: 0 })),
       ]),
     ]),
+  ],
+  imports: [
+    NgClass,
+    NgIf,
+    ViewListComponent,
+    MultiSelect,
+    FormsModule,
+    NgTemplateOutlet,
+    InputText,
+    ReactiveFormsModule,
+    Button,
+    Tooltip,
+    TranslateModule,
+    FloatLabel,
+    Badge,
   ],
 })
 export class BiaTableControllerComponent
@@ -88,7 +113,7 @@ export class BiaTableControllerComponent
 
   protected sub = new Subscription();
   isOverflowing: boolean;
-  overflowingContentActive: boolean = false;
+  overflowingContentActive = false;
   resizeObserver: ResizeObserver;
   overflowingWidth: number;
   overflowingContentOutsideClickListener: any;

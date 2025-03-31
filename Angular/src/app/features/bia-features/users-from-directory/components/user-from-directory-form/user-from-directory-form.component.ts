@@ -1,3 +1,4 @@
+import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -8,10 +9,18 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import {
+  FormsModule,
+  ReactiveFormsModule,
   UntypedFormBuilder,
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
+import { AutoComplete } from 'primeng/autocomplete';
+import { ButtonDirective } from 'primeng/button';
+import { FloatLabel } from 'primeng/floatlabel';
+import { Fluid } from 'primeng/fluid';
+import { Select } from 'primeng/select';
 import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
 import { LdapDomain } from 'src/app/domains/bia-domains/ldap-domain/model/ldap-domain';
 import { UserFilter } from '../../model/user-filter';
@@ -22,6 +31,17 @@ import { UserFromDirectory } from '../../model/user-from-directory';
   templateUrl: './user-from-directory-form.component.html',
   styleUrls: ['./user-from-directory-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    Fluid,
+    NgIf,
+    Select,
+    AutoComplete,
+    ButtonDirective,
+    TranslateModule,
+    FloatLabel,
+  ],
 })
 export class UserFromLdapFormComponent implements OnChanges {
   @Output() searchUsers = new EventEmitter<UserFilter>();

@@ -11,9 +11,8 @@ import { AirportOptionModule } from 'src/app/domains/airport-option/airport-opti
 import { CountryOptionModule } from 'src/app/domains/country-option/country-option.module';
 // BIAToolKit - End Option Country
 import { DynamicLayoutComponent } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
-import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
 import { Permission } from 'src/app/shared/permission';
-import { SharedModule } from 'src/app/shared/shared.module';
+
 import { MaintenanceTeamFormComponent } from './components/maintenance-team-form/maintenance-team-form.component';
 import { MaintenanceTeamTableComponent } from './components/maintenance-team-table/maintenance-team-table.component';
 import { maintenanceTeamCRUDConfiguration } from './maintenance-team.constants';
@@ -93,20 +92,7 @@ export const ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    MaintenanceTeamItemComponent,
-    MaintenanceTeamsIndexComponent,
-    // [Calc] : NOT used for calc (3 lines).
-    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-    MaintenanceTeamFormComponent,
-    MaintenanceTeamNewComponent,
-    MaintenanceTeamEditComponent,
-    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-    MaintenanceTeamTableComponent,
-  ],
   imports: [
-    SharedModule,
-    CrudItemModule,
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature(
       maintenanceTeamCRUDConfiguration.storeKey,
@@ -120,7 +106,15 @@ export const ROUTES: Routes = [
     // BIAToolKit - End Option Airport
     // BIAToolKit - Begin Option Country
     CountryOptionModule,
-    // BIAToolKit - End Option Country
+    MaintenanceTeamItemComponent,
+    MaintenanceTeamsIndexComponent,
+    // [Calc] : NOT used for calc (3 lines).
+    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
+    MaintenanceTeamFormComponent,
+    MaintenanceTeamNewComponent,
+    MaintenanceTeamEditComponent,
+    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
+    MaintenanceTeamTableComponent,
   ],
 })
 export class MaintenanceTeamModule {}

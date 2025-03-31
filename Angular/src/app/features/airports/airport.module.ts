@@ -5,9 +5,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { DynamicLayoutComponent } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
-import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
 import { Permission } from 'src/app/shared/permission';
-import { SharedModule } from 'src/app/shared/shared.module';
+
 import { airportCRUDConfiguration } from './airport.constants';
 import { AirportFormComponent } from './components/airport-form/airport-form.component';
 import { AirportTableComponent } from './components/airport-table/airport-table.component';
@@ -75,7 +74,13 @@ export const ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [
+  imports: [
+    RouterModule.forChild(ROUTES),
+    StoreModule.forFeature(
+      airportCRUDConfiguration.storeKey,
+      FeatureAirportsStore.reducers
+    ),
+    EffectsModule.forFeature([AirportsEffects]),
     AirportItemComponent,
     AirportsIndexComponent,
     // [Calc] : NOT used for calc (3 lines).
@@ -85,18 +90,6 @@ export const ROUTES: Routes = [
     AirportEditComponent,
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     AirportTableComponent,
-  ],
-  imports: [
-    SharedModule,
-    CrudItemModule,
-    RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(
-      airportCRUDConfiguration.storeKey,
-      FeatureAirportsStore.reducers
-    ),
-    EffectsModule.forFeature([AirportsEffects]),
-    // TODO after creation of CRUD Airport : select the optioDto dommain module required for link
-    // Domain Modules:
   ],
 })
 export class AirportModule {}

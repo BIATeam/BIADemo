@@ -5,11 +5,14 @@ import { Engine } from '../../model/engine';
 import { EngineService } from '../../services/engine.service';
 // BIAToolKit - Begin Option
 import { EngineOptionsService } from '../../services/engine-options.service';
+import { EngineFormComponent } from '../../components/engine-form/engine-form.component';
+import { AsyncPipe } from '@angular/common';
 // BIAToolKit - End Option
 
 @Component({
   selector: 'app-engine-new',
   templateUrl: './engine-new.component.html',
+  imports: [EngineFormComponent, AsyncPipe],
 })
 export class EngineNewComponent
   extends CrudItemNewComponent<Engine>

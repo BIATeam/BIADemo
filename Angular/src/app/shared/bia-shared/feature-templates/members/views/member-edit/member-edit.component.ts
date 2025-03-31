@@ -5,10 +5,14 @@ import { Permission } from 'src/app/shared/permission';
 import { memberCRUDConfiguration } from '../../member.constants';
 import { Member } from '../../model/member';
 import { MemberService } from '../../services/member.service';
+import { MemberFormEditComponent } from '../../components/member-form-edit/member-form-edit.component';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
 
 @Component({
   selector: 'bia-member-edit',
   templateUrl: './member-edit.component.html',
+  imports: [MemberFormEditComponent, NgIf, SpinnerComponent, AsyncPipe],
 })
 export class MemberEditComponent
   extends CrudItemEditComponent<Member>

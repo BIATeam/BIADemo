@@ -8,9 +8,8 @@ import {
   DynamicLayoutComponent,
   LayoutMode,
 } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
-import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
 import { Permission } from 'src/app/shared/permission';
-import { SharedModule } from 'src/app/shared/shared.module';
+
 import { aircraftMaintenanceCompanyCRUDConfiguration } from './aircraft-maintenance-company.constants';
 import { AircraftMaintenanceCompanyFormComponent } from './components/aircraft-maintenance-company-form/aircraft-maintenance-company-form.component';
 import { AircraftMaintenanceCompanyTableComponent } from './components/aircraft-maintenance-company-table/aircraft-maintenance-company-table.component';
@@ -107,7 +106,13 @@ export const ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [
+  imports: [
+    RouterModule.forChild(ROUTES),
+    StoreModule.forFeature(
+      aircraftMaintenanceCompanyCRUDConfiguration.storeKey,
+      FeatureAircraftMaintenanceCompaniesStore.reducers
+    ),
+    EffectsModule.forFeature([AircraftMaintenanceCompaniesEffects]),
     AircraftMaintenanceCompanyItemComponent,
     AircraftMaintenanceCompaniesIndexComponent,
     // [Calc] : NOT used for calc (3 lines).
@@ -117,18 +122,6 @@ export const ROUTES: Routes = [
     AircraftMaintenanceCompanyEditComponent,
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     AircraftMaintenanceCompanyTableComponent,
-  ],
-  imports: [
-    SharedModule,
-    CrudItemModule,
-    RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(
-      aircraftMaintenanceCompanyCRUDConfiguration.storeKey,
-      FeatureAircraftMaintenanceCompaniesStore.reducers
-    ),
-    EffectsModule.forFeature([AircraftMaintenanceCompaniesEffects]),
-    // TODO after creation of CRUD Team AircraftMaintenanceCompany : select the optioDto dommain module required for link
-    // Domain Modules:
   ],
 })
 export class AircraftMaintenanceCompanyModule {}

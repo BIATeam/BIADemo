@@ -20,7 +20,7 @@ body {
 
 .layout-content-wrapper p-breadcrumb + .layout-content {
   padding: 0;
-  min-height: calc(100vh - 6.45rem - var(--footer-height));
+  min-height: calc(100vh - 6.5rem - var(--footer-height));
 }
 
 .layout-container.layout-footer-overlay {
@@ -31,7 +31,7 @@ body {
 
   .layout-content-wrapper p-breadcrumb + .layout-content {
     padding: 0;
-    min-height: calc(100vh - 6.45rem);
+    min-height: calc(100vh - 6.5rem);
   }
 
   &.layout-horizontal {
@@ -42,7 +42,7 @@ body {
 
     .layout-content-wrapper p-breadcrumb + .layout-content {
       padding: 0;
-      min-height: calc(100vh - 9.45rem);
+      min-height: calc(100vh - 9.5rem);
     }
   }
 }
@@ -55,7 +55,7 @@ body {
 
   p-breadcrumb + .layout-content {
     padding: 0;
-    min-height: calc(100vh - 9.45rem - var(--footer-height));
+    min-height: calc(100vh - 9.5rem - var(--footer-height));
   }
 }
 
@@ -156,7 +156,7 @@ body {
 }
 
 .layout-footer-button {
-  position: absolute;
+  position: absolute !important;
   top: -2rem;
   right: 0;
 
@@ -228,6 +228,10 @@ body {
 
 .layout-sidebar {
   width: var(--sidebar-width);
+  box-shadow:
+    2px 0 4px -1px rgba(0, 0, 0, 0.2),
+    4px 0 5px 0 rgba(0, 0, 0, 0.14),
+    1px 0 10px 0 rgba(0, 0, 0, 0.12);
 }
 
 .layout-sidebar .layout-menu {
@@ -287,17 +291,47 @@ body {
   }
 }
 
-.layout-menu-profile {
-  height: 100%;
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
-}
-
-.layout-menu-profile-no-fill {
-  max-height: 80%;
-}
-
 .p-toast.p-toast-top-right {
   top: 4.5rem;
+}
+
+.layout-menu-light {
+  .layout-menu-profile > button {
+    font-family: var(--font-family);
+    font-size: 1rem;
+    background: var(--p-content-background);
+    color: var(--root-menuitem-text-color);
+    border: none;
+    &:not(:disabled):hover {
+      background: var(--menuitem-hover-bg);
+      cursor: pointer;
+    }
+  }
+}
+
+.layout-menu-dark {
+  .layout-menu-profile > button {
+    font-family: var(--font-family);
+    font-size: 1rem;
+    background: var(--p-content-background);
+    color: var(--root-menuitem-text-color);
+    border: none;
+    &:not(:disabled):hover {
+      background: var(--menuitem-hover-bg);
+      cursor: pointer;
+    }
+  }
+}
+
+.p-multiselect-overlay,
+.p-select-overlay {
+  border: none !important;
+}
+
+.layout-topbar-mobile-button {
+  margin-left: auto !important;
+}
+
+.p-fieldset {
+  margin: 0.2rem !important;
 }

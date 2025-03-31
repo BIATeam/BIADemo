@@ -7,6 +7,13 @@ import {
 } from '@angular/core';
 import { Observable, timer } from 'rxjs';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
+import {
+  NgIf,
+  NgTemplateOutlet,
+  NgSwitch,
+  NgSwitchCase,
+  AsyncPipe,
+} from '@angular/common';
 
 @Component({
   selector: 'bia-spinner',
@@ -33,6 +40,7 @@ import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.servic
   `,
   styleUrls: ['./spinner.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgIf, NgTemplateOutlet, NgSwitch, NgSwitchCase, AsyncPipe],
 })
 export class SpinnerComponent implements OnInit {
   @Input()

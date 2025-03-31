@@ -2,7 +2,7 @@
   <label *ngIf="displayTeamList === true && teamType.label"
     >{{ teamType.label | translate }} :
   </label>
-  <p-dropdown
+  <p-select
     *ngIf="displayTeamList === true"
     [options]="teams"
     [(ngModel)]="currentTeam"
@@ -10,7 +10,7 @@
     dataKey="id"
     (onChange)="onTeamChange()"
     scrollHeight="50vh"
-    [appendTo]="'body'"></p-dropdown>
+    [appendTo]="'body'"></p-select>
   <i
     *ngIf="displayTeamList === true && currentTeam?.id !== defaultTeamId"
     class="pi pi-star app-icon-header bia-pointer"
@@ -22,7 +22,7 @@
     *ngIf="displayTeamList === true && currentTeam?.id === defaultTeamId"
     class="pi pi-star-fill app-icon-header"></i>
   <!-- Role selection -->
-  <p-dropdown
+  <p-select
     *ngIf="displayRoleList"
     [options]="roles"
     [(ngModel)]="currentRole"
@@ -32,7 +32,7 @@
     placeholder="Select a role"
     scrollHeight="50vh"
     [appendTo]="'body'">
-  </p-dropdown>
+  </p-select>
   <p-multiSelect
     *ngIf="displayRoleMultiSelect"
     [options]="roles"

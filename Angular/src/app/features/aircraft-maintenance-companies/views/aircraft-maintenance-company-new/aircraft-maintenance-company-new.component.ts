@@ -3,10 +3,13 @@ import { CrudItemNewComponent } from 'src/app/shared/bia-shared/feature-template
 import { aircraftMaintenanceCompanyCRUDConfiguration } from '../../aircraft-maintenance-company.constants';
 import { AircraftMaintenanceCompany } from '../../model/aircraft-maintenance-company';
 import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maintenance-company.service';
+import { AircraftMaintenanceCompanyFormComponent } from '../../components/aircraft-maintenance-company-form/aircraft-maintenance-company-form.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-aircraft-maintenance-company-new',
   templateUrl: './aircraft-maintenance-company-new.component.html',
+  imports: [AircraftMaintenanceCompanyFormComponent, AsyncPipe],
 })
 export class AircraftMaintenanceCompanyNewComponent extends CrudItemNewComponent<AircraftMaintenanceCompany> {
   constructor(

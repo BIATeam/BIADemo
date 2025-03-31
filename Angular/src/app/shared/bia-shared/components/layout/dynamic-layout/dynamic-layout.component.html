@@ -27,7 +27,7 @@
   </div>
 } @else if (isPopup) {
   <p-dialog
-    #dialog
+    header="{{ popupTitle | translate }}"
     [hidden]="!hasChildren"
     [focusOnShow]="true"
     [visible]="hasChildren"
@@ -36,9 +36,6 @@
     [maximizable]="maximizable"
     [style]="style"
     [contentStyle]="{ overflow: 'auto' }">
-    <p-header>
-      {{ popupTitle | translate }}
-    </p-header>
     <router-outlet #outlet="outlet"></router-outlet>
   </p-dialog>
 } @else {

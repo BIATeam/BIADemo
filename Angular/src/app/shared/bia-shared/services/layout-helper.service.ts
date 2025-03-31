@@ -8,7 +8,7 @@ export class LayoutHelperService {
   ): string {
     let height: string;
     // topbar = 4rem
-    // breadcrumb = 2.45rem
+    // breadcrumb = 2.5rem
     // padding page = 2rem
     // bia-page-margin : 1.5rem
 
@@ -20,7 +20,7 @@ export class LayoutHelperService {
       if (layoutService.state.fullscreen) {
         height = '100vh - 3.5rem';
       } else {
-        height = '100vh - 9.95rem';
+        height = '100vh - 10rem';
         height +=
           layoutService._config.footerMode !== 'overlay'
             ? ' - var(--footer-height)'

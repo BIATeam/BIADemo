@@ -1,5 +1,9 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { BiaTableBehaviorControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
+import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
+import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
+import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
 // Begin BIADemo
 import { Permission } from 'src/app/shared/permission';
@@ -12,6 +16,10 @@ import { EngineService } from '../../services/engine.service';
 import { filter } from 'rxjs';
 // End BIADemo
 // BIAToolKit - Begin Option
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { PrimeTemplate } from 'primeng/api';
+import { ButtonDirective } from 'primeng/button';
 import { EngineOptionsService } from '../../services/engine-options.service';
 // BIAToolKit - End Option
 
@@ -19,6 +27,20 @@ import { EngineOptionsService } from '../../services/engine-options.service';
   selector: 'app-engines-index',
   templateUrl: './engines-index.component.html',
   styleUrls: ['./engines-index.component.scss'],
+  imports: [
+    NgClass,
+
+    PrimeTemplate,
+    NgIf,
+    ButtonDirective,
+    EngineTableComponent,
+    AsyncPipe,
+    TranslateModule,
+    BiaTableHeaderComponent,
+    BiaTableControllerComponent,
+    BiaTableBehaviorControllerComponent,
+    BiaTableComponent,
+  ],
 })
 export class EnginesIndexComponent
   extends CrudItemsIndexComponent<Engine>

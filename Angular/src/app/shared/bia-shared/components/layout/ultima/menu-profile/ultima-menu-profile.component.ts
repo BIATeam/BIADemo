@@ -1,4 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
+import { NgIf } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import {
   Component,
@@ -8,8 +9,10 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { TranslateService } from '@ngx-translate/core';
-import { MenuItem } from 'primeng/api';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MenuItem, SharedModule } from 'primeng/api';
+import { Dialog } from 'primeng/dialog';
+import { Tooltip } from 'primeng/tooltip';
 import { Observable, Subscription, catchError, map, take, tap } from 'rxjs';
 import { BiaEnvironmentService } from 'src/app/core/bia-core/services/bia-environment.service';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
@@ -18,6 +21,7 @@ import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/ser
 import { THEME_DARK, THEME_LIGHT } from 'src/app/shared/constants';
 import { BiaLayoutService } from '../../services/layout.service';
 import { BiaMenuProfileService } from '../../services/menu-profile.service';
+import { BiaUltimaConfigComponent } from '../config/ultima-config.component';
 
 @Component({
   selector: 'bia-ultima-menu-profile',
@@ -48,6 +52,14 @@ import { BiaMenuProfileService } from '../../services/menu-profile.service';
         animate('.1s linear', style({ opacity: 0 })),
       ]),
     ]),
+  ],
+  imports: [
+    Tooltip,
+    NgIf,
+    Dialog,
+    SharedModule,
+    BiaUltimaConfigComponent,
+    TranslateModule,
   ],
 })
 export class BiaUltimaMenuProfileComponent implements OnDestroy {

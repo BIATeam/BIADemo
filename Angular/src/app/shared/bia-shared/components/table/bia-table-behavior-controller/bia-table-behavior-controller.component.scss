@@ -8,6 +8,14 @@
   align-items: center;
 }
 
+.pi.enable {
+  color: var(--primary-color);
+}
+
+.pi.disabled {
+  opacity: var(--p-disabled-opacity);
+}
+
 .split-icon {
   position: absolute;
   top: 0rem;

@@ -8,9 +8,8 @@ import {
   DynamicLayoutComponent,
   LayoutMode,
 } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
-import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
 import { Permission } from 'src/app/shared/permission';
-import { SharedModule } from 'src/app/shared/shared.module';
+
 import { SiteFormComponent } from './components/site-form/site-form.component';
 import { SiteTableComponent } from './components/site-table/site-table.component';
 import { siteCRUDConfiguration } from './site.constants';
@@ -92,7 +91,13 @@ export const ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [
+  imports: [
+    RouterModule.forChild(ROUTES),
+    StoreModule.forFeature(
+      siteCRUDConfiguration.storeKey,
+      FeatureSitesStore.reducers
+    ),
+    EffectsModule.forFeature([SitesEffects]),
     SiteItemComponent,
     SitesIndexComponent,
     // [Calc] : NOT used for calc (3 lines).
@@ -102,17 +107,6 @@ export const ROUTES: Routes = [
     SiteEditComponent,
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     SiteTableComponent,
-  ],
-  imports: [
-    SharedModule,
-    CrudItemModule,
-    RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(
-      siteCRUDConfiguration.storeKey,
-      FeatureSitesStore.reducers
-    ),
-    EffectsModule.forFeature([SitesEffects]),
-    // Domain Modules:
   ],
 })
 export class SiteModule {}

@@ -1,6 +1,15 @@
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { Component, Injector, ViewChild } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { PrimeTemplate } from 'primeng/api';
+import { ButtonDirective } from 'primeng/button';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { BiaTableBehaviorControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
+import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
+import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
+import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
+import { ViewModule } from 'src/app/shared/bia-shared/features/view/view.module';
 import { Permission } from 'src/app/shared/permission';
 import { PlaneTableComponent } from '../../components/plane-table/plane-table.component';
 import { Plane } from '../../model/plane';
@@ -11,6 +20,20 @@ import { PlaneService } from '../../services/plane.service';
   selector: 'app-planes-index',
   templateUrl: './planes-index.component.html',
   styleUrls: ['./planes-index.component.scss'],
+  imports: [
+    NgClass,
+    ViewModule,
+    PrimeTemplate,
+    NgIf,
+    ButtonDirective,
+    PlaneTableComponent,
+    AsyncPipe,
+    TranslateModule,
+    BiaTableHeaderComponent,
+    BiaTableControllerComponent,
+    BiaTableBehaviorControllerComponent,
+    BiaTableComponent,
+  ],
 })
 export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
   @ViewChild(PlaneTableComponent, { static: false })

@@ -1,4 +1,5 @@
 <p-dialog
+  header="{{ this.popupTitle | translate }}"
   [focusOnShow]="true"
   [visible]="true"
   [modal]="true"
@@ -6,9 +7,6 @@
   [maximizable]="this.maximizable"
   [style]="this.style"
   [contentStyle]="{ overflow: 'auto' }">
-  <p-header>
-    {{ this.popupTitle | translate }}
-  </p-header>
   <ng-template #dynamic></ng-template>
 </p-dialog>
 <router-outlet></router-outlet>

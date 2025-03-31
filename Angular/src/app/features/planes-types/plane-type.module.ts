@@ -5,9 +5,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { DynamicLayoutComponent } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
-import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
 import { Permission } from 'src/app/shared/permission';
-import { SharedModule } from 'src/app/shared/shared.module';
+
 import { PlaneTypeFormComponent } from './components/plane-type-form/plane-type-form.component';
 import { PlaneTypeTableComponent } from './components/plane-type-table/plane-type-table.component';
 import { planeTypeCRUDConfiguration } from './plane-type.constants';
@@ -75,7 +74,13 @@ export const ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [
+  imports: [
+    RouterModule.forChild(ROUTES),
+    StoreModule.forFeature(
+      planeTypeCRUDConfiguration.storeKey,
+      FeaturePlanesTypesStore.reducers
+    ),
+    EffectsModule.forFeature([PlanesTypesEffects]),
     PlaneTypeItemComponent,
     PlanesTypesIndexComponent,
     // [Calc] : NOT used for calc (3 lines).
@@ -85,18 +90,6 @@ export const ROUTES: Routes = [
     PlaneTypeEditComponent,
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     PlaneTypeTableComponent,
-  ],
-  imports: [
-    SharedModule,
-    CrudItemModule,
-    RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(
-      planeTypeCRUDConfiguration.storeKey,
-      FeaturePlanesTypesStore.reducers
-    ),
-    EffectsModule.forFeature([PlanesTypesEffects]),
-    // TODO after creation of CRUD PlaneType : select the optioDto dommain module required for link
-    // Domain Modules:
   ],
 })
 export class PlaneTypeModule {}

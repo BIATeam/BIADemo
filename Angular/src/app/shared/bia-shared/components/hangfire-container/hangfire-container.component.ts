@@ -10,11 +10,13 @@ import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { LayoutHelperService } from '../../services/layout-helper.service';
 import { BiaLayoutService } from '../layout/services/layout.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'bia-hangfire-container',
   templateUrl: './hangfire-container.component.html',
   styleUrls: ['./hangfire-container.component.scss'],
+  imports: [FormsModule],
 })
 export class HangfireContainerComponent implements OnInit, OnDestroy {
   @Input() url = '';

@@ -1,10 +1,12 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/services/layout.service';
+import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { AppState } from 'src/app/store/state';
 import { Notification } from '../../model/notification';
 import { NotificationService } from '../../services/notification.service';
@@ -14,6 +16,7 @@ import { FeatureNotificationsStore } from '../../store/notification.state';
   selector: 'bia-notifications-item',
   templateUrl: './notification-item.component.html',
   styleUrls: ['./notification-item.component.scss'],
+  imports: [RouterOutlet, NgIf, AsyncPipe, SpinnerComponent],
 })
 export class NotificationItemComponent implements OnInit, OnDestroy {
   notification$: Observable<Notification>;

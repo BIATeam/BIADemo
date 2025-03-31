@@ -1,3 +1,4 @@
+import { NgFor, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,11 +8,28 @@ import {
   Output,
 } from '@angular/core';
 import {
+  FormsModule,
+  ReactiveFormsModule,
   UntypedFormArray,
   UntypedFormBuilder,
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
+import { PrimeTemplate } from 'primeng/api';
+import { ButtonDirective } from 'primeng/button';
+import { Checkbox } from 'primeng/checkbox';
+import { DatePicker } from 'primeng/datepicker';
+import { Fieldset } from 'primeng/fieldset';
+import { FloatLabel } from 'primeng/floatlabel';
+import { InputText } from 'primeng/inputtext';
+import { Textarea } from 'primeng/inputtextarea';
+import { MultiSelect } from 'primeng/multiselect';
+import { Ripple } from 'primeng/ripple';
+import { Select } from 'primeng/select';
+import { TableModule } from 'primeng/table';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
+import { Tooltip } from 'primeng/tooltip';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
@@ -30,6 +48,31 @@ import {
   templateUrl: './notification-form.component.html',
   styleUrls: ['./notification-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    Fieldset,
+    Tabs,
+    TabList,
+    Ripple,
+    Tab,
+    NgFor,
+    NgIf,
+    TabPanels,
+    TabPanel,
+    InputText,
+    ButtonDirective,
+    PrimeTemplate,
+    Select,
+    Checkbox,
+    DatePicker,
+    TableModule,
+    Tooltip,
+    MultiSelect,
+    Textarea,
+    TranslateModule,
+    FloatLabel,
+  ],
 })
 export class NotificationFormComponent implements OnChanges {
   @Input() notification: Notification = <Notification>{};
@@ -118,6 +161,10 @@ export class NotificationFormComponent implements OnChanges {
 
   get notifiedTeams(): UntypedFormArray {
     return this.form.get('notifiedTeams') as UntypedFormArray;
+  }
+
+  get hasMissingLanguageOptions(): boolean {
+    return (this.missingLanguageOptions?.length ?? 0) > 0;
   }
 
   addNewRow(): void {

@@ -1,3 +1,5 @@
+@use 'bia-variables';
+
 .bia-separator {
   height: 24px;
   border-left: 1px solid;
@@ -6,13 +8,7 @@
 
 // classic-footer-theme
 bia-classic-footer {
-  @if ($is-dark) {
-    background-color: $biaMainBarColor;
-  } @else {
-    background-color: $biaAccentColor;
-  }
-
-  color: $biaColorOnBgAccentColor;
+  color: var(--p-surface-0);
 }
 
 bia-ultima-sidebar .layout-sidebar-top .project-title {
@@ -22,35 +18,28 @@ bia-ultima-sidebar .layout-sidebar-top .project-title {
 // classic-header-theme
 bia-classic-header {
   .topbar {
-    background-color: $biaAccentColor;
+    background-color: var(--p-primary-800);
     color: white;
   }
 
   .mainbar {
-    background-color: $biaMainBarColor;
+    background-color: var(--p-primary-700);
   }
 
   .mainbar {
-    .project-title {
-      @if ($is-dark) {
-        color: white;
-      } @else {
-        color: $biaAccentColor;
-      }
-    }
-
     .p-menubar-root-list .p-state-active {
       text-decoration: underline;
     }
 
     .p-menubar {
       padding: 0px;
+      background-color: inherit;
     }
   }
 }
 
 .layout-topbar .layout-topbar-start .project-title {
-  color: $biaColorOnBgAccentColor;
+  color: var(--p-surface-0);
 }
 
 // classic-layout-theme
@@ -58,9 +47,10 @@ bia-classic-layout,
 bia-ultima-layout {
   .content,
   .layout-content {
-    background-image: linear-gradient(
-        rgba($biaBgColor, 0.6),
-        rgba($biaBgColor, 0.6)
+    background-image:
+      linear-gradient(
+        color-mix(in srgb, var(--p-content-background) 60%, transparent),
+        color-mix(in srgb, var(--p-content-background) 60%, transparent)
       ),
       url('../../assets/bia/img/bg-default.jpg');
   }
@@ -84,54 +74,27 @@ bia-ultima-layout {
 }
 
 .bia-classic-page-margin:not(:has(.bia-split-page-layout)) {
-  background-color: $biaBgColor;
+  background-color: var(--p-content-background);
 }
 
 // search-filter
 .bia-advanced-filter {
-  background-color: $biaBgHoverColor;
+  background-color: var(--active-menuitem-bg);
 }
 
 // bia-table-controller-theme
 bia-table-controller {
-  background-color: $biaBgHoverColor; // Same color in table
+  background-color: var(--active-menuitem-bg); // Same color in table
 }
 
 .bia-star-mandatory {
-  color: $biaRed;
+  color: bia-variables.$biaRed;
   margin-right: 5px;
   font-weight: bold;
 }
 
 .logo svg {
-  fill: $biaOrange;
-}
-
-// For table calc mode
-.bia-calc-form {
-  p-celleditor,
-  tfoot {
-    input {
-      width: 100%;
-    }
-    .p-inputtext {
-      padding: 0 !important;
-    }
-    .p-multiselect-label {
-      padding: 0 !important;
-    }
-  }
-  .p-datatable-tbody,
-  .p-datatable-tfoot {
-    td {
-      .bia-star-mandatory {
-        position: absolute;
-      }
-    }
-    td:not(.p-frozen-column) {
-      position: relative;
-    }
-  }
+  fill: bia-variables.$biaOrange;
 }
 
 // For view
@@ -156,36 +119,36 @@ bia-ultima-layout {
   &.env-dev {
     --environment-color: #{color-mix(
         in srgb,
-        $biaMainBarColor 100%,
-        $biaBlue 100%
+        var(--p-primary-800) 100%,
+        bia-variables.$biaBlue 100%
       )};
   }
   &.env-int {
     --environment-color: #{color-mix(
         in srgb,
-        $biaMainBarColor 100%,
-        $biaGreen 100%
+        var(--p-primary-800) 100%,
+        bia-variables.$biaGreen 100%
       )};
   }
   &.env-uat {
     --environment-color: #{color-mix(
         in srgb,
-        $biaMainBarColor 100%,
-        $biaOrange 100%
+        var(--p-primary-800) 100%,
+        bia-variables.$biaOrange 100%
       )};
   }
   &.env-pra {
     --environment-color: #{color-mix(
         in srgb,
-        $biaMainBarColor 100%,
-        $biaRed 100%
+        var(--p-primary-800) 100%,
+        bia-variables.$biaRed 100%
       )};
   }
   &.env-ppd {
     --environment-color: #{color-mix(
         in srgb,
-        $biaMainBarColor 100%,
-        $biaYellow 100%
+        var(--p-primary-800) 100%,
+        bia-variables.$biaYellow 100%
       )};
   }
 }
@@ -238,12 +201,16 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
   padding-bottom: 0.25rem;
 }
 
-// button max-width
+.p-button.p-button-icon-only {
+  padding: 0.465rem;
+}
+
 .p-button-label {
   max-width: 8em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-family: 'oswald-light';
 }
 
 .p-dialog {
@@ -254,7 +221,7 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
     .bia-form:has(> .bia-form-fixed-buttons) {
       padding-bottom: 1.5rem;
       .bia-form-fixed-buttons:has(> div) {
-        background: var(--surface-f);
+        background: var(--p-dialog-background);
         position: fixed;
         bottom: 0;
         right: 1rem;
@@ -267,7 +234,7 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
     .bia-form:has(> .bia-form-header) {
       padding-top: 1.5rem;
       .bia-form-header:has(> div) {
-        background: var(--surface-f);
+        background: var(--p-dialog-background);
         position: fixed;
         top: 3rem;
         right: 1rem;
@@ -281,6 +248,9 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
 
 // button group using menubar
 .bia-button-group {
+  .p-menubar {
+    background: transparent;
+  }
   div {
     padding: 0rem;
     border: none;
@@ -292,150 +262,29 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
         gap: 0.5rem;
         padding-left: 0.5rem;
         padding-right: 0.5rem;
-        .p-menuitem-content:hover {
-          background: transparent;
+        .p-menubar-item {
+          opacity: 100%;
         }
       }
     }
   }
 
-  // same style as @media screen and (max-width: 960px) of primeng theme
   &-compact {
     position: relative;
     .p-menubar-button {
       display: flex;
-      width: 2rem;
-      height: 2rem;
-      color: rgba(0, 0, 0, 0.6);
-      border-radius: 50%;
-      transition:
-        background-color 0.2s,
-        color 0.2s,
-        box-shadow 0.2s;
-    }
-    .p-menubar-button:hover {
-      color: rgba(0, 0, 0, 0.6);
-      background: rgba(0, 0, 0, 0.04);
-    }
-    .p-menubar-button:focus {
-      outline: 0 none;
-      outline-offset: 0;
-      box-shadow: none;
     }
     .p-menubar-root-list {
       position: absolute;
       display: none;
       padding: 0.5rem 0;
-      background: #ffffff;
+      background: var(--p-content-background);
       border: 0 none;
       box-shadow:
         0 2px 4px -1px rgba(0, 0, 0, 0.2),
         0 4px 5px 0 rgba(0, 0, 0, 0.14),
         0 1px 10px 0 rgba(0, 0, 0, 0.12);
       width: 100%;
-    }
-    .p-menubar-root-list .p-menuitem-separator {
-      border-top: 1px solid rgba(0, 0, 0, 0.12);
-      margin: 0.5rem 0;
-    }
-    .p-menubar-root-list .p-submenu-icon {
-      font-size: 0.875rem;
-    }
-    .p-menubar-root-list .p-menuitem {
-      width: 100%;
-      position: static;
-    }
-    .p-menubar-root-list
-      .p-menuitem
-      .p-menuitem-content
-      .p-menuitem-link
-      .p-submenu-icon {
-      margin-left: auto;
-      transition: transform 0.2s;
-    }
-    .p-menubar-root-list
-      .p-menuitem.p-menuitem-active
-      > .p-menuitem-content
-      > .p-menuitem-link
-      > .p-submenu-icon {
-      transform: rotate(-180deg);
-    }
-    .p-menubar-root-list .p-submenu-list {
-      width: 100%;
-      position: static;
-      box-shadow: none;
-      border: 0 none;
-    }
-    .p-menubar-root-list .p-submenu-list .p-submenu-icon {
-      transition: transform 0.2s;
-      transform: rotate(90deg);
-    }
-    .p-menubar-root-list
-      .p-submenu-list
-      .p-menuitem-active
-      > .p-menuitem-content
-      > .p-menuitem-link
-      > .p-submenu-icon {
-      transform: rotate(-90deg);
-    }
-    .p-menubar-root-list .p-menuitem {
-      width: 100%;
-      position: static;
-    }
-    .p-menubar-root-list
-      .p-submenu-list
-      .p-menuitem
-      .p-menuitem-content
-      .p-menuitem-link {
-      padding-left: 2.25rem;
-    }
-    .p-menubar-root-list
-      .p-submenu-list
-      .p-menuitem
-      .p-submenu-list
-      .p-menuitem
-      .p-menuitem-content
-      .p-menuitem-link {
-      padding-left: 3.75rem;
-    }
-    .p-menubar-root-list
-      .p-submenu-list
-      .p-menuitem
-      .p-submenu-list
-      .p-menuitem
-      .p-submenu-list
-      .p-menuitem
-      .p-menuitem-content
-      .p-menuitem-link {
-      padding-left: 5.25rem;
-    }
-    .p-menubar-root-list
-      .p-submenu-list
-      .p-menuitem
-      .p-submenu-list
-      .p-menuitem
-      .p-submenu-list
-      .p-menuitem
-      .p-submenu-list
-      .p-menuitem
-      .p-menuitem-content
-      .p-menuitem-link {
-      padding-left: 6.75rem;
-    }
-    .p-menubar-root-list
-      .p-submenu-list
-      .p-menuitem
-      .p-submenu-list
-      .p-menuitem
-      .p-submenu-list
-      .p-menuitem
-      .p-submenu-list
-      .p-menuitem
-      .p-submenu-list
-      .p-menuitem
-      .p-menuitem-content
-      .p-menuitem-link {
-      padding-left: 8.25rem;
     }
     .p-menubar.p-menubar-mobile-active .p-menubar-root-list {
       display: flex;
@@ -445,4 +294,205 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
       z-index: 1;
     }
   }
+}
+
+.p-breadcrumb {
+  font-size: 0.9em;
+}
+p-breadcrumb .p-breadcrumb-separator .p-icon {
+  width: 0.6rem;
+  height: 0.6rem;
+}
+.p-breadcrumb .p-breadcrumb-list li:first-child {
+  margin-left: 0.5rem;
+}
+.p-breadcrumb .p-breadcrumb-list li:last-child .p-breadcrumb-item-label {
+  color: var(--primary-color);
+}
+.p-breadcrumb .p-breadcrumb-list li:last-child .p-breadcrumb-item-label {
+  color: var(--primary-color);
+}
+.p-breadcrumb .p-breadcrumb-list li:last-child .p-breadcrumb-item-icon {
+  color: var(--primary-color);
+}
+
+p-table {
+  .p-sortable-column-icon {
+    margin-left: 0.5rem;
+  }
+}
+
+.bia-calc-form {
+  p-celleditor,
+  tfoot {
+    input {
+      width: 100%;
+    }
+    .p-inputtext {
+      padding: 0 !important;
+    }
+    .p-multiselect-label {
+      padding: 0 !important;
+    }
+  }
+  .p-datatable-tbody,
+  .p-datatable-tfoot {
+    td {
+      .bia-star-mandatory {
+        position: absolute;
+      }
+    }
+    td:not(.p-datatable-frozen-column) {
+      position: relative;
+    }
+  }
+
+  .p-select,
+  .p-multiselect {
+    bottom: 0.15rem;
+  }
+  .p-select-label {
+    padding: 0rem var(--p-select-padding-x);
+  }
+}
+
+p-date-picker.ng-invalid.ng-dirty .p-inputtext,
+.p-inputnumber.ng-invalid.ng-dirty .p-inputtext,
+.p-select.ng-invalid.ng-dirty,
+.p-multiselect.ng-invalid.ng-dirty,
+.p-inputtext.ng-invalid.ng-dirty {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--p-inputtext-invalid-border-color);
+  border-radius: 0;
+  &:hover,
+  &:focus {
+    border-color: var(--p-inputtext-invalid-border-color) !important;
+    background-image: none !important;
+  }
+}
+
+bia-team-selector {
+  .p-multiselect {
+    min-width: 12.5em;
+    background-image:
+      linear-gradient(to bottom, white, white),
+      linear-gradient(to bottom, white, white) !important;
+    padding-bottom: 2px;
+    .p-multiselect-label {
+      color: var(--topbar-item-text-color);
+      padding-top: 2px;
+      padding-bottom: 2px;
+      padding-left: 2px;
+      padding-right: 2px;
+      width: 157px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    background-color: transparent;
+    .p-inputtext {
+      color: white !important;
+    }
+  }
+  .p-multiselect:not(.p-disabled) {
+    &:hover {
+      background-image:
+        linear-gradient(to bottom, white, white),
+        linear-gradient(to bottom, white, white) !important;
+    }
+  }
+  .p-multiselect-trigger-icon {
+    color: white !important;
+  }
+  .p-multiselect-label.p-placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+  .p-select {
+    min-width: 12.5em;
+    background-image:
+      linear-gradient(to bottom, white, white),
+      linear-gradient(to bottom, white, white) !important;
+    padding-bottom: 2px;
+    .p-select-label {
+      color: var(--topbar-item-text-color);
+      padding-top: 2px;
+      padding-bottom: 2px;
+      padding-left: 2px;
+      padding-right: 2px;
+      width: 157px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    background-color: transparent;
+    .p-inputtext {
+      color: white !important;
+    }
+  }
+  .p-select:not(.p-disabled) {
+    &:hover {
+      background-image:
+        linear-gradient(to bottom, white, white),
+        linear-gradient(to bottom, white, white) !important;
+    }
+  }
+  .p-select-trigger-icon {
+    color: white !important;
+  }
+  label {
+    text-wrap: nowrap;
+    padding: 5px 5px 5px 0px;
+  }
+}
+
+.p-datatable-filter-overlay {
+  .p-datatable-filter-operator {
+    border-bottom: 1px solid var(--p-content-border-color);
+    padding-bottom: 0.5rem;
+  }
+  p-columnfilterformelement .p-variant-filled {
+    border-radius: 0px !important;
+  }
+  .p-variant-filled:not(.p-datepicker, .p-checkbox) {
+    border-color: 1px solid var(--p-select-border-color) !important;
+    padding: 0.5rem;
+    border-radius: var(--p-inputtext-border-radius);
+    &:hover,
+    &.p-focus,
+    &:focus {
+      border: 1px solid var(--p-select-focus-border-color) !important;
+      background-image: none !important;
+    }
+  }
+}
+
+.searchTR {
+  th {
+    padding: 0.75rem 0rem !important;
+    .p-inputtext {
+      margin-left: 0.7rem;
+    }
+  }
+}
+
+bia-table-header {
+  .p-badge {
+    top: 7px !important;
+    right: 4px !important;
+  }
+}
+
+bia-table-controller {
+  .p-badge {
+    top: 7px !important;
+    right: 6px !important;
+  }
+}
+
+.p-toast-message-text {
+  margin-left: 1rem;
 }

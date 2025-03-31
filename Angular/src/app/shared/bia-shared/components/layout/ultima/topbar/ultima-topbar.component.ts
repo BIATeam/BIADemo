@@ -1,6 +1,16 @@
 import { Platform } from '@angular/cdk/platform';
-import { DOCUMENT } from '@angular/common';
 import {
+  AsyncPipe,
+  DOCUMENT,
+  NgClass,
+  NgFor,
+  NgIf,
+  NgSwitch,
+  NgSwitchCase,
+  NgSwitchDefault,
+} from '@angular/common';
+import {
+  AfterViewInit,
   Component,
   ElementRef,
   Inject,
@@ -10,11 +20,14 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
-import { Message } from 'primeng/api';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { PrimeTemplate, ToastMessageOptions } from 'primeng/api';
+import { ButtonDirective } from 'primeng/button';
+import { Ripple } from 'primeng/ripple';
 import { Toast } from 'primeng/toast';
+import { Tooltip } from 'primeng/tooltip';
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
@@ -24,19 +37,47 @@ import {
   NotificationData,
   NotificationType,
 } from 'src/app/domains/bia-domains/notification/model/notification';
+import { NotificationModule } from 'src/app/domains/bia-domains/notification/notification.module';
 import { getUnreadNotificationCount } from 'src/app/domains/bia-domains/notification/store/notification.state';
 import { DomainNotificationsActions } from 'src/app/domains/bia-domains/notification/store/notifications-actions';
 import { BiaNavigation } from 'src/app/shared/bia-shared/model/bia-navigation';
 import { AppState } from 'src/app/store/state';
 import { allEnvironments } from 'src/environments/all-environments';
+import { BiaOnlineOfflineIconComponent } from '../../../bia-online-offline-icon/bia-online-offline-icon.component';
+import { BiaTeamSelectorComponent } from '../../../bia-team-selector/bia-team-selector.component';
+import { NotificationTeamWarningComponent } from '../../../notification-team-warning/notification-team-warning.component';
+import { IeWarningComponent } from '../../ie-warning/ie-warning.component';
 import { BiaLayoutService } from '../../services/layout.service';
 
 @Component({
   selector: 'bia-ultima-topbar',
   templateUrl: './ultima-topbar.component.html',
   styleUrls: ['./ultima-topbar.component.scss'],
+  imports: [
+    RouterLink,
+    Ripple,
+    NgIf,
+    IeWarningComponent,
+    NgFor,
+    BiaTeamSelectorComponent,
+    Tooltip,
+    BiaOnlineOfflineIconComponent,
+    Toast,
+    PrimeTemplate,
+    NgSwitch,
+    NgSwitchCase,
+    NgSwitchDefault,
+    ButtonDirective,
+    NotificationTeamWarningComponent,
+    NgClass,
+    AsyncPipe,
+    TranslateModule,
+    NotificationModule,
+  ],
 })
-export class BiaUltimaTopbarComponent implements OnInit, OnDestroy {
+export class BiaUltimaTopbarComponent
+  implements OnInit, OnDestroy, AfterViewInit
+{
   @Input() appTitle: string;
   @Input() version: string;
   @Input() helpUrl?: string;
@@ -92,7 +133,9 @@ export class BiaUltimaTopbarComponent implements OnInit, OnDestroy {
         DomainNotificationsActions.loadUnreadNotificationIds()
       );
     }
+  }
 
+  ngAfterViewInit(): void {
     this.positionClearButton();
   }
 
@@ -102,7 +145,7 @@ export class BiaUltimaTopbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  onNotificationClick(message: Message) {
+  onNotificationClick(message: ToastMessageOptions) {
     if (message.data?.notification) {
       const notification: Notification = message.data.notification;
       const data: NotificationData | undefined = notification.data;
@@ -130,11 +173,11 @@ export class BiaUltimaTopbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  onIgnoreClick(message: Message) {
+  onIgnoreClick(message: ToastMessageOptions) {
     this.removeMessage(message, true);
   }
 
-  protected removeMessage(message: Message, setRead = false) {
+  protected removeMessage(message: ToastMessageOptions, setRead = false) {
     this.toast.messages?.splice(this.toast.messages?.indexOf(message), 1);
 
     if (setRead && message.data?.notification?.id > 0) {

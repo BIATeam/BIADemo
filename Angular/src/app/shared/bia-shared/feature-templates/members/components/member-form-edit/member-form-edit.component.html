@@ -4,8 +4,8 @@
     <div class="app-field-container flex-1" style="max-width: 90%">
       <div class="flex flex-row justify-content-center">
         <div class="app-field-container flex-1" style="max-width: 90%">
-          <span class="p-float-label">
-            <p-dropdown
+          <p-floatlabel variant="in">
+            <p-select
               [options]="userOptions"
               placeholder="&nbsp;"
               formControlName="user"
@@ -13,12 +13,12 @@
               datakey="id"
               [style]="{ width: '100%' }"
               [filter]="true"
-              [showClear]="true"></p-dropdown>
+              [showClear]="true"></p-select>
             <label
               ><span class="bia-star-mandatory">*</span
               >{{ 'member.user' | translate }}</label
             >
-          </span>
+          </p-floatlabel>
         </div>
         <div
           class="app-field-container flex-1"

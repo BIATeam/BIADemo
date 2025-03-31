@@ -1,12 +1,15 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import { SiteService } from 'src/app/features/sites/services/site.service';
+import { MemberModule } from 'src/app/shared/bia-shared/feature-templates/members/member.module';
 import { MemberNewComponent } from 'src/app/shared/bia-shared/feature-templates/members/views/member-new/member-new.component';
 import { TeamTypeId } from 'src/app/shared/constants';
 
 @Component({
   selector: 'app-site-member-new',
   templateUrl:
-    '/src/app/shared/bia-shared/feature-templates/members/views/member-new/member-new.component.html',
+    '../../../../../../shared/bia-shared/feature-templates/members/views/member-new/member-new.component.html',
+  imports: [MemberModule, AsyncPipe],
 })
 export class SiteMemberNewComponent
   extends MemberNewComponent

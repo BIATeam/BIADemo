@@ -3,10 +3,13 @@ import { CrudItemNewComponent } from 'src/app/shared/bia-shared/feature-template
 import { PlaneType } from '../../model/plane-type';
 import { planeTypeCRUDConfiguration } from '../../plane-type.constants';
 import { PlaneTypeService } from '../../services/plane-type.service';
+import { PlaneTypeFormComponent } from '../../components/plane-type-form/plane-type-form.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-plane-type-new',
   templateUrl: './plane-type-new.component.html',
+  imports: [PlaneTypeFormComponent, AsyncPipe],
 })
 export class PlaneTypeNewComponent extends CrudItemNewComponent<PlaneType> {
   constructor(

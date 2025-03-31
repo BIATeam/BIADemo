@@ -1,3 +1,4 @@
+import { NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
 import {
   Component,
   OnChanges,
@@ -6,7 +7,15 @@ import {
   ViewChild,
   WritableSignal,
 } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { PrimeTemplate } from 'primeng/api';
+import { Checkbox } from 'primeng/checkbox';
+import { FloatLabel } from 'primeng/floatlabel';
+import { InputText } from 'primeng/inputtext';
+import { BiaFormComponent } from 'src/app/shared/bia-shared/components/form/bia-form/bia-form.component';
+import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
 import { CrudItemFormComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component';
 import { BiaFieldsConfig } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
@@ -21,7 +30,22 @@ import { PlaneSpecific } from '../../model/plane-specific';
   selector: 'app-plane-specific-form',
   templateUrl: 'plane-form.component.html',
   styleUrls: [
-    '/src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
+    '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
+  ],
+  imports: [
+    PrimeTemplate,
+    FormsModule,
+    ReactiveFormsModule,
+    NgSwitch,
+    NgSwitchCase,
+    Checkbox,
+    InputText,
+    NgIf,
+    EngineTableComponent,
+    TranslateModule,
+    BiaFormComponent,
+    BiaTableHeaderComponent,
+    FloatLabel,
   ],
 })
 export class PlaneFormComponent

@@ -12,7 +12,7 @@ import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-o
 import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
 import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
 import { Permission } from 'src/app/shared/permission';
-import { SharedModule } from 'src/app/shared/shared.module';
+
 import { NotificationFormComponent } from './components/notification-form/notification-form.component';
 import { FeatureNotificationsStore } from './store/notification.state';
 import { NotificationsEffects } from './store/notifications-effects';
@@ -91,16 +91,7 @@ const ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    NotificationItemComponent,
-    NotificationFormComponent,
-    NotificationsIndexComponent,
-    NotificationNewComponent,
-    NotificationEditComponent,
-    NotificationDetailComponent,
-  ],
   imports: [
-    SharedModule,
     ReactiveFormsModule,
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature('notifications', FeatureNotificationsStore.reducers),
@@ -111,6 +102,12 @@ const ROUTES: Routes = [
     LanguageOptionModule,
     RoleOptionModule,
     TeamOptionModule,
+    NotificationItemComponent,
+    NotificationFormComponent,
+    NotificationsIndexComponent,
+    NotificationNewComponent,
+    NotificationEditComponent,
+    NotificationDetailComponent,
   ],
 })
 export class NotificationModule {}

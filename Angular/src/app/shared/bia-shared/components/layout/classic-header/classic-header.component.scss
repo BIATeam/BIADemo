@@ -1,4 +1,4 @@
-@import '../../../../../../scss/bia/bia-variables';
+@use '../../../../../../scss/bia/bia-variables';
 
 :host {
   display: flex;
@@ -58,7 +58,7 @@
         right: 15px;
         z-index: 10;
         color: white;
-        background: $biaRed;
+        background: bia-variables.$biaRed;
         border-radius: 14%;
         font-size: 10px;
         line-height: 11px;
@@ -86,42 +86,41 @@
     margin-right: 0.5em;
     // https://codepen.io/sosuke/pen/Pjoqqp
     // hexa: #f8a92b
-    filter: invert(60%) sepia(92%) saturate(376%) hue-rotate(356deg)
-      brightness(98%) contrast(98%);
+    filter: bia-variables.$biaAppLogoFilter;
   }
 
   &.env-dev {
-    background-color: rgba($color: $biaBlue, $alpha: 0.5);
+    background-color: rgba($color: bia-variables.$biaBlue, $alpha: 0.5);
     .project-title {
-      background-color: rgba($color: $biaBlue, $alpha: 0);
+      background-color: rgba($color: bia-variables.$biaBlue, $alpha: 0);
     }
   }
 
   &.env-int {
-    background-color: rgba($color: $biaGreen, $alpha: 0.5);
+    background-color: rgba($color: bia-variables.$biaGreen, $alpha: 0.5);
     .project-title {
-      background-color: rgba($color: $biaGreen, $alpha: 0);
+      background-color: rgba($color: bia-variables.$biaGreen, $alpha: 0);
     }
   }
 
   &.env-uat {
-    background-color: rgba($color: $biaOrange, $alpha: 0.5);
+    background-color: rgba($color: bia-variables.$biaOrange, $alpha: 0.5);
     .project-title {
-      background-color: rgba($color: $biaOrange, $alpha: 0);
+      background-color: rgba($color: bia-variables.$biaOrange, $alpha: 0);
     }
   }
 
   &.env-pra {
-    background-color: rgba($color: $biaRed, $alpha: 0.5);
+    background-color: rgba($color: bia-variables.$biaRed, $alpha: 0.5);
     .project-title {
-      background-color: rgba($color: $biaRed, $alpha: 0);
+      background-color: rgba($color: bia-variables.$biaRed, $alpha: 0);
     }
   }
 
   &.env-ppd {
-    background-color: rgba($color: $biaYellow, $alpha: 0.5);
+    background-color: rgba($color: bia-variables.$biaYellow, $alpha: 0.5);
     .project-title {
-      background-color: rgba($color: $biaYellow, $alpha: 0);
+      background-color: rgba($color: bia-variables.$biaYellow, $alpha: 0);
     }
   }
 }

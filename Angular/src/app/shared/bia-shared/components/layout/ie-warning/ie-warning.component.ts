@@ -25,7 +25,6 @@ import { TranslateModule } from '@ngx-translate/core';
       }
     `,
   ],
-  standalone: true,
   imports: [CommonModule, TranslateModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

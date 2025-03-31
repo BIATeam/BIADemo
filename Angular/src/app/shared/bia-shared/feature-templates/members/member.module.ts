@@ -5,9 +5,7 @@ import { StoreModule } from '@ngrx/store';
 import { RoleOptionModule } from 'src/app/domains/bia-domains/role-option/role-option.module';
 import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
 import { UserFromDirectoryModule } from 'src/app/features/bia-features/users-from-directory/user-from-directory.module';
-import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
-import { SharedModule } from 'src/app/shared/shared.module';
-import { CrudItemImportModule } from '../crud-items/crud-item-import.module';
+
 import { MemberFormEditComponent } from './components/member-form-edit/member-form-edit.component';
 import { MemberFormNewComponent } from './components/member-form-new/member-form-new.component';
 import { MemberFormComponent } from './components/member-form/member-form.component';
@@ -22,7 +20,18 @@ import { MemberNewComponent } from './views/member-new/member-new.component';
 import { MembersIndexComponent } from './views/members-index/members-index.component';
 
 @NgModule({
-  declarations: [
+  imports: [
+    // RouterModule.forChild(ROUTES),
+    StoreModule.forFeature(
+      memberCRUDConfiguration.storeKey,
+      FeatureMembersStore.reducers
+    ),
+    EffectsModule.forFeature([MembersEffects]),
+    // TODO after creation of CRUD Member : select the optioDto dommain module required for link
+    // Domain Modules:
+    UserOptionModule,
+    RoleOptionModule,
+    UserFromDirectoryModule,
     MemberItemComponent,
     MembersIndexComponent,
     // [Calc] : NOT used for calc (3 lines).
@@ -35,22 +44,6 @@ import { MembersIndexComponent } from './views/members-index/members-index.compo
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     MemberTableComponent,
     MemberImportComponent,
-  ],
-  imports: [
-    SharedModule,
-    CrudItemModule,
-    CrudItemImportModule,
-    // RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(
-      memberCRUDConfiguration.storeKey,
-      FeatureMembersStore.reducers
-    ),
-    EffectsModule.forFeature([MembersEffects]),
-    // TODO after creation of CRUD Member : select the optioDto dommain module required for link
-    // Domain Modules:
-    UserOptionModule,
-    RoleOptionModule,
-    UserFromDirectoryModule, // required for the add user from directory feature
   ],
   exports: [
     MemberItemComponent,

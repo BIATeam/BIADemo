@@ -13,15 +13,13 @@
   <ng-template pTemplate="specificInput" let-field="field" let-form="form">
     <div [formGroup]="form">
       <ng-container [ngSwitch]="field.field">
-        <ng-container *ngSwitchCase="'isActive'">
-          <p-checkbox
-            binary="true"
-            [formControlName]="field.field"
-            label="{{ field.header | translate }}"></p-checkbox>
-        </ng-container>
+        <div *ngSwitchCase="'isActive'" class="flex items-center">
+          <p-checkbox binary="true"></p-checkbox>
+          <label class="ml-2">{{ field.header | translate }}</label>
+        </div>
         <!-- isActive -->
         <ng-container *ngSwitchCase="'capacity'">
-          <span class="p-float-label">
+          <p-floatlabel variant="in">
             <input
               [formControlName]="field.field"
               type="number"
@@ -31,7 +29,7 @@
               ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
               >{{ field.header | translate }}</label
             >
-          </span>
+          </p-floatlabel>
         </ng-container>
 
         <!-- capacity -->
@@ -44,7 +42,7 @@
         [canDelete]="true"
         (delete)="onDeleteEngines()"
         [selectedElements]="selectedEngines"></bia-table-header>
-      <span class="p-float-label">
+      <p-floatlabel variant="in">
         <app-engine-specific-table
           [elements]="displayedEngines()"
           [configuration]="engineCrudConfig"
@@ -61,7 +59,7 @@
           (selectedElementsChanged)="onSelectedEnginesChanged($event)"
           (save)="onEngineSave($event)"
           (isEditing)="onIsEditingChange($event)" />
-      </span>
+      </p-floatlabel>
     </ng-container>
   </ng-template>
 </bia-form>

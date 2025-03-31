@@ -21,6 +21,10 @@ import {
 } from 'src/app/shared/constants';
 import { BiaNavigation } from '../../../model/bia-navigation';
 import { BiaLayoutService } from '../services/layout.service';
+import { ClassicHeaderComponent } from '../classic-header/classic-header.component';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { Breadcrumb } from 'primeng/breadcrumb';
+import { ClassicFooterComponent } from '../classic-footer/classic-footer.component';
 
 @Component({
   selector: 'bia-classic-layout',
@@ -28,6 +32,13 @@ import { BiaLayoutService } from '../services/layout.service';
   styleUrls: ['./classic-layout.component.scss'],
   // In order to avoid change detections issues in custom footer / mainBar, stay default here
   changeDetection: ChangeDetectionStrategy.Default,
+  imports: [
+    ClassicHeaderComponent,
+    NgIf,
+    Breadcrumb,
+    ClassicFooterComponent,
+    AsyncPipe,
+  ],
 })
 export class ClassicLayoutComponent implements OnInit, OnDestroy {
   @HostBinding('class.no-margin') noMargin = false;

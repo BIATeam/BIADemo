@@ -62,11 +62,14 @@ export class BiaThemeService {
 
   protected applyTheme(theme: string, oldTheme?: string) {
     if (oldTheme && oldTheme !== DEFAULT_THEME) {
-      this.renderer.removeClass(this.document.body, `${oldTheme}-theme`);
+      this.renderer.removeClass(
+        this.document.documentElement,
+        `${oldTheme}-theme`
+      );
     } else if (theme !== DEFAULT_THEME) {
-      this.renderer.addClass(this.document.body, `${theme}-theme`);
+      this.renderer.addClass(this.document.documentElement, `${theme}-theme`);
     }
-    this.applyPrimeNgTheme(theme);
+    //this.applyPrimeNgTheme(theme);
     this.currentTheme.next(theme);
     this.layoutService.config().colorScheme = theme as ColorScheme;
   }

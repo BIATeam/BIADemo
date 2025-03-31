@@ -1,6 +1,17 @@
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { Component, Injector, ViewChild } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { PrimeTemplate } from 'primeng/api';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { BiaButtonGroupItem } from 'src/app/shared/bia-shared/components/bia-button-group/bia-button-group.component';
+import {
+  BiaButtonGroupComponent,
+  BiaButtonGroupItem,
+} from 'src/app/shared/bia-shared/components/bia-button-group/bia-button-group.component';
+import { BiaTableBehaviorControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
+import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
+import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
+import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
+import { TeamAdvancedFilterComponent } from 'src/app/shared/bia-shared/components/team-advanced-filter/team-advanced-filter.component';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
 import { TeamAdvancedFilterDto } from 'src/app/shared/bia-shared/model/team-advanced-filter-dto';
 import { Permission } from 'src/app/shared/permission';
@@ -13,6 +24,21 @@ import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maint
   selector: 'app-aircraft-maintenance-companies-index',
   templateUrl: './aircraft-maintenance-companies-index.component.html',
   styleUrls: ['./aircraft-maintenance-companies-index.component.scss'],
+  imports: [
+    NgIf,
+
+    NgClass,
+    PrimeTemplate,
+    AircraftMaintenanceCompanyTableComponent,
+    AsyncPipe,
+    TranslateModule,
+    TeamAdvancedFilterComponent,
+    BiaTableHeaderComponent,
+    BiaButtonGroupComponent,
+    BiaTableControllerComponent,
+    BiaTableBehaviorControllerComponent,
+    BiaTableComponent,
+  ],
 })
 export class AircraftMaintenanceCompaniesIndexComponent extends CrudItemsIndexComponent<AircraftMaintenanceCompany> {
   // Custo for teams

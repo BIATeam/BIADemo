@@ -4,10 +4,13 @@ import { CrudItemNewComponent } from 'src/app/shared/bia-shared/feature-template
 import { Site } from '../../model/site';
 import { SiteService } from '../../services/site.service';
 import { siteCRUDConfiguration } from '../../site.constants';
+import { SiteFormComponent } from '../../components/site-form/site-form.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-site-new',
   templateUrl: './site-new.component.html',
+  imports: [SiteFormComponent, AsyncPipe],
 })
 export class SiteNewComponent extends CrudItemNewComponent<Site> {
   constructor(

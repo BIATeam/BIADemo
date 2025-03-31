@@ -5,6 +5,7 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuItem } from 'primeng/api';
 import { Subscription } from 'rxjs';
@@ -13,11 +14,13 @@ import { BiaNavigation } from 'src/app/shared/bia-shared/model/bia-navigation';
 import { allEnvironments } from 'src/environments/all-environments';
 import { BiaLayoutService } from '../../services/layout.service';
 import { BiaUltimaMenuProfileComponent } from '../menu-profile/ultima-menu-profile.component';
+import { BiaUltimaMenuComponent } from '../menu/ultima-menu.component';
 
 @Component({
   selector: 'bia-ultima-sidebar',
   templateUrl: './ultima-sidebar.component.html',
   styleUrls: ['./ultima-sidebar.component.scss'],
+  imports: [RouterLink, BiaUltimaMenuProfileComponent, BiaUltimaMenuComponent],
 })
 export class BiaUltimaSidebarComponent implements OnDestroy {
   timeout: any = null;

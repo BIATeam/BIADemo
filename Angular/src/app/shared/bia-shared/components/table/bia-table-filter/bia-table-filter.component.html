@@ -1,4 +1,4 @@
-<span *ngIf="field.isSearchable === true" class="p-float-label">
+<p-floatlabel variant="in" *ngIf="field.isSearchable === true">
   <div class="flex flex-row">
     <div class="app-field-container flex-1" style="max-width: 18px">
       <ng-container *ngIf="!isArraySimple(field) && showColumnFilter">
@@ -51,7 +51,7 @@
             display="menu"
             [hideOnClear]="true"
             [maxConstraints]="field.maxConstraints">
-            @if (
+            <!-- @if (
               columnFilterType === 'date' || columnFilterType === 'boolean'
             ) {
               <ng-template
@@ -60,21 +60,22 @@
                 let-value
                 let-filter="filterCallback">
                 @if (columnFilterType === 'date') {
-                  <p-calendar
+                  <p-date-picker
                     [ngModel]="value"
                     (ngModelChange)="
                       filterConstraint.value = $event
-                    "></p-calendar>
+                    "></p-date-picker>
                 }
                 @if (columnFilterType === 'boolean') {
-                  <p-triStateCheckbox
+                  <p-checkbox
+                    [indeterminate]="true"
                     [ngModel]="value"
                     (ngModelChange)="
                       filterConstraint.value = $event
-                    "></p-triStateCheckbox>
+                    "></p-checkbox>
                 }
               </ng-template>
-            }
+            } -->
           </p-columnFilter>
         }
       </ng-container>
@@ -182,4 +183,4 @@
       </ng-container>
     </div>
   </div>
-</span>
+</p-floatlabel>

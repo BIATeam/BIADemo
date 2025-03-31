@@ -3,8 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 // import { ReducerManager, StoreModule } from '@ngrx/store';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { Permission } from 'src/app/shared/permission';
-import { SharedModule } from 'src/app/shared/shared.module';
-import { MaintenanceContractFormComponent } from './components/maintenance-contract-form/maintenance-contract-form.component';
 import { MaintenanceContractItemComponent } from './views/maintenance-contract-item/maintenance-contract-item.component';
 import { MaintenanceContractsIndexComponent } from './views/maintenance-contracts-index/maintenance-contracts-index.component';
 // BIAToolKit - Begin Option AircraftMaintenanceCompany
@@ -19,9 +17,6 @@ import { SiteOptionModule } from 'src/app/domains/site-option/site-option.module
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { DynamicLayoutComponent } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
-import { CrudItemImportModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item-import.module';
-import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
-import { MaintenanceContractTableComponent } from './components/maintenance-contract-table/maintenance-contract-table.component';
 import { maintenanceContractCRUDConfiguration } from './maintenance-contract.constants';
 import { FeatureMaintenanceContractsStore } from './store/maintenance-contract.state';
 import { MaintenanceContractsEffects } from './store/maintenance-contracts-effects';
@@ -104,22 +99,7 @@ export const ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    MaintenanceContractItemComponent,
-    MaintenanceContractsIndexComponent,
-    // [Calc] : NOT used for calc (3 lines).
-    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-    MaintenanceContractFormComponent,
-    MaintenanceContractNewComponent,
-    MaintenanceContractEditComponent,
-    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-    MaintenanceContractTableComponent,
-    MaintenanceContractImportComponent,
-  ],
   imports: [
-    SharedModule,
-    CrudItemModule,
-    CrudItemImportModule,
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature(
       maintenanceContractCRUDConfiguration.storeKey,

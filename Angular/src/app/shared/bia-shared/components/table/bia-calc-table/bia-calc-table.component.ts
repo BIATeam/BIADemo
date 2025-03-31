@@ -9,19 +9,61 @@ import {
   SimpleChanges,
   TemplateRef,
 } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import { BiaFieldConfig } from '../../../model/bia-field-config';
 import { DictOptionDto } from '../bia-table/dict-option-dto';
+import {
+  NgIf,
+  NgFor,
+  NgSwitch,
+  NgClass,
+  NgTemplateOutlet,
+  NgStyle,
+  AsyncPipe,
+} from '@angular/common';
+import { TableModule } from 'primeng/table';
+import { PrimeTemplate } from 'primeng/api';
+import { Tooltip } from 'primeng/tooltip';
+import { BiaTableFilterComponent } from '../bia-table-filter/bia-table-filter.component';
+import { BiaTableInputComponent } from '../bia-table-input/bia-table-input.component';
+import { BiaTableOutputComponent } from '../bia-table-output/bia-table-output.component';
+import { Skeleton } from 'primeng/skeleton';
+import { BiaTableFooterControllerComponent } from '../bia-table-footer-controller/bia-table-footer-controller.component';
 
 @Component({
   selector: 'bia-calc-table',
   templateUrl: './bia-calc-table.component.html',
   styleUrls: ['../bia-table/bia-table.component.scss'],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    NgIf,
+    TableModule,
+    PrimeTemplate,
+    NgFor,
+    Tooltip,
+    NgSwitch,
+    BiaTableFilterComponent,
+    NgClass,
+    BiaTableInputComponent,
+    NgTemplateOutlet,
+    BiaTableOutputComponent,
+    Skeleton,
+    NgStyle,
+    BiaTableFooterControllerComponent,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class BiaCalcTableComponent<TDto extends { id: number }>
   extends BiaTableComponent<TDto>
@@ -212,7 +254,7 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
           this.isInComplexInput !== true &&
           this.getParentComponent(document.activeElement, 'bia-calc-form') ===
             null &&
-          !document.activeElement?.className?.includes('p-dropdown') /*&&
+          !document.activeElement?.className?.includes('p-select') /*&&
           this.getParentComponent(document.activeElement, 'p-datepicker') === null*/
         ) {
           this.initEditableRow(null);

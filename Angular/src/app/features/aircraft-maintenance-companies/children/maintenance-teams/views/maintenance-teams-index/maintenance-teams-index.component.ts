@@ -1,5 +1,10 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { BiaTableBehaviorControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
+import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
+import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
+import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
+import { TeamAdvancedFilterComponent } from 'src/app/shared/bia-shared/components/team-advanced-filter/team-advanced-filter.component';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
 import { TeamAdvancedFilterDto } from 'src/app/shared/bia-shared/model/team-advanced-filter-dto';
 import { Permission } from 'src/app/shared/permission';
@@ -9,12 +14,33 @@ import { MaintenanceTeam } from '../../model/maintenance-team';
 // BIAToolKit - Begin Option
 import { MaintenanceTeamOptionsService } from '../../services/maintenance-team-options.service';
 // BIAToolKit - End Option
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { PrimeTemplate } from 'primeng/api';
+import { ButtonDirective } from 'primeng/button';
+import { Tooltip } from 'primeng/tooltip';
 import { MaintenanceTeamService } from '../../services/maintenance-team.service';
 
 @Component({
   selector: 'app-maintenance-teams-index',
   templateUrl: './maintenance-teams-index.component.html',
   styleUrls: ['./maintenance-teams-index.component.scss'],
+  imports: [
+    NgIf,
+
+    NgClass,
+    PrimeTemplate,
+    ButtonDirective,
+    Tooltip,
+    MaintenanceTeamTableComponent,
+    AsyncPipe,
+    TranslateModule,
+    TeamAdvancedFilterComponent,
+    BiaTableHeaderComponent,
+    BiaTableControllerComponent,
+    BiaTableBehaviorControllerComponent,
+    BiaTableComponent,
+  ],
 })
 export class MaintenanceTeamsIndexComponent
   extends CrudItemsIndexComponent<MaintenanceTeam>

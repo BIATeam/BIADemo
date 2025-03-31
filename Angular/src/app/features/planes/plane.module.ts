@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 // import { ReducerManager, StoreModule } from '@ngrx/store';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { Permission } from 'src/app/shared/permission';
-import { SharedModule } from 'src/app/shared/shared.module';
+
 import { PlaneFormComponent } from './components/plane-form/plane-form.component';
 import { PlaneItemComponent } from './views/plane-item/plane-item.component';
 import { PlanesIndexComponent } from './views/planes-index/planes-index.component';
@@ -19,8 +19,7 @@ import {
   DynamicLayoutComponent,
   LayoutMode,
 } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
-import { CrudItemImportModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item-import.module';
-import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
+
 import { PlaneReadComponent } from '../planes/views/plane-read/plane-read.component';
 import { PlaneTableComponent } from './components/plane-table/plane-table.component';
 import { planeCRUDConfiguration } from './plane.constants';
@@ -109,7 +108,6 @@ export const ROUTES: Routes = [
             redirectTo: 'read',
           },
           /// BIAToolKit - Begin Partial PlaneModuleChildPath Engine
-          /// BIAToolKit - Begin Partial PlaneModuleChildPath Engine
           {
             path: 'engines',
             data: {
@@ -134,23 +132,7 @@ export const ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    PlaneItemComponent,
-    PlanesIndexComponent,
-    // [Calc] : NOT used for calc (3 lines).
-    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-    PlaneFormComponent,
-    PlaneNewComponent,
-    PlaneEditComponent,
-    PlaneReadComponent,
-    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-    PlaneTableComponent,
-    PlaneImportComponent,
-  ],
   imports: [
-    SharedModule,
-    CrudItemModule,
-    CrudItemImportModule,
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature(
       planeCRUDConfiguration.storeKey,
@@ -165,6 +147,17 @@ export const ROUTES: Routes = [
     // BIAToolKit - Begin Option PlaneType
     PlaneTypeOptionModule,
     // BIAToolKit - End Option PlaneType
+    PlaneItemComponent,
+    PlanesIndexComponent,
+    // [Calc] : NOT used for calc (3 lines).
+    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
+    PlaneFormComponent,
+    PlaneNewComponent,
+    PlaneEditComponent,
+    PlaneReadComponent,
+    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
+    PlaneTableComponent,
+    PlaneImportComponent,
   ],
 })
 export class PlaneModule {}

@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { PrimeNGConfig } from 'primeng/api';
+import { PrimeNG } from 'primeng/config';
 import { BiaInjectExternalService } from './core/bia-core/services/bia-inject-external.service';
 import { BiaMatomoService } from './core/bia-core/services/matomo/bia-matomo.service';
 import { BiaLayoutService } from './shared/bia-shared/components/layout/services/layout.service';
@@ -11,12 +12,13 @@ import { BiaLayoutService } from './shared/bia-shared/components/layout/services
   styles: [
     ':host { min-height: 100vh; display: flex; flex-direction: column; }',
   ],
+  imports: [RouterOutlet],
 })
 export class AppComponent implements OnInit {
   constructor(
     private biaMatomoService: BiaMatomoService,
     private biaExternalJsService: BiaInjectExternalService,
-    private primeNgConfig: PrimeNGConfig,
+    private primeNgConfig: PrimeNG,
     private translateService: TranslateService,
     private layoutService: BiaLayoutService
   ) {

@@ -9,10 +9,9 @@ import {
   DynamicLayoutComponent,
   LayoutMode,
 } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
-import { CrudItemImportModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item-import.module';
-import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
+
 import { Permission } from 'src/app/shared/permission';
-import { SharedModule } from 'src/app/shared/shared.module';
+
 import { EngineFormComponent } from './components/engine-form/engine-form.component';
 import { EngineTableComponent } from './components/engine-table/engine-table.component';
 import { engineCRUDConfiguration } from './engine.constants';
@@ -98,7 +97,16 @@ export const ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [
+  imports: [
+    RouterModule.forChild(ROUTES),
+    StoreModule.forFeature(
+      engineCRUDConfiguration.storeKey,
+      FeatureEnginesStore.reducers
+    ),
+    EffectsModule.forFeature([EnginesEffects]),
+    // TODO after creation of CRUD Engine : select the optioDto dommain module required for link
+    // Domain Modules:
+    PartOptionModule,
     EngineItemComponent,
     EnginesIndexComponent,
     // [Calc] : NOT used for calc (3 lines).
@@ -109,20 +117,6 @@ export const ROUTES: Routes = [
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     EngineTableComponent,
     EngineImportComponent,
-  ],
-  imports: [
-    SharedModule,
-    CrudItemModule,
-    CrudItemImportModule,
-    RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(
-      engineCRUDConfiguration.storeKey,
-      FeatureEnginesStore.reducers
-    ),
-    EffectsModule.forFeature([EnginesEffects]),
-    // TODO after creation of CRUD Engine : select the optioDto dommain module required for link
-    // Domain Modules:
-    PartOptionModule,
   ],
 })
 export class EngineModule {}

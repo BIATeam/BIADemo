@@ -7,9 +7,9 @@ import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { AirportOptionModule } from 'src/app/domains/airport-option/airport-option.module';
 import { PlaneTypeOptionModule } from 'src/app/domains/plane-type-option/plane-type-option.module';
 import { DynamicLayoutComponent } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
-import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
+
 import { Permission } from 'src/app/shared/permission';
-import { SharedModule } from 'src/app/shared/shared.module';
+
 import { EngineTableComponent } from './children/engines/components/engine-table/engine-table.component';
 import { PlaneFormComponent } from './components/plane-form/plane-form.component';
 import { PlaneTableComponent } from './components/plane-table/plane-table.component';
@@ -91,7 +91,16 @@ export const ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [
+  imports: [
+    RouterModule.forChild(ROUTES),
+    StoreModule.forFeature(
+      planeCRUDConfiguration.storeKey,
+      FeaturePlanesStore.reducers
+    ),
+    EffectsModule.forFeature([PlanesEffects]),
+    // Domain Modules:
+    AirportOptionModule,
+    PlaneTypeOptionModule,
     PlaneItemComponent,
     PlanesIndexComponent,
     // [Calc] : NOT used for calc (3 lines).
@@ -103,19 +112,6 @@ export const ROUTES: Routes = [
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     PlaneTableComponent,
     EngineTableComponent,
-  ],
-  imports: [
-    SharedModule,
-    CrudItemModule,
-    RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(
-      planeCRUDConfiguration.storeKey,
-      FeaturePlanesStore.reducers
-    ),
-    EffectsModule.forFeature([PlanesEffects]),
-    // Domain Modules:
-    AirportOptionModule,
-    PlaneTypeOptionModule,
   ],
 })
 export class PlaneModule {}

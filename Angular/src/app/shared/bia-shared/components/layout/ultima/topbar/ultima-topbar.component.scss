@@ -1,4 +1,4 @@
-@import '../../../../../../../scss/bia/bia-variables';
+@use '../../../../../../../scss/bia/bia-variables';
 
 :host {
   display: flex;
@@ -143,8 +143,7 @@ bia-notification-team-warning {
   margin-right: 0.5em;
   // https://codepen.io/sosuke/pen/Pjoqqp
   // hexa: #f8a92b
-  filter: invert(60%) sepia(92%) saturate(376%) hue-rotate(356deg)
-    brightness(98%) contrast(98%);
+  filter: bia-variables.$biaAppLogoFilter;
 }
 
 .layout-topbar-items {
@@ -158,7 +157,7 @@ bia-notification-team-warning {
       right: 1.5rem;
       z-index: 10;
       color: white;
-      background: $biaRed;
+      background: bia-variables.$biaRed;
       border-radius: 14%;
       font-size: 0.7rem;
       line-height: 0.75rem;

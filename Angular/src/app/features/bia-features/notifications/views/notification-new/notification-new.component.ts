@@ -3,11 +3,14 @@ import { CrudItemNewComponent } from 'src/app/shared/bia-shared/feature-template
 import { Notification } from '../../model/notification';
 import { notificationCRUDConfiguration } from '../../notification.constants';
 import { NotificationService } from '../../services/notification.service';
+import { NotificationFormComponent } from '../../components/notification-form/notification-form.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'bia-notification-new',
   templateUrl: './notification-new.component.html',
   styleUrls: ['./notification-new.component.scss'],
+  imports: [NotificationFormComponent, AsyncPipe],
 })
 export class NotificationNewComponent extends CrudItemNewComponent<Notification> {
   constructor(

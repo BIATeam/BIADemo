@@ -6,11 +6,15 @@ import { getAllTeams } from 'src/app/domains/bia-domains/team/store/team.state';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
 import { randomReviewPlane } from '../../store/hangfire-actions';
+import { NgFor, NgIf, AsyncPipe } from '@angular/common';
+import { ButtonDirective } from 'primeng/button';
+import { Tooltip } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-hangfire-index',
   templateUrl: './hangfire-index.component.html',
   styleUrls: ['./hangfire-index.component.scss'],
+  imports: [NgFor, NgIf, ButtonDirective, Tooltip, AsyncPipe],
 })
 export class HangfireIndexComponent {
   @HostBinding('class') classes = 'bia-flex';

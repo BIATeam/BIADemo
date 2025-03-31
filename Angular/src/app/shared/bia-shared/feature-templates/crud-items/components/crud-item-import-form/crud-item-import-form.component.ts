@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgClass, NgIf } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -7,11 +7,25 @@ import {
   ViewChild,
 } from '@angular/core';
 import {
+  FormsModule,
+  ReactiveFormsModule,
   UntypedFormBuilder,
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionHeader,
+  AccordionPanel,
+} from 'primeng/accordion';
+import { ButtonDirective } from 'primeng/button';
+import { Checkbox } from 'primeng/checkbox';
 import { FileUpload } from 'primeng/fileupload';
+import { FloatLabel } from 'primeng/floatlabel';
+import { Ripple } from 'primeng/ripple';
+import { Select } from 'primeng/select';
 import { AppSettings } from 'src/app/domains/bia-domains/app-settings/model/app-settings';
 import {
   BiaFieldConfig,
@@ -20,6 +34,8 @@ import {
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
 import { clone } from 'src/app/shared/bia-shared/utils';
+import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
+import { BiaTableComponent } from '../../../../components/table/bia-table/bia-table.component';
 import { CrudConfig } from '../../model/crud-config';
 import { ImportParam } from '../../services/crud-item-import.service';
 
@@ -32,6 +48,25 @@ interface FormatExample {
   selector: 'bia-crud-item-import-form',
   templateUrl: './crud-item-import-form.component.html',
   styleUrls: ['./crud-item-import-form.component.scss'],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    FileUpload,
+    ButtonDirective,
+    NgIf,
+    Select,
+    Checkbox,
+    Accordion,
+    AccordionPanel,
+    Ripple,
+    AccordionHeader,
+    AccordionContent,
+    BiaTableComponent,
+    NgClass,
+    SpinnerComponent,
+    TranslateModule,
+    FloatLabel,
+  ],
 })
 export class CrudItemImportFormComponent<TDto extends { id: number }> {
   @ViewChild('fileUpload') fileUpload: FileUpload;

@@ -3,10 +3,13 @@ import { CrudItemNewComponent } from 'src/app/shared/bia-shared/feature-template
 import { User } from '../../model/user';
 import { UserService } from '../../services/user.service';
 import { userCRUDConfiguration } from '../../user.constants';
+import { UserFormComponent } from '../../components/user-form/user-form.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'bia-user-new',
   templateUrl: './user-new.component.html',
+  imports: [UserFormComponent, AsyncPipe],
 })
 export class UserNewComponent extends CrudItemNewComponent<User> {
   constructor(
