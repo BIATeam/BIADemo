@@ -1,24 +1,22 @@
-$RelativePathToBIAPackage = "BIAPackage"
+$RelativePathToBIAPackage = "..\..\BIADemo\DotNet\BIAPackage"
 $SolutionName = "BIADemo"
 $ProjectPrefix = "TheBIADevCompany." + $SolutionName
 
-function AddBIAProjectToSolution
-{
+function AddBIAProjectToSolution {
     param([string]$layerProject, [string]$layerPackage)
 	
-	$SlnFile = "$SolutionName.sln"
-	$BIAProjectFile = "$RelativePathToBIAPackage\BIA.Net.Core.$layerPackage\BIA.Net.Core.$layerPackage.csproj"
-	$ProjectFile = ".\$ProjectPrefix.$layerProject\$ProjectPrefix.$layerProject.csproj"
+    $SlnFile = "$SolutionName.sln"
+    $BIAProjectFile = "$RelativePathToBIAPackage\BIA.Net.Core.$layerPackage\BIA.Net.Core.$layerPackage.csproj"
+    $ProjectFile = ".\$ProjectPrefix.$layerProject\$ProjectPrefix.$layerProject.csproj"
 	
-	# Add the library project to the solution
-	dotnet sln $SlnFile add  -s "BIAPackage" $BIAProjectFile
-	if ($layerProject -ne "")
-	{
-		# Add the library reference to the executable project
-		dotnet add $ProjectFile reference $BIAProjectFile
-		# Remove the NuGet package reference
-		dotnet remove $ProjectFile package BIA.Net.Core.$layerPackage
-	}
+    # Add the library project to the solution
+    dotnet sln $SlnFile add  -s "BIAPackage" $BIAProjectFile
+    if ($layerProject -ne "") {
+        # Add the library reference to the executable project
+        dotnet add $ProjectFile reference $BIAProjectFile
+        # Remove the NuGet package reference
+        dotnet remove $ProjectFile package BIA.Net.Core.$layerPackage
+    }
 }
 
 AddBIAProjectToSolution "Crosscutting.Common" "Common"
@@ -36,8 +34,7 @@ AddBIAProjectToSolution "WorkerService" "WorkerService"
 # Add the library project to the solution
 dotnet sln "$SolutionName.sln" add -s "BIAPackage" "$RelativePathToBIAPackage\NuGetPackage\NuGetPackage.csproj"
 
-function UpdateDirectoryBuildPropsAnalyzersReferences
-{
+function UpdateDirectoryBuildPropsAnalyzersReferences {
     $propsFilePath = "Directory.Build.props"
 
     # Load the content of Directory.Build.props
@@ -50,14 +47,14 @@ function UpdateDirectoryBuildPropsAnalyzersReferences
     }
     Select-Object -First 1
 
-    if($analyzersNugetsItemGroup -ne $null) { 
+    if ($analyzersNugetsItemGroup -ne $null) { 
         $packageReference = $analyzersNugetsItemGroup.PackageReference |
         Where-Object {
             $_.Include -eq "BIA.Net.Analyzers"
         }
         Select-Object -First 1
 
-        if($packageReference -ne $null) {
+        if ($packageReference -ne $null) {
             $analyzersNugetsItemGroup.RemoveChild($packageReference)
             $xmlContent.Save($propsFilePath)
         }
@@ -109,8 +106,7 @@ function UpdateDirectoryBuildPropsAnalyzersReferences
 }
 
 # Add Analyzer projects
-function AddAnalyzerProjectToSolution
-{
+function AddAnalyzerProjectToSolution {
     param([string]$analyzerProjectName)
     
     $SlnFile = "$SolutionName.sln"

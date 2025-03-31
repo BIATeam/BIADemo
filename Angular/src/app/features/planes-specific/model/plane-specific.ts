@@ -3,6 +3,14 @@ import {
   BiaFieldsConfig,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
+import {
+  BiaFormLayoutConfig,
+  BiaFormLayoutConfigField,
+  BiaFormLayoutConfigGroup,
+  BiaFormLayoutConfigRow,
+  BiaFormLayoutConfigTab,
+  BiaFormLayoutConfigTabGroup,
+} from 'src/app/shared/bia-shared/model/bia-form-layout-config';
 import { Engine } from './engine';
 import { Plane, planeFieldsConfiguration } from './plane';
 
@@ -24,3 +32,38 @@ export const planeSpecificFieldsConfiguration: BiaFieldsConfig<PlaneSpecific> =
       }),
     ],
   };
+
+export const planeSpecificFormLayoutConfiguration: BiaFormLayoutConfig<PlaneSpecific> =
+  new BiaFormLayoutConfig<PlaneSpecific>([
+    new BiaFormLayoutConfigRow([
+      new BiaFormLayoutConfigTabGroup([
+        new BiaFormLayoutConfigTab('information', 'plane.information', [
+          new BiaFormLayoutConfigRow([
+            new BiaFormLayoutConfigGroup('plane.groupIdentification', [
+              new BiaFormLayoutConfigRow([new BiaFormLayoutConfigField('msn')]),
+            ]),
+            new BiaFormLayoutConfigGroup('plane.groupStatus', [
+              new BiaFormLayoutConfigRow([
+                new BiaFormLayoutConfigField('isActive', 2),
+              ]),
+            ]),
+          ]),
+          new BiaFormLayoutConfigRow([
+            new BiaFormLayoutConfigField('capacity'),
+          ]),
+        ]),
+        new BiaFormLayoutConfigTab('engines', 'plane.engines', [
+          new BiaFormLayoutConfigRow([new BiaFormLayoutConfigField('engines')]),
+        ]),
+      ]),
+      new BiaFormLayoutConfigGroup('plane.groupTracking', [
+        new BiaFormLayoutConfigRow([
+          new BiaFormLayoutConfigField('deliveryDate'),
+          new BiaFormLayoutConfigField('lastFlightDate'),
+        ]),
+        new BiaFormLayoutConfigRow([
+          new BiaFormLayoutConfigField('syncFlightDataTime'),
+        ]),
+      ]),
+    ]),
+  ]);

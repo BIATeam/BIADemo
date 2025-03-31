@@ -30,7 +30,7 @@
     header="{{ popupTitle | translate }}"
     [hidden]="!hasChildren"
     [focusOnShow]="true"
-    [visible]="true"
+    [visible]="hasChildren"
     [modal]="true"
     [closable]="false"
     [maximizable]="maximizable"

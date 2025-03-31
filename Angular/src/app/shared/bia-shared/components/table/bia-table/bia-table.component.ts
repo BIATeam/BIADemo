@@ -1,4 +1,13 @@
 import {
+  AsyncPipe,
+  NgClass,
+  NgFor,
+  NgIf,
+  NgStyle,
+  NgSwitch,
+  NgTemplateOutlet,
+} from '@angular/common';
+import {
   AfterContentInit,
   AfterViewInit,
   Component,
@@ -12,9 +21,11 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
-import { PrimeTemplate, TableState } from 'primeng/api';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { PrimeTemplate, SortMeta, TableState } from 'primeng/api';
+import { Skeleton } from 'primeng/skeleton';
 import { Table, TableLazyLoadEvent, TableModule } from 'primeng/table';
+import { Tooltip } from 'primeng/tooltip';
 import { Observable, of, timer } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import {
@@ -29,21 +40,10 @@ import {
 import { BiaTableState } from '../../../model/bia-table-state';
 import { KeyValuePair } from '../../../model/key-value-pair';
 import { TableHelperService } from '../../../services/table-helper.service';
-import { DictOptionDto } from './dict-option-dto';
-import {
-  NgIf,
-  NgFor,
-  NgSwitch,
-  NgClass,
-  NgTemplateOutlet,
-  NgStyle,
-  AsyncPipe,
-} from '@angular/common';
-import { Tooltip } from 'primeng/tooltip';
 import { BiaTableFilterComponent } from '../bia-table-filter/bia-table-filter.component';
-import { BiaTableOutputComponent } from '../bia-table-output/bia-table-output.component';
-import { Skeleton } from 'primeng/skeleton';
 import { BiaTableFooterControllerComponent } from '../bia-table-footer-controller/bia-table-footer-controller.component';
+import { BiaTableOutputComponent } from '../bia-table-output/bia-table-output.component';
+import { DictOptionDto } from './dict-option-dto';
 
 const objectsEqual = (o1: any, o2: any) =>
   Object.keys(o1).length === Object.keys(o2).length &&
@@ -110,6 +110,8 @@ export class BiaTableComponent<TDto extends { id: number }>
   @Input() dictOptionDtos: DictOptionDto[] = [];
   @Input() readOnly = false;
   @Input() showFixableState = false;
+  @Input() sortMode: 'single' | 'multiple' = 'multiple';
+  @Input() multiSortMeta?: SortMeta[] | null;
 
   protected isSelectFrozen = false;
   protected widthSelect: string;

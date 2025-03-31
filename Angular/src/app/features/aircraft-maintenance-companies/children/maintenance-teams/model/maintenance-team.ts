@@ -323,6 +323,7 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
           {
             isVisible: false,
             isHideByDefault: true,
+            isVisibleInTable: false,
           }
         ),
       ],

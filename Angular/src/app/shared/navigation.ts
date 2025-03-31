@@ -39,6 +39,13 @@ export const NAVIGATION: BiaNavigation[] = [
         path: ['/examples/maintenance-teams'],
       },
       /// BIAToolKit - End Partial Navigation MaintenanceTeam
+      /// BIAToolKit - Begin Partial Navigation MaintenanceContract
+      {
+        labelKey: 'app.maintenanceContracts',
+        permissions: [Permission.MaintenanceContract_List_Access],
+        path: ['/examples/maintenance-contracts'],
+      },
+      /// BIAToolKit - End Partial Navigation MaintenanceContract
       /// BIAToolKit - Begin Partial Navigation Plane
       {
         labelKey: 'app.planes',

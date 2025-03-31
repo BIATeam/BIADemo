@@ -59,6 +59,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// The domain section in the BiaNet configuration.
         /// </summary>
         private readonly IEnumerable<LdapDomain> ldapDomains;
+
+        /// <summary>
+        /// The ldap repository service.
+        /// </summary>
+        private readonly ILdapRepositoryHelper ldapRepositoryHelper;
 #if BIA_FRONT_FEATURE
 
         /// <summary>
@@ -85,11 +90,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// The role application service.
         /// </summary>
         private readonly IRoleAppService roleAppService;
-
-        /// <summary>
-        /// The ldap repository service.
-        /// </summary>
-        private readonly ILdapRepositoryHelper ldapRepositoryHelper;
 #endif
 
         /// <summary>

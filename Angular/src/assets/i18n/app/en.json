@@ -19,7 +19,8 @@
     "teams": "Teams",
     "users": "Users",
     "notifications": "Notifications",
-    "maintenance-teams": "Maintenance Teams"
+    "maintenance-teams": "Maintenance Teams",
+    "maintenanceContracts": "Maintenance contracts"
   },
   "Begin BIADemo": "To remove in project from here",
   "aircraftMaintenanceCompany": {
@@ -65,6 +66,14 @@
     "installedParts": "Installed parts",
     "import": "Import engines"
   },
+  "maintenanceContract": {
+    "listOf": "Liste of maintenance contracts",
+    "contractNumber": "Contract number",
+    "description": "Description",
+    "site": "Airlines",
+    "aircraftMaintenanceCompany": "Aircraft maintenance company",
+    "planes": "Planes"
+  },
   "maintenanceTeam": {
     "add": "Add maintenance team",
     "admins": "Administrators",
@@ -106,6 +115,7 @@
     "fuelLevel": "Fuel level",
     "isActive": "Active",
     "import": "Import planes",
+    "information": "Information",
     "lastFlightDate": "Last flight date",
     "listOf": "List of planes",
     "msn": "Msn",
@@ -156,9 +166,6 @@
     "edit": "Edit site",
     "listOf": "List of sites",
     "Begin BIADemo": "To remove in project from here",
-    "add": "Add airline",
-    "edit": "Edit airline",
-    "listOf": "List of airlines",
     "End BIADemo": "To remove in project up to here",
     "title": "Title"
   },

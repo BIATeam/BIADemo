@@ -19,65 +19,6 @@ import { MemberItemComponent } from './views/member-item/member-item.component';
 import { MemberNewComponent } from './views/member-new/member-new.component';
 import { MembersIndexComponent } from './views/members-index/members-index.component';
 
-// export let ROUTES: Routes = [
-//   {
-//     path: '',
-//     data: {
-//       breadcrumb: null,
-//       permission: Permission.Member_List_Access,
-//       injectComponent: MembersIndexComponent
-//     },
-//     component: FullPageLayoutComponent,
-//     canActivate: [PermissionGuard],
-//     // [Calc] : The children are not used in calc
-//     children: [
-//       {
-//         path: 'create',
-//         data: {
-//           breadcrumb: 'bia.add',
-//           canNavigate: false,
-//           permission: Permission.Member_Create,
-//           title: 'member.add',
-//           injectComponent: MemberNewComponent,
-//           dynamicComponent : () => (memberCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
-//         },
-//         component: (memberCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
-//         canActivate: [PermissionGuard],
-//       },
-//       {
-//         path: ':crudItemId',
-//         data: {
-//           breadcrumb: '',
-//           canNavigate: true,
-//         },
-//         component: MemberItemComponent,
-//         canActivate: [PermissionGuard],
-//         children: [
-//           {
-//             path: 'edit',
-//             data: {
-//               breadcrumb: 'bia.edit',
-//               canNavigate: true,
-//               permission: Permission.Member_Update,
-//               title: 'member.edit',
-//               injectComponent: MemberEditComponent,
-//               dynamicComponent : () => (memberCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
-//             },
-//             component: (memberCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
-//             canActivate: [PermissionGuard],
-//           },
-//           {
-//             path: '',
-//             pathMatch: 'full',
-//             redirectTo: 'edit'
-//           },
-//         ]
-//       },
-//     ]
-//   },
-//   { path: '**', redirectTo: '' }
-// ];
-
 @NgModule({
   imports: [
     // RouterModule.forChild(ROUTES),

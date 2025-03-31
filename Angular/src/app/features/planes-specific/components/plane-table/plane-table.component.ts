@@ -30,9 +30,9 @@ import { Plane } from '../../model/plane';
 @Component({
   selector: 'app-plane-specific-table',
   templateUrl:
-    '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
+    '/src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
   styleUrls: [
-    '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss',
+    '/src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss',
   ],
   imports: [
     FormsModule,

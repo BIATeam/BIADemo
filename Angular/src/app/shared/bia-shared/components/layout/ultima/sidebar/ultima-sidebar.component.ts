@@ -31,10 +31,8 @@ export class BiaUltimaSidebarComponent implements OnDestroy {
   @Input() supportedLangs: string[];
   @Input()
   set menus(navigations: BiaNavigation[]) {
-    if (navigations && navigations.length > 0) {
-      this.navigations = navigations;
-      this.buildNavigation();
-    }
+    this.navigations = navigations ?? [];
+    this.buildNavigation();
   }
   @Input() allowThemeChange = true;
   @Input() logos: string[];
@@ -73,14 +71,18 @@ export class BiaUltimaSidebarComponent implements OnDestroy {
       true
     );
 
-    this.sub.add(
-      this.translateService.stream(translationKeys).subscribe(translations => {
-        this.layoutService.processMenuTranslation(
-          this.navMenuItems,
-          translations
-        );
-      })
-    );
+    if (translationKeys.length > 0) {
+      this.sub.add(
+        this.translateService
+          .stream(translationKeys)
+          .subscribe(translations => {
+            this.layoutService.processMenuTranslation(
+              this.navMenuItems,
+              translations
+            );
+          })
+      );
+    }
   }
 
   resetOverlay() {

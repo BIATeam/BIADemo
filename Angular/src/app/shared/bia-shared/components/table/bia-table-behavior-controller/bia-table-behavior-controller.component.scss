@@ -15,3 +15,11 @@
 .pi.disabled {
   opacity: var(--p-disabled-opacity);
 }
+
+.split-icon {
+  position: absolute;
+  top: 0rem;
+  left: 0rem;
+  background: transparent;
+  rotate: 90deg;
+}

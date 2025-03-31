@@ -238,7 +238,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
 
                         if (string.Equals(headerName, HeaderName.IsMaintenance, StringComparison.OrdinalIgnoreCase))
                         {
-                            records.Add(CSVBool(x.IsMaintenance.GetValueOrDefault()));
+                            records.Add(CSVBool(x.IsMaintenance));
                         }
 
                         if (string.Equals(headerName, HeaderName.FirstFlightDate, StringComparison.OrdinalIgnoreCase))

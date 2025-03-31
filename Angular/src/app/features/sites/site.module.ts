@@ -4,9 +4,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
-import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
-import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
-
+import {
+  DynamicLayoutComponent,
+  LayoutMode,
+} from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { Permission } from 'src/app/shared/permission';
 
 import { SiteFormComponent } from './components/site-form/site-form.component';
@@ -26,8 +27,9 @@ export const ROUTES: Routes = [
       breadcrumb: null,
       permission: Permission.Site_List_Access,
       injectComponent: SitesIndexComponent,
+      configuration: siteCRUDConfiguration,
     },
-    component: FullPageLayoutComponent,
+    component: DynamicLayoutComponent,
     canActivate: [PermissionGuard],
     // [Calc] : The children are not used in calc
     children: [
@@ -38,15 +40,8 @@ export const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.Site_Create,
           title: 'site.add',
-          injectComponent: SiteNewComponent,
-          dynamicComponent: () =>
-            siteCRUDConfiguration.usePopup
-              ? PopupLayoutComponent
-              : FullPageLayoutComponent,
         },
-        component: siteCRUDConfiguration.usePopup
-          ? PopupLayoutComponent
-          : FullPageLayoutComponent,
+        component: SiteNewComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -65,15 +60,8 @@ export const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.Site_Update,
               title: 'site.edit',
-              injectComponent: SiteEditComponent,
-              dynamicComponent: () =>
-                siteCRUDConfiguration.usePopup
-                  ? PopupLayoutComponent
-                  : FullPageLayoutComponent,
             },
-            component: siteCRUDConfiguration.usePopup
-              ? PopupLayoutComponent
-              : FullPageLayoutComponent,
+            component: SiteEditComponent,
             canActivate: [PermissionGuard],
           },
           {
@@ -88,6 +76,7 @@ export const ROUTES: Routes = [
               breadcrumb: 'app.members',
               canNavigate: true,
               permission: Permission.Site_Member_List_Access,
+              layoutMode: LayoutMode.fullPage,
             },
             loadChildren: () =>
               import('./children/members/site-member.module').then(

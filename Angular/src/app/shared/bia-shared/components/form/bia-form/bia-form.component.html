@@ -18,78 +18,24 @@
 
   <div class="bia-form-fields">
     <ng-container *ngIf="formLayoutConfig">
-      <ng-container *ngFor="let item of formLayoutConfig.items">
-        <ng-container [ngSwitch]="item.type">
-          <ng-container *ngSwitchCase="'group'">
-            <ng-container
-              *ngTemplateOutlet="
-                groupTemplate;
-                context: { group: item }
-              "></ng-container>
-          </ng-container>
-          <ng-container *ngSwitchCase="'row'">
-            <ng-container
-              *ngTemplateOutlet="
-                rowTemplate;
-                context: { row: item }
-              "></ng-container>
-          </ng-container>
-        </ng-container>
-      </ng-container>
-
-      <ng-template #groupTemplate let-group="group">
-        <div class="bia-form-group">
-          <h4>{{ group.name | translate }}</h4>
-          <ng-container
-            *ngTemplateOutlet="
-              rowsTemplate;
-              context: { rows: group.rows }
-            "></ng-container>
-        </div>
-      </ng-template>
-
-      <ng-template #rowsTemplate let-rows="rows">
-        <ng-container *ngFor="let row of rows">
-          <ng-container
-            *ngTemplateOutlet="
-              rowTemplate;
-              context: { row: row }
-            "></ng-container>
-        </ng-container>
-      </ng-template>
-
-      <ng-template #rowTemplate let-row="row">
-        <div class="grid bia-form-row">
-          <div
-            *ngFor="let column of row.columns"
-            [class]="column.columnClass ?? row.computedColumnClass">
-            <ng-container [ngSwitch]="column.type">
-              <ng-container *ngSwitchCase="'group'">
-                <ng-container
-                  *ngTemplateOutlet="
-                    groupTemplate;
-                    context: { group: column }
-                  "></ng-container>
-              </ng-container>
-              <ng-container *ngSwitchCase="'field'">
-                <ng-container
-                  *ngTemplateOutlet="
-                    fieldTemplate;
-                    context: { field: column.fieldConfig }
-                  "></ng-container>
-              </ng-container>
-            </ng-container>
-          </div>
-        </div>
-      </ng-template>
+      <bia-form-layout
+        [element]="element"
+        [formLayoutConfig]="formLayoutConfig"
+        [dictOptionDtos]="dictOptionDtos"
+        [form]="form"
+        [readOnly]="readOnly"
+        [specificInputTemplate]="specificInputTemplate"
+        [specificOutputTemplate]="specificOutputTemplate"></bia-form-layout>
     </ng-container>
 
-    <ng-container *ngFor="let field of fieldsWithoutLayoutConfig">
-      <ng-container
-        *ngTemplateOutlet="
-          fieldTemplate;
-          context: { field: field }
-        "></ng-container>
+    <ng-container>
+      <ng-container *ngFor="let field of fieldsWithoutLayoutConfig">
+        <ng-container
+          *ngTemplateOutlet="
+            fieldTemplate;
+            context: { field: field, form: form }
+          "></ng-container>
+      </ng-container>
     </ng-container>
   </div>
   <div class="footer-container bia-form-fixed-buttons">
@@ -126,7 +72,7 @@
     </div>
   </div>
 
-  <ng-template #fieldTemplate let-field="field">
+  <ng-template #fieldTemplate let-field="field" let-form="form">
     <div
       *ngIf="field.isVisible === true"
       class="flex flex-row align-items-center"

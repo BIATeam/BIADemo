@@ -41,9 +41,6 @@ import { BiaDialogService } from 'src/app/core/bia-core/services/bia-dialog.serv
   ],
 })
 export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
-  @Input() hasFilter = false;
-  @Input() showFilter = false;
-  @Input() showBtnFilter = false;
   @Input() canAdd = true;
   @Input() canDelete = true;
   @Input() canEdit = true;
@@ -63,7 +60,6 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
     crudItemId: any;
     fixed: boolean;
   }>();
-  @Output() openFilter = new EventEmitter<void>();
   @Output() exportCSV = new EventEmitter<void>();
   @Output() fullExportCSV = new EventEmitter<void>();
   @Output() import = new EventEmitter<void>();
@@ -101,11 +97,7 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.selectedElements) {
-      this.nbSelectedElements = this.selectedElements.length;
-    } else {
-      this.nbSelectedElements = 0;
-    }
+    this.nbSelectedElements = this.selectedElements?.length ?? 0;
 
     if (changes.parentDisplayName || changes.headerTitle) {
       this.updateHeaderTitle();
@@ -139,13 +131,6 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
     this.confirmationService.confirm(confirmation);
   }
 
-  toggleFilter() {
-    this.showFilter = !this.showFilter;
-    if (this.showFilter === true) {
-      this.openFilter.emit();
-    }
-  }
-
   displayImportButton(): boolean {
     return (
       this.canImport === true &&
@@ -155,23 +140,25 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
 
   get isSelectedElementFixed(): boolean {
     return (
-      this.selectedElements.length === 1 &&
+      this.selectedElements?.length === 1 &&
       this.selectedElements[0].isFixed === true
     );
   }
 
   onFixedChanged(fixed: boolean): void {
     this.crudItemFixedChanged.emit({
-      crudItemId: this.selectedElements[0].id,
+      crudItemId: this.selectedElements
+        ? this.selectedElements[0].id
+        : undefined,
       fixed: fixed,
     });
   }
 
   get isDeleteButtonDisabled(): boolean {
     const selectedElements =
-      this.showFixedButtons === true
-        ? this.selectedElements.filter(e => e.isFixed !== true)
-        : this.selectedElements;
+      (this.showFixedButtons === true
+        ? this.selectedElements?.filter(e => e.isFixed !== true)
+        : this.selectedElements) ?? [];
     return selectedElements.length === 0;
   }
 }

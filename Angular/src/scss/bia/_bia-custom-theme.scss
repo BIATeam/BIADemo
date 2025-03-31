@@ -214,6 +214,8 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
 }
 
 .p-dialog {
+  max-width: 100%;
+
   .p-dialog-content {
     // forms button always visible
     .bia-form:has(> .bia-form-fixed-buttons) {

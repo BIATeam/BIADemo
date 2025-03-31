@@ -30,7 +30,7 @@ import { PlaneSpecific } from '../../model/plane-specific';
   selector: 'app-plane-specific-form',
   templateUrl: 'plane-form.component.html',
   styleUrls: [
-    '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
+    '/src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
   ],
   imports: [
     PrimeTemplate,
@@ -100,7 +100,7 @@ export class PlaneFormComponent
     this.crudItem.engines ??= [];
     this.newId = CrudHelperService.onEmbeddedItemSave(
       engine,
-      this.crudItem?.engines ?? [],
+      this.crudItem.engines,
       this.newId
     );
     this.setDisplayedEngines();

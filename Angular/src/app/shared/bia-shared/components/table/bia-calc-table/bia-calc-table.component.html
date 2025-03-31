@@ -23,7 +23,8 @@
     (onStateSave)="onStateSave($event)"
     (selectionChange)="onSelectionChange()"
     stripedRows
-    sortMode="multiple"
+    [sortMode]="sortMode"
+    [multiSortMeta]="multiSortMeta"
     [scrollHeight]="scrollHeightValue"
     [scrollable]="isScrollable"
     editMode="row"

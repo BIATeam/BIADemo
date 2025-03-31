@@ -171,6 +171,7 @@
           <p-floatlabel variant="in">
             <p-select
               [options]="getOptionDto('type')"
+              appendTo="body"
               placeholder="&nbsp;"
               formControlName="type"
               optionLabel="display"
@@ -198,6 +199,7 @@
             <p-date-picker
               biaLocale
               formControlName="createdDate"
+              appendTo="body"
               placeholder="&nbsp;"
               [showButtonBar]="true"
               dateFormat="yy-mm-dd"
@@ -274,6 +276,7 @@
           <p-floatlabel variant="in">
             <p-select
               [options]="getOptionDto('createdBy')"
+              appendTo="body"
               placeholder="&nbsp;"
               formControlName="createdBy"
               optionLabel="display"
@@ -289,6 +292,7 @@
           <p-floatlabel variant="in">
             <p-multiSelect
               [options]="getOptionDto('notifiedUsers')"
+              appendTo="body"
               formControlName="notifiedUsers"
               optionLabel="display"
               datakey="id"

@@ -185,12 +185,12 @@ export class BiaTranslationService {
     if (appSettings) {
       let culture;
 
-      if (code === null) {
+      if (!code) {
         culture = appSettings.cultures.filter(
           c => c.acceptedCodes.indexOf('default') > -1
         )[0];
       }
-      if (culture === null) {
+      if (!culture) {
         culture = appSettings.cultures.filter(c => c.code === code)[0];
       }
 

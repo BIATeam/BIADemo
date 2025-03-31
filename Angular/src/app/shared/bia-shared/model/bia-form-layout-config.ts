@@ -6,7 +6,8 @@ export class BiaFormLayoutConfig<TDto> {
 
 export type BiaFormLayoutConfigItem<TDto> =
   | BiaFormLayoutConfigGroup<TDto>
-  | BiaFormLayoutConfigRow<TDto>;
+  | BiaFormLayoutConfigRow<TDto>
+  | BiaFormLayoutConfigTabGroup<TDto>;
 
 export class BiaFormLayoutConfigRow<TDto> {
   readonly type = 'row';
@@ -91,6 +92,27 @@ export class BiaFormLayoutConfigField<
   ) {
     super(columnSize);
   }
+}
+
+export class BiaFormLayoutConfigTabGroup<
+  TDto,
+> extends BiaFormLayoutConfigColumn<TDto> {
+  readonly type = 'tab';
+
+  constructor(
+    public tabs: BiaFormLayoutConfigTab<TDto>[],
+    public columnSize?: number | BiaFormLayoutConfigColumnSize | undefined
+  ) {
+    super(columnSize);
+  }
+}
+
+export class BiaFormLayoutConfigTab<TDto> {
+  constructor(
+    public id: string,
+    public name: string,
+    public items: BiaFormLayoutConfigItem<TDto>[]
+  ) {}
 }
 
 export class BiaFormLayoutConfigColumnSize {

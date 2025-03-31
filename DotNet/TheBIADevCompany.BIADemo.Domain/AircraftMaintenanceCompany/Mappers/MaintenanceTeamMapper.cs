@@ -42,8 +42,30 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Mappers
             {
                 return new ExpressionCollection<MaintenanceTeam>
                 {
-                    { "Id", aircraftMaintenanceCompany => aircraftMaintenanceCompany.Id },
-                    { "Title", aircraftMaintenanceCompany => aircraftMaintenanceCompany.Title },
+                    { "Id", maintenanceTeam => maintenanceTeam.Id },
+                    { "Title", maintenanceTeam => maintenanceTeam.Title },
+                    { "AircraftMaintenanceCompany", maintenanceTeam => maintenanceTeam.AircraftMaintenanceCompany.Title },
+                    { "Code", maintenanceTeam => maintenanceTeam.Code },
+                    { "IsActive", maintenanceTeam => maintenanceTeam.IsActive },
+                    { "IsApproved", maintenanceTeam => maintenanceTeam.IsApproved },
+                    { "FirstOperation", maintenanceTeam => maintenanceTeam.FirstOperation },
+                    { "LastOperation", maintenanceTeam => maintenanceTeam.LastOperation },
+                    { "ApprovedDate", maintenanceTeam => maintenanceTeam.ApprovedDate },
+                    { "NextOperation", maintenanceTeam => maintenanceTeam.NextOperation },
+                    { "MaxTravelDuration", maintenanceTeam => maintenanceTeam.MaxTravelDuration },
+                    { "MaxOperationDuration", maintenanceTeam => maintenanceTeam.MaxOperationDuration },
+                    { "OperationCount", maintenanceTeam => maintenanceTeam.OperationCount },
+                    { "IncidentCount", maintenanceTeam => maintenanceTeam.IncidentCount },
+                    { "TotalOperationDuration", maintenanceTeam => maintenanceTeam.TotalOperationDuration },
+                    { "AverageOperationDuration", maintenanceTeam => maintenanceTeam.AverageOperationDuration },
+                    { "TotalTravelDuration", maintenanceTeam => maintenanceTeam.TotalTravelDuration },
+                    { "AverageTravelDuration", maintenanceTeam => maintenanceTeam.AverageTravelDuration },
+                    { "TotalOperationCost", maintenanceTeam => maintenanceTeam.TotalOperationCost },
+                    { "AverageOperationCost", maintenanceTeam => maintenanceTeam.AverageOperationCost },
+                    { "CurrentAirport", maintenanceTeam => maintenanceTeam.CurrentAirport != null ? maintenanceTeam.CurrentAirport.Name : null },
+                    { "OperationAirports", maintenanceTeam => maintenanceTeam.OperationAirports.Select(x => x.Name).OrderBy(x => x) },
+                    { "CurrentCountry", maintenanceTeam => maintenanceTeam.CurrentCountry != null ? maintenanceTeam.CurrentCountry.Name : null },
+                    { "OperationCountries", maintenanceTeam => maintenanceTeam.OperationCountries.Select(x => x.Name).OrderBy(x => x) },
                 };
             }
         }
@@ -203,7 +225,7 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Mappers
                 CSVString(x.Title),
                 CSVString(x.Code),
                 CSVBool(x.IsActive),
-                CSVBool(x.IsApproved.GetValueOrDefault()),
+                CSVBool(x.IsApproved),
                 CSVDateTime(x.FirstOperation),
                 CSVDateTime(x.LastOperation),
                 CSVDate(x.ApprovedDate),

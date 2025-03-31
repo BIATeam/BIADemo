@@ -1,11 +1,4 @@
 <div class="flex flex-row bia-page-remove-margin bia-responsive-flex-row">
-  <bia-team-advanced-filter
-    *ngIf="showAdvancedFilter"
-    (filter)="onFilter($event)"
-    (closeFilter)="onCloseFilter()"
-    [advancedFilter]="
-      crudConfiguration.fieldsConfig.advancedFilter
-    "></bia-team-advanced-filter>
   <div class="flex-grow-1 bia-page-margin">
     <div [ngClass]="{ 'table-compact': crudConfiguration.useCompactMode }">
       <bia-table-header
@@ -17,10 +10,6 @@
         (exportCSV)="onExportCSV('aircraftMaintenanceCompany.listOf')"
         (delete)="onDelete()"
         [selectedElements]="selectedCrudItems"
-        [showBtnFilter]="true"
-        [showFilter]="showAdvancedFilter"
-        [hasFilter]="hasAdvancedFilter"
-        (openFilter)="onOpenFilter()"
         [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
         [tableControllerVisible]="showTableController"
         (toggleTableControllerVisibility)="toggleTableControllerVisibility()">
@@ -36,6 +25,10 @@
         [columns]="columns"
         [columnToDisplays]="displayedColumns"
         (displayedColumnsChange)="displayedColumnsChanged($event)"
+        [showBtnFilter]="true"
+        [showFilter]="showAdvancedFilter"
+        [hasFilter]="hasAdvancedFilter"
+        (openFilter)="onOpenFilter()"
         (filter)="searchGlobalChanged($event)"
         (clearFilters)="onClearFilters()"
         (toggleSearch)="onToggleSearch()"
@@ -116,4 +109,11 @@
         "></app-aircraft-maintenance-company-table>
     </div>
   </div>
+  <bia-team-advanced-filter
+    *ngIf="showAdvancedFilter"
+    (filter)="onFilter($event)"
+    (closeFilter)="onCloseFilter()"
+    [advancedFilter]="
+      crudConfiguration.fieldsConfig.advancedFilter
+    "></bia-team-advanced-filter>
 </div>

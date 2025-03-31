@@ -100,6 +100,7 @@ export class BiaFieldConfig<TDto> {
   alignFrozen: string;
   displayFormat: BiaFieldNumberFormat | BiaFieldDateFormat | null;
   maxConstraints = 10;
+  isVisibleInTable: boolean;
 
   get isDate() {
     return (
@@ -141,6 +142,7 @@ export class BiaFieldConfig<TDto> {
     this.isFrozen = false;
     this.alignFrozen = 'left';
     this.displayFormat = null;
+    this.isVisibleInTable = true;
   }
 
   public clone(): BiaFieldConfig<TDto> {
@@ -168,6 +170,7 @@ export class BiaFieldConfig<TDto> {
         isFrozen: this.isFrozen,
         alignFrozen: this.alignFrozen,
         displayFormat: this.displayFormat,
+        isVisibleInTable: this.isVisibleInTable,
       }
     );
   }

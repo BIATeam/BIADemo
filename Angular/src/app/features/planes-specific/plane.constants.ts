@@ -7,6 +7,7 @@ import { Plane, planeFieldsConfiguration } from './model/plane';
 import {
   PlaneSpecific,
   planeSpecificFieldsConfiguration,
+  planeSpecificFormLayoutConfiguration,
 } from './model/plane-specific';
 
 // IMPORTANT: this key should be unique in all the application.
@@ -41,4 +42,5 @@ export const planeSpecificCRUDConfiguration: CrudConfig<PlaneSpecific> =
   new CrudConfig({
     ...planeCRUDConfiguration,
     fieldsConfig: planeSpecificFieldsConfiguration,
+    formLayoutConfig: planeSpecificFormLayoutConfiguration,
   });

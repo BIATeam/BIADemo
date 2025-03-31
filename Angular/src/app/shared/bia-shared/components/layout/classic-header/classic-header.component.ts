@@ -94,10 +94,8 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
   @Input() version: string;
   @Input()
   set menus(navigations: BiaNavigation[]) {
-    if (navigations && navigations.length > 0) {
-      this.navigations = navigations;
-      this.buildNavigation();
-    }
+    this.navigations = navigations ?? [];
+    this.buildNavigation();
   }
 
   @Input() logos: string[];
@@ -263,14 +261,18 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
       this.navigations
     );
 
-    this.sub.add(
-      this.translateService.stream(translationKeys).subscribe(translations => {
-        this.layoutService.processMenuTranslation(
-          this.navMenuItems,
-          translations
-        );
-      })
-    );
+    if (translationKeys.length > 0) {
+      this.sub.add(
+        this.translateService
+          .stream(translationKeys)
+          .subscribe(translations => {
+            this.layoutService.processMenuTranslation(
+              this.navMenuItems,
+              translations
+            );
+          })
+      );
+    }
   }
 
   buildTopBarMenu() {

@@ -10,9 +10,7 @@ import { AirportOptionModule } from 'src/app/domains/airport-option/airport-opti
 // BIAToolKit - Begin Option Country
 import { CountryOptionModule } from 'src/app/domains/country-option/country-option.module';
 // BIAToolKit - End Option Country
-import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
-import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
-
+import { DynamicLayoutComponent } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { Permission } from 'src/app/shared/permission';
 
 import { MaintenanceTeamFormComponent } from './components/maintenance-team-form/maintenance-team-form.component';
@@ -32,8 +30,9 @@ export const ROUTES: Routes = [
       breadcrumb: null,
       permission: Permission.MaintenanceTeam_List_Access,
       injectComponent: MaintenanceTeamsIndexComponent,
+      configuration: maintenanceTeamCRUDConfiguration,
     },
-    component: FullPageLayoutComponent,
+    component: DynamicLayoutComponent,
     canActivate: [PermissionGuard],
     // [Calc] : The children are not used in calc
     children: [
@@ -44,15 +43,8 @@ export const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.MaintenanceTeam_Create,
           title: 'maintenanceTeam.add',
-          injectComponent: MaintenanceTeamNewComponent,
-          dynamicComponent: () =>
-            maintenanceTeamCRUDConfiguration.usePopup
-              ? PopupLayoutComponent
-              : FullPageLayoutComponent,
         },
-        component: maintenanceTeamCRUDConfiguration.usePopup
-          ? PopupLayoutComponent
-          : FullPageLayoutComponent,
+        component: MaintenanceTeamNewComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -83,15 +75,8 @@ export const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.MaintenanceTeam_Update,
               title: 'maintenanceTeam.edit',
-              injectComponent: MaintenanceTeamEditComponent,
-              dynamicComponent: () =>
-                maintenanceTeamCRUDConfiguration.usePopup
-                  ? PopupLayoutComponent
-                  : FullPageLayoutComponent,
             },
-            component: maintenanceTeamCRUDConfiguration.usePopup
-              ? PopupLayoutComponent
-              : FullPageLayoutComponent,
+            component: MaintenanceTeamEditComponent,
             canActivate: [PermissionGuard],
           },
           {

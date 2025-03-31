@@ -15,6 +15,7 @@ import { NgIf, NgFor } from '@angular/common';
 import { Popover } from 'primeng/popover';
 
 export interface BiaBehaviorIcon {
+  name: 'CalcMode' | 'Popup' | 'Split' | 'FullPage';
   tooltip: string;
   disabled: boolean;
   icon: string;
@@ -67,30 +68,24 @@ export class BiaTableBehaviorControllerComponent<TDto extends { id: number }>
 
   private loadActions() {
     this.visibleLayouts = [];
-    this.addButtonIfVisible(
-      'showCalcMode',
-      'useCalcMode',
-      'bia.useCalcMode',
-      'pi-table'
-    );
-    this.addButtonIfVisible(
-      'showPopup',
-      'usePopup',
-      'bia.usePopup',
-      'pi-clone'
-    );
-    this.addButtonIfVisible('showSplit', 'useSplit', 'bia.useSplit', 'pi-book');
+    this.addButtonIfVisible('CalcMode', 'pi-table');
+    this.addButtonIfVisible('Popup', 'pi-clone');
+    this.addButtonIfVisible('Split', 'pi-stop');
     this.addFullPageButtonIfVisible();
   }
 
   private addButtonIfVisible(
-    showFlag: keyof typeof this.crudConfiguration.showIcons,
-    useFlag: keyof typeof this.crudConfiguration,
-    translationKey: string,
+    name: 'CalcMode' | 'Popup' | 'Split',
     icon: string
   ): void {
+    const showFlag: keyof typeof this.crudConfiguration.showIcons = ('show' +
+      name) as keyof typeof this.crudConfiguration.showIcons;
+    const useFlag: keyof typeof this.crudConfiguration = ('use' +
+      name) as keyof typeof this.crudConfiguration;
+    const translationKey: string = 'bia.use' + name;
     if (this.crudConfiguration.showIcons[showFlag]) {
       const button: BiaBehaviorIcon = {
+        name,
         tooltip: this.translateService.instant(translationKey),
         command: (button: BiaBehaviorIcon) =>
           this.setActiveLayout(useFlag, button),
@@ -111,6 +106,7 @@ export class BiaTableBehaviorControllerComponent<TDto extends { id: number }>
         this.crudConfiguration.usePopup ||
         this.crudConfiguration.useSplit;
       const button = {
+        name: 'FullPage' as 'FullPage',
         tooltip: this.translateService.instant('bia.useFullPage'),
         command: (button: BiaBehaviorIcon) =>
           this.setActiveLayout(null, button),

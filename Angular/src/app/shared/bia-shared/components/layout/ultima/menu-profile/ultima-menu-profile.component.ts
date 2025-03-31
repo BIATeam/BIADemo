@@ -20,6 +20,7 @@ import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-transl
 import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
 import { THEME_DARK, THEME_LIGHT } from 'src/app/shared/constants';
 import { BiaLayoutService } from '../../services/layout.service';
+import { BiaMenuProfileService } from '../../services/menu-profile.service';
 import { BiaUltimaConfigComponent } from '../config/ultima-config.component';
 
 @Component({
@@ -107,7 +108,7 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
   avatarUrl: string | SafeUrl = this.defaultProfileImage;
 
   usernameParam?: { name: string };
-  displayName: string;
+  menuProfileHtml: string;
   topBarMenuItems: MenuItem[];
 
   private sub: Subscription = new Subscription();
@@ -120,7 +121,8 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
     protected readonly appSettingsService: AppSettingsService,
     protected readonly http: HttpClient,
     protected readonly sanitizer: DomSanitizer,
-    public el: ElementRef
+    public el: ElementRef,
+    protected readonly menuProfileService: BiaMenuProfileService
   ) {}
 
   ngOnDestroy(): void {
@@ -191,10 +193,9 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
           });
         }
 
-        this.displayName =
-          translations['bia.greetings'] +
-          ' ' +
-          (this.usernameParam?.name ?? '');
+        this.menuProfileHtml = this.menuProfileService.getMenuProfileHtml(
+          this.usernameParam?.name ?? ''
+        );
 
         this.topBarMenuItems = [
           {

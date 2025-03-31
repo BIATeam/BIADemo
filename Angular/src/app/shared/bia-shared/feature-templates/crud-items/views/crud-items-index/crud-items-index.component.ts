@@ -554,7 +554,11 @@ export class CrudItemsIndexComponent<
     const columns: { [key: string]: string } = {};
 
     if (useAllColumn === true) {
-      const allColumns = [...this.crudConfiguration.fieldsConfig.columns];
+      const allColumns = [
+        ...this.crudConfiguration.fieldsConfig.columns.filter(
+          col => col.isVisibleInTable
+        ),
+      ];
       const columnIdExists = allColumns.some(column => column.field === 'id');
 
       if (columnIdExists !== true) {
@@ -601,9 +605,9 @@ export class CrudItemsIndexComponent<
     this.canFix = false;
   }
   protected initTableConfiguration() {
-    this.columns = this.crudConfiguration.fieldsConfig.columns.map(
-      col => <KeyValuePair>{ key: col.field, value: col.header }
-    );
+    this.columns = this.crudConfiguration.fieldsConfig.columns
+      .filter(col => col.isVisibleInTable)
+      .map(col => <KeyValuePair>{ key: col.field, value: col.header });
     this.displayedColumns = this.crudConfiguration.fieldsConfig.columns
       .filter(col => !col.isHideByDefault)
       .map(col => <KeyValuePair>{ key: col.field, value: col.header });

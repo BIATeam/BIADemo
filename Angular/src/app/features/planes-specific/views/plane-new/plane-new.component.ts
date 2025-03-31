@@ -13,6 +13,7 @@ import { AsyncPipe } from '@angular/common';
 })
 export class PlaneNewComponent extends CrudItemNewComponent<PlaneSpecific> {
   newPlane: PlaneSpecific = { engines: [] } as unknown as PlaneSpecific;
+  crudItem: PlaneSpecific = <PlaneSpecific>{};
 
   constructor(
     protected injector: Injector,

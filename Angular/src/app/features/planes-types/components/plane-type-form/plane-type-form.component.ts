@@ -6,9 +6,9 @@ import { PlaneType } from '../../model/plane-type';
 @Component({
   selector: 'app-plane-type-form',
   templateUrl:
-    '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.html',
+    '/src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.html',
   styleUrls: [
-    '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
+    '/src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
   ],
   imports: [BiaFormComponent],
 })

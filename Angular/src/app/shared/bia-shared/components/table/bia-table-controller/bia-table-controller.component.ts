@@ -82,11 +82,16 @@ export class BiaTableControllerComponent
   @Input() defaultViewPref: BiaTableState;
   @Input() hasColumnFilter = false;
 
+  @Input() hasFilter = false;
+  @Input() showFilter = false;
+  @Input() showBtnFilter = false;
+
   @Output() displayedColumnsChange = new EventEmitter<KeyValuePair[]>();
   @Output() filter = new EventEmitter<string>();
   @Output() toggleSearch = new EventEmitter<void>();
   @Output() viewChange = new EventEmitter<string>();
   @Output() clearFilters = new EventEmitter<void>();
+  @Output() openFilter = new EventEmitter<void>();
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   @ViewChild(ViewListComponent, { static: false })
@@ -235,7 +240,7 @@ export class BiaTableControllerComponent
   protected initFilterCtrl() {
     this.sub.add(
       this.filterCtrl.valueChanges.subscribe(filterValue => {
-        this.filter.emit(filterValue.trim().toLowerCase());
+        this.filter.emit(filterValue.trim());
       })
     );
   }
@@ -306,5 +311,12 @@ export class BiaTableControllerComponent
         }
       }
     );
+  }
+
+  toggleFilter() {
+    this.showFilter = !this.showFilter;
+    if (this.showFilter === true) {
+      this.openFilter.emit();
+    }
   }
 }
