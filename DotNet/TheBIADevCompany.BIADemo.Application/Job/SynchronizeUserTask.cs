@@ -6,6 +6,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
 {
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Job;
+    using BIA.Net.Core.Common.Configuration;
     using Hangfire;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
@@ -20,6 +21,11 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         private readonly IUserAppService userService;
 
         /// <summary>
+        /// The configuration of the BiaNet section.
+        /// </summary>
+        private readonly BiaNetSection biaNetSection;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SynchronizeUserTask"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
@@ -29,6 +35,8 @@ namespace TheBIADevCompany.BIADemo.Application.Job
             : base(configuration, logger)
         {
             this.userService = userService;
+            this.biaNetSection = new BiaNetSection();
+            configuration?.GetSection("BiaNet").Bind(this.biaNetSection);
         }
 
         /// <summary>
@@ -37,7 +45,14 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         /// <returns>The <see cref="Task"/> representing the operation to perform.</returns>
         protected override async Task RunMonitoredTask()
         {
-            await this.userService.SynchronizeWithADAsync(true);
+            if (this.biaNetSection?.Authentication?.Keycloak?.IsActive == true)
+            {
+                await this.userService.SynchronizeWithIdpAsync();
+            }
+            else
+            {
+                await this.userService.SynchronizeWithADAsync(true);
+            }
         }
     }
 }
