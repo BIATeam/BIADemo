@@ -259,8 +259,6 @@ export class BiaUltimaTopbarComponent
       ?.querySelector('.p-toast.p-component');
 
     if (parentElement) {
-      console.log('parentElement', parentElement);
-      console.log('firstChild', parentElement.firstChild);
       const clearButton = document.getElementById('clearButton');
       this.renderer.insertBefore(
         parentElement,

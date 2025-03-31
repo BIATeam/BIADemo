@@ -73,8 +73,6 @@ export class BiaUltimaSidebarComponent implements OnDestroy {
       true
     );
 
-    console.log('navMenuItems', this.navMenuItems);
-
     this.sub.add(
       this.translateService.stream(translationKeys).subscribe(translations => {
         this.layoutService.processMenuTranslation(
