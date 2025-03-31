@@ -4993,7 +4993,7 @@ const MyPreset = definePreset(Material, {
         transitionDuration: '{transition.duration}',
       },
       icon: {
-        size: '1.25rem',
+        size: '2rem',
       },
       content: {
         padding: '{overlay.popover.padding}',
@@ -5008,7 +5008,7 @@ const MyPreset = definePreset(Material, {
       },
       detail: {
         fontWeight: '500',
-        fontSize: '0.875rem',
+        fontSize: '1rem',
       },
       closeButton: {
         width: '2rem',
