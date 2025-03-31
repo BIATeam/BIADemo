@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // import { ReducerManager, StoreModule } from '@ngrx/store';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
-import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
-import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
 import { Permission } from 'src/app/shared/permission';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MaintenanceContractFormComponent } from './components/maintenance-contract-form/maintenance-contract-form.component';
@@ -20,6 +18,7 @@ import { SiteOptionModule } from 'src/app/domains/site-option/site-option.module
 // BIAToolKit - End Option Site
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { DynamicLayoutComponent } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { CrudItemImportModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item-import.module';
 import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
 import { MaintenanceContractTableComponent } from './components/maintenance-contract-table/maintenance-contract-table.component';
@@ -37,8 +36,9 @@ export const ROUTES: Routes = [
       breadcrumb: null,
       permission: Permission.MaintenanceContract_List_Access,
       injectComponent: MaintenanceContractsIndexComponent,
+      configuration: maintenanceContractCRUDConfiguration,
     },
-    component: FullPageLayoutComponent,
+    component: DynamicLayoutComponent,
     canActivate: [PermissionGuard],
     // [Calc] : The children are not used in calc
     children: [
@@ -49,15 +49,8 @@ export const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.MaintenanceContract_Create,
           title: 'maintenanceContract.add',
-          injectComponent: MaintenanceContractNewComponent,
-          dynamicComponent: () =>
-            maintenanceContractCRUDConfiguration.usePopup
-              ? PopupLayoutComponent
-              : FullPageLayoutComponent,
         },
-        component: maintenanceContractCRUDConfiguration.usePopup
-          ? PopupLayoutComponent
-          : FullPageLayoutComponent,
+        component: MaintenanceContractNewComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -72,15 +65,8 @@ export const ROUTES: Routes = [
           },
           permission: Permission.MaintenanceContract_Save,
           title: 'maintenanceContract.import',
-          injectComponent: MaintenanceContractImportComponent,
-          dynamicComponent: () =>
-            maintenanceContractCRUDConfiguration.usePopup
-              ? PopupLayoutComponent
-              : FullPageLayoutComponent,
         },
-        component: maintenanceContractCRUDConfiguration.usePopup
-          ? PopupLayoutComponent
-          : FullPageLayoutComponent,
+        component: MaintenanceContractImportComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -99,15 +85,8 @@ export const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.MaintenanceContract_Update,
               title: 'maintenanceContract.edit',
-              injectComponent: MaintenanceContractEditComponent,
-              dynamicComponent: () =>
-                maintenanceContractCRUDConfiguration.usePopup
-                  ? PopupLayoutComponent
-                  : FullPageLayoutComponent,
             },
-            component: maintenanceContractCRUDConfiguration.usePopup
-              ? PopupLayoutComponent
-              : FullPageLayoutComponent,
+            component: MaintenanceContractEditComponent,
             canActivate: [PermissionGuard],
           },
           {
