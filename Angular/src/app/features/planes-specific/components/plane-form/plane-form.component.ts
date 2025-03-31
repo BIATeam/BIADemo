@@ -30,7 +30,7 @@ import { PlaneSpecific } from '../../model/plane-specific';
   selector: 'app-plane-specific-form',
   templateUrl: 'plane-form.component.html',
   styleUrls: [
-    '/src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
+    '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
   ],
   imports: [
     PrimeTemplate,

@@ -6,7 +6,7 @@ import { TeamTypeId } from 'src/app/shared/constants';
 @Component({
   selector: 'app-site-member-edit',
   templateUrl:
-    '/src/app/shared/bia-shared/feature-templates/members/views/member-edit/member-edit.component.html',
+    '../../../../../../shared/bia-shared/feature-templates/members/views/member-edit/member-edit.component.html',
 })
 export class SiteMemberEditComponent
   extends MemberEditComponent

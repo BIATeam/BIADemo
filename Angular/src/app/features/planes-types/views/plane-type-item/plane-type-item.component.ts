@@ -13,9 +13,9 @@ import { PlaneTypeService } from '../../services/plane-type.service';
 @Component({
   selector: 'app-planes-types-item',
   templateUrl:
-    '/src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
+    '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
   styleUrls: [
-    '/src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
+    '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
   ],
   imports: [RouterOutlet, NgIf, AsyncPipe, SpinnerComponent],
 })

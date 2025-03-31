@@ -6,9 +6,9 @@ import { Engine } from '../../model/engine';
 @Component({
   selector: 'app-engine-form',
   templateUrl:
-    '/src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.html',
+    '../../../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.html',
   styleUrls: [
-    '/src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
+    '../../../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
   ],
   imports: [BiaFormComponent],
 })

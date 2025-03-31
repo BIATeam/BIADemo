@@ -15,9 +15,9 @@ import { MaintenanceTeamService } from '../../../../services/maintenance-team.se
 @Component({
   selector: 'app-maintenance-team-members-index',
   templateUrl:
-    '/src/app/shared/bia-shared/feature-templates/members/views/members-index/members-index.component.html',
+    '../../../../../../../../shared/bia-shared/feature-templates/members/views/members-index/members-index.component.html',
   styleUrls: [
-    '/src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component.scss',
+    '../../../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component.scss',
   ],
   imports: [
     NgClass,

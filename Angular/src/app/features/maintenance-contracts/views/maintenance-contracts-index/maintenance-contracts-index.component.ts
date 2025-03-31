@@ -10,8 +10,8 @@ import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bi
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
 import { Permission } from 'src/app/shared/permission';
 import { MaintenanceContractTableComponent } from '../../components/maintenance-contract-table/maintenance-contract-table.component';
-import { maintenanceContractCRUDConfiguration } from '../../maintenance-contract.constants';
 import { MaintenanceContract } from '../../model/maintenance-contract';
+import { maintenanceContractCRUDConfiguration } from '../../maintenance-contract.constants';
 import { MaintenanceContractService } from '../../services/maintenance-contract.service';
 
 @Component({
@@ -46,18 +46,10 @@ export class MaintenanceContractsIndexComponent extends CrudItemsIndexComponent<
   }
 
   protected setPermissions() {
-    this.canEdit = this.authService.hasPermission(
-      Permission.MaintenanceContract_Update
-    );
-    this.canDelete = this.authService.hasPermission(
-      Permission.MaintenanceContract_Delete
-    );
-    this.canAdd = this.authService.hasPermission(
-      Permission.MaintenanceContract_Create
-    );
-    this.canSave = this.authService.hasPermission(
-      Permission.MaintenanceContract_Save
-    );
+    this.canEdit = this.authService.hasPermission(Permission.MaintenanceContract_Update);
+    this.canDelete = this.authService.hasPermission(Permission.MaintenanceContract_Delete);
+    this.canAdd = this.authService.hasPermission(Permission.MaintenanceContract_Create);
+    this.canSave = this.authService.hasPermission(Permission.MaintenanceContract_Save);
     this.canSelect = this.canDelete;
     // BIAToolKit - Begin PlaneIndexTsCanViewChildSet
     // BIAToolKit - End PlaneIndexTsCanViewChildSet

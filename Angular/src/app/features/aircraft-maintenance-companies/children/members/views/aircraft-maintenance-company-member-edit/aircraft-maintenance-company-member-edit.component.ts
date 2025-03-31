@@ -6,7 +6,7 @@ import { AircraftMaintenanceCompanyService } from '../../../../services/aircraft
 @Component({
   selector: 'app-aircraft-maintenance-company-member-edit',
   templateUrl:
-    '/src/app/shared/bia-shared/feature-templates/members/views/member-edit/member-edit.component.html',
+    '../../../../../../shared/bia-shared/feature-templates/members/views/member-edit/member-edit.component.html',
 })
 export class AircraftMaintenanceCompanyMemberEditComponent
   extends MemberEditComponent
