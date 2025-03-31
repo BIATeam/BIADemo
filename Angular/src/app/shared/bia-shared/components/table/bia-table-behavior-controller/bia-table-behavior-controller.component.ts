@@ -102,7 +102,7 @@ export class BiaTableBehaviorControllerComponent<TDto extends { id: number }>
         this.crudConfiguration.usePopup ||
         this.crudConfiguration.useSplit;
       const button = {
-        name: 'FullPage' as 'FullPage',
+        name: 'FullPage' as const,
         tooltip: this.translateService.instant('bia.useFullPage'),
         command: (button: BiaBehaviorIcon) =>
           this.setActiveLayout(null, button),

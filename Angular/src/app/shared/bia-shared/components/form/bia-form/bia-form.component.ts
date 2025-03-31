@@ -201,7 +201,7 @@ export class BiaFormComponent<TDto extends { id: number }>
     crudItem: { [key: string]: any }
   ) {
     for (const key in crudItem) {
-      if (crudItem.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(crudItem, key)) {
         const control = formGroup.get(key);
 
         if (control && !(control instanceof UntypedFormGroup)) {
@@ -504,7 +504,7 @@ export class BiaFormComponent<TDto extends { id: number }>
     result: { [key: string]: any } = {}
   ): { [key: string]: any } {
     for (const key in formGroup.controls) {
-      if (formGroup.controls.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(formGroup.controls, key)) {
         const control = formGroup.controls[key];
         const newKey = parentKey ? `${parentKey}.${key}` : key;
 

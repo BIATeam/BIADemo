@@ -88,7 +88,7 @@ export class BiaTableControllerComponent
 
   protected sub = new Subscription();
   isOverflowing: boolean;
-  overflowingContentActive: boolean = false;
+  overflowingContentActive = false;
   resizeObserver: ResizeObserver;
   overflowingWidth: number;
   overflowingContentOutsideClickListener: any;
