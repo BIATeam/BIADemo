@@ -4,8 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
-import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
-import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
+import { DynamicLayoutComponent } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
 import { Permission } from 'src/app/shared/permission';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -26,8 +25,9 @@ export const ROUTES: Routes = [
       breadcrumb: null,
       permission: Permission.Airport_List_Access,
       injectComponent: AirportsIndexComponent,
+      configuration: airportCRUDConfiguration,
     },
-    component: FullPageLayoutComponent,
+    component: DynamicLayoutComponent,
     canActivate: [PermissionGuard],
     // [Calc] : The children are not used in calc
     children: [
@@ -38,15 +38,8 @@ export const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.Airport_Create,
           title: 'airport.add',
-          injectComponent: AirportNewComponent,
-          dynamicComponent: () =>
-            airportCRUDConfiguration.usePopup
-              ? PopupLayoutComponent
-              : FullPageLayoutComponent,
         },
-        component: airportCRUDConfiguration.usePopup
-          ? PopupLayoutComponent
-          : FullPageLayoutComponent,
+        component: AirportNewComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -65,15 +58,8 @@ export const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.Airport_Update,
               title: 'airport.edit',
-              injectComponent: AirportEditComponent,
-              dynamicComponent: () =>
-                airportCRUDConfiguration.usePopup
-                  ? PopupLayoutComponent
-                  : FullPageLayoutComponent,
             },
-            component: airportCRUDConfiguration.usePopup
-              ? PopupLayoutComponent
-              : FullPageLayoutComponent,
+            component: AirportEditComponent,
             canActivate: [PermissionGuard],
           },
           {

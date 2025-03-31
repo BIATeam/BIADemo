@@ -5,8 +5,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { RoleOptionModule } from 'src/app/domains/bia-domains/role-option/role-option.module';
-import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
-import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
+import { DynamicLayoutComponent } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { CrudItemImportModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item-import.module';
 import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
 import { Permission } from 'src/app/shared/permission';
@@ -30,8 +29,9 @@ export const ROUTES: Routes = [
       breadcrumb: null,
       permission: Permission.User_List_Access,
       injectComponent: UsersIndexComponent,
+      configuration: userCRUDConfiguration,
     },
-    component: FullPageLayoutComponent,
+    component: DynamicLayoutComponent,
     canActivate: [PermissionGuard],
     // [Calc] : The children are not used in calc
     children: [
@@ -47,15 +47,8 @@ export const ROUTES: Routes = [
           },
           permission: Permission.User_Save,
           title: 'user.import',
-          injectComponent: UserImportComponent,
-          dynamicComponent: () =>
-            userCRUDConfiguration.usePopup
-              ? PopupLayoutComponent
-              : FullPageLayoutComponent,
         },
-        component: userCRUDConfiguration.usePopup
-          ? PopupLayoutComponent
-          : FullPageLayoutComponent,
+        component: UserImportComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -65,15 +58,8 @@ export const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.User_Add,
           title: 'user.add',
-          injectComponent: UserNewComponent,
-          dynamicComponent: () =>
-            userCRUDConfiguration.usePopup
-              ? PopupLayoutComponent
-              : FullPageLayoutComponent,
         },
-        component: userCRUDConfiguration.usePopup
-          ? PopupLayoutComponent
-          : FullPageLayoutComponent,
+        component: UserNewComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -92,15 +78,8 @@ export const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.User_UpdateRoles,
               title: 'user.edit',
-              injectComponent: UserEditComponent,
-              dynamicComponent: () =>
-                userCRUDConfiguration.usePopup
-                  ? PopupLayoutComponent
-                  : FullPageLayoutComponent,
             },
-            component: userCRUDConfiguration.usePopup
-              ? PopupLayoutComponent
-              : FullPageLayoutComponent,
+            component: UserEditComponent,
             canActivate: [PermissionGuard],
           },
           {
