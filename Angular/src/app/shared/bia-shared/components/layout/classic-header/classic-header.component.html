@@ -153,7 +153,7 @@
         class="notification-actions flex flex-row justify-content-between align-content-between">
         <button
           pButton
-          [label]="message.data?.notification?.data.display | translate"
+          [label]="message.data?.notification?.data?.display | translate"
           (click)="onNotificationClick(message)"
           class="p-button-primary"></button>
         <button
