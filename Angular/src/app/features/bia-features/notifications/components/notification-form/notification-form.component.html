@@ -299,10 +299,6 @@
       </div>
       <div class="flex flex-row justify-content-center">
         <div class="flex-1" style="max-width: 90%">
-          <span
-            style="left: 5px; top: -20px; font-size: 12px; color: #00839b"
-            >{{ 'notification.jData' | translate }}</span
-          >
           <p-floatlabel variant="in">
             <textarea
               formControlName="jData"
@@ -311,6 +307,7 @@
               autoResize="autoResize"
               pInputTextarea
               style="width: 100%"></textarea>
+            <label>{{ 'notification.jData' | translate }}</label>
           </p-floatlabel>
         </div>
       </div>
