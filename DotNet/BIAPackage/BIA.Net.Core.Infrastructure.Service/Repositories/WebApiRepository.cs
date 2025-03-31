@@ -227,27 +227,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         }
 
         /// <summary>
-        /// Deserializes if required.
-        /// </summary>
-        /// <typeparam name="T">Type of return.</typeparam>
-        /// <param name="res">The resource.</param>
-        /// <returns>object T.</returns>
-        protected virtual T DeserializeIfRequired<T>(string res)
-        {
-            T content;
-            if (typeof(T) == typeof(string))
-            {
-                content = (T)Convert.ChangeType(res, typeof(T));
-            }
-            else
-            {
-                content = JsonConvert.DeserializeObject<T>(res);
-            }
-
-            return content;
-        }
-
-        /// <summary>
         /// Add bearer in http request authorization.
         /// </summary>
         /// <returns>A async task.</returns>
@@ -326,6 +305,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <returns>A async task.</returns>
         protected async Task SetBearerTokenInCacheAsync(string bearerToken)
         {
+#if !DEBUG
             if (!string.IsNullOrWhiteSpace(bearerToken))
             {
                 DateTimeOffset expirationDate = this.GetJwtTokenExpirationDate(bearerToken);
@@ -336,6 +316,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             {
                 await this.distributedCache.Remove(this.GetBearerCacheKey());
             }
+#endif
         }
 
         /// <summary>
@@ -400,7 +381,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 if (response.IsSuccessStatusCode)
                 {
                     string res = await response.Content.ReadAsStringAsync();
-                    T result = this.DeserializeIfRequired<T>(res);
+                    T result = JsonConvert.DeserializeObject<T>(res);
                     return (result, response.IsSuccessStatusCode, default(string));
                 }
                 else
@@ -479,7 +460,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 if (response.IsSuccessStatusCode)
                 {
                     string res = await response.Content.ReadAsStringAsync();
-                    TResult result = this.DeserializeIfRequired<TResult>(res);
+                    TResult result = JsonConvert.DeserializeObject<TResult>(res);
                     httpContent?.Dispose();
                     return (result, response.IsSuccessStatusCode, default(string));
                 }

@@ -45,6 +45,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         private readonly IClientForHubService clientForHubService;
 #endif
 
+        private readonly IRemotePlaneAppService remotePlaneAppService;
+
 #if UseHubForClientInPlane
         /// <summary>
         /// Initializes a new instance of the <see cref="PlanesController" /> class.
@@ -55,7 +57,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         public PlanesController(
             IPlaneAppService planeService,
             IClientForHubService clientForHubService,
-            IBiaClaimsPrincipalService biaClaimsPrincipalService)
+            IBiaClaimsPrincipalService biaClaimsPrincipalService,
+            IRemotePlaneAppService remotePlaneAppService)
 #else
         /// <summary>
         /// Initializes a new instance of the <see cref="PlanesController" /> class.
@@ -72,6 +75,19 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
 #endif
             this.planeService = planeService;
             this.biaClaimsPrincipalService = biaClaimsPrincipalService;
+            this.remotePlaneAppService = remotePlaneAppService;
+        }
+
+        [AllowAnonymous]
+        [HttpGet("testRemote")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Get()
+        {
+            await this.remotePlaneAppService.ExampleCallApiAsync();
+            return this.Ok();
         }
 
         /// <summary>
