@@ -4,10 +4,12 @@ import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { DomainAircraftMaintenanceCompanyOptionsActions } from './aircraft-maintenance-company-options-actions';
 
 // This adapter will allow is to manipulate aircraftMaintenanceCompanies (mostly CRUD operations)
-export const aircraftMaintenanceCompanyOptionsAdapter = createEntityAdapter<OptionDto>({
-  selectId: (aircraftMaintenanceCompany: OptionDto) => aircraftMaintenanceCompany.id,
-  sortComparer: false,
-});
+export const aircraftMaintenanceCompanyOptionsAdapter =
+  createEntityAdapter<OptionDto>({
+    selectId: (aircraftMaintenanceCompany: OptionDto) =>
+      aircraftMaintenanceCompany.id,
+    sortComparer: false,
+  });
 
 // -----------------------------------------
 // The shape of EntityState
@@ -22,17 +24,24 @@ export const aircraftMaintenanceCompanyOptionsAdapter = createEntityAdapter<Opti
 
 export type State = EntityState<OptionDto>;
 
-export const INIT_STATE: State = aircraftMaintenanceCompanyOptionsAdapter.getInitialState({
-  // additional props default values here
-});
+export const INIT_STATE: State =
+  aircraftMaintenanceCompanyOptionsAdapter.getInitialState({
+    // additional props default values here
+  });
 
 export const aircraftMaintenanceCompanyOptionReducers = createReducer<State>(
   INIT_STATE,
-  on(DomainAircraftMaintenanceCompanyOptionsActions.loadAllSuccess, (state, { aircraftMaintenanceCompanies }) =>
-    aircraftMaintenanceCompanyOptionsAdapter.setAll(aircraftMaintenanceCompanies, state)
+  on(
+    DomainAircraftMaintenanceCompanyOptionsActions.loadAllSuccess,
+    (state, { aircraftMaintenanceCompanies }) =>
+      aircraftMaintenanceCompanyOptionsAdapter.setAll(
+        aircraftMaintenanceCompanies,
+        state
+      )
   )
   // on(loadSuccess, (state, { aircraftMaintenanceCompany }) => aircraftMaintenanceCompanyOptionsAdapter.upsertOne(aircraftMaintenanceCompany, state))
 );
 
-export const getAircraftMaintenanceCompanyOptionById = (id: number) => (state: State) =>
-  state.entities[id];
+export const getAircraftMaintenanceCompanyOptionById =
+  (id: number) => (state: State) =>
+    state.entities[id];

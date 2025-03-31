@@ -31,9 +31,10 @@ export class AircraftMaintenanceCompanyOptionsEffects {
           .pipe(
             map(aircraftMaintenanceCompanies =>
               DomainAircraftMaintenanceCompanyOptionsActions.loadAllSuccess({
-                aircraftMaintenanceCompanies: aircraftMaintenanceCompanies?.sort((a, b) =>
-                  a.display.localeCompare(b.display)
-                ),
+                aircraftMaintenanceCompanies:
+                  aircraftMaintenanceCompanies?.sort((a, b) =>
+                    a.display.localeCompare(b.display)
+                  ),
               })
             ),
             catchError(err => {
@@ -43,7 +44,11 @@ export class AircraftMaintenanceCompanyOptionsEffects {
               ) {
                 this.biaMessageService.showErrorHttpResponse(err);
               }
-              return of(DomainAircraftMaintenanceCompanyOptionsActions.failure({ error: err }));
+              return of(
+                DomainAircraftMaintenanceCompanyOptionsActions.failure({
+                  error: err,
+                })
+              );
             })
           )
       )

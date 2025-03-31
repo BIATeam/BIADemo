@@ -14,9 +14,13 @@ export namespace FeatureMaintenanceContractsStore {
   }
 
   /** Provide reducers with AoT-compilation compliance */
-  export function reducers(state: MaintenanceContractsState | undefined, action: Action) {
+  export function reducers(
+    state: MaintenanceContractsState | undefined,
+    action: Action
+  ) {
     return combineReducers({
-      maintenanceContracts: fromMaintenanceContracts.maintenanceContractReducers,
+      maintenanceContracts:
+        fromMaintenanceContracts.maintenanceContractReducers,
     })(state, action);
   }
 
@@ -25,9 +29,10 @@ export namespace FeatureMaintenanceContractsStore {
    * This is used for selecting feature states that are loaded eagerly or lazily.
    */
 
-  export const getMaintenanceContractsState = createFeatureSelector<MaintenanceContractsState>(
-    maintenanceContractCRUDConfiguration.storeKey
-  );
+  export const getMaintenanceContractsState =
+    createFeatureSelector<MaintenanceContractsState>(
+      maintenanceContractCRUDConfiguration.storeKey
+    );
 
   export const getMaintenanceContractsEntitiesState = createSelector(
     getMaintenanceContractsState,
@@ -60,8 +65,13 @@ export namespace FeatureMaintenanceContractsStore {
   );
 
   export const { selectAll: getAllMaintenanceContracts } =
-    fromMaintenanceContracts.maintenanceContractsAdapter.getSelectors(getMaintenanceContractsEntitiesState);
+    fromMaintenanceContracts.maintenanceContractsAdapter.getSelectors(
+      getMaintenanceContractsEntitiesState
+    );
 
   export const getMaintenanceContractById = (id: number) =>
-    createSelector(getMaintenanceContractsEntitiesState, fromMaintenanceContracts.getMaintenanceContractById(id));
+    createSelector(
+      getMaintenanceContractsEntitiesState,
+      fromMaintenanceContracts.getMaintenanceContractById(id)
+    );
 }

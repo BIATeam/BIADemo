@@ -12,10 +12,7 @@ export interface SiteOptionsState {
 }
 
 /** Provide reducers with AoT-compilation compliance */
-export function reducers(
-  state: SiteOptionsState | undefined,
-  action: Action
-) {
+export function reducers(state: SiteOptionsState | undefined, action: Action) {
   return combineReducers({
     siteOptions: fromSiteOptions.siteOptionReducers,
   })(state, action);
@@ -26,8 +23,7 @@ export function reducers(
  * This is used for selecting feature states that are loaded eagerly or lazily.
  */
 
-export const getSitesState =
-  createFeatureSelector<SiteOptionsState>(storeKey);
+export const getSitesState = createFeatureSelector<SiteOptionsState>(storeKey);
 
 export const getSiteOptionsEntitiesState = createSelector(
   getSitesState,
@@ -35,9 +31,7 @@ export const getSiteOptionsEntitiesState = createSelector(
 );
 
 export const { selectAll: getAllSiteOptions } =
-  fromSiteOptions.siteOptionsAdapter.getSelectors(
-    getSiteOptionsEntitiesState
-  );
+  fromSiteOptions.siteOptionsAdapter.getSelectors(getSiteOptionsEntitiesState);
 
 export const getSiteOptionById = (id: number) =>
   createSelector(

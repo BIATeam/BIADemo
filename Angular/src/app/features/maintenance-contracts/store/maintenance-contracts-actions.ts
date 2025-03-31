@@ -41,8 +41,13 @@ export namespace FeatureMaintenanceContractsActions {
   );
 
   export const loadAllByPostSuccess = createAction(
-    '[' + maintenanceContractCRUDConfiguration.storeKey + '] Load all by post success',
-    props<{ result: DataResult<MaintenanceContract[]>; event: TableLazyLoadEvent }>()
+    '[' +
+      maintenanceContractCRUDConfiguration.storeKey +
+      '] Load all by post success',
+    props<{
+      result: DataResult<MaintenanceContract[]>;
+      event: TableLazyLoadEvent;
+    }>()
   );
 
   export const loadSuccess = createAction(

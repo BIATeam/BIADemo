@@ -56,7 +56,8 @@
           : ((crudItems$ | async) ?? [])
       "
       [dictOptionDtos]="
-        (maintenanceContractService.optionsService.dictOptionDtos$ | async) ?? []
+        (maintenanceContractService.optionsService.dictOptionDtos$ | async) ??
+        []
       "
       [totalRecord]="(totalCount$ | async) ?? 0"
       [columnToDisplays]="displayedColumns"
@@ -88,7 +89,8 @@
           : ((crudItems$ | async) ?? [])
       "
       [dictOptionDtos]="
-        (maintenanceContractService.optionsService.dictOptionDtos$ | async) ?? []
+        (maintenanceContractService.optionsService.dictOptionDtos$ | async) ??
+        []
       "
       [totalRecord]="(totalCount$ | async) ?? 0"
       [columnToDisplays]="displayedColumns"
