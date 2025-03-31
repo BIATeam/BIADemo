@@ -4,6 +4,7 @@ import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Subscription, filter, first } from 'rxjs';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { AppState } from 'src/app/store/state';
 import { CrudConfig } from '../../model/crud-config';
@@ -60,7 +61,11 @@ export class CrudItemNewComponent<CrudItem extends BaseDto>
     if (successActionType) {
       this.actions
         .pipe(
-          filter((action: any) => action.type === successActionType),
+          filter(
+            (action: any) =>
+              action.type === successActionType ||
+              action.type === biaSuccessWaitRefreshSignalR.type
+          ),
           first()
         )
         .subscribe(() => {
