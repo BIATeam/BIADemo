@@ -37,6 +37,7 @@ import {
   NotificationData,
   NotificationType,
 } from 'src/app/domains/bia-domains/notification/model/notification';
+import { NotificationModule } from 'src/app/domains/bia-domains/notification/notification.module';
 import { getUnreadNotificationCount } from 'src/app/domains/bia-domains/notification/store/notification.state';
 import { DomainNotificationsActions } from 'src/app/domains/bia-domains/notification/store/notifications-actions';
 import { BiaNavigation } from 'src/app/shared/bia-shared/model/bia-navigation';
@@ -71,6 +72,7 @@ import { BiaLayoutService } from '../../services/layout.service';
     NgClass,
     AsyncPipe,
     TranslateModule,
+    NotificationModule,
   ],
 })
 export class BiaUltimaTopbarComponent
