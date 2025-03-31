@@ -56,7 +56,10 @@ export class MaintenanceContractService extends CrudItemService<MaintenanceContr
   );
 
   public displayItemName$: Observable<string> = this.crudItem$.pipe(
-    map(maintenanceContract => maintenanceContract?.contractNumber?.toString() ?? '')
+    map(
+      maintenanceContract =>
+        maintenanceContract?.contractNumber?.toString() ?? ''
+    )
   );
 
   public loadingGet$: Observable<boolean> = this.store.select(
@@ -67,23 +70,39 @@ export class MaintenanceContractService extends CrudItemService<MaintenanceContr
     this.store.dispatch(FeatureMaintenanceContractsActions.load({ id }));
   }
   public loadAllByPost(event: TableLazyLoadEvent) {
-    this.store.dispatch(FeatureMaintenanceContractsActions.loadAllByPost({ event }));
+    this.store.dispatch(
+      FeatureMaintenanceContractsActions.loadAllByPost({ event })
+    );
   }
   public create(crudItem: MaintenanceContract) {
     // TODO after creation of CRUD MaintenanceContract : map parent Key on the corresponding field
-    this.store.dispatch(FeatureMaintenanceContractsActions.create({ maintenanceContract: crudItem }));
+    this.store.dispatch(
+      FeatureMaintenanceContractsActions.create({
+        maintenanceContract: crudItem,
+      })
+    );
   }
   public update(crudItem: MaintenanceContract) {
-    this.store.dispatch(FeatureMaintenanceContractsActions.update({ maintenanceContract: crudItem }));
+    this.store.dispatch(
+      FeatureMaintenanceContractsActions.update({
+        maintenanceContract: crudItem,
+      })
+    );
   }
   public save(crudItems: MaintenanceContract[]) {
-    this.store.dispatch(FeatureMaintenanceContractsActions.save({ maintenanceContracts: crudItems }));
+    this.store.dispatch(
+      FeatureMaintenanceContractsActions.save({
+        maintenanceContracts: crudItems,
+      })
+    );
   }
   public remove(id: any) {
     this.store.dispatch(FeatureMaintenanceContractsActions.remove({ id }));
   }
   public multiRemove(ids: any[]) {
-    this.store.dispatch(FeatureMaintenanceContractsActions.multiRemove({ ids }));
+    this.store.dispatch(
+      FeatureMaintenanceContractsActions.multiRemove({ ids })
+    );
   }
   public clearAll() {
     this.store.dispatch(FeatureMaintenanceContractsActions.clearAll());

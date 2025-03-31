@@ -12,10 +12,7 @@ export interface PlaneOptionsState {
 }
 
 /** Provide reducers with AoT-compilation compliance */
-export function reducers(
-  state: PlaneOptionsState | undefined,
-  action: Action
-) {
+export function reducers(state: PlaneOptionsState | undefined, action: Action) {
   return combineReducers({
     planeOptions: fromPlaneOptions.planeOptionReducers,
   })(state, action);

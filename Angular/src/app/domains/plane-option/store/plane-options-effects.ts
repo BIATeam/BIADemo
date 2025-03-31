@@ -15,9 +15,7 @@ import { DomainPlaneOptionsActions } from './plane-options-actions';
 export class PlaneOptionsEffects {
   loadAll$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(
-        DomainPlaneOptionsActions.loadAll
-      ) /* When action is dispatched */,
+      ofType(DomainPlaneOptionsActions.loadAll) /* When action is dispatched */,
       /* startWith(loadAll()), */
       /* Hit the Planes Index endpoint of our REST API */
       /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
