@@ -10,9 +10,6 @@ import { DynamicLayoutComponent } from 'src/app/shared/bia-shared/components/lay
 
 import { Permission } from 'src/app/shared/permission';
 
-import { EngineTableComponent } from './children/engines/components/engine-table/engine-table.component';
-import { PlaneFormComponent } from './components/plane-form/plane-form.component';
-import { PlaneTableComponent } from './components/plane-table/plane-table.component';
 import { planeCRUDConfiguration } from './plane.constants';
 import { FeaturePlanesStore } from './store/plane.state';
 import { PlanesEffects } from './store/planes-effects';
@@ -101,17 +98,6 @@ export const ROUTES: Routes = [
     // Domain Modules:
     AirportOptionModule,
     PlaneTypeOptionModule,
-    PlaneItemComponent,
-    PlanesIndexComponent,
-    // [Calc] : NOT used for calc (3 lines).
-    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-    PlaneFormComponent,
-    PlaneNewComponent,
-    PlaneEditComponent,
-    PlaneReadComponent,
-    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-    PlaneTableComponent,
-    EngineTableComponent,
   ],
 })
 export class PlaneModule {}

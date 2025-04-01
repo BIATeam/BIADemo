@@ -27,8 +27,6 @@ const ROUTES: Routes = [
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature('hangfire', reducers),
     EffectsModule.forFeature([HangfireEffects]),
-    HangfireIndexComponent,
   ],
-  providers: [],
 })
 export class HangfireModule {}

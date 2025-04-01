@@ -7,8 +7,6 @@ import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { DynamicLayoutComponent } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { Permission } from 'src/app/shared/permission';
 
-import { PlaneTypeFormComponent } from './components/plane-type-form/plane-type-form.component';
-import { PlaneTypeTableComponent } from './components/plane-type-table/plane-type-table.component';
 import { planeTypeCRUDConfiguration } from './plane-type.constants';
 import { FeaturePlanesTypesStore } from './store/plane-type.state';
 import { PlanesTypesEffects } from './store/planes-types-effects';
@@ -81,15 +79,6 @@ export const ROUTES: Routes = [
       FeaturePlanesTypesStore.reducers
     ),
     EffectsModule.forFeature([PlanesTypesEffects]),
-    PlaneTypeItemComponent,
-    PlanesTypesIndexComponent,
-    // [Calc] : NOT used for calc (3 lines).
-    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-    PlaneTypeFormComponent,
-    PlaneTypeNewComponent,
-    PlaneTypeEditComponent,
-    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-    PlaneTypeTableComponent,
   ],
 })
 export class PlaneTypeModule {}

@@ -13,7 +13,6 @@ import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/la
 import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
 import { Permission } from 'src/app/shared/permission';
 
-import { NotificationFormComponent } from './components/notification-form/notification-form.component';
 import { FeatureNotificationsStore } from './store/notification.state';
 import { NotificationsEffects } from './store/notifications-effects';
 import { NotificationDetailComponent } from './views/notification-detail/notification-detail.component';
@@ -102,12 +101,6 @@ const ROUTES: Routes = [
     LanguageOptionModule,
     RoleOptionModule,
     TeamOptionModule,
-    NotificationItemComponent,
-    NotificationFormComponent,
-    NotificationsIndexComponent,
-    NotificationNewComponent,
-    NotificationEditComponent,
-    NotificationDetailComponent,
   ],
 })
 export class NotificationModule {}
