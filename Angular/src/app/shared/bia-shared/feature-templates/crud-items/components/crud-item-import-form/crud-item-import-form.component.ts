@@ -69,7 +69,7 @@ interface FormatExample {
   ],
 })
 export class CrudItemImportFormComponent<TDto extends { id: number }> {
-  @ViewChild('fileUpload') fileUpload: FileUpload;
+  @ViewChild('fileUpload') fileUpload: FileUpload | undefined;
 
   fillFormDone = false;
   deleteChecked = false;
@@ -268,7 +268,7 @@ export class CrudItemImportFormComponent<TDto extends { id: number }> {
   }
 
   onApply() {
-    const file: File = this.fileUpload.files[0];
+    const file = this.fileUpload?.files[0];
     if (file) {
       this.loading = true;
       this.fileSelected.next(file);
