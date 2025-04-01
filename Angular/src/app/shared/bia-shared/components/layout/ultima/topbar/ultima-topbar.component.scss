@@ -56,9 +56,6 @@ bia-notification-team-warning {
     padding: 0px;
   }
 
-  .p-component {
-    border-width: 0px !important;
-  }
   .p-megamenu,
   .p-megamenu-root-list {
     background-color: transparent !important;
@@ -170,11 +167,13 @@ bia-notification-team-warning {
   right: -100%;
   transform: translateX(-100%);
   z-index: 1000;
-  background: #b3e5fc;
+  background: var(--p-primary-400);
   display: none;
   margin-bottom: 1rem;
+  color: var(--p-neutral-50);
 }
 
 .clear-button:hover {
-  background: #a5d2e8;
+  background: var(--p-primary-300) !important;
+  color: var(--p-neutral-50) !important;
 }
