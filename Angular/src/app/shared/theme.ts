@@ -2103,7 +2103,7 @@ const MyPreset = definePreset(Material, {
       },
       bodyCell: {
         borderColor: '{datatable.border.color}',
-        padding: '0.75rem 1rem',
+        padding: '0.4rem 0.8rem',
       },
       footerCell: {
         background: '{content.background}',
@@ -4996,7 +4996,7 @@ const MyPreset = definePreset(Material, {
         size: '2rem',
       },
       content: {
-        padding: '{overlay.popover.padding}',
+        padding: '1rem',
         gap: '0.5rem',
       },
       text: {
@@ -5025,10 +5025,10 @@ const MyPreset = definePreset(Material, {
       },
       colorScheme: {
         light: {
-          blur: '0',
+          blur: '10px',
           info: {
-            background: '{blue.50}',
-            borderColor: '{blue.200}',
+            background: 'color-mix(in srgb, {blue.50}, transparent 36%)',
+            borderColor: 'color-mix(in srgb, {blue.200}, transparent 64%)',
             color: '{blue.600}',
             detailColor: '{surface.700}',
             shadow:
@@ -5042,8 +5042,8 @@ const MyPreset = definePreset(Material, {
             },
           },
           success: {
-            background: '{green.50}',
-            borderColor: '{green.200}',
+            background: 'color-mix(in srgb, {green.50}, transparent 36%)',
+            borderColor: 'color-mix(in srgb, {green.200}, transparent 64%)',
             color: '{green.600}',
             detailColor: '{surface.700}',
             shadow:
@@ -5057,8 +5057,8 @@ const MyPreset = definePreset(Material, {
             },
           },
           warn: {
-            background: '{yellow.50}',
-            borderColor: '{yellow.200}',
+            background: 'color-mix(in srgb, {yellow.50}, transparent 36%)',
+            borderColor: 'color-mix(in srgb, {yellow.200}, transparent 64%)',
             color: '{yellow.900}',
             detailColor: '{surface.700}',
             shadow:
@@ -5072,8 +5072,8 @@ const MyPreset = definePreset(Material, {
             },
           },
           error: {
-            background: '{red.50}',
-            borderColor: '{red.200}',
+            background: 'color-mix(in srgb, {red.50}, transparent 36%)',
+            borderColor: 'color-mix(in srgb, {red.200}, transparent 64%)',
             color: '{red.600}',
             detailColor: '{surface.700}',
             shadow:
@@ -5120,8 +5120,8 @@ const MyPreset = definePreset(Material, {
         dark: {
           blur: '10px',
           info: {
-            background: 'color-mix(in srgb, {blue.500}, transparent 36%)',
-            borderColor: 'color-mix(in srgb, {blue.700}, transparent 64%)',
+            background: 'color-mix(in srgb, {blue.800}, transparent 36%)',
+            borderColor: 'color-mix(in srgb, {blue.950}, transparent 64%)',
             color: '{surface.0}',
             detailColor: '{blue.100}',
             shadow:

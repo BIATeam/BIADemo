@@ -9,7 +9,7 @@
     (onSelect)="onFileSelected()">
   </p-fileUpload>
   <button
-    [disabled]="this.fileUpload.hasFiles() !== true"
+    [disabled]="this.fileUpload?.hasFiles() !== true"
     pButton
     label="{{ 'primeng.apply' | translate }}"
     type="button"

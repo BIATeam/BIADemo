@@ -10,8 +10,6 @@ import {
 } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { Permission } from 'src/app/shared/permission';
 
-import { SiteFormComponent } from './components/site-form/site-form.component';
-import { SiteTableComponent } from './components/site-table/site-table.component';
 import { siteCRUDConfiguration } from './site.constants';
 import { FeatureSitesStore } from './store/site.state';
 import { SitesEffects } from './store/sites-effects';
@@ -98,15 +96,6 @@ export const ROUTES: Routes = [
       FeatureSitesStore.reducers
     ),
     EffectsModule.forFeature([SitesEffects]),
-    SiteItemComponent,
-    SitesIndexComponent,
-    // [Calc] : NOT used for calc (3 lines).
-    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-    SiteFormComponent,
-    SiteNewComponent,
-    SiteEditComponent,
-    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-    SiteTableComponent,
   ],
 })
 export class SiteModule {}

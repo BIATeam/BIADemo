@@ -8,8 +8,6 @@ import { DynamicLayoutComponent } from 'src/app/shared/bia-shared/components/lay
 import { Permission } from 'src/app/shared/permission';
 
 import { airportCRUDConfiguration } from './airport.constants';
-import { AirportFormComponent } from './components/airport-form/airport-form.component';
-import { AirportTableComponent } from './components/airport-table/airport-table.component';
 import { FeatureAirportsStore } from './store/airport.state';
 import { AirportsEffects } from './store/airports-effects';
 import { AirportEditComponent } from './views/airport-edit/airport-edit.component';
@@ -81,15 +79,6 @@ export const ROUTES: Routes = [
       FeatureAirportsStore.reducers
     ),
     EffectsModule.forFeature([AirportsEffects]),
-    AirportItemComponent,
-    AirportsIndexComponent,
-    // [Calc] : NOT used for calc (3 lines).
-    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-    AirportFormComponent,
-    AirportNewComponent,
-    AirportEditComponent,
-    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-    AirportTableComponent,
   ],
 })
 export class AirportModule {}

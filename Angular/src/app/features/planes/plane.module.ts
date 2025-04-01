@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { Permission } from 'src/app/shared/permission';
 
-import { PlaneFormComponent } from './components/plane-form/plane-form.component';
 import { PlaneItemComponent } from './views/plane-item/plane-item.component';
 import { PlanesIndexComponent } from './views/planes-index/planes-index.component';
 // BIAToolKit - Begin Option Airport
@@ -21,7 +20,6 @@ import {
 } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 
 import { PlaneReadComponent } from '../planes/views/plane-read/plane-read.component';
-import { PlaneTableComponent } from './components/plane-table/plane-table.component';
 import { planeCRUDConfiguration } from './plane.constants';
 import { FeaturePlanesStore } from './store/plane.state';
 import { PlanesEffects } from './store/planes-effects';
@@ -147,17 +145,6 @@ export const ROUTES: Routes = [
     // BIAToolKit - Begin Option PlaneType
     PlaneTypeOptionModule,
     // BIAToolKit - End Option PlaneType
-    PlaneItemComponent,
-    PlanesIndexComponent,
-    // [Calc] : NOT used for calc (3 lines).
-    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-    PlaneFormComponent,
-    PlaneNewComponent,
-    PlaneEditComponent,
-    PlaneReadComponent,
-    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-    PlaneTableComponent,
-    PlaneImportComponent,
   ],
 })
 export class PlaneModule {}

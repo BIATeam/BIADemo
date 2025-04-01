@@ -9,8 +9,6 @@ import { DynamicLayoutComponent } from 'src/app/shared/bia-shared/components/lay
 import { Permission } from 'src/app/shared/permission';
 
 import { UserFromDirectoryModule } from '../users-from-directory/user-from-directory.module';
-import { UserFormComponent } from './components/user-form/user-form.component';
-import { UserTableComponent } from './components/user-table/user-table.component';
 import { FeatureUsersStore } from './store/user.state';
 import { UsersEffects } from './store/users-effects';
 import { userCRUDConfiguration } from './user.constants';
@@ -104,16 +102,6 @@ export const ROUTES: Routes = [
     // Domain Modules:
     RoleOptionModule,
     UserFromDirectoryModule,
-    UserItemComponent,
-    UsersIndexComponent,
-    // [Calc] : NOT used for calc (3 lines).
-    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-    UserFormComponent,
-    UserNewComponent,
-    UserEditComponent,
-    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-    UserTableComponent,
-    UserImportComponent,
   ],
 })
 export class UserModule {}

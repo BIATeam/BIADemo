@@ -38,7 +38,7 @@
   #tabGroupTemplate
   let-tabGroup="tabGroup"
   let-formGroup="formGroup">
-  <p-tabs styleClass="tabview-custom">
+  <p-tabs styleClass="tabview-custom" [value]="0">
     <p-tablist>
       @for (tab of tabGroup.tabs; track $index) {
         <p-tab [value]="$index">
@@ -68,7 +68,7 @@
 
 <ng-template #groupTemplate let-group="group" let-formGroup="formGroup">
   <div class="bia-form-group">
-    <h6>{{ group.name | translate }}</h6>
+    <h4>{{ group.name | translate }}</h4>
     <ng-container
       *ngTemplateOutlet="
         rowsTemplate;

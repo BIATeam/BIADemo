@@ -12,8 +12,6 @@ import {
 
 import { Permission } from 'src/app/shared/permission';
 
-import { EngineFormComponent } from './components/engine-form/engine-form.component';
-import { EngineTableComponent } from './components/engine-table/engine-table.component';
 import { engineCRUDConfiguration } from './engine.constants';
 import { FeatureEnginesStore } from './store/engine.state';
 import { EnginesEffects } from './store/engines-effects';
@@ -107,16 +105,6 @@ export const ROUTES: Routes = [
     // TODO after creation of CRUD Engine : select the optioDto dommain module required for link
     // Domain Modules:
     PartOptionModule,
-    EngineItemComponent,
-    EnginesIndexComponent,
-    // [Calc] : NOT used for calc (3 lines).
-    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-    EngineFormComponent,
-    EngineNewComponent,
-    EngineEditComponent,
-    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-    EngineTableComponent,
-    EngineImportComponent,
   ],
 })
 export class EngineModule {}

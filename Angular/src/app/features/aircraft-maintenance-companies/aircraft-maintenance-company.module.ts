@@ -11,8 +11,6 @@ import {
 import { Permission } from 'src/app/shared/permission';
 
 import { aircraftMaintenanceCompanyCRUDConfiguration } from './aircraft-maintenance-company.constants';
-import { AircraftMaintenanceCompanyFormComponent } from './components/aircraft-maintenance-company-form/aircraft-maintenance-company-form.component';
-import { AircraftMaintenanceCompanyTableComponent } from './components/aircraft-maintenance-company-table/aircraft-maintenance-company-table.component';
 import { AircraftMaintenanceCompaniesEffects } from './store/aircraft-maintenance-companies-effects';
 import { FeatureAircraftMaintenanceCompaniesStore } from './store/aircraft-maintenance-company.state';
 import { AircraftMaintenanceCompaniesIndexComponent } from './views/aircraft-maintenance-companies-index/aircraft-maintenance-companies-index.component';
@@ -113,15 +111,6 @@ export const ROUTES: Routes = [
       FeatureAircraftMaintenanceCompaniesStore.reducers
     ),
     EffectsModule.forFeature([AircraftMaintenanceCompaniesEffects]),
-    AircraftMaintenanceCompanyItemComponent,
-    AircraftMaintenanceCompaniesIndexComponent,
-    // [Calc] : NOT used for calc (3 lines).
-    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-    AircraftMaintenanceCompanyFormComponent,
-    AircraftMaintenanceCompanyNewComponent,
-    AircraftMaintenanceCompanyEditComponent,
-    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-    AircraftMaintenanceCompanyTableComponent,
   ],
 })
 export class AircraftMaintenanceCompanyModule {}

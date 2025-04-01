@@ -9,8 +9,6 @@ import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/la
 import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
 import { Permission } from 'src/app/shared/permission';
 
-import { PlaneFormComponent } from './components/plane-form/plane-form.component';
-import { PlaneTableComponent } from './components/plane-table/plane-table.component';
 import { storeKey, usePopup } from './plane.constants';
 import { reducers } from './store/plane.state';
 import { PlanesEffects } from './store/planes-effects';
@@ -86,15 +84,6 @@ const ROUTES: Routes = [
     // Domain Modules:
     AirportOptionModule,
     PlaneTypeOptionModule,
-    PlaneItemComponent,
-    PlanesIndexComponent,
-    // [Calc] : NOT used for calc (3 lines).
-    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-    PlaneFormComponent,
-    PlaneNewComponent,
-    PlaneEditComponent,
-    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-    PlaneTableComponent,
   ],
 })
 export class PlaneModule {}

@@ -13,8 +13,6 @@ import { CountryOptionModule } from 'src/app/domains/country-option/country-opti
 import { DynamicLayoutComponent } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { Permission } from 'src/app/shared/permission';
 
-import { MaintenanceTeamFormComponent } from './components/maintenance-team-form/maintenance-team-form.component';
-import { MaintenanceTeamTableComponent } from './components/maintenance-team-table/maintenance-team-table.component';
 import { maintenanceTeamCRUDConfiguration } from './maintenance-team.constants';
 import { FeatureMaintenanceTeamsStore } from './store/maintenance-team.state';
 import { MaintenanceTeamsEffects } from './store/maintenance-teams-effects';
@@ -106,15 +104,7 @@ export const ROUTES: Routes = [
     // BIAToolKit - End Option Airport
     // BIAToolKit - Begin Option Country
     CountryOptionModule,
-    MaintenanceTeamItemComponent,
-    MaintenanceTeamsIndexComponent,
-    // [Calc] : NOT used for calc (3 lines).
-    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-    MaintenanceTeamFormComponent,
-    MaintenanceTeamNewComponent,
-    MaintenanceTeamEditComponent,
-    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-    MaintenanceTeamTableComponent,
+    // BIAToolKit - End Option Country
   ],
 })
 export class MaintenanceTeamModule {}

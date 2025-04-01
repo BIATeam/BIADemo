@@ -42,24 +42,22 @@
         [canDelete]="true"
         (delete)="onDeleteEngines()"
         [selectedElements]="selectedEngines"></bia-table-header>
-      <p-floatlabel variant="in">
-        <app-engine-specific-table
-          [elements]="displayedEngines()"
-          [configuration]="engineCrudConfig"
-          [columnToDisplays]="engineColumnsToDisplay"
-          [dictOptionDtos]="[]"
-          [totalRecord]="crudItem?.engines?.length ?? 0"
-          [paginator]="false"
-          [showColSearch]="false"
-          [canEdit]="true"
-          [canAdd]="true"
-          [canSelectElement]="true"
-          [loading]="false"
-          [readOnly]="isEngineTableReadOnly"
-          (selectedElementsChanged)="onSelectedEnginesChanged($event)"
-          (save)="onEngineSave($event)"
-          (isEditing)="onIsEditingChange($event)" />
-      </p-floatlabel>
+      <app-engine-specific-table
+        [elements]="displayedEngines()"
+        [configuration]="engineCrudConfig"
+        [columnToDisplays]="engineColumnsToDisplay"
+        [dictOptionDtos]="[]"
+        [totalRecord]="crudItem?.engines?.length ?? 0"
+        [paginator]="false"
+        [showColSearch]="false"
+        [canEdit]="true"
+        [canAdd]="true"
+        [canSelectElement]="true"
+        [loading]="false"
+        [readOnly]="isEngineTableReadOnly"
+        (selectedElementsChanged)="onSelectedEnginesChanged($event)"
+        (save)="onEngineSave($event)"
+        (isEditing)="onIsEditingChange($event)" />
     </ng-container>
   </ng-template>
 </bia-form>
