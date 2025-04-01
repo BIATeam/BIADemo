@@ -6,6 +6,7 @@ import { BiaTableBehaviorControllerComponent } from 'src/app/shared/bia-shared/c
 import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
 import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
+import { MemberTableComponent } from 'src/app/shared/bia-shared/feature-templates/members/components/member-table/member-table.component';
 import { MembersIndexComponent } from 'src/app/shared/bia-shared/feature-templates/members/views/members-index/members-index.component';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { Permission } from 'src/app/shared/permission';
@@ -31,6 +32,7 @@ import { AircraftMaintenanceCompanyService } from '../../../../services/aircraft
     BiaTableControllerComponent,
     BiaTableBehaviorControllerComponent,
     BiaTableComponent,
+    MemberTableComponent,
   ],
 })
 export class AircraftMaintenanceCompanyMembersIndexComponent
