@@ -337,11 +337,6 @@ p-table {
   }
   .p-datatable-tbody,
   .p-datatable-tfoot {
-    td {
-      .bia-star-mandatory {
-        position: absolute;
-      }
-    }
     td:not(.p-datatable-frozen-column) {
       position: relative;
     }
