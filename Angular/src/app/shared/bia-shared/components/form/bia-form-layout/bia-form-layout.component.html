@@ -38,7 +38,7 @@
   #tabGroupTemplate
   let-tabGroup="tabGroup"
   let-formGroup="formGroup">
-  <p-tabs styleClass="tabview-custom">
+  <p-tabs styleClass="tabview-custom" [value]="0">
     <p-tablist>
       @for (tab of tabGroup.tabs; track $index) {
         <p-tab [value]="$index">
