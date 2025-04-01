@@ -2103,7 +2103,7 @@ const MyPreset = definePreset(Material, {
       },
       bodyCell: {
         borderColor: '{datatable.border.color}',
-        padding: '0.75rem 1rem',
+        padding: '0.4rem 0.8rem',
       },
       footerCell: {
         background: '{content.background}',
