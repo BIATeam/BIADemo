@@ -86,9 +86,9 @@ export class BiaFormComponent<TDto extends { id: number }>
   @Input() disableSubmitButton = false;
   @Input() showSubmitButton = true;
   @Input() showFixableState?: boolean;
-  @Input() showSplitButton: boolean = false;
-  @Input() showPopupButton: boolean = false;
-  @Input() showFullPageButton: boolean = false;
+  @Input() showSplitButton = false;
+  @Input() showPopupButton = false;
+  @Input() showFullPageButton = false;
   @Input() canFix?: boolean;
   @Input() shown = true;
   @Output() save = new EventEmitter<any>();
