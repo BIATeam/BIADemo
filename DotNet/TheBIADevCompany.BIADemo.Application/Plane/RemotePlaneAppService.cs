@@ -29,12 +29,13 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         }
 
         /// <inheritdoc cref="IRemotePlaneAppService.ExampleCallApiAsync"/>
-        public async Task ExampleCallApiAsync()
+        public async Task<Plane> ExampleCallApiAsync()
         {
             var plane = new Plane();
             plane.Id = 2;
 
             plane = await this.remotePlaneRepository.GetAsync(plane.Id);
+            return plane;
         }
     }
 }

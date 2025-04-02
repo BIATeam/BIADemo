@@ -44,8 +44,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
         [Authorize(Roles = Rights.Sites.Options)]
         public async Task<IActionResult> GetAllOptions()
         {
-            var results = await siteOptionService.GetAllOptionsAsync();
-            return Ok(results);
+            var results = await this.siteOptionService.GetAllOptionsAsync();
+            return this.Ok(results);
         }
     }
 }
