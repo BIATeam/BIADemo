@@ -1,5 +1,5 @@
 <form
-  *ngIf="form"
+  *ngIf="form && shown"
   (submit)="onSubmit()"
   class="flex flex-column bia-form"
   [formGroup]="form">

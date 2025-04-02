@@ -29,6 +29,8 @@ import { getCurrentCulture } from './app/core/bia-core/services/bia-translation.
 import { BiaErrorHandler } from './app/core/bia-core/shared/bia-error-handler';
 import { CoreModule } from './app/core/core.module';
 import { HomeModule } from './app/features/home/home.module';
+import { reducers } from './app/shared/bia-shared/features/view/store/view.state';
+import { ViewsEffects } from './app/shared/bia-shared/features/view/store/views-effects';
 import { appConfig } from './app/shared/theme';
 import { ROOT_REDUCERS, metaReducers } from './app/store/state';
 import { environment } from './environments/environment';
@@ -74,7 +76,9 @@ bootstrapApplication(AppComponent, {
         // Register the ServiceWorker as soon as the app is stable
         // or after 30 seconds (whichever comes first).
         registrationStrategy: 'registerWhenStable:30000',
-      })
+      }),
+      StoreModule.forFeature('views', reducers),
+      EffectsModule.forFeature([ViewsEffects])
     ),
     DatePipe,
     CurrencyPipe,

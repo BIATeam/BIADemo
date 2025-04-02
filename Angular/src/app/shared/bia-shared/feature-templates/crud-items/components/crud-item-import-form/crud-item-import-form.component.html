@@ -60,7 +60,7 @@
   <p-accordion
     *ngIf="importData.errorToSaves.length > 0"
     class="w-full bia-import-accordion">
-    <p-accordion-panel class="bia-import-tab-error">
+    <p-accordion-panel class="bia-import-tab-error" [value]="0">
       <p-accordion-header>
         <div class="flex align-items-center">
           <i class="pi pi-exclamation-triangle mr-2"></i>
@@ -94,6 +94,7 @@
   <br />
   <p-accordion class="w-full bia-import-accordion">
     <p-accordion-panel
+      [value]="0"
       [ngClass]="{ 'bia-import-selected': insertChecked === true }"
       [disabled]="importData.toInserts.length === 0"
       *ngIf="canUseInsert() === true">
@@ -135,6 +136,7 @@
       </p-accordion-content>
     </p-accordion-panel>
     <p-accordion-panel
+      [value]="1"
       [ngClass]="{ 'bia-import-selected': updateChecked === true }"
       [disabled]="importData.toUpdates.length === 0"
       *ngIf="canUseUpdate() === true">
@@ -176,6 +178,7 @@
       </p-accordion-content>
     </p-accordion-panel>
     <p-accordion-panel
+      [value]="2"
       [ngClass]="{ 'bia-import-selected': deleteChecked === true }"
       [disabled]="importData.toDeletes.length === 0"
       *ngIf="canUseDelete() === true">

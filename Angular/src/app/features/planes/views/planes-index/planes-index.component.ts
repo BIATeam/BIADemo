@@ -10,7 +10,6 @@ import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/ta
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
-import { ViewModule } from 'src/app/shared/bia-shared/features/view/view.module';
 import { Permission } from 'src/app/shared/permission';
 import { PlaneTableComponent } from '../../components/plane-table/plane-table.component';
 import { Plane } from '../../model/plane';
@@ -23,7 +22,6 @@ import { PlaneService } from '../../services/plane.service';
   styleUrls: ['./planes-index.component.scss'],
   imports: [
     NgClass,
-    ViewModule,
     PrimeTemplate,
     NgIf,
     ButtonDirective,
