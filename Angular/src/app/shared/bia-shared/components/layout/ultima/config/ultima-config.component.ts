@@ -1,5 +1,9 @@
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { FormsModule } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ButtonDirective } from 'primeng/button';
+import { RadioButton } from 'primeng/radiobutton';
 import { take, tap } from 'rxjs';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
@@ -11,10 +15,6 @@ import {
   MenuMode,
 } from '../../services/layout.service';
 import { MenuService } from '../../services/menu.service';
-import { NgIf, NgFor, NgClass } from '@angular/common';
-import { RadioButton } from 'primeng/radiobutton';
-import { FormsModule } from '@angular/forms';
-import { ButtonDirective } from 'primeng/button';
 
 @Component({
   selector: 'bia-ultima-config',

@@ -1,4 +1,11 @@
 import {
+  AsyncPipe,
+  NgIf,
+  NgSwitch,
+  NgSwitchCase,
+  NgTemplateOutlet,
+} from '@angular/common';
+import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
@@ -7,13 +14,6 @@ import {
 } from '@angular/core';
 import { Observable, timer } from 'rxjs';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
-import {
-  NgIf,
-  NgTemplateOutlet,
-  NgSwitch,
-  NgSwitchCase,
-  AsyncPipe,
-} from '@angular/common';
 
 @Component({
   selector: 'bia-spinner',

@@ -7,8 +7,12 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MultiSelect } from 'primeng/multiselect';
+import { Select } from 'primeng/select';
+import { Tooltip } from 'primeng/tooltip';
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
@@ -21,10 +25,6 @@ import { allEnvironments } from 'src/environments/all-environments';
 import { AuthInfo } from '../../model/auth-info';
 import { RoleDto } from '../../model/role';
 import { BiaLayoutService } from '../layout/services/layout.service';
-import { Select } from 'primeng/select';
-import { FormsModule } from '@angular/forms';
-import { Tooltip } from 'primeng/tooltip';
-import { MultiSelect } from 'primeng/multiselect';
 
 @Component({
   selector: 'bia-team-selector',

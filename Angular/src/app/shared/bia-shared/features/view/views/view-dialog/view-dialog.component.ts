@@ -1,7 +1,15 @@
+import { AsyncPipe, NgIf, UpperCasePipe } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import { ConfirmationService, SharedModule } from 'primeng/api';
+import { ButtonDirective } from 'primeng/button';
+import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Dialog } from 'primeng/dialog';
+import { Ripple } from 'primeng/ripple';
+import { Select } from 'primeng/select';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 import { Observable, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -14,6 +22,9 @@ import {
 } from 'src/app/shared/constants';
 import { Permission } from 'src/app/shared/permission';
 import { AppState } from 'src/app/store/state';
+import { ViewFormComponent } from '../../components/view-form/view-form.component';
+import { ViewTeamTableComponent } from '../../components/view-team-table/view-team-table.component';
+import { ViewUserTableComponent } from '../../components/view-user-table/view-user-table.component';
 import { AssignViewToTeam } from '../../model/assign-view-to-team';
 import { DefaultView } from '../../model/default-view';
 import { TeamDefaultView } from '../../model/team-default-view';
@@ -32,17 +43,6 @@ import {
   updateTeamView,
   updateUserView,
 } from '../../store/views-actions';
-import { NgIf, AsyncPipe, UpperCasePipe } from '@angular/common';
-import { Tabs, TabList, Tab, TabPanels, TabPanel } from 'primeng/tabs';
-import { Ripple } from 'primeng/ripple';
-import { ViewFormComponent } from '../../components/view-form/view-form.component';
-import { ViewUserTableComponent } from '../../components/view-user-table/view-user-table.component';
-import { Select } from 'primeng/select';
-import { FormsModule } from '@angular/forms';
-import { ViewTeamTableComponent } from '../../components/view-team-table/view-team-table.component';
-import { ButtonDirective } from 'primeng/button';
-import { ConfirmDialog } from 'primeng/confirmdialog';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'bia-view-dialog',

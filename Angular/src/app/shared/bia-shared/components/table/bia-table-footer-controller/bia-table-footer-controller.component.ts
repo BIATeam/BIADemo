@@ -1,3 +1,4 @@
+import { DecimalPipe, I18nPluralPipe, NgIf } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -7,11 +8,10 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
-import { SelectItem } from 'primeng/api';
-import { NgIf, DecimalPipe, I18nPluralPipe } from '@angular/common';
-import { Select } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { SelectItem } from 'primeng/api';
+import { Select } from 'primeng/select';
 
 @Component({
   selector: 'bia-table-footer-controller',

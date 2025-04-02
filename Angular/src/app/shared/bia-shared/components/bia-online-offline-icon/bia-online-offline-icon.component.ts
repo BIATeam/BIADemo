@@ -1,9 +1,9 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { Tooltip } from 'primeng/tooltip';
 import { Observable } from 'rxjs';
 import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
-import { NgIf, AsyncPipe } from '@angular/common';
-import { Tooltip } from 'primeng/tooltip';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'bia-online-offline-icon',

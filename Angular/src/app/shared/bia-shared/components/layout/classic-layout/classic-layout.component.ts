@@ -1,3 +1,4 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,6 +10,7 @@ import {
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuItem } from 'primeng/api';
+import { Breadcrumb } from 'primeng/breadcrumb';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
@@ -20,11 +22,9 @@ import {
   ROUTE_DATA_NO_MARGIN,
 } from 'src/app/shared/constants';
 import { BiaNavigation } from '../../../model/bia-navigation';
-import { BiaLayoutService } from '../services/layout.service';
-import { ClassicHeaderComponent } from '../classic-header/classic-header.component';
-import { NgIf, AsyncPipe } from '@angular/common';
-import { Breadcrumb } from 'primeng/breadcrumb';
 import { ClassicFooterComponent } from '../classic-footer/classic-footer.component';
+import { ClassicHeaderComponent } from '../classic-header/classic-header.component';
+import { BiaLayoutService } from '../services/layout.service';
 
 @Component({
   selector: 'bia-classic-layout',

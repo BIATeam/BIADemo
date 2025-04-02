@@ -7,8 +7,8 @@ import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templa
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
-import { MaintenanceContract } from '../model/maintenance-contract';
 import { maintenanceContractCRUDConfiguration } from '../maintenance-contract.constants';
+import { MaintenanceContract } from '../model/maintenance-contract';
 import { FeatureMaintenanceContractsStore } from '../store/maintenance-contract.state';
 import { FeatureMaintenanceContractsActions } from '../store/maintenance-contracts-actions';
 import { MaintenanceContractDas } from './maintenance-contract-das.service';

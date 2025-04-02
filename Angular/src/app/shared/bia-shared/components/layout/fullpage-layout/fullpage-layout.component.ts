@@ -1,3 +1,4 @@
+import { NgIf } from '@angular/common';
 import {
   AfterViewInit,
   Component,
@@ -15,11 +16,10 @@ import {
   Router,
   RouterOutlet,
 } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { BiaInjectorService } from 'src/app/core/bia-core/services/bia-injector.service';
-import { NgIf } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'bia-full-page-layout',

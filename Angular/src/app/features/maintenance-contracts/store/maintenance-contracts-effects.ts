@@ -13,8 +13,8 @@ import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.se
 import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
-import { MaintenanceContract } from '../model/maintenance-contract';
 import { maintenanceContractCRUDConfiguration } from '../maintenance-contract.constants';
+import { MaintenanceContract } from '../model/maintenance-contract';
 import { MaintenanceContractDas } from '../services/maintenance-contract-das.service';
 import { FeatureMaintenanceContractsStore } from './maintenance-contract.state';
 import { FeatureMaintenanceContractsActions } from './maintenance-contracts-actions';

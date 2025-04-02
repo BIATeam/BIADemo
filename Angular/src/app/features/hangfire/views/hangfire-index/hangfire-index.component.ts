@@ -1,14 +1,14 @@
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { Component, HostBinding } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { ButtonDirective } from 'primeng/button';
+import { Tooltip } from 'primeng/tooltip';
 import { Observable } from 'rxjs';
 import { Team } from 'src/app/domains/bia-domains/team/model/team';
 import { getAllTeams } from 'src/app/domains/bia-domains/team/store/team.state';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
 import { randomReviewPlane } from '../../store/hangfire-actions';
-import { NgFor, NgIf, AsyncPipe } from '@angular/common';
-import { ButtonDirective } from 'primeng/button';
-import { Tooltip } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-hangfire-index',

@@ -1,4 +1,11 @@
 import {
+  NgIf,
+  NgSwitch,
+  NgSwitchCase,
+  NgSwitchDefault,
+  NgTemplateOutlet,
+} from '@angular/common';
+import {
   AfterContentInit,
   ChangeDetectionStrategy,
   Component,
@@ -12,12 +19,17 @@ import {
   TemplateRef,
 } from '@angular/core';
 import {
-  UntypedFormGroup,
   FormsModule,
   ReactiveFormsModule,
+  UntypedFormGroup,
 } from '@angular/forms';
 import { PrimeTemplate } from 'primeng/api';
+import { Checkbox } from 'primeng/checkbox';
+import { DatePicker } from 'primeng/datepicker';
+import { InputNumber } from 'primeng/inputnumber';
+import { InputText } from 'primeng/inputtext';
 import { MultiSelect } from 'primeng/multiselect';
+import { Select } from 'primeng/select';
 import { Subscription } from 'rxjs';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 import {
@@ -26,18 +38,6 @@ import {
   BiaFieldNumberFormat,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.component';
-import {
-  NgIf,
-  NgTemplateOutlet,
-  NgSwitch,
-  NgSwitchCase,
-  NgSwitchDefault,
-} from '@angular/common';
-import { Select } from 'primeng/select';
-import { Checkbox } from 'primeng/checkbox';
-import { InputNumber } from 'primeng/inputnumber';
-import { DatePicker } from 'primeng/datepicker';
-import { InputText } from 'primeng/inputtext';
 
 @Component({
   selector: 'bia-table-input',

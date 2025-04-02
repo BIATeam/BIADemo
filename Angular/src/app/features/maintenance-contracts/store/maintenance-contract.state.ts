@@ -4,8 +4,8 @@ import {
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
-import { MaintenanceContract } from '../model/maintenance-contract';
 import { maintenanceContractCRUDConfiguration } from '../maintenance-contract.constants';
+import { MaintenanceContract } from '../model/maintenance-contract';
 import * as fromMaintenanceContracts from './maintenance-contracts-reducer';
 
 export namespace FeatureMaintenanceContractsStore {
