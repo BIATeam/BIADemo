@@ -9,7 +9,6 @@ import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/component
 import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
-import { ViewModule } from 'src/app/shared/bia-shared/features/view/view.module';
 import { Permission } from 'src/app/shared/permission';
 import { Notification } from '../../model/notification';
 import { NotificationListItem } from '../../model/notification-list-item';
@@ -29,7 +28,6 @@ import { NotificationService } from '../../services/notification.service';
     BiaTableControllerComponent,
     BiaTableBehaviorControllerComponent,
     BiaTableComponent,
-    ViewModule,
   ],
 })
 export class NotificationsIndexComponent

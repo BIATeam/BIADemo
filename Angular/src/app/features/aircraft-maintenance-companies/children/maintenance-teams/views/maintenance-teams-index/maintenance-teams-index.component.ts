@@ -19,7 +19,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';
-import { ViewModule } from 'src/app/shared/bia-shared/features/view/view.module';
 import { MaintenanceTeamService } from '../../services/maintenance-team.service';
 
 @Component({
@@ -28,7 +27,6 @@ import { MaintenanceTeamService } from '../../services/maintenance-team.service'
   styleUrls: ['./maintenance-teams-index.component.scss'],
   imports: [
     NgIf,
-    ViewModule,
     NgClass,
     PrimeTemplate,
     ButtonDirective,
