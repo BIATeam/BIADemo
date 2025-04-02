@@ -19,6 +19,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';
+import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { ViewModule } from 'src/app/shared/bia-shared/features/view/view.module';
 import { MaintenanceTeamService } from '../../services/maintenance-team.service';
 
@@ -41,6 +42,9 @@ import { MaintenanceTeamService } from '../../services/maintenance-team.service'
     BiaTableControllerComponent,
     BiaTableBehaviorControllerComponent,
     BiaTableComponent,
+  ],
+  providers: [
+    { provide: CrudItemService, useExisting: MaintenanceTeamService },
   ],
 })
 export class MaintenanceTeamsIndexComponent

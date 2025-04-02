@@ -1,13 +1,14 @@
 <div class="flex flex-row gap-3 bia-table-behavior-container">
   <i
+    *ngIf="selectedLayout"
     class="relative pi bia-pointer"
     [class]="
-      (!selectedLayout?.disabled ? 'enable' : 'disabled') +
+      (!selectedLayout.disabled ? 'enable' : 'disabled') +
       ' ' +
-      selectedLayout?.icon
+      selectedLayout.icon
     "
     (click)="op.toggle($event)"
-    [pTooltip]="selectedLayout?.tooltip"
+    [pTooltip]="selectedLayout.tooltip"
     tooltipPosition="top">
     <div
       *ngIf="selectedLayout?.name === 'Split'"

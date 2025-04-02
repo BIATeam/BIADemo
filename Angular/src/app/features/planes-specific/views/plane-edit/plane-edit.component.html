@@ -7,7 +7,11 @@
   [dictOptionDtos]="(planeService.optionsService.dictOptionDtos$ | async) ?? []"
   [isCrudItemOutdated]="isCrudItemOutdated"
   (cancelled)="onCancelled()"
-  (save)="onSubmitted($event)"></app-plane-specific-form>
+  (save)="onSubmitted($event)"
+  [showPopupButton]="showPopupButton"
+  [showSplitButton]="showSplitButton"
+  [showFullPageButton]="showFullPageButton"
+  (layoutChanged)="notifyLayoutChange($event)"></app-plane-specific-form>
 <bia-spinner
   *ngIf="planeService.loadingGet$ | async"
   [overlay]="true"></bia-spinner>

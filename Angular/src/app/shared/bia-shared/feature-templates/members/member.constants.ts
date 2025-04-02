@@ -20,6 +20,7 @@ export const memberCRUDConfiguration: CrudConfig<Member> =
     },
     showIcons: {
       showCalcMode: true,
+      showPopup: true,
     },
     // IMPORTANT: this key should be unique in all the application.
     // storeKey: 'feature-' + featureName,

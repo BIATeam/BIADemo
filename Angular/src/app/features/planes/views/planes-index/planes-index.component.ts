@@ -8,6 +8,7 @@ import { BiaTableBehaviorControllerComponent } from 'src/app/shared/bia-shared/c
 import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
 import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
+import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
 import { ViewModule } from 'src/app/shared/bia-shared/features/view/view.module';
 import { Permission } from 'src/app/shared/permission';
@@ -34,6 +35,7 @@ import { PlaneService } from '../../services/plane.service';
     BiaTableBehaviorControllerComponent,
     BiaTableComponent,
   ],
+  providers: [{ provide: CrudItemService, useExisting: PlaneService }],
 })
 export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
   @ViewChild(PlaneTableComponent, { static: false })

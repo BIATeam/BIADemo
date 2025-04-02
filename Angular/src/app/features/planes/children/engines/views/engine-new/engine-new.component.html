@@ -5,4 +5,8 @@
     (engineService.optionsService.dictOptionDtos$ | async) ?? []
   "
   (cancelled)="onCancelled()"
-  (save)="onSubmitted($event)"></app-engine-form>
+  (save)="onSubmitted($event)"
+  [showPopupButton]="showPopupButton"
+  [showSplitButton]="showSplitButton"
+  [showFullPageButton]="showFullPageButton"
+  (layoutChanged)="notifyLayoutChange($event)"></app-engine-form>

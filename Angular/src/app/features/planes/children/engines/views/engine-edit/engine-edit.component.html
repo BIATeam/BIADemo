@@ -10,7 +10,11 @@
   [showFixableState]="crudConfiguration.isFixable"
   [formReadOnlyMode]="formReadOnlyMode"
   (cancelled)="onCancelled()"
-  (save)="onSubmitted($event)"></app-engine-form>
+  (save)="onSubmitted($event)"
+  [showPopupButton]="showPopupButton"
+  [showSplitButton]="showSplitButton"
+  [showFullPageButton]="showFullPageButton"
+  (layoutChanged)="notifyLayoutChange($event)"></app-engine-form>
 <bia-spinner
   *ngIf="engineService.loadingGet$ | async"
   [overlay]="true"></bia-spinner>

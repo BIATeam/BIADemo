@@ -6,6 +6,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  ViewChild,
 } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Popover } from 'primeng/popover';
@@ -13,6 +14,8 @@ import { Tooltip } from 'primeng/tooltip';
 import { Subscription } from 'rxjs';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { CrudConfig } from '../../../feature-templates/crud-items/model/crud-config';
+import { CrudItemService } from '../../../feature-templates/crud-items/services/crud-item.service';
+import { BaseDto } from '../../../model/base-dto';
 
 export interface BiaBehaviorIcon {
   name: 'CalcMode' | 'Popup' | 'Split' | 'FullPage';
@@ -28,7 +31,7 @@ export interface BiaBehaviorIcon {
   styleUrls: ['./bia-table-behavior-controller.component.scss'],
   imports: [Tooltip, NgIf, Popover, NgFor, TranslateModule],
 })
-export class BiaTableBehaviorControllerComponent<TDto extends { id: number }>
+export class BiaTableBehaviorControllerComponent<TDto extends BaseDto>
   implements OnInit, OnDestroy
 {
   selectedLayout?: BiaBehaviorIcon;
@@ -45,11 +48,14 @@ export class BiaTableBehaviorControllerComponent<TDto extends { id: number }>
   @Output() useVirtualScrollChanged = new EventEmitter<boolean>();
   @Output() useResizableColumnChanged = new EventEmitter<boolean>();
 
+  @ViewChild(Popover) popover: Popover;
+
   private sub = new Subscription();
 
   constructor(
     protected readonly translateService: TranslateService,
-    protected readonly biaTranslationService: BiaTranslationService
+    protected readonly biaTranslationService: BiaTranslationService,
+    protected readonly crudItemService: CrudItemService<TDto>
   ) {}
 
   ngOnInit(): void {
@@ -60,10 +66,42 @@ export class BiaTableBehaviorControllerComponent<TDto extends { id: number }>
         this.loadActions();
       })
     );
+
+    if (this.crudItemService) {
+      this.sub.add(
+        this.crudItemService.configChanged$.subscribe(() =>
+          this.updateSelectedLayout()
+        )
+      );
+    }
   }
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();
+  }
+
+  private updateSelectedLayout(): void {
+    if (this.visibleLayouts) {
+      this.selectedLayout = this.visibleLayouts.find(button => {
+        if (this.crudConfiguration.useCalcMode) {
+          return button.name === 'CalcMode';
+        }
+        if (this.crudConfiguration.usePopup) {
+          return button.name === 'Popup';
+        }
+        if (this.crudConfiguration.useSplit) {
+          return button.name === 'Split';
+        }
+        return button.name === 'FullPage';
+      });
+
+      this.visibleLayouts.forEach(layout => {
+        layout.disabled = true;
+      });
+      if (this.selectedLayout) {
+        this.selectedLayout.disabled = false;
+      }
+    }
   }
 
   private loadActions() {
@@ -100,7 +138,11 @@ export class BiaTableBehaviorControllerComponent<TDto extends { id: number }>
   }
 
   private addFullPageButtonIfVisible(): void {
-    if (this.crudConfiguration.showIcons.showSplit) {
+    if (
+      this.crudConfiguration.showIcons.showSplit ||
+      this.crudConfiguration.showIcons.showCalcMode ||
+      this.crudConfiguration.showIcons.showPopup
+    ) {
       const isAnyModeActive =
         this.crudConfiguration.useCalcMode ||
         this.crudConfiguration.usePopup ||
@@ -137,5 +179,6 @@ export class BiaTableBehaviorControllerComponent<TDto extends { id: number }>
       layout.disabled = true;
     });
     button.disabled = false;
+    this.popover.hide();
   }
 }
