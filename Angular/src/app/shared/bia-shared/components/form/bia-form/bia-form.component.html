@@ -4,8 +4,9 @@
   class="flex flex-column bia-form"
   [formGroup]="form">
   <div class="header-container bia-form-header" *ngIf="showHeaderContainer">
-    <div class="fixed-state" *ngIf="isFixableButtonVisible">
+    <div class="fixed-state">
       <button
+        *ngIf="isFixableButtonVisible"
         pButton
         icon="pi {{ fixableButtonIcon }}"
         label="{{ fixableButtonLabel | translate }}"
@@ -13,6 +14,44 @@
         [disabled]="!canFix"
         [ngClass]="{ 'p-button-outlined': !isFixed }"
         (click)="onFixableButtonClicked()"></button>
+      <button
+        pButton
+        *ngIf="showPopupButton"
+        [style]="{ overflow: 'visible' }"
+        icon="pi pi-clone"
+        styleClass="p-overlay-badge relative"
+        severity="secondary"
+        type="button"
+        [text]="true"
+        (click)="switchToPopup()"
+        pTooltip="{{ 'bia.usePopup' | translate }}"
+        tooltipPosition="top"></button>
+      <button
+        pButton
+        *ngIf="showSplitButton"
+        [style]="{ overflow: 'visible' }"
+        icon="pi pi-stop"
+        styleClass="p-overlay-badge relative"
+        severity="secondary"
+        type="button"
+        [text]="true"
+        (click)="switchToSplit()"
+        pTooltip="{{ 'bia.useSplit' | translate }}"
+        tooltipPosition="top">
+        <div class="split-icon pi pi-minus"></div>
+      </button>
+      <button
+        pButton
+        *ngIf="showFullPageButton"
+        [style]="{ overflow: 'visible' }"
+        icon="pi pi-stop"
+        styleClass="p-overlay-badge relative"
+        severity="secondary"
+        type="button"
+        [text]="true"
+        (click)="switchToFullPage()"
+        pTooltip="{{ 'bia.useFullPage' | translate }}"
+        tooltipPosition="top"></button>
     </div>
   </div>
 

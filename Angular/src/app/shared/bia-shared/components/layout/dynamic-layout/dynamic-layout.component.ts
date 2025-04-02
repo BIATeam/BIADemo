@@ -1,3 +1,4 @@
+import { NgClass, NgIf, NgStyle } from '@angular/common';
 import {
   AfterViewInit,
   Component,
@@ -18,15 +19,14 @@ import {
   Router,
   RouterOutlet,
 } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { SharedModule } from 'primeng/api';
+import { Dialog } from 'primeng/dialog';
 import { BehaviorSubject, filter } from 'rxjs';
 import { BiaInjectorService } from 'src/app/core/bia-core/services/bia-injector.service';
 import { CrudConfig } from '../../../feature-templates/crud-items/model/crud-config';
 import { LayoutHelperService } from '../../../services/layout-helper.service';
 import { BiaLayoutService } from '../services/layout.service';
-import { NgIf, NgClass, NgStyle } from '@angular/common';
-import { Dialog } from 'primeng/dialog';
-import { SharedModule } from 'primeng/api';
-import { TranslateModule } from '@ngx-translate/core';
 
 export enum LayoutMode {
   popup,
@@ -85,7 +85,7 @@ export class DynamicLayoutComponent<TDto extends { id: number }>
     public activatedRoute: ActivatedRoute,
     protected router: Router,
     protected serviceInjector: BiaInjectorService,
-    private renderer: Renderer2,
+    protected readonly renderer: Renderer2,
     protected readonly layoutService: BiaLayoutService
   ) {}
 
@@ -115,11 +115,23 @@ export class DynamicLayoutComponent<TDto extends { id: number }>
     );
   }
 
+  previousIsPopup = false;
+  get isPopupWithVisibilityCheck(): boolean {
+    const isPopup =
+      (this.configuration?.usePopup && this.layoutMode === undefined) ||
+      this.layoutMode === LayoutMode.popup;
+    if (this.previousIsPopup !== isPopup) {
+      this.checkChildrenRules();
+    }
+    this.previousIsPopup = isPopup;
+    return isPopup;
+  }
+
   get defaultContainerHeight(): string {
     return `calc(${LayoutHelperService.defaultContainerHeight(this.layoutService, this.heightOffset)}`;
   }
 
-  private get shouldDisplayPageComponent(): boolean {
+  get shouldDisplayPageComponent(): boolean {
     return !this.hasChildren || this.isSplit || this.isPopup;
   }
 

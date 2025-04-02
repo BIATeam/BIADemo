@@ -41,10 +41,17 @@
 
 .header-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
   align-items: center;
 
   .fixed-state {
     margin-left: auto;
   }
+}
+
+.split-icon {
+  position: absolute;
+  background: transparent;
+  rotate: 90deg;
+  translate: 1px;
 }

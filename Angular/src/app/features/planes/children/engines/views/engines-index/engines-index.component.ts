@@ -20,6 +20,7 @@ import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
+import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { EngineOptionsService } from '../../services/engine-options.service';
 // BIAToolKit - End Option
 
@@ -29,7 +30,6 @@ import { EngineOptionsService } from '../../services/engine-options.service';
   styleUrls: ['./engines-index.component.scss'],
   imports: [
     NgClass,
-
     PrimeTemplate,
     NgIf,
     ButtonDirective,
@@ -41,6 +41,7 @@ import { EngineOptionsService } from '../../services/engine-options.service';
     BiaTableBehaviorControllerComponent,
     BiaTableComponent,
   ],
+  providers: [{ provide: CrudItemService, useExisting: EngineService }],
 })
 export class EnginesIndexComponent
   extends CrudItemsIndexComponent<Engine>

@@ -19,6 +19,7 @@ export const userCRUDConfiguration: CrudConfig<User> = new CrudConfig({
   },
   showIcons: {
     showCalcMode: true,
+    showPopup: true,
   },
   // IMPORTANT: this key should be unique in all the application.
   // storeKey: 'feature-' + featureName,

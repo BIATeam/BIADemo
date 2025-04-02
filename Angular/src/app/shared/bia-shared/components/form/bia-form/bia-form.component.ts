@@ -28,6 +28,7 @@ import {
 import { TranslateModule } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
+import { Tooltip } from 'primeng/tooltip';
 import { Subscription } from 'rxjs';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
@@ -45,6 +46,7 @@ import {
   BiaFormLayoutConfigRow,
   BiaFormLayoutConfigTabGroup,
 } from '../../../model/bia-form-layout-config';
+import { LayoutMode } from '../../layout/dynamic-layout/dynamic-layout.component';
 import { BiaFormLayoutComponent } from '../bia-form-layout/bia-form-layout.component';
 import { BiaInputComponent } from '../bia-input/bia-input.component';
 import { BiaOutputComponent } from '../bia-output/bia-output.component';
@@ -67,6 +69,7 @@ import { BiaOutputComponent } from '../bia-output/bia-output.component';
     BiaOutputComponent,
     TranslateModule,
     BiaFormLayoutComponent,
+    Tooltip,
   ],
 })
 export class BiaFormComponent<TDto extends { id: number }>
@@ -83,12 +86,16 @@ export class BiaFormComponent<TDto extends { id: number }>
   @Input() disableSubmitButton = false;
   @Input() showSubmitButton = true;
   @Input() showFixableState?: boolean;
+  @Input() showSplitButton: boolean = false;
+  @Input() showPopupButton: boolean = false;
+  @Input() showFullPageButton: boolean = false;
   @Input() canFix?: boolean;
   @Input() shown = true;
   @Output() save = new EventEmitter<any>();
   @Output() cancelled = new EventEmitter<void>();
   @Output() readOnlyChanged = new EventEmitter<boolean>();
   @Output() fixableStateChanged = new EventEmitter<boolean>();
+  @Output() layoutChanged = new EventEmitter<LayoutMode>();
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   specificInputTemplate: TemplateRef<any>;
@@ -556,7 +563,12 @@ export class BiaFormComponent<TDto extends { id: number }>
   }
 
   get showHeaderContainer(): boolean {
-    return this.isFixableButtonVisible;
+    return (
+      this.isFixableButtonVisible ||
+      this.showPopupButton ||
+      this.showSplitButton ||
+      this.showFullPageButton
+    );
   }
 
   private applyFixedState(): void {
@@ -580,5 +592,17 @@ export class BiaFormComponent<TDto extends { id: number }>
 
   onFixableButtonClicked(): void {
     this.fixableStateChanged.emit(!this.isFixed);
+  }
+
+  switchToSplit() {
+    this.layoutChanged.emit(LayoutMode.splitPage);
+  }
+
+  switchToFullPage() {
+    this.layoutChanged.emit(LayoutMode.fullPage);
+  }
+
+  switchToPopup() {
+    this.layoutChanged.emit(LayoutMode.popup);
   }
 }
