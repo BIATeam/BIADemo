@@ -84,6 +84,7 @@ export class BiaFormComponent<TDto extends { id: number }>
   @Input() showSubmitButton = true;
   @Input() showFixableState?: boolean;
   @Input() canFix?: boolean;
+  @Input() shown = true;
   @Output() save = new EventEmitter<any>();
   @Output() cancelled = new EventEmitter<void>();
   @Output() readOnlyChanged = new EventEmitter<boolean>();
