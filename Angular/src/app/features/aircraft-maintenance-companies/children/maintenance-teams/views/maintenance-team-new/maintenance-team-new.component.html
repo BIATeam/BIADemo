@@ -5,4 +5,8 @@
     (maintenanceTeamService.optionsService.dictOptionDtos$ | async) ?? []
   "
   (cancelled)="onCancelled()"
-  (save)="onSubmitted($event)"></app-maintenance-team-form>
+  (save)="onSubmitted($event)"
+  [showPopupButton]="showPopupButton"
+  [showSplitButton]="showSplitButton"
+  [showFullPageButton]="showFullPageButton"
+  (layoutChanged)="notifyLayoutChange($event)"></app-maintenance-team-form>

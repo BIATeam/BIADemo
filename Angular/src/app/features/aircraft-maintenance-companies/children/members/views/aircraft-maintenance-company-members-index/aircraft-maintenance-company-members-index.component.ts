@@ -6,6 +6,7 @@ import { BiaTableBehaviorControllerComponent } from 'src/app/shared/bia-shared/c
 import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
 import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
+import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { MemberTableComponent } from 'src/app/shared/bia-shared/feature-templates/members/components/member-table/member-table.component';
 import { MembersIndexComponent } from 'src/app/shared/bia-shared/feature-templates/members/views/members-index/members-index.component';
 import { TeamTypeId } from 'src/app/shared/constants';
@@ -22,7 +23,6 @@ import { AircraftMaintenanceCompanyService } from '../../../../services/aircraft
   ],
   imports: [
     NgClass,
-
     PrimeTemplate,
     NgIf,
     MemberModule,
@@ -33,6 +33,12 @@ import { AircraftMaintenanceCompanyService } from '../../../../services/aircraft
     BiaTableBehaviorControllerComponent,
     BiaTableComponent,
     MemberTableComponent,
+  ],
+  providers: [
+    {
+      provide: CrudItemService,
+      useExisting: AircraftMaintenanceCompanyService,
+    },
   ],
 })
 export class AircraftMaintenanceCompanyMembersIndexComponent

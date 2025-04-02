@@ -25,9 +25,9 @@
     }">
     <router-outlet #outlet="outlet"></router-outlet>
   </div>
-} @else if (isPopup) {
+} @else if (isPopupWithVisibilityCheck) {
   <p-dialog
-    header="{{ popupTitle | translate }}"
+    [header]="popupTitle | translate"
     [hidden]="!hasChildren"
     [focusOnShow]="true"
     [visible]="hasChildren"

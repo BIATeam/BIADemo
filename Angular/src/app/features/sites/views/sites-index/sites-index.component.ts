@@ -10,6 +10,7 @@ import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/component
 import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import { TeamAdvancedFilterComponent } from 'src/app/shared/bia-shared/components/team-advanced-filter/team-advanced-filter.component';
+import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
 import { TeamAdvancedFilterDto } from 'src/app/shared/bia-shared/model/team-advanced-filter-dto';
 import { Permission } from 'src/app/shared/permission';
@@ -24,7 +25,6 @@ import { siteCRUDConfiguration } from '../../site.constants';
   styleUrls: ['./sites-index.component.scss'],
   imports: [
     NgIf,
-
     NgClass,
     PrimeTemplate,
     ButtonDirective,
@@ -38,6 +38,7 @@ import { siteCRUDConfiguration } from '../../site.constants';
     BiaTableComponent,
     UserOptionModule,
   ],
+  providers: [{ provide: CrudItemService, useExisting: SiteService }],
 })
 export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
   // Custo for teams

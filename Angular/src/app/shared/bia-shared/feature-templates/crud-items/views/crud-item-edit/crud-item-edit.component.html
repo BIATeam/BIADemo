@@ -10,11 +10,13 @@
   [isCrudItemOutdated]="isCrudItemOutdated"
   [showFixableState]="crudConfiguration.isFixable"
   [canFix]="canFix"
+  [showPopupButton]="showPopupButton"
+  [showSplitButton]="showSplitButton"
+  [showFullPageButton]="showFullPageButton"
   (cancelled)="onCancelled()"
   (save)="onSubmitted($event)"
-  (fixedChanged)="
-    crudItemService.updateFixedStatus(crudItem.id, $event)
-  "></bia-crud-item-form>
+  (fixedChanged)="crudItemService.updateFixedStatus(crudItem.id, $event)"
+  (layoutChanged)="notifyLayoutChange($event)"></bia-crud-item-form>
 <bia-spinner
   *ngIf="crudItemService.loadingGet$ | async"
   [overlay]="true"></bia-spinner>

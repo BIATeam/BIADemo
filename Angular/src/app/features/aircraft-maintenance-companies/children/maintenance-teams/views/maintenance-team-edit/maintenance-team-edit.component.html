@@ -7,6 +7,9 @@
     (maintenanceTeamService.optionsService.dictOptionDtos$ | async) ?? []
   "
   [isCrudItemOutdated]="isCrudItemOutdated"
+  [showPopupButton]="showPopupButton"
+  [showSplitButton]="showSplitButton"
+  [showFullPageButton]="showFullPageButton"
   (cancelled)="onCancelled()"
   (save)="onSubmitted($event)"></app-maintenance-team-form>
 <bia-spinner

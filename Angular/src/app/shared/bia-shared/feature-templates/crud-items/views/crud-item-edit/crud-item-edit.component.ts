@@ -1,3 +1,4 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { HttpStatusCode } from '@angular/common/http';
 import {
   Component,
@@ -7,21 +8,16 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Actions } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { Subscription, filter, first } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
 import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
-import { AppState } from 'src/app/store/state';
-import { CrudConfig, FormReadOnlyMode } from '../../model/crud-config';
-import { CrudItemSingleService } from '../../services/crud-item-single.service';
-import { NgIf, AsyncPipe } from '@angular/common';
-import { CrudItemFormComponent } from '../../components/crud-item-form/crud-item-form.component';
 import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
+import { CrudItemFormComponent } from '../../components/crud-item-form/crud-item-form.component';
+import { FormReadOnlyMode } from '../../model/crud-config';
+import { CrudItemSingleService } from '../../services/crud-item-single.service';
+import { CrudItemComponent } from '../crud-item/crud-item.component';
 
 @Component({
   selector: 'bia-crud-item-edit',
@@ -30,20 +26,14 @@ import { SpinnerComponent } from '../../../../components/spinner/spinner.compone
   imports: [NgIf, CrudItemFormComponent, SpinnerComponent, AsyncPipe],
 })
 export class CrudItemEditComponent<CrudItem extends BaseDto>
+  extends CrudItemComponent<CrudItem>
   implements OnInit, OnDestroy
 {
   @Output() displayChange = new EventEmitter<boolean>();
-  protected sub = new Subscription();
   protected permissionSub = new Subscription();
-  public crudConfiguration: CrudConfig<CrudItem>;
   public formReadOnlyMode: FormReadOnlyMode;
   public canFix: boolean;
 
-  protected store: Store<AppState>;
-  protected router: Router;
-  protected activatedRoute: ActivatedRoute;
-  protected biaTranslationService: BiaTranslationService;
-  protected actions: Actions;
   protected isCrudItemOutdated: boolean;
   protected authService: AuthService;
 
@@ -51,13 +41,7 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
     protected injector: Injector,
     public crudItemService: CrudItemSingleService<CrudItem>
   ) {
-    this.store = this.injector.get<Store<AppState>>(Store);
-    this.router = this.injector.get<Router>(Router);
-    this.activatedRoute = this.injector.get<ActivatedRoute>(ActivatedRoute);
-    this.biaTranslationService = this.injector.get<BiaTranslationService>(
-      BiaTranslationService
-    );
-    this.actions = this.injector.get<Actions>(Actions);
+    super(injector, crudItemService);
     this.authService = this.injector.get<AuthService>(AuthService);
   }
 
@@ -130,11 +114,7 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
     }
   }
 
-  onCancelled() {
-    this.navigateBack();
-  }
-
-  private navigateBack() {
+  protected navigateBack() {
     this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
   }
 

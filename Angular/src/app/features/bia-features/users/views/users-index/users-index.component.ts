@@ -11,6 +11,7 @@ import { BiaTableBehaviorControllerComponent } from 'src/app/shared/bia-shared/c
 import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
 import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
+import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
 import { Permission } from 'src/app/shared/permission';
 import { UserAddFromLdapComponent } from '../../../users-from-directory/views/user-add-from-directory-dialog/user-add-from-directory-dialog.component';
@@ -38,6 +39,12 @@ import { userCRUDConfiguration } from '../../user.constants';
     BiaTableControllerComponent,
     BiaTableBehaviorControllerComponent,
     BiaTableComponent,
+  ],
+  providers: [
+    {
+      provide: CrudItemService,
+      useExisting: UserService,
+    },
   ],
 })
 export class UsersIndexComponent

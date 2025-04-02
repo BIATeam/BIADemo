@@ -4,4 +4,8 @@
   [formLayoutConfig]="crudConfiguration.formLayoutConfig"
   [dictOptionDtos]="(planeService.optionsService.dictOptionDtos$ | async) ?? []"
   (cancelled)="onCancelled()"
-  (save)="onSubmitted($event)"></app-plane-form>
+  (save)="onSubmitted($event)"
+  [showPopupButton]="showPopupButton"
+  [showSplitButton]="showSplitButton"
+  [showFullPageButton]="showFullPageButton"
+  (layoutChanged)="notifyLayoutChange($event)"></app-plane-form>

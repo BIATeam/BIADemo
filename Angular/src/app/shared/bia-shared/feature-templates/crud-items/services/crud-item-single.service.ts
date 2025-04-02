@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { BaseDto } from '../../../model/base-dto';
 import { DtoState } from '../../../model/dto-state.enum';
 import { CrudItemOptionsService } from './crud-item-options.service';
@@ -123,5 +123,14 @@ export abstract class CrudItemSingleService<CrudItem extends BaseDto> {
         dto.dtoState = DtoState.Added;
       }
     });
+  }
+
+  protected configChanged: BehaviorSubject<void> = new BehaviorSubject<void>(
+    undefined
+  );
+  configChanged$: Observable<void> = this.configChanged.asObservable();
+
+  notifyConfigChange(): void {
+    this.configChanged.next();
   }
 }

@@ -10,7 +10,10 @@ import { AirportOptionModule } from 'src/app/domains/airport-option/airport-opti
 // BIAToolKit - Begin Option Country
 import { CountryOptionModule } from 'src/app/domains/country-option/country-option.module';
 // BIAToolKit - End Option Country
-import { DynamicLayoutComponent } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
+import {
+  DynamicLayoutComponent,
+  LayoutMode,
+} from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { Permission } from 'src/app/shared/permission';
 
 import { maintenanceTeamCRUDConfiguration } from './maintenance-team.constants';
@@ -60,6 +63,7 @@ export const ROUTES: Routes = [
               breadcrumb: 'app.members',
               canNavigate: true,
               permission: Permission.MaintenanceTeam_Member_List_Access,
+              layoutMode: LayoutMode.fullPage,
             },
             loadChildren: () =>
               import('./children/members/maintenance-team-member.module').then(

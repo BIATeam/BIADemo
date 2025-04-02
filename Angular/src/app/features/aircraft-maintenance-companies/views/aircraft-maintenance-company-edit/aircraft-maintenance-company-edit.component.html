@@ -9,7 +9,13 @@
   "
   [isCrudItemOutdated]="isCrudItemOutdated"
   (cancelled)="onCancelled()"
-  (save)="onSubmitted($event)"></app-aircraft-maintenance-company-form>
+  (save)="onSubmitted($event)"
+  [showPopupButton]="showPopupButton"
+  [showSplitButton]="showSplitButton"
+  [showFullPageButton]="showFullPageButton"
+  (layoutChanged)="
+    notifyLayoutChange($event)
+  "></app-aircraft-maintenance-company-form>
 <bia-spinner
   *ngIf="aircraftMaintenanceCompanyService.loadingGet$ | async"
   [overlay]="true"></bia-spinner>

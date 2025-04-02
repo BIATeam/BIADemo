@@ -10,8 +10,12 @@
   [showSubmitButton]="showSubmitButton"
   [showFixableState]="showFixableState"
   [canFix]="canFix"
+  [showPopupButton]="showPopupButton"
+  [showSplitButton]="showSplitButton"
+  [showFullPageButton]="showFullPageButton"
   (save)="onSave($event)"
   (cancelled)="onCancel()"
   (readOnlyChanged)="onReadOnlyChanged($event)"
-  (fixableStateChanged)="onFixableStateChanged($event)">
+  (fixableStateChanged)="onFixableStateChanged($event)"
+  (layoutChanged)="layoutChanged.emit($event)">
 </bia-form>
