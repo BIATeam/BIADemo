@@ -2,7 +2,7 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Dto.Keycloak
+namespace BIA.Net.Core.Infrastructure.Service.Dto.Keycloak
 {
     using Newtonsoft.Json;
 

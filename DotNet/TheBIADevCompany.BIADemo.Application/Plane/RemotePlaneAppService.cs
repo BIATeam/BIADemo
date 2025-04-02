@@ -29,31 +29,13 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         }
 
         /// <inheritdoc cref="IRemotePlaneAppService.ExampleCallApiAsync"/>
-        public async Task ExampleCallApiAsync()
+        public async Task<Plane> ExampleCallApiAsync()
         {
             var plane = new Plane();
+            plane.Id = 2;
 
-            plane.Capacity = 10;
-            plane.SiteId = 1;
-            plane.Msn = "MSN1";
-            plane.IsActive = true;
-            plane.SyncFlightDataTime = new TimeSpan(1, 30, 34);
-            plane.CurrentAirportId = 1;
-            plane.CurrentAirport = new Airport { Id = 1 };
-
-            plane = await this.remotePlaneRepository.PostAsync(plane);
-
-            if (plane?.Id > 0)
-            {
-                plane = await this.remotePlaneRepository.GetAsync(plane.Id);
-
-                if (plane?.Id > 0)
-                {
-                    plane.Capacity += 1;
-                    plane = await this.remotePlaneRepository.PutAsync(plane);
-                    await this.remotePlaneRepository.DeleteAsync(plane.Id);
-                }
-            }
+            plane = await this.remotePlaneRepository.GetAsync(plane.Id);
+            return plane;
         }
     }
 }

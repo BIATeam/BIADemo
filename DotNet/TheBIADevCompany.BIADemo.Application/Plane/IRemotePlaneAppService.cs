@@ -6,6 +6,7 @@
 namespace TheBIADevCompany.BIADemo.Application.Plane
 {
     using System.Threading.Tasks;
+    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
 
     /// <summary>
     /// Interface RemotePlane App Service.
@@ -15,7 +16,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         /// <summary>
         /// Examples the call API asynchronous.
         /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task ExampleCallApiAsync();
+        /// <returns>A plane.</returns>
+        Task<Plane> ExampleCallApiAsync();
     }
 }

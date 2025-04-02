@@ -87,7 +87,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <summary>
         /// The authentication configuration for the API requests.
         /// </summary>
-        protected AuthenticationConfiguration AuthenticationConfiguration { get; }
+        protected AuthenticationConfiguration AuthenticationConfiguration { get; set; }
 
         /// <summary>
         /// The distributed cache.
@@ -227,31 +227,10 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         }
 
         /// <summary>
-        /// Deserializes if required.
-        /// </summary>
-        /// <typeparam name="T">Type of return.</typeparam>
-        /// <param name="res">The resource.</param>
-        /// <returns>object T.</returns>
-        protected virtual T DeserializeIfRequired<T>(string res)
-        {
-            T content;
-            if (typeof(T) == typeof(string))
-            {
-                content = (T)Convert.ChangeType(res, typeof(T));
-            }
-            else
-            {
-                content = JsonConvert.DeserializeObject<T>(res);
-            }
-
-            return content;
-        }
-
-        /// <summary>
         /// Add bearer in http request authorization.
         /// </summary>
         /// <returns>A async task.</returns>
-        protected async Task AddAuthorizationBearerAsync()
+        protected virtual async Task AddAuthorizationBearerAsync()
         {
             string bearerToken = await this.GetBearerTokenInCacheAsync();
 
@@ -288,7 +267,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// </summary>
         /// <param name="token">The bearerToken.</param>
         /// <returns>Return true if the token is valid.</returns>
-        protected bool CheckTokenValid(string token)
+        protected virtual bool CheckTokenValid(string token)
         {
             bool isValid = false;
 
@@ -305,7 +284,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// Get the storage key of the token in the cache.
         /// </summary>
         /// <returns>The storage key.</returns>
-        protected string GetBearerCacheKey()
+        protected virtual string GetBearerCacheKey()
         {
             return $"{this.className}|{Bearer}";
         }
@@ -314,7 +293,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// Get the bearer token in the cache.
         /// </summary>
         /// <returns>The bearer token.</returns>
-        protected async Task<string> GetBearerTokenInCacheAsync()
+        protected virtual async Task<string> GetBearerTokenInCacheAsync()
         {
             return await this.distributedCache.Get<string>(this.GetBearerCacheKey());
         }
@@ -324,7 +303,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// </summary>
         /// <param name="bearerToken">The bearer token.</param>
         /// <returns>A async task.</returns>
-        protected async Task SetBearerTokenInCacheAsync(string bearerToken)
+        protected virtual async Task SetBearerTokenInCacheAsync(string bearerToken)
         {
             if (!string.IsNullOrWhiteSpace(bearerToken))
             {
@@ -358,7 +337,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="request">The request.</param>
         /// <param name="retry">if true it is a retry operation.</param>
         /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
-        protected async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase)> SendAsync<T>(
+        protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase)> SendAsync<T>(
             string url = default,
             HttpMethod httpMethod = default,
             HttpRequestMessage request = default,
@@ -400,7 +379,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 if (response.IsSuccessStatusCode)
                 {
                     string res = await response.Content.ReadAsStringAsync();
-                    T result = this.DeserializeIfRequired<T>(res);
+                    T result = JsonConvert.DeserializeObject<T>(res);
                     return (result, response.IsSuccessStatusCode, default(string));
                 }
                 else
@@ -433,7 +412,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="isFormUrlEncoded">specify if form url is encoded.</param>
         /// <param name="retry">if true it is a retry operation.</param>
         /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
-        protected async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase)> SendAsync<TResult, TBody>(
+        protected virtual async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase)> SendAsync<TResult, TBody>(
             string url,
             HttpMethod httpMethod,
             TBody body = default,
@@ -479,7 +458,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 if (response.IsSuccessStatusCode)
                 {
                     string res = await response.Content.ReadAsStringAsync();
-                    TResult result = this.DeserializeIfRequired<TResult>(res);
+                    TResult result = JsonConvert.DeserializeObject<TResult>(res);
                     httpContent?.Dispose();
                     return (result, response.IsSuccessStatusCode, default(string));
                 }
@@ -506,7 +485,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// To be called by child constructor.
         /// Add httpClient authorizations (token or API key).
         /// </summary>
-        protected void ConfigureHttpClient()
+        protected virtual void ConfigureHttpClient()
         {
             this.ConfigureHttpClientAsync().GetAwaiter().GetResult();
         }
@@ -515,7 +494,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// Add httpClient authorizations (token or API key).
         /// </summary>
         /// <returns>Task.</returns>
-        protected async Task ConfigureHttpClientAsync()
+        protected virtual async Task ConfigureHttpClientAsync()
         {
             this.ongoingConfiguration = true;
             switch (this.AuthenticationConfiguration.Mode)
