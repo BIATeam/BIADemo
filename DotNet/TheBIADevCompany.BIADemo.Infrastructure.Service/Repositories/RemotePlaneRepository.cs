@@ -5,13 +5,12 @@
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
 {
-    using System.Security.Principal;
     using System.Net.Http;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
-    using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using Microsoft.Extensions.Configuration;
@@ -23,22 +22,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     /// <summary>
     /// RemotePlane Repository.
     /// </summary>
-    public class RemotePlaneRepository : WebApiRepository, IRemotePlaneRepository
+    public class RemotePlaneRepository : BiaApiRepository, IRemotePlaneRepository
     {
-        /// <summary>
-        /// The base address.
-        /// </summary>
-        private readonly string baseAddress;
-
         /// <summary>
         /// The URL plane.
         /// </summary>
         private readonly string urlPlane;
-
-        /// <summary>
-        /// The bia web API authentication repository.
-        /// </summary>
-        private readonly IBiaWebApiAuthRepository biaWebApiAuthRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RemotePlaneRepository" /> class.
@@ -47,14 +36,14 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <param name="configuration">The configuration.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="distributedCache">The distributed cache.</param>
-        /// <param name="biaWebApiAuthRepository">The bia web API authentication repository.</param>
+        /// <param name="biaApiAuthRepository">The bia web API authentication repository.</param>
         public RemotePlaneRepository(
             HttpClient httpClient,
             IConfiguration configuration,
             ILogger<RemotePlaneRepository> logger,
             IBiaDistributedCache distributedCache,
-            IBiaWebApiAuthRepository biaWebApiAuthRepository)
-             : base(httpClient, logger, distributedCache, new BIA.Net.Core.Common.Configuration.AuthenticationSection.AuthenticationConfiguration() { Mode = BIA.Net.Core.Common.Configuration.AuthenticationSection.AuthenticationMode.Token })
+            IBiaApiAuthRepository biaApiAuthRepository)
+             : base(httpClient, logger, distributedCache, biaApiAuthRepository)
         {
 #pragma warning disable S125 // Sections of code should not be commented out
 
@@ -62,12 +51,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
             // and retrieved via the configuration field.
 
             // this.baseAddress = configuration["RemoteBIADemoWebApi:baseAddress"];
-            this.baseAddress = "http://localhost:32128/BIADemo/WebApi";
+            this.BaseAddress = "http://localhost:32128/BIADemo/WebApi";
 
             // this.urlPlane = configuration["RemoteBIADemoWebApi:urlPlane"];
             this.urlPlane = "/api/Planes/";
-
-            this.biaWebApiAuthRepository = biaWebApiAuthRepository;
 
 #pragma warning restore S125 // Sections of code should not be commented out
         }
@@ -75,14 +62,14 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <inheritdoc cref="IRemotePlaneRepository.GetAsync"/>
         public async Task<Plane> GetAsync(int id)
         {
-            var result = await this.GetAsync<Plane>($"{this.baseAddress}{this.urlPlane}{id}");
+            var result = await this.GetAsync<Plane>($"{this.BaseAddress}{this.urlPlane}{id}");
             return result.IsSuccessStatusCode ? result.Result : null;
         }
 
         /// <inheritdoc cref="IRemotePlaneRepository.DeleteAsync"/>
         public async Task<bool> DeleteAsync(int id)
         {
-            var result = await this.DeleteAsync<Plane>($"{this.baseAddress}{this.urlPlane}{id}");
+            var result = await this.DeleteAsync<Plane>($"{this.BaseAddress}{this.urlPlane}{id}");
             return result.IsSuccessStatusCode;
         }
 
@@ -92,7 +79,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
             RemotePlaneDto dto = new RemotePlaneDto();
             PropertyMapper.Map(plane, dto);
             dto.CurrentAirport = new OptionDto { Id = plane.CurrentAirportId, DtoState = DtoState.Unchanged };
-            var result = await this.PostAsync<RemotePlaneDto, RemotePlaneDto>($"{this.baseAddress}{this.urlPlane}", dto);
+            var result = await this.PostAsync<RemotePlaneDto, RemotePlaneDto>($"{this.BaseAddress}{this.urlPlane}", dto);
 
             if (result.IsSuccessStatusCode)
             {
@@ -111,7 +98,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
             RemotePlaneDto dto = new RemotePlaneDto();
             PropertyMapper.Map(plane, dto);
             dto.CurrentAirport = new OptionDto { Id = plane.CurrentAirport.Id, Display = string.Empty, DtoState = DtoState.Unchanged };
-            var result = await this.PutAsync<RemotePlaneDto, RemotePlaneDto>($"{this.baseAddress}{this.urlPlane}{dto.Id}", dto);
+            var result = await this.PutAsync<RemotePlaneDto, RemotePlaneDto>($"{this.BaseAddress}{this.urlPlane}{dto.Id}", dto);
 
             if (result.IsSuccessStatusCode)
             {
@@ -122,13 +109,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
             {
                 return null;
             }
-        }
-
-        /// <inheritdoc />
-        protected override async Task<string> GetBearerTokenAsync()
-        {
-            string token = await this.biaWebApiAuthRepository.LoginAsync(baseAddress: this.baseAddress);
-            return token;
         }
     }
 }

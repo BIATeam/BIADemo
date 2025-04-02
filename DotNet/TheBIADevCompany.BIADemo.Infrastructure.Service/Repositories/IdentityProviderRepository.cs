@@ -12,14 +12,14 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.AuthenticationSection;
+    using BIA.Net.Core.Infrastructure.Service.Dto.Keycloak;
+    using BIA.Net.Core.Infrastructure.Service.Dto.Keycloak.SearchUserResponse;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.User.Models;
-    using TheBIADevCompany.BIADemo.Infrastructure.Service.Dto.Keycloak;
-    using TheBIADevCompany.BIADemo.Infrastructure.Service.Dto.Keycloak.SearchUserResponse;
 
     /// <summary>
     /// WorkInstruction Repository.
@@ -62,28 +62,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <inheritdoc />
         protected override async Task<string> GetBearerTokenAsync()
         {
-            string token = null;
-
-            if (this.configuration.Authentication.Keycloak.IsActive && !string.IsNullOrWhiteSpace(this.configuration.Authentication.Keycloak.BaseUrl))
-            {
-                string url = $"{this.configuration.Authentication.Keycloak.BaseUrl}{this.configuration.Authentication.Keycloak.Api.TokenConf.RelativeUrl}";
-
-                TokenRequestDto tokenRequestDto = new TokenRequestDto()
-                {
-                    ClientId = this.configuration.Authentication.Keycloak.Api.TokenConf.ClientId,
-                    GrantType = this.configuration.Authentication.Keycloak.Api.TokenConf.GrantType,
-                };
-
-                (string Login, string Password) credential = CredentialRepository.RetrieveCredentials(this.configuration.Authentication.Keycloak.Api.TokenConf.CredentialSource);
-
-                tokenRequestDto.Username = credential.Login;
-                tokenRequestDto.Password = credential.Password;
-
-                TokenResponseDto tokenResponseDto = (await this.PostAsync<TokenResponseDto, TokenRequestDto>(url: url, body: tokenRequestDto, isFormUrlEncoded: true)).Result;
-
-                token = tokenResponseDto?.AccessToken;
-            }
-
+            string token = await BiaKeycloakHelper.GetBearerTokenAsync(this.configuration.Authentication.Keycloak, this.PostAsync<TokenResponseDto, TokenRequestDto>);
             return token;
         }
 

@@ -2,14 +2,14 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Dto.Keycloak
+namespace BIA.Net.Core.Infrastructure.Service.Dto.Keycloak
 {
     using Newtonsoft.Json;
 
     /// <summary>
     /// Token Request Dto.
     /// </summary>
-    internal class TokenResponseDto
+    public class TokenResponseDto
     {
         /// <summary>
         /// Gets or sets the access token.
