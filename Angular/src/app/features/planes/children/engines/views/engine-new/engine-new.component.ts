@@ -4,9 +4,9 @@ import { engineCRUDConfiguration } from '../../engine.constants';
 import { Engine } from '../../model/engine';
 import { EngineService } from '../../services/engine.service';
 // BIAToolKit - Begin Option
-import { EngineOptionsService } from '../../services/engine-options.service';
-import { EngineFormComponent } from '../../components/engine-form/engine-form.component';
 import { AsyncPipe } from '@angular/common';
+import { EngineFormComponent } from '../../components/engine-form/engine-form.component';
+import { EngineOptionsService } from '../../services/engine-options.service';
 // BIAToolKit - End Option
 
 @Component({

@@ -1,5 +1,6 @@
 import { APP_BASE_HREF, NgIf } from '@angular/common';
 import { Component, HostBinding, Inject, OnInit } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { tap } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -15,10 +16,9 @@ import { environment } from 'src/environments/environment';
 import { APP_SUPPORTED_TRANSLATIONS } from '../../../constants';
 import { AuthInfo } from '../../model/auth-info';
 import { BiaNavigation } from '../../model/bia-navigation';
-import { BiaLayoutService } from './services/layout.service';
 import { SpinnerComponent } from '../spinner/spinner.component';
 import { ClassicLayoutComponent } from './classic-layout/classic-layout.component';
-import { RouterOutlet } from '@angular/router';
+import { BiaLayoutService } from './services/layout.service';
 import { BiaUltimaLayoutComponent } from './ultima/layout/ultima-layout.component';
 
 @Component({

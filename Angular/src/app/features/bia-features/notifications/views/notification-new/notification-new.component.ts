@@ -1,10 +1,10 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, Injector } from '@angular/core';
 import { CrudItemNewComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-new/crud-item-new.component';
+import { NotificationFormComponent } from '../../components/notification-form/notification-form.component';
 import { Notification } from '../../model/notification';
 import { notificationCRUDConfiguration } from '../../notification.constants';
 import { NotificationService } from '../../services/notification.service';
-import { NotificationFormComponent } from '../../components/notification-form/notification-form.component';
-import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'bia-notification-new',

@@ -36,9 +36,9 @@ export class CrudItemFormComponent<CrudItem extends BaseDto> {
   @Input() showSubmitButton = true;
   @Input() showFixableState?: boolean;
   @Input() canFix = false;
-  @Input() showSplitButton: boolean = false;
-  @Input() showPopupButton: boolean = false;
-  @Input() showFullPageButton: boolean = false;
+  @Input() showSplitButton = false;
+  @Input() showPopupButton = false;
+  @Input() showFullPageButton = false;
 
   @Output() save = new EventEmitter<CrudItem>();
   @Output() cancelled = new EventEmitter<void>();

@@ -1,12 +1,12 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/services/layout.service';
 import { CrudItemItemComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component';
+import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
 import { Member } from '../../model/member';
 import { MemberService } from '../../services/member.service';
-import { RouterOutlet } from '@angular/router';
-import { NgIf, AsyncPipe } from '@angular/common';
-import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
 
 @Component({
   selector: 'bia-members-item',

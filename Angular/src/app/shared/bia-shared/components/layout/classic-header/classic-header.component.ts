@@ -1,4 +1,14 @@
 import { Platform } from '@angular/cdk/platform';
+import { CdkPortalOutlet } from '@angular/cdk/portal';
+import {
+  AsyncPipe,
+  NgClass,
+  NgFor,
+  NgIf,
+  NgSwitch,
+  NgSwitchCase,
+  NgSwitchDefault,
+} from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -11,14 +21,18 @@ import {
 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
   MegaMenuItem,
   MenuItem,
-  ToastMessageOptions,
   PrimeTemplate,
+  ToastMessageOptions,
 } from 'primeng/api';
+import { ButtonDirective } from 'primeng/button';
+import { MegaMenu } from 'primeng/megamenu';
+import { Menubar } from 'primeng/menubar';
 import { Toast } from 'primeng/toast';
+import { Tooltip } from 'primeng/tooltip';
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
@@ -34,25 +48,11 @@ import { THEME_DARK, THEME_LIGHT } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
 import { allEnvironments } from 'src/environments/all-environments';
 import { BiaNavigation } from '../../../model/bia-navigation';
-import { BiaLayoutService } from '../services/layout.service';
-import {
-  NgFor,
-  NgIf,
-  NgClass,
-  NgSwitch,
-  NgSwitchCase,
-  NgSwitchDefault,
-  AsyncPipe,
-} from '@angular/common';
-import { IeWarningComponent } from '../ie-warning/ie-warning.component';
-import { BiaTeamSelectorComponent } from '../../bia-team-selector/bia-team-selector.component';
-import { MegaMenu } from 'primeng/megamenu';
-import { Tooltip } from 'primeng/tooltip';
 import { BiaOnlineOfflineIconComponent } from '../../bia-online-offline-icon/bia-online-offline-icon.component';
-import { CdkPortalOutlet } from '@angular/cdk/portal';
-import { Menubar } from 'primeng/menubar';
-import { ButtonDirective } from 'primeng/button';
+import { BiaTeamSelectorComponent } from '../../bia-team-selector/bia-team-selector.component';
 import { NotificationTeamWarningComponent } from '../../notification-team-warning/notification-team-warning.component';
+import { IeWarningComponent } from '../ie-warning/ie-warning.component';
+import { BiaLayoutService } from '../services/layout.service';
 
 @Component({
   selector: 'bia-classic-header',

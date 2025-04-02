@@ -5,9 +5,9 @@ import { MaintenanceTeam } from '../../model/maintenance-team';
 // BIAToolKit - Begin Option
 import { MaintenanceTeamOptionsService } from '../../services/maintenance-team-options.service';
 // BIAToolKit - End Option
-import { MaintenanceTeamService } from '../../services/maintenance-team.service';
-import { MaintenanceTeamFormComponent } from '../../components/maintenance-team-form/maintenance-team-form.component';
 import { AsyncPipe } from '@angular/common';
+import { MaintenanceTeamFormComponent } from '../../components/maintenance-team-form/maintenance-team-form.component';
+import { MaintenanceTeamService } from '../../services/maintenance-team.service';
 
 @Component({
   selector: 'app-maintenance-team-new',

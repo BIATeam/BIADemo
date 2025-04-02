@@ -1,11 +1,24 @@
+import {
+  AsyncPipe,
+  NgClass,
+  NgFor,
+  NgIf,
+  NgStyle,
+  NgSwitch,
+  NgTemplateOutlet,
+} from '@angular/common';
 import { Component, OnChanges } from '@angular/core';
 import {
-  UntypedFormBuilder,
-  Validators,
   FormsModule,
   ReactiveFormsModule,
+  UntypedFormBuilder,
+  Validators,
 } from '@angular/forms';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { PrimeTemplate } from 'primeng/api';
+import { Skeleton } from 'primeng/skeleton';
+import { TableModule } from 'primeng/table';
+import { Tooltip } from 'primeng/tooltip';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
@@ -14,23 +27,10 @@ import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { PropType } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
-import {
-  NgIf,
-  NgFor,
-  NgSwitch,
-  NgClass,
-  NgTemplateOutlet,
-  NgStyle,
-  AsyncPipe,
-} from '@angular/common';
-import { TableModule } from 'primeng/table';
-import { PrimeTemplate } from 'primeng/api';
-import { Tooltip } from 'primeng/tooltip';
 import { BiaTableFilterComponent } from '../../../../components/table/bia-table-filter/bia-table-filter.component';
+import { BiaTableFooterControllerComponent } from '../../../../components/table/bia-table-footer-controller/bia-table-footer-controller.component';
 import { BiaTableInputComponent } from '../../../../components/table/bia-table-input/bia-table-input.component';
 import { BiaTableOutputComponent } from '../../../../components/table/bia-table-output/bia-table-output.component';
-import { Skeleton } from 'primeng/skeleton';
-import { BiaTableFooterControllerComponent } from '../../../../components/table/bia-table-footer-controller/bia-table-footer-controller.component';
 
 @Component({
   selector: 'bia-crud-item-table',

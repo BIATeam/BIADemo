@@ -9,10 +9,10 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
-import { BiaInjectorService } from 'src/app/core/bia-core/services/bia-injector.service';
-import { Dialog } from 'primeng/dialog';
-import { SharedModule } from 'primeng/api';
 import { TranslateModule } from '@ngx-translate/core';
+import { SharedModule } from 'primeng/api';
+import { Dialog } from 'primeng/dialog';
+import { BiaInjectorService } from 'src/app/core/bia-core/services/bia-injector.service';
 
 @Component({
   selector: 'bia-popup-layout',

@@ -1,12 +1,12 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, Injector } from '@angular/core';
 import { CrudItemImportComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-import/crud-item-import.component';
 import { Permission } from 'src/app/shared/permission';
+import { BiaFormComponent } from '../../../../components/form/bia-form/bia-form.component';
+import { CrudItemImportFormComponent } from '../../../crud-items/components/crud-item-import-form/crud-item-import-form.component';
 import { memberCRUDConfiguration } from '../../member.constants';
 import { Member } from '../../model/member';
 import { MemberService } from '../../services/member.service';
-import { BiaFormComponent } from '../../../../components/form/bia-form/bia-form.component';
-import { CrudItemImportFormComponent } from '../../../crud-items/components/crud-item-import-form/crud-item-import-form.component';
-import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'bia-member-import',

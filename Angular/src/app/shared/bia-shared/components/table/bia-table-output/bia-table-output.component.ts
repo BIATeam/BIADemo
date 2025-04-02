@@ -1,4 +1,11 @@
 import {
+  NgIf,
+  NgSwitch,
+  NgSwitchCase,
+  NgSwitchDefault,
+  NgTemplateOutlet,
+} from '@angular/common';
+import {
   AfterContentInit,
   ChangeDetectionStrategy,
   Component,
@@ -11,17 +18,10 @@ import {
 } from '@angular/core';
 import { PrimeTemplate } from 'primeng/api';
 import { DtoState } from '../../../model/dto-state.enum';
-import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.component';
-import {
-  NgIf,
-  NgTemplateOutlet,
-  NgSwitch,
-  NgSwitchCase,
-  NgSwitchDefault,
-} from '@angular/common';
-import { PluckPipe } from '../../../pipes/pluck.pipe';
-import { JoinPipe } from '../../../pipes/join.pipe';
 import { FormatValuePipe } from '../../../pipes/format-value.pipe';
+import { JoinPipe } from '../../../pipes/join.pipe';
+import { PluckPipe } from '../../../pipes/pluck.pipe';
+import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.component';
 
 @Component({
   selector: 'bia-table-output',

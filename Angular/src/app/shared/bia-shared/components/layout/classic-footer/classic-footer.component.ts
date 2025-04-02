@@ -1,8 +1,8 @@
+import { CdkPortalOutlet } from '@angular/cdk/portal';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FRAMEWORK_VERSION } from '../../../framework-version';
 import { BiaLayoutService } from '../services/layout.service';
-import { NgIf, AsyncPipe } from '@angular/common';
-import { CdkPortalOutlet } from '@angular/cdk/portal';
 
 @Component({
   selector: 'bia-classic-footer',

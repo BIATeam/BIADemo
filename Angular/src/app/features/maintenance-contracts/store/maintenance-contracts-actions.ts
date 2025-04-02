@@ -1,8 +1,8 @@
 import { createAction, props } from '@ngrx/store';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
-import { MaintenanceContract } from '../model/maintenance-contract';
 import { maintenanceContractCRUDConfiguration } from '../maintenance-contract.constants';
+import { MaintenanceContract } from '../model/maintenance-contract';
 
 export namespace FeatureMaintenanceContractsActions {
   export const loadAllByPost = createAction(

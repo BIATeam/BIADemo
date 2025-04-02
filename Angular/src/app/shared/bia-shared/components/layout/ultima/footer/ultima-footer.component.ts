@@ -1,13 +1,13 @@
+import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
   Input,
 } from '@angular/core';
+import { Ripple } from 'primeng/ripple';
 import { FRAMEWORK_VERSION } from 'src/app/shared/bia-shared/framework-version';
 import { BiaLayoutService } from '../../services/layout.service';
-import { NgIf, NgClass, NgFor, AsyncPipe } from '@angular/common';
-import { Ripple } from 'primeng/ripple';
 
 @Component({
   selector: 'bia-ultima-footer',

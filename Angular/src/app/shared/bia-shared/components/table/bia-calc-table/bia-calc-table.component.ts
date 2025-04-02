@@ -1,4 +1,13 @@
 import {
+  AsyncPipe,
+  NgClass,
+  NgFor,
+  NgIf,
+  NgStyle,
+  NgSwitch,
+  NgTemplateOutlet,
+} from '@angular/common';
+import {
   AfterContentInit,
   Component,
   EventEmitter,
@@ -10,35 +19,26 @@ import {
   TemplateRef,
 } from '@angular/core';
 import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
   FormsModule,
   ReactiveFormsModule,
+  UntypedFormBuilder,
+  UntypedFormGroup,
 } from '@angular/forms';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { PrimeTemplate } from 'primeng/api';
+import { Skeleton } from 'primeng/skeleton';
+import { TableModule } from 'primeng/table';
+import { Tooltip } from 'primeng/tooltip';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import { BiaFieldConfig } from '../../../model/bia-field-config';
-import { DictOptionDto } from '../bia-table/dict-option-dto';
-import {
-  NgIf,
-  NgFor,
-  NgSwitch,
-  NgClass,
-  NgTemplateOutlet,
-  NgStyle,
-  AsyncPipe,
-} from '@angular/common';
-import { TableModule } from 'primeng/table';
-import { PrimeTemplate } from 'primeng/api';
-import { Tooltip } from 'primeng/tooltip';
 import { BiaTableFilterComponent } from '../bia-table-filter/bia-table-filter.component';
+import { BiaTableFooterControllerComponent } from '../bia-table-footer-controller/bia-table-footer-controller.component';
 import { BiaTableInputComponent } from '../bia-table-input/bia-table-input.component';
 import { BiaTableOutputComponent } from '../bia-table-output/bia-table-output.component';
-import { Skeleton } from 'primeng/skeleton';
-import { BiaTableFooterControllerComponent } from '../bia-table-footer-controller/bia-table-footer-controller.component';
+import { DictOptionDto } from '../bia-table/dict-option-dto';
 
 @Component({
   selector: 'bia-calc-table',

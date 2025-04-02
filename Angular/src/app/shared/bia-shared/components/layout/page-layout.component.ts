@@ -1,6 +1,6 @@
 import { Component, HostBinding } from '@angular/core';
-import { ClassicPageLayoutComponent } from './classic-page-layout/classic-page-layout.component';
 import { RouterOutlet } from '@angular/router';
+import { ClassicPageLayoutComponent } from './classic-page-layout/classic-page-layout.component';
 
 @Component({
   selector: 'bia-page-layout',
