@@ -180,7 +180,8 @@ html .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
 body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
 .table-compact p-table .p-datatable .p-datatable-tfoot > tr > td,
 .table-compact p-table .p-datatable .p-datatable-thead > tr > th {
-  padding: 0.12em 0.25em;
+  padding-top: 0.12em;
+  padding-bottom: 0.12em;
 }
 
 .table-compact
