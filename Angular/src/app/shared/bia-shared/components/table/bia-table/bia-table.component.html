@@ -151,7 +151,10 @@
         [alignFrozen]="col.alignFrozen"
         pFrozenColumn
         [frozen]="col.isFrozen">
-        <bia-table-output [field]="col" [data]="getCellData(rowData, col)">
+        <bia-table-output
+          [field]="col"
+          [data]="getCellData(rowData, col)"
+          [ignoreSpecificOutput]="ignoreSpecificOutput">
           <ng-template pTemplate="specificOutput">
             <ng-container
               *ngTemplateOutlet="
