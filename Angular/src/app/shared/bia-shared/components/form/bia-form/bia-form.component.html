@@ -55,7 +55,7 @@
     </div>
   </div>
 
-  <div class="bia-form-fields">
+  <div class="bia-form-fields" #refFormField>
     <ng-container *ngIf="formLayoutConfig">
       <bia-form-layout
         [element]="element"
@@ -114,8 +114,7 @@
   <ng-template #fieldTemplate let-field="field" let-form="form">
     <div
       *ngIf="field.isVisible === true"
-      class="flex flex-row align-items-center"
-      #refFormField>
+      class="flex flex-row align-items-center">
       <div class="app-field-container">
         <ng-template
           [ngIf]="field.isEditable === true"
