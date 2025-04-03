@@ -1,4 +1,4 @@
-<div [formGroup]="form" class="flex">
+<div [formGroup]="form">
   <ng-container *ngIf="field.specificInput === true">
     <ng-container
       *ngTemplateOutlet="
@@ -41,12 +41,15 @@
         scrollHeight="50vh"></p-multiSelect>
     </ng-container>
     <ng-container *ngSwitchCase="'Boolean'">
-      <p-checkbox
-        class="bia-simple-input"
-        [binary]="true"
-        [formControlName]="field.field"
-        [autofocus]="focusByDefault"
-        (onChange)="onChange()"></p-checkbox>
+      <div class="flex">
+        <p-checkbox
+          class="bia-simple-input"
+          [binary]="true"
+          [formControlName]="field.field"
+          [autofocus]="focusByDefault"
+          (onChange)="onChange()"></p-checkbox>
+        <span *ngIf="field.isRequired" class="bia-star-mandatory">*</span>
+      </div>
     </ng-container>
     <ng-container *ngSwitchCase="'Number'">
       <p-inputNumber
@@ -187,5 +190,9 @@
         (change)="onChange()" />
     </ng-container>
   </ng-container>
-  <span *ngIf="field.isRequired" class="bia-star-mandatory">*</span>
+  <span
+    *ngIf="field.isRequired && field.type !== 'Boolean'"
+    class="bia-star-mandatory"
+    >*</span
+  >
 </div>

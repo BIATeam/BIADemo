@@ -1,7 +1,6 @@
 import { NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ContentChildren,
@@ -73,7 +72,7 @@ import { BiaOutputComponent } from '../bia-output/bia-output.component';
   ],
 })
 export class BiaFormComponent<TDto extends { id: number }>
-  implements OnInit, OnDestroy, OnChanges, AfterContentInit, AfterViewInit
+  implements OnInit, OnDestroy, OnChanges, AfterContentInit
 {
   @Input() element?: TDto;
   @Input() fields: BiaFieldConfig<TDto>[];
@@ -159,12 +158,6 @@ export class BiaFormComponent<TDto extends { id: number }>
       this.applyFormReadOnlyMode();
       this.applyFixedState();
     }
-  }
-
-  ngAfterViewInit() {
-    setTimeout(() => {
-      this.setFocus();
-    });
   }
 
   get submitButtonLabel(): string {
@@ -253,15 +246,13 @@ export class BiaFormComponent<TDto extends { id: number }>
    */
   protected setFocus() {
     const formElement = 'input, textarea, select';
-    const firstActiveField = this.formElements.find(field => {
-      const element = field.nativeElement.querySelector(formElement);
-      return this.readOnly ? element : element && !element.disabled;
-    });
+    const firstActiveField = this.formElements
+      .map(element => element.nativeElement.querySelector(formElement))
+      .find(field => {
+        return this.readOnly ? field : field && !field.disabled;
+      });
     if (firstActiveField) {
-      const element = firstActiveField.nativeElement.querySelector(formElement);
-      if (element) {
-        element.focus();
-      }
+      firstActiveField.focus();
     }
   }
 

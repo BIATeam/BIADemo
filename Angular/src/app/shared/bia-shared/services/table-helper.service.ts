@@ -133,7 +133,7 @@ export class TableHelperService {
     // Non compact mode :
     // table header margin = 1.25rem
     // controller height = 4.5rem
-    // paginator = 3.6rem
+    // paginator = 3.75rem
 
     // Compact mode :
     // table header margin = -0.25rem
@@ -143,7 +143,7 @@ export class TableHelperService {
     if (layoutService._config.classicStyle) {
       height += ' - 200px';
     } else {
-      height += ' - 11.59rem';
+      height += ' - 11.74rem';
     }
     if (compactMode) {
       height += ' + 3.75rem';
