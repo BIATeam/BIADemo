@@ -18,10 +18,10 @@ Write-Host "old name: " $oldName
 Write-Host "new name: " $newName
 
 
-RemoveFolderContents -path "$newPath" -Exclude ('dist', 'node_modules', '.angular')
+RemoveFolderContents -path "$newPath"
 
 Write-Host "Copy from $oldPath to $newPath"
-Copy-Item -Path $oldPath -Destination $newPath -Recurse -Force
+Copy-Item -Path (Get-Item -Path "$oldPath\*").FullName -Destination $newPath -Recurse -Force
 
 Write-Host "replace project name"
 ReplaceProjectNameRecurse -oldName $oldName -newName $newName -Path $newPath 
