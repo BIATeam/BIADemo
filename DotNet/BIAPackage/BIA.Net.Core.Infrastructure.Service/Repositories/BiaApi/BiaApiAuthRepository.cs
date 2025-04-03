@@ -9,7 +9,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration.AuthenticationSection;
     using BIA.Net.Core.Common.Configuration.Keycloak;
-    using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Service.Dto.Keycloak;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
