@@ -1800,7 +1800,7 @@ const MyPreset = definePreset(Material, {
         background: '{form.field.background}',
         checkedBackground: '{primary.color}',
         checkedHoverBackground: '{primary.color}',
-        disabledBackground: '{form.field.disabled.background}',
+        disabledBackground: '{surface.400}',
         filledBackground: '{form.field.filled.background}',
         borderColor: '{form.field.border.color}',
         hoverBorderColor: '{form.field.hover.border.color}',
@@ -1808,7 +1808,7 @@ const MyPreset = definePreset(Material, {
         checkedBorderColor: '{primary.color}',
         checkedHoverBorderColor: '{primary.color}',
         checkedFocusBorderColor: '{primary.color}',
-        checkedDisabledBorderColor: '{form.field.border.color}',
+        checkedDisabledBorderColor: '{surface.400}',
         invalidBorderColor: '{form.field.invalid.border.color}',
         shadow: '{form.field.shadow}',
         focusRing: {
