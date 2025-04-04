@@ -4,6 +4,7 @@
 
 namespace BIA.Net.Core.Infrastructure.Service.Repositories
 {
+    using System;
     using System.Dynamic;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -21,6 +22,16 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     /// </summary>
     public class BiaWebApiRepository : WebApiRepository, IBiaWebApiRepository
     {
+        /// <summary>
+        /// The bia web API config.
+        /// </summary>
+        private BiaWebApi biaWebApi;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [call application setting].
+        /// </summary>
+        private bool callAppSetting = true;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BiaWebApiRepository" /> class.
         /// </summary>
@@ -45,17 +56,28 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <summary>
         /// Gets the bia web API.
         /// </summary>
-        protected BiaWebApi BiaWebApi { get; private set; }
+        protected BiaWebApi BiaWebApi
+        {
+            get
+            {
+                if (this.biaWebApi == null)
+                {
+                    throw new InvalidOperationException("BiaWebApi is not initialized. Please call Init method before using this repository.");
+                }
+
+                return this.biaWebApi;
+            }
+
+            private set
+            {
+                this.biaWebApi = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the keycloak setting.
         /// </summary>
         protected Keycloak KeycloakSetting { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether [call application setting].
-        /// </summary>
-        protected bool CallAppSetting { get; set; } = true;
 
         /// <inheritdoc />
         public virtual void Init(BiaWebApi biaWebApi)
@@ -164,9 +186,9 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <inheritdoc />
         protected override async Task ConfigureHttpClientAsync()
         {
-            if (this.CallAppSetting)
+            if (this.callAppSetting)
             {
-                this.CallAppSetting = false;
+                this.callAppSetting = false;
                 this.KeycloakSetting = await this.GetKeycloakSettingAsync();
                 this.SetAuthenticationConfiguration();
             }
@@ -178,8 +200,10 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         protected override async Task<string> GetBearerTokenAsync()
         {
             string token = await BiaKeycloakHelper.GetBearerTokenAsync(this.KeycloakSetting, this.PostAsync<TokenResponseDto, TokenRequestDto>, this.BiaWebApi.CredentialSource);
+
             string cacheKey = this.GetKeycloakSettingCacheKey();
             await this.DistributedCache.Remove(cacheKey);
+
             return token;
         }
     }
