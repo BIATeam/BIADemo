@@ -1,0 +1,210 @@
+﻿// <copyright file="BiaWebApiRepository.cs" company="TheBIADevCompany">
+// Copyright (c) TheBIADevCompany. All rights reserved.
+// </copyright>
+
+namespace BIA.Net.Core.Infrastructure.Service.Repositories
+{
+    using System;
+    using System.Dynamic;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+    using BIA.Net.Core.Common.Configuration.AuthenticationSection;
+    using BIA.Net.Core.Common.Configuration.BiaWebApi;
+    using BIA.Net.Core.Common.Configuration.Keycloak;
+    using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Infrastructure.Service.Dto.Keycloak;
+    using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
+    using Microsoft.Extensions.Logging;
+    using Newtonsoft.Json;
+
+    /// <summary>
+    /// BiaApiAuth Repository.
+    /// </summary>
+    public class BiaWebApiRepository : WebApiRepository, IBiaWebApiRepository
+    {
+        /// <summary>
+        /// The bia web API config.
+        /// </summary>
+        private BiaWebApi biaWebApi;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [call application setting].
+        /// </summary>
+        private bool callAppSetting = true;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BiaWebApiRepository" /> class.
+        /// </summary>
+        /// <param name="httpClient">The HTTP client.</param>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="distributedCache">The distributed cache.</param>
+        /// <param name="biaWebApi">The bia web API configuration.</param>
+        public BiaWebApiRepository(
+            HttpClient httpClient,
+            ILogger<BiaWebApiRepository> logger,
+            IBiaDistributedCache distributedCache)
+             : base(httpClient, logger, distributedCache)
+        {
+        }
+
+        /// <summary>
+        /// Gets the base address.
+        /// </summary>
+        public string BaseAddress => this.BiaWebApi?.BaseAddress;
+
+        /// <summary>
+        /// Gets the bia web API.
+        /// </summary>
+        protected BiaWebApi BiaWebApi
+        {
+            get
+            {
+                if (this.biaWebApi == null)
+                {
+                    throw new InvalidOperationException("BiaWebApi is not initialized. Please call Init method before using this repository.");
+                }
+
+                return this.biaWebApi;
+            }
+
+            private set
+            {
+                this.biaWebApi = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the keycloak setting.
+        /// </summary>
+        protected Keycloak KeycloakSetting { get; set; }
+
+        /// <inheritdoc />
+        public virtual void Init(BiaWebApi biaWebApi)
+        {
+            this.BiaWebApi = biaWebApi;
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<string> LoginAsync(string url = "/api/Auth/login?lightToken=false")
+        {
+            var result = await this.GetAsync<object>($"{this.BaseAddress}{url}");
+            if (result.IsSuccessStatusCode && result.Result != null)
+            {
+                dynamic responseObject = JsonConvert.DeserializeObject<ExpandoObject>(result.Result.ToString());
+                return responseObject?.token;
+            }
+
+            return null;
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<string> GetTokenAsync(string url = "/api/Auth/token")
+        {
+            var result = await this.GetAsync<string>($"{this.BaseAddress}{url}");
+            return result.IsSuccessStatusCode ? result.Result : null;
+        }
+
+        /// <summary>
+        /// Gets the application settings.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <returns>The application settings.</returns>
+        protected virtual async Task<Keycloak> GetKeycloakSettingsAsync(string url = "/api/AppSettings")
+        {
+            var result = await this.GetAsync<object>($"{this.BiaWebApi.BaseAddress}{url}");
+            if (result.IsSuccessStatusCode && result.Result != null)
+            {
+                var responseObject = JsonConvert.DeserializeAnonymousType(result.Result.ToString(), new { keycloak = new Keycloak() });
+                return responseObject?.keycloak;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the prefix cache key.
+        /// </summary>
+        /// <returns>The prefix cache key.</returns>
+        protected virtual string GetPrefixCacheKey()
+        {
+            return $"{this.BiaWebApi.BaseAddress}|{nameof(BiaWebApiRepository)}|";
+        }
+
+        /// <summary>
+        /// Gets the keycloak setting cache key.
+        /// </summary>
+        /// <returns>The keycloak setting cache key.</returns>
+        protected virtual string GetKeycloakSettingCacheKey()
+        {
+            return $"{this.GetPrefixCacheKey()}KeycloakSetting";
+        }
+
+        /// <summary>
+        /// Gets the keycloak setting.
+        /// </summary>
+        /// <returns>The keycloak setting.</returns>
+        protected virtual async Task<Keycloak> GetKeycloakSettingAsync()
+        {
+            string cacheKey = this.GetKeycloakSettingCacheKey();
+            Keycloak setting = await this.DistributedCache.Get<Keycloak>(cacheKey);
+
+            if (setting == null)
+            {
+                setting = await this.GetKeycloakSettingsAsync();
+
+                if (setting != null)
+                {
+                    await this.DistributedCache.Add(cacheKey, setting, 60);
+                }
+            }
+
+            return setting;
+        }
+
+        /// <summary>
+        /// Sets the authentication configuration.
+        /// </summary>
+        protected virtual void SetAuthenticationConfiguration()
+        {
+            if (this.KeycloakSetting?.IsActive == true)
+            {
+                this.AuthenticationConfiguration = new AuthenticationConfiguration() { Mode = AuthenticationMode.Token };
+            }
+            else
+            {
+                this.AuthenticationConfiguration = new AuthenticationConfiguration { Mode = AuthenticationMode.Anonymous };
+            }
+        }
+
+        /// <inheritdoc />
+        protected override string GetBearerCacheKey()
+        {
+            return $"{this.GetPrefixCacheKey()}{Bearer}";
+        }
+
+        /// <inheritdoc />
+        protected override async Task ConfigureHttpClientAsync()
+        {
+            if (this.callAppSetting)
+            {
+                this.callAppSetting = false;
+                this.KeycloakSetting = await this.GetKeycloakSettingAsync();
+                this.SetAuthenticationConfiguration();
+            }
+
+            await base.ConfigureHttpClientAsync();
+        }
+
+        /// <inheritdoc />
+        protected override async Task<string> GetBearerTokenAsync()
+        {
+            string token = await BiaKeycloakHelper.GetBearerTokenAsync(this.KeycloakSetting, this.PostAsync<TokenResponseDto, TokenRequestDto>, this.BiaWebApi.CredentialSource);
+
+            string cacheKey = this.GetKeycloakSettingCacheKey();
+            await this.DistributedCache.Remove(cacheKey);
+
+            return token;
+        }
+    }
+}

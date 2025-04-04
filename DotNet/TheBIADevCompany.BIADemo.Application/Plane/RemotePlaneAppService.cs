@@ -28,14 +28,14 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
             this.remotePlaneRepository = remotePlaneRepository;
         }
 
-        /// <inheritdoc cref="IRemotePlaneAppService.ExampleCallApiAsync"/>
-        public async Task<Plane> ExampleCallApiAsync()
+        /// <inheritdoc cref="IRemotePlaneAppService.GetRemoteAsync"/>
+        public async Task<bool> CheckExistAsync(int id)
         {
             var plane = new Plane();
-            plane.Id = 2;
+            plane.Id = id;
 
             plane = await this.remotePlaneRepository.GetAsync(plane.Id);
-            return plane;
+            return plane?.Id > 0;
         }
     }
 }
