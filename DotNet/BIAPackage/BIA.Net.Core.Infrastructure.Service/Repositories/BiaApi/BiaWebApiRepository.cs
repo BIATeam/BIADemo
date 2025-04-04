@@ -4,11 +4,13 @@
 
 namespace BIA.Net.Core.Infrastructure.Service.Repositories
 {
+    using System.Dynamic;
     using System.Net.Http;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration.AuthenticationSection;
     using BIA.Net.Core.Common.Configuration.BiaWebApi;
     using BIA.Net.Core.Common.Configuration.Keycloak;
+    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Service.Dto.Keycloak;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using Microsoft.Extensions.Logging;
@@ -17,10 +19,8 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     /// <summary>
     /// BiaApiAuth Repository.
     /// </summary>
-    public class BiaWebApiRepository : WebApiRepository
+    public class BiaWebApiRepository : WebApiRepository, IBiaWebApiRepository
     {
-        private readonly BiaWebApi biaWebApi;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="BiaWebApiRepository" /> class.
         /// </summary>
@@ -32,22 +32,20 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         public BiaWebApiRepository(
             HttpClient httpClient,
             ILogger<BiaWebApiRepository> logger,
-            IBiaDistributedCache distributedCache,
-            BiaWebApi biaWebApi)
+            IBiaDistributedCache distributedCache)
              : base(httpClient, logger, distributedCache)
         {
-            this.biaWebApi = biaWebApi;
         }
 
         /// <summary>
         /// Gets the base address.
         /// </summary>
-        protected string BaseAddress => this.biaWebApi?.BaseAddress;
+        public string BaseAddress => this.BiaWebApi?.BaseAddress;
 
         /// <summary>
         /// Gets the bia web API.
         /// </summary>
-        protected BiaWebApi BiaWebApi => this.biaWebApi;
+        protected BiaWebApi BiaWebApi { get; private set; }
 
         /// <summary>
         /// Gets or sets the keycloak setting.
@@ -59,6 +57,32 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// </summary>
         protected bool CallAppSetting { get; set; } = true;
 
+        /// <inheritdoc />
+        public virtual void Init(BiaWebApi biaWebApi)
+        {
+            this.BiaWebApi = biaWebApi;
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<string> LoginAsync(string url = "/api/Auth/login?lightToken=false")
+        {
+            var result = await this.GetAsync<object>($"{this.BaseAddress}{url}");
+            if (result.IsSuccessStatusCode && result.Result != null)
+            {
+                dynamic responseObject = JsonConvert.DeserializeObject<ExpandoObject>(result.Result.ToString());
+                return responseObject?.token;
+            }
+
+            return null;
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<string> GetTokenAsync(string url = "/api/Auth/token")
+        {
+            var result = await this.GetAsync<string>($"{this.BaseAddress}{url}");
+            return result.IsSuccessStatusCode ? result.Result : null;
+        }
+
         /// <summary>
         /// Gets the application settings.
         /// </summary>
@@ -66,7 +90,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <returns>The application settings.</returns>
         protected virtual async Task<Keycloak> GetKeycloakSettingsAsync(string url = "/api/AppSettings")
         {
-            var result = await this.GetAsync<object>($"{this.biaWebApi.BaseAddress}{url}");
+            var result = await this.GetAsync<object>($"{this.BiaWebApi.BaseAddress}{url}");
             if (result.IsSuccessStatusCode && result.Result != null)
             {
                 var responseObject = JsonConvert.DeserializeAnonymousType(result.Result.ToString(), new { keycloak = new Keycloak() });
@@ -82,7 +106,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <returns>The prefix cache key.</returns>
         protected virtual string GetPrefixCacheKey()
         {
-            return $"{this.biaWebApi.BaseAddress}|{nameof(BiaWebApiRepository)}|";
+            return $"{this.BiaWebApi.BaseAddress}|{nameof(BiaWebApiRepository)}|";
         }
 
         /// <summary>
@@ -153,7 +177,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <inheritdoc />
         protected override async Task<string> GetBearerTokenAsync()
         {
-            string token = await BiaKeycloakHelper.GetBearerTokenAsync(this.KeycloakSetting, this.PostAsync<TokenResponseDto, TokenRequestDto>, this.biaWebApi.CredentialSource);
+            string token = await BiaKeycloakHelper.GetBearerTokenAsync(this.KeycloakSetting, this.PostAsync<TokenResponseDto, TokenRequestDto>, this.BiaWebApi.CredentialSource);
             string cacheKey = this.GetKeycloakSettingCacheKey();
             await this.DistributedCache.Remove(cacheKey);
             return token;
