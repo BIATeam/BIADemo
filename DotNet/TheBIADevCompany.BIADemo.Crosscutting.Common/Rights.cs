@@ -205,10 +205,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
 
         // BIAToolKit - End Partial Rights MaintenanceTeam
 
-        // BIAToolKit - Begin Partial Rights Country
+        // BIAToolKit - Begin Partial RightsForOption Country
 
         /// <summary>
-        /// The countries rights.
+        /// The country options rights.
         /// </summary>
         public static class CountryOptions
         {
@@ -218,7 +218,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Options = "Country_Options";
         }
 
-        // BIAToolKit - End Partial Rights Country
+        // BIAToolKit - End Partial RightsForOption Country
 
         // BIAToolKit - Begin Partial Rights Plane
 
@@ -674,5 +674,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
 
         // BIAToolKit - End Partial Rights MaintenanceContract
         // BIAToolKit - End Rights
+
+        // BIAToolKit - Begin RightsForOption
+        // BIAToolKit - End RightsForOption
     }
 }

@@ -44,6 +44,7 @@ export class BiaTableOutputComponent<CrudItem>
   implements OnInit, OnDestroy, AfterContentInit
 {
   @Input() data: any;
+  @Input() ignoreSpecificOutput = false;
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
 

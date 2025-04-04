@@ -25,9 +25,9 @@ try
 
     WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
     builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-    builder.Configuration.AddJsonFile($"appsettings.{environment}.json", optional: false, reloadOnChange: true);
+    builder.Configuration.AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true);
     builder.Configuration.AddJsonFile("bianetconfig.json", optional: false, reloadOnChange: true);
-    builder.Configuration.AddJsonFile($"bianetconfig.{environment}.json", optional: false, reloadOnChange: true);
+    builder.Configuration.AddJsonFile($"bianetconfig.{environment}.json", optional: true, reloadOnChange: true);
 
     builder.Host.UseNLog();
 

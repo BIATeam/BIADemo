@@ -161,34 +161,40 @@ export class CrudItemImportService<T extends BaseDto> {
       map((dictOptionDtos: DictOptionDto[]) => {
         csvObjs.forEach(csvObj => {
           this.crudConfig.fieldsConfig.columns.map(column => {
-            const csvValue: any = csvObj[column.field];
-            if (csvValue !== undefined && csvValue !== null) {
-              if (column.type === PropType.String) {
-                this.parseCSVString(csvObj, column);
-              } else if (
-                column.type === PropType.Date &&
-                Object(csvValue) instanceof Date !== true
-              ) {
-                this.parseCSVDate(csvObj, column);
-              } else if (
-                column.type === PropType.DateTime &&
-                Object(csvValue) instanceof Date !== true
-              ) {
-                this.parseCSVDateTime(csvObj, column);
-              } else if (
-                column.type === PropType.Boolean &&
-                Object(csvValue) instanceof Boolean !== true
-              ) {
-                this.parseCSVBoolean(csvObj, column);
-              } else if (
-                column.type === PropType.Number &&
-                Object(csvValue) instanceof Number !== true
-              ) {
-                this.parseCSVNumber(csvObj, column);
-              } else if (column.type === PropType.OneToMany) {
-                this.parseCSVOneToMany(csvObj, column, dictOptionDtos);
-              } else if (column.type === PropType.ManyToMany) {
-                this.parseCSVManyToMany(csvObj, column, dictOptionDtos);
+            if (
+              column.isEditable ||
+              column.isOnlyInitializable ||
+              column.isOnlyUpdatable
+            ) {
+              const csvValue: any = csvObj[column.field];
+              if (csvValue !== undefined && csvValue !== null) {
+                if (column.type === PropType.String) {
+                  this.parseCSVString(csvObj, column);
+                } else if (
+                  column.type === PropType.Date &&
+                  Object(csvValue) instanceof Date !== true
+                ) {
+                  this.parseCSVDate(csvObj, column);
+                } else if (
+                  column.type === PropType.DateTime &&
+                  Object(csvValue) instanceof Date !== true
+                ) {
+                  this.parseCSVDateTime(csvObj, column);
+                } else if (
+                  column.type === PropType.Boolean &&
+                  Object(csvValue) instanceof Boolean !== true
+                ) {
+                  this.parseCSVBoolean(csvObj, column);
+                } else if (
+                  column.type === PropType.Number &&
+                  Object(csvValue) instanceof Number !== true
+                ) {
+                  this.parseCSVNumber(csvObj, column);
+                } else if (column.type === PropType.OneToMany) {
+                  this.parseCSVOneToMany(csvObj, column, dictOptionDtos);
+                } else if (column.type === PropType.ManyToMany) {
+                  this.parseCSVManyToMany(csvObj, column, dictOptionDtos);
+                }
               }
             }
           });
@@ -422,7 +428,13 @@ export class CrudItemImportService<T extends BaseDto> {
     for (const prop in newObj) {
       // We do not directly compare the CSV object because it could contain properties that are not known to the object.
       // So, we start from an obj and we fill in the properties if they are present on both sides.
-      if (Object.prototype.hasOwnProperty.call(csvObj, prop)) {
+      const field = this.crudConfig.fieldsConfig.columns.find(
+        column => column.field === prop
+      );
+      if (
+        Object.prototype.hasOwnProperty.call(csvObj, prop) &&
+        (field?.isEditable || field?.isOnlyUpdatable)
+      ) {
         Object.assign(newObj, { [prop]: csvObj[prop] });
 
         if (isEmpty(newObj[prop]) && isEmpty(oldObj[prop])) {
@@ -446,6 +458,15 @@ export class CrudItemImportService<T extends BaseDto> {
   }
 
   protected fillToInserts(csvObj: T) {
+    for (const prop in csvObj) {
+      const field = this.crudConfig.fieldsConfig.columns.find(
+        column => column.field === prop
+      );
+      if (!field?.isEditable && !field?.isOnlyInitializable) {
+        csvObj[prop] = null as T[Extract<keyof T, string>];
+      }
+    }
+
     this.form.element = <T>{};
     const checkObject = this.form.checkObject(csvObj);
 

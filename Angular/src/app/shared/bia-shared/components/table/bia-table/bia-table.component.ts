@@ -112,6 +112,7 @@ export class BiaTableComponent<TDto extends { id: number }>
   @Input() showFixableState = false;
   @Input() sortMode: 'single' | 'multiple' = 'multiple';
   @Input() multiSortMeta?: SortMeta[] | null;
+  @Input() ignoreSpecificOutput = false;
 
   protected isSelectFrozen = false;
   protected widthSelect: string;

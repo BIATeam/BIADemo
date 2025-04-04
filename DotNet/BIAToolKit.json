@@ -174,7 +174,7 @@
             "NoParentValue": "{DomainName}"
           },
           {
-            "RegexMatch": ".*using MyCompany.MyFirstProject.Domain.([A-Za-z0-9_]+).Mappers;",
+            "RegexMatch": ".*using TheBIADevCompany.BIADemo.Domain.([A-Za-z0-9_]+).Mappers;",
             "NoParentValue": "{DomainName}"
           }
         ]
@@ -196,7 +196,7 @@
             "NoParentValue": "{DomainName}"
           },
           {
-            "RegexMatch": ".*using MyCompany.MyFirstProject.Application.([A-Za-z0-9_]+);",
+            "RegexMatch": ".*using TheBIADevCompany.BIADemo.Application.([A-Za-z0-9_]+);",
             "NoParentValue": "{DomainName}"
           }
         ]
