@@ -16,38 +16,50 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Utilities
     /// </summary>
     public class BiaRemoteController : BiaControllerBase
     {
-        private readonly IBiaRemoteService biaRemoteService;
+        /// <summary>
+        /// The remote authentication service.
+        /// </summary>
+        private readonly IRemoteAuthService remoteAuthService;
 
-        private readonly IRemotePlaneAppService remotePlaneAppService;
+        /// <summary>
+        /// The remote plane service.
+        /// </summary>
+        private readonly IRemotePlaneAppService remotePlaneService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BiaRemoteController"/> class.
         /// </summary>
-        /// <param name="biaRemoteService">Document analysis service.</param>
-        public BiaRemoteController(IBiaRemoteService biaRemoteService, IRemotePlaneAppService remotePlaneAppService)
+        /// <param name="remoteAuthService">The remote authentication service.</param>
+        /// <param name="remotePlaneService">The remote plane service.</param>
+        public BiaRemoteController(IRemoteAuthService remoteAuthService, IRemotePlaneAppService remotePlaneService)
         {
-            this.biaRemoteService = biaRemoteService;
-            this.remotePlaneAppService = remotePlaneAppService;
+            this.remoteAuthService = remoteAuthService;
+            this.remotePlaneService = remotePlaneService;
         }
 
         /// <summary>
         /// Ping.
         /// </summary>
         /// <returns>Return true if ok.</returns>
-        [HttpGet("PingOne")]
+        [HttpGet("ping")]
         [AllowAnonymous]
-        public async Task<IActionResult> PingOne()
+        public async Task<IActionResult> Ping()
         {
-            bool isOk = await this.biaRemoteService.PingAsync();
+            bool isOk = await this.remoteAuthService.PingAsync();
             return this.Ok(isOk);
         }
 
-        [HttpGet("PingTwo")]
+        /// <summary>
+        /// Check if remote plane exist.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>Return true if plane exist.</returns>
+        [HttpGet("planes/{id}")]
         [AllowAnonymous]
-        public async Task<IActionResult> PingTwo()
+        public async Task<IActionResult> GetRemotePlane(int id)
         {
-            var obj = await this.remotePlaneAppService.ExampleCallApiAsync();
-            return this.Ok(obj?.Id > 0);
+            bool isOk = await this.remotePlaneService.CheckExistAsync(id);
+            return this.Ok(isOk);
         }
     }
 }

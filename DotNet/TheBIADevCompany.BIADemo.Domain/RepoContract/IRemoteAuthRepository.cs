@@ -1,5 +1,5 @@
 ﻿// BIADemo only
-// <copyright file="IBiaRemoteRepository.cs" company="PlaceholderCompany">
+// <copyright file="IRemoteAuthRepository.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
@@ -10,7 +10,7 @@ namespace TheBIADevCompany.BIADemo.Domain.RepoContract
     /// <summary>
     /// Interface Bia Remote Repository.
     /// </summary>
-    public interface IBiaRemoteRepository
+    public interface IRemoteAuthRepository
     {
         /// <summary>
         /// Ping the Api.
