@@ -33,16 +33,18 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
             : base(
                 httpClient,
                 logger,
-                distributedCache,
-                configuration.GetSection("MyBiaWebApi").Get<BiaWebApi>())
+                distributedCache)
         {
+            this.Init(configuration.GetSection("MyBiaWebApi").Get<BiaWebApi>());
         }
 
         /// <inheritdoc />
         public virtual async Task<bool> PingAsync()
         {
-            string url = "/api/shared/healthcheck";
-            return (await this.GetAsync<bool>($"{this.BaseAddress}{url}")).Result;
+            //string url = "/api/shared/healthcheck";
+            string url = "/api/Auth/token";
+            var result = await this.GetAsync<object>($"{this.BaseAddress}{url}");
+            return result.IsSuccessStatusCode;
         }
     }
 }

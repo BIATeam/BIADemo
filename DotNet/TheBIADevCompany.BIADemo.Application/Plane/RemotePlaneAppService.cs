@@ -32,7 +32,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         public async Task<Plane> ExampleCallApiAsync()
         {
             var plane = new Plane();
-            plane.Id = 2;
+            plane.Id = 5; //6005;
 
             plane = await this.remotePlaneRepository.GetAsync(plane.Id);
             return plane;

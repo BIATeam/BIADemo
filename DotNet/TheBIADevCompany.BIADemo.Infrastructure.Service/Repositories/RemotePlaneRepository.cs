@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
 {
     using System.Net.Http;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common.Configuration.BiaWebApi;
     using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
@@ -22,7 +23,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     /// <summary>
     /// RemotePlane Repository.
     /// </summary>
-    public class RemotePlaneRepository : BiaApiRepository, IRemotePlaneRepository
+    public class RemotePlaneRepository : BiaWebApiTokenRepository, IRemotePlaneRepository
     {
         /// <summary>
         /// The URL plane.
@@ -30,33 +31,22 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         private readonly string urlPlane;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RemotePlaneRepository" /> class.
+        /// Initializes a new instance of the <see cref="RemotePlaneRepository"/> class.
         /// </summary>
         /// <param name="httpClient">The HTTP client.</param>
         /// <param name="configuration">The configuration.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="distributedCache">The distributed cache.</param>
-        /// <param name="biaApiAuthRepository">The bia web API authentication repository.</param>
+        /// <param name="biaWebApiRepository">The bia web API repository.</param>
         public RemotePlaneRepository(
             HttpClient httpClient,
             IConfiguration configuration,
             ILogger<RemotePlaneRepository> logger,
             IBiaDistributedCache distributedCache,
-            IBiaApiAuthRepository biaApiAuthRepository)
-             : base(httpClient, logger, distributedCache, biaApiAuthRepository)
+            IBiaWebApiRepository biaWebApiRepository)
+             : base(httpClient, logger, distributedCache, biaWebApiRepository, configuration.GetSection("MyBiaWebApi").Get<BiaWebApi>())
         {
-#pragma warning disable S125 // Sections of code should not be commented out
-
-            // For a real project, the fields baseAddress, urlPlane, urlLogin must be entered in the appsettings.json file
-            // and retrieved via the configuration field.
-
-            // this.baseAddress = configuration["RemoteBIADemoWebApi:baseAddress"];
-            this.BaseAddress = "http://localhost:32128/BIADemo/WebApi";
-
-            // this.urlPlane = configuration["RemoteBIADemoWebApi:urlPlane"];
             this.urlPlane = "/api/Planes/";
-
-#pragma warning restore S125 // Sections of code should not be commented out
         }
 
         /// <inheritdoc cref="IRemotePlaneRepository.GetAsync"/>
