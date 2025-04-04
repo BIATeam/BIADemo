@@ -22,8 +22,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// </summary>
         private readonly IBiaWebApiRepository biaWebApiRepository;
 
-        protected string BaseAddress => this.biaWebApiRepository?.BaseAddress;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="BiaWebApiTokenRepository"/> class.
         /// </summary>
@@ -43,6 +41,11 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             this.biaWebApiRepository = biaWebApiRepository;
             this.biaWebApiRepository.Init(biaWebApi);
         }
+
+        /// <summary>
+        /// Gets the base address.
+        /// </summary>
+        protected string BaseAddress => this.biaWebApiRepository?.BaseAddress;
 
         /// <inheritdoc />
         protected override async Task<string> GetBearerTokenAsync()

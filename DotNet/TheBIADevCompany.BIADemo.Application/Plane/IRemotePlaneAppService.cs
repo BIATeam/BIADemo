@@ -6,7 +6,6 @@
 namespace TheBIADevCompany.BIADemo.Application.Plane
 {
     using System.Threading.Tasks;
-    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
 
     /// <summary>
     /// Interface RemotePlane App Service.
@@ -14,9 +13,10 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     public interface IRemotePlaneAppService
     {
         /// <summary>
-        /// Examples the call API asynchronous.
+        /// Checks if remote plane exist.
         /// </summary>
-        /// <returns>A plane.</returns>
-        Task<Plane> ExampleCallApiAsync();
+        /// <param name="id">The identifier.</param>
+        /// <returns>Return true if plane exist.</returns>
+        Task<bool> CheckExistAsync(int id);
     }
 }

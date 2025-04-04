@@ -1,4 +1,8 @@
-﻿namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
+﻿// <copyright file="BiaKeycloakHelper.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
 {
     using System;
     using System.Threading.Tasks;
