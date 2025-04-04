@@ -13,17 +13,6 @@ export const planesAdapter = createEntityAdapter<Plane>({
   sortComparer: false,
 });
 
-// -----------------------------------------
-// The shape of EntityState
-// ------------------------------------------
-// interface EntityState<Plane> {
-//   ids: string[] | number[];
-//   entities: { [id: string]: Plane };
-// }
-// -----------------------------------------
-// -> ids arrays allow us to sort data easily
-// -> entities map allows us to access the data quickly without iterating/filtering though an array of objects
-
 export interface State extends CrudState<Plane>, EntityState<Plane> {
   // additional props here
 }

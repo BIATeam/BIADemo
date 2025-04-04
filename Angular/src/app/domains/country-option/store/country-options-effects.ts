@@ -23,7 +23,7 @@ export class CountryOptionsEffects {
       /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
       /* 'Countries Reducers' will take care of the rest */
       switchMap(() =>
-        this.countryDas
+        this.countryOptionDas
           .getList({
             endpoint: 'allOptions',
             offlineMode: BiaOnlineOfflineService.isModeEnabled,
@@ -52,7 +52,7 @@ export class CountryOptionsEffects {
 
   constructor(
     private actions$: Actions,
-    private countryDas: CountryOptionDas,
+    private countryOptionDas: CountryOptionDas,
     private biaMessageService: BiaMessageService
   ) {}
 }

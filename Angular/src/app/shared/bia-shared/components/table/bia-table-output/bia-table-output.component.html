@@ -1,4 +1,9 @@
-<ng-container *ngIf="field !== undefined && field.specificOutput === true">
+<ng-container
+  *ngIf="
+    field !== undefined &&
+    field.specificOutput === true &&
+    !ignoreSpecificOutput
+  ">
   <ng-container
     *ngTemplateOutlet="
       specificOutputTemplate;
@@ -7,7 +12,10 @@
 </ng-container>
 <ng-container
   [ngSwitch]="field.type"
-  *ngIf="field !== undefined && field.specificOutput !== true">
+  *ngIf="
+    field !== undefined &&
+    (field.specificOutput !== true || ignoreSpecificOutput)
+  ">
   <ng-container *ngSwitchCase="'OneToMany'">
     {{ data?.display }}
   </ng-container>
