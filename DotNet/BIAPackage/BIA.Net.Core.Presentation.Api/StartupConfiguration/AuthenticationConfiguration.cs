@@ -166,11 +166,7 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(JwtBearerDefaults.AuthenticationScheme, policy => policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).RequireAuthenticatedUser().Build());
-
-                if (configuration.Policies != default)
-                {
-                    AddConfigurationPolicies(configuration, options);
-                }
+                AddConfigurationPolicies(configuration, options);
             });
 
             services.AddSingleton<IAuthorizationPolicyProvider, BiaAuthorizationPolicyProvider>();
@@ -178,18 +174,22 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
 
         private static void AddConfigurationPolicies(BiaNetSection configuration, AuthorizationOptions options)
         {
-            foreach (Policy policy in configuration.Policies?.Where(policy => !string.IsNullOrWhiteSpace(policy.Name) && policy.RequireClaims?.Any() == true))
+            if (configuration?.Policies != null)
             {
-                foreach (RequireClaim requireClaim in policy.RequireClaims)
+                foreach (Policy policy in configuration.Policies.Where(p => !string.IsNullOrWhiteSpace(p.Name) && p.RequireClaims?.Any() == true))
                 {
-                    if (!string.IsNullOrWhiteSpace(requireClaim?.Type) && requireClaim?.AllowedValues?.Any() == true)
+                    options.AddPolicy(policy.Name, policyBuilder =>
                     {
-                        options.AddPolicy(policy.Name, policy => policy.RequireClaim(requireClaim.Type, requireClaim.AllowedValues));
-                    }
+                        policyBuilder.RequireAssertion(context =>
+                        {
+                            return policy.RequireClaims.Any(requireClaim =>
+                                context.User.HasClaim(claim => claim.Type == requireClaim.Type && requireClaim.AllowedValues.Contains(claim.Value)));
+                        });
+                    });
                 }
             }
 
-            if (!configuration.Policies.Any(confPolicy => confPolicy.Name == BiaConstants.Policy.ServiceApiRW))
+            if (configuration?.Policies?.Any(confPolicy => confPolicy.Name == BiaConstants.Policy.ServiceApiRW) != true)
             {
                 options.AddPolicy(BiaConstants.Policy.ServiceApiRW, policy => policy.RequireAssertion(_ => true));
             }
