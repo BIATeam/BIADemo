@@ -17,9 +17,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Utilities
     public class BiaRemoteController : BiaControllerBase
     {
         /// <summary>
-        /// The remote authentication service.
+        /// The remote bia API rw service.
         /// </summary>
-        private readonly IRemoteAuthService remoteAuthService;
+        private readonly IRemoteBiaApiRwService remoteBiaApiRwService;
 
         /// <summary>
         /// The remote plane service.
@@ -29,11 +29,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Utilities
         /// <summary>
         /// Initializes a new instance of the <see cref="BiaRemoteController"/> class.
         /// </summary>
-        /// <param name="remoteAuthService">The remote authentication service.</param>
+        /// <param name="remoteBiaApiRwService">The remote bia API rw service.</param>
         /// <param name="remotePlaneService">The remote plane service.</param>
-        public BiaRemoteController(IRemoteAuthService remoteAuthService, IRemotePlaneAppService remotePlaneService)
+        public BiaRemoteController(IRemoteBiaApiRwService remoteBiaApiRwService, IRemotePlaneAppService remotePlaneService)
         {
-            this.remoteAuthService = remoteAuthService;
+            this.remoteBiaApiRwService = remoteBiaApiRwService;
             this.remotePlaneService = remotePlaneService;
         }
 
@@ -45,7 +45,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Utilities
         [AllowAnonymous]
         public async Task<IActionResult> Ping()
         {
-            bool isOk = await this.remoteAuthService.PingAsync();
+            bool isOk = await this.remoteBiaApiRwService.PingAsync();
             return this.Ok(isOk);
         }
 

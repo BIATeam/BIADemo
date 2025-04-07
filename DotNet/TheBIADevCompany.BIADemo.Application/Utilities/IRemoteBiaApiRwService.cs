@@ -1,5 +1,5 @@
 ﻿// BIADemo only
-// <copyright file="IRemoteAuthService.cs" company="PlaceholderCompany">
+// <copyright file="IRemoteBiaApiRwService.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
@@ -10,7 +10,7 @@ namespace TheBIADevCompany.BIADemo.Application.Utilities
     /// <summary>
     /// Interface BiaRemoteService.
     /// </summary>
-    public interface IRemoteAuthService
+    public interface IRemoteBiaApiRwService
     {
         /// <summary>
         /// Ping.

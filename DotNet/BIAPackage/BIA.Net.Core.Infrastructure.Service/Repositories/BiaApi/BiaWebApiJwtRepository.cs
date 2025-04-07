@@ -1,4 +1,4 @@
-﻿// <copyright file="BiaWebApiTokenRepository.cs" company="TheBIADevCompany">
+﻿// <copyright file="BiaWebApiJwtRepository.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -15,42 +15,58 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     /// <summary>
     /// Bia WebApi Token Repository.
     /// </summary>
-    public abstract class BiaWebApiTokenRepository : WebApiRepository
+    public abstract class BiaWebApiJwtRepository : WebApiRepository
     {
+        /// <summary>
+        /// The bia web API.
+        /// </summary>
+        private readonly BiaWebApi biaWebApi;
+
         /// <summary>
         /// The bia web API repository.
         /// </summary>
-        private readonly IBiaWebApiRepository biaWebApiRepository;
+        private readonly IBiaWebApiAuthRepository biaWebApiAuthRepository;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BiaWebApiTokenRepository"/> class.
+        /// Initializes a new instance of the <see cref="BiaWebApiJwtRepository"/> class.
         /// </summary>
         /// <param name="httpClient">The HTTP client.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="distributedCache">The distributed cache.</param>
-        /// <param name="biaWebApiRepository">The bia web API repository.</param>
+        /// <param name="biaWebApiAuthRepository">The bia web API repository.</param>
         /// <param name="biaWebApi">The bia web API.</param>
-        protected BiaWebApiTokenRepository(
+        protected BiaWebApiJwtRepository(
             HttpClient httpClient,
-            ILogger<BiaWebApiTokenRepository> logger,
+            ILogger<BiaWebApiJwtRepository> logger,
             IBiaDistributedCache distributedCache,
-            IBiaWebApiRepository biaWebApiRepository,
+            IBiaWebApiAuthRepository biaWebApiAuthRepository,
             BiaWebApi biaWebApi)
              : base(httpClient, logger, distributedCache, new AuthenticationConfiguration() { Mode = AuthenticationMode.Token })
         {
-            this.biaWebApiRepository = biaWebApiRepository;
-            this.biaWebApiRepository.Init(biaWebApi);
+            this.biaWebApi = biaWebApi;
+            this.biaWebApiAuthRepository = biaWebApiAuthRepository;
+            this.biaWebApiAuthRepository.Init(biaWebApi);
         }
 
         /// <summary>
         /// Gets the base address.
         /// </summary>
-        protected string BaseAddress => this.biaWebApiRepository?.BaseAddress;
+        protected string BaseAddress => this.biaWebApi?.BaseAddress;
 
         /// <inheritdoc />
         protected override async Task<string> GetBearerTokenAsync()
         {
-            string token = await this.biaWebApiRepository.LoginAsync();
+            string token = null;
+
+            if (this.biaWebApi.UseLoginFineGrained)
+            {
+                token = await this.biaWebApiAuthRepository.LoginAsync();
+            }
+            else
+            {
+                token = await this.biaWebApiAuthRepository.GetTokenAsync();
+            }
+
             return token;
         }
     }

@@ -1,4 +1,4 @@
-﻿// <copyright file="IBiaWebApiRepository.cs" company="TheBIADevCompany">
+﻿// <copyright file="IBiaWebApiAuthRepository.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -10,13 +10,8 @@ namespace BIA.Net.Core.Domain.RepoContract
     /// <summary>
     /// Interface Bia WebApi Repository.
     /// </summary>
-    public interface IBiaWebApiRepository
+    public interface IBiaWebApiAuthRepository
     {
-        /// <summary>
-        /// Gets the base address.
-        /// </summary>
-        string BaseAddress { get; }
-
         /// <summary>
         /// Initializes the specified bia web API.
         /// </summary>

@@ -198,7 +198,7 @@ namespace BIA.Net.Core.IocContainer
             collection.AddHttpClient<IImageUrlRepository, ImageUrlRepository>().ConfigurePrimaryHttpMessageHandler(() =>
                 GetHttpMessagehandler(biaNetSection.ProfileConfiguration.AuthenticationConfiguration, biaNetSection));
 
-            collection.AddHttpClient<IBiaWebApiRepository, BiaWebApiRepository>().ConfigurePrimaryHttpMessageHandler(() =>
+            collection.AddHttpClient<IBiaWebApiAuthRepository, BiaWebApiAuthRepository>().ConfigurePrimaryHttpMessageHandler(() =>
             CreateHttpClientHandler(biaNetSection));
         }
 

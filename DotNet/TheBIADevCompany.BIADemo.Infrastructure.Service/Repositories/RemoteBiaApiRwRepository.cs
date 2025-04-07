@@ -1,5 +1,5 @@
 ﻿// BIADemo only
-// <copyright file="RemoteAuthRepository.cs" company="PlaceholderCompany">
+// <copyright file="RemoteBiaApiRwRepository.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
@@ -16,33 +16,33 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     /// <summary>
     /// Bia Remote Repository.
     /// </summary>
-    public class RemoteAuthRepository : BiaWebApiRepository, IRemoteAuthRepository
+    public class RemoteBiaApiRwRepository : BiaWebApiRepository, IRemoteBiaApiRwRepository
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RemoteAuthRepository"/> class.
+        /// Initializes a new instance of the <see cref="RemoteBiaApiRwRepository"/> class.
         /// </summary>
         /// <param name="httpClient">The HTTP client.</param>
         /// <param name="configuration">The configuration.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="distributedCache">The distributed cache.</param>
-        public RemoteAuthRepository(
+        public RemoteBiaApiRwRepository(
             HttpClient httpClient,
             IConfiguration configuration,
-            ILogger<RemoteAuthRepository> logger,
+            ILogger<RemoteBiaApiRwRepository> logger,
             IBiaDistributedCache distributedCache)
             : base(
                 httpClient,
                 logger,
-                distributedCache)
+                distributedCache,
+                configuration.GetSection("MyBiaWebApi").Get<BiaWebApi>())
         {
-            this.Init(configuration.GetSection("MyBiaWebApi").Get<BiaWebApi>());
         }
 
         /// <inheritdoc />
         public virtual async Task<bool> PingAsync()
         {
             string url = "/api/Auth/token";
-            var result = await this.GetAsync<object>($"{this.BaseAddress}{url}");
+            var result = await this.GetAsync<object>($"{this.BiaWebApi.BaseAddress}{url}");
             return result.IsSuccessStatusCode;
         }
     }

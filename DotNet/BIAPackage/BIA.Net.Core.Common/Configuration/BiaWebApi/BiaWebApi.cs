@@ -18,5 +18,10 @@ namespace BIA.Net.Core.Common.Configuration.BiaWebApi
         /// Gets or sets the credential source.
         /// </summary>
         public CredentialSource CredentialSource { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [use login fine grained].
+        /// </summary>
+        public bool UseLoginFineGrained { get; set; }
     }
 }

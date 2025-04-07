@@ -23,7 +23,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     /// <summary>
     /// RemotePlane Repository.
     /// </summary>
-    public class RemotePlaneRepository : BiaWebApiTokenRepository, IRemotePlaneRepository
+    public class RemotePlaneRepository : BiaWebApiJwtRepository, IRemotePlaneRepository
     {
         /// <summary>
         /// The URL plane.
@@ -37,14 +37,14 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <param name="configuration">The configuration.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="distributedCache">The distributed cache.</param>
-        /// <param name="biaWebApiRepository">The bia web API repository.</param>
+        /// <param name="biaWebApiAuthRepository">The bia web API authentication repository.</param>
         public RemotePlaneRepository(
             HttpClient httpClient,
             IConfiguration configuration,
             ILogger<RemotePlaneRepository> logger,
             IBiaDistributedCache distributedCache,
-            IBiaWebApiRepository biaWebApiRepository)
-             : base(httpClient, logger, distributedCache, biaWebApiRepository, configuration.GetSection("MyBiaWebApi").Get<BiaWebApi>())
+            IBiaWebApiAuthRepository biaWebApiAuthRepository)
+             : base(httpClient, logger, distributedCache, biaWebApiAuthRepository, configuration.GetSection("MyBiaWebApi").Get<BiaWebApi>())
         {
             this.urlPlane = "/api/Planes/";
         }

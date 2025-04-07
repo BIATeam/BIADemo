@@ -4,14 +4,11 @@
 
 namespace BIA.Net.Core.Infrastructure.Service.Repositories
 {
-    using System;
-    using System.Dynamic;
     using System.Net.Http;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration.AuthenticationSection;
     using BIA.Net.Core.Common.Configuration.BiaWebApi;
     using BIA.Net.Core.Common.Configuration.Keycloak;
-    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Service.Dto.Keycloak;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using Microsoft.Extensions.Logging;
@@ -20,13 +17,8 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     /// <summary>
     /// BiaApiAuth Repository.
     /// </summary>
-    public class BiaWebApiRepository : WebApiRepository, IBiaWebApiRepository
+    public abstract class BiaWebApiRepository : WebApiRepository
     {
-        /// <summary>
-        /// The bia web API config.
-        /// </summary>
-        private BiaWebApi biaWebApi;
-
         /// <summary>
         /// Gets or sets a value indicating whether [call application setting].
         /// </summary>
@@ -40,70 +32,30 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="logger">The logger.</param>
         /// <param name="distributedCache">The distributed cache.</param>
         /// <param name="biaWebApi">The bia web API configuration.</param>
-        public BiaWebApiRepository(
+        protected BiaWebApiRepository(
             HttpClient httpClient,
             ILogger<BiaWebApiRepository> logger,
-            IBiaDistributedCache distributedCache)
+            IBiaDistributedCache distributedCache,
+            BiaWebApi biaWebApi = null)
              : base(httpClient, logger, distributedCache)
         {
+            this.BiaWebApi = biaWebApi;
         }
-
-        /// <summary>
-        /// Gets the base address.
-        /// </summary>
-        public string BaseAddress => this.BiaWebApi?.BaseAddress;
 
         /// <summary>
         /// Gets the bia web API.
         /// </summary>
-        protected BiaWebApi BiaWebApi
-        {
-            get
-            {
-                if (this.biaWebApi == null)
-                {
-                    throw new InvalidOperationException("BiaWebApi is not initialized. Please call Init method before using this repository.");
-                }
-
-                return this.biaWebApi;
-            }
-
-            private set
-            {
-                this.biaWebApi = value;
-            }
-        }
+        protected BiaWebApi BiaWebApi { get; set; }
 
         /// <summary>
         /// Gets or sets the keycloak setting.
         /// </summary>
         protected Keycloak KeycloakSetting { get; set; }
 
-        /// <inheritdoc />
-        public virtual void Init(BiaWebApi biaWebApi)
-        {
-            this.BiaWebApi = biaWebApi;
-        }
-
-        /// <inheritdoc />
-        public virtual async Task<string> LoginAsync(string url = "/api/Auth/login?lightToken=false")
-        {
-            var result = await this.GetAsync<object>($"{this.BaseAddress}{url}");
-            if (result.IsSuccessStatusCode && result.Result != null)
-            {
-                dynamic responseObject = JsonConvert.DeserializeObject<ExpandoObject>(result.Result.ToString());
-                return responseObject?.token;
-            }
-
-            return null;
-        }
-
-        /// <inheritdoc />
-        public virtual async Task<string> GetTokenAsync(string url = "/api/Auth/token")
-        {
-            var result = await this.GetAsync<string>($"{this.BaseAddress}{url}");
-            return result.IsSuccessStatusCode ? result.Result : null;
-        }
+        /// <summary>
+        /// Gets the base address.
+        /// </summary>
+        protected string BaseAddress => this.BiaWebApi?.BaseAddress;
 
         /// <summary>
         /// Gets the application settings.
