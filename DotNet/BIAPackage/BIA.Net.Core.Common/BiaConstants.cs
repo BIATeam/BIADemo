@@ -108,5 +108,16 @@ namespace BIA.Net.Core.Common
             /// </summary>
             public const string Synchro = "Synchro";
         }
+
+        /// <summary>
+        /// Policy.
+        /// </summary>
+        public static class Policy
+        {
+            /// <summary>
+            /// Policy for  service API RW.
+            /// </summary>
+            public const string ServiceApiRW = "ServiceApiRW";
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
     using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Authentication;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -177,12 +178,20 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
 
         private static void AddConfigurationPolicies(BiaNetSection configuration, AuthorizationOptions options)
         {
-            foreach (Policy confPolicy in
-                                configuration.Policies.Where(confPolicy => !string.IsNullOrWhiteSpace(confPolicy.Name) &&
-                                    !string.IsNullOrWhiteSpace(confPolicy.RequireClaim?.Type) &&
-                                    confPolicy.RequireClaim?.AllowedValues?.Any() == true))
+            foreach (Policy policy in configuration.Policies?.Where(policy => !string.IsNullOrWhiteSpace(policy.Name) && policy.RequireClaims?.Any() == true))
             {
-                options.AddPolicy(confPolicy.Name, policy => policy.RequireClaim(confPolicy.RequireClaim.Type, confPolicy.RequireClaim.AllowedValues));
+                foreach (RequireClaim requireClaim in policy.RequireClaims)
+                {
+                    if (!string.IsNullOrWhiteSpace(requireClaim?.Type) && requireClaim?.AllowedValues?.Any() == true)
+                    {
+                        options.AddPolicy(policy.Name, policy => policy.RequireClaim(requireClaim.Type, requireClaim.AllowedValues));
+                    }
+                }
+            }
+
+            if (!configuration.Policies.Any(confPolicy => confPolicy.Name == BiaConstants.Policy.ServiceApiRW))
+            {
+                options.AddPolicy(BiaConstants.Policy.ServiceApiRW, policy => policy.RequireAssertion(_ => true));
             }
         }
 

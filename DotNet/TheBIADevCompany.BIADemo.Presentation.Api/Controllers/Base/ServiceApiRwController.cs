@@ -4,13 +4,13 @@
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base
 {
-    using BIA.Net.Presentation.Api.Controllers.Base;
+    using BIA.Net.Core.Common;
     using Microsoft.AspNetCore.Authorization;
 
     /// <summary>
     /// Service Api Rw Controller.
     /// </summary>
-    [Authorize(Policy = "ServiceApiRW")]
+    [Authorize(Policy = BiaConstants.Policy.ServiceApiRW)]
     public abstract class ServiceApiRwController : AuthControllerBase
     {
     }
