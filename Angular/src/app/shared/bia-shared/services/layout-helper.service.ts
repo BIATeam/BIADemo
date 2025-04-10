@@ -20,7 +20,12 @@ export class LayoutHelperService {
       if (layoutService.state.fullscreen) {
         height = '100vh - 3.5rem';
       } else {
-        height = '100vh - 10rem';
+        if (layoutService.isBreadcrumbVisible) {
+          height = '100vh - 10rem';
+        } else {
+          height = '100vh - 7.5rem';
+        }
+
         height +=
           layoutService._config.footerMode !== 'overlay'
             ? ' - var(--footer-height)'
