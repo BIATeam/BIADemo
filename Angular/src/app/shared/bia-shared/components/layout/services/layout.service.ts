@@ -138,6 +138,10 @@ export class BiaLayoutService {
     .pipe(debounceTime(0));
   breadcrumbRefresh$ = this.breadcrumbRefresh.asObservable();
 
+  get isBreadcrumbVisible(): boolean {
+    return !this.breadcrumbHidden.value;
+  }
+
   constructor() {
     effect(() => {
       const config = this.config();
