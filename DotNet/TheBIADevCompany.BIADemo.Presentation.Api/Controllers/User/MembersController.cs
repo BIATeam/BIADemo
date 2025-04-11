@@ -1,5 +1,5 @@
 // <copyright file="MembersController.cs" company="TheBIADevCompany">
-//     Copyright (c) TheBIADevCompany. All rights reserved.
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 // #define UseHubForClientInMember
 // #define UseHubForClientInUser

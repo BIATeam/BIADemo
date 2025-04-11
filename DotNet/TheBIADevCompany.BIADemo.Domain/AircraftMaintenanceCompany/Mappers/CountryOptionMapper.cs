@@ -1,6 +1,6 @@
 ﻿// BIADemo only
 // <copyright file="CountryOptionMapper.cs" company="TheBIADevCompany">
-//     Copyright (c) TheBIADevCompany. All rights reserved.
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Mappers

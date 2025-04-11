@@ -1,5 +1,5 @@
 ﻿// <copyright file="AuditFeature.cs" company="TheBIADevCompany">
-//     Copyright (c) BIA.Net. All rights reserved.
+// Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features

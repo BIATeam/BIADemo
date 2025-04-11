@@ -1,6 +1,6 @@
 // BIADemo only
 // <copyright file="AircraftMaintenanceCompaniesController.cs" company="TheBIADevCompany">
-//     Copyright (c) TheBIADevCompany. All rights reserved.
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 // #define UseHubForClientInAircraftMaintenanceCompany
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintenanceCompany

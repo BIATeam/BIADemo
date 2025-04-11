@@ -1,6 +1,6 @@
 // BIADemo only
 // <copyright file="AirportsController.cs" company="TheBIADevCompany">
-//     Copyright (c) TheBIADevCompany. All rights reserved.
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 #define UseHubForClientInAirport
 
