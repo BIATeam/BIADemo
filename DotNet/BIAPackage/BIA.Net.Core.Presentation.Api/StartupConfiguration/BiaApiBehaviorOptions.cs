@@ -1,5 +1,5 @@
-﻿// <copyright file="BiaApiBehaviorOptions.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+﻿// <copyright file="BiaApiBehaviorOptions.cs" company="TheBIADevCompany">
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Presentation.Api.StartupConfiguration

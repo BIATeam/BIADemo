@@ -1,6 +1,6 @@
 ﻿// BIADemo only
-// <copyright file="IRemoteBiaApiRwService.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+// <copyright file="IRemoteBiaApiRwService.cs" company="TheBIADevCompany">
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Application.Utilities

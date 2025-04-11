@@ -1,6 +1,6 @@
 ﻿// BIADemo only
-// <copyright file="EnginePart.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+// <copyright file="EnginePart.cs" company="TheBIADevCompany">
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Domain.Plane.Entities

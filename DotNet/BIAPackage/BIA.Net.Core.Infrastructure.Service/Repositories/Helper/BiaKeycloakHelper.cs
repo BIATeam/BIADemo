@@ -1,5 +1,5 @@
-﻿// <copyright file="BiaKeycloakHelper.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+﻿// <copyright file="BiaKeycloakHelper.cs" company="TheBIADevCompany">
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper

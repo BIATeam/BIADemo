@@ -1,6 +1,6 @@
 ﻿// BIADemo only
-// <copyright file="DocumentContent.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+// <copyright file="DocumentContent.cs" company="TheBIADevCompany">
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Domain.DocumentAnalysis.Models

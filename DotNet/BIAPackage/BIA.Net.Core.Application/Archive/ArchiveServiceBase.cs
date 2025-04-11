@@ -1,5 +1,5 @@
-﻿// <copyright file="ArchiveServiceBase.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+﻿// <copyright file="ArchiveServiceBase.cs" company="TheBIADevCompany">
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Application.Archive

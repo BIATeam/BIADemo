@@ -1,6 +1,6 @@
 ﻿// BIADemo only
-// <copyright file="BiaRemoteController.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+// <copyright file="BiaRemoteController.cs" company="TheBIADevCompany">
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Utilities

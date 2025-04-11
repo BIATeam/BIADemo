@@ -1,6 +1,6 @@
 ﻿// BIADemo only
-// <copyright file="IDocumentAnalysisRepository.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+// <copyright file="IDocumentAnalysisRepository.cs" company="TheBIADevCompany">
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Domain.RepoContract.DocumentAnalysis

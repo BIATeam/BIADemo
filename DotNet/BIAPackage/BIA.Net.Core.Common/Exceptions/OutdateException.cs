@@ -1,5 +1,5 @@
-﻿// <copyright file="OutdateException.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+﻿// <copyright file="OutdateException.cs" company="TheBIADevCompany">
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Common.Exceptions

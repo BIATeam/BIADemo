@@ -1,6 +1,6 @@
 ﻿// BIADemo only
-// <copyright file="DocumentAnalysisController.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+// <copyright file="DocumentAnalysisController.cs" company="TheBIADevCompany">
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Utilities
