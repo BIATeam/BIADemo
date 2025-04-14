@@ -18,9 +18,10 @@ import { BehaviorSubject, Subject, debounceTime } from 'rxjs';
 import { STORAGE_THEME_KEY } from 'src/app/core/bia-core/services/bia-theme.service';
 import { STORAGE_CULTURE_KEY } from 'src/app/core/bia-core/services/bia-translation.service';
 import { BiaNavigation } from 'src/app/shared/bia-shared/model/bia-navigation';
+import { allEnvironments } from 'src/environments/all-environments';
 import { ConfigDisplay } from '../../../model/config-display';
 
-export const BIA_USER_CONFIG = 'bia-user-config';
+export const BIA_USER_CONFIG = `${allEnvironments.companyName}.${allEnvironments.appTitle}.bia-user-config`;
 
 export const BIA_LAYOUT_DATA = new InjectionToken<any>('BiaLayoutData');
 
