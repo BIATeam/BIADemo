@@ -60,8 +60,8 @@ export class BiaFieldBaseComponent<CrudItem> implements OnInit, OnDestroy {
           dateFormat => {
             if (this.field instanceof BiaFieldConfig) {
               const field = this.field.clone();
-              field.displayFormat ||= new BiaFieldDateFormat();
-              if (field.displayFormat instanceof BiaFieldDateFormat) {
+              if (!(field.displayFormat instanceof BiaFieldDateFormat)) {
+                field.displayFormat = new BiaFieldDateFormat();
                 switch (field.type) {
                   case PropType.DateTime:
                     field.displayFormat.autoPrimeDateFormat =
