@@ -3,6 +3,13 @@ bia-ultima-layout {
 }
 
 :root {
-  --topbar-menu-button-bg: #a4de00;
-  --topbar-menu-button-hover-bg: #559c00;
+  // Customize your topbar menu button color
+  --topbar-menu-button-bg: #98d404;
+  --topbar-menu-button-hover-bg: #5ea204;
+
+  // Customize your logo filter color
+  // Use https://codepen.io/sosuke/pen/Pjoqqp
+  // -> Choose the hexadecimal value of --topbar-menu-button-bg
+  --topbar-logo-filter: invert(76%) sepia(18%) saturate(4644%) hue-rotate(30deg)
+    brightness(101%) contrast(97%);
 }
