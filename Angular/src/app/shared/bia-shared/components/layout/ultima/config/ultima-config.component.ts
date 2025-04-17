@@ -106,6 +106,8 @@ export class BiaUltimaConfigComponent {
   }
   set currentCulture(_val: string) {
     this._currentCulture = _val;
+
+    console.error(_val);
     this.biaTranslation.loadAndChangeLanguage(_val);
   }
 

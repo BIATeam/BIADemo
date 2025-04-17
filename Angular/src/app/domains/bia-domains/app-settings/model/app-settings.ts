@@ -14,6 +14,7 @@ export interface AppSettings {
   cultures: Culture[];
   monitoringUrl: string;
   profileConfiguration?: ProfileConfiguration;
+  allowedHostUrls: string[];
 }
 
 export interface Environment {

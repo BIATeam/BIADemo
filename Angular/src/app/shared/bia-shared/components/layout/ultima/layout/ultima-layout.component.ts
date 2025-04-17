@@ -444,6 +444,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
       'layout-topbar-menu-active': this.layoutService.state.topbarMenuActive,
       'layout-menu-profile-active': this.layoutService.state.menuProfileActive,
       'layout-content-wrapper-fullscreen': this.layoutService.state.fullscreen,
+      'layout-content-wrapper-iframe': this.layoutService.state.isInIframe,
     };
     styleClass['layout-menu-' + this.layoutService.config().colorScheme] = true;
     styleClass[

@@ -9,6 +9,24 @@ export const NAVIGATION: BiaNavigation[] = [
     icon: 'pi pi-users',
   },
   {
+    labelKey: 'mfe',
+    permissions: [Permission.User_List_Access],
+    path: ['/mfe'],
+    icon: 'pi pi-users',
+  },
+  {
+    labelKey: 'mfe1',
+    permissions: [Permission.User_List_Access],
+    path: ['/mfe1'],
+    icon: 'pi pi-users',
+  },
+  {
+    labelKey: 'mfe2',
+    permissions: [Permission.User_List_Access],
+    path: ['/mfe2'],
+    icon: 'pi pi-users',
+  },
+  {
     labelKey: 'app.sites',
     permissions: [Permission.Site_List_Access],
     path: ['/sites'],

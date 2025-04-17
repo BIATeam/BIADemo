@@ -63,6 +63,7 @@ interface LayoutState {
   anchored: boolean;
   fullscreen: boolean;
   isSmallScreen: boolean;
+  isInIframe: boolean;
 }
 
 const DEFAULT_LAYOUT_CONFIG: AppConfig = {
@@ -106,6 +107,7 @@ export class BiaLayoutService {
     fullscreen: false,
     menuProfileActive: false,
     isSmallScreen: false,
+    isInIframe: false,
   };
 
   config = signal<AppConfig>(this._config);

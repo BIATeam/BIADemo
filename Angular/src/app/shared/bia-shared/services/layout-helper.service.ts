@@ -17,7 +17,7 @@ export class LayoutHelperService {
         ? '100vh - 40px'
         : '100vh - 256px';
     } else {
-      if (layoutService.state.fullscreen) {
+      if (layoutService.state.fullscreen || layoutService.state.isInIframe) {
         height = '100vh - 3.5rem';
       } else {
         if (layoutService.isBreadcrumbVisible) {

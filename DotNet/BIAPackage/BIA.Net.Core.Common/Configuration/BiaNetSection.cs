@@ -94,5 +94,10 @@ namespace BIA.Net.Core.Common.Configuration
         /// The lheader label to add to any CSV.
         /// </summary>
         public string CsvHeaderLabel { get; set; }
+
+        /// <summary>
+        /// Gets or sets .
+        /// </summary>
+        public List<string> AllowedHostUrls { get; set; }
     }
 }

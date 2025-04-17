@@ -39,5 +39,10 @@ namespace BIA.Net.Core.Domain.Dto.Option
         /// Gets or sets the user profile configuration.
         /// </summary>
         public ProfileConfiguration ProfileConfiguration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the allowed host for iframe communication.
+        /// </summary>
+        public List<string> AllowedHostUrls { get; set; }
     }
 }
