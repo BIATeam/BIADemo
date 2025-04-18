@@ -1,7 +1,7 @@
 import { CrudConfig } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
-/// BIAToolKit - Begin AncestorTeam
+// BIAToolKit - Begin AncestorTeam
 import { TeamTypeId } from 'src/app/shared/constants';
-/// BIAToolKit - End AncestorTeam
+// BIAToolKit - End AncestorTeam
 import {
   Plane,
   planeFieldsConfiguration,
@@ -20,9 +20,9 @@ export const planeCRUDConfiguration: CrudConfig<Plane> = new CrudConfig({
   useCalcMode: true,
   useSignalR: false,
   useView: true,
-  /// BIAToolKit - Begin AncestorTeam Site
+  // BIAToolKit - Begin AncestorTeam Site
   useViewTeamWithTypeId: TeamTypeId.Site, // use to filter view by teams => should know the type of team
-  /// BIAToolKit - End AncestorTeam Site
+  // BIAToolKit - End AncestorTeam Site
   usePopup: false,
   useSplit: false,
   useOfflineMode: false,

@@ -14,16 +14,16 @@ export enum Permission {
   Notification_Read = 'Notification_Read',
   Notification_Update = 'Notification_Update',
 
-  /// BIAToolKit - Begin Permission
-  /// BIAToolKit - Begin Partial Permission MaintenanceContract
+  // BIAToolKit - Begin Permission
+  // BIAToolKit - Begin Partial Permission MaintenanceContract
   MaintenanceContract_Create = 'MaintenanceContract_Create',
   MaintenanceContract_Delete = 'MaintenanceContract_Delete',
   MaintenanceContract_List_Access = 'MaintenanceContract_List_Access',
   MaintenanceContract_Read = 'MaintenanceContract_Read',
   MaintenanceContract_Save = 'MaintenanceContract_Save',
   MaintenanceContract_Update = 'MaintenanceContract_Update',
-  /// BIAToolKit - End Partial Permission MaintenanceContract
-  /// BIAToolKit - End Permission
+  // BIAToolKit - End Partial Permission MaintenanceContract
+  // BIAToolKit - End Permission
 
   // Begin BIADemo
   AircraftMaintenanceCompany_Create = 'AircraftMaintenanceCompany_Create',
@@ -41,7 +41,7 @@ export enum Permission {
   AircraftMaintenanceCompany_View_SetDefaultTeamView = 'AircraftMaintenanceCompany_View_Set_Default_TeamView',
   AircraftMaintenanceCompany_View_AssignToTeam = 'AircraftMaintenanceCompany_View_Assign_To_Team',
 
-  /// BIAToolKit - Begin Partial Permission MaintenanceTeam
+  // BIAToolKit - Begin Partial Permission MaintenanceTeam
   MaintenanceTeam_Create = 'MaintenanceTeam_Create',
   MaintenanceTeam_Delete = 'MaintenanceTeam_Delete',
   MaintenanceTeam_List_Access = 'MaintenanceTeam_List_Access',
@@ -52,9 +52,9 @@ export enum Permission {
   MaintenanceTeam_Member_Delete = 'MaintenanceTeam_Member_Delete',
   MaintenanceTeam_Member_Create = 'MaintenanceTeam_Member_Create',
   MaintenanceTeam_Member_List_Access = 'MaintenanceTeam_Member_List_Access',
-  /// BIAToolKit - End Partial Permission MaintenanceTeam
+  // BIAToolKit - End Partial Permission MaintenanceTeam
 
-  /// BIAToolKit - Begin Partial Permission Plane
+  // BIAToolKit - Begin Partial Permission Plane
   Plane_Create = 'Plane_Create',
   Plane_Delete = 'Plane_Delete',
   Plane_List_Access = 'Plane_List_Access',
@@ -62,21 +62,21 @@ export enum Permission {
   Plane_Save = 'Plane_Save',
   Plane_Update = 'Plane_Update',
   Plane_Fix = 'Plane_Fix',
-  /// BIAToolKit - End Partial Permission Plane
+  // BIAToolKit - End Partial Permission Plane
   Airport_Create = 'Airport_Create',
   Airport_Delete = 'Airport_Delete',
   Airport_List_Access = 'Airport_List_Access',
   Airport_Read = 'Airport_Read',
   Airport_Save = 'Airport_Save',
   Airport_Update = 'Airport_Update',
-  /// BIAToolKit - Begin Partial Permission Engine
+  // BIAToolKit - Begin Partial Permission Engine
   Engine_Create = 'Engine_Create',
   Engine_Delete = 'Engine_Delete',
   Engine_List_Access = 'Engine_List_Access',
   Engine_Read = 'Engine_Read',
   Engine_Save = 'Engine_Save',
   Engine_Update = 'Engine_Update',
-  /// BIAToolKit - End Partial Permission Engine
+  // BIAToolKit - End Partial Permission Engine
   PlaneType_Create = 'PlaneType_Create',
   PlaneType_Delete = 'PlaneType_Delete',
   PlaneType_List_Access = 'PlaneType_List_Access',

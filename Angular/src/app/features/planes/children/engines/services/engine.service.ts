@@ -60,9 +60,9 @@ export class EngineService extends CrudItemService<Engine> {
   );
 
   public displayItemName$: Observable<string> = this.crudItem$.pipe(
-    /// BIAToolKit - Begin Display reference
+    // BIAToolKit - Begin Display reference
     map(engine => engine?.reference?.toString() ?? '')
-    /// BIAToolKit - End Display reference
+    // BIAToolKit - End Display reference
   );
 
   public loadingGet$: Observable<boolean> = this.store.select(

@@ -39,9 +39,9 @@ export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
   @ViewChild(PlaneTableComponent, { static: false })
   crudItemTableComponent: PlaneTableComponent;
 
-  /// BIAToolKit - Begin Partial PlaneIndexTsCanViewChildDeclaration Engine
+  // BIAToolKit - Begin Partial PlaneIndexTsCanViewChildDeclaration Engine
   canViewEngines = false;
-  /// BIAToolKit - End Partial PlaneIndexTsCanViewChildDeclaration Engine
+  // BIAToolKit - End Partial PlaneIndexTsCanViewChildDeclaration Engine
   // BIAToolKit - Begin PlaneIndexTsCanViewChildDeclaration
   // BIAToolKit - End PlaneIndexTsCanViewChildDeclaration
   constructor(
@@ -62,17 +62,17 @@ export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
     this.canFix = this.authService.hasPermission(Permission.Plane_Fix);
     // End BIADemo
     this.canSelect = this.canDelete;
-    /// BIAToolKit - Begin Partial PlaneIndexTsCanViewChildSet Engine
+    // BIAToolKit - Begin Partial PlaneIndexTsCanViewChildSet Engine
     this.canViewEngines = this.authService.hasPermission(
       Permission.Engine_List_Access
     );
     this.canSelect = this.canSelect || this.canViewEngines;
-    /// BIAToolKit - End Partial PlaneIndexTsCanViewChildSet Engine
+    // BIAToolKit - End Partial PlaneIndexTsCanViewChildSet Engine
     // BIAToolKit - Begin PlaneIndexTsCanViewChildSet
     // BIAToolKit - End PlaneIndexTsCanViewChildSet
   }
 
-  /// BIAToolKit - Begin Partial PlaneIndexTsOnViewChild Engine
+  // BIAToolKit - Begin Partial PlaneIndexTsOnViewChild Engine
   onViewEngines(crudItemId: any) {
     if (crudItemId && crudItemId > 0) {
       this.router.navigate([crudItemId, 'engines'], {
@@ -80,7 +80,7 @@ export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
       });
     }
   }
-  /// BIAToolKit - End Partial PlaneIndexTsOnViewChild Engine
+  // BIAToolKit - End Partial PlaneIndexTsOnViewChild Engine
   // BIAToolKit - Begin PlaneIndexTsOnViewChild
   // BIAToolKit - End PlaneIndexTsOnViewChild
 }
