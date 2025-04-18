@@ -9,21 +9,9 @@ export const NAVIGATION: BiaNavigation[] = [
     icon: 'pi pi-users',
   },
   {
-    labelKey: 'mfe',
+    labelKey: 'iframe',
     permissions: [Permission.User_List_Access],
-    path: ['/mfe'],
-    icon: 'pi pi-users',
-  },
-  {
-    labelKey: 'mfe1',
-    permissions: [Permission.User_List_Access],
-    path: ['/mfe1'],
-    icon: 'pi pi-users',
-  },
-  {
-    labelKey: 'mfe2',
-    permissions: [Permission.User_List_Access],
-    path: ['/mfe2'],
+    path: ['/iframe'],
     icon: 'pi pi-users',
   },
   {

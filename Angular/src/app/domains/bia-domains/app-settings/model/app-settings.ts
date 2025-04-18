@@ -14,7 +14,7 @@ export interface AppSettings {
   cultures: Culture[];
   monitoringUrl: string;
   profileConfiguration?: ProfileConfiguration;
-  allowedHostUrls: string[];
+  allowedIframeHosts?: AllowedHost[];
 }
 
 export interface Environment {
@@ -67,4 +67,9 @@ export interface ProfileConfiguration {
   clientProfileImageGetMode: boolean;
   profileImageUrlOrPath: string;
   editProfileImageUrl: string;
+}
+
+export interface AllowedHost {
+  name: string;
+  url: string;
 }

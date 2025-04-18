@@ -53,6 +53,7 @@ export class AppComponent implements OnInit {
       this.layoutService.state.isInIframe = this.isInIframe;
       this.layoutService.hideBreadcrumb();
       this.layoutService.hideFooter();
+      this.getConfigFromParent();
     }
     this.biaMatomoService.init();
     this.biaExternalJsService.init();
@@ -62,12 +63,16 @@ export class AppComponent implements OnInit {
     this.checkSmallScreen();
   }
 
+  getConfigFromParent() {
+    window.parent.postMessage('iframeReady', location.ancestorOrigins[0]);
+  }
+
   @HostListener('window:message', ['$event'])
   receiveMessage(event: MessageEvent<IframeConfig>) {
     if (
       !this.layoutService ||
-      !this.appSettingsService.appSettings.allowedHostUrls.find(
-        url => url === event.origin
+      !this.appSettingsService.appSettings?.allowedIframeHosts?.find(
+        allowedHost => allowedHost.url === event.origin
       ) ||
       !event.data
     ) {

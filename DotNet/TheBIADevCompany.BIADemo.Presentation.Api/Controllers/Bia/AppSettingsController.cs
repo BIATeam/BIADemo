@@ -36,6 +36,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
                 Cultures = configuration.Value.Cultures,
                 MonitoringUrl = configuration.Value.ApiFeatures?.DelegateJobToWorker?.MonitoringUrl,
                 ProfileConfiguration = configuration.Value.ProfileConfiguration,
+                AllowedIframeHosts = configuration.Value.AllowedIframeHosts,
             };
         }
 

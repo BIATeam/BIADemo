@@ -98,6 +98,6 @@ namespace BIA.Net.Core.Common.Configuration
         /// <summary>
         /// Gets or sets .
         /// </summary>
-        public List<string> AllowedHostUrls { get; set; }
+        public List<AllowedHost> AllowedIframeHosts { get; set; }
     }
 }

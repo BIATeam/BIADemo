@@ -43,6 +43,6 @@ namespace BIA.Net.Core.Domain.Dto.Option
         /// <summary>
         /// Gets or sets the allowed host for iframe communication.
         /// </summary>
-        public List<string> AllowedHostUrls { get; set; }
+        public List<AllowedHost> AllowedIframeHosts { get; set; }
     }
 }
