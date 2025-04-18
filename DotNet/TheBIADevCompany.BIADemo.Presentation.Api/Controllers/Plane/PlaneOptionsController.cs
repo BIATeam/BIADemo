@@ -44,8 +44,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         [Authorize(Roles = Rights.Planes.Options)]
         public async Task<IActionResult> GetAllOptions()
         {
-            var results = await planeOptionService.GetAllOptionsAsync();
-            return Ok(results);
+            var results = await this.planeOptionService.GetAllOptionsAsync();
+            return this.Ok(results);
         }
     }
 }

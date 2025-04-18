@@ -18,7 +18,6 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
     /// </summary>
     public class MaintenanceContractAppService : CrudAppServiceBase<MaintenanceContractDto, MaintenanceContract, int, PagingFilterFormatDto, MaintenanceContractMapper>, IMaintenanceContractAppService
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="MaintenanceContractAppService"/> class.
         /// </summary>
