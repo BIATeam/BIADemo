@@ -86,9 +86,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
         [Authorize(Roles = Rights.MaintenanceContracts.ListAccess)]
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
-            var (results, total) = await maintenanceContractService.GetRangeAsync(filters);
-            HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
-            return Ok(results);
+            var (results, total) = await this.maintenanceContractService.GetRangeAsync(filters);
+            this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
+            return this.Ok(results);
         }
 
         /// <summary>
@@ -106,17 +106,17 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
         {
             if (id == 0)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
             try
             {
-                var dto = await maintenanceContractService.GetAsync(id);
-                return Ok(dto);
+                var dto = await this.maintenanceContractService.GetAsync(id);
+                return this.Ok(dto);
             }
             catch (ElementNotFoundException)
             {
-                return NotFound();
+                return this.NotFound();
             }
         }
 
@@ -134,14 +134,15 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
         {
             try
             {
-                var createdDto = await maintenanceContractService.AddAsync(dto);
+                var createdDto = await this.maintenanceContractService.AddAsync(dto);
 #if UseHubForClientInMaintenanceContract
+                await this.clientForHubService.SendTargetedMessage(string.Empty, "maintenance-contracts", "refresh-maintenance-contracts");
 #endif
-                return CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
+                return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
             catch (ArgumentNullException)
             {
-                return ValidationProblem();
+                return this.ValidationProblem();
             }
         }
 
@@ -161,23 +162,25 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
         {
             if (id == 0 || dto == null || dto.Id != id)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
             try
             {
-                var updatedDto = await maintenanceContractService.UpdateAsync(dto);
+                var updatedDto = await this.maintenanceContractService.UpdateAsync(dto);
 #if UseHubForClientInMaintenanceContract
+                await this.clientForHubService.SendTargetedMessage(string.Empty, "maintenance-contracts", "refresh-maintenance-contracts");
+                await this.clientForHubService.SendTargetedMessage(string.Empty, "maintenance-contracts", "update-maintenance-contract", updatedDto);
 #endif
-                return Ok(updatedDto);
+                return this.Ok(updatedDto);
             }
             catch (ArgumentNullException)
             {
-                return ValidationProblem();
+                return this.ValidationProblem();
             }
             catch (ElementNotFoundException)
             {
-                return NotFound();
+                return this.NotFound();
             }
         }
 
@@ -196,19 +199,20 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
         {
             if (id == 0)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
             try
             {
-                var deletedDto = await maintenanceContractService.RemoveAsync(id);
+                await this.maintenanceContractService.RemoveAsync(id);
 #if UseHubForClientInMaintenanceContract
+                await this.clientForHubService.SendTargetedMessage(string.Empty, "maintenance-contracts", "refresh-maintenance-contracts");
 #endif
-                return Ok();
+                return this.Ok();
             }
             catch (ElementNotFoundException)
             {
-                return NotFound();
+                return this.NotFound();
             }
         }
 
@@ -227,20 +231,21 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
         {
             if (ids?.Any() != true)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
             try
             {
-                var deletedDtos = await maintenanceContractService.RemoveAsync(ids);
+                await this.maintenanceContractService.RemoveAsync(ids);
 
 #if UseHubForClientInMaintenanceContract
+                await this.clientForHubService.SendTargetedMessage(string.Empty, "maintenance-contracts", "refresh-maintenance-contracts");
 #endif
-                return Ok();
+                return this.Ok();
             }
             catch (ElementNotFoundException)
             {
-                return NotFound();
+                return this.NotFound();
             }
         }
 
@@ -261,28 +266,28 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
             var dtoList = dtos.ToList();
             if (!dtoList.Any())
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
             try
             {
-                var savedDtos = await maintenanceContractService.SaveSafeAsync(
-                    dtos: dtoList,
-                    principal: biaClaimsPrincipalService.GetBiaClaimsPrincipal(),
-                    rightAdd: Rights.MaintenanceContracts.Create,
-                    rightUpdate: Rights.MaintenanceContracts.Update,
-                    rightDelete: Rights.MaintenanceContracts.Delete);
+                await this.maintenanceContractService.SaveSafeAsync(
+                   dtos: dtoList,
+                   principal: this.biaClaimsPrincipalService.GetBiaClaimsPrincipal(),
+                   rightAdd: Rights.MaintenanceContracts.Create,
+                   rightUpdate: Rights.MaintenanceContracts.Update,
+                   rightDelete: Rights.MaintenanceContracts.Delete);
 #if UseHubForClientInMaintenanceContract
 #endif
-                return Ok();
+                return this.Ok();
             }
             catch (ArgumentNullException)
             {
-                return ValidationProblem();
+                return this.ValidationProblem();
             }
             catch (ElementNotFoundException)
             {
-                return NotFound();
+                return this.NotFound();
             }
         }
 
@@ -295,8 +300,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
         [Authorize(Roles = Rights.MaintenanceContracts.ListAccess)]
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
-            byte[] buffer = await maintenanceContractService.GetCsvAsync(filters);
-            return File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"MaintenanceContracts{BiaConstants.Csv.Extension}");
+            byte[] buffer = await this.maintenanceContractService.GetCsvAsync(filters);
+            return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"MaintenanceContracts{BiaConstants.Csv.Extension}");
         }
     }
 }
