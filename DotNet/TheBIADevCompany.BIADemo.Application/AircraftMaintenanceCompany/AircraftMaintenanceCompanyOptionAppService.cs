@@ -24,6 +24,7 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
         /// Initializes a new instance of the <see cref="AircraftMaintenanceCompanyOptionAppService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
+        /// <param name="principal">The principal.</param>
         public AircraftMaintenanceCompanyOptionAppService(ITGenericRepository<AircraftMaintenanceCompany, int> repository, IPrincipal principal)
             : base(repository)
         {

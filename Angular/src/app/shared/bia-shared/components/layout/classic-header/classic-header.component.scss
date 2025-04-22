@@ -84,9 +84,7 @@
     height: 60px;
     width: 60px;
     margin-right: 0.5em;
-    // https://codepen.io/sosuke/pen/Pjoqqp
-    // hexa: #f8a92b
-    filter: bia-variables.$biaAppLogoFilter;
+    filter: var(--topbar-logo-filter);
   }
 
   &.env-dev {

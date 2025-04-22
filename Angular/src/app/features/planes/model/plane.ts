@@ -2,6 +2,7 @@ import { Validators } from '@angular/forms';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import {
   BiaFieldConfig,
+  BiaFieldDateFormat,
   BiaFieldNumberFormat,
   BiaFieldsConfig,
   NumberMode,
@@ -93,6 +94,12 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       new BiaFieldConfig('lastFlightDate', 'plane.lastFlightDate'),
       {
         type: PropType.DateTime,
+        //Begin BIADemo
+        displayFormat: Object.assign(new BiaFieldDateFormat(), {
+          autoFormatDate: 'yyyy',
+          autoPrimeDateFormat: 'yyyy',
+        }),
+        //End BIADemo
       }
     ),
     // BIAToolKit - End Block lastFlightDate

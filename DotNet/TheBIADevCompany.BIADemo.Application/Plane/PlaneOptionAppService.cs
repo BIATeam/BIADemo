@@ -31,15 +31,16 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         /// Initializes a new instance of the <see cref="PlaneOptionAppService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
+        /// <param name="principal">The principal.</param>
         public PlaneOptionAppService(ITGenericRepository<Plane, int> repository, IPrincipal principal)
             : base(repository)
         {
             // BIAToolKit - Begin AncestorTeam Site
             var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
-            currentTeamId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.Site) : 0;
+            this.currentTeamId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.Site) : 0;
 
             // For child : set the TeamId of the Ancestor that contain a team Parent
-            FiltersContext.Add(AccessMode.Read, new DirectSpecification<Plane>(p => p.SiteId == currentTeamId));
+            this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<Plane>(p => p.SiteId == this.currentTeamId));
 
             // BIAToolKit - End AncestorTeam Site
         }
