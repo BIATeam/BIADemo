@@ -104,15 +104,6 @@ Set-Location -Path $newPath
 
 #New-Item -ItemType Directory -Path $docsFolder
 
-# Read Json settings to generate archive
-$myJson = Get-Content "$oldPath\$jsonFileName" -Raw | ConvertFrom-Json 
-ForEach ($settings in $myJson) {
-  GenerateZipArchive -settings $settings -settingsName $jsonFileName -oldPath $oldPath -newPath $newPath
-}
-
-Write-Host "Copy-Item -Path $oldPath\$jsonFileName -Destination $newPath\$docsFolder\$jsonFileName -Force"
-Copy-Item -Path "$oldPath\$jsonFileName" -Destination "$newPath\$docsFolder\$jsonFileName" -Force
-
 #Write-Host "RemoveFolder dist"
 #RemoveFolder -path 'dist'
 #Write-Host "RemoveFolder node_modules"
@@ -133,6 +124,8 @@ Write-Host "RemoveFolder src\app\features\airports"
 RemoveFolder -path 'src\app\features\airports'
 Write-Host "RemoveFolder src\app\features\hangfire"
 RemoveFolder -path 'src\app\features\hangfire'
+Write-Host "RemoveFolder src\app\features\maintenance-contracts"
+RemoveFolder -path 'src\app\features\maintenance-contracts'
 
 Write-Host "RemoveFolder src\app\domains\airport-option"
 RemoveFolder -path 'src\app\domains\airport-option'
@@ -140,6 +133,12 @@ Write-Host "RemoveFolder src\app\domains\plane-type-option"
 RemoveFolder -path 'src\app\domains\plane-type-option'
 Write-Host "RemoveFolder src\app\domains\country-option"
 RemoveFolder -path 'src\app\domains\country-option'
+Write-Host "RemoveFolder src\app\domains\plane-option"
+RemoveFolder -path 'src\app\domains\plane-option'
+Write-Host "RemoveFolder src\app\domains\part-option"
+RemoveFolder -path 'src\app\domains\part-option'
+Write-Host "RemoveFolder src\app\domains\aircraft-maintenance-company-option"
+RemoveFolder -path 'src\app\domains\aircraft-maintenance-company-option'
 
 #Write-Host "RemoveFolder src\assets\bia\primeng\sass"
 #RemoveFolder -path 'src\assets\bia\primeng\sass'

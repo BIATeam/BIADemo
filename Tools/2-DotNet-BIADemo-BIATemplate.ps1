@@ -127,15 +127,6 @@ RemoveFolder -path $biaPackage
 
 Set-Location -Path $newPath
 
-Write-Host "Zip elements"
-
-# Read Json settings to generate archive
-$myJson = Get-Content "$oldPath\$jsonFileName" -Raw | ConvertFrom-Json 
-ForEach ($settings in $myJson) {
-  GenerateZipArchive -settings $settings -settingsName $jsonFileName -oldPath $oldPath -newPath $newPath
-}
-Copy-Item -Path "$oldPath\$jsonFileName" -Destination "$newPath\$docsFolder\$jsonFileName" -Force
-
 Write-Host "Remove .vs"
 RemoveItemFolder -path '.vs'
 Write-Host "Remove *\bin"
