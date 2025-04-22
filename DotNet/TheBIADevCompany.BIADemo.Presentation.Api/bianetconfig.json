@@ -126,26 +126,28 @@
     "Permissions": [
       // BIAToolKit - Begin Config
       // BIAToolKit - End Config
+      // BIAToolKit - Begin ConfigForOption
+      // BIAToolKit - End ConfigForOption
       // Begin BIADemo
       // BIAToolKit - Begin Partial Config Site
       // Site
       {
-          "Name": "Site_Options",
-          "Roles": [ "Admin", "Site_Member" ]
+        "Name": "Site_Options",
+        "Roles": [ "Admin", "Site_Member" ]
       },
       // BIAToolKit - End Partial Config Site
       // BIAToolKit - Begin Partial Config AircraftMaintenanceCompany
       // AircraftMaintenanceCompany
       {
-          "Name": "AircraftMaintenanceCompany_Options",
-          "Roles": [ "Admin", "Site_Member" ]
+        "Name": "AircraftMaintenanceCompany_Options",
+        "Roles": [ "Admin", "Site_Member" ]
       },
       // BIAToolKit - End Partial Config AircraftMaintenanceCompany
       // BIAToolKit - Begin Partial Config Plane
       // Plane
       {
-          "Name": "Plane_Options",
-          "Roles": [ "Admin", "Site_Member" ]
+        "Name": "Plane_Options",
+        "Roles": [ "Admin", "Site_Member" ]
       },
       // BIAToolKit - End Partial Config Plane
       // BIAToolKit - Begin Partial Config MaintenanceContract
