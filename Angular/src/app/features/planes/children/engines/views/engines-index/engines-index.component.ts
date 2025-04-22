@@ -15,14 +15,12 @@ import { EngineService } from '../../services/engine.service';
 // Begin BIADemo
 import { filter } from 'rxjs';
 // End BIADemo
-// BIAToolKit - Begin Option
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { EngineOptionsService } from '../../services/engine-options.service';
-// BIAToolKit - End Option
 
 @Component({
   selector: 'app-engines-index',
@@ -49,14 +47,17 @@ export class EnginesIndexComponent
 {
   @ViewChild(EngineTableComponent, { static: false })
   crudItemTableComponent: EngineTableComponent;
+  // BIAToolKit - Begin MaintenanceContractIndexTsCanViewChildDeclaration
+  // BIAToolKit - End MaintenanceContractIndexTsCanViewChildDeclaration
+
+  // Begin BIADemo
   isParentFixed = false;
+  // End BIADemo
 
   constructor(
     protected injector: Injector,
     public engineService: EngineService,
-    // BIAToolKit - Begin Option
     protected engineOptionsService: EngineOptionsService,
-    // BIAToolKit - End Option
     protected authService: AuthService
   ) {
     super(injector, engineService);
@@ -68,16 +69,17 @@ export class EnginesIndexComponent
     super.ngOnInit();
     this.parentDisplayItemName$ =
       this.engineService.planeService.displayItemName$;
-    // BIAToolKit - Begin Option
     this.sub.add(
       this.biaTranslationService.currentCulture$.subscribe(() => {
         this.engineOptionsService.loadAllOptions();
       })
     );
-    // BIAToolKit - End Option
   }
-  // Begin BIADemo
   protected async setPermissions() {
+    // BIAToolKit - Begin MaintenanceContractIndexTsCanViewChildSet
+    // BIAToolKit - End MaintenanceContractIndexTsCanViewChildSet
+
+    // Begin BIADemo
     super.setPermissions();
 
     this.permissionSub.add(
@@ -100,6 +102,6 @@ export class EnginesIndexComponent
             this.authService.hasPermission(Permission.Engine_Save);
         })
     );
+    // End BIADemo
   }
-  // End BIADemo
 }

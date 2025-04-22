@@ -22,11 +22,7 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Mappers
             return entity => new OptionDto
             {
                 Id = entity.Id,
-
-                // BIAToolKit - Begin Display Name
                 Display = entity.Name,
-
-                // BIAToolKit - End Display Name
             };
         }
     }

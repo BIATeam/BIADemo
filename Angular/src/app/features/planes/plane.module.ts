@@ -4,20 +4,16 @@ import { RouterModule, Routes } from '@angular/router';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { Permission } from 'src/app/shared/permission';
 
-import { PlaneItemComponent } from './views/plane-item/plane-item.component';
-import { PlanesIndexComponent } from './views/planes-index/planes-index.component';
-// BIAToolKit - Begin Option Airport
-import { AirportOptionModule } from 'src/app/domains/airport-option/airport-option.module';
-// BIAToolKit - End Option Airport
-// BIAToolKit - Begin Option PlaneType
-import { PlaneTypeOptionModule } from 'src/app/domains/plane-type-option/plane-type-option.module';
-// BIAToolKit - End Option PlaneType
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { AirportOptionModule } from 'src/app/domains/airport-option/airport-option.module';
+import { PlaneTypeOptionModule } from 'src/app/domains/plane-type-option/plane-type-option.module';
 import {
   DynamicLayoutComponent,
   LayoutMode,
 } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
+import { PlaneItemComponent } from './views/plane-item/plane-item.component';
+import { PlanesIndexComponent } from './views/planes-index/planes-index.component';
 
 import { PlaneReadComponent } from '../planes/views/plane-read/plane-read.component';
 import { planeCRUDConfiguration } from './plane.constants';
@@ -105,7 +101,6 @@ export const ROUTES: Routes = [
             pathMatch: 'full',
             redirectTo: 'read',
           },
-          // BIAToolKit - Begin Partial PlaneModuleChildPath Engine
           {
             path: 'engines',
             data: {
@@ -119,7 +114,6 @@ export const ROUTES: Routes = [
                 m => m.EngineModule
               ),
           },
-          // BIAToolKit - End Partial PlaneModuleChildPath Engine
           // BIAToolKit - Begin PlaneModuleChildPath
           // BIAToolKit - End PlaneModuleChildPath
         ],
@@ -139,12 +133,8 @@ export const ROUTES: Routes = [
     EffectsModule.forFeature([PlanesEffects]),
     // TODO after creation of CRUD Plane : select the optioDto dommain module required for link
     // Domain Modules:
-    // BIAToolKit - Begin Option Airport
     AirportOptionModule,
-    // BIAToolKit - End Option Airport
-    // BIAToolKit - Begin Option PlaneType
     PlaneTypeOptionModule,
-    // BIAToolKit - End Option PlaneType
   ],
 })
 export class PlaneModule {}

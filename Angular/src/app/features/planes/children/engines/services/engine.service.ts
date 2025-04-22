@@ -60,9 +60,7 @@ export class EngineService extends CrudItemService<Engine> {
   );
 
   public displayItemName$: Observable<string> = this.crudItem$.pipe(
-    // BIAToolKit - Begin Display reference
     map(engine => engine?.reference?.toString() ?? '')
-    // BIAToolKit - End Display reference
   );
 
   public loadingGet$: Observable<boolean> = this.store.select(
@@ -77,16 +75,12 @@ export class EngineService extends CrudItemService<Engine> {
   }
   public create(crudItem: Engine) {
     // TODO after creation of CRUD Engine : map parent Key on the corresponding field
-    // BIAToolKit - Begin Parent planeId
     (crudItem.planeId = this.getParentIds()[0]),
-      // BIAToolKit - End Parent planeId
       this.store.dispatch(FeatureEnginesActions.create({ engine: crudItem }));
   }
   public save(crudItems: Engine[]) {
     // TODO after creation of CRUD Engine : map parent Key on the corresponding field
-    // BIAToolKit - Begin Parent planeId
     crudItems.map(x => (x.planeId = this.getParentIds()[0])),
-      // BIAToolKit - End Parent planeId
       this.store.dispatch(FeatureEnginesActions.save({ engines: crudItems }));
   }
   public update(crudItem: Engine) {

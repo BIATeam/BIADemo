@@ -76,7 +76,6 @@ export const ROUTES: Routes = [
             component: AircraftMaintenanceCompanyEditComponent,
             canActivate: [PermissionGuard],
           },
-          // BIAToolKit - Begin Partial Parent AircraftMaintenanceCompany
           {
             path: 'maintenance-teams',
             data: {
@@ -90,12 +89,13 @@ export const ROUTES: Routes = [
                 './children/maintenance-teams/maintenance-team.module'
               ).then(m => m.MaintenanceTeamModule),
           },
-          // BIAToolKit - End Partial Parent AircraftMaintenanceCompany
           {
             path: '',
             pathMatch: 'full',
             redirectTo: 'edit',
           },
+          // BIAToolKit - Begin AircraftMaintenanceCompanyModuleChildPath
+          // BIAToolKit - End AircraftMaintenanceCompanyModuleChildPath
         ],
       },
     ],

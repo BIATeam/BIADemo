@@ -2,9 +2,12 @@ import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { Component, Injector, ViewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
-import { ButtonDirective } from 'primeng/button';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
+import {
+  BiaButtonGroupComponent,
+  BiaButtonGroupItem,
+} from 'src/app/shared/bia-shared/components/bia-button-group/bia-button-group.component';
 import { BiaTableBehaviorControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
 import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
 import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
@@ -27,7 +30,6 @@ import { siteCRUDConfiguration } from '../../site.constants';
     NgIf,
     NgClass,
     PrimeTemplate,
-    ButtonDirective,
     SiteTableComponent,
     AsyncPipe,
     TranslateModule,
@@ -37,6 +39,7 @@ import { siteCRUDConfiguration } from '../../site.constants';
     BiaTableBehaviorControllerComponent,
     BiaTableComponent,
     UserOptionModule,
+    BiaButtonGroupComponent,
   ],
   providers: [{ provide: CrudItemService, useExisting: SiteService }],
 })
@@ -44,6 +47,8 @@ export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
   // Custo for teams
   canViewMembers = false;
   canSelectElement = false;
+  // BIAToolKit - Begin SiteIndexTsCanViewChildDeclaration
+  // BIAToolKit - End SiteIndexTsCanViewChildDeclaration
 
   checkhasAdvancedFilter() {
     this.hasAdvancedFilter = TeamAdvancedFilterDto.hasFilter(
@@ -71,7 +76,34 @@ export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
     this.canViewMembers = this.authService.hasPermission(
       Permission.Site_Member_List_Access
     );
-    this.canSelectElement = this.canViewMembers || this.canDelete;
+    // BIAToolKit - Begin SiteIndexTsCanViewChildSet
+    // BIAToolKit - End SiteIndexTsCanViewChildSet
+    this.canSelectElement =
+      // BIAToolKit - Begin SiteIndexTsCanSelectElementChildSet
+      // BIAToolKit - End SiteIndexTsCanSelectElementChildSet
+      this.canViewMembers || this.canDelete;
+  }
+
+  protected initSelectedButtonGroup() {
+    this.selectedButtonGroup = [
+      new BiaButtonGroupItem(
+        this.translateService.instant('site.edit'),
+        () => this.onEdit(this.selectedCrudItems[0].id),
+        this.canEdit,
+        this.selectedCrudItems.length !== 1,
+        this.translateService.instant('site.edit')
+      ),
+      // BIAToolKit - Begin SiteIndexTsChildTeamButton
+      // BIAToolKit - End SiteIndexTsChildTeamButton
+      new BiaButtonGroupItem(
+        this.translateService.instant('app.members'),
+        () => this.onViewMembers(this.selectedCrudItems[0].id),
+        this.canViewMembers,
+        this.selectedCrudItems.length !== 1 ||
+          !this.selectedCrudItems[0].canMemberListAccess,
+        this.translateService.instant('app.members')
+      ),
+    ];
   }
 
   // Custo for teams
@@ -100,4 +132,7 @@ export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
     super.onDelete();
     this.authService.reLogin();
   }
+
+  // BIAToolKit - Begin SiteIndexTsOnViewChild
+  // BIAToolKit - End SiteIndexTsOnViewChild
 }

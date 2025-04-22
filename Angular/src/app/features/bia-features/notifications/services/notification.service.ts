@@ -79,12 +79,8 @@ export class NotificationService extends CrudItemService<
   }
   public create(crudItem: Notification) {
     // TODO after creation of CRUD Notification : map parent Key on the corresponding field
-    // BIAToolKit - Begin Parent
     let indexParent = 0;
-    // BIAToolKit - End Parent
-    // BIAToolKit - Begin Parent siteId
     crudItem.siteId = this.getParentIds()[indexParent++];
-    // BIAToolKit - End Parent siteId
     this.store.dispatch(
       FeatureNotificationsActions.create({ notification: crudItem })
     );

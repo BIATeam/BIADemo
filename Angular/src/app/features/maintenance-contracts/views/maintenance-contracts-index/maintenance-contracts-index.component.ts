@@ -41,8 +41,8 @@ import { MaintenanceContractService } from '../../services/maintenance-contract.
 export class MaintenanceContractsIndexComponent extends CrudItemsIndexComponent<MaintenanceContract> {
   @ViewChild(MaintenanceContractTableComponent, { static: false })
   crudItemTableComponent: MaintenanceContractTableComponent;
-  // BIAToolKit - Begin PlaneIndexTsCanViewChildDeclaration
-  // BIAToolKit - End PlaneIndexTsCanViewChildDeclaration
+  // BIAToolKit - Begin MaintenanceContractIndexTsCanViewChildDeclaration
+  // BIAToolKit - End MaintenanceContractIndexTsCanViewChildDeclaration
   constructor(
     protected injector: Injector,
     public maintenanceContractService: MaintenanceContractService,
@@ -66,9 +66,10 @@ export class MaintenanceContractsIndexComponent extends CrudItemsIndexComponent<
       Permission.MaintenanceContract_Save
     );
     this.canSelect = this.canDelete;
-    // BIAToolKit - Begin PlaneIndexTsCanViewChildSet
-    // BIAToolKit - End PlaneIndexTsCanViewChildSet
+    // BIAToolKit - Begin MaintenanceContractIndexTsCanViewChildSet
+    // BIAToolKit - End MaintenanceContractIndexTsCanViewChildSet
   }
-  // BIAToolKit - Begin PlaneIndexTsOnViewChild
-  // BIAToolKit - End PlaneIndexTsOnViewChild
+
+  // BIAToolKit - Begin MaintenanceContractIndexTsOnViewChild
+  // BIAToolKit - End MaintenanceContractIndexTsOnViewChild
 }

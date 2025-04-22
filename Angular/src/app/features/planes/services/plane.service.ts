@@ -60,9 +60,7 @@ export class PlaneService extends CrudItemService<Plane> {
   );
 
   public displayItemName$: Observable<string> = this.crudItem$.pipe(
-    // BIAToolKit - Begin Display msn
     map(plane => plane?.msn?.toString() ?? '')
-    // BIAToolKit - End Display msn
   );
 
   public loadingGet$: Observable<boolean> = this.store.select(
@@ -77,27 +75,19 @@ export class PlaneService extends CrudItemService<Plane> {
   }
   public create(crudItem: Plane) {
     // TODO after creation of CRUD Plane : map parent Key on the corresponding field
-    // BIAToolKit - Begin Parent
     let indexParent = 0;
-    // BIAToolKit - End Parent
-    // BIAToolKit - Begin Parent siteId
     crudItem.siteId = this.getParentIds()[indexParent++];
-    // BIAToolKit - End Parent siteId
     this.store.dispatch(FeaturePlanesActions.create({ plane: crudItem }));
   }
   public update(crudItem: Plane) {
     this.store.dispatch(FeaturePlanesActions.update({ plane: crudItem }));
   }
   public save(crudItems: Plane[]) {
-    // BIAToolKit - Begin Parent
     let indexParent = 0;
-    // BIAToolKit - End Parent
-    // BIAToolKit - Begin Parent siteId
     const siteIdIndexParent = indexParent++;
     crudItems
       .filter(x => !x.id)
       .map(x => (x.siteId = this.getParentIds()[siteIdIndexParent]));
-    // BIAToolKit - End Parent siteId
     this.store.dispatch(FeaturePlanesActions.save({ planes: crudItems }));
   }
   public remove(id: any) {

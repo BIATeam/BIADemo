@@ -64,6 +64,8 @@ export const ROUTES: Routes = [
             pathMatch: 'full',
             redirectTo: 'edit',
           },
+          // BIAToolKit - Begin PlaneTypeModuleChildPath
+          // BIAToolKit - End PlaneTypeModuleChildPath
         ],
       },
     ],

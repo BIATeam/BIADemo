@@ -27,7 +27,6 @@ export const allEnvironments = {
       inHeader: true,
       displayOne: true,
     },
-    // BIAToolKit - Begin Partial AllEnvironment MaintenanceTeam
     {
       teamTypeId: TeamTypeId.MaintenanceTeam,
       roleMode: RoleMode.AllRoles,
@@ -35,7 +34,6 @@ export const allEnvironments = {
       displayAlways: true,
       label: 'maintenanceTeam.headerLabel',
     },
-    // BIAToolKit - End Partial AllEnvironment MaintenanceTeam
     // End BIADemo
     // BIAToolKit - Begin AllEnvironment
     // BIAToolKit - End AllEnvironment

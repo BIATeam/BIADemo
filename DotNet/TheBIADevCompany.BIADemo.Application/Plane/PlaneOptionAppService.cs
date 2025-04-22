@@ -35,14 +35,11 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         public PlaneOptionAppService(ITGenericRepository<Plane, int> repository, IPrincipal principal)
             : base(repository)
         {
-            // BIAToolKit - Begin AncestorTeam Site
             var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
             this.currentTeamId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.Site) : 0;
 
             // For child : set the TeamId of the Ancestor that contain a team Parent
             this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<Plane>(p => p.SiteId == this.currentTeamId));
-
-            // BIAToolKit - End AncestorTeam Site
         }
     }
 }

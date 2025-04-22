@@ -67,6 +67,8 @@ export const ROUTES: Routes = [
             pathMatch: 'full',
             redirectTo: 'edit',
           },
+          // BIAToolKit - Begin SiteModuleChildPath
+          // BIAToolKit - End SiteModuleChildPath
           // Custo for teams
           {
             path: 'members',
