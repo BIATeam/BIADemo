@@ -19,6 +19,7 @@
     <div class="copyright">
       © 2025 {{ companyName }} v{{ frameworkVersion }}
     </div>
+    <ng-content select="[footer-content]"></ng-content>
     <div class="logos flex justify-content-center">
       <ng-template ngFor let-logo let-first="first" [ngForOf]="logos">
         <span

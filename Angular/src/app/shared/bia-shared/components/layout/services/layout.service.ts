@@ -38,6 +38,8 @@ export type FooterMode = 'bottom' | 'overlay';
 
 export type ColorScheme = 'light' | 'dark';
 
+export type MenuProfilePosition = 'start' | 'end';
+
 export interface AppConfig {
   classicStyle: boolean;
   colorScheme: ColorScheme;
@@ -45,6 +47,7 @@ export interface AppConfig {
   scale: number;
   showAvatar: boolean;
   footerMode: FooterMode;
+  menuProfilePosition: MenuProfilePosition;
 }
 
 interface LayoutState {
@@ -69,6 +72,7 @@ const DEFAULT_LAYOUT_CONFIG: AppConfig = {
   scale: 14,
   showAvatar: true,
   footerMode: 'overlay',
+  menuProfilePosition: 'end',
 };
 
 const DEFAULT_CONFIG_DISPLAY: ConfigDisplay = {
@@ -79,6 +83,7 @@ const DEFAULT_CONFIG_DISPLAY: ConfigDisplay = {
   showMenuStyle: false,
   showFooterStyle: false,
   showToggleStyle: false,
+  showMenuProfilePosition: false,
 };
 
 @Injectable({
@@ -476,5 +481,13 @@ export class BiaLayoutService {
 
   checkSmallScreen() {
     this.state.isSmallScreen = window.matchMedia('(max-width:991px)').matches;
+  }
+
+  isConfigSidebarActive(): boolean {
+    return this.state.configSidebarVisible;
+  }
+
+  openConfigSidebar(): void {
+    this.state.configSidebarVisible = true;
   }
 }

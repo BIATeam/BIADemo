@@ -1,4 +1,5 @@
 <ul class="layout-menu">
+  <ng-content select="[menu-top]"></ng-content>
   <ng-container *ngFor="let item of menuItems; let i = index">
     <li
       bia-ultima-menu-item
@@ -8,4 +9,5 @@
       [root]="true"></li>
     <li *ngIf="item.separator" class="menu-separator"></li>
   </ng-container>
+  <ng-content select="[menu-bottom]"></ng-content>
 </ul>
