@@ -3,16 +3,17 @@ import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ButtonDirective } from 'primeng/button';
+import { DrawerModule } from 'primeng/drawer';
 import { RadioButton } from 'primeng/radiobutton';
 import { take, tap } from 'rxjs';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
-import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
 import {
   BiaLayoutService,
   ColorScheme,
   FooterMode,
   MenuMode,
+  MenuProfilePosition,
 } from '../../services/layout.service';
 import { MenuService } from '../../services/menu.service';
 
@@ -28,6 +29,7 @@ import { MenuService } from '../../services/menu.service';
     ButtonDirective,
     NgClass,
     TranslateModule,
+    DrawerModule,
   ],
 })
 export class BiaUltimaConfigComponent {
@@ -38,7 +40,6 @@ export class BiaUltimaConfigComponent {
   componentThemes: any[] = [];
   menuThemes: any[] = [];
   topbarThemes: any[] = [];
-  urlEditAvatar: string;
 
   protected _currentCulture: string | null;
 
@@ -47,8 +48,7 @@ export class BiaUltimaConfigComponent {
     protected biaTranslation: BiaTranslationService,
     protected biaTheme: BiaThemeService,
     public menuService: MenuService,
-    protected translateService: TranslateService,
-    protected readonly appSettingsService: AppSettingsService
+    protected translateService: TranslateService
   ) {
     this.biaTranslation.currentCulture$
       .pipe(
@@ -58,14 +58,12 @@ export class BiaUltimaConfigComponent {
         })
       )
       .subscribe();
-    this.urlEditAvatar =
-      this.appSettingsService.appSettings.profileConfiguration
-        ?.editProfileImageUrl ?? '';
   }
 
   get visible(): boolean {
     return this.layoutService.state.configSidebarVisible;
   }
+
   set visible(_val: boolean) {
     this.layoutService.state.configSidebarVisible = _val;
   }
@@ -115,7 +113,10 @@ export class BiaUltimaConfigComponent {
     return 'bia.lang.' + lang.split('-')[1].toLowerCase();
   }
 
-  set menuProfilePosition(_val: string) {
+  get menuProfilePosition(): MenuProfilePosition {
+    return this.layoutService.config().menuProfilePosition;
+  }
+  set menuProfilePosition(_val: MenuProfilePosition) {
     this.layoutService.config.update(config => ({
       ...config,
       menuProfilePosition: _val,

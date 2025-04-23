@@ -253,6 +253,10 @@ export class BiaUltimaTopbarComponent
     this.layoutService.toggleStyle();
   }
 
+  openSettings() {
+    this.layoutService.openConfigSidebar();
+  }
+
   positionClearButton() {
     const parentElement = document
       .getElementById('toast')
