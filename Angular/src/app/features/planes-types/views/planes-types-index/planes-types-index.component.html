@@ -11,9 +11,10 @@
       [selectedElements]="selectedCrudItems"
       [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
       [tableControllerVisible]="showTableController"
-      (toggleTableControllerVisibility)="
-        toggleTableControllerVisibility()
-      "></bia-table-header>
+      (toggleTableControllerVisibility)="toggleTableControllerVisibility()">
+      <!-- BIAToolKit - Begin PlaneTypeIndexHtml -->
+      <!-- BIAToolKit - End PlaneTypeIndexHtml -->
+    </bia-table-header>
     <bia-table-controller
       [ngClass]="{ 'table-controller-hidden': !showTableController }"
       [defaultPageSize]="defaultPageSize"

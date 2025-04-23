@@ -1,6 +1,6 @@
 // BIADemo only
 // <copyright file="EnginesController.cs" company="TheBIADevCompany">
-//     Copyright (c) TheBIADevCompany. All rights reserved.
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 #define UseHubForClientInEngine
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
@@ -124,10 +124,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 var createdDto = await this.engineService.AddAsync(dto);
 #if UseHubForClientInEngine
-                // BIAToolKit - Begin Parent PlaneId
                 _ = this.clientForHubService.SendTargetedMessage(createdDto.PlaneId.ToString(), "engines", "refresh-engines");
-
-                // BIAToolKit - End Parent PlaneId
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
@@ -161,10 +158,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 var updatedDto = await this.engineService.UpdateAsync(dto);
 #if UseHubForClientInEngine
-                // BIAToolKit - Begin Parent PlaneId
                 _ = this.clientForHubService.SendTargetedMessage(updatedDto.PlaneId.ToString(), "engines", "refresh-engines");
-
-                // BIAToolKit - End Parent PlaneId
 #endif
                 return this.Ok(updatedDto);
             }
@@ -204,10 +198,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 var deletedDto = await this.engineService.RemoveAsync(id);
 #if UseHubForClientInEngine
-                // BIAToolKit - Begin Parent PlaneId
                 _ = this.clientForHubService.SendTargetedMessage(deletedDto.PlaneId.ToString(), "engines", "refresh-engines");
-
-                // BIAToolKit - End Parent PlaneId
 #endif
                 return this.Ok();
             }
@@ -240,13 +231,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
                 var deletedDtos = await this.engineService.RemoveAsync(ids);
 
 #if UseHubForClientInEngine
-                // BIAToolKit - Begin Parent PlaneId
                 deletedDtos.Select(m => m.PlaneId).Distinct().ToList().ForEach(parentId =>
                 {
                     _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "engines", "refresh-engines");
                 });
-
-                // BIAToolKit - End Parent PlaneId
 #endif
                 return this.Ok();
             }
@@ -279,13 +267,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 var savedDtos = await this.engineService.SaveAsync(dtoList);
 #if UseHubForClientInEngine
-                // BIAToolKit - Begin Parent PlaneId
                 savedDtos.Select(m => m.PlaneId).Distinct().ToList().ForEach(parentId =>
                 {
                     _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "engines", "refresh-engines");
                 });
-
-                // BIAToolKit - End Parent PlaneId
 #endif
                 return this.Ok();
             }

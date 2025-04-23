@@ -1,5 +1,5 @@
 // <copyright file="TeamMapper.cs" company="TheBIADevCompany">
-//     Copyright (c) TheBIADevCompany. All rights reserved.
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
@@ -13,12 +13,8 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
 
     // Begin BIADemo
-    // BIAToolKit - Begin Partial TeamMapperUsing MaintenanceTeam
-    // BIAToolKit - Begin Nested AncestorTeam AircraftMaintenanceCompany
     using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities;
 
-    // BIAToolKit - End Nested AncestorTeam AircraftMaintenanceCompany
-    // BIAToolKit - End Partial TeamMapperUsing MaintenanceTeam
     // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
@@ -92,12 +88,8 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
             return team switch
             {
                 // Begin BIADemo
-                // BIAToolKit - Begin Partial TeamMapperParentTeamId MaintenanceTeam
-                // BIAToolKit - Begin Nested Parent AircraftMaintenanceCompanyId
                 MaintenanceTeam maintenanceTeam => team.TeamTypeId == (int)TeamTypeId.MaintenanceTeam ? maintenanceTeam.AircraftMaintenanceCompanyId : 0,
 
-                // BIAToolKit - End Nested Parent AircraftMaintenanceCompanyId
-                // BIAToolKit - End Partial TeamMapperParentTeamId MaintenanceTeam
                 // End BIADemo
                 // BIAToolKit - Begin TeamMapperParentTeamId
                 // BIAToolKit - End TeamMapperParentTeamId
@@ -115,12 +107,8 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
             return team switch
             {
                 // Begin BIADemo
-                // BIAToolKit - Begin Partial TeamMapperParentTeamTitle MaintenanceTeam
-                // BIAToolKit - Begin Nested AncestorTeam AircraftMaintenanceCompany
                 MaintenanceTeam maintenanceTeam => team.TeamTypeId == (int)TeamTypeId.MaintenanceTeam ? maintenanceTeam.AircraftMaintenanceCompany.Title : string.Empty,
 
-                // BIAToolKit - End Nested AncestorTeam AircraftMaintenanceCompany
-                // BIAToolKit - End Partial TeamMapperParentTeamTitle MaintenanceTeam
                 // End BIADemo
                 // BIAToolKit - Begin TeamMapperParentTeamTitle
                 // BIAToolKit - End TeamMapperParentTeamTitle

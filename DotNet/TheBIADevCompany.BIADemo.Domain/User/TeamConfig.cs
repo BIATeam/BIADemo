@@ -1,5 +1,5 @@
 ﻿// <copyright file="TeamConfig.cs" company="TheBIADevCompany">
-//     Copyright (c) TheBIADevCompany. All rights reserved.
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 namespace TheBIADevCompany.BIADemo.Domain.User
 {
@@ -50,14 +50,12 @@ namespace TheBIADevCompany.BIADemo.Domain.User
                 }.ToImmutable(),
             },
 
-            // BIAToolKit - Begin Partial TeamConfig MaintenanceTeam
             new BiaTeamConfig<Team>()
             {
                 TeamTypeId = (int)TeamTypeId.MaintenanceTeam,
                 RightPrefix = "MaintenanceTeam",
                 AdminRoleIds = new int[] { (int)RoleId.MaintenanceTeamAdmin },
 
-                // BIAToolKit - Begin Nested Parent AircraftMaintenanceCompany
                 Parents = new ImmutableListBuilder<BiaTeamParentConfig<Team>>
                 {
                     new BiaTeamParentConfig<Team>
@@ -67,11 +65,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User
                     },
                 }
                 .ToImmutable(),
-
-                // BIAToolKit - End Nested Parent AircraftMaintenanceCompany
             },
-
-            // BIAToolKit - End Partial TeamConfig MaintenanceTeam
 
             // End BIADemo
         }.ToImmutable();

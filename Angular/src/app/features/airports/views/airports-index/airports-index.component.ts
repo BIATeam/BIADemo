@@ -41,6 +41,8 @@ import { AirportService } from '../../services/airport.service';
 export class AirportsIndexComponent extends CrudItemsIndexComponent<Airport> {
   @ViewChild(AirportTableComponent, { static: false })
   crudItemTableComponent: AirportTableComponent;
+  // BIAToolKit - Begin AirportIndexTsCanViewChildDeclaration
+  // BIAToolKit - End AirportIndexTsCanViewChildDeclaration
 
   constructor(
     protected injector: Injector,
@@ -55,5 +57,10 @@ export class AirportsIndexComponent extends CrudItemsIndexComponent<Airport> {
     this.canEdit = this.authService.hasPermission(Permission.Airport_Update);
     this.canDelete = this.authService.hasPermission(Permission.Airport_Delete);
     this.canAdd = this.authService.hasPermission(Permission.Airport_Create);
+    // BIAToolKit - Begin MaintenanceContractIndexTsCanViewChildSet
+    // BIAToolKit - End MaintenanceContractIndexTsCanViewChildSet
   }
+
+  // BIAToolKit - Begin MaintenanceContractIndexTsOnViewChild
+  // BIAToolKit - End MaintenanceContractIndexTsOnViewChild
 }

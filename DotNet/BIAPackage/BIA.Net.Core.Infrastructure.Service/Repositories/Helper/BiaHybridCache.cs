@@ -1,5 +1,5 @@
-﻿// <copyright file="BiaHybridCache.cs" company="BIA.Net">
-//     Copyright (c) BIA.Net. All rights reserved.
+﻿// <copyright file="BiaHybridCache.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
 {

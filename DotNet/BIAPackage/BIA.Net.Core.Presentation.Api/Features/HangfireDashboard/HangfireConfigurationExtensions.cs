@@ -1,5 +1,5 @@
 ﻿// <copyright file="HangfireConfigurationExtensions.cs" company="BIA">
-//     Copyright (c) BIA. All rights reserved.
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace Hangfire.Dashboard.JobLogs

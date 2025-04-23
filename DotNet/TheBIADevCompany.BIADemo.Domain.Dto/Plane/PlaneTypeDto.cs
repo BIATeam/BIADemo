@@ -1,6 +1,6 @@
 // BIADemo only
 // <copyright file="PlaneTypeDto.cs" company="TheBIADevCompany">
-//     Copyright (c) TheBIADevCompany. All rights reserved.
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
@@ -23,7 +23,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
         /// <summary>
         /// Gets or sets the first flight date.
         /// </summary>
-        [BiaDtoField(Type = "date&time", Required = false)]
+        [BiaDtoField(Type = "datetime", Required = false)]
         public DateTime? CertificationDate { get; set; }
     }
 }

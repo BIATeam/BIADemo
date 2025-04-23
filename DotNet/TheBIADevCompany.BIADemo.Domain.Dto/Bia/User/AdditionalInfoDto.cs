@@ -1,5 +1,5 @@
 ﻿// <copyright file="AdditionalInfoDto.cs" company="TheBIADevCompany">
-//     Copyright (c) BIA. All rights reserved.
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Domain.Dto.User

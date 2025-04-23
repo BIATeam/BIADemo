@@ -1,5 +1,5 @@
 // <copyright file="Rights.cs" company="TheBIADevCompany">
-//     Copyright (c) TheBIADevCompany. All rights reserved.
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Crosscutting.Common
@@ -110,8 +110,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Options = "AircraftMaintenanceCompany_Options";
         }
 
-        // BIAToolKit - Begin Partial Rights Engine
-
         /// <summary>
         /// The planes rights.
         /// </summary>
@@ -148,10 +146,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Save = "Engine_Save";
         }
 
-        // BIAToolKit - End Partial Rights Engine
-
-        // BIAToolKit - Begin Partial Rights Part
-
         /// <summary>
         /// The countries rights.
         /// </summary>
@@ -162,10 +156,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             public const string Options = "Part_Options";
         }
-
-        // BIAToolKit - End Partial Rights Part
-
-        // BIAToolKit - Begin Partial Rights MaintenanceTeam
 
         /// <summary>
         /// The maintenance team rights.
@@ -203,10 +193,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Save = "MaintenanceTeam_Save";
         }
 
-        // BIAToolKit - End Partial Rights MaintenanceTeam
-
-        // BIAToolKit - Begin Partial RightsForOption Country
-
         /// <summary>
         /// The country options rights.
         /// </summary>
@@ -217,10 +203,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             public const string Options = "Country_Options";
         }
-
-        // BIAToolKit - End Partial RightsForOption Country
-
-        // BIAToolKit - Begin Partial Rights Plane
 
         /// <summary>
         /// The planes rights.
@@ -268,8 +250,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Options = "Plane_Options";
         }
 
-        // BIAToolKit - End Partial Rights Plane
-
         /// <summary>
         /// The planes rights.
         /// </summary>
@@ -311,8 +291,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Save = "PlaneType_Save";
         }
 
-        // BIAToolKit - Begin Partial Rights Airport
-
         /// <summary>
         /// The airports rights.
         /// </summary>
@@ -353,8 +331,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             public const string Save = "Airport_Save";
         }
-
-        // BIAToolKit - End Partial Rights Airport
 
         /// <summary>
         /// The Hangfire rights.
@@ -633,9 +609,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Options = "NotificationType_Options";
         }
 
-        // BIAToolKit - Begin Rights
-        // BIAToolKit - Begin Partial Rights MaintenanceContract
-
         /// <summary>
         /// The maintenanceContracts rights.
         /// </summary>
@@ -672,7 +645,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Save = "MaintenanceContract_Save";
         }
 
-        // BIAToolKit - End Partial Rights MaintenanceContract
+        // BIAToolKit - Begin Rights
         // BIAToolKit - End Rights
 
         // BIAToolKit - Begin RightsForOption

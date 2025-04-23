@@ -1,5 +1,5 @@
-﻿// <copyright file="GlobalSuppressions.cs" company="BIA.Net">
-// Copyright (c) BIA.Net. All rights reserved.
+﻿// <copyright file="GlobalSuppressions.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 using System.Diagnostics.CodeAnalysis;

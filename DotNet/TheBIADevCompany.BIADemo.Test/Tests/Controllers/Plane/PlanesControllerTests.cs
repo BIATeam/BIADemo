@@ -1,6 +1,6 @@
 // BIADemo only
 // <copyright file="PlanesControllerTests.cs" company="TheBIADevCompany">
-//     Copyright (c) TheBIADevCompany. All rights reserved.
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Plane
 {

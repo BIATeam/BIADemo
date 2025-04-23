@@ -1,5 +1,5 @@
 ﻿// <copyright file="Permission.cs" company="BIA">
-//     Copyright (c) BIA. All rights reserved.
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Common.Configuration

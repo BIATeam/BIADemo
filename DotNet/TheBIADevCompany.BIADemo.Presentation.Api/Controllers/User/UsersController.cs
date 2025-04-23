@@ -1,5 +1,5 @@
 // <copyright file="UsersController.cs" company="TheBIADevCompany">
-//     Copyright (c) TheBIADevCompany. All rights reserved.
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 // #define UseHubForClientInUser
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User

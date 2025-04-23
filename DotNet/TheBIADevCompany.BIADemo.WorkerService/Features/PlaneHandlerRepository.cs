@@ -1,6 +1,6 @@
 // BIADemo only
 // <copyright file="PlaneHandlerRepository.cs" company="TheBIADevCompany">
-//     Copyright (c) BIA.Net. All rights reserved.
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.WorkerService.Features

@@ -8,11 +8,9 @@ import { EngineService } from '../../services/engine.service';
 import { filter } from 'rxjs';
 import { FormReadOnlyMode } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
 // End BIADemo
-// BIAToolKit - Begin Option
 import { AsyncPipe, NgIf } from '@angular/common';
 import { EngineFormComponent } from '../../components/engine-form/engine-form.component';
 import { EngineOptionsService } from '../../services/engine-options.service';
-// BIAToolKit - End Option
 
 @Component({
   selector: 'app-engine-edit',
@@ -25,9 +23,7 @@ export class EngineEditComponent
 {
   constructor(
     protected injector: Injector,
-    // BIAToolKit - Begin Option
     protected engineOptionsService: EngineOptionsService,
-    // BIAToolKit - End Option
     public engineService: EngineService
   ) {
     super(injector, engineService);
@@ -36,13 +32,11 @@ export class EngineEditComponent
 
   ngOnInit(): void {
     super.ngOnInit();
-    // BIAToolKit - Begin Option
     this.sub.add(
       this.biaTranslationService.currentCulture$.subscribe(() => {
         this.engineOptionsService.loadAllOptions();
       })
     );
-    // BIAToolKit - End Option
   }
   // Begin BIADemo
   protected setPermissions(): void {

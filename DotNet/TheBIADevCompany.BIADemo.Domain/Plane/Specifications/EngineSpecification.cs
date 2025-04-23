@@ -1,6 +1,6 @@
 // BIADemo only
 // <copyright file="EngineSpecification.cs" company="TheBIADevCompany">
-//     Copyright (c) TheBIADevCompany. All rights reserved.
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Domain.Plane.Specifications
@@ -27,11 +27,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Specifications
             if (filter.ParentIds != null && filter.ParentIds.Length > 0)
             {
                 specification &= new DirectSpecification<Engine>(s =>
-
-                    // BIAToolKit - Begin Parent PlaneId
                     s.PlaneId == int.Parse(filter.ParentIds[0]));
-
-                // BIAToolKit - End Parent PlaneId
             }
 
             return specification;

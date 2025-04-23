@@ -13,27 +13,10 @@
         [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
         [tableControllerVisible]="showTableController"
         (toggleTableControllerVisibility)="toggleTableControllerVisibility()">
-        <!-- // Custo for teams -->
         <ng-template pTemplate="actionOnSelected">
-          <button
-            pButton
-            [disabled]="selectedCrudItems.length !== 1"
-            *ngIf="canEdit"
-            class="p-button-outlined"
-            label="{{ 'maintenanceTeam.edit' | translate }}"
-            (click)="onEdit(selectedCrudItems[0].id)"
-            pTooltip="{{ 'maintenanceTeam.edit' | translate }}"
-            tooltipPosition="top"></button>
-          <button
-            pButton
-            [disabled]="
-              selectedCrudItems.length !== 1 ||
-              !selectedCrudItems[0].canMemberListAccess
-            "
-            *ngIf="canViewMembers"
-            class="p-button-outlined"
-            label="{{ 'app.members' | translate }}"
-            (click)="onViewMembers(selectedCrudItems[0].id)"></button>
+          <bia-button-group
+            [buttons]="selectedButtonGroup"
+            [compact]="false"></bia-button-group>
         </ng-template>
       </bia-table-header>
       <bia-table-controller

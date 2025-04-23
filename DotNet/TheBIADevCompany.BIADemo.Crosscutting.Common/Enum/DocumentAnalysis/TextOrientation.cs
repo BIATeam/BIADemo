@@ -1,6 +1,6 @@
 ﻿// BIADemo only
-// <copyright file="TextOrientation.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+// <copyright file="TextOrientation.cs" company="TheBIADevCompany">
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum.DocumentAnalysis

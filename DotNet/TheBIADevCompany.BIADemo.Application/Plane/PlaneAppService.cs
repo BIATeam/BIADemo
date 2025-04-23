@@ -1,6 +1,6 @@
 // BIADemo only
 // <copyright file="PlaneAppService.cs" company="TheBIADevCompany">
-//     Copyright (c) TheBIADevCompany. All rights reserved.
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Application.Plane
@@ -26,14 +26,10 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     /// </summary>
     public class PlaneAppService : CrudAppServiceBase<PlaneDto, Plane, int, PagingFilterFormatDto, PlaneMapper>, IPlaneAppService
     {
-        // BIAToolKit - Begin AncestorTeam Site
-
         /// <summary>
         /// The current TeamId.
         /// </summary>
         private readonly int currentTeamId;
-
-        // BIAToolKit - End AncestorTeam Site
 
         // Begin BIADemo
 
@@ -62,14 +58,11 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
             IPrincipal principal)
             : base(repository)
         {
-            // BIAToolKit - Begin AncestorTeam Site
             var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
             this.currentTeamId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.Site) : 0;
 
             // For child : set the TeamId of the Ancestor that contain a team Parent
             this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<Plane>(p => p.SiteId == this.currentTeamId));
-
-            // BIAToolKit - End AncestorTeam Site
 
             // Begin BIADemo
             this.engineRepository = engineRepository;

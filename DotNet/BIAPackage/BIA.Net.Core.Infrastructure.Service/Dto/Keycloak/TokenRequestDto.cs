@@ -1,5 +1,5 @@
-﻿// <copyright file="TokenRequestDto.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+﻿// <copyright file="TokenRequestDto.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Infrastructure.Service.Dto.Keycloak

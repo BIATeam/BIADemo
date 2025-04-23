@@ -1,6 +1,6 @@
 ﻿// BIADemo only
-// <copyright file="PlaneArchiveService.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+// <copyright file="PlaneArchiveService.cs" company="TheBIADevCompany">
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Application.Plane

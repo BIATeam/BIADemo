@@ -21,7 +21,6 @@
       (crudItemFixedChanged)="
         crudItemService.updateFixedStatus($event.crudItemId, $event.fixed)
       ">
-      <!-- BIAToolKit - Begin Partial PlaneIndexHtml Engine -->
       <ng-template pTemplate="actionOnSelected">
         <button
           *ngIf="canViewEngines"
@@ -31,7 +30,6 @@
           label="{{ 'plane.engines' | translate }}"
           (click)="onViewEngines(selectedCrudItems[0].id)"></button>
       </ng-template>
-      <!-- BIAToolKit - End Partial PlaneIndexHtml Engine -->
       <!-- BIAToolKit - Begin PlaneIndexHtml -->
       <!-- BIAToolKit - End PlaneIndexHtml -->
     </bia-table-header>
