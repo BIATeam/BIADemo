@@ -33,6 +33,7 @@ import {
 import { AppState } from 'src/app/store/state';
 import { BiaLayoutService } from '../../services/layout.service';
 import { MenuService } from '../../services/menu.service';
+import { BiaUltimaConfigComponent } from '../config/ultima-config.component';
 import { BiaUltimaFooterComponent } from '../footer/ultima-footer.component';
 import { BiaUltimaSidebarComponent } from '../sidebar/ultima-sidebar.component';
 import { BiaUltimaTopbarComponent } from '../topbar/ultima-topbar.component';
@@ -51,6 +52,7 @@ import { BiaUltimaTopbarComponent } from '../topbar/ultima-topbar.component';
     BiaUltimaFooterComponent,
     AsyncPipe,
     TranslateModule,
+    BiaUltimaConfigComponent,
   ],
 })
 export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
@@ -444,6 +446,9 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
       'layout-content-wrapper-fullscreen': this.layoutService.state.fullscreen,
     };
     styleClass['layout-menu-' + this.layoutService.config().colorScheme] = true;
+    styleClass[
+      'layout-menu-profile-' + this.layoutService.config().menuProfilePosition
+    ] = true;
     styleClass[this.cssClassEnv] = true;
     /* eslint-enable @typescript-eslint/naming-convention */
     return styleClass;

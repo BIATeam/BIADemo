@@ -1,27 +1,25 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { NgIf } from '@angular/common';
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import {
   Component,
+  effect,
   ElementRef,
   HostBinding,
   Input,
   OnDestroy,
 } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MenuItem, SharedModule } from 'primeng/api';
+import { TranslateModule } from '@ngx-translate/core';
+import { SharedModule } from 'primeng/api';
 import { Dialog } from 'primeng/dialog';
 import { Tooltip } from 'primeng/tooltip';
-import { Observable, Subscription, catchError, map, take, tap } from 'rxjs';
+import { catchError, map, Observable, Subscription, take, tap } from 'rxjs';
 import { BiaEnvironmentService } from 'src/app/core/bia-core/services/bia-environment.service';
-import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
-import { THEME_DARK, THEME_LIGHT } from 'src/app/shared/constants';
 import { BiaLayoutService } from '../../services/layout.service';
 import { BiaMenuProfileService } from '../../services/menu-profile.service';
-import { BiaUltimaConfigComponent } from '../config/ultima-config.component';
 
 @Component({
   selector: 'bia-ultima-menu-profile',
@@ -58,8 +56,8 @@ import { BiaUltimaConfigComponent } from '../config/ultima-config.component';
     NgIf,
     Dialog,
     SharedModule,
-    BiaUltimaConfigComponent,
     TranslateModule,
+    NgTemplateOutlet,
   ],
 })
 export class BiaUltimaMenuProfileComponent implements OnDestroy {
@@ -77,7 +75,7 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
     }
     this.buildTopBarMenu();
   }
-  @Input() supportedLangs: string[];
+
   @Input() set login(value: string) {
     const profile = this.appSettingsService.appSettings.profileConfiguration;
     this.externalImage = profile?.clientProfileImageGetMode ?? false;
@@ -109,21 +107,34 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
 
   usernameParam?: { name: string };
   menuProfileHtml: string;
-  topBarMenuItems: MenuItem[];
 
   private sub: Subscription = new Subscription();
 
+  urlEditAvatar: string;
+
   constructor(
-    protected readonly translateService: TranslateService,
     protected readonly layoutService: BiaLayoutService,
     protected biaTranslation: BiaTranslationService,
-    protected biaTheme: BiaThemeService,
     protected readonly appSettingsService: AppSettingsService,
     protected readonly http: HttpClient,
     protected readonly sanitizer: DomSanitizer,
     public el: ElementRef,
     protected readonly menuProfileService: BiaMenuProfileService
-  ) {}
+  ) {
+    this.urlEditAvatar =
+      this.appSettingsService.appSettings.profileConfiguration
+        ?.editProfileImageUrl ?? '';
+
+    this.sub.add(
+      this.biaTranslation.currentCulture$.subscribe(() => {
+        this.buildTopBarMenu();
+      })
+    );
+
+    effect(() => {
+      this.buildTopBarMenu();
+    });
+  }
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();
@@ -148,79 +159,9 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
     return !this.layoutService.isSlim();
   }
 
-  protected onChangeTheme(theme: string) {
-    this.biaTheme.changeTheme(theme);
-  }
-
-  protected onChangeLanguage(lang: string) {
-    this.biaTranslation.loadAndChangeLanguage(lang);
-  }
-
   buildTopBarMenu() {
-    const translationKeys = [
-      'bia.lang.fr',
-      'bia.lang.de',
-      'bia.lang.es',
-      'bia.lang.gb',
-      'bia.lang.mx',
-      'bia.lang.us',
-      'bia.greetings',
-      'bia.language',
-      'bia.theme',
-      'bia.themeLight',
-      'bia.themeDark',
-    ];
-
-    this.sub.add(
-      this.translateService.stream(translationKeys).subscribe(translations => {
-        const menuItemLang: MenuItem[] = [];
-
-        if (this.supportedLangs) {
-          this.supportedLangs.forEach(lang => {
-            menuItemLang.push({
-              label:
-                translations['bia.lang.' + lang.split('-')[1].toLowerCase()],
-              command: () => {
-                this.onChangeLanguage(lang);
-              },
-            });
-          });
-
-          menuItemLang.sort((a, b) => {
-            const labelA = a.label || '';
-            const labelB = b.label || '';
-            return labelA.localeCompare(labelB);
-          });
-        }
-
-        this.menuProfileHtml = this.menuProfileService.getMenuProfileHtml(
-          this.usernameParam?.name ?? ''
-        );
-
-        this.topBarMenuItems = [
-          {
-            label: translations['bia.language'],
-            items: menuItemLang,
-          },
-          {
-            label: translations['bia.theme'],
-            items: [
-              {
-                label: translations['bia.themeLight'],
-                command: () => {
-                  this.onChangeTheme(THEME_LIGHT);
-                },
-              },
-              {
-                label: translations['bia.themeDark'],
-                command: () => {
-                  this.onChangeTheme(THEME_DARK);
-                },
-              },
-            ],
-          },
-        ];
-      })
+    this.menuProfileHtml = this.menuProfileService.getMenuProfileHtml(
+      this.usernameParam?.name ?? ''
     );
   }
 

@@ -58,7 +58,7 @@
 </div>
 <i
   *ngIf="fullscreenMode"
-  class="pi pi-window-minimize fullscreen-exit bia-mat-tiny-fab bia-pointer"
+  class="pi pi-window-minimize fullscreen-exit bia-pointer"
   (click)="toggleFullscreenMode()"></i>
 
 <ng-template #classicMainBar>
@@ -80,7 +80,7 @@
         <ng-container *ngIf="enableNotifications">
           <span class="notifications">
             <i
-              class="pi pi-bell bia-mat-tiny-fab bia-pointer"
+              class="pi pi-bell bia-pointer"
               pTooltip="{{ 'bia.notifications' | translate }}"
               tooltipPosition="left"
               [routerLink]="['/notifications']"></i>
@@ -98,13 +98,13 @@
         </ng-container>
         <i
           *ngIf="reportUrl"
-          class="pi pi-chart-bar bia-mat-tiny-fab bia-pointer"
+          class="pi pi-chart-bar bia-pointer"
           pTooltip="{{ 'bia.report' | translate }}"
           tooltipPosition="left"
           (click)="openReport()"></i>
         <i
           *ngIf="helpUrl"
-          class="pi pi-question-circle bia-mat-tiny-fab bia-pointer"
+          class="pi pi-question-circle bia-pointer"
           pTooltip="{{ 'bia.help' | translate }}"
           (click)="openHelp()"></i>
       </div>

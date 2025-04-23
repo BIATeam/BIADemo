@@ -1,3 +1,4 @@
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   Component,
   ElementRef,
@@ -20,7 +21,13 @@ import { BiaUltimaMenuComponent } from '../menu/ultima-menu.component';
   selector: 'bia-ultima-sidebar',
   templateUrl: './ultima-sidebar.component.html',
   styleUrls: ['./ultima-sidebar.component.scss'],
-  imports: [RouterLink, BiaUltimaMenuProfileComponent, BiaUltimaMenuComponent],
+  imports: [
+    RouterLink,
+    BiaUltimaMenuProfileComponent,
+    BiaUltimaMenuComponent,
+    NgIf,
+    NgTemplateOutlet,
+  ],
 })
 export class BiaUltimaSidebarComponent implements OnDestroy {
   timeout: any = null;
@@ -28,7 +35,6 @@ export class BiaUltimaSidebarComponent implements OnDestroy {
   @Input() version: string;
   @Input() username: string | undefined;
   @Input() login: string;
-  @Input() supportedLangs: string[];
   @Input()
   set menus(navigations: BiaNavigation[]) {
     this.navigations = navigations ?? [];

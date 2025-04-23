@@ -1,0 +1,40 @@
+<bia-spinner [overlay]="true" *ngIf="isLoadingUserInfo"></bia-spinner>
+<bia-ultima-layout
+  [menus]="menus"
+  [version]="version"
+  [username]="username"
+  [login]="login"
+  [headerLogos]="headerLogos"
+  [footerLogo]="footerLogo"
+  [supportedLangs]="supportedLangs"
+  [appTitle]="appTitle"
+  [helpUrl]="helpUrl"
+  [reportUrl]="reportUrl"
+  [enableNotifications]="enableNotifications"
+  [companyName]="companyName"
+  class="p-input-filled">
+  <ng-container topbar-left>Content for topbar left.</ng-container>
+  <ng-container topbar-right>Content for topbar right.</ng-container>
+  <ng-container custom-topbar-icons>
+    <li>
+      <a><i class="pi pi-thumbs-up bia-pointer"></i></a>
+    </li>
+  </ng-container>
+  <ng-container menu-profile-replace>
+    Content for the menu profile.
+  </ng-container>
+  <ng-container menu-profile-panel>
+    Content at the bottom of menu profile panel.
+  </ng-container>
+  <ng-container app-config-top>
+    Content for app config panel top.
+  </ng-container>
+  <ng-container app-config-bottom>
+    Content for app config panel bottom.
+  </ng-container>
+  <ng-container menu-top>Content for menu top.</ng-container>
+  <ng-container menu-bottom>Content for menu bottom.</ng-container>
+  <ng-container breadcrumb-top>Content for breadcrumb top.</ng-container>
+  <ng-container breadcrumb-bottom>Content for breadcrumb bottom.</ng-container>
+  <ng-container footer-content>Content for footer.</ng-container>
+</bia-ultima-layout>
