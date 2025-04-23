@@ -1,5 +1,5 @@
 ﻿// <copyright file="JwtFactory.cs" company="BIA">
-// Copyright (c) BIA.Net. All rights reserved.
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Application.Authentication

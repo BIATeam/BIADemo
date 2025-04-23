@@ -1,5 +1,5 @@
-﻿// <copyright file="ExpressionExtensions.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+﻿// <copyright file="ExpressionExtensions.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Common.Extensions

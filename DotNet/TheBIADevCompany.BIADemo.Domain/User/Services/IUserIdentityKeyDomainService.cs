@@ -1,5 +1,5 @@
-﻿// <copyright file="IUserIdentityKeyDomainService.cs" company="BIA.Net">
-// Copyright (c) BIA.Net. All rights reserved.
+﻿// <copyright file="IUserIdentityKeyDomainService.cs" company="TheBIADevCompany">
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Domain.User.Services

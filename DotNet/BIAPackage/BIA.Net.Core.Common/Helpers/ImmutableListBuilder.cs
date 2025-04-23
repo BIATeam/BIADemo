@@ -1,5 +1,5 @@
-﻿// <copyright file="ImmutableListBuilder.cs" company="BIA.Net">
-// Copyright (c) BIA.Net. All rights reserved.
+﻿// <copyright file="ImmutableListBuilder.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 namespace BIA.Net.Core.Common.Helpers
 {

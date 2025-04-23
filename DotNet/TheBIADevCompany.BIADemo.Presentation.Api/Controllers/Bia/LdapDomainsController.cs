@@ -1,5 +1,5 @@
 ﻿// <copyright file="LdapDomainsController.cs" company="BIA">
-// Copyright (c) BIA.Net. All rights reserved.
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
 {
