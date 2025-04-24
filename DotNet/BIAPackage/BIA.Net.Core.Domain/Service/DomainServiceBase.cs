@@ -4,9 +4,11 @@
 
 namespace BIA.Net.Core.Domain.Service
 {
+    using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.RepoContract;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
@@ -17,14 +19,22 @@ namespace BIA.Net.Core.Domain.Service
     public abstract class DomainServiceBase<TEntity, TKey>
                 where TEntity : class, IEntity<TKey>
     {
-       /// <summary>
+        /// <summary>
         /// Initializes a new instance of the <see cref="DomainServiceBase{TEntity, TKey}"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         protected DomainServiceBase(ITGenericRepository<TEntity, TKey> repository)
         {
             this.Repository = repository;
+            this.BiaNetSection = new BiaNetSection();
+            var configuration = this.Repository.ServiceProvider.GetRequiredService<IConfiguration>();
+            configuration?.GetSection("BiaNet").Bind(this.BiaNetSection);
         }
+
+        /// <summary>
+        /// The BIANet section from configuration.
+        /// </summary>
+        protected BiaNetSection BiaNetSection { get; private set; }
 
         /// <summary>
         /// Gets the repository.
