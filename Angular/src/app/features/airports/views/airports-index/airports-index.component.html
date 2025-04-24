@@ -3,10 +3,12 @@
     <bia-table-header
       [headerTitle]="'airport.listOf' | translate"
       [canAdd]="canAdd && !crudConfiguration.useCalcMode"
+      [canClone]="canAdd && crudConfiguration.isClonable"
       [canDelete]="canDelete"
       [canExportCSV]="true"
       (create)="onCreate()"
       (exportCSV)="onExportCSV('airport.listOf')"
+      (clone)="onClone()"
       (delete)="onDelete()"
       [selectedElements]="selectedCrudItems"
       [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"

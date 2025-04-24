@@ -1,4 +1,5 @@
 <app-maintenance-contract-form
+  [crudItem]="(itemTemplate$ | async) ?? undefined"
   [isAdd]="true"
   [fields]="crudConfiguration.fieldsConfig.columns"
   [dictOptionDtos]="

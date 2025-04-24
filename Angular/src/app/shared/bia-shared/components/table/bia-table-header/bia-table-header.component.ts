@@ -53,7 +53,6 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   @Input() showTableControllerButton = false;
   @Input() tableControllerVisible = false;
   @Input() showFixedButtons = false;
-  @Input() showCloneButton = false;
   @Output() create = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
   @Output() clone = new EventEmitter<void>();
