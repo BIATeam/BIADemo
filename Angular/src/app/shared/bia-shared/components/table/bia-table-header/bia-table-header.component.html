@@ -11,6 +11,14 @@
       pTooltip="{{ 'bia.delete' | translate }}"
       tooltipPosition="top"
       (click)="onDelete()"></button>
+    <button
+      *ngIf="canClone && showCloneButton"
+      pButton
+      [disabled]="selectedElements.length !== 1"
+      class="p-button-outlined"
+      label="{{ 'bia.clone' | translate }}"
+      icon="pi pi-copy"
+      (click)="onClone()"></button>
     <ng-container *ngIf="showFixedButtons && canFix">
       <p-divider class="fixed-buttons-separator" layout="vertical" />
       <button

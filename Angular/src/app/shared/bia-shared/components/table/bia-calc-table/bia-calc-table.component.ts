@@ -142,6 +142,12 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
     }
   }
 
+  public addFooterClonedObject(itemTemplate: TDto) {
+    if (this.canAdd === true) {
+      this.footerRowData = itemTemplate;
+    }
+  }
+
   public initForm() {
     throw new Error('initForm not Implemented');
   }
