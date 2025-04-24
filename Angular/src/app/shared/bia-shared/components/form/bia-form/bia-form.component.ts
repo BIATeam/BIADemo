@@ -501,7 +501,7 @@ export class BiaFormComponent<TDto extends { id: number }>
             col.field,
             BiaOptionService.differential(
               Reflect.get(element, col.field) as BaseDto[],
-              (this.element
+              (this.element && this.element.id
                 ? (Reflect.get(this.element, col.field) ?? [])
                 : []) as BaseDto[]
             )

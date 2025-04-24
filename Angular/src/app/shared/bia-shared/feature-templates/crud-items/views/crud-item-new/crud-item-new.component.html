@@ -1,4 +1,5 @@
 <bia-crud-item-form
+  [crudItem]="(itemTemplate$ | async) ?? undefined"
   [fields]="crudConfiguration.fieldsConfig.columns"
   [formLayoutConfig]="crudConfiguration.formLayoutConfig"
   [dictOptionDtos]="

@@ -24,6 +24,7 @@ import {
   UntypedFormGroup,
 } from '@angular/forms';
 import { PrimeTemplate } from 'primeng/api';
+import { AutoFocusModule } from 'primeng/autofocus';
 import { Checkbox } from 'primeng/checkbox';
 import { DatePicker } from 'primeng/datepicker';
 import { InputNumber } from 'primeng/inputnumber';
@@ -58,6 +59,7 @@ import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.
     DatePicker,
     NgSwitchDefault,
     InputText,
+    AutoFocusModule,
   ],
 })
 export class BiaTableInputComponent<CrudItem>

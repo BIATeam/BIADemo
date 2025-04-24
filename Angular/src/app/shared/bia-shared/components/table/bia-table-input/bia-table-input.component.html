@@ -185,8 +185,7 @@
         type="text"
         [maxlength]="field.maxlength"
         [formControlName]="field.field.toString()"
-        pAutoFocus
-        [autofocus]="focusByDefault"
+        [pAutoFocus]="focusByDefault"
         (change)="onChange()" />
     </ng-container>
   </ng-container>

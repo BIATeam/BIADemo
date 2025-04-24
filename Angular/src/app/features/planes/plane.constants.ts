@@ -14,6 +14,7 @@ export const planeCRUDConfiguration: CrudConfig<Plane> = new CrudConfig({
   formLayoutConfig: planeFormLayoutConfiguration,
   // Begin BIADemo
   isFixable: true,
+  isClonable: true,
   // End BIADemo
   useCalcMode: true,
   useSignalR: false,

@@ -33,6 +33,7 @@ import { BiaTableState } from 'src/app/shared/bia-shared/model/bia-table-state';
 import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
 import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
 import { TableHelperService } from 'src/app/shared/bia-shared/services/table-helper.service';
+import { clone } from 'src/app/shared/bia-shared/utils';
 import { DEFAULT_PAGE_SIZE, TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
 import { BiaTableBehaviorControllerComponent } from '../../../../components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
@@ -386,6 +387,20 @@ export class CrudItemsIndexComponent<
   onCreate() {
     if (!this.crudConfiguration.useCalcMode) {
       this.router.navigate(['create'], { relativeTo: this.activatedRoute });
+    }
+  }
+
+  onClone() {
+    if (!this.crudConfiguration.useCalcMode) {
+      this.router.navigate(['create'], {
+        relativeTo: this.activatedRoute,
+        state: { itemTemplateId: this.selectedCrudItems[0].id },
+      });
+    } else {
+      this.crudItemTableComponent.initEditableRow({
+        ...clone(this.selectedCrudItems[0]),
+        id: 0,
+      });
     }
   }
 

@@ -40,6 +40,7 @@ import { BiaDialogService } from 'src/app/core/bia-core/services/bia-dialog.serv
 })
 export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   @Input() canAdd = true;
+  @Input() canClone = true;
   @Input() canDelete = true;
   @Input() canEdit = true;
   @Input() canFix = false;
@@ -52,8 +53,10 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   @Input() showTableControllerButton = false;
   @Input() tableControllerVisible = false;
   @Input() showFixedButtons = false;
+  @Input() showCloneButton = false;
   @Output() create = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
+  @Output() clone = new EventEmitter<void>();
   @Output() crudItemFixedChanged = new EventEmitter<{
     crudItemId: any;
     fixed: boolean;
@@ -117,6 +120,10 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
 
   onCreate() {
     this.create.next();
+  }
+
+  onClone() {
+    this.clone.next();
   }
 
   onDelete() {
