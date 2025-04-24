@@ -1,5 +1,6 @@
 <app-plane-specific-form
   [crudItem]="crudItem"
+  [isAdd]="true"
   [fields]="crudConfiguration.fieldsConfig.columns"
   [formLayoutConfig]="crudConfiguration.formLayoutConfig"
   [dictOptionDtos]="(planeService.optionsService.dictOptionDtos$ | async) ?? []"

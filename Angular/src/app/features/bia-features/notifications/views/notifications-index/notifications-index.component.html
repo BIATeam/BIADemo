@@ -3,6 +3,7 @@
     <bia-table-header
       [headerTitle]="'notification.listOf' | translate"
       [canAdd]="canAdd && !crudConfiguration.useCalcMode"
+      [canClone]="canAdd && crudConfiguration.isClonable"
       [canDelete]="canDelete"
       [canEdit]="canEdit"
       [canImport]="canSave && crudConfiguration.useImport"
@@ -10,6 +11,7 @@
       (create)="onCreate()"
       (exportCSV)="onExportCSV('notification.listOf')"
       (fullExportCSV)="onExportCSV('notification.listOf', true)"
+      (clone)="onClone()"
       (delete)="onDelete()"
       (import)="onImport()"
       [selectedElements]="selectedCrudItems"

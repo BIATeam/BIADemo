@@ -12,7 +12,6 @@ import { PlaneService } from '../../services/plane.service';
   imports: [PlaneFormComponent, AsyncPipe],
 })
 export class PlaneNewComponent extends CrudItemNewComponent<PlaneSpecific> {
-  newPlane: PlaneSpecific = { engines: [] } as unknown as PlaneSpecific;
   crudItem: PlaneSpecific = <PlaneSpecific>{};
 
   constructor(
