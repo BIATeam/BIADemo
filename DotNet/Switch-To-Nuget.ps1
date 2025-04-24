@@ -1,6 +1,7 @@
 $RelativePathToBIAPackage = "..\..\BIADemo\DotNet\BIAPackage"
 $SolutionName = "BIADemo"
 $ProjectPrefix = "TheBIADevCompany." + $SolutionName
+$BiaFrameworkVersion = "4.0.*"
 
 function AddBIAPackageToSolution {
     param([string]$layerProject, [string]$layerPackage)
@@ -15,7 +16,7 @@ function AddBIAPackageToSolution {
         # Remove the library reference
         dotnet remove $ProjectFile reference $BIAProjectFile
         # Restore the NuGet package reference
-        dotnet add $ProjectFile package BIA.Net.Core.$layerPackage -v 4.0.*
+        dotnet add $ProjectFile package BIA.Net.Core.$layerPackage -v $BiaFrameworkVersion
     }
 }
 
@@ -59,7 +60,7 @@ function UpdateDirectoryBuildPropsAnalyzersReferences {
     if ($analyzersNugetsItemGroup -ne $null) { 
         $nugetPackageReference = $xmlContent.CreateElement("PackageReference")
         $nugetPackageReference.SetAttribute("Include", "BIA.Net.Analyzers")
-        $nugetPackageReference.SetAttribute("Version", "1.0.0")
+            $nugetPackageReference.SetAttribute("Version", $BiaFrameworkVersion)
 
         $privateAssets = $xmlContent.CreateElement("PrivateAssets")
         $privateAssets.InnerText = "all"
