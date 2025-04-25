@@ -20,9 +20,13 @@
 }
     .sal-button.sal-light-button {
         bottom: 90px;
-        height: 40px;
-        width: 40px;
+        height: 45px;
+        width: 45px;
         font-size: x-small;
+    }
+
+    .sal-button.sal-keycloak-button {
+        right: 68px;
     }
 
     .sal-button.sal-logout-button {
