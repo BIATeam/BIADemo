@@ -164,8 +164,29 @@ namespace TheBIADevCompany.BIADemo.Application.User
                         {
                             memberRole.IsDefault = roleIds.Contains(memberRole.RoleId);
                         }
+                    }
 
-                        // this.Repository.Update(member)
+                    await this.Repository.UnitOfWork.CommitAsync();
+                }
+            }
+        }
+
+        /// <inheritdoc cref="IMemberAppService.ResetDefaultRoleAsync(int)"/>
+        public async Task ResetDefaultRoleAsync(int teamId)
+        {
+            int userId = this.principal.GetUserId();
+            if (userId > 0)
+            {
+                IList<Member> members = (await this.Repository.GetAllEntityAsync(filter: x => x.UserId == userId && x.Team.Id == teamId, includes: new Expression<Func<Member, object>>[] { member => member.MemberRoles })).ToList();
+
+                if (members.Any())
+                {
+                    foreach (Member member in members)
+                    {
+                        foreach (MemberRole memberRole in member.MemberRoles)
+                        {
+                            memberRole.IsDefault = false;
+                        }
                     }
 
                     await this.Repository.UnitOfWork.CommitAsync();

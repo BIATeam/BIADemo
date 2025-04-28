@@ -133,7 +133,7 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
     }
   }
 
-  onUnsetDefaultTeam() {
+  onResetDefaultTeam() {
     this.store.dispatch(
       DomainTeamsActions.resetDefaultTeam({
         teamTypeId: this.teamType.teamTypeId,
@@ -186,6 +186,14 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
       DomainTeamsActions.setDefaultRoles({
         teamId: this.currentTeam.id,
         roleIds: this.currentRoles.map(r => r.id),
+      })
+    );
+  }
+
+  onResetDefaultRoles() {
+    this.store.dispatch(
+      DomainTeamsActions.resetDefaultRoles({
+        teamId: this.currentTeam.id,
       })
     );
   }

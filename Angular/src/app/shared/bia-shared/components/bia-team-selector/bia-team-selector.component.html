@@ -23,7 +23,7 @@
     <i
       *ngIf="displayTeamList === true && currentTeam.isDefault"
       class="pi pi-star-fill app-icon-header bia-pointer"
-      (click)="onUnsetDefaultTeam()"
+      (click)="onResetDefaultTeam()"
       pTooltip="{{ 'bia.resetDefault' | translate }}"
       tooltipPosition="bottom"></i>
   </ng-container>
@@ -67,6 +67,11 @@
       pTooltip="{{ 'bia.defineDefault' | translate }}"
       tooltipPosition="bottom"
       placeholder="Top"></i>
-    <i *ngIf="isDefaultRoles()" class="pi pi-star-fill app-icon-header"></i>
+    <i
+      *ngIf="isDefaultRoles()"
+      class="pi pi-star-fill app-icon-header bia-pointer"
+      (click)="onResetDefaultRoles()"
+      pTooltip="{{ 'bia.resetDefault' | translate }}"
+      tooltipPosition="bottom"></i>
   </ng-container>
 </div>

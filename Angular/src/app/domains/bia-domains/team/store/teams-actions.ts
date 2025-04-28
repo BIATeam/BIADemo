@@ -42,4 +42,14 @@ export namespace DomainTeamsActions {
     '[' + storeKey + '] Set default role success',
     props<{ teamId: number; roleIds: number[] }>()
   );
+
+  export const resetDefaultRoles = createAction(
+    '[' + storeKey + '] Reset default role',
+    props<{ teamId: number }>()
+  );
+
+  export const resetDefaultRolesSuccess = createAction(
+    '[' + storeKey + '] Reset default role success',
+    props<{ teamId: number }>()
+  );
 }

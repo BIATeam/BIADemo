@@ -81,7 +81,26 @@ export const teamReducers = createReducer<State>(
       }
       return state;
     }
-  )
+  ),
+  on(DomainTeamsActions.resetDefaultRolesSuccess, (state, { teamId }) => {
+    const updates: Update<Team>[] = [];
+    for (const key in state.entities) {
+      const value = state.entities[key];
+      // Use `key` and `value`
+      if (value?.id === teamId) {
+        const roles: RoleDto[] = value.roles.map(role => ({
+          ...role,
+          isDefault: false,
+        }));
+
+        return teamsAdapter.updateOne(
+          { id: key, changes: { roles: roles } },
+          state
+        );
+      }
+    }
+    return teamsAdapter.updateMany(updates, state);
+  })
   // on(loadSuccess, (state, { team }) => teamsAdapter.upsertOne(team, state))
 );
 

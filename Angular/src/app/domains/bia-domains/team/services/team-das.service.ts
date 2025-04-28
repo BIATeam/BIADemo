@@ -30,4 +30,11 @@ export class TeamDas extends AbstractDas<Team> {
     );
     return this.http.put(route, roleIds);
   }
+
+  public resetDefaultRoles(teamId: number) {
+    const route = AbstractDas.buildRoute(
+      `Teams/Team/${teamId}/resetDefaultRoles`
+    );
+    return this.http.put(route, null);
+  }
 }

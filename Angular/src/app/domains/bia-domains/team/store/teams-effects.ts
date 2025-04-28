@@ -63,6 +63,23 @@ export class TeamsEffects {
       )
     )
   );
+  resetDefaultRoles$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DomainTeamsActions.resetDefaultRoles),
+      switchMap(data =>
+        this.teamDas.resetDefaultRoles(data.teamId).pipe(
+          switchMap(() => {
+            this.biaMessageService.showUpdateSuccess();
+            return [DomainTeamsActions.resetDefaultRolesSuccess(data)];
+          }),
+          catchError(err => {
+            this.biaMessageService.showErrorHttpResponse(err);
+            return of(DomainTeamsActions.failure({ error: err }));
+          })
+        )
+      )
+    )
+  );
 
   constructor(
     protected actions$: Actions,

@@ -132,7 +132,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// </summary>
         /// <param name="teamTypeId">The team type.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        [HttpPut("TeamType/{teamTypeId}/ResetDefault")]
+        [HttpPut("TeamType/{teamTypeId}/resetDefault")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -182,6 +182,39 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             try
             {
                 await this.memberService.SetDefaultRoleAsync(teamId, roleIds);
+                return this.Ok();
+            }
+            catch (ArgumentNullException)
+            {
+                return this.ValidationProblem();
+            }
+            catch (ElementNotFoundException)
+            {
+                return this.NotFound();
+            }
+        }
+
+        /// <summary>
+        /// Resets the default role.
+        /// </summary>
+        /// <param name="teamId">The team identifier.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        [HttpPut("Team/{teamId}/resetDefaultRoles")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = Rights.Teams.SetDefaultRoles)]
+        public async Task<IActionResult> ResetDefaultRoles(int teamId)
+        {
+            if (teamId == 0)
+            {
+                return this.BadRequest();
+            }
+
+            try
+            {
+                await this.memberService.ResetDefaultRoleAsync(teamId);
                 return this.Ok();
             }
             catch (ArgumentNullException)

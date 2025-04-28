@@ -55,6 +55,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
         Task SetDefaultRoleAsync(int teamId, List<int> roleIds);
 
         /// <summary>
+        /// Resets the default role.
+        /// </summary>
+        /// <param name="teamId">The team identifier.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        Task ResetDefaultRoleAsync(int teamId);
+
+        /// <summary>
         /// Generates CSV content.
         /// </summary>
         /// <param name="filters">Represents the columns and their translations.</param>
