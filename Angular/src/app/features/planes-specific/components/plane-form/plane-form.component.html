@@ -40,8 +40,10 @@
         [headerTitle]="field.header | translate"
         [canAdd]="false"
         [canDelete]="true"
+        [canClone]="true"
         (delete)="onDeleteEngines()"
-        [selectedElements]="selectedEngines"></bia-table-header>
+        [selectedElements]="selectedEngines"
+        (clone)="onCloneEngines()"></bia-table-header>
       <app-engine-specific-table
         [elements]="displayedEngines()"
         [configuration]="engineCrudConfig"

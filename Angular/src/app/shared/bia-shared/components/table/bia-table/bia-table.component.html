@@ -29,7 +29,11 @@
   [(selection)]="selectedElements"
   [virtualScroll]="virtualScroll"
   [virtualScrollItemSize]="rowHeight"
-  [virtualScrollOptions]="{ scrollHeight: scrollHeightValue }">
+  [virtualScrollOptions]="{ scrollHeight: scrollHeightValue }"
+  dataKey="id"
+  [expandedRowKeys]="expandedRows"
+  (onRowExpand)="onRowExpand($event)"
+  (onRowCollapse)="onRowCollapse($event)">
   <ng-template pTemplate="header" let-columns>
     <tr>
       <th
@@ -42,6 +46,12 @@
         <p-tableHeaderCheckbox
           *ngIf="canSelectMultipleElement"></p-tableHeaderCheckbox>
       </th>
+      <th
+        *ngIf="canExpandRow"
+        [style.width]="widthExpand"
+        [alignFrozen]="alignFrozenSelect"
+        pFrozenColumn
+        [frozen]="isSelectFrozen"></th>
       <th
         *ngIf="showFixableState"
         [style.width]="widthSelect"
@@ -139,7 +149,8 @@
     pTemplate="body"
     let-rowData
     let-columns="columns"
-    let-ri="rowIndex">
+    let-ri="rowIndex"
+    let-expanded="expanded">
     <tr [pSelectableRow]="rowData" [ngClass]="{ 'p-even-row': ri % 2 === 0 }">
       <td
         *ngIf="canSelectElement === true && !readOnly"
@@ -157,6 +168,17 @@
             <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
           </ng-template>
         </ng-container>
+      </td>
+      <td
+        *ngIf="canExpandRow"
+        [class]="'bia-column-expand'"
+        [style.width]="widthExpand"
+        [alignFrozen]="alignFrozenSelect"
+        pFrozenColumn
+        [frozen]="isSelectFrozen">
+        <i
+          [pRowToggler]="rowData"
+          [class]="expanded ? 'pi pi-angle-down' : 'pi pi-angle-right'"></i>
       </td>
       <td
         *ngIf="showFixableState"
@@ -194,6 +216,15 @@
               "></ng-container>
           </ng-template>
         </bia-table-output>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template *ngIf="canExpandRow" pTemplate="expandedrow" let-rowData>
+    <tr>
+      <td colspan="100%">
+        <ng-container
+          [ngTemplateOutlet]="expandedRowTemplate"
+          [ngTemplateOutletContext]="{ data: rowData }"></ng-container>
       </td>
     </tr>
   </ng-template>

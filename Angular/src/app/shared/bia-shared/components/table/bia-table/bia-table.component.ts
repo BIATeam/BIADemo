@@ -24,7 +24,13 @@ import {
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { PrimeTemplate, SortMeta, TableState } from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
-import { Table, TableLazyLoadEvent, TableModule } from 'primeng/table';
+import {
+  Table,
+  TableLazyLoadEvent,
+  TableModule,
+  TableRowCollapseEvent,
+  TableRowExpandEvent,
+} from 'primeng/table';
 import { Tooltip } from 'primeng/tooltip';
 import { Observable, of, timer } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -103,7 +109,14 @@ export class BiaTableComponent<TDto extends { id: number }>
   @Input() scrollHeightValue = 'calc( 100vh - 460px)';
   @Input() isScrollable = true;
   @Input() isResizableColumn = false;
-  @Input() frozeSelectColumn = true;
+  protected _frozeSelectColumn = true;
+  get frozeSelectColumn() {
+    return this._frozeSelectColumn;
+  }
+  @Input() set frozeSelectColumn(value: boolean) {
+    this._frozeSelectColumn = value;
+    this.manageSelectFrozen(this._configuration);
+  }
   @Input() canSelectMultipleElement = true;
   @Input() rowHeight = 33.56;
   @Input() virtualScrollPageSize = 100;
@@ -113,9 +126,12 @@ export class BiaTableComponent<TDto extends { id: number }>
   @Input() sortMode: 'single' | 'multiple' = 'multiple';
   @Input() multiSortMeta?: SortMeta[] | null;
   @Input() ignoreSpecificOutput = false;
+  @Input() canExpandRow = false;
+  @Input() expandedRowTemplate: TemplateRef<any>;
 
   protected isSelectFrozen = false;
   protected widthSelect: string;
+  protected widthExpand: string;
   protected alignFrozenSelect = 'left';
   protected _configuration: BiaFieldsConfig<TDto>;
   get configuration(): BiaFieldsConfig<TDto> {
@@ -133,6 +149,8 @@ export class BiaTableComponent<TDto extends { id: number }>
   @Output() selectedElementsChanged = new EventEmitter<any[]>();
   @Output() stateSave = new EventEmitter<string>();
   @Output() pageSizeChange = new EventEmitter<number>();
+  @Output() rowExpand = new EventEmitter<TableRowExpandEvent>();
+  @Output() rowCollapse = new EventEmitter<TableRowCollapseEvent>();
 
   @ViewChild('dt', { static: false }) table: Table | undefined;
 
@@ -155,6 +173,8 @@ export class BiaTableComponent<TDto extends { id: number }>
   protected defaultSortOrder: number;
   protected defaultPageSize: number;
   protected defaultColumns: string[];
+
+  protected expandedRows = {};
 
   constructor(
     public authService: AuthService,
@@ -627,13 +647,16 @@ export class BiaTableComponent<TDto extends { id: number }>
       if (biaFieldsConfig?.columns?.some(x => x.isFrozen === true) === true) {
         this.isSelectFrozen = true;
         this.widthSelect = '50px';
+        this.widthExpand = '38px';
       } else {
         this.isSelectFrozen = false;
         this.widthSelect = '';
+        this.widthExpand = '';
       }
     } else {
       this.isSelectFrozen = true;
       this.widthSelect = '50px';
+      this.widthExpand = '38px';
     }
   }
 
@@ -712,5 +735,13 @@ export class BiaTableComponent<TDto extends { id: number }>
 
     storage.setItem(<string>table.stateKey, JSON.stringify(state));
     table.onStateSave.emit(state);
+  }
+
+  onRowExpand(event: TableRowExpandEvent) {
+    this.rowExpand.emit(event);
+  }
+
+  onRowCollapse(event: TableRowCollapseEvent) {
+    this.rowCollapse.emit(event);
   }
 }

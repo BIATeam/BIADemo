@@ -21,6 +21,7 @@ import { BiaFieldsConfig } from 'src/app/shared/bia-shared/model/bia-field-confi
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
 import { CrudHelperService } from 'src/app/shared/bia-shared/services/crud-helper.service';
+import { clone } from 'src/app/shared/bia-shared/utils';
 import { EngineTableComponent } from '../../children/engines/components/engine-table/engine-table.component';
 import { engineCRUDConfiguration } from '../../children/engines/engine.constants';
 import { Engine } from '../../model/engine';
@@ -110,6 +111,13 @@ export class PlaneFormComponent
   onDeleteEngines() {
     this.selectedEngines.forEach(e => (e.dtoState = DtoState.Deleted));
     this.setDisplayedEngines();
+  }
+
+  onCloneEngines() {
+    this.engineTableComponent.initEditableRow({
+      ...clone(this.selectedEngines[0]),
+      id: 0,
+    });
   }
 
   onReadOnlyChanged(readOnly: boolean): void {

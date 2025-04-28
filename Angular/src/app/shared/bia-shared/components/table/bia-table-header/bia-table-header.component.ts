@@ -40,7 +40,7 @@ import { BiaDialogService } from 'src/app/core/bia-core/services/bia-dialog.serv
 })
 export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   @Input() canAdd = true;
-  @Input() canClone = true;
+  @Input() canClone = false;
   @Input() canDelete = true;
   @Input() canEdit = true;
   @Input() canFix = false;
