@@ -11,6 +11,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain.Authentication;
@@ -24,6 +25,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using TheBIADevCompany.BIADemo.Domain.User;
     using TheBIADevCompany.BIADemo.Domain.User.Models;
     using TheBIADevCompany.BIADemo.Domain.User.Services;
+    using static TheBIADevCompany.BIADemo.Crosscutting.Common.Rights;
 
     /// <summary>
     /// Auth App Service.
@@ -546,18 +548,24 @@ namespace TheBIADevCompany.BIADemo.Application.User
             // get user rights
             if (loginParam.TeamsConfig != null)
             {
-                foreach (var teamsConfigTeamTypeId in loginParam.TeamsConfig.Select(tc => tc.TeamTypeId))
+                foreach (var loginTeamConfigTeamTypeId in loginParam.TeamsConfig.Select(x => x.TeamTypeId))
                 {
+                    var teamConfig = TeamConfig.Config.Single(tc => tc.TeamTypeId == loginTeamConfigTeamTypeId);
+                    var correspondingTeams = allTeams.Where(t => t.TeamTypeId == loginTeamConfigTeamTypeId);
+                    var automaticallySelectedTeam = teamConfig.AutomaticSelectionMode switch
+                    {
+                        TeamAutomaticSelectionMode.None => null,
+                        TeamAutomaticSelectionMode.First => correspondingTeams.FirstOrDefault(),
+                        _ => throw new NotImplementedException()
+                    };
+                    var defaultTeam = correspondingTeams.FirstOrDefault(x => x.IsDefault) ?? automaticallySelectedTeam;
+
                     CurrentTeamDto teamLogin = null;
-
-                    var correspondingTeams = allTeams.Where(t => t.TeamTypeId == teamsConfigTeamTypeId);
-                    var defaultTeam = correspondingTeams.FirstOrDefault(x => x.IsDefault);
-
                     if (loginParam.IsFirstLogin && defaultTeam != null)
                     {
                         teamLogin = new CurrentTeamDto
                         {
-                            TeamTypeId = teamsConfigTeamTypeId,
+                            TeamTypeId = defaultTeam.TeamTypeId,
                             TeamId = defaultTeam.Id,
                             TeamTitle = defaultTeam.Title,
                             UseDefaultRoles = true,
@@ -566,7 +574,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     }
                     else if (!loginParam.IsFirstLogin)
                     {
-                        teamLogin = Array.Find(loginParam.CurrentTeamLogins, ct => ct.TeamTypeId == teamsConfigTeamTypeId);
+                        teamLogin = Array.Find(loginParam.CurrentTeamLogins, ct => ct.TeamTypeId == loginTeamConfigTeamTypeId);
                     }
 
                     if (teamLogin is null)
@@ -636,19 +644,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
                     // add the sites roles (filter if singleRole mode is used)
                     allRoles.AddRange(roles.Where(r => currentTeam.CurrentRoleIds.Exists(id => id == r.Id)).Select(r => r.Code).ToList());
-
-                    foreach (var teamConfig in TeamConfig.Config)
-                    {
-                        if (currentTeam.TeamTypeId == teamConfig.TeamTypeId)
-                        {
-                            allRoles.Add(teamConfig.RightPrefix + Crosscutting.Common.Constants.Role.TeamMemberSuffix);
-                        }
-
-                        if (teamConfig.Parents != null && allTeams.Any(t => t.TeamTypeId == teamConfig.TeamTypeId && t.ParentTeamId == currentTeam.TeamId))
-                        {
-                            allRoles.Add(teamConfig.RightPrefix + Crosscutting.Common.Constants.Role.TeamMemberOfOneSuffix);
-                        }
-                    }
+                    allRoles.Add(teamConfig.RightPrefix + Crosscutting.Common.Constants.Role.TeamMemberSuffix);
+                    allRoles.Add(teamConfig.RightPrefix + Crosscutting.Common.Constants.Role.TeamMemberOfOneSuffix);
 
                     // add computed roles (can be customized)
                 }

@@ -65,6 +65,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User
                     },
                 }
                 .ToImmutable(),
+                AutomaticSelectionMode = BIA.Net.Core.Common.Enum.TeamAutomaticSelectionMode.None,
             },
 
             // End BIADemo
