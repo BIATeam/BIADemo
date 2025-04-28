@@ -1,5 +1,6 @@
 import { EntityState, Update, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
+import { RoleDto } from 'src/app/shared/bia-shared/model/role';
 import { Team } from '../model/team';
 import { DomainTeamsActions } from './teams-actions';
 
@@ -56,11 +57,10 @@ export const teamReducers = createReducer<State>(
         const value = state.entities[key];
         // Use `key` and `value`
         if (value?.id === teamId) {
-          //let roles = value.roles.map(role => ({role, isDefault: roleIds.indexOf(role.id) > -1}));
-          const roles = [...value.roles];
-          roles.forEach(
-            role => (role.isDefault = roleIds.indexOf(role.id) > -1)
-          );
+          const roles: RoleDto[] = value.roles.map(role => ({
+            ...role,
+            isDefault: roleIds.includes(role.id),
+          }));
 
           return teamsAdapter.updateOne(
             { id: key, changes: { roles: roles } },

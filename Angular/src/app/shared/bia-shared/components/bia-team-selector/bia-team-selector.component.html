@@ -47,20 +47,18 @@
     scrollHeight="50vh"
     [appendTo]="'body'">
   </p-multiSelect>
-  <i
+  <ng-container
     *ngIf="
       (displayRoleList === true || displayRoleMultiSelect === true) &&
-      !isDefaultRoles()
-    "
-    class="pi pi-star app-icon-header bia-pointer"
-    (click)="onSetDefaultRoles()"
-    pTooltip="{{ 'bia.defineDefault' | translate }}"
-    tooltipPosition="bottom"
-    placeholder="Top"></i>
-  <i
-    *ngIf="
-      (displayRoleList === true || displayRoleMultiSelect === true) &&
-      isDefaultRoles()
-    "
-    class="pi pi-star-fill app-icon-header"></i>
+      currentRoles.length > 0
+    ">
+    <i
+      *ngIf="!isDefaultRoles()"
+      class="pi pi-star app-icon-header bia-pointer"
+      (click)="onSetDefaultRoles()"
+      pTooltip="{{ 'bia.defineDefault' | translate }}"
+      tooltipPosition="bottom"
+      placeholder="Top"></i>
+    <i *ngIf="isDefaultRoles()" class="pi pi-star-fill app-icon-header"></i>
+  </ng-container>
 </div>

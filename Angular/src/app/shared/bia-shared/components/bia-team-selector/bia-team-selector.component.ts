@@ -92,6 +92,7 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
     );
     this.sub.add(
       this.teams$.subscribe(teams => {
+        console.log('Team changed', teams);
         this.teams = this.sortTeams(teams);
         this.initDropdownTeam();
         this.initDropdownRole();
