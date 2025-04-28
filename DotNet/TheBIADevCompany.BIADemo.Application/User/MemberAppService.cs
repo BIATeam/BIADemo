@@ -116,7 +116,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
                     if (parentTeams.SelectMany(t => t.Members).Any(m => m.UserId == userId) && !members.Any(m => m.TeamId == teamId && m.UserId == userId))
                     {
-                        throw new FrontUserException($"Unable to set the team {teamConfig.RightPrefix} as favorite because you are not a member of.");
+                        throw new FrontUserException($"Unable to set the team {teamConfig.RightPrefix} as default because you are not a member of.");
                     }
                 }
 
