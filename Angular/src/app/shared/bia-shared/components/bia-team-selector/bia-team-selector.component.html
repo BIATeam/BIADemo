@@ -11,7 +11,7 @@
     (onChange)="onTeamChange()"
     scrollHeight="50vh"
     [appendTo]="'body'"
-    [showClear]="true"></p-select>
+    [showClear]="canClear"></p-select>
   <ng-container *ngIf="currentTeam">
     <i
       *ngIf="displayTeamList === true && !currentTeam.isDefault"

@@ -33,6 +33,7 @@ export const allEnvironments = {
       inHeader: true,
       displayAlways: true,
       label: 'maintenanceTeam.headerLabel',
+      canBeCleared: true,
     },
     // End BIADemo
     // BIAToolKit - Begin AllEnvironment

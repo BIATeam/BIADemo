@@ -52,6 +52,7 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
   languageId: number;
   singleRoleMode: boolean;
   multiRoleMode: boolean;
+  canClear: boolean | undefined;
 
   protected sub = new Subscription();
 
@@ -68,6 +69,9 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.canClear = allEnvironments.teams.find(
+      t => t.teamTypeId === this.teamType.teamTypeId
+    )?.canBeCleared;
     this.singleRoleMode =
       allEnvironments.teams.find(
         t =>
