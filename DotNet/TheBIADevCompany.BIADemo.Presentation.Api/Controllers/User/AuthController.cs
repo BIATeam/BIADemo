@@ -58,7 +58,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 
                     // Begin BIADemo
                     new TeamConfigDto() { TeamTypeId = (int)TeamTypeId.AircraftMaintenanceCompany, RoleMode = RoleMode.MultiRoles, InHeader = true },
-                    new TeamConfigDto() { TeamTypeId = (int)TeamTypeId.MaintenanceTeam, RoleMode = RoleMode.AllRoles, InHeader = false },
+                    new TeamConfigDto() { TeamTypeId = (int)TeamTypeId.MaintenanceTeam, RoleMode = RoleMode.AllRoles, InHeader = false, CanBeCleared = true },
 
                     // End BIADemo
                     // BIAToolKit - Begin AuthController
