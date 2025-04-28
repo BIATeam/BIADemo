@@ -28,6 +28,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Mappers;
     using TheBIADevCompany.BIADemo.Domain.User.Specifications;
+    using static TheBIADevCompany.BIADemo.Crosscutting.Common.Rights;
 
     /// <summary>
     /// The application service used for member.
@@ -105,19 +106,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
             if (userId > 0)
             {
                 IList<Member> members = (await this.Repository.GetAllEntityAsync(filter: x => x.UserId == userId && x.Team.TeamTypeId == teamTypeId)).ToList();
-                var teamConfig = TeamConfig.Config.Single(t => t.TeamTypeId == teamTypeId);
-                if (teamConfig.Parents?.IsEmpty == false)
+                if (!members.Any(m => m.TeamId == teamId && m.UserId == userId))
                 {
-                    var parentTeamIds = teamConfig.Parents.Select(p => p.TeamTypeId).ToList();
-                    var parentTeams = await this.teamRepository.GetAllEntityAsync(
-                        filter: t => parentTeamIds.Any(pti => pti == t.TeamTypeId),
-                        isReadOnlyMode: true,
-                        includes: [t => t.Members]);
-
-                    if (parentTeams.SelectMany(t => t.Members).Any(m => m.UserId == userId) && !members.Any(m => m.TeamId == teamId && m.UserId == userId))
-                    {
-                        throw new FrontUserException($"Unable to set the team {teamConfig.RightPrefix} as default because you are not a member.");
-                    }
+                    throw new FrontUserException("Unable to set the team as default because you are not a member.");
                 }
 
                 if (members.Any())
@@ -139,6 +130,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             if (userId > 0)
             {
                 IList<Member> members = (await this.Repository.GetAllEntityAsync(filter: x => x.UserId == userId && x.Team.TeamTypeId == teamTypeId)).ToList();
+
                 foreach (Member member in members)
                 {
                     member.IsDefault = false;
