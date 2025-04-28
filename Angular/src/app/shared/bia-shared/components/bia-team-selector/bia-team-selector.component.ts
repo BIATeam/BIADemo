@@ -123,12 +123,14 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
   }
 
   onSetDefaultTeam() {
-    this.store.dispatch(
-      DomainTeamsActions.setDefaultTeam({
-        teamTypeId: this.teamType.teamTypeId,
-        teamId: this.currentTeam.id,
-      })
-    );
+    if (this.currentTeam.id) {
+      this.store.dispatch(
+        DomainTeamsActions.setDefaultTeam({
+          teamTypeId: this.teamType.teamTypeId,
+          teamId: this.currentTeam.id,
+        })
+      );
+    }
   }
 
   protected initDropdownTeam() {
