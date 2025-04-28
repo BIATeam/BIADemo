@@ -32,9 +32,11 @@
     optionLabel="display"
     dataKey="id"
     (onChange)="onRolesChange()"
+    (onClear)="onRolesChange()"
     placeholder="Select a role"
     scrollHeight="50vh"
-    [appendTo]="'body'">
+    [appendTo]="'body'"
+    [showClear]="true">
   </p-select>
   <p-multiSelect
     *ngIf="displayRoleMultiSelect"
@@ -43,9 +45,11 @@
     optionLabel="display"
     datakey="id"
     (onChange)="onRolesChange()"
+    (onClear)="onRolesChange()"
     placeholder="Select a role"
     scrollHeight="50vh"
-    [appendTo]="'body'">
+    [appendTo]="'body'"
+    [showClear]="true">
   </p-multiSelect>
   <ng-container
     *ngIf="

@@ -158,8 +158,12 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
   }
 
   onRolesChange() {
-    if (this.singleRoleMode) {
-      if (this.currentRole) this.currentRoles = [this.currentRole];
+    if (!this.currentRoles) {
+      this.currentRoles = [];
+    }
+
+    if (this.singleRoleMode && this.currentRole) {
+      this.currentRoles = [this.currentRole];
     }
 
     this.authService.changeCurrentRoleIds(
