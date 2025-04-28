@@ -116,7 +116,7 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
   onTeamChange() {
     this.authService.changeCurrentTeamId(
       this.teamType.teamTypeId,
-      this.currentTeam.id
+      this.currentTeam ? this.currentTeam.id : 0
     );
     this.authService.clearSessionExceptLoginInfos();
     location.reload();

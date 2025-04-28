@@ -10,7 +10,8 @@
     dataKey="id"
     (onChange)="onTeamChange()"
     scrollHeight="50vh"
-    [appendTo]="'body'"></p-select>
+    [appendTo]="'body'"
+    [showClear]="true"></p-select>
   <i
     *ngIf="displayTeamList === true && currentTeam?.id !== defaultTeamId"
     class="pi pi-star app-icon-header bia-pointer"

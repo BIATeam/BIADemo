@@ -7,6 +7,7 @@ export class LoginParamDto {
   lightToken: boolean;
   fineGrainedPermission: boolean;
   additionalInfos: boolean;
+  isFirstLogin: boolean;
 }
 
 export class TeamConfigDto {
