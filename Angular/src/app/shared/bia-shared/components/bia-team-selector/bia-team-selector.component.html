@@ -35,11 +35,9 @@
     optionLabel="display"
     dataKey="id"
     (onChange)="onRolesChange()"
-    (onClear)="onRolesChange()"
     placeholder="Select a role"
     scrollHeight="50vh"
-    [appendTo]="'body'"
-    [showClear]="true">
+    [appendTo]="'body'">
   </p-select>
   <p-multiSelect
     *ngIf="displayRoleMultiSelect"

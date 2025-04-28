@@ -203,6 +203,14 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
   }
 
   isDefaultRoles(): boolean {
+    console.log('DefaultRoleIds', this.defaultRoleIds?.sort().toString());
+    console.log(
+      'CurrentRoles',
+      this.currentRoles
+        ?.map(r => r.id)
+        .sort()
+        .toString()
+    );
     return (
       this.defaultRoleIds?.sort().toString() ===
       this.currentRoles
@@ -215,6 +223,7 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
   protected initDropdownRole() {
     this.displayRoleList = false;
     this.displayRoleMultiSelect = false;
+    this.defaultRoleIds = [];
     if (this.singleRoleMode || this.multiRoleMode) {
       const currentRoleIds = this.authService
         .getUncryptedToken()
