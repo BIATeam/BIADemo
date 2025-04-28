@@ -128,6 +128,39 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         }
 
         /// <summary>
+        /// Reset the default site.
+        /// </summary>
+        /// <param name="teamTypeId">The team type.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        [HttpPut("TeamType/{teamTypeId}/ResetDefault")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = Rights.Teams.SetDefaultTeam)]
+        public async Task<IActionResult> ResetDefaultTeam(int teamTypeId)
+        {
+            if (teamTypeId == 0)
+            {
+                return this.BadRequest();
+            }
+
+            try
+            {
+                await this.memberService.ResetDefaultTeamAsync(teamTypeId);
+                return this.Ok();
+            }
+            catch (ArgumentNullException)
+            {
+                return this.ValidationProblem();
+            }
+            catch (ElementNotFoundException)
+            {
+                return this.NotFound();
+            }
+        }
+
+        /// <summary>
         /// Sets the default role.
         /// </summary>
         /// <param name="teamId">The team identifier.</param>

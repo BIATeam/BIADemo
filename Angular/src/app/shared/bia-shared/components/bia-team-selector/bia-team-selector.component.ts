@@ -92,7 +92,6 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
     );
     this.sub.add(
       this.teams$.subscribe(teams => {
-        console.log('Team changed', teams);
         this.teams = this.sortTeams(teams);
         this.initDropdownTeam();
         this.initDropdownRole();
@@ -132,6 +131,14 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
         })
       );
     }
+  }
+
+  onUnsetDefaultTeam() {
+    this.store.dispatch(
+      DomainTeamsActions.resetDefaultTeam({
+        teamTypeId: this.teamType.teamTypeId,
+      })
+    );
   }
 
   protected initDropdownTeam() {

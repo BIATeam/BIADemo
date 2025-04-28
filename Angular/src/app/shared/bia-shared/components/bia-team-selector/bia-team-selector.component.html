@@ -14,15 +14,18 @@
     [showClear]="true"></p-select>
   <ng-container *ngIf="currentTeam">
     <i
-      *ngIf="displayTeamList === true && currentTeam?.id !== defaultTeamId"
+      *ngIf="displayTeamList === true && !currentTeam.isDefault"
       class="pi pi-star app-icon-header bia-pointer"
       (click)="onSetDefaultTeam()"
       pTooltip="{{ 'bia.defineDefault' | translate }}"
       tooltipPosition="bottom"
       placeholder="Top"></i>
     <i
-      *ngIf="displayTeamList === true && currentTeam?.id === defaultTeamId"
-      class="pi pi-star-fill app-icon-header"></i>
+      *ngIf="displayTeamList === true && currentTeam.isDefault"
+      class="pi pi-star-fill app-icon-header bia-pointer"
+      (click)="onUnsetDefaultTeam()"
+      pTooltip="{{ 'bia.resetDefault' | translate }}"
+      tooltipPosition="bottom"></i>
   </ng-container>
   <!-- Role selection -->
   <p-select

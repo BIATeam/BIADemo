@@ -50,6 +50,17 @@ export const teamReducers = createReducer<State>(
       return teamsAdapter.updateMany(updates, state);
     }
   ),
+  on(DomainTeamsActions.resetDefaultTeamSuccess, (state, { teamTypeId }) => {
+    const updates: Update<Team>[] = [];
+    for (const key in state.entities) {
+      const value = state.entities[key];
+      // Use `key` and `value`
+      if (value?.teamTypeId === teamTypeId) {
+        updates.push({ id: key, changes: { isDefault: false } });
+      }
+    }
+    return teamsAdapter.updateMany(updates, state);
+  }),
   on(
     DomainTeamsActions.setDefaultRolesSuccess,
     (state, { teamId, roleIds }) => {

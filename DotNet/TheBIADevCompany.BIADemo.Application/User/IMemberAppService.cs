@@ -40,6 +40,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
         Task SetDefaultTeamAsync(int teamId, int teamTypeId);
 
         /// <summary>
+        /// Reset the default site.
+        /// </summary>
+        /// <param name="teamTypeId">The team type identifier.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        Task ResetDefaultTeamAsync(int teamTypeId);
+
+        /// <summary>
         /// Sets the default role.
         /// </summary>
         /// <param name="teamId">The team identifier.</param>

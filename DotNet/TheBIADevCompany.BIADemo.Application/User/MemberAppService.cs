@@ -132,6 +132,22 @@ namespace TheBIADevCompany.BIADemo.Application.User
             }
         }
 
+        /// <inheritdoc cref="IMemberAppService.ResetDefaultSite"/>
+        public async Task ResetDefaultTeamAsync(int teamTypeId)
+        {
+            int userId = this.principal.GetUserId();
+            if (userId > 0)
+            {
+                IList<Member> members = (await this.Repository.GetAllEntityAsync(filter: x => x.UserId == userId && x.Team.TeamTypeId == teamTypeId)).ToList();
+                foreach (Member member in members)
+                {
+                    member.IsDefault = false;
+                }
+
+                await this.Repository.UnitOfWork.CommitAsync();
+            }
+        }
+
         /// <inheritdoc cref="IMemberAppService.SetDefaultRoleAsync(int)"/>
         public async Task SetDefaultRoleAsync(int teamId, List<int> roleIds)
         {
