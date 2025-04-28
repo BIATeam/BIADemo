@@ -117,9 +117,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     {
                         member.IsDefault = member.TeamId == teamId;
                     }
-                }
 
-                await this.Repository.UnitOfWork.CommitAsync();
+                    await this.Repository.UnitOfWork.CommitAsync();
+                }
             }
         }
 
@@ -131,12 +131,15 @@ namespace TheBIADevCompany.BIADemo.Application.User
             {
                 IList<Member> members = (await this.Repository.GetAllEntityAsync(filter: x => x.UserId == userId && x.Team.TeamTypeId == teamTypeId)).ToList();
 
-                foreach (Member member in members)
+                if (members.Any())
                 {
-                    member.IsDefault = false;
-                }
+                    foreach (Member member in members)
+                    {
+                        member.IsDefault = false;
+                    }
 
-                await this.Repository.UnitOfWork.CommitAsync();
+                    await this.Repository.UnitOfWork.CommitAsync();
+                }
             }
         }
 
@@ -150,12 +153,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
                 if (members.Any())
                 {
-                    foreach (Member member in members)
+                    foreach (var memberRole in members.SelectMany(x => x.MemberRoles))
                     {
-                        foreach (MemberRole memberRole in member.MemberRoles)
-                        {
-                            memberRole.IsDefault = roleIds.Contains(memberRole.RoleId);
-                        }
+                        memberRole.IsDefault = roleIds.Contains(memberRole.RoleId);
                     }
 
                     await this.Repository.UnitOfWork.CommitAsync();
@@ -173,12 +173,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
                 if (members.Any())
                 {
-                    foreach (Member member in members)
+                    foreach (var memberRole in members.SelectMany(x => x.MemberRoles))
                     {
-                        foreach (MemberRole memberRole in member.MemberRoles)
-                        {
-                            memberRole.IsDefault = false;
-                        }
+                        memberRole.IsDefault = false;
                     }
 
                     await this.Repository.UnitOfWork.CommitAsync();
