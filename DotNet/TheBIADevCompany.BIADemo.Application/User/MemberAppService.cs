@@ -13,6 +13,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
@@ -101,11 +102,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
         public async Task SetDefaultTeamAsync(int teamId, int teamTypeId)
         {
             int userId = this.principal.GetUserId();
-            if (userId > 0 && teamId > 0)
+            if (userId > 0)
             {
                 IList<Member> members = (await this.Repository.GetAllEntityAsync(filter: x => x.UserId == userId && x.Team.TeamTypeId == teamTypeId)).ToList();
                 var teamConfig = TeamConfig.Config.Single(t => t.TeamTypeId == teamTypeId);
-                if (!teamConfig.Parents?.IsEmpty == true)
+                if (teamConfig.Parents?.IsEmpty == false)
                 {
                     var parentTeamIds = teamConfig.Parents.Select(p => p.TeamTypeId).ToList();
                     var parentTeams = await this.teamRepository.GetAllEntityAsync(
@@ -115,7 +116,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
                     if (parentTeams.SelectMany(t => t.Members).Any(m => m.UserId == userId) && !members.Any(m => m.TeamId == teamId && m.UserId == userId))
                     {
-                        this.Repository.Add(new Member { TeamId = teamId, UserId = userId, IsDefault = true });
+                        throw new FrontUserException($"Unable to set the team {teamConfig.RightPrefix} as favorite because you are not a member of.");
                     }
                 }
 
