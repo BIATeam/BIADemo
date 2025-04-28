@@ -12,9 +12,10 @@
       tooltipPosition="top"
       (click)="onDelete()"></button>
     <button
+      type="button"
       *ngIf="canClone"
       pButton
-      [disabled]="selectedElements.length !== 1"
+      [disabled]="nbSelectedElements !== 1"
       class="p-button-outlined"
       label="{{ 'bia.clone' | translate }}"
       icon="pi pi-copy"

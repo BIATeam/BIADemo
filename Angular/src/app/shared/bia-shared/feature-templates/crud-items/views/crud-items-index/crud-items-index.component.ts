@@ -619,6 +619,7 @@ export class CrudItemsIndexComponent<
     this.canAdd = true;
     this.canFix = false;
   }
+
   protected initTableConfiguration() {
     this.columns = this.crudConfiguration.fieldsConfig.columns
       .filter(col => col.isVisibleInTable)
