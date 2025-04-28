@@ -9,26 +9,18 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Linq;
     using System.Linq.Expressions;
     using System.Security.Principal;
-    using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
-    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Domain.User;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Mappers;
     using TheBIADevCompany.BIADemo.Domain.User.Specifications;
-    using static TheBIADevCompany.BIADemo.Crosscutting.Common.Rights;
 
     /// <summary>
     /// The application service used for member.
@@ -41,21 +33,15 @@ namespace TheBIADevCompany.BIADemo.Application.User
         private readonly BiaClaimsPrincipal principal;
 
         /// <summary>
-        /// The <see cref="Team"/> repository.
-        /// </summary>
-        private readonly ITGenericRepository<Team, int> teamRepository;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="MemberAppService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The claims principal.</param>
         /// <param name="userContext">The user context.</param>
-        public MemberAppService(ITGenericRepository<Member, int> repository, IPrincipal principal, ITGenericRepository<Team, int> teamRepository)
+        public MemberAppService(ITGenericRepository<Member, int> repository, IPrincipal principal)
             : base(repository)
         {
             this.principal = principal as BiaClaimsPrincipal;
-            this.teamRepository = teamRepository;
         }
 
         /// <inheritdoc cref="IMemberAppService.GetRangeByTeamAsync"/>
