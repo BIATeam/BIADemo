@@ -133,5 +133,10 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Entities
         /// Gets or sets the collection of roles.
         /// </summary>
         public ICollection<Role> Roles { get; set; }
+
+        /// <summary>
+        /// Gets or sets the collection of default teams.
+        /// </summary>
+        public ICollection<UserDefaultTeam> DefaultTeams { get; set; }
     }
 }

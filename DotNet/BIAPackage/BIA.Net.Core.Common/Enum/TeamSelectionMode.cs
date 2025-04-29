@@ -1,4 +1,4 @@
-﻿// <copyright file="TeamAutomaticSelectionMode.cs" company="BIA">
+﻿// <copyright file="TeamSelectionMode.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 

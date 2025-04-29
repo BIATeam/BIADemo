@@ -17,7 +17,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.14")
+                .HasAnnotation("ProductVersion", "8.0.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -1377,9 +1377,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("IsDefault")
-                        .HasColumnType("bit");
-
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
@@ -1735,6 +1732,35 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasKey("AuditId");
 
                     b.ToTable("UsersAudit");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.UserDefaultTeam", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TeamId");
+
+                    b.HasIndex("UserId", "TeamId")
+                        .IsUnique();
+
+                    b.ToTable("UserDefaultTeams");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.View.Entities.View", b =>
@@ -2319,6 +2345,25 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("TeamType");
                 });
 
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.UserDefaultTeam", b =>
+                {
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.Team", "Team")
+                        .WithMany("UserDefaultTeams")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.User", "User")
+                        .WithMany("DefaultTeams")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Team");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.View.Entities.ViewTeam", b =>
                 {
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.Team", "Team")
@@ -2464,11 +2509,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.Navigation("NotificationTeams");
 
+                    b.Navigation("UserDefaultTeams");
+
                     b.Navigation("ViewTeams");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.User", b =>
                 {
+                    b.Navigation("DefaultTeams");
+
                     b.Navigation("Members");
 
                     b.Navigation("NotificationUsers");

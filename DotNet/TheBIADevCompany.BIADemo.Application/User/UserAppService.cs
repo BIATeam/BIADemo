@@ -32,6 +32,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using TheBIADevCompany.BIADemo.Domain.User.Models;
     using TheBIADevCompany.BIADemo.Domain.User.Services;
     using TheBIADevCompany.BIADemo.Domain.User.Specifications;
+    using static TheBIADevCompany.BIADemo.Crosscutting.Common.Rights;
 
     /// <summary>
     /// The application service used for user.
@@ -54,6 +55,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
         private readonly IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper;
 
         /// <summary>
+        /// The user default team repository.
+        /// </summary>
+        private readonly ITGenericRepository<UserDefaultTeam, int> userDefaultTeamRepository;
+
+        /// <summary>
         /// The logger.
         /// </summary>
         private readonly ILogger<UserAppService> logger;
@@ -74,6 +80,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="userSynchronizeDomainService">The user synchronize domain service.</param>
         /// <param name="configuration">The configuration of the BiaNet section.</param>
         /// <param name="userDirectoryHelper">The user directory helper.</param>
+        /// <param name="userDefaultTeamRepository">The user team default repository.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="identityProviderRepository">The identity provider repository.</param>
         /// <param name="userIdentityKeyDomainService">The user Identity Key Domain Service.</param>
@@ -83,6 +90,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             IUserSynchronizeDomainService userSynchronizeDomainService,
             IOptions<BiaNetSection> configuration,
             IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
+            ITGenericRepository<UserDefaultTeam, int> userDefaultTeamRepository,
             ILogger<UserAppService> logger,
             IIdentityProviderRepository identityProviderRepository,
             IUserIdentityKeyDomainService userIdentityKeyDomainService,
@@ -92,6 +100,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             this.userSynchronizeDomainService = userSynchronizeDomainService;
             this.configuration = configuration.Value;
             this.userDirectoryHelper = userDirectoryHelper;
+            this.userDefaultTeamRepository = userDefaultTeamRepository;
             this.logger = logger;
             this.identityProviderRepository = identityProviderRepository;
             this.userIdentityKeyDomainService = userIdentityKeyDomainService;
@@ -458,6 +467,49 @@ namespace TheBIADevCompany.BIADemo.Application.User
         public virtual async Task<byte[]> GetCsvAsync(PagingFilterFormatDto filters)
         {
             return await this.GetCsvAsync<UserDto, UserMapper, PagingFilterFormatDto>(filters: filters);
+        }
+
+        /// <inheritdoc cref="IUserAppService.SetDefaultSite"/>
+        public async Task SetDefaultTeamAsync(int teamId, int teamTypeId)
+        {
+            int userId = this.principal.GetUserId();
+            if (userId > 0)
+            {
+                var userDefaultTeams = await this.userDefaultTeamRepository.GetAllEntityAsync(
+                    filter: x => x.UserId == userId && x.Team.TeamTypeId == teamTypeId,
+                    includes: [u => u.Team]);
+
+                foreach (var userDefaultTeam in userDefaultTeams.Where(x => x.TeamId != teamId))
+                {
+                    this.userDefaultTeamRepository.Remove(userDefaultTeam);
+                }
+
+                if (!userDefaultTeams.Any(x => x.TeamId == teamId))
+                {
+                    this.userDefaultTeamRepository.Add(new UserDefaultTeam { TeamId = teamId, UserId = userId });
+                }
+
+                await this.Repository.UnitOfWork.CommitAsync();
+            }
+        }
+
+        /// <inheritdoc cref="IUserAppService.ResetDefaultSite"/>
+        public async Task ResetDefaultTeamAsync(int teamTypeId)
+        {
+            int userId = this.principal.GetUserId();
+            if (userId > 0)
+            {
+                var userDefaultTeams = await this.userDefaultTeamRepository.GetAllEntityAsync(
+                    filter: x => x.UserId == userId && x.Team.TeamTypeId == teamTypeId,
+                    includes: [u => u.Team]);
+
+                foreach (var userDefaultTeam in userDefaultTeams)
+                {
+                    this.userDefaultTeamRepository.Remove(userDefaultTeam);
+                }
+
+                await this.Repository.UnitOfWork.CommitAsync();
+            }
         }
     }
 }

@@ -32,21 +32,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
         Task<IEnumerable<MemberDto>> AddUsers(MembersDto membersDto);
 
         /// <summary>
-        /// Sets the default site.
-        /// </summary>
-        /// <param name="teamId">The team identifier.</param>
-        /// <param name="teamTypeId">The team type identifier.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task SetDefaultTeamAsync(int teamId, int teamTypeId);
-
-        /// <summary>
-        /// Reset the default site.
-        /// </summary>
-        /// <param name="teamTypeId">The team type identifier.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task ResetDefaultTeamAsync(int teamTypeId);
-
-        /// <summary>
         /// Sets the default role.
         /// </summary>
         /// <param name="teamId">The team identifier.</param>

@@ -85,50 +85,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             return await this.SaveAsync(dtoList);
         }
 
-        /// <inheritdoc cref="IMemberAppService.SetDefaultSite"/>
-        public async Task SetDefaultTeamAsync(int teamId, int teamTypeId)
-        {
-            int userId = this.principal.GetUserId();
-            if (userId > 0)
-            {
-                IList<Member> members = (await this.Repository.GetAllEntityAsync(filter: x => x.UserId == userId && x.Team.TeamTypeId == teamTypeId)).ToList();
-                if (!members.Any(m => m.TeamId == teamId && m.UserId == userId))
-                {
-                    throw new FrontUserException("Unable to set the team as default because you are not a member.");
-                }
-
-                if (members.Any())
-                {
-                    foreach (Member member in members)
-                    {
-                        member.IsDefault = member.TeamId == teamId;
-                    }
-
-                    await this.Repository.UnitOfWork.CommitAsync();
-                }
-            }
-        }
-
-        /// <inheritdoc cref="IMemberAppService.ResetDefaultSite"/>
-        public async Task ResetDefaultTeamAsync(int teamTypeId)
-        {
-            int userId = this.principal.GetUserId();
-            if (userId > 0)
-            {
-                IList<Member> members = (await this.Repository.GetAllEntityAsync(filter: x => x.UserId == userId && x.Team.TeamTypeId == teamTypeId)).ToList();
-
-                if (members.Any())
-                {
-                    foreach (Member member in members)
-                    {
-                        member.IsDefault = false;
-                    }
-
-                    await this.Repository.UnitOfWork.CommitAsync();
-                }
-            }
-        }
-
         /// <inheritdoc cref="IMemberAppService.SetDefaultRoleAsync(int)"/>
         public async Task SetDefaultRoleAsync(int teamId, List<int> roleIds)
         {

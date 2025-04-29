@@ -30,6 +30,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         private readonly IMemberAppService memberService;
 
         /// <summary>
+        /// The user application service.
+        /// </summary>
+        private readonly IUserAppService userService;
+
+        /// <summary>
         /// The plane application service.
         /// </summary>
         private readonly ITeamAppService teamService;
@@ -52,13 +57,15 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// </summary>
         /// <param name="teamService">The team application service.</param>
         /// <param name="memberService">The member application service.</param>
-        public TeamsController(ITeamAppService teamService, IMemberAppService memberService)
+        /// <param name="userService">The user application service.</param>
+        public TeamsController(ITeamAppService teamService, IMemberAppService memberService, IUserAppService userService)
 #endif
         {
 #if UseHubForClientInTeam
             this.clientForHubService = clientForHubService;
 #endif
             this.memberService = memberService;
+            this.userService = userService;
             this.teamService = teamService;
         }
 
@@ -114,7 +121,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 
             try
             {
-                await this.memberService.SetDefaultTeamAsync(teamId, teamTypeId);
+                await this.userService.SetDefaultTeamAsync(teamId, teamTypeId);
                 return this.Ok();
             }
             catch (ArgumentNullException)
@@ -147,7 +154,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 
             try
             {
-                await this.memberService.ResetDefaultTeamAsync(teamTypeId);
+                await this.userService.ResetDefaultTeamAsync(teamTypeId);
                 return this.Ok();
             }
             catch (ArgumentNullException)
