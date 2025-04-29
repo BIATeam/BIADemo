@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -17,8 +16,8 @@ import {
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ButtonDirective } from 'primeng/button';
 import { FloatLabel } from 'primeng/floatlabel';
+import { InputText } from 'primeng/inputtext';
 import { Listbox } from 'primeng/listbox';
-import { Select } from 'primeng/select';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { UserAddFromLdapComponent } from '../../../../../../features/bia-features/users-from-directory/views/user-add-from-directory-dialog/user-add-from-directory-dialog.component';
@@ -32,8 +31,7 @@ import { Member } from '../../model/member';
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    Select,
-    NgIf,
+    InputText,
     ButtonDirective,
     Listbox,
     UserAddFromLdapComponent,
@@ -53,6 +51,11 @@ export class MemberFormEditComponent implements OnChanges {
   form: UntypedFormGroup;
   displayUserAddFromDirectoryDialog = false;
 
+  get userData(): string | null {
+    return !this.member || Object.keys(this.member).length === 0
+      ? null
+      : `${this.member?.lastName} ${this.member?.firstName} (${this.member?.login})`;
+  }
   constructor(
     public formBuilder: UntypedFormBuilder,
     public translateService: TranslateService
