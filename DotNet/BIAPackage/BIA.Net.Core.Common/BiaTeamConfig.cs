@@ -47,8 +47,8 @@ namespace BIA.Net.Core.Common
         public int[] ParentsAdminRoleIds { get; set; }
 
         /// <summary>
-        /// Gets or sets the automatic selection mode of the team.
+        /// Gets or sets the team selection mode.
         /// </summary>
-        public TeamAutomaticSelectionMode AutomaticSelectionMode { get; set; }
+        public TeamSelectionMode TeamSelectionMode { get; set; }
     }
 }

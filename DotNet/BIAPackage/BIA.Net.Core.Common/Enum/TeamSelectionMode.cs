@@ -13,7 +13,7 @@ namespace BIA.Net.Core.Common.Enum
     /// <summary>
     /// Enum that represents the team automatic selection mode.
     /// </summary>
-    public enum TeamAutomaticSelectionMode
+    public enum TeamSelectionMode
     {
         /// <summary>
         /// Return the first team available.

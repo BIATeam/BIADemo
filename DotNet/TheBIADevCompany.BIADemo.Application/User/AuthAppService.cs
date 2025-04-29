@@ -552,10 +552,10 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 {
                     var teamConfig = TeamConfig.Config.Single(tc => tc.TeamTypeId == loginTeamConfigTeamTypeId);
                     var correspondingTeams = allTeams.Where(t => t.TeamTypeId == loginTeamConfigTeamTypeId);
-                    var automaticallySelectedTeam = teamConfig.AutomaticSelectionMode switch
+                    var automaticallySelectedTeam = teamConfig.TeamSelectionMode switch
                     {
-                        TeamAutomaticSelectionMode.None => null,
-                        TeamAutomaticSelectionMode.First => correspondingTeams.FirstOrDefault(),
+                        TeamSelectionMode.None => null,
+                        TeamSelectionMode.First => correspondingTeams.FirstOrDefault(),
                         _ => throw new NotImplementedException()
                     };
                     var defaultTeam = correspondingTeams.FirstOrDefault(x => x.IsDefault) ?? automaticallySelectedTeam;

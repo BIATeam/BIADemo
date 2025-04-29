@@ -31,8 +31,8 @@ namespace BIA.Net.Core.Domain.Dto.User
         public bool InHeader { get; set; }
 
         /// <summary>
-        /// Indicates weither the team selector can be celared or not.
+        /// Indicates weither the team selection can be empty or not.
         /// </summary>
-        public bool CanBeCleared { get; set; }
+        public bool TeamSelectionCanBeEmpty { get; set; }
     }
 }

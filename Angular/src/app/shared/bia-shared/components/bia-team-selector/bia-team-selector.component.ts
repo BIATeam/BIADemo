@@ -71,7 +71,7 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.canClear = allEnvironments.teams.find(
       t => t.teamTypeId === this.teamType.teamTypeId
-    )?.canBeCleared;
+    )?.teamSelectionCanBeEmpty;
     this.singleRoleMode =
       allEnvironments.teams.find(
         t =>
