@@ -18,6 +18,7 @@ namespace BIA.Net.Core.Common.Configuration.WorkerFeature
         public HangfireServerConfiguration()
         {
             this.IsActive = false;
+            this.SucceededTasksRetentionDays = 7;
         }
 
         /// <summary>
@@ -39,5 +40,10 @@ namespace BIA.Net.Core.Common.Configuration.WorkerFeature
         /// Connexion string name for the database.
         /// </summary>
         public string ConnectionStringName { get; set; }
+
+        /// <summary>
+        /// Number of days to keep succeeded tasks.
+        /// </summary>
+        public int SucceededTasksRetentionDays { get; set; }
     }
 }

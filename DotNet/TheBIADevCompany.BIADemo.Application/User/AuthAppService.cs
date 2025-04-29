@@ -586,7 +586,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     {
                         TeamTypeId = teamLogin.TeamTypeId,
                         TeamId = teamLogin.TeamId,
-                        TeamTitle = correspondingTeams.First(s => s.Id == teamLogin.TeamId).Title,
+                        TeamTitle = correspondingTeams.FirstOrDefault(s => s.Id == teamLogin.TeamId)?.Title,
                     };
 
                     if (currentTeam.TeamId <= 0)

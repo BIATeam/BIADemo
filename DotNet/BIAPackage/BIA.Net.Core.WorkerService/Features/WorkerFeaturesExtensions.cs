@@ -84,6 +84,8 @@ namespace BIA.Net.Core.WorkerService.Features
                     services.AddHangfirePerformContextAccessor();
                 }
 
+                GlobalJobFilters.Filters.Add(new ProlongExpirationTimeAttribute(workerFeatures.HangfireServer.SucceededTasksRetentionDays));
+
                 services.AddHangfireServer(hfOptions =>
                 {
                     hfOptions.ServerName = workerFeatures.HangfireServer.ServerName;
