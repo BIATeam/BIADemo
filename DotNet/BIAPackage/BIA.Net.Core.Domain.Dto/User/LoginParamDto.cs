@@ -33,5 +33,10 @@ namespace BIA.Net.Core.Domain.Dto.User
         /// Gets or sets if it required aditionnal users (from database or ad and user profile) info in the token.
         /// </summary>
         public bool AdditionalInfos { get; set; }
+
+        /// <summary>
+        /// Inidcates wheither is ifrst login or not.
+        /// </summary>
+        public bool IsFirstLogin { get; set; }
     }
 }

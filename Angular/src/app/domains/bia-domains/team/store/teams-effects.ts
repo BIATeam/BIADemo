@@ -29,6 +29,23 @@ export class TeamsEffects {
       )
     )
   );
+  resetDefaultTeam$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DomainTeamsActions.resetDefaultTeam),
+      switchMap(data =>
+        this.teamDas.resetDefaultTeam(data.teamTypeId).pipe(
+          switchMap(() => {
+            this.biaMessageService.showUpdateSuccess();
+            return [DomainTeamsActions.resetDefaultTeamSuccess(data)];
+          }),
+          catchError(err => {
+            this.biaMessageService.showErrorHttpResponse(err);
+            return of(DomainTeamsActions.failure({ error: err }));
+          })
+        )
+      )
+    )
+  );
   setDefaultRoles$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DomainTeamsActions.setDefaultRoles),
@@ -37,6 +54,23 @@ export class TeamsEffects {
           switchMap(() => {
             this.biaMessageService.showUpdateSuccess();
             return [DomainTeamsActions.setDefaultRolesSuccess(data)];
+          }),
+          catchError(err => {
+            this.biaMessageService.showErrorHttpResponse(err);
+            return of(DomainTeamsActions.failure({ error: err }));
+          })
+        )
+      )
+    )
+  );
+  resetDefaultRoles$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DomainTeamsActions.resetDefaultRoles),
+      switchMap(data =>
+        this.teamDas.resetDefaultRoles(data.teamId).pipe(
+          switchMap(() => {
+            this.biaMessageService.showUpdateSuccess();
+            return [DomainTeamsActions.resetDefaultRolesSuccess(data)];
           }),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);

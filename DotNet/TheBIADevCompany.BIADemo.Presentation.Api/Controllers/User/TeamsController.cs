@@ -30,6 +30,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         private readonly IMemberAppService memberService;
 
         /// <summary>
+        /// The user application service.
+        /// </summary>
+        private readonly IUserAppService userService;
+
+        /// <summary>
         /// The plane application service.
         /// </summary>
         private readonly ITeamAppService teamService;
@@ -52,13 +57,15 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// </summary>
         /// <param name="teamService">The team application service.</param>
         /// <param name="memberService">The member application service.</param>
-        public TeamsController(ITeamAppService teamService, IMemberAppService memberService)
+        /// <param name="userService">The user application service.</param>
+        public TeamsController(ITeamAppService teamService, IMemberAppService memberService, IUserAppService userService)
 #endif
         {
 #if UseHubForClientInTeam
             this.clientForHubService = clientForHubService;
 #endif
             this.memberService = memberService;
+            this.userService = userService;
             this.teamService = teamService;
         }
 
@@ -114,7 +121,40 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 
             try
             {
-                await this.memberService.SetDefaultTeamAsync(teamId, teamTypeId);
+                await this.userService.SetDefaultTeamAsync(teamId, teamTypeId);
+                return this.Ok();
+            }
+            catch (ArgumentNullException)
+            {
+                return this.ValidationProblem();
+            }
+            catch (ElementNotFoundException)
+            {
+                return this.NotFound();
+            }
+        }
+
+        /// <summary>
+        /// Reset the default site.
+        /// </summary>
+        /// <param name="teamTypeId">The team type.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        [HttpPut("TeamType/{teamTypeId}/resetDefault")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = Rights.Teams.SetDefaultTeam)]
+        public async Task<IActionResult> ResetDefaultTeam(int teamTypeId)
+        {
+            if (teamTypeId == 0)
+            {
+                return this.BadRequest();
+            }
+
+            try
+            {
+                await this.userService.ResetDefaultTeamAsync(teamTypeId);
                 return this.Ok();
             }
             catch (ArgumentNullException)
@@ -149,6 +189,39 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             try
             {
                 await this.memberService.SetDefaultRoleAsync(teamId, roleIds);
+                return this.Ok();
+            }
+            catch (ArgumentNullException)
+            {
+                return this.ValidationProblem();
+            }
+            catch (ElementNotFoundException)
+            {
+                return this.NotFound();
+            }
+        }
+
+        /// <summary>
+        /// Resets the default role.
+        /// </summary>
+        /// <param name="teamId">The team identifier.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        [HttpPut("Team/{teamId}/resetDefaultRoles")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = Rights.Teams.SetDefaultRoles)]
+        public async Task<IActionResult> ResetDefaultRoles(int teamId)
+        {
+            if (teamId == 0)
+            {
+                return this.BadRequest();
+            }
+
+            try
+            {
+                await this.memberService.ResetDefaultRoleAsync(teamId);
                 return this.Ok();
             }
             catch (ArgumentNullException)

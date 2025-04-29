@@ -9,20 +9,15 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Linq;
     using System.Linq.Expressions;
     using System.Security.Principal;
-    using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
-    using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Mappers;
     using TheBIADevCompany.BIADemo.Domain.User.Specifications;
@@ -90,26 +85,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             return await this.SaveAsync(dtoList);
         }
 
-        /// <inheritdoc cref="IMemberAppService.SetDefaultSite"/>
-        public async Task SetDefaultTeamAsync(int teamId, int teamTypeId)
-        {
-            int userId = this.principal.GetUserId();
-            if (userId > 0 && teamId > 0)
-            {
-                IList<Member> members = (await this.Repository.GetAllEntityAsync(filter: x => x.UserId == userId && x.Team.TeamTypeId == teamTypeId)).ToList();
-
-                if (members.Any())
-                {
-                    foreach (Member member in members)
-                    {
-                        member.IsDefault = member.TeamId == teamId;
-                    }
-
-                    await this.Repository.UnitOfWork.CommitAsync();
-                }
-            }
-        }
-
         /// <inheritdoc cref="IMemberAppService.SetDefaultRoleAsync(int)"/>
         public async Task SetDefaultRoleAsync(int teamId, List<int> roleIds)
         {
@@ -120,14 +95,29 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
                 if (members.Any())
                 {
-                    foreach (Member member in members)
+                    foreach (var memberRole in members.SelectMany(x => x.MemberRoles))
                     {
-                        foreach (MemberRole memberRole in member.MemberRoles)
-                        {
-                            memberRole.IsDefault = roleIds.Contains(memberRole.RoleId);
-                        }
+                        memberRole.IsDefault = roleIds.Contains(memberRole.RoleId);
+                    }
 
-                        // this.Repository.Update(member)
+                    await this.Repository.UnitOfWork.CommitAsync();
+                }
+            }
+        }
+
+        /// <inheritdoc cref="IMemberAppService.ResetDefaultRoleAsync(int)"/>
+        public async Task ResetDefaultRoleAsync(int teamId)
+        {
+            int userId = this.principal.GetUserId();
+            if (userId > 0)
+            {
+                IList<Member> members = (await this.Repository.GetAllEntityAsync(filter: x => x.UserId == userId && x.Team.Id == teamId, includes: new Expression<Func<Member, object>>[] { member => member.MemberRoles })).ToList();
+
+                if (members.Any())
+                {
+                    foreach (var memberRole in members.SelectMany(x => x.MemberRoles))
+                    {
+                        memberRole.IsDefault = false;
                     }
 
                     await this.Repository.UnitOfWork.CommitAsync();

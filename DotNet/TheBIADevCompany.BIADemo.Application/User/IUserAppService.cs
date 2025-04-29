@@ -134,5 +134,20 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="filters">The filters.</param>
         /// <returns>binary csv.</returns>
         Task<byte[]> GetCsvAsync(PagingFilterFormatDto filters);
+
+        /// <summary>
+        /// Sets the default site.
+        /// </summary>
+        /// <param name="teamId">The team identifier.</param>
+        /// <param name="teamTypeId">The team type identifier.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        Task SetDefaultTeamAsync(int teamId, int teamTypeId);
+
+        /// <summary>
+        /// Reset the default site.
+        /// </summary>
+        /// <param name="teamTypeId">The team type identifier.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        Task ResetDefaultTeamAsync(int teamTypeId);
     }
 }

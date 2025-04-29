@@ -216,8 +216,16 @@
       },
       // Maintenance Team
       {
-        "Names": [ "MaintenanceTeam_Create", "MaintenanceTeam_Update", "MaintenanceTeam_Delete", "MaintenanceTeam_Save" ],
+        "Names": [ "MaintenanceTeam_Create", "MaintenanceTeam_Delete" ],
         "Roles": [
+          "Supervisor",
+          "Admin"
+        ]
+      },
+      {
+        "Names": [  "MaintenanceTeam_Update", "MaintenanceTeam_Save" ],
+        "Roles": [
+          "Supervisor",
           "MaintenanceTeam_Admin",
           "Admin"
         ]

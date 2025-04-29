@@ -165,6 +165,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// </summary>
         public DbSet<Part> Parts { get; set; }
 
+        /// <summary>
+        /// Gets or sets the user team defaults.
+        /// </summary>
+        public DbSet<UserDefaultTeam> UserDefaultTeams { get; set; }
+
         // End BIADemo
 #endif
 

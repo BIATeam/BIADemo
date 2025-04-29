@@ -52,6 +52,7 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
   languageId: number;
   singleRoleMode: boolean;
   multiRoleMode: boolean;
+  canClear: boolean | undefined;
 
   protected sub = new Subscription();
 
@@ -68,6 +69,9 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.canClear = allEnvironments.teams.find(
+      t => t.teamTypeId === this.teamType.teamTypeId
+    )?.teamSelectionCanBeEmpty;
     this.singleRoleMode =
       allEnvironments.teams.find(
         t =>
@@ -116,17 +120,27 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
   onTeamChange() {
     this.authService.changeCurrentTeamId(
       this.teamType.teamTypeId,
-      this.currentTeam.id
+      this.currentTeam ? this.currentTeam.id : 0
     );
     this.authService.clearSessionExceptLoginInfos();
     location.reload();
   }
 
   onSetDefaultTeam() {
+    if (this.currentTeam.id) {
+      this.store.dispatch(
+        DomainTeamsActions.setDefaultTeam({
+          teamTypeId: this.teamType.teamTypeId,
+          teamId: this.currentTeam.id,
+        })
+      );
+    }
+  }
+
+  onResetDefaultTeam() {
     this.store.dispatch(
-      DomainTeamsActions.setDefaultTeam({
+      DomainTeamsActions.resetDefaultTeam({
         teamTypeId: this.teamType.teamTypeId,
-        teamId: this.currentTeam.id,
       })
     );
   }
@@ -155,8 +169,12 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
   }
 
   onRolesChange() {
-    if (this.singleRoleMode) {
-      if (this.currentRole) this.currentRoles = [this.currentRole];
+    if (!this.currentRoles) {
+      this.currentRoles = [];
+    }
+
+    if (this.singleRoleMode && this.currentRole) {
+      this.currentRoles = [this.currentRole];
     }
 
     this.authService.changeCurrentRoleIds(
@@ -176,6 +194,14 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
     );
   }
 
+  onResetDefaultRoles() {
+    this.store.dispatch(
+      DomainTeamsActions.resetDefaultRoles({
+        teamId: this.currentTeam.id,
+      })
+    );
+  }
+
   isDefaultRoles(): boolean {
     return (
       this.defaultRoleIds?.sort().toString() ===
@@ -189,6 +215,7 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
   protected initDropdownRole() {
     this.displayRoleList = false;
     this.displayRoleMultiSelect = false;
+    this.defaultRoleIds = [];
     if (this.singleRoleMode || this.multiRoleMode) {
       const currentRoleIds = this.authService
         .getUncryptedToken()

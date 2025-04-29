@@ -27,6 +27,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             CreateTeamTypeModel(modelBuilder);
             CreateTeamTypeRoleModel(modelBuilder);
             CreateTeamModel(modelBuilder);
+            CreateUserDefaultTeamModel(modelBuilder);
         }
 
         /// <summary>
@@ -207,6 +208,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<MemberRole>().HasKey(mr => new { mr.MemberId, mr.RoleId });
             modelBuilder.Entity<MemberRole>().HasOne(mr => mr.Member).WithMany(m => m.MemberRoles).HasForeignKey(mr => mr.MemberId);
             modelBuilder.Entity<MemberRole>().HasOne(mr => mr.Role).WithMany(m => m.MemberRoles).HasForeignKey(mr => mr.RoleId);
+        }
+
+        /// <summary>
+        /// Create the model for user default teams.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        private static void CreateUserDefaultTeamModel(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UserDefaultTeam>().HasIndex(udt => new { udt.UserId, udt.TeamId }).IsUnique();
         }
     }
 }

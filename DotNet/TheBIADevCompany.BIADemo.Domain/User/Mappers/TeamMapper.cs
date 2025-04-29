@@ -63,7 +63,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
                 Id = entity.Id,
                 Title = entity.Title,
                 TeamTypeId = entity.TeamTypeId,
-                IsDefault = entity.Members.Any(member => member.UserId == userId && member.IsDefault),
+                IsDefault = entity.UserDefaultTeams.Any(x => x.UserId == userId && x.TeamId == entity.Id),
                 Roles = entity.Members.FirstOrDefault(member => member.UserId == userId).MemberRoles.Select(mem => new RoleDto
                 {
                     Id = mem.RoleId,
