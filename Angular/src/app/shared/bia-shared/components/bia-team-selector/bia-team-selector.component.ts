@@ -203,14 +203,6 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
   }
 
   isDefaultRoles(): boolean {
-    console.log('DefaultRoleIds', this.defaultRoleIds?.sort().toString());
-    console.log(
-      'CurrentRoles',
-      this.currentRoles
-        ?.map(r => r.id)
-        .sort()
-        .toString()
-    );
     return (
       this.defaultRoleIds?.sort().toString() ===
       this.currentRoles
