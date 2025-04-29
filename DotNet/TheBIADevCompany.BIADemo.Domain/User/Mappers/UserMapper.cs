@@ -56,6 +56,12 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
                             .Select(role => role.Label))
                         .OrderBy(x => x)
                     },
+                    {
+                        HeaderName.Teams,
+                        user => user.Members
+                        .SelectMany(member => member.Team.Title)
+                        .OrderBy(x => x)
+                    },
                 };
             }
         }
@@ -83,6 +89,11 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
                 {
                     Id = ca.Id,
                     Display = ca.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? ca.Label,
+                }).ToList(),
+                Teams = entity.Members.Select(m => new OptionDto
+                {
+                    Id = m.Id,
+                    Display = m.Team.Title,
                 }).ToList(),
             };
         }
@@ -151,6 +162,11 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
                         {
                             records.Add(CSVList(x.Roles));
                         }
+
+                        if (string.Equals(headerName, HeaderName.Teams, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVList(x.Teams));
+                        }
                     }
                 }
 
@@ -198,6 +214,11 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
             /// header name Roles.
             /// </summary>
             public const string Roles = "roles";
+
+            /// <summary>
+            /// header name Teams.
+            /// </summary>
+            public const string Teams = "teams";
         }
     }
 }

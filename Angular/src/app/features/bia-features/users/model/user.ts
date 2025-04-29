@@ -15,6 +15,7 @@ export interface User extends BaseDto {
   // Computed by Angular when data receive
   displayName: string;
   roles: OptionDto[];
+  teams: OptionDto[];
 }
 
 // TODO after creation of CRUD User : adapt the field configuration
@@ -29,6 +30,10 @@ export const userFieldsConfiguration: BiaFieldsConfig<User> = {
     Object.assign(new BiaFieldConfig('login', 'user.login'), {
       isEditable: false,
       isOnlyInitializable: true,
+    }),
+    Object.assign(new BiaFieldConfig('teams', 'member.teams'), {
+      type: PropType.ManyToMany,
+      isEditable: false,
     }),
     Object.assign(new BiaFieldConfig('roles', 'member.roles'), {
       type: PropType.ManyToMany,

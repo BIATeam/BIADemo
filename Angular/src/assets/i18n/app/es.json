@@ -153,7 +153,8 @@
     "listOf": "Lista de miembros",
     "manage": "Gestionar miembro",
     "roles": "Roles",
-    "user": "Usuario"
+    "user": "Usuario",
+    "teams": "Equipos"
   },
   "msg": {
     "hideFilters": "Ocultar filtros",

@@ -38,5 +38,10 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.User
         /// Gets or sets the roles.
         /// </summary>
         public ICollection<OptionDto> Roles { get; set; }
+
+        /// <summary>
+        /// Gets or sets the teams.
+        /// </summary>
+        public ICollection<OptionDto> Teams { get; set; }
     }
 }
