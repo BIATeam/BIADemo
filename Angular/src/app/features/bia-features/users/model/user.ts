@@ -5,6 +5,7 @@ import {
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+import { UserTeam } from './user-team';
 
 // TODO after creation of CRUD User : adapt the model
 export interface User extends BaseDto {
@@ -15,7 +16,7 @@ export interface User extends BaseDto {
   // Computed by Angular when data receive
   displayName: string;
   roles: OptionDto[];
-  teams: OptionDto[];
+  teams: UserTeam[];
 }
 
 // TODO after creation of CRUD User : adapt the field configuration
@@ -32,7 +33,6 @@ export const userFieldsConfiguration: BiaFieldsConfig<User> = {
       isOnlyInitializable: true,
     }),
     Object.assign(new BiaFieldConfig('teams', 'member.teams'), {
-      type: PropType.ManyToMany,
       isEditable: false,
       specificOutput: true,
       isSortable: false,
