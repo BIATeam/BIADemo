@@ -30,7 +30,8 @@
     "goto": "View Company",
     "listOf": "List of aircraft maintenance companies",
     "maintenanceTeams": "Maintenance teams",
-    "title": "Name"
+    "title": "Name",
+    "headerLabel": "Aircraft maintenance company"
   },
   "airport": {
     "add": "Add airport",
@@ -153,7 +154,8 @@
     "listOf": "List of members",
     "manage": "Manage member",
     "roles": "Roles",
-    "user": "User"
+    "user": "User",
+    "teams": "Teams"
   },
   "msg": {
     "hideFilters": "Hide filters",
@@ -167,7 +169,8 @@
     "listOf": "List of sites",
     "Begin BIADemo": "To remove in project from here",
     "End BIADemo": "To remove in project up to here",
-    "title": "Title"
+    "title": "Title",
+    "headerLabel": "Site"
   },
   "translation": {
     "defaultLanguage": "Default (English)"

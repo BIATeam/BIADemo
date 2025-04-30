@@ -21,8 +21,7 @@ import { getAllTeamsOfType } from 'src/app/domains/bia-domains/team/store/team.s
 import { DomainTeamsActions } from 'src/app/domains/bia-domains/team/store/teams-actions';
 import { RoleMode } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
-import { allEnvironments } from 'src/environments/all-environments';
-import { AuthInfo } from '../../model/auth-info';
+import { AuthInfo, TeamConfigDto } from '../../model/auth-info';
 import { RoleDto } from '../../model/role';
 import { BiaLayoutService } from '../layout/services/layout.service';
 
@@ -34,7 +33,7 @@ import { BiaLayoutService } from '../layout/services/layout.service';
   imports: [NgIf, Select, FormsModule, Tooltip, MultiSelect, TranslateModule],
 })
 export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
-  @Input() teamType: any;
+  @Input() teamType: TeamConfigDto;
 
   displayTeamList = false;
   defaultTeamId = 0;
@@ -69,21 +68,27 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.canClear = allEnvironments.teams.find(
-      t => t.teamTypeId === this.teamType.teamTypeId
-    )?.teamSelectionCanBeEmpty;
+    this.canClear = this.authService
+      .getLoginParameters()
+      .teamsConfig.find(
+        t => t.teamTypeId === this.teamType.teamTypeId
+      )?.teamSelectionCanBeEmpty;
     this.singleRoleMode =
-      allEnvironments.teams.find(
-        t =>
-          t.teamTypeId === this.teamType.teamTypeId &&
-          t.roleMode === RoleMode.SingleRole
-      ) !== undefined;
+      this.authService
+        .getLoginParameters()
+        .teamsConfig.find(
+          t =>
+            t.teamTypeId === this.teamType.teamTypeId &&
+            t.roleMode === RoleMode.SingleRole
+        ) !== undefined;
     this.multiRoleMode =
-      allEnvironments.teams.find(
-        t =>
-          t.teamTypeId === this.teamType.teamTypeId &&
-          t.roleMode === RoleMode.MultiRoles
-      ) !== undefined;
+      this.authService
+        .getLoginParameters()
+        .teamsConfig.find(
+          t =>
+            t.teamTypeId === this.teamType.teamTypeId &&
+            t.roleMode === RoleMode.MultiRoles
+        ) !== undefined;
     this.teams$ = this.store.select(
       getAllTeamsOfType(this.teamType.teamTypeId)
     );

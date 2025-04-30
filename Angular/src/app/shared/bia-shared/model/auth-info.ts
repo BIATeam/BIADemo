@@ -14,6 +14,10 @@ export class TeamConfigDto {
   teamTypeId: number;
   roleMode: RoleMode;
   inHeader: boolean;
+  displayOne?: boolean;
+  displayAlways?: boolean;
+  label?: string;
+  teamSelectionCanBeEmpty?: boolean;
 }
 
 export interface UserInfo {
