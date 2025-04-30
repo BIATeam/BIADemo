@@ -61,7 +61,9 @@ export class AppComponent implements OnInit {
 
   @HostListener('window:message', ['$event'])
   receiveMessage(event: MessageEvent<IframeMessage>) {
-    this.iframeCommunicationService.readMessage(event);
+    if (this.iframeCommunicationService) {
+      this.iframeCommunicationService.readMessage(event);
+    }
   }
 
   @HostListener('window:resize', ['$event'])
