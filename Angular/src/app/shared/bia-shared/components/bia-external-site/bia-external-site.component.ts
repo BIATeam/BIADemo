@@ -4,12 +4,13 @@ import {
   ElementRef,
   HostListener,
   Input,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { tap } from 'rxjs';
+import { Subscription, tap } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { ExternalSiteConfig } from '../../model/external-site-config';
@@ -26,13 +27,15 @@ export const initExternalSiteConfig: ExternalSiteConfig = {
   selector: 'bia-external-site',
   templateUrl: './bia-external-site.component.html',
 })
-export class BiaExternalSiteComponent implements OnInit {
+export class BiaExternalSiteComponent implements OnInit, OnDestroy {
   @ViewChild('externalSiteIFrame', { static: true })
   iframe: ElementRef<HTMLObjectElement>;
 
   url: SafeUrl;
 
   @Input() config = initExternalSiteConfig;
+
+  private subscription: Subscription = new Subscription();
 
   constructor(
     protected readonly activatedRoute: ActivatedRoute,
@@ -45,28 +48,15 @@ export class BiaExternalSiteComponent implements OnInit {
       this.sendConfigToIframe();
     });
 
-    this.biaTranslationService.currentCulture$
-      .pipe(
-        tap(() => {
-          this.sendConfigToIframe();
-        })
-      )
-      .subscribe();
-  }
-
-  private sendConfigToIframe() {
-    if (this.iframe?.nativeElement?.contentWindow) {
-      const config: IframeConfig = {
-        type: 'CONFIG',
-        layoutConfig: this.layoutService.config(),
-        language: this.biaTranslationService.currentCultureValue,
-        loginParams: this.authService.getLoginParameters(),
-      };
-      this.iframe.nativeElement.contentWindow?.postMessage(
-        config,
-        this.config.baseUrl
-      );
-    }
+    this.subscription.add(
+      this.biaTranslationService.currentCulture$
+        .pipe(
+          tap(() => {
+            this.sendConfigToIframe();
+          })
+        )
+        .subscribe()
+    );
   }
 
   ngOnInit() {
@@ -81,10 +71,29 @@ export class BiaExternalSiteComponent implements OnInit {
     this.sendConfigToIframe();
   }
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
   @HostListener('window:message', ['$event'])
   receiveMessage(event: MessageEvent<string>) {
-    if (event.origin === this.config.baseUrl && event.data === 'iframeReady') {
+    if (event.origin === this.config.baseUrl && event.data === 'IFRAME_READY') {
       this.sendConfigToIframe();
+    }
+  }
+
+  private sendConfigToIframe() {
+    if (this.iframe?.nativeElement?.contentWindow) {
+      const config: IframeConfig = {
+        type: 'CONFIG',
+        layoutConfig: this.layoutService.config(),
+        language: this.biaTranslationService.currentCultureValue,
+        loginParams: this.authService.getLoginParameters(),
+      };
+      this.iframe.nativeElement.contentWindow?.postMessage(
+        config,
+        this.config.baseUrl
+      );
     }
   }
 

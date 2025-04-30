@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
-import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
-import { BiaLayoutService } from '../components/layout/services/layout.service';
-import { IframeConfig } from '../model/iframe-config';
-import { IframeMessage } from '../model/iframe-message';
+import { BiaLayoutService } from '../../components/layout/services/layout.service';
+import { IframeMessage } from '../../model/iframe-message';
 
 type MessageProcessor<T extends IframeMessage> = (message: T) => void;
 
@@ -20,13 +17,9 @@ export class IframeCommunicationService {
   private handlers = new Map<string, MessageHandler<IframeMessage>>();
 
   constructor(
-    protected readonly layoutService: BiaLayoutService,
-    protected readonly biaTheme: BiaThemeService,
-    protected readonly biaTranslation: BiaTranslationService,
-    protected readonly appSettingsService: AppSettingsService
-  ) {
-    this.registerHandler('CONFIG', this.configureApplication.bind(this));
-  }
+    protected readonly appSettingsService: AppSettingsService,
+    protected readonly layoutService: BiaLayoutService
+  ) {}
 
   readMessage(message: MessageEvent<IframeMessage>) {
     if (
@@ -41,10 +34,11 @@ export class IframeCommunicationService {
     this.processMessage(message.data);
   }
 
-  configureApplication(config: IframeConfig) {
-    this.biaTranslation.loadAndChangeLanguage(config.language);
-    this.layoutService.config.set(config.layoutConfig);
-    this.biaTheme.changeTheme(this.layoutService.config().colorScheme);
+  initLayoutInsideIframe() {
+    this.layoutService.state.isInIframe = true;
+    this.layoutService.hideBreadcrumb();
+    this.layoutService.hideFooter();
+    this.getConfigFromParent();
   }
 
   registerHandler<T extends IframeMessage>(
@@ -71,5 +65,9 @@ export class IframeCommunicationService {
         message.type
       );
     }
+  }
+
+  protected getConfigFromParent() {
+    window.parent.postMessage('IFRAME_READY', location.ancestorOrigins[0]);
   }
 }

@@ -6,7 +6,8 @@ import { BiaInjectExternalService } from './core/bia-core/services/bia-inject-ex
 import { BiaMatomoService } from './core/bia-core/services/matomo/bia-matomo.service';
 import { BiaLayoutService } from './shared/bia-shared/components/layout/services/layout.service';
 import { IframeMessage } from './shared/bia-shared/model/iframe-message';
-import { IframeCommunicationService } from './shared/bia-shared/services/iframe-communication.service';
+import { IframeCommunicationService } from './shared/bia-shared/services/iframe/iframe-communication.service';
+import { IframeConfigMessageService } from './shared/bia-shared/services/iframe/iframe-config-message.service';
 
 @Component({
   selector: 'app-root',
@@ -25,7 +26,8 @@ export class AppComponent implements OnInit {
     private primeNgConfig: PrimeNG,
     private translateService: TranslateService,
     private layoutService: BiaLayoutService,
-    private iframeCommunicationService: IframeCommunicationService
+    private iframeCommunicationService: IframeCommunicationService,
+    private iframeConfigMessageService: IframeConfigMessageService
   ) {
     this.layoutService.defaultConfigUpdate({});
     this.layoutService.setConfigDisplay({
@@ -41,11 +43,9 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.isInIframe = window !== window.top;
     if (this.isInIframe) {
+      this.iframeConfigMessageService.register();
       window.addEventListener('message', this.receiveMessage, false);
-      this.layoutService.state.isInIframe = this.isInIframe;
-      this.layoutService.hideBreadcrumb();
-      this.layoutService.hideFooter();
-      this.getConfigFromParent();
+      this.iframeCommunicationService.initLayoutInsideIframe();
     }
     this.biaMatomoService.init();
     this.biaExternalJsService.init();
@@ -53,10 +53,6 @@ export class AppComponent implements OnInit {
       .get('primeng')
       .subscribe(res => this.primeNgConfig.setTranslation(res));
     this.checkSmallScreen();
-  }
-
-  getConfigFromParent() {
-    window.parent.postMessage('iframeReady', location.ancestorOrigins[0]);
   }
 
   @HostListener('window:message', ['$event'])
