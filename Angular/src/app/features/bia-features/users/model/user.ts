@@ -34,6 +34,7 @@ export const userFieldsConfiguration: BiaFieldsConfig<User> = {
     Object.assign(new BiaFieldConfig('teams', 'member.teams'), {
       type: PropType.ManyToMany,
       isEditable: false,
+      specificOutput: true,
     }),
     Object.assign(new BiaFieldConfig('roles', 'member.roles'), {
       type: PropType.ManyToMany,

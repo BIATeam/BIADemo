@@ -78,7 +78,15 @@
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
-      [scrollHeightValue]="getFillScrollHeightValue()"></bia-table>
+      [scrollHeightValue]="getFillScrollHeightValue()">
+      <ng-template pTemplate="specificOutput" let-field="field" let-data="data">
+        <ng-container [ngSwitch]="field.field">
+          <ng-container *ngSwitchCase="'teams'">
+            <bia-user-teams [teams]="data"></bia-user-teams>
+          </ng-container>
+        </ng-container>
+      </ng-template>
+    </bia-table>
     <bia-user-table
       *ngIf="crudConfiguration.useCalcMode"
       [elements]="(crudItems$ | async) ?? []"
@@ -103,7 +111,15 @@
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
       (save)="onSave($event)"
-      [scrollHeightValue]="getFillScrollHeightValue()"></bia-user-table>
+      [scrollHeightValue]="getFillScrollHeightValue()">
+      <ng-template pTemplate="specificOutput" let-field="field" let-data="data">
+        <ng-container [ngSwitch]="field.field">
+          <ng-container *ngSwitchCase="'teams'">
+            <bia-user-teams [teams]="data"></bia-user-teams>
+          </ng-container>
+        </ng-container>
+      </ng-template>
+    </bia-user-table>
   </div>
 </div>
 <bia-user-add-from-directory-dialog

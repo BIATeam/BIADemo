@@ -1,4 +1,10 @@
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import {
+  AsyncPipe,
+  NgClass,
+  NgIf,
+  NgSwitch,
+  NgSwitchCase,
+} from '@angular/common';
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
@@ -16,6 +22,7 @@ import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templ
 import { Permission } from 'src/app/shared/permission';
 import { UserAddFromLdapComponent } from '../../../users-from-directory/views/user-add-from-directory-dialog/user-add-from-directory-dialog.component';
 import { UserTableComponent } from '../../components/user-table/user-table.component';
+import { UserTeamsComponent } from '../../components/user-teams/user-teams.component';
 import { User } from '../../model/user';
 import { UserService } from '../../services/user.service';
 import { FeatureUsersActions } from '../../store/users-actions';
@@ -27,7 +34,8 @@ import { userCRUDConfiguration } from '../../user.constants';
   styleUrls: ['./users-index.component.scss'],
   imports: [
     NgClass,
-
+    NgSwitch,
+    NgSwitchCase,
     PrimeTemplate,
     NgIf,
     ButtonDirective,
@@ -39,6 +47,7 @@ import { userCRUDConfiguration } from '../../user.constants';
     BiaTableControllerComponent,
     BiaTableBehaviorControllerComponent,
     BiaTableComponent,
+    UserTeamsComponent,
   ],
   providers: [
     {

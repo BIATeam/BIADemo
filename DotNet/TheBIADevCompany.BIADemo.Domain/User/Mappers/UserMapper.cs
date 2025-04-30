@@ -90,7 +90,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
                     Id = ca.Id,
                     Display = ca.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? ca.Label,
                 }).ToList(),
-                Teams = entity.Members.Select(m => new OptionDto
+                Teams = entity.Members.OrderBy(m => m.Team.TeamTypeId).ThenBy(m => m.Team.Title).Select(m => new OptionDto
                 {
                     Id = m.Id,
                     Display = m.Team.Title,
