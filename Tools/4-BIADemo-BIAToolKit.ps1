@@ -2,7 +2,7 @@ $scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
 Import-Module -Force $scriptPath/Library-BIA-BIATemplate.psm1
 
 $biaDemoProjectPath = "$scriptPath\.."
-$biaToolKitProjectPath = "C:\sources\Github\BIAToolKit"
+$biaToolKitProjectPath = "$scriptPath\..\..\BIAToolKit"
 if(!(Test-Path $biaToolKitProjectPath)) {
   Write-Error "Unable to find BIAToolKit sources at $biaToolKitProjectPath"
   exit
@@ -84,10 +84,15 @@ Remove-Line "// BIADemo only" -Path $biaToolKitVersionTargetPath
 
 Write-Host "Archiving..." -ForegroundColor Blue
 $biaDemoArchivePath = $biaToolKitVersionTargetPath + "\..\BIADemo_$biaDemoVersion.zip"
+$biaDemoExtarctedArchivePath = $biaToolKitVersionTargetPath + "\..\BIADemo_$biaDemoVersion"
 Write-Host "Target archive : $biaDemoArchivePath" -ForegroundColor DarkGray
 if(Test-Path $biaDemoArchivePath) {
   Remove-Item $biaDemoArchivePath -Force
 }
+if(Test-Path $biaDemoExtarctedArchivePath) {
+  Remove-Item $biaDemoExtarctedArchivePath -Force -Recurse
+}
+
 Compress-Archive -Path "$biaToolKitVersionTargetPath\*" -DestinationPath $biaDemoArchivePath
 Remove-Item $biaToolKitVersionTargetPath -Force -Recurse
 
