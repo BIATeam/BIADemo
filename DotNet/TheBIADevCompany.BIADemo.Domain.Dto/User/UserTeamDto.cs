@@ -15,8 +15,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.User
         public string Title { get; set; }
 
         /// <summary>
-        /// The team type name.
+        /// The team type id.
         /// </summary>
-        public string TeamTypeName { get; set; }
+        public int TeamTypeId { get; set; }
     }
 }

@@ -96,7 +96,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
                 .Select(m => new UserTeamDto
                 {
                     Title = m.Team.Title,
-                    TeamTypeName = m.Team.TeamType.Name,
+                    TeamTypeId = m.Team.TeamTypeId,
                 })
                 .ToList(),
             };

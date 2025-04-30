@@ -82,7 +82,7 @@
       <ng-template pTemplate="specificOutput" let-field="field" let-data="data">
         <ng-container [ngSwitch]="field.field">
           <ng-container *ngSwitchCase="'teams'">
-            <bia-user-teams [teams]="data"></bia-user-teams>
+            <bia-user-teams [userTeams]="data"></bia-user-teams>
           </ng-container>
         </ng-container>
       </ng-template>
@@ -115,7 +115,7 @@
       <ng-template pTemplate="specificOutput" let-field="field" let-data="data">
         <ng-container [ngSwitch]="field.field">
           <ng-container *ngSwitchCase="'teams'">
-            <bia-user-teams [teams]="data"></bia-user-teams>
+            <bia-user-teams [userTeams]="data"></bia-user-teams>
           </ng-container>
         </ng-container>
       </ng-template>

@@ -23,7 +23,7 @@
       <ng-container *ngSwitchCase="'teams'">
         <div *ngIf="data?.length > 0">
           <label class="user-teams-label">{{ field.header | translate }}</label>
-          <bia-user-teams [teams]="data"></bia-user-teams>
+          <bia-user-teams [userTeams]="data"></bia-user-teams>
         </div>
       </ng-container>
     </ng-container>

@@ -1,9 +1,9 @@
 <div>
-  @for (team of teams; track $index) {
+  @for (team of userTeams; track $index) {
     <p-chip
       class="user-team-chip"
       [label]="team.title"
-      [pTooltip]="team.teamTypeName"
+      [pTooltip]="getTeamTypeName(team.teamTypeId)"
       tooltipPosition="top" />
   }
 </div>
