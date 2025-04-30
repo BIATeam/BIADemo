@@ -6,7 +6,6 @@
 namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
@@ -14,7 +13,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
     using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
 
     /// <summary>
-    /// The mapper used for plane.
+    /// The mapper used for PlaneType.
     /// </summary>
     public class PlaneTypeMapper : BaseMapper<PlaneTypeDto, PlaneType, int>
     {
@@ -35,10 +34,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
         public override void DtoToEntity(PlaneTypeDto dto, PlaneType entity)
         {
-            if (entity == null)
-            {
-                entity = new PlaneType();
-            }
+            entity ??= new PlaneType();
 
             entity.Id = dto.Id;
             entity.Title = dto.Title;
@@ -68,6 +64,11 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
                 {
                     foreach (string headerName in headerNames)
                     {
+                        if (string.Equals(headerName, HeaderName.Id, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVNumber(x.Id));
+                        }
+
                         if (string.Equals(headerName, HeaderName.Title, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVString(x.Title));
@@ -85,22 +86,22 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
         }
 
         /// <summary>
-        /// Header Name.
+        /// Header names.
         /// </summary>
         public struct HeaderName
         {
             /// <summary>
-            /// header name Id.
+            /// Header name for Id.
             /// </summary>
             public const string Id = "id";
 
             /// <summary>
-            /// header name Title.
+            /// Header name for Title.
             /// </summary>
             public const string Title = "title";
 
             /// <summary>
-            /// header name Certification Date.
+            /// Header name for Certification Date.
             /// </summary>
             public const string CertificationDate = "certificationDate";
         }
