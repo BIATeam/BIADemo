@@ -184,6 +184,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       loginParam.lightToken = false;
       loginParam.fineGrainedPermission = true;
       loginParam.additionalInfos = true;
+      loginParam.isFirstLogin = false;
       return loginParam;
     }
 
@@ -193,6 +194,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       fineGrainedPermission: true,
       additionalInfos: true,
       teamsConfig: allEnvironments.teams,
+      isFirstLogin: true,
     };
   }
 
@@ -253,13 +255,15 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   protected setCurrentTeamId(teamTypeId: number, teamId: number): boolean {
     teamId = +teamId;
     const loginParam = this.getLoginParameters();
-    let teamsLogin = loginParam.currentTeamLogins;
+    const teamsLogin = loginParam.currentTeamLogins;
     const team = teamsLogin.find(i => i.teamTypeId === teamTypeId);
     if (team) {
       if (+team.teamId !== +teamId) {
         if (teamId === 0) {
           // TODO check if there is a remove in array;
-          teamsLogin = teamsLogin.filter(i => i.teamTypeId !== teamTypeId);
+          loginParam.currentTeamLogins = teamsLogin.filter(
+            i => i.teamTypeId !== teamTypeId
+          );
         } else {
           team.teamId = teamId;
           team.useDefaultRoles = true;
@@ -275,7 +279,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
         newTeam.useDefaultRoles = true;
         newTeam.currentRoleIds = [];
         newTeam.teamId = teamId;
-        teamsLogin.push(newTeam);
+        loginParam.currentTeamLogins.push(newTeam);
         this.setLoginParameters(loginParam);
         return true;
       }

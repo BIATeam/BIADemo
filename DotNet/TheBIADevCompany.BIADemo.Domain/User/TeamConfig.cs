@@ -65,6 +65,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User
                     },
                 }
                 .ToImmutable(),
+                TeamSelectionMode = BIA.Net.Core.Common.Enum.TeamSelectionMode.None,
             },
 
             // End BIADemo

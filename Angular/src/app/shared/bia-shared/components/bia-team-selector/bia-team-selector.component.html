@@ -10,17 +10,23 @@
     dataKey="id"
     (onChange)="onTeamChange()"
     scrollHeight="50vh"
-    [appendTo]="'body'"></p-select>
-  <i
-    *ngIf="displayTeamList === true && currentTeam?.id !== defaultTeamId"
-    class="pi pi-star app-icon-header bia-pointer"
-    (click)="onSetDefaultTeam()"
-    pTooltip="{{ 'bia.defineDefault' | translate }}"
-    tooltipPosition="bottom"
-    placeholder="Top"></i>
-  <i
-    *ngIf="displayTeamList === true && currentTeam?.id === defaultTeamId"
-    class="pi pi-star-fill app-icon-header"></i>
+    [appendTo]="'body'"
+    [showClear]="canClear"></p-select>
+  <ng-container *ngIf="currentTeam">
+    <i
+      *ngIf="displayTeamList === true && !currentTeam.isDefault"
+      class="pi pi-star app-icon-header bia-pointer"
+      (click)="onSetDefaultTeam()"
+      pTooltip="{{ 'bia.defineDefault' | translate }}"
+      tooltipPosition="bottom"
+      placeholder="Top"></i>
+    <i
+      *ngIf="displayTeamList === true && currentTeam.isDefault"
+      class="pi pi-star-fill app-icon-header bia-pointer"
+      (click)="onResetDefaultTeam()"
+      pTooltip="{{ 'bia.resetDefault' | translate }}"
+      tooltipPosition="bottom"></i>
+  </ng-container>
   <!-- Role selection -->
   <p-select
     *ngIf="displayRoleList"
@@ -40,24 +46,30 @@
     optionLabel="display"
     datakey="id"
     (onChange)="onRolesChange()"
+    (onClear)="onRolesChange()"
     placeholder="Select a role"
     scrollHeight="50vh"
-    [appendTo]="'body'">
+    [appendTo]="'body'"
+    [showClear]="true">
   </p-multiSelect>
-  <i
+  <ng-container
     *ngIf="
       (displayRoleList === true || displayRoleMultiSelect === true) &&
-      !isDefaultRoles()
-    "
-    class="pi pi-star app-icon-header bia-pointer"
-    (click)="onSetDefaultRoles()"
-    pTooltip="{{ 'bia.defineDefault' | translate }}"
-    tooltipPosition="bottom"
-    placeholder="Top"></i>
-  <i
-    *ngIf="
-      (displayRoleList === true || displayRoleMultiSelect === true) &&
-      isDefaultRoles()
-    "
-    class="pi pi-star-fill app-icon-header"></i>
+      currentRoles &&
+      currentRoles.length > 0
+    ">
+    <i
+      *ngIf="!isDefaultRoles()"
+      class="pi pi-star app-icon-header bia-pointer"
+      (click)="onSetDefaultRoles()"
+      pTooltip="{{ 'bia.defineDefault' | translate }}"
+      tooltipPosition="bottom"
+      placeholder="Top"></i>
+    <i
+      *ngIf="isDefaultRoles()"
+      class="pi pi-star-fill app-icon-header bia-pointer"
+      (click)="onResetDefaultRoles()"
+      pTooltip="{{ 'bia.resetDefault' | translate }}"
+      tooltipPosition="bottom"></i>
+  </ng-container>
 </div>

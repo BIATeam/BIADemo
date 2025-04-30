@@ -49,5 +49,10 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Entities
         /// Gets or sets the collection of notification teams.
         /// </summary>
         public ICollection<NotificationTeam> NotificationTeams { get; set; }
+
+        /// <summary>
+        /// Gets or sets the collection of users that have the team as default.
+        /// </summary>
+        public ICollection<UserDefaultTeam> UserDefaultTeams { get; set; }
     }
 }

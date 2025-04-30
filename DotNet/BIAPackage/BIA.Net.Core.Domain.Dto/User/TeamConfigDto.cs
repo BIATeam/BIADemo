@@ -29,5 +29,10 @@ namespace BIA.Net.Core.Domain.Dto.User
         /// Gets or sets if appear in UI header (normaly should not be use in back).
         /// </summary>
         public bool InHeader { get; set; }
+
+        /// <summary>
+        /// Indicates weither the team selection can be empty or not.
+        /// </summary>
+        public bool TeamSelectionCanBeEmpty { get; set; }
     }
 }
