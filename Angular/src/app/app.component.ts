@@ -3,15 +3,10 @@ import { RouterOutlet } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { PrimeNG } from 'primeng/config';
 import { BiaInjectExternalService } from './core/bia-core/services/bia-inject-external.service';
-import { BiaThemeService } from './core/bia-core/services/bia-theme.service';
-import { BiaTranslationService } from './core/bia-core/services/bia-translation.service';
 import { BiaMatomoService } from './core/bia-core/services/matomo/bia-matomo.service';
-import { AppSettingsService } from './domains/bia-domains/app-settings/services/app-settings.service';
-import {
-  AppConfig,
-  BiaLayoutService,
-} from './shared/bia-shared/components/layout/services/layout.service';
-import { IframeConfig } from './shared/bia-shared/model/iframe-config';
+import { BiaLayoutService } from './shared/bia-shared/components/layout/services/layout.service';
+import { IframeMessage } from './shared/bia-shared/model/iframe-message';
+import { IframeCommunicationService } from './shared/bia-shared/services/iframe-communication.service';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +18,6 @@ import { IframeConfig } from './shared/bia-shared/model/iframe-config';
 })
 export class AppComponent implements OnInit {
   isInIframe: boolean;
-  initializationData: AppConfig;
 
   constructor(
     private biaMatomoService: BiaMatomoService,
@@ -31,9 +25,7 @@ export class AppComponent implements OnInit {
     private primeNgConfig: PrimeNG,
     private translateService: TranslateService,
     private layoutService: BiaLayoutService,
-    private biaTheme: BiaThemeService,
-    private biaTranslation: BiaTranslationService,
-    private appSettingsService: AppSettingsService
+    private iframeCommunicationService: IframeCommunicationService
   ) {
     this.layoutService.defaultConfigUpdate({});
     this.layoutService.setConfigDisplay({
@@ -68,21 +60,8 @@ export class AppComponent implements OnInit {
   }
 
   @HostListener('window:message', ['$event'])
-  receiveMessage(event: MessageEvent<IframeConfig>) {
-    if (
-      !this.layoutService ||
-      !this.appSettingsService.appSettings?.allowedIframeHosts?.find(
-        allowedHost => allowedHost.url === event.origin
-      ) ||
-      !event.data
-    ) {
-      return;
-    }
-
-    this.initializationData = event.data.layoutConfig;
-    this.biaTranslation.loadAndChangeLanguage(event.data.language);
-    this.layoutService.config.set(this.initializationData);
-    this.biaTheme.changeTheme(this.layoutService.config().colorScheme);
+  receiveMessage(event: MessageEvent<IframeMessage>) {
+    this.iframeCommunicationService.readMessage(event);
   }
 
   @HostListener('window:resize', ['$event'])

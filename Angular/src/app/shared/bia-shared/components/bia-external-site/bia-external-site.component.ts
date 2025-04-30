@@ -57,6 +57,7 @@ export class BiaExternalSiteComponent implements OnInit {
   private sendConfigToIframe() {
     if (this.iframe?.nativeElement?.contentWindow) {
       const config: IframeConfig = {
+        type: 'CONFIG',
         layoutConfig: this.layoutService.config(),
         language: this.biaTranslationService.currentCultureValue,
         loginParams: this.authService.getLoginParameters(),
