@@ -1,3 +1,5 @@
-@for (team of teams; track $index) {
-  <p-chip class="user-team-chip" [label]="team.display" />
-}
+<div>
+  @for (team of teams; track $index) {
+    <p-chip class="user-team-chip" [label]="team.display" />
+  }
+</div>

@@ -21,7 +21,10 @@
   <ng-template pTemplate="specificOutput" let-field="field" let-data="data">
     <ng-container [ngSwitch]="field.field">
       <ng-container *ngSwitchCase="'teams'">
-        <bia-user-teams [teams]="data"></bia-user-teams>
+        <div *ngIf="data?.length > 0">
+          <label class="user-teams-label">{{ field.header | translate }}</label>
+          <bia-user-teams [teams]="data"></bia-user-teams>
+        </div>
       </ng-container>
     </ng-container>
   </ng-template>

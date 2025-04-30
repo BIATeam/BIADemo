@@ -35,6 +35,8 @@ export const userFieldsConfiguration: BiaFieldsConfig<User> = {
       type: PropType.ManyToMany,
       isEditable: false,
       specificOutput: true,
+      isSortable: false,
+      isSearchable: false,
     }),
     Object.assign(new BiaFieldConfig('roles', 'member.roles'), {
       type: PropType.ManyToMany,
