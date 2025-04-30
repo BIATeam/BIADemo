@@ -19,6 +19,7 @@ export const allEnvironments = {
       teamTypeId: TeamTypeId.Site,
       roleMode: RoleMode.AllRoles,
       inHeader: true,
+      label: 'site.headerLabel',
     },
     // Begin BIADemo
     {
@@ -26,6 +27,7 @@ export const allEnvironments = {
       roleMode: RoleMode.MultiRoles,
       inHeader: true,
       displayOne: true,
+      label: 'aircraftMaintenanceCompany.headerLabel',
     },
     {
       teamTypeId: TeamTypeId.MaintenanceTeam,

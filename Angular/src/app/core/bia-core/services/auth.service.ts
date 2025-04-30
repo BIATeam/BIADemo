@@ -303,11 +303,11 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     roleIds: number[]
   ): boolean {
     roleIds = roleIds.map(roleId => +roleId);
+    const loginParam = this.getLoginParameters();
     const roleMode =
-      allEnvironments.teams.find(r => r.teamTypeId === teamTypeId)?.roleMode ||
+      loginParam.teamsConfig.find(r => r.teamTypeId === teamTypeId)?.roleMode ||
       RoleMode.AllRoles;
     if (roleMode !== RoleMode.AllRoles) {
-      const loginParam = this.getLoginParameters();
       const teamsLogin = loginParam.currentTeamLogins;
       const team = teamsLogin.find(i => i.teamId === teamId);
       if (team) {
