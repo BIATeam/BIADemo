@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes, UrlMatcher, UrlSegment } from '@angular/router';
 import { HOME_ROUTES } from './features/home/home.module';
-import { BiaExternalSiteComponent } from './shared/bia-shared/components/bia-external-site/bia-external-site.component';
 import { LayoutComponent } from './shared/bia-shared/components/layout/layout.component';
 import { PageLayoutComponent } from './shared/bia-shared/components/layout/page-layout.component';
 
@@ -19,17 +18,6 @@ const routes: Routes = [
     component: LayoutComponent,
     children: [
       ...HOME_ROUTES,
-      {
-        path: 'iframe',
-        component: BiaExternalSiteComponent,
-        data: {
-          breadcrumb: 'iframe',
-          config: {
-            baseUrl: 'https://dmeu-int.electrical-power.safran',
-            suffixUrl: 'BIADemo/App/examples/planes',
-          },
-        },
-      },
       {
         path: '',
         component: PageLayoutComponent,
