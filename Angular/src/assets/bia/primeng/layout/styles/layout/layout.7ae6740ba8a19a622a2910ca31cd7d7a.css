@@ -2960,20 +2960,32 @@ body {
 }
 
 .layout-container.layout-content-wrapper-fullscreen .layout-content-wrapper,
+.layout-container.layout-content-wrapper-iframe .layout-content-wrapper,
 .layout-container.layout-content-wrapper-fullscreen.layout-footer-overlay
+  .layout-content-wrapper,
+.layout-container.layout-content-wrapper-iframe.layout-footer-overlay
   .layout-content-wrapper {
   padding-top: 0;
 }
 .layout-container.layout-content-wrapper-fullscreen
   .layout-content-wrapper
   .layout-content,
+.layout-container.layout-content-wrapper-iframe
+  .layout-content-wrapper
+  .layout-content,
 .layout-container.layout-content-wrapper-fullscreen.layout-footer-overlay
+  .layout-content-wrapper
+  .layout-content,
+.layout-container.layout-content-wrapper-iframe.layout-footer-overlay
   .layout-content-wrapper
   .layout-content {
   min-height: 100vh;
 }
 .layout-container.layout-content-wrapper-fullscreen .layout-sidebar,
+.layout-container.layout-content-wrapper-iframe .layout-sidebar,
 .layout-container.layout-content-wrapper-fullscreen.layout-footer-overlay
+  .layout-sidebar,
+.layout-container.layout-content-wrapper-iframe.layout-footer-overlay
   .layout-sidebar {
   height: 100%;
   top: 0;
@@ -2988,11 +3000,31 @@ body {
   .layout-topbar
   .layout-topbar-start
   .layout-menu-button,
+.layout-container.layout-content-wrapper-iframe.layout-static-inactive
+  .layout-topbar
+  .layout-topbar-start
+  .layout-menu-button,
+.layout-container.layout-content-wrapper-iframe.layout-overlay:not(
+    .layout-overlay-active
+  )
+  .layout-topbar
+  .layout-topbar-start
+  .layout-menu-button,
 .layout-container.layout-content-wrapper-fullscreen.layout-footer-overlay.layout-static-inactive
   .layout-topbar
   .layout-topbar-start
   .layout-menu-button,
 .layout-container.layout-content-wrapper-fullscreen.layout-footer-overlay.layout-overlay:not(
+    .layout-overlay-active
+  )
+  .layout-topbar
+  .layout-topbar-start
+  .layout-menu-button,
+.layout-container.layout-content-wrapper-iframe.layout-footer-overlay.layout-static-inactive
+  .layout-topbar
+  .layout-topbar-start
+  .layout-menu-button,
+.layout-container.layout-content-wrapper-iframe.layout-footer-overlay.layout-overlay:not(
     .layout-overlay-active
   )
   .layout-topbar
@@ -3201,6 +3233,9 @@ body {
     margin-left: var(--sidebar-width);
   }
   .layout-container.layout-static-inactive .layout-content-wrapper {
+    margin-left: 0;
+  }
+  .layout-container.layout-content-wrapper-iframe .layout-content-wrapper {
     margin-left: 0;
   }
 }

@@ -1,6 +1,10 @@
 <div
   class="flex-1 flex-column"
-  [style.display]="fullscreenMode ? 'none' : 'flex'"
+  [style.display]="
+    layoutService.state.fullscreen || layoutService.state.isInIframe
+      ? 'none'
+      : 'flex'
+  "
   style="width: calc(100vw)">
   <!-- topbar -->
   <div class="layout-topbar">

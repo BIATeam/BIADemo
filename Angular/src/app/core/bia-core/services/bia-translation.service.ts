@@ -93,6 +93,10 @@ export class BiaTranslationService {
   protected currentCulture = 'None';
   protected currentLanguage = 'None';
 
+  get currentCultureValue() {
+    return this.currentCulture;
+  }
+
   constructor(
     protected translate: TranslateService,
     @Inject(LOCALE_ID) localeId: string,

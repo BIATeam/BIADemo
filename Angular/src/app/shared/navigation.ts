@@ -9,6 +9,12 @@ export const NAVIGATION: BiaNavigation[] = [
     icon: 'pi pi-users',
   },
   {
+    labelKey: 'iframe',
+    permissions: [Permission.User_List_Access],
+    path: ['/iframe'],
+    icon: 'pi pi-users',
+  },
+  {
     labelKey: 'app.sites',
     permissions: [Permission.Site_List_Access],
     path: ['/sites'],
