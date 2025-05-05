@@ -2,7 +2,7 @@
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Common.Configuration
+namespace BIA.Net.Core.Common.Configuration.Iframe
 {
     /// <summary>
     /// The Language configuration.

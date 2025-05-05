@@ -23,7 +23,7 @@ export class IframeCommunicationService {
 
   readMessage(message: MessageEvent<IframeMessage>) {
     if (
-      !this.appSettingsService.appSettings?.allowedIframeHosts?.find(
+      !this.appSettingsService.appSettings?.iframeConfiguration?.allowedIframeHosts?.find(
         allowedHost => allowedHost.url === message.origin
       ) ||
       !message.data
@@ -35,9 +35,11 @@ export class IframeCommunicationService {
   }
 
   initLayoutInsideIframe() {
-    this.layoutService.state.isInIframe = true;
-    this.layoutService.hideBreadcrumb();
-    this.layoutService.hideFooter();
+    if (!this.appSettingsService.appSettings.iframeConfiguration?.keepLayout) {
+      this.layoutService.state.isInIframe = true;
+      this.layoutService.hideBreadcrumb();
+      this.layoutService.hideFooter();
+    }
     this.getConfigFromParent();
   }
 

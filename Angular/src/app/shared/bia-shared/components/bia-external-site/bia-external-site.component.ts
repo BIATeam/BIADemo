@@ -31,11 +31,11 @@ export class BiaExternalSiteComponent implements OnInit, OnDestroy {
   @ViewChild('externalSiteIFrame', { static: true })
   iframe: ElementRef<HTMLObjectElement>;
 
-  url: SafeUrl;
-
   @Input() config = initExternalSiteConfig;
 
-  private subscription: Subscription = new Subscription();
+  protected url: SafeUrl;
+  protected isIframeReady = false;
+  protected subscription: Subscription = new Subscription();
 
   constructor(
     protected readonly activatedRoute: ActivatedRoute,
@@ -78,12 +78,13 @@ export class BiaExternalSiteComponent implements OnInit, OnDestroy {
   @HostListener('window:message', ['$event'])
   receiveMessage(event: MessageEvent<string>) {
     if (event.origin === this.config.baseUrl && event.data === 'IFRAME_READY') {
+      this.isIframeReady = true;
       this.sendConfigToIframe();
     }
   }
 
   private sendConfigToIframe() {
-    if (this.iframe?.nativeElement?.contentWindow) {
+    if (this.iframe?.nativeElement?.contentWindow && this.isIframeReady) {
       const config: IframeConfig = {
         type: 'CONFIG',
         layoutConfig: this.layoutService.config(),

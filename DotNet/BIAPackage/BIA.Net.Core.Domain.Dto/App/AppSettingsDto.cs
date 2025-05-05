@@ -6,6 +6,7 @@ namespace BIA.Net.Core.Domain.Dto.Option
 {
     using System.Collections.Generic;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Configuration.Iframe;
     using BIA.Net.Core.Common.Configuration.Keycloak;
     using BIA.Net.Core.Common.Configuration.ProfileSection;
     using BIA.Net.Core.Domain.Dto.Base;
@@ -41,8 +42,8 @@ namespace BIA.Net.Core.Domain.Dto.Option
         public ProfileConfiguration ProfileConfiguration { get; set; }
 
         /// <summary>
-        /// Gets or sets the allowed host for iframe communication.
+        /// Gets or sets the configuration when front called in iframe.
         /// </summary>
-        public List<AllowedHost> AllowedIframeHosts { get; set; }
+        public IframeConfiguration IframeConfiguration { get; set; }
     }
 }

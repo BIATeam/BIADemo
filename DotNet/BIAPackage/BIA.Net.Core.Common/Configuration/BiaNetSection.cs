@@ -7,6 +7,7 @@ namespace BIA.Net.Core.Common.Configuration
     using System.Collections.Generic;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
+    using BIA.Net.Core.Common.Configuration.Iframe;
     using BIA.Net.Core.Common.Configuration.ProfileSection;
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
 
@@ -96,8 +97,8 @@ namespace BIA.Net.Core.Common.Configuration
         public string CsvHeaderLabel { get; set; }
 
         /// <summary>
-        /// Gets or sets .
+        /// Gets or sets the configuration when front called in iframe.
         /// </summary>
-        public List<AllowedHost> AllowedIframeHosts { get; set; }
+        public IframeConfiguration IframeConfiguration { get; set; }
     }
 }
