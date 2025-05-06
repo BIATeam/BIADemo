@@ -66,7 +66,9 @@ body {
 }
 
 .layout-container.layout-content-wrapper-fullscreen,
-.layout-container.layout-content-wrapper-fullscreen.layout-footer-overlay {
+.layout-container.layout-content-wrapper-iframe,
+.layout-container.layout-content-wrapper-fullscreen.layout-footer-overlay,
+.layout-container.layout-content-wrapper-iframe.layout-footer-overlay {
   .layout-content-wrapper {
     padding-top: 0;
 
@@ -287,6 +289,10 @@ body {
   }
 
   .layout-container.layout-static-inactive .layout-content-wrapper {
+    margin-left: 0;
+  }
+
+  .layout-container.layout-content-wrapper-iframe .layout-content-wrapper {
     margin-left: 0;
   }
 }

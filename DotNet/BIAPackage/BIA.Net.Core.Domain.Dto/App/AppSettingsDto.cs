@@ -6,6 +6,7 @@ namespace BIA.Net.Core.Domain.Dto.Option
 {
     using System.Collections.Generic;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Configuration.Iframe;
     using BIA.Net.Core.Common.Configuration.Keycloak;
     using BIA.Net.Core.Common.Configuration.ProfileSection;
     using BIA.Net.Core.Domain.Dto.Base;
@@ -39,5 +40,10 @@ namespace BIA.Net.Core.Domain.Dto.Option
         /// Gets or sets the user profile configuration.
         /// </summary>
         public ProfileConfiguration ProfileConfiguration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the configuration when front called in iframe.
+        /// </summary>
+        public IframeConfiguration IframeConfiguration { get; set; }
     }
 }

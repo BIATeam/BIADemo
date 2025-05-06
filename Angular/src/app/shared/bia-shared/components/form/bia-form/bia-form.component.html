@@ -1,3 +1,36 @@
+<ng-template #tooltipContent>
+  <div>
+    <p>
+      {{ 'bia.form-help.summary' | translate }}
+    </p>
+    <ul>
+      <li>
+        <b>{{ 'bia.form-help.tab' | translate }}</b>
+        {{ 'bia.form-help.tab-description' | translate }}
+      </li>
+      <li>
+        <b>{{ 'bia.form-help.shift-tab' | translate }}</b>
+        {{ 'bia.form-help.shift-tab-description' | translate }}
+      </li>
+      <li>
+        <b>{{ 'bia.form-help.down-arrow' | translate }}</b>
+        {{ 'bia.form-help.down-arrow-description' | translate }}
+      </li>
+      <li>
+        <b>{{ 'bia.form-help.enter' | translate }}</b>
+        {{ 'bia.form-help.enter-description' | translate }}
+      </li>
+      <li>
+        <b>{{ 'bia.form-help.space' | translate }}</b>
+        {{ 'bia.form-help.space-description' | translate }}
+      </li>
+      <li>
+        <b>{{ 'bia.form-help.escape' | translate }}</b>
+        {{ 'bia.form-help.escape-description' | translate }}
+      </li>
+    </ul>
+  </div>
+</ng-template>
 <form
   *ngIf="form && shown"
   (submit)="onSubmit()"
@@ -78,6 +111,12 @@
     </ng-container>
   </div>
   <div class="footer-container bia-form-fixed-buttons">
+    <i
+      *ngIf="showFormHelp"
+      class="pi pi-question-circle"
+      [pTooltip]="tooltipContent"
+      tooltipPosition="top"
+      tooltipStyleClass="bia-tooltip-large"></i>
     <div class="flex gap-2 align-items-center info-locked-container">
       <button
         *ngIf="isCrudItemOutdated"

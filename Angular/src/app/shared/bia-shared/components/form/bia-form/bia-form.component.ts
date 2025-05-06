@@ -88,6 +88,7 @@ export class BiaFormComponent<TDto extends { id: number }>
   @Input() showSplitButton = false;
   @Input() showPopupButton = false;
   @Input() showFullPageButton = false;
+  @Input() showFormHelp = true;
   @Input() canFix?: boolean;
   @Input() shown = true;
   @Output() save = new EventEmitter<any>();
