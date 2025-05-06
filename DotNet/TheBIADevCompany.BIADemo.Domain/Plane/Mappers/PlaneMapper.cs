@@ -17,18 +17,18 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
     using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
 
     /// <summary>
-    /// The mapper used for plane.
+    /// The mapper used for Plane.
     /// </summary>
     public class PlaneMapper : BaseMapper<PlaneDto, Plane, int>
     {
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
         public override ExpressionCollection<Plane> ExpressionCollection
         {
-            // It is not necessary to implement this function if you to not use the mapper for filtered list. In BIADemo it is use only for Calc SpreadSheet.
             get
             {
                 return new ExpressionCollection<Plane>
                 {
+                    { HeaderName.SiteId, plane => plane.SiteId },
                     { HeaderName.Id, plane => plane.Id },
                     { HeaderName.Msn, plane => plane.Msn },
                     { HeaderName.Manufacturer, plane => plane.Manufacturer },
@@ -49,9 +49,9 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
                     { HeaderName.OriginalPrice, plane => plane.OriginalPrice },
                     { HeaderName.EstimatedPrice, plane => plane.EstimatedPrice },
                     { HeaderName.PlaneType, plane => plane.PlaneType != null ? plane.PlaneType.Title : null },
-                    { HeaderName.ConnectingAirports, plane => plane.ConnectingAirports.Select(x => x.Name).OrderBy(x => x) },
-                    { HeaderName.CurrentAirport, plane => plane.CurrentAirport != null ? plane.CurrentAirport.Name : null },
                     { HeaderName.SimilarTypes, plane => plane.SimilarTypes.Select(x => x.Title).OrderBy(x => x) },
+                    { HeaderName.CurrentAirport, plane => plane.CurrentAirport != null ? plane.CurrentAirport.Name : null },
+                    { HeaderName.ConnectingAirports, plane => plane.ConnectingAirports.Select(x => x.Name).OrderBy(x => x) },
                 };
             }
         }
@@ -59,9 +59,12 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
         public override void DtoToEntity(PlaneDto dto, Plane entity)
         {
-            if (entity == null)
+            entity ??= new Plane();
+
+            // Map parent relationship 1-* : SiteId
+            if (dto.SiteId != 0)
             {
-                entity = new Plane();
+                entity.SiteId = dto.SiteId;
             }
 
             entity.Id = dto.Id;
@@ -89,43 +92,15 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
             entity.OriginalPrice = dto.OriginalPrice;
             entity.EstimatedPrice = dto.EstimatedPrice;
 
-            // Mapping relationship 1-* : Site
-            if (dto.SiteId != 0)
-            {
-                entity.SiteId = dto.SiteId;
-            }
-
-            // Mapping relationship 0..1-* : PlaneType
+            // Map relationship 0..1-* : PlaneType
             entity.PlaneTypeId = dto.PlaneType?.Id;
 
-            // Mapping relationship 0..1-* : CurrentAirport
-            entity.CurrentAirportId = dto.CurrentAirport.Id;
-
-            // Mapping relationship *-* : ICollection<OptionDto> ConnectingAirports
-            if (dto.ConnectingAirports != null && dto.ConnectingAirports?.Any() == true)
+            // Map relationship *-* : SimilarTypes
+            if (dto.SimilarTypes?.Count != 0)
             {
-                foreach (var airportDto in dto.ConnectingAirports.Where(x => x.DtoState == DtoState.Deleted))
+                foreach (var similarTypeDto in dto.SimilarTypes.Where(x => x.DtoState == DtoState.Deleted))
                 {
-                    var connectingAirport = entity.ConnectingAirports.FirstOrDefault(x => x.Id == airportDto.Id);
-                    if (connectingAirport != null)
-                    {
-                        entity.ConnectingAirports.Remove(connectingAirport);
-                    }
-                }
-
-                entity.ConnectingPlaneAirports = entity.ConnectingPlaneAirports ?? new List<PlaneAirport>();
-                foreach (var airportDto in dto.ConnectingAirports.Where(w => w.DtoState == DtoState.Added))
-                {
-                    entity.ConnectingPlaneAirports.Add(new PlaneAirport
-                    { AirportId = airportDto.Id, PlaneId = dto.Id });
-                }
-            }
-
-            if (dto.SimilarTypes != null && dto.SimilarTypes?.Any() == true)
-            {
-                foreach (var planeTypeDto in dto.SimilarTypes.Where(x => x.DtoState == DtoState.Deleted))
-                {
-                    var similarType = entity.SimilarTypes.FirstOrDefault(x => x.Id == planeTypeDto.Id);
+                    var similarType = entity.SimilarTypes.FirstOrDefault(x => x.Id == similarTypeDto.Id);
                     if (similarType != null)
                     {
                         entity.SimilarTypes.Remove(similarType);
@@ -133,10 +108,39 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
                 }
 
                 entity.SimilarPlaneType = entity.SimilarPlaneType ?? new List<PlanePlaneType>();
-                foreach (var planeTypeDto in dto.SimilarTypes.Where(w => w.DtoState == DtoState.Added))
+                foreach (var similarTypeDto in dto.SimilarTypes.Where(x => x.DtoState == DtoState.Added))
                 {
                     entity.SimilarPlaneType.Add(new PlanePlaneType
-                    { PlaneTypeId = planeTypeDto.Id, PlaneId = dto.Id });
+                    {
+                        PlaneTypeId = similarTypeDto.Id,
+                        PlaneId = dto.Id,
+                    });
+                }
+            }
+
+            // Map relationship 1-* : CurrentAirport
+            entity.CurrentAirportId = dto.CurrentAirport.Id;
+
+            // Map relationship *-* : ConnectingAirports
+            if (dto.ConnectingAirports?.Count != 0)
+            {
+                foreach (var connectingAirportDto in dto.ConnectingAirports.Where(x => x.DtoState == DtoState.Deleted))
+                {
+                    var connectingAirport = entity.ConnectingAirports.FirstOrDefault(x => x.Id == connectingAirportDto.Id);
+                    if (connectingAirport != null)
+                    {
+                        entity.ConnectingAirports.Remove(connectingAirport);
+                    }
+                }
+
+                entity.ConnectingPlaneAirports = entity.ConnectingPlaneAirports ?? new List<PlaneAirport>();
+                foreach (var connectingAirportDto in dto.ConnectingAirports.Where(x => x.DtoState == DtoState.Added))
+                {
+                    entity.ConnectingPlaneAirports.Add(new PlaneAirport
+                    {
+                        AirportId = connectingAirportDto.Id,
+                        PlaneId = dto.Id,
+                    });
                 }
             }
         }
@@ -146,13 +150,13 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
         {
             return entity => new PlaneDto
             {
+                SiteId = entity.SiteId,
                 Id = entity.Id,
 
                 // Begin BIADemo
                 IsFixed = entity.IsFixed,
 
                 // End BIADemo
-                RowVersion = Convert.ToBase64String(entity.RowVersion),
                 Msn = entity.Msn,
                 Manufacturer = entity.Manufacturer,
                 IsActive = entity.IsActive,
@@ -172,10 +176,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
                 OriginalPrice = entity.OriginalPrice,
                 EstimatedPrice = entity.EstimatedPrice,
 
-                // Mapping relationship 1-* : Site
-                SiteId = entity.SiteId,
-
-                // Mapping relationship 0..1-* : PlaneType
+                // Map relationship 0..1-* : PlaneType
                 PlaneType = entity.PlaneType != null ? new OptionDto
                 {
                     Id = entity.PlaneType.Id,
@@ -183,6 +184,14 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
                 }
                 : null,
 
+                // Map relationship *-* : SimilarTypes
+                SimilarTypes = entity.SimilarTypes.Select(x => new OptionDto
+                {
+                    Id = x.Id,
+                    Display = x.Title,
+                }).OrderBy(x => x.Display).ToList(),
+
+                // Map relationship 1-* : CurrentAirport
                 CurrentAirport = entity.CurrentAirport != null ? new OptionDto
                 {
                     Id = entity.CurrentAirport.Id,
@@ -190,18 +199,13 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
                 }
                 : null,
 
-                // Mapping relationship *-* : ICollection<Airports>
-                ConnectingAirports = entity.ConnectingAirports.Select(ca => new OptionDto
+                // Map relationship *-* : ConnectingAirports
+                ConnectingAirports = entity.ConnectingAirports.Select(x => new OptionDto
                 {
-                    Id = ca.Id,
-                    Display = ca.Name,
+                    Id = x.Id,
+                    Display = x.Name,
                 }).OrderBy(x => x.Display).ToList(),
-
-                SimilarTypes = entity.SimilarTypes.Select(ca => new OptionDto
-                {
-                    Id = ca.Id,
-                    Display = ca.Title,
-                }).OrderBy(x => x.Display).ToList(),
+                RowVersion = Convert.ToBase64String(entity.RowVersion),
             };
         }
 
@@ -216,6 +220,11 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
                 {
                     foreach (string headerName in headerNames)
                     {
+                        if (string.Equals(headerName, HeaderName.SiteId, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVNumber(x.SiteId));
+                        }
+
                         if (string.Equals(headerName, HeaderName.Id, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVNumber(x.Id));
@@ -281,16 +290,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
                             records.Add(CSVNumber(x.MotorsCount));
                         }
 
-                        if (string.Equals(headerName, HeaderName.PlaneType, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.PlaneType?.Display));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.ConnectingAirports, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVList(x.ConnectingAirports));
-                        }
-
                         if (string.Equals(headerName, HeaderName.TotalFlightHours, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVNumber(x.TotalFlightHours));
@@ -321,14 +320,24 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
                             records.Add(CSVNumber(x.EstimatedPrice));
                         }
 
-                        if (string.Equals(headerName, HeaderName.CurrentAirport, StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals(headerName, HeaderName.PlaneType, StringComparison.OrdinalIgnoreCase))
                         {
-                            records.Add(CSVString(x.CurrentAirport?.Display));
+                            records.Add(CSVString(x.PlaneType?.Display));
                         }
 
                         if (string.Equals(headerName, HeaderName.SimilarTypes, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVList(x.SimilarTypes));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.CurrentAirport, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVString(x.CurrentAirport?.Display));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.ConnectingAirports, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVList(x.ConnectingAirports));
                         }
                     }
                 }
@@ -347,128 +356,137 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesForUpdate"/>
         public override Expression<Func<Plane, object>>[] IncludesForUpdate()
         {
-            return new Expression<Func<Plane, object>>[] { x => x.ConnectingAirports, x => x.SimilarTypes };
+            return new Expression<Func<Plane, object>>[]
+            {
+                x => x.SimilarTypes,
+                x => x.ConnectingAirports,
+            };
         }
 
         /// <summary>
-        /// Header Name.
+        /// Header names.
         /// </summary>
         public struct HeaderName
         {
             /// <summary>
-            /// Header Name Id.
+            /// Header name for Site Id.
+            /// </summary>
+            public const string SiteId = "siteId";
+
+            /// <summary>
+            /// Header name for Id.
             /// </summary>
             public const string Id = "id";
 
             /// <summary>
-            /// Header Name Msn.
+            /// Header name for Msn.
             /// </summary>
             public const string Msn = "msn";
 
             /// <summary>
-            /// Header Name Manufacturer.
+            /// Header name for Manufacturer.
             /// </summary>
             public const string Manufacturer = "manufacturer";
 
             /// <summary>
-            /// Header Name IsActive.
+            /// Header name for Is Active.
             /// </summary>
             public const string IsActive = "isActive";
 
             /// <summary>
-            /// Header Name IsMaintenance.
+            /// Header name for Is Maintenance.
             /// </summary>
             public const string IsMaintenance = "isMaintenance";
 
             /// <summary>
-            /// Header Name FirstFlightDate.
+            /// Header name for First Flight Date.
             /// </summary>
             public const string FirstFlightDate = "firstFlightDate";
 
             /// <summary>
-            /// Header Name LastFlightDate.
+            /// Header name for Last Flight Date.
             /// </summary>
             public const string LastFlightDate = "lastFlightDate";
 
             /// <summary>
-            /// Header Name DeliveryDate.
+            /// Header name for Delivery Date.
             /// </summary>
             public const string DeliveryDate = "deliveryDate";
 
             /// <summary>
-            /// Header Name NextMaintenanceDate.
+            /// Header name for Next Maintenance Date.
             /// </summary>
             public const string NextMaintenanceDate = "nextMaintenanceDate";
 
             /// <summary>
-            /// Header Name SyncTime.
+            /// Header name for Sync Time.
             /// </summary>
             public const string SyncTime = "syncTime";
 
             /// <summary>
-            /// Header Name SyncFlightDataTime.
+            /// Header name for Sync Flight Data Time.
             /// </summary>
             public const string SyncFlightDataTime = "syncFlightDataTime";
 
             /// <summary>
-            /// Header Name Capacity.
+            /// Header name for Capacity.
             /// </summary>
             public const string Capacity = "capacity";
 
             /// <summary>
-            /// Header Name MotorsCount.
+            /// Header name for Motors Count.
             /// </summary>
             public const string MotorsCount = "motorsCount";
 
             /// <summary>
-            /// Header Name TotalFlightHours.
+            /// Header name for Total Flight Hours.
             /// </summary>
             public const string TotalFlightHours = "totalFlightHours";
 
             /// <summary>
-            /// Header Name Propability.
+            /// Header name for Probability.
             /// </summary>
             public const string Probability = "probability";
 
             /// <summary>
-            /// Header Name Fuel Capacity.
+            /// Header name for Fuel Capacity.
             /// </summary>
             public const string FuelCapacity = "fuelCapacity";
 
             /// <summary>
-            /// Header Name Fuel Level.
+            /// Header name for Fuel Level.
             /// </summary>
             public const string FuelLevel = "fuelLevel";
 
             /// <summary>
-            /// Header Name Original Price.
+            /// Header name for Original Price.
             /// </summary>
             public const string OriginalPrice = "originalPrice";
 
             /// <summary>
-            /// Header Name Estimated Price.
+            /// Header name for Estimated Price.
             /// </summary>
             public const string EstimatedPrice = "estimatedPrice";
 
             /// <summary>
-            /// Header Name PlaneType.
+            /// Header name for Plane Type.
             /// </summary>
             public const string PlaneType = "planeType";
 
             /// <summary>
-            /// Header Name ConnectingAirports.
-            /// </summary>
-            public const string ConnectingAirports = "connectingAirports";
-
-            /// <summary>
-            /// Header Name SimilarTypes.
+            /// Header name for Similar Types.
             /// </summary>
             public const string SimilarTypes = "similarTypes";
 
             /// <summary>
-            /// Header Name CurrentAirport.
+            /// Header name for Current Airport.
             /// </summary>
             public const string CurrentAirport = "currentAirport";
+
+            /// <summary>
+            /// Header name for Connecting Airports.
+            /// </summary>
+            public const string ConnectingAirports = "connectingAirports";
         }
     }
 }
