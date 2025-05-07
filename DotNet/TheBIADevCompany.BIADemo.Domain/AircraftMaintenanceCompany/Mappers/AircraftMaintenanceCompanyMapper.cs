@@ -36,12 +36,7 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Mappers
         {
         }
 
-        /// <summary>
-        /// Precise the Id of the type of team.
-        /// </summary>
-        public override int TeamType
-        {
-            get { return (int)TeamTypeId.AircraftMaintenanceCompany; }
-        }
+        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
+        public override int TeamType => (int)TeamTypeId.AircraftMaintenanceCompany;
     }
 }

@@ -16,6 +16,18 @@ namespace BIA.Net.Core.Domain
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     public class ExpressionCollection<TEntity> : BiaDictionary<LambdaExpression>
     {
+        public ExpressionCollection() : base()
+        {
+        }
+
+        public ExpressionCollection(ExpressionCollection<TEntity> initial) : base()
+        {
+            foreach (var elem in initial)
+            {
+                this.InternalDictionary.Add(elem.Key, elem.Value);
+            }
+        }
+
         /// <summary>
         /// Adds the specified key.
         /// </summary>

@@ -34,16 +34,17 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Mappers
         {
         }
 
+        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
+        public override int TeamType => (int)TeamTypeId.MaintenanceTeam;
+
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
         public override ExpressionCollection<MaintenanceTeam> ExpressionCollection
         {
             // It is not necessary to implement this function if you to not use the mapper for filtered list. In BIADemo it is use only for Calc SpreadSheet.
             get
             {
-                return new ExpressionCollection<MaintenanceTeam>
+                return new ExpressionCollection<MaintenanceTeam>(base.ExpressionCollection)
                 {
-                    { "Id", maintenanceTeam => maintenanceTeam.Id },
-                    { "Title", maintenanceTeam => maintenanceTeam.Title },
                     { "AircraftMaintenanceCompany", maintenanceTeam => maintenanceTeam.AircraftMaintenanceCompany.Title },
                     { "Code", maintenanceTeam => maintenanceTeam.Code },
                     { "IsActive", maintenanceTeam => maintenanceTeam.IsActive },
@@ -73,14 +74,7 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Mappers
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
         public override void DtoToEntity(MaintenanceTeamDto dto, MaintenanceTeam entity)
         {
-            if (entity == null)
-            {
-                entity = new MaintenanceTeam();
-            }
-
-            entity.Id = dto.Id;
-            entity.Title = dto.Title;
-            entity.TeamTypeId = (int)TeamTypeId.MaintenanceTeam;
+            base.DtoToEntity(dto, entity);
             entity.Code = dto.Code;
             entity.IsActive = dto.IsActive;
             entity.IsApproved = dto.IsApproved;
@@ -220,29 +214,32 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Mappers
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
         public override Func<MaintenanceTeamDto, object[]> DtoToRecord(List<string> headerNames = null)
         {
-            return x => (new object[]
-            {
-                CSVString(x.Title),
-                CSVString(x.Code),
-                CSVBool(x.IsActive),
-                CSVBool(x.IsApproved),
-                CSVDateTime(x.FirstOperation),
-                CSVDateTime(x.LastOperation),
-                CSVDate(x.ApprovedDate),
-                CSVDate(x.NextOperation),
-                CSVTime(x.MaxTravelDuration),
-                CSVTime(x.MaxOperationDuration),
-                CSVNumber(x.OperationCount),
-                CSVNumber(x.IncidentCount),
-                CSVNumber(x.TotalOperationDuration),
-                CSVNumber(x.AverageOperationDuration),
-                CSVNumber(x.TotalTravelDuration),
-                CSVNumber(x.AverageTravelDuration),
-                CSVNumber(x.TotalOperationCost),
-                CSVNumber(x.AverageOperationCost),
-                CSVString(x.CurrentAirport.Display),
-                CSVString(x.CurrentCountry?.Display),
-            });
+            return x =>
+            [
+                .. base.DtoToRecord(headerNames)(x),
+                .. new object[]
+                {
+                    CSVString(x.Code),
+                    CSVBool(x.IsActive),
+                    CSVBool(x.IsApproved),
+                    CSVDateTime(x.FirstOperation),
+                    CSVDateTime(x.LastOperation),
+                    CSVDate(x.ApprovedDate),
+                    CSVDate(x.NextOperation),
+                    CSVTime(x.MaxTravelDuration),
+                    CSVTime(x.MaxOperationDuration),
+                    CSVNumber(x.OperationCount),
+                    CSVNumber(x.IncidentCount),
+                    CSVNumber(x.TotalOperationDuration),
+                    CSVNumber(x.AverageOperationDuration),
+                    CSVNumber(x.TotalTravelDuration),
+                    CSVNumber(x.AverageTravelDuration),
+                    CSVNumber(x.TotalOperationCost),
+                    CSVNumber(x.AverageOperationCost),
+                    CSVString(x.CurrentAirport.Display),
+                    CSVString(x.CurrentCountry?.Display),
+                },
+            ];
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
