@@ -329,7 +329,7 @@ const MyPreset = definePreset(Material, {
     },
     formField: {
       paddingX: '0.75rem',
-      paddingY: '0.2rem',
+      paddingY: '0.75rem',
       sm: {
         fontSize: '0.875rem',
         paddingX: '0.625rem',
@@ -349,6 +349,7 @@ const MyPreset = definePreset(Material, {
         shadow: 'none',
       },
       transitionDuration: '{transition.duration}',
+      background: 'transparent',
     },
     list: {
       padding: '0rem',
@@ -445,11 +446,11 @@ const MyPreset = definePreset(Material, {
           color: '{primary.500}',
         },
         formField: {
-          background: '{surface.0}',
-          disabledBackground: '{surface.200}',
-          filledBackground: 'transparent',
-          filledHoverBackground: 'transparent',
-          filledFocusBackground: 'transparent',
+          background: '{surface.50}',
+          disabledBackground: '{surface.100}',
+          filledBackground: '{surface.50}',
+          filledHoverBackground: '{surface.50}',
+          filledFocusBackground: '{surface.50}',
           borderColor: '{surface.300}',
           hoverBorderColor: '{surface.400}',
           focusBorderColor: '{primary.color}',
@@ -2464,7 +2465,7 @@ const MyPreset = definePreset(Material, {
       },
       in: {
         input: {
-          paddingTop: '0.9rem',
+          paddingTop: '{form.field.padding.y}',
           paddingBottom: '0.5rem',
         },
         active: {
@@ -3543,7 +3544,7 @@ const MyPreset = definePreset(Material, {
         invalidPlaceholderColor: '{form.field.invalid.placeholder.color}',
         shadow: '{form.field.shadow}',
         paddingX: '{form.field.padding.x}',
-        paddingY: '0.1rem',
+        paddingY: '{form.field.padding.y}',
         borderRadius: '{form.field.border.radius}',
         focusRing: {
           width: '{form.field.focus.ring.width}',
@@ -5279,7 +5280,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimationsAsync(),
     providePrimeNG({
-      inputStyle: 'filled',
+      inputStyle: 'outlined',
       theme: {
         preset: MyPreset,
         options: { darkModeSelector: '.dark-theme' },

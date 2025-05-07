@@ -3,7 +3,7 @@
     <div class="flex flex-row justify-content-center">
       <div class="app-field-container flex-1" style="max-width: 50%">
         <p-floatlabel
-          variant="in"
+          variant="on"
           *ngIf="useKeycloak !== true && domains.length > 1">
           <p-select
             [options]="domains"
@@ -19,7 +19,7 @@
       </div>
       <div class="app-field-container flex-1" style="max-width: 10%"></div>
       <div class="app-field-container flex-1" style="max-width: 30%">
-        <p-floatlabel variant="in">
+        <p-floatlabel variant="on">
           <p-select
             [options]="returnSizeOptions"
             placeholder="&nbsp;"
@@ -32,7 +32,7 @@
     </div>
     <div class="flex flex-row justify-content-center">
       <div class="app-field-container flex-1" style="max-width: 90%">
-        <p-floatlabel variant="in">
+        <p-floatlabel variant="on">
           <p-autoComplete
             [multiple]="true"
             formControlName="selectedUsers"

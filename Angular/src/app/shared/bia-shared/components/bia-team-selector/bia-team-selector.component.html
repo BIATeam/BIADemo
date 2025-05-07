@@ -3,6 +3,7 @@
     >{{ teamType.label | translate }} :
   </label>
   <p-select
+    [class]="'p-variant-filled'"
     *ngIf="displayTeamList === true"
     [options]="teams"
     [(ngModel)]="currentTeam"
@@ -30,6 +31,7 @@
   <!-- Role selection -->
   <p-select
     *ngIf="displayRoleList"
+    [class]="'p-variant-filled'"
     [options]="roles"
     [(ngModel)]="currentRole"
     optionLabel="display"
@@ -41,6 +43,7 @@
   </p-select>
   <p-multiSelect
     *ngIf="displayRoleMultiSelect"
+    [class]="'p-variant-filled'"
     [options]="roles"
     [(ngModel)]="currentRoles"
     optionLabel="display"

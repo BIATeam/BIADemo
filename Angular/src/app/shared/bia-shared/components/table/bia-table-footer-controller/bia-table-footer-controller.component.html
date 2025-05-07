@@ -9,6 +9,7 @@
   <div *ngIf="canChangePageSize">
     <span>{{ 'bia.itemsPerPage' | translate }} : </span>
     <p-select
+      [class]="'p-variant-filled'"
       [options]="pageSizes"
       [(ngModel)]="pageSize"
       (onChange)="onPageSizeChange()"
