@@ -8,7 +8,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany
     using BIA.Net.Core.Domain.Dto.User;
 
     /// <summary>
-    /// The DTO used to represent a AircraftMaintenanceCompany.
+    /// The DTO used to represent an aircraft maintenance company.
     /// </summary>
 #pragma warning disable S2094 // Classes should not be empty
     public class AircraftMaintenanceCompanyDto : TeamDto

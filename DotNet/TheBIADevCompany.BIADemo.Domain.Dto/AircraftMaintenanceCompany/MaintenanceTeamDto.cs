@@ -12,7 +12,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany
     using BIA.Net.Core.Domain.Dto.User;
 
     /// <summary>
-    /// The DTO used to represent a MaintenanceTeamDto.
+    /// The DTO used to represent a maintenance team.
     /// </summary>
     [BiaDtoClass(AncestorTeam = "AircraftMaintenanceCompany")]
     public class MaintenanceTeamDto : TeamDto
