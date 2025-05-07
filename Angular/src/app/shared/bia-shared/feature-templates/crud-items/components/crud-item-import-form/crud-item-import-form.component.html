@@ -15,7 +15,7 @@
     type="button"
     (click)="onApply()"></button>
   <ng-container *ngIf="hasDate === true">
-    <p-floatlabel variant="in">
+    <p-floatlabel variant="on">
       <p-select
         formControlName="dateFormat"
         [options]="dateFormats"
@@ -28,7 +28,7 @@
       <label>{{ 'import.dateFormat' | translate }}</label>
     </p-floatlabel>
 
-    <p-floatlabel variant="in">
+    <p-floatlabel variant="on">
       <p-select
         formControlName="timeFormat"
         [options]="timeFormats"

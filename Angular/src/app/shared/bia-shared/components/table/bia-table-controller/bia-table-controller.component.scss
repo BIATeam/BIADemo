@@ -9,20 +9,6 @@
   padding-right: 35px;
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
-}
-
-:host ::ng-deep {
-  // p-select {
-  //   .p-select-label {
-  //     padding: 0.125rem !important;
-  //   }
-  // }
-
-  // p-multiselect {
-  //   .p-multiselect-label {
-  //     padding: 0.125rem !important;
-  //   }
-  // }
 
   .bia-btn-del-filter {
     color: bia-variables.$biaRed !important;
@@ -48,23 +34,8 @@
   margin-top: 5px;
 }
 
-// .bia-table-controller-container > div {
-//   padding-left: 5px;
-//   padding-right: 5px;
-// }
-
 .options {
   padding-top: 20px;
-}
-
-strong {
-  font-family: 'oswald-bold';
-}
-
-input,
-span,
-label {
-  font-family: 'oswald-light';
 }
 
 .result {
@@ -118,7 +89,7 @@ label {
   left: 0;
   top: 100%;
   z-index: 10;
-  background-color: var(--surface-ground);
+  background-color: var(--active-menuitem-bg);
   box-shadow:
     0px 4px 5px rgba(0, 0, 0, 0.14),
     0px 4px 4px -1px rgba(0, 0, 0, 0.2);
