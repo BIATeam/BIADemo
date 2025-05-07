@@ -3,17 +3,15 @@
   width: 100%;
 }
 
-.bia-form-fields {
-  .bia-form-group {
-    margin-bottom: 0.5rem;
-    h6 {
-      margin: 0rem 0rem 0.5rem 0rem;
-    }
-    .bia-form-row {
-      margin-left: 0.5rem;
-    }
+.bia-form-group {
+  margin-bottom: 0.5rem;
+  h6 {
+    margin: 0rem 0rem 0.5rem 0rem;
   }
   .bia-form-row {
-    margin-bottom: -0.5rem;
+    margin-left: 0.5rem;
   }
+}
+.bia-form-row {
+  margin-bottom: -0.5rem;
 }

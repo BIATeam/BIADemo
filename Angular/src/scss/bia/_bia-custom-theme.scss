@@ -200,6 +200,10 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
 .table-compact bia-table-controller {
   padding-top: 0;
   padding-bottom: 0.25rem;
+
+  --p-multiselect-padding-y: 0.25rem;
+  --p-select-padding-y: 0.25rem;
+  --p-inputtext-padding-y: 0.25rem;
 }
 
 .p-button.p-button-icon-only {
@@ -330,10 +334,12 @@ p-table {
       width: 100%;
     }
     .p-inputtext {
-      padding: 0 !important;
+      padding-left: 0.25rem !important;
+      padding-right: 0.25rem !important;
     }
     .p-multiselect-label {
-      padding: 0 !important;
+      padding-left: 0.25rem !important;
+      padding-right: 0.25rem !important;
     }
   }
   .p-datatable-tbody,
@@ -344,8 +350,13 @@ p-table {
   }
 
   .p-select-label {
-    padding: 0rem var(--p-select-padding-x);
+    padding-left: 0.25rem !important;
+    padding-right: 0.25rem !important;
   }
+}
+
+bia-table-footer-controller .p-select-label {
+  padding: 0rem var(--p-select-padding-x);
 }
 
 p-date-picker.ng-invalid.ng-dirty .p-inputtext,
@@ -368,7 +379,7 @@ p-date-picker.ng-invalid.ng-dirty .p-inputtext,
 }
 
 bia-team-selector {
-  .p-multiselect {
+  .p-multiselect.p-variant-filled {
     min-width: 12.5em;
     background-image:
       linear-gradient(to bottom, white, white),
@@ -390,8 +401,10 @@ bia-team-selector {
       color: white !important;
     }
   }
-  .p-multiselect:not(.p-disabled) {
-    &:hover {
+  .p-multiselect.p-variant-filled:not(.p-disabled) {
+    &:hover,
+    &.p-focus {
+      background-color: transparent;
       background-image:
         linear-gradient(to bottom, white, white),
         linear-gradient(to bottom, white, white) !important;
@@ -403,7 +416,7 @@ bia-team-selector {
   .p-multiselect-label.p-placeholder {
     color: rgba(255, 255, 255, 0.6);
   }
-  .p-select {
+  .p-select.p-variant-filled {
     min-width: 12.5em;
     background-image:
       linear-gradient(to bottom, white, white),
@@ -425,8 +438,10 @@ bia-team-selector {
       color: white !important;
     }
   }
-  .p-select:not(.p-disabled) {
-    &:hover {
+  .p-select.p-variant-filled:not(.p-disabled) {
+    &:hover,
+    &.p-focus {
+      background-color: transparent;
       background-image:
         linear-gradient(to bottom, white, white),
         linear-gradient(to bottom, white, white) !important;
@@ -491,4 +506,17 @@ bia-table-controller {
 
 .bia-tooltip-large.p-tooltip .p-tooltip-text {
   width: 32rem;
+}
+
+.p-floatlabel-in .p-multiselect-label-container .p-multiselect-label {
+  padding-top: 0;
+}
+
+.p-datepicker-clear-icon,
+.p-inputnumber-clear-icon {
+  color: var(--p-form-field-icon-color);
+}
+
+.p-dialog-content form {
+  padding-top: 0.5rem;
 }

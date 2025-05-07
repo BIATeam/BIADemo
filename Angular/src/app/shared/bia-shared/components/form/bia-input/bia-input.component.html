@@ -8,7 +8,7 @@
   </ng-container>
   <ng-container [ngSwitch]="field.type" *ngIf="field.specificInput !== true">
     <ng-container *ngSwitchCase="'OneToMany'">
-      <p-floatlabel variant="in">
+      <p-floatlabel variant="on">
         <p-select
           [options]="getOptionDto(field.field)"
           placeholder="&nbsp;"
@@ -26,7 +26,7 @@
       </p-floatlabel>
     </ng-container>
     <ng-container *ngSwitchCase="'ManyToMany'">
-      <p-floatlabel variant="in">
+      <p-floatlabel variant="on">
         <p-multiSelect
           [formControlName]="field.field"
           [options]="getOptionDto(field.field)"
@@ -51,7 +51,7 @@
     </div>
     <ng-container *ngSwitchCase="'Number'">
       <p-floatlabel
-        variant="in"
+        variant="on"
         *ngIf="
           getDisplayNumberFormat(field.displayFormat);
           let displayNumberFormat
@@ -74,7 +74,7 @@
     </ng-container>
     <ng-container *ngSwitchCase="'Date'">
       <p-floatlabel
-        variant="in"
+        variant="on"
         *ngIf="
           getDisplayDateFormat(field.displayFormat);
           let displayDateFormat
@@ -96,7 +96,7 @@
     </ng-container>
     <ng-container *ngSwitchCase="'Time'">
       <p-floatlabel
-        variant="in"
+        variant="on"
         *ngIf="
           getDisplayDateFormat(field.displayFormat);
           let displayDateFormat
@@ -120,7 +120,7 @@
       </p-floatlabel>
     </ng-container>
     <ng-container *ngSwitchCase="'TimeOnly'">
-      <p-floatlabel variant="in">
+      <p-floatlabel variant="on">
         <p-date-picker
           [formControlName]="field.field"
           [showTime]="true"
@@ -140,7 +140,7 @@
       </p-floatlabel>
     </ng-container>
     <ng-container *ngSwitchCase="'TimeSecOnly'">
-      <p-floatlabel variant="in">
+      <p-floatlabel variant="on">
         <p-date-picker
           [formControlName]="field.field"
           [showTime]="true"
@@ -161,8 +161,8 @@
     </ng-container>
     <ng-container *ngSwitchCase="'DateTime'">
       <p-floatlabel
-        variant="in"
-        variant="in"
+        variant="on"
+        variant="on"
         *ngIf="
           getDisplayDateFormat(field.displayFormat);
           let displayDateFormat
@@ -184,7 +184,7 @@
       </p-floatlabel>
     </ng-container>
     <ng-container *ngSwitchDefault>
-      <p-floatlabel variant="in">
+      <p-floatlabel variant="on">
         <input
           [formControlName]="field.field"
           type="text"
