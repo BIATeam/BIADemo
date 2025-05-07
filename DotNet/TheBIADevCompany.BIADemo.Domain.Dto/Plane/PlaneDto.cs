@@ -5,6 +5,7 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
 {
+    using System;
     using System.Collections.Generic;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.CustomAttribute;
@@ -17,25 +18,31 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
     public class PlaneDto : BaseDto<int>
     {
         /// <summary>
-        /// Gets or sets the Manufacturer's Serial Number.
+        /// Gets or sets the site id.
+        /// </summary>
+        [BiaDtoField(Required = true, IsParent = true)]
+        public int SiteId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the msn.
         /// </summary>
         [BiaDtoField(Required = true)]
         public string Msn { get; set; }
 
         /// <summary>
-        /// Gets or sets the Manufacturer.
+        /// Gets or sets the manufacturer.
         /// </summary>
         [BiaDtoField(Required = false)]
         public string Manufacturer { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the plane is active.
+        /// Gets or sets a value indicating whether the Plane is active.
         /// </summary>
         [BiaDtoField(Required = true)]
         public bool IsActive { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the plane is on maintenance.
+        /// Gets or sets a value indicating whether the Plane is maintenance.
         /// </summary>
         [BiaDtoField(Required = false)]
         public bool? IsMaintenance { get; set; }
@@ -43,37 +50,37 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
         /// <summary>
         /// Gets or sets the first flight date.
         /// </summary>
-        [BiaDtoField(Type = "datetime", Required = true)]
+        [BiaDtoField(Required = true, Type = "datetime")]
         public DateTime FirstFlightDate { get; set; }
 
         /// <summary>
-        /// Gets or sets the last flight date and time.
+        /// Gets or sets the last flight date.
         /// </summary>
-        [BiaDtoField(Type = "datetime", Required = false)]
+        [BiaDtoField(Required = false, Type = "datetime")]
         public DateTime? LastFlightDate { get; set; }
 
         /// <summary>
         /// Gets or sets the delivery date.
         /// </summary>
-        [BiaDtoField(Type = "date", Required = false)]
+        [BiaDtoField(Required = false, Type = "date")]
         public DateTime? DeliveryDate { get; set; }
 
         /// <summary>
         /// Gets or sets the next maintenance date.
         /// </summary>
-        [BiaDtoField(Type = "date", Required = true)]
+        [BiaDtoField(Required = true, Type = "date")]
         public DateTime NextMaintenanceDate { get; set; }
 
         /// <summary>
-        /// Gets or sets the daily synchronisation hour.
+        /// Gets or sets the sync time.
         /// </summary>
-        [BiaDtoField(Type = "time", Required = false)]
+        [BiaDtoField(Required = false, Type = "time")]
         public string SyncTime { get; set; }
 
         /// <summary>
-        /// Gets or sets the daily synchronisation hour for flight data.
+        /// Gets or sets the sync flight data time.
         /// </summary>
-        [BiaDtoField(Type = "time", Required = true)]
+        [BiaDtoField(Required = true, Type = "time")]
         public string SyncFlightDataTime { get; set; }
 
         /// <summary>
@@ -89,7 +96,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
         public int? MotorsCount { get; set; }
 
         /// <summary>
-        /// Gets or sets the total of flight hours.
+        /// Gets or sets the total flight hours.
         /// </summary>
         [BiaDtoField(Required = true)]
         public double TotalFlightHours { get; set; }
@@ -107,7 +114,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
         public float FuelCapacity { get; set; }
 
         /// <summary>
-        /// Gets or sets the fuelLevel.
+        /// Gets or sets the fuel level.
         /// </summary>
         [BiaDtoField(Required = false)]
         public float? FuelLevel { get; set; }
@@ -125,33 +132,27 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
         public decimal? EstimatedPrice { get; set; }
 
         /// <summary>
-        /// Gets or sets the site.
+        /// Gets or sets the plane type.
         /// </summary>
-        [BiaDtoField(IsParent = true, Required = true)]
-        public int SiteId { get; set; }
+        [BiaDtoField(Required = false, ItemType = "PlaneType")]
+        public OptionDto PlaneType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of similar types.
+        /// </summary>
+        [BiaDtoField(Required = false, ItemType = "PlaneType")]
+        public ICollection<OptionDto> SimilarTypes { get; set; }
+
+        /// <summary>
+        /// Gets or sets the current airport.
+        /// </summary>
+        [BiaDtoField(Required = true, ItemType = "Airport")]
+        public OptionDto CurrentAirport { get; set; }
 
         /// <summary>
         /// Gets or sets the list of connecting airports.
         /// </summary>
-        [BiaDtoField(ItemType = "Airport", Required = true)]
+        [BiaDtoField(Required = true, ItemType = "Airport")]
         public ICollection<OptionDto> ConnectingAirports { get; set; }
-
-        /// <summary>
-        /// Gets or sets the plane type title.
-        /// </summary>
-        [BiaDtoField(ItemType = "PlaneType")]
-        public OptionDto PlaneType { get; set; }
-
-        /// <summary>
-        /// Gets or sets the list of similar plane types.
-        /// </summary>
-        [BiaDtoField(ItemType = "PlaneType")]
-        public ICollection<OptionDto> SimilarTypes { get; set; }
-
-        /// <summary>
-        /// Gets or sets the current airport title.
-        /// </summary>
-        [BiaDtoField(ItemType = "Airport", Required = true)]
-        public OptionDto CurrentAirport { get; set; }
     }
 }

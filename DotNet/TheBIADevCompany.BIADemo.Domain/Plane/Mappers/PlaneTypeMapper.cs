@@ -90,17 +90,17 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
         public struct HeaderName
         {
             /// <summary>
-            /// Header name for Id.
+            /// Header name for id.
             /// </summary>
             public const string Id = "id";
 
             /// <summary>
-            /// Header name for Title.
+            /// Header name for title.
             /// </summary>
             public const string Title = "title";
 
             /// <summary>
-            /// Header name for Certification Date.
+            /// Header name for certification date.
             /// </summary>
             public const string CertificationDate = "certificationDate";
         }

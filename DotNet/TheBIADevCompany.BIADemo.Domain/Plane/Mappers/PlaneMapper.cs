@@ -369,122 +369,122 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
         public struct HeaderName
         {
             /// <summary>
-            /// Header name for Site Id.
+            /// Header name for site id.
             /// </summary>
             public const string SiteId = "siteId";
 
             /// <summary>
-            /// Header name for Id.
+            /// Header name for id.
             /// </summary>
             public const string Id = "id";
 
             /// <summary>
-            /// Header name for Msn.
+            /// Header name for msn.
             /// </summary>
             public const string Msn = "msn";
 
             /// <summary>
-            /// Header name for Manufacturer.
+            /// Header name for manufacturer.
             /// </summary>
             public const string Manufacturer = "manufacturer";
 
             /// <summary>
-            /// Header name for Is Active.
+            /// Header name for is active.
             /// </summary>
             public const string IsActive = "isActive";
 
             /// <summary>
-            /// Header name for Is Maintenance.
+            /// Header name for is maintenance.
             /// </summary>
             public const string IsMaintenance = "isMaintenance";
 
             /// <summary>
-            /// Header name for First Flight Date.
+            /// Header name for first flight date.
             /// </summary>
             public const string FirstFlightDate = "firstFlightDate";
 
             /// <summary>
-            /// Header name for Last Flight Date.
+            /// Header name for last flight date.
             /// </summary>
             public const string LastFlightDate = "lastFlightDate";
 
             /// <summary>
-            /// Header name for Delivery Date.
+            /// Header name for delivery date.
             /// </summary>
             public const string DeliveryDate = "deliveryDate";
 
             /// <summary>
-            /// Header name for Next Maintenance Date.
+            /// Header name for next maintenance date.
             /// </summary>
             public const string NextMaintenanceDate = "nextMaintenanceDate";
 
             /// <summary>
-            /// Header name for Sync Time.
+            /// Header name for sync time.
             /// </summary>
             public const string SyncTime = "syncTime";
 
             /// <summary>
-            /// Header name for Sync Flight Data Time.
+            /// Header name for sync flight data time.
             /// </summary>
             public const string SyncFlightDataTime = "syncFlightDataTime";
 
             /// <summary>
-            /// Header name for Capacity.
+            /// Header name for capacity.
             /// </summary>
             public const string Capacity = "capacity";
 
             /// <summary>
-            /// Header name for Motors Count.
+            /// Header name for motors count.
             /// </summary>
             public const string MotorsCount = "motorsCount";
 
             /// <summary>
-            /// Header name for Total Flight Hours.
+            /// Header name for total flight hours.
             /// </summary>
             public const string TotalFlightHours = "totalFlightHours";
 
             /// <summary>
-            /// Header name for Probability.
+            /// Header name for probability.
             /// </summary>
             public const string Probability = "probability";
 
             /// <summary>
-            /// Header name for Fuel Capacity.
+            /// Header name for fuel capacity.
             /// </summary>
             public const string FuelCapacity = "fuelCapacity";
 
             /// <summary>
-            /// Header name for Fuel Level.
+            /// Header name for fuel level.
             /// </summary>
             public const string FuelLevel = "fuelLevel";
 
             /// <summary>
-            /// Header name for Original Price.
+            /// Header name for original price.
             /// </summary>
             public const string OriginalPrice = "originalPrice";
 
             /// <summary>
-            /// Header name for Estimated Price.
+            /// Header name for estimated price.
             /// </summary>
             public const string EstimatedPrice = "estimatedPrice";
 
             /// <summary>
-            /// Header name for Plane Type.
+            /// Header name for plane type.
             /// </summary>
             public const string PlaneType = "planeType";
 
             /// <summary>
-            /// Header name for Similar Types.
+            /// Header name for similar types.
             /// </summary>
             public const string SimilarTypes = "similarTypes";
 
             /// <summary>
-            /// Header name for Current Airport.
+            /// Header name for current airport.
             /// </summary>
             public const string CurrentAirport = "currentAirport";
 
             /// <summary>
-            /// Header name for Connecting Airports.
+            /// Header name for connecting airports.
             /// </summary>
             public const string ConnectingAirports = "connectingAirports";
         }
