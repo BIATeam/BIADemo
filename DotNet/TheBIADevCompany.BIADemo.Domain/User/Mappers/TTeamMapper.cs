@@ -115,10 +115,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         /// <param name="entity">The entity to update.</param>
         public override void DtoToEntity(TTeamDto dto, TTeam entity)
         {
-            if (entity == null)
-            {
-                entity = new TTeam();
-            }
+            entity ??= new TTeam();
 
             entity.Id = dto.Id;
             entity.Title = dto.Title;

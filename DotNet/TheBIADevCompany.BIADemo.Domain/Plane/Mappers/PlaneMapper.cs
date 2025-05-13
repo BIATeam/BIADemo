@@ -28,7 +28,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
             {
                 return new ExpressionCollection<Plane>
                 {
-                    { HeaderName.SiteId, plane => plane.SiteId },
                     { HeaderName.Id, plane => plane.Id },
                     { HeaderName.Msn, plane => plane.Msn },
                     { HeaderName.Manufacturer, plane => plane.Manufacturer },
@@ -96,7 +95,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
             entity.PlaneTypeId = dto.PlaneType?.Id;
 
             // Map relationship *-* : SimilarTypes
-            if (dto.SimilarTypes?.Count != 0)
+            if (dto.SimilarTypes != null && dto.SimilarTypes.Count != 0)
             {
                 foreach (var similarTypeDto in dto.SimilarTypes.Where(x => x.DtoState == DtoState.Deleted))
                 {
@@ -122,7 +121,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
             entity.CurrentAirportId = dto.CurrentAirport.Id;
 
             // Map relationship *-* : ConnectingAirports
-            if (dto.ConnectingAirports?.Count != 0)
+            if (dto.ConnectingAirports != null && dto.ConnectingAirports.Count != 0)
             {
                 foreach (var connectingAirportDto in dto.ConnectingAirports.Where(x => x.DtoState == DtoState.Deleted))
                 {
@@ -192,12 +191,11 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
                 }).OrderBy(x => x.Display).ToList(),
 
                 // Map relationship 1-* : CurrentAirport
-                CurrentAirport = entity.CurrentAirport != null ? new OptionDto
+                CurrentAirport = new OptionDto
                 {
                     Id = entity.CurrentAirport.Id,
                     Display = entity.CurrentAirport.Name,
-                }
-                : null,
+                },
 
                 // Map relationship *-* : ConnectingAirports
                 ConnectingAirports = entity.ConnectingAirports.Select(x => new OptionDto
@@ -220,11 +218,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
                 {
                     foreach (string headerName in headerNames)
                     {
-                        if (string.Equals(headerName, HeaderName.SiteId, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.SiteId));
-                        }
-
                         if (string.Equals(headerName, HeaderName.Id, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVNumber(x.Id));

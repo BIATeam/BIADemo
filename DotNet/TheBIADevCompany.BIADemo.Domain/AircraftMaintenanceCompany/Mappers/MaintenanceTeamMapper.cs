@@ -21,7 +21,7 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Mappers
     using TheBIADevCompany.BIADemo.Domain.User.Mappers;
 
     /// <summary>
-    /// The mapper used for AircraftMaintenanceCompany.
+    /// The mapper used for MaintenanceTeam.
     /// </summary>
     public class MaintenanceTeamMapper : TTeamMapper<MaintenanceTeamDto, MaintenanceTeam>
     {
@@ -40,33 +40,31 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Mappers
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
         public override ExpressionCollection<MaintenanceTeam> ExpressionCollection
         {
-            // It is not necessary to implement this function if you to not use the mapper for filtered list. In BIADemo it is use only for Calc SpreadSheet.
             get
             {
                 return new ExpressionCollection<MaintenanceTeam>(base.ExpressionCollection)
                 {
-                    { "AircraftMaintenanceCompany", maintenanceTeam => maintenanceTeam.AircraftMaintenanceCompany.Title },
-                    { "Code", maintenanceTeam => maintenanceTeam.Code },
-                    { "IsActive", maintenanceTeam => maintenanceTeam.IsActive },
-                    { "IsApproved", maintenanceTeam => maintenanceTeam.IsApproved },
-                    { "FirstOperation", maintenanceTeam => maintenanceTeam.FirstOperation },
-                    { "LastOperation", maintenanceTeam => maintenanceTeam.LastOperation },
-                    { "ApprovedDate", maintenanceTeam => maintenanceTeam.ApprovedDate },
-                    { "NextOperation", maintenanceTeam => maintenanceTeam.NextOperation },
-                    { "MaxTravelDuration", maintenanceTeam => maintenanceTeam.MaxTravelDuration },
-                    { "MaxOperationDuration", maintenanceTeam => maintenanceTeam.MaxOperationDuration },
-                    { "OperationCount", maintenanceTeam => maintenanceTeam.OperationCount },
-                    { "IncidentCount", maintenanceTeam => maintenanceTeam.IncidentCount },
-                    { "TotalOperationDuration", maintenanceTeam => maintenanceTeam.TotalOperationDuration },
-                    { "AverageOperationDuration", maintenanceTeam => maintenanceTeam.AverageOperationDuration },
-                    { "TotalTravelDuration", maintenanceTeam => maintenanceTeam.TotalTravelDuration },
-                    { "AverageTravelDuration", maintenanceTeam => maintenanceTeam.AverageTravelDuration },
-                    { "TotalOperationCost", maintenanceTeam => maintenanceTeam.TotalOperationCost },
-                    { "AverageOperationCost", maintenanceTeam => maintenanceTeam.AverageOperationCost },
-                    { "CurrentAirport", maintenanceTeam => maintenanceTeam.CurrentAirport != null ? maintenanceTeam.CurrentAirport.Name : null },
-                    { "OperationAirports", maintenanceTeam => maintenanceTeam.OperationAirports.Select(x => x.Name).OrderBy(x => x) },
-                    { "CurrentCountry", maintenanceTeam => maintenanceTeam.CurrentCountry != null ? maintenanceTeam.CurrentCountry.Name : null },
-                    { "OperationCountries", maintenanceTeam => maintenanceTeam.OperationCountries.Select(x => x.Name).OrderBy(x => x) },
+                    { HeaderName.Code, maintenanceTeam => maintenanceTeam.Code },
+                    { HeaderName.IsActive, maintenanceTeam => maintenanceTeam.IsActive },
+                    { HeaderName.IsApproved, maintenanceTeam => maintenanceTeam.IsApproved },
+                    { HeaderName.FirstOperation, maintenanceTeam => maintenanceTeam.FirstOperation },
+                    { HeaderName.LastOperation, maintenanceTeam => maintenanceTeam.LastOperation },
+                    { HeaderName.ApprovedDate, maintenanceTeam => maintenanceTeam.ApprovedDate },
+                    { HeaderName.NextOperation, maintenanceTeam => maintenanceTeam.NextOperation },
+                    { HeaderName.MaxTravelDuration, maintenanceTeam => maintenanceTeam.MaxTravelDuration },
+                    { HeaderName.MaxOperationDuration, maintenanceTeam => maintenanceTeam.MaxOperationDuration },
+                    { HeaderName.OperationCount, maintenanceTeam => maintenanceTeam.OperationCount },
+                    { HeaderName.IncidentCount, maintenanceTeam => maintenanceTeam.IncidentCount },
+                    { HeaderName.TotalOperationDuration, maintenanceTeam => maintenanceTeam.TotalOperationDuration },
+                    { HeaderName.AverageOperationDuration, maintenanceTeam => maintenanceTeam.AverageOperationDuration },
+                    { HeaderName.TotalTravelDuration, maintenanceTeam => maintenanceTeam.TotalTravelDuration },
+                    { HeaderName.AverageTravelDuration, maintenanceTeam => maintenanceTeam.AverageTravelDuration },
+                    { HeaderName.TotalOperationCost, maintenanceTeam => maintenanceTeam.TotalOperationCost },
+                    { HeaderName.AverageOperationCost, maintenanceTeam => maintenanceTeam.AverageOperationCost },
+                    { HeaderName.CurrentAirport, maintenanceTeam => maintenanceTeam.CurrentAirport != null ? maintenanceTeam.CurrentAirport.Name : null },
+                    { HeaderName.OperationAirports, maintenanceTeam => maintenanceTeam.OperationAirports.Select(x => x.Name).OrderBy(x => x) },
+                    { HeaderName.CurrentCountry, maintenanceTeam => maintenanceTeam.CurrentCountry != null ? maintenanceTeam.CurrentCountry.Name : null },
+                    { HeaderName.OperationCountries, maintenanceTeam => maintenanceTeam.OperationCountries.Select(x => x.Name).OrderBy(x => x) },
                 };
             }
         }
@@ -75,6 +73,13 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Mappers
         public override void DtoToEntity(MaintenanceTeamDto dto, MaintenanceTeam entity)
         {
             base.DtoToEntity(dto, entity);
+
+            // Map parent relationship 1-* : AircraftMaintenanceCompanyId
+            if (dto.AircraftMaintenanceCompanyId != 0)
+            {
+                entity.AircraftMaintenanceCompanyId = dto.AircraftMaintenanceCompanyId;
+            }
+
             entity.Code = dto.Code;
             entity.IsActive = dto.IsActive;
             entity.IsApproved = dto.IsApproved;
@@ -88,59 +93,60 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Mappers
             entity.IncidentCount = dto.IncidentCount;
             entity.TotalOperationDuration = dto.TotalOperationDuration;
             entity.AverageOperationDuration = dto.AverageOperationDuration;
-            entity.TotalOperationCost = dto.TotalOperationCost;
-            entity.AverageOperationCost = dto.AverageOperationCost;
             entity.TotalTravelDuration = dto.TotalTravelDuration;
             entity.AverageTravelDuration = dto.AverageTravelDuration;
+            entity.TotalOperationCost = dto.TotalOperationCost;
+            entity.AverageOperationCost = dto.AverageOperationCost;
 
-            // Mapping relationship 1-* : AircraftMaintenanceCompany
-            if (dto.AircraftMaintenanceCompanyId != 0)
-            {
-                entity.AircraftMaintenanceCompanyId = dto.AircraftMaintenanceCompanyId;
-            }
-
-            // Mapping relationship 0..1-* : Country
-            entity.CurrentCountryId = dto.CurrentCountry?.Id;
-
-            // Mapping relationship 0..1-* : Airport
+            // Map relationship 1-* : CurrentAirport
             entity.CurrentAirportId = dto.CurrentAirport.Id;
 
-            // Mapping relationship *-* : ICollection<OptionDto> OperationAirports
-            if (dto.OperationAirports != null && dto.OperationAirports?.Any() == true)
+            // Map relationship *-* : OperationAirports
+            if (dto.OperationAirports != null && dto.OperationAirports.Count != 0)
             {
-                foreach (var airportDto in dto.OperationAirports.Where(x => x.DtoState == DtoState.Deleted))
+                foreach (var operationAirportDto in dto.OperationAirports.Where(x => x.DtoState == DtoState.Deleted))
                 {
-                    var connectingAirport = entity.OperationAirports.FirstOrDefault(x => x.Id == airportDto.Id);
-                    if (connectingAirport != null)
+                    var operationAirport = entity.OperationAirports.FirstOrDefault(x => x.Id == operationAirportDto.Id);
+                    if (operationAirport != null)
                     {
-                        entity.OperationAirports.Remove(connectingAirport);
+                        entity.OperationAirports.Remove(operationAirport);
                     }
                 }
 
                 entity.OperationMaintenanceTeamAirports = entity.OperationMaintenanceTeamAirports ?? new List<MaintenanceTeamAirport>();
-                foreach (var airportDto in dto.OperationAirports.Where(w => w.DtoState == DtoState.Added))
+                foreach (var operationAirportDto in dto.OperationAirports.Where(x => x.DtoState == DtoState.Added))
                 {
                     entity.OperationMaintenanceTeamAirports.Add(new MaintenanceTeamAirport
-                    { AirportId = airportDto.Id, MaintenanceTeamId = dto.Id });
+                    {
+                        AirportId = operationAirportDto.Id,
+                        MaintenanceTeamId = dto.Id,
+                    });
                 }
             }
 
-            if (dto.OperationCountries != null && dto.OperationCountries?.Any() == true)
+            // Map relationship 0..1-* : CurrentCountry
+            entity.CurrentCountryId = dto.CurrentCountry?.Id;
+
+            // Map relationship *-* : OperationCountries
+            if (dto.OperationCountries != null && dto.OperationCountries.Count != 0)
             {
-                foreach (var planeTypeDto in dto.OperationCountries.Where(x => x.DtoState == DtoState.Deleted))
+                foreach (var operationCountryDto in dto.OperationCountries.Where(x => x.DtoState == DtoState.Deleted))
                 {
-                    var similarType = entity.OperationCountries.FirstOrDefault(x => x.Id == planeTypeDto.Id);
-                    if (similarType != null)
+                    var operationCountry = entity.OperationCountries.FirstOrDefault(x => x.Id == operationCountryDto.Id);
+                    if (operationCountry != null)
                     {
-                        entity.OperationCountries.Remove(similarType);
+                        entity.OperationCountries.Remove(operationCountry);
                     }
                 }
 
                 entity.OperationMaintenanceTeamCountries = entity.OperationMaintenanceTeamCountries ?? new List<MaintenanceTeamCountry>();
-                foreach (var countryDto in dto.OperationCountries.Where(w => w.DtoState == DtoState.Added))
+                foreach (var operationCountryDto in dto.OperationCountries.Where(x => x.DtoState == DtoState.Added))
                 {
                     entity.OperationMaintenanceTeamCountries.Add(new MaintenanceTeamCountry
-                    { CountryId = countryDto.Id, MaintenanceTeamId = dto.Id });
+                    {
+                        CountryId = operationCountryDto.Id,
+                        MaintenanceTeamId = dto.Id,
+                    });
                 }
             }
         }
@@ -148,28 +154,55 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Mappers
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
         public override Expression<Func<MaintenanceTeam, MaintenanceTeamDto>> EntityToDto()
         {
-            return base.EntityToDto().CombineMapping(x => new MaintenanceTeamDto
+            return base.EntityToDto().CombineMapping(entity => new MaintenanceTeamDto
             {
-                Code = x.Code,
-                IsActive = x.IsActive,
-                IsApproved = x.IsApproved,
-                FirstOperation = x.FirstOperation,
-                LastOperation = x.LastOperation,
-                ApprovedDate = x.ApprovedDate,
-                NextOperation = x.NextOperation,
-                MaxTravelDuration = x.MaxTravelDuration.Value.ToString(@"hh\:mm\:ss"),
-                MaxOperationDuration = x.MaxOperationDuration.ToString(@"hh\:mm\:ss"),
-                OperationCount = x.OperationCount,
-                IncidentCount = x.IncidentCount,
-                TotalOperationDuration = x.TotalOperationDuration,
-                AverageOperationDuration = x.AverageOperationDuration,
-                TotalTravelDuration = x.TotalTravelDuration,
-                AverageTravelDuration = x.AverageTravelDuration,
-                TotalOperationCost = x.TotalOperationCost,
-                AverageOperationCost = x.AverageOperationCost,
+                AircraftMaintenanceCompanyId = entity.AircraftMaintenanceCompanyId,
+                Code = entity.Code,
+                IsActive = entity.IsActive,
+                IsApproved = entity.IsApproved,
+                FirstOperation = entity.FirstOperation,
+                LastOperation = entity.LastOperation,
+                ApprovedDate = entity.ApprovedDate,
+                NextOperation = entity.NextOperation,
+                MaxTravelDuration = entity.MaxTravelDuration.Value.ToString(@"hh\:mm\:ss"),
+                MaxOperationDuration = entity.MaxOperationDuration.ToString(@"hh\:mm\:ss"),
+                OperationCount = entity.OperationCount,
+                IncidentCount = entity.IncidentCount,
+                TotalOperationDuration = entity.TotalOperationDuration,
+                AverageOperationDuration = entity.AverageOperationDuration,
+                TotalTravelDuration = entity.TotalTravelDuration,
+                AverageTravelDuration = entity.AverageTravelDuration,
+                TotalOperationCost = entity.TotalOperationCost,
+                AverageOperationCost = entity.AverageOperationCost,
 
-                // Mapping relationship 1-* : AircraftMaintenanceCompany
-                AircraftMaintenanceCompanyId = x.AircraftMaintenanceCompanyId,
+                // Map relationship 1-* : CurrentAirport
+                CurrentAirport = new OptionDto
+                {
+                    Id = entity.CurrentAirport.Id,
+                    Display = entity.CurrentAirport.Name,
+                },
+
+                // Map relationship *-* : OperationAirports
+                OperationAirports = entity.OperationAirports.Select(x => new OptionDto
+                {
+                    Id = x.Id,
+                    Display = x.Name,
+                }).OrderBy(x => x.Display).ToList(),
+
+                // Map relationship 0..1-* : CurrentCountry
+                CurrentCountry = entity.CurrentCountry != null ? new OptionDto
+                {
+                    Id = entity.CurrentCountry.Id,
+                    Display = entity.CurrentCountry.Name,
+                }
+                : null,
+
+                // Map relationship *-* : OperationCountries
+                OperationCountries = entity.OperationCountries.Select(x => new OptionDto
+                {
+                    Id = x.Id,
+                    Display = x.Name,
+                }).OrderBy(x => x.Display).ToList(),
 
                 // Should correspond to MaintenanceTeam_Update permission (but without use the roles *_Member that is not determined at list display)
                 CanUpdate =
@@ -179,35 +212,8 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Mappers
                 // Should correspond to MaintenanceTeam_Member_List_Access (but without use the roles *_Member that is not determined at list display)
                 CanMemberListAccess =
                     this.UserRoleIds.Contains((int)RoleId.Admin) ||
-                    x.AircraftMaintenanceCompany.Members.Any(m => m.UserId == this.UserId) ||
-                    x.Members.Any(m => m.UserId == this.UserId),
-
-                // Mapping relationship 0..1-* : Country
-                CurrentCountry = x.CurrentCountry != null ? new OptionDto
-                {
-                    Id = x.CurrentCountry.Id,
-                    Display = x.CurrentCountry.Name,
-                }
-                : null,
-
-                CurrentAirport = new OptionDto
-                {
-                    Id = x.CurrentAirport.Id,
-                    Display = x.CurrentAirport.Name,
-                },
-
-                // Mapping relationship *-* : ICollection<Airports>
-                OperationAirports = x.OperationAirports.Select(ca => new OptionDto
-                {
-                    Id = ca.Id,
-                    Display = ca.Name,
-                }).OrderBy(x => x.Display).ToList(),
-
-                OperationCountries = x.OperationCountries.Select(ca => new OptionDto
-                {
-                    Id = ca.Id,
-                    Display = ca.Name,
-                }).OrderBy(x => x.Display).ToList(),
+                    entity.AircraftMaintenanceCompany.Members.Any(m => m.UserId == this.UserId) ||
+                    entity.Members.Any(m => m.UserId == this.UserId),
             });
         }
 
@@ -215,37 +221,244 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Mappers
         public override Func<MaintenanceTeamDto, object[]> DtoToRecord(List<string> headerNames = null)
         {
             return x =>
-            [
-                .. base.DtoToRecord(headerNames)(x),
-                .. new object[]
+            {
+                List<object> records = [.. base.DtoToRecord(headerNames)(x)];
+
+                if (headerNames?.Any() == true)
                 {
-                    CSVString(x.Code),
-                    CSVBool(x.IsActive),
-                    CSVBool(x.IsApproved),
-                    CSVDateTime(x.FirstOperation),
-                    CSVDateTime(x.LastOperation),
-                    CSVDate(x.ApprovedDate),
-                    CSVDate(x.NextOperation),
-                    CSVTime(x.MaxTravelDuration),
-                    CSVTime(x.MaxOperationDuration),
-                    CSVNumber(x.OperationCount),
-                    CSVNumber(x.IncidentCount),
-                    CSVNumber(x.TotalOperationDuration),
-                    CSVNumber(x.AverageOperationDuration),
-                    CSVNumber(x.TotalTravelDuration),
-                    CSVNumber(x.AverageTravelDuration),
-                    CSVNumber(x.TotalOperationCost),
-                    CSVNumber(x.AverageOperationCost),
-                    CSVString(x.CurrentAirport.Display),
-                    CSVString(x.CurrentCountry?.Display),
-                },
-            ];
+                    foreach (string headerName in headerNames)
+                    {
+                        if (string.Equals(headerName, HeaderName.Code, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVString(x.Code));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.IsActive, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVBool(x.IsActive));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.IsApproved, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVBool(x.IsApproved));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.FirstOperation, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVDateTime(x.FirstOperation));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.LastOperation, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVDateTime(x.LastOperation));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.ApprovedDate, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVDate(x.ApprovedDate));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.NextOperation, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVDate(x.NextOperation));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.MaxTravelDuration, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVTime(x.MaxTravelDuration));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.MaxOperationDuration, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVTime(x.MaxOperationDuration));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.OperationCount, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVNumber(x.OperationCount));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.IncidentCount, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVNumber(x.IncidentCount));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.TotalOperationDuration, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVNumber(x.TotalOperationDuration));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.AverageOperationDuration, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVNumber(x.AverageOperationDuration));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.TotalTravelDuration, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVNumber(x.TotalTravelDuration));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.AverageTravelDuration, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVNumber(x.AverageTravelDuration));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.TotalOperationCost, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVNumber(x.TotalOperationCost));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.AverageOperationCost, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVNumber(x.AverageOperationCost));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.CurrentAirport, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVString(x.CurrentAirport?.Display));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.OperationAirports, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVList(x.OperationAirports));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.CurrentCountry, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVString(x.CurrentCountry?.Display));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.OperationCountries, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVList(x.OperationCountries));
+                        }
+                    }
+                }
+
+                return records.ToArray();
+            };
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
         public override Expression<Func<MaintenanceTeam, object>>[] IncludesForUpdate()
         {
             return new Expression<Func<MaintenanceTeam, object>>[] { x => x.OperationAirports, x => x.OperationCountries };
+        }
+
+        /// <summary>
+        /// Header names.
+        /// </summary>
+        public struct HeaderName
+        {
+            /// <summary>
+            /// Header name for aircraft maintenance company id.
+            /// </summary>
+            public const string AircraftMaintenanceCompanyId = "aircraftMaintenanceCompanyId";
+
+            /// <summary>
+            /// Header name for code.
+            /// </summary>
+            public const string Code = "code";
+
+            /// <summary>
+            /// Header name for is active.
+            /// </summary>
+            public const string IsActive = "isActive";
+
+            /// <summary>
+            /// Header name for is approved.
+            /// </summary>
+            public const string IsApproved = "isApproved";
+
+            /// <summary>
+            /// Header name for first operation.
+            /// </summary>
+            public const string FirstOperation = "firstOperation";
+
+            /// <summary>
+            /// Header name for last operation.
+            /// </summary>
+            public const string LastOperation = "lastOperation";
+
+            /// <summary>
+            /// Header name for approved date.
+            /// </summary>
+            public const string ApprovedDate = "approvedDate";
+
+            /// <summary>
+            /// Header name for next operation.
+            /// </summary>
+            public const string NextOperation = "nextOperation";
+
+            /// <summary>
+            /// Header name for max travel duration.
+            /// </summary>
+            public const string MaxTravelDuration = "maxTravelDuration";
+
+            /// <summary>
+            /// Header name for max operation duration.
+            /// </summary>
+            public const string MaxOperationDuration = "maxOperationDuration";
+
+            /// <summary>
+            /// Header name for operation count.
+            /// </summary>
+            public const string OperationCount = "operationCount";
+
+            /// <summary>
+            /// Header name for incident count.
+            /// </summary>
+            public const string IncidentCount = "incidentCount";
+
+            /// <summary>
+            /// Header name for total operation duration.
+            /// </summary>
+            public const string TotalOperationDuration = "totalOperationDuration";
+
+            /// <summary>
+            /// Header name for average operation duration.
+            /// </summary>
+            public const string AverageOperationDuration = "averageOperationDuration";
+
+            /// <summary>
+            /// Header name for total travel duration.
+            /// </summary>
+            public const string TotalTravelDuration = "totalTravelDuration";
+
+            /// <summary>
+            /// Header name for average travel duration.
+            /// </summary>
+            public const string AverageTravelDuration = "averageTravelDuration";
+
+            /// <summary>
+            /// Header name for total operation cost.
+            /// </summary>
+            public const string TotalOperationCost = "totalOperationCost";
+
+            /// <summary>
+            /// Header name for average operation cost.
+            /// </summary>
+            public const string AverageOperationCost = "averageOperationCost";
+
+            /// <summary>
+            /// Header name for current airport.
+            /// </summary>
+            public const string CurrentAirport = "currentAirport";
+
+            /// <summary>
+            /// Header name for operation airports.
+            /// </summary>
+            public const string OperationAirports = "operationAirports";
+
+            /// <summary>
+            /// Header name for current country.
+            /// </summary>
+            public const string CurrentCountry = "currentCountry";
+
+            /// <summary>
+            /// Header name for operation countries.
+            /// </summary>
+            public const string OperationCountries = "operationCountries";
         }
     }
 }

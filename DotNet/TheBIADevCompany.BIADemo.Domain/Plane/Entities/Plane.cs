@@ -64,13 +64,13 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Entities
         public DateTime NextMaintenanceDate { get; set; }
 
         /// <summary>
-        /// Gets or sets the daily synchronisation hour.
+        /// Gets or sets the daily synchronization hour.
         /// </summary>
         [Column(TypeName = "time")]
         public TimeSpan? SyncTime { get; set; }
 
         /// <summary>
-        /// Gets or sets the daily synchronisation hour for flight data.
+        /// Gets or sets the daily synchronization hour for flight data.
         /// </summary>
         [Column(TypeName = "time")]
         public TimeSpan SyncFlightDataTime { get; set; }

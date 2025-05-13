@@ -16,11 +16,20 @@ namespace BIA.Net.Core.Domain
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     public class ExpressionCollection<TEntity> : BiaDictionary<LambdaExpression>
     {
-        public ExpressionCollection() : base()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExpressionCollection{TEntity}"/> class.
+        /// </summary>
+        public ExpressionCollection()
+            : base()
         {
         }
 
-        public ExpressionCollection(ExpressionCollection<TEntity> initial) : base()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExpressionCollection{TEntity}"/> class.
+        /// </summary>
+        /// <param name="initial">The initial.</param>
+        public ExpressionCollection(ExpressionCollection<TEntity> initial)
+            : base()
         {
             foreach (var elem in initial)
             {
