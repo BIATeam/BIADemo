@@ -8,7 +8,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
     using System;
     using System.Collections.Generic;
     using System.Globalization;
-    using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
@@ -212,9 +211,9 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
         {
             return x =>
             {
-                List<object> records = new List<object>();
+                List<object> records = [];
 
-                if (headerNames?.Any() == true)
+                if (headerNames != null && headerNames.Count > 0)
                 {
                     foreach (string headerName in headerNames)
                     {
@@ -335,25 +334,25 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
                     }
                 }
 
-                return records.ToArray();
+                return [.. records];
             };
         }
 
         /// <inheritdoc/>
         public override void MapEntityKeysInDto(Plane entity, PlaneDto dto)
         {
-            dto.Id = entity.Id;
+            base.MapEntityKeysInDto(entity, dto);
             dto.SiteId = entity.SiteId;
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesForUpdate"/>
         public override Expression<Func<Plane, object>>[] IncludesForUpdate()
         {
-            return new Expression<Func<Plane, object>>[]
-            {
+            return
+            [
                 x => x.SimilarTypes,
                 x => x.ConnectingAirports,
-            };
+            ];
         }
 
         /// <summary>

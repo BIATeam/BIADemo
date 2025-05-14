@@ -61,10 +61,9 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         /// <summary>
         /// Precise the Id of the type of team.
         /// </summary>
-        public virtual int TeamType
-        {
-            get { return 0; }
-        }
+#pragma warning disable CA1065 // Do not raise exceptions in unexpected locations
+        public virtual int TeamType => throw new NotImplementedException("Implementation of TeamType is missing.");
+#pragma warning restore CA1065 // Do not raise exceptions in unexpected locations
 
         /// <summary>
         /// the user id.
@@ -92,6 +91,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
                 Id = entity.Id,
                 Title = entity.Title,
                 RowVersion = Convert.ToBase64String(entity.RowVersion),
+                TeamTypeId = this.TeamType,
 
                 Admins = entity.Members
                     .Where(w => w.MemberRoles.Any(a => this.AdminRoleIds.Contains(a.RoleId)))

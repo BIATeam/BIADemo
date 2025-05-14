@@ -8,7 +8,6 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Mappers
     using System;
     using System.Collections.Generic;
     using System.Globalization;
-    using System.Linq;
     using System.Linq.Expressions;
     using System.Security.Principal;
     using BIA.Net.Core.Common.Extensions;
@@ -204,12 +203,10 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Mappers
                     Display = x.Name,
                 }).OrderBy(x => x.Display).ToList(),
 
-                // Should correspond to MaintenanceTeam_Update permission (but without use the roles *_Member that is not determined at list display)
                 CanUpdate =
                     this.UserRoleIds.Contains((int)RoleId.MaintenanceTeamAdmin) ||
                     this.UserRoleIds.Contains((int)RoleId.Admin),
 
-                // Should correspond to MaintenanceTeam_Member_List_Access (but without use the roles *_Member that is not determined at list display)
                 CanMemberListAccess =
                     this.UserRoleIds.Contains((int)RoleId.Admin) ||
                     entity.AircraftMaintenanceCompany.Members.Any(m => m.UserId == this.UserId) ||
@@ -224,7 +221,7 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Mappers
             {
                 List<object> records = [.. base.DtoToRecord(headerNames)(x)];
 
-                if (headerNames?.Any() == true)
+                if (headerNames != null && headerNames.Count > 0)
                 {
                     foreach (string headerName in headerNames)
                     {
@@ -335,14 +332,25 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Mappers
                     }
                 }
 
-                return records.ToArray();
+                return [.. records];
             };
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
+        /// <inheritdoc/>
+        public override void MapEntityKeysInDto(MaintenanceTeam entity, MaintenanceTeamDto dto)
+        {
+            base.MapEntityKeysInDto(entity, dto);
+            dto.AircraftMaintenanceCompanyId = entity.AircraftMaintenanceCompanyId;
+        }
+
+        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesForUpdate"/>
         public override Expression<Func<MaintenanceTeam, object>>[] IncludesForUpdate()
         {
-            return new Expression<Func<MaintenanceTeam, object>>[] { x => x.OperationAirports, x => x.OperationCountries };
+            return
+            [
+                x => x.OperationAirports,
+                x => x.OperationCountries,
+            ];
         }
 
         /// <summary>

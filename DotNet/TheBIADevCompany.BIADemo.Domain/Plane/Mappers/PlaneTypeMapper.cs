@@ -6,7 +6,6 @@
 namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
 {
     using System;
-    using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
@@ -57,9 +56,9 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
         {
             return x =>
             {
-                List<object> records = new List<object>();
+                List<object> records = [];
 
-                if (headerNames?.Any() == true)
+                if (headerNames != null && headerNames.Count > 0)
                 {
                     foreach (string headerName in headerNames)
                     {
@@ -80,7 +79,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
                     }
                 }
 
-                return records.ToArray();
+                return [.. records];
             };
         }
 

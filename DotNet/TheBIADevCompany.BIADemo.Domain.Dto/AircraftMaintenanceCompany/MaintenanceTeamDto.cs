@@ -18,63 +18,63 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany
     public class MaintenanceTeamDto : TeamDto
     {
         /// <summary>
-        /// Gets or sets the aircraft maintenance company.
+        /// Gets or sets the aircraft maintenance company id.
         /// </summary>
-        [BiaDtoField(IsParent = true, Required = true)]
+        [BiaDtoField(Required = true, IsParent = true)]
         public int AircraftMaintenanceCompanyId { get; set; }
 
         /// <summary>
-        /// Gets or sets the maintenance team code.
+        /// Gets or sets the code.
         /// </summary>
         [BiaDtoField(Required = false)]
         public string Code { get; set; }
 
         /// <summary>
-        /// Gets or sets the maintenance team active indicator.
+        /// Gets or sets a value indicating whether the MaintenanceTeam is active.
         /// </summary>
         [BiaDtoField(Required = true)]
         public bool IsActive { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the maintenance team is approved.
+        /// Gets or sets a value indicating whether the MaintenanceTeam is approved.
         /// </summary>
         [BiaDtoField(Required = false)]
         public bool? IsApproved { get; set; }
 
         /// <summary>
-        /// Gets or sets the first operation date and time.
+        /// Gets or sets the first operation.
         /// </summary>
-        [BiaDtoField(Type = "datetime", Required = true)]
+        [BiaDtoField(Required = true, Type = "datetime")]
         public DateTime FirstOperation { get; set; }
 
         /// <summary>
-        /// Gets or sets the last flight operation and time.
+        /// Gets or sets the last operation.
         /// </summary>
-        [BiaDtoField(Type = "datetime", Required = false)]
+        [BiaDtoField(Required = false, Type = "datetime")]
         public DateTime? LastOperation { get; set; }
 
         /// <summary>
-        /// Gets or sets the approval date.
+        /// Gets or sets the approved date.
         /// </summary>
-        [BiaDtoField(Type = "date", Required = false)]
+        [BiaDtoField(Required = false, Type = "date")]
         public DateTime? ApprovedDate { get; set; }
 
         /// <summary>
-        /// Gets or sets the next operation date.
+        /// Gets or sets the next operation.
         /// </summary>
-        [BiaDtoField(Type = "date", Required = true)]
+        [BiaDtoField(Required = true, Type = "date")]
         public DateTime NextOperation { get; set; }
 
         /// <summary>
-        /// Gets or sets the max travel duration hour.
+        /// Gets or sets the max travel duration.
         /// </summary>
-        [BiaDtoField(Type = "time", Required = false)]
+        [BiaDtoField(Required = false, Type = "time")]
         public string MaxTravelDuration { get; set; }
 
         /// <summary>
-        /// Gets or sets the max operation duration hour.
+        /// Gets or sets the max operation duration.
         /// </summary>
-        [BiaDtoField(Type = "time", Required = true)]
+        [BiaDtoField(Required = true, Type = "time")]
         public string MaxOperationDuration { get; set; }
 
         /// <summary>
@@ -90,63 +90,63 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany
         public int? IncidentCount { get; set; }
 
         /// <summary>
-        /// Gets or sets the total of operation duration hours.
+        /// Gets or sets the total operation duration.
         /// </summary>
         [BiaDtoField(Required = true)]
         public double TotalOperationDuration { get; set; }
 
         /// <summary>
-        /// Gets or sets the average of operation duration hours.
+        /// Gets or sets the average operation duration.
         /// </summary>
         [BiaDtoField(Required = false)]
         public double? AverageOperationDuration { get; set; }
 
         /// <summary>
-        /// Gets or sets the total of travel duration hours.
+        /// Gets or sets the total travel duration.
         /// </summary>
         [BiaDtoField(Required = true)]
         public float TotalTravelDuration { get; set; }
 
         /// <summary>
-        /// Gets or sets the average of travel duration hours.
+        /// Gets or sets the average travel duration.
         /// </summary>
         [BiaDtoField(Required = false)]
         public float? AverageTravelDuration { get; set; }
 
         /// <summary>
-        /// Gets or sets the total of operation cost.
+        /// Gets or sets the total operation cost.
         /// </summary>
         [BiaDtoField(Required = true)]
         public decimal TotalOperationCost { get; set; }
 
         /// <summary>
-        /// Gets or sets the average of operation cost.
+        /// Gets or sets the average operation cost.
         /// </summary>
         [BiaDtoField(Required = false)]
         public decimal? AverageOperationCost { get; set; }
 
         /// <summary>
-        /// Gets or sets the current airport title.
+        /// Gets or sets the current airport.
         /// </summary>
-        [BiaDtoField(ItemType = "Airport", Required = true)]
+        [BiaDtoField(Required = true, ItemType = "Airport")]
         public OptionDto CurrentAirport { get; set; }
 
         /// <summary>
         /// Gets or sets the list of operation airports.
         /// </summary>
-        [BiaDtoField(ItemType = "Airport", Required = true)]
+        [BiaDtoField(Required = true, ItemType = "Airport")]
         public ICollection<OptionDto> OperationAirports { get; set; }
 
         /// <summary>
-        /// Gets or sets the country title.
+        /// Gets or sets the current country.
         /// </summary>
-        [BiaDtoField(ItemType = "Country")]
+        [BiaDtoField(Required = false, ItemType = "Country")]
         public OptionDto CurrentCountry { get; set; }
 
         /// <summary>
         /// Gets or sets the list of operation countries.
         /// </summary>
-        [BiaDtoField(ItemType = "Country")]
+        [BiaDtoField(Required = false, ItemType = "Country")]
         public ICollection<OptionDto> OperationCountries { get; set; }
     }
 }
