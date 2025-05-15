@@ -17,6 +17,7 @@ export class TeamConfigDto {
   displayOne?: boolean;
   displayAlways?: boolean;
   label?: string;
+  displayLabel?: boolean;
   teamSelectionCanBeEmpty?: boolean;
 }
 
