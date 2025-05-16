@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
-import { storeKey } from '../plane-type-option.contants';
+import { storeKey } from '../plane-type-option.constants';
 
 export namespace DomainPlaneTypeOptionsActions {
   export const loadAll = createAction('[' + storeKey + '] Load all');

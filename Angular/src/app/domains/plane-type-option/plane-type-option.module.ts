@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { storeKey } from './plane-type-option.contants';
+import { storeKey } from './plane-type-option.constants';
 import { reducers } from './store/plane-type-option.state';
 import { PlaneTypeOptionsEffects } from './store/plane-type-options-effects';
 

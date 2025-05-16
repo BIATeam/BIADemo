@@ -4,7 +4,7 @@ import {
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
-import { storeKey } from '../plane-type-option.contants';
+import { storeKey } from '../plane-type-option.constants';
 import * as fromPlaneTypeOptions from './plane-type-options-reducer';
 
 export interface PlaneTypeOptionsState {
