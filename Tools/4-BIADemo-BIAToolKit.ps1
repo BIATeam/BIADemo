@@ -73,8 +73,8 @@ Write-Host "Copy BIADemo to BIAToolKit..." -ForegroundColor Blue
 robocopy "$biaDemoProjectPath\DotNet" "$biaToolKitVersionTargetPath\DotNet" /E /XD BIAPackage .vs .vscode bin obj | Out-Null
 robocopy "$biaDemoProjectPath\Angular" "$biaToolKitVersionTargetPath\Angular" /E /XD dist node_modules .angular .dart_tool .vscode | Out-Null
 
-Write-Host "Remove code example..." -ForegroundColor Blue
-Remove-CodeExample -path $biaToolKitVersionTargetPath
+# Write-Host "Remove code example..." -ForegroundColor Blue
+# Remove-CodeExample -path $biaToolKitVersionTargetPath
 
 Write-Host "Remove Except BIADemo lines..." -ForegroundColor Blue
 Remove-Line "// Except BIADemo" -Path $biaToolKitVersionTargetPath

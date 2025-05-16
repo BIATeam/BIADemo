@@ -7,7 +7,6 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
 {
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Domain.Dto.Option;
-    using BIA.Net.Core.Domain.Service;
 
     /// <summary>
     /// The interface defining the application service for country option.

@@ -12,7 +12,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
     using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
 
     /// <summary>
-    /// The mapper used for plane.
+    /// The mapper used for plane type option.
     /// </summary>
     public class PlaneTypeOptionMapper : BaseMapper<OptionDto, PlaneType, int>
     {

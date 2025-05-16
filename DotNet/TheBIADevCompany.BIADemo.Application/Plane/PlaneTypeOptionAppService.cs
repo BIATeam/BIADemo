@@ -8,12 +8,11 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
     using TheBIADevCompany.BIADemo.Domain.Plane.Mappers;
 
     /// <summary>
-    /// The application service used for PlaneType option.
+    /// The application service used for plane type option.
     /// </summary>
     public class PlaneTypeOptionAppService : OptionAppServiceBase<OptionDto, PlaneType, int, PlaneTypeOptionMapper>, IPlaneTypeOptionAppService
     {
