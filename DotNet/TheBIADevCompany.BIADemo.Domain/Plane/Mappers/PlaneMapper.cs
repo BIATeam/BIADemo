@@ -18,16 +18,15 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
     /// <summary>
     /// The mapper used for Plane.
     /// </summary>
-    public class PlaneMapper : BaseMapper<PlaneDto, Plane, int>
+    public class PlaneMapper : ReflectionMapper<PlaneDto, Plane, int>
     {
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
+        /// <inheritdoc cref="ReflectionMapper{TDto,TEntity}.ExpressionCollection"/>
         public override ExpressionCollection<Plane> ExpressionCollection
         {
             get
             {
-                return new ExpressionCollection<Plane>
+                return new ExpressionCollection<Plane>(base.ExpressionCollection)
                 {
-                    { HeaderName.Id, plane => plane.Id },
                     { HeaderName.Msn, plane => plane.Msn },
                     { HeaderName.Manufacturer, plane => plane.Manufacturer },
                     { HeaderName.IsActive, plane => plane.IsActive },
@@ -57,15 +56,13 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
         public override void DtoToEntity(PlaneDto dto, Plane entity)
         {
-            entity ??= new Plane();
+            base.DtoToEntity(dto, entity);
 
             // Map parent relationship 1-* : SiteId
             if (dto.SiteId != 0)
             {
                 entity.SiteId = dto.SiteId;
             }
-
-            entity.Id = dto.Id;
 
             // Begin BIADemo
             entity.IsFixed = dto.IsFixed;
@@ -364,11 +361,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
             /// Header name for site id.
             /// </summary>
             public const string SiteId = "siteId";
-
-            /// <summary>
-            /// Header name for id.
-            /// </summary>
-            public const string Id = "id";
 
             /// <summary>
             /// Header name for msn.
