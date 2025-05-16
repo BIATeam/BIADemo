@@ -207,12 +207,12 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         // BIAToolKit - Begin Partial RightsForOption PlaneType
 
         /// <summary>
-        /// The country options rights.
+        /// The plane type options rights.
         /// </summary>
         public static class PlaneTypeOptions
         {
             /// <summary>
-            /// The right to access to the list of planes types (options only).
+            /// The right to access to the list of plane types (options only).
             /// </summary>
             public const string Options = "PlaneType_Options";
         }
