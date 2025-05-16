@@ -262,11 +262,13 @@
           "MaintenanceTeam_Admin"
         ]
       },
+      // BIAToolKit - Begin Partial ConfigForOption Country
       // Country
       {
         "Name": "Country_Options",
         "Roles": [ "Admin", "Site_Member" ]
       },
+      // BIAToolKit - End Partial ConfigForOption Country
       // Airport
       {
         "Name": "Airport_Options",

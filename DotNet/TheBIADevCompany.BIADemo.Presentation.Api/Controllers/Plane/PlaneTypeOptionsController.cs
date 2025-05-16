@@ -14,12 +14,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
 
     /// <summary>
-    /// The API controller used to manage PlaneType options.
+    /// The API controller used to manage plane type options.
     /// </summary>
     public class PlaneTypeOptionsController : BiaControllerBase
     {
         /// <summary>
-        /// The PlaneType application service.
+        /// The plane type application service.
         /// </summary>
         private readonly IPlaneTypeOptionAppService planeTypeOptionService;
 

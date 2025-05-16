@@ -193,6 +193,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Save = "MaintenanceTeam_Save";
         }
 
+        // BIAToolKit - Begin Partial RightsForOption Country
+
         /// <summary>
         /// The country options rights.
         /// </summary>
@@ -203,6 +205,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             public const string Options = "Country_Options";
         }
+
+        // BIAToolKit - End Partial RightsForOption Country
 
         // BIAToolKit - Begin Partial RightsForOption PlaneType
 
