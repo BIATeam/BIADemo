@@ -7,7 +7,7 @@ export namespace DomainPlaneTypeOptionsActions {
 
   export const loadAllSuccess = createAction(
     '[' + storeKey + '] Load all success',
-    props<{ planesTypes: OptionDto[] }>()
+    props<{ planeTypes: OptionDto[] }>()
   );
 
   export const failure = createAction(
