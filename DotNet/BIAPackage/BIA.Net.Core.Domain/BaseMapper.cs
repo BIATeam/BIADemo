@@ -24,6 +24,27 @@ namespace BIA.Net.Core.Domain
         where TEntity : class, IEntity<TKey>
     {
         /// <summary>
+        /// CSVs the specified x.
+        /// </summary>
+        /// <typeparam name="TType">The type of the type.</typeparam>
+        /// <param name="x">The x.</param>
+        /// <returns>A string for a string cell.</returns>
+        public static string CSVCell<TType>(TType x)
+        {
+            if (typeof(TType) == typeof(string))
+            {
+                return CSVString(x as string);
+            }
+
+            if (typeof(IFormattable).IsAssignableFrom(typeof(TType)))
+            {
+                return CSVNumber(x as IFormattable);
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// CSVs the string.
         /// </summary>
         /// <param name="x">The x.</param>

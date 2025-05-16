@@ -72,8 +72,8 @@ namespace BIA.Net.Core.Domain
 
                 if (this.IsArchivable)
                 {
-                    expression.Add(ReflectionHeaderName.IsFixed, entity => (entity as IEntityArchivable<TKey>).IsArchived);
-                    expression.Add(ReflectionHeaderName.FixedDate, entity => (entity as IEntityArchivable<TKey>).ArchivedDate);
+                    expression.Add(ReflectionHeaderName.IsArchived, entity => (entity as IEntityArchivable<TKey>).IsArchived);
+                    expression.Add(ReflectionHeaderName.ArchivedDate, entity => (entity as IEntityArchivable<TKey>).ArchivedDate);
                 }
 
                 return expression;
@@ -95,7 +95,7 @@ namespace BIA.Net.Core.Domain
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
         public override Expression<Func<TEntity, TDto>> EntityToDto()
         {
-            if (!this.IsFixable) {
+            if (this.IsFixable) {
                 return entity => new TDto
                 {
                     Id = entity.Id,
@@ -120,22 +120,39 @@ namespace BIA.Net.Core.Domain
                 {
                     foreach (string headerName in headerNames)
                     {
-                        if (string.Equals(headerName, ReflectionHeaderName.Id, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVCell(x.Id));
-                        }
+                        records.Add(this.DtoToCell(x, headerName));
                     }
                 }
 
                 return [.. records];
             };
         }
-    }
 
-    /// <summary>
-    /// Header names.
-    /// </summary>
-    public struct ReflectionHeaderName
+        /// <summary>
+        /// Dto to cell.
+        /// </summary>
+        /// <param name="dto">The dto.</param>
+        /// <param name="headerName">Name of the header.</param>
+        /// <returns>a string formated for csv/returns>
+        protected virtual string DtoToCell(TDto dto, string headerName)
+        {
+            if (string.Equals(headerName, ReflectionHeaderName.Id, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVCell(dto.Id);
+            }
+
+            if (string.Equals(headerName, ReflectionHeaderName.IsFixed, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVBool(dto.IsFixed);
+            }
+
+            return "Unknow header " + headerName;
+        }
+
+        /// <summary>
+        /// Header names.
+        /// </summary>
+        public struct ReflectionHeaderName
         {
             /// <summary>
             /// Header name for id.
@@ -163,5 +180,4 @@ namespace BIA.Net.Core.Domain
             public const string ArchivedDate = "archivedDate";
         }
     }
-}
 }
