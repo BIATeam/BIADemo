@@ -52,6 +52,9 @@ namespace BIA.Net.Core.Domain
             if (typeof(IEntityArchivable<TKey>).IsAssignableFrom(typeof(TEntity)))
             {
                 this.isArchivable = true;
+                Debug.Assert(
+                    typeof(IArchivableDto).IsAssignableFrom(typeof(TDto)),
+                    "The dto " + typeof(TDto).ToString() + " should implement of IArchivableDto");
             }
         }
 
@@ -121,6 +124,25 @@ namespace BIA.Net.Core.Domain
                 bindings.Add(bindFixedDate);
             }
 
+            if (this.isArchivable)
+            {
+                /// IsArchived = (entity as IEntityArchivable<TKey>).IsArchived,
+                /// ArchivedDate = (entity as IEntityArchivable<TKey>).ArchivedDate,
+
+                var isArchivedProperty = Expression.Property(
+                    Expression.Convert(entityParam, typeof(IEntityArchivable<TKey>)),
+                    nameof(IEntityArchivable<TKey>.IsArchived));
+
+                var archivedDateProperty = Expression.Property(
+                    Expression.Convert(entityParam, typeof(IEntityArchivable<TKey>)),
+                    nameof(IEntityArchivable<TKey>.ArchivedDate));
+
+                var bindIsArchived = Expression.Bind(typeof(TDto).GetProperty(nameof(IArchivableDto.IsArchived)), isArchivedProperty);
+                var bindArchivedDate = Expression.Bind(typeof(TDto).GetProperty(nameof(IArchivableDto.ArchivedDate)), archivedDateProperty);
+                bindings.Add(bindIsArchived);
+                bindings.Add(bindArchivedDate);
+            }
+
             // Id = entity.Id,
             var idProperty = Expression.Property(
                 Expression.Convert(entityParam, typeof(IEntity<TKey>)),
@@ -174,6 +196,16 @@ namespace BIA.Net.Core.Domain
             if (string.Equals(headerName, ReflectionHeaderName.FixedDate, StringComparison.OrdinalIgnoreCase))
             {
                 return CSVDate((dto as IFixableDto).FixedDate);
+            }
+
+            if (string.Equals(headerName, ReflectionHeaderName.IsArchived, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVBool((dto as IArchivableDto).IsArchived);
+            }
+
+            if (string.Equals(headerName, ReflectionHeaderName.ArchivedDate, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVDate((dto as IArchivableDto).ArchivedDate);
             }
 
             return "Unknow header " + headerName;
