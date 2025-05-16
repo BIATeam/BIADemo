@@ -15,7 +15,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
     /// The DTO used to represent a Engine.
     /// </summary>
     [BiaDtoClass(AncestorTeam = "Site")]
-    public class EngineDto : BaseDto<int>
+    public class EngineDto : BaseDto<int>, IFixableDto
     {
         /// <summary>
         /// Gets or sets the Manufacturer's Serial Number.
@@ -142,5 +142,15 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
         /// </summary>
         [BiaDtoField(ItemType = "Part")]
         public ICollection<OptionDto> InstalledParts { get; set; }
+
+        /// <summary>
+        /// Gets or sets the IsFixed.
+        /// </summary>
+        public bool IsFixed { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of connecting airports.
+        /// </summary>
+        public DateTime? FixedDate { get; set; }
     }
 }

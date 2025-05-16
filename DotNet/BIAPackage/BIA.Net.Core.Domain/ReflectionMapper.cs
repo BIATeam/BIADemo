@@ -2,16 +2,18 @@
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-
 namespace BIA.Net.Core.Domain
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
     using System.Linq.Expressions;
     using System.Numerics;
     using System.Reflection;
     using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain.Dto.Base;
+    using Microsoft.Identity.Client;
 
     /// <summary>
     /// The class used to define the base mapper with reflection to map some field.
@@ -26,12 +28,12 @@ namespace BIA.Net.Core.Domain
         /// <summary>
         /// The is fixable.
         /// </summary>
-        bool IsFixable;
+        private readonly bool isFixable;
 
         /// <summary>
         /// The is archivable.
         /// </summary>
-        bool IsArchivable;
+        private readonly bool isArchivable;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReflectionMapper{TDto, TEntity, TKey}"/> class.
@@ -39,18 +41,17 @@ namespace BIA.Net.Core.Domain
         protected ReflectionMapper()
             : base()
         {
-            Assembly asm = Assembly.GetAssembly(this.GetType());
-            foreach (Type type in asm.GetTypes())
+            if (typeof(IEntityFixable<TKey>).IsAssignableFrom(typeof(TEntity)))
             {
-                if (typeof(IEntityFixable<TKey>).IsAssignableFrom(type))
-                {
-                    this.IsFixable = true;
-                }
+                this.isFixable = true;
+                Debug.Assert(
+                    typeof(IFixableDto).IsAssignableFrom(typeof(TDto)),
+                    "The dto " + typeof(TDto).ToString() + " should implement of IFixableDto");
+            }
 
-                if (typeof(IEntityArchivable<TKey>).IsAssignableFrom(type))
-                {
-                    this.IsArchivable = true;
-                }
+            if (typeof(IEntityArchivable<TKey>).IsAssignableFrom(typeof(TEntity)))
+            {
+                this.isArchivable = true;
             }
         }
 
@@ -64,13 +65,13 @@ namespace BIA.Net.Core.Domain
                     { ReflectionHeaderName.Id, entity => entity.Id },
                 };
 
-                if (this.IsFixable)
+                if (this.isFixable)
                 {
                     expression.Add(ReflectionHeaderName.IsFixed, entity => (entity as IEntityFixable<TKey>).IsFixed);
                     expression.Add(ReflectionHeaderName.FixedDate, entity => (entity as IEntityFixable<TKey>).FixedDate);
                 }
 
-                if (this.IsArchivable)
+                if (this.isArchivable)
                 {
                     expression.Add(ReflectionHeaderName.IsArchived, entity => (entity as IEntityArchivable<TKey>).IsArchived);
                     expression.Add(ReflectionHeaderName.ArchivedDate, entity => (entity as IEntityArchivable<TKey>).ArchivedDate);
@@ -95,18 +96,42 @@ namespace BIA.Net.Core.Domain
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
         public override Expression<Func<TEntity, TDto>> EntityToDto()
         {
-            if (this.IsFixable) {
-                return entity => new TDto
-                {
-                    Id = entity.Id,
-                    IsFixed = (entity as IEntityFixable<TKey>).IsFixed,
-                };
+            var entityParam = Expression.Parameter(typeof(TEntity), "entity");
+
+            var newDto = Expression.New(typeof(TDto));
+
+            List<MemberBinding> bindings = new List<MemberBinding>();
+
+            if (this.isFixable)
+            {
+                /// IsFixed = (entity as IEntityFixable<TKey>).IsFixed,
+                /// FixedDate = (entity as IEntityFixable<TKey>).FixedDate,
+
+                var isFixedProperty = Expression.Property(
+                    Expression.Convert(entityParam, typeof(IEntityFixable<TKey>)),
+                    nameof(IEntityFixable<TKey>.IsFixed));
+
+                var fixedDateProperty = Expression.Property(
+                    Expression.Convert(entityParam, typeof(IEntityFixable<TKey>)),
+                    nameof(IEntityFixable<TKey>.FixedDate));
+
+                var bindIsFixed = Expression.Bind(typeof(TDto).GetProperty(nameof(IFixableDto.IsFixed)), isFixedProperty);
+                var bindFixedDate = Expression.Bind(typeof(TDto).GetProperty(nameof(IFixableDto.FixedDate)), fixedDateProperty);
+                bindings.Add(bindIsFixed);
+                bindings.Add(bindFixedDate);
             }
 
-            return entity => new TDto
-            {
-                Id = entity.Id,
-            };
+            // Id = entity.Id,
+            var idProperty = Expression.Property(
+                Expression.Convert(entityParam, typeof(IEntity<TKey>)),
+                nameof(IEntity<TKey>.Id));
+
+            var bindId = Expression.Bind(typeof(TDto).GetProperty(nameof(BaseDto<TKey>.Id)), idProperty);
+            bindings.Add(bindId);
+
+            var memberInit = Expression.MemberInit(newDto, bindings);
+
+            return Expression.Lambda<Func<TEntity, TDto>>(memberInit, entityParam);
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
@@ -133,8 +158,8 @@ namespace BIA.Net.Core.Domain
         /// </summary>
         /// <param name="dto">The dto.</param>
         /// <param name="headerName">Name of the header.</param>
-        /// <returns>a string formated for csv/returns>
-        protected virtual string DtoToCell(TDto dto, string headerName)
+        /// <returns>a string formated for csv.<returns>
+        public virtual string DtoToCell(TDto dto, string headerName)
         {
             if (string.Equals(headerName, ReflectionHeaderName.Id, StringComparison.OrdinalIgnoreCase))
             {
@@ -143,7 +168,12 @@ namespace BIA.Net.Core.Domain
 
             if (string.Equals(headerName, ReflectionHeaderName.IsFixed, StringComparison.OrdinalIgnoreCase))
             {
-                return CSVBool(dto.IsFixed);
+                return CSVBool((dto as IFixableDto).IsFixed);
+            }
+
+            if (string.Equals(headerName, ReflectionHeaderName.FixedDate, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVDate((dto as IFixableDto).FixedDate);
             }
 
             return "Unknow header " + headerName;

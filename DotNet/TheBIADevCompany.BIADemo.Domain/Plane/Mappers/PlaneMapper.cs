@@ -195,7 +195,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
         }
 
         /// <inheritdoc cref="ReflectionMapper{TDto,TEntity}.DtoToCell"/>
-        protected override string DtoToCell(PlaneDto dto, string headerName)
+        public override string DtoToCell(PlaneDto dto, string headerName)
         {
             if (string.Equals(headerName, HeaderName.Msn, StringComparison.OrdinalIgnoreCase))
             {
