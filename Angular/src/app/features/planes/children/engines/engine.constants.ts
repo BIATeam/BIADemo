@@ -22,11 +22,15 @@ export const engineCRUDConfiguration: CrudConfig<Engine> = new CrudConfig({
   usePopup: false,
   useSplit: false,
   useOfflineMode: false,
+  useCompactMode: false,
+  useVirtualScroll: false,
+  // Begin BIADemo
   importMode: {
     useInsert: true,
     useUpdate: true,
     useDelete: false,
   },
+  // End BIADemo
   // IMPORTANT: this key should be unique in all the application.
   // storeKey: 'feature-' + featureName,
   // IMPORTANT: this is the key used for the view management it should be unique in all the application (except if share same views).
