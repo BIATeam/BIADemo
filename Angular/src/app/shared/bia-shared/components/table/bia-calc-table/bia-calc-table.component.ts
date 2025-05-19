@@ -187,12 +187,14 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
             (rowData.id === 0 && this.editFooter !== true))))
     ) {
       if (this.hasChanged === true) {
-        if (this.form.valid) {
-          this.onSubmit();
-        } else {
-          this.biaMessageService.showWarning(
-            this.translateService.instant('biaMsg.invalidForm')
-          );
+        if (!rowData) {
+          if (this.form.valid) {
+            this.onSubmit();
+          } else {
+            this.biaMessageService.showWarning(
+              this.translateService.instant('biaMsg.invalidForm')
+            );
+          }
         }
       } else {
         this.cancel();
