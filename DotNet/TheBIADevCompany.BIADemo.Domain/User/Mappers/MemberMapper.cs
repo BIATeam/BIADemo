@@ -97,12 +97,8 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         /// <inheritdoc/>
         public override void DtoToEntity(MemberDto dto, ref Member entity)
         {
-            if (entity == null)
-            {
-                entity = new Member();
-            }
+            base.DtoToEntity(dto, ref entity);
 
-            entity.Id = dto.Id;
             entity.TeamId = dto.TeamId;
             entity.UserId = dto.User.Id;
             foreach (var roleDto in dto.Roles.Where(w => w.DtoState == DtoState.Deleted))
