@@ -63,7 +63,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Mappers
         private UserContext UserContext { get; set; }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
-        public override void DtoToEntity(NotificationDto dto, Notification entity)
+        public override void DtoToEntity(NotificationDto dto, ref Notification entity)
         {
             if (entity == null)
             {

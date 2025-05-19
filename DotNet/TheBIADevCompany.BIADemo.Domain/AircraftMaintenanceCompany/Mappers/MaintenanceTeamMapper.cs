@@ -69,9 +69,9 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Mappers
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
-        public override void DtoToEntity(MaintenanceTeamDto dto, MaintenanceTeam entity)
+        public override void DtoToEntity(MaintenanceTeamDto dto, ref MaintenanceTeam entity)
         {
-            base.DtoToEntity(dto, entity);
+            base.DtoToEntity(dto, ref entity);
 
             // Map parent relationship 1-* : AircraftMaintenanceCompanyId
             if (dto.AircraftMaintenanceCompanyId != 0)

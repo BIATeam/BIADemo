@@ -95,7 +95,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         }
 
         /// <inheritdoc/>
-        public override void DtoToEntity(MemberDto dto, Member entity)
+        public override void DtoToEntity(MemberDto dto, ref Member entity)
         {
             if (entity == null)
             {

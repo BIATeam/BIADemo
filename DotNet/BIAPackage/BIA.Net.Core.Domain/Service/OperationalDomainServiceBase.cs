@@ -331,8 +331,8 @@ namespace BIA.Net.Core.Domain.Service
                 if (dto != null)
                 {
                     TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
-                    var entity = new TEntity();
-                    mapper.DtoToEntity(dto, entity, mapperMode, this.Repository.UnitOfWork);
+                    var entity = default(TEntity);
+                    mapper.DtoToEntity(dto, ref entity, mapperMode, this.Repository.UnitOfWork);
                     this.Repository.Add(entity);
                     await this.Repository.UnitOfWork.CommitAsync();
                     mapper.MapEntityKeysInDto(entity, dto);
@@ -381,7 +381,7 @@ namespace BIA.Net.Core.Domain.Service
                         throw new OutdateException();
                     }
 
-                    mapper.DtoToEntity(dto, entity, mapperMode, this.Repository.UnitOfWork);
+                    mapper.DtoToEntity(dto, ref entity, mapperMode, this.Repository.UnitOfWork);
 
                     await this.Repository.UnitOfWork.CommitAsync();
                     dto.DtoState = DtoState.Unchanged;
@@ -724,9 +724,9 @@ namespace BIA.Net.Core.Domain.Service
             {
                 List<TEntity> entities = dtoList.AsParallel().Select(item =>
                     {
-                        var converted = new TEntity();
+                        var converted = default(TEntity);
                         TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
-                        mapper.DtoToEntity(item, converted);
+                        mapper.DtoToEntity(item, ref converted);
                         return converted;
                     }).ToList();
 

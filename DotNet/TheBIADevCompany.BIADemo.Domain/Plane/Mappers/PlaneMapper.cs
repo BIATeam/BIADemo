@@ -9,6 +9,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq.Expressions;
+    using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
@@ -20,14 +21,13 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
     /// </summary>
     public class PlaneMapper : BaseMapper<PlaneDto, Plane, int>
     {
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
+        /// <inheritdoc cref="ReflectionMapper{TDto,TEntity}.ExpressionCollection"/>
         public override ExpressionCollection<Plane> ExpressionCollection
         {
             get
             {
-                return new ExpressionCollection<Plane>
+                return new ExpressionCollection<Plane>(base.ExpressionCollection)
                 {
-                    { HeaderName.Id, plane => plane.Id },
                     { HeaderName.Msn, plane => plane.Msn },
                     { HeaderName.Manufacturer, plane => plane.Manufacturer },
                     { HeaderName.IsActive, plane => plane.IsActive },
@@ -55,9 +55,9 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
-        public override void DtoToEntity(PlaneDto dto, Plane entity)
+        public override void DtoToEntity(PlaneDto dto, ref Plane entity)
         {
-            entity ??= new Plane();
+            base.DtoToEntity(dto, ref entity);
 
             // Map parent relationship 1-* : SiteId
             if (dto.SiteId != 0)
@@ -65,12 +65,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
                 entity.SiteId = dto.SiteId;
             }
 
-            entity.Id = dto.Id;
-
-            // Begin BIADemo
-            entity.IsFixed = dto.IsFixed;
-
-            // End BIADemo
             entity.Msn = dto.Msn;
             entity.Manufacturer = dto.Manufacturer;
             entity.IsActive = dto.IsActive;
@@ -146,15 +140,9 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
         public override Expression<Func<Plane, PlaneDto>> EntityToDto()
         {
-            return entity => new PlaneDto
+            return base.EntityToDto().CombineMapping(entity => new PlaneDto
             {
                 SiteId = entity.SiteId,
-                Id = entity.Id,
-
-                // Begin BIADemo
-                IsFixed = entity.IsFixed,
-
-                // End BIADemo
                 Msn = entity.Msn,
                 Manufacturer = entity.Manufacturer,
                 IsActive = entity.IsActive,
@@ -203,139 +191,123 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
                     Display = x.Name,
                 }).OrderBy(x => x.Display).ToList(),
                 RowVersion = Convert.ToBase64String(entity.RowVersion),
-            };
+            });
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
-        public override Func<PlaneDto, object[]> DtoToRecord(List<string> headerNames = null)
+        /// <inheritdoc cref="ReflectionMapper{TDto,TEntity}.DtoToCell"/>
+        public override string DtoToCell(PlaneDto dto, string headerName)
         {
-            return x =>
+            if (string.Equals(headerName, HeaderName.Msn, StringComparison.OrdinalIgnoreCase))
             {
-                List<object> records = [];
+                return CSVString(dto.Msn);
+            }
 
-                if (headerNames != null && headerNames.Count > 0)
-                {
-                    foreach (string headerName in headerNames)
-                    {
-                        if (string.Equals(headerName, HeaderName.Id, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.Id));
-                        }
+            if (string.Equals(headerName, HeaderName.Manufacturer, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVString(dto.Manufacturer);
+            }
 
-                        if (string.Equals(headerName, HeaderName.Msn, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.Msn));
-                        }
+            if (string.Equals(headerName, HeaderName.IsActive, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVBool(dto.IsActive);
+            }
 
-                        if (string.Equals(headerName, HeaderName.Manufacturer, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.Manufacturer));
-                        }
+            if (string.Equals(headerName, HeaderName.IsMaintenance, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVBool(dto.IsMaintenance);
+            }
 
-                        if (string.Equals(headerName, HeaderName.IsActive, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVBool(x.IsActive));
-                        }
+            if (string.Equals(headerName, HeaderName.FirstFlightDate, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVDateTime(dto.FirstFlightDate);
+            }
 
-                        if (string.Equals(headerName, HeaderName.IsMaintenance, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVBool(x.IsMaintenance));
-                        }
+            if (string.Equals(headerName, HeaderName.LastFlightDate, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVDateTime(dto.LastFlightDate);
+            }
 
-                        if (string.Equals(headerName, HeaderName.FirstFlightDate, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVDateTime(x.FirstFlightDate));
-                        }
+            if (string.Equals(headerName, HeaderName.DeliveryDate, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVDate(dto.DeliveryDate);
+            }
 
-                        if (string.Equals(headerName, HeaderName.LastFlightDate, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVDateTime(x.LastFlightDate));
-                        }
+            if (string.Equals(headerName, HeaderName.NextMaintenanceDate, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVDate(dto.NextMaintenanceDate);
+            }
 
-                        if (string.Equals(headerName, HeaderName.DeliveryDate, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVDate(x.DeliveryDate));
-                        }
+            if (string.Equals(headerName, HeaderName.SyncTime, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVTime(dto.SyncTime);
+            }
 
-                        if (string.Equals(headerName, HeaderName.NextMaintenanceDate, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVDate(x.NextMaintenanceDate));
-                        }
+            if (string.Equals(headerName, HeaderName.SyncFlightDataTime, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVTime(dto.SyncFlightDataTime);
+            }
 
-                        if (string.Equals(headerName, HeaderName.SyncTime, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVTime(x.SyncTime));
-                        }
+            if (string.Equals(headerName, HeaderName.Capacity, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVNumber(dto.Capacity);
+            }
 
-                        if (string.Equals(headerName, HeaderName.SyncFlightDataTime, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVTime(x.SyncFlightDataTime));
-                        }
+            if (string.Equals(headerName, HeaderName.MotorsCount, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVNumber(dto.MotorsCount);
+            }
 
-                        if (string.Equals(headerName, HeaderName.Capacity, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.Capacity));
-                        }
+            if (string.Equals(headerName, HeaderName.TotalFlightHours, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVNumber(dto.TotalFlightHours);
+            }
 
-                        if (string.Equals(headerName, HeaderName.MotorsCount, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.MotorsCount));
-                        }
+            if (string.Equals(headerName, HeaderName.Probability, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVNumber(dto.Probability);
+            }
 
-                        if (string.Equals(headerName, HeaderName.TotalFlightHours, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.TotalFlightHours));
-                        }
+            if (string.Equals(headerName, HeaderName.FuelCapacity, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVNumber(dto.FuelCapacity);
+            }
 
-                        if (string.Equals(headerName, HeaderName.Probability, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.Probability));
-                        }
+            if (string.Equals(headerName, HeaderName.FuelLevel, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVNumber(dto.FuelLevel);
+            }
 
-                        if (string.Equals(headerName, HeaderName.FuelCapacity, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.FuelCapacity));
-                        }
+            if (string.Equals(headerName, HeaderName.OriginalPrice, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVNumber(dto.OriginalPrice);
+            }
 
-                        if (string.Equals(headerName, HeaderName.FuelLevel, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.FuelLevel));
-                        }
+            if (string.Equals(headerName, HeaderName.EstimatedPrice, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVNumber(dto.EstimatedPrice);
+            }
 
-                        if (string.Equals(headerName, HeaderName.OriginalPrice, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.OriginalPrice));
-                        }
+            if (string.Equals(headerName, HeaderName.PlaneType, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVString(dto.PlaneType?.Display);
+            }
 
-                        if (string.Equals(headerName, HeaderName.EstimatedPrice, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.EstimatedPrice));
-                        }
+            if (string.Equals(headerName, HeaderName.SimilarTypes, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVList(dto.SimilarTypes);
+            }
 
-                        if (string.Equals(headerName, HeaderName.PlaneType, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.PlaneType?.Display));
-                        }
+            if (string.Equals(headerName, HeaderName.CurrentAirport, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVString(dto.CurrentAirport?.Display);
+            }
 
-                        if (string.Equals(headerName, HeaderName.SimilarTypes, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVList(x.SimilarTypes));
-                        }
+            if (string.Equals(headerName, HeaderName.ConnectingAirports, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVList(dto.ConnectingAirports);
+            }
 
-                        if (string.Equals(headerName, HeaderName.CurrentAirport, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.CurrentAirport?.Display));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.ConnectingAirports, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVList(x.ConnectingAirports));
-                        }
-                    }
-                }
-
-                return [.. records];
-            };
+            return base.DtoToCell(dto, headerName);
         }
 
         /// <inheritdoc/>
@@ -364,11 +336,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
             /// Header name for site id.
             /// </summary>
             public const string SiteId = "siteId";
-
-            /// <summary>
-            /// Header name for id.
-            /// </summary>
-            public const string Id = "id";
 
             /// <summary>
             /// Header name for msn.

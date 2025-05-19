@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
     using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
+    using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
@@ -27,9 +28,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
             // It is not necessary to implement this function if you to not use the mapper for filtered list. In BIADemo it is use only for Calc SpreadSheet.
             get
             {
-                return new ExpressionCollection<Engine>
+                return new ExpressionCollection<Engine>(base.ExpressionCollection)
                 {
-                    { HeaderName.Id, engine => engine.Id },
                     { HeaderName.Reference, engine => engine.Reference },
                     { HeaderName.Manufacturer, engine => engine.Manufacturer },
                     { HeaderName.NextMaintenanceDate, engine => engine.NextMaintenanceDate },
@@ -51,23 +51,14 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
                     { HeaderName.PrincipalPart, engine => engine.PrincipalPart != null ? engine.PrincipalPart.SN : null },
                     { HeaderName.InstalledParts, engine => engine.InstalledParts.Select(x => x.SN).OrderBy(x => x) },
                 };
-        }
+            }
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
-        public override void DtoToEntity(EngineDto dto, Engine entity)
+        public override void DtoToEntity(EngineDto dto, ref Engine entity)
         {
-            if (entity == null)
-            {
-                entity = new Engine();
-            }
+            base.DtoToEntity(dto, ref entity);
 
-            entity.Id = dto.Id;
-
-            // Begin BIADemo
-            entity.IsFixed = dto.IsFixed;
-
-            // End BIADemo
             entity.Reference = dto.Reference;
             entity.Manufacturer = dto.Manufacturer;
             entity.NextMaintenanceDate = dto.NextMaintenanceDate;
@@ -117,14 +108,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
         public override Expression<Func<Engine, EngineDto>> EntityToDto()
         {
-            return entity => new EngineDto
+            return base.EntityToDto().CombineMapping(entity => new EngineDto
             {
-                Id = entity.Id,
-
-                // Begin BIADemo
-                IsFixed = entity.IsFixed,
-
-                // End BIADemo
                 RowVersion = Convert.ToBase64String(entity.RowVersion),
                 Reference = entity.Reference,
                 Manufacturer = entity.Manufacturer,
@@ -160,253 +145,235 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
                     Id = ca.Id,
                     Display = ca.SN,
                 }).OrderBy(x => x.Display).ToList(),
-            };
+            });
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
-        public override Func<EngineDto, object[]> DtoToRecord(List<string> headerNames = null)
+        /// <inheritdoc cref="ReflectionMapper{TDto,TEntity}.DtoToCell"/>
+        public override string DtoToCell(EngineDto dto, string headerName)
         {
-            return x =>
+            if (string.Equals(headerName, HeaderName.Reference, StringComparison.OrdinalIgnoreCase))
             {
-                List<object> records = new List<object>();
+                return CSVString(dto.Reference);
+            }
 
-                if (headerNames?.Any() == true)
-                {
-                    foreach (string headerName in headerNames)
-                    {
-                        if (string.Equals(headerName, HeaderName.Id, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.Id));
-                        }
+            if (string.Equals(headerName, HeaderName.Manufacturer, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVString(dto.Manufacturer);
+            }
 
-                        if (string.Equals(headerName, HeaderName.Reference, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.Reference));
-                        }
+            if (string.Equals(headerName, HeaderName.NextMaintenanceDate, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVDateTime(dto.NextMaintenanceDate);
+            }
 
-                        if (string.Equals(headerName, HeaderName.Manufacturer, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.Manufacturer));
-                        }
+            if (string.Equals(headerName, HeaderName.LastMaintenanceDate, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVDateTime(dto.LastMaintenanceDate);
+            }
 
-                        if (string.Equals(headerName, HeaderName.NextMaintenanceDate, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVDateTime(x.NextMaintenanceDate));
-                        }
+            if (string.Equals(headerName, HeaderName.DeliveryDate, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVDate(dto.DeliveryDate);
+            }
 
-                        if (string.Equals(headerName, HeaderName.LastMaintenanceDate, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVDateTime(x.LastMaintenanceDate));
-                        }
+            if (string.Equals(headerName, HeaderName.ExchangeDate, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVDate(dto.ExchangeDate);
+            }
 
-                        if (string.Equals(headerName, HeaderName.DeliveryDate, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVDate(x.DeliveryDate));
-                        }
+            if (string.Equals(headerName, HeaderName.IgnitionTime, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVTime(dto.IgnitionTime);
+            }
 
-                        if (string.Equals(headerName, HeaderName.ExchangeDate, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVDate(x.ExchangeDate));
-                        }
+            if (string.Equals(headerName, HeaderName.SyncTime, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVTime(dto.SyncTime);
+            }
 
-                        if (string.Equals(headerName, HeaderName.IgnitionTime, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVTime(x.IgnitionTime));
-                        }
+            if (string.Equals(headerName, HeaderName.Power, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVNumber(dto.Power);
+            }
 
-                        if (string.Equals(headerName, HeaderName.SyncTime, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVTime(x.SyncTime));
-                        }
+            if (string.Equals(headerName, HeaderName.NoiseLevel, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVNumber(dto.NoiseLevel);
+            }
 
-                        if (string.Equals(headerName, HeaderName.Power, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.Power));
-                        }
+            if (string.Equals(headerName, HeaderName.AverageFlightHours, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVNumber(dto.AverageFlightHours);
+            }
 
-                        if (string.Equals(headerName, HeaderName.NoiseLevel, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.NoiseLevel));
-                        }
+            if (string.Equals(headerName, HeaderName.FlightHours, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVNumber(dto.FlightHours);
+            }
 
-                        if (string.Equals(headerName, HeaderName.AverageFlightHours, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.AverageFlightHours));
-                        }
+            if (string.Equals(headerName, HeaderName.AverageFuelConsumption, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVNumber(dto.AverageFuelConsumption);
+            }
 
-                        if (string.Equals(headerName, HeaderName.FlightHours, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.FlightHours));
-                        }
+            if (string.Equals(headerName, HeaderName.FuelConsumption, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVNumber(dto.FuelConsumption);
+            }
 
-                        if (string.Equals(headerName, HeaderName.AverageFuelConsumption, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.AverageFuelConsumption));
-                        }
+            if (string.Equals(headerName, HeaderName.EstimatedPrice, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVNumber(dto.EstimatedPrice);
+            }
 
-                        if (string.Equals(headerName, HeaderName.FuelConsumption, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.FuelConsumption));
-                        }
+            if (string.Equals(headerName, HeaderName.OriginalPrice, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVNumber(dto.OriginalPrice);
+            }
 
-                        if (string.Equals(headerName, HeaderName.EstimatedPrice, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.EstimatedPrice));
-                        }
+            if (string.Equals(headerName, HeaderName.IsToBeMaintained, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVBool(dto.IsToBeMaintained);
+            }
 
-                        if (string.Equals(headerName, HeaderName.OriginalPrice, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.OriginalPrice));
-                        }
+            if (string.Equals(headerName, HeaderName.IsHybrid, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVBool(dto.IsHybrid);
+            }
 
-                        if (string.Equals(headerName, HeaderName.IsToBeMaintained, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVBool(x.IsToBeMaintained));
-                        }
+            if (string.Equals(headerName, HeaderName.PrincipalPart, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVString(dto.PrincipalPart?.Display);
+            }
 
-                        if (string.Equals(headerName, HeaderName.IsHybrid, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVBool(x.IsHybrid));
-                        }
+            if (string.Equals(headerName, HeaderName.InstalledParts, StringComparison.OrdinalIgnoreCase))
+            {
+                return CSVList(dto.InstalledParts);
+            }
 
-                        if (string.Equals(headerName, HeaderName.PrincipalPart, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.PrincipalPart?.Display));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.InstalledParts, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVList(x.InstalledParts));
-                        }
-                    }
-                }
-
-                return records.ToArray();
-            };
+            return base.DtoToCell(dto, headerName);
         }
 
         /// <inheritdoc/>
         public override void MapEntityKeysInDto(Engine entity, EngineDto dto)
         {
-            dto.Id = entity.Id;
+            base.MapEntityKeysInDto(entity, dto);
             dto.PlaneId = entity.PlaneId;
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
         public override Expression<Func<Engine, object>>[] IncludesForUpdate()
         {
-            return new Expression<Func<Engine, object>>[] { x => x.InstalledParts };
+            return
+            [
+                x => x.InstalledParts,
+            ];
         }
 
         /// <summary>
         /// Header Name.
         /// </summary>
         public struct HeaderName
-    {
-        /// <summary>
-        /// Header Name Id.
-        /// </summary>
-        public const string Id = "id";
+        {
+            /// <summary>
+            /// Header Name Reference.
+            /// </summary>
+            public const string Reference = "reference";
 
-        /// <summary>
-        /// Header Name Reference.
-        /// </summary>
-        public const string Reference = "reference";
+            /// <summary>
+            /// Header Name Manufacturer.
+            /// </summary>
+            public const string Manufacturer = "manufacturer";
 
-        /// <summary>
-        /// Header Name Manufacturer.
-        /// </summary>
-        public const string Manufacturer = "manufacturer";
+            /// <summary>
+            /// Header Name NextMaintenanceDate.
+            /// </summary>
+            public const string NextMaintenanceDate = "nextMaintenanceDate";
 
-        /// <summary>
-        /// Header Name NextMaintenanceDate.
-        /// </summary>
-        public const string NextMaintenanceDate = "nextMaintenanceDate";
+            /// <summary>
+            /// Header Name LastMaintenanceDate.
+            /// </summary>
+            public const string LastMaintenanceDate = "lastMaintenanceDate";
 
-        /// <summary>
-        /// Header Name LastMaintenanceDate.
-        /// </summary>
-        public const string LastMaintenanceDate = "lastMaintenanceDate";
+            /// <summary>
+            /// Header Name DeliveryDate.
+            /// </summary>
+            public const string DeliveryDate = "deliveryDate";
 
-        /// <summary>
-        /// Header Name DeliveryDate.
-        /// </summary>
-        public const string DeliveryDate = "deliveryDate";
+            /// <summary>
+            /// Header Name ExchangeDate.
+            /// </summary>
+            public const string ExchangeDate = "exchangeDate";
 
-        /// <summary>
-        /// Header Name ExchangeDate.
-        /// </summary>
-        public const string ExchangeDate = "exchangeDate";
+            /// <summary>
+            /// Header Name SyncTime.
+            /// </summary>
+            public const string SyncTime = "syncTime";
 
-        /// <summary>
-        /// Header Name SyncTime.
-        /// </summary>
-        public const string SyncTime = "syncTime";
+            /// <summary>
+            /// Header Name IgnitionTime.
+            /// </summary>
+            public const string IgnitionTime = "ignitionTime";
 
-        /// <summary>
-        /// Header Name IgnitionTime.
-        /// </summary>
-        public const string IgnitionTime = "ignitionTime";
+            /// <summary>
+            /// Header Name Power.
+            /// </summary>
+            public const string Power = "power";
 
-        /// <summary>
-        /// Header Name Power.
-        /// </summary>
-        public const string Power = "power";
+            /// <summary>
+            /// Header Name NoiseLevel.
+            /// </summary>
+            public const string NoiseLevel = "noiseLevel";
 
-        /// <summary>
-        /// Header Name NoiseLevel.
-        /// </summary>
-        public const string NoiseLevel = "noiseLevel";
+            /// <summary>
+            /// Header Name FlightHours.
+            /// </summary>
+            public const string FlightHours = "flightHours";
 
-        /// <summary>
-        /// Header Name FlightHours.
-        /// </summary>
-        public const string FlightHours = "flightHours";
+            /// <summary>
+            /// Header Name AverageFlightHours.
+            /// </summary>
+            public const string AverageFlightHours = "averageFlightHours";
 
-        /// <summary>
-        /// Header Name AverageFlightHours.
-        /// </summary>
-        public const string AverageFlightHours = "averageFlightHours";
+            /// <summary>
+            /// Header Name FuelConsumption.
+            /// </summary>
+            public const string FuelConsumption = "fuelConsumption";
 
-        /// <summary>
-        /// Header Name FuelConsumption.
-        /// </summary>
-        public const string FuelConsumption = "fuelConsumption";
+            /// <summary>
+            /// Header Name AverageFuelConsumption.
+            /// </summary>
+            public const string AverageFuelConsumption = "averageFuelConsumption";
 
-        /// <summary>
-        /// Header Name AverageFuelConsumption.
-        /// </summary>
-        public const string AverageFuelConsumption = "averageFuelConsumption";
+            /// <summary>
+            /// Header Name OriginalPrice.
+            /// </summary>
+            public const string OriginalPrice = "originalPrice";
 
-        /// <summary>
-        /// Header Name OriginalPrice.
-        /// </summary>
-        public const string OriginalPrice = "originalPrice";
+            /// <summary>
+            /// Header Name EstimatedPrice.
+            /// </summary>
+            public const string EstimatedPrice = "estimatedPrice";
 
-        /// <summary>
-        /// Header Name EstimatedPrice.
-        /// </summary>
-        public const string EstimatedPrice = "estimatedPrice";
+            /// <summary>
+            /// Header Name IsToBeMaintained.
+            /// </summary>
+            public const string IsToBeMaintained = "isToBeMaintained";
 
-        /// <summary>
-        /// Header Name IsToBeMaintained.
-        /// </summary>
-        public const string IsToBeMaintained = "isToBeMaintained";
+            /// <summary>
+            /// Header Name IsHybrid.
+            /// </summary>
+            public const string IsHybrid = "isHybrid";
 
-        /// <summary>
-        /// Header Name IsHybrid.
-        /// </summary>
-        public const string IsHybrid = "isHybrid";
+            /// <summary>
+            /// Header Name principalPart.
+            /// </summary>
+            public const string PrincipalPart = "principalPart";
 
-        /// <summary>
-        /// Header Name principalPart.
-        /// </summary>
-        public const string PrincipalPart = "principalPart";
-
-        /// <summary>
-        /// Header Name installedParts.
-        /// </summary>
-        public const string InstalledParts = "installedParts";
+            /// <summary>
+            /// Header Name installedParts.
+            /// </summary>
+            public const string InstalledParts = "installedParts";
+        }
     }
-}
 }

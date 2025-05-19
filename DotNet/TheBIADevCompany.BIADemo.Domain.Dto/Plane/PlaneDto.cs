@@ -15,7 +15,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
     /// The DTO used to represent a plane.
     /// </summary>
     [BiaDtoClass(AncestorTeam = "Site")]
-    public class PlaneDto : BaseDto<int>
+    public class PlaneDto : BaseDto<int>, IArchivableDto
     {
         /// <summary>
         /// Gets or sets the site id.
@@ -154,5 +154,25 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
         /// </summary>
         [BiaDtoField(Required = true, ItemType = "Airport")]
         public ICollection<OptionDto> ConnectingAirports { get; set; }
+
+        /// <summary>
+        /// Gets or sets the IsFixed.
+        /// </summary>
+        public bool IsFixed { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of connecting airports.
+        /// </summary>
+        public DateTime? FixedDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the is archived.
+        /// </summary>
+        public bool IsArchived { get; set; }
+
+        /// <summary>
+        /// Gets or sets the archived date.
+        /// </summary>
+        public DateTime? ArchivedDate { get; set; }
     }
 }

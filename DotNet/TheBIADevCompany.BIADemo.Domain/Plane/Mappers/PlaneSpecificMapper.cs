@@ -70,9 +70,9 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
-        public override void DtoToEntity(PlaneSpecificDto dto, Plane entity)
+        public override void DtoToEntity(PlaneSpecificDto dto, ref Plane entity)
         {
-            this.planeMapper.DtoToEntity(dto, entity);
+            this.planeMapper.DtoToEntity(dto, ref entity);
             entity.Engines ??= new List<Engine>();
             MapEmbeddedItemToEntityCollection(dto.Engines, entity.Engines, this.engineMapper);
         }

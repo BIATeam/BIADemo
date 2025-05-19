@@ -42,7 +42,7 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Mappers
         }
 
         /// <inheritdoc/>
-        public override void DtoToEntity(MaintenanceContractDto dto, MaintenanceContract entity)
+        public override void DtoToEntity(MaintenanceContractDto dto, ref MaintenanceContract entity)
         {
             entity ??= new MaintenanceContract();
 

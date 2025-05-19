@@ -24,10 +24,5 @@ namespace BIA.Net.Core.Domain.Dto.Base
         /// Gets or sets the row version.
         /// </summary>
         public string RowVersion { get; set; }
-
-        /// <summary>
-        /// Gets or sets the IsFixed.
-        /// </summary>
-        public bool IsFixed { get; set; }
     }
 }

@@ -31,7 +31,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
-        public override void DtoToEntity(PlaneTypeDto dto, PlaneType entity)
+        public override void DtoToEntity(PlaneTypeDto dto, ref PlaneType entity)
         {
             entity ??= new PlaneType();
             entity.Id = dto.Id;
