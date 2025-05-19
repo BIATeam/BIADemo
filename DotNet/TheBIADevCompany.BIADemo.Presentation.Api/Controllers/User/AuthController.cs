@@ -68,6 +68,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                 LightToken = lightToken,
                 FineGrainedPermission = !lightToken,
                 AdditionalInfos = !lightToken,
+                IsFirstLogin = true,
             };
 
             return await this.LoginOnTeams(loginParam);
