@@ -1,8 +1,6 @@
 import { APP_BASE_HREF, NgIf } from '@angular/common';
-import { Component, HostBinding, Inject, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { tap } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import {
   BiaTranslationService,
@@ -17,24 +15,15 @@ import { APP_SUPPORTED_TRANSLATIONS } from '../../../constants';
 import { AuthInfo } from '../../model/auth-info';
 import { BiaNavigation } from '../../model/bia-navigation';
 import { SpinnerComponent } from '../spinner/spinner.component';
-import { ClassicLayoutComponent } from './classic-layout/classic-layout.component';
 import { BiaLayoutService } from './services/layout.service';
 import { BiaUltimaLayoutComponent } from './ultima/layout/ultima-layout.component';
 
 @Component({
   selector: 'bia-layout',
   templateUrl: './layout.component.html',
-  imports: [
-    NgIf,
-    SpinnerComponent,
-    ClassicLayoutComponent,
-    RouterOutlet,
-    BiaUltimaLayoutComponent,
-  ],
+  imports: [NgIf, SpinnerComponent, BiaUltimaLayoutComponent],
 })
 export class LayoutComponent implements OnInit {
-  @HostBinding('class.bia-flex') classicStyle = false;
-
   isLoadingUserInfo = false;
   menus = new Array<BiaNavigation>();
   version = allEnvironments.version;
@@ -57,16 +46,7 @@ export class LayoutComponent implements OnInit {
     protected readonly store: Store,
     // protected notificationSignalRService: NotificationSignalRService,
     @Inject(APP_BASE_HREF) public baseHref: string
-  ) {
-    this.classicStyle = layoutService.config().classicStyle;
-    this.layoutService.configUpdate$
-      .pipe(
-        tap(update => {
-          this.classicStyle = update.classicStyle;
-        })
-      )
-      .subscribe();
-  }
+  ) {}
 
   public showEnvironmentMessage(environmentType: EnvironmentType | undefined) {
     return environmentType !== EnvironmentType.PRD;
