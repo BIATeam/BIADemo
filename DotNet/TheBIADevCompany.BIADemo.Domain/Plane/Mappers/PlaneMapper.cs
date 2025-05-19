@@ -19,7 +19,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
     /// <summary>
     /// The mapper used for Plane.
     /// </summary>
-    public class PlaneMapper : ReflectionMapper<PlaneDto, Plane, int>
+    public class PlaneMapper : BaseMapper<PlaneDto, Plane, int>
     {
         /// <inheritdoc cref="ReflectionMapper{TDto,TEntity}.ExpressionCollection"/>
         public override ExpressionCollection<Plane> ExpressionCollection
@@ -55,9 +55,9 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
-        public override void DtoToEntity(PlaneDto dto, Plane entity)
+        public override void DtoToEntity(PlaneDto dto, ref Plane entity)
         {
-            base.DtoToEntity(dto, entity);
+            base.DtoToEntity(dto, ref entity);
 
             // Map parent relationship 1-* : SiteId
             if (dto.SiteId != 0)

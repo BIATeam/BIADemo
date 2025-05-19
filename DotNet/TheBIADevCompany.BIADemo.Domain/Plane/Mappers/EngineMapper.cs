@@ -20,7 +20,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
     /// <summary>
     /// The mapper used for engine.
     /// </summary>
-    public class EngineMapper : ReflectionMapper<EngineDto, Engine, int>
+    public class EngineMapper : BaseMapper<EngineDto, Engine, int>
     {
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
         public override ExpressionCollection<Engine> ExpressionCollection
@@ -51,13 +51,13 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
                     { HeaderName.PrincipalPart, engine => engine.PrincipalPart != null ? engine.PrincipalPart.SN : null },
                     { HeaderName.InstalledParts, engine => engine.InstalledParts.Select(x => x.SN).OrderBy(x => x) },
                 };
-        }
+            }
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
-        public override void DtoToEntity(EngineDto dto, Engine entity)
+        public override void DtoToEntity(EngineDto dto, ref Engine entity)
         {
-            base.DtoToEntity(dto, entity);
+            base.DtoToEntity(dto, ref entity);
 
             entity.Reference = dto.Reference;
             entity.Manufacturer = dto.Manufacturer;

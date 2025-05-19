@@ -33,7 +33,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
-        public override void DtoToEntity(AirportDto dto, Airport entity)
+        public override void DtoToEntity(AirportDto dto, ref Airport entity)
         {
             if (entity == null)
             {

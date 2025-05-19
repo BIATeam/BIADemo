@@ -17,7 +17,7 @@ namespace BIA.Net.Core.Domain.Service
     /// <typeparam name="TEntity">Entity type.</typeparam>
     /// <typeparam name="TKey">Primary key type for the entity.</typeparam>
     public abstract class DomainServiceBase<TEntity, TKey>
-                where TEntity : class, IEntity<TKey>
+                where TEntity : class, IEntity<TKey>, new()
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DomainServiceBase{TEntity, TKey}"/> class.
