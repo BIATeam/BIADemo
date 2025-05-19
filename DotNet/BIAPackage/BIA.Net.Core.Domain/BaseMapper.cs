@@ -25,12 +25,12 @@ namespace BIA.Net.Core.Domain
         where TEntity : class, IEntity<TKey>, new()
     {
         /// <summary>
-        /// The is fixable.
+        /// The dto is fixable.
         /// </summary>
         private readonly bool isFixable;
 
         /// <summary>
-        /// The is archivable.
+        /// The dto is archivable.
         /// </summary>
         private readonly bool isArchivable;
 
@@ -40,20 +40,14 @@ namespace BIA.Net.Core.Domain
         protected BaseMapper()
             : base()
         {
-            if (typeof(IEntityFixable<TKey>).IsAssignableFrom(typeof(TEntity)))
+            if (typeof(IEntityFixable<TKey>).IsAssignableFrom(typeof(TEntity)) && typeof(IFixableDto).IsAssignableFrom(typeof(TDto)))
             {
                 this.isFixable = true;
-                Debug.Assert(
-                    typeof(IFixableDto).IsAssignableFrom(typeof(TDto)),
-                    "The dto " + typeof(TDto).ToString() + " should implement of IFixableDto");
             }
 
-            if (typeof(IEntityArchivable<TKey>).IsAssignableFrom(typeof(TEntity)))
+            if (typeof(IEntityArchivable<TKey>).IsAssignableFrom(typeof(TEntity)) && typeof(IArchivableDto).IsAssignableFrom(typeof(TDto)))
             {
                 this.isArchivable = true;
-                Debug.Assert(
-                    typeof(IArchivableDto).IsAssignableFrom(typeof(TDto)),
-                    "The dto " + typeof(TDto).ToString() + " should implement of IArchivableDto");
             }
         }
 
