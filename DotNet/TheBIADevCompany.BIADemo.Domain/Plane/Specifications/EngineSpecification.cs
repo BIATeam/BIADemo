@@ -7,7 +7,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Specifications
 {
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Specification;
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
 
     /// <summary>
