@@ -18,9 +18,13 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
+
+    // Begin BIADemo
     using Hangfire;
     using Microsoft.Extensions.Configuration;
     using TheBIADevCompany.BIADemo.Application.Job;
+
+    // End BIADemo
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
     using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
@@ -29,19 +33,14 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
     /// <summary>
-    /// The application service used for plane.
+    /// The application service used for engine.
     /// </summary>
     public class EngineAppService : CrudAppServiceBase<EngineDto, Engine, int, PagingFilterFormatDto, EngineMapper>, IEngineAppService
     {
         /// <summary>
-        /// The current TeamId.
+        /// The current AncestorTeamId.
         /// </summary>
-        private readonly int currentTeamId;
-
-        /// <summary>
-        /// The configuration.
-        /// </summary>
-        private readonly IConfiguration configuration;
+        private readonly int currentAncestorTeamId;
 
         /// <summary>
         /// The repository.
@@ -49,6 +48,11 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         private readonly IEngineRepository repository;
 
         // Begin BIADemo
+
+        /// <summary>
+        /// The configuration.
+        /// </summary>
+        private readonly IConfiguration configuration;
 
         /// <summary>
         /// The plane repository.
@@ -65,27 +69,31 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         /// <param name="repository">The repository.</param>
         // Begin BIADemo
         /// <param name="planeRepository">The plane repository.</param>
+        /// <param name="configuration">The configuration.</param>
         // End BIADemo
         /// <param name="principal">The claims principal.</param>
-        /// <param name="configuration">The configuration.</param>
         public EngineAppService(
             IEngineRepository repository,
             // Begin BIADemo
             ITGenericRepository<Plane, int> planeRepository,
+            IConfiguration configuration,
             // End BIADemo
-            IPrincipal principal,
-            IConfiguration configuration)
+            IPrincipal principal)
             : base(repository)
         {
             this.repository = repository;
+
+            var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
+            this.currentAncestorTeamId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.Site) : 0;
+
+            // For child : set the TeamId of the Ancestor that contain a team Parent
+            this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<Engine>(x => x.Plane.SiteId == this.currentAncestorTeamId));
+
+            // Begin BIADemo
             this.planeRepository = planeRepository;
             this.configuration = configuration;
 
-            var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
-            this.currentTeamId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.Site) : 0;
-
-            // For child : set the TeamId of the Ancestor that contain a team Parent
-            this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<Engine>(p => p.Plane.SiteId == this.currentTeamId));
+            // End BIADemo
         }
 
         // Begin BIADemo
