@@ -12,7 +12,7 @@ import { BiaFormLayoutConfig } from 'src/app/shared/bia-shared/model/bia-form-la
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 // TODO after creation of CRUD Engine : adapt the model
-export interface Engine extends BaseDto {
+export class Engine extends BaseDto {
   reference: string;
   manufacturer: string | null;
   nextMaintenanceDate: Date;
@@ -61,6 +61,14 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
         type: PropType.DateTime,
       }
     ),
+    Object.assign(new BiaFieldConfig('deliveryDate', 'engine.deliveryDate'), {
+      type: PropType.Date,
+      isRequired: true,
+      validators: [Validators.required],
+    }),
+    Object.assign(new BiaFieldConfig('exchangeDate', 'engine.exchangeDate'), {
+      type: PropType.Date,
+    }),
     Object.assign(new BiaFieldConfig('syncTime', 'engine.syncTime'), {
       type: PropType.TimeSecOnly,
       isRequired: true,
@@ -80,8 +88,8 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
       validators: [Validators.required],
     }),
     Object.assign(new BiaFieldConfig('flightHours', 'engine.flightHours'), {
-      isRequired: true,
       type: PropType.Number,
+      isRequired: true,
       filterMode: PrimeNGFiltering.Equals,
       displayFormat: Object.assign(new BiaFieldNumberFormat(), {
         mode: NumberMode.Decimal,
@@ -105,8 +113,8 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
     Object.assign(
       new BiaFieldConfig('fuelConsumption', 'engine.fuelConsumption'),
       {
-        isRequired: true,
         type: PropType.Number,
+        isRequired: true,
         filterMode: PrimeNGFiltering.Equals,
         displayFormat: Object.assign(new BiaFieldNumberFormat(), {
           mode: NumberMode.Decimal,
@@ -133,8 +141,8 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
       }
     ),
     Object.assign(new BiaFieldConfig('originalPrice', 'engine.originalPrice'), {
-      isRequired: true,
       type: PropType.Number,
+      isRequired: true,
       filterMode: PrimeNGFiltering.Equals,
       displayFormat: Object.assign(new BiaFieldNumberFormat(), {
         mode: NumberMode.Currency,
@@ -158,19 +166,19 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
         validators: [Validators.min(0)],
       }
     ),
-    Object.assign(new BiaFieldConfig('isHybrid', 'engine.isHybrid'), {
-      isSearchable: true,
-      type: PropType.Boolean,
-    }),
     Object.assign(
       new BiaFieldConfig('isToBeMaintained', 'engine.isToBeMaintained'),
       {
+        type: PropType.Boolean,
         isRequired: true,
         isSearchable: true,
-        type: PropType.Boolean,
         validators: [Validators.required],
       }
     ),
+    Object.assign(new BiaFieldConfig('isHybrid', 'engine.isHybrid'), {
+      type: PropType.Boolean,
+      isSearchable: true,
+    }),
     Object.assign(new BiaFieldConfig('principalPart', 'engine.principalPart'), {
       type: PropType.OneToMany,
     }),
@@ -178,6 +186,8 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
       new BiaFieldConfig('installedParts', 'engine.installedParts'),
       {
         type: PropType.ManyToMany,
+        isRequired: true,
+        validators: [Validators.required],
       }
     ),
     Object.assign(new BiaFieldConfig('rowVersion', 'engine.rowVersion'), {
