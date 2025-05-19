@@ -1,5 +1,3 @@
-@use '../../../../../../scss/bia/bia-variables';
-
 :host {
   display: block;
   position: relative;
@@ -9,10 +7,6 @@
   padding-right: 35px;
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
-
-  .bia-btn-del-filter {
-    color: bia-variables.$biaRed !important;
-  }
 }
 
 .bia-table-controller-container {
