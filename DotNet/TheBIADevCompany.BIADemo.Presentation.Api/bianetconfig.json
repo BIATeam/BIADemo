@@ -223,7 +223,7 @@
         ]
       },
       {
-        "Names": [  "MaintenanceTeam_Update", "MaintenanceTeam_Save" ],
+        "Names": [ "MaintenanceTeam_Update", "MaintenanceTeam_Save" ],
         "Roles": [
           "Supervisor",
           "MaintenanceTeam_Admin",
@@ -262,11 +262,13 @@
           "MaintenanceTeam_Admin"
         ]
       },
+      // BIAToolKit - Begin Partial ConfigForOption Country
       // Country
       {
         "Name": "Country_Options",
         "Roles": [ "Admin", "Site_Member" ]
       },
+      // BIAToolKit - End Partial ConfigForOption Country
       // Airport
       {
         "Name": "Airport_Options",
@@ -276,11 +278,14 @@
         "Names": [ "Airport_List_Access", "Airport_Create", "Airport_Read", "Airport_Update", "Airport_Delete", "Airport_Save" ],
         "Roles": [ "Admin" ]
       },
+      // BIAToolKit - Begin Partial ConfigForOption PlaneType
       // PlaneType
       {
         "Name": "PlaneType_Options",
         "Roles": [ "Admin", "Site_Member" ]
       },
+      // BIAToolKit - End Partial ConfigForOption PlaneType
+      // PlaneType
       {
         "Names": [ "PlaneType_List_Access", "PlaneType_Create", "PlaneType_Read", "PlaneType_Update", "PlaneType_Delete", "PlaneType_Save" ],
         "Roles": [ "Admin" ]

@@ -19,19 +19,19 @@ export class PlaneTypeOptionsEffects {
         DomainPlaneTypeOptionsActions.loadAll
       ) /* When action is dispatched */,
       /* startWith(loadAll()), */
-      /* Hit the PlanesTypes Index endpoint of our REST API */
+      /* Hit the PlaneTypes Index endpoint of our REST API */
       /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
-      /* 'PlanesTypes Reducers' will take care of the rest */
+      /* 'PlaneTypes Reducers' will take care of the rest */
       switchMap(() =>
-        this.planeTypeDas
+        this.planeTypeOptionDas
           .getList({
             endpoint: 'allOptions',
             offlineMode: BiaOnlineOfflineService.isModeEnabled,
           })
           .pipe(
-            map(planesTypes =>
+            map(planeTypes =>
               DomainPlaneTypeOptionsActions.loadAllSuccess({
-                planesTypes: planesTypes?.sort((a, b) =>
+                planeTypes: planeTypes?.sort((a, b) =>
                   a.display.localeCompare(b.display)
                 ),
               })
@@ -52,7 +52,7 @@ export class PlaneTypeOptionsEffects {
 
   constructor(
     private actions$: Actions,
-    private planeTypeDas: PlaneTypeOptionDas,
+    private planeTypeOptionDas: PlaneTypeOptionDas,
     private biaMessageService: BiaMessageService
   ) {}
 }

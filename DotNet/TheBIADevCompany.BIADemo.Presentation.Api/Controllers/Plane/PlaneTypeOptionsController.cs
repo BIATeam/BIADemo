@@ -14,22 +14,22 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
 
     /// <summary>
-    /// The API controller used to manage PlaneType options.
+    /// The API controller used to manage plane type options.
     /// </summary>
     public class PlaneTypeOptionsController : BiaControllerBase
     {
         /// <summary>
-        /// The PlaneType application service.
+        /// The plane type application service.
         /// </summary>
-        private readonly IPlaneTypeOptionAppService airportOptionService;
+        private readonly IPlaneTypeOptionAppService planeTypeOptionService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlaneTypeOptionsController"/> class.
         /// </summary>
-        /// <param name="airportOptionService">The PlaneType application service.</param>
-        public PlaneTypeOptionsController(IPlaneTypeOptionAppService airportOptionService)
+        /// <param name="planeTypeOptionService">The plane type application service.</param>
+        public PlaneTypeOptionsController(IPlaneTypeOptionAppService planeTypeOptionService)
         {
-            this.airportOptionService = airportOptionService;
+            this.planeTypeOptionService = planeTypeOptionService;
         }
 
         /// <summary>
@@ -41,10 +41,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.PlanesTypes.Options)]
+        [Authorize(Roles = Rights.PlaneTypeOptions.Options)]
         public async Task<IActionResult> GetAllOptions()
         {
-            var results = await this.airportOptionService.GetAllOptionsAsync();
+            var results = await this.planeTypeOptionService.GetAllOptionsAsync();
             return this.Ok(results);
         }
     }

@@ -133,10 +133,13 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// </summary>
         /// <typeparam name="T">The result type.</typeparam>
         /// <param name="url">The URL.</param>
-        /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
-        protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase)> GetAsync<T>(string url)
+        /// <param name="cacheDurationInMinute">The cache duration in minute.</param>
+        /// <returns>
+        /// Result, IsSuccessStatusCode, ReasonPhrase.
+        /// </returns>
+        protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase)> GetAsync<T>(string url, double cacheDurationInMinute = default)
         {
-            return await this.SendAsync<T>(url: url, httpMethod: HttpMethod.Get, retry: false);
+            return await this.SendAsync<T>(url: url, httpMethod: HttpMethod.Get, retry: false, cacheDurationInMinute: cacheDurationInMinute);
         }
 
         /// <summary>
@@ -336,12 +339,16 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="httpMethod">The httpMethod.</param>
         /// <param name="request">The request.</param>
         /// <param name="retry">if true it is a retry operation.</param>
-        /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
+        /// <param name="cacheDurationInMinute">The cache duration in minute.</param>
+        /// <returns>
+        /// Result, IsSuccessStatusCode, ReasonPhrase.
+        /// </returns>
         protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase)> SendAsync<T>(
             string url = default,
             HttpMethod httpMethod = default,
             HttpRequestMessage request = default,
-            bool retry = false)
+            bool retry = false,
+            double cacheDurationInMinute = default)
         {
             if (!string.IsNullOrWhiteSpace(url) || request != default)
             {
@@ -362,23 +369,52 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 }
 
                 HttpResponseMessage response = default;
+                string cacheKey = $"{nameof(WebApiRepository)}|{httpMethod?.Method}|{url}";
 
-                if (request != default)
+                if (request != default) // POST, PUT
                 {
                     response = await this.httpClient.SendAsync(request);
                 }
-                else if (httpMethod?.Method == HttpMethod.Delete.Method)
+                else if (httpMethod?.Method == HttpMethod.Delete.Method) // DELETE
                 {
                     response = await this.httpClient.DeleteAsync(url);
                 }
-                else
+                else // GET
                 {
-                    response = await this.httpClient.GetAsync(url);
+                    if (cacheDurationInMinute > 0)
+                    {
+                        string cachedResponse = await this.distributedCache.Get<string>(cacheKey);
+                        if (!string.IsNullOrEmpty(cachedResponse))
+                        {
+                            response = new HttpResponseMessage(System.Net.HttpStatusCode.OK)
+                            {
+                                Content = new StringContent(cachedResponse, Encoding.UTF8, MediaTypeNames.Application.Json),
+                            };
+
+                            string message = $"Retrieve from cache {httpMethod?.Method}: {url}";
+                            this.logger.LogInformation(message);
+
+                            cacheDurationInMinute = default;
+                        }
+                        else
+                        {
+                            response = await this.httpClient.GetAsync(url);
+                        }
+                    }
+                    else
+                    {
+                        response = await this.httpClient.GetAsync(url);
+                    }
                 }
 
                 if (response.IsSuccessStatusCode)
                 {
                     string res = await response.Content.ReadAsStringAsync();
+                    if (cacheDurationInMinute > 0)
+                    {
+                        await this.distributedCache.Add(cacheKey, res, cacheDurationInMinute);
+                    }
+
                     T result = JsonConvert.DeserializeObject<T>(res);
                     return (result, response.IsSuccessStatusCode, default(string));
                 }

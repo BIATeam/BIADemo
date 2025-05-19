@@ -193,6 +193,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Save = "MaintenanceTeam_Save";
         }
 
+        // BIAToolKit - Begin Partial RightsForOption Country
+
         /// <summary>
         /// The country options rights.
         /// </summary>
@@ -203,6 +205,23 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             public const string Options = "Country_Options";
         }
+
+        // BIAToolKit - End Partial RightsForOption Country
+
+        // BIAToolKit - Begin Partial RightsForOption PlaneType
+
+        /// <summary>
+        /// The plane type options rights.
+        /// </summary>
+        public static class PlaneTypeOptions
+        {
+            /// <summary>
+            /// The right to access to the list of plane types (options only).
+            /// </summary>
+            public const string Options = "PlaneType_Options";
+        }
+
+        // BIAToolKit - End Partial RightsForOption PlaneType
 
         /// <summary>
         /// The planes rights.
@@ -255,11 +274,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         /// </summary>
         public static class PlanesTypes
         {
-            /// <summary>
-            /// The right to access to the list of planes types (options only).
-            /// </summary>
-            public const string Options = "PlaneType_Options";
-
             /// <summary>
             /// The right to access to the list of planes types.
             /// </summary>

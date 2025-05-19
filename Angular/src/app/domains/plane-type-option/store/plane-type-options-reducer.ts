@@ -3,7 +3,7 @@ import { createReducer, on } from '@ngrx/store';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { DomainPlaneTypeOptionsActions } from './plane-type-options-actions';
 
-// This adapter will allow is to manipulate planesTypes (mostly CRUD operations)
+// This adapter will allow is to manipulate planeTypes (mostly CRUD operations)
 export const planeTypeOptionsAdapter = createEntityAdapter<OptionDto>({
   selectId: (planeType: OptionDto) => planeType.id,
   sortComparer: false,
@@ -28,10 +28,9 @@ export const INIT_STATE: State = planeTypeOptionsAdapter.getInitialState({
 
 export const planeTypeOptionReducers = createReducer<State>(
   INIT_STATE,
-  on(DomainPlaneTypeOptionsActions.loadAllSuccess, (state, { planesTypes }) =>
-    planeTypeOptionsAdapter.setAll(planesTypes, state)
+  on(DomainPlaneTypeOptionsActions.loadAllSuccess, (state, { planeTypes }) =>
+    planeTypeOptionsAdapter.setAll(planeTypes, state)
   )
-  // on(loadSuccess, (state, { planeType }) => planeTypeOptionsAdapter.upsertOne(planeType, state))
 );
 
 export const getPlaneTypeOptionById = (id: number) => (state: State) =>
