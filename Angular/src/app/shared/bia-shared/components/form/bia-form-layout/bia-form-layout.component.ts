@@ -20,6 +20,7 @@ import {
 import { TranslateModule } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
 import { Badge } from 'primeng/badge';
+import { PanelModule } from 'primeng/panel';
 import { Ripple } from 'primeng/ripple';
 import { Tab, TabList, TabPanel, Tabs } from 'primeng/tabs';
 import { BiaFormLayoutConfig } from '../../../model/bia-form-layout-config';
@@ -50,6 +51,7 @@ import { BiaOutputComponent } from '../bia-output/bia-output.component';
     Ripple,
     Tab,
     TabPanel,
+    PanelModule,
   ],
 })
 export class BiaFormLayoutComponent<TDto extends { id: number }> {
