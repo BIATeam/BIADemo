@@ -41,7 +41,6 @@ export type ColorScheme = 'light' | 'dark';
 export type MenuProfilePosition = 'start' | 'end';
 
 export interface AppConfig {
-  classicStyle: boolean;
   colorScheme: ColorScheme;
   menuMode: MenuMode;
   scale: number;
@@ -67,7 +66,6 @@ interface LayoutState {
 }
 
 const DEFAULT_LAYOUT_CONFIG: AppConfig = {
-  classicStyle: false,
   colorScheme: 'light',
   menuMode: 'static',
   scale: 14,
@@ -83,7 +81,6 @@ const DEFAULT_CONFIG_DISPLAY: ConfigDisplay = {
   showTheme: true,
   showMenuStyle: false,
   showFooterStyle: false,
-  showToggleStyle: false,
   showMenuProfilePosition: false,
 };
 
@@ -461,15 +458,6 @@ export class BiaLayoutService {
       this.menuProfileOpen.next(null);
     }
   }
-
-  toggleStyle() {
-    this.config.update(config => ({
-      ...config,
-      classicStyle: !this._config.classicStyle,
-      scale: this._config.classicStyle ? 14 : 16,
-    }));
-  }
-
   clearSession() {
     const culture = localStorage.getItem(STORAGE_CULTURE_KEY);
     const theme = localStorage.getItem(STORAGE_THEME_KEY);
