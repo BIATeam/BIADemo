@@ -156,12 +156,12 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Fleet
         public ICollection<OptionDto> ConnectingAirports { get; set; }
 
         /// <summary>
-        /// Gets or sets the IsFixed.
+        /// Gets or sets the is fixed.
         /// </summary>
         public bool IsFixed { get; set; }
 
         /// <summary>
-        /// Gets or sets the list of connecting airports.
+        /// Gets or sets the fixed date.
         /// </summary>
         public DateTime? FixedDate { get; set; }
 
