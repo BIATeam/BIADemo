@@ -469,13 +469,23 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 if (response.IsSuccessStatusCode)
                 {
                     string res = await response.Content.ReadAsStringAsync();
-                    if (cacheDurationInMinute > 0)
-                    {
-                        await this.distributedCache.Add(cacheKey, res, cacheDurationInMinute);
-                    }
+                    string contentType = response.Content.Headers.ContentType?.MediaType;
 
-                    T result = JsonConvert.DeserializeObject<T>(res);
-                    return (result, response.IsSuccessStatusCode, default(string));
+                    if (contentType == MediaTypeNames.Application.Json)
+                    {
+                        if (cacheDurationInMinute > 0)
+                        {
+                            await this.distributedCache.Add(cacheKey, res, cacheDurationInMinute);
+                        }
+
+                        T result = JsonConvert.DeserializeObject<T>(res);
+                        return (result, response.IsSuccessStatusCode, default(string));
+                    }
+                    else
+                    {
+                        this.logger.LogWarning("Expected JSON but got '{ContentType}'. Returning default value.", contentType);
+                        return (default(T), response.IsSuccessStatusCode, "Response is not JSON.");
+                    }
                 }
                 else
                 {
