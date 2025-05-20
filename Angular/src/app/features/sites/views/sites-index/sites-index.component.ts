@@ -44,7 +44,7 @@ import { siteCRUDConfiguration } from '../../site.constants';
   providers: [{ provide: CrudItemService, useExisting: SiteService }],
 })
 export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
-  // Custo for teams
+  // Customization for teams
   canViewMembers = false;
   canSelectElement = false;
   // BIAToolKit - Begin SiteIndexTsCanViewChildDeclaration
@@ -72,7 +72,7 @@ export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
     this.canEdit = this.authService.hasPermission(Permission.Site_Update);
     this.canDelete = this.authService.hasPermission(Permission.Site_Delete);
     this.canAdd = this.authService.hasPermission(Permission.Site_Create);
-    // Custo for teams
+    // Customization for teams
     this.canViewMembers = this.authService.hasPermission(
       Permission.Site_Member_List_Access
     );
@@ -106,7 +106,7 @@ export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
     ];
   }
 
-  // Custo for teams
+  // Customization for teams
   onClickRowData(crudItem: Site) {
     if (crudItem.canMemberListAccess) {
       this.onViewMembers(crudItem.id);

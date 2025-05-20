@@ -92,7 +92,7 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Mappers
             });
         }
 
-        /// <inheritdoc cref="ReflectionMapper{TDto,TEntity}.DtoToCell"/>
+        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCell"/>
         public override string DtoToCell(MaintenanceContractDto dto, string headerName)
         {
             if (string.Equals(headerName, HeaderName.ContractNumber, StringComparison.OrdinalIgnoreCase))

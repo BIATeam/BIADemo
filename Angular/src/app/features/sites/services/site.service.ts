@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { map, Observable } from 'rxjs';
@@ -27,19 +27,20 @@ export class SiteService extends CrudItemService<Site> {
     public dasService: SiteDas,
     public signalRService: CrudItemSignalRService<Site>,
     public optionsService: SiteOptionsService,
+    protected injector: Injector,
     // required only for parent key
     protected authService: AuthService
   ) {
-    super(dasService, signalRService, optionsService);
+    super(dasService, signalRService, optionsService, injector);
   }
 
-  // Custo for teams
+  // Customization for teams
   public get currentCrudItemId(): any {
-    // should be redifine due to the setter
+    // should be redefine due to the setter
     return super.currentCrudItemId;
   }
 
-  // Custo for teams
+  // Customization for teams
   public set currentCrudItemId(id: any) {
     if (this._currentCrudItemId !== id) {
       this._currentCrudItemId = id;

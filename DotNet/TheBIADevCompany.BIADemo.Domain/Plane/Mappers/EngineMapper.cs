@@ -148,7 +148,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Mappers
             });
         }
 
-        /// <inheritdoc cref="ReflectionMapper{TDto,TEntity}.DtoToCell"/>
+        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCell"/>
         public override string DtoToCell(EngineDto dto, string headerName)
         {
             if (string.Equals(headerName, HeaderName.Reference, StringComparison.OrdinalIgnoreCase))

@@ -11,6 +11,7 @@ namespace BIA.Net.Core.Domain
     using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
 
@@ -330,32 +331,21 @@ namespace BIA.Net.Core.Domain
         /// <returns>a string formated for csv.<returns>
         public virtual string DtoToCell(TDto dto, string headerName)
         {
-            if (string.Equals(headerName, BaseHeaderName.Id, StringComparison.OrdinalIgnoreCase))
+            switch (headerName.ToLowerInvariant())
             {
-                return CSVCell(dto.Id);
+                case BaseHeaderName.Id:
+                    return CSVCell(dto.Id);
+                case BaseHeaderName.IsFixed:
+                    return CSVBool((dto as IFixableDto).IsFixed);
+                case BaseHeaderName.FixedDate:
+                    return CSVDate((dto as IFixableDto).FixedDate);
+                case BaseHeaderName.IsArchived:
+                    return CSVBool((dto as IArchivableDto).IsArchived);
+                case BaseHeaderName.ArchivedDate:
+                    return CSVDate((dto as IArchivableDto).ArchivedDate);
+                default:
+                    throw new FrontUserException("Unknow header " + headerName);
             }
-
-            if (string.Equals(headerName, BaseHeaderName.IsFixed, StringComparison.OrdinalIgnoreCase))
-            {
-                return CSVBool((dto as IFixableDto).IsFixed);
-            }
-
-            if (string.Equals(headerName, BaseHeaderName.FixedDate, StringComparison.OrdinalIgnoreCase))
-            {
-                return CSVDate((dto as IFixableDto).FixedDate);
-            }
-
-            if (string.Equals(headerName, BaseHeaderName.IsArchived, StringComparison.OrdinalIgnoreCase))
-            {
-                return CSVBool((dto as IArchivableDto).IsArchived);
-            }
-
-            if (string.Equals(headerName, BaseHeaderName.ArchivedDate, StringComparison.OrdinalIgnoreCase))
-            {
-                return CSVDate((dto as IArchivableDto).ArchivedDate);
-            }
-
-            return "Unknow header " + headerName;
         }
 
         /// <summary>
