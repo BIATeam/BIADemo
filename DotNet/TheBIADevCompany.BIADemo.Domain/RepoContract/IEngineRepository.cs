@@ -7,7 +7,7 @@ namespace TheBIADevCompany.BIADemo.Domain.RepoContract
 {
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.RepoContract;
-    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
     /// <summary>
     /// Interface Engine Repository.

@@ -11,7 +11,7 @@ namespace TheBIADevCompany.BIADemo.Test.Data
     using BIA.Net.Core.Test.Data;
 #if BIA_FRONT_FEATURE
     // Begin BIADemo
-    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
     // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.Site.Entities;

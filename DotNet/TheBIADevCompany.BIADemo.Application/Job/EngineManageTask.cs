@@ -10,7 +10,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     using Hangfire;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
-    using TheBIADevCompany.BIADemo.Application.Plane;
+    using TheBIADevCompany.BIADemo.Application.Fleet;
 
     /// <summary>
     /// Task to synchronize users from LDAP.
