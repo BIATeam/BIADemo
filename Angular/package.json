@@ -53,7 +53,7 @@
     "keycloak-angular": "~19.0.2",
     "keycloak-js": "~25.0.6",
     "ngx-logger": "~5.0.12",
-    "papaparse": "~5.4.1",
+    "papaparse": "~5.5.3",
     "primeflex": "~4.0.0",
     "primeicons": "~7.0.0",
     "primeng": "~19.0.9",
