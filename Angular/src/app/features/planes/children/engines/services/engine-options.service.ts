@@ -13,20 +13,20 @@ import { AppState } from 'src/app/store/state';
   providedIn: 'root',
 })
 export class EngineOptionsService extends CrudItemOptionsService {
-  partsOptions$: Observable<OptionDto[]>;
+  partOptions$: Observable<OptionDto[]>;
 
   constructor(private store: Store<AppState>) {
     super();
-    // TODO after creation of CRUD Team MaintenanceTeam : get all required option dto use in Table calc and create and edit form
-    this.partsOptions$ = this.store.select(getAllPartOptions);
+    // TODO after creation of CRUD Engine : get all required option dto use in Table calc and create and edit form
+    this.partOptions$ = this.store.select(getAllPartOptions);
     let cpt = 0;
-    const partType = cpt++;
+    const part = cpt++;
 
-    this.dictOptionDtos$ = combineLatest([this.partsOptions$]).pipe(
+    this.dictOptionDtos$ = combineLatest([this.partOptions$]).pipe(
       map(options => {
         return <DictOptionDto[]>[
-          new DictOptionDto('principalPart', options[partType]),
-          new DictOptionDto('installedParts', options[partType]),
+          new DictOptionDto('principalPart', options[part]),
+          new DictOptionDto('installedParts', options[part]),
         ];
       })
     );

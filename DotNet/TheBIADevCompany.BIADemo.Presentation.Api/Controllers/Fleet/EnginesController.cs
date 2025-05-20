@@ -47,7 +47,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         /// <param name="engineService">The engine application service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
         public EnginesController(
-            IEngineAppService engineService, IClientForHubService clientForHubService)
+            IEngineAppService engineService,
+            IClientForHubService clientForHubService)
 #else
         /// <summary>
         /// Initializes a new instance of the <see cref="EnginesController"/> class.
@@ -144,9 +145,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.Engines.Update)]
-        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> Update(int id, [FromBody] EngineDto dto)
         {
             if (id == 0 || dto == null || dto.Id != id)
@@ -229,7 +230,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             try
             {
                 var deletedDtos = await this.engineService.RemoveAsync(ids);
-
 #if UseHubForClientInEngine
                 deletedDtos.Select(m => m.PlaneId).Distinct().ToList().ForEach(parentId =>
                 {
@@ -253,6 +253,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.Engines.Save)]
         public async Task<IActionResult> Save(IEnumerable<EngineDto> dtos)

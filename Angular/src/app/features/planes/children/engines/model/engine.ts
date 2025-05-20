@@ -2,17 +2,21 @@ import { Validators } from '@angular/forms';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import {
   BiaFieldConfig,
+  // Begin BIADemo
   BiaFieldNumberFormat,
+  // End BIADemo
   BiaFieldsConfig,
+  // Begin BIADemo
   NumberMode,
   PrimeNGFiltering,
+  // End BIADemo
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { BiaFormLayoutConfig } from 'src/app/shared/bia-shared/model/bia-form-layout-config';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 // TODO after creation of CRUD Engine : adapt the model
-export interface Engine extends BaseDto {
+export class Engine extends BaseDto {
   reference: string;
   manufacturer: string | null;
   nextMaintenanceDate: Date;
@@ -61,6 +65,14 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
         type: PropType.DateTime,
       }
     ),
+    Object.assign(new BiaFieldConfig('deliveryDate', 'engine.deliveryDate'), {
+      type: PropType.Date,
+      isRequired: true,
+      validators: [Validators.required],
+    }),
+    Object.assign(new BiaFieldConfig('exchangeDate', 'engine.exchangeDate'), {
+      type: PropType.Date,
+    }),
     Object.assign(new BiaFieldConfig('syncTime', 'engine.syncTime'), {
       type: PropType.TimeSecOnly,
       isRequired: true,
@@ -71,49 +83,59 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
     }),
     Object.assign(new BiaFieldConfig('power', 'engine.power'), {
       type: PropType.Number,
+      // Begin BIADemo
       filterMode: PrimeNGFiltering.Equals,
+      // End BIADemo
     }),
     Object.assign(new BiaFieldConfig('noiseLevel', 'engine.noiseLevel'), {
       type: PropType.Number,
-      filterMode: PrimeNGFiltering.Equals,
       isRequired: true,
       validators: [Validators.required],
+      // Begin BIADemo
+      filterMode: PrimeNGFiltering.Equals,
+      // End BIADemo
     }),
     Object.assign(new BiaFieldConfig('flightHours', 'engine.flightHours'), {
-      isRequired: true,
       type: PropType.Number,
+      isRequired: true,
+      validators: [Validators.required],
+      // Begin BIADemo
       filterMode: PrimeNGFiltering.Equals,
       displayFormat: Object.assign(new BiaFieldNumberFormat(), {
         mode: NumberMode.Decimal,
         minFractionDigits: 6,
         maxFractionDigits: 6,
       }),
-      validators: [Validators.required, Validators.min(0)],
+      // End BIADemo
     }),
     Object.assign(
       new BiaFieldConfig('averageFlightHours', 'engine.averageFlightHours'),
       {
         type: PropType.Number,
+        // Begin BIADemo
         filterMode: PrimeNGFiltering.Equals,
         displayFormat: Object.assign(new BiaFieldNumberFormat(), {
           mode: NumberMode.Decimal,
           minFractionDigits: 6,
           maxFractionDigits: 6,
         }),
+        // End BIADemo
       }
     ),
     Object.assign(
       new BiaFieldConfig('fuelConsumption', 'engine.fuelConsumption'),
       {
-        isRequired: true,
         type: PropType.Number,
+        isRequired: true,
+        validators: [Validators.required],
+        // Begin BIADemo
         filterMode: PrimeNGFiltering.Equals,
         displayFormat: Object.assign(new BiaFieldNumberFormat(), {
           mode: NumberMode.Decimal,
           minFractionDigits: 2,
           maxFractionDigits: 2,
         }),
-        validators: [Validators.required, Validators.min(0)],
+        // End BIADemo
       }
     ),
     Object.assign(
@@ -123,18 +145,22 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
       ),
       {
         type: PropType.Number,
+        // Begin BIADemo
+        validators: [Validators.min(0)],
         filterMode: PrimeNGFiltering.Equals,
         displayFormat: Object.assign(new BiaFieldNumberFormat(), {
           mode: NumberMode.Decimal,
           minFractionDigits: 2,
           maxFractionDigits: 2,
         }),
-        validators: [Validators.min(0), Validators.max(100)],
+        // End BIADemo
       }
     ),
     Object.assign(new BiaFieldConfig('originalPrice', 'engine.originalPrice'), {
-      isRequired: true,
       type: PropType.Number,
+      isRequired: true,
+      validators: [Validators.required],
+      // Begin BIADemo
       filterMode: PrimeNGFiltering.Equals,
       displayFormat: Object.assign(new BiaFieldNumberFormat(), {
         mode: NumberMode.Currency,
@@ -142,12 +168,14 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
         maxFractionDigits: 2,
         currency: 'EUR',
       }),
-      validators: [Validators.required, Validators.min(0)],
+      // End BIADemo
     }),
     Object.assign(
       new BiaFieldConfig('estimatedPrice', 'engine.estimatedPrice'),
       {
         type: PropType.Number,
+        // Begin BIADemo
+        validators: [Validators.min(0)],
         filterMode: PrimeNGFiltering.Equals,
         displayFormat: Object.assign(new BiaFieldNumberFormat(), {
           mode: NumberMode.Currency,
@@ -155,22 +183,26 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
           maxFractionDigits: 2,
           currency: 'EUR',
         }),
-        validators: [Validators.min(0)],
+        // End BIADemo
       }
     ),
-    Object.assign(new BiaFieldConfig('isHybrid', 'engine.isHybrid'), {
-      isSearchable: true,
-      type: PropType.Boolean,
-    }),
     Object.assign(
       new BiaFieldConfig('isToBeMaintained', 'engine.isToBeMaintained'),
       {
-        isRequired: true,
-        isSearchable: true,
         type: PropType.Boolean,
+        isRequired: true,
         validators: [Validators.required],
+        // Begin BIADemo
+        isSearchable: true,
+        // End BIADemo
       }
     ),
+    Object.assign(new BiaFieldConfig('isHybrid', 'engine.isHybrid'), {
+      type: PropType.Boolean,
+      // Begin BIADemo
+      isSearchable: true,
+      // End BIADemo
+    }),
     Object.assign(new BiaFieldConfig('principalPart', 'engine.principalPart'), {
       type: PropType.OneToMany,
     }),
@@ -178,6 +210,8 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
       new BiaFieldConfig('installedParts', 'engine.installedParts'),
       {
         type: PropType.ManyToMany,
+        isRequired: true,
+        validators: [Validators.required],
       }
     ),
     Object.assign(new BiaFieldConfig('rowVersion', 'engine.rowVersion'), {

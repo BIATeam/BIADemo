@@ -43,7 +43,6 @@ import { Engine } from '../../model/engine';
     NgFor,
     Tooltip,
     NgSwitch,
-
     NgClass,
     NgTemplateOutlet,
     Skeleton,

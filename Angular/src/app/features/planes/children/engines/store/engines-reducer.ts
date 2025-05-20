@@ -1,6 +1,9 @@
-import { EntityState, createEntityAdapter } from '@ngrx/entity';
+import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { TableLazyLoadEvent } from 'primeng/table';
+import {
+  CrudState,
+  DEFAULT_CRUD_STATE,
+} from 'src/app/shared/bia-shared/model/crud-state';
 import { Engine } from '../model/engine';
 import { FeatureEnginesActions } from './engines-actions';
 
@@ -10,33 +13,13 @@ export const enginesAdapter = createEntityAdapter<Engine>({
   sortComparer: false,
 });
 
-// -----------------------------------------
-// The shape of EntityState
-// ------------------------------------------
-// interface EntityState<Engine> {
-//   ids: string[] | number[];
-//   entities: { [id: string]: Engine };
-// }
-// -----------------------------------------
-// -> ids arrays allow us to sort data easily
-// -> entities map allows us to access the data quickly without iterating/filtering though an array of objects
-
-export interface State extends EntityState<Engine> {
+export interface State extends CrudState<Engine>, EntityState<Engine> {
   // additional props here
-  totalCount: number;
-  currentEngine: Engine;
-  lastLazyLoadEvent: TableLazyLoadEvent;
-  loadingGet: boolean;
-  loadingGetAll: boolean;
 }
 
 export const INIT_STATE: State = enginesAdapter.getInitialState({
+  ...DEFAULT_CRUD_STATE(),
   // additional props default values here
-  totalCount: 0,
-  currentEngine: <Engine>{},
-  lastLazyLoadEvent: <TableLazyLoadEvent>{},
-  loadingGet: false,
-  loadingGetAll: false,
 });
 
 export const engineReducers = createReducer<State>(
@@ -47,13 +30,16 @@ export const engineReducers = createReducer<State>(
     return stateUpdated;
   }),
   on(FeatureEnginesActions.clearCurrent, state => {
-    return { ...state, currentEngine: <Engine>{} };
+    return { ...state, currentItem: <Engine>{} };
   }),
   on(FeatureEnginesActions.loadAllByPost, state => {
     return { ...state, loadingGetAll: true };
   }),
   on(FeatureEnginesActions.load, state => {
     return { ...state, loadingGet: true };
+  }),
+  on(FeatureEnginesActions.save, state => {
+    return { ...state, loadingGetAll: true };
   }),
   on(FeatureEnginesActions.loadAllByPostSuccess, (state, { result, event }) => {
     const stateUpdated = enginesAdapter.setAll(result.data, state);
@@ -63,7 +49,7 @@ export const engineReducers = createReducer<State>(
     return stateUpdated;
   }),
   on(FeatureEnginesActions.loadSuccess, (state, { engine }) => {
-    return { ...state, currentEngine: engine, loadingGet: false };
+    return { ...state, currentItem: engine, loadingGet: false };
   }),
   on(FeatureEnginesActions.failure, state => {
     return { ...state, loadingGetAll: false, loadingGet: false };
