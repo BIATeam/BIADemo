@@ -25,9 +25,8 @@ export class EngineService extends CrudItemService<Engine> {
     private store: Store<AppState>,
     public dasService: EngineDas,
     public signalRService: CrudItemSignalRService<Engine>,
-    public optionsService: EngineOptionsService,
-    // required only for parent key
-    public planeService: PlaneService
+    public planeService: PlaneService,
+    public optionsService: EngineOptionsService
   ) {
     super(dasService, signalRService, optionsService);
   }
@@ -75,13 +74,13 @@ export class EngineService extends CrudItemService<Engine> {
   }
   public create(crudItem: Engine) {
     // TODO after creation of CRUD Engine : map parent Key on the corresponding field
-    (crudItem.planeId = this.getParentIds()[0]),
-      this.store.dispatch(FeatureEnginesActions.create({ engine: crudItem }));
+    crudItem.planeId = this.getParentIds()[0];
+    this.store.dispatch(FeatureEnginesActions.create({ engine: crudItem }));
   }
   public save(crudItems: Engine[]) {
     // TODO after creation of CRUD Engine : map parent Key on the corresponding field
-    crudItems.map(x => (x.planeId = this.getParentIds()[0])),
-      this.store.dispatch(FeatureEnginesActions.save({ engines: crudItems }));
+    crudItems.map(x => (x.planeId = this.getParentIds()[0]));
+    this.store.dispatch(FeatureEnginesActions.save({ engines: crudItems }));
   }
   public update(crudItem: Engine) {
     this.store.dispatch(FeatureEnginesActions.update({ engine: crudItem }));
