@@ -8,7 +8,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Utilities
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using TheBIADevCompany.BIADemo.Application.Plane;
+    using TheBIADevCompany.BIADemo.Application.Fleet;
     using TheBIADevCompany.BIADemo.Application.Utilities;
 
     /// <summary>

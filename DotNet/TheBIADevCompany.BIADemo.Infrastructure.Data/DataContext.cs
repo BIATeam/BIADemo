@@ -13,17 +13,19 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
 #if BIA_FRONT_FEATURE
+    using TheBIADevCompany.BIADemo.Domain.Audit.Entities;
+
     // Begin BIADemo
-    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
     // End BIADemo
-    using TheBIADevCompany.BIADemo.Domain.Audit.Entities;
+    // Begin BIADemo
+    using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
+
+    // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
 
-    // Begin BIADemo
-    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
 
-    // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.Site.Entities;
     using TheBIADevCompany.BIADemo.Domain.Translation.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;

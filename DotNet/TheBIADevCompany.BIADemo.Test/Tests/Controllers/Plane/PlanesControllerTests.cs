@@ -11,9 +11,8 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Plane
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
-    using TheBIADevCompany.BIADemo.Presentation.Api.Controllers;
-    using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
+    using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet;
 
     /// <summary>
     /// Class used to test <see cref="PlanesController"/> methods.
