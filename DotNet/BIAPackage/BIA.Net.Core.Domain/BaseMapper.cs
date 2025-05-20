@@ -331,7 +331,7 @@ namespace BIA.Net.Core.Domain
         /// <returns>a string formated for csv.<returns>
         public virtual string DtoToCell(TDto dto, string headerName)
         {
-            switch (headerName.ToLowerInvariant())
+            switch (headerName)
             {
                 case BaseHeaderName.Id:
                     return CSVCell(dto.Id);

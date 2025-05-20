@@ -1,11 +1,13 @@
 import { Injectable, Injector } from '@angular/core';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { first, Observable } from 'rxjs';
+import { EMPTY, first, Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { AbstractDas } from 'src/app/core/bia-core/services/abstract-das.service';
 import { BaseDto } from '../../../model/base-dto';
 import { CrudItemOptionsService } from './crud-item-options.service';
 import { CrudItemSignalRService } from './crud-item-signalr.service';
 import { CrudItemSingleService } from './crud-item-single.service';
+import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +23,10 @@ export abstract class CrudItemService<
     protected injector: Injector
   ) {
     super(optionsService);
+    this.biaMessageService = injector.get(BiaMessageService);
   }
+
+  private biaMessageService: BiaMessageService;
 
   abstract crudItems$: Observable<ListCrudItem[]>;
   abstract totalCount$: Observable<number>;
@@ -35,10 +40,12 @@ export abstract class CrudItemService<
       .subscribe(event => this.loadAllByPost(event));
   }
 
-  protected getFile(
-    event: TableLazyLoadEvent,
-    endpoint = 'csv'
-  ): Observable<any> {
-    return this.dasService.getFile(event, endpoint).pipe();
+  public getFile(event: TableLazyLoadEvent, endpoint = 'csv'): Observable<any> {
+    return this.dasService.getFile(event, endpoint).pipe(
+      catchError(err => {
+        this.biaMessageService.showErrorHttpResponse(err);
+        return EMPTY;
+      })
+    );
   }
 }

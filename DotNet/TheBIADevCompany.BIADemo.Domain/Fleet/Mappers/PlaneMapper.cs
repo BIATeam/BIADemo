@@ -197,7 +197,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCell"/>
         public override string DtoToCell(PlaneDto dto, string headerName)
         {
-            switch (headerName.ToLowerInvariant())
+            switch (headerName)
             {
                 case HeaderName.Msn:
                     return CSVString(dto.Msn);
