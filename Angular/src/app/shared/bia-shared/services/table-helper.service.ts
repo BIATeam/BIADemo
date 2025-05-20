@@ -140,11 +140,7 @@ export class TableHelperService {
     // controller height = 3.25rem
     // paginator = 2.6rem
 
-    if (layoutService._config.classicStyle) {
-      height += ' - 200px';
-    } else {
-      height += ' - 11.74rem';
-    }
+    height += ' - 11.74rem';
     if (compactMode) {
       height += ' + 3.75rem';
 

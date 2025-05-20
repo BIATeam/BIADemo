@@ -8,7 +8,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
     using TheBIADevCompany.BIADemo.Domain.Audit.Entities;
 
     // Begin BIADemo
-    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
     // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.User.Entities;

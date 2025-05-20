@@ -11,7 +11,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories
     using BIA.Net.Core.Infrastructure.Data;
     using BIA.Net.Core.Infrastructure.Data.Repositories;
     using Microsoft.EntityFrameworkCore;
-    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
     /// <summary>

@@ -34,7 +34,6 @@ export class AppComponent implements OnInit {
       // Begin BIADemo
       showMenuStyle: true,
       showFooterStyle: true,
-      showToggleStyle: true,
       showMenuProfilePosition: true,
       // End BIADemo
     });

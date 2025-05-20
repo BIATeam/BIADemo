@@ -7,7 +7,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 {
     using Microsoft.EntityFrameworkCore;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
 
     /// <summary>
     /// Class used to update the model builder for aircraft maintenance company domain.
