@@ -48,7 +48,7 @@ export class MaintenanceTeamsIndexComponent
   extends CrudItemsIndexComponent<MaintenanceTeam>
   implements OnInit
 {
-  // Custo for teams
+  // Customization for teams
   canViewMembers = false;
   canSelectElement = false;
   // BIAToolKit - Begin MaintenanceTeamIndexTsCanViewChildDeclaration
@@ -92,7 +92,7 @@ export class MaintenanceTeamsIndexComponent
     this.canAdd = this.authService.hasPermission(
       Permission.MaintenanceTeam_Create
     );
-    // Custo for teams
+    // Customization for teams
     this.canViewMembers = this.authService.hasPermission(
       Permission.MaintenanceTeam_Member_List_Access
     );

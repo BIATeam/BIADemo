@@ -15,7 +15,7 @@ export class AppDB extends Dexie {
   public datas!: Table<DataItem, string>;
 
   constructor() {
-    super('biaDemoDB');
+    super('BIADemoDB');
     this.version(3).stores({
       httpRequests: '++id',
       datas: 'url',

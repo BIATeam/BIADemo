@@ -103,8 +103,10 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
-        public override void DtoToEntity(UserDto dto, User entity, string mapperMode, IUnitOfWork context)
+        public override void DtoToEntity(UserDto dto, ref User entity, string mapperMode, IUnitOfWork context)
         {
+            base.DtoToEntity(dto, ref entity, mapperMode, context);
+
             if ((mapperMode == "RolesInit" || mapperMode == "Roles") && dto.Roles?.Any() == true)
             {
                 foreach (var userRoleDto in dto.Roles.Where(x => x.DtoState == DtoState.Deleted || mapperMode == "RolesInit"))

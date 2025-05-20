@@ -7,6 +7,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     using System;
     using System.Collections.Generic;
     using System.IdentityModel.Tokens.Jwt;
+    using System.Linq;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Net.Mime;
@@ -140,6 +141,64 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase)> GetAsync<T>(string url, double cacheDurationInMinute = default)
         {
             return await this.SendAsync<T>(url: url, httpMethod: HttpMethod.Get, retry: false, cacheDurationInMinute: cacheDurationInMinute);
+        }
+
+        /// <summary>
+        /// Retrieves a list of objects by sending a POST request with a list of keys, utilizing cache when possible.
+        /// Cached objects are returned directly, while missing objects are fetched from the API and optionally cached.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result objects.</typeparam>
+        /// <typeparam name="TKey">The type of the key used to identify objects.</typeparam>
+        /// <param name="url">The URL to send the POST request to.</param>
+        /// <param name="keys">The list of keys to retrieve objects for.</param>
+        /// <param name="keySelector">A function to extract the key from a result object.</param>
+        /// <param name="cacheDurationInMinute">The duration in minutes to cache fetched objects. If 0, caching is disabled.</param>
+        /// <param name="isFormUrlEncoded">Indicates whether the POST body should be form URL encoded.</param>
+        /// <returns>
+        /// A tuple containing:
+        /// - Result: The list of retrieved objects (from cache and/or API),
+        /// - IsSuccessStatusCode: True if the API call was successful or not needed,
+        /// - ReasonPhrase: The reason phrase from the API response if applicable.
+        /// </returns>
+
+        protected virtual async Task<(List<TResult> Result, bool IsSuccessStatusCode, string ReasonPhrase)> GetByPostAsync<TResult, TKey>(
+            string url,
+            List<TKey> keys,
+            Func<TResult, TKey> keySelector,
+            double cacheDurationInMinute = default,
+            bool isFormUrlEncoded = false)
+        {
+            if (keys == null || keys.Count == 0)
+            {
+                return (new List<TResult>(), true, null);
+            }
+
+            // Get cached objects
+            List<TResult> cachedObjects = await this.GetCachedObjectsAsync<TResult, TKey>(keys);
+            List<TKey> objectNotInCacheKeys = keys.Except(cachedObjects.Select(keySelector)).ToList();
+
+            List<TResult> fetchedObjects = new List<TResult>();
+            bool isSuccess = true;
+            string reasonPhrase = null;
+
+            if (objectNotInCacheKeys.Any())
+            {
+                var fetchResult = await this.PostAsync<List<TResult>, List<TKey>>(url, objectNotInCacheKeys, isFormUrlEncoded);
+                fetchedObjects = fetchResult.Result ?? new List<TResult>();
+                isSuccess = fetchResult.IsSuccessStatusCode;
+                reasonPhrase = fetchResult.ReasonPhrase;
+
+                if (cacheDurationInMinute > 0 && isSuccess && fetchedObjects.Any())
+                {
+                    await this.CacheObjectsAsync(
+                        fetchedObjects.ToDictionary(keySelector, x => x),
+                        cacheDurationInMinute);
+                }
+            }
+
+            List<TResult> allObjects = cachedObjects.Concat(fetchedObjects).ToList();
+
+            return (allObjects, isSuccess, reasonPhrase);
         }
 
         /// <summary>
@@ -410,13 +469,23 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 if (response.IsSuccessStatusCode)
                 {
                     string res = await response.Content.ReadAsStringAsync();
-                    if (cacheDurationInMinute > 0)
-                    {
-                        await this.distributedCache.Add(cacheKey, res, cacheDurationInMinute);
-                    }
+                    string contentType = response.Content.Headers.ContentType?.MediaType;
 
-                    T result = JsonConvert.DeserializeObject<T>(res);
-                    return (result, response.IsSuccessStatusCode, default(string));
+                    if (contentType == MediaTypeNames.Application.Json)
+                    {
+                        if (cacheDurationInMinute > 0)
+                        {
+                            await this.distributedCache.Add(cacheKey, res, cacheDurationInMinute);
+                        }
+
+                        T result = JsonConvert.DeserializeObject<T>(res);
+                        return (result, response.IsSuccessStatusCode, default(string));
+                    }
+                    else
+                    {
+                        this.logger.LogWarning("Expected JSON but got '{ContentType}'. Returning default value.", contentType);
+                        return (default(T), response.IsSuccessStatusCode, "Response is not JSON.");
+                    }
                 }
                 else
                 {
@@ -555,6 +624,61 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
             this.configuredHttpClient = true;
             this.ongoingConfiguration = false;
+        }
+
+        /// <summary>
+        /// Retrieves a list of objects from the distributed cache based on the provided keys.
+        /// Only objects found in the cache are returned; missing objects are ignored.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the objects to retrieve.</typeparam>
+        /// <typeparam name="TKey">The type of the keys used to identify objects.</typeparam>
+        /// <param name="keys">The list of keys to look up in the cache.</param>
+        /// <returns>A list of objects found in the cache corresponding to the provided keys.</returns>
+        /// <exception cref="ArgumentException">Thrown if the keys list is null or empty.</exception>
+        protected virtual async Task<List<TResult>> GetCachedObjectsAsync<TResult, TKey>(List<TKey> keys)
+        {
+            if (keys == null || keys.Count == 0)
+            {
+                throw new ArgumentException("Keys list cannot be null or empty.", nameof(keys));
+            }
+
+            List<string> cacheKeys = keys.Select(key => $"{typeof(TResult).Namespace}|{typeof(TResult).Name}|{key}").ToList();
+
+            List<TResult> returns = new List<TResult>();
+
+            foreach (string cacheKey in cacheKeys)
+            {
+                TResult obj = await this.distributedCache.Get<TResult>(cacheKey);
+                if (!object.Equals(obj, default(TResult)))
+                {
+                    returns.Add(obj);
+                }
+            }
+
+            return returns;
+        }
+
+        /// <summary>
+        /// Stores a collection of objects in the distributed cache with the specified cache duration.
+        /// Each object is cached using a key composed of its type and the provided key.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the objects to cache.</typeparam>
+        /// <typeparam name="TKey">The type of the keys used to identify objects.</typeparam>
+        /// <param name="dicts">A dictionary mapping keys to objects to be cached.</param>
+        /// <param name="cacheDurationInMinute">The duration in minutes to keep the objects in the cache.</param>
+        /// <returns>A task representing the asynchronous cache operation.</returns>
+        /// <exception cref="ArgumentException">Thrown if the dictionary is null or empty.</exception>
+        protected virtual async Task CacheObjectsAsync<TResult, TKey>(Dictionary<TKey, TResult> dicts, double cacheDurationInMinute)
+        {
+            if (dicts == null || dicts.Count == 0)
+            {
+                throw new ArgumentException("Dictionary cannot be null or empty.", nameof(dicts));
+            }
+
+            foreach (var dict in dicts)
+            {
+                await this.distributedCache.Add($"{typeof(TResult).Namespace}|{typeof(TResult).Name}|{dict.Key}", dict.Value, cacheDurationInMinute);
+            }
         }
     }
 }

@@ -29,9 +29,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<!--installed here because one of the packages references this one in a version that contains a vulnerability-->
-		<PackageReference Include="Microsoft.Identity.Client" Version="4.71.*" />
-		<PackageReference Include="Azure.Identity" Version="1.13.*" />
+		<!--c references this one in a version that contains a vulnerability-->
+		<PackageReference Include="Microsoft.Identity.Client" Version="4.72.*" />
+		<PackageReference Include="Azure.Identity" Version="1.14.*" />
 	</ItemGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">

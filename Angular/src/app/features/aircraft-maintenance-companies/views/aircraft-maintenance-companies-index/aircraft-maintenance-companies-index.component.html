@@ -4,7 +4,7 @@
       <bia-table-header
         [headerTitle]="'aircraftMaintenanceCompany.listOf' | translate"
         [canAdd]="canAdd && !crudConfiguration.useCalcMode"
-        [canClone]="canAdd && crudConfiguration.isClonable"
+        [canClone]="canAdd && crudConfiguration.isCloneable"
         [canDelete]="canDelete"
         [canExportCSV]="true"
         (create)="onCreate()"

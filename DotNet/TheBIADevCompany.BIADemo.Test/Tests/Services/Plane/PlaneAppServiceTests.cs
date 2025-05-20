@@ -12,10 +12,10 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using TheBIADevCompany.BIADemo.Application.Plane;
+    using TheBIADevCompany.BIADemo.Application.Fleet;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
-    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
+    using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
     using TheBIADevCompany.BIADemo.Test.Data;
 
     /// <summary>

@@ -47,7 +47,7 @@ import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maint
   ],
 })
 export class AircraftMaintenanceCompaniesIndexComponent extends CrudItemsIndexComponent<AircraftMaintenanceCompany> {
-  // Custo for teams
+  // Customization for teams
   canViewMembers = false;
   canSelectElement = false;
   canViewMaintenanceTeams = false;
@@ -82,7 +82,7 @@ export class AircraftMaintenanceCompaniesIndexComponent extends CrudItemsIndexCo
     this.canAdd = this.authService.hasPermission(
       Permission.AircraftMaintenanceCompany_Create
     );
-    // Custo for teams
+    // Customization for teams
     this.canViewMembers = this.authService.hasPermission(
       Permission.AircraftMaintenanceCompany_Member_List_Access
     );

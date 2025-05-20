@@ -13,7 +13,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
 
     // Begin BIADemo
-    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
 
     // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.User.Entities;

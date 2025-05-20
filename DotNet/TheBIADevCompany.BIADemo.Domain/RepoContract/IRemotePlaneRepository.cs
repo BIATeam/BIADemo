@@ -6,7 +6,7 @@
 namespace TheBIADevCompany.BIADemo.Domain.RepoContract
 {
     using System.Threading.Tasks;
-    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
     /// <summary>
     /// Interface RemotePlaneRepository.

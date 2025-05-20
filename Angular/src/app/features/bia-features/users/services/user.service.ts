@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { map, Observable } from 'rxjs';
@@ -26,10 +26,11 @@ export class UserService extends CrudItemService<User> {
     public dasService: UserDas,
     public signalRService: CrudItemSignalRService<User>,
     public optionsService: UserOptionsService,
+    protected injector: Injector,
     // required only for parent key
     protected authService: AuthService
   ) {
-    super(dasService, signalRService, optionsService);
+    super(dasService, signalRService, optionsService, injector);
   }
 
   public getParentIds(): any[] {

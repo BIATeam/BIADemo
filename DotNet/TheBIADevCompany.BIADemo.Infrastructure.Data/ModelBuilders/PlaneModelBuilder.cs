@@ -6,7 +6,7 @@
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 {
     using Microsoft.EntityFrameworkCore;
-    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
     /// <summary>
     /// Class used to update the model builder for plane domain.

@@ -69,7 +69,7 @@ export const ROUTES: Routes = [
           },
           // BIAToolKit - Begin SiteModuleChildPath
           // BIAToolKit - End SiteModuleChildPath
-          // Custo for teams
+          // Customization for teams
           {
             path: 'members',
             data: {

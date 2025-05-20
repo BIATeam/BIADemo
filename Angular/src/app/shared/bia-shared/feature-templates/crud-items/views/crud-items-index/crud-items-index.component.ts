@@ -604,11 +604,9 @@ export class CrudItemsIndexComponent<
       advancedFilter: this.crudConfiguration.fieldsConfig.advancedFilter,
       ...this.crudItemListComponent.getLazyLoadMetadata(),
     };
-    this.crudItemService.dasService
-      .getFile(columnsAndFilter)
-      .subscribe(data => {
-        saveAs(data, fileName + '.csv');
-      });
+    this.crudItemService.getFile(columnsAndFilter).subscribe(data => {
+      saveAs(data, fileName + '.csv');
+    });
   }
 
   protected setPermissions() {

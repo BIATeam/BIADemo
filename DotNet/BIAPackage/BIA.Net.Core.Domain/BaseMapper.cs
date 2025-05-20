@@ -6,10 +6,12 @@ namespace BIA.Net.Core.Domain
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
 
@@ -21,140 +23,59 @@ namespace BIA.Net.Core.Domain
     /// <typeparam name="TKey">The type of the key.</typeparam>
     public abstract class BaseMapper<TDto, TEntity, TKey> : BaseEntityMapper<TEntity>
         where TDto : BaseDto<TKey>
-        where TEntity : class, IEntity<TKey>
+        where TEntity : class, IEntity<TKey>, new()
     {
         /// <summary>
-        /// CSVs the string.
+        /// The dto is fixable.
         /// </summary>
-        /// <param name="x">The x.</param>
-        /// <returns>A string for a string cell.</returns>
-        public static string CSVString(string x)
-        {
-            return "\"=\"\"" + x?.Replace("\"", "\"\"\"\"") + "\"\"\"";
-        }
+        private readonly bool isFixable;
 
         /// <summary>
-        /// CSVs the list.
+        /// The dto is archivable.
         /// </summary>
-        /// <param name="x">The x.</param>
-        /// <returns>A string for a list cell.</returns>
-        public static string CSVList(ICollection<OptionDto> x)
-        {
-            return CSVString(string.Join(" - ", x?.Select(ca => ca.Display).ToList()));
-        }
+        private readonly bool isArchivable;
 
         /// <summary>
-        /// CSVs the list.
+        /// Initializes a new instance of the <see cref="BaseMapper{TDto, TEntity, TKey}"/> class.
         /// </summary>
-        /// <param name="x">The x.</param>
-        /// <returns>A string for a list cell.</returns>
-        public static string CSVList(IEnumerable<OptionDto> x)
+        protected BaseMapper()
+            : base()
         {
-            return CSVString(string.Join(" - ", x?.Select(ca => ca.Display).ToList()));
+            if (typeof(IEntityFixable<TKey>).IsAssignableFrom(typeof(TEntity)) && typeof(IFixableDto).IsAssignableFrom(typeof(TDto)))
+            {
+                this.isFixable = true;
+            }
+
+            if (typeof(IEntityArchivable<TKey>).IsAssignableFrom(typeof(TEntity)) && typeof(IArchivableDto).IsAssignableFrom(typeof(TDto)))
+            {
+                this.isArchivable = true;
+            }
         }
 
-        /// <summary>
-        /// CSVs the date.
-        /// </summary>
-        /// <param name="x">The DateTime.</param>
-        /// <returns>A string for a date cell.</returns>
-        public static string CSVDate(DateTime? x)
+        /// <inheritdoc cref="BaseEntityMapper{TEntity}.ExpressionCollection"/>
+        public override ExpressionCollection<TEntity> ExpressionCollection
         {
-            return x?.ToString("yyyy-MM-dd");
-        }
+            get
+            {
+                var expression = new ExpressionCollection<TEntity>
+                {
+                    { BaseHeaderName.Id, entity => entity.Id },
+                };
 
-        /// <summary>
-        /// CSVs the time.
-        /// </summary>
-        /// <param name="x">The DateTime.</param>
-        /// <returns>A string for a time cell.</returns>
-        public static string CSVTime(DateTime? x)
-        {
-            return x?.ToString("HH:mm");
-        }
+                if (this.isFixable)
+                {
+                    expression.Add(BaseHeaderName.IsFixed, entity => (entity as IEntityFixable<TKey>).IsFixed);
+                    expression.Add(BaseHeaderName.FixedDate, entity => (entity as IEntityFixable<TKey>).FixedDate);
+                }
 
-        /// <summary>
-        /// CSVs the time.
-        /// </summary>
-        /// <param name="x">The TimeSpan.</param>
-        /// <returns>A string for a time cell.</returns>
-        public static string CSVTime(TimeSpan? x)
-        {
-            return x?.ToString("HH:mm");
-        }
+                if (this.isArchivable)
+                {
+                    expression.Add(BaseHeaderName.IsArchived, entity => (entity as IEntityArchivable<TKey>).IsArchived);
+                    expression.Add(BaseHeaderName.ArchivedDate, entity => (entity as IEntityArchivable<TKey>).ArchivedDate);
+                }
 
-        /// <summary>
-        /// CSVs the time.
-        /// </summary>
-        /// <param name="x">The string.</param>
-        /// <returns>A string for a time cell.</returns>
-        public static string CSVTime(string x)
-        {
-            return x;
-        }
-
-        /// <summary>
-        /// CSVs the date time.
-        /// </summary>
-        /// <param name="x">The DateTime.</param>
-        /// <returns>A string for a date and time cell.</returns>
-        public static string CSVDateTime(DateTime? x)
-        {
-            return x?.ToString("yyyy-MM-dd HH:mm");
-        }
-
-        /// <summary>
-        /// CSVs the date time with seconds.
-        /// </summary>
-        /// <param name="x">The DateTime.</param>
-        /// <returns>A string for a date and time with seconds cell.</returns>
-        public static string CSVDateTimeSeconds(DateTime? x)
-        {
-            return x?.ToString("yyyy-MM-dd HH:mm:ss");
-        }
-
-        /// <summary>
-        /// CSVs the bool.
-        /// </summary>
-        /// <param name="x">if set to <c>true</c> [x].</param>
-        /// <returns>A string for a bool cell.</returns>
-        public static string CSVBool(bool x)
-        {
-            return x.ToString().ToLower();
-        }
-
-        /// <summary>
-        /// CSVs the bool.
-        /// </summary>
-        /// <param name="x">if set to <c>true</c> [x].</param>
-        /// <returns>A string for a bool cell.</returns>
-        public static string CSVBool(bool? x)
-        {
-            return x.HasValue ? x.Value.ToString().ToLower() : string.Empty;
-        }
-
-        /// <summary>
-        /// CSVs the number.
-        /// </summary>
-        /// <typeparam name="T">The type of number.</typeparam>
-        /// <param name="x">The number.</param>
-        /// <returns>A string for a number cell.</returns>
-        public static string CSVNumber<T>(T? x)
-            where T : struct, IFormattable
-        {
-            return x.HasValue ? x.Value.ToString(null, CultureInfo.InvariantCulture) : string.Empty;
-        }
-
-        /// <summary>
-        /// CSVs the number.
-        /// </summary>
-        /// <typeparam name="T">The type of number.</typeparam>
-        /// <param name="x">The number.</param>
-        /// <returns>A string for a number cell.</returns>
-        public static string CSVNumber<T>(T x)
-            where T : IFormattable
-        {
-            return x.ToString(null, CultureInfo.InvariantCulture);
+                return expression;
+            }
         }
 
         /// <summary>
@@ -178,13 +99,13 @@ namespace BIA.Net.Core.Domain
                 switch (dto.DtoState)
                 {
                     case DtoState.Added:
-                        entity = new TEmbeddedEntity();
-                        mapper.DtoToEntity(dto, entity);
+                        entity = default(TEmbeddedEntity);
+                        mapper.DtoToEntity(dto, ref entity);
                         entityCollection.Add(entity);
                         break;
                     case DtoState.Modified:
                         entity = entityCollection.FirstOrDefault(e => e.Id == dto.Id);
-                        mapper.DtoToEntity(dto, entity);
+                        mapper.DtoToEntity(dto, ref entity);
                         break;
                     case DtoState.Deleted:
                         entityCollection.Remove(entityCollection.FirstOrDefault(e => e.Id == dto.Id));
@@ -200,9 +121,9 @@ namespace BIA.Net.Core.Domain
         /// <param name="entity">The entity to update with the DTO values.</param>
         /// <param name="mapperMode">The mode of mapping.</param>
         /// <param name="context">The context.</param>
-        public virtual void DtoToEntity(TDto dto, TEntity entity, string mapperMode, IUnitOfWork context)
+        public virtual void DtoToEntity(TDto dto, ref TEntity entity, string mapperMode, IUnitOfWork context)
         {
-            this.DtoToEntity(dto, entity, mapperMode);
+            this.DtoToEntity(dto, ref entity, mapperMode);
         }
 
         /// <summary>
@@ -211,9 +132,9 @@ namespace BIA.Net.Core.Domain
         /// <param name="dto">The DTO to use.</param>
         /// <param name="entity">The entity to update with the DTO values.</param>
         /// <param name="mapperMode">The mode of mapping.</param>
-        public virtual void DtoToEntity(TDto dto, TEntity entity, string mapperMode)
+        public virtual void DtoToEntity(TDto dto, ref TEntity entity, string mapperMode)
         {
-            this.DtoToEntity(dto, entity);
+            this.DtoToEntity(dto, ref entity);
         }
 
         /// <summary>
@@ -221,9 +142,15 @@ namespace BIA.Net.Core.Domain
         /// </summary>
         /// <param name="dto">The DTO to use.</param>
         /// <param name="entity">The entity to update with the DTO values.</param>
-        public virtual void DtoToEntity(TDto dto, TEntity entity)
+        public virtual void DtoToEntity(TDto dto, ref TEntity entity)
         {
-            throw new NotImplementedException("This mapper is not build to manipulate entity, or the implementation of DtoToEntity is missing.");
+            if (entity == null)
+            {
+                entity = new TEntity
+                {
+                    Id = dto.Id,
+                };
+            }
         }
 
         /// <summary>
@@ -242,7 +169,61 @@ namespace BIA.Net.Core.Domain
         /// <returns>The created DTO.</returns>
         public virtual Expression<Func<TEntity, TDto>> EntityToDto()
         {
-            throw new NotImplementedException("This mapper is not build to create dto, or the implementation of EntityToDto is missing.");
+            var entityParam = Expression.Parameter(typeof(TEntity), "entity");
+
+            var newDto = Expression.New(typeof(TDto));
+
+            List<MemberBinding> bindings = new List<MemberBinding>();
+
+            if (this.isFixable)
+            {
+                /// IsFixed = (entity as IEntityFixable<TKey>).IsFixed,
+                /// FixedDate = (entity as IEntityFixable<TKey>).FixedDate,
+
+                var isFixedProperty = Expression.Property(
+                    Expression.Convert(entityParam, typeof(IEntityFixable<TKey>)),
+                    nameof(IEntityFixable<TKey>.IsFixed));
+
+                var fixedDateProperty = Expression.Property(
+                    Expression.Convert(entityParam, typeof(IEntityFixable<TKey>)),
+                    nameof(IEntityFixable<TKey>.FixedDate));
+
+                var bindIsFixed = Expression.Bind(typeof(TDto).GetProperty(nameof(IFixableDto.IsFixed)), isFixedProperty);
+                var bindFixedDate = Expression.Bind(typeof(TDto).GetProperty(nameof(IFixableDto.FixedDate)), fixedDateProperty);
+                bindings.Add(bindIsFixed);
+                bindings.Add(bindFixedDate);
+            }
+
+            if (this.isArchivable)
+            {
+                /// IsArchived = (entity as IEntityArchivable<TKey>).IsArchived,
+                /// ArchivedDate = (entity as IEntityArchivable<TKey>).ArchivedDate,
+
+                var isArchivedProperty = Expression.Property(
+                    Expression.Convert(entityParam, typeof(IEntityArchivable<TKey>)),
+                    nameof(IEntityArchivable<TKey>.IsArchived));
+
+                var archivedDateProperty = Expression.Property(
+                    Expression.Convert(entityParam, typeof(IEntityArchivable<TKey>)),
+                    nameof(IEntityArchivable<TKey>.ArchivedDate));
+
+                var bindIsArchived = Expression.Bind(typeof(TDto).GetProperty(nameof(IArchivableDto.IsArchived)), isArchivedProperty);
+                var bindArchivedDate = Expression.Bind(typeof(TDto).GetProperty(nameof(IArchivableDto.ArchivedDate)), archivedDateProperty);
+                bindings.Add(bindIsArchived);
+                bindings.Add(bindArchivedDate);
+            }
+
+            // Id = entity.Id,
+            var idProperty = Expression.Property(
+                Expression.Convert(entityParam, typeof(IEntity<TKey>)),
+                nameof(IEntity<TKey>.Id));
+
+            var bindId = Expression.Bind(typeof(TDto).GetProperty(nameof(BaseDto<TKey>.Id)), idProperty);
+            bindings.Add(bindId);
+
+            var memberInit = Expression.MemberInit(newDto, bindings);
+
+            return Expression.Lambda<Func<TEntity, TDto>>(memberInit, entityParam);
         }
 
         /// <summary>
@@ -326,7 +307,76 @@ namespace BIA.Net.Core.Domain
         /// <returns>Func.</returns>
         public virtual Func<TDto, object[]> DtoToRecord(List<string> headerNames = null)
         {
-            throw new NotImplementedException("This mapper is not build to generate records, or the implementation of DtoToRecord is missing.");
+            return x =>
+            {
+                List<object> records = [];
+
+                if (headerNames != null && headerNames.Count > 0)
+                {
+                    foreach (string headerName in headerNames)
+                    {
+                        records.Add(this.DtoToCell(x, headerName));
+                    }
+                }
+
+                return [.. records];
+            };
+        }
+
+        /// <summary>
+        /// Dto to cell.
+        /// </summary>
+        /// <param name="dto">The dto.</param>
+        /// <param name="headerName">Name of the header.</param>
+        /// <returns>a string formated for csv.<returns>
+        public virtual string DtoToCell(TDto dto, string headerName)
+        {
+            switch (headerName)
+            {
+                case BaseHeaderName.Id:
+                    return CSVCell(dto.Id);
+                case BaseHeaderName.IsFixed:
+                    return CSVBool((dto as IFixableDto).IsFixed);
+                case BaseHeaderName.FixedDate:
+                    return CSVDate((dto as IFixableDto).FixedDate);
+                case BaseHeaderName.IsArchived:
+                    return CSVBool((dto as IArchivableDto).IsArchived);
+                case BaseHeaderName.ArchivedDate:
+                    return CSVDate((dto as IArchivableDto).ArchivedDate);
+                default:
+                    throw new FrontUserException("Unknow header " + headerName);
+            }
+        }
+
+        /// <summary>
+        /// Header names.
+        /// </summary>
+        public struct BaseHeaderName
+        {
+            /// <summary>
+            /// Header name for id.
+            /// </summary>
+            public const string Id = "id";
+
+            /// <summary>
+            /// Header name for is fixed.
+            /// </summary>
+            public const string IsFixed = "isFixed";
+
+            /// <summary>
+            /// Header name for fixed date.
+            /// </summary>
+            public const string FixedDate = "fixedDate";
+
+            /// <summary>
+            /// Header name for is archived.
+            /// </summary>
+            public const string IsArchived = "isArchived";
+
+            /// <summary>
+            /// Header name for archived date.
+            /// </summary>
+            public const string ArchivedDate = "archivedDate";
         }
     }
 }

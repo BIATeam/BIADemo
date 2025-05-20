@@ -1,0 +1,27 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": "./Angular/",
+    "esModuleInterop": true,
+    "noUnusedLocals": true,
+    "outDir": "./dist/out-tsc",
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "declaration": false,
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "target": "ES2022",
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["ES2022", "dom"],
+    "useDefineForClassFields": false
+  },
+  "angularCompilerOptions": {
+    "strictTemplates": true
+  }
+}
