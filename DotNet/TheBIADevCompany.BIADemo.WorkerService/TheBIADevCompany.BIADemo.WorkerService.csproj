@@ -15,6 +15,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.2" />
     <PackageReference Include="NLog.Extensions.Hosting" Version="5.4.*" />
     <PackageReference Include="NLog.Extensions.Logging" Version="5.4.*" />
+	<PackageReference Include="Bonura.NLog.HangfireLayouts" Version="1.1.*" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="[8.0.*,9.0.0)" />
   </ItemGroup>
   <ItemGroup>
