@@ -7,6 +7,7 @@
       [canClone]="canAdd && crudConfiguration.isClonable"
       [canDelete]="canDelete"
       [canEdit]="canEdit"
+      [canFix]="canFix"
       [canImport]="canSave && crudConfiguration.useImport"
       [canExportCSV]="true"
       (create)="onCreate()"
@@ -18,7 +19,11 @@
       [selectedElements]="selectedCrudItems"
       [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
       [tableControllerVisible]="showTableController"
-      (toggleTableControllerVisibility)="toggleTableControllerVisibility()">
+      [showFixedButtons]="crudConfiguration.isFixable"
+      (toggleTableControllerVisibility)="toggleTableControllerVisibility()"
+      (crudItemFixedChanged)="
+        crudItemService.updateFixedStatus($event.crudItemId, $event.fixed)
+      ">
       <ng-template pTemplate="customControl">
         <button
           *ngIf="isParentFixed"
@@ -94,7 +99,8 @@
       [virtualScroll]="crudConfiguration.useVirtualScroll"
       [isResizableColumn]="crudConfiguration.useResizableColumn"
       [readOnly]="isParentFixed"
-      [rowHeight]="defaultRowHeight"></bia-table>
+      [rowHeight]="defaultRowHeight"
+      [showFixableState]="crudConfiguration.isFixable"></bia-table>
     <app-engine-table
       *ngIf="crudConfiguration.useCalcMode"
       [elements]="
@@ -130,6 +136,7 @@
       [virtualScroll]="crudConfiguration.useVirtualScroll"
       [isResizableColumn]="crudConfiguration.useResizableColumn"
       [readOnly]="isParentFixed"
-      [rowHeight]="defaultRowHeight"></app-engine-table>
+      [rowHeight]="defaultRowHeight"
+      [showFixableState]="crudConfiguration.isFixable"></app-engine-table>
   </div>
 </div>

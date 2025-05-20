@@ -1,16 +1,14 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
+import { filter } from 'rxjs';
 import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
+import { FormReadOnlyMode } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
 import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
+import { EngineFormComponent } from '../../components/engine-form/engine-form.component';
 import { engineCRUDConfiguration } from '../../engine.constants';
 import { Engine } from '../../model/engine';
-import { EngineService } from '../../services/engine.service';
-// Begin BIADemo
-import { filter } from 'rxjs';
-import { FormReadOnlyMode } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
-// End BIADemo
-import { AsyncPipe, NgIf } from '@angular/common';
-import { EngineFormComponent } from '../../components/engine-form/engine-form.component';
 import { EngineOptionsService } from '../../services/engine-options.service';
+import { EngineService } from '../../services/engine.service';
 
 @Component({
   selector: 'app-engine-edit',
@@ -38,7 +36,7 @@ export class EngineEditComponent
       })
     );
   }
-  // Begin BIADemo
+
   protected setPermissions(): void {
     super.setPermissions();
 
@@ -55,5 +53,4 @@ export class EngineEditComponent
         })
     );
   }
-  // End BIADemo
 }
