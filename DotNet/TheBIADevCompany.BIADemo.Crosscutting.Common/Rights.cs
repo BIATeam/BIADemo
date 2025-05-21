@@ -113,7 +113,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         // BIAToolKit - Begin Partial Rights Engines
 
         /// <summary>
-        /// The planes rights.
+        /// The engines rights.
         /// </summary>
         public static class Engines
         {

@@ -80,7 +80,6 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
             : base(repository)
         {
             this.repository = repository;
-
             var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
             this.currentAncestorTeamId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.Site) : 0;
 
