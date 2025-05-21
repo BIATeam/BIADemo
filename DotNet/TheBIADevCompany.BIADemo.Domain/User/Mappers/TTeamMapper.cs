@@ -2,7 +2,7 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers
+namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
 {
     using System;
     using System.Collections.Generic;
@@ -12,13 +12,12 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers
     using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Mapper;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.User;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// The mapper used for site.
@@ -37,7 +36,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers
         {
             this.UserRoleIds = (principal as BiaClaimsPrincipal).GetRoleIds();
             this.UserId = (principal as BiaClaimsPrincipal).GetUserId();
-            this.AdminRoleIds = TeamConfig.Config.Where(tc => tc.TeamTypeId == this.TeamType).Select(tc => tc.AdminRoleIds).FirstOrDefault() ?? [];
+            this.AdminRoleIds = TeamConfig.Config.Where(tc => tc.TeamTypeId == this.TeamType).Select(tc => tc.AdminRoleIds).FirstOrDefault() ?? Array.Empty<int>();
         }
 
         /// <summary>

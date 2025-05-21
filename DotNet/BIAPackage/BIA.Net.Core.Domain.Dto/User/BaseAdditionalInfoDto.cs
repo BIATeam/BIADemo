@@ -4,6 +4,7 @@
 
 namespace BIA.Net.Core.Domain.Dto.User
 {
+    using BIA.Net.Core.Domain.Dto.Base;
     using System.Collections.Generic;
 
     /// <summary>
@@ -19,6 +20,6 @@ namespace BIA.Net.Core.Domain.Dto.User
         /// <summary>
         /// Gets or sets the teams.
         /// </summary>
-        public ICollection<TeamDto> Teams { get; set; }
+        public ICollection<BaseDtoVersionedTeam> Teams { get; set; }
     }
 }

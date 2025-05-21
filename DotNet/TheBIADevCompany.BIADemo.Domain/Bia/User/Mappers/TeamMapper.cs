@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers
     using System;
     using System.Linq;
     using System.Linq.Expressions;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.Service;
@@ -28,7 +29,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers
     /// Initializes a new instance of the <see cref="TeamMapper"/> class.
     /// </remarks>
     /// <param name="userContext">the user context.</param>
-    public class TeamMapper(UserContext userContext) : BaseMapper<TeamDto, Team, int>
+    public class TeamMapper(UserContext userContext) : BaseMapper<BaseDtoVersionedTeam, Team, int>
     {
         /// <summary>
         /// The user context language and culture.
@@ -39,9 +40,9 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers
         /// Create a site DTO from a entity.
         /// </summary>
         /// <returns>The site DTO.</returns>
-        public override Expression<Func<Team, TeamDto>> EntityToDto()
+        public override Expression<Func<Team, BaseDtoVersionedTeam>> EntityToDto()
         {
-            return entity => new TeamDto { Id = entity.Id, Title = entity.Title, TeamTypeId = entity.TeamTypeId };
+            return entity => new BaseDtoVersionedTeam { Id = entity.Id, Title = entity.Title, TeamTypeId = entity.TeamTypeId };
         }
 
         /// <summary>
@@ -51,9 +52,9 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers
         /// <returns>
         /// The site DTO.
         /// </returns>
-        public Expression<Func<Team, TeamDto>> EntityToDto(int userId)
+        public Expression<Func<Team, BaseDtoVersionedTeam>> EntityToDto(int userId)
         {
-            return entity => new TeamDto
+            return entity => new BaseDtoVersionedTeam
             {
                 Id = entity.Id,
                 Title = entity.Title,

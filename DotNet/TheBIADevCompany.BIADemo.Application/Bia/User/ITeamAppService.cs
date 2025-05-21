@@ -10,7 +10,6 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
-    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
@@ -18,7 +17,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     /// <summary>
     /// The interface defining the application service for team.
     /// </summary>
-    public interface ITeamAppService : ICrudAppServiceBase<TeamDto, Team, int, PagingFilterFormatDto>
+    public interface ITeamAppService : ICrudAppServiceBase<BaseDtoVersionedTeam, Team, int, PagingFilterFormatDto>
     {
         /// <summary>
         /// Gets all option that I can see.
@@ -32,7 +31,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="userId">The user identifier.</param>
         /// <param name="userPermissions">The user rights.</param>
         /// <returns>all teams.</returns>
-        Task<IEnumerable<TeamDto>> GetAllAsync(int userId = 0, IEnumerable<string> userPermissions = null);
+        Task<IEnumerable<BaseDtoVersionedTeam>> GetAllAsync(int userId = 0, IEnumerable<string> userPermissions = null);
 
         /// <summary>
         /// Check autorize based on teamTypeId.

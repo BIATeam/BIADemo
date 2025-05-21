@@ -7,15 +7,15 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Maintenance
 {
     using System;
     using System.Collections.Generic;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.CustomAttribute;
     using BIA.Net.Core.Domain.Dto.Option;
-    using BIA.Net.Core.Domain.Dto.User;
 
     /// <summary>
     /// The DTO used to represent a maintenance team.
     /// </summary>
     [BiaDtoClass(AncestorTeam = "AircraftMaintenanceCompany")]
-    public class MaintenanceTeamDto : TeamDto
+    public class MaintenanceTeamDto : BaseDtoVersionedTeam
     {
         /// <summary>
         /// Gets or sets the aircraft maintenance company id.

@@ -15,6 +15,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using Microsoft.Extensions.Configuration;
@@ -217,7 +218,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             // Get Permissions
             List<string> userPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(globalRoles, loginParam.LightToken);
 
-            IEnumerable<TeamDto> allTeams = new List<TeamDto>();
+            IEnumerable<BaseDtoVersionedTeam> allTeams = new List<BaseDtoVersionedTeam>();
             UserDataDto userData = new UserDataDto();
 
             // Get Fine Grained Permissions
@@ -456,7 +457,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="allTeams">All teams.</param>
         /// <param name="userData">The user data.</param>
         /// <returns>A AdditionalInfo Dto.</returns>
-        private AdditionalInfoDto GetAdditionalInfo(LoginParamDto loginParam, UserInfoDto userInfo, IEnumerable<TeamDto> allTeams, UserDataDto userData)
+        private AdditionalInfoDto GetAdditionalInfo(LoginParamDto loginParam, UserInfoDto userInfo, IEnumerable<BaseDtoVersionedTeam> allTeams, UserDataDto userData)
         {
             AdditionalInfoDto additionalInfo = default;
 
@@ -541,7 +542,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="userInfo">The user information.</param>
         /// <param name="allTeams">All teams.</param>
         /// <returns>List of role.</returns>
-        private async Task<List<string>> GetFineRolesAsync(LoginParamDto loginParam, UserDataDto userData, UserInfoDto userInfo, IEnumerable<TeamDto> allTeams)
+        private async Task<List<string>> GetFineRolesAsync(LoginParamDto loginParam, UserDataDto userData, UserInfoDto userInfo, IEnumerable<BaseDtoVersionedTeam> allTeams)
         {
             // the main roles
             var allRoles = new List<string>();

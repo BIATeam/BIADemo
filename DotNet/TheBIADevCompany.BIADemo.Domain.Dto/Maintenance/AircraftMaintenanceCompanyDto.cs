@@ -5,13 +5,13 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Dto.Maintenance
 {
-    using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Domain.Dto.Base;
 
     /// <summary>
     /// The DTO used to represent an aircraft maintenance company.
     /// </summary>
 #pragma warning disable S2094 // Classes should not be empty
-    public class AircraftMaintenanceCompanyDto : TeamDto
+    public class AircraftMaintenanceCompanyDto : BaseDtoVersionedTeam
 #pragma warning restore S2094 // Classes should not be empty
     {
     }

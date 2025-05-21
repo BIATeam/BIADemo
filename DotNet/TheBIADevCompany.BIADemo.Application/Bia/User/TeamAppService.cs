@@ -27,7 +27,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     /// <summary>
     /// The application service used for team.
     /// </summary>
-    public class TeamAppService : CrudAppServiceBase<TeamDto, Team, int, PagingFilterFormatDto, TeamMapper>, ITeamAppService
+    public class TeamAppService : CrudAppServiceBase<BaseDtoVersionedTeam, Team, int, PagingFilterFormatDto, TeamMapper>, ITeamAppService
     {
         /// <summary>
         /// The claims principal.
@@ -232,12 +232,12 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         }
 
         /// <inheritdoc cref="ITeamAppService.GetAllAsync"/>
-        public async Task<IEnumerable<TeamDto>> GetAllAsync(int userId = 0, IEnumerable<string> userPermissions = null)
+        public async Task<IEnumerable<BaseDtoVersionedTeam>> GetAllAsync(int userId = 0, IEnumerable<string> userPermissions = null)
         {
             userPermissions = userPermissions != null ? userPermissions : this.principal.GetUserPermissions();
             userId = userId > 0 ? userId : this.principal.GetUserId();
 
-            TeamMapper mapper = this.InitMapper<TeamDto, TeamMapper>();
+            TeamMapper mapper = this.InitMapper<BaseDtoVersionedTeam, TeamMapper>();
             if (userPermissions?.Any(x => x == Rights.Teams.AccessAll) == true)
             {
                 return await this.Repository.GetAllResultAsync(mapper.EntityToDto(userId));

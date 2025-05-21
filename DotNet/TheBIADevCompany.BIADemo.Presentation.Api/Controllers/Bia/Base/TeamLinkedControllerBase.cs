@@ -5,7 +5,7 @@
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Base
 {
     using System.Threading.Tasks;
-    using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using TheBIADevCompany.BIADemo.Application.Bia.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
@@ -37,7 +37,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Base
         /// <returns>true if authorized.</returns>
         protected async Task<bool> IsAuthorizeForTeam(int teamId, string roleSuffix)
         {
-            TeamDto teamDto = await this.teamAppService.GetAsync(id: teamId);
+            BaseDtoVersionedTeam teamDto = await this.teamAppService.GetAsync(id: teamId);
             if (teamDto == null)
             {
                 return false;
