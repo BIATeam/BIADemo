@@ -5,6 +5,7 @@ import {
   createSelector,
 } from '@ngrx/store';
 import { engineCRUDConfiguration } from '../engine.constants';
+import { Engine } from '../model/engine';
 import * as fromEngines from './engines-reducer';
 
 export namespace FeatureEnginesStore {
@@ -40,7 +41,7 @@ export namespace FeatureEnginesStore {
 
   export const getCurrentEngine = createSelector(
     getEnginesEntitiesState,
-    state => state.currentEngine
+    state => state.currentItem ?? <Engine>{}
   );
 
   export const getLastLazyLoadEvent = createSelector(

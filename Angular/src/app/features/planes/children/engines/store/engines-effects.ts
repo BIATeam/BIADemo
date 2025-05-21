@@ -1,5 +1,4 @@
-import { APP_BASE_HREF } from '@angular/common';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
@@ -57,7 +56,6 @@ export class EnginesEffects {
           map(engine => FeatureEnginesActions.loadSuccess({ engine })),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
-            location.assign(this.baseHref);
             return of(FeatureEnginesActions.failure({ error: err }));
           })
         );
@@ -255,7 +253,6 @@ export class EnginesEffects {
     private actions$: Actions,
     private engineDas: EngineDas,
     private biaMessageService: BiaMessageService,
-    private store: Store<AppState>,
-    @Inject(APP_BASE_HREF) public baseHref: string
+    private store: Store<AppState>
   ) {}
 }

@@ -106,7 +106,14 @@ export class CrudItemImportService<T extends BaseDto> {
       skipEmptyLines: 'greedy',
       header: true,
       dynamicTyping: true,
-      transformHeader: header => columnMapping[header],
+      transformHeader: header => {
+        const propName = columnMapping[header];
+        if (propName === undefined) {
+          return header;
+        } else {
+          return propName;
+        }
+      },
     });
 
     const resultData$ = this.parseCSVBia(result.data);

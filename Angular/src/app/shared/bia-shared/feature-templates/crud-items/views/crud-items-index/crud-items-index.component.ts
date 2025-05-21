@@ -123,6 +123,7 @@ export class CrudItemsIndexComponent<
   useViewTeamWithTypeId: TeamTypeId | null;
   defaultViewPref: BiaTableState;
   hasColumnFilter = false;
+  isParentFixed = false;
 
   protected store: Store<AppState>;
   protected router: Router;

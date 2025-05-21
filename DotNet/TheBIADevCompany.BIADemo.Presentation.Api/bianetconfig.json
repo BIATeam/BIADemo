@@ -175,6 +175,7 @@
         "Names": [ "Plane_Create", "Plane_Delete" ],
         "Roles": [ "Site_Admin" ]
       },
+      // BIAToolKit - Begin Partial Config Engine
       // Engine
       {
         "Names": [ "Engine_List_Access", "Engine_Read" ],
@@ -188,6 +189,7 @@
         "Names": [ "Engine_Create", "Engine_Delete" ],
         "Roles": [ "Site_Admin" ]
       },
+      // BIAToolKit - End Partial Config Engine
       // Part
       {
         "Name": "Part_Options",

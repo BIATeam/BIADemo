@@ -18,33 +18,6 @@ function Get-BiaDemoVersion() {
   }
 }
 
-function Remove-CodeExample {
-  param (
-    [string]$path
-  )
-  Get-ChildItem -Path $path -File -Recurse | ForEach-Object { 
-    $lineBegin = @()
-    $file = $_.FullName
-  
-    $searchWord = 'Begin BIADemo'
-    $starts = GetLineNumber -pattern $searchWord -file $file
-    $lineBegin += $starts
-  
-    $searchWord = 'End BIADemo'
-    $ends = GetLineNumber -pattern $searchWord -file $file
-    $lineBegin += $ends
-  
-    if ($lineBegin -and $lineBegin.Length -gt 0) {
-      $lineBegin = $lineBegin | Sort-Object
-      for ($i = $lineBegin.Length - 1; $i -gt 0; $i = $i - 2) {
-        $start = [int]$lineBegin[$i - 1]
-        $end = [int]$lineBegin[$i]
-        DeleteLine -start $start -end $end -file $file
-      }
-    }
-  }
-}
-
 function Remove-Line {
   param (
     [string]$path,
@@ -72,9 +45,6 @@ if(Test-Path $biaToolKitVersionTargetPath) {
 Write-Host "Copy BIADemo to BIAToolKit..." -ForegroundColor Blue
 robocopy "$biaDemoProjectPath\DotNet" "$biaToolKitVersionTargetPath\DotNet" /E /XD BIAPackage .vs .vscode bin obj | Out-Null
 robocopy "$biaDemoProjectPath\Angular" "$biaToolKitVersionTargetPath\Angular" /E /XD dist node_modules .angular .dart_tool .vscode | Out-Null
-
-# Write-Host "Remove code example..." -ForegroundColor Blue
-# Remove-CodeExample -path $biaToolKitVersionTargetPath
 
 Write-Host "Remove Except BIADemo lines..." -ForegroundColor Blue
 Remove-Line "// Except BIADemo" -Path $biaToolKitVersionTargetPath
