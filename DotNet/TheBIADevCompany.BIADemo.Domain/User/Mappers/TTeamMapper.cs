@@ -9,13 +9,12 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
     using System.Linq;
     using System.Linq.Expressions;
     using System.Security.Principal;
-    using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Mapper;
-    using Microsoft.VisualBasic;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.User;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
@@ -47,13 +46,12 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         {
             get
             {
-                return new ExpressionCollection<TTeam>
+                return new ExpressionCollection<TTeam>(base.ExpressionCollection)
                 {
-                    { "Id", site => site.Id },
-                    { "Title", site => site.Title },
+                    { HeaderName.Title, team => team.Title },
                     {
-                        "Admins", site =>
-                        site.Members.Where(w => w.MemberRoles.Any(a => this.AdminRoleIds.Contains(a.RoleId))).Select(s => s.User.LastName + " " + s.User.FirstName + " (" + s.User.Login + ")").OrderBy(x => x)
+                        HeaderName.Admins, team =>
+                        team.Members.Where(w => w.MemberRoles.Any(a => this.AdminRoleIds.Contains(a.RoleId))).Select(s => s.User.LastName + " " + s.User.FirstName + " (" + s.User.Login + ")").OrderBy(x => x)
                     },
                 };
             }
@@ -82,16 +80,27 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         protected IEnumerable<int> UserRoleIds { get; set; }
 
         /// <summary>
+        /// Create a site entity from a DTO.
+        /// </summary>
+        /// <param name="dto">The site DTO.</param>
+        /// <param name="entity">The entity to update.</param>
+        public override void DtoToEntity(TTeamDto dto, ref TTeam entity)
+        {
+            base.DtoToEntity(dto, ref entity);
+
+            entity.Title = dto.Title;
+            entity.TeamTypeId = this.TeamType;
+        }
+
+        /// <summary>
         /// Create a site DTO from a entity.
         /// </summary>
         /// <returns>The site DTO.</returns>
         public override Expression<Func<TTeam, TTeamDto>> EntityToDto()
         {
-            return entity => new TTeamDto
+            return base.EntityToDto().CombineMapping(entity => new TTeamDto
             {
-                Id = entity.Id,
                 Title = entity.Title,
-                RowVersion = Convert.ToBase64String(entity.RowVersion),
                 TeamTypeId = this.TeamType,
 
                 Admins = entity.Members
@@ -106,30 +115,33 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
                 CanMemberListAccess =
                     this.UserRoleIds.Contains((int)RoleId.Admin) ||
                     entity.Members.Any(m => m.UserId == this.UserId),
+            });
+        }
+
+        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCellMapping"/>
+        public override Dictionary<string, Func<string>> DtoToCellMapping(TTeamDto dto)
+        {
+            return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
+            {
+                { HeaderName.Title, () => CSVString(dto.Title) },
+                { HeaderName.Admins, () => CSVList(dto.Admins?.ToList()) },
             };
         }
 
         /// <summary>
-        /// Create a site entity from a DTO.
+        /// Header names.
         /// </summary>
-        /// <param name="dto">The site DTO.</param>
-        /// <param name="entity">The entity to update.</param>
-        public override void DtoToEntity(TTeamDto dto, ref TTeam entity)
+        public struct HeaderName
         {
-            base.DtoToEntity(dto, ref entity);
+            /// <summary>
+            /// Header name for site id.
+            /// </summary>
+            public const string Title = "title";
 
-            entity.Title = dto.Title;
-            entity.TeamTypeId = this.TeamType;
-        }
-
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
-        public override Func<TTeamDto, object[]> DtoToRecord(List<string> headerNames = null)
-        {
-            return x => (new object[]
-            {
-                CSVString(x.Title),
-                CSVList(x.Admins?.ToList()),
-            });
+            /// <summary>
+            /// Header name for msn.
+            /// </summary>
+            public const string Admins = "admins";
         }
     }
 }

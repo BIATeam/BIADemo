@@ -335,15 +335,16 @@ namespace BIA.Net.Core.Domain.Mapper
         /// <returns>Func.</returns>
         public virtual Func<TDto, object[]> DtoToRecord(List<string> headerNames = null)
         {
-            return x =>
+            return dto =>
             {
                 List<object> records = [];
+                Dictionary<string, Func<string>> headerActions = this.DtoToCellMapping(dto);
 
                 if (headerNames != null && headerNames.Count > 0)
                 {
                     foreach (string headerName in headerNames)
                     {
-                        records.Add(this.DtoToCell(x, headerName));
+                        records.Add(this.DtoToCell(dto, headerName, headerActions));
                     }
                 }
 
@@ -356,24 +357,33 @@ namespace BIA.Net.Core.Domain.Mapper
         /// </summary>
         /// <param name="dto">The dto.</param>
         /// <param name="headerName">Name of the header.</param>
-        /// <returns>a string formated for csv.<returns>
-        public virtual string DtoToCell(TDto dto, string headerName)
+        /// <param name="headerActions">List of exprestion to translate dto in csv cell.</param>
+        /// <returns>A string formatted for CSV.</returns>
+        public virtual string DtoToCell(TDto dto, string headerName, Dictionary<string, Func<string>> headerActions)
         {
-            switch (headerName)
+            if (headerActions.TryGetValue(headerName, out var action))
             {
-                case BaseHeaderName.Id:
-                    return CSVCell(dto.Id);
-                case BaseHeaderName.IsFixed:
-                    return CSVBool((dto as IDtoFixable).IsFixed);
-                case BaseHeaderName.FixedDate:
-                    return CSVDate((dto as IDtoFixable).FixedDate);
-                case BaseHeaderName.IsArchived:
-                    return CSVBool((dto as IDtoArchivable).IsArchived);
-                case BaseHeaderName.ArchivedDate:
-                    return CSVDate((dto as IDtoArchivable).ArchivedDate);
-                default:
-                    throw new FrontUserException("Unknow header " + headerName);
+                return action();
             }
+
+            throw new FrontUserException("Unknown header " + headerName);
+        }
+
+        /// <summary>
+        /// List of exprestion to translate dto in csv cell.
+        /// </summary>
+        /// <param name="dto">The dto.</param>
+        /// <returns>The list of expression.</returns>
+        public virtual Dictionary<string, Func<string>> DtoToCellMapping(TDto dto)
+        {
+            return new Dictionary<string, Func<string>>
+            {
+                { BaseHeaderName.Id, () => CSVCell(dto.Id) },
+                { BaseHeaderName.IsFixed, () => CSVBool((dto as IDtoFixable).IsFixed) },
+                { BaseHeaderName.FixedDate, () => CSVDate((dto as IDtoFixable).FixedDate) },
+                { BaseHeaderName.IsArchived, () => CSVBool((dto as IDtoArchivable).IsArchived) },
+                { BaseHeaderName.ArchivedDate, () => CSVDate((dto as IDtoArchivable).ArchivedDate) },
+            };
         }
 
         /// <summary>

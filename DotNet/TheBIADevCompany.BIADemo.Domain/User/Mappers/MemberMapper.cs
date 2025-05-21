@@ -4,18 +4,17 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Linq.Expressions;
+    using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain;
-    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.Service;
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Linq.Expressions;
     using TheBIADevCompany.BIADemo.Domain.User;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
@@ -38,9 +37,8 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         {
             get
             {
-                return new ExpressionCollection<Member>
+                return new ExpressionCollection<Member>(base.ExpressionCollection)
                 {
-                    { "Id", member => member.Id },
                     {
                         "Roles",
                         member => member.MemberRoles
@@ -69,33 +67,6 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         private UserContext UserContext { get; set; }
 
         /// <inheritdoc/>
-        public override Expression<Func<Member, MemberDto>> EntityToDto()
-        {
-            return entity => new MemberDto
-            {
-                Id = entity.Id,
-                TeamId = entity.TeamId,
-                User = new OptionDto
-                {
-                    Id = entity.User.Id,
-                    Display = entity.User.Display() + (entity.User.IsActive ? string.Empty : " **Disabled**"),
-                },
-                FirstName = entity.User.FirstName,
-                LastName = entity.User.LastName,
-                Login = entity.User.Login,
-                IsActive = entity.User.IsActive,
-                Roles = entity.MemberRoles.Select(x => new OptionDto { Id = x.RoleId, Display = x.Role.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? x.Role.Label }),
-            };
-        }
-
-        /// <inheritdoc/>
-        public override void MapEntityKeysInDto(Member entity, MemberDto dto)
-        {
-            dto.Id = entity.Id;
-            dto.TeamId = entity.TeamId;
-        }
-
-        /// <inheritdoc/>
         public override void DtoToEntity(MemberDto dto, ref Member entity)
         {
             base.DtoToEntity(dto, ref entity);
@@ -121,61 +92,52 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         }
 
         /// <inheritdoc/>
-        public override Func<MemberDto, object[]> DtoToRecord(List<string> headerNames = null)
+        public override Expression<Func<Member, MemberDto>> EntityToDto()
         {
-            return x =>
+            return base.EntityToDto().CombineMapping(entity => new MemberDto
             {
-                List<object> records = new List<object>();
-
-                if (headerNames?.Any() == true)
+                TeamId = entity.TeamId,
+                User = new OptionDto
                 {
-                    foreach (string headerName in headerNames)
-                    {
-                        if (string.Equals(headerName, HeaderName.Id, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.Id));
-                        }
+                    Id = entity.User.Id,
+                    Display = entity.User.Display() + (entity.User.IsActive ? string.Empty : " **Disabled**"),
+                },
+                FirstName = entity.User.FirstName,
+                LastName = entity.User.LastName,
+                Login = entity.User.Login,
+                IsActive = entity.User.IsActive,
+                Roles = entity.MemberRoles.Select(x => new OptionDto { Id = x.RoleId, Display = x.Role.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? x.Role.Label }),
+            });
+        }
 
-                        if (string.Equals(headerName, HeaderName.User, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.User?.Display));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.LastName, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.LastName));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.FirstName, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.FirstName));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.Login, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.Login));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.IsActive, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVBool(x.IsActive));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.Roles, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVList(x.Roles));
-                        }
-                    }
-                }
-
-                return records.ToArray();
+        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCellMapping"/>
+        public override Dictionary<string, Func<string>> DtoToCellMapping(MemberDto dto)
+        {
+            return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
+            {
+                { HeaderName.User, () => CSVString(dto.User?.Display) },
+                { HeaderName.LastName, () => CSVString(dto.LastName) },
+                { HeaderName.FirstName, () => CSVString(dto.FirstName) },
+                { HeaderName.Login, () => CSVString(dto.Login) },
+                { HeaderName.IsActive, () => CSVBool(dto.IsActive) },
+                { HeaderName.Roles, () => CSVList(dto.Roles) },
             };
+        }
+
+        /// <inheritdoc/>
+        public override void MapEntityKeysInDto(Member entity, MemberDto dto)
+        {
+            base.MapEntityKeysInDto(entity, dto);
+            dto.TeamId = entity.TeamId;
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesForUpdate"/>
         public override Expression<Func<Member, object>>[] IncludesForUpdate()
         {
-            return new Expression<Func<Member, object>>[] { member => member.MemberRoles };
+            return
+            [
+                x => x.MemberRoles
+            ];
         }
 
         /// <summary>
@@ -183,11 +145,6 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         /// </summary>
         public struct HeaderName
         {
-            /// <summary>
-            /// Header Name Id.
-            /// </summary>
-            public const string Id = "id";
-
             /// <summary>
             /// Header Name User.
             /// </summary>

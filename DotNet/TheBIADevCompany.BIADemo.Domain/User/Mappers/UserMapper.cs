@@ -13,6 +13,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
@@ -21,17 +22,12 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
     /// <summary>
     /// The mapper used for user.
     /// </summary>
-    public class UserMapper : BaseMapper<UserDto, User, int>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="UserMapper"/> class.
+    /// </remarks>
+    /// <param name="userContext">the user context.</param>
+    public class UserMapper(UserContext userContext) : BaseMapper<UserDto, User, int>()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserMapper"/> class.
-        /// </summary>
-        /// <param name="userContext">the user context.</param>
-        public UserMapper(UserContext userContext)
-        {
-            this.UserContext = userContext;
-        }
-
         /// <summary>
         /// Gets or sets the collection used for expressions to access fields.
         /// </summary>
@@ -39,9 +35,8 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         {
             get
             {
-                return new ExpressionCollection<User>
+                return new ExpressionCollection<User>(base.ExpressionCollection)
                 {
-                    { HeaderName.Id, user => user.Id },
                     { HeaderName.LastName, user => user.LastName },
                     { HeaderName.FirstName, user => user.FirstName },
                     { HeaderName.Login, user => user.Login },
@@ -71,7 +66,34 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         /// <summary>
         /// The user context language and culture.
         /// </summary>
-        private UserContext UserContext { get; set; }
+        private UserContext UserContext { get; set; } = userContext;
+
+
+        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
+        public override void DtoToEntity(UserDto dto, ref User entity, string mapperMode, IUnitOfWork context)
+        {
+            base.DtoToEntity(dto, ref entity, mapperMode, context);
+
+            if ((mapperMode == "RolesInit" || mapperMode == "Roles") && dto.Roles?.Any() == true)
+            {
+                foreach (var userRoleDto in dto.Roles.Where(x => x.DtoState == DtoState.Deleted || mapperMode == "RolesInit"))
+                {
+                    var userRole = entity.Roles.FirstOrDefault(x => x.Id == userRoleDto.Id);
+                    if (userRole != null)
+                    {
+                        entity.Roles.Remove(userRole);
+                    }
+                }
+
+                entity.Roles = entity.Roles ?? new List<Role>();
+                foreach (var userRoleDto in dto.Roles.Where(w => w.DtoState == DtoState.Added))
+                {
+                    Role role = new Role { Id = userRoleDto.Id };
+                    context.Attach(role); // required to map on Id (without get element before)
+                    entity.Roles.Add(role);
+                }
+            }
+        }
 
         /// <summary>
         /// Create a user DTO from an entity.
@@ -102,88 +124,27 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
             });
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
-        public override void DtoToEntity(UserDto dto, ref User entity, string mapperMode, IUnitOfWork context)
+        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCellMapping"/>
+        public override Dictionary<string, Func<string>> DtoToCellMapping(UserDto dto)
         {
-            base.DtoToEntity(dto, ref entity, mapperMode, context);
-
-            if ((mapperMode == "RolesInit" || mapperMode == "Roles") && dto.Roles?.Any() == true)
+            return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
             {
-                foreach (var userRoleDto in dto.Roles.Where(x => x.DtoState == DtoState.Deleted || mapperMode == "RolesInit"))
-                {
-                    var userRole = entity.Roles.FirstOrDefault(x => x.Id == userRoleDto.Id);
-                    if (userRole != null)
-                    {
-                        entity.Roles.Remove(userRole);
-                    }
-                }
-
-                entity.Roles = entity.Roles ?? new List<Role>();
-                foreach (var userRoleDto in dto.Roles.Where(w => w.DtoState == DtoState.Added))
-                {
-                    Role role = new Role { Id = userRoleDto.Id };
-                    context.Attach(role); // required to map on Id (without get element before)
-                    entity.Roles.Add(role);
-                }
-            }
-        }
-
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
-        public override Func<UserDto, object[]> DtoToRecord(List<string> headerNames = null)
-        {
-            return x =>
-            {
-                List<object> records = new List<object>();
-
-                if (headerNames?.Any() == true)
-                {
-                    foreach (string headerName in headerNames)
-                    {
-                        if (string.Equals(headerName, HeaderName.Id, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.Id));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.LastName, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.LastName));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.FirstName, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.FirstName));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.Login, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.Login));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.Guid, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.Guid.ToString()));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.Roles, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVList(x.Roles));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.Teams, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVList(x.Teams.Select(t => new OptionDto { Display = t.Title })));
-                        }
-                    }
-                }
-
-                return records.ToArray();
+                { HeaderName.LastName, () => CSVString(dto.LastName) },
+                { HeaderName.FirstName, () => CSVString(dto.FirstName) },
+                { HeaderName.Login, () => CSVString(dto.Login) },
+                { HeaderName.Guid, () => CSVString(dto.Guid.ToString()) },
+                { HeaderName.Roles, () => CSVList(dto.Roles) },
+                { HeaderName.Teams, () => CSVList(dto.Teams.Select(t => new OptionDto { Display = t.Title })) },
             };
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesForUpdate"/>
         public override Expression<Func<User, object>>[] IncludesForUpdate()
         {
-            return new Expression<Func<User, object>>[] { x => x.Roles };
+            return
+            [
+                x => x.Roles,
+            ];
         }
 
         /// <summary>
@@ -191,11 +152,6 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         /// </summary>
         public struct HeaderName
         {
-            /// <summary>
-            /// header name Id.
-            /// </summary>
-            public const string Id = "id";
-
             /// <summary>
             /// header name LastName.
             /// </summary>

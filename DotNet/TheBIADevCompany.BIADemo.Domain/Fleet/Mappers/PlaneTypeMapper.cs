@@ -50,18 +50,14 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             });
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCell"/>
-        public override string DtoToCell(PlaneTypeDto dto, string headerName)
+        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCellMapping"/>
+        public override Dictionary<string, Func<string>> DtoToCellMapping(PlaneTypeDto dto)
         {
-            switch (headerName)
+            return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
             {
-                case HeaderName.Title:
-                    return CSVString(dto.Title);
-                case HeaderName.CertificationDate:
-                    return CSVDateTime(dto.CertificationDate);
-                default:
-                    return base.DtoToCell(dto, headerName);
-            }
+                { HeaderName.Title, () => CSVString(dto.Title) },
+                { HeaderName.CertificationDate, () => CSVDateTime(dto.CertificationDate) },
+            };
         }
 
         /// <summary>

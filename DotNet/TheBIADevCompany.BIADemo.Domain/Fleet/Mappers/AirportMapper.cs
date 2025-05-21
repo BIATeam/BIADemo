@@ -7,7 +7,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain;
@@ -52,18 +51,14 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             });
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCell"/>
-        public override string DtoToCell(AirportDto dto, string headerName)
+        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCellMapping"/>
+        public override Dictionary<string, Func<string>> DtoToCellMapping(AirportDto dto)
         {
-            switch (headerName)
+            return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
             {
-                case HeaderName.Name:
-                    return CSVString(dto.Name);
-                case HeaderName.City:
-                    return CSVString(dto.City);
-                default:
-                    return base.DtoToCell(dto, headerName);
-            }
+                { HeaderName.Name, () => CSVString(dto.Name) },
+                { HeaderName.City, () => CSVString(dto.City) },
+            };
         }
 
         /// <summary>

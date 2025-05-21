@@ -148,39 +148,32 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             });
         }
 
-        /// <inheritdoc/>
-        public override string DtoToCell(EngineDto dto, string headerName)
+        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCellMapping"/>
+        public override Dictionary<string, Func<string>> DtoToCellMapping(EngineDto dto)
         {
-            var headerMappings = new Dictionary<string, Func<EngineDto, string>>(StringComparer.OrdinalIgnoreCase)
+            return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
             {
-                { HeaderName.Reference, d => CSVString(d.Reference) },
-                { HeaderName.Manufacturer, d => CSVString(d.Manufacturer) },
-                { HeaderName.NextMaintenanceDate, d => CSVDateTime(d.NextMaintenanceDate) },
-                { HeaderName.LastMaintenanceDate, d => CSVDateTime(d.LastMaintenanceDate) },
-                { HeaderName.DeliveryDate, d => CSVDate(d.DeliveryDate) },
-                { HeaderName.ExchangeDate, d => CSVDate(d.ExchangeDate) },
-                { HeaderName.IgnitionTime, d => CSVTime(d.IgnitionTime) },
-                { HeaderName.SyncTime, d => CSVTime(d.SyncTime) },
-                { HeaderName.Power, d => CSVNumber(d.Power) },
-                { HeaderName.NoiseLevel, d => CSVNumber(d.NoiseLevel) },
-                { HeaderName.AverageFlightHours, d => CSVNumber(d.AverageFlightHours) },
-                { HeaderName.FlightHours, d => CSVNumber(d.FlightHours) },
-                { HeaderName.AverageFuelConsumption, d => CSVNumber(d.AverageFuelConsumption) },
-                { HeaderName.FuelConsumption, d => CSVNumber(d.FuelConsumption) },
-                { HeaderName.EstimatedPrice, d => CSVNumber(d.EstimatedPrice) },
-                { HeaderName.OriginalPrice, d => CSVNumber(d.OriginalPrice) },
-                { HeaderName.IsToBeMaintained, d => CSVBool(d.IsToBeMaintained) },
-                { HeaderName.IsHybrid, d => CSVBool(d.IsHybrid) },
-                { HeaderName.PrincipalPart, d => CSVString(d.PrincipalPart?.Display) },
-                { HeaderName.InstalledParts, d => CSVList(d.InstalledParts) },
+                { HeaderName.Reference, () => CSVString(dto.Reference) },
+                { HeaderName.Manufacturer, () => CSVString(dto.Manufacturer) },
+                { HeaderName.NextMaintenanceDate, () => CSVDateTime(dto.NextMaintenanceDate) },
+                { HeaderName.LastMaintenanceDate, () => CSVDateTime(dto.LastMaintenanceDate) },
+                { HeaderName.DeliveryDate, () => CSVDate(dto.DeliveryDate) },
+                { HeaderName.ExchangeDate, () => CSVDate(dto.ExchangeDate) },
+                { HeaderName.IgnitionTime, () => CSVTime(dto.IgnitionTime) },
+                { HeaderName.SyncTime, () => CSVTime(dto.SyncTime) },
+                { HeaderName.Power, () => CSVNumber(dto.Power) },
+                { HeaderName.NoiseLevel, () => CSVNumber(dto.NoiseLevel) },
+                { HeaderName.AverageFlightHours, () => CSVNumber(dto.AverageFlightHours) },
+                { HeaderName.FlightHours, () => CSVNumber(dto.FlightHours) },
+                { HeaderName.AverageFuelConsumption, () => CSVNumber(dto.AverageFuelConsumption) },
+                { HeaderName.FuelConsumption, () => CSVNumber(dto.FuelConsumption) },
+                { HeaderName.EstimatedPrice, () => CSVNumber(dto.EstimatedPrice) },
+                { HeaderName.OriginalPrice, () => CSVNumber(dto.OriginalPrice) },
+                { HeaderName.IsToBeMaintained, () => CSVBool(dto.IsToBeMaintained) },
+                { HeaderName.IsHybrid, () => CSVBool(dto.IsHybrid) },
+                { HeaderName.PrincipalPart, () => CSVString(dto.PrincipalPart?.Display) },
+                { HeaderName.InstalledParts, () => CSVList(dto.InstalledParts) },
             };
-
-            if (headerMappings.TryGetValue(headerName, out var method))
-            {
-                return method(dto);
-            }
-
-            return base.DtoToCell(dto, headerName);
         }
 
         /// <inheritdoc/>

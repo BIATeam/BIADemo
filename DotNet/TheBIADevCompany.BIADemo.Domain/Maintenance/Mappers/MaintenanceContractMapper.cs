@@ -92,20 +92,14 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
             });
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCell"/>
-        public override string DtoToCell(MaintenanceContractDto dto, string headerName)
+        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCellMapping"/>
+        public override Dictionary<string, Func<string>> DtoToCellMapping(MaintenanceContractDto dto)
         {
-            if (string.Equals(headerName, HeaderName.ContractNumber, StringComparison.OrdinalIgnoreCase))
+            return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
             {
-                return CSVString(dto.ContractNumber);
-            }
-
-            if (string.Equals(headerName, HeaderName.Description, StringComparison.OrdinalIgnoreCase))
-            {
-                return CSVString(dto.Description);
-            }
-
-            return base.DtoToCell(dto, headerName);
+                { HeaderName.ContractNumber, () => CSVString(dto.ContractNumber) },
+                { HeaderName.Description, () => CSVString(dto.Description) },
+            };
         }
 
         /// <summary>
