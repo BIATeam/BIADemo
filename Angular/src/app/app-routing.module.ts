@@ -65,6 +65,7 @@ const routes: Routes = [
                     './features/maintenance-contracts/maintenance-contract.module'
                   ).then(m => m.MaintenanceContractModule),
               },
+              // BIAToolKit - Begin Partial Routing Plane
               {
                 path: 'planes',
                 data: {
@@ -76,6 +77,7 @@ const routes: Routes = [
                     m => m.PlaneModule
                   ),
               },
+              // BIAToolKit - End Partial Routing Plane
               {
                 path: 'planes-full-code',
                 data: {

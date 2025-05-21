@@ -227,6 +227,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
 
         // BIAToolKit - End Partial RightsForOption PlaneType
 
+        // BIAToolKit - Begin Partial Rights Plane
+
         /// <summary>
         /// The planes rights.
         /// </summary>
@@ -266,7 +268,15 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// The right to fixe planes.
             /// </summary>
             public const string Fix = "Plane_Fix";
+        }
 
+        // BIAToolKit - End Partial Rights Plane
+
+        /// <summary>
+        /// The plane options rights.
+        /// </summary>
+        public static class PlaneOptions
+        {
             /// <summary>
             /// The right to access to the list of planes (options only).
             /// </summary>

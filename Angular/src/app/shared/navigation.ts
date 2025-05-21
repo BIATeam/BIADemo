@@ -42,11 +42,13 @@ export const NAVIGATION: BiaNavigation[] = [
         permissions: [Permission.MaintenanceContract_List_Access],
         path: ['/examples/maintenance-contracts'],
       },
+      // BIAToolKit - Begin Partial Navigation Plane
       {
         labelKey: 'app.planes',
         permissions: [Permission.Plane_List_Access],
         path: ['/examples/planes'],
       },
+      // BIAToolKit - End Partial Navigation Plane
       {
         labelKey: 'app.planesFullCode',
         permissions: [Permission.Plane_List_Access],
