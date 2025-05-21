@@ -5,19 +5,13 @@
 namespace TheBIADevCompany.BIADemo.Domain.User.Entities
 {
     using System.Collections.Generic;
-
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity;
 
     /// <summary>
     /// The type of team.
     /// </summary>
-    public class TeamType : VersionedTable, IEntity<int>
+    public class TeamType : BaseEntityVersioned<int>
     {
-        /// <summary>
-        /// Gets or sets the id.
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Gets or sets the name.
         /// </summary>

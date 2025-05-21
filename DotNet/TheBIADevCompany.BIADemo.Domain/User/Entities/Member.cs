@@ -5,19 +5,13 @@
 namespace TheBIADevCompany.BIADemo.Domain.User.Entities
 {
     using System.Collections.Generic;
-
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity;
 
     /// <summary>
     /// The member entity.
     /// </summary>
-    public class Member : VersionedTable, IEntity<int>
+    public class Member : BaseEntityVersioned<int>
     {
-        /// <summary>
-        /// Gets or sets the id.
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Gets or sets the user.
         /// </summary>

@@ -1,16 +1,17 @@
-﻿// <copyright file="IEntityFixable.cs" company="BIA">
+﻿// <copyright file="BaseEntityVersionedFixable.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Domain
+namespace BIA.Net.Core.Domain.Entity
 {
     using System;
+    using BIA.Net.Core.Domain.Entity.Interface;
 
     /// <summary>
-    /// Inrerface of a fixable entity.
+    /// The base class for Entity.
     /// </summary>
-    /// <typeparam name="TKey">Key type of the entity.</typeparam>
-    public interface IEntityFixable<TKey> : IEntity<TKey>
+    /// <typeparam name="TKey">Type of the key.</typeparam>
+    public abstract class BaseEntityVersionedFixable<TKey> : BaseEntityVersioned<TKey>, IEntityFixable
     {
         /// <summary>
         /// Gets or sets the is fixed.

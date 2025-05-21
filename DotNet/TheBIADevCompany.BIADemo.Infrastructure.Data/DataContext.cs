@@ -25,7 +25,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
 
-
     using TheBIADevCompany.BIADemo.Domain.Site.Entities;
     using TheBIADevCompany.BIADemo.Domain.Translation.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;

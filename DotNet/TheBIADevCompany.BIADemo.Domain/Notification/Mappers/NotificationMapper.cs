@@ -8,15 +8,13 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Mappers
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-    using System.Security.Principal;
+    using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain;
-    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.Service;
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Serialization;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
     using TheBIADevCompany.BIADemo.Domain.Translation.Entities;
@@ -25,34 +23,29 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Mappers
     /// <summary>
     /// The mapper used for user.
     /// </summary>
-    public class NotificationMapper : BaseMapper<NotificationDto, Notification, int>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="NotificationMapper"/> class.
+    /// </remarks>
+    /// <param name="userContext">the user context.</param>
+    public class NotificationMapper(UserContext userContext) : BaseMapper<NotificationDto, Notification, int>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NotificationMapper"/> class.
-        /// </summary>
-        /// <param name="userContext">the user context.</param>
-        public NotificationMapper(UserContext userContext)
-        {
-            this.UserContext = userContext;
-        }
-
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
         public override ExpressionCollection<Notification> ExpressionCollection
         {
             get
             {
-                return new ExpressionCollection<Notification>
+                return new ExpressionCollection<Notification>(base.ExpressionCollection)
                 {
-                    { "Title", notification => notification.Title },
-                    { "Description", notification => notification.Description },
-                    { "TitleTranslated", notification => notification.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Title).FirstOrDefault() ?? notification.Title },
-                    { "DescriptionTranslated", notification => notification.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Description).FirstOrDefault() ?? notification.Description },
-                    { "CreatedDate", notification => notification.CreatedDate },
-                    { "Type", notification => notification.Type.NotificationTypeTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? notification.Type.Label },
-                    { "Read", notification => notification.Read },
-                    { "CreatedBy", notification => notification.CreatedBy.LastName + notification.CreatedBy.FirstName + " (" + notification.CreatedBy.Login + ")" },
-                    { "NotifiedTeams", notification => notification.NotifiedTeams.Select(x => x.Team.Title).OrderBy(x => x) },
-                    { "NotifiedUsers", notification => notification.NotifiedUsers.Select(x => x.User.LastName + " " + x.User.FirstName + " (" + x.User.Login + ")").OrderBy(x => x) },
+                    { HeaderName.Title, notification => notification.Title },
+                    { HeaderName.Description, notification => notification.Description },
+                    { HeaderName.TitleTranslated, notification => notification.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Title).FirstOrDefault() ?? notification.Title },
+                    { HeaderName.DescriptionTranslated, notification => notification.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Description).FirstOrDefault() ?? notification.Description },
+                    { HeaderName.CreatedDate, notification => notification.CreatedDate },
+                    { HeaderName.Type, notification => notification.Type.NotificationTypeTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? notification.Type.Label },
+                    { HeaderName.Read, notification => notification.Read },
+                    { HeaderName.CreatedBy, notification => notification.CreatedBy.LastName + notification.CreatedBy.FirstName + " (" + notification.CreatedBy.Login + ")" },
+                    { HeaderName.NotifiedTeams, notification => notification.NotifiedTeams.Select(x => x.Team.Title).OrderBy(x => x) },
+                    { HeaderName.NotifiedUsers, notification => notification.NotifiedUsers.Select(x => x.User.LastName + " " + x.User.FirstName + " (" + x.User.Login + ")").OrderBy(x => x) },
                 };
             }
         }
@@ -60,7 +53,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Mappers
         /// <summary>
         /// The user context language and culture.
         /// </summary>
-        private UserContext UserContext { get; set; }
+        private UserContext UserContext { get; set; } = userContext;
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
         public override void DtoToEntity(NotificationDto dto, ref Notification entity)
@@ -183,9 +176,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Mappers
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
         public override Expression<Func<Notification, NotificationDto>> EntityToDto(string mapperMode)
         {
-            return entity => new NotificationDto
+            return this.EntityToDto().CombineMapping(entity => new NotificationDto
             {
-                Id = entity.Id,
                 Title = entity.Title,
                 Description = entity.Description,
                 TitleTranslated = entity.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Title).FirstOrDefault() ?? entity.Title,
@@ -240,19 +232,73 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Mappers
                     Title = nt.Title,
                     Description = nt.Description,
                 }).ToList(),
-            };
-        }
-
-        /// <inheritdoc/>
-        public override void MapEntityKeysInDto(Notification entity, NotificationDto dto)
-        {
-            dto.Id = entity.Id;
+            });
         }
 
         /// <inheritdoc/>
         public override Expression<Func<Notification, object>>[] IncludesBeforeDelete()
         {
-            return new Expression<Func<Notification, object>>[] { x => x.NotifiedTeams, x => x.NotifiedUsers };
+            return
+            [
+                x => x.NotifiedTeams,
+                x => x.NotifiedUsers,
+            ];
+        }
+
+        /// <summary>
+        /// Header names.
+        /// </summary>
+        public struct HeaderName
+        {
+            /// <summary>
+            /// Header name for title.
+            /// </summary>
+            public const string Title = "title";
+
+            /// <summary>
+            /// Header name for description.
+            /// </summary>
+            public const string Description = "description";
+
+            /// <summary>
+            /// Header name for title translated.
+            /// </summary>
+            public const string TitleTranslated = "titleTranslated";
+
+            /// <summary>
+            /// Header name for description translated.
+            /// </summary>
+            public const string DescriptionTranslated = "descriptionTranslated";
+
+            /// <summary>
+            /// Header name for created date.
+            /// </summary>
+            public const string CreatedDate = "createdDate";
+
+            /// <summary>
+            /// Header name for type.
+            /// </summary>
+            public const string Type = "type";
+
+            /// <summary>
+            /// Header name for read.
+            /// </summary>
+            public const string Read = "read";
+
+            /// <summary>
+            /// Header name for created by.
+            /// </summary>
+            public const string CreatedBy = "createdBy";
+
+            /// <summary>
+            /// Header name for notified teams.
+            /// </summary>
+            public const string NotifiedTeams = "notifiedTeams";
+
+            /// <summary>
+            /// Header name for notified users.
+            /// </summary>
+            public const string NotifiedUsers = "NntifiedUsers";
         }
     }
 }

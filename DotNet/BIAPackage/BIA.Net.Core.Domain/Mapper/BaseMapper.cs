@@ -2,7 +2,7 @@
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Domain
+namespace BIA.Net.Core.Domain.Mapper
 {
     using System;
     using System.Collections.Generic;
@@ -12,8 +12,12 @@ namespace BIA.Net.Core.Domain
     using System.Linq.Expressions;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Entity.Interface;
+    using Microsoft.VisualBasic;
 
     /// <summary>
     /// The class used to define the base mapper.
@@ -25,6 +29,11 @@ namespace BIA.Net.Core.Domain
         where TDto : BaseDto<TKey>
         where TEntity : class, IEntity<TKey>, new()
     {
+        /// <summary>
+        /// The dto is versionned.
+        /// </summary>
+        private readonly bool isVersionned;
+
         /// <summary>
         /// The dto is fixable.
         /// </summary>
@@ -41,14 +50,19 @@ namespace BIA.Net.Core.Domain
         protected BaseMapper()
             : base()
         {
-            if (typeof(IEntityFixable<TKey>).IsAssignableFrom(typeof(TEntity)) && typeof(IFixableDto).IsAssignableFrom(typeof(TDto)))
+            if (typeof(IEntityFixable).IsAssignableFrom(typeof(TEntity)) && typeof(IDtoFixable).IsAssignableFrom(typeof(TDto)))
             {
                 this.isFixable = true;
             }
 
-            if (typeof(IEntityArchivable<TKey>).IsAssignableFrom(typeof(TEntity)) && typeof(IArchivableDto).IsAssignableFrom(typeof(TDto)))
+            if (typeof(IEntityArchivable).IsAssignableFrom(typeof(TEntity)) && typeof(IDtoArchivable).IsAssignableFrom(typeof(TDto)))
             {
                 this.isArchivable = true;
+            }
+
+            if (typeof(IEntityVersioned).IsAssignableFrom(typeof(TEntity)) && typeof(IDtoVersioned).IsAssignableFrom(typeof(TDto)))
+            {
+                this.isVersionned = true;
             }
         }
 
@@ -64,14 +78,14 @@ namespace BIA.Net.Core.Domain
 
                 if (this.isFixable)
                 {
-                    expression.Add(BaseHeaderName.IsFixed, entity => (entity as IEntityFixable<TKey>).IsFixed);
-                    expression.Add(BaseHeaderName.FixedDate, entity => (entity as IEntityFixable<TKey>).FixedDate);
+                    expression.Add(BaseHeaderName.IsFixed, entity => (entity as IEntityFixable).IsFixed);
+                    expression.Add(BaseHeaderName.FixedDate, entity => (entity as IEntityFixable).FixedDate);
                 }
 
                 if (this.isArchivable)
                 {
-                    expression.Add(BaseHeaderName.IsArchived, entity => (entity as IEntityArchivable<TKey>).IsArchived);
-                    expression.Add(BaseHeaderName.ArchivedDate, entity => (entity as IEntityArchivable<TKey>).ArchivedDate);
+                    expression.Add(BaseHeaderName.IsArchived, entity => (entity as IEntityArchivable).IsArchived);
+                    expression.Add(BaseHeaderName.ArchivedDate, entity => (entity as IEntityArchivable).ArchivedDate);
                 }
 
                 return expression;
@@ -99,7 +113,7 @@ namespace BIA.Net.Core.Domain
                 switch (dto.DtoState)
                 {
                     case DtoState.Added:
-                        entity = default(TEmbeddedEntity);
+                        entity = default;
                         mapper.DtoToEntity(dto, ref entity);
                         entityCollection.Add(entity);
                         break;
@@ -175,40 +189,54 @@ namespace BIA.Net.Core.Domain
 
             List<MemberBinding> bindings = new List<MemberBinding>();
 
+            if (this.isVersionned)
+            {
+                // RowVersion = Convert.ToBase64String(entity.RowVersion),
+                var rowVersionProperty = Expression.Property(
+                    Expression.Convert(entityParam, typeof(IEntityVersioned)),
+                    nameof(IEntityVersioned.RowVersion));
+
+                var toBase64StringMethod = typeof(Convert).GetMethod(nameof(Convert.ToBase64String), new[] { typeof(byte[]) });
+
+                var rowVersion = Expression.Call(toBase64StringMethod, rowVersionProperty);
+
+                var bindRowVersion = Expression.Bind(typeof(TDto).GetProperty(nameof(IDtoVersioned.RowVersion)), rowVersion);
+
+                bindings.Add(bindRowVersion);
+            }
+
             if (this.isFixable)
             {
-                /// IsFixed = (entity as IEntityFixable<TKey>).IsFixed,
-                /// FixedDate = (entity as IEntityFixable<TKey>).FixedDate,
-
+                // IsFixed = (entity as IEntityFixable).IsFixed,
+                // FixedDate = (entity as IEntityFixable).FixedDate,
                 var isFixedProperty = Expression.Property(
-                    Expression.Convert(entityParam, typeof(IEntityFixable<TKey>)),
-                    nameof(IEntityFixable<TKey>.IsFixed));
+                    Expression.Convert(entityParam, typeof(IEntityFixable)),
+                    nameof(IEntityFixable.IsFixed));
 
                 var fixedDateProperty = Expression.Property(
-                    Expression.Convert(entityParam, typeof(IEntityFixable<TKey>)),
-                    nameof(IEntityFixable<TKey>.FixedDate));
+                    Expression.Convert(entityParam, typeof(IEntityFixable)),
+                    nameof(IEntityFixable.FixedDate));
 
-                var bindIsFixed = Expression.Bind(typeof(TDto).GetProperty(nameof(IFixableDto.IsFixed)), isFixedProperty);
-                var bindFixedDate = Expression.Bind(typeof(TDto).GetProperty(nameof(IFixableDto.FixedDate)), fixedDateProperty);
+                var bindIsFixed = Expression.Bind(typeof(TDto).GetProperty(nameof(IDtoFixable.IsFixed)), isFixedProperty);
+                var bindFixedDate = Expression.Bind(typeof(TDto).GetProperty(nameof(IDtoFixable.FixedDate)), fixedDateProperty);
                 bindings.Add(bindIsFixed);
                 bindings.Add(bindFixedDate);
             }
 
             if (this.isArchivable)
             {
-                /// IsArchived = (entity as IEntityArchivable<TKey>).IsArchived,
-                /// ArchivedDate = (entity as IEntityArchivable<TKey>).ArchivedDate,
-
+                // IsArchived = (entity as IEntityArchivable).IsArchived,
+                // ArchivedDate = (entity as IEntityArchivable).ArchivedDate,
                 var isArchivedProperty = Expression.Property(
-                    Expression.Convert(entityParam, typeof(IEntityArchivable<TKey>)),
-                    nameof(IEntityArchivable<TKey>.IsArchived));
+                    Expression.Convert(entityParam, typeof(IEntityArchivable)),
+                    nameof(IEntityArchivable.IsArchived));
 
                 var archivedDateProperty = Expression.Property(
-                    Expression.Convert(entityParam, typeof(IEntityArchivable<TKey>)),
-                    nameof(IEntityArchivable<TKey>.ArchivedDate));
+                    Expression.Convert(entityParam, typeof(IEntityArchivable)),
+                    nameof(IEntityArchivable.ArchivedDate));
 
-                var bindIsArchived = Expression.Bind(typeof(TDto).GetProperty(nameof(IArchivableDto.IsArchived)), isArchivedProperty);
-                var bindArchivedDate = Expression.Bind(typeof(TDto).GetProperty(nameof(IArchivableDto.ArchivedDate)), archivedDateProperty);
+                var bindIsArchived = Expression.Bind(typeof(TDto).GetProperty(nameof(IDtoArchivable.IsArchived)), isArchivedProperty);
+                var bindArchivedDate = Expression.Bind(typeof(TDto).GetProperty(nameof(IDtoArchivable.ArchivedDate)), archivedDateProperty);
                 bindings.Add(bindIsArchived);
                 bindings.Add(bindArchivedDate);
             }
@@ -245,9 +273,9 @@ namespace BIA.Net.Core.Domain
         public virtual void MapEntityKeysInDto(TEntity entity, TDto dto)
         {
             dto.Id = entity.Id;
-            if (entity is VersionedTable versionedEntity)
+            if (this.isVersionned)
             {
-                dto.RowVersion = Convert.ToBase64String(versionedEntity.RowVersion);
+                (dto as IDtoVersioned).RowVersion = Convert.ToBase64String((entity as IEntityVersioned).RowVersion);
             }
         }
 
@@ -307,15 +335,16 @@ namespace BIA.Net.Core.Domain
         /// <returns>Func.</returns>
         public virtual Func<TDto, object[]> DtoToRecord(List<string> headerNames = null)
         {
-            return x =>
+            return dto =>
             {
                 List<object> records = [];
+                Dictionary<string, Func<string>> headerActions = this.DtoToCellMapping(dto);
 
                 if (headerNames != null && headerNames.Count > 0)
                 {
                     foreach (string headerName in headerNames)
                     {
-                        records.Add(this.DtoToCell(x, headerName));
+                        records.Add(this.DtoToCell(dto, headerName, headerActions));
                     }
                 }
 
@@ -328,24 +357,33 @@ namespace BIA.Net.Core.Domain
         /// </summary>
         /// <param name="dto">The dto.</param>
         /// <param name="headerName">Name of the header.</param>
-        /// <returns>a string formated for csv.<returns>
-        public virtual string DtoToCell(TDto dto, string headerName)
+        /// <param name="headerActions">List of exprestion to translate dto in csv cell.</param>
+        /// <returns>A string formatted for CSV.</returns>
+        public virtual string DtoToCell(TDto dto, string headerName, Dictionary<string, Func<string>> headerActions)
         {
-            switch (headerName)
+            if (headerActions.TryGetValue(headerName, out var action))
             {
-                case BaseHeaderName.Id:
-                    return CSVCell(dto.Id);
-                case BaseHeaderName.IsFixed:
-                    return CSVBool((dto as IFixableDto).IsFixed);
-                case BaseHeaderName.FixedDate:
-                    return CSVDate((dto as IFixableDto).FixedDate);
-                case BaseHeaderName.IsArchived:
-                    return CSVBool((dto as IArchivableDto).IsArchived);
-                case BaseHeaderName.ArchivedDate:
-                    return CSVDate((dto as IArchivableDto).ArchivedDate);
-                default:
-                    throw new FrontUserException("Unknow header " + headerName);
+                return action();
             }
+
+            throw new FrontUserException("Unknown header " + headerName);
+        }
+
+        /// <summary>
+        /// List of exprestion to translate dto in csv cell.
+        /// </summary>
+        /// <param name="dto">The dto.</param>
+        /// <returns>The list of expression.</returns>
+        public virtual Dictionary<string, Func<string>> DtoToCellMapping(TDto dto)
+        {
+            return new Dictionary<string, Func<string>>
+            {
+                { BaseHeaderName.Id, () => CSVCell(dto.Id) },
+                { BaseHeaderName.IsFixed, () => CSVBool((dto as IDtoFixable).IsFixed) },
+                { BaseHeaderName.FixedDate, () => CSVDate((dto as IDtoFixable).FixedDate) },
+                { BaseHeaderName.IsArchived, () => CSVBool((dto as IDtoArchivable).IsArchived) },
+                { BaseHeaderName.ArchivedDate, () => CSVDate((dto as IDtoArchivable).ArchivedDate) },
+            };
         }
 
         /// <summary>

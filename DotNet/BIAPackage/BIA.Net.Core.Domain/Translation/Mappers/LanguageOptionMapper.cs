@@ -6,8 +6,8 @@ namespace BIA.Net.Core.Domain.Translation.Mappers
 {
     using System;
     using System.Linq.Expressions;
-    using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.Translation.Entities;
 
     /// <summary>

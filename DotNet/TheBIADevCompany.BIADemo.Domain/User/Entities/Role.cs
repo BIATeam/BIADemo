@@ -6,20 +6,15 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Entities
 {
     using System.Collections.Generic;
 
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity;
     using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
     using TheBIADevCompany.BIADemo.Domain.Translation.Entities;
 
     /// <summary>
     /// The role entity.
     /// </summary>
-    public class Role : VersionedTable, IEntity<int>
+    public class Role : BaseEntityVersioned<int>
     {
-        /// <summary>
-        /// Gets or sets the id.
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Gets or sets the code.
         /// </summary>

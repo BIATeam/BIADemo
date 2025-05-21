@@ -7,20 +7,15 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Entities
 {
     using System;
     using System.Collections.Generic;
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
     using TheBIADevCompany.BIADemo.Domain.Site.Entities;
 
     /// <summary>
     /// The entity to link maintenance teams and countries.
     /// </summary>
-    public class MaintenanceContract : VersionedTable, IEntityArchivable<int>
+    public class MaintenanceContract : BaseEntityVersionedFixableArchivable<int>
     {
-        /// <summary>
-        /// Gets or sets the id.
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Gets or sets the contract number.
         /// </summary>
@@ -60,17 +55,5 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Entities
         /// Gets or sets the AircraftMaintenanceCompany id.
         /// </summary>
         public int? AircraftMaintenanceCompanyId { get; set; }
-
-        /// <inheritdoc/>
-        public bool IsArchived { get; set; }
-
-        /// <inheritdoc/>
-        public DateTime? ArchivedDate { get; set; }
-
-        /// <inheritdoc/>
-        public bool IsFixed { get; set; }
-
-        /// <inheritdoc/>
-        public DateTime? FixedDate { get; set; }
     }
 }

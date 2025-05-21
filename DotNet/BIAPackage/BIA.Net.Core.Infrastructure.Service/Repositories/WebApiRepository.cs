@@ -160,7 +160,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// - IsSuccessStatusCode: True if the API call was successful or not needed,
         /// - ReasonPhrase: The reason phrase from the API response if applicable.
         /// </returns>
-
         protected virtual async Task<(List<TResult> Result, bool IsSuccessStatusCode, string ReasonPhrase)> GetByPostAsync<TResult, TKey>(
             string url,
             List<TKey> keys,

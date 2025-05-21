@@ -1,16 +1,16 @@
-﻿// <copyright file="IEntityArchivable.cs" company="BIA">
+﻿// <copyright file="IDtoArchivable.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Domain
+namespace BIA.Net.Core.Domain.Dto.Base.Interface
 {
     using System;
 
     /// <summary>
-    /// Interface for archivable entity.
+    /// The base class for DTO.
     /// </summary>
-    /// <typeparam name="TKey">Key type of the entity.</typeparam>
-    public interface IEntityArchivable<TKey> : IEntityFixable<TKey>
+    /// <typeparam name="TKey">Type of the key.</typeparam>
+    public interface IDtoArchivable : IDtoFixable
     {
         /// <summary>
         /// Gets or sets the is archived.

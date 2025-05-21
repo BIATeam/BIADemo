@@ -6,18 +6,13 @@
 namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
 {
     using System;
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity;
 
     /// <summary>
     /// The plane entity.
     /// </summary>
-    public class PlaneType : VersionedTable, IEntity<int>
+    public class PlaneType : BaseEntityVersioned<int>
     {
-        /// <summary>
-        /// Gets or sets the id.
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Gets or sets the Manufacturer's Serial Number.
         /// </summary>

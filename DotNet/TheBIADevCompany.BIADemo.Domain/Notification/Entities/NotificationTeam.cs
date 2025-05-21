@@ -4,21 +4,15 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Notification.Entities
 {
-    using System;
     using System.Collections.Generic;
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// The NotificationTeam entity.
     /// </summary>
-    public class NotificationTeam : VersionedTable, IEntity<int>
+    public class NotificationTeam : BaseEntityVersioned<int>
     {
-        /// <summary>
-        /// Gets or sets the notification team identifier.
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Gets or sets the notification identifier.
         /// </summary>

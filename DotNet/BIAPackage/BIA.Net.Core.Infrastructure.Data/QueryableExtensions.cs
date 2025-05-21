@@ -5,7 +5,7 @@
 namespace BIA.Net.Core.Infrastructure.Data
 {
     using System.Linq;
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.QueryOrder;
 
     /// <summary>

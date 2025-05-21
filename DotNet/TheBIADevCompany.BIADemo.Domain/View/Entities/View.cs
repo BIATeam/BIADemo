@@ -5,19 +5,14 @@
 namespace TheBIADevCompany.BIADemo.Domain.View.Entities
 {
     using System.Collections.Generic;
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity;
     using TheBIADevCompany.BIADemo.Domain.View.Models;
 
     /// <summary>
     /// The View entity.
     /// </summary>
-    public class View : VersionedTable, IEntity<int>
+    public class View : BaseEntityVersioned<int>
     {
-        /// <summary>
-        /// Gets or sets the identifier.
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Gets or sets the table Id.
         /// </summary>

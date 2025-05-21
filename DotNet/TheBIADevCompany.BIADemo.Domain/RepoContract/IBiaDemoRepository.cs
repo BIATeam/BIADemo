@@ -5,7 +5,7 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.RepoContract
 {
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.RepoContract;
 
     /// <summary>

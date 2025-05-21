@@ -4,8 +4,8 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Audit.Entities
 {
-    using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Audit;
+    using BIA.Net.Core.Domain.Entity.Interface;
 
     /// <summary>
     /// The airport entity.

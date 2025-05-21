@@ -7,8 +7,8 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
     using System;
     using System.Linq;
     using System.Linq.Expressions;
-    using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
 

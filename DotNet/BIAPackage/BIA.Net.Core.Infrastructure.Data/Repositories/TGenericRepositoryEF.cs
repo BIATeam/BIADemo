@@ -12,7 +12,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
@@ -356,7 +356,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <inheritdoc/>
         public void UpdateFixedAsync(TEntity item, bool isFixed)
         {
-            if (item is not IEntityFixable<TKey> fixableEntity)
+            if (item is not IEntityFixable fixableEntity)
             {
                 throw new BadBiaFrameworkUsageException($"Entity {item.GetType()} is not a fixable entity");
             }
