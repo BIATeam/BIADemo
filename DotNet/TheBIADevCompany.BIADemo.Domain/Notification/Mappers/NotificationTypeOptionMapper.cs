@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Mappers
     using System;
     using System.Linq;
     using System.Linq.Expressions;
+    using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.Service;
@@ -34,11 +35,10 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Mappers
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
         public override Expression<Func<NotificationType, OptionDto>> EntityToDto()
         {
-            return entity => new OptionDto
+            return base.EntityToDto().CombineMapping(entity => new OptionDto
             {
-                Id = entity.Id,
                 Display = entity.NotificationTypeTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? entity.Label,
-            };
+            });
         }
     }
 }
