@@ -17,6 +17,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
     using NLog;
     using NLog.Extensions.Hosting;
     using NLog.Extensions.Logging;
+    using TheBIADevCompany.BIADemo.Application.Bia.Job;
     using TheBIADevCompany.BIADemo.Application.Job;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Infrastructure.Data;

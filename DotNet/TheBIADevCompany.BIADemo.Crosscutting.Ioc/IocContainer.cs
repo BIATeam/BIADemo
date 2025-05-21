@@ -24,15 +24,15 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using TheBIADevCompany.BIADemo.Application.User;
+    using TheBIADevCompany.BIADemo.Application.Bia.User;
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
 #if BIA_FRONT_FEATURE
-    using TheBIADevCompany.BIADemo.Domain.RepoContract;
-    using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
     using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract.DocumentAnalysis;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Models;
+    using TheBIADevCompany.BIADemo.Domain.RepoContract;
+    using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
 #endif
 
     /// <summary>

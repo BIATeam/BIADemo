@@ -10,7 +10,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
-    using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base;
+    using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Base;
 
     /// <summary>
     /// The API controller used to manage users.

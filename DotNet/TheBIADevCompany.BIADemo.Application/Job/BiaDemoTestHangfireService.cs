@@ -20,8 +20,8 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
+    using TheBIADevCompany.BIADemo.Application.Bia.Notification;
     using TheBIADevCompany.BIADemo.Application.Fleet;
-    using TheBIADevCompany.BIADemo.Application.Notification;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
