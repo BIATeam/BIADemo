@@ -20,10 +20,10 @@ namespace TheBIADevCompany.BIADemo.Application.Site
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Specifications;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
     using TheBIADevCompany.BIADemo.Domain.Site.Entities;
     using TheBIADevCompany.BIADemo.Domain.Site.Mappers;
-    using TheBIADevCompany.BIADemo.Domain.User.Specifications;
 
     /// <summary>
     /// The application service used for site.

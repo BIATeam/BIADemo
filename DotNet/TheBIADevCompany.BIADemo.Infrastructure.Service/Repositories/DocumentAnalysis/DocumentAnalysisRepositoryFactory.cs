@@ -9,7 +9,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories.DocumentA
     using System.Collections.Generic;
     using Microsoft.Extensions.DependencyInjection;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum.DocumentAnalysis;
-    using TheBIADevCompany.BIADemo.Domain.RepoContract.DocumentAnalysis;
+    using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract.DocumentAnalysis;
 
     /// <summary>
     /// The <see cref="IDocumentAnalysisRepository"/> factory.

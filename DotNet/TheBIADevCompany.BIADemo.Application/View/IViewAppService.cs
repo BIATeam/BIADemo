@@ -6,7 +6,7 @@ namespace TheBIADevCompany.BIADemo.Application.View
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using TheBIADevCompany.BIADemo.Domain.Dto.View;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Bia.View;
 
     /// <summary>
     /// The interface defining the view application service.

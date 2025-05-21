@@ -13,7 +13,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Application.View;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    using TheBIADevCompany.BIADemo.Domain.Dto.View;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Bia.View;
     using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base;
 
     /// <summary>

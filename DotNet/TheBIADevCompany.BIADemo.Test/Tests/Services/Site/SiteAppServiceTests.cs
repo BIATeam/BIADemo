@@ -13,9 +13,9 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
     using TheBIADevCompany.BIADemo.Application.Site;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Specifications;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
     using TheBIADevCompany.BIADemo.Domain.Site.Entities;
-    using TheBIADevCompany.BIADemo.Domain.User.Specifications;
     using TheBIADevCompany.BIADemo.Test.Data;
 
     /// <summary>

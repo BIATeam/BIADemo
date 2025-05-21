@@ -16,6 +16,8 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.Service;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Bia.User;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
 

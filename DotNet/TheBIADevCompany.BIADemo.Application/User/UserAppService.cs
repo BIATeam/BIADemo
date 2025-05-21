@@ -24,14 +24,16 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Models;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Services;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Specifications;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Domain.RepoContract;
-    using TheBIADevCompany.BIADemo.Domain.User;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Mappers;
-    using TheBIADevCompany.BIADemo.Domain.User.Models;
-    using TheBIADevCompany.BIADemo.Domain.User.Services;
-    using TheBIADevCompany.BIADemo.Domain.User.Specifications;
     using static TheBIADevCompany.BIADemo.Crosscutting.Common.Rights;
 
     /// <summary>

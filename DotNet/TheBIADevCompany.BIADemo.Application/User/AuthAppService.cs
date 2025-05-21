@@ -21,10 +21,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+    using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Models;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Services;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User;
-    using TheBIADevCompany.BIADemo.Domain.User.Models;
-    using TheBIADevCompany.BIADemo.Domain.User.Services;
     using static TheBIADevCompany.BIADemo.Crosscutting.Common.Rights;
 
     /// <summary>
@@ -76,7 +77,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <summary>
         /// The identity provider repository.
         /// </summary>
-        private readonly Domain.RepoContract.IIdentityProviderRepository identityProviderRepository;
+        private readonly IIdentityProviderRepository identityProviderRepository;
 
         /// <summary>
         /// The user application service.
@@ -114,7 +115,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             IUserAppService userAppService,
             ITeamAppService teamAppService,
             IRoleAppService roleAppService,
-            Domain.RepoContract.IIdentityProviderRepository identityProviderRepository,
+            IIdentityProviderRepository identityProviderRepository,
 #endif
             IJwtFactory jwtFactory,
             IPrincipal principal,

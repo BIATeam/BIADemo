@@ -8,8 +8,9 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Entities
     using System.Collections.Generic;
     using BIA.Net.Core.Domain.Entity;
     using global::Audit.EntityFramework;
-    using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
-    using TheBIADevCompany.BIADemo.Domain.View.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Bia.View.Entities;
 
     /// <summary>
     /// The user entity.

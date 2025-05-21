@@ -18,11 +18,11 @@ namespace TheBIADevCompany.BIADemo.Application.View
     using BIA.Net.Core.Domain.Specification;
     using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    using TheBIADevCompany.BIADemo.Domain.Dto.View;
-    using TheBIADevCompany.BIADemo.Domain.RepoContract;
-    using TheBIADevCompany.BIADemo.Domain.View.Entities;
-    using TheBIADevCompany.BIADemo.Domain.View.Mappers;
-    using TheBIADevCompany.BIADemo.Domain.View.Models;
+    using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract;
+    using TheBIADevCompany.BIADemo.Domain.Bia.View.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Bia.View.Mappers;
+    using TheBIADevCompany.BIADemo.Domain.Bia.View.Models;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Bia.View;
 
     /// <summary>
     /// The application service used to manage views.

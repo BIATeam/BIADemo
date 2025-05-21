@@ -13,7 +13,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
 #if BIA_FRONT_FEATURE
-    using TheBIADevCompany.BIADemo.Domain.Audit.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Bia.Audit.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Bia.Translation.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Bia.View.Entities;
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
@@ -23,12 +27,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
 
     // End BIADemo
-    using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
-
     using TheBIADevCompany.BIADemo.Domain.Site.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Translation.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
-    using TheBIADevCompany.BIADemo.Domain.View.Entities;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders;
 #endif
 

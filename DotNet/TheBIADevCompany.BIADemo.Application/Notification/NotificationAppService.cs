@@ -18,9 +18,9 @@ namespace TheBIADevCompany.BIADemo.Application.Notification
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Notification.Mappers;
-    using TheBIADevCompany.BIADemo.Domain.RepoContract;
+    using TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Bia.Notification.Mappers;
+    using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract;
 
     /// <summary>
     /// The application service used to manage views.

@@ -13,7 +13,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
 
     /// <summary>
     /// The interface defining the application service for team.

@@ -9,6 +9,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.User
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Bia.User;
 
     /// <summary>
     /// The DTO used for user.

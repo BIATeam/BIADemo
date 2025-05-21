@@ -18,8 +18,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using TheBIADevCompany.BIADemo.Domain.RepoContract;
-    using TheBIADevCompany.BIADemo.Domain.User.Models;
+    using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Models;
 
     /// <summary>
     /// WorkInstruction Repository.

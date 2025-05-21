@@ -23,8 +23,8 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     using TheBIADevCompany.BIADemo.Application.Fleet;
     using TheBIADevCompany.BIADemo.Application.Notification;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
     using static TheBIADevCompany.BIADemo.Crosscutting.Common.Constants;
 
     /// <summary>

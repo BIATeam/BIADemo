@@ -18,9 +18,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Specification;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
-    using TheBIADevCompany.BIADemo.Domain.User.Mappers;
-    using TheBIADevCompany.BIADemo.Domain.User.Specifications;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Specifications;
 
     /// <summary>
     /// The application service used for member.

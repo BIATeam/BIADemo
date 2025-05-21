@@ -11,10 +11,10 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Linq.Expressions;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.RepoContract;
-    using TheBIADevCompany.BIADemo.Domain.RepoContract;
+    using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Models;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Services;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
-    using TheBIADevCompany.BIADemo.Domain.User.Models;
-    using TheBIADevCompany.BIADemo.Domain.User.Services;
 
     /// <summary>
     /// The service used for synchronization between AD and DB.

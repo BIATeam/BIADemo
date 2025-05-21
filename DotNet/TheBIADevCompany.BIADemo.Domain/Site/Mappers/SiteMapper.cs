@@ -14,9 +14,9 @@ namespace TheBIADevCompany.BIADemo.Domain.Site.Mappers
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Option;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
     using TheBIADevCompany.BIADemo.Domain.Site.Entities;
-    using TheBIADevCompany.BIADemo.Domain.User.Mappers;
 
     /// <summary>
     /// The mapper used for site.
