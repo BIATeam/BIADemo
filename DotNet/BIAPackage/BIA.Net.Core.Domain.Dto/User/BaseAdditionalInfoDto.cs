@@ -4,8 +4,8 @@
 
 namespace BIA.Net.Core.Domain.Dto.User
 {
-    using BIA.Net.Core.Domain.Dto.Base;
     using System.Collections.Generic;
+    using BIA.Net.Core.Domain.Dto.Base;
 
     /// <summary>
     /// Adtitionnal Information send to the front. Cannot be customized.
