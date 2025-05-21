@@ -1,5 +1,5 @@
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
-import { Component, Injector, ViewChild } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
@@ -14,6 +14,7 @@ import { Permission } from 'src/app/shared/permission';
 import { PlaneTableComponent } from '../../components/plane-table/plane-table.component';
 import { Plane } from '../../model/plane';
 import { planeCRUDConfiguration } from '../../plane.constants';
+import { PlaneOptionsService } from '../../services/plane-options.service';
 import { PlaneService } from '../../services/plane.service';
 
 @Component({
@@ -35,22 +36,38 @@ import { PlaneService } from '../../services/plane.service';
   ],
   providers: [{ provide: CrudItemService, useExisting: PlaneService }],
 })
-export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
+export class PlanesIndexComponent
+  extends CrudItemsIndexComponent<Plane>
+  implements OnInit
+{
   @ViewChild(PlaneTableComponent, { static: false })
   crudItemTableComponent: PlaneTableComponent;
 
+  // Begin BIADemo
   // BIAToolKit - Begin Partial PlaneIndexTsCanViewChildDeclaration Engine
   canViewEngines = false;
   // BIAToolKit - End Partial PlaneIndexTsCanViewChildDeclaration Engine
+  // End BIADemo
   // BIAToolKit - Begin PlaneIndexTsCanViewChildDeclaration
   // BIAToolKit - End PlaneIndexTsCanViewChildDeclaration
+
   constructor(
     protected injector: Injector,
-    public planeService: PlaneService,
+    public crudItemService: PlaneService,
+    protected planeOptionsService: PlaneOptionsService,
     protected authService: AuthService
   ) {
-    super(injector, planeService);
+    super(injector, crudItemService);
     this.crudConfiguration = planeCRUDConfiguration;
+  }
+
+  ngOnInit(): void {
+    super.ngOnInit();
+    this.sub.add(
+      this.biaTranslationService.currentCulture$.subscribe(() => {
+        this.planeOptionsService.loadAllOptions();
+      })
+    );
   }
 
   protected setPermissions() {
@@ -58,20 +75,20 @@ export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
     this.canDelete = this.authService.hasPermission(Permission.Plane_Delete);
     this.canAdd = this.authService.hasPermission(Permission.Plane_Create);
     this.canSave = this.authService.hasPermission(Permission.Plane_Save);
-    // Begin BIADemo
     this.canFix = this.authService.hasPermission(Permission.Plane_Fix);
-    // End BIADemo
     this.canSelect = this.canDelete;
+    // Begin BIADemo
     // BIAToolKit - Begin Partial PlaneIndexTsCanViewChildSet Engine
     this.canViewEngines = this.authService.hasPermission(
       Permission.Engine_List_Access
     );
     this.canSelect = this.canSelect || this.canViewEngines;
     // BIAToolKit - End Partial PlaneIndexTsCanViewChildSet Engine
+    // End BIADemo
     // BIAToolKit - Begin PlaneIndexTsCanViewChildSet
     // BIAToolKit - End PlaneIndexTsCanViewChildSet
   }
-
+  // Begin BIADemo
   // BIAToolKit - Begin Partial PlaneIndexTsOnViewChild Engine
   onViewEngines(crudItemId: any) {
     if (crudItemId && crudItemId > 0) {
@@ -81,6 +98,8 @@ export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
     }
   }
   // BIAToolKit - End Partial PlaneIndexTsOnViewChild Engine
+  // End BIADemo
+
   // BIAToolKit - Begin PlaneIndexTsOnViewChild
   // BIAToolKit - End PlaneIndexTsOnViewChild
 }
