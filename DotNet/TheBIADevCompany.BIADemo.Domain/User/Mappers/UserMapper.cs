@@ -68,7 +68,6 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         /// </summary>
         private UserContext UserContext { get; set; } = userContext;
 
-
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
         public override void DtoToEntity(UserDto dto, ref User entity, string mapperMode, IUnitOfWork context)
         {

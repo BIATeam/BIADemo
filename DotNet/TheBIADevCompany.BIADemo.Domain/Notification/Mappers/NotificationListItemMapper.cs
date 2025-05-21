@@ -26,7 +26,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Mappers
     /// <param name="userContext">the user context.</param>
     public class NotificationListItemMapper(UserContext userContext) : BaseMapper<NotificationListItemDto, Notification, int>
     {
-
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
         public override ExpressionCollection<Notification> ExpressionCollection
         {

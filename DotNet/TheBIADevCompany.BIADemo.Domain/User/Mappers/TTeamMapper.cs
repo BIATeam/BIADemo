@@ -48,9 +48,9 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
             {
                 return new ExpressionCollection<TTeam>(base.ExpressionCollection)
                 {
-                    { HeaderName.Title, team => team.Title },
+                    { TeamHeaderName.Title, team => team.Title },
                     {
-                        HeaderName.Admins, team =>
+                        TeamHeaderName.Admins, team =>
                         team.Members.Where(w => w.MemberRoles.Any(a => this.AdminRoleIds.Contains(a.RoleId))).Select(s => s.User.LastName + " " + s.User.FirstName + " (" + s.User.Login + ")").OrderBy(x => x)
                     },
                 };
@@ -123,15 +123,15 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         {
             return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
             {
-                { HeaderName.Title, () => CSVString(dto.Title) },
-                { HeaderName.Admins, () => CSVList(dto.Admins?.ToList()) },
+                { TeamHeaderName.Title, () => CSVString(dto.Title) },
+                { TeamHeaderName.Admins, () => CSVList(dto.Admins?.ToList()) },
             };
         }
 
         /// <summary>
         /// Header names.
         /// </summary>
-        public struct HeaderName
+        public struct TeamHeaderName
         {
             /// <summary>
             /// Header name for site id.
