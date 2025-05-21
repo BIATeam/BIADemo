@@ -2,7 +2,7 @@
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Domain
+namespace BIA.Net.Core.Domain.Mapper
 {
     using System;
     using System.Collections.Generic;

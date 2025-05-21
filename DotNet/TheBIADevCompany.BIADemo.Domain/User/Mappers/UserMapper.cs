@@ -9,9 +9,11 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
     using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
@@ -78,10 +80,8 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         /// <returns>The user DTO.</returns>
         public override Expression<Func<User, UserDto>> EntityToDto(string mapperMode)
         {
-            return entity => new UserDto
+            return this.EntityToDto().CombineMapping(entity => new UserDto
             {
-                Id = entity.Id,
-                RowVersion = Convert.ToBase64String(entity.RowVersion),
                 LastName = entity.LastName,
                 FirstName = entity.FirstName,
                 Login = entity.Login,
@@ -99,7 +99,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
                     TeamTypeId = m.Team.TeamTypeId,
                 })
                 .ToList(),
-            };
+            });
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>

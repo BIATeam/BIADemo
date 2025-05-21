@@ -6,20 +6,15 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Entities
 {
     using System;
     using System.Collections.Generic;
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity;
     using TheBIADevCompany.BIADemo.Domain.Translation.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// The Notification entity.
     /// </summary>
-    public class Notification : VersionedTable, IEntity<int>
+    public class Notification : BaseEntityVersioned<int>
     {
-        /// <summary>
-        /// Gets or sets the identifier.
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Gets or sets the title.
         /// </summary>

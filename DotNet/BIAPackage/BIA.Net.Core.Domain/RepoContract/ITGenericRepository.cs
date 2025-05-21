@@ -9,6 +9,7 @@ namespace BIA.Net.Core.Domain.RepoContract
     using System.Linq.Expressions;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using BIA.Net.Core.Domain.Specification;

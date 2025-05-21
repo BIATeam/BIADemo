@@ -5,7 +5,7 @@
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories
 {
     using System;
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Infrastructure.Data;
     using BIA.Net.Core.Infrastructure.Data.Repositories;
     using Microsoft.EntityFrameworkCore;

@@ -13,7 +13,7 @@ namespace BIA.Net.Core.IocContainer
     using BIA.Net.Core.Application.Translation;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.AuthenticationSection;
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Data.Repositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories;

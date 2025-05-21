@@ -13,7 +13,7 @@ namespace BIA.Net.Core.Application.Archive
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.RepoContract;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +27,7 @@ namespace BIA.Net.Core.Application.Archive
     /// <typeparam name="TEntity">The entity type.</typeparam>
     /// <typeparam name="TKey">The entity key type.</typeparam>
     public abstract class ArchiveServiceBase<TEntity, TKey> : IArchiveService
-        where TEntity : class, IEntityArchivable<TKey>
+        where TEntity : class, IEntityArchivable, IEntity<TKey>
     {
         private readonly JsonSerializerSettings jsonSerializerSettings;
 

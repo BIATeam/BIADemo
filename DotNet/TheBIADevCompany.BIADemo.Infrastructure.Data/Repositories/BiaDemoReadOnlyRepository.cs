@@ -6,7 +6,7 @@
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories
 {
     using System;
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
 

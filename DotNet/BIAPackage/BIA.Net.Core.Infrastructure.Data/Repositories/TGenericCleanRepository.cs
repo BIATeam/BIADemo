@@ -8,7 +8,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.RepoContract;
     using Microsoft.EntityFrameworkCore;
 

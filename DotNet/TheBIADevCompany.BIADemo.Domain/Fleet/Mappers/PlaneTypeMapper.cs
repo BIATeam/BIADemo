@@ -7,7 +7,9 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
 {
     using System;
     using System.Linq.Expressions;
+    using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Mapper;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
@@ -21,9 +23,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
         {
             get
             {
-                return new ExpressionCollection<PlaneType>
+                return new ExpressionCollection<PlaneType>(base.ExpressionCollection)
                 {
-                    { HeaderName.Id, planeType => planeType.Id },
                     { HeaderName.Title, planeType => planeType.Title },
                     { HeaderName.CertificationDate, planeType => planeType.CertificationDate },
                 };
@@ -42,45 +43,25 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
         public override Expression<Func<PlaneType, PlaneTypeDto>> EntityToDto()
         {
-            return entity => new PlaneTypeDto
+            return base.EntityToDto().CombineMapping(entity => new PlaneTypeDto
             {
-                Id = entity.Id,
                 Title = entity.Title,
                 CertificationDate = entity.CertificationDate,
-                RowVersion = Convert.ToBase64String(entity.RowVersion),
-            };
+            });
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
-        public override Func<PlaneTypeDto, object[]> DtoToRecord(List<string> headerNames = null)
+        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCell"/>
+        public override string DtoToCell(PlaneTypeDto dto, string headerName)
         {
-            return x =>
+            switch (headerName)
             {
-                List<object> records = [];
-
-                if (headerNames != null && headerNames.Count > 0)
-                {
-                    foreach (string headerName in headerNames)
-                    {
-                        if (string.Equals(headerName, HeaderName.Id, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.Id));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.Title, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.Title));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.CertificationDate, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVDateTime(x.CertificationDate));
-                        }
-                    }
-                }
-
-                return [.. records];
-            };
+                case HeaderName.Title:
+                    return CSVString(dto.Title);
+                case HeaderName.CertificationDate:
+                    return CSVDateTime(dto.CertificationDate);
+                default:
+                    return base.DtoToCell(dto, headerName);
+            }
         }
 
         /// <summary>
@@ -88,11 +69,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
         /// </summary>
         public struct HeaderName
         {
-            /// <summary>
-            /// Header name for id.
-            /// </summary>
-            public const string Id = "id";
-
             /// <summary>
             /// Header name for title.
             /// </summary>

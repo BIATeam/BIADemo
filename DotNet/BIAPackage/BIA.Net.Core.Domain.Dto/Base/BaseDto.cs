@@ -8,7 +8,7 @@ namespace BIA.Net.Core.Domain.Dto.Base
     /// The base class for DTO.
     /// </summary>
     /// <typeparam name="TKey">Type of the key.</typeparam>
-    public class BaseDto<TKey>
+    public abstract class BaseDto<TKey>
     {
         /// <summary>
         /// Gets or sets the identifier.
@@ -19,10 +19,5 @@ namespace BIA.Net.Core.Domain.Dto.Base
         /// Gets or sets the state of the DTO regarding to the DB context.
         /// </summary>
         public DtoState DtoState { get; set; }
-
-        /// <summary>
-        /// Gets or sets the row version.
-        /// </summary>
-        public string RowVersion { get; set; }
     }
 }

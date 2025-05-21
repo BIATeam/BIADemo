@@ -11,7 +11,7 @@ namespace BIA.Net.Core.Domain.Dto.User
     /// <summary>
     /// The DTO used to manage site.
     /// </summary>
-    public class TeamDto : BaseDto<int>
+    public class TeamDto : BaseDtoVersioned<int>
     {
         /// <summary>
         /// Gets or sets the title.

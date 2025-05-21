@@ -7,6 +7,7 @@ namespace BIA.Net.Core.Domain.RepoContract
     using System;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.Entity.Interface;
 
     /// <summary>
     /// Interface for generic clean repositories of an entity.

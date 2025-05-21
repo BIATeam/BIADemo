@@ -13,6 +13,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Mapper;
     using TheBIADevCompany.BIADemo.Domain.Dto.Maintenance;
     using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
 

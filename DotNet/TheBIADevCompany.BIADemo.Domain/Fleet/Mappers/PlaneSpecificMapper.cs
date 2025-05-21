@@ -9,8 +9,10 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+    using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Mapper;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
@@ -80,10 +82,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
         public override Expression<Func<Plane, PlaneSpecificDto>> EntityToDto()
         {
-            return entity => new PlaneSpecificDto
+            return base.EntityToDto().CombineMapping(entity => new PlaneSpecificDto
             {
-                Id = entity.Id,
-                RowVersion = Convert.ToBase64String(entity.RowVersion),
                 Msn = entity.Msn,
                 Manufacturer = entity.Manufacturer,
                 IsActive = entity.IsActive,
@@ -135,7 +135,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
                 }).OrderBy(x => x.Display).ToList(),
 
                 Engines = entity.Engines.AsQueryable().Select(this.engineMapper.EntityToDto()).ToList(),
-            };
+            });
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>

@@ -7,12 +7,13 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Fleet
 {
     using System;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Dto.CustomAttribute;
 
     /// <summary>
     /// The DTO used to represent a plane type.
     /// </summary>
-    public class PlaneTypeDto : BaseDto<int>
+    public class PlaneTypeDto : BaseDtoVersioned<int>
     {
         /// <summary>
         /// Gets or sets the title.

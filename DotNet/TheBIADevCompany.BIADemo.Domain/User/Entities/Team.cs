@@ -5,21 +5,15 @@
 namespace TheBIADevCompany.BIADemo.Domain.User.Entities
 {
     using System.Collections.Generic;
-
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity;
     using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
     using TheBIADevCompany.BIADemo.Domain.View.Entities;
 
     /// <summary>
     /// The team.
     /// </summary>
-    public class Team : VersionedTable, IEntity<int>
+    public class Team : BaseEntityVersioned<int>
     {
-        /// <summary>
-        /// Gets or sets the id.
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Gets or sets the title.
         /// </summary>

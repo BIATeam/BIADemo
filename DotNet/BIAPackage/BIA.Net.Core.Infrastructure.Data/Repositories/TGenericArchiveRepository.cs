@@ -9,7 +9,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.RepoContract;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata;
@@ -20,7 +20,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
     /// <typeparam name="TEntity">The entity type.</typeparam>
     /// <typeparam name="TKey">The entity key type.</typeparam>
     public class TGenericArchiveRepository<TEntity, TKey> : ITGenericArchiveRepository<TEntity, TKey>
-        where TEntity : class, IEntityArchivable<TKey>
+        where TEntity : class, IEntityArchivable, IEntity<TKey>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TGenericArchiveRepository{TEntity, TKey}"/> class.

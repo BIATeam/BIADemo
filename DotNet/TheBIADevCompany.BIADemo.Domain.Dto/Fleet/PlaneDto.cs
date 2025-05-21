@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Fleet
     using System;
     using System.Collections.Generic;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Dto.CustomAttribute;
     using BIA.Net.Core.Domain.Dto.Option;
 
@@ -15,7 +16,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Fleet
     /// The DTO used to represent a plane.
     /// </summary>
     [BiaDtoClass(AncestorTeam = "Site")]
-    public class PlaneDto : BaseDto<int>, IArchivableDto
+    public class PlaneDto : BaseDtoVersionedFixableArchivable<int>
     {
         /// <summary>
         /// Gets or sets the site id.
@@ -154,25 +155,5 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Fleet
         /// </summary>
         [BiaDtoField(Required = true, ItemType = "Airport")]
         public ICollection<OptionDto> ConnectingAirports { get; set; }
-
-        /// <summary>
-        /// Gets or sets the IsFixed.
-        /// </summary>
-        public bool IsFixed { get; set; }
-
-        /// <summary>
-        /// Gets or sets the list of connecting airports.
-        /// </summary>
-        public DateTime? FixedDate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the is archived.
-        /// </summary>
-        public bool IsArchived { get; set; }
-
-        /// <summary>
-        /// Gets or sets the archived date.
-        /// </summary>
-        public DateTime? ArchivedDate { get; set; }
     }
 }

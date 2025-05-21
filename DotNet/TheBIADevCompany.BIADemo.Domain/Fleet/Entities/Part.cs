@@ -5,18 +5,13 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
 {
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity;
 
     /// <summary>
     /// The Part Entity.
     /// </summary>
-    public class Part : VersionedTable, IEntity<int>
+    public class Part : BaseEntityVersioned<int>
     {
-        /// <summary>
-        /// Gets or sets the id.
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Gets or sets the serial number.
         /// </summary>

@@ -14,6 +14,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Domain.Mapper;
     using Microsoft.VisualBasic;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.User;

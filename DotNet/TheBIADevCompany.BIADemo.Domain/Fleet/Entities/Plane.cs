@@ -8,19 +8,14 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity;
     using TheBIADevCompany.BIADemo.Domain.Site.Entities;
 
     /// <summary>
     /// The plane entity.
     /// </summary>
-    public class Plane : VersionedTable, IEntityArchivable<int>
+    public class Plane : BaseEntityVersionedFixableArchivable<int>
     {
-        /// <summary>
-        /// Gets or sets the id.
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Gets or sets the Manufacturer's Serial Number.
         /// </summary>
@@ -169,17 +164,5 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
         /// Gets or sets the list of engines for plane.
         /// </summary>
         public ICollection<Engine> Engines { get; set; }
-
-        /// <inheritdoc/>
-        public bool IsArchived { get; set; }
-
-        /// <inheritdoc/>
-        public DateTime? ArchivedDate { get; set; }
-
-        /// <inheritdoc/>
-        public bool IsFixed { get; set; }
-
-        /// <inheritdoc/>
-        public DateTime? FixedDate { get; set; }
     }
 }

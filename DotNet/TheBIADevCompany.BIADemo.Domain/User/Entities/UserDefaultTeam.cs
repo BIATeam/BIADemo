@@ -4,18 +4,13 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.User.Entities
 {
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity;
 
     /// <summary>
     /// The user team default entity.
     /// </summary>
-    public class UserDefaultTeam : VersionedTable, IEntity<int>
+    public class UserDefaultTeam : BaseEntityVersioned<int>
     {
-        /// <summary>
-        /// Gets or sets the ID.
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Gets or sets the user.
         /// </summary>
