@@ -2,11 +2,15 @@ import { Validators } from '@angular/forms';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import {
   BiaFieldConfig,
+  // Begin BIADemo
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
+  // End BIADemo
   BiaFieldsConfig,
+  // Begin BIADemo
   NumberMode,
   PrimeNGFiltering,
+  // End BIADemo
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import {
@@ -20,8 +24,9 @@ import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 // TODO after creation of CRUD Plane : adapt the model
 export class Plane extends BaseDto {
+  siteId: number;
   msn: string;
-  manufacturer: string;
+  manufacturer: string | null;
   isActive: boolean;
   isMaintenance: boolean | null;
   firstFlightDate: Date;
@@ -29,7 +34,7 @@ export class Plane extends BaseDto {
   deliveryDate: Date | null;
   nextMaintenanceDate: Date;
   syncTime: string;
-  syncFlightDataTime: string;
+  syncFlightDataTime: string | null;
   capacity: number;
   motorsCount: number | null;
   totalFlightHours: number;
@@ -39,41 +44,43 @@ export class Plane extends BaseDto {
   originalPrice: number;
   estimatedPrice: number | null;
   planeType: OptionDto | null;
-  similarTypes: OptionDto[];
-  siteId: number;
-  connectingAirports: OptionDto[];
+  similarTypes: OptionDto[] | null;
   currentAirport: OptionDto;
+  connectingAirports: OptionDto[];
 }
 
 // TODO after creation of CRUD Plane : adapt the field configuration
 export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
   columns: [
     Object.assign(new BiaFieldConfig('msn', 'plane.msn'), {
+      type: PropType.String,
       isRequired: true,
-      validators: [Validators.required, Validators.maxLength(64)],
-    }),
-    Object.assign(new BiaFieldConfig('manufacturer', 'plane.manufacturer'), {}),
-    Object.assign(new BiaFieldConfig('isActive', 'plane.isActive'), {
-      isRequired: true,
-      isSearchable: true,
-      // Begin BIADemo
-      isSortable: false,
-      // End BIADemo
-      type: PropType.Boolean,
       validators: [Validators.required],
     }),
-    Object.assign(new BiaFieldConfig('isMaintenance', 'plane.isMaintenance'), {
-      isSearchable: true,
+    Object.assign(new BiaFieldConfig('manufacturer', 'plane.manufacturer'), {
+      type: PropType.String,
+    }),
+    Object.assign(new BiaFieldConfig('isActive', 'plane.isActive'), {
+      type: PropType.Boolean,
+      isRequired: true,
+      validators: [Validators.required],
       // Begin BIADemo
+      isSearchable: true,
       isSortable: false,
       // End BIADemo
+    }),
+    Object.assign(new BiaFieldConfig('isMaintenance', 'plane.isMaintenance'), {
       type: PropType.Boolean,
+      // Begin BIADemo
+      isSearchable: true,
+      isSortable: false,
+      // End BIADemo
     }),
     Object.assign(
       new BiaFieldConfig('firstFlightDate', 'plane.firstFlightDate'),
       {
-        isRequired: true,
         type: PropType.DateTime,
+        isRequired: true,
         validators: [Validators.required],
       }
     ),
@@ -95,68 +102,79 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
     Object.assign(
       new BiaFieldConfig('nextMaintenanceDate', 'plane.nextMaintenanceDate'),
       {
-        isRequired: true,
         type: PropType.Date,
+        isRequired: true,
         validators: [Validators.required],
       }
     ),
     Object.assign(new BiaFieldConfig('syncTime', 'plane.syncTime'), {
       type: PropType.TimeSecOnly,
+      isRequired: true,
+      validators: [Validators.required],
     }),
     Object.assign(
       new BiaFieldConfig('syncFlightDataTime', 'plane.syncFlightDataTime'),
       {
-        isRequired: true,
         type: PropType.TimeSecOnly,
-        validators: [Validators.required],
       }
     ),
     Object.assign(new BiaFieldConfig('capacity', 'plane.capacity'), {
       type: PropType.Number,
-      filterMode: PrimeNGFiltering.Equals,
       isRequired: true,
-      validators: [Validators.required, Validators.min(1)],
+      validators: [Validators.required],
+      // Begin BIADemo
+      filterMode: PrimeNGFiltering.Equals,
+      // End BIADemo
     }),
     Object.assign(new BiaFieldConfig('motorsCount', 'plane.motorsCount'), {
       type: PropType.Number,
+      // Begin BIADemo
       filterMode: PrimeNGFiltering.Equals,
+      // End BIADemo
     }),
     Object.assign(
       new BiaFieldConfig('totalFlightHours', 'plane.totalFlightHours'),
       {
-        isRequired: true,
         type: PropType.Number,
+        isRequired: true,
+        validators: [Validators.required],
+        // Begin BIADemo
         filterMode: PrimeNGFiltering.Equals,
         displayFormat: Object.assign(new BiaFieldNumberFormat(), {
           mode: NumberMode.Decimal,
           minFractionDigits: 6,
           maxFractionDigits: 6,
         }),
-        validators: [Validators.required, Validators.min(0)],
+        // End BIADemo
       }
     ),
     Object.assign(new BiaFieldConfig('probability', 'plane.probability'), {
       type: PropType.Number,
+      // Begin BIADemo
       filterMode: PrimeNGFiltering.Equals,
       displayFormat: Object.assign(new BiaFieldNumberFormat(), {
         mode: NumberMode.Decimal,
         minFractionDigits: 6,
         maxFractionDigits: 6,
       }),
+      // End BIADemo
     }),
     Object.assign(new BiaFieldConfig('fuelCapacity', 'plane.fuelCapacity'), {
-      isRequired: true,
       type: PropType.Number,
+      isRequired: true,
+      validators: [Validators.required],
+      // Begin BIADemo
       filterMode: PrimeNGFiltering.Equals,
       displayFormat: Object.assign(new BiaFieldNumberFormat(), {
         mode: NumberMode.Decimal,
         minFractionDigits: 2,
         maxFractionDigits: 2,
       }),
-      validators: [Validators.required, Validators.min(0)],
+      // End BIADemo
     }),
     Object.assign(new BiaFieldConfig('fuelLevel', 'plane.fuelLevel'), {
       type: PropType.Number,
+      // Begin BIADemo
       filterMode: PrimeNGFiltering.Equals,
       displayFormat: Object.assign(new BiaFieldNumberFormat(), {
         mode: NumberMode.Decimal,
@@ -164,10 +182,13 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
         maxFractionDigits: 2,
       }),
       validators: [Validators.min(0), Validators.max(100)],
+      // End BIADemo
     }),
     Object.assign(new BiaFieldConfig('originalPrice', 'plane.originalPrice'), {
-      isRequired: true,
       type: PropType.Number,
+      isRequired: true,
+      validators: [Validators.required],
+      // Begin BIADemo
       filterMode: PrimeNGFiltering.Equals,
       displayFormat: Object.assign(new BiaFieldNumberFormat(), {
         mode: NumberMode.Currency,
@@ -175,12 +196,13 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
         maxFractionDigits: 2,
         currency: 'EUR',
       }),
-      validators: [Validators.required, Validators.min(0)],
+      // End BIADemo
     }),
     Object.assign(
       new BiaFieldConfig('estimatedPrice', 'plane.estimatedPrice'),
       {
         type: PropType.Number,
+        // Begin BIADemo
         filterMode: PrimeNGFiltering.Equals,
         displayFormat: Object.assign(new BiaFieldNumberFormat(), {
           mode: NumberMode.Currency,
@@ -189,6 +211,7 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
           currency: 'EUR',
         }),
         validators: [Validators.min(0)],
+        // End BIADemo
       }
     ),
     Object.assign(new BiaFieldConfig('planeType', 'plane.planeType'), {
@@ -200,16 +223,16 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
     Object.assign(
       new BiaFieldConfig('currentAirport', 'plane.currentAirport'),
       {
-        isRequired: true,
         type: PropType.OneToMany,
+        isRequired: true,
         validators: [Validators.required],
       }
     ),
     Object.assign(
       new BiaFieldConfig('connectingAirports', 'plane.connectingAirports'),
       {
-        isRequired: true,
         type: PropType.ManyToMany,
+        isRequired: true,
         validators: [Validators.required],
       }
     ),

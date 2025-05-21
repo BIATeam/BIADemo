@@ -140,7 +140,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Fleet
         /// <summary>
         /// Gets or sets the list of installed part'ss serial numbers.
         /// </summary>
-        [BiaDtoField(ItemType = "Part")]
+        [BiaDtoField(ItemType = "Part", Required = true)]
         public ICollection<OptionDto> InstalledParts { get; set; }
 
         /// <summary>
