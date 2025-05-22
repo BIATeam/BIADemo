@@ -2,15 +2,11 @@ import { Validators } from '@angular/forms';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import {
   BiaFieldConfig,
-  // Begin BIADemo
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
-  // End BIADemo
   BiaFieldsConfig,
-  // Begin BIADemo
   NumberMode,
   PrimeNGFiltering,
-  // End BIADemo
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import {
@@ -247,7 +243,7 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
 // TODO after creation of CRUD Plane : adapt the form layout configuration
 export const planeFormLayoutConfiguration: BiaFormLayoutConfig<Plane> =
   new BiaFormLayoutConfig([
-    //Begin BIADemo
+    // Begin BIADemo
     new BiaFormLayoutConfigRow([
       new BiaFormLayoutConfigGroup('plane.groupIdentification', [
         new BiaFormLayoutConfigRow([
@@ -284,5 +280,5 @@ export const planeFormLayoutConfiguration: BiaFormLayoutConfig<Plane> =
       new BiaFormLayoutConfigField('probability'),
       new BiaFormLayoutConfigField('capacity'),
     ]),
-    //End BIADemo
+    // End BIADemo
   ]);
