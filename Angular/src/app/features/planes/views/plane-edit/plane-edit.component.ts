@@ -1,17 +1,14 @@
-import { Component, Injector } from '@angular/core';
-import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
-// Begin BIADemo
-import { filter } from 'rxjs';
-import { FormReadOnlyMode } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
-// End BIADemo
-import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
-// Begin BIADemo
-import { Permission } from 'src/app/shared/permission';
-// End BIADemo
 import { AsyncPipe, NgIf } from '@angular/common';
+import { Component, Injector, OnInit } from '@angular/core';
+import { filter } from 'rxjs';
+import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
+import { FormReadOnlyMode } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
+import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
+import { Permission } from 'src/app/shared/permission';
 import { PlaneFormComponent } from '../../components/plane-form/plane-form.component';
 import { Plane } from '../../model/plane';
 import { planeCRUDConfiguration } from '../../plane.constants';
+import { PlaneOptionsService } from '../../services/plane-options.service';
 import { PlaneService } from '../../services/plane.service';
 
 @Component({
@@ -19,15 +16,28 @@ import { PlaneService } from '../../services/plane.service';
   templateUrl: './plane-edit.component.html',
   imports: [NgIf, PlaneFormComponent, AsyncPipe, SpinnerComponent],
 })
-export class PlaneEditComponent extends CrudItemEditComponent<Plane> {
+export class PlaneEditComponent
+  extends CrudItemEditComponent<Plane>
+  implements OnInit
+{
   constructor(
     protected injector: Injector,
+    protected planeOptionsService: PlaneOptionsService,
     public planeService: PlaneService
   ) {
     super(injector, planeService);
     this.crudConfiguration = planeCRUDConfiguration;
   }
-  // Begin BIADemo
+
+  ngOnInit(): void {
+    super.ngOnInit();
+    this.sub.add(
+      this.biaTranslationService.currentCulture$.subscribe(() => {
+        this.planeOptionsService.loadAllOptions();
+      })
+    );
+  }
+
   protected setPermissions(): void {
     super.setPermissions();
 
@@ -43,5 +53,4 @@ export class PlaneEditComponent extends CrudItemEditComponent<Plane> {
         })
     );
   }
-  // End BIADemo
 }
