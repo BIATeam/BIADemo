@@ -24,7 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hangfire.Dashboard.Customize" Version="1.0.*" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.*" />
   </ItemGroup>
 
