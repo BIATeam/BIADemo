@@ -15,9 +15,9 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers;
     using TheBIADevCompany.BIADemo.Domain.Dto.Maintenance;
     using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
-    using TheBIADevCompany.BIADemo.Domain.User.Mappers;
 
     /// <summary>
     /// The mapper used for MaintenanceTeam.
@@ -214,125 +214,32 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
             });
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
-        public override Func<MaintenanceTeamDto, object[]> DtoToRecord(List<string> headerNames = null)
+        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCellMapping"/>
+        public override Dictionary<string, Func<string>> DtoToCellMapping(MaintenanceTeamDto dto)
         {
-            return x =>
+            return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
             {
-                List<object> records = [.. base.DtoToRecord(headerNames)(x)];
-
-                if (headerNames != null && headerNames.Count > 0)
-                {
-                    foreach (string headerName in headerNames)
-                    {
-                        if (string.Equals(headerName, HeaderName.Code, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.Code));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.IsActive, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVBool(x.IsActive));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.IsApproved, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVBool(x.IsApproved));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.FirstOperation, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVDateTime(x.FirstOperation));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.LastOperation, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVDateTime(x.LastOperation));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.ApprovedDate, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVDate(x.ApprovedDate));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.NextOperation, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVDate(x.NextOperation));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.MaxTravelDuration, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVTime(x.MaxTravelDuration));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.MaxOperationDuration, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVTime(x.MaxOperationDuration));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.OperationCount, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.OperationCount));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.IncidentCount, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.IncidentCount));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.TotalOperationDuration, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.TotalOperationDuration));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.AverageOperationDuration, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.AverageOperationDuration));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.TotalTravelDuration, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.TotalTravelDuration));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.AverageTravelDuration, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.AverageTravelDuration));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.TotalOperationCost, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.TotalOperationCost));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.AverageOperationCost, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.AverageOperationCost));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.CurrentAirport, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.CurrentAirport?.Display));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.OperationAirports, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVList(x.OperationAirports));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.CurrentCountry, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.CurrentCountry?.Display));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.OperationCountries, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVList(x.OperationCountries));
-                        }
-                    }
-                }
-
-                return [.. records];
+                { HeaderName.Code, () => CSVString(dto.Code) },
+                { HeaderName.IsActive, () => CSVBool(dto.IsActive) },
+                { HeaderName.IsApproved, () => CSVBool(dto.IsApproved) },
+                { HeaderName.FirstOperation, () => CSVDateTime(dto.FirstOperation) },
+                { HeaderName.LastOperation, () => CSVDateTime(dto.LastOperation) },
+                { HeaderName.ApprovedDate, () => CSVDate(dto.ApprovedDate) },
+                { HeaderName.NextOperation, () => CSVDate(dto.NextOperation) },
+                { HeaderName.MaxTravelDuration, () => CSVTime(dto.MaxTravelDuration) },
+                { HeaderName.MaxOperationDuration, () => CSVTime(dto.MaxOperationDuration) },
+                { HeaderName.OperationCount, () => CSVNumber(dto.OperationCount) },
+                { HeaderName.IncidentCount, () => CSVNumber(dto.IncidentCount) },
+                { HeaderName.TotalOperationDuration, () => CSVNumber(dto.TotalOperationDuration) },
+                { HeaderName.AverageOperationDuration, () => CSVNumber(dto.AverageOperationDuration) },
+                { HeaderName.TotalTravelDuration, () => CSVNumber(dto.TotalTravelDuration) },
+                { HeaderName.AverageTravelDuration, () => CSVNumber(dto.AverageTravelDuration) },
+                { HeaderName.TotalOperationCost, () => CSVNumber(dto.TotalOperationCost) },
+                { HeaderName.AverageOperationCost, () => CSVNumber(dto.AverageOperationCost) },
+                { HeaderName.CurrentAirport, () => CSVString(dto.CurrentAirport?.Display) },
+                { HeaderName.OperationAirports, () => CSVList(dto.OperationAirports) },
+                { HeaderName.CurrentCountry, () => CSVString(dto.CurrentCountry?.Display) },
+                { HeaderName.OperationCountries, () => CSVList(dto.OperationCountries) },
             };
         }
 

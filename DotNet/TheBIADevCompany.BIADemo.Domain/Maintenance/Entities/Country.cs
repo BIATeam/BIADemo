@@ -5,18 +5,13 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Entities
 {
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity;
 
     /// <summary>
     /// The Country entity.
     /// </summary>
-    public class Country : VersionedTable, IEntity<int>
+    public class Country : BaseEntityVersioned<int>
     {
-        /// <summary>
-        /// Gets or sets the Id.
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Gets or sets the name.
         /// </summary>

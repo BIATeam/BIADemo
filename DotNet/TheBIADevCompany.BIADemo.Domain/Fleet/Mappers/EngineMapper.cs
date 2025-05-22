@@ -14,6 +14,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Mapper;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
@@ -110,7 +111,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
         {
             return base.EntityToDto().CombineMapping(entity => new EngineDto
             {
-                RowVersion = Convert.ToBase64String(entity.RowVersion),
                 Reference = entity.Reference,
                 Manufacturer = entity.Manufacturer,
                 NextMaintenanceDate = entity.NextMaintenanceDate,
@@ -148,110 +148,32 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             });
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCell"/>
-        public override string DtoToCell(EngineDto dto, string headerName)
+        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCellMapping"/>
+        public override Dictionary<string, Func<string>> DtoToCellMapping(EngineDto dto)
         {
-            if (string.Equals(headerName, HeaderName.Reference, StringComparison.OrdinalIgnoreCase))
+            return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
             {
-                return CSVString(dto.Reference);
-            }
-
-            if (string.Equals(headerName, HeaderName.Manufacturer, StringComparison.OrdinalIgnoreCase))
-            {
-                return CSVString(dto.Manufacturer);
-            }
-
-            if (string.Equals(headerName, HeaderName.NextMaintenanceDate, StringComparison.OrdinalIgnoreCase))
-            {
-                return CSVDateTime(dto.NextMaintenanceDate);
-            }
-
-            if (string.Equals(headerName, HeaderName.LastMaintenanceDate, StringComparison.OrdinalIgnoreCase))
-            {
-                return CSVDateTime(dto.LastMaintenanceDate);
-            }
-
-            if (string.Equals(headerName, HeaderName.DeliveryDate, StringComparison.OrdinalIgnoreCase))
-            {
-                return CSVDate(dto.DeliveryDate);
-            }
-
-            if (string.Equals(headerName, HeaderName.ExchangeDate, StringComparison.OrdinalIgnoreCase))
-            {
-                return CSVDate(dto.ExchangeDate);
-            }
-
-            if (string.Equals(headerName, HeaderName.IgnitionTime, StringComparison.OrdinalIgnoreCase))
-            {
-                return CSVTime(dto.IgnitionTime);
-            }
-
-            if (string.Equals(headerName, HeaderName.SyncTime, StringComparison.OrdinalIgnoreCase))
-            {
-                return CSVTime(dto.SyncTime);
-            }
-
-            if (string.Equals(headerName, HeaderName.Power, StringComparison.OrdinalIgnoreCase))
-            {
-                return CSVNumber(dto.Power);
-            }
-
-            if (string.Equals(headerName, HeaderName.NoiseLevel, StringComparison.OrdinalIgnoreCase))
-            {
-                return CSVNumber(dto.NoiseLevel);
-            }
-
-            if (string.Equals(headerName, HeaderName.AverageFlightHours, StringComparison.OrdinalIgnoreCase))
-            {
-                return CSVNumber(dto.AverageFlightHours);
-            }
-
-            if (string.Equals(headerName, HeaderName.FlightHours, StringComparison.OrdinalIgnoreCase))
-            {
-                return CSVNumber(dto.FlightHours);
-            }
-
-            if (string.Equals(headerName, HeaderName.AverageFuelConsumption, StringComparison.OrdinalIgnoreCase))
-            {
-                return CSVNumber(dto.AverageFuelConsumption);
-            }
-
-            if (string.Equals(headerName, HeaderName.FuelConsumption, StringComparison.OrdinalIgnoreCase))
-            {
-                return CSVNumber(dto.FuelConsumption);
-            }
-
-            if (string.Equals(headerName, HeaderName.EstimatedPrice, StringComparison.OrdinalIgnoreCase))
-            {
-                return CSVNumber(dto.EstimatedPrice);
-            }
-
-            if (string.Equals(headerName, HeaderName.OriginalPrice, StringComparison.OrdinalIgnoreCase))
-            {
-                return CSVNumber(dto.OriginalPrice);
-            }
-
-            if (string.Equals(headerName, HeaderName.IsToBeMaintained, StringComparison.OrdinalIgnoreCase))
-            {
-                return CSVBool(dto.IsToBeMaintained);
-            }
-
-            if (string.Equals(headerName, HeaderName.IsHybrid, StringComparison.OrdinalIgnoreCase))
-            {
-                return CSVBool(dto.IsHybrid);
-            }
-
-            if (string.Equals(headerName, HeaderName.PrincipalPart, StringComparison.OrdinalIgnoreCase))
-            {
-                return CSVString(dto.PrincipalPart?.Display);
-            }
-
-            if (string.Equals(headerName, HeaderName.InstalledParts, StringComparison.OrdinalIgnoreCase))
-            {
-                return CSVList(dto.InstalledParts);
-            }
-
-            return base.DtoToCell(dto, headerName);
+                { HeaderName.Reference, () => CSVString(dto.Reference) },
+                { HeaderName.Manufacturer, () => CSVString(dto.Manufacturer) },
+                { HeaderName.NextMaintenanceDate, () => CSVDateTime(dto.NextMaintenanceDate) },
+                { HeaderName.LastMaintenanceDate, () => CSVDateTime(dto.LastMaintenanceDate) },
+                { HeaderName.DeliveryDate, () => CSVDate(dto.DeliveryDate) },
+                { HeaderName.ExchangeDate, () => CSVDate(dto.ExchangeDate) },
+                { HeaderName.IgnitionTime, () => CSVTime(dto.IgnitionTime) },
+                { HeaderName.SyncTime, () => CSVTime(dto.SyncTime) },
+                { HeaderName.Power, () => CSVNumber(dto.Power) },
+                { HeaderName.NoiseLevel, () => CSVNumber(dto.NoiseLevel) },
+                { HeaderName.AverageFlightHours, () => CSVNumber(dto.AverageFlightHours) },
+                { HeaderName.FlightHours, () => CSVNumber(dto.FlightHours) },
+                { HeaderName.AverageFuelConsumption, () => CSVNumber(dto.AverageFuelConsumption) },
+                { HeaderName.FuelConsumption, () => CSVNumber(dto.FuelConsumption) },
+                { HeaderName.EstimatedPrice, () => CSVNumber(dto.EstimatedPrice) },
+                { HeaderName.OriginalPrice, () => CSVNumber(dto.OriginalPrice) },
+                { HeaderName.IsToBeMaintained, () => CSVBool(dto.IsToBeMaintained) },
+                { HeaderName.IsHybrid, () => CSVBool(dto.IsHybrid) },
+                { HeaderName.PrincipalPart, () => CSVString(dto.PrincipalPart?.Display) },
+                { HeaderName.InstalledParts, () => CSVList(dto.InstalledParts) },
+            };
         }
 
         /// <inheritdoc/>

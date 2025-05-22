@@ -14,6 +14,8 @@ namespace BIA.Net.Core.Domain
     using System.Reflection;
     using System.Text.Json;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Entity.Interface;
+    using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.Specification;
     using Newtonsoft.Json.Linq;
 

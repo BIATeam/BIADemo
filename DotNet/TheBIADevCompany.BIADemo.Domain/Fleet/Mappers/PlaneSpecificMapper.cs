@@ -9,8 +9,10 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+    using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Mapper;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
@@ -80,10 +82,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
         public override Expression<Func<Plane, PlaneSpecificDto>> EntityToDto()
         {
-            return entity => new PlaneSpecificDto
+            return base.EntityToDto().CombineMapping(entity => new PlaneSpecificDto
             {
-                Id = entity.Id,
-                RowVersion = Convert.ToBase64String(entity.RowVersion),
                 Msn = entity.Msn,
                 Manufacturer = entity.Manufacturer,
                 IsActive = entity.IsActive,
@@ -135,152 +135,55 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
                 }).OrderBy(x => x.Display).ToList(),
 
                 Engines = entity.Engines.AsQueryable().Select(this.engineMapper.EntityToDto()).ToList(),
-            };
+            });
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
-        public override Func<PlaneSpecificDto, object[]> DtoToRecord(List<string> headerNames = null)
+        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCellMapping"/>
+        public override Dictionary<string, Func<string>> DtoToCellMapping(PlaneSpecificDto dto)
         {
-            return x =>
+            return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
             {
-                List<object> records = new List<object>();
-
-                if (headerNames?.Count > 0)
-                {
-                    foreach (string headerName in headerNames)
-                    {
-                        if (string.Equals(headerName, HeaderName.Id, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.Id));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.Msn, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.Msn));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.Manufacturer, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.Manufacturer));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.IsActive, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVBool(x.IsActive));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.IsMaintenance, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVBool(x.IsMaintenance));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.FirstFlightDate, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVDateTime(x.FirstFlightDate));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.LastFlightDate, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVDateTime(x.LastFlightDate));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.DeliveryDate, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVDate(x.DeliveryDate));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.NextMaintenanceDate, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVDate(x.NextMaintenanceDate));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.SyncTime, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVTime(x.SyncTime));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.SyncFlightDataTime, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVTime(x.SyncFlightDataTime));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.Capacity, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.Capacity));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.MotorsCount, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.MotorsCount));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.PlaneType, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.PlaneType?.Display));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.ConnectingAirports, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVList(x.ConnectingAirports));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.TotalFlightHours, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.TotalFlightHours));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.Probability, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.Probability));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.FuelCapacity, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.FuelCapacity));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.FuelLevel, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.FuelLevel));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.OriginalPrice, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.OriginalPrice));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.EstimatedPrice, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.EstimatedPrice));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.CurrentAirport, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.CurrentAirport?.Display));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.SimilarTypes, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVList(x.SimilarTypes));
-                        }
-                    }
-                }
-
-                return records.ToArray();
+                { HeaderName.Id, () => CSVNumber(dto.Id) },
+                { HeaderName.Msn, () => CSVString(dto.Msn) },
+                { HeaderName.Manufacturer, () => CSVString(dto.Manufacturer) },
+                { HeaderName.IsActive, () => CSVBool(dto.IsActive) },
+                { HeaderName.IsMaintenance, () => CSVBool(dto.IsMaintenance) },
+                { HeaderName.FirstFlightDate, () => CSVDateTime(dto.FirstFlightDate) },
+                { HeaderName.LastFlightDate, () => CSVDateTime(dto.LastFlightDate) },
+                { HeaderName.DeliveryDate, () => CSVDate(dto.DeliveryDate) },
+                { HeaderName.NextMaintenanceDate, () => CSVDate(dto.NextMaintenanceDate) },
+                { HeaderName.SyncTime, () => CSVTime(dto.SyncTime) },
+                { HeaderName.SyncFlightDataTime, () => CSVTime(dto.SyncFlightDataTime) },
+                { HeaderName.Capacity, () => CSVNumber(dto.Capacity) },
+                { HeaderName.MotorsCount, () => CSVNumber(dto.MotorsCount) },
+                { HeaderName.PlaneType, () => CSVString(dto.PlaneType?.Display) },
+                { HeaderName.ConnectingAirports, () => CSVList(dto.ConnectingAirports) },
+                { HeaderName.TotalFlightHours, () => CSVNumber(dto.TotalFlightHours) },
+                { HeaderName.Probability, () => CSVNumber(dto.Probability) },
+                { HeaderName.FuelCapacity, () => CSVNumber(dto.FuelCapacity) },
+                { HeaderName.FuelLevel, () => CSVNumber(dto.FuelLevel) },
+                { HeaderName.OriginalPrice, () => CSVNumber(dto.OriginalPrice) },
+                { HeaderName.EstimatedPrice, () => CSVNumber(dto.EstimatedPrice) },
+                { HeaderName.CurrentAirport, () => CSVString(dto.CurrentAirport?.Display) },
+                { HeaderName.SimilarTypes, () => CSVList(dto.SimilarTypes) },
             };
         }
 
         /// <inheritdoc/>
         public override void MapEntityKeysInDto(Plane entity, PlaneSpecificDto dto)
         {
-            dto.Id = entity.Id;
+            base.MapEntityKeysInDto(entity, dto);
             dto.SiteId = entity.SiteId;
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesForUpdate"/>
         public override Expression<Func<Plane, object>>[] IncludesForUpdate()
         {
-            return new Expression<Func<Plane, object>>[] { x => x.ConnectingAirports, x => x.Engines };
+            return
+            [
+                x => x.ConnectingAirports,
+                x => x.Engines
+            ];
         }
 
         /// <summary>

@@ -7,7 +7,7 @@ namespace BIA.Net.Core.Application.Clean
     using System;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.RepoContract;
     using Microsoft.Extensions.Logging;
 

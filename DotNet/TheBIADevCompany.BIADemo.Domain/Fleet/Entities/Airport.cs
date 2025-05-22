@@ -5,20 +5,15 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
 {
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity;
     using global::Audit.EntityFramework;
 
     /// <summary>
     /// The airport entity.
     /// </summary>
     [AuditInclude]
-    public class Airport : VersionedTable, IEntity<int>
+    public class Airport : BaseEntityVersioned<int>
     {
-        /// <summary>
-        /// Gets or sets the id.
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Gets or sets the name of the airport.
         /// </summary>

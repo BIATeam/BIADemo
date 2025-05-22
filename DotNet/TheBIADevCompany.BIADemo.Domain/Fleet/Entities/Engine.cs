@@ -8,18 +8,13 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity;
 
     /// <summary>
     /// The Engine entity.
     /// </summary>
-    public class Engine : VersionedTable, IEntityFixable<int>
+    public class Engine : BaseEntityVersionedFixable<int>
     {
-        /// <summary>
-        /// Gets or sets the id.
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Gets or sets the Manufacturer's Serial Number.
         /// </summary>
@@ -143,11 +138,5 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
         /// Gets or sets the installed parts. Via jointure table.
         /// </summary>
         public ICollection<EnginePart> InstalledEngineParts { get; set; }
-
-        /// <inheritdoc/>
-        public bool IsFixed { get; set; }
-
-        /// <inheritdoc/>
-        public DateTime? FixedDate { get; set; }
     }
 }

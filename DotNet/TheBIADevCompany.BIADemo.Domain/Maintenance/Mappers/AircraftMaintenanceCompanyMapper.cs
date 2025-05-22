@@ -7,9 +7,9 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
 {
     using System.Security.Principal;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers;
     using TheBIADevCompany.BIADemo.Domain.Dto.Maintenance;
     using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
-    using TheBIADevCompany.BIADemo.Domain.User.Mappers;
 
     /// <summary>
     /// The mapper used for AircraftMaintenanceCompany.

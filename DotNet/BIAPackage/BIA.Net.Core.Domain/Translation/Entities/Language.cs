@@ -4,18 +4,13 @@
 
 namespace BIA.Net.Core.Domain.Translation.Entities
 {
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity;
 
     /// <summary>
     /// The role entity.
     /// </summary>
-    public class Language : VersionedTable, IEntity<int>
+    public class Language : BaseEntityVersioned<int>
     {
-        /// <summary>
-        /// Gets or sets the id.
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Gets or sets the language code.
         /// </summary>

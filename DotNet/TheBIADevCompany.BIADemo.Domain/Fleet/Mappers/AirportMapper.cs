@@ -7,9 +7,10 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
+    using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Mapper;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
@@ -23,9 +24,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
         {
             get
             {
-                return new ExpressionCollection<Airport>
+                return new ExpressionCollection<Airport>(base.ExpressionCollection)
                 {
-                    { HeaderName.Id, planeType => planeType.Id },
                     { HeaderName.Name, planeType => planeType.Name },
                     { HeaderName.City, planeType => planeType.City },
                 };
@@ -44,39 +44,20 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
         public override Expression<Func<Airport, AirportDto>> EntityToDto()
         {
-            return entity => new AirportDto
+            return base.EntityToDto().CombineMapping(entity => new AirportDto
             {
-                Id = entity.Id,
                 Name = entity.Name,
                 City = entity.City,
-                RowVersion = Convert.ToBase64String(entity.RowVersion),
-            };
+            });
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
-        public override Func<AirportDto, object[]> DtoToRecord(List<string> headerNames = null)
+        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCellMapping"/>
+        public override Dictionary<string, Func<string>> DtoToCellMapping(AirportDto dto)
         {
-            return x =>
+            return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
             {
-                List<object> records = new List<object>();
-
-                if (headerNames?.Any() == true)
-                {
-                    foreach (string headerName in headerNames)
-                    {
-                        if (string.Equals(headerName, HeaderName.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.Name));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.City, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.City));
-                        }
-                    }
-                }
-
-                return records.ToArray();
+                { HeaderName.Name, () => CSVString(dto.Name) },
+                { HeaderName.City, () => CSVString(dto.City) },
             };
         }
 
@@ -85,11 +66,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
         /// </summary>
         public struct HeaderName
         {
-            /// <summary>
-            /// header name Id.
-            /// </summary>
-            public const string Id = "id";
-
             /// <summary>
             /// header name Name.
             /// </summary>

@@ -9,27 +9,27 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
     using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.Service;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Bia.User;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// The mapper used for user.
     /// </summary>
-    public class UserMapper : BaseMapper<UserDto, User, int>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="UserMapper"/> class.
+    /// </remarks>
+    /// <param name="userContext">the user context.</param>
+    public class UserMapper(UserContext userContext) : BaseMapper<UserDto, User, int>()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserMapper"/> class.
-        /// </summary>
-        /// <param name="userContext">the user context.</param>
-        public UserMapper(UserContext userContext)
-        {
-            this.UserContext = userContext;
-        }
-
         /// <summary>
         /// Gets or sets the collection used for expressions to access fields.
         /// </summary>
@@ -37,9 +37,8 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         {
             get
             {
-                return new ExpressionCollection<User>
+                return new ExpressionCollection<User>(base.ExpressionCollection)
                 {
-                    { HeaderName.Id, user => user.Id },
                     { HeaderName.LastName, user => user.LastName },
                     { HeaderName.FirstName, user => user.FirstName },
                     { HeaderName.Login, user => user.Login },
@@ -69,38 +68,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         /// <summary>
         /// The user context language and culture.
         /// </summary>
-        private UserContext UserContext { get; set; }
-
-        /// <summary>
-        /// Create a user DTO from an entity.
-        /// </summary>
-        /// <param name="mapperMode">the mode for mapping.</param>
-        /// <returns>The user DTO.</returns>
-        public override Expression<Func<User, UserDto>> EntityToDto(string mapperMode)
-        {
-            return entity => new UserDto
-            {
-                Id = entity.Id,
-                RowVersion = Convert.ToBase64String(entity.RowVersion),
-                LastName = entity.LastName,
-                FirstName = entity.FirstName,
-                Login = entity.Login,
-                Roles = entity.Roles.Select(ca => new OptionDto
-                {
-                    Id = ca.Id,
-                    Display = ca.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? ca.Label,
-                }).ToList(),
-                Teams = entity.Members
-                .OrderBy(m => m.Team.TeamTypeId)
-                .ThenBy(m => m.Team.Title)
-                .Select(m => new UserTeamDto
-                {
-                    Title = m.Team.Title,
-                    TeamTypeId = m.Team.TeamTypeId,
-                })
-                .ToList(),
-            };
-        }
+        private UserContext UserContext { get; set; } = userContext;
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
         public override void DtoToEntity(UserDto dto, ref User entity, string mapperMode, IUnitOfWork context)
@@ -128,62 +96,56 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
             }
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
-        public override Func<UserDto, object[]> DtoToRecord(List<string> headerNames = null)
+        /// <summary>
+        /// Create a user DTO from an entity.
+        /// </summary>
+        /// <param name="mapperMode">the mode for mapping.</param>
+        /// <returns>The user DTO.</returns>
+        public override Expression<Func<User, UserDto>> EntityToDto(string mapperMode)
         {
-            return x =>
+            return this.EntityToDto().CombineMapping(entity => new UserDto
             {
-                List<object> records = new List<object>();
-
-                if (headerNames?.Any() == true)
+                LastName = entity.LastName,
+                FirstName = entity.FirstName,
+                Login = entity.Login,
+                Roles = entity.Roles.Select(ca => new OptionDto
                 {
-                    foreach (string headerName in headerNames)
-                    {
-                        if (string.Equals(headerName, HeaderName.Id, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVNumber(x.Id));
-                        }
+                    Id = ca.Id,
+                    Display = ca.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? ca.Label,
+                }).ToList(),
+                Teams = entity.Members
+                .OrderBy(m => m.Team.TeamTypeId)
+                .ThenBy(m => m.Team.Title)
+                .Select(m => new UserTeamDto
+                {
+                    Title = m.Team.Title,
+                    TeamTypeId = m.Team.TeamTypeId,
+                })
+                .ToList(),
+            });
+        }
 
-                        if (string.Equals(headerName, HeaderName.LastName, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.LastName));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.FirstName, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.FirstName));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.Login, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.Login));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.Guid, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVString(x.Guid.ToString()));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.Roles, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVList(x.Roles));
-                        }
-
-                        if (string.Equals(headerName, HeaderName.Teams, StringComparison.OrdinalIgnoreCase))
-                        {
-                            records.Add(CSVList(x.Teams.Select(t => new OptionDto { Display = t.Title })));
-                        }
-                    }
-                }
-
-                return records.ToArray();
+        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCellMapping"/>
+        public override Dictionary<string, Func<string>> DtoToCellMapping(UserDto dto)
+        {
+            return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
+            {
+                { HeaderName.LastName, () => CSVString(dto.LastName) },
+                { HeaderName.FirstName, () => CSVString(dto.FirstName) },
+                { HeaderName.Login, () => CSVString(dto.Login) },
+                { HeaderName.Guid, () => CSVString(dto.Guid.ToString()) },
+                { HeaderName.Roles, () => CSVList(dto.Roles) },
+                { HeaderName.Teams, () => CSVList(dto.Teams.Select(t => new OptionDto { Display = t.Title })) },
             };
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesForUpdate"/>
         public override Expression<Func<User, object>>[] IncludesForUpdate()
         {
-            return new Expression<Func<User, object>>[] { x => x.Roles };
+            return
+            [
+                x => x.Roles,
+            ];
         }
 
         /// <summary>
@@ -191,11 +153,6 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         /// </summary>
         public struct HeaderName
         {
-            /// <summary>
-            /// header name Id.
-            /// </summary>
-            public const string Id = "id";
-
             /// <summary>
             /// header name LastName.
             /// </summary>

@@ -19,11 +19,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using TheBIADevCompany.BIADemo.Application.User;
+    using TheBIADevCompany.BIADemo.Application.Bia.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base;
+    using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Base;
 
     /// <summary>
     /// The API controller used to manage members.

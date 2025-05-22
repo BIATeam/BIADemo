@@ -15,12 +15,12 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
-    using TheBIADevCompany.BIADemo.Application.User;
+    using TheBIADevCompany.BIADemo.Application.Bia.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Specifications;
     using TheBIADevCompany.BIADemo.Domain.Dto.Maintenance;
     using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
     using TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers;
-    using TheBIADevCompany.BIADemo.Domain.User.Specifications;
 
     /// <summary>
     /// The application service used for AircraftMaintenanceCompany.

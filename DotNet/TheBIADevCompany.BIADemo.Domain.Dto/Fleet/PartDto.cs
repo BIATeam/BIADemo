@@ -10,7 +10,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Fleet
     /// <summary>
     /// The DTO used to represent a Part.
     /// </summary>
-    public class PartDto : BaseDto<int>
+    public class PartDto : BaseDtoVersioned<int>
     {
         /// <summary>
         /// Gets or sets the serial number.

@@ -13,7 +13,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Maintenance
     /// <summary>
     /// The DTO used to represent a MaintenanceContract.
     /// </summary>
-    public class MaintenanceContractDto : BaseDto<int>
+    public class MaintenanceContractDto : BaseDtoVersioned<int>
     {
         /// <summary>
         /// Gets or sets the AircraftMaintenanceCompany.

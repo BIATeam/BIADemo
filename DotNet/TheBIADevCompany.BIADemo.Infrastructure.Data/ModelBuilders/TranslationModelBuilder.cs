@@ -7,7 +7,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
     using BIA.Net.Core.Domain.Translation.Entities;
     using Microsoft.EntityFrameworkCore;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.Translation.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Bia.Translation.Entities;
     using static TheBIADevCompany.BIADemo.Crosscutting.Common.Constants;
 
     /// <summary>

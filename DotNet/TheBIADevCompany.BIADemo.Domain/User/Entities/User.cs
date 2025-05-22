@@ -6,22 +6,18 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Entities
 {
     using System;
     using System.Collections.Generic;
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity;
     using global::Audit.EntityFramework;
-    using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
-    using TheBIADevCompany.BIADemo.Domain.View.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Bia.View.Entities;
 
     /// <summary>
     /// The user entity.
     /// </summary>
     [AuditInclude]
-    public class User : VersionedTable, IEntity<int>
+    public class User : BaseEntityVersioned<int>
     {
-        /// <summary>
-        /// Gets or sets the id.
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Gets or sets the email.
         /// </summary>

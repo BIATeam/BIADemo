@@ -16,6 +16,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
     using Newtonsoft.Json;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Bia.User;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site;

@@ -5,8 +5,8 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
 {
-    using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Audit;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using global::Audit.EntityFramework;
 
     /// <summary>

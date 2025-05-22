@@ -17,8 +17,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using TheBIADevCompany.BIADemo.Domain.User.Models;
-    using TheBIADevCompany.BIADemo.Domain.User.Services;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Models;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Services;
 
     /// <summary>
     /// Class the manipulate AD.

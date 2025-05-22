@@ -13,6 +13,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Mapper;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
@@ -190,62 +191,37 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
                     Id = x.Id,
                     Display = x.Name,
                 }).OrderBy(x => x.Display).ToList(),
-                RowVersion = Convert.ToBase64String(entity.RowVersion),
             });
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCell"/>
-        public override string DtoToCell(PlaneDto dto, string headerName)
+        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCellMapping"/>
+        public override Dictionary<string, Func<string>> DtoToCellMapping(PlaneDto dto)
         {
-            switch (headerName)
+            return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
             {
-                case HeaderName.Msn:
-                    return CSVString(dto.Msn);
-                case HeaderName.Manufacturer:
-                    return CSVString(dto.Manufacturer);
-                case HeaderName.IsActive:
-                    return CSVBool(dto.IsActive);
-                case HeaderName.IsMaintenance:
-                    return CSVBool(dto.IsMaintenance);
-                case HeaderName.FirstFlightDate:
-                    return CSVDateTime(dto.FirstFlightDate);
-                case HeaderName.LastFlightDate:
-                    return CSVDateTime(dto.LastFlightDate);
-                case HeaderName.DeliveryDate:
-                    return CSVDate(dto.DeliveryDate);
-                case HeaderName.NextMaintenanceDate:
-                    return CSVDate(dto.NextMaintenanceDate);
-                case HeaderName.SyncTime:
-                    return CSVTime(dto.SyncTime);
-                case HeaderName.SyncFlightDataTime:
-                    return CSVTime(dto.SyncFlightDataTime);
-                case HeaderName.Capacity:
-                    return CSVNumber(dto.Capacity);
-                case HeaderName.MotorsCount:
-                    return CSVNumber(dto.MotorsCount);
-                case HeaderName.TotalFlightHours:
-                    return CSVNumber(dto.TotalFlightHours);
-                case HeaderName.Probability:
-                    return CSVNumber(dto.Probability);
-                case HeaderName.FuelCapacity:
-                    return CSVNumber(dto.FuelCapacity);
-                case HeaderName.FuelLevel:
-                    return CSVNumber(dto.FuelLevel);
-                case HeaderName.OriginalPrice:
-                    return CSVNumber(dto.OriginalPrice);
-                case HeaderName.EstimatedPrice:
-                    return CSVNumber(dto.EstimatedPrice);
-                case HeaderName.PlaneType:
-                    return CSVString(dto.PlaneType?.Display);
-                case HeaderName.SimilarTypes:
-                    return CSVList(dto.SimilarTypes);
-                case HeaderName.CurrentAirport:
-                    return CSVString(dto.CurrentAirport?.Display);
-                case HeaderName.ConnectingAirports:
-                    return CSVList(dto.ConnectingAirports);
-                default:
-                    return base.DtoToCell(dto, headerName);
-            }
+                { HeaderName.Msn, () => CSVString(dto.Msn) },
+                { HeaderName.Manufacturer, () => CSVString(dto.Manufacturer) },
+                { HeaderName.IsActive, () => CSVBool(dto.IsActive) },
+                { HeaderName.IsMaintenance, () => CSVBool(dto.IsMaintenance) },
+                { HeaderName.FirstFlightDate, () => CSVDateTime(dto.FirstFlightDate) },
+                { HeaderName.LastFlightDate, () => CSVDateTime(dto.LastFlightDate) },
+                { HeaderName.DeliveryDate, () => CSVDate(dto.DeliveryDate) },
+                { HeaderName.NextMaintenanceDate, () => CSVDate(dto.NextMaintenanceDate) },
+                { HeaderName.SyncTime, () => CSVTime(dto.SyncTime) },
+                { HeaderName.SyncFlightDataTime, () => CSVTime(dto.SyncFlightDataTime) },
+                { HeaderName.Capacity, () => CSVNumber(dto.Capacity) },
+                { HeaderName.MotorsCount, () => CSVNumber(dto.MotorsCount) },
+                { HeaderName.TotalFlightHours, () => CSVNumber(dto.TotalFlightHours) },
+                { HeaderName.Probability, () => CSVNumber(dto.Probability) },
+                { HeaderName.FuelCapacity, () => CSVNumber(dto.FuelCapacity) },
+                { HeaderName.FuelLevel, () => CSVNumber(dto.FuelLevel) },
+                { HeaderName.OriginalPrice, () => CSVNumber(dto.OriginalPrice) },
+                { HeaderName.EstimatedPrice, () => CSVNumber(dto.EstimatedPrice) },
+                { HeaderName.PlaneType, () => CSVString(dto.PlaneType?.Display) },
+                { HeaderName.SimilarTypes, () => CSVList(dto.SimilarTypes) },
+                { HeaderName.CurrentAirport, () => CSVString(dto.CurrentAirport?.Display) },
+                { HeaderName.ConnectingAirports, () => CSVList(dto.ConnectingAirports) },
+            };
         }
 
         /// <inheritdoc/>

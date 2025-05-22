@@ -17,6 +17,9 @@ namespace BIA.Net.Core.Domain.Service
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Base.Interface;
+    using BIA.Net.Core.Domain.Entity.Interface;
+    using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
@@ -369,14 +372,14 @@ namespace BIA.Net.Core.Domain.Service
                     var entity = await this.Repository.GetEntityAsync(id: dto.Id, specification: this.GetFilterSpecification(accessMode, this.FiltersContext), includes: mapper.IncludesForUpdate(mapperMode), queryMode: queryMode)
                         ?? throw new ElementNotFoundException();
 
-                    if (entity is IEntityFixable<TKey> entityFixable && entityFixable.IsFixed)
+                    if (entity is IEntityFixable entityFixable && entityFixable.IsFixed)
                     {
                         throw new FrontUserException("Item is fixed and cannot be edited.");
                     }
 
-                    if (entity is VersionedTable versionedEntity
-                    && !string.IsNullOrWhiteSpace(dto.RowVersion)
-                    && !Convert.ToBase64String(versionedEntity.RowVersion).SequenceEqual(dto.RowVersion))
+                    if (entity is IEntityVersioned versionedEntity && dto is IDtoVersioned dtoVersioned
+                    && !string.IsNullOrWhiteSpace(dtoVersioned.RowVersion)
+                    && !Convert.ToBase64String(versionedEntity.RowVersion).SequenceEqual(dtoVersioned.RowVersion))
                     {
                         throw new OutdateException();
                     }
@@ -422,7 +425,7 @@ namespace BIA.Net.Core.Domain.Service
                     throw new ElementNotFoundException();
                 }
 
-                if (!bypassFixed && entity is IEntityFixable<TKey> entityFixable && entityFixable.IsFixed)
+                if (!bypassFixed && entity is IEntityFixable entityFixable && entityFixable.IsFixed)
                 {
                     throw new FrontUserException("Item is fixed and cannot be deleted.");
                 }
