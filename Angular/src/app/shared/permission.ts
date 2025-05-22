@@ -44,6 +44,7 @@ export enum Permission {
   MaintenanceTeam_Member_Create = 'MaintenanceTeam_Member_Create',
   MaintenanceTeam_Member_List_Access = 'MaintenanceTeam_Member_List_Access',
 
+  // BIAToolKit - Begin Partial Permission Plane
   Plane_Create = 'Plane_Create',
   Plane_Delete = 'Plane_Delete',
   Plane_List_Access = 'Plane_List_Access',
@@ -51,6 +52,7 @@ export enum Permission {
   Plane_Save = 'Plane_Save',
   Plane_Update = 'Plane_Update',
   Plane_Fix = 'Plane_Fix',
+  // BIAToolKit - End Partial Permission Plane
 
   Airport_Create = 'Airport_Create',
   Airport_Delete = 'Airport_Delete',

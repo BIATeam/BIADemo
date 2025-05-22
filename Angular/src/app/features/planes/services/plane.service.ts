@@ -26,16 +26,15 @@ export class PlaneService extends CrudItemService<Plane> {
     private store: Store<AppState>,
     public dasService: PlaneDas,
     public signalRService: CrudItemSignalRService<Plane>,
+    protected authService: AuthService,
     public optionsService: PlaneOptionsService,
-    protected injector: Injector,
-    // required only for parent key
-    protected authService: AuthService
+    protected injector: Injector
   ) {
     super(dasService, signalRService, optionsService, injector);
   }
 
   public getParentIds(): any[] {
-    // TODO after creation of CRUD Plane : adapt the parent Key tothe context. It can be null if root crud
+    // TODO after creation of CRUD Plane : adapt the parent Key to the context. It can be null if root crud
     return [this.authService.getCurrentTeamId(TeamTypeId.Site)];
   }
 
@@ -75,21 +74,15 @@ export class PlaneService extends CrudItemService<Plane> {
     this.store.dispatch(FeaturePlanesActions.loadAllByPost({ event }));
   }
   public create(crudItem: Plane) {
-    // TODO after creation of CRUD Plane : map parent Key on the corresponding field
-    let indexParent = 0;
-    crudItem.siteId = this.getParentIds()[indexParent++];
+    crudItem.siteId = this.getParentIds()[0];
     this.store.dispatch(FeaturePlanesActions.create({ plane: crudItem }));
+  }
+  public save(crudItems: Plane[]) {
+    crudItems.map(x => (x.siteId = this.getParentIds()[0]));
+    this.store.dispatch(FeaturePlanesActions.save({ planes: crudItems }));
   }
   public update(crudItem: Plane) {
     this.store.dispatch(FeaturePlanesActions.update({ plane: crudItem }));
-  }
-  public save(crudItems: Plane[]) {
-    let indexParent = 0;
-    const siteIdIndexParent = indexParent++;
-    crudItems
-      .filter(x => !x.id)
-      .map(x => (x.siteId = this.getParentIds()[siteIdIndexParent]));
-    this.store.dispatch(FeaturePlanesActions.save({ planes: crudItems }));
   }
   public remove(id: any) {
     this.store.dispatch(FeaturePlanesActions.remove({ id }));

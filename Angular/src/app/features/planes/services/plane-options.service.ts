@@ -23,7 +23,6 @@ export class PlaneOptionsService extends CrudItemOptionsService {
     // TODO after creation of CRUD Plane : get all required option dto use in Table calc and create and edit form
     this.planeTypeOptions$ = this.store.select(getAllPlaneTypeOptions);
     this.airportOptions$ = this.store.select(getAllAirportOptions);
-
     let cpt = 0;
     const planeType = cpt++;
     const airport = cpt++;
@@ -34,10 +33,10 @@ export class PlaneOptionsService extends CrudItemOptionsService {
     ]).pipe(
       map(options => {
         return <DictOptionDto[]>[
-          new DictOptionDto('connectingAirports', options[airport]),
           new DictOptionDto('planeType', options[planeType]),
           new DictOptionDto('similarTypes', options[planeType]),
           new DictOptionDto('currentAirport', options[airport]),
+          new DictOptionDto('connectingAirports', options[airport]),
         ];
       })
     );

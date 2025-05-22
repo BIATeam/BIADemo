@@ -43,7 +43,6 @@ import { Plane } from '../../model/plane';
     NgFor,
     Tooltip,
     NgSwitch,
-
     NgClass,
     NgTemplateOutlet,
     Skeleton,

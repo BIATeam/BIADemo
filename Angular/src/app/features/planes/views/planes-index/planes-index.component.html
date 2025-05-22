@@ -23,6 +23,7 @@
       (crudItemFixedChanged)="
         crudItemService.updateFixedStatus($event.crudItemId, $event.fixed)
       ">
+      <!-- Begin BIADemo -->
       <!-- BIAToolKit - Begin Partial PlaneIndexHtml Engine -->
       <ng-template pTemplate="actionOnSelected">
         <button
@@ -34,6 +35,7 @@
           (click)="onViewEngines(selectedCrudItems[0].id)"></button>
       </ng-template>
       <!-- BIAToolKit - End Partial PlaneIndexHtml Engine -->
+      <!-- End BIADemo -->
       <!-- BIAToolKit - Begin PlaneIndexHtml -->
       <!-- BIAToolKit - End PlaneIndexHtml -->
     </bia-table-header>
@@ -52,8 +54,8 @@
       [defaultViewPref]="defaultViewPref"
       [useViewTeamWithTypeId]="useViewTeamWithTypeId"
       [hasColumnFilter]="hasColumnFilter">
-      <ng-template pTemplate="customControl"
-        ><bia-table-behavior-controller
+      <ng-template pTemplate="customControl">
+        <bia-table-behavior-controller
           [crudConfiguration]="crudConfiguration"
           (useCalcModeChanged)="useCalcModeChange($event)"
           (usePopupChanged)="usePopupChange($event)"
@@ -64,8 +66,8 @@
           (useVirtualScrollChanged)="useVirtualScrollChange($event)"
           (useResizableColumnChanged)="
             useResizableColumnChange($event)
-          "></bia-table-behavior-controller
-      ></ng-template>
+          "></bia-table-behavior-controller>
+      </ng-template>
     </bia-table-controller>
     <bia-table
       *ngIf="!crudConfiguration.useCalcMode"
@@ -79,13 +81,14 @@
       "
       [totalRecord]="(totalCount$ | async) ?? 0"
       [columnToDisplays]="displayedColumns"
+      [reorderableColumns]="reorderableColumns"
       [pageSize]="pageSize"
       (pageSizeChange)="onPageSizeChange($event)"
       [configuration]="crudConfiguration.fieldsConfig"
-      [(showColSearch)]="showColSearch"
+      [showColSearch]="showColSearch"
       [globalSearchValue]="globalSearchValue"
       [canClickRow]="canEdit"
-      [canSelectElement]="canSelect"
+      [canSelectElement]="canDelete"
       [loading]="(loading$ | async) ?? false"
       (clickRowId)="onClickRow($event)"
       (loadLazy)="onLoadLazy($event)"
@@ -112,10 +115,11 @@
       "
       [totalRecord]="(totalCount$ | async) ?? 0"
       [columnToDisplays]="displayedColumns"
+      [reorderableColumns]="reorderableColumns"
       [pageSize]="pageSize"
       (pageSizeChange)="onPageSizeChange($event)"
       [configuration]="crudConfiguration.fieldsConfig"
-      [(showColSearch)]="showColSearch"
+      [showColSearch]="showColSearch"
       [globalSearchValue]="globalSearchValue"
       [canEdit]="canEdit"
       [canAdd]="canAdd"

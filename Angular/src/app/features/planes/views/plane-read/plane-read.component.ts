@@ -1,17 +1,11 @@
-import { Component, Injector } from '@angular/core';
-import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
-// Begin BIADemo
-import { filter } from 'rxjs';
-// End BIADemo
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-// Begin BIADemo
-import { FormReadOnlyMode } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
-// End BIADemo
-import { CrudItemReadComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-read/crud-item-read.component';
-// Begin BIADemo
-import { Permission } from 'src/app/shared/permission';
-// End BIADemo
 import { AsyncPipe, NgIf } from '@angular/common';
+import { Component, Injector } from '@angular/core';
+import { filter } from 'rxjs';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
+import { FormReadOnlyMode } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
+import { CrudItemReadComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-read/crud-item-read.component';
+import { Permission } from 'src/app/shared/permission';
 import { PlaneFormComponent } from '../../components/plane-form/plane-form.component';
 import { Plane } from '../../model/plane';
 import { planeCRUDConfiguration } from '../../plane.constants';
@@ -31,7 +25,7 @@ export class PlaneReadComponent extends CrudItemReadComponent<Plane> {
     super(injector, planeService, authService);
     this.crudConfiguration = planeCRUDConfiguration;
   }
-  // Begin BIADemo
+
   protected setPermissions(): void {
     super.setPermissions();
     this.canFix = this.authService.hasPermission(Permission.Plane_Fix);
@@ -53,5 +47,4 @@ export class PlaneReadComponent extends CrudItemReadComponent<Plane> {
         })
     );
   }
-  // End BIADemo
 }

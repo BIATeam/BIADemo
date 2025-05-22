@@ -1,10 +1,9 @@
 import { AsyncPipe, NgIf } from '@angular/common';
-import { Component, Injector } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { CrudItemItemComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component';
 import { Plane } from '../../model/plane';
-import { PlaneService } from '../../services/plane.service';
 
 @Component({
   selector: 'app-planes-item',
@@ -15,11 +14,4 @@ import { PlaneService } from '../../services/plane.service';
   ],
   imports: [RouterOutlet, NgIf, AsyncPipe, SpinnerComponent],
 })
-export class PlaneItemComponent extends CrudItemItemComponent<Plane> {
-  constructor(
-    protected injector: Injector,
-    public planeService: PlaneService
-  ) {
-    super(injector, planeService);
-  }
-}
+export class PlaneItemComponent extends CrudItemItemComponent<Plane> {}

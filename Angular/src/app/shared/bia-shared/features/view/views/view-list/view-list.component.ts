@@ -426,7 +426,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
   protected initViewByQueryParam(views: View[]) {
-    //<a [routerLink]="['/examples/planes-view']" [queryParams]="{ view: 'test2' }">link to plane view</a>
+    //<a [routerLink]="['/planes-view']" [queryParams]="{ view: 'test2' }">link to plane view</a>
     if (views?.length > 0) {
       const viewName = this.route.snapshot.queryParamMap.get(QUERY_STRING_VIEW);
       if (viewName && viewName.length > 0) {
