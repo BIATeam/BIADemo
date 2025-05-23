@@ -2,14 +2,10 @@ import { Validators } from '@angular/forms';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import {
   BiaFieldConfig,
-  // Begin BIADemo
   BiaFieldNumberFormat,
-  // End BIADemo
   BiaFieldsConfig,
-  // Begin BIADemo
   NumberMode,
   PrimeNGFiltering,
-  // End BIADemo
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { BiaFormLayoutConfig } from 'src/app/shared/bia-shared/model/bia-form-layout-config';
@@ -83,43 +79,43 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
     }),
     Object.assign(new BiaFieldConfig('power', 'engine.power'), {
       type: PropType.Number,
-      // Begin BIADemo
+      // Begin BIAToolKit Generation Ignore
       filterMode: PrimeNGFiltering.Equals,
-      // End BIADemo
+      // End BIAToolKit Generation Ignore
     }),
     Object.assign(new BiaFieldConfig('noiseLevel', 'engine.noiseLevel'), {
       type: PropType.Number,
       isRequired: true,
       validators: [Validators.required],
-      // Begin BIADemo
+      // Begin BIAToolKit Generation Ignore
       filterMode: PrimeNGFiltering.Equals,
-      // End BIADemo
+      // End BIAToolKit Generation Ignore
     }),
     Object.assign(new BiaFieldConfig('flightHours', 'engine.flightHours'), {
       type: PropType.Number,
       isRequired: true,
       validators: [Validators.required],
-      // Begin BIADemo
+      // Begin BIAToolKit Generation Ignore
       filterMode: PrimeNGFiltering.Equals,
       displayFormat: Object.assign(new BiaFieldNumberFormat(), {
         mode: NumberMode.Decimal,
         minFractionDigits: 6,
         maxFractionDigits: 6,
       }),
-      // End BIADemo
+      // End BIAToolKit Generation Ignore
     }),
     Object.assign(
       new BiaFieldConfig('averageFlightHours', 'engine.averageFlightHours'),
       {
         type: PropType.Number,
-        // Begin BIADemo
+        // Begin BIAToolKit Generation Ignore
         filterMode: PrimeNGFiltering.Equals,
         displayFormat: Object.assign(new BiaFieldNumberFormat(), {
           mode: NumberMode.Decimal,
           minFractionDigits: 6,
           maxFractionDigits: 6,
         }),
-        // End BIADemo
+        // End BIAToolKit Generation Ignore
       }
     ),
     Object.assign(
@@ -128,14 +124,14 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
         type: PropType.Number,
         isRequired: true,
         validators: [Validators.required],
-        // Begin BIADemo
+        // Begin BIAToolKit Generation Ignore
         filterMode: PrimeNGFiltering.Equals,
         displayFormat: Object.assign(new BiaFieldNumberFormat(), {
           mode: NumberMode.Decimal,
           minFractionDigits: 2,
           maxFractionDigits: 2,
         }),
-        // End BIADemo
+        // End BIAToolKit Generation Ignore
       }
     ),
     Object.assign(
@@ -145,7 +141,7 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
       ),
       {
         type: PropType.Number,
-        // Begin BIADemo
+        // Begin BIAToolKit Generation Ignore
         validators: [Validators.min(0)],
         filterMode: PrimeNGFiltering.Equals,
         displayFormat: Object.assign(new BiaFieldNumberFormat(), {
@@ -153,14 +149,14 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
           minFractionDigits: 2,
           maxFractionDigits: 2,
         }),
-        // End BIADemo
+        // End BIAToolKit Generation Ignore
       }
     ),
     Object.assign(new BiaFieldConfig('originalPrice', 'engine.originalPrice'), {
       type: PropType.Number,
       isRequired: true,
       validators: [Validators.required],
-      // Begin BIADemo
+      // Begin BIAToolKit Generation Ignore
       filterMode: PrimeNGFiltering.Equals,
       displayFormat: Object.assign(new BiaFieldNumberFormat(), {
         mode: NumberMode.Currency,
@@ -168,13 +164,13 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
         maxFractionDigits: 2,
         currency: 'EUR',
       }),
-      // End BIADemo
+      // End BIAToolKit Generation Ignore
     }),
     Object.assign(
       new BiaFieldConfig('estimatedPrice', 'engine.estimatedPrice'),
       {
         type: PropType.Number,
-        // Begin BIADemo
+        // Begin BIAToolKit Generation Ignore
         validators: [Validators.min(0)],
         filterMode: PrimeNGFiltering.Equals,
         displayFormat: Object.assign(new BiaFieldNumberFormat(), {
@@ -183,7 +179,7 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
           maxFractionDigits: 2,
           currency: 'EUR',
         }),
-        // End BIADemo
+        // End BIAToolKit Generation Ignore
       }
     ),
     Object.assign(
@@ -192,16 +188,16 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
         type: PropType.Boolean,
         isRequired: true,
         validators: [Validators.required],
-        // Begin BIADemo
+        // Begin BIAToolKit Generation Ignore
         isSearchable: true,
-        // End BIADemo
+        // End BIAToolKit Generation Ignore
       }
     ),
     Object.assign(new BiaFieldConfig('isHybrid', 'engine.isHybrid'), {
       type: PropType.Boolean,
-      // Begin BIADemo
+      // Begin BIAToolKit Generation Ignore
       isSearchable: true,
-      // End BIADemo
+      // End BIAToolKit Generation Ignore
     }),
     Object.assign(new BiaFieldConfig('principalPart', 'engine.principalPart'), {
       type: PropType.OneToMany,

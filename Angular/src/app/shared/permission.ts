@@ -17,6 +17,26 @@ export enum Permission {
   // BIAToolKit - Begin Permission
   // BIAToolKit - End Permission
 
+  // Begin BIAToolKit Generation Ignore
+  // BIAToolKit - Begin Partial Permission Plane
+  Plane_Create = 'Plane_Create',
+  Plane_Delete = 'Plane_Delete',
+  Plane_List_Access = 'Plane_List_Access',
+  Plane_Read = 'Plane_Read',
+  Plane_Save = 'Plane_Save',
+  Plane_Update = 'Plane_Update',
+  Plane_Fix = 'Plane_Fix',
+  // BIAToolKit - End Partial Permission Plane
+  // BIAToolKit - Begin Partial Permission Engine
+  Engine_Create = 'Engine_Create',
+  Engine_Delete = 'Engine_Delete',
+  Engine_List_Access = 'Engine_List_Access',
+  Engine_Read = 'Engine_Read',
+  Engine_Save = 'Engine_Save',
+  Engine_Update = 'Engine_Update',
+  // BIAToolKit - End Partial Permission Engine
+  // End BIAToolKit Generation Ignore
+
   // Begin BIADemo
   AircraftMaintenanceCompany_Create = 'AircraftMaintenanceCompany_Create',
   AircraftMaintenanceCompany_Delete = 'AircraftMaintenanceCompany_Delete',
@@ -44,31 +64,12 @@ export enum Permission {
   MaintenanceTeam_Member_Create = 'MaintenanceTeam_Member_Create',
   MaintenanceTeam_Member_List_Access = 'MaintenanceTeam_Member_List_Access',
 
-  // BIAToolKit - Begin Partial Permission Plane
-  Plane_Create = 'Plane_Create',
-  Plane_Delete = 'Plane_Delete',
-  Plane_List_Access = 'Plane_List_Access',
-  Plane_Read = 'Plane_Read',
-  Plane_Save = 'Plane_Save',
-  Plane_Update = 'Plane_Update',
-  Plane_Fix = 'Plane_Fix',
-  // BIAToolKit - End Partial Permission Plane
-
   Airport_Create = 'Airport_Create',
   Airport_Delete = 'Airport_Delete',
   Airport_List_Access = 'Airport_List_Access',
   Airport_Read = 'Airport_Read',
   Airport_Save = 'Airport_Save',
   Airport_Update = 'Airport_Update',
-
-  // BIAToolKit - Begin Partial Permission Engine
-  Engine_Create = 'Engine_Create',
-  Engine_Delete = 'Engine_Delete',
-  Engine_List_Access = 'Engine_List_Access',
-  Engine_Read = 'Engine_Read',
-  Engine_Save = 'Engine_Save',
-  Engine_Update = 'Engine_Update',
-  // BIAToolKit - End Partial Permission Engine
 
   PlaneType_Create = 'PlaneType_Create',
   PlaneType_Delete = 'PlaneType_Delete',

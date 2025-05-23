@@ -16,6 +16,18 @@ export const NAVIGATION: BiaNavigation[] = [
   },
   // BIAToolKit - Begin Navigation
   // BIAToolKit - End Navigation
+
+  // Begin BIAToolKit Generation Ignore
+  // BIAToolKit - Begin Partial Navigation Plane
+  {
+    labelKey: 'app.planes',
+    permissions: [Permission.Plane_List_Access],
+    path: ['/planes'],
+    icon: 'pi pi-th-large',
+  },
+  // BIAToolKit - End Partial Navigation Plane
+  // End BIAToolKit Generation Ignore
+
   // Begin BIADemo
   {
     labelKey: 'app.aircraft-maintenance-companies',
@@ -35,14 +47,6 @@ export const NAVIGATION: BiaNavigation[] = [
     path: ['/maintenance-contracts'],
     icon: 'pi pi-clipboard',
   },
-  // BIAToolKit - Begin Partial Navigation Plane
-  {
-    labelKey: 'app.planes',
-    permissions: [Permission.Plane_List_Access],
-    path: ['/planes'],
-    icon: 'pi pi-th-large',
-  },
-  // BIAToolKit - End Partial Navigation Plane
   {
     labelKey: 'app.planesFullCode',
     permissions: [Permission.Plane_List_Access],

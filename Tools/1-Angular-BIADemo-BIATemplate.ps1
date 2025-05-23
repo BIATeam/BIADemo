@@ -35,25 +35,8 @@ function RemoveCodeExample {
   }	
 	
   Get-ChildItem -Path $Path -File | Where-Object { $_.FullName -NotLike "*.ps1" -and $_.FullName -NotLike "*.md" } | ForEach-Object { 
-    $lineBegin = @()
-    $file = $_.FullName
-  
-    $searchWord = 'Begin BIADemo'
-    $starts = GetLineNumber -pattern $searchWord -file $file
-    $lineBegin += $starts
-  
-    $searchWord = 'End BIADemo'
-    $ends = GetLineNumber -pattern $searchWord -file $file
-    $lineBegin += $ends
-  
-    if ($lineBegin -and $lineBegin.Length -gt 0) {
-      $lineBegin = $lineBegin | Sort-Object
-      for ($i = $lineBegin.Length - 1; $i -gt 0; $i = $i - 2) {
-        $start = [int]$lineBegin[$i - 1]
-        $end = [int]$lineBegin[$i]
-        DeleteLine -start $start -end $end -file $file
-      }
-    }
+    RemoveCodeBetweenMarkers -file $_.FullName -marker "BIADemo"
+    RemoveCodeBetweenMarkers -file $_.FullName -marker "BIAToolKit Generation Ignore"
   }
 }
 
