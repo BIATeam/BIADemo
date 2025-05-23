@@ -16,10 +16,12 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Specification;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+    using TheBIADevCompany.BIADemo.Domain.Bia.Base.Interface;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers;
     using TheBIADevCompany.BIADemo.Domain.User;
@@ -54,7 +56,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="principal">the user claims.</param>
         /// <returns>the Standard Read Specification.</returns>
         public static Specification<TTeam> ReadSpecification<TTeam>(TeamTypeId teamTypeId, IPrincipal principal)
-            where TTeam : Team
+            where TTeam : class, IEntity<int>, IEntityTeam
         {
             var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
             IEnumerable<string> currentUserPermissions = (principal as BiaClaimsPrincipal).GetUserPermissions();
@@ -75,7 +77,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="userId">the user id.</param>
         /// <returns>the Standard Read Specification.</returns>
         public static Specification<TTeam> ReadSpecification<TTeam>(TeamTypeId teamTypeId, UserDataDto userData, bool viewAll, int userId)
-             where TTeam : Team
+            where TTeam : class, IEntity<int>, IEntityTeam
         {
             // You can a team if your are member or have the viewAll permission
             Specification<TTeam> specification = new DirectSpecification<TTeam>(team => viewAll || team.Members.Any(m => m.UserId == userId));
@@ -123,7 +125,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="principal">the user claims.</param>
         /// <returns>the Standard Update Specification.</returns>
         public static Specification<TTeam> UpdateSpecification<TTeam>(TeamTypeId teamTypeId, IPrincipal principal)
-            where TTeam : Team
+            where TTeam : class, IEntity<int>, IEntityTeam
         {
             var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
             var currentTeamId = userData != null ? userData.GetCurrentTeamId((int)teamTypeId) : 0;
@@ -137,7 +139,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="getTeams">the list of teams.</param>
         /// <returns>list of teams casted in Team.</returns>
         public static Expression<Func<TTeam, IEnumerable<Team>>> Convert<TTeam>(Expression<Func<Team, IEnumerable<Team>>> getTeams)
-            where TTeam : Team
+            where TTeam : class, IEntity<int>, IEntityTeam
         {
             var typeConverter = (Expression<Func<TTeam, Team>>)(team => team as Team);
 
@@ -151,7 +153,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="getTeam">the team.</param>
         /// <returns>team casted in Team.</returns>
         public static Expression<Func<TTeam, Team>> Convert<TTeam>(Expression<Func<Team, Team>> getTeam)
-            where TTeam : Team
+            where TTeam : class, IEntity<int>, IEntityTeam
         {
             var typeConverter = (Expression<Func<TTeam, Team>>)(team => team as Team);
 
@@ -166,7 +168,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="userId">the user Id.</param>
         /// <returns>expresion that return true if user is member of the team.</returns>
         public static Expression<Func<TTeam, bool>> IsMemberOfTeam<TTeam>(Expression<Func<TTeam, Team>> getTeam, int userId)
-            where TTeam : Team
+            where TTeam : class, IEntity<int>, IEntityTeam
         {
             var isMember = (Expression<Func<Team, bool>>)(team => team.Members.Any(b => b.UserId == userId));
 
@@ -181,7 +183,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="userId">the user Id.</param>
         /// <returns>expresion that return true if user is member of one of the teams.</returns>
         public static Expression<Func<TTeam, bool>> IsMemberOfOneOfTeams<TTeam>(Expression<Func<TTeam, IEnumerable<Team>>> getTeams, int userId)
-             where TTeam : Team
+             where TTeam : class, IEntity<int>, IEntityTeam
         {
             var isMemberOfOne = (Expression<Func<IEnumerable<Team>, bool>>)(teams => teams.Any(a => a.Members.Any(b => b.UserId == userId)));
 
@@ -196,7 +198,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="teamId">the team Id to check.</param>
         /// <returns>expresion that return true if the team id correspond.</returns>
         public static Expression<Func<TTeam, bool>> IsCorrectId<TTeam>(Expression<Func<TTeam, Team>> getTeam, int teamId)
-            where TTeam : Team
+            where TTeam : class, IEntity<int>, IEntityTeam
         {
             var isCorrectId = (Expression<Func<Team, bool>>)(team => team.Id == teamId);
 

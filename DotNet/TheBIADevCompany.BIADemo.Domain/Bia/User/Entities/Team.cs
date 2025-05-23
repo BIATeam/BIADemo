@@ -23,7 +23,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Entities
         /// <summary>
         /// Gets or sets the team type.
         /// </summary>
-        public TeamType TeamType { get; set; }
+        public virtual TeamType TeamType { get; set; }
 
         /// <summary>
         /// Gets or sets the team type id.

@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.Base.Mappers
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Formats.Asn1;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Security.Principal;
@@ -16,10 +17,10 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.Base.Mappers
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Bia.Base.Interface;
     using TheBIADevCompany.BIADemo.Domain.Bia.User;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.User;
 
     /// <summary>
@@ -29,7 +30,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.Base.Mappers
     /// <typeparam name="TTeam">Type for the Team.</typeparam>
     public class BaseTeamMapper<TTeamDto, TTeam> : BasePrincipalMapper<TTeamDto, TTeam, int>
         where TTeamDto : BaseDtoVersionedTeam, new()
-        where TTeam : Team, new()
+        where TTeam : class, IEntity<int>, IEntityTeam, new()
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseTeamMapper{TTeamDto, TTeam}"/> class.
