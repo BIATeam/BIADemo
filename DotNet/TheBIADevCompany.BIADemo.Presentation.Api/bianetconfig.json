@@ -219,34 +219,6 @@
         "Names": [ "Hangfire_Run_Worker", "Hangfire_Access" ],
         "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
       },
-      // Plane
-      {
-        "Names": [ "Plane_List_Access", "Plane_Read" ],
-        "Roles": [ "Admin", "Site_Member" ]
-      },
-      {
-        "Names": [ "Plane_Update", "Plane_Save", "Plane_Fix" ],
-        "Roles": [ "Site_Admin" ]
-      },
-      {
-        "Names": [ "Plane_Create", "Plane_Delete" ],
-        "Roles": [ "Site_Admin" ]
-      },
-      // BIAToolKit - Begin Partial Config Engine
-      // Engine
-      {
-        "Names": [ "Engine_List_Access", "Engine_Read" ],
-        "Roles": [ "Admin", "Site_Member" ]
-      },
-      {
-        "Names": [ "Engine_Update", "Engine_Save" ],
-        "Roles": [ "Site_Admin" ]
-      },
-      {
-        "Names": [ "Engine_Create", "Engine_Delete" ],
-        "Roles": [ "Site_Admin" ]
-      },
-      // BIAToolKit - End Partial Config Engine
       // Part
       {
         "Name": "Part_Options",
