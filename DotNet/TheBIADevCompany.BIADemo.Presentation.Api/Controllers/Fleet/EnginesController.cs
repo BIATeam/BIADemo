@@ -125,7 +125,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 var createdDto = await this.engineService.AddAsync(dto);
 #if UseHubForClientInEngine
-                _ = this.clientForHubService.SendTargetedMessage(createdDto.PlaneId.ToString(), "engines", "refresh-engines");
+                await this.clientForHubService.SendTargetedMessage(createdDto.PlaneId.ToString(), "engines", "refresh-engines");
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
@@ -159,7 +159,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 var updatedDto = await this.engineService.UpdateAsync(dto);
 #if UseHubForClientInEngine
-                _ = this.clientForHubService.SendTargetedMessage(updatedDto.PlaneId.ToString(), "engines", "refresh-engines");
+                await this.clientForHubService.SendTargetedMessage(updatedDto.PlaneId.ToString(), "engines", "refresh-engines");
 #endif
                 return this.Ok(updatedDto);
             }
@@ -199,7 +199,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 var deletedDto = await this.engineService.RemoveAsync(id);
 #if UseHubForClientInEngine
-                _ = this.clientForHubService.SendTargetedMessage(deletedDto.PlaneId.ToString(), "engines", "refresh-engines");
+                await this.clientForHubService.SendTargetedMessage(deletedDto.PlaneId.ToString(), "engines", "refresh-engines");
 #endif
                 return this.Ok();
             }
@@ -231,9 +231,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 var deletedDtos = await this.engineService.RemoveAsync(ids);
 #if UseHubForClientInEngine
-                deletedDtos.Select(m => m.PlaneId).Distinct().ToList().ForEach(parentId =>
+                deletedDtos.Select(m => m.PlaneId).Distinct().ToList().ForEach(async parentId =>
                 {
-                    _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "engines", "refresh-engines");
+                    await this.clientForHubService.SendTargetedMessage(parentId.ToString(), "engines", "refresh-engines");
                 });
 #endif
                 return this.Ok();
@@ -268,9 +268,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 var savedDtos = await this.engineService.SaveAsync(dtoList);
 #if UseHubForClientInEngine
-                savedDtos.Select(m => m.PlaneId).Distinct().ToList().ForEach(parentId =>
+                savedDtos.Select(m => m.PlaneId).Distinct().ToList().ForEach(async parentId =>
                 {
-                    _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "engines", "refresh-engines");
+                    await this.clientForHubService.SendTargetedMessage(parentId.ToString(), "engines", "refresh-engines");
                 });
 #endif
                 return this.Ok();
