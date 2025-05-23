@@ -6,13 +6,14 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Entities
 {
     using System.Collections.Generic;
     using BIA.Net.Core.Domain.Entity;
+    using TheBIADevCompany.BIADemo.Domain.Bia.Base.Interface;
     using TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities;
     using TheBIADevCompany.BIADemo.Domain.Bia.View.Entities;
 
     /// <summary>
     /// The team.
     /// </summary>
-    public class Team : BaseEntityVersioned<int>
+    public class Team : BaseEntityVersioned<int>, IEntityTeam
     {
         /// <summary>
         /// Gets or sets the title.
@@ -22,7 +23,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Entities
         /// <summary>
         /// Gets or sets the team type.
         /// </summary>
-        public virtual TeamType TeamType { get; set; }
+        public TeamType TeamType { get; set; }
 
         /// <summary>
         /// Gets or sets the team type id.

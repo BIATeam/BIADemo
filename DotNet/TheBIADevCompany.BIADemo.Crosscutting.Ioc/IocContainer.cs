@@ -108,7 +108,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 assemblyName: "TheBIADevCompany.BIADemo.Domain",
                 serviceLifetime: ServiceLifetime.Transient);
 
-            Type templateType = typeof(BaseMapper<,,>);
+            Type templateType = typeof(BiaBaseMapper<,,>);
             Assembly assembly = Assembly.Load("TheBIADevCompany.BIADemo.Domain");
             List<Type> derivedTypes = ReflectiveEnumerator.GetDerivedTypes(assembly, templateType);
             foreach (var type in derivedTypes)

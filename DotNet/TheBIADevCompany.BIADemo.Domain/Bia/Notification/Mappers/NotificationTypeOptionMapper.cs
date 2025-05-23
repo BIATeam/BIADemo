@@ -11,6 +11,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.Notification.Mappers
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.Service;
+    using TheBIADevCompany.BIADemo.Domain.Bia.Base.Mappers;
     using TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities;
 
     /// <summary>

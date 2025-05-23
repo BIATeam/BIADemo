@@ -1,4 +1,4 @@
-﻿// <copyright file="BaseMapper.cs" company="BIA">
+﻿// <copyright file="BaseBiaMapper.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -25,7 +25,7 @@ namespace BIA.Net.Core.Domain.Mapper
     /// <typeparam name="TDto">The DTO type.</typeparam>
     /// <typeparam name="TEntity">The entity type.</typeparam>
     /// <typeparam name="TKey">The type of the key.</typeparam>
-    public abstract class BaseMapper<TDto, TEntity, TKey> : BaseEntityMapper<TEntity>
+    public abstract class BiaBaseMapper<TDto, TEntity, TKey> : BaseEntityMapper<TEntity>
         where TDto : BaseDto<TKey>
         where TEntity : class, IEntity<TKey>, new()
     {
@@ -45,9 +45,9 @@ namespace BIA.Net.Core.Domain.Mapper
         private readonly bool isArchivable;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseMapper{TDto, TEntity, TKey}"/> class.
+        /// Initializes a new instance of the <see cref="BiaBaseMapper{TDto, TEntity, TKey}"/> class.
         /// </summary>
-        protected BaseMapper()
+        protected BiaBaseMapper()
             : base()
         {
             if (typeof(IEntityFixable).IsAssignableFrom(typeof(TEntity)) && typeof(IDtoFixable).IsAssignableFrom(typeof(TDto)))
@@ -103,7 +103,7 @@ namespace BIA.Net.Core.Domain.Mapper
         public static void MapEmbeddedItemToEntityCollection<TEmbeddedDto, TEmbeddedEntity>(
             ICollection<TEmbeddedDto> dtoCollection,
             ICollection<TEmbeddedEntity> entityCollection,
-            BaseMapper<TEmbeddedDto, TEmbeddedEntity, int> mapper)
+            BiaBaseMapper<TEmbeddedDto, TEmbeddedEntity, int> mapper)
             where TEmbeddedDto : BaseDto<int>
             where TEmbeddedEntity : class, IEntity<int>, new()
         {

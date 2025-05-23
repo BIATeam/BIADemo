@@ -32,8 +32,8 @@ namespace BIA.Net.Core.Application.Services
         where TDtoListItem : BaseDto<TKey>, new()
         where TEntity : class, IEntity<TKey>, new()
         where TFilterDto : LazyLoadDto, new()
-        where TMapper : BaseMapper<TDto, TEntity, TKey>
-        where TMapperListItem : BaseMapper<TDtoListItem, TEntity, TKey>
+        where TMapper : BiaBaseMapper<TDto, TEntity, TKey>
+        where TMapperListItem : BiaBaseMapper<TDtoListItem, TEntity, TKey>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CrudAppServiceListAndItemBase{TDto, TDtoListItem, TEntity, TKey, TFilterDto, TMapper, TMapperListItem}"/> class.
