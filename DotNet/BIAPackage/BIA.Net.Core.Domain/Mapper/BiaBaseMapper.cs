@@ -1,4 +1,4 @@
-﻿// <copyright file="BaseBiaMapper.cs" company="BIA">
+﻿// <copyright file="BiaBaseMapper.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -6,8 +6,6 @@ namespace BIA.Net.Core.Domain.Mapper
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Common;
@@ -15,9 +13,7 @@ namespace BIA.Net.Core.Domain.Mapper
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Base.Interface;
-    using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Entity.Interface;
-    using Microsoft.VisualBasic;
 
     /// <summary>
     /// The class used to define the base mapper.
