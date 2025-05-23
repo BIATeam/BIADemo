@@ -83,8 +83,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         [Authorize(Roles = Rights.Users.Options)]
         public async Task<IActionResult> GetAllOptions(string filter = null)
         {
-            var results = await userService.GetAllOptionsAsync(filter);
-            return Ok(results);
+            var results = await this.userService.GetAllOptionsAsync(filter);
+            return this.Ok(results);
         }
 
         /// <summary>
@@ -97,9 +97,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         [Authorize(Roles = Rights.Users.ListAccess)]
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
-            var (results, total) = await userService.GetRangeAsync(filters);
-            HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
-            return Ok(results);
+            var (results, total) = await this.userService.GetRangeAsync(filters);
+            this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
+            return this.Ok(results);
         }
 
         /// <summary>
@@ -115,27 +115,27 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAllFromAD(string filter, string ldapName = null, int returnSize = 10)
         {
-            if (filter.Contains('\n') || ldapName != null && ldapName.Contains('\n'))
+            if (filter.Contains('\n') || (ldapName != null && ldapName.Contains('\n')))
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
             IEnumerable<UserFromDirectoryDto> results = default;
 
-            if (configuration?.Authentication?.Keycloak?.IsActive == true)
+            if (this.configuration?.Authentication?.Keycloak?.IsActive == true)
             {
-                results = await userService.GetAllIdpUserAsync(filter: filter, first: 0, max: returnSize);
+                results = await this.userService.GetAllIdpUserAsync(filter: filter, first: 0, max: returnSize);
             }
             else
             {
-                results = await userService.GetAllADUserAsync(filter, ldapName, returnSize);
+                results = await this.userService.GetAllADUserAsync(filter, ldapName, returnSize);
             }
 
             int resultCount = results.Count();
 
-            HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, resultCount.ToString());
+            this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, resultCount.ToString());
 
-            return Ok(results);
+            return this.Ok(results);
         }
 
         /// <summary>
@@ -153,17 +153,17 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         {
             if (id == 0)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
             try
             {
-                var dto = await userService.GetAsync(id);
-                return Ok(dto);
+                var dto = await this.userService.GetAsync(id);
+                return this.Ok(dto);
             }
             catch (ElementNotFoundException)
             {
-                return NotFound();
+                return this.NotFound();
             }
         }
 
@@ -183,20 +183,20 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         {
             try
             {
-                ResultAddUsersFromDirectoryDto result = await userService.AddByIdentityKeyAsync(dto);
+                ResultAddUsersFromDirectoryDto result = await this.userService.AddByIdentityKeyAsync(dto);
 #if UseHubForClientInUser
                 _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");
 #endif
                 if (result.Errors.Any())
                 {
-                    return StatusCode(StatusCodes.Status422UnprocessableEntity, result.Errors);
+                    return this.StatusCode(StatusCodes.Status422UnprocessableEntity, result.Errors);
                 }
 
-                return Ok(result.UsersAddedDtos);
+                return this.Ok(result.UsersAddedDtos);
             }
             catch (ArgumentNullException)
             {
-                return ValidationProblem();
+                return this.ValidationProblem();
             }
         }
 
@@ -211,16 +211,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         [Authorize(Roles = Rights.Users.Add)]
         public async Task<IActionResult> Add([FromBody] IEnumerable<UserFromDirectoryDto> users)
         {
-            ResultAddUsersFromDirectoryDto result = await userService.AddFromDirectory(users);
+            ResultAddUsersFromDirectoryDto result = await this.userService.AddFromDirectory(users);
 #if UseHubForClientInUser
             _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");
 #endif
             if (result.Errors.Any())
             {
-                return StatusCode(303, result.Errors);
+                return this.StatusCode(303, result.Errors);
             }
 
-            return Ok(result.UsersAddedDtos);
+            return this.Ok(result.UsersAddedDtos);
         }
 
         /// <summary>
@@ -240,28 +240,28 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         {
             if (id == 0 || dto == null || dto.Id != id)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
             try
             {
-                var updatedDto = await userService.UpdateAsync(dto, mapperMode: "Roles");
+                var updatedDto = await this.userService.UpdateAsync(dto, mapperMode: "Roles");
 #if UseHubForClientInUser
                 _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");
 #endif
-                return Ok(updatedDto);
+                return this.Ok(updatedDto);
             }
             catch (ArgumentNullException)
             {
-                return ValidationProblem();
+                return this.ValidationProblem();
             }
             catch (ElementNotFoundException)
             {
-                return NotFound();
+                return this.NotFound();
             }
             catch (OutdateException)
             {
-                return Conflict();
+                return this.Conflict();
             }
         }
 
@@ -295,16 +295,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         {
             if (id == 0)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
-            var error = await userService.RemoveInGroupAsync(id);
+            var error = await this.userService.RemoveInGroupAsync(id);
             if (error != string.Empty)
             {
-                return Problem(error);
+                return this.Problem(error);
             }
 
-            return Ok();
+            return this.Ok();
         }
 
         /// <summary>
@@ -322,14 +322,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         {
             if (ids?.Any() != true)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
             StringBuilder sb = new StringBuilder();
 
             foreach (int id in ids)
             {
-                var error = await userService.RemoveInGroupAsync(id);
+                var error = await this.userService.RemoveInGroupAsync(id);
                 if (error != string.Empty)
                 {
                     sb.Append(error);
@@ -341,10 +341,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
             var errors = sb.ToString();
             if (!string.IsNullOrEmpty(errors))
             {
-                return Problem(errors);
+                return this.Problem(errors);
             }
 
-            return Ok();
+            return this.Ok();
         }
 
         /// <summary>
@@ -364,31 +364,31 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
             var dtoList = dtos.ToList();
             if (!dtoList.Any())
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
             try
             {
-                string errorMessage = await userService.SaveAsync(dtoList);
+                string errorMessage = await this.userService.SaveAsync(dtoList);
 #if UseHubForClientInUser
                 _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");
 #endif
                 if (!string.IsNullOrEmpty(errorMessage))
                 {
-                    return StatusCode(StatusCodes.Status422UnprocessableEntity, errorMessage);
+                    return this.StatusCode(StatusCodes.Status422UnprocessableEntity, errorMessage);
                 }
                 else
                 {
-                    return Ok();
+                    return this.Ok();
                 }
             }
             catch (ArgumentNullException)
             {
-                return ValidationProblem();
+                return this.ValidationProblem();
             }
             catch (ElementNotFoundException)
             {
-                return NotFound();
+                return this.NotFound();
             }
         }
 
@@ -402,19 +402,19 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         [Authorize(Roles = Rights.Users.Sync)]
         public async Task<IActionResult> Synchronize(bool fullSynchro = false)
         {
-            if (configuration?.Authentication?.Keycloak?.IsActive == true)
+            if (this.configuration?.Authentication?.Keycloak?.IsActive == true)
             {
-                await userService.SynchronizeWithIdpAsync();
+                await this.userService.SynchronizeWithIdpAsync();
             }
             else
             {
-                await userService.SynchronizeWithADAsync(fullSynchro);
+                await this.userService.SynchronizeWithADAsync(fullSynchro);
             }
 
 #if UseHubForClientInUser
             _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");
 #endif
-            return Ok();
+            return this.Ok();
         }
 
         /// <summary>
@@ -426,8 +426,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         [Authorize(Roles = Rights.Users.ListAccess)]
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
-            byte[] buffer = await userService.GetCsvAsync(filters);
-            return File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Planes{BiaConstants.Csv.Extension}");
+            byte[] buffer = await this.userService.GetCsvAsync(filters);
+            return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Planes{BiaConstants.Csv.Extension}");
         }
     }
 }

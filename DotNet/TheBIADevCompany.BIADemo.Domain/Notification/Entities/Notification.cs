@@ -2,13 +2,12 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-using TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities;
-
 namespace TheBIADevCompany.BIADemo.Domain.Notification.Entities
 {
     using System;
     using System.Collections.Generic;
     using BIA.Net.Core.Domain.Entity;
+    using TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities;
     using TheBIADevCompany.BIADemo.Domain.Bia.Translation.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
 

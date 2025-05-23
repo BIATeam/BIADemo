@@ -37,12 +37,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features.Bia
         {
             Audit.Core.Configuration.AuditDisabled = true;
             AuditConfiguration auditConfiguration = commonFeaturesConfigurationOptions.Value.AuditConfiguration;
-            isActive = auditConfiguration?.IsActive == true;
+            this.isActive = auditConfiguration?.IsActive == true;
 
             // Audit
-            if (isActive)
+            if (this.isActive)
             {
-                UseAuditFeatures(serviceProvider);
+                this.UseAuditFeatures(serviceProvider);
                 Audit.Core.Configuration.AuditDisabled = false;
 
                 // Log some Audit in dedicated table and all other in AuditLog
@@ -100,7 +100,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features.Bia
         /// <param name="serviceProvider">The serviceProvider.</param>
         public void UseAuditFeatures(IServiceProvider serviceProvider)
         {
-            if (isActive)
+            if (this.isActive)
             {
                 Audit.Core.Configuration.AddOnSavingAction(scope =>
                 {

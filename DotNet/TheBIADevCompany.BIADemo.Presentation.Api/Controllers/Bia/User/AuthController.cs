@@ -71,7 +71,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
                 IsFirstLogin = true,
             };
 
-            return await LoginOnTeams(loginParam);
+            return await this.LoginOnTeams(loginParam);
         }
 
         /// <summary>
@@ -90,21 +90,21 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         {
             try
             {
-                AuthInfoDto<AdditionalInfoDto> authInfo = await authService.LoginOnTeamsAsync(loginParam);
+                AuthInfoDto<AdditionalInfoDto> authInfo = await this.authService.LoginOnTeamsAsync(loginParam);
 
-                return Ok(authInfo);
+                return this.Ok(authInfo);
             }
             catch (UnauthorizedException ex)
             {
-                return Unauthorized(ex.Message);
+                return this.Unauthorized(ex.Message);
             }
             catch (BadRequestException ex)
             {
-                return BadRequest(ex.Message);
+                return this.BadRequest(ex.Message);
             }
             catch (ForbiddenException ex)
             {
-                return Forbid(ex.Message);
+                return this.Forbid(ex.Message);
             }
         }
 
@@ -116,7 +116,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         [ProducesResponseType<string>(StatusCodes.Status200OK)]
         public IActionResult GetFrontEndVersion()
         {
-            return Ok(Constants.Application.FrontEndVersion);
+            return this.Ok(Constants.Application.FrontEndVersion);
         }
 #endif
 #if BIA_BACK_TO_BACK_AUTH
@@ -133,20 +133,20 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         {
             try
             {
-                string token = await authService.LoginAsync();
-                return Ok(token);
+                string token = await this.authService.LoginAsync();
+                return this.Ok(token);
             }
             catch (UnauthorizedException ex)
             {
-                return Unauthorized(ex.Message);
+                return this.Unauthorized(ex.Message);
             }
             catch (BadRequestException ex)
             {
-                return BadRequest(ex.Message);
+                return this.BadRequest(ex.Message);
             }
             catch (ForbiddenException ex)
             {
-                return Forbid(ex.Message);
+                return this.Forbid(ex.Message);
             }
         }
 #endif

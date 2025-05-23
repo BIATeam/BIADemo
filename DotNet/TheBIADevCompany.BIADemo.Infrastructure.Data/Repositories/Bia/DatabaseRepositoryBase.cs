@@ -41,7 +41,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories.Bia
         /// <returns><see cref="DbSet{TEntity}"/> as no tracking.</returns>
         protected override DbSet<TEntity> RetrieveSetNoTracking()
         {
-            return dataContextFactory.GetQueryableUnitOfWorkNoTracking(databaseConfigurationKey).RetrieveSet<TEntity>();
+            return this.dataContextFactory.GetQueryableUnitOfWorkNoTracking(this.databaseConfigurationKey).RetrieveSet<TEntity>();
         }
     }
 }

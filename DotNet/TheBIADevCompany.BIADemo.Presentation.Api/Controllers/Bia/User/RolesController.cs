@@ -46,8 +46,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         [Authorize(Roles = Rights.Roles.Options)]
         public async Task<IActionResult> GetAllOptions(int teamTypeId)
         {
-            var results = await roleService.GetAllOptionsAsync(teamTypeId);
-            return Ok(results);
+            var results = await this.roleService.GetAllOptionsAsync(teamTypeId);
+            return this.Ok(results);
         }
     }
 }
