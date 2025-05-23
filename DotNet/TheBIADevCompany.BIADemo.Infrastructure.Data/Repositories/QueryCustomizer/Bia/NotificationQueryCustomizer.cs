@@ -2,13 +2,13 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories.QueryCustomizer
+namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories.QueryCustomizer.Bia
 {
     using System.Linq;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using Microsoft.EntityFrameworkCore;
-    using TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities;
     using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract;
+    using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
 
     /// <summary>
     /// Class use to customize the EF request on Member entity.

@@ -2,7 +2,7 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
+namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features.Bia
 {
     using System;
     using System.Security.Principal;
@@ -37,12 +37,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
         {
             Audit.Core.Configuration.AuditDisabled = true;
             AuditConfiguration auditConfiguration = commonFeaturesConfigurationOptions.Value.AuditConfiguration;
-            this.isActive = auditConfiguration?.IsActive == true;
+            isActive = auditConfiguration?.IsActive == true;
 
             // Audit
-            if (this.isActive)
+            if (isActive)
             {
-                this.UseAuditFeatures(serviceProvider);
+                UseAuditFeatures(serviceProvider);
                 Audit.Core.Configuration.AuditDisabled = false;
 
                 // Log some Audit in dedicated table and all other in AuditLog
@@ -100,7 +100,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
         /// <param name="serviceProvider">The serviceProvider.</param>
         public void UseAuditFeatures(IServiceProvider serviceProvider)
         {
-            if (this.isActive)
+            if (isActive)
             {
                 Audit.Core.Configuration.AddOnSavingAction(scope =>
                 {

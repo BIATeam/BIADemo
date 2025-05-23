@@ -3,7 +3,7 @@
 // </copyright>
 // #define UseHubForClientInTeam
 
-namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
+namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
 {
     using System;
     using System.Collections.Generic;
@@ -81,8 +81,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         [Authorize(Roles = Rights.Teams.Options)]
         public async Task<IActionResult> GetAllOptions()
         {
-            var results = await this.teamService.GetAllOptionsAsync();
-            return this.Ok(results);
+            var results = await teamService.GetAllOptionsAsync();
+            return Ok(results);
         }
 
         /// <summary>
@@ -96,8 +96,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         [Authorize(Roles = Rights.Teams.ListAccess)]
         public async Task<IActionResult> GetAll()
         {
-            var results = await this.teamService.GetAllAsync();
-            return this.Ok(results);
+            var results = await teamService.GetAllAsync();
+            return Ok(results);
         }
 
         /// <summary>
@@ -116,21 +116,21 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         {
             if (teamId == 0 || teamTypeId == 0)
             {
-                return this.BadRequest();
+                return BadRequest();
             }
 
             try
             {
-                await this.userService.SetDefaultTeamAsync(teamId, teamTypeId);
-                return this.Ok();
+                await userService.SetDefaultTeamAsync(teamId, teamTypeId);
+                return Ok();
             }
             catch (ArgumentNullException)
             {
-                return this.ValidationProblem();
+                return ValidationProblem();
             }
             catch (ElementNotFoundException)
             {
-                return this.NotFound();
+                return NotFound();
             }
         }
 
@@ -149,21 +149,21 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         {
             if (teamTypeId == 0)
             {
-                return this.BadRequest();
+                return BadRequest();
             }
 
             try
             {
-                await this.userService.ResetDefaultTeamAsync(teamTypeId);
-                return this.Ok();
+                await userService.ResetDefaultTeamAsync(teamTypeId);
+                return Ok();
             }
             catch (ArgumentNullException)
             {
-                return this.ValidationProblem();
+                return ValidationProblem();
             }
             catch (ElementNotFoundException)
             {
-                return this.NotFound();
+                return NotFound();
             }
         }
 
@@ -183,21 +183,21 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         {
             if (teamId == 0)
             {
-                return this.BadRequest();
+                return BadRequest();
             }
 
             try
             {
-                await this.memberService.SetDefaultRoleAsync(teamId, roleIds);
-                return this.Ok();
+                await memberService.SetDefaultRoleAsync(teamId, roleIds);
+                return Ok();
             }
             catch (ArgumentNullException)
             {
-                return this.ValidationProblem();
+                return ValidationProblem();
             }
             catch (ElementNotFoundException)
             {
-                return this.NotFound();
+                return NotFound();
             }
         }
 
@@ -216,21 +216,21 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         {
             if (teamId == 0)
             {
-                return this.BadRequest();
+                return BadRequest();
             }
 
             try
             {
-                await this.memberService.ResetDefaultRoleAsync(teamId);
-                return this.Ok();
+                await memberService.ResetDefaultRoleAsync(teamId);
+                return Ok();
             }
             catch (ArgumentNullException)
             {
-                return this.ValidationProblem();
+                return ValidationProblem();
             }
             catch (ElementNotFoundException)
             {
-                return this.NotFound();
+                return NotFound();
             }
         }
     }

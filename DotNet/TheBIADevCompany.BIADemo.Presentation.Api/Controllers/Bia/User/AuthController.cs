@@ -2,7 +2,7 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
+namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
 {
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Enum;
@@ -71,7 +71,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                 IsFirstLogin = true,
             };
 
-            return await this.LoginOnTeams(loginParam);
+            return await LoginOnTeams(loginParam);
         }
 
         /// <summary>
@@ -90,21 +90,21 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         {
             try
             {
-                AuthInfoDto<AdditionalInfoDto> authInfo = await this.authService.LoginOnTeamsAsync(loginParam);
+                AuthInfoDto<AdditionalInfoDto> authInfo = await authService.LoginOnTeamsAsync(loginParam);
 
-                return this.Ok(authInfo);
+                return Ok(authInfo);
             }
             catch (UnauthorizedException ex)
             {
-                return this.Unauthorized(ex.Message);
+                return Unauthorized(ex.Message);
             }
             catch (BadRequestException ex)
             {
-                return this.BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
             catch (ForbiddenException ex)
             {
-                return this.Forbid(ex.Message);
+                return Forbid(ex.Message);
             }
         }
 
@@ -116,7 +116,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         [ProducesResponseType<string>(StatusCodes.Status200OK)]
         public IActionResult GetFrontEndVersion()
         {
-            return this.Ok(Constants.Application.FrontEndVersion);
+            return Ok(Constants.Application.FrontEndVersion);
         }
 #endif
 #if BIA_BACK_TO_BACK_AUTH
@@ -133,20 +133,20 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         {
             try
             {
-                string token = await this.authService.LoginAsync();
-                return this.Ok(token);
+                string token = await authService.LoginAsync();
+                return Ok(token);
             }
             catch (UnauthorizedException ex)
             {
-                return this.Unauthorized(ex.Message);
+                return Unauthorized(ex.Message);
             }
             catch (BadRequestException ex)
             {
-                return this.BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
             catch (ForbiddenException ex)
             {
-                return this.Forbid(ex.Message);
+                return Forbid(ex.Message);
             }
         }
 #endif

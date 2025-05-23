@@ -2,7 +2,9 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities
+using TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities;
+
+namespace TheBIADevCompany.BIADemo.Domain.Notification.Entities
 {
     using System;
     using System.Collections.Generic;

@@ -4,7 +4,7 @@
 // #define UseHubForClientInMember
 // #define UseHubForClientInUser
 
-namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
+namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
 {
     using System;
     using System.Collections.Generic;
@@ -104,19 +104,19 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         {
             if (filters.ParentIds != null && filters.ParentIds.Length > 0 && filters.ParentIds[0] != null)
             {
-                if (!this.IsAuthorizeForTeam(int.Parse(filters.ParentIds[0]), Rights.Members.ListAccessSuffix).Result)
+                if (!IsAuthorizeForTeam(int.Parse(filters.ParentIds[0]), Rights.Members.ListAccessSuffix).Result)
                 {
-                    return this.StatusCode(StatusCodes.Status403Forbidden);
+                    return StatusCode(StatusCodes.Status403Forbidden);
                 }
             }
             else
             {
-                return this.StatusCode(StatusCodes.Status403Forbidden);
+                return StatusCode(StatusCodes.Status403Forbidden);
             }
 
-            var (results, total) = await this.memberService.GetRangeByTeamAsync(filters);
-            this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
-            return this.Ok(results);
+            var (results, total) = await memberService.GetRangeByTeamAsync(filters);
+            HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
+            return Ok(results);
         }
 
         /// <summary>
@@ -134,22 +134,22 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         {
             if (id == 0)
             {
-                return this.BadRequest();
+                return BadRequest();
             }
 
             try
             {
-                var dto = await this.memberService.GetAsync(id);
-                if (!this.IsAuthorizeForTeam(dto.TeamId, Rights.Members.ReadSuffix).Result)
+                var dto = await memberService.GetAsync(id);
+                if (!IsAuthorizeForTeam(dto.TeamId, Rights.Members.ReadSuffix).Result)
                 {
-                    return this.StatusCode(StatusCodes.Status403Forbidden);
+                    return StatusCode(StatusCodes.Status403Forbidden);
                 }
 
-                return this.Ok(dto);
+                return Ok(dto);
             }
             catch (ElementNotFoundException)
             {
-                return this.NotFound();
+                return NotFound();
             }
         }
 
@@ -169,36 +169,36 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         {
             try
             {
-                if (!this.IsAuthorizeForTeam(dto.TeamId, Rights.Members.CreateSuffix).Result)
+                if (!IsAuthorizeForTeam(dto.TeamId, Rights.Members.CreateSuffix).Result)
                 {
-                    return this.StatusCode(StatusCodes.Status403Forbidden);
+                    return StatusCode(StatusCodes.Status403Forbidden);
                 }
 
                 if (dto.User == null && string.IsNullOrEmpty(dto.Login))
                 {
-                    return this.BadRequest();
+                    return BadRequest();
                 }
 
                 // Specific Code to add user if required
-                var addUserResult = await this.AddUserIfRequired(dto);
+                var addUserResult = await AddUserIfRequired(dto);
                 if (addUserResult != null)
                 {
                     return addUserResult;
                 }
 
-                var createdDto = await this.memberService.AddAsync(dto);
+                var createdDto = await memberService.AddAsync(dto);
 #if UseHubForClientInMember
                 await this.clientForHubService.SendTargetedMessage(createdDto.TeamId.ToString(), "members", "refresh-members");
 #endif
-                return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
+                return CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
             catch (ArgumentNullException)
             {
-                return this.ValidationProblem();
+                return ValidationProblem();
             }
             catch (InvalidOperationException)
             {
-                return this.UnprocessableEntity(ErrorMessage.GetMessage(ErrorId.MemberAlreadyExists, this.userContextService.GetLanguageId()));
+                return UnprocessableEntity(ErrorMessage.GetMessage(ErrorId.MemberAlreadyExists, userContextService.GetLanguageId()));
             }
         }
 
@@ -216,22 +216,22 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         {
             try
             {
-                if (!this.IsAuthorizeForTeam(dtos.TeamId, Rights.Members.CreateSuffix).Result)
+                if (!IsAuthorizeForTeam(dtos.TeamId, Rights.Members.CreateSuffix).Result)
                 {
-                    return this.StatusCode(StatusCodes.Status403Forbidden);
+                    return StatusCode(StatusCodes.Status403Forbidden);
                 }
 
 #pragma warning disable S1481 // Unused local variables should be removed
-                var savedDtos = await this.memberService.AddUsers(dtos);
+                var savedDtos = await memberService.AddUsers(dtos);
 #pragma warning restore S1481 // Unused local variables should be removed
 #if UseHubForClientInMember
                 _ = this.clientForHubService.SendTargetedMessage(dtos.TeamId.ToString(), "members", "refresh-members");
 #endif
-                return this.Ok();
+                return Ok();
             }
             catch (ArgumentNullException)
             {
-                return this.ValidationProblem();
+                return ValidationProblem();
             }
         }
 
@@ -251,41 +251,41 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         {
             if (id == 0 || dto == null || dto.Id != id)
             {
-                return this.BadRequest();
+                return BadRequest();
             }
 
             try
             {
-                if (!this.IsAuthorizeForTeam(dto.TeamId, Rights.Members.UpdateSuffix).Result)
+                if (!IsAuthorizeForTeam(dto.TeamId, Rights.Members.UpdateSuffix).Result)
                 {
-                    return this.StatusCode(StatusCodes.Status403Forbidden);
+                    return StatusCode(StatusCodes.Status403Forbidden);
                 }
 
                 if (dto.User == null && string.IsNullOrEmpty(dto.Login))
                 {
-                    return this.BadRequest();
+                    return BadRequest();
                 }
 
                 // Specific Code to add user if required
-                var addUserResult = await this.AddUserIfRequired(dto);
+                var addUserResult = await AddUserIfRequired(dto);
                 if (addUserResult != null)
                 {
                     return addUserResult;
                 }
 
-                var updatedDto = await this.memberService.UpdateAsync(dto);
+                var updatedDto = await memberService.UpdateAsync(dto);
 #if UseHubForClientInMember
                 await this.clientForHubService.SendTargetedMessage(updatedDto.TeamId.ToString(), "members", "refresh-members");
 #endif
-                return this.Ok(updatedDto);
+                return Ok(updatedDto);
             }
             catch (ArgumentNullException)
             {
-                return this.ValidationProblem();
+                return ValidationProblem();
             }
             catch (ElementNotFoundException)
             {
-                return this.NotFound();
+                return NotFound();
             }
         }
 
@@ -304,28 +304,28 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         {
             if (id == 0)
             {
-                return this.BadRequest();
+                return BadRequest();
             }
 
             try
             {
-                var toDeleteDto = await this.memberService.GetAsync(id);
-                if (!this.IsAuthorizeForTeam(toDeleteDto.TeamId, Rights.Members.DeleteSuffix).Result)
+                var toDeleteDto = await memberService.GetAsync(id);
+                if (!IsAuthorizeForTeam(toDeleteDto.TeamId, Rights.Members.DeleteSuffix).Result)
                 {
-                    return this.StatusCode(StatusCodes.Status403Forbidden);
+                    return StatusCode(StatusCodes.Status403Forbidden);
                 }
 
 #pragma warning disable S1481 // Unused local variables should be removed
-                var deletedDto = await this.memberService.RemoveAsync(id);
+                var deletedDto = await memberService.RemoveAsync(id);
 #pragma warning restore S1481 // Unused local variables should be removed
 #if UseHubForClientInMember
                 await this.clientForHubService.SendTargetedMessage(deletedDto.TeamId.ToString(), "members", "refresh-members");
 #endif
-                return this.Ok();
+                return Ok();
             }
             catch (ElementNotFoundException)
             {
-                return this.NotFound();
+                return NotFound();
             }
         }
 
@@ -344,7 +344,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         {
             if (ids?.Any() != true)
             {
-                return this.BadRequest();
+                return BadRequest();
             }
 
             try
@@ -352,14 +352,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 #pragma warning disable S1481 // Unused local variables should be removed
                 foreach (var id in ids)
                 {
-                    var toDeleteDto = await this.memberService.GetAsync(id);
-                    if (!this.IsAuthorizeForTeam(toDeleteDto.TeamId, Rights.Members.DeleteSuffix).Result)
+                    var toDeleteDto = await memberService.GetAsync(id);
+                    if (!IsAuthorizeForTeam(toDeleteDto.TeamId, Rights.Members.DeleteSuffix).Result)
                     {
-                        return this.StatusCode(StatusCodes.Status403Forbidden);
+                        return StatusCode(StatusCodes.Status403Forbidden);
                     }
                 }
 
-                var deletedDtos = await this.memberService.RemoveAsync(ids);
+                var deletedDtos = await memberService.RemoveAsync(ids);
 #pragma warning restore S1481 // Unused local variables should be removed
 #if UseHubForClientInMember
                 deletedDtos.Select(m => m.TeamId).Distinct().ToList().ForEach(parentId =>
@@ -367,11 +367,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                     _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "members", "refresh-members");
                 });
 #endif
-                return this.Ok();
+                return Ok();
             }
             catch (ElementNotFoundException)
             {
-                return this.NotFound();
+                return NotFound();
             }
         }
 
@@ -391,20 +391,20 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             var dtoList = dtos.ToList();
             if (!dtoList.Any())
             {
-                return this.BadRequest();
+                return BadRequest();
             }
 
             try
             {
                 foreach (var dto in dtos)
                 {
-                    if (!this.IsAuthorizeForTeam(dto.TeamId, Rights.Members.SaveSuffix).Result)
+                    if (!IsAuthorizeForTeam(dto.TeamId, Rights.Members.SaveSuffix).Result)
                     {
-                        return this.StatusCode(StatusCodes.Status403Forbidden);
+                        return StatusCode(StatusCodes.Status403Forbidden);
                     }
 
                     // Specific Code to add user if required
-                    var addUserResult = await this.AddUserIfRequired(dto);
+                    var addUserResult = await AddUserIfRequired(dto);
                     if (addUserResult != null)
                     {
                         return addUserResult;
@@ -412,7 +412,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                 }
 
 #pragma warning disable S1481 // Unused local variables should be removed
-                var savedDtos = await this.memberService.SaveAsync(dtoList);
+                var savedDtos = await memberService.SaveAsync(dtoList);
 #pragma warning restore S1481 // Unused local variables should be removed
 #if UseHubForClientInMember
                 savedDtos.Select(m => m.TeamId).Distinct().ToList().ForEach(parentId =>
@@ -420,15 +420,15 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                     _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "members", "refresh-members");
                 });
 #endif
-                return this.Ok();
+                return Ok();
             }
             catch (ArgumentNullException)
             {
-                return this.ValidationProblem();
+                return ValidationProblem();
             }
             catch (ElementNotFoundException)
             {
-                return this.NotFound();
+                return NotFound();
             }
         }
 
@@ -443,18 +443,18 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         {
             if (filters.ParentIds != null && filters.ParentIds.Length > 0 && filters.ParentIds[0] != null)
             {
-                if (!this.IsAuthorizeForTeam(int.Parse(filters.ParentIds[0]), Rights.Members.ListAccessSuffix).Result)
+                if (!IsAuthorizeForTeam(int.Parse(filters.ParentIds[0]), Rights.Members.ListAccessSuffix).Result)
                 {
-                    return this.StatusCode(StatusCodes.Status403Forbidden);
+                    return StatusCode(StatusCodes.Status403Forbidden);
                 }
             }
             else
             {
-                return this.StatusCode(StatusCodes.Status403Forbidden);
+                return StatusCode(StatusCodes.Status403Forbidden);
             }
 
-            byte[] buffer = await this.memberService.GetCsvAsync(filters);
-            return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Members{BiaConstants.Csv.Extension}");
+            byte[] buffer = await memberService.GetCsvAsync(filters);
+            return File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Members{BiaConstants.Csv.Extension}");
         }
 
         /// <summary>
@@ -466,27 +466,27 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         {
             if (dto.User == null)
             {
-                var existingUser = await this.userService.GetUserInfoAsync(dto.Login);
+                var existingUser = await userService.GetUserInfoAsync(dto.Login);
                 if (existingUser != null && existingUser.IsActive)
                 {
                     dto.User = new OptionDto() { Id = existingUser.Id };
                     return null;
                 }
 
-                if (!this.IsAuthorize(Rights.Users.Add))
+                if (!IsAuthorize(Rights.Users.Add))
                 {
-                    return this.StatusCode(StatusCodes.Status403Forbidden);
+                    return StatusCode(StatusCodes.Status403Forbidden);
                 }
 
                 UserDto userDto = new UserDto();
                 userDto.Login = dto.Login;
-                ResultAddUsersFromDirectoryDto result = await this.userService.AddByIdentityKeyAsync(userDto);
+                ResultAddUsersFromDirectoryDto result = await userService.AddByIdentityKeyAsync(userDto);
 #if UseHubForClientInUser
                 _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");
 #endif
                 if (result.Errors.Any())
                 {
-                    return this.StatusCode(StatusCodes.Status303SeeOther, result.Errors);
+                    return StatusCode(StatusCodes.Status303SeeOther, result.Errors);
                 }
 
                 dto.User = result.UsersAddedDtos.FirstOrDefault();

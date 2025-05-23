@@ -25,11 +25,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     // End BIADemo
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
 
     // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.Site.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders;
+    using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia;
 #endif
 
     /// <summary>

@@ -2,7 +2,7 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories.QueryCustomizer
+namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories.QueryCustomizer.Bia
 {
     using System.Linq;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;

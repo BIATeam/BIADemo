@@ -6,7 +6,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.Translation.Entities
 {
     using BIA.Net.Core.Domain.Entity;
     using BIA.Net.Core.Domain.Translation.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
 
     /// <summary>
     /// The role entity.

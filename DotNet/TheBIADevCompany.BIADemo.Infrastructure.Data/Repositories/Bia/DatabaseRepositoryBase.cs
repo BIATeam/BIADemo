@@ -2,7 +2,7 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories
+namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories.Bia
 {
     using System;
     using BIA.Net.Core.Domain.Entity.Interface;
@@ -41,7 +41,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories
         /// <returns><see cref="DbSet{TEntity}"/> as no tracking.</returns>
         protected override DbSet<TEntity> RetrieveSetNoTracking()
         {
-            return this.dataContextFactory.GetQueryableUnitOfWorkNoTracking(this.databaseConfigurationKey).RetrieveSet<TEntity>();
+            return dataContextFactory.GetQueryableUnitOfWorkNoTracking(databaseConfigurationKey).RetrieveSet<TEntity>();
         }
     }
 }
