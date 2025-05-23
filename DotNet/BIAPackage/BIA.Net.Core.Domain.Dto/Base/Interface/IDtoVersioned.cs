@@ -7,7 +7,6 @@ namespace BIA.Net.Core.Domain.Dto.Base.Interface
     /// <summary>
     /// The base class for DTO.
     /// </summary>
-    /// <typeparam name="TKey">Type of the key.</typeparam>
     public interface IDtoVersioned
     {
         /// <summary>

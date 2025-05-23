@@ -1,11 +1,12 @@
-// <copyright file="TTeamMapper.cs" company="TheBIADevCompany">
+// <copyright file="BaseTeamMapper.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers
+namespace TheBIADevCompany.BIADemo.Domain.Bia.Base.Mappers
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Security.Principal;
@@ -13,10 +14,10 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Dto.Option;
-    using BIA.Net.Core.Domain.Mapper;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.Bia.Base.Mappers;
+    using TheBIADevCompany.BIADemo.Domain.Bia.Base.Interface;
     using TheBIADevCompany.BIADemo.Domain.Bia.User;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.User;
@@ -26,18 +27,21 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers
     /// </summary>
     /// <typeparam name="TTeamDto">Type for the Dto.</typeparam>
     /// <typeparam name="TTeam">Type for the Team.</typeparam>
-    public class TTeamMapper<TTeamDto, TTeam> : BaseMapper<TTeamDto, TTeam, int>
+    public class BaseTeamMapper<TTeamDto, TTeam> : BasePrincipalMapper<TTeamDto, TTeam, int>
         where TTeamDto : BaseDtoVersionedTeam, new()
         where TTeam : Team, new()
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TTeamMapper{TTeamDto, TTeam}"/> class.
+        /// Initializes a new instance of the <see cref="BaseTeamMapper{TTeamDto, TTeam}"/> class.
         /// </summary>
         /// <param name="principal">The principal.</param>
-        public TTeamMapper(IPrincipal principal)
+        public BaseTeamMapper(IPrincipal principal)
+            : base(principal)
         {
+            Debug.Assert(typeof(IEntityTeam).IsAssignableFrom(typeof(TTeam)), typeof(TTeam) + " should imùplement IEntityTeam");
+            Debug.Assert(typeof(IDtoTeam).IsAssignableFrom(typeof(TTeamDto)), typeof(TTeamDto) + " should imùplement IDtoTeam");
+
             this.UserRoleIds = (principal as BiaClaimsPrincipal).GetRoleIds();
-            this.UserId = (principal as BiaClaimsPrincipal).GetUserId();
             this.AdminRoleIds = TeamConfig.Config.Where(tc => tc.TeamTypeId == this.TeamType).Select(tc => tc.AdminRoleIds).FirstOrDefault() ?? [];
         }
 
@@ -65,11 +69,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers
 #pragma warning disable CA1065 // Do not raise exceptions in unexpected locations
         public virtual int TeamType => throw new NotImplementedException("Implementation of TeamType is missing.");
 #pragma warning restore CA1065 // Do not raise exceptions in unexpected locations
-
-        /// <summary>
-        /// the user id.
-        /// </summary>
-        protected int UserId { get; set; }
 
         /// <summary>
         /// the admin role Ids.

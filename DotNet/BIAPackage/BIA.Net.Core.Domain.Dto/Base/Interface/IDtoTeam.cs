@@ -1,18 +1,17 @@
-// <copyright file="BaseDtoVersionedTeam.cs" company="BIA">
+﻿// <copyright file="IDtoTeam.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Domain.Dto.Base
+namespace BIA.Net.Core.Domain.Dto.Base.Interface
 {
     using System.Collections.Generic;
-    using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
 
     /// <summary>
-    /// The DTO used to manage site.
+    /// The base class for DTO.
     /// </summary>
-    public class BaseDtoVersionedTeam : BaseDtoVersioned<int>, IDtoTeam
+    public interface IDtoTeam
     {
         /// <summary>
         /// Gets or sets the title.
