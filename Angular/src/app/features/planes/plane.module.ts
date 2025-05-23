@@ -98,7 +98,7 @@ export const ROUTES: Routes = [
             pathMatch: 'full',
             redirectTo: 'read',
           },
-          // Begin BIADemo
+          // Begin BIAToolKit Generation Ignore
           // BIAToolKit - Begin Partial PlaneModuleChildPath Engine
           {
             path: 'engines',
@@ -114,7 +114,7 @@ export const ROUTES: Routes = [
               ),
           },
           // BIAToolKit - End Partial PlaneModuleChildPath Engine
-          // End BIADemo
+          // End BIAToolKit Generation Ignore
           // BIAToolKit - Begin PlaneModuleChildPath
           // BIAToolKit - End PlaneModuleChildPath
         ],

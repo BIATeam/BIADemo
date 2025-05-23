@@ -67,136 +67,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string SaveSuffix = "_Member_Save";
         }
 
-        // Begin BIADemo
-
-        /// <summary>
-        /// The aircraft maintenance companies rights.
-        /// </summary>
-        public static class AircraftMaintenanceCompanies
-        {
-            /// <summary>
-            /// The right to access to the list of aircraft maintenance companies.
-            /// </summary>
-            public const string ListAccess = "AircraftMaintenanceCompany_List_Access";
-
-            /// <summary>
-            /// The right to create aircraft maintenance companies.
-            /// </summary>
-            public const string Create = "AircraftMaintenanceCompany_Create";
-
-            /// <summary>
-            /// The right to read aircraft maintenance companies.
-            /// </summary>
-            public const string Read = "AircraftMaintenanceCompany_Read";
-
-            /// <summary>
-            /// The right to update aircraft maintenance companies.
-            /// </summary>
-            public const string Update = "AircraftMaintenanceCompany_Update";
-
-            /// <summary>
-            /// The right to delete aircraft maintenance companies.
-            /// </summary>
-            public const string Delete = "AircraftMaintenanceCompany_Delete";
-
-            /// <summary>
-            /// The right to save aircraft maintenance companies.
-            /// </summary>
-            public const string Save = "AircraftMaintenanceCompany_Save";
-
-            /// <summary>
-            /// The right to access to the list of aircraftMaintenanceCompanies (options only).
-            /// </summary>
-            public const string Options = "AircraftMaintenanceCompany_Options";
-        }
-
-        // BIAToolKit - Begin Partial Rights Engines
-
-        /// <summary>
-        /// The engines rights.
-        /// </summary>
-        public static class Engines
-        {
-            /// <summary>
-            /// The right to access to the list of engines.
-            /// </summary>
-            public const string ListAccess = "Engine_List_Access";
-
-            /// <summary>
-            /// The right to create engine.
-            /// </summary>
-            public const string Create = "Engine_Create";
-
-            /// <summary>
-            /// The right to read engine.
-            /// </summary>
-            public const string Read = "Engine_Read";
-
-            /// <summary>
-            /// The right to update engine.
-            /// </summary>
-            public const string Update = "Engine_Update";
-
-            /// <summary>
-            /// The right to delete engine.
-            /// </summary>
-            public const string Delete = "Engine_Delete";
-
-            /// <summary>
-            /// The right to save engine.
-            /// </summary>
-            public const string Save = "Engine_Save";
-        }
-
-        // BIAToolKit - End Partial Rights Engines
-
-        /// <summary>
-        /// The countries rights.
-        /// </summary>
-        public static class Parts
-        {
-            /// <summary>
-            /// The right to access to the list of parts (options only).
-            /// </summary>
-            public const string Options = "Part_Options";
-        }
-
-        /// <summary>
-        /// The maintenance team rights.
-        /// </summary>
-        public static class MaintenanceTeams
-        {
-            /// <summary>
-            /// The right to access to the list of maintenance team.
-            /// </summary>
-            public const string ListAccess = "MaintenanceTeam_List_Access";
-
-            /// <summary>
-            /// The right to create maintenance team.
-            /// </summary>
-            public const string Create = "MaintenanceTeam_Create";
-
-            /// <summary>
-            /// The right to read maintenance team.
-            /// </summary>
-            public const string Read = "MaintenanceTeam_Read";
-
-            /// <summary>
-            /// The right to update maintenance team.
-            /// </summary>
-            public const string Update = "MaintenanceTeam_Update";
-
-            /// <summary>
-            /// The right to delete maintenance team.
-            /// </summary>
-            public const string Delete = "MaintenanceTeam_Delete";
-
-            /// <summary>
-            /// The right to save maintenance team.
-            /// </summary>
-            public const string Save = "MaintenanceTeam_Save";
-        }
-
+        // Begin BIAToolKit Generation Ignore
         // BIAToolKit - Begin Partial RightsForOption Country
 
         /// <summary>
@@ -271,6 +142,137 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         }
 
         // BIAToolKit - End Partial Rights Plane
+
+        // BIAToolKit - Begin Partial Rights Engines
+
+        /// <summary>
+        /// The engines rights.
+        /// </summary>
+        public static class Engines
+        {
+            /// <summary>
+            /// The right to access to the list of engines.
+            /// </summary>
+            public const string ListAccess = "Engine_List_Access";
+
+            /// <summary>
+            /// The right to create engine.
+            /// </summary>
+            public const string Create = "Engine_Create";
+
+            /// <summary>
+            /// The right to read engine.
+            /// </summary>
+            public const string Read = "Engine_Read";
+
+            /// <summary>
+            /// The right to update engine.
+            /// </summary>
+            public const string Update = "Engine_Update";
+
+            /// <summary>
+            /// The right to delete engine.
+            /// </summary>
+            public const string Delete = "Engine_Delete";
+
+            /// <summary>
+            /// The right to save engine.
+            /// </summary>
+            public const string Save = "Engine_Save";
+        }
+
+        // BIAToolKit - End Partial Rights Engines
+        // End BIAToolKit Generation Ignore
+
+        // Begin BIADemo
+
+        /// <summary>
+        /// The aircraft maintenance companies rights.
+        /// </summary>
+        public static class AircraftMaintenanceCompanies
+        {
+            /// <summary>
+            /// The right to access to the list of aircraft maintenance companies.
+            /// </summary>
+            public const string ListAccess = "AircraftMaintenanceCompany_List_Access";
+
+            /// <summary>
+            /// The right to create aircraft maintenance companies.
+            /// </summary>
+            public const string Create = "AircraftMaintenanceCompany_Create";
+
+            /// <summary>
+            /// The right to read aircraft maintenance companies.
+            /// </summary>
+            public const string Read = "AircraftMaintenanceCompany_Read";
+
+            /// <summary>
+            /// The right to update aircraft maintenance companies.
+            /// </summary>
+            public const string Update = "AircraftMaintenanceCompany_Update";
+
+            /// <summary>
+            /// The right to delete aircraft maintenance companies.
+            /// </summary>
+            public const string Delete = "AircraftMaintenanceCompany_Delete";
+
+            /// <summary>
+            /// The right to save aircraft maintenance companies.
+            /// </summary>
+            public const string Save = "AircraftMaintenanceCompany_Save";
+
+            /// <summary>
+            /// The right to access to the list of aircraftMaintenanceCompanies (options only).
+            /// </summary>
+            public const string Options = "AircraftMaintenanceCompany_Options";
+        }
+
+        /// <summary>
+        /// The countries rights.
+        /// </summary>
+        public static class Parts
+        {
+            /// <summary>
+            /// The right to access to the list of parts (options only).
+            /// </summary>
+            public const string Options = "Part_Options";
+        }
+
+        /// <summary>
+        /// The maintenance team rights.
+        /// </summary>
+        public static class MaintenanceTeams
+        {
+            /// <summary>
+            /// The right to access to the list of maintenance team.
+            /// </summary>
+            public const string ListAccess = "MaintenanceTeam_List_Access";
+
+            /// <summary>
+            /// The right to create maintenance team.
+            /// </summary>
+            public const string Create = "MaintenanceTeam_Create";
+
+            /// <summary>
+            /// The right to read maintenance team.
+            /// </summary>
+            public const string Read = "MaintenanceTeam_Read";
+
+            /// <summary>
+            /// The right to update maintenance team.
+            /// </summary>
+            public const string Update = "MaintenanceTeam_Update";
+
+            /// <summary>
+            /// The right to delete maintenance team.
+            /// </summary>
+            public const string Delete = "MaintenanceTeam_Delete";
+
+            /// <summary>
+            /// The right to save maintenance team.
+            /// </summary>
+            public const string Save = "MaintenanceTeam_Save";
+        }
 
         /// <summary>
         /// The plane options rights.

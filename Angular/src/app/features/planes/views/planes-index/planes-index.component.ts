@@ -43,11 +43,11 @@ export class PlanesIndexComponent
   @ViewChild(PlaneTableComponent, { static: false })
   crudItemTableComponent: PlaneTableComponent;
 
-  // Begin BIADemo
+  // Begin BIAToolKit Generation Ignore
   // BIAToolKit - Begin Partial PlaneIndexTsCanViewChildDeclaration Engine
   canViewEngines = false;
   // BIAToolKit - End Partial PlaneIndexTsCanViewChildDeclaration Engine
-  // End BIADemo
+  // End BIAToolKit Generation Ignore
   // BIAToolKit - Begin PlaneIndexTsCanViewChildDeclaration
   // BIAToolKit - End PlaneIndexTsCanViewChildDeclaration
 
@@ -77,18 +77,18 @@ export class PlanesIndexComponent
     this.canSave = this.authService.hasPermission(Permission.Plane_Save);
     this.canFix = this.authService.hasPermission(Permission.Plane_Fix);
     this.canSelect = this.canDelete;
-    // Begin BIADemo
+    // Begin BIAToolKit Generation Ignore
     // BIAToolKit - Begin Partial PlaneIndexTsCanViewChildSet Engine
     this.canViewEngines = this.authService.hasPermission(
       Permission.Engine_List_Access
     );
     this.canSelect = this.canSelect || this.canViewEngines;
     // BIAToolKit - End Partial PlaneIndexTsCanViewChildSet Engine
-    // End BIADemo
+    // End BIAToolKit Generation Ignore
     // BIAToolKit - Begin PlaneIndexTsCanViewChildSet
     // BIAToolKit - End PlaneIndexTsCanViewChildSet
   }
-  // Begin BIADemo
+  // Begin BIAToolKit Generation Ignore
   // BIAToolKit - Begin Partial PlaneIndexTsOnViewChild Engine
   onViewEngines(crudItemId: any) {
     if (crudItemId && crudItemId > 0) {
@@ -98,7 +98,7 @@ export class PlanesIndexComponent
     }
   }
   // BIAToolKit - End Partial PlaneIndexTsOnViewChild Engine
-  // End BIADemo
+  // End BIAToolKit Generation Ignore
 
   // BIAToolKit - Begin PlaneIndexTsOnViewChild
   // BIAToolKit - End PlaneIndexTsOnViewChild
