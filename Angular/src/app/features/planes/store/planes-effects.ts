@@ -248,6 +248,7 @@ export class PlanesEffects {
       })
     )
   );
+
   updateFixedStatus$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeaturePlanesActions.updateFixedStatus),

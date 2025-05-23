@@ -60,17 +60,17 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       type: PropType.Boolean,
       isRequired: true,
       validators: [Validators.required],
-      // Begin BIADemo
+      // Begin BIAToolKit Generation Ignore
       isSearchable: true,
       isSortable: false,
-      // End BIADemo
+      // End BIAToolKit Generation Ignore
     }),
     Object.assign(new BiaFieldConfig('isMaintenance', 'plane.isMaintenance'), {
       type: PropType.Boolean,
-      // Begin BIADemo
+      // Begin BIAToolKit Generation Ignore
       isSearchable: true,
       isSortable: false,
-      // End BIADemo
+      // End BIAToolKit Generation Ignore
     }),
     Object.assign(
       new BiaFieldConfig('firstFlightDate', 'plane.firstFlightDate'),
@@ -118,15 +118,15 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       type: PropType.Number,
       isRequired: true,
       validators: [Validators.required],
-      // Begin BIADemo
+      // Begin BIAToolKit Generation Ignore
       filterMode: PrimeNGFiltering.Equals,
-      // End BIADemo
+      // End BIAToolKit Generation Ignore
     }),
     Object.assign(new BiaFieldConfig('motorsCount', 'plane.motorsCount'), {
       type: PropType.Number,
-      // Begin BIADemo
+      // Begin BIAToolKit Generation Ignore
       filterMode: PrimeNGFiltering.Equals,
-      // End BIADemo
+      // End BIAToolKit Generation Ignore
     }),
     Object.assign(
       new BiaFieldConfig('totalFlightHours', 'plane.totalFlightHours'),
@@ -134,43 +134,43 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
         type: PropType.Number,
         isRequired: true,
         validators: [Validators.required],
-        // Begin BIADemo
+        // Begin BIAToolKit Generation Ignore
         filterMode: PrimeNGFiltering.Equals,
         displayFormat: Object.assign(new BiaFieldNumberFormat(), {
           mode: NumberMode.Decimal,
           minFractionDigits: 6,
           maxFractionDigits: 6,
         }),
-        // End BIADemo
+        // End BIAToolKit Generation Ignore
       }
     ),
     Object.assign(new BiaFieldConfig('probability', 'plane.probability'), {
       type: PropType.Number,
-      // Begin BIADemo
+      // Begin BIAToolKit Generation Ignore
       filterMode: PrimeNGFiltering.Equals,
       displayFormat: Object.assign(new BiaFieldNumberFormat(), {
         mode: NumberMode.Decimal,
         minFractionDigits: 6,
         maxFractionDigits: 6,
       }),
-      // End BIADemo
+      // End BIAToolKit Generation Ignore
     }),
     Object.assign(new BiaFieldConfig('fuelCapacity', 'plane.fuelCapacity'), {
       type: PropType.Number,
       isRequired: true,
       validators: [Validators.required],
-      // Begin BIADemo
+      // Begin BIAToolKit Generation Ignore
       filterMode: PrimeNGFiltering.Equals,
       displayFormat: Object.assign(new BiaFieldNumberFormat(), {
         mode: NumberMode.Decimal,
         minFractionDigits: 2,
         maxFractionDigits: 2,
       }),
-      // End BIADemo
+      // End BIAToolKit Generation Ignore
     }),
     Object.assign(new BiaFieldConfig('fuelLevel', 'plane.fuelLevel'), {
       type: PropType.Number,
-      // Begin BIADemo
+      // Begin BIAToolKit Generation Ignore
       filterMode: PrimeNGFiltering.Equals,
       displayFormat: Object.assign(new BiaFieldNumberFormat(), {
         mode: NumberMode.Decimal,
@@ -178,13 +178,13 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
         maxFractionDigits: 2,
       }),
       validators: [Validators.min(0), Validators.max(100)],
-      // End BIADemo
+      // End BIAToolKit Generation Ignore
     }),
     Object.assign(new BiaFieldConfig('originalPrice', 'plane.originalPrice'), {
       type: PropType.Number,
       isRequired: true,
       validators: [Validators.required],
-      // Begin BIADemo
+      // Begin BIAToolKit Generation Ignore
       filterMode: PrimeNGFiltering.Equals,
       displayFormat: Object.assign(new BiaFieldNumberFormat(), {
         mode: NumberMode.Currency,
@@ -192,13 +192,13 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
         maxFractionDigits: 2,
         currency: 'EUR',
       }),
-      // End BIADemo
+      // End BIAToolKit Generation Ignore
     }),
     Object.assign(
       new BiaFieldConfig('estimatedPrice', 'plane.estimatedPrice'),
       {
         type: PropType.Number,
-        // Begin BIADemo
+        // Begin BIAToolKit Generation Ignore
         filterMode: PrimeNGFiltering.Equals,
         displayFormat: Object.assign(new BiaFieldNumberFormat(), {
           mode: NumberMode.Currency,
@@ -207,7 +207,7 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
           currency: 'EUR',
         }),
         validators: [Validators.min(0)],
-        // End BIADemo
+        // End BIAToolKit Generation Ignore
       }
     ),
     Object.assign(new BiaFieldConfig('planeType', 'plane.planeType'), {
@@ -243,7 +243,7 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
 // TODO after creation of CRUD Plane : adapt the form layout configuration
 export const planeFormLayoutConfiguration: BiaFormLayoutConfig<Plane> =
   new BiaFormLayoutConfig([
-    // Begin BIADemo
+    // Begin BIAToolKit Generation Ignore
     new BiaFormLayoutConfigRow([
       new BiaFormLayoutConfigGroup('plane.groupIdentification', [
         new BiaFormLayoutConfigRow([
@@ -280,5 +280,5 @@ export const planeFormLayoutConfiguration: BiaFormLayoutConfig<Plane> =
       new BiaFormLayoutConfigField('probability'),
       new BiaFormLayoutConfigField('capacity'),
     ]),
-    // End BIADemo
+    // End BIAToolKit Generation Ignore
   ]);
