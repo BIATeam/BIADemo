@@ -34,12 +34,23 @@ namespace TheBIADevCompany.BIADemo.Domain.User
             // BIAToolKit - Begin TeamConfig
             // BIAToolKit - End TeamConfig
 
-            // Begin BIADemo
+            // Begin BIAToolKit Generation Ignore
+            // BIAToolKit - Begin Partial TeamConfig AircraftMaintenanceCompany
             new BiaTeamConfig<Team>()
             {
                 TeamTypeId = (int)TeamTypeId.AircraftMaintenanceCompany,
                 RightPrefix = "AircraftMaintenanceCompany",
-                AdminRoleIds = new int[] { (int)RoleId.Supervisor },
+                AdminRoleIds = [
+
+                    // Begin BIADemo
+                    (int)RoleId.Supervisor,
+
+                    // End BIADemo
+                    (int)RoleId.AircraftMaintenanceCompanyAdmin
+                    ],
+
+                // BIAToolKit - Begin TeamConfigAircraftMaintenanceCompanyChildren
+                // BIAToolKit - Begin Partial TeamConfigAircraftMaintenanceCompanyChildren MaintenanceTeam
                 Children = new ImmutableListBuilder<BiaTeamChildrenConfig<Team>>
                 {
                     new BiaTeamChildrenConfig<Team>
@@ -48,14 +59,20 @@ namespace TheBIADevCompany.BIADemo.Domain.User
                         GetChilds = team => (team as AircraftMaintenanceCompany).MaintenanceTeams,
                     },
                 }.ToImmutable(),
+
+                // BIAToolKit - End Partial TeamConfigAircraftMaintenanceCompanyChildren MaintenanceTeam
+                // BIAToolKit - End TeamConfigAircraftMaintenanceCompanyChildren
             },
 
+            // BIAToolKit - End Partial TeamConfig AircraftMaintenanceCompany
+            // BIAToolKit - Begin Partial TeamConfig MaintenanceTeam
             new BiaTeamConfig<Team>()
             {
                 TeamTypeId = (int)TeamTypeId.MaintenanceTeam,
                 RightPrefix = "MaintenanceTeam",
-                AdminRoleIds = new int[] { (int)RoleId.MaintenanceTeamAdmin },
-
+                AdminRoleIds = [
+                    (int)RoleId.MaintenanceTeamAdmin
+                    ],
                 Parents = new ImmutableListBuilder<BiaTeamParentConfig<Team>>
                 {
                     new BiaTeamParentConfig<Team>
@@ -68,7 +85,8 @@ namespace TheBIADevCompany.BIADemo.Domain.User
                 TeamSelectionMode = BIA.Net.Core.Common.Enum.TeamSelectionMode.None,
             },
 
-            // End BIADemo
+            // BIAToolKit - End Partial TeamConfig MaintenanceTeam
+            // End BIAToolKit Generation Ignore
         }.ToImmutable();
     }
 }

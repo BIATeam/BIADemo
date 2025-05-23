@@ -113,11 +113,16 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.Root, Name = "Root" });
             modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.Site, Name = "Site" });
 
-            // Begin BIADemo
+            // Begin BIAToolKit Generation Ignore
+            // BIAToolKit - Begin Partial TeamTypeModelBuilder AircraftMaintenanceCompany
             modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.AircraftMaintenanceCompany, Name = "AircraftMaintenanceCompany" });
+
+            // BIAToolKit - End Partial TeamTypeModelBuilder AircraftMaintenanceCompany
+            // BIAToolKit - Begin Partial TeamTypeModelBuilder MaintenanceTeam
             modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.MaintenanceTeam, Name = "MaintenanceTeam" });
 
-            // End BIADemo
+            // BIAToolKit - End Partial TeamTypeModelBuilder MaintenanceTeam
+            // End BIAToolKit Generation Ignore
 
             // BIAToolKit - Begin TeamTypeModelBuilder
             // BIAToolKit - End TeamTypeModelBuilder
@@ -150,15 +155,22 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 
             modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.SiteAdmin, Code = "Site_Admin", Label = "Airline administrator" });
             modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.Pilot, Code = "Pilot", Label = "Pilot" });
-
             modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.Supervisor, Code = "Supervisor", Label = "Supervisor" });
             modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.Expert, Code = "Expert", Label = "Expert" });
             modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.Operator, Code = "Operator", Label = "Operator" });
-
             modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.TeamLeader, Code = "Team_Leader", Label = "Team leader" });
-            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.MaintenanceTeamAdmin, Code = "MaintenanceTeam_Admin", Label = "MaintenanceTeam administrator" });
 
             // End BIADemo
+            // Begin BIAToolKit Generation Ignore
+            // BIAToolKit - Begin Partial RoleModelBuilder AircraftMaintenanceCompany
+            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.AircraftMaintenanceCompanyAdmin, Code = "AircraftMaintenanceCompany_Admin", Label = "AircraftMaintenanceCompany administrator" });
+
+            // BIAToolKit - End Partial RoleModelBuilder AircraftMaintenanceCompany
+            // BIAToolKit - Begin Partial RoleModelBuilder MaintenanceTeam
+            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.MaintenanceTeamAdmin, Code = "MaintenanceTeam_Admin", Label = "MaintenanceTeam administrator" });
+
+            // BIAToolKit - End Partial RoleModelBuilder MaintenanceTeam
+            // End BIAToolKit Generation Ignore
 
             // BIAToolKit - Begin RoleModelBuilder
             // BIAToolKit - End RoleModelBuilder
@@ -179,21 +191,27 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
                     rt.HasData(new { TeamTypesId = (int)TeamTypeId.Root, RolesId = (int)RoleId.Admin });
                     rt.HasData(new { TeamTypesId = (int)TeamTypeId.Root, RolesId = (int)RoleId.BackAdmin });
                     rt.HasData(new { TeamTypesId = (int)TeamTypeId.Root, RolesId = (int)RoleId.BackReadOnly });
-
                     rt.HasData(new { TeamTypesId = (int)TeamTypeId.Site, RolesId = (int)RoleId.SiteAdmin });
 
                     // Begin BIADemo
                     rt.HasData(new { TeamTypesId = (int)TeamTypeId.Site, RolesId = (int)RoleId.Pilot });
-
                     rt.HasData(new { TeamTypesId = (int)TeamTypeId.AircraftMaintenanceCompany, RolesId = (int)RoleId.Supervisor });
                     rt.HasData(new { TeamTypesId = (int)TeamTypeId.AircraftMaintenanceCompany, RolesId = (int)RoleId.Expert });
                     rt.HasData(new { TeamTypesId = (int)TeamTypeId.MaintenanceTeam, RolesId = (int)RoleId.Operator });
                     rt.HasData(new { TeamTypesId = (int)TeamTypeId.MaintenanceTeam, RolesId = (int)RoleId.Expert });
-
-                    rt.HasData(new { TeamTypesId = (int)TeamTypeId.MaintenanceTeam, RolesId = (int)RoleId.MaintenanceTeamAdmin });
                     rt.HasData(new { TeamTypesId = (int)TeamTypeId.MaintenanceTeam, RolesId = (int)RoleId.TeamLeader });
 
                     // End BIADemo
+                    // Begin BIAToolKit Generation Ignore
+                    // BIAToolKit - Begin Partial TeamTypeRoleModelBuilder AircraftMaintenanceCompany
+                    rt.HasData(new { TeamTypesId = (int)TeamTypeId.AircraftMaintenanceCompany, RolesId = (int)RoleId.AircraftMaintenanceCompanyAdmin });
+
+                    // BIAToolKit - End Partial TeamTypeRoleModelBuilder AircraftMaintenanceCompany
+                    // BIAToolKit - Begin Partial TeamTypeRoleModelBuilder MaintenanceTeam
+                    rt.HasData(new { TeamTypesId = (int)TeamTypeId.MaintenanceTeam, RolesId = (int)RoleId.MaintenanceTeamAdmin });
+
+                    // BIAToolKit - End Partial TeamTypeRoleModelBuilder MaintenanceTeam
+                    // End BIAToolKit Generation Ignore
 
                     // BIAToolKit - Begin TeamTypeRoleModelBuilder
                     // BIAToolKit - End TeamTypeRoleModelBuilder
