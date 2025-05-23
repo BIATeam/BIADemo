@@ -1,4 +1,7 @@
-import { CrudConfig } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
+import {
+  CrudConfig,
+  FormReadOnlyMode,
+} from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
 import { TeamTypeId } from 'src/app/shared/constants';
 import {
   Plane,
@@ -12,10 +15,11 @@ export const planeCRUDConfiguration: CrudConfig<Plane> = new CrudConfig({
   featureName: 'planes',
   fieldsConfig: planeFieldsConfiguration,
   formLayoutConfig: planeFormLayoutConfiguration,
-  // Begin BIADemo
+  formEditReadOnlyMode: FormReadOnlyMode.off,
   isFixable: true,
+  // Begin BIAToolKit Generation Ignore
   isCloneable: true,
-  // End BIADemo
+  // End BIAToolKit Generation Ignore
   useCalcMode: true,
   useSignalR: false,
   useView: true,
@@ -25,7 +29,7 @@ export const planeCRUDConfiguration: CrudConfig<Plane> = new CrudConfig({
   useOfflineMode: false,
   useCompactMode: false,
   useVirtualScroll: false,
-  // Begin BIADemo
+  // Begin BIAToolKit Generation Ignore
   importMode: {
     useInsert: true,
     useUpdate: true,
@@ -41,8 +45,7 @@ export const planeCRUDConfiguration: CrudConfig<Plane> = new CrudConfig({
     showVirtualScroll: true,
     showResizableColumn: true,
   },
-
-  // End BIADemo
+  // End BIAToolKit Generation Ignore
   // IMPORTANT: this key should be unique in all the application.
   // storeKey: 'feature-' + featureName,
   // IMPORTANT: this is the key used for the view management it should be unique in all the application (except if share same views).

@@ -36,42 +36,31 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         /// </summary>
         private readonly IPlaneAppService planeService;
 
-        /// <summary>
-        /// The BIA claims principal service.
-        /// </summary>
-        private readonly IBiaClaimsPrincipalService biaClaimsPrincipalService;
-
 #if UseHubForClientInPlane
         private readonly IClientForHubService clientForHubService;
 #endif
 
 #if UseHubForClientInPlane
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlanesController" /> class.
+        /// Initializes a new instance of the <see cref="PlanesController"/> class.
         /// </summary>
         /// <param name="planeService">The plane application service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
-        /// <param name="biaClaimsPrincipalService">The BIA claims principal service.</param>
         public PlanesController(
             IPlaneAppService planeService,
-            IClientForHubService clientForHubService,
-            IBiaClaimsPrincipalService biaClaimsPrincipalService)
+            IClientForHubService clientForHubService)
 #else
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlanesController" /> class.
+        /// Initializes a new instance of the <see cref="PlanesController"/> class.
         /// </summary>
         /// <param name="planeService">The plane application service.</param>
-        /// <param name="biaClaimsPrincipalService">The BIA claims principal service.</param>
-        public PlanesController(
-            IPlaneAppService planeService,
-            IBiaClaimsPrincipalService biaClaimsPrincipalService)
+        public PlanesController(IPlaneAppService planeService)
 #endif
         {
 #if UseHubForClientInPlane
             this.clientForHubService = clientForHubService;
 #endif
             this.planeService = planeService;
-            this.biaClaimsPrincipalService = biaClaimsPrincipalService;
         }
 
         /// <summary>
@@ -241,7 +230,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             try
             {
                 var deletedDtos = await this.planeService.RemoveAsync(ids);
-
 #if UseHubForClientInPlane
                 deletedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
                 {
@@ -278,12 +266,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
 
             try
             {
-                var savedDtos = await this.planeService.SaveSafeAsync(
-                    dtos: dtoList,
-                    principal: this.biaClaimsPrincipalService.GetBiaClaimsPrincipal(),
-                    rightAdd: Rights.Planes.Create,
-                    rightUpdate: Rights.Planes.Update,
-                    rightDelete: Rights.Planes.Delete);
+                var savedDtos = await this.planeService.SaveAsync(dtoList);
 #if UseHubForClientInPlane
                 savedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
                 {

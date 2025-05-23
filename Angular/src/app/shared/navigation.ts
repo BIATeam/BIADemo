@@ -16,53 +16,54 @@ export const NAVIGATION: BiaNavigation[] = [
   },
   // BIAToolKit - Begin Navigation
   // BIAToolKit - End Navigation
+
+  // Begin BIAToolKit Generation Ignore
+  // BIAToolKit - Begin Partial Navigation Plane
+  {
+    labelKey: 'app.planes',
+    permissions: [Permission.Plane_List_Access],
+    path: ['/planes'],
+    icon: 'pi pi-th-large',
+  },
+  // BIAToolKit - End Partial Navigation Plane
+  // End BIAToolKit Generation Ignore
+
   // Begin BIADemo
   {
-    labelKey: 'app.examples',
-    permissions: [
-      Permission.Plane_List_Access,
-      Permission.AircraftMaintenanceCompany_List_Access,
-      Permission.Hangfire_Access,
-    ],
+    labelKey: 'app.aircraft-maintenance-companies',
+    permissions: [Permission.AircraftMaintenanceCompany_List_Access],
+    path: ['/aircraft-maintenance-companies'],
+    icon: 'pi pi-sitemap',
+  },
+  {
+    labelKey: 'app.maintenance-teams',
+    permissions: [Permission.MaintenanceTeam_List_Access],
+    path: ['/maintenance-teams'],
+    icon: 'pi pi-sitemap',
+  },
+  {
+    labelKey: 'app.maintenanceContracts',
+    permissions: [Permission.MaintenanceContract_List_Access],
+    path: ['/maintenance-contracts'],
+    icon: 'pi pi-clipboard',
+  },
+  {
+    labelKey: 'app.planesFullCode',
+    permissions: [Permission.Plane_List_Access],
+    path: ['/planes-full-code'],
     icon: 'pi pi-th-large',
-    children: [
-      {
-        labelKey: 'app.aircraft-maintenance-companies',
-        permissions: [Permission.AircraftMaintenanceCompany_List_Access],
-        path: ['/examples/aircraft-maintenance-companies'],
-      },
-      {
-        labelKey: 'app.maintenance-teams',
-        permissions: [Permission.MaintenanceTeam_List_Access],
-        /// TODO after creation of CRUD Team MaintenanceTeam : adapt the path
-        path: ['/examples/maintenance-teams'],
-      },
-      {
-        labelKey: 'app.maintenanceContracts',
-        permissions: [Permission.MaintenanceContract_List_Access],
-        path: ['/examples/maintenance-contracts'],
-      },
-      {
-        labelKey: 'app.planes',
-        permissions: [Permission.Plane_List_Access],
-        path: ['/examples/planes'],
-      },
-      {
-        labelKey: 'app.planesFullCode',
-        permissions: [Permission.Plane_List_Access],
-        path: ['/examples/planes-full-code'],
-      },
-      {
-        labelKey: 'app.planesSpecific',
-        permissions: [Permission.Plane_List_Access],
-        path: ['/examples/planes-specific'],
-      },
-      {
-        labelKey: 'app.hangfire',
-        permissions: [Permission.Hangfire_Access],
-        path: ['/examples/hangfire'],
-      },
-    ],
+  },
+  {
+    labelKey: 'app.planesSpecific',
+    permissions: [Permission.Plane_List_Access],
+    path: ['/planes-specific'],
+    icon: 'pi pi-th-large',
+  },
+  {
+    labelKey: 'app.hangfire',
+    permissions: [Permission.Hangfire_Access],
+    path: ['/hangfire'],
+    icon: 'pi pi-send',
   },
   // End BIADemo
   {
@@ -91,12 +92,12 @@ export const NAVIGATION: BiaNavigation[] = [
       {
         labelKey: 'app.airports',
         permissions: [Permission.Airport_List_Access],
-        path: ['/examples/airports'],
+        path: ['airports'],
       },
       {
         labelKey: 'app.planesTypes',
         permissions: [Permission.PlaneType_List_Access],
-        path: ['/examples/planes-types'],
+        path: ['planes-types'],
       },
       // End BIADemo
     ],

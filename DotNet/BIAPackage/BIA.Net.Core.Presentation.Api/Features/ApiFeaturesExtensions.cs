@@ -207,10 +207,6 @@ namespace BIA.Net.Core.Presentation.Api.Features
             // Hangfire Server
             if (apiFeatures.HangfireDashboard.IsActive)
             {
-                app.UseHangfireDashboardCustomOptions(new HangfireDashboardCustomOptions
-                {
-                    DashboardTitle = () => apiFeatures.HangfireDashboard.ServerName,
-                });
                 app.UseHangfireDashboard("/hangfireAdmin", new DashboardOptions
                 {
                     Authorization = hangfireServerAuthorizations.Authorization,

@@ -67,6 +67,123 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string SaveSuffix = "_Member_Save";
         }
 
+        // Begin BIAToolKit Generation Ignore
+        // BIAToolKit - Begin Partial RightsForOption Country
+
+        /// <summary>
+        /// The country options rights.
+        /// </summary>
+        public static class CountryOptions
+        {
+            /// <summary>
+            /// The right to access to the list of countries (options only).
+            /// </summary>
+            public const string Options = "Country_Options";
+        }
+
+        // BIAToolKit - End Partial RightsForOption Country
+
+        // BIAToolKit - Begin Partial RightsForOption PlaneType
+
+        /// <summary>
+        /// The plane type options rights.
+        /// </summary>
+        public static class PlaneTypeOptions
+        {
+            /// <summary>
+            /// The right to access to the list of plane types (options only).
+            /// </summary>
+            public const string Options = "PlaneType_Options";
+        }
+
+        // BIAToolKit - End Partial RightsForOption PlaneType
+
+        // BIAToolKit - Begin Partial Rights Plane
+
+        /// <summary>
+        /// The planes rights.
+        /// </summary>
+        public static class Planes
+        {
+            /// <summary>
+            /// The right to access to the list of planes.
+            /// </summary>
+            public const string ListAccess = "Plane_List_Access";
+
+            /// <summary>
+            /// The right to create plane.
+            /// </summary>
+            public const string Create = "Plane_Create";
+
+            /// <summary>
+            /// The right to read plane.
+            /// </summary>
+            public const string Read = "Plane_Read";
+
+            /// <summary>
+            /// The right to update plane.
+            /// </summary>
+            public const string Update = "Plane_Update";
+
+            /// <summary>
+            /// The right to delete plane.
+            /// </summary>
+            public const string Delete = "Plane_Delete";
+
+            /// <summary>
+            /// The right to save plane.
+            /// </summary>
+            public const string Save = "Plane_Save";
+
+            /// <summary>
+            /// The right to fixe plane.
+            /// </summary>
+            public const string Fix = "Plane_Fix";
+        }
+
+        // BIAToolKit - End Partial Rights Plane
+
+        // BIAToolKit - Begin Partial Rights Engines
+
+        /// <summary>
+        /// The engines rights.
+        /// </summary>
+        public static class Engines
+        {
+            /// <summary>
+            /// The right to access to the list of engines.
+            /// </summary>
+            public const string ListAccess = "Engine_List_Access";
+
+            /// <summary>
+            /// The right to create engine.
+            /// </summary>
+            public const string Create = "Engine_Create";
+
+            /// <summary>
+            /// The right to read engine.
+            /// </summary>
+            public const string Read = "Engine_Read";
+
+            /// <summary>
+            /// The right to update engine.
+            /// </summary>
+            public const string Update = "Engine_Update";
+
+            /// <summary>
+            /// The right to delete engine.
+            /// </summary>
+            public const string Delete = "Engine_Delete";
+
+            /// <summary>
+            /// The right to save engine.
+            /// </summary>
+            public const string Save = "Engine_Save";
+        }
+
+        // BIAToolKit - End Partial Rights Engines
+        // End BIAToolKit Generation Ignore
+
         // Begin BIADemo
 
         /// <summary>
@@ -109,46 +226,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             public const string Options = "AircraftMaintenanceCompany_Options";
         }
-
-        // BIAToolKit - Begin Partial Rights Engines
-
-        /// <summary>
-        /// The planes rights.
-        /// </summary>
-        public static class Engines
-        {
-            /// <summary>
-            /// The right to access to the list of planes.
-            /// </summary>
-            public const string ListAccess = "Engine_List_Access";
-
-            /// <summary>
-            /// The right to create planes.
-            /// </summary>
-            public const string Create = "Engine_Create";
-
-            /// <summary>
-            /// The right to read planes.
-            /// </summary>
-            public const string Read = "Engine_Read";
-
-            /// <summary>
-            /// The right to update planes.
-            /// </summary>
-            public const string Update = "Engine_Update";
-
-            /// <summary>
-            /// The right to delete planes.
-            /// </summary>
-            public const string Delete = "Engine_Delete";
-
-            /// <summary>
-            /// The right to save planes.
-            /// </summary>
-            public const string Save = "Engine_Save";
-        }
-
-        // BIAToolKit - End Partial Rights Engines
 
         /// <summary>
         /// The countries rights.
@@ -202,76 +279,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Fix = "MaintenanceTeam_Fix";
         }
 
-        // BIAToolKit - Begin Partial RightsForOption Country
-
         /// <summary>
-        /// The country options rights.
+        /// The plane options rights.
         /// </summary>
-        public static class CountryOptions
+        public static class PlaneOptions
         {
-            /// <summary>
-            /// The right to access to the list of countries (options only).
-            /// </summary>
-            public const string Options = "Country_Options";
-        }
-
-        // BIAToolKit - End Partial RightsForOption Country
-
-        // BIAToolKit - Begin Partial RightsForOption PlaneType
-
-        /// <summary>
-        /// The plane type options rights.
-        /// </summary>
-        public static class PlaneTypeOptions
-        {
-            /// <summary>
-            /// The right to access to the list of plane types (options only).
-            /// </summary>
-            public const string Options = "PlaneType_Options";
-        }
-
-        // BIAToolKit - End Partial RightsForOption PlaneType
-
-        /// <summary>
-        /// The planes rights.
-        /// </summary>
-        public static class Planes
-        {
-            /// <summary>
-            /// The right to access to the list of planes.
-            /// </summary>
-            public const string ListAccess = "Plane_List_Access";
-
-            /// <summary>
-            /// The right to create planes.
-            /// </summary>
-            public const string Create = "Plane_Create";
-
-            /// <summary>
-            /// The right to read planes.
-            /// </summary>
-            public const string Read = "Plane_Read";
-
-            /// <summary>
-            /// The right to update planes.
-            /// </summary>
-            public const string Update = "Plane_Update";
-
-            /// <summary>
-            /// The right to delete planes.
-            /// </summary>
-            public const string Delete = "Plane_Delete";
-
-            /// <summary>
-            /// The right to save planes.
-            /// </summary>
-            public const string Save = "Plane_Save";
-
-            /// <summary>
-            /// The right to fixe planes.
-            /// </summary>
-            public const string Fix = "Plane_Fix";
-
             /// <summary>
             /// The right to access to the list of planes (options only).
             /// </summary>

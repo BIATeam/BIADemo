@@ -128,6 +128,63 @@
       // BIAToolKit - End Config
       // BIAToolKit - Begin ConfigForOption
       // BIAToolKit - End ConfigForOption
+
+      // Begin BIAToolKit Generation Ignore
+      // BIAToolKit - Begin Partial Config Plane
+      // Plane
+      {
+        "Names": [ "Plane_List_Access", "Plane_Read" ],
+        "Roles": [ "Admin", "Site_Member" ]
+      },
+      {
+        "Names": [ "Plane_Update", "Plane_Save" ],
+        "Roles": [ "Site_Admin" ]
+      },
+      {
+        "Names": [ "Plane_Create", "Plane_Delete", "Plane_Fix" ],
+        "Roles": [ "Site_Admin" ]
+      },
+      // BIAToolKit - End Partial Config Plane
+      // BIAToolKit - Begin Partial Config Engine
+      // Engine
+      {
+        "Names": [ "Engine_List_Access", "Engine_Read" ],
+        "Roles": [ "Admin", "Site_Member" ]
+      },
+      {
+        "Names": [ "Engine_Update", "Engine_Save" ],
+        "Roles": [ "Site_Admin" ]
+      },
+      {
+        "Names": [ "Engine_Create", "Engine_Delete" ],
+        "Roles": [ "Site_Admin" ]
+      },
+      // BIAToolKit - End Partial Config Engine
+      // BIAToolKit - Begin Partial ConfigForOption Country
+      // Country
+      {
+        "Name": "Country_Options",
+        "Roles": [ "Admin", "Site_Member" ]
+      },
+      // BIAToolKit - End Partial ConfigForOption Country
+      // Airport
+      {
+        "Name": "Airport_Options",
+        "Roles": [ "Admin", "Site_Member" ]
+      },
+      {
+        "Names": [ "Airport_List_Access", "Airport_Create", "Airport_Read", "Airport_Update", "Airport_Delete", "Airport_Save" ],
+        "Roles": [ "Admin" ]
+      },
+      // BIAToolKit - Begin Partial ConfigForOption PlaneType
+      // PlaneType
+      {
+        "Name": "PlaneType_Options",
+        "Roles": [ "Admin", "Site_Member" ]
+      },
+      // BIAToolKit - End Partial ConfigForOption PlaneType
+      // End BIAToolKit Generation Ignore
+
       // Begin BIADemo
       // Site
       {
@@ -168,11 +225,11 @@
         "Roles": [ "Admin", "Site_Member" ]
       },
       {
-        "Names": [ "Plane_Update", "Plane_Save" ],
+        "Names": [ "Plane_Update", "Plane_Save", "Plane_Fix" ],
         "Roles": [ "Site_Admin" ]
       },
       {
-        "Names": [ "Plane_Create", "Plane_Delete", "Plane_Fix" ],
+        "Names": [ "Plane_Create", "Plane_Delete" ],
         "Roles": [ "Site_Admin" ]
       },
       // BIAToolKit - Begin Partial Config Engine
@@ -264,29 +321,6 @@
           "MaintenanceTeam_Admin"
         ]
       },
-      // BIAToolKit - Begin Partial ConfigForOption Country
-      // Country
-      {
-        "Name": "Country_Options",
-        "Roles": [ "Admin", "Site_Member" ]
-      },
-      // BIAToolKit - End Partial ConfigForOption Country
-      // Airport
-      {
-        "Name": "Airport_Options",
-        "Roles": [ "Admin", "Site_Member" ]
-      },
-      {
-        "Names": [ "Airport_List_Access", "Airport_Create", "Airport_Read", "Airport_Update", "Airport_Delete", "Airport_Save" ],
-        "Roles": [ "Admin" ]
-      },
-      // BIAToolKit - Begin Partial ConfigForOption PlaneType
-      // PlaneType
-      {
-        "Name": "PlaneType_Options",
-        "Roles": [ "Admin", "Site_Member" ]
-      },
-      // BIAToolKit - End Partial ConfigForOption PlaneType
       // PlaneType
       {
         "Names": [ "PlaneType_List_Access", "PlaneType_Create", "PlaneType_Read", "PlaneType_Update", "PlaneType_Delete", "PlaneType_Save" ],

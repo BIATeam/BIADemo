@@ -29,9 +29,17 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
 #if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract;
+
+    // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract.DocumentAnalysis;
+
+    // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Models;
+
+    // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
+
+    // End BIADemo
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features.Bia;
 #endif
 
