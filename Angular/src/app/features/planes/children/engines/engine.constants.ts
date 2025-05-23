@@ -22,13 +22,13 @@ export const engineCRUDConfiguration: CrudConfig<Engine> = new CrudConfig({
   useOfflineMode: false,
   useCompactMode: false,
   useVirtualScroll: false,
-  // Begin BIADemo
+  // Begin BIAToolKit Generation Ignore
   importMode: {
     useInsert: true,
     useUpdate: true,
     useDelete: false,
   },
-  // End BIADemo
+  // End BIAToolKit Generation Ignore
   // IMPORTANT: this key should be unique in all the application.
   // storeKey: 'feature-' + featureName,
   // IMPORTANT: this is the key used for the view management it should be unique in all the application (except if share same views).
