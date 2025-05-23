@@ -114,4 +114,12 @@ export class MaintenanceTeamService extends CrudItemService<MaintenanceTeam> {
     this._currentCrudItemId = 0;
     this.store.dispatch(FeatureMaintenanceTeamsActions.clearCurrent());
   }
+  public updateFixedStatus(id: any, isFixed: boolean): void {
+    this.store.dispatch(
+      FeatureMaintenanceTeamsActions.updateFixedStatus({
+        id: id,
+        isFixed: isFixed,
+      })
+    );
+  }
 }

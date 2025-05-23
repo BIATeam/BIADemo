@@ -295,5 +295,29 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
             byte[] buffer = await this.maintenanceTeamAppService.GetCsvAsync(filters);
             return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"MaintenanceTeams{BiaConstants.Csv.Extension}");
         }
+
+        /// <summary>
+        /// Update the fixed status of an item by its id.
+        /// </summary>
+        /// <param name="id">ID of the item to update.</param>
+        /// <param name="isFixed">Fixed status.</param>
+        /// <returns>Updated item.</returns>
+        [HttpPut("{id}/[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = Rights.MaintenanceTeams.Fix)]
+        public virtual async Task<IActionResult> Fix(int id, [FromBody] bool isFixed)
+        {
+            try
+            {
+                var dto = await this.maintenanceTeamAppService.UpdateFixedAsync(id, isFixed);
+                return this.Ok(dto);
+            }
+            catch (ElementNotFoundException)
+            {
+                return this.NotFound();
+            }
+        }
     }
 }

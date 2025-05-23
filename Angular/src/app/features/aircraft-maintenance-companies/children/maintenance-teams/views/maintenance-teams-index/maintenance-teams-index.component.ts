@@ -102,6 +102,9 @@ export class MaintenanceTeamsIndexComponent
       // BIAToolKit - Begin AircraftMaintenanceCompanyIndexTsCanSelectElementChildSet
       // BIAToolKit - End AircraftMaintenanceCompanyIndexTsCanSelectElementChildSet
       this.canViewMembers || this.canDelete;
+    this.canFix = this.authService.hasPermission(
+      Permission.MaintenanceTeam_Fix
+    );
   }
 
   protected initSelectedButtonGroup() {

@@ -15,7 +15,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Entities
     /// <summary>
     /// The AircraftMaintenanceCompany entity.
     /// </summary>
-    public class MaintenanceTeam : Team
+    public class MaintenanceTeam : TeamFixableArchivable
     {
         /// <summary>
         /// Gets or sets the aircraft maintenance company.

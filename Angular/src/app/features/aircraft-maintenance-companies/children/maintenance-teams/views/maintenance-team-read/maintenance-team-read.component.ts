@@ -1,7 +1,7 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
-import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
+import { CrudItemReadComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-read/crud-item-read.component';
 import { MaintenanceTeamFormComponent } from '../../components/maintenance-team-form/maintenance-team-form.component';
 import { maintenanceTeamCRUDConfiguration } from '../../maintenance-team.constants';
 import { MaintenanceTeam } from '../../model/maintenance-team';
@@ -12,12 +12,12 @@ import { filter } from 'rxjs';
 import { FormReadOnlyMode } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
 
 @Component({
-  selector: 'app-maintenance-team-edit',
-  templateUrl: './maintenance-team-edit.component.html',
+  selector: 'app-maintenance-team-read',
+  templateUrl: './maintenance-team-read.component.html',
   imports: [NgIf, MaintenanceTeamFormComponent, AsyncPipe, SpinnerComponent],
 })
-export class MaintenanceTeamEditComponent
-  extends CrudItemEditComponent<MaintenanceTeam>
+export class MaintenanceTeamReadComponent
+  extends CrudItemReadComponent<MaintenanceTeam>
   implements OnInit
 {
   constructor(
@@ -52,12 +52,18 @@ export class MaintenanceTeamEditComponent
       this.crudItemService.crudItem$
         .pipe(filter(feature => !!feature && Object.keys(feature).length > 0))
         .subscribe(feature => {
-          // Define the read only mode
+          this.canEdit =
+            this.crudConfiguration.isFixable === true &&
+            feature.isFixed === true
+              ? false
+              : this.authService.hasPermission(Permission.Plane_Update);
+
           this.formReadOnlyMode =
+            this.canEdit === false &&
             this.crudConfiguration.isFixable === true &&
             feature.isFixed === true
               ? FormReadOnlyMode.on
-              : FormReadOnlyMode.off;
+              : this.initialFormReadOnlyMode;
         })
     );
   }
