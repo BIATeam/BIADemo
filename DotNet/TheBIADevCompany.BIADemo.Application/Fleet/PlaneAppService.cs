@@ -19,7 +19,11 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Mappers;
+
+    // Begin BIAToolKit Generation Ignore
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
+
+    // End BIAToolKit Generation Ignore
 
     /// <summary>
     /// The application service used for plane.
@@ -31,30 +35,33 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
         /// </summary>
         private readonly int currentAncestorTeamId;
 
-        // Begin BIADemo
+        // Begin BIAToolKit Generation Ignore
 
         /// <summary>
         /// The engine app repository.
         /// </summary>
         private readonly IEngineRepository engineRepository;
 
+        // End BIAToolKit Generation Ignore
+        // Begin BIADemo
 #pragma warning disable SA1515 // Single-line comment should be preceded by blank line
 #pragma warning disable SA1611 // Element parameters should be documented
+
         // End BIADemo
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlaneAppService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
-        // Begin BIADemo
+        // Begin BIAToolKit Generation Ignore
         /// <param name="engineRepository">The engine app service.</param>
-        // End BIADemo
+        // End BIAToolKit Generation Ignore
         /// <param name="principal">The claims principal.</param>
         public PlaneAppService(
             ITGenericRepository<Plane, int> repository,
-            // Begin BIADemo
+            // Begin BIAToolKit Generation Ignore
             IEngineRepository engineRepository,
-            // End BIADemo
+            // End BIAToolKit Generation Ignore
             IPrincipal principal)
             : base(repository)
         {
@@ -64,14 +71,16 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
             // For child : set the TeamId of the Ancestor that contain a team Parent
             this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<Plane>(x => x.SiteId == this.currentAncestorTeamId));
 
-            // Begin BIADemo
+            // Begin BIAToolKit Generation Ignore
             this.engineRepository = engineRepository;
-            // End BIADemo
+            // End BIAToolKit Generation Ignore
         }
 
         // Begin BIADemo
 #pragma warning restore SA1611 // Element parameters should be documented
 #pragma warning restore SA1515 // Single-line comment should be preceded by blank line
+
+        // End BIADemo
 
         /// <inheritdoc/>
         public override async Task<PlaneDto> UpdateFixedAsync(int id, bool isFixed)
@@ -82,6 +91,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
                 var entity = await this.Repository.GetEntityAsync(id) ?? throw new ElementNotFoundException();
                 this.Repository.UpdateFixedAsync(entity, isFixed);
 
+                // Begin BIAToolKit Generation Ignore
                 // Update children fixed status
                 var engines = await this.engineRepository.GetAllEntityAsync(filter: x => x.PlaneId == id);
                 foreach (var engine in engines)
@@ -89,11 +99,10 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
                     this.engineRepository.UpdateFixedAsync(engine, isFixed);
                 }
 
+                // End BIAToolKit Generation Ignore
                 await this.Repository.UnitOfWork.CommitAsync();
                 return await this.GetAsync(id);
             });
         }
-
-        // End BIADemo
     }
 }
