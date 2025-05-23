@@ -9,7 +9,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
     using System.Linq.Expressions;
     using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain.Dto.Option;
-    using BIA.Net.Core.Domain.Mapper;
+    using TheBIADevCompany.BIADemo.Domain.Bia.Base.Mappers;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
     /// <summary>

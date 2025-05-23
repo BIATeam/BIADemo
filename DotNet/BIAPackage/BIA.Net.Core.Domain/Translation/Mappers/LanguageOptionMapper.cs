@@ -13,9 +13,9 @@ namespace BIA.Net.Core.Domain.Translation.Mappers
     /// <summary>
     /// The mapper used for permission option.
     /// </summary>
-    public class LanguageOptionMapper : BaseMapper<OptionDto, Language, int>
+    public class LanguageOptionMapper : BiaBaseMapper<OptionDto, Language, int>
     {
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
+        /// <inheritdoc cref="BiaBaseMapper{TDto,TEntity}.EntityToDto"/>
         public override Expression<Func<Language, OptionDto>> EntityToDto()
         {
             return entity => new OptionDto

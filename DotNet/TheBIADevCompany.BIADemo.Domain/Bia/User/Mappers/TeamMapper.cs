@@ -12,6 +12,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+    using TheBIADevCompany.BIADemo.Domain.Bia.Base.Mappers;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
 
     // Begin BIADemo

@@ -1,6 +1,5 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
 import { CrudItemFormComponent } from '../../components/crud-item-form/crud-item-form.component';
@@ -23,8 +22,7 @@ export class CrudItemReadComponent<CrudItem extends BaseDto>
 
   constructor(
     protected injector: Injector,
-    public crudItemService: CrudItemSingleService<CrudItem>,
-    protected authService: AuthService
+    public crudItemService: CrudItemSingleService<CrudItem>
   ) {
     super(injector, crudItemService);
   }

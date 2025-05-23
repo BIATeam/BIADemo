@@ -50,7 +50,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <returns>The mapper.</returns>
         protected virtual TOtherMapper InitMapper<TOtherDto, TOtherMapper>()
             where TOtherDto : BaseDto<TKey>, new()
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
         {
             TOtherMapper mapper = this.Repository.ServiceProvider.GetService<TOtherMapper>();
 

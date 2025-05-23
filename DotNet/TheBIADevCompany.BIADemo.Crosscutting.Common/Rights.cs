@@ -272,6 +272,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// The right to save maintenance team.
             /// </summary>
             public const string Save = "MaintenanceTeam_Save";
+
+            /// <summary>
+            /// The right to fixe maintenance team.
+            /// </summary>
+            public const string Fix = "MaintenanceTeam_Fix";
         }
 
         /// <summary>

@@ -2,7 +2,7 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
+namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
 {
     using Microsoft.EntityFrameworkCore;
     using TheBIADevCompany.BIADemo.Domain.Bia.Audit.Entities;

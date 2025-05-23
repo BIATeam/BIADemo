@@ -9,6 +9,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories
     using BIA.Net.Core.Domain.Entity.Interface;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
+    using TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories.Bia;
 
     /// <summary>
     /// Repository for <typeparamref name="TEntity"/> on BIA Demo read only database.

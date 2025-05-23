@@ -62,4 +62,9 @@ export namespace FeatureMaintenanceTeamsActions {
   export const clearCurrent = createAction(
     '[' + maintenanceTeamCRUDConfiguration.storeKey + '] Clear current'
   );
+
+  export const updateFixedStatus = createAction(
+    '[' + maintenanceTeamCRUDConfiguration.storeKey + '] Update fixed status',
+    props<{ id: number; isFixed: boolean }>()
+  );
 }

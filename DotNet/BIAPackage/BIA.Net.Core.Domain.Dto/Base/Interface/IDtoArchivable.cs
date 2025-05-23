@@ -7,10 +7,9 @@ namespace BIA.Net.Core.Domain.Dto.Base.Interface
     using System;
 
     /// <summary>
-    /// The base class for DTO.
+    /// The base class for DTO Archivable.
     /// </summary>
-    /// <typeparam name="TKey">Type of the key.</typeparam>
-    public interface IDtoArchivable : IDtoFixable
+    public interface IDtoArchivable
     {
         /// <summary>
         /// Gets or sets the is archived.

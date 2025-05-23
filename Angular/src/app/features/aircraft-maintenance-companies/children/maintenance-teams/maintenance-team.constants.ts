@@ -13,6 +13,7 @@ export const maintenanceTeamCRUDConfiguration: CrudConfig<MaintenanceTeam> =
     featureName: 'maintenance-teams',
     fieldsConfig: maintenanceTeamFieldsConfiguration,
     formLayoutConfig: maintenanceTeamFormLayoutConfiguration,
+    isFixable: true,
     useCalcMode: false,
     useSignalR: false,
     useView: true,

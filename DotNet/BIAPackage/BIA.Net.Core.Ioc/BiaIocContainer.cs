@@ -142,7 +142,7 @@ namespace BIA.Net.Core.IocContainer
         private static void ConfigureDomainContainer(IServiceCollection collection)
         {
             // Domain
-            Type templateType = typeof(BaseMapper<,,>);
+            Type templateType = typeof(BiaBaseMapper<,,>);
             Assembly assembly = Assembly.Load("BIA.Net.Core.Domain");
             List<Type> derivedTypes = ReflectiveEnumerator.GetDerivedTypes(assembly, templateType);
             foreach (var type in derivedTypes)

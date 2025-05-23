@@ -5,13 +5,14 @@
 namespace BIA.Net.Core.Domain.Dto.Base
 {
     using System.Collections.Generic;
+    using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
 
     /// <summary>
     /// The DTO used to manage site.
     /// </summary>
-    public class BaseDtoVersionedTeam : BaseDtoVersioned<int>
+    public class BaseDtoVersionedTeam : BaseDtoVersioned<int>, IDtoTeam
     {
         /// <summary>
         /// Gets or sets the title.

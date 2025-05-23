@@ -2,7 +2,7 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
+namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features.Bia
 {
     using System;
     using System.Security.Principal;

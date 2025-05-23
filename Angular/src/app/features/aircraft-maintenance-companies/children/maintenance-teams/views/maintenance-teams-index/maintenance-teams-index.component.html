@@ -14,7 +14,12 @@
         [selectedElements]="selectedCrudItems"
         [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
         [tableControllerVisible]="showTableController"
-        (toggleTableControllerVisibility)="toggleTableControllerVisibility()">
+        (toggleTableControllerVisibility)="toggleTableControllerVisibility()"
+        [canFix]="canFix"
+        [showFixedButtons]="crudConfiguration.isFixable"
+        (crudItemFixedChanged)="
+          crudItemService.updateFixedStatus($event.crudItemId, $event.fixed)
+        ">
         <ng-template pTemplate="actionOnSelected">
           <bia-button-group
             [buttons]="selectedButtonGroup"
@@ -79,7 +84,8 @@
         [sortFieldValue]="sortFieldValue"
         (stateSave)="onStateSave($event)"
         [canSelectMultipleElement]="false"
-        [scrollHeightValue]="getFillScrollHeightValue()"></bia-table>
+        [scrollHeightValue]="getFillScrollHeightValue()"
+        [showFixableState]="crudConfiguration.isFixable"></bia-table>
       <app-maintenance-team-table
         *ngIf="crudConfiguration.useCalcMode"
         [elements]="(crudItems$ | async) ?? []"
@@ -105,8 +111,9 @@
         (stateSave)="onStateSave($event)"
         (save)="onSave($event)"
         [canSelectMultipleElement]="false"
-        [scrollHeightValue]="
-          getFillScrollHeightValue()
+        [scrollHeightValue]="getFillScrollHeightValue()"
+        [showFixableState]="
+          crudConfiguration.isFixable
         "></app-maintenance-team-table>
     </div>
   </div>

@@ -22,7 +22,7 @@ namespace BIA.Net.Core.Application.Services
     public abstract class OptionAppServiceBase<TOptionDto, TEntity, TKey, TMapper> : OperationalDomainServiceBase<TEntity, TKey>, IOptionAppServiceBase<TOptionDto, TKey>
         where TOptionDto : TOptionDto<TKey>, new()
         where TEntity : class, IEntity<TKey>, new()
-        where TMapper : BaseMapper<TOptionDto, TEntity, TKey>
+        where TMapper : BiaBaseMapper<TOptionDto, TEntity, TKey>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="OptionAppServiceBase{TOptionDto, TEntity, TKey, TMapper}"/> class.

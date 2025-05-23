@@ -1,7 +1,6 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, Injector } from '@angular/core';
 import { filter } from 'rxjs';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { FormReadOnlyMode } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
 import { CrudItemReadComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-read/crud-item-read.component';
@@ -19,10 +18,9 @@ import { PlaneService } from '../../services/plane.service';
 export class PlaneReadComponent extends CrudItemReadComponent<Plane> {
   constructor(
     protected injector: Injector,
-    public planeService: PlaneService,
-    protected authService: AuthService
+    public planeService: PlaneService
   ) {
-    super(injector, planeService, authService);
+    super(injector, planeService);
     this.crudConfiguration = planeCRUDConfiguration;
   }
 

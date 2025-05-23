@@ -5,7 +5,7 @@
 namespace TheBIADevCompany.BIADemo.Domain.Bia.RepoContract
 {
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
-    using TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
 
     /// <summary>
     /// interface use to customize the request on Member entity.
