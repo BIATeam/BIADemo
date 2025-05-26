@@ -48,20 +48,19 @@ namespace TheBIADevCompany.BIADemo.Domain.User
                     // End BIADemo
                     (int)RoleId.AircraftMaintenanceCompanyAdmin
                     ],
-
-                // BIAToolKit - Begin TeamConfigAircraftMaintenanceCompanyChildren
-                // BIAToolKit - Begin Partial TeamConfigAircraftMaintenanceCompanyChildren MaintenanceTeam
                 Children = new ImmutableListBuilder<BiaTeamChildrenConfig<Team>>
                 {
+                // BIAToolKit - Begin TeamConfigAircraftMaintenanceCompanyChildren
+                // BIAToolKit - Begin Partial TeamConfigAircraftMaintenanceCompanyChildren MaintenanceTeam
                     new BiaTeamChildrenConfig<Team>
                     {
                         TeamTypeId = (int)TeamTypeId.MaintenanceTeam,
                         GetChilds = team => (team as AircraftMaintenanceCompany).MaintenanceTeams,
                     },
-                }.ToImmutable(),
 
                 // BIAToolKit - End Partial TeamConfigAircraftMaintenanceCompanyChildren MaintenanceTeam
                 // BIAToolKit - End TeamConfigAircraftMaintenanceCompanyChildren
+                }.ToImmutable(),
             },
 
             // BIAToolKit - End Partial TeamConfig AircraftMaintenanceCompany
@@ -73,6 +72,11 @@ namespace TheBIADevCompany.BIADemo.Domain.User
                 AdminRoleIds = [
                     (int)RoleId.MaintenanceTeamAdmin
                     ],
+                Children = new ImmutableListBuilder<BiaTeamChildrenConfig<Team>>
+                {
+                // BIAToolKit - Begin TeamConfigMaintenanceTeamChildren
+                // BIAToolKit - End TeamConfigMaintenanceTeamChildren
+                }.ToImmutable(),
                 Parents = new ImmutableListBuilder<BiaTeamParentConfig<Team>>
                 {
                     new BiaTeamParentConfig<Team>
@@ -82,7 +86,11 @@ namespace TheBIADevCompany.BIADemo.Domain.User
                     },
                 }
                 .ToImmutable(),
+
+                // Begin BIADemo
                 TeamSelectionMode = BIA.Net.Core.Common.Enum.TeamSelectionMode.None,
+
+                // End BIADemo
             },
 
             // BIAToolKit - End Partial TeamConfig MaintenanceTeam
