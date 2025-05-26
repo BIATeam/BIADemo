@@ -43,7 +43,6 @@ import { AircraftMaintenanceCompany } from '../../model/aircraft-maintenance-com
     NgFor,
     Tooltip,
     NgSwitch,
-
     NgClass,
     NgTemplateOutlet,
     Skeleton,

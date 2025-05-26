@@ -13,7 +13,9 @@ export class AircraftMaintenanceCompanyOptionsService extends CrudItemOptionsSer
     // TODO after creation of CRUD Team AircraftMaintenanceCompany : get all required option dto use in Table calc and create and edit form
 
     this.dictOptionDtos$ = combineLatest([]).pipe(
-      map(() => <DictOptionDto[]>[])
+      map(options => {
+        return <DictOptionDto[]>[];
+      })
     );
   }
 }
