@@ -19,7 +19,6 @@ import { MaintenanceTeamEditComponent } from './views/maintenance-team-edit/main
 import { MaintenanceTeamItemComponent } from './views/maintenance-team-item/maintenance-team-item.component';
 import { MaintenanceTeamNewComponent } from './views/maintenance-team-new/maintenance-team-new.component';
 import { MaintenanceTeamsIndexComponent } from './views/maintenance-teams-index/maintenance-teams-index.component';
-import { MaintenanceTeamReadComponent } from './views/maintenance-team-read/maintenance-team-read.component';
 
 export const ROUTES: Routes = [
   {
@@ -66,19 +65,6 @@ export const ROUTES: Routes = [
               import('./children/members/maintenance-team-member.module').then(
                 m => m.MaintenanceTeamMemberModule
               ),
-          },
-          {
-            path: 'read',
-            data: {
-              breadcrumb: 'bia.read',
-              canNavigate: true,
-              permission: Permission.MaintenanceTeam_Read,
-              readOnlyMode:
-                maintenanceTeamCRUDConfiguration.formEditReadOnlyMode,
-              title: 'maintenanceTeam.read',
-            },
-            component: MaintenanceTeamReadComponent,
-            canActivate: [PermissionGuard],
           },
           {
             path: 'edit',
