@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-// import { ReducerManager, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
@@ -9,7 +8,6 @@ import {
   LayoutMode,
 } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { Permission } from 'src/app/shared/permission';
-
 import { aircraftMaintenanceCompanyCRUDConfiguration } from './aircraft-maintenance-company.constants';
 import { AircraftMaintenanceCompaniesEffects } from './store/aircraft-maintenance-companies-effects';
 import { FeatureAircraftMaintenanceCompaniesStore } from './store/aircraft-maintenance-company.state';
@@ -77,6 +75,14 @@ export const ROUTES: Routes = [
             canActivate: [PermissionGuard],
           },
           {
+            path: '',
+            pathMatch: 'full',
+            redirectTo: 'edit',
+          },
+          // BIAToolKit - Begin AircraftMaintenanceCompanyModuleChildPath
+          // Begin BIAToolKit Generation Ignore
+          // BIAToolKit - Begin Partial AircraftMaintenanceCompanyModuleChildPath MaintenanceTeam
+          {
             path: 'maintenance-teams',
             data: {
               breadcrumb: 'aircraftMaintenanceCompany.maintenanceTeams',
@@ -89,12 +95,8 @@ export const ROUTES: Routes = [
                 './children/maintenance-teams/maintenance-team.module'
               ).then(m => m.MaintenanceTeamModule),
           },
-          {
-            path: '',
-            pathMatch: 'full',
-            redirectTo: 'edit',
-          },
-          // BIAToolKit - Begin AircraftMaintenanceCompanyModuleChildPath
+          // BIAToolKit - End Partial AircraftMaintenanceCompanyModuleChildPath MaintenanceTeam
+          // End BIAToolKit Generation Ignore
           // BIAToolKit - End AircraftMaintenanceCompanyModuleChildPath
         ],
       },
@@ -111,6 +113,8 @@ export const ROUTES: Routes = [
       FeatureAircraftMaintenanceCompaniesStore.reducers
     ),
     EffectsModule.forFeature([AircraftMaintenanceCompaniesEffects]),
+    // TODO after creation of CRUD AircraftMaintenanceCompany : select the optionDto domain module required for link
+    // Domain Modules:
   ],
 })
 export class AircraftMaintenanceCompanyModule {}
