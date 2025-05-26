@@ -1,7 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
@@ -81,6 +81,14 @@ export class AircraftMaintenanceCompanyService extends CrudItemService<AircraftM
   public crudItem$: Observable<AircraftMaintenanceCompany> = this.store.select(
     FeatureAircraftMaintenanceCompaniesStore.getCurrentAircraftMaintenanceCompany
   );
+
+  public displayItemName$: Observable<string> = this.crudItem$.pipe(
+    map(
+      aircraftMaintenanceCompany =>
+        aircraftMaintenanceCompany?.title?.toString() ?? ''
+    )
+  );
+
   public loadingGet$: Observable<boolean> = this.store.select(
     FeatureAircraftMaintenanceCompaniesStore.getAircraftMaintenanceCompanyLoadingGet
   );
