@@ -18,7 +18,7 @@ import { EngineService } from '../../services/engine.service';
   providers: [
     {
       provide: CrudItemService,
-      useClass: EngineService,
+      useExisting: EngineService,
     },
   ],
 })

@@ -53,11 +53,11 @@ export class PlanesIndexComponent
 
   constructor(
     protected injector: Injector,
-    public crudItemService: PlaneService,
+    public planeService: PlaneService,
     protected planeOptionsService: PlaneOptionsService,
     protected authService: AuthService
   ) {
-    super(injector, crudItemService);
+    super(injector, planeService);
     this.crudConfiguration = planeCRUDConfiguration;
   }
 

@@ -48,18 +48,18 @@ export class EnginesIndexComponent
 
   constructor(
     protected injector: Injector,
-    public crudItemService: EngineService,
+    public engineService: EngineService,
     protected engineOptionsService: EngineOptionsService,
     protected authService: AuthService
   ) {
-    super(injector, crudItemService);
+    super(injector, engineService);
     this.crudConfiguration = engineCRUDConfiguration;
   }
 
   ngOnInit(): void {
     super.ngOnInit();
     this.parentDisplayItemName$ =
-      this.crudItemService.planeService.displayItemName$;
+      this.engineService.planeService.displayItemName$;
     this.sub.add(
       this.biaTranslationService.currentCulture$.subscribe(() => {
         this.engineOptionsService.loadAllOptions();
@@ -74,7 +74,7 @@ export class EnginesIndexComponent
     super.setPermissions();
 
     this.permissionSub.add(
-      this.crudItemService.planeService.crudItem$
+      this.engineService.planeService.crudItem$
         .pipe(filter(plane => !!plane && Object.keys(plane).length > 0))
         .subscribe(plane => {
           this.isParentFixed = plane.isFixed === true;

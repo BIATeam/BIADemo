@@ -18,7 +18,7 @@ import { PlaneService } from '../../services/plane.service';
   providers: [
     {
       provide: CrudItemService,
-      useClass: PlaneService,
+      useExisting: PlaneService,
     },
   ],
 })
