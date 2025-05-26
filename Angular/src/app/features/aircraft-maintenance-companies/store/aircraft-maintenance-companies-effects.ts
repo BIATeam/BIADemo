@@ -63,9 +63,7 @@ export class AircraftMaintenanceCompaniesEffects {
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
             return of(
-              FeatureAircraftMaintenanceCompaniesActions.failure({
-                error: err,
-              })
+              FeatureAircraftMaintenanceCompaniesActions.failure({ error: err })
             );
           })
         );
@@ -100,7 +98,9 @@ export class AircraftMaintenanceCompaniesEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureAircraftMaintenanceCompaniesActions.loadAllByPost(
-                  { event: event }
+                  {
+                    event: event,
+                  }
                 );
               }
             }),
@@ -145,7 +145,9 @@ export class AircraftMaintenanceCompaniesEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureAircraftMaintenanceCompaniesActions.loadAllByPost(
-                  { event: event }
+                  {
+                    event: event,
+                  }
                 );
               }
             }),
@@ -189,7 +191,9 @@ export class AircraftMaintenanceCompaniesEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureAircraftMaintenanceCompaniesActions.loadAllByPost(
-                  { event: event }
+                  {
+                    event: event,
+                  }
                 );
               }
             }),
@@ -233,7 +237,9 @@ export class AircraftMaintenanceCompaniesEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureAircraftMaintenanceCompaniesActions.loadAllByPost(
-                  { event: event }
+                  {
+                    event: event,
+                  }
                 );
               }
             }),

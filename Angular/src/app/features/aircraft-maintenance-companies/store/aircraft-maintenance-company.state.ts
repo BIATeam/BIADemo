@@ -5,6 +5,7 @@ import {
   createSelector,
 } from '@ngrx/store';
 import { aircraftMaintenanceCompanyCRUDConfiguration } from '../aircraft-maintenance-company.constants';
+import { AircraftMaintenanceCompany } from '../model/aircraft-maintenance-company';
 import * as fromAircraftMaintenanceCompanies from './aircraft-maintenance-companies-reducer';
 
 export namespace FeatureAircraftMaintenanceCompaniesStore {
@@ -45,7 +46,7 @@ export namespace FeatureAircraftMaintenanceCompaniesStore {
 
   export const getCurrentAircraftMaintenanceCompany = createSelector(
     getAircraftMaintenanceCompaniesEntitiesState,
-    state => state.currentAircraftMaintenanceCompany
+    state => state.currentItem ?? <AircraftMaintenanceCompany>{}
   );
 
   export const getLastLazyLoadEvent = createSelector(
