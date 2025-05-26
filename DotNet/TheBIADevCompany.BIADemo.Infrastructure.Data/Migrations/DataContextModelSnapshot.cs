@@ -17,7 +17,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.15")
+                .HasAnnotation("ProductVersion", "8.0.16")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -167,12 +167,17 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         },
                         new
                         {
-                            RolesId = 3,
+                            RolesId = 201,
                             TeamTypesId = 4
                         },
                         new
                         {
-                            RolesId = 201,
+                            RolesId = 3,
+                            TeamTypesId = 3
+                        },
+                        new
+                        {
+                            RolesId = 4,
                             TeamTypesId = 4
                         });
                 });
@@ -192,161 +197,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("UserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.Country", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Countries", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "France"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Mexico"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "China"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Spain"
-                        });
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceContract", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("AircraftMaintenanceCompanyId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ArchivedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ContractNumber")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)")
-                        .UseCollation("SQL_Latin1_General_CP1_CS_AS");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("FixedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsArchived")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsFixed")
-                        .HasColumnType("bit");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<int?>("SiteId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AircraftMaintenanceCompanyId");
-
-                    b.HasIndex("SiteId");
-
-                    b.ToTable("MaintenanceContract");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceContractPlane", b =>
-                {
-                    b.Property<int>("MaintenanceContractId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlaneId")
-                        .HasColumnType("int");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("MaintenanceContractId", "PlaneId");
-
-                    b.HasIndex("PlaneId");
-
-                    b.ToTable("MaintenanceContractPlane");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceTeamAirport", b =>
-                {
-                    b.Property<int>("AirportId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MaintenanceTeamId")
-                        .HasColumnType("int");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("AirportId", "MaintenanceTeamId");
-
-                    b.HasIndex("MaintenanceTeamId");
-
-                    b.ToTable("MaintenanceTeamAirport");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceTeamCountry", b =>
-                {
-                    b.Property<int>("CountryId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MaintenanceTeamId")
-                        .HasColumnType("int");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("CountryId", "MaintenanceTeamId");
-
-                    b.HasIndex("MaintenanceTeamId");
-
-                    b.ToTable("MaintenanceTeamCountry");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Audit.Entities.AuditLog", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.Audit.Entities.AuditLog", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -384,7 +235,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("AuditLogs");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.Notification", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities.Notification", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -431,7 +282,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("Notifications");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.NotificationTeam", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities.NotificationTeam", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -459,7 +310,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("NotificationTeam");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.NotificationTeamRole", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities.NotificationTeamRole", b =>
                 {
                     b.Property<int>("NotificationTeamId")
                         .HasColumnType("int");
@@ -479,7 +330,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("NotificationTeamRole");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.NotificationType", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities.NotificationType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -539,7 +390,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.NotificationUser", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities.NotificationUser", b =>
                 {
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -557,6 +408,814 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasIndex("NotificationId");
 
                     b.ToTable("NotificationUser");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.Translation.Entities.NotificationTranslation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NotificationId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LanguageId");
+
+                    b.HasIndex("NotificationId", "LanguageId")
+                        .IsUnique();
+
+                    b.ToTable("NotificationTranslations");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.Translation.Entities.NotificationTypeTranslation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NotificationTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LanguageId");
+
+                    b.HasIndex("NotificationTypeId", "LanguageId")
+                        .IsUnique();
+
+                    b.ToTable("NotificationTypeTranslations");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 101,
+                            Label = "Tâche",
+                            LanguageId = 2,
+                            NotificationTypeId = 1
+                        },
+                        new
+                        {
+                            Id = 102,
+                            Label = "Tarea",
+                            LanguageId = 3,
+                            NotificationTypeId = 1
+                        },
+                        new
+                        {
+                            Id = 103,
+                            Label = "Aufgabe",
+                            LanguageId = 4,
+                            NotificationTypeId = 1
+                        },
+                        new
+                        {
+                            Id = 201,
+                            Label = "Information",
+                            LanguageId = 2,
+                            NotificationTypeId = 2
+                        },
+                        new
+                        {
+                            Id = 202,
+                            Label = "Información",
+                            LanguageId = 3,
+                            NotificationTypeId = 2
+                        },
+                        new
+                        {
+                            Id = 203,
+                            Label = "Information",
+                            LanguageId = 4,
+                            NotificationTypeId = 2
+                        },
+                        new
+                        {
+                            Id = 301,
+                            Label = "Succès",
+                            LanguageId = 2,
+                            NotificationTypeId = 3
+                        },
+                        new
+                        {
+                            Id = 302,
+                            Label = "Éxito",
+                            LanguageId = 3,
+                            NotificationTypeId = 3
+                        },
+                        new
+                        {
+                            Id = 303,
+                            Label = "Erfolg",
+                            LanguageId = 4,
+                            NotificationTypeId = 3
+                        },
+                        new
+                        {
+                            Id = 401,
+                            Label = "Avertissement",
+                            LanguageId = 2,
+                            NotificationTypeId = 4
+                        },
+                        new
+                        {
+                            Id = 402,
+                            Label = "Advertencia",
+                            LanguageId = 3,
+                            NotificationTypeId = 4
+                        },
+                        new
+                        {
+                            Id = 403,
+                            Label = "Erwärmen",
+                            LanguageId = 4,
+                            NotificationTypeId = 4
+                        },
+                        new
+                        {
+                            Id = 501,
+                            Label = "Erreur",
+                            LanguageId = 2,
+                            NotificationTypeId = 5
+                        },
+                        new
+                        {
+                            Id = 502,
+                            Label = "Culpa",
+                            LanguageId = 3,
+                            NotificationTypeId = 5
+                        },
+                        new
+                        {
+                            Id = 503,
+                            Label = "Fehler",
+                            LanguageId = 4,
+                            NotificationTypeId = 5
+                        });
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.Translation.Entities.RoleTranslation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LanguageId");
+
+                    b.HasIndex("RoleId", "LanguageId")
+                        .IsUnique();
+
+                    b.ToTable("RoleTranslations");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1000101,
+                            Label = "Administrateur",
+                            LanguageId = 2,
+                            RoleId = 10001
+                        },
+                        new
+                        {
+                            Id = 1000102,
+                            Label = "Administrador",
+                            LanguageId = 3,
+                            RoleId = 10001
+                        },
+                        new
+                        {
+                            Id = 1000103,
+                            Label = "Administrator",
+                            LanguageId = 4,
+                            RoleId = 10001
+                        },
+                        new
+                        {
+                            Id = 1000201,
+                            Label = "Administrateur des tâches en arrière-plan",
+                            LanguageId = 2,
+                            RoleId = 10002
+                        },
+                        new
+                        {
+                            Id = 1000202,
+                            Label = "Administrador de tareas en segundo plano",
+                            LanguageId = 3,
+                            RoleId = 10002
+                        },
+                        new
+                        {
+                            Id = 1000203,
+                            Label = "Administrator für Hintergrundaufgaben",
+                            LanguageId = 4,
+                            RoleId = 10002
+                        },
+                        new
+                        {
+                            Id = 1000301,
+                            Label = "Visualisation des tâches en arrière-plan",
+                            LanguageId = 2,
+                            RoleId = 10003
+                        },
+                        new
+                        {
+                            Id = 1000302,
+                            Label = "Visualización de tareas en segundo plano",
+                            LanguageId = 3,
+                            RoleId = 10003
+                        },
+                        new
+                        {
+                            Id = 1000303,
+                            Label = "Visualisierung von Hintergrundaufgaben",
+                            LanguageId = 4,
+                            RoleId = 10003
+                        },
+                        new
+                        {
+                            Id = 101,
+                            Label = "Administrateur de la compagnie",
+                            LanguageId = 2,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 102,
+                            Label = "Administrador de la aerolínea",
+                            LanguageId = 3,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 103,
+                            Label = "Fluglinienadministrator",
+                            LanguageId = 4,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 201,
+                            Label = "Pilote",
+                            LanguageId = 2,
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            Id = 202,
+                            Label = "Piloto",
+                            LanguageId = 3,
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            Id = 203,
+                            Label = "Pilot",
+                            LanguageId = 4,
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            Id = 10101,
+                            Label = "Superviseur",
+                            LanguageId = 2,
+                            RoleId = 101
+                        },
+                        new
+                        {
+                            Id = 10102,
+                            Label = "Supervisor",
+                            LanguageId = 3,
+                            RoleId = 101
+                        },
+                        new
+                        {
+                            Id = 10103,
+                            Label = "Supervisor",
+                            LanguageId = 4,
+                            RoleId = 101
+                        },
+                        new
+                        {
+                            Id = 10201,
+                            Label = "Expert",
+                            LanguageId = 2,
+                            RoleId = 102
+                        },
+                        new
+                        {
+                            Id = 10202,
+                            Label = "Experto",
+                            LanguageId = 3,
+                            RoleId = 102
+                        },
+                        new
+                        {
+                            Id = 10203,
+                            Label = "Experte",
+                            LanguageId = 4,
+                            RoleId = 102
+                        },
+                        new
+                        {
+                            Id = 20101,
+                            Label = "Chef d'equipe",
+                            LanguageId = 2,
+                            RoleId = 201
+                        },
+                        new
+                        {
+                            Id = 20102,
+                            Label = "Jefe de equipo",
+                            LanguageId = 3,
+                            RoleId = 201
+                        },
+                        new
+                        {
+                            Id = 20103,
+                            Label = "Teamleiter",
+                            LanguageId = 4,
+                            RoleId = 201
+                        },
+                        new
+                        {
+                            Id = 20201,
+                            Label = "Operateur",
+                            LanguageId = 2,
+                            RoleId = 202
+                        },
+                        new
+                        {
+                            Id = 20202,
+                            Label = "Operador",
+                            LanguageId = 3,
+                            RoleId = 202
+                        },
+                        new
+                        {
+                            Id = 20203,
+                            Label = "Operator",
+                            LanguageId = 4,
+                            RoleId = 202
+                        });
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.Member", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("TeamId", "UserId")
+                        .IsUnique();
+
+                    b.ToTable("Members");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.MemberRole", b =>
+                {
+                    b.Property<int>("MemberId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("bit");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("MemberId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("MemberRole");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 10001,
+                            Code = "Admin",
+                            Label = "Administrator"
+                        },
+                        new
+                        {
+                            Id = 10002,
+                            Code = "Back_Admin",
+                            Label = "Background task administrator"
+                        },
+                        new
+                        {
+                            Id = 10003,
+                            Code = "Back_Read_Only",
+                            Label = "Visualization of background tasks"
+                        },
+                        new
+                        {
+                            Id = 1,
+                            Code = "Site_Admin",
+                            Label = "Airline administrator"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Code = "Pilot",
+                            Label = "Pilot"
+                        },
+                        new
+                        {
+                            Id = 101,
+                            Code = "Supervisor",
+                            Label = "Supervisor"
+                        },
+                        new
+                        {
+                            Id = 102,
+                            Code = "Expert",
+                            Label = "Expert"
+                        },
+                        new
+                        {
+                            Id = 202,
+                            Code = "Operator",
+                            Label = "Operator"
+                        },
+                        new
+                        {
+                            Id = 201,
+                            Code = "Team_Leader",
+                            Label = "Team leader"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Code = "AircraftMaintenanceCompany_Admin",
+                            Label = "AircraftMaintenanceCompany administrator"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Code = "MaintenanceTeam_Admin",
+                            Label = "MaintenanceTeam administrator"
+                        });
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.Team", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int>("TeamTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(2);
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TeamTypeId");
+
+                    b.ToTable("Teams", (string)null);
+
+                    b.UseTptMappingStrategy();
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.TeamType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TeamTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Root"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Site"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "AircraftMaintenanceCompany"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "MaintenanceTeam"
+                        });
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.UserAudit", b =>
+                {
+                    b.Property<int>("AuditId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditId"));
+
+                    b.Property<string>("AuditAction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AuditChanges")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AuditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("AuditUserLogin")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Domain")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("--");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("AuditId");
+
+                    b.ToTable("UsersAudit");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.UserDefaultTeam", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TeamId");
+
+                    b.HasIndex("UserId", "TeamId")
+                        .IsUnique();
+
+                    b.ToTable("UserDefaultTeams");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.View.Entities.View", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Preference")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("TableId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("ViewType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Views");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = -1,
+                            Name = "default",
+                            Preference = "{\"first\":0,\"rows\":10,\"sortField\":\"createdDate\",\"sortOrder\":-1,\"columnOrder\":[\"titleTranslated\",\"descriptionTranslated\",\"type\",\"read\",\"createdDate\",\"createdBy\"],\"selection\":[],\"filters\":{}}",
+                            TableId = "notificationsGrid",
+                            ViewType = 0
+                        });
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.View.Entities.ViewTeam", b =>
+                {
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ViewId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("bit");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("TeamId", "ViewId");
+
+                    b.HasIndex("ViewId");
+
+                    b.ToTable("ViewTeam");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.View.Entities.ViewUser", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ViewId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("bit");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("UserId", "ViewId");
+
+                    b.HasIndex("ViewId");
+
+                    b.ToTable("ViewUser");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Airport", b =>
@@ -964,586 +1623,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("PlanesTypes");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Translation.Entities.NotificationTranslation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<int>("LanguageId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NotificationId")
-                        .HasColumnType("int");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LanguageId");
-
-                    b.HasIndex("NotificationId", "LanguageId")
-                        .IsUnique();
-
-                    b.ToTable("NotificationTranslations");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Translation.Entities.NotificationTypeTranslation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Label")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("LanguageId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NotificationTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LanguageId");
-
-                    b.HasIndex("NotificationTypeId", "LanguageId")
-                        .IsUnique();
-
-                    b.ToTable("NotificationTypeTranslations");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 101,
-                            Label = "Tâche",
-                            LanguageId = 2,
-                            NotificationTypeId = 1
-                        },
-                        new
-                        {
-                            Id = 102,
-                            Label = "Tarea",
-                            LanguageId = 3,
-                            NotificationTypeId = 1
-                        },
-                        new
-                        {
-                            Id = 103,
-                            Label = "Aufgabe",
-                            LanguageId = 4,
-                            NotificationTypeId = 1
-                        },
-                        new
-                        {
-                            Id = 201,
-                            Label = "Information",
-                            LanguageId = 2,
-                            NotificationTypeId = 2
-                        },
-                        new
-                        {
-                            Id = 202,
-                            Label = "Información",
-                            LanguageId = 3,
-                            NotificationTypeId = 2
-                        },
-                        new
-                        {
-                            Id = 203,
-                            Label = "Information",
-                            LanguageId = 4,
-                            NotificationTypeId = 2
-                        },
-                        new
-                        {
-                            Id = 301,
-                            Label = "Succès",
-                            LanguageId = 2,
-                            NotificationTypeId = 3
-                        },
-                        new
-                        {
-                            Id = 302,
-                            Label = "Éxito",
-                            LanguageId = 3,
-                            NotificationTypeId = 3
-                        },
-                        new
-                        {
-                            Id = 303,
-                            Label = "Erfolg",
-                            LanguageId = 4,
-                            NotificationTypeId = 3
-                        },
-                        new
-                        {
-                            Id = 401,
-                            Label = "Avertissement",
-                            LanguageId = 2,
-                            NotificationTypeId = 4
-                        },
-                        new
-                        {
-                            Id = 402,
-                            Label = "Advertencia",
-                            LanguageId = 3,
-                            NotificationTypeId = 4
-                        },
-                        new
-                        {
-                            Id = 403,
-                            Label = "Erwärmen",
-                            LanguageId = 4,
-                            NotificationTypeId = 4
-                        },
-                        new
-                        {
-                            Id = 501,
-                            Label = "Erreur",
-                            LanguageId = 2,
-                            NotificationTypeId = 5
-                        },
-                        new
-                        {
-                            Id = 502,
-                            Label = "Culpa",
-                            LanguageId = 3,
-                            NotificationTypeId = 5
-                        },
-                        new
-                        {
-                            Id = 503,
-                            Label = "Fehler",
-                            LanguageId = 4,
-                            NotificationTypeId = 5
-                        });
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Translation.Entities.RoleTranslation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Label")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("LanguageId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LanguageId");
-
-                    b.HasIndex("RoleId", "LanguageId")
-                        .IsUnique();
-
-                    b.ToTable("RoleTranslations");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1000101,
-                            Label = "Administrateur",
-                            LanguageId = 2,
-                            RoleId = 10001
-                        },
-                        new
-                        {
-                            Id = 1000102,
-                            Label = "Administrador",
-                            LanguageId = 3,
-                            RoleId = 10001
-                        },
-                        new
-                        {
-                            Id = 1000103,
-                            Label = "Administrator",
-                            LanguageId = 4,
-                            RoleId = 10001
-                        },
-                        new
-                        {
-                            Id = 1000201,
-                            Label = "Administrateur des tâches en arrière-plan",
-                            LanguageId = 2,
-                            RoleId = 10002
-                        },
-                        new
-                        {
-                            Id = 1000202,
-                            Label = "Administrador de tareas en segundo plano",
-                            LanguageId = 3,
-                            RoleId = 10002
-                        },
-                        new
-                        {
-                            Id = 1000203,
-                            Label = "Administrator für Hintergrundaufgaben",
-                            LanguageId = 4,
-                            RoleId = 10002
-                        },
-                        new
-                        {
-                            Id = 1000301,
-                            Label = "Visualisation des tâches en arrière-plan",
-                            LanguageId = 2,
-                            RoleId = 10003
-                        },
-                        new
-                        {
-                            Id = 1000302,
-                            Label = "Visualización de tareas en segundo plano",
-                            LanguageId = 3,
-                            RoleId = 10003
-                        },
-                        new
-                        {
-                            Id = 1000303,
-                            Label = "Visualisierung von Hintergrundaufgaben",
-                            LanguageId = 4,
-                            RoleId = 10003
-                        },
-                        new
-                        {
-                            Id = 101,
-                            Label = "Administrateur de la compagnie",
-                            LanguageId = 2,
-                            RoleId = 1
-                        },
-                        new
-                        {
-                            Id = 102,
-                            Label = "Administrador de la aerolínea",
-                            LanguageId = 3,
-                            RoleId = 1
-                        },
-                        new
-                        {
-                            Id = 103,
-                            Label = "Fluglinienadministrator",
-                            LanguageId = 4,
-                            RoleId = 1
-                        },
-                        new
-                        {
-                            Id = 201,
-                            Label = "Pilote",
-                            LanguageId = 2,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            Id = 202,
-                            Label = "Piloto",
-                            LanguageId = 3,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            Id = 203,
-                            Label = "Pilot",
-                            LanguageId = 4,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            Id = 10101,
-                            Label = "Superviseur",
-                            LanguageId = 2,
-                            RoleId = 101
-                        },
-                        new
-                        {
-                            Id = 10102,
-                            Label = "Supervisor",
-                            LanguageId = 3,
-                            RoleId = 101
-                        },
-                        new
-                        {
-                            Id = 10103,
-                            Label = "Supervisor",
-                            LanguageId = 4,
-                            RoleId = 101
-                        },
-                        new
-                        {
-                            Id = 10201,
-                            Label = "Expert",
-                            LanguageId = 2,
-                            RoleId = 102
-                        },
-                        new
-                        {
-                            Id = 10202,
-                            Label = "Experto",
-                            LanguageId = 3,
-                            RoleId = 102
-                        },
-                        new
-                        {
-                            Id = 10203,
-                            Label = "Experte",
-                            LanguageId = 4,
-                            RoleId = 102
-                        },
-                        new
-                        {
-                            Id = 20101,
-                            Label = "Chef d'equipe",
-                            LanguageId = 2,
-                            RoleId = 201
-                        },
-                        new
-                        {
-                            Id = 20102,
-                            Label = "Jefe de equipo",
-                            LanguageId = 3,
-                            RoleId = 201
-                        },
-                        new
-                        {
-                            Id = 20103,
-                            Label = "Teamleiter",
-                            LanguageId = 4,
-                            RoleId = 201
-                        },
-                        new
-                        {
-                            Id = 20201,
-                            Label = "Operateur",
-                            LanguageId = 2,
-                            RoleId = 202
-                        },
-                        new
-                        {
-                            Id = 20202,
-                            Label = "Operador",
-                            LanguageId = 3,
-                            RoleId = 202
-                        },
-                        new
-                        {
-                            Id = 20203,
-                            Label = "Operator",
-                            LanguageId = 4,
-                            RoleId = 202
-                        });
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.Member", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<int>("TeamId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("TeamId", "UserId")
-                        .IsUnique();
-
-                    b.ToTable("Members");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.MemberRole", b =>
-                {
-                    b.Property<int>("MemberId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDefault")
-                        .HasColumnType("bit");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("MemberId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("MemberRole");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.Role", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Label")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Roles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 10001,
-                            Code = "Admin",
-                            Label = "Administrator"
-                        },
-                        new
-                        {
-                            Id = 10002,
-                            Code = "Back_Admin",
-                            Label = "Background task administrator"
-                        },
-                        new
-                        {
-                            Id = 10003,
-                            Code = "Back_Read_Only",
-                            Label = "Visualization of background tasks"
-                        },
-                        new
-                        {
-                            Id = 1,
-                            Code = "Site_Admin",
-                            Label = "Airline administrator"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Code = "Pilot",
-                            Label = "Pilot"
-                        },
-                        new
-                        {
-                            Id = 101,
-                            Code = "Supervisor",
-                            Label = "Supervisor"
-                        },
-                        new
-                        {
-                            Id = 102,
-                            Code = "Expert",
-                            Label = "Expert"
-                        },
-                        new
-                        {
-                            Id = 202,
-                            Code = "Operator",
-                            Label = "Operator"
-                        },
-                        new
-                        {
-                            Id = 201,
-                            Code = "Team_Leader",
-                            Label = "Team leader"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Code = "MaintenanceTeam_Admin",
-                            Label = "MaintenanceTeam administrator"
-                        });
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.Team", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<int>("TeamTypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(2);
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TeamTypeId");
-
-                    b.ToTable("Teams", (string)null);
-
-                    b.UseTptMappingStrategy();
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.TeamType", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.Country", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1553,8 +1633,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -1563,29 +1643,138 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TeamTypes");
+                    b.ToTable("Countries", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            Name = "Root"
+                            Name = "France"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Site"
+                            Name = "Mexico"
                         },
                         new
                         {
                             Id = 3,
-                            Name = "AircraftMaintenanceCompany"
+                            Name = "China"
                         },
                         new
                         {
                             Id = 4,
-                            Name = "MaintenanceTeam"
+                            Name = "Spain"
                         });
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceContract", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("AircraftMaintenanceCompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ArchivedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ContractNumber")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .UseCollation("SQL_Latin1_General_CP1_CS_AS");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("FixedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsFixed")
+                        .HasColumnType("bit");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("SiteId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AircraftMaintenanceCompanyId");
+
+                    b.HasIndex("SiteId");
+
+                    b.ToTable("MaintenanceContract");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceContractPlane", b =>
+                {
+                    b.Property<int>("MaintenanceContractId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlaneId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("MaintenanceContractId", "PlaneId");
+
+                    b.HasIndex("PlaneId");
+
+                    b.ToTable("MaintenanceContractPlane");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceTeamAirport", b =>
+                {
+                    b.Property<int>("AirportId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaintenanceTeamId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("AirportId", "MaintenanceTeamId");
+
+                    b.HasIndex("MaintenanceTeamId");
+
+                    b.ToTable("MaintenanceTeamAirport");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceTeamCountry", b =>
+                {
+                    b.Property<int>("CountryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaintenanceTeamId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("CountryId", "MaintenanceTeamId");
+
+                    b.HasIndex("MaintenanceTeamId");
+
+                    b.ToTable("MaintenanceTeamCountry");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.User", b =>
@@ -1680,187 +1869,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.UserAudit", b =>
-                {
-                    b.Property<int>("AuditId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditId"));
-
-                    b.Property<string>("AuditAction")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AuditChanges")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("AuditDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("AuditUserLogin")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Domain")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("--");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Login")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("AuditId");
-
-                    b.ToTable("UsersAudit");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.UserDefaultTeam", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<int>("TeamId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TeamId");
-
-                    b.HasIndex("UserId", "TeamId")
-                        .IsUnique();
-
-                    b.ToTable("UserDefaultTeams");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.View.Entities.View", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Preference")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<string>("TableId")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("ViewType")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Views");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = -1,
-                            Name = "default",
-                            Preference = "{\"first\":0,\"rows\":10,\"sortField\":\"createdDate\",\"sortOrder\":-1,\"columnOrder\":[\"titleTranslated\",\"descriptionTranslated\",\"type\",\"read\",\"createdDate\",\"createdBy\"],\"selection\":[],\"filters\":{}}",
-                            TableId = "notificationsGrid",
-                            ViewType = 0
-                        });
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.View.Entities.ViewTeam", b =>
-                {
-                    b.Property<int>("TeamId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ViewId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDefault")
-                        .HasColumnType("bit");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("TeamId", "ViewId");
-
-                    b.HasIndex("ViewId");
-
-                    b.ToTable("ViewTeam");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.View.Entities.ViewUser", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ViewId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDefault")
-                        .HasColumnType("bit");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("UserId", "ViewId");
-
-                    b.HasIndex("ViewId");
-
-                    b.ToTable("ViewUser");
-                });
-
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.AircraftMaintenanceCompany", b =>
                 {
-                    b.HasBaseType("TheBIADevCompany.BIADemo.Domain.User.Entities.Team");
+                    b.HasBaseType("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.Team");
 
                     b.Property<byte[]>("RowVersionAircraftMaintenanceCompany")
                         .IsConcurrencyToken()
@@ -1873,7 +1884,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceTeam", b =>
                 {
-                    b.HasBaseType("TheBIADevCompany.BIADemo.Domain.User.Entities.Team");
+                    b.HasBaseType("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.Team");
 
                     b.Property<int>("AircraftMaintenanceCompanyId")
                         .HasColumnType("int");
@@ -1953,7 +1964,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Site.Entities.Site", b =>
                 {
-                    b.HasBaseType("TheBIADevCompany.BIADemo.Domain.User.Entities.Team");
+                    b.HasBaseType("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.Team");
 
                     b.Property<byte[]>("RowVersionSite")
                         .IsConcurrencyToken()
@@ -1966,13 +1977,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("RoleTeamType", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.Role", null)
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.Role", null)
                         .WithMany()
                         .HasForeignKey("RolesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.TeamType", null)
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.TeamType", null)
                         .WithMany()
                         .HasForeignKey("TeamTypesId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1981,7 +1992,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("RoleUser", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.Role", null)
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.Role", null)
                         .WithMany()
                         .HasForeignKey("RolesId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1994,85 +2005,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceContract", b =>
-                {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.AircraftMaintenanceCompany", "AircraftMaintenanceCompany")
-                        .WithMany()
-                        .HasForeignKey("AircraftMaintenanceCompanyId");
-
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Site.Entities.Site", "Site")
-                        .WithMany()
-                        .HasForeignKey("SiteId");
-
-                    b.Navigation("AircraftMaintenanceCompany");
-
-                    b.Navigation("Site");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceContractPlane", b =>
-                {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceContract", "MaintenanceContract")
-                        .WithMany("MaintenanceContractPlanes")
-                        .HasForeignKey("MaintenanceContractId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Plane", "Plane")
-                        .WithMany()
-                        .HasForeignKey("PlaneId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MaintenanceContract");
-
-                    b.Navigation("Plane");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceTeamAirport", b =>
-                {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Airport", "Airport")
-                        .WithMany()
-                        .HasForeignKey("AirportId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceTeam", "MaintenanceTeam")
-                        .WithMany("OperationMaintenanceTeamAirports")
-                        .HasForeignKey("MaintenanceTeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Airport");
-
-                    b.Navigation("MaintenanceTeam");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceTeamCountry", b =>
-                {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.Country", "Country")
-                        .WithMany()
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceTeam", "MaintenanceTeam")
-                        .WithMany("OperationMaintenanceTeamCountries")
-                        .HasForeignKey("MaintenanceTeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Country");
-
-                    b.Navigation("MaintenanceTeam");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.Notification", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities.Notification", b =>
                 {
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById");
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Notification.Entities.NotificationType", "Type")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities.NotificationType", "Type")
                         .WithMany()
                         .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2083,15 +2022,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("Type");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.NotificationTeam", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities.NotificationTeam", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Notification.Entities.Notification", "Notification")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities.Notification", "Notification")
                         .WithMany("NotifiedTeams")
                         .HasForeignKey("NotificationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.Team", "Team")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.Team", "Team")
                         .WithMany("NotificationTeams")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -2102,15 +2041,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("Team");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.NotificationTeamRole", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities.NotificationTeamRole", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Notification.Entities.NotificationTeam", "NotificationTeam")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities.NotificationTeam", "NotificationTeam")
                         .WithMany("Roles")
                         .HasForeignKey("NotificationTeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.Role", "Role")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.Role", "Role")
                         .WithMany("NotificationTeamRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2121,9 +2060,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.NotificationUser", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities.NotificationUser", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Notification.Entities.Notification", "Notification")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities.Notification", "Notification")
                         .WithMany("NotifiedUsers")
                         .HasForeignKey("NotificationId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2138,6 +2077,169 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("Notification");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.Translation.Entities.NotificationTranslation", b =>
+                {
+                    b.HasOne("BIA.Net.Core.Domain.Translation.Entities.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities.Notification", "Notification")
+                        .WithMany("NotificationTranslations")
+                        .HasForeignKey("NotificationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Language");
+
+                    b.Navigation("Notification");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.Translation.Entities.NotificationTypeTranslation", b =>
+                {
+                    b.HasOne("BIA.Net.Core.Domain.Translation.Entities.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities.NotificationType", "NotificationType")
+                        .WithMany("NotificationTypeTranslations")
+                        .HasForeignKey("NotificationTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Language");
+
+                    b.Navigation("NotificationType");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.Translation.Entities.RoleTranslation", b =>
+                {
+                    b.HasOne("BIA.Net.Core.Domain.Translation.Entities.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.Role", "Role")
+                        .WithMany("RoleTranslations")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Language");
+
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.Member", b =>
+                {
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.Team", "Team")
+                        .WithMany("Members")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.User", "User")
+                        .WithMany("Members")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Team");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.MemberRole", b =>
+                {
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.Member", "Member")
+                        .WithMany("MemberRoles")
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.Role", "Role")
+                        .WithMany("MemberRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Member");
+
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.Team", b =>
+                {
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.TeamType", "TeamType")
+                        .WithMany()
+                        .HasForeignKey("TeamTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TeamType");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.UserDefaultTeam", b =>
+                {
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.Team", "Team")
+                        .WithMany("UserDefaultTeams")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.User", "User")
+                        .WithMany("DefaultTeams")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Team");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.View.Entities.ViewTeam", b =>
+                {
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.Team", "Team")
+                        .WithMany("ViewTeams")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Bia.View.Entities.View", "View")
+                        .WithMany("ViewTeams")
+                        .HasForeignKey("ViewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Team");
+
+                    b.Navigation("View");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.View.Entities.ViewUser", b =>
+                {
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.User", "User")
+                        .WithMany("ViewUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Bia.View.Entities.View", "View")
+                        .WithMany("ViewUsers")
+                        .HasForeignKey("ViewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("View");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Engine", b =>
@@ -2239,172 +2341,81 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("PlaneType");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Translation.Entities.NotificationTranslation", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceContract", b =>
                 {
-                    b.HasOne("BIA.Net.Core.Domain.Translation.Entities.Language", "Language")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.AircraftMaintenanceCompany", "AircraftMaintenanceCompany")
                         .WithMany()
-                        .HasForeignKey("LanguageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AircraftMaintenanceCompanyId");
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Notification.Entities.Notification", "Notification")
-                        .WithMany("NotificationTranslations")
-                        .HasForeignKey("NotificationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Language");
-
-                    b.Navigation("Notification");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Translation.Entities.NotificationTypeTranslation", b =>
-                {
-                    b.HasOne("BIA.Net.Core.Domain.Translation.Entities.Language", "Language")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Site.Entities.Site", "Site")
                         .WithMany()
-                        .HasForeignKey("LanguageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SiteId");
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Notification.Entities.NotificationType", "NotificationType")
-                        .WithMany("NotificationTypeTranslations")
-                        .HasForeignKey("NotificationTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("AircraftMaintenanceCompany");
 
-                    b.Navigation("Language");
-
-                    b.Navigation("NotificationType");
+                    b.Navigation("Site");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Translation.Entities.RoleTranslation", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceContractPlane", b =>
                 {
-                    b.HasOne("BIA.Net.Core.Domain.Translation.Entities.Language", "Language")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceContract", "MaintenanceContract")
+                        .WithMany("MaintenanceContractPlanes")
+                        .HasForeignKey("MaintenanceContractId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Plane", "Plane")
                         .WithMany()
-                        .HasForeignKey("LanguageId")
+                        .HasForeignKey("PlaneId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.Role", "Role")
-                        .WithMany("RoleTranslations")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("MaintenanceContract");
 
-                    b.Navigation("Language");
-
-                    b.Navigation("Role");
+                    b.Navigation("Plane");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.Member", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceTeamAirport", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.Team", "Team")
-                        .WithMany("Members")
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.User", "User")
-                        .WithMany("Members")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Team");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.MemberRole", b =>
-                {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.Member", "Member")
-                        .WithMany("MemberRoles")
-                        .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.Role", "Role")
-                        .WithMany("MemberRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Member");
-
-                    b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.Team", b =>
-                {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.TeamType", "TeamType")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Airport", "Airport")
                         .WithMany()
-                        .HasForeignKey("TeamTypeId")
+                        .HasForeignKey("AirportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("TeamType");
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceTeam", "MaintenanceTeam")
+                        .WithMany("OperationMaintenanceTeamAirports")
+                        .HasForeignKey("MaintenanceTeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Airport");
+
+                    b.Navigation("MaintenanceTeam");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.UserDefaultTeam", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceTeamCountry", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.Team", "Team")
-                        .WithMany("UserDefaultTeams")
-                        .HasForeignKey("TeamId")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.User", "User")
-                        .WithMany("DefaultTeams")
-                        .HasForeignKey("UserId")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceTeam", "MaintenanceTeam")
+                        .WithMany("OperationMaintenanceTeamCountries")
+                        .HasForeignKey("MaintenanceTeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Team");
+                    b.Navigation("Country");
 
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.View.Entities.ViewTeam", b =>
-                {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.Team", "Team")
-                        .WithMany("ViewTeams")
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.View.Entities.View", "View")
-                        .WithMany("ViewTeams")
-                        .HasForeignKey("ViewId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Team");
-
-                    b.Navigation("View");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.View.Entities.ViewUser", b =>
-                {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.User", "User")
-                        .WithMany("ViewUsers")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.View.Entities.View", "View")
-                        .WithMany("ViewUsers")
-                        .HasForeignKey("ViewId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-
-                    b.Navigation("View");
+                    b.Navigation("MaintenanceTeam");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.AircraftMaintenanceCompany", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.Team", null)
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.Team", null)
                         .WithOne()
                         .HasForeignKey("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.AircraftMaintenanceCompany", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2429,7 +2440,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .WithMany()
                         .HasForeignKey("CurrentCountryId");
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.Team", null)
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.Team", null)
                         .WithOne()
                         .HasForeignKey("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceTeam", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2444,19 +2455,14 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Site.Entities.Site", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.Team", null)
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.Team", null)
                         .WithOne()
                         .HasForeignKey("TheBIADevCompany.BIADemo.Domain.Site.Entities.Site", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceContract", b =>
-                {
-                    b.Navigation("MaintenanceContractPlanes");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.Notification", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities.Notification", b =>
                 {
                     b.Navigation("NotificationTranslations");
 
@@ -2465,14 +2471,46 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("NotifiedUsers");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.NotificationTeam", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities.NotificationTeam", b =>
                 {
                     b.Navigation("Roles");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.NotificationType", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities.NotificationType", b =>
                 {
                     b.Navigation("NotificationTypeTranslations");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.Member", b =>
+                {
+                    b.Navigation("MemberRoles");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.Role", b =>
+                {
+                    b.Navigation("MemberRoles");
+
+                    b.Navigation("NotificationTeamRoles");
+
+                    b.Navigation("RoleTranslations");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.User.Entities.Team", b =>
+                {
+                    b.Navigation("Members");
+
+                    b.Navigation("NotificationTeams");
+
+                    b.Navigation("UserDefaultTeams");
+
+                    b.Navigation("ViewTeams");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.View.Entities.View", b =>
+                {
+                    b.Navigation("ViewTeams");
+
+                    b.Navigation("ViewUsers");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Engine", b =>
@@ -2489,29 +2527,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("SimilarPlaneType");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.Member", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceContract", b =>
                 {
-                    b.Navigation("MemberRoles");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.Role", b =>
-                {
-                    b.Navigation("MemberRoles");
-
-                    b.Navigation("NotificationTeamRoles");
-
-                    b.Navigation("RoleTranslations");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.Team", b =>
-                {
-                    b.Navigation("Members");
-
-                    b.Navigation("NotificationTeams");
-
-                    b.Navigation("UserDefaultTeams");
-
-                    b.Navigation("ViewTeams");
+                    b.Navigation("MaintenanceContractPlanes");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.User", b =>
@@ -2521,13 +2539,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("Members");
 
                     b.Navigation("NotificationUsers");
-
-                    b.Navigation("ViewUsers");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.View.Entities.View", b =>
-                {
-                    b.Navigation("ViewTeams");
 
                     b.Navigation("ViewUsers");
                 });
