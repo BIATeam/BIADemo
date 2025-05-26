@@ -1,10 +1,11 @@
 import { AsyncPipe, NgIf } from '@angular/common';
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { CrudItemItemComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component';
 import { Site } from '../../model/site';
 import { SiteService } from '../../services/site.service';
+import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 
 @Component({
   selector: 'app-sites-item',
@@ -14,15 +15,13 @@ import { SiteService } from '../../services/site.service';
     '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
   ],
   imports: [RouterOutlet, NgIf, AsyncPipe, SpinnerComponent],
+  providers: [
+    {
+      provide: CrudItemService,
+      useExisting: SiteService,
+    },
+  ],
 })
 export class SiteItemComponent
   extends CrudItemItemComponent<Site>
-  implements OnInit
-{
-  constructor(
-    protected injector: Injector,
-    public siteService: SiteService
-  ) {
-    super(injector, siteService);
-  }
-}
+  implements OnInit {}
