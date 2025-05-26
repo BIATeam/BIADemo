@@ -56,7 +56,7 @@ export class AircraftMaintenanceCompanyService extends CrudItemService<AircraftM
   }
 
   public getParentIds(): any[] {
-    // TODO after creation of CRUD Team AircraftMaintenanceCompany : adapt the parent Key tothe context. It can be null if root crud
+    // TODO after creation of CRUD Team AircraftMaintenanceCompany : adapt the parent Key to the context. It can be null if root crud
     return [];
   }
 

@@ -50,7 +50,7 @@ export class SiteService extends CrudItemService<Site> {
   }
 
   public getParentIds(): any[] {
-    // TODO after creation of CRUD Team Site : adapt the parent Key tothe context. It can be null if root crud
+    // TODO after creation of CRUD Team Site : adapt the parent Key to the context. It can be null if root crud
     //return this.authService.getCurrentTeamId(TeamTypeId.Site);
     return [];
   }
