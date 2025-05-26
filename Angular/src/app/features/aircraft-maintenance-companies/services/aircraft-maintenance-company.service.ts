@@ -1,7 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
@@ -29,10 +29,9 @@ export class AircraftMaintenanceCompanyService extends CrudItemService<AircraftM
     private store: Store<AppState>,
     public dasService: AircraftMaintenanceCompanyDas,
     public signalRService: CrudItemSignalRService<AircraftMaintenanceCompany>,
+    protected authService: AuthService,
     public optionsService: AircraftMaintenanceCompanyOptionsService,
-    protected injector: Injector,
-    // required only for parent key
-    protected authService: AuthService
+    protected injector: Injector
   ) {
     super(dasService, signalRService, optionsService, injector);
   }
@@ -56,7 +55,7 @@ export class AircraftMaintenanceCompanyService extends CrudItemService<AircraftM
   }
 
   public getParentIds(): any[] {
-    // TODO after creation of CRUD Team AircraftMaintenanceCompany : adapt the parent Key tothe context. It can be null if root crud
+    // TODO after creation of CRUD Team AircraftMaintenanceCompany : adapt the parent Key to the context. It can be null if root crud
     return [];
   }
 
@@ -81,6 +80,14 @@ export class AircraftMaintenanceCompanyService extends CrudItemService<AircraftM
   public crudItem$: Observable<AircraftMaintenanceCompany> = this.store.select(
     FeatureAircraftMaintenanceCompaniesStore.getCurrentAircraftMaintenanceCompany
   );
+
+  public displayItemName$: Observable<string> = this.crudItem$.pipe(
+    map(
+      aircraftMaintenanceCompany =>
+        aircraftMaintenanceCompany?.title?.toString() ?? ''
+    )
+  );
+
   public loadingGet$: Observable<boolean> = this.store.select(
     FeatureAircraftMaintenanceCompaniesStore.getAircraftMaintenanceCompanyLoadingGet
   );
@@ -96,8 +103,6 @@ export class AircraftMaintenanceCompanyService extends CrudItemService<AircraftM
     );
   }
   public create(crudItem: AircraftMaintenanceCompany) {
-    // TODO after creation of CRUD Team AircraftMaintenanceCompany : map parent Key on the corresponding field
-    // crudItem.siteId = this.getParentIds()[0],
     this.store.dispatch(
       FeatureAircraftMaintenanceCompaniesActions.create({
         aircraftMaintenanceCompany: crudItem,
