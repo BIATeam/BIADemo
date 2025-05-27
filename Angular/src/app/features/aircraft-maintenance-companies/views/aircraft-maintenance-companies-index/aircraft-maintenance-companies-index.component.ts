@@ -1,5 +1,5 @@
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
-import { Component, Injector, ViewChild } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -26,15 +26,15 @@ import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maint
   templateUrl: './aircraft-maintenance-companies-index.component.html',
   styleUrls: ['./aircraft-maintenance-companies-index.component.scss'],
   imports: [
-    NgIf,
     NgClass,
     PrimeTemplate,
+    NgIf,
+    BiaButtonGroupComponent,
     AircraftMaintenanceCompanyTableComponent,
     AsyncPipe,
     TranslateModule,
     TeamAdvancedFilterComponent,
     BiaTableHeaderComponent,
-    BiaButtonGroupComponent,
     BiaTableControllerComponent,
     BiaTableBehaviorControllerComponent,
     BiaTableComponent,
@@ -46,12 +46,21 @@ import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maint
     },
   ],
 })
-export class AircraftMaintenanceCompaniesIndexComponent extends CrudItemsIndexComponent<AircraftMaintenanceCompany> {
+export class AircraftMaintenanceCompaniesIndexComponent
+  extends CrudItemsIndexComponent<AircraftMaintenanceCompany>
+  implements OnInit
+{
+  @ViewChild(AircraftMaintenanceCompanyTableComponent, { static: false })
+  crudItemTableComponent: AircraftMaintenanceCompanyTableComponent;
+
   // Customization for teams
   canViewMembers = false;
-  canSelectElement = false;
-  canViewMaintenanceTeams = false;
   // BIAToolKit - Begin AircraftMaintenanceCompanyIndexTsCanViewChildDeclaration
+  // Begin BIAToolKit Generation Ignore
+  // BIAToolKit - Begin Partial AircraftMaintenanceCompanyIndexTsCanViewChildDeclaration MaintenanceTeam
+  canViewMaintenanceTeams = false;
+  // BIAToolKit - End Partial AircraftMaintenanceCompanyIndexTsCanViewChildDeclaration MaintenanceTeam
+  // End BIAToolKit Generation Ignore
   // BIAToolKit - End AircraftMaintenanceCompanyIndexTsCanViewChildDeclaration
 
   checkhasAdvancedFilter() {
@@ -60,9 +69,6 @@ export class AircraftMaintenanceCompaniesIndexComponent extends CrudItemsIndexCo
     );
   }
 
-  @ViewChild(AircraftMaintenanceCompanyTableComponent, { static: false })
-  crudItemTableComponent: AircraftMaintenanceCompanyTableComponent;
-
   constructor(
     protected injector: Injector,
     public aircraftMaintenanceCompanyService: AircraftMaintenanceCompanyService,
@@ -70,6 +76,10 @@ export class AircraftMaintenanceCompaniesIndexComponent extends CrudItemsIndexCo
   ) {
     super(injector, aircraftMaintenanceCompanyService);
     this.crudConfiguration = aircraftMaintenanceCompanyCRUDConfiguration;
+  }
+
+  ngOnInit(): void {
+    super.ngOnInit();
   }
 
   protected setPermissions() {
@@ -82,18 +92,25 @@ export class AircraftMaintenanceCompaniesIndexComponent extends CrudItemsIndexCo
     this.canAdd = this.authService.hasPermission(
       Permission.AircraftMaintenanceCompany_Create
     );
-    // Customization for teams
-    this.canViewMembers = this.authService.hasPermission(
-      Permission.AircraftMaintenanceCompany_Member_List_Access
-    );
+    // BIAToolKit - Begin AircraftMaintenanceCompanyIndexTsCanViewChildSet
+    // Begin BIAToolKit Generation Ignore
+    // BIAToolKit - Begin Partial AircraftMaintenanceCompanyIndexTsCanViewChildSet MaintenanceTeam
     this.canViewMaintenanceTeams = this.authService.hasPermission(
       Permission.MaintenanceTeam_List_Access
     );
-    // BIAToolKit - Begin AircraftMaintenanceCompanyIndexTsCanViewChildSet
+    // BIAToolKit - End Partial AircraftMaintenanceCompanyIndexTsCanViewChildSet MaintenanceTeam
+    // End BIAToolKit Generation Ignore
     // BIAToolKit - End AircraftMaintenanceCompanyIndexTsCanViewChildSet
-    this.canSelectElement =
-      this.canViewMaintenanceTeams ||
+    this.canViewMembers = this.authService.hasPermission(
+      Permission.AircraftMaintenanceCompany_Member_List_Access
+    );
+    this.canSelect =
       // BIAToolKit - Begin AircraftMaintenanceCompanyIndexTsCanSelectElementChildSet
+      // Begin BIAToolKit Generation Ignore
+      // BIAToolKit - Begin Partial AircraftMaintenanceCompanyIndexTsCanSelectElementChildSet MaintenanceTeam
+      this.canViewMaintenanceTeams ||
+      // BIAToolKit - End Partial AircraftMaintenanceCompanyIndexTsCanSelectElementChildSet MaintenanceTeam
+      // End BIAToolKit Generation Ignore
       // BIAToolKit - End AircraftMaintenanceCompanyIndexTsCanSelectElementChildSet
       this.canViewMembers ||
       this.canDelete;
@@ -108,6 +125,9 @@ export class AircraftMaintenanceCompaniesIndexComponent extends CrudItemsIndexCo
         this.selectedCrudItems.length !== 1,
         this.translateService.instant('aircraftMaintenanceCompany.edit')
       ),
+      // BIAToolKit - Begin AircraftMaintenanceCompanyIndexTsChildTeamButton
+      // Begin BIAToolKit Generation Ignore
+      // BIAToolKit - Begin Partial AircraftMaintenanceCompanyIndexTsChildTeamButton MaintenanceTeam
       new BiaButtonGroupItem(
         this.translateService.instant(
           'aircraftMaintenanceCompany.maintenanceTeams'
@@ -119,7 +139,8 @@ export class AircraftMaintenanceCompaniesIndexComponent extends CrudItemsIndexCo
           'aircraftMaintenanceCompany.maintenanceTeams'
         )
       ),
-      // BIAToolKit - Begin AircraftMaintenanceCompanyIndexTsChildTeamButton
+      // BIAToolKit - End Partial AircraftMaintenanceCompanyIndexTsChildTeamButton MaintenanceTeam
+      // End BIAToolKit Generation Ignore
       // BIAToolKit - End AircraftMaintenanceCompanyIndexTsChildTeamButton
       new BiaButtonGroupItem(
         this.translateService.instant('app.members'),
@@ -159,6 +180,9 @@ export class AircraftMaintenanceCompaniesIndexComponent extends CrudItemsIndexCo
     this.authService.reLogin();
   }
 
+  // BIAToolKit - Begin AircraftMaintenanceCompanyIndexTsOnViewChild
+  // Begin BIAToolKit Generation Ignore
+  // BIAToolKit - Begin Partial AircraftMaintenanceCompanyIndexTsOnViewChild MaintenanceTeam
   onViewMaintenanceTeams() {
     if (this.selectedCrudItems.length === 1) {
       this.router.navigate(
@@ -167,7 +191,7 @@ export class AircraftMaintenanceCompaniesIndexComponent extends CrudItemsIndexCo
       );
     }
   }
-
-  // BIAToolKit - Begin AircraftMaintenanceCompanyIndexTsOnViewChild
+  // BIAToolKit - End Partial AircraftMaintenanceCompanyIndexTsOnViewChild MaintenanceTeam
+  // End BIAToolKit Generation Ignore
   // BIAToolKit - End AircraftMaintenanceCompanyIndexTsOnViewChild
 }
