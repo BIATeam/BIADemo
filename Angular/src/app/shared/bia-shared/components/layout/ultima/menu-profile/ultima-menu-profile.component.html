@@ -59,8 +59,7 @@
       }}</a>
     </small>
     @if (
-      authService.hasPermissionObs(permissions.Impersonation_Connection_Rights)
-        | async
+      authService.hasPermission(permissions.Impersonation_Connection_Rights)
     ) {
       <div class="flex mt-3">
         <input
