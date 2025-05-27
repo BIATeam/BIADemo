@@ -2,7 +2,7 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories
+namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories.Bia
 {
     using System;
     using BIA.Net.Core.Domain.Entity.Interface;

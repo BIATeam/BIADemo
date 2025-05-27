@@ -15,7 +15,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Maintenance
     /// The DTO used to represent a maintenance team.
     /// </summary>
     [BiaDtoClass(AncestorTeam = "AircraftMaintenanceCompany")]
-    public class MaintenanceTeamDto : BaseDtoVersionedTeam
+    public class MaintenanceTeamDto : BaseDtoVersionedTeamFixableArchivable
     {
         /// <summary>
         /// Gets or sets the aircraft maintenance company id.

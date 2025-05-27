@@ -1,7 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
@@ -50,7 +50,7 @@ export class MaintenanceTeamService extends CrudItemService<MaintenanceTeam> {
   }
 
   public getParentIds(): any[] {
-    // TODO after creation of CRUD Team MaintenanceTeam : adapt the parent Key tothe context. It can be null if root crud
+    // TODO after creation of CRUD Team MaintenanceTeam : adapt the parent Key to the context. It can be null if root crud
     return [
       this.authService.getCurrentTeamId(TeamTypeId.AircraftMaintenanceCompany),
     ];
@@ -76,6 +76,11 @@ export class MaintenanceTeamService extends CrudItemService<MaintenanceTeam> {
   public crudItem$: Observable<MaintenanceTeam> = this.store.select(
     FeatureMaintenanceTeamsStore.getCurrentMaintenanceTeam
   );
+
+  public displayItemName$: Observable<string> = this.crudItem$.pipe(
+    map(maintenanceTeam => maintenanceTeam?.title?.toString() ?? '')
+  );
+
   public loadingGet$: Observable<boolean> = this.store.select(
     FeatureMaintenanceTeamsStore.getMaintenanceTeamLoadingGet
   );
@@ -113,5 +118,13 @@ export class MaintenanceTeamService extends CrudItemService<MaintenanceTeam> {
     this._currentCrudItem = <MaintenanceTeam>{};
     this._currentCrudItemId = 0;
     this.store.dispatch(FeatureMaintenanceTeamsActions.clearCurrent());
+  }
+  public updateFixedStatus(id: any, isFixed: boolean): void {
+    this.store.dispatch(
+      FeatureMaintenanceTeamsActions.updateFixedStatus({
+        id: id,
+        isFixed: isFixed,
+      })
+    );
   }
 }

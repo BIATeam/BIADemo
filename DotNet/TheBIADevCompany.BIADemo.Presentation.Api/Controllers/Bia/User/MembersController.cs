@@ -4,7 +4,7 @@
 // #define UseHubForClientInMember
 // #define UseHubForClientInUser
 
-namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
+namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
 {
     using System;
     using System.Collections.Generic;

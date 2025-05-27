@@ -6,6 +6,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities
 {
     using System;
     using BIA.Net.Core.Domain;
+    using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>

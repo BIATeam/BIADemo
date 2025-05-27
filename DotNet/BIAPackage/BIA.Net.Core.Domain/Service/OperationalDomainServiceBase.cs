@@ -73,7 +73,7 @@ namespace BIA.Net.Core.Domain.Service
             string queryMode = QueryMode.ReadList,
             string mapperMode = null,
             bool isReadOnlyMode = false)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherFilterDto : LazyLoadDto, new()
         {
@@ -132,7 +132,7 @@ namespace BIA.Net.Core.Domain.Service
             string queryMode = null,
             string mapperMode = null,
             bool isReadOnlyMode = false)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
@@ -183,7 +183,7 @@ namespace BIA.Net.Core.Domain.Service
             string queryMode = null,
             string mapperMode = null,
             bool isReadOnlyMode = false)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
@@ -228,7 +228,7 @@ namespace BIA.Net.Core.Domain.Service
             string queryMode = QueryMode.ReadList,
             string mapperMode = "Csv",
             bool isReadOnlyMode = false)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherFilterDto : LazyLoadDto, new()
         {
@@ -292,7 +292,7 @@ namespace BIA.Net.Core.Domain.Service
             string mapperMode = MapperMode.Item,
             bool isReadOnlyMode = false)
 
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
@@ -326,7 +326,7 @@ namespace BIA.Net.Core.Domain.Service
         protected virtual async Task<TOtherDto> AddAsync<TOtherDto, TOtherMapper>(
             TOtherDto dto,
             string mapperMode = null)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
@@ -360,7 +360,7 @@ namespace BIA.Net.Core.Domain.Service
             string accessMode = AccessMode.Update,
             string queryMode = QueryMode.Update,
             string mapperMode = null)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
@@ -412,7 +412,7 @@ namespace BIA.Net.Core.Domain.Service
             string queryMode = QueryMode.Delete,
             string mapperMode = null,
             bool bypassFixed = false)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
@@ -456,7 +456,7 @@ namespace BIA.Net.Core.Domain.Service
             string queryMode = QueryMode.Delete,
             string mapperMode = null,
             bool bypassFixed = false)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             var dtos = new List<TOtherDto>();
@@ -491,7 +491,7 @@ namespace BIA.Net.Core.Domain.Service
             string accessMode = null,
             string queryMode = null,
             string mapperMode = null)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             StringBuilder strBldr = new StringBuilder();
@@ -640,7 +640,7 @@ namespace BIA.Net.Core.Domain.Service
             string accessMode = null,
             string queryMode = null,
             string mapperMode = null)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             var dtoList = dtos.ToList();
@@ -676,7 +676,7 @@ namespace BIA.Net.Core.Domain.Service
             string accessMode = null,
             string queryMode = null,
             string mapperMode = null)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             TOtherDto returnDto = dto;
@@ -720,7 +720,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="dtoList">The list of element to add.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         protected virtual async Task AddBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             if (dtoList != null)
@@ -750,7 +750,7 @@ namespace BIA.Net.Core.Domain.Service
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         protected virtual async Task UpdateBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             throw new NotImplementedException();
@@ -769,7 +769,7 @@ namespace BIA.Net.Core.Domain.Service
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         protected virtual async Task RemoveBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             throw new NotImplementedException();

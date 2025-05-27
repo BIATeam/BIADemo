@@ -3,6 +3,7 @@
   [crudItem]="crudItem"
   [fields]="crudConfiguration.fieldsConfig.columns"
   [formLayoutConfig]="crudConfiguration.formLayoutConfig"
+  [formReadOnlyMode]="formReadOnlyMode"
   [dictOptionDtos]="
     (maintenanceTeamService.optionsService.dictOptionDtos$ | async) ?? []
   "
@@ -11,7 +12,12 @@
   [showSplitButton]="showSplitButton"
   [showFullPageButton]="showFullPageButton"
   (cancelled)="onCancelled()"
-  (save)="onSubmitted($event)"></app-maintenance-team-form>
+  (save)="onSubmitted($event)"
+  [showFixableState]="crudConfiguration.isFixable"
+  [canFix]="canFix"
+  (fixedChanged)="
+    crudItemService.updateFixedStatus(crudItem.id, $event)
+  "></app-maintenance-team-form>
 <bia-spinner
   *ngIf="maintenanceTeamService.loadingGet$ | async"
   [overlay]="true"></bia-spinner>

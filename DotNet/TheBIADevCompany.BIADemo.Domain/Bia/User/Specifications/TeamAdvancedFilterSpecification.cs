@@ -6,18 +6,18 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Specifications
 {
     using System.Linq;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.Specification;
     using Newtonsoft.Json;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Bia.Base.Interface;
     using TheBIADevCompany.BIADemo.Domain.Dto.Bia.User;
-    using TheBIADevCompany.BIADemo.Domain.Dto.Site;
 
     /// <summary>
     /// The specifications of the site entity.
     /// </summary>
     /// <typeparam name="TTeam">The type of team.</typeparam>
     public static class TeamAdvancedFilterSpecification<TTeam>
-        where TTeam : Team
+        where TTeam : class, IEntity<int>, IEntityTeam
     {
         /// <summary>
         /// Search site using the filter.

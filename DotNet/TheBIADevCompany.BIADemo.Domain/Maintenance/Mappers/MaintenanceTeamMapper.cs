@@ -15,14 +15,14 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers;
+    using TheBIADevCompany.BIADemo.Domain.Bia.Base.Mappers;
     using TheBIADevCompany.BIADemo.Domain.Dto.Maintenance;
     using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
 
     /// <summary>
     /// The mapper used for MaintenanceTeam.
     /// </summary>
-    public class MaintenanceTeamMapper : TTeamMapper<MaintenanceTeamDto, MaintenanceTeam>
+    public class MaintenanceTeamMapper : BaseTeamMapper<MaintenanceTeamDto, MaintenanceTeam>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MaintenanceTeamMapper"/> class.

@@ -24,7 +24,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Notification
     /// <summary>
     /// The API controller used to manage Notifications.
     /// </summary>
-    public class NotificationsController : BiaControllerBase
+    public partial class NotificationsController : BiaControllerBase
     {
         /// <summary>
         /// The notification application service.

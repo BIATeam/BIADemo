@@ -137,11 +137,11 @@
         "Roles": [ "Admin", "Site_Member" ]
       },
       {
-        "Names": [ "Plane_Update", "Plane_Save", "Plane_Fix" ],
+        "Names": [ "Plane_Update", "Plane_Save" ],
         "Roles": [ "Site_Admin" ]
       },
       {
-        "Names": [ "Plane_Create", "Plane_Delete" ],
+        "Names": [ "Plane_Create", "Plane_Delete", "Plane_Fix" ],
         "Roles": [ "Site_Admin" ]
       },
       // BIAToolKit - End Partial Config Plane
@@ -276,7 +276,7 @@
       },
       // Maintenance Team
       {
-        "Names": [ "MaintenanceTeam_Create", "MaintenanceTeam_Delete" ],
+        "Names": [ "MaintenanceTeam_Create", "MaintenanceTeam_Delete", "MaintenanceTeam_Fix" ],
         "Roles": [
           "Admin",
           // Begin BIADemo

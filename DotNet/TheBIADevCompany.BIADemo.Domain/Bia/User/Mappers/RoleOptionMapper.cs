@@ -9,8 +9,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers
     using System.Linq.Expressions;
     using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain.Dto.Option;
-    using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.Service;
+    using TheBIADevCompany.BIADemo.Domain.Bia.Base.Mappers;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
 
     /// <summary>

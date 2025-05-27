@@ -62,6 +62,7 @@ export enum Permission {
   MaintenanceTeam_Member_Delete = 'MaintenanceTeam_Member_Delete',
   MaintenanceTeam_Member_Create = 'MaintenanceTeam_Member_Create',
   MaintenanceTeam_Member_List_Access = 'MaintenanceTeam_Member_List_Access',
+  MaintenanceTeam_Fix = 'MaintenanceTeam_Fix',
   // BIAToolKit - End Partial Permission MaintenanceTeam
   // End BIAToolKit Generation Ignore
 

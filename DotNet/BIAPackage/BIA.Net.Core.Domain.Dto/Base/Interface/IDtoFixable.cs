@@ -7,9 +7,8 @@ namespace BIA.Net.Core.Domain.Dto.Base.Interface
     using System;
 
     /// <summary>
-    /// The base class for DTO.
+    /// The base class for DTO Fixable.
     /// </summary>
-    /// <typeparam name="TKey">Type of the key.</typeparam>
     public interface IDtoFixable
     {
         /// <summary>

@@ -2,7 +2,7 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
+namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
 {
     using Microsoft.EntityFrameworkCore;
     using TheBIADevCompany.BIADemo.Domain.Bia.View.Entities;
@@ -51,7 +51,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         /// <param name="modelBuilder">The model builder.</param>
         private static void CreateViewUserModel(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ViewUser>().HasKey(mr => new { UserId = mr.UserId, ViewId = mr.ViewId });
+            modelBuilder.Entity<ViewUser>().HasKey(mr => new { mr.UserId, mr.ViewId });
             modelBuilder.Entity<ViewUser>().Property(m => m.IsDefault).IsRequired();
             modelBuilder.Entity<ViewUser>().HasOne(mr => mr.User).WithMany(m => m.ViewUsers)
                 .HasForeignKey(mr => mr.UserId);
@@ -65,7 +65,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         /// <param name="modelBuilder">The model builder.</param>
         private static void CreateViewTeamModel(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ViewTeam>().HasKey(mr => new { TeamId = mr.TeamId, ViewId = mr.ViewId });
+            modelBuilder.Entity<ViewTeam>().HasKey(mr => new { mr.TeamId, mr.ViewId });
             modelBuilder.Entity<ViewTeam>().Property(m => m.IsDefault).IsRequired();
             modelBuilder.Entity<ViewTeam>().HasOne(mr => mr.Team).WithMany(m => m.ViewTeams)
                 .HasForeignKey(mr => mr.TeamId);

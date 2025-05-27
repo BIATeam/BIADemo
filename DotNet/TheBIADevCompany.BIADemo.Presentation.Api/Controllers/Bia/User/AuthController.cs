@@ -2,7 +2,7 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
+namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
 {
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Enum;
