@@ -485,8 +485,13 @@ bia-table-controller {
   margin-left: 1rem;
 }
 
-.bia-tooltip-large.p-tooltip .p-tooltip-text {
-  width: 32rem;
+.bia-tooltip-large.p-tooltip {
+  .p-tooltip-text {
+    width: 32rem;
+  }
+  .p-tooltip-arrow {
+    left: 5%;
+  }
 }
 
 .p-floatlabel-in .p-multiselect-label-container .p-multiselect-label {
