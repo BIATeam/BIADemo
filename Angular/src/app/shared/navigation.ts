@@ -18,6 +18,22 @@ export const NAVIGATION: BiaNavigation[] = [
   // BIAToolKit - End Navigation
 
   // Begin BIAToolKit Generation Ignore
+  // BIAToolKit - Begin Partial Navigation AircraftMaintenanceCompany
+  {
+    labelKey: 'app.aircraftMaintenanceCompanies',
+    permissions: [Permission.AircraftMaintenanceCompany_List_Access],
+    path: ['/aircraft-maintenance-companies'],
+    icon: 'pi pi-sitemap',
+  },
+  // BIAToolKit - End Partial Navigation AircraftMaintenanceCompany
+  // BIAToolKit - Begin Partial Navigation MaintenanceTeam
+  {
+    labelKey: 'app.maintenanceTeams',
+    permissions: [Permission.MaintenanceTeam_List_Access],
+    path: ['/maintenance-teams'],
+    icon: 'pi pi-sitemap',
+  },
+  // BIAToolKit - End Partial Navigation MaintenanceTeam
   // BIAToolKit - Begin Partial Navigation Plane
   {
     labelKey: 'app.planes',
@@ -30,24 +46,6 @@ export const NAVIGATION: BiaNavigation[] = [
 
   // Begin BIADemo
   {
-    labelKey: 'app.aircraft-maintenance-companies',
-    permissions: [Permission.AircraftMaintenanceCompany_List_Access],
-    path: ['/aircraft-maintenance-companies'],
-    icon: 'pi pi-sitemap',
-  },
-  {
-    labelKey: 'app.maintenance-teams',
-    permissions: [Permission.MaintenanceTeam_List_Access],
-    path: ['/maintenance-teams'],
-    icon: 'pi pi-sitemap',
-  },
-  {
-    labelKey: 'app.maintenanceContracts',
-    permissions: [Permission.MaintenanceContract_List_Access],
-    path: ['/maintenance-contracts'],
-    icon: 'pi pi-clipboard',
-  },
-  {
     labelKey: 'app.planesFullCode',
     permissions: [Permission.Plane_List_Access],
     path: ['/planes-full-code'],
@@ -58,6 +56,12 @@ export const NAVIGATION: BiaNavigation[] = [
     permissions: [Permission.Plane_List_Access],
     path: ['/planes-specific'],
     icon: 'pi pi-th-large',
+  },
+  {
+    labelKey: 'app.maintenanceContracts',
+    permissions: [Permission.MaintenanceContract_List_Access],
+    path: ['/maintenance-contracts'],
+    icon: 'pi pi-clipboard',
   },
   {
     labelKey: 'app.hangfire',

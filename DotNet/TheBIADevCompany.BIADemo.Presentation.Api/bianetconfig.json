@@ -176,6 +176,56 @@
         "Names": [ "Airport_List_Access", "Airport_Create", "Airport_Read", "Airport_Update", "Airport_Delete", "Airport_Save" ],
         "Roles": [ "Admin" ]
       },
+      // BIAToolKit - Begin Partial Config AircraftMaintenanceCompany
+      // AircraftMaintenanceCompany
+      {
+        "Names": [ "AircraftMaintenanceCompany_Create", "AircraftMaintenanceCompany_Delete" ],
+        "Roles": [
+          "Admin"
+        ]
+      },
+      {
+        "Names": [ "AircraftMaintenanceCompany_Update", "AircraftMaintenanceCompany_Save" ],
+        "Roles": [
+          "Admin",
+          "AircraftMaintenanceCompany_Admin"
+        ]
+      },
+      {
+        "Names": [ "AircraftMaintenanceCompany_List_Access" ],
+        "Roles": [
+          "Admin",
+          "AircraftMaintenanceCompany_MemberOfOne"
+        ]
+      },
+      {
+        "Names": [ "AircraftMaintenanceCompany_Read", "AircraftMaintenanceCompany_Member_List_Access" ],
+        "Roles": [
+          "Admin",
+          "AircraftMaintenanceCompany_Member"
+        ]
+      },
+      {
+        "Names": [ "AircraftMaintenanceCompany_Member_Create", "AircraftMaintenanceCompany_Member_Read", "AircraftMaintenanceCompany_Member_Update", "AircraftMaintenanceCompany_Member_Delete", "AircraftMaintenanceCompany_Member_Save" ],
+        "Roles": [
+          "Admin",
+          // Begin BIADemo
+          "Supervisor",
+          // End BIADemo
+          "AircraftMaintenanceCompany_Admin"
+        ]
+      },
+      {
+        "Names": [ "AircraftMaintenanceCompany_View_Add_TeamView", "AircraftMaintenanceCompany_View_Update_TeamView", "AircraftMaintenanceCompany_View_Set_Default_TeamView", "AircraftMaintenanceCompany_View_Assign_To_Team" ],
+        "Roles": [
+          "Admin",
+          // Begin BIADemo
+          "Supervisor",
+          // End BIADemo
+          "AircraftMaintenanceCompany_Admin"
+        ]
+      },
+      // BIAToolKit - End Partial Config AircraftMaintenanceCompany
       // BIAToolKit - Begin Partial ConfigForOption PlaneType
       // PlaneType
       {
@@ -224,41 +274,26 @@
         "Name": "Part_Options",
         "Roles": [ "Admin", "Site_Member" ]
       },
-      // Aircraft Maintenance Company
-      {
-        "Names": [ "AircraftMaintenanceCompany_Create", "AircraftMaintenanceCompany_Update", "AircraftMaintenanceCompany_Delete", "AircraftMaintenanceCompany_Save" ],
-        "Roles": [ "Admin" ]
-      },
-      {
-        "Names": [ "AircraftMaintenanceCompany_List_Access" ],
-        "Roles": [ "Admin", "AircraftMaintenanceCompany_MemberOfOne" ]
-      },
-      {
-        "Names": [ "AircraftMaintenanceCompany_Read", "AircraftMaintenanceCompany_Member_List_Access" ],
-        "Roles": [ "Admin", "AircraftMaintenanceCompany_Member" ]
-      },
-      {
-        "Names": [ "AircraftMaintenanceCompany_Member_Create", "AircraftMaintenanceCompany_Member_Read", "AircraftMaintenanceCompany_Member_Update", "AircraftMaintenanceCompany_Member_Delete", "AircraftMaintenanceCompany_Member_Save" ],
-        "Roles": [ "Admin", "Supervisor" ]
-      },
-      {
-        "Names": [ "AircraftMaintenanceCompany_View_Add_TeamView", "AircraftMaintenanceCompany_View_Update_TeamView", "AircraftMaintenanceCompany_View_Set_Default_TeamView", "AircraftMaintenanceCompany_View_Assign_To_Team" ],
-        "Roles": [ "Admin", "Supervisor" ]
-      },
       // Maintenance Team
       {
         "Names": [ "MaintenanceTeam_Create", "MaintenanceTeam_Delete", "MaintenanceTeam_Fix" ],
         "Roles": [
+          "Admin",
+          // Begin BIADemo
           "Supervisor",
-          "Admin"
+          // End BIADemo
+          "AircraftMaintenanceCompany_Admin"
         ]
       },
       {
         "Names": [ "MaintenanceTeam_Update", "MaintenanceTeam_Save" ],
         "Roles": [
+          "Admin",
+          "AircraftMaintenanceCompany_Admin",
+          // Begin BIADemo
           "Supervisor",
-          "MaintenanceTeam_Admin",
-          "Admin"
+          // End BIADemo
+          "MaintenanceTeam_Admin"
         ]
       },
       {
@@ -281,7 +316,10 @@
         "Names": [ "MaintenanceTeam_Member_Create", "MaintenanceTeam_Member_Read", "MaintenanceTeam_Member_Update", "MaintenanceTeam_Member_Delete", "MaintenanceTeam_Member_Save" ],
         "Roles": [
           "Admin",
+          "AircraftMaintenanceCompany_Admin",
+          // Begin BIADemo
           "Team_Leader",
+          // End BIADemo
           "MaintenanceTeam_Admin"
         ]
       },
@@ -289,7 +327,10 @@
         "Names": [ "MaintenanceTeam_View_Add_TeamView", "MaintenanceTeam_View_Update_TeamView", "MaintenanceTeam_View_Set_Default_TeamView", "MaintenanceTeam_View_Assign_To_Team" ],
         "Roles": [
           "Admin",
+          "AircraftMaintenanceCompany_Admin",
+          // Begin BIADemo
           "Team_Leader",
+          // End BIADemo
           "MaintenanceTeam_Admin"
         ]
       },

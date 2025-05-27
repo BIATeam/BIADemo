@@ -46,25 +46,34 @@ export enum TeamTypeId {
   All = 0,
   Root = 1,
   Site = 2,
-  // Begin BIADemo
-  AircraftMaintenanceCompany = 3,
-  // TODO after creation of team MaintenanceTeam : adapt enum value
-  MaintenanceTeam = 4,
-  // End BIADemo
   // BIAToolKit - Begin TeamTypeIdConstants
+  // Begin BIAToolKit Generation Ignore
+  // BIAToolKit - Begin Partial TeamTypeIdConstants AircraftMaintenanceCompany
+  // TODO after creation of team AircraftMaintenanceCompany : adapt enum value
+  AircraftMaintenanceCompany = 3,
+  // BIAToolKit - End Partial TeamTypeIdConstants AircraftMaintenanceCompany
+  // BIAToolKit - Begin Partial TeamTypeIdConstants MaintenanceTeam
+  // TODO after creation of team AircraftMaintenanceCompany : adapt enum value
+  MaintenanceTeam = 4,
+  // BIAToolKit - End Partial TeamTypeIdConstants MaintenanceTeam
+  // End BIAToolKit Generation Ignore
   // BIAToolKit - End TeamTypeIdConstants
 }
 
 const TeamTypeRightPrefix: { key: TeamTypeId; value: string }[] = [
   { key: TeamTypeId.Site, value: 'Site' },
-  // Begin BIADemo
+  // BIAToolKit - Begin TeamTypeRightPrefixConstants
+  // Begin BIAToolKit Generation Ignore
+  // BIAToolKit - Begin Partial TeamTypeRightPrefixConstants AircraftMaintenanceCompany
   {
     key: TeamTypeId.AircraftMaintenanceCompany,
     value: 'AircraftMaintenanceCompany',
   },
+  // BIAToolKit - End Partial TeamTypeRightPrefixConstants AircraftMaintenanceCompany
+  // BIAToolKit - Begin Partial TeamTypeRightPrefixConstants MaintenanceTeam
   { key: TeamTypeId.MaintenanceTeam, value: 'MaintenanceTeam' },
-  // End BIADemo
-  // BIAToolKit - Begin TeamTypeRightPrefixConstants
+  // BIAToolKit - End Partial TeamTypeRightPrefixConstants MaintenanceTeam
+  // End BIAToolKit Generation Ignore
   // BIAToolKit - End TeamTypeRightPrefixConstants
 ];
 export { TeamTypeRightPrefix };

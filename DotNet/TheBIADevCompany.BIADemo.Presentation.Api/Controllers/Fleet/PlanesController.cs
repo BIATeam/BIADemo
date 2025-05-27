@@ -125,7 +125,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 var createdDto = await this.planeService.AddAsync(dto);
 #if UseHubForClientInPlane
-                _ = this.clientForHubService.SendTargetedMessage(createdDto.SiteId.ToString(), "planes", "refresh-planes");
+                await this.clientForHubService.SendTargetedMessage(createdDto.SiteId.ToString(), "planes", "refresh-planes");
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
@@ -159,7 +159,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 var updatedDto = await this.planeService.UpdateAsync(dto);
 #if UseHubForClientInPlane
-                _ = this.clientForHubService.SendTargetedMessage(updatedDto.SiteId.ToString(), "planes", "refresh-planes");
+                await this.clientForHubService.SendTargetedMessage(updatedDto.SiteId.ToString(), "planes", "refresh-planes");
 #endif
                 return this.Ok(updatedDto);
             }
@@ -199,7 +199,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 var deletedDto = await this.planeService.RemoveAsync(id);
 #if UseHubForClientInPlane
-                _ = this.clientForHubService.SendTargetedMessage(deletedDto.SiteId.ToString(), "planes", "refresh-planes");
+                await this.clientForHubService.SendTargetedMessage(deletedDto.SiteId.ToString(), "planes", "refresh-planes");
 #endif
                 return this.Ok();
             }
@@ -231,9 +231,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 var deletedDtos = await this.planeService.RemoveAsync(ids);
 #if UseHubForClientInPlane
-                deletedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
+                deletedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(async parentId =>
                 {
-                    _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "planes", "refresh-planes");
+                    await this.clientForHubService.SendTargetedMessage(parentId.ToString(), "planes", "refresh-planes");
                 });
 #endif
                 return this.Ok();
@@ -268,9 +268,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 var savedDtos = await this.planeService.SaveAsync(dtoList);
 #if UseHubForClientInPlane
-                savedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
+                savedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(async parentId =>
                 {
-                    _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "planes", "refresh-planes");
+                    await this.clientForHubService.SendTargetedMessage(parentId.ToString(), "planes", "refresh-planes");
                 });
 #endif
                 return this.Ok();
@@ -298,8 +298,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Planes{BiaConstants.Csv.Extension}");
         }
 
-        // Begin BIADemo
-
         /// <summary>
         /// Update the fixed status of an item by its id.
         /// </summary>
@@ -323,7 +321,5 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
                 return this.NotFound();
             }
         }
-
-        // End BIADemo
     }
 }

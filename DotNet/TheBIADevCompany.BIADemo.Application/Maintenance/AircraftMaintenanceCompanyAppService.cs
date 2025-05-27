@@ -5,8 +5,6 @@
 
 namespace TheBIADevCompany.BIADemo.Application.Maintenance
 {
-    using System;
-    using System.Collections.Generic;
     using System.Linq.Expressions;
     using System.Security.Principal;
     using System.Threading.Tasks;
@@ -23,7 +21,7 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
     using TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers;
 
     /// <summary>
-    /// The application service used for AircraftMaintenanceCompany.
+    /// The application service used for aircraftMaintenanceCompany.
     /// </summary>
     public class AircraftMaintenanceCompanyAppService : CrudAppServiceBase<AircraftMaintenanceCompanyDto, AircraftMaintenanceCompany, int, PagingFilterFormatDto, AircraftMaintenanceCompanyMapper>, IAircraftMaintenanceCompanyAppService
     {
@@ -32,7 +30,9 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The claims principal.</param>
-        public AircraftMaintenanceCompanyAppService(ITGenericRepository<AircraftMaintenanceCompany, int> repository, IPrincipal principal)
+        public AircraftMaintenanceCompanyAppService(
+            ITGenericRepository<AircraftMaintenanceCompany, int> repository,
+            IPrincipal principal)
             : base(repository)
         {
             this.FiltersContext.Add(

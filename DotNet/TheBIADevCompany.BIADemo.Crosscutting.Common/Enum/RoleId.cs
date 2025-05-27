@@ -35,19 +35,31 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         Supervisor = 101,
         Expert = 102,
         Operator = 202,
+        TeamLeader = 201,
 #pragma warning restore SA1602 // Enumeration items should be documented
+
+        // End BIADemo
+
+        // Begin BIAToolKit Generation Ignore
+#pragma warning disable S1135 // Track uses of "TODO" tags
+
+        // BIAToolKit - Begin Partial RoleId AircraftMaintenanceCompany
+
+        /// <summary>
+        /// The AircraftMaintenanceCompany admin role identifier.
+        /// </summary>
+        // TODO after creation of team AircraftMaintenanceCompany : adapt the enum value
+        AircraftMaintenanceCompanyAdmin = 3,
+
+        // BIAToolKit - End Partial RoleId AircraftMaintenanceCompany
 
         /// <summary>
         /// The maintenanceTeam admin role identifier.
         /// </summary>
-        MaintenanceTeamAdmin = 3,
+        MaintenanceTeamAdmin = 4,
+#pragma warning restore S1135 // Track uses of "TODO" tags
 
-        /// <summary>
-        /// The TeamLeader role identifier
-        /// </summary>
-        TeamLeader = 201,
-
-        // End BIADemo
+        // End BIAToolKit Generation Ignore
 
         // BIAToolKit - Begin RoleId
         // BIAToolKit - End RoleId

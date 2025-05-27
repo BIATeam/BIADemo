@@ -11,7 +11,7 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
     using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
 
     /// <summary>
-    /// The interface defining the application service for AircraftMaintenanceCompany.
+    /// The interface defining the application service for aircraftMaintenanceCompany.
     /// </summary>
     public interface IAircraftMaintenanceCompanyAppService : ICrudAppServiceBase<AircraftMaintenanceCompanyDto, AircraftMaintenanceCompany, int, PagingFilterFormatDto>
     {

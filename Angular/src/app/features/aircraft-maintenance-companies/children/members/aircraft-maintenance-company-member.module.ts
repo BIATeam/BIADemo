@@ -33,7 +33,6 @@ const ROUTES: Routes = [
           injectComponent: AircraftMaintenanceCompanyMemberNewComponent,
         },
         component: PopupLayoutComponent,
-        // component: FullPageLayoutComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -55,7 +54,6 @@ const ROUTES: Routes = [
               injectComponent: AircraftMaintenanceCompanyMemberEditComponent,
             },
             component: PopupLayoutComponent,
-            // component: FullPageLayoutComponent,
             canActivate: [PermissionGuard],
           },
           {

@@ -1,5 +1,5 @@
 import { AsyncPipe, NgIf } from '@angular/common';
-import { Component, Injector } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
 import { aircraftMaintenanceCompanyCRUDConfiguration } from '../../aircraft-maintenance-company.constants';
@@ -13,17 +13,23 @@ import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maint
   imports: [
     NgIf,
     AircraftMaintenanceCompanyFormComponent,
-
     AsyncPipe,
     SpinnerComponent,
   ],
 })
-export class AircraftMaintenanceCompanyEditComponent extends CrudItemEditComponent<AircraftMaintenanceCompany> {
+export class AircraftMaintenanceCompanyEditComponent
+  extends CrudItemEditComponent<AircraftMaintenanceCompany>
+  implements OnInit
+{
   constructor(
     protected injector: Injector,
     public aircraftMaintenanceCompanyService: AircraftMaintenanceCompanyService
   ) {
     super(injector, aircraftMaintenanceCompanyService);
     this.crudConfiguration = aircraftMaintenanceCompanyCRUDConfiguration;
+  }
+
+  ngOnInit(): void {
+    super.ngOnInit();
   }
 }

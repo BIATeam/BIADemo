@@ -167,12 +167,17 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         },
                         new
                         {
-                            RolesId = 3,
+                            RolesId = 201,
                             TeamTypesId = 4
                         },
                         new
                         {
-                            RolesId = 201,
+                            RolesId = 3,
+                            TeamTypesId = 3
+                        },
+                        new
+                        {
+                            RolesId = 4,
                             TeamTypesId = 4
                         });
                 });
@@ -900,6 +905,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         new
                         {
                             Id = 3,
+                            Code = "AircraftMaintenanceCompany_Admin",
+                            Label = "AircraftMaintenanceCompany administrator"
+                        },
+                        new
+                        {
+                            Id = 4,
                             Code = "MaintenanceTeam_Admin",
                             Label = "MaintenanceTeam administrator"
                         });
@@ -1764,6 +1775,115 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasIndex("TypeId");
 
                     b.ToTable("Notifications");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceContract", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("AircraftMaintenanceCompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ArchivedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ContractNumber")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .UseCollation("SQL_Latin1_General_CP1_CS_AS");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("FixedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsFixed")
+                        .HasColumnType("bit");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("SiteId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AircraftMaintenanceCompanyId");
+
+                    b.HasIndex("SiteId");
+
+                    b.ToTable("MaintenanceContract");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceContractPlane", b =>
+                {
+                    b.Property<int>("MaintenanceContractId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlaneId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("MaintenanceContractId", "PlaneId");
+
+                    b.HasIndex("PlaneId");
+
+                    b.ToTable("MaintenanceContractPlane");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceTeamAirport", b =>
+                {
+                    b.Property<int>("AirportId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaintenanceTeamId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("AirportId", "MaintenanceTeamId");
+
+                    b.HasIndex("MaintenanceTeamId");
+
+                    b.ToTable("MaintenanceTeamAirport");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceTeamCountry", b =>
+                {
+                    b.Property<int>("CountryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaintenanceTeamId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("CountryId", "MaintenanceTeamId");
+
+                    b.HasIndex("MaintenanceTeamId");
+
+                    b.ToTable("MaintenanceTeamCountry");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.User", b =>

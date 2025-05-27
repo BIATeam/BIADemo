@@ -14,6 +14,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
     using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Base;
 
     /// <summary>
@@ -56,12 +57,17 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
                     // it should correspond to the Front config (allEnvironments.Teams)
                     new TeamConfigDto { TeamTypeId = (int)TeamTypeId.Site, RoleMode = RoleMode.AllRoles, InHeader = true },
 
-                    // Begin BIADemo
+                    // BIAToolKit - Begin AuthController
+                    // Begin BIAToolKit Generation Ignore
+                    // BIAToolKit - Begin Partial AuthController AircraftMaintenanceCompany
                     new TeamConfigDto() { TeamTypeId = (int)TeamTypeId.AircraftMaintenanceCompany, RoleMode = RoleMode.MultiRoles, InHeader = true },
+
+                    // BIAToolKit - End Partial AuthController AircraftMaintenanceCompany
+                    // BIAToolKit - Begin Partial AuthController MaintenanceTeam
                     new TeamConfigDto() { TeamTypeId = (int)TeamTypeId.MaintenanceTeam, RoleMode = RoleMode.AllRoles, InHeader = false, TeamSelectionCanBeEmpty = true },
 
-                    // End BIADemo
-                    // BIAToolKit - Begin AuthController
+                    // BIAToolKit - End Partial AuthController MaintenanceTeam
+                    // End BIAToolKit Generation Ignore
                     // BIAToolKit - End AuthController
                 },
                 CurrentTeamLogins = null,

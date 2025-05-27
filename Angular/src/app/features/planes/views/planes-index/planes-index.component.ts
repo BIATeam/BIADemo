@@ -43,21 +43,21 @@ export class PlanesIndexComponent
   @ViewChild(PlaneTableComponent, { static: false })
   crudItemTableComponent: PlaneTableComponent;
 
+  // BIAToolKit - Begin PlaneIndexTsCanViewChildDeclaration
   // Begin BIAToolKit Generation Ignore
   // BIAToolKit - Begin Partial PlaneIndexTsCanViewChildDeclaration Engine
   canViewEngines = false;
   // BIAToolKit - End Partial PlaneIndexTsCanViewChildDeclaration Engine
   // End BIAToolKit Generation Ignore
-  // BIAToolKit - Begin PlaneIndexTsCanViewChildDeclaration
   // BIAToolKit - End PlaneIndexTsCanViewChildDeclaration
 
   constructor(
     protected injector: Injector,
-    public crudItemService: PlaneService,
+    public planeService: PlaneService,
     protected planeOptionsService: PlaneOptionsService,
     protected authService: AuthService
   ) {
-    super(injector, crudItemService);
+    super(injector, planeService);
     this.crudConfiguration = planeCRUDConfiguration;
   }
 
@@ -75,8 +75,9 @@ export class PlanesIndexComponent
     this.canDelete = this.authService.hasPermission(Permission.Plane_Delete);
     this.canAdd = this.authService.hasPermission(Permission.Plane_Create);
     this.canSave = this.authService.hasPermission(Permission.Plane_Save);
-    this.canFix = this.authService.hasPermission(Permission.Plane_Fix);
     this.canSelect = this.canDelete;
+    this.canFix = this.authService.hasPermission(Permission.Plane_Fix);
+    // BIAToolKit - Begin PlaneIndexTsCanViewChildSet
     // Begin BIAToolKit Generation Ignore
     // BIAToolKit - Begin Partial PlaneIndexTsCanViewChildSet Engine
     this.canViewEngines = this.authService.hasPermission(
@@ -85,7 +86,6 @@ export class PlanesIndexComponent
     this.canSelect = this.canSelect || this.canViewEngines;
     // BIAToolKit - End Partial PlaneIndexTsCanViewChildSet Engine
     // End BIAToolKit Generation Ignore
-    // BIAToolKit - Begin PlaneIndexTsCanViewChildSet
     // BIAToolKit - End PlaneIndexTsCanViewChildSet
   }
   // Begin BIAToolKit Generation Ignore
