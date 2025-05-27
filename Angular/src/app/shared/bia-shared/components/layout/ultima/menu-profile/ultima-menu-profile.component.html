@@ -58,6 +58,25 @@
         'bia.editProfileImage' | translate
       }}</a>
     </small>
+    @if (
+      authService.hasPermissionObs(permissions.Impersonation_Connection_Rights)
+        | async
+    ) {
+      <div class="flex mt-3">
+        <input
+          type="text"
+          pInputText
+          [(ngModel)]="signInAs"
+          placeholder="{{ 'bia.signInAs' | translate }}" />
+        <button
+          [disabled]="!signInAs"
+          pButton
+          type="button"
+          icon="pi pi-user"
+          pTooltip="{{ 'bia.signIn' | translate }}"
+          (click)="connectWithSpecificRights()"></button>
+      </div>
+    }
     <div>
       <ng-content select="[menu-profile-panel]"></ng-content>
     </div>

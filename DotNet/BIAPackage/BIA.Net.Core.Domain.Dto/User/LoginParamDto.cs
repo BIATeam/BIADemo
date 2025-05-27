@@ -38,5 +38,10 @@ namespace BIA.Net.Core.Domain.Dto.User
         /// Inidcates wheither is ifrst login or not.
         /// </summary>
         public bool IsFirstLogin { get; set; }
+
+        /// <summary>
+        /// User to copy rights and roles from.
+        /// </summary>
+        public string BaseUserLogin { get; set; }
     }
 }

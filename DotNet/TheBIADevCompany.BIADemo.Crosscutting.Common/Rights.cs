@@ -367,6 +367,43 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Save = "Airport_Save";
         }
 
+
+        /// <summary>
+        /// The maintenanceContracts rights.
+        /// </summary>
+        public static class MaintenanceContracts
+        {
+            /// <summary>
+            /// The right to access to the list of maintenanceContracts.
+            /// </summary>
+            public const string ListAccess = "MaintenanceContract_List_Access";
+
+            /// <summary>
+            /// The right to create maintenanceContracts.
+            /// </summary>
+            public const string Create = "MaintenanceContract_Create";
+
+            /// <summary>
+            /// The right to read maintenanceContracts.
+            /// </summary>
+            public const string Read = "MaintenanceContract_Read";
+
+            /// <summary>
+            /// The right to update maintenanceContracts.
+            /// </summary>
+            public const string Update = "MaintenanceContract_Update";
+
+            /// <summary>
+            /// The right to delete maintenanceContracts.
+            /// </summary>
+            public const string Delete = "MaintenanceContract_Delete";
+
+            /// <summary>
+            /// The right to save maintenanceContracts.
+            /// </summary>
+            public const string Save = "MaintenanceContract_Save";
+        }
+
         /// <summary>
         /// The Hangfire rights.
         /// </summary>
@@ -645,39 +682,14 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         }
 
         /// <summary>
-        /// The maintenanceContracts rights.
+        /// The Impersonation rights.
         /// </summary>
-        public static class MaintenanceContracts
+        public static class Impersonation
         {
             /// <summary>
-            /// The right to access to the list of maintenanceContracts.
+            /// The right to connect with same rights of another user.
             /// </summary>
-            public const string ListAccess = "MaintenanceContract_List_Access";
-
-            /// <summary>
-            /// The right to create maintenanceContracts.
-            /// </summary>
-            public const string Create = "MaintenanceContract_Create";
-
-            /// <summary>
-            /// The right to read maintenanceContracts.
-            /// </summary>
-            public const string Read = "MaintenanceContract_Read";
-
-            /// <summary>
-            /// The right to update maintenanceContracts.
-            /// </summary>
-            public const string Update = "MaintenanceContract_Update";
-
-            /// <summary>
-            /// The right to delete maintenanceContracts.
-            /// </summary>
-            public const string Delete = "MaintenanceContract_Delete";
-
-            /// <summary>
-            /// The right to save maintenanceContracts.
-            /// </summary>
-            public const string Save = "MaintenanceContract_Save";
+            public const string ConnectionRights = "Impersonation_Connection_Rights";
         }
 
         // BIAToolKit - Begin Rights

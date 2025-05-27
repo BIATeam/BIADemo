@@ -25,6 +25,11 @@ namespace BIA.Net.Core.Domain.Authentication
         public const string RoleId = "http://schemas.microsoft.com/ws/2008/06/identity/claims/roleid";
 
         /// <summary>
+        /// The role name key.
+        /// </summary>
+        public const string Role = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="BiaClaimsPrincipal"/> class.
         /// </summary>
         public BiaClaimsPrincipal()

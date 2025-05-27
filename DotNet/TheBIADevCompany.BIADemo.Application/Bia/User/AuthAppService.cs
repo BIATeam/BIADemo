@@ -21,13 +21,13 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Models;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Services;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User;
-    using static TheBIADevCompany.BIADemo.Crosscutting.Common.Rights;
 
     /// <summary>
     /// Auth App Service.
@@ -190,17 +190,50 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             // Check if current user is authenticated
             this.CheckIsAuthenticated();
 
+            AuthInfoDto<AdditionalInfoDto> authInfo = await this.GetLoginToken(loginParam, true);
+
+            if (!string.IsNullOrWhiteSpace(loginParam.BaseUserLogin) && JwtFactory.HasRole(authInfo.Token, Rights.Impersonation.ConnectionRights))
+            {
+                return await this.GetLoginToken(loginParam, false);
+            }
+            else
+            {
+                return authInfo;
+            }
+        }
+
+        /// <summary>
+        /// Gets the role ids.
+        /// </summary>
+        /// <param name="roles">The roles.</param>
+        /// <returns>Role ids.</returns>
+        private static List<int> GetRoleIds(List<string> roles)
+        {
+            List<int> roleIds = new List<int>();
+            foreach (string role in roles)
+            {
+                if (Enum.TryParse<RoleId>(role, out var roleId) && !roleIds.Contains((int)roleId))
+                {
+                    roleIds.Add((int)roleId);
+                }
+            }
+
+            return roleIds;
+        }
+
+        private async Task<AuthInfoDto<AdditionalInfoDto>> GetLoginToken(LoginParamDto loginParam, bool withCredentials)
+        {
             // Get informations in Claims
             string sid = this.GetSid();
-            string login = this.GetLogin();
+            string login = withCredentials ? this.GetLogin() : loginParam.BaseUserLogin;
             string domain = this.GetDomain();
-            string identityKey = this.GetIdentityKey();
+            string identityKey = withCredentials ? this.GetIdentityKey() : loginParam.BaseUserLogin;
 
             // Get UserInfo
             UserInfoDto userInfo = await this.GetUserInfo(loginParam, login, identityKey);
 
             // Get Global Roles
-            List<string> globalRoles = await this.GetGlobalRolesAsync(sid: sid, domain: domain, userInfo: userInfo);
+            List<string> globalRoles = await this.GetGlobalRolesAsync(sid: sid, domain: domain, userInfo: userInfo, withCredentials);
 
             // Fill UserInfo
             userInfo = await this.CreateOrUpdateUserInDatabase(sid, identityKey, userInfo, globalRoles);
@@ -263,25 +296,6 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
 
             return authInfo;
         }
-
-        /// <summary>
-        /// Gets the role ids.
-        /// </summary>
-        /// <param name="roles">The roles.</param>
-        /// <returns>Role ids.</returns>
-        private static List<int> GetRoleIds(List<string> roles)
-        {
-            List<int> roleIds = new List<int>();
-            foreach (string role in roles)
-            {
-                if (Enum.TryParse<RoleId>(role, out var roleId) && !roleIds.Contains((int)roleId))
-                {
-                    roleIds.Add((int)roleId);
-                }
-            }
-
-            return roleIds;
-        }
 #endif
 
         /// <summary>
@@ -327,9 +341,9 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="userInfo">The user information.</param>
         /// <returns>Global roles.</returns>
         /// <exception cref="UnauthorizedException">No roles found.</exception>
-        private async Task<List<string>> GetGlobalRolesAsync(string sid, string domain, UserInfoDto userInfo = default)
+        private async Task<List<string>> GetGlobalRolesAsync(string sid, string domain, UserInfoDto userInfo = default, bool withCredentials = true)
         {
-            List<string> globalRoles = await this.userDirectoryHelper.GetUserRolesAsync(claimsPrincipal: this.claimsPrincipal, userInfoDto: userInfo, sid: sid, domain: domain);
+            List<string> globalRoles = await this.userDirectoryHelper.GetUserRolesAsync(claimsPrincipal: withCredentials ? this.claimsPrincipal : null, userInfoDto: userInfo, sid: sid, domain: domain);
 
             // If the user has no role
             if (globalRoles?.Any() != true)
@@ -642,7 +656,10 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
                         }
                     }
 
-                    userData.CurrentTeams.Add(currentTeam);
+                    if (allTeams.Any(team => team.Id == currentTeam.TeamId && team.TeamTypeId == currentTeam.TeamTypeId))
+                    {
+                        userData.CurrentTeams.Add(currentTeam);
+                    }
 
                     // add the sites roles (filter if singleRole mode is used)
                     allRoles.AddRange(roles.Where(r => currentTeam.CurrentRoleIds.Exists(id => id == r.Id)).Select(r => r.Code).ToList());
