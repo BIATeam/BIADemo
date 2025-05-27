@@ -764,7 +764,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                             break;
 
                         case BiaConstants.RoleType.ClaimsToRole:
-                            if (role.RequireClaim?.AllowedValues?.Any() == true)
+                            if (role.RequireClaim?.AllowedValues?.Any() == true && claimsPrincipal != null)
                             {
                                 List<string> claimValues = claimsPrincipal.FindAll(role.RequireClaim.Type).Select(c => c.Value).ToList();
                                 if (role.RequireClaim.AllowedValues.Intersect(claimValues).Any())

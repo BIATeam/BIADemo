@@ -119,4 +119,6 @@ export enum Permission {
   View_SetDefaultUserView = 'View_Set_Default_UserView',
   View_SetDefaultTeamViewSuffix = '_View_Set_Default_TeamView',
   View_AssignToTeamSuffix = '_View_Assign_To_Team',
+
+  Impersonation_Connection_Rights = 'Impersonation_Connection_Rights',
 }

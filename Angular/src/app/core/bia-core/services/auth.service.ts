@@ -341,43 +341,52 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   }
 
   protected getAuthInfo() {
-    return this.http
-      .post<AuthInfo>(`${this.route}LoginAndTeams`, this.getLoginParameters())
-      .pipe(
-        map((authInfo: AuthInfo) => {
-          if (authInfo) {
-            authInfo.uncryptedToken = this.decodeToken(authInfo.token);
-          }
-          RefreshTokenService.shouldRefreshToken = false;
-          this.isInLogin = false;
-          this.authInfoSubject.next(authInfo);
+    return this.registerToken(
+      this.http.post<AuthInfo>(
+        `${this.route}LoginAndTeams`,
+        this.getLoginParameters()
+      )
+    );
+  }
 
-          this.store.dispatch(
-            DomainTeamsActions.loadAllSuccess({
-              teams: authInfo.additionalInfos.teams,
-            })
-          );
-          return authInfo;
-        }),
-        catchError(err => {
-          if (err.status === HttpStatusCode.Unauthorized) {
-            window.location.href =
-              allEnvironments.urlErrorPage + '?num=' + err.status;
-          }
+  private registerToken(
+    authResult: Observable<AuthInfo>
+  ): Observable<AuthInfo> {
+    return authResult.pipe(
+      map((authInfo: AuthInfo) => {
+        if (authInfo) {
+          authInfo.uncryptedToken = this.decodeToken(authInfo.token);
+        }
+        RefreshTokenService.shouldRefreshToken = false;
+        this.isInLogin = false;
+        this.authInfoSubject.next(authInfo);
 
-          RefreshTokenService.shouldRefreshToken = true;
-          this.isInLogin = false;
-          const authInfo: AuthInfo = <AuthInfo>{};
-          this.authInfoSubject.next(authInfo);
-          this.store.dispatch(
-            DomainTeamsActions.loadAllSuccess({
-              teams: authInfo?.additionalInfos?.teams ?? [],
-            })
-          );
+        this.store.dispatch(
+          DomainTeamsActions.loadAllSuccess({
+            teams: authInfo.additionalInfos.teams,
+          })
+        );
+        return authInfo;
+      }),
+      catchError(err => {
+        if (err.status === HttpStatusCode.Unauthorized) {
+          window.location.href =
+            allEnvironments.urlErrorPage + '?num=' + err.status;
+        }
 
-          return of(authInfo);
-        })
-      );
+        RefreshTokenService.shouldRefreshToken = true;
+        this.isInLogin = false;
+        const authInfo: AuthInfo = <AuthInfo>{};
+        this.authInfoSubject.next(authInfo);
+        this.store.dispatch(
+          DomainTeamsActions.loadAllSuccess({
+            teams: authInfo?.additionalInfos?.teams ?? [],
+          })
+        );
+
+        return of(authInfo);
+      })
+    );
   }
 
   public getLightToken() {

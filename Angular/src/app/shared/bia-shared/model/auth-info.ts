@@ -8,6 +8,7 @@ export class LoginParamDto {
   fineGrainedPermission: boolean;
   additionalInfos: boolean;
   isFirstLogin: boolean;
+  baseUserLogin?: string;
 }
 
 export class TeamConfigDto {

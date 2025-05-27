@@ -1,5 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { CommonModule, NgIf, NgTemplateOutlet } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import {
   Component,
@@ -9,15 +9,20 @@ import {
   Input,
   OnDestroy,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
 import { Tooltip } from 'primeng/tooltip';
 import { catchError, map, Observable, Subscription, take, tap } from 'rxjs';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaEnvironmentService } from 'src/app/core/bia-core/services/bia-environment.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
+import { Permission } from 'src/app/shared/permission';
 import { BiaLayoutService } from '../../services/layout.service';
 import { BiaMenuProfileService } from '../../services/menu-profile.service';
 
@@ -58,6 +63,10 @@ import { BiaMenuProfileService } from '../../services/menu-profile.service';
     SharedModule,
     TranslateModule,
     NgTemplateOutlet,
+    ButtonModule,
+    InputTextModule,
+    FormsModule,
+    CommonModule,
   ],
 })
 export class BiaUltimaMenuProfileComponent implements OnDestroy {
@@ -111,6 +120,8 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
   private sub: Subscription = new Subscription();
 
   urlEditAvatar: string;
+  signInAs: string;
+  permissions = Permission;
 
   constructor(
     protected readonly layoutService: BiaLayoutService,
@@ -119,7 +130,8 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
     protected readonly http: HttpClient,
     protected readonly sanitizer: DomSanitizer,
     public el: ElementRef,
-    protected readonly menuProfileService: BiaMenuProfileService
+    protected readonly menuProfileService: BiaMenuProfileService,
+    protected readonly authService: AuthService
   ) {
     this.urlEditAvatar =
       this.appSettingsService.appSettings.profileConfiguration
@@ -177,5 +189,13 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
           this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(val))
         )
       );
+  }
+
+  connectWithSpecificRights() {
+    this.authService.setLoginParameters({
+      ...this.authService.getLoginParameters(),
+      baseUserLogin: this.signInAs,
+    });
+    this.sub.add(this.authService.login().subscribe());
   }
 }

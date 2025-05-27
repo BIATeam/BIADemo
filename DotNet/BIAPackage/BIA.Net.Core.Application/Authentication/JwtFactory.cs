@@ -49,6 +49,19 @@ namespace BIA.Net.Core.Application.Authentication
         public SigningCredentials SigningCredentials { get; set; }
 
         /// <summary>
+        /// Check if a role is in a given jwt token.
+        /// </summary>
+        /// <param name="jwtToken">The jwt token.</param>
+        /// <param name="roleToCheck">The role to look for in the token.</param>
+        /// <returns>If the role is in the token.</returns>
+        public static bool HasRole(string jwtToken, string roleToCheck)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.ReadJwtToken(jwtToken);
+            return token.Claims.Any(c => c.Type == BiaClaimsPrincipal.Role && c.Value == roleToCheck);
+        }
+
+        /// <summary>
         /// Extract the claims from token.
         /// </summary>
         /// <param name="token">the token.</param>

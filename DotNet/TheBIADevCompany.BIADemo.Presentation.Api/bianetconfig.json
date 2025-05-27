@@ -409,6 +409,11 @@
         "Names": [ "Notification_Update", "Notification_Create", "NotificationType_Options" ],
         "Roles": [ "Admin" ]
       },
+      // SupportAdmin
+      {
+        "Names": [ "Impersonation_Connection_Rights" ],
+        "Roles": [ "SupportAdmin" ]
+      },
       {
         "Name": "Background_Task_Admin",
         "LightToken": true,
