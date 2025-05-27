@@ -52,18 +52,18 @@ export const planeSpecificFormLayoutConfiguration: BiaFormLayoutConfig<PlaneSpec
             new BiaFormLayoutConfigField('capacity'),
           ]),
         ]),
-        new BiaFormLayoutConfigTab('engines', 'plane.engines', [
-          new BiaFormLayoutConfigRow([new BiaFormLayoutConfigField('engines')]),
+        new BiaFormLayoutConfigTab('tracking', 'plane.groupTracking', [
+          new BiaFormLayoutConfigRow([
+            new BiaFormLayoutConfigField('deliveryDate'),
+            new BiaFormLayoutConfigField('lastFlightDate'),
+          ]),
+          new BiaFormLayoutConfigRow([
+            new BiaFormLayoutConfigField('syncFlightDataTime'),
+          ]),
         ]),
       ]),
-      new BiaFormLayoutConfigGroup('plane.groupTracking', [
-        new BiaFormLayoutConfigRow([
-          new BiaFormLayoutConfigField('deliveryDate'),
-          new BiaFormLayoutConfigField('lastFlightDate'),
-        ]),
-        new BiaFormLayoutConfigRow([
-          new BiaFormLayoutConfigField('syncFlightDataTime'),
-        ]),
+      new BiaFormLayoutConfigGroup('plane.engines', [
+        new BiaFormLayoutConfigRow([new BiaFormLayoutConfigField('engines')]),
       ]),
     ]),
   ]);
