@@ -18,14 +18,6 @@ export const NAVIGATION: BiaNavigation[] = [
   // BIAToolKit - End Navigation
 
   // Begin BIAToolKit Generation Ignore
-  // BIAToolKit - Begin Partial Navigation Plane
-  {
-    labelKey: 'app.planes',
-    permissions: [Permission.Plane_List_Access],
-    path: ['/planes'],
-    icon: 'pi pi-th-large',
-  },
-  // BIAToolKit - End Partial Navigation Plane
   // BIAToolKit - Begin Partial Navigation AircraftMaintenanceCompany
   {
     labelKey: 'app.aircraftMaintenanceCompanies',
@@ -42,15 +34,17 @@ export const NAVIGATION: BiaNavigation[] = [
     icon: 'pi pi-sitemap',
   },
   // BIAToolKit - End Partial Navigation MaintenanceTeam
+  // BIAToolKit - Begin Partial Navigation Plane
+  {
+    labelKey: 'app.planes',
+    permissions: [Permission.Plane_List_Access],
+    path: ['/planes'],
+    icon: 'pi pi-th-large',
+  },
+  // BIAToolKit - End Partial Navigation Plane
   // End BIAToolKit Generation Ignore
 
   // Begin BIADemo
-  {
-    labelKey: 'app.maintenanceContracts',
-    permissions: [Permission.MaintenanceContract_List_Access],
-    path: ['/maintenance-contracts'],
-    icon: 'pi pi-clipboard',
-  },
   {
     labelKey: 'app.planesFullCode',
     permissions: [Permission.Plane_List_Access],
@@ -62,6 +56,12 @@ export const NAVIGATION: BiaNavigation[] = [
     permissions: [Permission.Plane_List_Access],
     path: ['/planes-specific'],
     icon: 'pi pi-th-large',
+  },
+  {
+    labelKey: 'app.maintenanceContracts',
+    permissions: [Permission.MaintenanceContract_List_Access],
+    path: ['/maintenance-contracts'],
+    icon: 'pi pi-clipboard',
   },
   {
     labelKey: 'app.hangfire',

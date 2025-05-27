@@ -3,7 +3,7 @@
     "members": "Membres",
     "sites": "Sites",
     "Begin BIADemo": "To remove in project from here",
-    "aircraft-maintenance-companies": "Entreprises de maintenance aéronautique",
+    "aircraftMaintenanceCompanies": "Entreprises de maintenance aéronautique",
     "airports": "Aéroports",
     "engines": "Moteurs",
     "hangfire": "Hangfire",
@@ -18,7 +18,7 @@
     "teams": "Equipes",
     "users": "Utilisateurs",
     "notifications": "Notifications",
-    "maintenance-teams": "Equipes de maintenance",
+    "maintenanceTeams": "Equipes de maintenance",
     "maintenanceContracts": "Contrats de maintenance"
   },
   "Begin BIADemo": "To remove in project from here",
