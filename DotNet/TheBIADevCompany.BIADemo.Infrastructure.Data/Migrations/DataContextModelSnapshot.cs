@@ -2128,7 +2128,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities.NotificationTeam", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities.Notification", "Notification")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Notification.Entities.Notification", "Notification")
                         .WithMany("NotifiedTeams")
                         .HasForeignKey("NotificationId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2166,7 +2166,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities.NotificationUser", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities.Notification", "Notification")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Notification.Entities.Notification", "Notification")
                         .WithMany("NotifiedUsers")
                         .HasForeignKey("NotificationId")
                         .OnDelete(DeleteBehavior.Cascade)
