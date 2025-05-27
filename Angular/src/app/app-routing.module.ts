@@ -37,13 +37,11 @@ const routes: Routes = [
               import('./features/planes/plane.module').then(m => m.PlaneModule),
           },
           // BIAToolKit - End Partial Routing Plane
-          // End BIAToolKit Generation Ignore
-
-          // Begin BIADemo
+          // BIAToolKit - Begin Partial Routing AircraftMaintenanceCompany
           {
             path: 'aircraft-maintenance-companies',
             data: {
-              breadcrumb: 'app.aircraft-maintenance-companies',
+              breadcrumb: 'app.aircraftMaintenanceCompanies',
               canNavigate: true,
             },
             loadChildren: () =>
@@ -51,10 +49,12 @@ const routes: Routes = [
                 './features/aircraft-maintenance-companies/aircraft-maintenance-company.module'
               ).then(m => m.AircraftMaintenanceCompanyModule),
           },
+          // BIAToolKit - End Partial Routing AircraftMaintenanceCompany
+          // BIAToolKit - Begin Partial Routing MaintenanceTeam
           {
             path: 'maintenance-teams',
             data: {
-              breadcrumb: 'app.maintenance-teams',
+              breadcrumb: 'app.maintenanceTeams',
               canNavigate: true,
             },
             loadChildren: () =>
@@ -62,6 +62,10 @@ const routes: Routes = [
                 './features/aircraft-maintenance-companies/children/maintenance-teams/maintenance-team.module'
               ).then(m => m.MaintenanceTeamModule),
           },
+          // BIAToolKit - End Partial Routing MaintenanceTeam
+          // End BIAToolKit Generation Ignore
+
+          // Begin BIADemo
           {
             path: 'maintenance-contracts',
             data: {

@@ -43,12 +43,12 @@ export class PlanesIndexComponent
   @ViewChild(PlaneTableComponent, { static: false })
   crudItemTableComponent: PlaneTableComponent;
 
+  // BIAToolKit - Begin PlaneIndexTsCanViewChildDeclaration
   // Begin BIAToolKit Generation Ignore
   // BIAToolKit - Begin Partial PlaneIndexTsCanViewChildDeclaration Engine
   canViewEngines = false;
   // BIAToolKit - End Partial PlaneIndexTsCanViewChildDeclaration Engine
   // End BIAToolKit Generation Ignore
-  // BIAToolKit - Begin PlaneIndexTsCanViewChildDeclaration
   // BIAToolKit - End PlaneIndexTsCanViewChildDeclaration
 
   constructor(

@@ -26,21 +26,25 @@ export const NAVIGATION: BiaNavigation[] = [
     icon: 'pi pi-th-large',
   },
   // BIAToolKit - End Partial Navigation Plane
-  // End BIAToolKit Generation Ignore
-
-  // Begin BIADemo
+  // BIAToolKit - Begin Partial Navigation AircraftMaintenanceCompany
   {
-    labelKey: 'app.aircraft-maintenance-companies',
+    labelKey: 'app.aircraftMaintenanceCompanies',
     permissions: [Permission.AircraftMaintenanceCompany_List_Access],
     path: ['/aircraft-maintenance-companies'],
     icon: 'pi pi-sitemap',
   },
+  // BIAToolKit - End Partial Navigation AircraftMaintenanceCompany
+  // BIAToolKit - Begin Partial Navigation MaintenanceTeam
   {
-    labelKey: 'app.maintenance-teams',
+    labelKey: 'app.maintenanceTeams',
     permissions: [Permission.MaintenanceTeam_List_Access],
     path: ['/maintenance-teams'],
     icon: 'pi pi-sitemap',
   },
+  // BIAToolKit - End Partial Navigation MaintenanceTeam
+  // End BIAToolKit Generation Ignore
+
+  // Begin BIADemo
   {
     labelKey: 'app.maintenanceContracts',
     permissions: [Permission.MaintenanceContract_List_Access],

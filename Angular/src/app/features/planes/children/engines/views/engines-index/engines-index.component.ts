@@ -43,6 +43,7 @@ export class EnginesIndexComponent
 {
   @ViewChild(EngineTableComponent, { static: false })
   crudItemTableComponent: EngineTableComponent;
+
   // BIAToolKit - Begin EngineIndexTsCanViewChildDeclaration
   // BIAToolKit - End EngineIndexTsCanViewChildDeclaration
 

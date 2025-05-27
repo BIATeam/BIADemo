@@ -21,7 +21,9 @@ export const allEnvironments = {
       inHeader: true,
       label: 'site.headerLabel',
     },
-    // Begin BIADemo
+    // BIAToolKit - Begin AllEnvironment
+    // Begin BIAToolKit Generation Ignore
+    // BIAToolKit - Begin Partial AllEnvironment AircraftMaintenanceCompany
     {
       teamTypeId: TeamTypeId.AircraftMaintenanceCompany,
       roleMode: RoleMode.MultiRoles,
@@ -29,6 +31,8 @@ export const allEnvironments = {
       displayOne: true,
       label: 'aircraftMaintenanceCompany.headerLabel',
     },
+    // BIAToolKit - End Partial AllEnvironment AircraftMaintenanceCompany
+    // BIAToolKit - Begin Partial AllEnvironment MaintenanceTeam
     {
       teamTypeId: TeamTypeId.MaintenanceTeam,
       roleMode: RoleMode.AllRoles,
@@ -38,8 +42,8 @@ export const allEnvironments = {
       displayLabel: true,
       teamSelectionCanBeEmpty: true,
     },
-    // End BIADemo
-    // BIAToolKit - Begin AllEnvironment
+    // BIAToolKit - End Partial AllEnvironment MaintenanceTeam
+    // End BIAToolKit Generation Ignore
     // BIAToolKit - End AllEnvironment
   ],
 };
