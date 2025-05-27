@@ -377,7 +377,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Save = "Airport_Save";
         }
 
-
         /// <summary>
         /// The maintenanceContracts rights.
         /// </summary>
