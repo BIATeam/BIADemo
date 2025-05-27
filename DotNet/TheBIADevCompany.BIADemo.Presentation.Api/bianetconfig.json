@@ -176,7 +176,6 @@
         "Names": [ "Airport_List_Access", "Airport_Create", "Airport_Read", "Airport_Update", "Airport_Delete", "Airport_Save" ],
         "Roles": [ "Admin" ]
       },
-      // BIAToolKit - Begin Partial ConfigForOption PlaneType
       // BIAToolKit - Begin Partial Config AircraftMaintenanceCompany
       // AircraftMaintenanceCompany
       {
@@ -227,6 +226,7 @@
         ]
       },
       // BIAToolKit - End Partial Config AircraftMaintenanceCompany
+      // BIAToolKit - Begin Partial ConfigForOption PlaneType
       // PlaneType
       {
         "Name": "PlaneType_Options",
