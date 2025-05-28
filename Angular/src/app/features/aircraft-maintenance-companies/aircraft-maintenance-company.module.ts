@@ -113,7 +113,6 @@ export const ROUTES: Routes = [
       FeatureAircraftMaintenanceCompaniesStore.reducers
     ),
     EffectsModule.forFeature([AircraftMaintenanceCompaniesEffects]),
-    // TODO after creation of CRUD AircraftMaintenanceCompany : select the optionDto domain module required for link
     // Domain Modules:
   ],
 })

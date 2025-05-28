@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-// import { ReducerManager, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
@@ -11,7 +10,6 @@ import {
   LayoutMode,
 } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { Permission } from 'src/app/shared/permission';
-
 import { maintenanceTeamCRUDConfiguration } from './maintenance-team.constants';
 import { FeatureMaintenanceTeamsStore } from './store/maintenance-team.state';
 import { MaintenanceTeamsEffects } from './store/maintenance-teams-effects';
@@ -99,7 +97,6 @@ export const ROUTES: Routes = [
       FeatureMaintenanceTeamsStore.reducers
     ),
     EffectsModule.forFeature([MaintenanceTeamsEffects]),
-    // TODO after creation of CRUD Team MaintenanceTeam : select the optioDto dommain module required for link
     // Domain Modules:
     AirportOptionModule,
     CountryOptionModule,
