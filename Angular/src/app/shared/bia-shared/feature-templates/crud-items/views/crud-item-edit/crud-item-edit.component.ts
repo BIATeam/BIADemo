@@ -8,7 +8,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { Subscription, filter, first } from 'rxjs';
+import { Subscription, filter, first, tap } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
 import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
@@ -34,7 +34,7 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
   public formReadOnlyMode: FormReadOnlyMode;
   public canFix: boolean;
 
-  protected isCrudItemOutdated: boolean;
+  protected isCrudItemOutdated: boolean = false;
   protected authService: AuthService;
 
   constructor(
@@ -43,6 +43,15 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
   ) {
     super(injector, crudItemService);
     this.authService = this.injector.get<AuthService>(AuthService);
+    this.sub.add(
+      this.crudItemService.crudItem$
+        .pipe(
+          tap(() => {
+            this.isCrudItemOutdated = false;
+          })
+        )
+        .subscribe()
+    );
   }
 
   ngOnInit() {
