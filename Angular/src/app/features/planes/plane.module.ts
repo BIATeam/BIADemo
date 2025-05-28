@@ -132,7 +132,6 @@ export const ROUTES: Routes = [
       FeaturePlanesStore.reducers
     ),
     EffectsModule.forFeature([PlanesEffects]),
-    // TODO after creation of CRUD Plane : select the optionDto domain module required for link
     // Domain Modules:
     PlaneTypeOptionModule,
     AirportOptionModule,

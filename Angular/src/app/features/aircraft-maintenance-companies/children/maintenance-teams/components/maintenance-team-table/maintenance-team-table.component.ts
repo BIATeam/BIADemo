@@ -43,7 +43,6 @@ import { MaintenanceTeam } from '../../model/maintenance-team';
     NgFor,
     Tooltip,
     NgSwitch,
-
     NgClass,
     NgTemplateOutlet,
     Skeleton,

@@ -7,6 +7,7 @@ import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templa
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
+import { AircraftMaintenanceCompanyService } from '../../../services/aircraft-maintenance-company.service';
 import { maintenanceTeamCRUDConfiguration } from '../maintenance-team.constants';
 import { MaintenanceTeam } from '../model/maintenance-team';
 import { FeatureMaintenanceTeamsStore } from '../store/maintenance-team.state';
@@ -26,10 +27,10 @@ export class MaintenanceTeamService extends CrudItemService<MaintenanceTeam> {
     private store: Store<AppState>,
     public dasService: MaintenanceTeamDas,
     public signalRService: CrudItemSignalRService<MaintenanceTeam>,
+    public aircraftMaintenanceCompanyService: AircraftMaintenanceCompanyService,
+    protected authService: AuthService,
     public optionsService: MaintenanceTeamOptionsService,
-    protected injector: Injector,
-    // required only for parent key
-    protected authService: AuthService
+    protected injector: Injector
   ) {
     super(dasService, signalRService, optionsService, injector);
   }
@@ -94,8 +95,7 @@ export class MaintenanceTeamService extends CrudItemService<MaintenanceTeam> {
     );
   }
   public create(crudItem: MaintenanceTeam) {
-    // TODO after creation of CRUD Team MaintenanceTeam : map parent Key on the corresponding field
-    // crudItem.siteId = this.getParentIds()[0],
+    crudItem.aircraftMaintenanceCompanyId = this.getParentIds()[0];
     this.store.dispatch(
       FeatureMaintenanceTeamsActions.create({ maintenanceTeam: crudItem })
     );

@@ -1,6 +1,9 @@
-import { EntityState, createEntityAdapter } from '@ngrx/entity';
+import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { TableLazyLoadEvent } from 'primeng/table';
+import {
+  CrudState,
+  DEFAULT_CRUD_STATE,
+} from 'src/app/shared/bia-shared/model/crud-state';
 import { MaintenanceTeam } from '../model/maintenance-team';
 import { FeatureMaintenanceTeamsActions } from './maintenance-teams-actions';
 
@@ -10,33 +13,15 @@ export const maintenanceTeamsAdapter = createEntityAdapter<MaintenanceTeam>({
   sortComparer: false,
 });
 
-// -----------------------------------------
-// The shape of EntityState
-// ------------------------------------------
-// interface EntityState<MaintenanceTeam> {
-//   ids: string[] | number[];
-//   entities: { [id: string]: MaintenanceTeam };
-// }
-// -----------------------------------------
-// -> ids arrays allow us to sort data easily
-// -> entities map allows us to access the data quickly without iterating/filtering though an array of objects
-
-export interface State extends EntityState<MaintenanceTeam> {
+export interface State
+  extends CrudState<MaintenanceTeam>,
+    EntityState<MaintenanceTeam> {
   // additional props here
-  totalCount: number;
-  currentMaintenanceTeam: MaintenanceTeam;
-  lastLazyLoadEvent: TableLazyLoadEvent;
-  loadingGet: boolean;
-  loadingGetAll: boolean;
 }
 
 export const INIT_STATE: State = maintenanceTeamsAdapter.getInitialState({
+  ...DEFAULT_CRUD_STATE(),
   // additional props default values here
-  totalCount: 0,
-  currentMaintenanceTeam: <MaintenanceTeam>{},
-  lastLazyLoadEvent: <TableLazyLoadEvent>{},
-  loadingGet: false,
-  loadingGetAll: false,
 });
 
 export const maintenanceTeamReducers = createReducer<State>(
@@ -47,7 +32,7 @@ export const maintenanceTeamReducers = createReducer<State>(
     return stateUpdated;
   }),
   on(FeatureMaintenanceTeamsActions.clearCurrent, state => {
-    return { ...state, currentMaintenanceTeam: <MaintenanceTeam>{} };
+    return { ...state, currentItem: <MaintenanceTeam>{} };
   }),
   on(FeatureMaintenanceTeamsActions.loadAllByPost, state => {
     return { ...state, loadingGetAll: true };
@@ -68,11 +53,7 @@ export const maintenanceTeamReducers = createReducer<State>(
   on(
     FeatureMaintenanceTeamsActions.loadSuccess,
     (state, { maintenanceTeam }) => {
-      return {
-        ...state,
-        currentMaintenanceTeam: maintenanceTeam,
-        loadingGet: false,
-      };
+      return { ...state, currentItem: maintenanceTeam, loadingGet: false };
     }
   ),
   on(FeatureMaintenanceTeamsActions.failure, state => {

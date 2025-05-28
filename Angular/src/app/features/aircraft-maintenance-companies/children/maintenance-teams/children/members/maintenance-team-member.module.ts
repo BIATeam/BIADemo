@@ -33,7 +33,6 @@ const ROUTES: Routes = [
           injectComponent: MaintenanceTeamMemberNewComponent,
         },
         component: PopupLayoutComponent,
-        // component: FullPageLayoutComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -55,7 +54,6 @@ const ROUTES: Routes = [
               injectComponent: MaintenanceTeamMemberEditComponent,
             },
             component: PopupLayoutComponent,
-            // component: FullPageLayoutComponent,
             canActivate: [PermissionGuard],
           },
           {

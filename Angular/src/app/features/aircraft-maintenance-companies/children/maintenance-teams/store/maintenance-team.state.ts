@@ -5,6 +5,7 @@ import {
   createSelector,
 } from '@ngrx/store';
 import { maintenanceTeamCRUDConfiguration } from '../maintenance-team.constants';
+import { MaintenanceTeam } from '../model/maintenance-team';
 import * as fromMaintenanceTeams from './maintenance-teams-reducer';
 
 export namespace FeatureMaintenanceTeamsStore {
@@ -44,7 +45,7 @@ export namespace FeatureMaintenanceTeamsStore {
 
   export const getCurrentMaintenanceTeam = createSelector(
     getMaintenanceTeamsEntitiesState,
-    state => state.currentMaintenanceTeam
+    state => state.currentItem ?? <MaintenanceTeam>{}
   );
 
   export const getLastLazyLoadEvent = createSelector(

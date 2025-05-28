@@ -16,14 +16,14 @@ import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 // TODO after creation of CRUD Team MaintenanceTeam : adapt the model
 export class MaintenanceTeam extends BaseTeamDto {
-  code: string;
+  code: string | null;
   isActive: boolean;
   isApproved: boolean | null;
   firstOperation: Date;
   lastOperation: Date | null;
   approvedDate: Date | null;
   nextOperation: Date;
-  maxTravelDuration: string;
+  maxTravelDuration: string | null;
   maxOperationDuration: string;
   operationCount: number;
   incidentCount: number | null;
@@ -33,10 +33,11 @@ export class MaintenanceTeam extends BaseTeamDto {
   averageTravelDuration: number | null;
   totalOperationCost: number;
   averageOperationCost: number | null;
-  currentCountry: OptionDto | null;
-  operationCountries: OptionDto[];
-  operationAirports: OptionDto[];
+  aircraftMaintenanceCompanyId: number;
   currentAirport: OptionDto;
+  operationAirports: OptionDto[];
+  currentCountry: OptionDto | null;
+  operationCountries: OptionDto[] | null;
 }
 
 // TODO after creation of CRUD Team MaintenanceTeam : adapt the field configuration
@@ -52,16 +53,18 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
           new BiaFieldConfig('isActive', 'maintenanceTeam.isActive'),
           {
             type: PropType.Boolean,
+            isRequired: true,
+            validators: [Validators.required],
           }
         ),
         Object.assign(
           new BiaFieldConfig('isApproved', 'maintenanceTeam.isApproved'),
           {
-            isRequired: true,
+            type: PropType.Boolean,
+            // Begin BIAToolKit Generation Ignore
             isSearchable: true,
             isSortable: false,
-            type: PropType.Boolean,
-            validators: [Validators.required],
+            // End BIAToolKit Generation Ignore
           }
         ),
         Object.assign(
@@ -70,8 +73,8 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
             'maintenanceTeam.firstOperation'
           ),
           {
-            isRequired: true,
             type: PropType.DateTime,
+            isRequired: true,
             validators: [Validators.required],
           }
         ),
@@ -90,8 +93,8 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
         Object.assign(
           new BiaFieldConfig('nextOperation', 'maintenanceTeam.nextOperation'),
           {
-            isRequired: true,
             type: PropType.Date,
+            isRequired: true,
             validators: [Validators.required],
           }
         ),
@@ -110,8 +113,8 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
             'maintenanceTeam.maxOperationDuration'
           ),
           {
-            isRequired: true,
             type: PropType.TimeSecOnly,
+            isRequired: true,
             validators: [Validators.required],
           }
         ),
@@ -122,16 +125,20 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
           ),
           {
             type: PropType.Number,
-            filterMode: PrimeNGFiltering.Equals,
             isRequired: true,
-            validators: [Validators.required, Validators.min(1)],
+            validators: [Validators.required],
+            // Begin BIAToolKit Generation Ignore
+            filterMode: PrimeNGFiltering.Equals,
+            // End BIAToolKit Generation Ignore
           }
         ),
         Object.assign(
           new BiaFieldConfig('incidentCount', 'maintenanceTeam.incidentCount'),
           {
             type: PropType.Number,
+            // Begin BIAToolKit Generation Ignore
             filterMode: PrimeNGFiltering.Equals,
+            // End BIAToolKit Generation Ignore
           }
         ),
         Object.assign(
@@ -140,15 +147,17 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
             'maintenanceTeam.totalOperationDuration'
           ),
           {
-            isRequired: true,
             type: PropType.Number,
+            isRequired: true,
+            validators: [Validators.required],
+            // Begin BIAToolKit Generation Ignore
             filterMode: PrimeNGFiltering.Equals,
             displayFormat: Object.assign(new BiaFieldNumberFormat(), {
               mode: NumberMode.Decimal,
               minFractionDigits: 6,
               maxFractionDigits: 6,
             }),
-            validators: [Validators.required, Validators.min(0)],
+            // End BIAToolKit Generation Ignore
           }
         ),
         Object.assign(
@@ -158,12 +167,14 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
           ),
           {
             type: PropType.Number,
+            // Begin BIAToolKit Generation Ignore
             filterMode: PrimeNGFiltering.Equals,
             displayFormat: Object.assign(new BiaFieldNumberFormat(), {
               mode: NumberMode.Decimal,
               minFractionDigits: 6,
               maxFractionDigits: 6,
             }),
+            // End BIAToolKit Generation Ignore
           }
         ),
         Object.assign(
@@ -172,15 +183,17 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
             'maintenanceTeam.totalTravelDuration'
           ),
           {
-            isRequired: true,
             type: PropType.Number,
+            isRequired: true,
+            validators: [Validators.required],
+            // Begin BIAToolKit Generation Ignore
             filterMode: PrimeNGFiltering.Equals,
             displayFormat: Object.assign(new BiaFieldNumberFormat(), {
               mode: NumberMode.Decimal,
               minFractionDigits: 2,
               maxFractionDigits: 2,
             }),
-            validators: [Validators.required, Validators.min(0)],
+            // End BIAToolKit Generation Ignore
           }
         ),
         Object.assign(
@@ -190,6 +203,7 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
           ),
           {
             type: PropType.Number,
+            // Begin BIAToolKit Generation Ignore
             filterMode: PrimeNGFiltering.Equals,
             displayFormat: Object.assign(new BiaFieldNumberFormat(), {
               mode: NumberMode.Decimal,
@@ -197,6 +211,7 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
               maxFractionDigits: 2,
             }),
             validators: [Validators.min(0), Validators.max(100)],
+            // End BIAToolKit Generation Ignore
           }
         ),
         Object.assign(
@@ -205,8 +220,10 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
             'maintenanceTeam.totalOperationCost'
           ),
           {
-            isRequired: true,
             type: PropType.Number,
+            isRequired: true,
+            validators: [Validators.required],
+            // Begin BIAToolKit Generation Ignore
             filterMode: PrimeNGFiltering.Equals,
             displayFormat: Object.assign(new BiaFieldNumberFormat(), {
               mode: NumberMode.Currency,
@@ -214,7 +231,7 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
               maxFractionDigits: 2,
               currency: 'EUR',
             }),
-            validators: [Validators.required, Validators.min(0)],
+            // End BIAToolKit Generation Ignore
           }
         ),
         Object.assign(
@@ -224,6 +241,7 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
           ),
           {
             type: PropType.Number,
+            // Begin BIAToolKit Generation Ignore
             filterMode: PrimeNGFiltering.Equals,
             displayFormat: Object.assign(new BiaFieldNumberFormat(), {
               mode: NumberMode.Currency,
@@ -232,6 +250,29 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
               currency: 'EUR',
             }),
             validators: [Validators.min(0)],
+            // End BIAToolKit Generation Ignore
+          }
+        ),
+        Object.assign(
+          new BiaFieldConfig(
+            'currentAirport',
+            'maintenanceTeam.currentAirport'
+          ),
+          {
+            type: PropType.OneToMany,
+            isRequired: true,
+            validators: [Validators.required],
+          }
+        ),
+        Object.assign(
+          new BiaFieldConfig(
+            'operationAirports',
+            'maintenanceTeam.operationAirports'
+          ),
+          {
+            type: PropType.ManyToMany,
+            isRequired: true,
+            validators: [Validators.required],
           }
         ),
         Object.assign(
@@ -250,28 +291,6 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
           ),
           {
             type: PropType.ManyToMany,
-          }
-        ),
-        Object.assign(
-          new BiaFieldConfig(
-            'currentAirport',
-            'maintenanceTeam.currentAirport'
-          ),
-          {
-            isRequired: true,
-            type: PropType.OneToMany,
-            validators: [Validators.required],
-          }
-        ),
-        Object.assign(
-          new BiaFieldConfig(
-            'operationAirports',
-            'maintenanceTeam.operationAirports'
-          ),
-          {
-            isRequired: true,
-            type: PropType.ManyToMany,
-            validators: [Validators.required],
           }
         ),
         Object.assign(
