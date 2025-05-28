@@ -22,26 +22,24 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
+    using BIA.Net.Core.Domain.User.Entities;
+    using BIA.Net.Core.Domain.User.Mappers;
+    using BIA.Net.Core.Domain.User.Models;
+    using BIA.Net.Core.Domain.User.Services;
     using Microsoft.AspNetCore.DataProtection.KeyManagement;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.Bia.User;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Models;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Services;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Specifications;
-    using TheBIADevCompany.BIADemo.Domain.Dto.Bia.User;
-    using static TheBIADevCompany.BIADemo.Crosscutting.Common.Rights;
+    using static BIA.Net.Core.Common.BiaRights;
 
     /// <summary>
     /// The application service used for user.
     /// </summary>
     /// <typeparam name="TUserDto">The type of user dto.</typeparam>
     /// <typeparam name="TUser">The type of user.</typeparam>
-	/// <typeparam name="TUserMapper">The type of user mapper.</typeparam>
+    /// <typeparam name="TUserMapper">The type of user mapper.</typeparam>
     public class UserAppService<TUserDto, TUser, TUserMapper> : CrudAppServiceBase<TUserDto, TUser, int, PagingFilterFormatDto, TUserMapper>, IUserAppService<TUserDto, TUser>
         where TUserDto : UserDto, new()
         where TUser : User, IEntity<int>, new()

@@ -4,9 +4,9 @@
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
 {
+    using BIA.Net.Core.Domain.Audit;
+    using BIA.Net.Core.Domain.User.Entities;
     using Microsoft.EntityFrameworkCore;
-    using TheBIADevCompany.BIADemo.Domain.Bia.Audit.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;

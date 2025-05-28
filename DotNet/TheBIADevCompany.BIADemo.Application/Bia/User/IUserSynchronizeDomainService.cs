@@ -4,9 +4,9 @@
 
 namespace TheBIADevCompany.BIADemo.Application.Bia.User
 {
+    using BIA.Net.Core.Domain.User.Entities;
+    using BIA.Net.Core.Domain.User.Models;
     using System.Threading.Tasks;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Models;
 
     /// <summary>
     /// The interface defining the user synchronize domain service.

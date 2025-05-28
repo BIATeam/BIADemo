@@ -12,9 +12,9 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
+    using BIA.Net.Core.Domain.User.Entities;
+    using BIA.Net.Core.Domain.User.Mappers;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers;
 
     /// <summary>
     /// The application service used for role.

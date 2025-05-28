@@ -7,10 +7,10 @@ namespace TheBIADevCompany.BIADemo.Test.Data
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
+    using BIA.Net.Core.Domain.User.Entities;
+    using BIA.Net.Core.Domain.View.Entities;
     using BIA.Net.Core.Infrastructure.Data;
     using BIA.Net.Core.Test.Data;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Bia.View.Entities;
 #if BIA_FRONT_FEATURE
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;

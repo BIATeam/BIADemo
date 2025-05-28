@@ -12,6 +12,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
@@ -19,12 +20,12 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Specification;
+    using BIA.Net.Core.Domain.User.Entities;
+    using BIA.Net.Core.Domain.User.Mappers;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.Bia.Base.Interface;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers;
     using TheBIADevCompany.BIADemo.Domain.User;
+    using TheBIADevCompany.BIADemo.Domain.User.Mappers;
 
     /// <summary>
     /// The application service used for team.

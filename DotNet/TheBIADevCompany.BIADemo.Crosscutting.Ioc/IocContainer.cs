@@ -31,20 +31,18 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract;
 
     // Begin BIADemo
-    using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract.DocumentAnalysis;
 
     // End BIADemo
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Models;
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
     // End BIADemo
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features.Bia;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Services;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Domain.Dto.Bia.User;
+    using TheBIADevCompany.BIADemo.Domain.RepoContract.DocumentAnalysis;
+    using BIA.Net.Core.Domain.User.Models;
 #endif
 
     /// <summary>

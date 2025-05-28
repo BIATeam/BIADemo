@@ -3,6 +3,12 @@
 // </copyright>
 namespace TheBIADevCompany.BIADemo.Application.Bia.User
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Security.Claims;
+    using System.Security.Principal;
+    using System.Threading.Tasks;
     using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Enum;
@@ -13,25 +19,15 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.User.Entities;
+    using BIA.Net.Core.Domain.User.Models;
+    using BIA.Net.Core.Domain.User.Services;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Security.Claims;
-    using System.Security.Principal;
-    using System.Threading.Tasks;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Models;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Services;
-    using TheBIADevCompany.BIADemo.Domain.Dto.Bia.User;
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
-    using static TheBIADevCompany.BIADemo.Crosscutting.Common.Rights;
 
     /// <summary>
     /// Auth App Service.

@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
 {
     using System;
     using BIA.Net.Core.Application.Services;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Presentation.Api.Controllers.Base;

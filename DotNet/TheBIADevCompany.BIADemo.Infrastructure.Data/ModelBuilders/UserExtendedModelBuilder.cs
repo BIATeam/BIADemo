@@ -5,8 +5,6 @@
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
 {
     using Microsoft.EntityFrameworkCore;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>

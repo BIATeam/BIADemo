@@ -5,7 +5,7 @@
 namespace TheBIADevCompany.BIADemo.Domain.User.Entities
 {
     using Audit.EntityFramework;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
+    using BIA.Net.Core.Domain.User.Entities;
 
     /// <summary>
     /// The user entity.

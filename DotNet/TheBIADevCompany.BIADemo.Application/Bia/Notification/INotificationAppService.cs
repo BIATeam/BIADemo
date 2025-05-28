@@ -9,8 +9,8 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.Notification
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
+    using BIA.Net.Core.Domain.Notification.Entities;
     using BIA.Net.Core.Domain.Service;
-    using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
 
     /// <summary>
     /// The interface defining the notification application service.

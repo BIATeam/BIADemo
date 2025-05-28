@@ -14,11 +14,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.User.Models;
+    using BIA.Net.Core.Domain.User.Services;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Models;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Services;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>

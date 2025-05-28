@@ -6,6 +6,7 @@
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
 {
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;

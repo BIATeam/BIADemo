@@ -7,13 +7,13 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.Job
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Job;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Entity.Interface;
+    using BIA.Net.Core.Domain.User.Entities;
     using Hangfire;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Application.Bia.User;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Dto.Bia.User;
 
     /// <summary>
     /// Task to synchronize users from LDAP.

@@ -15,6 +15,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
+    using BIA.Net.Core.Domain.User.Entities;
     using Hangfire.Server;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
@@ -23,7 +24,6 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     using TheBIADevCompany.BIADemo.Application.Bia.Notification;
     using TheBIADevCompany.BIADemo.Application.Fleet;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
     using static TheBIADevCompany.BIADemo.Crosscutting.Common.Constants;
 

@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
     using Microsoft.AspNetCore.Http;
@@ -16,9 +17,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
     using Newtonsoft.Json;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.Dto.Bia.User;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site;
     using TheBIADevCompany.BIADemo.Test.Data;
 
