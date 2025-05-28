@@ -35,7 +35,11 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     /// <summary>
     /// Auth App Service.
     /// </summary>
-    public class AuthAppService : IAuthAppService
+    /// <typeparam name="TUserDto">The type of user dto.</typeparam>
+    /// <typeparam name="TUser">The type of user.</typeparam>
+    public class AuthAppService<TUserDto, TUser> : IAuthAppService
+        where TUserDto : UserDto, new()
+        where TUser : User, IEntity<int>, new()
     {
         /// <summary>
         /// The logger.
@@ -100,7 +104,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
 #endif
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AuthAppService" /> class.
+        /// Initializes a new instance of the <see cref="AuthAppService{TUserDto, TUser}" /> class.
         /// </summary>
         /// <param name="userAppService">The user application service.</param>
         /// <param name="teamAppService">The team application service.</param>
