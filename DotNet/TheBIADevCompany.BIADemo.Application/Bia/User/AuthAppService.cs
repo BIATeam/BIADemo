@@ -3,6 +3,12 @@
 // </copyright>
 namespace TheBIADevCompany.BIADemo.Application.Bia.User
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Security.Claims;
+    using System.Security.Principal;
+    using System.Threading.Tasks;
     using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Enum;
@@ -11,40 +17,30 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
-    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.RepoContract;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Security.Claims;
-    using System.Security.Principal;
-    using System.Threading.Tasks;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Models;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Services;
-    using TheBIADevCompany.BIADemo.Domain.Dto.Bia.User;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
     using static TheBIADevCompany.BIADemo.Crosscutting.Common.Rights;
 
     /// <summary>
     /// Auth App Service.
     /// </summary>
-    /// <typeparam name="TUserDto">The type of user dto.</typeparam>
-    /// <typeparam name="TUser">The type of user.</typeparam>
-    public class AuthAppService<TUserDto, TUser> : IAuthAppService<TUserDto, TUser>
-        where TUserDto : UserDto, new()
-        where TUser : User, IEntity<int>, new()
+    public class AuthAppService : IAuthAppService
     {
         /// <summary>
         /// The logger.
         /// </summary>
-        private readonly ILogger<AuthAppService<TUserDto, TUser>> logger;
+        private readonly ILogger<AuthAppService> logger;
 
         /// <summary>
         /// The principal.
@@ -90,7 +86,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <summary>
         /// The user application service.
         /// </summary>
-        private readonly IUserAppService<TUserDto, TUser> userAppService;
+        private readonly IUserAppService<Domain.User.Entities.UserExtended> userAppService;
 
         /// <summary>
         /// The team application service.
@@ -120,7 +116,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="ldapRepositoryHelper">The LDAP repository helper.</param>
         public AuthAppService(
 #if BIA_FRONT_FEATURE
-            IUserAppService<TUserDto, TUser> userAppService,
+            IUserAppService<Domain.User.Entities.UserExtended> userAppService,
             ITeamAppService teamAppService,
             IRoleAppService roleAppService,
             IIdentityProviderRepository identityProviderRepository,
@@ -128,7 +124,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             IJwtFactory jwtFactory,
             IPrincipal principal,
             IUserPermissionDomainService userPermissionDomainService,
-            ILogger<AuthAppService<TUserDto, TUser>> logger,
+            ILogger<AuthAppService> logger,
             IConfiguration configuration,
             IOptions<BiaNetSection> biaNetconfiguration,
             IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
@@ -529,7 +525,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
 
                         if (userFromDirectory != null)
                         {
-                            TUser user = await this.userAppService.AddUserFromUserDirectoryAsync(identityKey, userFromDirectory);
+                            Domain.User.Entities.UserExtended user = await this.userAppService.AddUserFromUserDirectoryAsync(identityKey, userFromDirectory);
                             userInfo = this.userAppService.CreateUserInfo(user);
                         }
                     }

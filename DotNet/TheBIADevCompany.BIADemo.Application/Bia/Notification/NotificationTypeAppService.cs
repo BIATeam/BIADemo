@@ -8,10 +8,10 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.Notification
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Notification.Entities;
+    using BIA.Net.Core.Domain.Notification.Mappers;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
-    using TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Bia.Notification.Mappers;
 
     /// <summary>
     /// The application service used for notification type.

@@ -4,11 +4,6 @@
 
 namespace BIA.Net.Core.IocContainer
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net.Http;
-    using System.Reflection;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Application.Translation;
     using BIA.Net.Core.Common.Configuration;
@@ -16,12 +11,18 @@ namespace BIA.Net.Core.IocContainer
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Data.Repositories;
+    using BIA.Net.Core.Infrastructure.Data.Repositories.QueryCustomizer;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Ldap;
     using BIA.Net.Core.Ioc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net.Http;
+    using System.Reflection;
 
     /// <summary>
     /// The IoC Container.
@@ -144,6 +145,12 @@ namespace BIA.Net.Core.IocContainer
 
         private static void ConfigureDomainContainer(IServiceCollection collection)
         {
+            // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
+            BiaIocContainer.RegisterServicesFromAssembly(
+                collection: collection,
+                assemblyName: "BIA.Net.Core.Domain",
+                serviceLifetime: ServiceLifetime.Transient);
+
             // Domain
             Type templateType = typeof(BiaBaseMapper<,,>);
             Assembly assembly = Assembly.Load("BIA.Net.Core.Domain");
@@ -165,6 +172,8 @@ namespace BIA.Net.Core.IocContainer
             collection.AddScoped(typeof(ITGenericRepository<,>), typeof(TGenericRepositoryEF<,>));
             collection.AddScoped(typeof(ITGenericArchiveRepository<,>), typeof(TGenericArchiveRepository<,>));
             collection.AddScoped(typeof(ITGenericCleanRepository<,>), typeof(TGenericCleanRepository<,>));
+            collection.AddScoped<INotificationQueryCustomizer, NotificationQueryCustomizer>();
+            collection.AddScoped<IViewQueryCustomizer, ViewQueryCustomizer>();
 
             // Infrastructure Data
         }

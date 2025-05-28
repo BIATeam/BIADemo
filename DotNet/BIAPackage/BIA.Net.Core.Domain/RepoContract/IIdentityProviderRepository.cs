@@ -1,0 +1,33 @@
+﻿// <copyright file="IIdentityProviderRepository.cs" company="TheBIADevCompany">
+// Copyright (c) TheBIADevCompany. All rights reserved.
+// </copyright>
+
+namespace TheBIADevCompany.BIADemo.Domain.Bia.RepoContract
+{
+    using BIA.Net.Core.Domain.User.Models;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
+    /// <summary>
+    /// Interface IdentityProviderRepository.
+    /// </summary>
+    public interface IIdentityProviderRepository
+    {
+        /// <summary>
+        /// Finds user by identityKey.
+        /// </summary>
+        /// <param name="identityKey">The identity key.</param>
+        /// <param name="paramName">Name of the parameter on the IdP side.</param>
+        /// <returns>Get a <see cref="UserFromDirectory"/>.</returns>
+        Task<UserFromDirectory> FindUserAsync(string identityKey, string paramName = "username");
+
+        /// <summary>
+        /// Returns the list of users matching the search value.
+        /// </summary>
+        /// <param name="search">The search.</param>
+        /// <param name="first">Index start.</param>
+        /// <param name="max">Size of the return.</param>
+        /// <returns>List of <see cref="UserFromDirectory"/>.</returns>
+        Task<List<UserFromDirectory>> SearchUserAsync(string search, int first = 0, int max = 10);
+    }
+}

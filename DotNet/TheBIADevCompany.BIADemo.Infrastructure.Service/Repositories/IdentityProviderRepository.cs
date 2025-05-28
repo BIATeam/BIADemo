@@ -12,6 +12,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.AuthenticationSection;
+    using BIA.Net.Core.Domain.User.Models;
     using BIA.Net.Core.Infrastructure.Service.Dto.Keycloak;
     using BIA.Net.Core.Infrastructure.Service.Dto.Keycloak.SearchUserResponse;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
@@ -19,7 +20,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Models;
 
     /// <summary>
     /// WorkInstruction Repository.

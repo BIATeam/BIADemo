@@ -6,10 +6,8 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
 {
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Entity.Interface;
+    using BIA.Net.Core.Domain.User.Entities;
     using System.Threading.Tasks;
-    using TheBIADevCompany.BIADemo.Domain.Dto.Bia.User;
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
 
     /// <summary>
     /// Interface AuthService.

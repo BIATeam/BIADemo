@@ -10,19 +10,18 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.View
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Domain.Dto.View;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
+    using BIA.Net.Core.Domain.View.Entities;
+    using BIA.Net.Core.Domain.View.Mappers;
+    using BIA.Net.Core.Domain.View.Models;
     using Microsoft.Extensions.Logging;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract;
-    using TheBIADevCompany.BIADemo.Domain.Bia.View.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Bia.View.Mappers;
-    using TheBIADevCompany.BIADemo.Domain.Bia.View.Models;
-    using TheBIADevCompany.BIADemo.Domain.Dto.Bia.View;
 
     /// <summary>
     /// The application service used to manage views.
@@ -60,7 +59,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.View
             int currentUserId = this.principal.GetUserId();
             IEnumerable<string> currentUserPermissions = this.principal.GetUserPermissions();
 
-            if (currentUserPermissions?.Any(x => x == Rights.Teams.AccessAll) == true)
+            if (currentUserPermissions?.Any(x => x == BiaRights.Teams.AccessAll) == true)
             {
                 return await this.Repository.GetAllResultAsync(
                     ViewMapper.EntityToDto(currentUserId),
