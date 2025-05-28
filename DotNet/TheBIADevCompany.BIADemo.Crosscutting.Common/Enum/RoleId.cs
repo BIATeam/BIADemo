@@ -48,7 +48,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         /// <summary>
         /// The AircraftMaintenanceCompany admin role identifier.
         /// </summary>
-        // TODO after creation of team AircraftMaintenanceCompany : adapt the enum value
         AircraftMaintenanceCompanyAdmin = 3,
 
         // BIAToolKit - End Partial RoleId AircraftMaintenanceCompany
