@@ -14,9 +14,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     /// </summary>
     /// <typeparam name="TUserDto">The type of user dto.</typeparam>
     /// <typeparam name="TUser">The type of user.</typeparam>
-    public interface IAuthAppService<TUserDto, TUser>
-        where TUserDto : UserDto, new()
-        where TUser : User, IEntity<int>, new()
+    public interface IAuthAppService
     {
 #if BIA_BACK_TO_BACK_AUTH
         /// <summary>

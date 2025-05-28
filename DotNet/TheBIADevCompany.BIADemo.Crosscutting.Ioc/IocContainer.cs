@@ -91,6 +91,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         {
             collection.AddTransient(typeof(IUserSynchronizeDomainService<UserExtended>), typeof(UserExtendedSynchronizeDomainService));
             collection.AddTransient(typeof(IUserAppService<UserExtendedDto, UserExtended>), typeof(UserExtendedAppService));
+            collection.AddTransient(typeof(IAuthAppService), typeof(AuthAppService<UserExtendedDto, UserExtended>));
 
             // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
             BiaIocContainer.RegisterServicesFromAssembly(
