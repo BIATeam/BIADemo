@@ -5,12 +5,11 @@
 
 namespace TheBIADevCompany.BIADemo.Application.Maintenance
 {
-    using System;
-    using System.Collections.Generic;
     using System.Linq.Expressions;
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
@@ -23,28 +22,36 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
     using TheBIADevCompany.BIADemo.Domain.Dto.Maintenance;
     using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
     using TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers;
+    using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
     /// <summary>
-    /// The application service used for MaintenanceTeam.
+    /// The application service used for maintenanceTeam.
     /// </summary>
     public class MaintenanceTeamAppService : CrudAppServiceBase<MaintenanceTeamDto, MaintenanceTeam, int, PagingFilterFormatDto, MaintenanceTeamMapper>, IMaintenanceTeamAppService
     {
         /// <summary>
-        /// The current Ancestor TeamId.
+        /// The current AncestorTeamId.
         /// </summary>
         private readonly int currentAncestorTeamId;
 
+        // BIAToolKit - Begin FixedChildrenRepositoryDefinitionMaintenanceTeam
+        // BIAToolKit - End FixedChildrenRepositoryDefinitionMaintenanceTeam
+#pragma warning disable SA1515 // Single-line comment should be preceded by blank line
+#pragma warning disable SA1611 // Element parameters should be documented
         /// <summary>
         /// Initializes a new instance of the <see cref="MaintenanceTeamAppService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
+        // BIAToolKit - Begin FixedChildrenRepositoryConstructorParamMaintenanceTeam
+        // BIAToolKit - End FixedChildrenRepositoryConstructorParamMaintenanceTeam
         /// <param name="principal">The claims principal.</param>
-        public MaintenanceTeamAppService(ITGenericRepository<MaintenanceTeam, int> repository, IPrincipal principal)
+        public MaintenanceTeamAppService(
+            ITGenericRepository<MaintenanceTeam, int> repository,
+            // BIAToolKit - Begin FixedChildrenRepositoryInjectionMaintenanceTeam
+            // BIAToolKit - End FixedChildrenRepositoryInjectionMaintenanceTeam
+            IPrincipal principal)
             : base(repository)
         {
-            var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
-            this.currentAncestorTeamId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.AircraftMaintenanceCompany) : 0;
-
             this.FiltersContext.Add(
                 AccessMode.Read,
                 TeamAppService.ReadSpecification<MaintenanceTeam>(TeamTypeId.MaintenanceTeam, principal));
@@ -52,22 +59,45 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
             this.FiltersContext.Add(
                 AccessMode.Update,
                 TeamAppService.UpdateSpecification<MaintenanceTeam>(TeamTypeId.MaintenanceTeam, principal));
+            var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
+            this.currentAncestorTeamId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.AircraftMaintenanceCompany) : 0;
+
+            // BIAToolKit - Begin FixedChildrenRepositorySetMaintenanceTeam
+            // BIAToolKit - End FixedChildrenRepositorySetMaintenanceTeam
         }
+#pragma warning restore SA1611 // Element parameters should be documented
+#pragma warning restore SA1515 // Single-line comment should be preceded by blank line
 
         /// <inheritdoc/>
-        public override Task<MaintenanceTeamDto> AddAsync(MaintenanceTeamDto dto, string mapperMode = null)
+        public override async Task<MaintenanceTeamDto> UpdateFixedAsync(int id, bool isFixed)
         {
-            dto.AircraftMaintenanceCompanyId = this.currentAncestorTeamId;
-            return base.AddAsync(dto, mapperMode);
+            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
+            {
+                // Update entity fixed status
+                var entity = await this.Repository.GetEntityAsync(id) ?? throw new ElementNotFoundException();
+                this.Repository.UpdateFixedAsync(entity, isFixed);
+
+                // BIAToolKit - Begin UpdateFixedChildrenMaintenanceTeam
+                // BIAToolKit - End UpdateFixedChildrenMaintenanceTeam
+                await this.Repository.UnitOfWork.CommitAsync();
+                return await this.GetAsync(id);
+            });
         }
 
         /// <inheritdoc/>
 #pragma warning disable S1006 // Method overrides should not change parameter defaults
-        public override Task<(IEnumerable<MaintenanceTeamDto> Results, int Total)> GetRangeAsync(PagingFilterFormatDto filters = null, int id = default, Specification<MaintenanceTeam> specification = null, Expression<Func<MaintenanceTeam, bool>> filter = null, string accessMode = "Read", string queryMode = "ReadList", string mapperMode = null, bool isReadOnlyMode = false)
+        public override async Task<(IEnumerable<MaintenanceTeamDto> Results, int Total)> GetRangeAsync(PagingFilterFormatDto filters = null, int id = default, Specification<MaintenanceTeam> specification = null, Expression<Func<MaintenanceTeam, bool>> filter = null, string accessMode = "Read", string queryMode = "ReadList", string mapperMode = null, bool isReadOnlyMode = false)
 #pragma warning restore S1006 // Method overrides should not change parameter defaults
         {
             specification ??= TeamAdvancedFilterSpecification<MaintenanceTeam>.Filter(filters);
-            return base.GetRangeAsync(filters, id, specification, filter, accessMode, queryMode, mapperMode, isReadOnlyMode);
+            return await base.GetRangeAsync(filters, id, specification, filter, accessMode, queryMode, mapperMode, isReadOnlyMode);
+        }
+
+        /// <inheritdoc/>
+        public override async Task<MaintenanceTeamDto> AddAsync(MaintenanceTeamDto dto, string mapperMode = null)
+        {
+            dto.AircraftMaintenanceCompanyId = this.currentAncestorTeamId;
+            return await base.AddAsync(dto, mapperMode);
         }
     }
 }

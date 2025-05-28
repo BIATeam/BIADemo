@@ -222,39 +222,16 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         }
 
         // BIAToolKit - End Partial Rights AircraftMaintenanceCompany
-        // End BIAToolKit Generation Ignore
 
-        // Begin BIADemo
-
-        /// <summary>
-        /// The countries rights.
-        /// </summary>
-        public static class AircraftMaintenanceCompanyOptions
-        {
-            /// <summary>
-            /// The right to access to the list of aircraftMaintenanceCompanies (options only).
-            /// </summary>
-            public const string Options = "AircraftMaintenanceCompany_Options";
-        }
+        // BIAToolKit - Begin Partial Rights MaintenanceTeam
 
         /// <summary>
-        /// The countries rights.
-        /// </summary>
-        public static class Parts
-        {
-            /// <summary>
-            /// The right to access to the list of parts (options only).
-            /// </summary>
-            public const string Options = "Part_Options";
-        }
-
-        /// <summary>
-        /// The maintenance team rights.
+        /// The maintenance teams rights.
         /// </summary>
         public static class MaintenanceTeams
         {
             /// <summary>
-            /// The right to access to the list of maintenance team.
+            /// The right to access to the list of maintenance teams.
             /// </summary>
             public const string ListAccess = "MaintenanceTeam_List_Access";
 
@@ -287,6 +264,33 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// The right to fixe maintenance team.
             /// </summary>
             public const string Fix = "MaintenanceTeam_Fix";
+        }
+
+        // BIAToolKit - End Partial Rights MaintenanceTeam
+        // End BIAToolKit Generation Ignore
+
+        // Begin BIADemo
+
+        /// <summary>
+        /// The countries rights.
+        /// </summary>
+        public static class AircraftMaintenanceCompanyOptions
+        {
+            /// <summary>
+            /// The right to access to the list of aircraftMaintenanceCompanies (options only).
+            /// </summary>
+            public const string Options = "AircraftMaintenanceCompany_Options";
+        }
+
+        /// <summary>
+        /// The countries rights.
+        /// </summary>
+        public static class Parts
+        {
+            /// <summary>
+            /// The right to access to the list of parts (options only).
+            /// </summary>
+            public const string Options = "Part_Options";
         }
 
         /// <summary>

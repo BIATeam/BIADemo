@@ -48,15 +48,17 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         /// <summary>
         /// The AircraftMaintenanceCompany admin role identifier.
         /// </summary>
-        // TODO after creation of team AircraftMaintenanceCompany : adapt the enum value
         AircraftMaintenanceCompanyAdmin = 3,
 
         // BIAToolKit - End Partial RoleId AircraftMaintenanceCompany
+        // BIAToolKit - Begin Partial RoleId MaintenanceTeam
 
         /// <summary>
-        /// The maintenanceTeam admin role identifier.
+        /// The MaintenanceTeam admin role identifier.
         /// </summary>
         MaintenanceTeamAdmin = 4,
+
+        // BIAToolKit - End Partial RoleId MaintenanceTeam
 #pragma warning restore S1135 // Track uses of "TODO" tags
 
         // End BIAToolKit Generation Ignore

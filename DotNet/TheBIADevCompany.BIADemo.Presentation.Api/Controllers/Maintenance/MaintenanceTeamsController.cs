@@ -32,9 +32,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
     public class MaintenanceTeamsController : BiaControllerBase
     {
         /// <summary>
-        /// The MaintenanceTeam application service.
+        /// The maintenanceTeam application service.
         /// </summary>
-        private readonly IMaintenanceTeamAppService maintenanceTeamAppService;
+        private readonly IMaintenanceTeamAppService maintenanceTeamService;
 
 #if UseHubForClientInMaintenanceTeam
         private readonly IClientForHubService clientForHubService;
@@ -44,29 +44,30 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         /// <summary>
         /// Initializes a new instance of the <see cref="MaintenanceTeamsController"/> class.
         /// </summary>
-        /// <param name="maintenanceTeamAppService">The MaintenanceTeam application service.</param>
+        /// <param name="maintenanceTeamService">The maintenanceTeam application service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
         public MaintenanceTeamsController(
-            IMaintenanceTeamAppService maintenanceTeamAppService, IClientForHubService clientForHubService)
+            IMaintenanceTeamAppService maintenanceTeamService,
+            IClientForHubService clientForHubService)
 #else
         /// <summary>
         /// Initializes a new instance of the <see cref="MaintenanceTeamsController"/> class.
         /// </summary>
-        /// <param name="maintenanceTeamAppService">The MaintenanceTeam application service.</param>
-        public MaintenanceTeamsController(IMaintenanceTeamAppService maintenanceTeamAppService)
+        /// <param name="maintenanceTeamService">The maintenanceTeam application service.</param>
+        public MaintenanceTeamsController(IMaintenanceTeamAppService maintenanceTeamService)
 #endif
         {
 #if UseHubForClientInMaintenanceTeam
             this.clientForHubService = clientForHubService;
 #endif
-            this.maintenanceTeamAppService = maintenanceTeamAppService;
+            this.maintenanceTeamService = maintenanceTeamService;
         }
 
         /// <summary>
-        /// Get all MaintenanceTeams with filters.
+        /// Get all maintenanceTeams with filters.
         /// </summary>
         /// <param name="filters">The filters.</param>
-        /// <returns>The list of MaintenanceTeams.</returns>
+        /// <returns>The list of maintenanceTeams.</returns>
         [HttpPost("all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -74,16 +75,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         [Authorize(Roles = Rights.MaintenanceTeams.ListAccess)]
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
-            var (results, total) = await this.maintenanceTeamAppService.GetRangeAsync(filters);
+            var (results, total) = await this.maintenanceTeamService.GetRangeAsync(filters);
             this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
             return this.Ok(results);
         }
 
         /// <summary>
-        /// Get a MaintenanceTeam by its identifier.
+        /// Get a maintenanceTeam by its identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <returns>The MaintenanceTeam.</returns>
+        /// <returns>The maintenanceTeam.</returns>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -99,7 +100,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
 
             try
             {
-                var dto = await this.maintenanceTeamAppService.GetAsync(id);
+                var dto = await this.maintenanceTeamService.GetAsync(id);
                 return this.Ok(dto);
             }
             catch (ElementNotFoundException)
@@ -109,9 +110,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         }
 
         /// <summary>
-        /// Add a MaintenanceTeam.
+        /// Add a maintenanceTeam.
         /// </summary>
-        /// <param name="dto">The MaintenanceTeam DTO.</param>
+        /// <param name="dto">The maintenanceTeam DTO.</param>
         /// <returns>The result of the creation.</returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -122,9 +123,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         {
             try
             {
-                var createdDto = await this.maintenanceTeamAppService.AddAsync(dto);
+                var createdDto = await this.maintenanceTeamService.AddAsync(dto);
 #if UseHubForClientInMaintenanceTeam
-                await this.clientForHubService.SendTargetedMessage(createdDto.AircraftMaintenanceCompanyId.ToString(), "MaintenanceTeams", "refresh-MaintenanceTeams");
+                await this.clientForHubService.SendTargetedMessage(createdDto.AircraftMaintenanceCompanyId.ToString(), "maintenanceTeams", "refresh-maintenanceTeams");
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
@@ -135,10 +136,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         }
 
         /// <summary>
-        /// Update a MaintenanceTeam.
+        /// Update a maintenanceTeam.
         /// </summary>
-        /// <param name="id">The MaintenanceTeam identifier.</param>
-        /// <param name="dto">The MaintenanceTeam DTO.</param>
+        /// <param name="id">The maintenanceTeam identifier.</param>
+        /// <param name="dto">The maintenanceTeam DTO.</param>
         /// <returns>The result of the update.</returns>
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -156,9 +157,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
 
             try
             {
-                var updatedDto = await this.maintenanceTeamAppService.UpdateAsync(dto);
+                var updatedDto = await this.maintenanceTeamService.UpdateAsync(dto);
 #if UseHubForClientInMaintenanceTeam
-                _ = this.clientForHubService.SendTargetedMessage(updatedDto.AircraftMaintenanceCompanyId.ToString(), "MaintenanceTeams", "refresh-MaintenanceTeams");
+                await this.clientForHubService.SendTargetedMessage(updatedDto.AircraftMaintenanceCompanyId.ToString(), "maintenanceTeams", "refresh-maintenanceTeams");
 #endif
                 return this.Ok(updatedDto);
             }
@@ -177,9 +178,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         }
 
         /// <summary>
-        /// Remove a MaintenanceTeam.
+        /// Remove a maintenanceTeam.
         /// </summary>
-        /// <param name="id">The MaintenanceTeam identifier.</param>
+        /// <param name="id">The maintenanceTeam identifier.</param>
         /// <returns>The result of the remove.</returns>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -196,9 +197,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
 
             try
             {
-                var deletedDto = await this.maintenanceTeamAppService.RemoveAsync(id);
+                var deletedDto = await this.maintenanceTeamService.RemoveAsync(id);
 #if UseHubForClientInMaintenanceTeam
-                _ = this.clientForHubService.SendTargetedMessage(deletedDto.AircraftMaintenanceCompanyId.ToString(), "MaintenanceTeams", "refresh-MaintenanceTeams");
+                await this.clientForHubService.SendTargetedMessage(deletedDto.AircraftMaintenanceCompanyId.ToString(), "maintenanceTeams", "refresh-maintenanceTeams");
 #endif
                 return this.Ok();
             }
@@ -209,9 +210,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         }
 
         /// <summary>
-        /// Removes the specified MaintenanceTeam ids.
+        /// Removes the specified maintenanceTeam ids.
         /// </summary>
-        /// <param name="ids">The MaintenanceTeam ids.</param>
+        /// <param name="ids">The maintenanceTeam ids.</param>
         /// <returns>The result of the remove.</returns>
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -228,12 +229,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
 
             try
             {
-                var deletedDtos = await this.maintenanceTeamAppService.RemoveAsync(ids);
-
+                var deletedDtos = await this.maintenanceTeamService.RemoveAsync(ids);
 #if UseHubForClientInMaintenanceTeam
-                deletedDtos.Select(m => m.AircraftMaintenanceCompanyId).Distinct().ToList().ForEach(parentId =>
+                deletedDtos.Select(m => m.AircraftMaintenanceCompanyId).Distinct().ToList().ForEach(async parentId =>
                 {
-                    _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "MaintenanceTeams", "refresh-MaintenanceTeams");
+                    await this.clientForHubService.SendTargetedMessage(parentId.ToString(), "maintenanceTeams", "refresh-maintenanceTeams");
                 });
 #endif
                 return this.Ok();
@@ -245,14 +245,15 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         }
 
         /// <summary>
-        /// Save all MaintenanceTeams according to their state (added, updated or removed).
+        /// Save all maintenanceTeams according to their state (added, updated or removed).
         /// </summary>
-        /// <param name="dtos">The list of MaintenanceTeams.</param>
+        /// <param name="dtos">The list of maintenanceTeams.</param>
         /// <returns>The status code.</returns>
         [HttpPost("save")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.MaintenanceTeams.Save)]
         public async Task<IActionResult> Save(IEnumerable<MaintenanceTeamDto> dtos)
@@ -265,11 +266,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
 
             try
             {
-                var savedDtos = await this.maintenanceTeamAppService.SaveAsync(dtoList);
+                var savedDtos = await this.maintenanceTeamService.SaveAsync(dtoList);
 #if UseHubForClientInMaintenanceTeam
-                savedDtos.Select(m => m.AircraftMaintenanceCompanyId).Distinct().ToList().ForEach(parentId =>
+                savedDtos.Select(m => m.AircraftMaintenanceCompanyId).Distinct().ToList().ForEach(async parentId =>
                 {
-                    _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "MaintenanceTeams", "refresh-MaintenanceTeams");
+                    await this.clientForHubService.SendTargetedMessage(parentId.ToString(), "maintenanceTeams", "refresh-maintenanceTeams");
                 });
 #endif
                 return this.Ok();
@@ -290,9 +291,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         /// <param name="filters">filters ( <see cref="PagingFilterFormatDto"/>).</param>
         /// <returns>a csv file.</returns>
         [HttpPost("csv")]
+        [Authorize(Roles = Rights.MaintenanceTeams.ListAccess)]
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
-            byte[] buffer = await this.maintenanceTeamAppService.GetCsvAsync(filters);
+            byte[] buffer = await this.maintenanceTeamService.GetCsvAsync(filters);
             return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"MaintenanceTeams{BiaConstants.Csv.Extension}");
         }
 
@@ -311,7 +313,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         {
             try
             {
-                var dto = await this.maintenanceTeamAppService.UpdateFixedAsync(id, isFixed);
+                var dto = await this.maintenanceTeamService.UpdateFixedAsync(id, isFixed);
                 return this.Ok(dto);
             }
             catch (ElementNotFoundException)

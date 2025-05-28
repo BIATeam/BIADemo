@@ -11,7 +11,7 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
     using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
 
     /// <summary>
-    /// The interface defining the application service for MaintenanceTeam.
+    /// The interface defining the application service for maintenanceTeam.
     /// </summary>
     public interface IMaintenanceTeamAppService : ICrudAppServiceBase<MaintenanceTeamDto, MaintenanceTeam, int, PagingFilterFormatDto>
     {

@@ -233,48 +233,8 @@
         "Roles": [ "Admin", "Site_Member" ]
       },
       // BIAToolKit - End Partial ConfigForOption PlaneType
-      // End BIAToolKit Generation Ignore
-
-      // Begin BIADemo
-      // Site
-      {
-        "Name": "Site_Options",
-        "Roles": [ "Admin", "Site_Member" ]
-      },
-      // AircraftMaintenanceCompany
-      {
-        "Name": "AircraftMaintenanceCompany_Options",
-        "Roles": [ "Admin", "Site_Member" ]
-      },
-      // Plane
-      {
-        "Name": "Plane_Options",
-        "Roles": [ "Admin", "Site_Member" ]
-      },
-      // MaintenanceContract
-      {
-        "Names": [ "MaintenanceContract_List_Access", "MaintenanceContract_Read" ],
-        "Roles": [ "Admin", "Site_Member" ]
-      },
-      {
-        "Names": [ "MaintenanceContract_Update", "MaintenanceContract_Save" ],
-        "Roles": [ "Site_Admin" ]
-      },
-      {
-        "Names": [ "MaintenanceContract_Create", "MaintenanceContract_Delete" ],
-        "Roles": [ "Site_Admin" ]
-      },
-      // Hangfire
-      {
-        "Names": [ "Hangfire_Run_Worker", "Hangfire_Access" ],
-        "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
-      },
-      // Part
-      {
-        "Name": "Part_Options",
-        "Roles": [ "Admin", "Site_Member" ]
-      },
-      // Maintenance Team
+      // BIAToolKit - Begin Partial Config MaintenanceTeam
+      // MaintenanceTeam
       {
         "Names": [ "MaintenanceTeam_Create", "MaintenanceTeam_Delete", "MaintenanceTeam_Fix" ],
         "Roles": [
@@ -333,6 +293,48 @@
           // End BIADemo
           "MaintenanceTeam_Admin"
         ]
+      },
+      // BIAToolKit - End Partial Config MaintenanceTeam
+      // End BIAToolKit Generation Ignore
+
+      // Begin BIADemo
+      // Site
+      {
+        "Name": "Site_Options",
+        "Roles": [ "Admin", "Site_Member" ]
+      },
+      // AircraftMaintenanceCompany
+      {
+        "Name": "AircraftMaintenanceCompany_Options",
+        "Roles": [ "Admin", "Site_Member" ]
+      },
+      // Plane
+      {
+        "Name": "Plane_Options",
+        "Roles": [ "Admin", "Site_Member" ]
+      },
+      // MaintenanceContract
+      {
+        "Names": [ "MaintenanceContract_List_Access", "MaintenanceContract_Read" ],
+        "Roles": [ "Admin", "Site_Member" ]
+      },
+      {
+        "Names": [ "MaintenanceContract_Update", "MaintenanceContract_Save" ],
+        "Roles": [ "Site_Admin" ]
+      },
+      {
+        "Names": [ "MaintenanceContract_Create", "MaintenanceContract_Delete" ],
+        "Roles": [ "Site_Admin" ]
+      },
+      // Hangfire
+      {
+        "Names": [ "Hangfire_Run_Worker", "Hangfire_Access" ],
+        "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
+      },
+      // Part
+      {
+        "Name": "Part_Options",
+        "Roles": [ "Admin", "Site_Member" ]
       },
       // PlaneType
       {

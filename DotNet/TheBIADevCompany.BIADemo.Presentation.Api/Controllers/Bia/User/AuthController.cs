@@ -59,11 +59,30 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
                     // BIAToolKit - Begin AuthController
                     // Begin BIAToolKit Generation Ignore
                     // BIAToolKit - Begin Partial AuthController AircraftMaintenanceCompany
-                    new TeamConfigDto() { TeamTypeId = (int)TeamTypeId.AircraftMaintenanceCompany, RoleMode = RoleMode.MultiRoles, InHeader = true },
+                    new TeamConfigDto()
+                    {
+                        TeamTypeId = (int)TeamTypeId.AircraftMaintenanceCompany,
+
+                        // Begin BIADemo
+                        RoleMode = RoleMode.MultiRoles,
+                        InHeader = true,
+
+                        // End BIADemo
+                    },
 
                     // BIAToolKit - End Partial AuthController AircraftMaintenanceCompany
                     // BIAToolKit - Begin Partial AuthController MaintenanceTeam
-                    new TeamConfigDto() { TeamTypeId = (int)TeamTypeId.MaintenanceTeam, RoleMode = RoleMode.AllRoles, InHeader = false, TeamSelectionCanBeEmpty = true },
+                    new TeamConfigDto()
+                    {
+                        TeamTypeId = (int)TeamTypeId.MaintenanceTeam,
+
+                        // Begin BIADemo
+                        RoleMode = RoleMode.AllRoles,
+                        InHeader = false,
+                        TeamSelectionCanBeEmpty = true,
+
+                        // End BIADemo
+                    },
 
                     // BIAToolKit - End Partial AuthController MaintenanceTeam
                     // End BIAToolKit Generation Ignore

@@ -9,11 +9,6 @@ namespace TheBIADevCompany.BIADemo.Domain.User
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
 
-    // Begin BIADemo
-    using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
-
-    // End BIADemo
-
     /// <summary>
     /// Team prefixe.
     /// </summary>
@@ -55,7 +50,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User
                     new BiaTeamChildrenConfig<Team>
                     {
                         TeamTypeId = (int)TeamTypeId.MaintenanceTeam,
-                        GetChilds = team => (team as AircraftMaintenanceCompany).MaintenanceTeams,
+                        GetChilds = team => (team as Maintenance.Entities.AircraftMaintenanceCompany).MaintenanceTeams,
                     },
 
                 // BIAToolKit - End Partial TeamConfigAircraftMaintenanceCompanyChildren MaintenanceTeam
@@ -82,7 +77,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User
                     new BiaTeamParentConfig<Team>
                     {
                         TeamTypeId = (int)TeamTypeId.AircraftMaintenanceCompany,
-                        GetParent = team => (team as MaintenanceTeam).AircraftMaintenanceCompany,
+                        GetParent = team => (team as Maintenance.Entities.MaintenanceTeam).AircraftMaintenanceCompany,
                     },
                 }
                 .ToImmutable(),

@@ -34,16 +34,17 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         /// <summary>
         /// Value for AircraftMaintenanceCompany.
         /// </summary>
-        // TODO after creation of team AircraftMaintenanceCompany : adapt the enum value
         AircraftMaintenanceCompany = 3,
 
         // BIAToolKit - End Partial TeamTypeId AircraftMaintenanceCompany
+        // BIAToolKit - Begin Partial TeamTypeId MaintenanceTeam
 
         /// <summary>
         /// Value for MaintenanceTeam.
         /// </summary>
-        // TODO after creation of team MaintenanceTeam : adapt the enum value
         MaintenanceTeam = 4,
+
+        // BIAToolKit - End Partial TeamTypeId MaintenanceTeam
 #pragma warning restore S1135 // Track uses of "TODO" tags
 
         // End BIAToolKit Generation Ignore
