@@ -33,6 +33,7 @@ export class MaintenanceTeam extends BaseTeamDto {
   averageTravelDuration: number | null;
   totalOperationCost: number;
   averageOperationCost: number | null;
+  aircraftMaintenanceCompanyId: number;
   currentCountry: OptionDto | null;
   operationCountries: OptionDto[];
   operationAirports: OptionDto[];

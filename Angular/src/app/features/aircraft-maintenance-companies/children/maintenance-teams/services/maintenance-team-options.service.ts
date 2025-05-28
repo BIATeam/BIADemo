@@ -15,35 +15,35 @@ import { AppState } from 'src/app/store/state';
   providedIn: 'root',
 })
 export class MaintenanceTeamOptionsService extends CrudItemOptionsService {
-  countriesOptions$: Observable<OptionDto[]>;
   airportOptions$: Observable<OptionDto[]>;
+  countryOptions$: Observable<OptionDto[]>;
 
   constructor(private store: Store<AppState>) {
     super();
     // TODO after creation of CRUD Team MaintenanceTeam : get all required option dto use in Table calc and create and edit form
-    this.countriesOptions$ = this.store.select(getAllCountryOptions);
     this.airportOptions$ = this.store.select(getAllAirportOptions);
+    this.countryOptions$ = this.store.select(getAllCountryOptions);
     let cpt = 0;
-    const countryType = cpt++;
     const airport = cpt++;
+    const country = cpt++;
 
     this.dictOptionDtos$ = combineLatest([
-      this.countriesOptions$,
       this.airportOptions$,
+      this.countryOptions$,
     ]).pipe(
       map(options => {
         return <DictOptionDto[]>[
-          new DictOptionDto('operationAirports', options[airport]),
           new DictOptionDto('currentAirport', options[airport]),
-          new DictOptionDto('currentCountry', options[countryType]),
-          new DictOptionDto('operationCountries', options[countryType]),
+          new DictOptionDto('operationAirports', options[airport]),
+          new DictOptionDto('currentCountry', options[country]),
+          new DictOptionDto('operationCountries', options[country]),
         ];
       })
     );
   }
 
   loadAllOptions() {
-    this.store.dispatch(DomainCountryOptionsActions.loadAll());
     this.store.dispatch(DomainAirportOptionsActions.loadAll());
+    this.store.dispatch(DomainCountryOptionsActions.loadAll());
   }
 }

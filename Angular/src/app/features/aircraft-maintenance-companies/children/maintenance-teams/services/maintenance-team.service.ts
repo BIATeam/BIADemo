@@ -26,10 +26,9 @@ export class MaintenanceTeamService extends CrudItemService<MaintenanceTeam> {
     private store: Store<AppState>,
     public dasService: MaintenanceTeamDas,
     public signalRService: CrudItemSignalRService<MaintenanceTeam>,
+    protected authService: AuthService,
     public optionsService: MaintenanceTeamOptionsService,
-    protected injector: Injector,
-    // required only for parent key
-    protected authService: AuthService
+    protected injector: Injector
   ) {
     super(dasService, signalRService, optionsService, injector);
   }
@@ -94,8 +93,7 @@ export class MaintenanceTeamService extends CrudItemService<MaintenanceTeam> {
     );
   }
   public create(crudItem: MaintenanceTeam) {
-    // TODO after creation of CRUD Team MaintenanceTeam : map parent Key on the corresponding field
-    // crudItem.siteId = this.getParentIds()[0],
+    crudItem.aircraftMaintenanceCompanyId = this.getParentIds()[0];
     this.store.dispatch(
       FeatureMaintenanceTeamsActions.create({ maintenanceTeam: crudItem })
     );
