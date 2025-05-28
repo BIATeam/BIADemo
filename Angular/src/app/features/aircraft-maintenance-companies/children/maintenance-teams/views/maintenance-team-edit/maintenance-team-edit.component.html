@@ -1,5 +1,5 @@
 <app-maintenance-team-form
-  *ngIf="maintenanceTeamService.crudItem$ | async; let crudItem"
+  *ngIf="crudItemService.crudItem$ | async; let crudItem"
   [crudItem]="crudItem"
   [fields]="crudConfiguration.fieldsConfig.columns"
   [formLayoutConfig]="crudConfiguration.formLayoutConfig"

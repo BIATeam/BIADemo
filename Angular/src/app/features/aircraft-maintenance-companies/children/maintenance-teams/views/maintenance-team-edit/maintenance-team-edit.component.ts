@@ -44,7 +44,6 @@ export class MaintenanceTeamEditComponent
     this.canFix = this.authService.hasPermission(
       Permission.MaintenanceTeam_Fix
     );
-
     this.permissionSub.add(
       this.crudItemService.crudItem$
         .pipe(
