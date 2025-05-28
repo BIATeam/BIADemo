@@ -19,11 +19,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Mappers;
-
-    // Begin BIAToolKit Generation Ignore
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
-
-    // End BIAToolKit Generation Ignore
 
     /// <summary>
     /// The application service used for plane.
@@ -36,15 +32,17 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
         private readonly int currentAncestorTeamId;
 
         // BIAToolKit - Begin FixedChildrenRepositoryDefinitionPlane
-        // BIAToolKit - End FixedChildrenRepositoryDefinitionPlane
         // Begin BIAToolKit Generation Ignore
+        // BIAToolKit - Begin Partial FixedChildrenRepositoryDefinitionPlane Engine
 
         /// <summary>
         /// The engine app repository.
         /// </summary>
         private readonly IEngineRepository engineRepository;
 
+        // BIAToolKit - End Partial FixedChildrenRepositoryDefinitionPlane Engine
         // End BIAToolKit Generation Ignore
+        // BIAToolKit - End FixedChildrenRepositoryDefinitionPlane
 #pragma warning disable SA1515 // Single-line comment should be preceded by blank line
 #pragma warning disable SA1611 // Element parameters should be documented
         /// <summary>
@@ -52,18 +50,22 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
         /// </summary>
         /// <param name="repository">The repository.</param>
         // BIAToolKit - Begin FixedChildrenRepositoryConstructorParamPlane
-        // BIAToolKit - End FixedChildrenRepositoryConstructorParamPlane
         // Begin BIAToolKit Generation Ignore
+        // BIAToolKit - Begin Partial FixedChildrenRepositoryConstructorParamPlane Engine
         /// <param name="engineRepository">The engine app service.</param>
+        // BIAToolKit - End Partial FixedChildrenRepositoryConstructorParamPlane Engine
         // End BIAToolKit Generation Ignore
+        // BIAToolKit - End FixedChildrenRepositoryConstructorParamPlane
         /// <param name="principal">The claims principal.</param>
         public PlaneAppService(
             ITGenericRepository<Plane, int> repository,
             // BIAToolKit - Begin FixedChildrenRepositoryInjectionPlane
-            // BIAToolKit - End FixedChildrenRepositoryInjectionPlane
             // Begin BIAToolKit Generation Ignore
+            // BIAToolKit - Begin Partial FixedChildrenRepositoryInjectionPlane Engine
             IEngineRepository engineRepository,
+            // BIAToolKit - End Partial FixedChildrenRepositoryInjectionPlane Engine
             // End BIAToolKit Generation Ignore
+            // BIAToolKit - End FixedChildrenRepositoryInjectionPlane
             IPrincipal principal)
             : base(repository)
         {
@@ -74,10 +76,12 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
             this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<Plane>(x => x.SiteId == this.currentAncestorTeamId));
 
             // BIAToolKit - Begin FixedChildrenRepositorySetPlane
-            // BIAToolKit - End FixedChildrenRepositorySetPlane
             // Begin BIAToolKit Generation Ignore
+            // BIAToolKit - Begin Partial FixedChildrenRepositorySetPlane Engine
             this.engineRepository = engineRepository;
+            // BIAToolKit - End Partial FixedChildrenRepositorySetPlane Engine
             // End BIAToolKit Generation Ignore
+            // BIAToolKit - End FixedChildrenRepositorySetPlane
         }
 #pragma warning restore SA1611 // Element parameters should be documented
 #pragma warning restore SA1515 // Single-line comment should be preceded by blank line
@@ -92,15 +96,17 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
                 this.Repository.UpdateFixedAsync(entity, isFixed);
 
                 // BIAToolKit - Begin UpdateFixedChildrenPlane
-                // BIAToolKit - End UpdateFixedChildrenPlane
                 // Begin BIAToolKit Generation Ignore
+                // BIAToolKit - Begin Partial UpdateFixedChildrenPlane Engine
                 var engines = await this.engineRepository.GetAllEntityAsync(filter: x => x.PlaneId == id);
                 foreach (var engine in engines)
                 {
                     this.engineRepository.UpdateFixedAsync(engine, isFixed);
                 }
 
+                // BIAToolKit - End Partial UpdateFixedChildrenPlane Engine
                 // End BIAToolKit Generation Ignore
+                // BIAToolKit - End UpdateFixedChildrenPlane
                 await this.Repository.UnitOfWork.CommitAsync();
                 return await this.GetAsync(id);
             });
