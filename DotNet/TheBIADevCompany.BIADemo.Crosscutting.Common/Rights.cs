@@ -222,31 +222,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         }
 
         // BIAToolKit - End Partial Rights AircraftMaintenanceCompany
-        // End BIAToolKit Generation Ignore
 
-        // Begin BIADemo
-
-        /// <summary>
-        /// The countries rights.
-        /// </summary>
-        public static class AircraftMaintenanceCompanyOptions
-        {
-            /// <summary>
-            /// The right to access to the list of aircraftMaintenanceCompanies (options only).
-            /// </summary>
-            public const string Options = "AircraftMaintenanceCompany_Options";
-        }
-
-        /// <summary>
-        /// The countries rights.
-        /// </summary>
-        public static class Parts
-        {
-            /// <summary>
-            /// The right to access to the list of parts (options only).
-            /// </summary>
-            public const string Options = "Part_Options";
-        }
+        // BIAToolKit - Begin Partial Rights MaintenanceTeam
 
         /// <summary>
         /// The maintenance team rights.
@@ -287,6 +264,33 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// The right to fixe maintenance team.
             /// </summary>
             public const string Fix = "MaintenanceTeam_Fix";
+        }
+
+        // BIAToolKit - End Partial Rights MaintenanceTeam
+        // End BIAToolKit Generation Ignore
+
+        // Begin BIADemo
+
+        /// <summary>
+        /// The countries rights.
+        /// </summary>
+        public static class AircraftMaintenanceCompanyOptions
+        {
+            /// <summary>
+            /// The right to access to the list of aircraftMaintenanceCompanies (options only).
+            /// </summary>
+            public const string Options = "AircraftMaintenanceCompany_Options";
+        }
+
+        /// <summary>
+        /// The countries rights.
+        /// </summary>
+        public static class Parts
+        {
+            /// <summary>
+            /// The right to access to the list of parts (options only).
+            /// </summary>
+            public const string Options = "Part_Options";
         }
 
         /// <summary>

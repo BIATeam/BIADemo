@@ -52,6 +52,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         AircraftMaintenanceCompanyAdmin = 3,
 
         // BIAToolKit - End Partial RoleId AircraftMaintenanceCompany
+        // BIAToolKit - Begin Partial RoleId MaintenanceTeam
 
         /// <summary>
         /// The maintenanceTeam admin role identifier.
@@ -59,6 +60,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         MaintenanceTeamAdmin = 4,
 #pragma warning restore S1135 // Track uses of "TODO" tags
 
+        // BIAToolKit - End Partial RoleId MaintenanceTeam
         // End BIAToolKit Generation Ignore
 
         // BIAToolKit - Begin RoleId

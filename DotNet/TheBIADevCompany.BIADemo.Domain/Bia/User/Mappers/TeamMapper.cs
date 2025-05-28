@@ -15,12 +15,13 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers
     using TheBIADevCompany.BIADemo.Domain.Bia.Base.Mappers;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
 
-    // Begin BIADemo
+    // BIAToolKit - Begin TeamMapperUsing
+    // Begin BIAToolKit Generation Ignore
+    // BIAToolKit - Begin Partial TeamMapperUsing MaintenanceTeam
     using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
 
-    // End BIADemo
-
-    // BIAToolKit - Begin TeamMapperUsing
+    // BIAToolKit - End Partial TeamMapperUsing MaintenanceTeam
+    // End BIAToolKit Generation Ignore
     // BIAToolKit - End TeamMapperUsing
 
     /// <summary>
@@ -84,11 +85,13 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers
         {
             return team switch
             {
-                // Begin BIADemo
+                // BIAToolKit - Begin TeamMapperParentTeamId
+                // Begin BIAToolKit Generation Ignore
+                // BIAToolKit - Begin Partial TeamMapperParentTeamId MaintenanceTeam
                 MaintenanceTeam maintenanceTeam => team.TeamTypeId == (int)TeamTypeId.MaintenanceTeam ? maintenanceTeam.AircraftMaintenanceCompanyId : 0,
 
-                // End BIADemo
-                // BIAToolKit - Begin TeamMapperParentTeamId
+                // BIAToolKit - End Partial TeamMapperParentTeamId MaintenanceTeam
+                // End BIAToolKit Generation Ignore
                 // BIAToolKit - End TeamMapperParentTeamId
                 _ => 0
             };
@@ -103,11 +106,13 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers
         {
             return team switch
             {
-                // Begin BIADemo
+                // BIAToolKit - Begin TeamMapperParentTeamTitle
+                // Begin BIAToolKit Generation Ignore
+                // BIAToolKit - Begin Partial TeamMapperParentTeamTitle MaintenanceTeam
                 MaintenanceTeam maintenanceTeam => team.TeamTypeId == (int)TeamTypeId.MaintenanceTeam ? maintenanceTeam.AircraftMaintenanceCompany.Title : string.Empty,
 
-                // End BIADemo
-                // BIAToolKit - Begin TeamMapperParentTeamTitle
+                // BIAToolKit - End Partial TeamMapperParentTeamTitle MaintenanceTeam
+                // End BIAToolKit Generation Ignore
                 // BIAToolKit - End TeamMapperParentTeamTitle
                 _ => string.Empty
             };

@@ -38,6 +38,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         AircraftMaintenanceCompany = 3,
 
         // BIAToolKit - End Partial TeamTypeId AircraftMaintenanceCompany
+        // BIAToolKit - Begin Partial TeamTypeId MaintenanceTeam
 
         /// <summary>
         /// Value for MaintenanceTeam.
@@ -46,6 +47,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         MaintenanceTeam = 4,
 #pragma warning restore S1135 // Track uses of "TODO" tags
 
+        // BIAToolKit - End Partial TeamTypeId MaintenanceTeam
         // End BIAToolKit Generation Ignore
 
         // BIAToolKit - Begin TeamTypeId
