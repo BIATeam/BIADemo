@@ -22,6 +22,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
     using TheBIADevCompany.BIADemo.Application.Bia.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Bia.User;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Base;
@@ -39,7 +40,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// <summary>
         /// The member application service.
         /// </summary>
-        private readonly IUserAppService<UserExtended> userService;
+        private readonly IUserAppService<UserExtendedDto, UserExtended> userService;
 
         /// <summary>
         /// The user context service for message translation.
@@ -77,7 +78,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// <param name="teamAppService">The team service.</param>
         /// <param name="userContextService">The user context service.</param>
         public MembersController(
-            IUserAppService<UserExtended> userService,
+            IUserAppService<UserExtendedDto, UserExtended> userService,
             IMemberAppService memberService,
             IUserContextService userContextService,
             ITeamAppService teamAppService)
@@ -479,7 +480,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
                     return this.StatusCode(StatusCodes.Status403Forbidden);
                 }
 
-                UserDto userDto = new UserDto();
+                UserExtendedDto userDto = new UserExtendedDto();
                 userDto.Login = dto.Login;
                 ResultAddUsersFromDirectoryDto result = await this.userService.AddByIdentityKeyAsync(userDto);
 #if UseHubForClientInUser

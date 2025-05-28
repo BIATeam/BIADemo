@@ -39,7 +39,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     /// <summary>
     /// The application service used for user.
     /// </summary>
-    public class UserExtendedAppService : UserAppService<UserExtended>
+    public class UserExtendedAppService : UserAppService<UserExtendedDto, UserExtended, UserExtendedMapper>
     {
         public UserExtendedAppService(
             ITGenericRepository<UserExtended, int> repository,
@@ -47,7 +47,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             IOptions<BiaNetSection> configuration,
             IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
             ITGenericRepository<UserDefaultTeam, int> userDefaultTeamRepository,
-            ILogger<UserAppService<UserExtended>> logger,
+            ILogger<UserExtendedAppService> logger,
             IIdentityProviderRepository identityProviderRepository,
             IUserIdentityKeyDomainService<UserExtended> userIdentityKeyDomainService,
             IPrincipal principal)

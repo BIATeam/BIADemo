@@ -18,6 +18,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.Bia.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
@@ -33,7 +34,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// <summary>
         /// The user application service.
         /// </summary>
-        private readonly IUserAppService<UserExtended> userService;
+        private readonly IUserAppService<UserExtendedDto, UserExtended> userService;
 
         /// <summary>
         /// The plane application service.
@@ -59,7 +60,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// <param name="teamService">The team application service.</param>
         /// <param name="memberService">The member application service.</param>
         /// <param name="userService">The user application service.</param>
-        public TeamsController(ITeamAppService teamService, IMemberAppService memberService, IUserAppService<UserExtended> userService)
+        public TeamsController(ITeamAppService teamService, IMemberAppService memberService, IUserAppService<UserExtendedDto, UserExtended> userService)
 #endif
         {
 #if UseHubForClientInTeam

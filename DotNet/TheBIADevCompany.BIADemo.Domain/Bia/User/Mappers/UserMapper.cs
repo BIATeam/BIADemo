@@ -2,7 +2,7 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
+namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers
 {
     using System;
     using System.Collections.Generic;
@@ -18,7 +18,6 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
     using TheBIADevCompany.BIADemo.Domain.Bia.Base.Mappers;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.Dto.Bia.User;
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
 
     /// <summary>
     /// The mapper used for user.
@@ -27,8 +26,11 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
     /// Initializes a new instance of the <see cref="UserMapper"/> class.
     /// </remarks>
     /// <param name="userContext">the user context.</param>
-    public class UserMapper<TUser>(UserContext userContext) : BaseMapper<UserDto, TUser, int>()
+    /// <typeparam name="TUserDto">The type of user dto.</typeparam>
+    /// <typeparam name="TUser">The type of user.</typeparam>
+    public class UserMapper<TUserDto, TUser>(UserContext userContext) : BaseMapper<TUserDto, TUser, int>()
         where TUser : User, IEntity<int>, new()
+        where TUserDto : UserDto, new()
     {
         /// <summary>
         /// Gets or sets the collection used for expressions to access fields.
@@ -47,11 +49,11 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
                         user => user.Roles
                         .SelectMany(
                             role => role.RoleTranslations
-                            .Where(roleTranslation => roleTranslation.Language.Code == this.UserContext.Language)
+                            .Where(roleTranslation => roleTranslation.Language.Code == UserContext.Language)
                             .Select(roleTranslation => roleTranslation.Label))
                         .Union(
                             user.Roles
-                            .Where(role => !role.RoleTranslations.Any(rt => rt.Language.Code == this.UserContext.Language))
+                            .Where(role => !role.RoleTranslations.Any(rt => rt.Language.Code == UserContext.Language))
                             .Select(role => role.Label))
                         .OrderBy(x => x)
                     },
@@ -68,10 +70,10 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         /// <summary>
         /// The user context language and culture.
         /// </summary>
-        private UserContext UserContext { get; set; } = userContext;
+        protected UserContext UserContext { get; set; } = userContext;
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
-        public override void DtoToEntity(UserDto dto, ref TUser entity, string mapperMode, IUnitOfWork context)
+        public override void DtoToEntity(TUserDto dto, ref TUser entity, string mapperMode, IUnitOfWork context)
         {
             base.DtoToEntity(dto, ref entity, mapperMode, context);
 
@@ -101,9 +103,9 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         /// </summary>
         /// <param name="mapperMode">the mode for mapping.</param>
         /// <returns>The user DTO.</returns>
-        public override Expression<Func<TUser, UserDto>> EntityToDto(string mapperMode)
+        public override Expression<Func<TUser, TUserDto>> EntityToDto(string mapperMode)
         {
-            return this.EntityToDto().CombineMapping(entity => new UserDto
+            return base.EntityToDto(mapperMode).CombineMapping(entity => new TUserDto
             {
                 LastName = entity.LastName,
                 FirstName = entity.FirstName,
@@ -111,7 +113,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
                 Roles = entity.Roles.Select(ca => new OptionDto
                 {
                     Id = ca.Id,
-                    Display = ca.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? ca.Label,
+                    Display = ca.RoleTranslations.Where(rt => rt.Language.Code == UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? ca.Label,
                 }).ToList(),
                 Teams = entity.Members
                 .OrderBy(m => m.Team.TeamTypeId)
@@ -126,7 +128,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCellMapping"/>
-        public override Dictionary<string, Func<string>> DtoToCellMapping(UserDto dto)
+        public override Dictionary<string, Func<string>> DtoToCellMapping(TUserDto dto)
         {
             return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
             {

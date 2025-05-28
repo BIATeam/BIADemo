@@ -1,0 +1,24 @@
+// <copyright file="UserDto.cs" company="TheBIADevCompany">
+// Copyright (c) TheBIADevCompany. All rights reserved.
+// </copyright>
+
+namespace TheBIADevCompany.BIADemo.Domain.Dto.User
+{
+    using System;
+    using System.Collections.Generic;
+    using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Bia.User;
+
+    /// <summary>
+    /// The DTO used for user.
+    /// </summary>
+    public class UserExtendedDto : UserDto
+    {
+        /// <summary>
+        /// Gets or sets the country.
+        /// </summary>
+        public string Country { get; set; }
+    }
+}
