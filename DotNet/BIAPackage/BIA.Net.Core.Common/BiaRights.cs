@@ -10,6 +10,33 @@ namespace BIA.Net.Core.Common
     public static class BiaRights
     {
         /// <summary>
+        /// The roles rights.
+        /// </summary>
+        public static class Roles
+        {
+            /// <summary>
+            /// The right to access to the list of roles (options only).
+            /// </summary>
+            public const string Options = "Roles_Options";
+
+            /// <summary>
+            /// The right to get the roles of the current user.
+            /// </summary>
+            public const string ListForCurrentUser = "Roles_List_For_Current_User";
+        }
+
+        /// <summary>
+        /// The roles rights.
+        /// </summary>
+        public static class Permissions
+        {
+            /// <summary>
+            /// The right to access to the list of permissions (options only).
+            /// </summary>
+            public const string Options = "Permissions_Options";
+        }
+
+        /// <summary>
         /// The LDAP domains rights.
         /// </summary>
         public static class LdapDomains
