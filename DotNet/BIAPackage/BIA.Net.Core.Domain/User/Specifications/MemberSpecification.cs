@@ -2,7 +2,7 @@
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Specifications
+namespace BIA.Net.Core.Domain.User.Specifications
 {
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Specification;

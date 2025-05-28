@@ -23,11 +23,6 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Models;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Services;
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
     using static TheBIADevCompany.BIADemo.Crosscutting.Common.Rights;

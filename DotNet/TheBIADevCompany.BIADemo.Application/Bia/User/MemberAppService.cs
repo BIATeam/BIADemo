@@ -20,7 +20,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using BIA.Net.Core.Domain.Specification;
     using BIA.Net.Core.Domain.User.Entities;
     using BIA.Net.Core.Domain.User.Mappers;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Specifications;
+    using BIA.Net.Core.Domain.User.Specifications;
 
     /// <summary>
     /// The application service used for member.

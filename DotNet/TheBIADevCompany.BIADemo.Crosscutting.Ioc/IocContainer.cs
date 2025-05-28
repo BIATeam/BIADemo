@@ -31,7 +31,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
 #if BIA_FRONT_FEATURE
-    using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
 
     // Begin BIADemo

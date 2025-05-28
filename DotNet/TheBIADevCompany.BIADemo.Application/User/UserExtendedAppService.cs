@@ -12,7 +12,6 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using BIA.Net.Core.Domain.User.Services;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Mappers;

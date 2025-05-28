@@ -1,4 +1,4 @@
-﻿// <copyright file="TeamTypeId.cs" company="TheBIADevCompany">
+﻿// <copyright file="BiaTeamTypeId.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
