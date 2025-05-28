@@ -1,8 +1,8 @@
-// <copyright file="UserSelectBuilder.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+// <copyright file="UserSelectBuilder.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.Bia.User
+namespace BIA.Net.Core.Domain.User
 {
     using System;
     using System.Linq.Expressions;
@@ -12,6 +12,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User
     /// <summary>
     /// The select builder of the user entity.
     /// </summary>
+    /// <typeparam name="TUser">The type of user.</typeparam>
     public static class UserSelectBuilder<TUser>
         where TUser : User
     {

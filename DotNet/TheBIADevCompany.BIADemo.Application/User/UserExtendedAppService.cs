@@ -22,6 +22,18 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     /// </summary>
     public class UserExtendedAppService : UserAppService<UserExtendedDto, UserExtended, UserExtendedMapper>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserExtendedAppService"/> class.
+        /// </summary>
+        /// <param name="repository">The repository.</param>
+        /// <param name="userSynchronizeDomainService">The user synchronize domain service.</param>
+        /// <param name="configuration">The configuration of the BiaNet section.</param>
+        /// <param name="userDirectoryHelper">The user directory helper.</param>
+        /// <param name="userDefaultTeamRepository">The user team default repository.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="identityProviderRepository">The identity provider repository.</param>
+        /// <param name="userIdentityKeyDomainService">The user Identity Key Domain Service.</param>
+        /// <param name="principal">The principal.</param>
         public UserExtendedAppService(
             ITGenericRepository<UserExtended, int> repository,
             IUserSynchronizeDomainService<UserExtended> userSynchronizeDomainService,

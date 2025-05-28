@@ -1,5 +1,5 @@
-// <copyright file="NotificationTypeOptionMapper.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+// <copyright file="NotificationTypeOptionMapper.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Domain.Notification.Mappers
@@ -24,7 +24,7 @@ namespace BIA.Net.Core.Domain.Notification.Mappers
         /// <param name="userContext">the user context.</param>
         public NotificationTypeOptionMapper(UserContext userContext)
         {
-            UserContext = userContext;
+            this.UserContext = userContext;
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace BIA.Net.Core.Domain.Notification.Mappers
         {
             return base.EntityToDto().CombineMapping(entity => new OptionDto
             {
-                Display = entity.NotificationTypeTranslations.Where(rt => rt.Language.Code == UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? entity.Label,
+                Display = entity.NotificationTypeTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? entity.Label,
             });
         }
     }

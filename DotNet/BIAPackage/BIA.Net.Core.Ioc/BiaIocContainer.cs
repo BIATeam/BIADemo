@@ -4,6 +4,11 @@
 
 namespace BIA.Net.Core.IocContainer
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net.Http;
+    using System.Reflection;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Application.Translation;
     using BIA.Net.Core.Common.Configuration;
@@ -18,11 +23,6 @@ namespace BIA.Net.Core.IocContainer
     using BIA.Net.Core.Ioc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net.Http;
-    using System.Reflection;
 
     /// <summary>
     /// The IoC Container.

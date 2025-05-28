@@ -1,5 +1,5 @@
-// <copyright file="MemberMapper.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+// <copyright file="MemberMapper.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Domain.User.Mappers
@@ -15,8 +15,8 @@ namespace BIA.Net.Core.Domain.User.Mappers
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.Service;
+    using BIA.Net.Core.Domain.User;
     using BIA.Net.Core.Domain.User.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User;
 
     /// <summary>
     /// The mapper used for member.
@@ -39,11 +39,11 @@ namespace BIA.Net.Core.Domain.User.Mappers
                         member => member.MemberRoles
                         .SelectMany(
                             memberRole => memberRole.Role.RoleTranslations
-                            .Where(roleTranslation => roleTranslation.Language.Code == UserContext.Language)
+                            .Where(roleTranslation => roleTranslation.Language.Code == this.UserContext.Language)
                             .Select(roleTranslation => roleTranslation.Label))
                         .Union(
                             member.MemberRoles
-                            .Where(memberRole => !memberRole.Role.RoleTranslations.Any(rt => rt.Language.Code == UserContext.Language))
+                            .Where(memberRole => !memberRole.Role.RoleTranslations.Any(rt => rt.Language.Code == this.UserContext.Language))
                             .Select(memberRole => memberRole.Role.Label))
                         .OrderBy(x => x)
                     },
@@ -101,7 +101,7 @@ namespace BIA.Net.Core.Domain.User.Mappers
                 LastName = entity.User.LastName,
                 Login = entity.User.Login,
                 IsActive = entity.User.IsActive,
-                Roles = entity.MemberRoles.Select(x => new OptionDto { Id = x.RoleId, Display = x.Role.RoleTranslations.Where(rt => rt.Language.Code == UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? x.Role.Label }),
+                Roles = entity.MemberRoles.Select(x => new OptionDto { Id = x.RoleId, Display = x.Role.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? x.Role.Label }),
             });
         }
 

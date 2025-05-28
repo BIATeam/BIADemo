@@ -1,5 +1,5 @@
-// <copyright file="ViewQueryCustomizer.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+// <copyright file="ViewQueryCustomizer.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Infrastructure.Data.Repositories.QueryCustomizer

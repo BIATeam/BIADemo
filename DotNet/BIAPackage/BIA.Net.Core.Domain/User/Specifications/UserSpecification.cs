@@ -1,5 +1,5 @@
-// <copyright file="UserSpecification.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+// <copyright file="UserSpecification.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Specifications

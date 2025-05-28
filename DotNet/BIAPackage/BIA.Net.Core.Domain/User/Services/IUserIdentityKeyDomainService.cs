@@ -1,5 +1,5 @@
-﻿// <copyright file="IUserIdentityKeyDomainService.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+﻿// <copyright file="IUserIdentityKeyDomainService.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Domain.User.Services
@@ -14,6 +14,7 @@ namespace BIA.Net.Core.Domain.User.Services
     /// <summary>
     /// Interface UserIdentityKey Domain Service.
     /// </summary>
+    /// <typeparam name="TUser">The type of user.</typeparam>
     public interface IUserIdentityKeyDomainService<TUser>
         where TUser : User
     {

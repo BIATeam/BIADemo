@@ -5,10 +5,10 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Entities
 {
-    using BIA.Net.Core.Domain.User.Entities;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using BIA.Net.Core.Domain.User.Entities;
 
     /// <summary>
     /// The AircraftMaintenanceCompany entity.

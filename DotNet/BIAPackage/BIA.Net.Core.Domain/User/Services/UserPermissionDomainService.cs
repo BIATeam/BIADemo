@@ -1,5 +1,5 @@
-// <copyright file="UserPermissionDomainService.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+// <copyright file="UserPermissionDomainService.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Domain.User.Services
@@ -34,13 +34,13 @@ namespace BIA.Net.Core.Domain.User.Services
         {
             IEnumerable<Permission> rights = default;
 
-            if (configuration.PermissionsByEnv?.Any() == true)
+            if (this.configuration.PermissionsByEnv?.Any() == true)
             {
-                rights = configuration.Permissions.Concat(configuration.PermissionsByEnv).ToList();
+                rights = this.configuration.Permissions.Concat(this.configuration.PermissionsByEnv).ToList();
             }
             else
             {
-                rights = configuration.Permissions;
+                rights = this.configuration.Permissions;
             }
 
             var userPermissions1 = rights.Where(w => (!lightToken || w.LightToken) && w.Name != null && w.Roles.Any(a => roles.Contains(a))).Select(s => s.Name);

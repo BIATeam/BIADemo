@@ -4,14 +4,16 @@
 
 namespace TheBIADevCompany.BIADemo.Application.Bia.User
 {
+    using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.User.Entities;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Interface AuthService.
     /// </summary>
+    /// <typeparam name="TUserDto">The type of user dto.</typeparam>
+    /// <typeparam name="TUser">The type of user.</typeparam>
     public interface IAuthAppService<TUserDto, TUser>
         where TUserDto : UserDto, new()
         where TUser : User, IEntity<int>, new()

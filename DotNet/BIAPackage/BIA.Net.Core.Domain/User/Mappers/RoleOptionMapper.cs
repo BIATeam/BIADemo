@@ -1,5 +1,5 @@
-// <copyright file="RoleOptionMapper.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+// <copyright file="RoleOptionMapper.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Domain.User.Mappers
@@ -32,7 +32,7 @@ namespace BIA.Net.Core.Domain.User.Mappers
         {
             return base.EntityToDto().CombineMapping(entity => new OptionDto
             {
-                Display = entity.RoleTranslations.Where(rt => rt.Language.Code == UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? entity.Label,
+                Display = entity.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? entity.Label,
             });
         }
     }

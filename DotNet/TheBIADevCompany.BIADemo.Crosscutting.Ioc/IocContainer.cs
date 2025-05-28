@@ -15,6 +15,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.RepoContract;
+#if BIA_FRONT_FEATURE
+    using BIA.Net.Core.Domain.User.Models;
+#endif
     using BIA.Net.Core.Infrastructure.Data;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.Ioc;
@@ -29,20 +32,15 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
 #if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract;
-
-    // Begin BIADemo
-
-    // End BIADemo
+    using TheBIADevCompany.BIADemo.Domain.Dto.User;
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
+    using TheBIADevCompany.BIADemo.Domain.RepoContract.DocumentAnalysis;
 
     // End BIADemo
-    using TheBIADevCompany.BIADemo.Infrastructure.Data.Features.Bia;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Domain.RepoContract.DocumentAnalysis;
-    using BIA.Net.Core.Domain.User.Models;
+    using TheBIADevCompany.BIADemo.Infrastructure.Data.Features.Bia;
 #endif
 
     /// <summary>
@@ -93,6 +91,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         {
             collection.AddTransient(typeof(IUserSynchronizeDomainService<UserExtended>), typeof(UserExtendedSynchronizeDomainService));
             collection.AddTransient(typeof(IUserAppService<UserExtendedDto, UserExtended>), typeof(UserExtendedAppService));
+
             // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
             BiaIocContainer.RegisterServicesFromAssembly(
                 collection: collection,

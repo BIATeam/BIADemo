@@ -4,9 +4,9 @@
 
 namespace TheBIADevCompany.BIADemo.Application.Bia.View
 {
-    using BIA.Net.Core.Domain.Dto.View;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.Dto.View;
 
     /// <summary>
     /// The interface defining the view application service.

@@ -22,6 +22,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
+    using BIA.Net.Core.Domain.User;
     using BIA.Net.Core.Domain.User.Entities;
     using BIA.Net.Core.Domain.User.Mappers;
     using BIA.Net.Core.Domain.User.Models;
@@ -30,7 +31,6 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Specifications;
     using static BIA.Net.Core.Common.BiaRights;
 

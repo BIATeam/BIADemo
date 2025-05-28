@@ -1,5 +1,5 @@
-// <copyright file="BasePrincipalMapper.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+// <copyright file="BasePrincipalMapper.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Domain.Mapper
@@ -26,7 +26,7 @@ namespace BIA.Net.Core.Domain.Mapper
         public BasePrincipalMapper(IPrincipal principal)
             : base()
         {
-            UserId = (principal as BiaClaimsPrincipal).GetUserId();
+            this.UserId = (principal as BiaClaimsPrincipal).GetUserId();
         }
 
         /// <summary>
