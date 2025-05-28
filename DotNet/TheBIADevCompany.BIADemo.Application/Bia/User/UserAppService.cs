@@ -27,11 +27,9 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using BIA.Net.Core.Domain.User.Mappers;
     using BIA.Net.Core.Domain.User.Models;
     using BIA.Net.Core.Domain.User.Services;
-    using Microsoft.AspNetCore.DataProtection.KeyManagement;
+    using BIA.Net.Core.Domain.User.Specifications;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Specifications;
     using static BIA.Net.Core.Common.BiaRights;
 
     /// <summary>

@@ -7,6 +7,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using System.Threading.Tasks;
 #if BIA_FRONT_FEATURE
     using Audit.EntityFramework;
+    using BIA.Net.Core.Domain.Audit;
+    using BIA.Net.Core.Domain.Notification.Entities;
+    using BIA.Net.Core.Domain.Translation.Entities;
+    using BIA.Net.Core.Domain.User.Entities;
+    using BIA.Net.Core.Domain.View.Entities;
 #endif
     using BIA.Net.Core.Infrastructure.Data;
     using Microsoft.EntityFrameworkCore;
@@ -26,11 +31,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia;
-    using BIA.Net.Core.Domain.Audit;
-    using BIA.Net.Core.Domain.Notification.Entities;
-    using BIA.Net.Core.Domain.Translation.Entities;
-    using BIA.Net.Core.Domain.User.Entities;
-    using BIA.Net.Core.Domain.View.Entities;
 #endif
 
     /// <summary>

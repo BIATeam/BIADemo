@@ -2,7 +2,7 @@
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Specifications
+namespace BIA.Net.Core.Domain.User.Specifications
 {
     using BIA.Net.Core.Domain.Specification;
     using BIA.Net.Core.Domain.User.Entities;
@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Specifications
     /// <summary>
     /// The specifications of the user entity.
     /// </summary>
+    /// <typeparam name="TUser">The type of user.</typeparam>
     public static class UserSpecification<TUser>
         where TUser : User
     {

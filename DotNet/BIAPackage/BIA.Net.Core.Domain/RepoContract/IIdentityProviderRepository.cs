@@ -2,7 +2,7 @@
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.Bia.RepoContract
+namespace BIA.Net.Core.Domain.RepoContract
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;

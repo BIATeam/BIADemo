@@ -26,7 +26,6 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.User;
 
     /// <summary>

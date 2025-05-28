@@ -11,11 +11,11 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Domain.User.Specifications;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using TheBIADevCompany.BIADemo.Application.Site;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Specifications;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
     using TheBIADevCompany.BIADemo.Domain.Site.Entities;
     using TheBIADevCompany.BIADemo.Test.Data;
