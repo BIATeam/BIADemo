@@ -49,11 +49,9 @@ export enum TeamTypeId {
   // BIAToolKit - Begin TeamTypeIdConstants
   // Begin BIAToolKit Generation Ignore
   // BIAToolKit - Begin Partial TeamTypeIdConstants AircraftMaintenanceCompany
-  // TODO after creation of team AircraftMaintenanceCompany : adapt enum value
   AircraftMaintenanceCompany = 3,
   // BIAToolKit - End Partial TeamTypeIdConstants AircraftMaintenanceCompany
   // BIAToolKit - Begin Partial TeamTypeIdConstants MaintenanceTeam
-  // TODO after creation of team AircraftMaintenanceCompany : adapt enum value
   MaintenanceTeam = 4,
   // BIAToolKit - End Partial TeamTypeIdConstants MaintenanceTeam
   // End BIAToolKit Generation Ignore

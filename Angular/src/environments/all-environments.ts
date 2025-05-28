@@ -26,21 +26,25 @@ export const allEnvironments = {
     // BIAToolKit - Begin Partial AllEnvironment AircraftMaintenanceCompany
     {
       teamTypeId: TeamTypeId.AircraftMaintenanceCompany,
+      label: 'aircraftMaintenanceCompany.headerLabel',
+      // Begin BIADemo
       roleMode: RoleMode.MultiRoles,
       inHeader: true,
       displayOne: true,
-      label: 'aircraftMaintenanceCompany.headerLabel',
+      // End BIADemo
     },
     // BIAToolKit - End Partial AllEnvironment AircraftMaintenanceCompany
     // BIAToolKit - Begin Partial AllEnvironment MaintenanceTeam
     {
       teamTypeId: TeamTypeId.MaintenanceTeam,
+      label: 'maintenanceTeam.headerLabel',
+      // Begin BIADemo
       roleMode: RoleMode.AllRoles,
       inHeader: true,
       displayAlways: true,
-      label: 'maintenanceTeam.headerLabel',
       displayLabel: true,
       teamSelectionCanBeEmpty: true,
+      // End BIADemo
     },
     // BIAToolKit - End Partial AllEnvironment MaintenanceTeam
     // End BIAToolKit Generation Ignore
