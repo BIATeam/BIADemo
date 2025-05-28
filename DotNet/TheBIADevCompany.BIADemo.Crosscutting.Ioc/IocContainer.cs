@@ -41,6 +41,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
     // End BIADemo
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features.Bia;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Services;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 #endif
 
     /// <summary>
@@ -89,6 +91,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
         private static void ConfigureApplicationContainer(IServiceCollection collection, bool isApi)
         {
+            collection.AddTransient(typeof(IUserSynchronizeDomainService<UserExtended>), typeof(UserExtendedSynchronizeDomainService));
+            collection.AddTransient(typeof(IUserAppService<UserExtended>), typeof(UserExtendedAppService));
+            collection.AddTransient(typeof(IUserIdentityKeyDomainService<>), typeof(UserIdentityKeyDomainService<>));
             // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
             BiaIocContainer.RegisterServicesFromAssembly(
                 collection: collection,

@@ -9,7 +9,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Entities
     using BIA.Net.Core.Domain.Entity;
     using TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities;
     using TheBIADevCompany.BIADemo.Domain.Bia.Translation.Entities;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
 
     /// <summary>
     /// The Notification entity.

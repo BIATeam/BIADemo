@@ -7,19 +7,20 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User
     using System;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// The select builder of the user entity.
     /// </summary>
-    public static class UserSelectBuilder
+    public static class UserSelectBuilder<TUser>
+        where TUser : User
     {
         /// <summary>
         /// Gets the expression used to select user.
         /// </summary>
         /// <returns>The expression.</returns>
-        public static Expression<Func<User, UserDto>> EntityToDto()
+        public static Expression<Func<TUser, UserDto>> EntityToDto()
         {
             return user => new UserDto
             {
@@ -34,7 +35,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User
         /// Gets the expression used to select user.
         /// </summary>
         /// <returns>The expression.</returns>
-        public static Expression<Func<User, UserInfoDto>> SelectUserInfo()
+        public static Expression<Func<TUser, UserInfoDto>> SelectUserInfo()
         {
             return user => new UserInfoDto
             {
@@ -42,7 +43,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User
                 FirstName = user.FirstName,
                 Login = user.Login,
                 LastName = user.LastName,
-                Country = user.Country,
                 IsActive = user.IsActive,
             };
         }

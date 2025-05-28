@@ -95,7 +95,7 @@ namespace TheBIADevCompany.BIADemo.Test.Data
         /// <inheritdoc cref="IDataUsers.AddUser(int, string, string, int?, int?, ICollection{MemberRole})"/>
         public void AddUser(int id, string firstName, string lastName, int? memberId = null, int? memberSiteId = null, ICollection<MemberRole> memberRoles = null)
         {
-            User user = new User()
+            UserExtended user = new UserExtended()
             {
                 Id = id,
                 Company = "TheBIADevCompany",

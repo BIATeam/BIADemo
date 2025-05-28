@@ -17,10 +17,12 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
+    using Microsoft.AspNetCore.DataProtection.KeyManagement;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
@@ -32,19 +34,19 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Services;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Specifications;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Mappers;
     using static TheBIADevCompany.BIADemo.Crosscutting.Common.Rights;
 
     /// <summary>
     /// The application service used for user.
     /// </summary>
-    public class UserAppService : CrudAppServiceBase<UserDto, User, int, PagingFilterFormatDto, UserMapper>, IUserAppService
+    public class UserAppService<TUser> : CrudAppServiceBase<UserDto, TUser, int, PagingFilterFormatDto, UserMapper<TUser>>, IUserAppService<TUser>
+        where TUser : User, new()
     {
         /// <summary>
         /// The user synchronize domain service.
         /// </summary>
-        private readonly IUserSynchronizeDomainService userSynchronizeDomainService;
+        private readonly IUserSynchronizeDomainService<TUser> userSynchronizeDomainService;
 
         /// <summary>
         /// The configuration of the BiaNet section.
@@ -64,11 +66,11 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <summary>
         /// The logger.
         /// </summary>
-        private readonly ILogger<UserAppService> logger;
+        private readonly ILogger<UserAppService<TUser>> logger;
 
         private readonly IIdentityProviderRepository identityProviderRepository;
 
-        private readonly IUserIdentityKeyDomainService userIdentityKeyDomainService;
+        private readonly IUserIdentityKeyDomainService<TUser> userIdentityKeyDomainService;
 
         /// <summary>
         /// The claims principal.
@@ -88,14 +90,14 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="userIdentityKeyDomainService">The user Identity Key Domain Service.</param>
         /// <param name="principal">The principal.</param>
         public UserAppService(
-            ITGenericRepository<User, int> repository,
-            IUserSynchronizeDomainService userSynchronizeDomainService,
+            ITGenericRepository<TUser, int> repository,
+            IUserSynchronizeDomainService<TUser> userSynchronizeDomainService,
             IOptions<BiaNetSection> configuration,
             IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
             ITGenericRepository<UserDefaultTeam, int> userDefaultTeamRepository,
-            ILogger<UserAppService> logger,
+            ILogger<UserAppService<TUser>> logger,
             IIdentityProviderRepository identityProviderRepository,
-            IUserIdentityKeyDomainService userIdentityKeyDomainService,
+            IUserIdentityKeyDomainService<TUser> userIdentityKeyDomainService,
             IPrincipal principal)
             : base(repository)
         {
@@ -107,27 +109,27 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             this.identityProviderRepository = identityProviderRepository;
             this.userIdentityKeyDomainService = userIdentityKeyDomainService;
             this.principal = principal as BiaClaimsPrincipal;
-            this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<User>(u => u.IsActive));
+            this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<TUser>(u => u.IsActive));
         }
 
         /// <inheritdoc/>
         public async Task<IEnumerable<OptionDto>> GetAllOptionsAsync(string filter = null)
         {
-            Specification<User> specification = null;
+            Specification<TUser> specification = null;
             if (!string.IsNullOrEmpty(filter))
             {
-                specification = UserSpecification.Search(filter);
+                specification = UserSpecification<TUser>.Search(filter);
             }
 
-            return await this.GetAllAsync<OptionDto, UserOptionMapper>(specification: specification, queryOrder: new QueryOrder<User>().OrderBy(o => o.LastName).ThenBy(o => o.FirstName));
+            return await this.GetAllAsync<OptionDto, UserOptionMapper<TUser>>(specification: specification, queryOrder: new QueryOrder<TUser>().OrderBy(o => o.LastName).ThenBy(o => o.FirstName));
         }
 
         /// <inheritdoc cref="IUserAppService.AddUserFromUserDirectoryAsync"/>
-        public async Task<User> AddUserFromUserDirectoryAsync(string identityKey, UserFromDirectory userFromDirectory)
+        public async Task<TUser> AddUserFromUserDirectoryAsync(string identityKey, UserFromDirectory userFromDirectory)
         {
             if (userFromDirectory != null)
             {
-                User user = new User();
+                TUser user = new TUser();
                 this.userSynchronizeDomainService.UpdateUserFieldFromDirectory(user, userFromDirectory);
 
                 var func = this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(identityKey).Compile();
@@ -146,7 +148,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         }
 
         /// <inheritdoc cref="IUserAppService.CreateUserInfo"/>
-        public UserInfoDto CreateUserInfo(User user)
+        public UserInfoDto CreateUserInfo(TUser user)
         {
             if (user != null)
             {
@@ -156,7 +158,6 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
                     Login = user.Login,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                    Country = user.Country,
                     IsActive = user.IsActive,
                 };
                 return userInfo;
@@ -168,7 +169,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <inheritdoc cref="IUserAppService.GetUserInfoAsync"/>
         public async Task<UserInfoDto> GetUserInfoAsync(string identityKey)
         {
-            return await this.Repository.GetResultAsync(UserSelectBuilder.SelectUserInfo(), filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(identityKey));
+            return await this.Repository.GetResultAsync(UserSelectBuilder<TUser>.SelectUserInfo(), filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(identityKey));
         }
 
         /// <inheritdoc/>
@@ -208,7 +209,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
                 foreach (var user in result.UsersAddedDtos)
                 {
                     userDto.Id = user.Id;
-                    await this.UpdateAsync<UserDto, UserMapper>(userDto, mapperMode: "RolesInit");
+                    await this.UpdateAsync<UserDto, UserMapper<TUser>>(userDto, mapperMode: "RolesInit");
                 }
             }
 
@@ -245,12 +246,12 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             }
             else
             {
-                List<User> usersAdded = new List<User>();
+                List<TUser> usersAdded = new List<TUser>();
                 foreach (var userFormDirectoryDto in users)
                 {
                     try
                     {
-                        var foundUser = (await this.Repository.GetAllEntityAsync(filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(this.userIdentityKeyDomainService.GetDirectoryIdentityKey(userFormDirectoryDto)))).FirstOrDefault();
+                        TUser foundUser = (await this.Repository.GetAllEntityAsync(filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(this.userIdentityKeyDomainService.GetDirectoryIdentityKey(userFormDirectoryDto)))).FirstOrDefault();
 
                         UserFromDirectory userFormDirectory = null;
 
@@ -356,7 +357,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         {
             if (userId > 0)
             {
-                User entity = await this.Repository.GetEntityAsync(id: userId, queryMode: "NoInclude");
+                TUser entity = await this.Repository.GetEntityAsync(id: userId, queryMode: "NoInclude");
                 entity.LastLoginDate = DateTime.Now;
                 entity.IsActive = activate;
 
@@ -421,7 +422,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
                         }
                         else if (canUpdate && userDto.DtoState == DtoState.Modified)
                         {
-                            await this.UpdateAsync<UserDto, UserMapper>(userDto, mapperMode: "Roles");
+                            await this.UpdateAsync<UserDto, UserMapper<TUser>>(userDto, mapperMode: "Roles");
                             this.Repository.UnitOfWork.Reset();
                             nbUpdated++;
                         }
@@ -468,7 +469,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <inheritdoc cref="IUserAppService.GetCsvAsync"/>
         public virtual async Task<byte[]> GetCsvAsync(PagingFilterFormatDto filters)
         {
-            return await this.GetCsvAsync<UserDto, UserMapper, PagingFilterFormatDto>(filters: filters);
+            return await this.GetCsvAsync<UserDto, UserMapper<TUser>, PagingFilterFormatDto>(filters: filters);
         }
 
         /// <inheritdoc cref="IUserAppService.SetDefaultSite"/>

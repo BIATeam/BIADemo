@@ -8,16 +8,17 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Services
     using System.Collections.Generic;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Models;
 #if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 #endif
 
     /// <summary>
     /// Interface UserIdentityKey Domain Service.
     /// </summary>
-    public interface IUserIdentityKeyDomainService
+    public interface IUserIdentityKeyDomainService<TUser>
+        where TUser : User
     {
 #if BIA_FRONT_FEATURE
         /// <summary>
@@ -25,21 +26,21 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Services
         /// </summary>
         /// <param name="identityKey">The identity key.</param>
         /// <returns>The checks the database identity key.</returns>
-        Expression<Func<User, bool>> CheckDatabaseIdentityKey(string identityKey);
+        Expression<Func<TUser, bool>> CheckDatabaseIdentityKey(string identityKey);
 
         /// <summary>
         /// Checks the database identity key.
         /// </summary>
         /// <param name="identityKeys">The identity keys.</param>
         /// <returns>The checks the database identity key.</returns>
-        Expression<Func<User, bool>> CheckDatabaseIdentityKey(List<string> identityKeys);
+        Expression<Func<TUser, bool>> CheckDatabaseIdentityKey(List<string> identityKeys);
 
         /// <summary>
         /// Gets the database identity key.
         /// </summary>
         /// <param name="user">The user.</param>
         /// <returns>The database identity key.</returns>
-        string GetDatabaseIdentityKey(User user);
+        string GetDatabaseIdentityKey(TUser user);
 
         /// <summary>
         /// Gets the userDto identity key.

@@ -11,14 +11,15 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Service;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Models;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// The interface defining the application service for user.
     /// </summary>
-    public interface IUserAppService : ICrudAppServiceBase<UserDto, User, int, PagingFilterFormatDto>
+    public interface IUserAppService<TUser> : ICrudAppServiceBase<UserDto, TUser, int, PagingFilterFormatDto>
+        where TUser : User, new()
     {
         /// <summary>
         /// Gets all option that I can see.
@@ -33,14 +34,14 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="identityKey">The identity key.</param>
         /// <param name="userFromDirectory">The user from directory.</param>
         /// <returns>The user in DB.</returns>
-        Task<User> AddUserFromUserDirectoryAsync(string identityKey, UserFromDirectory userFromDirectory);
+        Task<TUser> AddUserFromUserDirectoryAsync(string identityKey, UserFromDirectory userFromDirectory);
 
         /// <summary>
         /// Creates the user information from user.
         /// </summary>
         /// <param name="user">The user.</param>
         /// <returns>A UserInfoDto.</returns>
-        UserInfoDto CreateUserInfo(User user);
+        UserInfoDto CreateUserInfo(TUser user);
 
         /// <summary>
         /// Gets user info with its login.

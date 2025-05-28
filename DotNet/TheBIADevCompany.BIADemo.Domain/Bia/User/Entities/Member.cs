@@ -6,7 +6,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Entities
 {
     using System.Collections.Generic;
     using BIA.Net.Core.Domain.Entity;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// The member entity.

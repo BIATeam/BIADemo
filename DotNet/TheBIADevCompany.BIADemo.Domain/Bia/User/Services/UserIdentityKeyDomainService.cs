@@ -8,16 +8,17 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Services
     using System.Collections.Generic;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Models;
 #if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 #endif
 
     /// <summary>
     /// This class MAnage the identity key during authentication and relation beetween Database, Directory and identity Provider.
     /// </summary>
-    public class UserIdentityKeyDomainService : IUserIdentityKeyDomainService
+    public class UserIdentityKeyDomainService<TUser> : IUserIdentityKeyDomainService<TUser>
+        where TUser : User
     {
 #if BIA_FRONT_FEATURE
         // -------------------------------- DataBase EntityKey --------------------------------------
@@ -28,7 +29,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Services
         /// </summary>
         /// <param name="identityKey">the identity Key.</param>
         /// <returns>Expression to compare.</returns>
-        public Expression<Func<User, bool>> CheckDatabaseIdentityKey(string identityKey)
+        public Expression<Func<TUser, bool>> CheckDatabaseIdentityKey(string identityKey)
         {
             return user => user.Login == identityKey;
         }
@@ -39,7 +40,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Services
         /// </summary>
         /// <param name="identityKeys">the list of identity Keys.</param>
         /// <returns>Expression to compare.</returns>
-        public Expression<Func<User, bool>> CheckDatabaseIdentityKey(List<string> identityKeys)
+        public Expression<Func<TUser, bool>> CheckDatabaseIdentityKey(List<string> identityKeys)
         {
             return user => identityKeys.Contains(user.Login);
         }
@@ -51,7 +52,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Services
         /// </summary>
         /// <param name="user">the user.</param>
         /// <returns>Return the Identity Key.</returns>
-        public string GetDatabaseIdentityKey(User user)
+        public string GetDatabaseIdentityKey(TUser user)
         {
             return user.Login;
         }
