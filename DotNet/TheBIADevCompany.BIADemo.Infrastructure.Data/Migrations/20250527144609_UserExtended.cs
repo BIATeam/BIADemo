@@ -43,6 +43,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                 maxLength: 13,
                 nullable: false,
                 defaultValue: "");
+
+            migrationBuilder.Sql("UPDATE Users SET [Discriminator] = 'UserExtended'");
         }
 
         /// <inheritdoc />
