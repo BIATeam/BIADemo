@@ -55,12 +55,13 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         // BIAToolKit - Begin Partial RoleId MaintenanceTeam
 
         /// <summary>
-        /// The maintenanceTeam admin role identifier.
+        /// The MaintenanceTeam admin role identifier.
         /// </summary>
         MaintenanceTeamAdmin = 4,
-#pragma warning restore S1135 // Track uses of "TODO" tags
 
         // BIAToolKit - End Partial RoleId MaintenanceTeam
+#pragma warning restore S1135 // Track uses of "TODO" tags
+
         // End BIAToolKit Generation Ignore
 
         // BIAToolKit - Begin RoleId

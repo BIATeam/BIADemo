@@ -234,7 +234,7 @@
       },
       // BIAToolKit - End Partial ConfigForOption PlaneType
       // BIAToolKit - Begin Partial Config MaintenanceTeam
-      // Maintenance Team
+      // MaintenanceTeam
       {
         "Names": [ "MaintenanceTeam_Create", "MaintenanceTeam_Delete", "MaintenanceTeam_Fix" ],
         "Roles": [

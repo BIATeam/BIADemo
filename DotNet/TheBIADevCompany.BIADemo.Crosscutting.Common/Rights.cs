@@ -226,12 +226,12 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         // BIAToolKit - Begin Partial Rights MaintenanceTeam
 
         /// <summary>
-        /// The maintenance team rights.
+        /// The maintenance teams rights.
         /// </summary>
         public static class MaintenanceTeams
         {
             /// <summary>
-            /// The right to access to the list of maintenance team.
+            /// The right to access to the list of maintenance teams.
             /// </summary>
             public const string ListAccess = "MaintenanceTeam_List_Access";
 

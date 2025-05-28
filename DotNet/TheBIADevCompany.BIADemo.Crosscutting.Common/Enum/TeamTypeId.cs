@@ -45,9 +45,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         /// </summary>
         // TODO after creation of team MaintenanceTeam : adapt the enum value
         MaintenanceTeam = 4,
-#pragma warning restore S1135 // Track uses of "TODO" tags
 
         // BIAToolKit - End Partial TeamTypeId MaintenanceTeam
+#pragma warning restore S1135 // Track uses of "TODO" tags
+
         // End BIAToolKit Generation Ignore
 
         // BIAToolKit - Begin TeamTypeId
