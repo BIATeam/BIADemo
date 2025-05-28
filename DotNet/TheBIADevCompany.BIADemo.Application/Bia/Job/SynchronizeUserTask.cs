@@ -7,19 +7,23 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.Job
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Job;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using Hangfire;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Application.Bia.User;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Bia.User;
 
     /// <summary>
     /// Task to synchronize users from LDAP.
     /// </summary>
     [AutomaticRetry(Attempts = 2, LogEvents = true)]
-    public class SynchronizeUserTask : BaseJob
+    public class SynchronizeUserTask<TUserDto, TUser> : BaseJob
+        where TUserDto : UserDto, new()
+        where TUser : User, IEntity<int>, new()
     {
-        private readonly IUserAppService<Domain.User.Entities.UserExtended> userService;
+        private readonly IUserAppService<TUserDto, TUser> userService;
 
         /// <summary>
         /// The configuration of the BiaNet section.
@@ -32,7 +36,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.Job
         /// <param name="configuration">The configuration.</param>
         /// <param name="userService">The user app service.</param>
         /// <param name="logger">logger.</param>
-        public SynchronizeUserTask(IConfiguration configuration, IUserAppService<Domain.User.Entities.UserExtended> userService, ILogger<SynchronizeUserTask> logger)
+        public SynchronizeUserTask(IConfiguration configuration, IUserAppService<TUserDto, TUser> userService, ILogger<SynchronizeUserTask<TUserDto, TUser>> logger)
             : base(configuration, logger)
         {
             this.userService = userService;

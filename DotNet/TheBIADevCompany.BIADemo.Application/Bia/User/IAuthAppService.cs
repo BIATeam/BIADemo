@@ -4,14 +4,19 @@
 
 namespace TheBIADevCompany.BIADemo.Application.Bia.User
 {
-    using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Domain.Entity.Interface;
+    using System.Threading.Tasks;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Bia.User;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
 
     /// <summary>
     /// Interface AuthService.
     /// </summary>
-    public interface IAuthAppService
+    public interface IAuthAppService<TUserDto, TUser>
+        where TUserDto : UserDto, new()
+        where TUser : User, IEntity<int>, new()
     {
 #if BIA_BACK_TO_BACK_AUTH
         /// <summary>

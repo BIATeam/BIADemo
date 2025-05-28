@@ -24,6 +24,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Application.Bia.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Bia.User;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
@@ -35,7 +36,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// <summary>
         /// The service user.
         /// </summary>
-        private readonly IUserAppService<Domain.User.Entities.UserExtended> userService;
+        private readonly IUserAppService<UserExtendedDto, UserExtended> userService;
 
 #if UseHubForClientInUser
         private readonly IClientForHubService clientForHubService;
@@ -61,7 +62,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// </summary>
         /// <param name="userService">The user service.</param>
         /// <param name="configuration">The configuration.</param>
-        public UsersController(IUserAppService<Domain.User.Entities.UserExtended> userService, IOptions<BiaNetSection> configuration)
+        public UsersController(IUserAppService<UserExtendedDto, UserExtended> userService, IOptions<BiaNetSection> configuration)
 #endif
         {
 #if UseHubForClientInUser
@@ -180,7 +181,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Authorize(Roles = Rights.Users.Add)]
-        public async Task<IActionResult> Add([FromBody] UserDto dto)
+        public async Task<IActionResult> Add([FromBody] UserExtendedDto dto)
         {
             try
             {
@@ -237,7 +238,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.Users.UpdateRoles)]
-        public async Task<IActionResult> Update(int id, [FromBody] UserDto dto)
+        public async Task<IActionResult> Update(int id, [FromBody] UserExtendedDto dto)
         {
             if (id == 0 || dto == null || dto.Id != id)
             {
@@ -360,7 +361,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [Authorize(Roles = Rights.Users.Save)]
-        public async Task<IActionResult> Save(IEnumerable<UserDto> dtos)
+        public async Task<IActionResult> Save(IEnumerable<UserExtendedDto> dtos)
         {
             var dtoList = dtos.ToList();
             if (!dtoList.Any())

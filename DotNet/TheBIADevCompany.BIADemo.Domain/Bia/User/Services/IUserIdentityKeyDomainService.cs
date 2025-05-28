@@ -10,8 +10,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Services
     using BIA.Net.Core.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Models;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Bia.User;
 #if BIA_FRONT_FEATURE
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
 #endif
 
     /// <summary>

@@ -2,14 +2,13 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.Dto.User
+namespace TheBIADevCompany.BIADemo.Domain.Dto.Bia.User
 {
     using System;
     using System.Collections.Generic;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Domain.Dto.Bia.User;
 
     /// <summary>
     /// The DTO used for user.

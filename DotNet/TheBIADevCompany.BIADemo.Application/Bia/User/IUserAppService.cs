@@ -10,16 +10,20 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
-    using BIA.Net.Core.Domain.Service;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Models;
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Bia.User;
 
     /// <summary>
     /// The interface defining the application service for user.
     /// </summary>
-    public interface IUserAppService<TUser> : ICrudAppServiceBase<UserDto, TUser, int, PagingFilterFormatDto>
-        where TUser : User, new()
+    /// <typeparam name="TUserDto">The type of user dto.</typeparam>
+    /// <typeparam name="TUser">The type of user.</typeparam>
+    public interface IUserAppService<TUserDto, TUser> : ICrudAppServiceBase<TUserDto, TUser, int, PagingFilterFormatDto>
+        where TUserDto : UserDto, new()
+        where TUser : User, IEntity<int>, new()
     {
         /// <summary>
         /// Gets all option that I can see.
@@ -80,7 +84,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// </summary>
         /// <param name="userDto">The list of users to add.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<ResultAddUsersFromDirectoryDto> AddByIdentityKeyAsync(UserDto userDto);
+        Task<ResultAddUsersFromDirectoryDto> AddByIdentityKeyAsync(TUserDto userDto);
 
         /// <summary>
         /// Remove a user in a group in AD.
@@ -121,7 +125,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// </summary>
         /// <param name="userDtos">List of users dto.</param>
         /// <returns>Error message.</returns>
-        Task<string> SaveAsync(List<UserDto> userDtos);
+        Task<string> SaveAsync(List<TUserDto> userDtos);
 
         /// <summary>
         /// Selects the default language.

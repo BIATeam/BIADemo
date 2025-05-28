@@ -8,7 +8,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Bia.User;
 
     /// <summary>
     /// The select builder of the user entity.

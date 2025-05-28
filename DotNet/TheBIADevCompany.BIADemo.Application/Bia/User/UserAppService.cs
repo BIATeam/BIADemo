@@ -33,15 +33,19 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Models;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Services;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Specifications;
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Domain.User.Mappers;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Bia.User;
     using static TheBIADevCompany.BIADemo.Crosscutting.Common.Rights;
 
     /// <summary>
     /// The application service used for user.
     /// </summary>
-    public class UserAppService<TUser> : CrudAppServiceBase<UserDto, TUser, int, PagingFilterFormatDto, UserMapper<TUser>>, IUserAppService<TUser>
-        where TUser : User, new()
+    /// <typeparam name="TUserDto">The type of user dto.</typeparam>
+    /// <typeparam name="TUser">The type of user.</typeparam>
+	/// <typeparam name="TUserMapper">The type of user mapper.</typeparam>
+    public class UserAppService<TUserDto, TUser, TUserMapper> : CrudAppServiceBase<TUserDto, TUser, int, PagingFilterFormatDto, TUserMapper>, IUserAppService<TUserDto, TUser>
+        where TUserDto : UserDto, new()
+        where TUser : User, IEntity<int>, new()
+        where TUserMapper : UserMapper<TUserDto, TUser>
     {
         /// <summary>
         /// The user synchronize domain service.
@@ -66,7 +70,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <summary>
         /// The logger.
         /// </summary>
-        private readonly ILogger<UserAppService<TUser>> logger;
+        private readonly ILogger<UserAppService<TUserDto, TUser, TUserMapper>> logger;
 
         private readonly IIdentityProviderRepository identityProviderRepository;
 
@@ -78,7 +82,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         private readonly BiaClaimsPrincipal principal;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UserAppService" /> class.
+        /// Initializes a new instance of the <see cref="UserAppService{TUserDto, TUser, TUserMapper}"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="userSynchronizeDomainService">The user synchronize domain service.</param>
@@ -95,7 +99,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             IOptions<BiaNetSection> configuration,
             IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
             ITGenericRepository<UserDefaultTeam, int> userDefaultTeamRepository,
-            ILogger<UserAppService<TUser>> logger,
+            ILogger<UserAppService<TUserDto, TUser, TUserMapper>> logger,
             IIdentityProviderRepository identityProviderRepository,
             IUserIdentityKeyDomainService<TUser> userIdentityKeyDomainService,
             IPrincipal principal)
@@ -197,7 +201,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         }
 
         /// <inheritdoc cref="IUserAppService.AddByIdentityKeyAsync"/>
-        public async Task<ResultAddUsersFromDirectoryDto> AddByIdentityKeyAsync(UserDto userDto)
+        public async Task<ResultAddUsersFromDirectoryDto> AddByIdentityKeyAsync(TUserDto userDto)
         {
             UserFromDirectoryDto userFromDirectoryDto = new UserFromDirectoryDto();
             userFromDirectoryDto.IdentityKey = this.userIdentityKeyDomainService.GetDtoIdentityKey(userDto);
@@ -209,7 +213,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
                 foreach (var user in result.UsersAddedDtos)
                 {
                     userDto.Id = user.Id;
-                    await this.UpdateAsync<UserDto, UserMapper<TUser>>(userDto, mapperMode: "RolesInit");
+                    await this.UpdateAsync<TUserDto, TUserMapper>(userDto, mapperMode: "RolesInit");
                 }
             }
 
@@ -367,7 +371,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         }
 
         /// <inheritdoc cref="IUserAppService.SaveAsync"/>
-        public async Task<string> SaveAsync(List<UserDto> userDtos)
+        public async Task<string> SaveAsync(List<TUserDto> userDtos)
         {
             StringBuilder strBldr = new StringBuilder();
 
@@ -401,7 +405,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
                     nbError++;
                 }
 
-                foreach (UserDto userDto in userDtos)
+                foreach (TUserDto userDto in userDtos)
                 {
                     try
                     {
@@ -422,7 +426,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
                         }
                         else if (canUpdate && userDto.DtoState == DtoState.Modified)
                         {
-                            await this.UpdateAsync<UserDto, UserMapper<TUser>>(userDto, mapperMode: "Roles");
+                            await this.UpdateAsync<TUserDto, TUserMapper>(userDto, mapperMode: "Roles");
                             this.Repository.UnitOfWork.Reset();
                             nbUpdated++;
                         }
@@ -469,7 +473,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <inheritdoc cref="IUserAppService.GetCsvAsync"/>
         public virtual async Task<byte[]> GetCsvAsync(PagingFilterFormatDto filters)
         {
-            return await this.GetCsvAsync<UserDto, UserMapper<TUser>, PagingFilterFormatDto>(filters: filters);
+            return await this.GetCsvAsync<TUserDto, TUserMapper, PagingFilterFormatDto>(filters: filters);
         }
 
         /// <inheritdoc cref="IUserAppService.SetDefaultSite"/>
