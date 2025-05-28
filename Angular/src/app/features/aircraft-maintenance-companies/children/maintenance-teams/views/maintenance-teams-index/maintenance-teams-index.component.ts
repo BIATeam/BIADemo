@@ -27,9 +27,9 @@ import { MaintenanceTeamService } from '../../services/maintenance-team.service'
   templateUrl: './maintenance-teams-index.component.html',
   styleUrls: ['./maintenance-teams-index.component.scss'],
   imports: [
-    NgIf,
     NgClass,
     PrimeTemplate,
+    NgIf,
     BiaButtonGroupComponent,
     MaintenanceTeamTableComponent,
     AsyncPipe,
@@ -48,9 +48,11 @@ export class MaintenanceTeamsIndexComponent
   extends CrudItemsIndexComponent<MaintenanceTeam>
   implements OnInit
 {
+  @ViewChild(MaintenanceTeamTableComponent, { static: false })
+  crudItemTableComponent: MaintenanceTeamTableComponent;
+
   // Customization for teams
   canViewMembers = false;
-  canSelectElement = false;
   // BIAToolKit - Begin MaintenanceTeamIndexTsCanViewChildDeclaration
   // BIAToolKit - End MaintenanceTeamIndexTsCanViewChildDeclaration
 
@@ -59,9 +61,6 @@ export class MaintenanceTeamsIndexComponent
       this.crudConfiguration.fieldsConfig.advancedFilter
     );
   }
-
-  @ViewChild(MaintenanceTeamTableComponent, { static: false })
-  crudItemTableComponent: MaintenanceTeamTableComponent;
 
   constructor(
     protected injector: Injector,
@@ -75,6 +74,8 @@ export class MaintenanceTeamsIndexComponent
 
   ngOnInit(): void {
     super.ngOnInit();
+    this.parentDisplayItemName$ =
+      this.maintenanceTeamService.aircraftMaintenanceCompanyService.displayItemName$;
     this.sub.add(
       this.biaTranslationService.currentCulture$.subscribe(() => {
         this.maintenanceTeamOptionsService.loadAllOptions();
@@ -92,19 +93,18 @@ export class MaintenanceTeamsIndexComponent
     this.canAdd = this.authService.hasPermission(
       Permission.MaintenanceTeam_Create
     );
-    // Customization for teams
-    this.canViewMembers = this.authService.hasPermission(
-      Permission.MaintenanceTeam_Member_List_Access
-    );
-    // BIAToolKit - Begin MaintenanceTeamIndexTsCanViewChildSet
-    // BIAToolKit - End MaintenanceTeamIndexTsCanViewChildSet
-    this.canSelectElement =
-      // BIAToolKit - Begin AircraftMaintenanceCompanyIndexTsCanSelectElementChildSet
-      // BIAToolKit - End AircraftMaintenanceCompanyIndexTsCanSelectElementChildSet
-      this.canViewMembers || this.canDelete;
     this.canFix = this.authService.hasPermission(
       Permission.MaintenanceTeam_Fix
     );
+    // BIAToolKit - Begin MaintenanceTeamIndexTsCanViewChildSet
+    // BIAToolKit - End MaintenanceTeamIndexTsCanViewChildSet
+    this.canViewMembers = this.authService.hasPermission(
+      Permission.MaintenanceTeam_Member_List_Access
+    );
+    this.canSelect =
+      // BIAToolKit - Begin MaintenanceTeamIndexTsCanSelectElementChildSet
+      // BIAToolKit - End MaintenanceTeamIndexTsCanSelectElementChildSet
+      this.canViewMembers || this.canDelete;
   }
 
   protected initSelectedButtonGroup() {
@@ -116,8 +116,8 @@ export class MaintenanceTeamsIndexComponent
         this.selectedCrudItems.length !== 1,
         this.translateService.instant('maintenanceTeam.edit')
       ),
-      // BIAToolKit - Begin AircraftMaintenanceCompanyIndexTsChildTeamButton
-      // BIAToolKit - End AircraftMaintenanceCompanyIndexTsChildTeamButton
+      // BIAToolKit - Begin MaintenanceTeamIndexTsChildTeamButton
+      // BIAToolKit - End MaintenanceTeamIndexTsChildTeamButton
       new BiaButtonGroupItem(
         this.translateService.instant('app.members'),
         () => this.onViewMembers(this.selectedCrudItems[0].id),
