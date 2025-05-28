@@ -67,17 +67,17 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         protected override async Task RunMonitoredTask()
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            bool accessAll = (principal as BiaClaimsPrincipal).GetUserPermissions().Any(x => x == BiaRights.Teams.AccessAll);
+            bool accessAll = (this.principal as BiaClaimsPrincipal).GetUserPermissions().Any(x => x == BiaRights.Teams.AccessAll);
 
             if (accessAll)
             {
                 var message = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + ": Hello from the job WithPermissionTask WITH AccessAll.";
-                Logger.LogInformation(message);
+                this.Logger.LogInformation(message);
             }
             else
             {
                 var message = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + ": Hello from the job WithPermissionTask WHITHOUT AccessAll.";
-                Logger.LogInformation(message);
+                this.Logger.LogInformation(message);
             }
         }
     }

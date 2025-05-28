@@ -1,4 +1,4 @@
-﻿// <copyright file="AdditionalInfoDto.cs" company="TheBIADevCompany">
+﻿// <copyright file="AdditionalInfoDto.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 

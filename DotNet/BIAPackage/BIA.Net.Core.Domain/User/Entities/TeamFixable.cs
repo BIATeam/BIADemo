@@ -1,11 +1,11 @@
-// <copyright file="TeamFixable.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+// <copyright file="TeamFixable.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Domain.User.Entities
 {
-    using BIA.Net.Core.Domain.Entity.Interface;
     using System;
+    using BIA.Net.Core.Domain.Entity.Interface;
 
     /// <summary>
     /// The team.

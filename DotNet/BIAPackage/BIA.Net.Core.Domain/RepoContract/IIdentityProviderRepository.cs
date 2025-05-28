@@ -1,12 +1,12 @@
-﻿// <copyright file="IIdentityProviderRepository.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+﻿// <copyright file="IIdentityProviderRepository.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Domain.Bia.RepoContract
 {
-    using BIA.Net.Core.Domain.User.Models;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.User.Models;
 
     /// <summary>
     /// Interface IdentityProviderRepository.

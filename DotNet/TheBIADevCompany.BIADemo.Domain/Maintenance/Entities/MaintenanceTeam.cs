@@ -5,11 +5,11 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Entities
 {
-    using BIA.Net.Core.Domain.User.Entities;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using BIA.Net.Core.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
     /// <summary>

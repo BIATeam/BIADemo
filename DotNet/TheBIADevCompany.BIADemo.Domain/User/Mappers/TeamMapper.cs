@@ -65,7 +65,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
                     Id = mem.RoleId,
                     IsDefault = mem.IsDefault,
                     Code = mem.Role.Code,
-                    Display = mem.Role.RoleTranslations.Where(rt => rt.Language.Code == UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? mem.Role.Label,
+                    Display = mem.Role.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? mem.Role.Label,
                 }).ToList(),
 
                 // Map the parent properties if usefull in project:

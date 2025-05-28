@@ -1,11 +1,11 @@
-// <copyright file="IEntityTeam.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+// <copyright file="IEntityTeam.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Domain.Entity.Interface
 {
-    using BIA.Net.Core.Domain.User.Entities;
     using System.Collections.Generic;
+    using BIA.Net.Core.Domain.User.Entities;
 
     /// <summary>
     /// The team.

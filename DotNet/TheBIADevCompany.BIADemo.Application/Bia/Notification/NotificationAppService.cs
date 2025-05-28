@@ -9,19 +9,18 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.Notification
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
+    using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
+    using BIA.Net.Core.Domain.Notification.Entities;
+    using BIA.Net.Core.Domain.Notification.Mappers;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    using BIA.Net.Core.Domain.Notification.Entities;
-    using BIA.Net.Core.Domain.Notification.Mappers;
-    using BIA.Net.Core.Common.Enum;
-    using BIA.Net.Core.Common;
 
     /// <summary>
     /// The application service used to manage views.

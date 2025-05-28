@@ -127,7 +127,6 @@ namespace BIA.Net.Core.Common
             public const string SaveSuffix = "_Member_Save";
         }
 
-
         /// <summary>
         /// The teams rights.
         /// </summary>

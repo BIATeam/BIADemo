@@ -1,8 +1,8 @@
-﻿// <copyright file="UserExtensions.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+﻿// <copyright file="UserExtensions.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.Bia.User
+namespace BIA.Net.Core.Domain.User
 {
     using BIA.Net.Core.Domain.User.Entities;
 

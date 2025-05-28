@@ -1,5 +1,5 @@
-// <copyright file="UserMapper.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+// <copyright file="UserMapper.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Domain.User.Mappers
@@ -49,11 +49,11 @@ namespace BIA.Net.Core.Domain.User.Mappers
                         user => user.Roles
                         .SelectMany(
                             role => role.RoleTranslations
-                            .Where(roleTranslation => roleTranslation.Language.Code == UserContext.Language)
+                            .Where(roleTranslation => roleTranslation.Language.Code == this.UserContext.Language)
                             .Select(roleTranslation => roleTranslation.Label))
                         .Union(
                             user.Roles
-                            .Where(role => !role.RoleTranslations.Any(rt => rt.Language.Code == UserContext.Language))
+                            .Where(role => !role.RoleTranslations.Any(rt => rt.Language.Code == this.UserContext.Language))
                             .Select(role => role.Label))
                         .OrderBy(x => x)
                     },
@@ -113,7 +113,7 @@ namespace BIA.Net.Core.Domain.User.Mappers
                 Roles = entity.Roles.Select(ca => new OptionDto
                 {
                     Id = ca.Id,
-                    Display = ca.RoleTranslations.Where(rt => rt.Language.Code == UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? ca.Label,
+                    Display = ca.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? ca.Label,
                 }).ToList(),
                 Teams = entity.Members
                 .OrderBy(m => m.Team.TeamTypeId)

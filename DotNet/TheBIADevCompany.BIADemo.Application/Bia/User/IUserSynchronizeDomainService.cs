@@ -4,13 +4,14 @@
 
 namespace TheBIADevCompany.BIADemo.Application.Bia.User
 {
+    using System.Threading.Tasks;
     using BIA.Net.Core.Domain.User.Entities;
     using BIA.Net.Core.Domain.User.Models;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface defining the user synchronize domain service.
     /// </summary>
+    /// <typeparam name="TUser">The type of user.</typeparam>
     public interface IUserSynchronizeDomainService<TUser>
         where TUser : User, new()
     {
