@@ -35,7 +35,10 @@ import { MaintenanceTeamService } from '../../../../services/maintenance-team.se
     MemberTableComponent,
   ],
   providers: [
-    { provide: CrudItemService, useExisting: MaintenanceTeamService },
+    {
+      provide: CrudItemService,
+      useExisting: MaintenanceTeamService,
+    },
   ],
 })
 export class MaintenanceTeamMembersIndexComponent
@@ -52,6 +55,7 @@ export class MaintenanceTeamMembersIndexComponent
   ngOnInit() {
     this.teamTypeId = TeamTypeId.MaintenanceTeam;
     super.ngOnInit();
+    this.memberService.parentService = this.maintenanceTeamService;
   }
 
   protected setPermissions() {
