@@ -7,35 +7,35 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
     using Microsoft.EntityFrameworkCore;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
 
     /// <summary>
     /// Class used to update the model builder for user domain.
     /// </summary>
-    public static class UserModelBuilder
+    public class UserModelBuilder
     {
         /// <summary>
         /// Create the user model.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        public static void CreateModel(ModelBuilder modelBuilder)
+        public virtual void CreateModel(ModelBuilder modelBuilder)
         {
-            CreateMemberModel(modelBuilder);
-            CreateUserModel(modelBuilder);
-            CreateRoleModel(modelBuilder);
-            CreateUserRoleModel(modelBuilder);
-            CreateMemberRoleModel(modelBuilder);
-            CreateTeamTypeModel(modelBuilder);
-            CreateTeamTypeRoleModel(modelBuilder);
-            CreateTeamModel(modelBuilder);
-            CreateUserDefaultTeamModel(modelBuilder);
+            this.CreateMemberModel(modelBuilder);
+            this.CreateUserModel(modelBuilder);
+            this.CreateRoleModel(modelBuilder);
+            this.CreateUserRoleModel(modelBuilder);
+            this.CreateMemberRoleModel(modelBuilder);
+            this.CreateTeamTypeModel(modelBuilder);
+            this.CreateTeamTypeRoleModel(modelBuilder);
+            this.CreateTeamModel(modelBuilder);
+            this.CreateUserDefaultTeamModel(modelBuilder);
         }
 
         /// <summary>
         /// Create the model for members.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        private static void CreateMemberModel(ModelBuilder modelBuilder)
+        public virtual void CreateMemberModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Member>().HasKey(m => m.Id);
             modelBuilder.Entity<Member>().Property(m => m.TeamId).IsRequired();
@@ -51,24 +51,14 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
         /// Create the model for users.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        private static void CreateUserModel(ModelBuilder modelBuilder)
+        public virtual void CreateUserModel(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<User>().HasKey(u => u.Id);
             modelBuilder.Entity<User>().Property(u => u.Email).HasMaxLength(256);
             modelBuilder.Entity<User>().Property(u => u.FirstName).IsRequired().HasMaxLength(50);
             modelBuilder.Entity<User>().Property(u => u.LastName).IsRequired().HasMaxLength(50);
             modelBuilder.Entity<User>().Property(u => u.Login).IsRequired().HasMaxLength(50);
-            modelBuilder.Entity<User>().Property(u => u.DistinguishedName).IsRequired().HasMaxLength(250);
-            modelBuilder.Entity<User>().Property(u => u.IsEmployee);
-            modelBuilder.Entity<User>().Property(u => u.IsExternal);
-            modelBuilder.Entity<User>().Property(u => u.ExternalCompany).HasMaxLength(50);
-            modelBuilder.Entity<User>().Property(u => u.Company).HasMaxLength(50);
-            modelBuilder.Entity<User>().Property(u => u.Site).HasMaxLength(50);
-            modelBuilder.Entity<User>().Property(u => u.Manager).HasMaxLength(250);
-            modelBuilder.Entity<User>().Property(u => u.Department).HasMaxLength(50);
-            modelBuilder.Entity<User>().Property(u => u.SubDepartment).HasMaxLength(50);
-            modelBuilder.Entity<User>().Property(u => u.Office).HasMaxLength(20);
-            modelBuilder.Entity<User>().Property(u => u.Country).HasMaxLength(10);
             modelBuilder.Entity<User>().Property(u => u.DaiDate).IsRequired();
             modelBuilder.Entity<User>().Property(u => u.IsActive).IsRequired();
 
@@ -79,7 +69,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
         ///  Create the model for user role.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        private static void CreateUserRoleModel(ModelBuilder modelBuilder)
+        public virtual void CreateUserRoleModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()
                     .HasMany(p => p.Roles)
@@ -94,7 +84,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
         /// Create the model for teams.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        private static void CreateTeamModel(ModelBuilder modelBuilder)
+        public virtual void CreateTeamModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Team>().ToTable("Teams");
             modelBuilder.Entity<Team>().HasKey(t => t.Id);
@@ -106,7 +96,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
         /// Create the model for teams.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        private static void CreateTeamTypeModel(ModelBuilder modelBuilder)
+        public virtual void CreateTeamTypeModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TeamType>().HasKey(t => t.Id);
             modelBuilder.Entity<TeamType>().Property(r => r.Name).IsRequired().HasMaxLength(32);
@@ -132,7 +122,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
         /// Create the model for roles.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        private static void CreateRoleModel(ModelBuilder modelBuilder)
+        public virtual void CreateRoleModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Role>().HasKey(r => r.Id);
             modelBuilder.Entity<Role>().Property(r => r.Code).IsRequired().HasMaxLength(50);
@@ -180,7 +170,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
         /// Create the model for member roles.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        private static void CreateTeamTypeRoleModel(ModelBuilder modelBuilder)
+        public virtual void CreateTeamTypeRoleModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Role>()
                 .HasMany(p => p.TeamTypes)
@@ -222,7 +212,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
         /// Create the model for member roles.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        private static void CreateMemberRoleModel(ModelBuilder modelBuilder)
+        public virtual void CreateMemberRoleModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<MemberRole>().HasKey(mr => new { mr.MemberId, mr.RoleId });
             modelBuilder.Entity<MemberRole>().HasOne(mr => mr.Member).WithMany(m => m.MemberRoles).HasForeignKey(mr => mr.MemberId);
@@ -233,7 +223,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
         /// Create the model for user default teams.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        private static void CreateUserDefaultTeamModel(ModelBuilder modelBuilder)
+        public virtual void CreateUserDefaultTeamModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserDefaultTeam>().HasIndex(udt => new { udt.UserId, udt.TeamId }).IsUnique();
         }

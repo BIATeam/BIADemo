@@ -112,20 +112,23 @@ namespace BIA.Net.Core.IocContainer
 
             foreach (var (classType, interfaceType) in mappings)
             {
-                switch (serviceLifetime)
+                if (!collection.Any(s => s.ServiceType == interfaceType))
                 {
-                    case ServiceLifetime.Singleton:
-                        collection.AddSingleton(interfaceType, classType);
-                        break;
-                    case ServiceLifetime.Scoped:
-                        collection.AddScoped(interfaceType, classType);
-                        break;
-                    case ServiceLifetime.Transient:
-                        collection.AddTransient(interfaceType, classType);
-                        break;
-                    default:
-                        collection.AddScoped(interfaceType, classType);
-                        break;
+                    switch (serviceLifetime)
+                    {
+                        case ServiceLifetime.Singleton:
+                            collection.AddSingleton(interfaceType, classType);
+                            break;
+                        case ServiceLifetime.Scoped:
+                            collection.AddScoped(interfaceType, classType);
+                            break;
+                        case ServiceLifetime.Transient:
+                            collection.AddTransient(interfaceType, classType);
+                            break;
+                        default:
+                            collection.AddScoped(interfaceType, classType);
+                            break;
+                    }
                 }
             }
         }

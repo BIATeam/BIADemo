@@ -13,12 +13,12 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Domain.Bia.Base.Mappers;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.Dto.Bia.User;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// The mapper used for user.
@@ -27,16 +27,17 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
     /// Initializes a new instance of the <see cref="UserMapper"/> class.
     /// </remarks>
     /// <param name="userContext">the user context.</param>
-    public class UserMapper(UserContext userContext) : BaseMapper<UserDto, User, int>()
+    public class UserMapper<TUser>(UserContext userContext) : BaseMapper<UserDto, TUser, int>()
+        where TUser : User, IEntity<int>, new()
     {
         /// <summary>
         /// Gets or sets the collection used for expressions to access fields.
         /// </summary>
-        public override ExpressionCollection<User> ExpressionCollection
+        public override ExpressionCollection<TUser> ExpressionCollection
         {
             get
             {
-                return new ExpressionCollection<User>(base.ExpressionCollection)
+                return new ExpressionCollection<TUser>(base.ExpressionCollection)
                 {
                     { HeaderName.LastName, user => user.LastName },
                     { HeaderName.FirstName, user => user.FirstName },
@@ -70,7 +71,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         private UserContext UserContext { get; set; } = userContext;
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
-        public override void DtoToEntity(UserDto dto, ref User entity, string mapperMode, IUnitOfWork context)
+        public override void DtoToEntity(UserDto dto, ref TUser entity, string mapperMode, IUnitOfWork context)
         {
             base.DtoToEntity(dto, ref entity, mapperMode, context);
 
@@ -100,7 +101,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         /// </summary>
         /// <param name="mapperMode">the mode for mapping.</param>
         /// <returns>The user DTO.</returns>
-        public override Expression<Func<User, UserDto>> EntityToDto(string mapperMode)
+        public override Expression<Func<TUser, UserDto>> EntityToDto(string mapperMode)
         {
             return this.EntityToDto().CombineMapping(entity => new UserDto
             {
@@ -139,7 +140,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesForUpdate"/>
-        public override Expression<Func<User, object>>[] IncludesForUpdate()
+        public override Expression<Func<TUser, object>>[] IncludesForUpdate()
         {
             return
             [

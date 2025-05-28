@@ -23,6 +23,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Base;
 
     /// <summary>
@@ -38,7 +39,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// <summary>
         /// The member application service.
         /// </summary>
-        private readonly IUserAppService userService;
+        private readonly IUserAppService<UserExtended> userService;
 
         /// <summary>
         /// The user context service for message translation.
@@ -76,7 +77,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// <param name="teamAppService">The team service.</param>
         /// <param name="userContextService">The user context service.</param>
         public MembersController(
-            IUserAppService userService,
+            IUserAppService<UserExtended> userService,
             IMemberAppService memberService,
             IUserContextService userContextService,
             ITeamAppService teamAppService)

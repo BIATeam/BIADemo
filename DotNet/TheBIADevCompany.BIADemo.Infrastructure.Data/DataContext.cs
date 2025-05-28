@@ -74,7 +74,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// <summary>
         /// Gets or sets the User DBSet.
         /// </summary>
-        public DbSet<User> Users { get; set; }
+        public DbSet<UserExtended> Users { get; set; }
 
         /// <summary>
         /// Gets or sets the User DBSet.
@@ -195,7 +195,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
 
             TranslationModelBuilder.CreateModel(modelBuilder);
             SiteModelBuilder.CreateSiteModel(modelBuilder);
-            UserModelBuilder.CreateModel(modelBuilder);
+            new UserExtendedModelBuilder().CreateModel(modelBuilder);
             ViewModelBuilder.CreateModel(modelBuilder);
             NotificationModelBuilder.CreateModel(modelBuilder);
             AuditModelBuilder.CreateModel(modelBuilder);

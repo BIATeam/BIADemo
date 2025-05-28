@@ -9,7 +9,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Entities
     using BIA.Net.Core.Domain.Entity;
     using TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities;
     using TheBIADevCompany.BIADemo.Domain.Bia.Translation.Entities;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// The role entity.

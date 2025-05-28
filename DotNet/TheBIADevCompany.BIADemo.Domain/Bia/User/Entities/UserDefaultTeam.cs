@@ -5,7 +5,6 @@
 namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Entities
 {
     using BIA.Net.Core.Domain.Entity;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// The user team default entity.

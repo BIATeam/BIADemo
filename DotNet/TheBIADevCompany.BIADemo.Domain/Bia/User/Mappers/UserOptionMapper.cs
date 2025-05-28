@@ -10,15 +10,16 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers
     using BIA.Net.Core.Domain.Dto.Option;
     using TheBIADevCompany.BIADemo.Domain.Bia.Base.Mappers;
     using TheBIADevCompany.BIADemo.Domain.Bia.User;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
 
     /// <summary>
     /// The mapper used for user option.
     /// </summary>
-    public class UserOptionMapper : BaseMapper<OptionDto, User, int>
+    public class UserOptionMapper<TUser> : BaseMapper<OptionDto, TUser, int>
+        where TUser : User, new()
     {
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
-        public override Expression<Func<User, OptionDto>> EntityToDto()
+        public override Expression<Func<TUser, OptionDto>> EntityToDto()
         {
             return base.EntityToDto().CombineMapping(entity => new OptionDto
             {

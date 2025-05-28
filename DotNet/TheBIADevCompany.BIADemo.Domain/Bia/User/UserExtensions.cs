@@ -4,7 +4,7 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Bia.User
 {
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
 
     /// <summary>
     /// Extension for User.

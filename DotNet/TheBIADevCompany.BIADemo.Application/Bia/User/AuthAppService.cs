@@ -24,10 +24,12 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Models;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Services;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User;
+    using static TheBIADevCompany.BIADemo.Crosscutting.Common.Rights;
 
     /// <summary>
     /// Auth App Service.
@@ -73,7 +75,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <summary>
         /// The role section in the BiaNet configuration.
         /// </summary>
-        private readonly IEnumerable<Role> rolesConfiguration;
+        private readonly IEnumerable<BIA.Net.Core.Common.Configuration.Role> rolesConfiguration;
 
         /// <summary>
         /// The identity provider repository.
@@ -83,7 +85,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <summary>
         /// The user application service.
         /// </summary>
-        private readonly IUserAppService userAppService;
+        private readonly IUserAppService<Domain.User.Entities.UserExtended> userAppService;
 
         /// <summary>
         /// The team application service.
@@ -113,7 +115,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="ldapRepositoryHelper">The LDAP repository helper.</param>
         public AuthAppService(
 #if BIA_FRONT_FEATURE
-            IUserAppService userAppService,
+            IUserAppService<Domain.User.Entities.UserExtended> userAppService,
             ITeamAppService teamAppService,
             IRoleAppService roleAppService,
             IIdentityProviderRepository identityProviderRepository,
@@ -522,7 +524,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
 
                         if (userFromDirectory != null)
                         {
-                            Domain.User.Entities.User user = await this.userAppService.AddUserFromUserDirectoryAsync(identityKey, userFromDirectory);
+                            Domain.User.Entities.UserExtended user = await this.userAppService.AddUserFromUserDirectoryAsync(identityKey, userFromDirectory);
                             userInfo = this.userAppService.CreateUserInfo(user);
                         }
                     }

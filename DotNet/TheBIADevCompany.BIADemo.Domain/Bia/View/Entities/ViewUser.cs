@@ -5,7 +5,7 @@
 namespace TheBIADevCompany.BIADemo.Domain.Bia.View.Entities
 {
     using BIA.Net.Core.Domain;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
 
     /// <summary>
     /// The mapping entity between users and views.

@@ -11,6 +11,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.Job
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Application.Bia.User;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// Task to synchronize users from LDAP.
@@ -18,7 +19,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.Job
     [AutomaticRetry(Attempts = 2, LogEvents = true)]
     public class SynchronizeUserTask : BaseJob
     {
-        private readonly IUserAppService userService;
+        private readonly IUserAppService<Domain.User.Entities.UserExtended> userService;
 
         /// <summary>
         /// The configuration of the BiaNet section.
@@ -31,7 +32,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.Job
         /// <param name="configuration">The configuration.</param>
         /// <param name="userService">The user app service.</param>
         /// <param name="logger">logger.</param>
-        public SynchronizeUserTask(IConfiguration configuration, IUserAppService userService, ILogger<SynchronizeUserTask> logger)
+        public SynchronizeUserTask(IConfiguration configuration, IUserAppService<Domain.User.Entities.UserExtended> userService, ILogger<SynchronizeUserTask> logger)
             : base(configuration, logger)
         {
             this.userService = userService;

@@ -5,13 +5,14 @@
 namespace TheBIADevCompany.BIADemo.Application.Bia.User
 {
     using System.Threading.Tasks;
+    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.Bia.User.Models;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// The interface defining the user synchronize domain service.
     /// </summary>
-    public interface IUserSynchronizeDomainService
+    public interface IUserSynchronizeDomainService<TUser>
+        where TUser : User, new()
     {
         /// <summary>
         /// Synchronize the users in DB from the Idp.
@@ -32,19 +33,19 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="userFormDirectory">the user in Directory.</param>
         /// <param name="foundUser">the User if exist in repository.</param>
         /// <returns>The async task.</returns>
-        User AddOrActiveUserFromDirectory(UserFromDirectory userFormDirectory, User foundUser);
+        TUser AddOrActiveUserFromDirectory(UserFromDirectory userFormDirectory, TUser foundUser);
 
         /// <summary>
         /// Deactivaye a user.
         /// </summary>
         /// <param name="user">The user to deactivate.</param>
-        void DeactivateUser(User user);
+        void DeactivateUser(TUser user);
 
         /// <summary>
         /// Updates the user field from directory.
         /// </summary>
         /// <param name="user">The user.</param>
         /// <param name="userDirectory">The user directory.</param>
-        void UpdateUserFieldFromDirectory(User user, UserFromDirectory userDirectory);
+        void UpdateUserFieldFromDirectory(TUser user, UserFromDirectory userDirectory);
     }
 }
