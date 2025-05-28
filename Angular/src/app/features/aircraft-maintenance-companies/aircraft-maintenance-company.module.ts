@@ -85,7 +85,7 @@ export const ROUTES: Routes = [
           {
             path: 'maintenance-teams',
             data: {
-              breadcrumb: 'aircraftMaintenanceCompany.maintenanceTeams',
+              breadcrumb: 'app.maintenanceTeams',
               canNavigate: true,
               permission: Permission.MaintenanceTeam_List_Access,
               layoutMode: LayoutMode.fullPage,
