@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Enum;
 #if UseHubForClientInTeam
     using BIA.Net.Core.Application.Services;
@@ -81,7 +82,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Teams.Options)]
+        [Authorize(Roles = BiaRights.Teams.Options)]
         public async Task<IActionResult> GetAllOptions()
         {
             var results = await this.teamService.GetAllOptionsAsync();
@@ -96,7 +97,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Teams.ListAccess)]
+        [Authorize(Roles = BiaRights.Teams.ListAccess)]
         public async Task<IActionResult> GetAll()
         {
             var results = await this.teamService.GetAllAsync();
@@ -114,7 +115,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Teams.SetDefaultTeam)]
+        [Authorize(Roles = BiaRights.Teams.SetDefaultTeam)]
         public async Task<IActionResult> SetDefaultTeam(int teamTypeId, int teamId)
         {
             if (teamId == 0 || teamTypeId == 0)
@@ -147,7 +148,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Teams.SetDefaultTeam)]
+        [Authorize(Roles = BiaRights.Teams.SetDefaultTeam)]
         public async Task<IActionResult> ResetDefaultTeam(int teamTypeId)
         {
             if (teamTypeId == 0)
@@ -181,7 +182,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Teams.SetDefaultRoles)]
+        [Authorize(Roles = BiaRights.Teams.SetDefaultRoles)]
         public async Task<IActionResult> SetDefaultRoles(int teamId, List<int> roleIds)
         {
             if (teamId == 0)
@@ -214,7 +215,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Teams.SetDefaultRoles)]
+        [Authorize(Roles = BiaRights.Teams.SetDefaultRoles)]
         public async Task<IActionResult> ResetDefaultRoles(int teamId)
         {
             if (teamId == 0)

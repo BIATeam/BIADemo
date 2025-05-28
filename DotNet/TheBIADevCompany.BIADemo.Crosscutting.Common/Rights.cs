@@ -9,63 +9,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
     /// </summary>
     public static class Rights
     {
-        /// <summary>
-        /// The home rights.
-        /// </summary>
-        public static class Home
-        {
-            /// <summary>
-            /// The right to access the home.
-            /// </summary>
-            public const string Access = "Home_Access";
-        }
-
-        /// <summary>
-        /// The logs rights.
-        /// </summary>
-        public static class Logs
-        {
-            /// <summary>
-            /// The right to create logs.
-            /// </summary>
-            public const string Create = "Logs_Create";
-        }
-
-        /// <summary>
-        /// The members rights.
-        /// </summary>
-        public static class Members
-        {
-            /// <summary>
-            /// The right to access to the list of members.
-            /// </summary>
-            public const string ListAccessSuffix = "_Member_List_Access";
-
-            /// <summary>
-            /// The right to create members.
-            /// </summary>
-            public const string CreateSuffix = "_Member_Create";
-
-            /// <summary>
-            /// The right to read members.
-            /// </summary>
-            public const string ReadSuffix = "_Member_Read";
-
-            /// <summary>
-            /// The right to update members.
-            /// </summary>
-            public const string UpdateSuffix = "_Member_Update";
-
-            /// <summary>
-            /// The right to delete members.
-            /// </summary>
-            public const string DeleteSuffix = "_Member_Delete";
-
-            /// <summary>
-            /// The right to save members.
-            /// </summary>
-            public const string SaveSuffix = "_Member_Save";
-        }
+        // Begin BIADemo
 
         // Begin BIAToolKit Generation Ignore
         // BIAToolKit - Begin Partial RightsForOption Country
@@ -431,44 +375,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         // End BIADemo
 
         /// <summary>
-        /// The roles rights.
-        /// </summary>
-        public static class Roles
-        {
-            /// <summary>
-            /// The right to access to the list of roles (options only).
-            /// </summary>
-            public const string Options = "Roles_Options";
-
-            /// <summary>
-            /// The right to get the roles of the current user.
-            /// </summary>
-            public const string ListForCurrentUser = "Roles_List_For_Current_User";
-        }
-
-        /// <summary>
-        /// The roles rights.
-        /// </summary>
-        public static class Permissions
-        {
-            /// <summary>
-            /// The right to access to the list of permissions (options only).
-            /// </summary>
-            public const string Options = "Permissions_Options";
-        }
-
-        /// <summary>
-        /// The LDAP domains rights.
-        /// </summary>
-        public static class LdapDomains
-        {
-            /// <summary>
-            /// The right to get all LDAP domains.
-            /// </summary>
-            public const string List = "LdapDomains_List";
-        }
-
-        /// <summary>
         /// The sites rights.
         /// </summary>
         public static class Sites
@@ -509,46 +415,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Options = "Site_Options";
         }
 
-        /// <summary>
-        /// The teams rights.
-        /// </summary>
-        public static class Teams
-        {
-            /// <summary>
-            /// The right to access to the list of teams (options only).
-            /// </summary>
-            public const string Options = "Team_Options";
-
-            /// <summary>
-            /// The right to access to all sites.
-            /// </summary>
-            public const string AccessAll = "Team_Access_All";
-
-            /// <summary>
-            /// The right to access to the list of sites.
-            /// </summary>
-            public const string ListAccess = "Team_List_Access";
-
-            /// <summary>
-            /// The right to set default site.
-            /// </summary>
-            public const string SetDefaultTeam = "Team_Set_Default_Team";
-
-            /// <summary>
-            /// The right to set default role.
-            /// </summary>
-            public const string SetDefaultRoles = "Team_Set_Default_Roles";
-        }
-
-        /// <summary>
-        /// The users rights.
-        /// </summary>
-        public static class Users
-        {
-            /// <summary>
-            /// The right to access to the list of user (options only).
-            /// </summary>
-            public const string Options = "User_Options";
+        // Begin BIADemo
 
             /// <summary>
             /// The right to access to the list of users.
@@ -695,7 +562,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         }
 
         /// <summary>
-        /// The Impersonation rights.
+        /// The maintenanceContracts rights.
         /// </summary>
         public static class Impersonation
         {
@@ -704,6 +571,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             public const string ConnectionRights = "Impersonation_Connection_Rights";
         }
+
+        // End BIADemo
 
         // BIAToolKit - Begin Rights
         // BIAToolKit - End Rights

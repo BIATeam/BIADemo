@@ -11,6 +11,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Job;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.RepoContract;
@@ -66,7 +67,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         protected override async Task RunMonitoredTask()
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            bool accessAll = (principal as BiaClaimsPrincipal).GetUserPermissions().Any(x => x == Rights.Teams.AccessAll);
+            bool accessAll = (principal as BiaClaimsPrincipal).GetUserPermissions().Any(x => x == BiaRights.Teams.AccessAll);
 
             if (accessAll)
             {

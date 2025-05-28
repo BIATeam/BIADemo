@@ -6,6 +6,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
 {
     using System.Security.Principal;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
@@ -44,7 +45,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Roles.Options)]
+        [Authorize(Roles = BiaRights.Roles.Options)]
         public async Task<IActionResult> GetAllOptions(int teamTypeId)
         {
             var results = await this.roleService.GetAllOptionsAsync(teamTypeId);

@@ -6,6 +6,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
 {
     using System;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.View;
@@ -44,7 +45,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         /// <returns>The list of views.</returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [Authorize(Roles = Rights.Views.List)]
+        [Authorize(Roles = BiaRights.Views.List)]
         public async Task<IActionResult> GetAll()
         {
             var results = await this.viewAppService.GetAllAsync();
@@ -63,7 +64,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Views.UpdateUserView)]
+        [Authorize(Roles = BiaRights.Views.UpdateUserView)]
         public async Task<IActionResult> UpdateUserView(int id, [FromBody] ViewDto dto)
         {
             return await this.UpdateView(id, dto);
@@ -78,7 +79,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Views.AddUserView)]
+        [Authorize(Roles = BiaRights.Views.AddUserView)]
         public async Task<IActionResult> AddUserView([FromBody] ViewDto dto)
         {
             try
@@ -102,7 +103,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Views.DeleteUserView)]
+        [Authorize(Roles = BiaRights.Views.DeleteUserView)]
         public async Task<IActionResult> RemoveUserView(int id)
         {
             if (id == 0)
@@ -138,7 +139,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Views.SetDefaultUserView)]
+        [Authorize(Roles = BiaRights.Views.SetDefaultUserView)]
         public async Task<IActionResult> SetDefaultUserView(int id, [FromBody] DefaultViewDto dto)
         {
             if (id == 0 || dto == null || dto.Id != id)
@@ -173,7 +174,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateTeamView(int id, [FromBody] TeamViewDto dto)
         {
-            if (!this.IsAuthorizeForTeam(dto.TeamId, Rights.Views.UpdateTeamViewSuffix).Result)
+            if (!this.IsAuthorizeForTeam(dto.TeamId, BiaRights.Views.UpdateTeamViewSuffix).Result)
             {
                 return this.StatusCode(StatusCodes.Status403Forbidden);
             }
@@ -193,7 +194,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> AddTeamView([FromBody] TeamViewDto dto)
         {
-            if (!this.IsAuthorizeForTeam(dto.TeamId, Rights.Views.AddTeamViewSuffix).Result)
+            if (!this.IsAuthorizeForTeam(dto.TeamId, BiaRights.Views.AddTeamViewSuffix).Result)
             {
                 return this.StatusCode(StatusCodes.Status403Forbidden);
             }
@@ -219,7 +220,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Views.DeleteTeamView)]
+        [Authorize(Roles = BiaRights.Views.DeleteTeamView)]
         public async Task<IActionResult> RemoveTeamView(int id)
         {
             if (id == 0)
@@ -258,7 +259,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> SetDefaultTeamView(int id, [FromBody] DefaultTeamViewDto dto)
         {
-            if (!this.IsAuthorizeForTeam(dto.TeamId, Rights.Views.SetDefaultTeamViewSuffix).Result)
+            if (!this.IsAuthorizeForTeam(dto.TeamId, BiaRights.Views.SetDefaultTeamViewSuffix).Result)
             {
                 return this.StatusCode(StatusCodes.Status403Forbidden);
             }
@@ -295,7 +296,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> AssignViewToTeam(int id, [FromBody] AssignViewToTeamDto dto)
         {
-            if (!this.IsAuthorizeForTeam(dto.TeamId, Rights.Views.AssignToTeamSuffix).Result)
+            if (!this.IsAuthorizeForTeam(dto.TeamId, BiaRights.Views.AssignToTeamSuffix).Result)
             {
                 return this.StatusCode(StatusCodes.Status403Forbidden);
             }

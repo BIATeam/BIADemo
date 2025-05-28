@@ -21,6 +21,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.Notification
     using BIA.Net.Core.Domain.Notification.Entities;
     using BIA.Net.Core.Domain.Notification.Mappers;
     using BIA.Net.Core.Common.Enum;
+    using BIA.Net.Core.Common;
 
     /// <summary>
     /// The application service used to manage views.
@@ -55,7 +56,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.Notification
             this.Repository.QueryCustomizer = queryCustomizer;
             this.clientForHubService = clientForHubService;
             this.userId = (principal as BiaClaimsPrincipal).GetUserId();
-            bool isTeamAccesAll = (principal as BiaClaimsPrincipal).GetUserPermissions().Any(x => x == Rights.Teams.AccessAll);
+            bool isTeamAccesAll = (principal as BiaClaimsPrincipal).GetUserPermissions().Any(x => x == BiaRights.Teams.AccessAll);
 
             this.FiltersContext.Add(
                  AccessMode.Read,

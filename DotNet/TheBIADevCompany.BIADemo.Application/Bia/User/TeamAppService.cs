@@ -12,6 +12,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
@@ -61,7 +62,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         {
             var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
             IEnumerable<string> currentUserPermissions = (principal as BiaClaimsPrincipal).GetUserPermissions();
-            bool accessAll = currentUserPermissions?.Any(x => x == Rights.Teams.AccessAll) == true;
+            bool accessAll = currentUserPermissions?.Any(x => x == BiaRights.Teams.AccessAll) == true;
             int userId = (principal as BiaClaimsPrincipal).GetUserId();
 
             return ReadSpecification<TTeam>(teamTypeId, userData, accessAll, userId);
@@ -241,7 +242,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             userId = userId > 0 ? userId : this.principal.GetUserId();
 
             TeamMapper mapper = this.InitMapper<BaseDtoVersionedTeam, TeamMapper>();
-            if (userPermissions?.Any(x => x == Rights.Teams.AccessAll) == true)
+            if (userPermissions?.Any(x => x == BiaRights.Teams.AccessAll) == true)
             {
                 return await this.Repository.GetAllResultAsync(mapper.EntityToDto(userId));
             }
