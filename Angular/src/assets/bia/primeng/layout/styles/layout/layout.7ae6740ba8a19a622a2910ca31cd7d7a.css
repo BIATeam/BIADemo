@@ -3301,6 +3301,7 @@ body {
 
 .layout-menu-dark {
   --active-menuitem-text-color: var(--primary-color);
+  --active-menuitem-bg: #1e2732;
 }
 
 .layout-menu-light {
