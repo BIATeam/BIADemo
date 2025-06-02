@@ -67,14 +67,17 @@ export abstract class CrudItemComponent<CrudItem extends BaseDto> {
   protected notifyLayoutChange(layoutMode: LayoutMode) {
     switch (layoutMode) {
       case LayoutMode.popup:
+        this.crudConfiguration.useCalcMode = false;
         this.crudConfiguration.useSplit = false;
         this.crudConfiguration.usePopup = true;
         break;
       case LayoutMode.splitPage:
+        this.crudConfiguration.useCalcMode = false;
         this.crudConfiguration.useSplit = true;
         this.crudConfiguration.usePopup = false;
         break;
       case LayoutMode.fullPage:
+        this.crudConfiguration.useCalcMode = false;
         this.crudConfiguration.useSplit = false;
         this.crudConfiguration.usePopup = false;
         break;
