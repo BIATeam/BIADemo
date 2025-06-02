@@ -32,7 +32,7 @@ import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 import { Tooltip } from 'primeng/tooltip';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
-import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
+import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { JsonValidator } from 'src/app/shared/bia-shared/validators/json.validator';

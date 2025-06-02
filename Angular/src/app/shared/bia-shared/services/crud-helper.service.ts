@@ -1,5 +1,5 @@
-import { BaseDto } from '../model/base-dto';
 import { DtoState } from '../model/dto-state.enum';
+import { BaseDto } from '../model/dto/base-dto';
 
 export class CrudHelperService {
   public static readonly newIdStartingValue: number = -1;

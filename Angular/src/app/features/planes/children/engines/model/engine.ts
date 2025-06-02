@@ -1,5 +1,4 @@
 import { Validators } from '@angular/forms';
-import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import {
   BiaFieldConfig,
   BiaFieldNumberFormat,
@@ -9,10 +8,13 @@ import {
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { BiaFormLayoutConfig } from 'src/app/shared/bia-shared/model/bia-form-layout-config';
+import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
+import { FixableDto } from 'src/app/shared/bia-shared/model/dto/fixable-dto';
+import { VersionedDto } from 'src/app/shared/bia-shared/model/dto/versioned-dto';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 // TODO after creation of CRUD Engine : adapt the model
-export class Engine extends BaseDto {
+export interface Engine extends BaseDto, FixableDto, VersionedDto {
   reference: string;
   manufacturer: string | null;
   nextMaintenanceDate: Date;

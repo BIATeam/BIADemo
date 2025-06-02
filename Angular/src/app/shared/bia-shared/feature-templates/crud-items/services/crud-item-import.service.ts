@@ -6,7 +6,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { DateHelperService } from 'src/app/core/bia-core/services/date-helper.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
-import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
+import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 import { BiaFormComponent } from '../../../components/form/bia-form/bia-form.component';
 import { DictOptionDto } from '../../../components/table/bia-table/dict-option-dto';

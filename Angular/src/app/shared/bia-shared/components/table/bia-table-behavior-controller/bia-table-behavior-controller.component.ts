@@ -15,7 +15,7 @@ import { Subscription } from 'rxjs';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { CrudConfig } from '../../../feature-templates/crud-items/model/crud-config';
 import { CrudItemService } from '../../../feature-templates/crud-items/services/crud-item.service';
-import { BaseDto } from '../../../model/base-dto';
+import { BaseDto } from '../../../model/dto/base-dto';
 
 export interface BiaBehaviorIcon {
   name: 'CalcMode' | 'Popup' | 'Split' | 'FullPage';

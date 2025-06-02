@@ -16,7 +16,7 @@ import {
   ImportData,
   ImportParam,
 } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-import.service';
-import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
+import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
 import {
   BiaFieldConfig,
   PropType,

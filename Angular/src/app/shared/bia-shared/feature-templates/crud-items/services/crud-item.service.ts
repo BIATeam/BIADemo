@@ -4,7 +4,7 @@ import { EMPTY, first, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AbstractDas } from 'src/app/core/bia-core/services/abstract-das.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
-import { BaseDto } from '../../../model/base-dto';
+import { BaseDto } from '../../../model/dto/base-dto';
 import { CrudItemOptionsService } from './crud-item-options.service';
 import { CrudItemSignalRService } from './crud-item-signalr.service';
 import { CrudItemSingleService } from './crud-item-single.service';

@@ -2,7 +2,7 @@ import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { filter, first, map, Observable, skip, take } from 'rxjs';
 import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
-import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
+import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
 import { clone } from 'src/app/shared/bia-shared/utils';
 import { CrudItemFormComponent } from '../../components/crud-item-form/crud-item-form.component';
 import { CrudItemSingleService } from '../../services/crud-item-single.service';

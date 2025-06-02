@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { BaseDto } from '../../../model/base-dto';
 import { DtoState } from '../../../model/dto-state.enum';
+import { BaseDto } from '../../../model/dto/base-dto';
 import { CrudItemOptionsService } from './crud-item-options.service';
 
 @Injectable({

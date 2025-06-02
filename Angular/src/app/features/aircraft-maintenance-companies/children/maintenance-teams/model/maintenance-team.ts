@@ -1,9 +1,5 @@
 import { Validators } from '@angular/forms';
 import {
-  BaseTeamDto,
-  teamFieldsConfigurationColumns,
-} from 'src/app/shared/bia-shared/model/base-team-dto';
-import {
   BiaFieldConfig,
   BiaFieldNumberFormat,
   BiaFieldsConfig,
@@ -12,10 +8,21 @@ import {
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { BiaFormLayoutConfig } from 'src/app/shared/bia-shared/model/bia-form-layout-config';
+import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
+import { FixableDto } from 'src/app/shared/bia-shared/model/dto/fixable-dto';
+import {
+  TeamDto,
+  teamFieldsConfigurationColumns,
+} from 'src/app/shared/bia-shared/model/dto/team-dto';
+import { VersionedDto } from 'src/app/shared/bia-shared/model/dto/versioned-dto';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 // TODO after creation of CRUD Team MaintenanceTeam : adapt the model
-export class MaintenanceTeam extends BaseTeamDto {
+export interface MaintenanceTeam
+  extends BaseDto,
+    TeamDto,
+    FixableDto,
+    VersionedDto {
   code: string | null;
   isActive: boolean;
   isApproved: boolean | null;

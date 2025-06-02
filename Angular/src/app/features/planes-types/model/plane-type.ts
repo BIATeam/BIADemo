@@ -1,12 +1,13 @@
-import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import {
   BiaFieldConfig,
   BiaFieldsConfig,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
+import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
+import { VersionedDto } from 'src/app/shared/bia-shared/model/dto/versioned-dto';
 
 // TODO after creation of CRUD PlaneType : adapt the model
-export interface PlaneType extends BaseDto {
+export interface PlaneType extends BaseDto, VersionedDto {
   title: string;
   certificationDate: Date;
 }

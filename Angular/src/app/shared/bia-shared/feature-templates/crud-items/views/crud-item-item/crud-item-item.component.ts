@@ -3,7 +3,7 @@ import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { first, Subscription } from 'rxjs';
 import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/services/layout.service';
-import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
+import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
 import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
 import { CrudItemService } from '../../services/crud-item.service';
 

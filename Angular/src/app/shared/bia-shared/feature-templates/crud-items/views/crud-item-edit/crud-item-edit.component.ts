@@ -12,7 +12,7 @@ import { Subscription, filter, first } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
 import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
-import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
+import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
 import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
 import { CrudItemFormComponent } from '../../components/crud-item-form/crud-item-form.component';
 import { FormReadOnlyMode } from '../../model/crud-config';
