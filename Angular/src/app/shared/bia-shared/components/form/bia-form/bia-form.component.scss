@@ -18,7 +18,7 @@
     }
 
     .info-locked-label {
-      color: #fbc02d;
+      color: var(--p-button-outlined-warn-color);
       font-weight: 500;
     }
   }
