@@ -1,4 +1,4 @@
-// <copyright file="UserAppService.cs" company="TheBIADevCompany">
+// <copyright file="BaseUserAppService.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -38,10 +38,10 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     /// <typeparam name="TUserDto">The type of user dto.</typeparam>
     /// <typeparam name="TUser">The type of user.</typeparam>
     /// <typeparam name="TUserMapper">The type of user mapper.</typeparam>
-    public class UserAppService<TUserDto, TUser, TUserMapper> : CrudAppServiceBase<TUserDto, TUser, int, PagingFilterFormatDto, TUserMapper>, IUserAppService<TUserDto, TUser>
-        where TUserDto : UserDto, new()
-        where TUser : User, IEntity<int>, new()
-        where TUserMapper : UserMapper<TUserDto, TUser>
+    public class BaseUserAppService<TUserDto, TUser, TUserMapper> : CrudAppServiceBase<TUserDto, TUser, int, PagingFilterFormatDto, TUserMapper>, IUserAppService<TUserDto, TUser>
+        where TUserDto : BaseUserDto, new()
+        where TUser : BaseUser, IEntity<int>, new()
+        where TUserMapper : BaseUserMapper<TUserDto, TUser>
     {
         /// <summary>
         /// The user synchronize domain service.
@@ -66,7 +66,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <summary>
         /// The logger.
         /// </summary>
-        private readonly ILogger<UserAppService<TUserDto, TUser, TUserMapper>> logger;
+        private readonly ILogger<BaseUserAppService<TUserDto, TUser, TUserMapper>> logger;
 
         private readonly IIdentityProviderRepository identityProviderRepository;
 
@@ -78,7 +78,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         private readonly BiaClaimsPrincipal principal;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UserAppService{TUserDto, TUser, TUserMapper}"/> class.
+        /// Initializes a new instance of the <see cref="BaseUserAppService{TUserDto, TUser, TUserMapper}"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="userSynchronizeDomainService">The user synchronize domain service.</param>
@@ -89,13 +89,13 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="identityProviderRepository">The identity provider repository.</param>
         /// <param name="userIdentityKeyDomainService">The user Identity Key Domain Service.</param>
         /// <param name="principal">The principal.</param>
-        public UserAppService(
+        public BaseUserAppService(
             ITGenericRepository<TUser, int> repository,
             IUserSynchronizeDomainService<TUser> userSynchronizeDomainService,
             IOptions<BiaNetSection> configuration,
             IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
             ITGenericRepository<UserDefaultTeam, int> userDefaultTeamRepository,
-            ILogger<UserAppService<TUserDto, TUser, TUserMapper>> logger,
+            ILogger<BaseUserAppService<TUserDto, TUser, TUserMapper>> logger,
             IIdentityProviderRepository identityProviderRepository,
             IUserIdentityKeyDomainService<TUser> userIdentityKeyDomainService,
             IPrincipal principal)

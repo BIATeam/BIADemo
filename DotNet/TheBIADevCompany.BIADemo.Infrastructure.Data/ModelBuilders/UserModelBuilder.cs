@@ -1,4 +1,4 @@
-// <copyright file="UserExtendedModelBuilder.cs" company="TheBIADevCompany">
+// <copyright file="UserModelBuilder.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -10,7 +10,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
     /// <summary>
     /// Class used to update the model builder for user domain.
     /// </summary>
-    public class UserExtendedModelBuilder : UserModelBuilder
+    public class UserModelBuilder : BaseUserModelBuilder
     {
         /// <summary>
         /// Create the model for users.
@@ -19,7 +19,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
         public override void CreateUserModel(ModelBuilder modelBuilder)
         {
             base.CreateUserModel(modelBuilder);
-            modelBuilder.Entity<UserExtended>(entity =>
+            modelBuilder.Entity<User>(entity =>
             {
                 entity.Property(u => u.DistinguishedName).IsRequired().HasMaxLength(250);
                 entity.Property(u => u.IsEmployee);

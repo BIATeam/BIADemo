@@ -1,4 +1,4 @@
-// <copyright file="UserMapper.cs" company="BIA">
+// <copyright file="BaseUserMapper.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -28,9 +28,9 @@ namespace BIA.Net.Core.Domain.User.Mappers
     /// <param name="userContext">the user context.</param>
     /// <typeparam name="TUserDto">The type of user dto.</typeparam>
     /// <typeparam name="TUser">The type of user.</typeparam>
-    public class UserMapper<TUserDto, TUser>(UserContext userContext) : BaseMapper<TUserDto, TUser, int>()
-        where TUser : User, IEntity<int>, new()
-        where TUserDto : UserDto, new()
+    public abstract class BaseUserMapper<TUserDto, TUser>(UserContext userContext) : BaseMapper<TUserDto, TUser, int>()
+        where TUser : BaseUser, IEntity<int>, new()
+        where TUserDto : BaseUserDto, new()
     {
         /// <summary>
         /// Gets or sets the collection used for expressions to access fields.

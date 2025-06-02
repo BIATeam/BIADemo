@@ -1,4 +1,4 @@
-// <copyright file="UserExtendedSynchronizeDomainService.cs" company="TheBIADevCompany">
+// <copyright file="UserSynchronizeDomainService.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -12,19 +12,19 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     /// <summary>
     /// The service used for synchronization between AD and DB.
     /// </summary>
-    public class UserExtendedSynchronizeDomainService : UserSynchronizeDomainService<UserExtended>
+    public class UserSynchronizeDomainService : BaseUserSynchronizeDomainService<User>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UserExtendedSynchronizeDomainService" /> class.
+        /// Initializes a new instance of the <see cref="UserSynchronizeDomainService" /> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="adHelper">The AD helper.</param>
         /// <param name="userIdentityKeyDomainService">The user IdentityKey Domain Service.</param>
         /// <param name="identityProviderRepository">The identity provider repository.</param>
-        public UserExtendedSynchronizeDomainService(
-            ITGenericRepository<UserExtended, int> repository,
+        public UserSynchronizeDomainService(
+            ITGenericRepository<User, int> repository,
             IUserDirectoryRepository<UserFromDirectory> adHelper,
-            IUserIdentityKeyDomainService<UserExtended> userIdentityKeyDomainService,
+            IUserIdentityKeyDomainService<User> userIdentityKeyDomainService,
             IIdentityProviderRepository identityProviderRepository)
             : base(repository, adHelper, userIdentityKeyDomainService, identityProviderRepository)
         {
@@ -35,7 +35,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// </summary>
         /// <param name="user">the user object to update.</param>
         /// <param name="userDirectory">the user from directory object containing values.</param>
-        public override void UpdateUserFieldFromDirectory(UserExtended user, UserFromDirectory userDirectory)
+        public override void UpdateUserFieldFromDirectory(User user, UserFromDirectory userDirectory)
         {
             base.UpdateUserFieldFromDirectory(user, userDirectory);
             user.Country = userDirectory.Country?.Length > 10 ? userDirectory.Country?.Substring(0, 10) : userDirectory.Country ?? string.Empty;

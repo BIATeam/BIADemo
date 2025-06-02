@@ -14,15 +14,15 @@ namespace BIA.Net.Core.Domain.User
     /// </summary>
     /// <typeparam name="TUser">The type of user.</typeparam>
     public static class UserSelectBuilder<TUser>
-        where TUser : User
+        where TUser : BaseUser
     {
         /// <summary>
         /// Gets the expression used to select user.
         /// </summary>
         /// <returns>The expression.</returns>
-        public static Expression<Func<TUser, UserDto>> EntityToDto()
+        public static Expression<Func<TUser, BaseUserDto>> EntityToDto()
         {
-            return user => new UserDto
+            return user => new BaseUserDto
             {
                 Id = user.Id,
                 FirstName = user.FirstName,

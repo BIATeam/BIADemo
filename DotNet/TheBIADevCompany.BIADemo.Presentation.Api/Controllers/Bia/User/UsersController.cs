@@ -34,7 +34,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// <summary>
         /// The service user.
         /// </summary>
-        private readonly UserExtendedAppService userService;
+        private readonly UserAppService userService;
 
 #if UseHubForClientInUser
         private readonly IClientForHubService clientForHubService;
@@ -60,7 +60,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// </summary>
         /// <param name="userService">The user service.</param>
         /// <param name="configuration">The configuration.</param>
-        public UsersController(UserExtendedAppService userService, IOptions<BiaNetSection> configuration)
+        public UsersController(UserAppService userService, IOptions<BiaNetSection> configuration)
 #endif
         {
 #if UseHubForClientInUser
@@ -179,7 +179,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Authorize(Roles = BiaRights.Users.Add)]
-        public async Task<IActionResult> Add([FromBody] UserExtendedDto dto)
+        public async Task<IActionResult> Add([FromBody] UserDto dto)
         {
             try
             {
@@ -236,7 +236,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = BiaRights.Users.UpdateRoles)]
-        public async Task<IActionResult> Update(int id, [FromBody] UserExtendedDto dto)
+        public async Task<IActionResult> Update(int id, [FromBody] UserDto dto)
         {
             if (id == 0 || dto == null || dto.Id != id)
             {
@@ -359,7 +359,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [Authorize(Roles = BiaRights.Users.Save)]
-        public async Task<IActionResult> Save(IEnumerable<UserExtendedDto> dtos)
+        public async Task<IActionResult> Save(IEnumerable<UserDto> dtos)
         {
             var dtoList = dtos.ToList();
             if (!dtoList.Any())

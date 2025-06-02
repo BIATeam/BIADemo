@@ -5,7 +5,7 @@
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class UserExtended : Migration
+    public partial class BaseUser : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -39,12 +39,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
             migrationBuilder.AddColumn<string>(
                 name: "Discriminator",
                 table: "Users",
-                type: "nvarchar(13)",
-                maxLength: 13,
+                type: "nvarchar(8)",
+                maxLength: 8,
                 nullable: false,
                 defaultValue: "");
 
-            migrationBuilder.Sql("UPDATE Users SET [Discriminator] = 'UserExtended'");
+            migrationBuilder.Sql("UPDATE Users SET [Discriminator] = 'User'");
         }
 
         /// <inheritdoc />

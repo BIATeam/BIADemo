@@ -1,4 +1,4 @@
-// <copyright file="User.cs" company="BIA">
+// <copyright file="BaseUser.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -15,7 +15,7 @@ namespace BIA.Net.Core.Domain.User.Entities
     /// The user entity.
     /// </summary>
     [AuditInclude]
-    public class User : BaseEntityVersioned<int>
+    public abstract class BaseUser : BaseEntityVersioned<int>
     {
         /// <summary>
         /// Gets or sets the email.

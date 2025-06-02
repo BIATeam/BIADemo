@@ -33,8 +33,8 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     /// <typeparam name="TUserDto">The type of user dto.</typeparam>
     /// <typeparam name="TUser">The type of user.</typeparam>
     public class AuthAppService<TUserDto, TUser> : IAuthAppService
-        where TUserDto : UserDto, new()
-        where TUser : User, IEntity<int>, new()
+        where TUserDto : BaseUserDto, new()
+        where TUser : BaseUser, IEntity<int>, new()
     {
         /// <summary>
         /// The logger.

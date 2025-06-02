@@ -1,4 +1,4 @@
-// <copyright file="UserExtendedDto.cs" company="TheBIADevCompany">
+// <copyright file="UserDto.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -13,7 +13,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.User
     /// <summary>
     /// The DTO used for user.
     /// </summary>
-    public class UserExtendedDto : UserDto
+    public class UserDto : BaseUserDto
     {
         /// <summary>
         /// Gets or sets the country.

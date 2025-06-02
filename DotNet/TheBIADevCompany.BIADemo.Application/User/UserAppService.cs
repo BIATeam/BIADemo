@@ -1,4 +1,4 @@
-// <copyright file="UserExtendedAppService.cs" company="TheBIADevCompany">
+// <copyright file="UserAppService.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -19,10 +19,10 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     /// <summary>
     /// The application service used for user.
     /// </summary>
-    public class UserExtendedAppService : UserAppService<UserExtendedDto, UserExtended, UserExtendedMapper>
+    public class UserAppService : BaseUserAppService<UserDto, User, UserMapper>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UserExtendedAppService"/> class.
+        /// Initializes a new instance of the <see cref="UserAppService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="userSynchronizeDomainService">The user synchronize domain service.</param>
@@ -33,15 +33,15 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="identityProviderRepository">The identity provider repository.</param>
         /// <param name="userIdentityKeyDomainService">The user Identity Key Domain Service.</param>
         /// <param name="principal">The principal.</param>
-        public UserExtendedAppService(
-            ITGenericRepository<UserExtended, int> repository,
-            IUserSynchronizeDomainService<UserExtended> userSynchronizeDomainService,
+        public UserAppService(
+            ITGenericRepository<User, int> repository,
+            IUserSynchronizeDomainService<User> userSynchronizeDomainService,
             IOptions<BiaNetSection> configuration,
             IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
             ITGenericRepository<UserDefaultTeam, int> userDefaultTeamRepository,
-            ILogger<UserExtendedAppService> logger,
+            ILogger<UserAppService> logger,
             IIdentityProviderRepository identityProviderRepository,
-            IUserIdentityKeyDomainService<UserExtended> userIdentityKeyDomainService,
+            IUserIdentityKeyDomainService<User> userIdentityKeyDomainService,
             IPrincipal principal)
             : base(repository, userSynchronizeDomainService, configuration, userDirectoryHelper, userDefaultTeamRepository, logger, identityProviderRepository, userIdentityKeyDomainService, principal)
         {

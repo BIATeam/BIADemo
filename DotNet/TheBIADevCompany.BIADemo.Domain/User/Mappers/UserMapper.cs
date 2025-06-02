@@ -1,4 +1,4 @@
-// <copyright file="UserExtendedMapper.cs" company="TheBIADevCompany">
+// <copyright file="UserMapper.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -21,16 +21,16 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
     /// Initializes a new instance of the <see cref="UserMapper"/> class.
     /// </remarks>
     /// <param name="userContext">the user context.</param>
-    public class UserExtendedMapper(UserContext userContext) : UserMapper<UserExtendedDto, UserExtended>(userContext)
+    public class UserMapper(UserContext userContext) : BaseUserMapper<UserDto, User>(userContext)
     {
         /// <summary>
         /// Gets or sets the collection used for expressions to access fields.
         /// </summary>
-        public override ExpressionCollection<UserExtended> ExpressionCollection
+        public override ExpressionCollection<User> ExpressionCollection
         {
             get
             {
-                return new ExpressionCollection<UserExtended>(base.ExpressionCollection)
+                return new ExpressionCollection<User>(base.ExpressionCollection)
                 {
                     { HeaderNameExtended.Country, user => user.Country },
                 };
@@ -42,16 +42,16 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         /// </summary>
         /// <param name="mapperMode">the mode for mapping.</param>
         /// <returns>The user DTO.</returns>
-        public override Expression<Func<UserExtended, UserExtendedDto>> EntityToDto(string mapperMode)
+        public override Expression<Func<User, UserDto>> EntityToDto(string mapperMode)
         {
-            return base.EntityToDto(mapperMode).CombineMapping(entity => new UserExtendedDto
+            return base.EntityToDto(mapperMode).CombineMapping(entity => new UserDto
             {
                 Country = entity.Country,
             });
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCellMapping"/>
-        public override Dictionary<string, Func<string>> DtoToCellMapping(UserExtendedDto dto)
+        public override Dictionary<string, Func<string>> DtoToCellMapping(UserDto dto)
         {
             return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
             {
@@ -60,7 +60,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesForUpdate"/>
-        public override Expression<Func<UserExtended, object>>[] IncludesForUpdate()
+        public override Expression<Func<User, object>>[] IncludesForUpdate()
         {
             return
             [

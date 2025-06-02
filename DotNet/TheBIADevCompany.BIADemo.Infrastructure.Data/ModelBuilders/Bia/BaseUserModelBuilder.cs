@@ -1,4 +1,4 @@
-// <copyright file="UserModelBuilder.cs" company="TheBIADevCompany">
+// <copyright file="BaseUserModelBuilder.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -12,7 +12,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
     /// <summary>
     /// Class used to update the model builder for user domain.
     /// </summary>
-    public class UserModelBuilder
+    public class BaseUserModelBuilder
     {
         /// <summary>
         /// Create the user model.
@@ -53,16 +53,16 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
         /// <param name="modelBuilder">The model builder.</param>
         public virtual void CreateUserModel(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>().ToTable("Users");
-            modelBuilder.Entity<User>().HasKey(u => u.Id);
-            modelBuilder.Entity<User>().Property(u => u.Email).HasMaxLength(256);
-            modelBuilder.Entity<User>().Property(u => u.FirstName).IsRequired().HasMaxLength(50);
-            modelBuilder.Entity<User>().Property(u => u.LastName).IsRequired().HasMaxLength(50);
-            modelBuilder.Entity<User>().Property(u => u.Login).IsRequired().HasMaxLength(50);
-            modelBuilder.Entity<User>().Property(u => u.DaiDate).IsRequired();
-            modelBuilder.Entity<User>().Property(u => u.IsActive).IsRequired();
+            modelBuilder.Entity<BaseUser>().ToTable("Users");
+            modelBuilder.Entity<BaseUser>().HasKey(u => u.Id);
+            modelBuilder.Entity<BaseUser>().Property(u => u.Email).HasMaxLength(256);
+            modelBuilder.Entity<BaseUser>().Property(u => u.FirstName).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<BaseUser>().Property(u => u.LastName).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<BaseUser>().Property(u => u.Login).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<BaseUser>().Property(u => u.DaiDate).IsRequired();
+            modelBuilder.Entity<BaseUser>().Property(u => u.IsActive).IsRequired();
 
-            modelBuilder.Entity<User>().HasIndex(u => new { u.Login }).IsUnique();
+            modelBuilder.Entity<BaseUser>().HasIndex(u => new { u.Login }).IsUnique();
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
         /// <param name="modelBuilder">The model builder.</param>
         public virtual void CreateUserRoleModel(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<BaseUser>()
                     .HasMany(p => p.Roles)
                     .WithMany(r => r.Users)
                     .UsingEntity(mc =>
