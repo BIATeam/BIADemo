@@ -11,9 +11,12 @@
   overflow: auto;
 }
 
-.handle {
+.split-zone {
   width: 1rem;
   background-color: transparent;
+}
+
+.handle {
   cursor: col-resize;
   user-select: none; /* Prevent text selection */
 }
