@@ -27,9 +27,10 @@ import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/component
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views-actions';
 import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
-import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { BiaFieldConfig } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { BiaTableState } from 'src/app/shared/bia-shared/model/bia-table-state';
+import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
+import { FixableDto } from 'src/app/shared/bia-shared/model/dto/fixable-dto';
 import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
 import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
 import { TableHelperService } from 'src/app/shared/bia-shared/services/table-helper.service';
@@ -506,10 +507,11 @@ export class CrudItemsIndexComponent<
 
   onDelete() {
     if (this.canDelete) {
-      const itemsToDelete =
-        this.crudConfiguration.isFixable && this.canFix !== true
-          ? this.selectedCrudItems.filter(x => x.isFixed === false)
-          : this.selectedCrudItems;
+      const itemsToDelete = this.crudConfiguration.isFixable
+        ? this.selectedCrudItems.filter(
+            x => (x as unknown as FixableDto).isFixed === false
+          )
+        : this.selectedCrudItems;
 
       this.crudItemService.multiRemove(itemsToDelete.map(x => x.id));
     }

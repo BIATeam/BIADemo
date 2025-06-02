@@ -1,20 +1,22 @@
 import { Validators } from '@angular/forms';
-import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import {
   BiaFieldConfig,
   BiaFieldsConfig,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
+import { ArchivableDto } from 'src/app/shared/bia-shared/model/dto/archivable-dto';
+import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
+import { FixableDto } from 'src/app/shared/bia-shared/model/dto/fixable-dto';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 // TODO after creation of CRUD MaintenanceContract : adapt the model
-export class MaintenanceContract extends BaseDto {
+export interface MaintenanceContract
+  extends BaseDto,
+    ArchivableDto,
+    FixableDto {
   aircraftMaintenanceCompany: OptionDto | null;
-  archivedDate: Date | null;
   contractNumber: string;
   description: string | null;
-  fixedDate: Date | null;
-  isArchived: boolean | null;
   planes: OptionDto[] | null;
   site: OptionDto | null;
 }

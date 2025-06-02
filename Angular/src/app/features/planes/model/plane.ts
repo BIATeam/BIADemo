@@ -1,5 +1,4 @@
 import { Validators } from '@angular/forms';
-import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import {
   BiaFieldConfig,
   BiaFieldDateFormat,
@@ -16,10 +15,13 @@ import {
   BiaFormLayoutConfigGroup,
   BiaFormLayoutConfigRow,
 } from 'src/app/shared/bia-shared/model/bia-form-layout-config';
+import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
+import { FixableDto } from 'src/app/shared/bia-shared/model/dto/fixable-dto';
+import { VersionedDto } from 'src/app/shared/bia-shared/model/dto/versioned-dto';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 // TODO after creation of CRUD Plane : adapt the model
-export class Plane extends BaseDto {
+export interface Plane extends BaseDto, FixableDto, VersionedDto {
   siteId: number;
   msn: string;
   manufacturer: string | null;
@@ -43,6 +45,7 @@ export class Plane extends BaseDto {
   similarTypes: OptionDto[] | null;
   currentAirport: OptionDto;
   connectingAirports: OptionDto[];
+  blabla: string;
 }
 
 // TODO after creation of CRUD Plane : adapt the field configuration

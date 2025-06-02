@@ -4,7 +4,7 @@ import { first } from 'rxjs/operators';
 import { BiaSignalRService } from 'src/app/core/bia-core/services/bia-signalr.service';
 import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
 import { AppState } from 'src/app/store/state';
-import { BaseDto } from '../../../model/base-dto';
+import { BaseDto } from '../../../model/dto/base-dto';
 import { CrudItemService } from './crud-item.service';
 
 /**

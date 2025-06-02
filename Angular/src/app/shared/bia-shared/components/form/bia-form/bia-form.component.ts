@@ -36,7 +36,6 @@ import {
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { FormReadOnlyMode } from '../../../feature-templates/crud-items/model/crud-config';
-import { BaseDto } from '../../../model/base-dto';
 import {
   BiaFormLayoutConfig,
   BiaFormLayoutConfigField,
@@ -45,6 +44,7 @@ import {
   BiaFormLayoutConfigRow,
   BiaFormLayoutConfigTabGroup,
 } from '../../../model/bia-form-layout-config';
+import { BaseDto } from '../../../model/dto/base-dto';
 import { LayoutMode } from '../../layout/dynamic-layout/dynamic-layout.component';
 import { BiaFormLayoutComponent } from '../bia-form-layout/bia-form-layout.component';
 import { BiaInputComponent } from '../bia-input/bia-input.component';

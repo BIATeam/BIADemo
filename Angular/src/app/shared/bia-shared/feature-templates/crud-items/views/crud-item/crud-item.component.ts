@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { LayoutMode } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
-import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
+import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
 import { AppState } from 'src/app/store/state';
 import { CrudConfig } from '../../model/crud-config';
 import { CrudItemSingleService } from '../../services/crud-item-single.service';

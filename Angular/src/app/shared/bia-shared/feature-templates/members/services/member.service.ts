@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { AppState } from 'src/app/store/state';
-import { BaseDto } from '../../../model/base-dto';
+import { BaseDto } from '../../../model/dto/base-dto';
 import { memberCRUDConfiguration } from '../member.constants';
 import { Member, Members } from '../model/member';
 import { FeatureMembersStore } from '../store/member.state';
