@@ -18,6 +18,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     /// <summary>
     /// The service used for synchronization between AD and DB.
     /// </summary>
+    /// <typeparam name="TUser">The type of user.</typeparam>
     public class UserSynchronizeDomainService<TUser> : IUserSynchronizeDomainService<TUser>
         where TUser : User, new()
     {
@@ -39,7 +40,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         private readonly IIdentityProviderRepository identityProviderRepository;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UserSynchronizeDomainService" /> class.
+        /// Initializes a new instance of the <see cref="UserSynchronizeDomainService{TUser}" /> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="adHelper">The AD helper.</param>
