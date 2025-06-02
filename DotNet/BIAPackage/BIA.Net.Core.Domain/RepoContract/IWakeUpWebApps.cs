@@ -8,7 +8,7 @@ namespace BIA.Net.Core.Domain.RepoContract
     using System.Threading.Tasks;
 
     /// <summary>
-    /// Interface BIADemoWebApiRepository.
+    /// Interface WakeUpWebApps.
     /// </summary>
     public interface IWakeUpWebApps
     {
