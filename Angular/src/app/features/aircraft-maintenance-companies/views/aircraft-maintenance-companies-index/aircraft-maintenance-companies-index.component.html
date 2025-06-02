@@ -1,5 +1,7 @@
-<div>
-  <div [ngClass]="{ 'table-compact': crudConfiguration.useCompactMode }">
+<div class="flex flex-row bia-page-remove-margin">
+  <div
+    class="flex-grow-1 bia-page-margin"
+    [ngClass]="{ 'table-compact': crudConfiguration.useCompactMode }">
     <bia-table-header
       [headerTitle]="'aircraftMaintenanceCompany.listOf' | translate"
       [canAdd]="canAdd && !crudConfiguration.useCalcMode"
