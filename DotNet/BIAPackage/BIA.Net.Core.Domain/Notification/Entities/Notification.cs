@@ -53,7 +53,7 @@ namespace BIA.Net.Core.Domain.Notification.Entities
         /// <summary>
         /// Gets or sets the user who triggered the notification.
         /// </summary>
-        public virtual User CreatedBy { get; set; }
+        public virtual BaseUser CreatedBy { get; set; }
 
         /// <summary>
         /// Gets or sets the teams to be notified, if any.

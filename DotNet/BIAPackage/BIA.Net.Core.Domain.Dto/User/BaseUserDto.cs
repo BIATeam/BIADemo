@@ -1,4 +1,4 @@
-// <copyright file="UserDto.cs" company="BIA">
+// <copyright file="BaseUserDto.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -12,7 +12,7 @@ namespace BIA.Net.Core.Domain.Dto.User
     /// <summary>
     /// The DTO used for user.
     /// </summary>
-    public class UserDto : BaseDtoVersioned<int>
+    public class BaseUserDto : BaseDtoVersioned<int>
     {
         /// <summary>
         /// Gets or sets the last name.

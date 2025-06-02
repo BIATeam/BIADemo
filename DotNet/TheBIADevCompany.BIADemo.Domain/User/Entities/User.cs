@@ -1,4 +1,4 @@
-// <copyright file="UserExtended.cs" company="TheBIADevCompany">
+// <copyright file="User.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -11,7 +11,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Entities
     /// The user entity.
     /// </summary>
     [AuditInclude]
-    public class UserExtended : User
+    public class User : BaseUser
     {
         /// <summary>
         /// Gets or sets the distinguished name.

@@ -88,15 +88,16 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
         private static void ConfigureApplicationContainer(IServiceCollection collection, bool isApi)
         {
-            collection.AddTransient(typeof(IUserSynchronizeDomainService<UserExtended>), typeof(UserExtendedSynchronizeDomainService));
-            collection.AddTransient(typeof(IUserAppService<UserExtendedDto, UserExtended>), typeof(UserExtendedAppService));
-            collection.AddTransient(typeof(IAuthAppService), typeof(AuthAppService<UserExtendedDto, UserExtended>));
+            collection.AddTransient(typeof(IUserSynchronizeDomainService<User>), typeof(UserSynchronizeDomainService));
+            collection.AddTransient(typeof(IUserAppService<UserDto, User>), typeof(UserAppService));
+            collection.AddTransient(typeof(UserAppService));
+            collection.AddTransient(typeof(IAuthAppService), typeof(AuthAppService<UserDto, User>));
 
             // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
             BiaIocContainer.RegisterServicesFromAssembly(
                 collection: collection,
                 assemblyName: "TheBIADevCompany.BIADemo.Application",
-                excludedServiceNames: new List<string>() { nameof(AuthAppService<UserExtendedDto, UserExtended>) },
+                excludedServiceNames: new List<string>() { nameof(AuthAppService<UserDto, User>) },
                 serviceLifetime: ServiceLifetime.Transient);
 
             if (isApi)
@@ -104,7 +105,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 BiaIocContainer.RegisterServicesFromAssembly(
                 collection: collection,
                 assemblyName: "TheBIADevCompany.BIADemo.Application",
-                includedServiceNames: new List<string>() { nameof(AuthAppService<UserExtendedDto, UserExtended>) },
+                includedServiceNames: new List<string>() { nameof(AuthAppService<UserDto, User>) },
                 serviceLifetime: ServiceLifetime.Transient);
             }
 

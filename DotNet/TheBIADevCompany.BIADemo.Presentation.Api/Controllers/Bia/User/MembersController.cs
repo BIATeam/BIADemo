@@ -36,7 +36,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// <summary>
         /// The member application service.
         /// </summary>
-        private readonly UserExtendedAppService userService;
+        private readonly UserAppService userService;
 
         /// <summary>
         /// The user context service for message translation.
@@ -74,7 +74,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// <param name="teamAppService">The team service.</param>
         /// <param name="userContextService">The user context service.</param>
         public MembersController(
-            UserExtendedAppService userService,
+            UserAppService userService,
             IMemberAppService memberService,
             IUserContextService userContextService,
             ITeamAppService teamAppService)
@@ -476,7 +476,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
                     return this.StatusCode(StatusCodes.Status403Forbidden);
                 }
 
-                UserExtendedDto userDto = new UserExtendedDto();
+                UserDto userDto = new UserDto();
                 userDto.Login = dto.Login;
                 ResultAddUsersFromDirectoryDto result = await this.userService.AddByIdentityKeyAsync(userDto);
 #if UseHubForClientInUser

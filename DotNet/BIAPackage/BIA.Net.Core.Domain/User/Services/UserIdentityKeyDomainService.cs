@@ -16,7 +16,7 @@ namespace BIA.Net.Core.Domain.User.Services
     /// </summary>
     /// <typeparam name="TUser">The type of user.</typeparam>
     public class UserIdentityKeyDomainService<TUser> : IUserIdentityKeyDomainService<TUser>
-        where TUser : User
+        where TUser : BaseUser
     {
         // -------------------------------- DataBase EntityKey --------------------------------------
 
@@ -61,7 +61,7 @@ namespace BIA.Net.Core.Domain.User.Services
         /// </summary>
         /// <param name="user">the user.</param>
         /// <returns>Return the Identity Key.</returns>
-        public string GetDtoIdentityKey(UserDto user)
+        public string GetDtoIdentityKey(BaseUserDto user)
         {
             return user.Login;
         }

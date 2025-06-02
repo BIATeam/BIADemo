@@ -1,4 +1,4 @@
-// <copyright file="UserSynchronizeDomainService.cs" company="TheBIADevCompany">
+// <copyright file="BaseUserSynchronizeDomainService.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -19,8 +19,8 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     /// The service used for synchronization between AD and DB.
     /// </summary>
     /// <typeparam name="TUser">The type of user.</typeparam>
-    public class UserSynchronizeDomainService<TUser> : IUserSynchronizeDomainService<TUser>
-        where TUser : User, new()
+    public class BaseUserSynchronizeDomainService<TUser> : IUserSynchronizeDomainService<TUser>
+        where TUser : BaseUser, new()
     {
         /// <summary>
         /// The repository.
@@ -40,13 +40,13 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         private readonly IIdentityProviderRepository identityProviderRepository;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UserSynchronizeDomainService{TUser}" /> class.
+        /// Initializes a new instance of the <see cref="BaseUserSynchronizeDomainService{TUser}" /> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="adHelper">The AD helper.</param>
         /// <param name="userIdentityKeyDomainService">The user IdentityKey Domain Service.</param>
         /// <param name="identityProviderRepository">The identity provider repository.</param>
-        public UserSynchronizeDomainService(
+        public BaseUserSynchronizeDomainService(
             ITGenericRepository<TUser, int> repository,
             IUserDirectoryRepository<UserFromDirectory> adHelper,
             IUserIdentityKeyDomainService<TUser> userIdentityKeyDomainService,

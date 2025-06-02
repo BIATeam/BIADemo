@@ -13,7 +13,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     /// </summary>
     /// <typeparam name="TUser">The type of user.</typeparam>
     public interface IUserSynchronizeDomainService<TUser>
-        where TUser : User, new()
+        where TUser : BaseUser, new()
     {
         /// <summary>
         /// Synchronize the users in DB from the Idp.

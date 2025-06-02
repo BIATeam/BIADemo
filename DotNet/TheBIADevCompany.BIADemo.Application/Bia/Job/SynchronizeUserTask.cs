@@ -22,8 +22,8 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.Job
     /// <typeparam name="TUser">The type of user.</typeparam>
     [AutomaticRetry(Attempts = 2, LogEvents = true)]
     public class SynchronizeUserTask<TUserDto, TUser> : BaseJob
-        where TUserDto : UserDto, new()
-        where TUser : User, IEntity<int>, new()
+        where TUserDto : BaseUserDto, new()
+        where TUser : BaseUser, IEntity<int>, new()
     {
         private readonly IUserAppService<TUserDto, TUser> userService;
 

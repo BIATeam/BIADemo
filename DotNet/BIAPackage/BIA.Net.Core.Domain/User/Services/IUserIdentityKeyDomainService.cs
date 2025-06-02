@@ -16,7 +16,7 @@ namespace BIA.Net.Core.Domain.User.Services
     /// </summary>
     /// <typeparam name="TUser">The type of user.</typeparam>
     public interface IUserIdentityKeyDomainService<TUser>
-        where TUser : User
+        where TUser : BaseUser
     {
         /// <summary>
         /// Checks the database identity key.
@@ -44,7 +44,7 @@ namespace BIA.Net.Core.Domain.User.Services
         /// </summary>
         /// <param name="user">The user dto.</param>
         /// <returns>The userDto identity key.</returns>
-        string GetDtoIdentityKey(UserDto user);
+        string GetDtoIdentityKey(BaseUserDto user);
 
         /// <summary>
         /// Checks the directory identity key.

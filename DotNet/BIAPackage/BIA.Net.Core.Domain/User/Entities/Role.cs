@@ -28,7 +28,7 @@ namespace BIA.Net.Core.Domain.User.Entities
         /// <summary>
         /// Gets or sets the collection of users.
         /// </summary>
-        public ICollection<User> Users { get; set; }
+        public ICollection<BaseUser> Users { get; set; }
 
         /// <summary>
         /// Gets or sets the members with this role.
