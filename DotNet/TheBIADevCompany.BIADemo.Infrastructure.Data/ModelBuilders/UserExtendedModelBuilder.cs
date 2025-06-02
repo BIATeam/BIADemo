@@ -19,17 +19,20 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
         public override void CreateUserModel(ModelBuilder modelBuilder)
         {
             base.CreateUserModel(modelBuilder);
-            modelBuilder.Entity<UserExtended>().Property(u => u.DistinguishedName).IsRequired().HasMaxLength(250);
-            modelBuilder.Entity<UserExtended>().Property(u => u.IsEmployee);
-            modelBuilder.Entity<UserExtended>().Property(u => u.IsExternal);
-            modelBuilder.Entity<UserExtended>().Property(u => u.ExternalCompany).HasMaxLength(50);
-            modelBuilder.Entity<UserExtended>().Property(u => u.Company).HasMaxLength(50);
-            modelBuilder.Entity<UserExtended>().Property(u => u.Site).HasMaxLength(50);
-            modelBuilder.Entity<UserExtended>().Property(u => u.Manager).HasMaxLength(250);
-            modelBuilder.Entity<UserExtended>().Property(u => u.Department).HasMaxLength(50);
-            modelBuilder.Entity<UserExtended>().Property(u => u.SubDepartment).HasMaxLength(50);
-            modelBuilder.Entity<UserExtended>().Property(u => u.Office).HasMaxLength(20);
-            modelBuilder.Entity<UserExtended>().Property(u => u.Country).HasMaxLength(10);
+            modelBuilder.Entity<UserExtended>(entity =>
+            {
+                entity.Property(u => u.DistinguishedName).IsRequired().HasMaxLength(250);
+                entity.Property(u => u.IsEmployee);
+                entity.Property(u => u.IsExternal);
+                entity.Property(u => u.ExternalCompany).HasMaxLength(50);
+                entity.Property(u => u.Company).HasMaxLength(50);
+                entity.Property(u => u.Site).HasMaxLength(50);
+                entity.Property(u => u.Manager).HasMaxLength(250);
+                entity.Property(u => u.Department).HasMaxLength(50);
+                entity.Property(u => u.SubDepartment).HasMaxLength(50);
+                entity.Property(u => u.Office).HasMaxLength(20);
+                entity.Property(u => u.Country).HasMaxLength(10);
+            });
         }
     }
 }
