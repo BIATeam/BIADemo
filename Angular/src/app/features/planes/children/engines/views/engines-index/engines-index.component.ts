@@ -92,6 +92,8 @@ export class EnginesIndexComponent
           this.canSave =
             plane.isFixed === false &&
             this.authService.hasPermission(Permission.Engine_Save);
+
+          this.canSelect = this.canDelete;
         })
     );
   }
