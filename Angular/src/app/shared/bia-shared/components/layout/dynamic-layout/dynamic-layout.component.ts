@@ -70,6 +70,7 @@ export class DynamicLayoutComponent<TDto extends { id: number }>
 
   leftWidth = 70;
   heightOffset = '+ 1.5rem';
+  allowSplitScreenResize = true;
 
   popupTitle: string;
   style: any;
@@ -144,6 +145,8 @@ export class DynamicLayoutComponent<TDto extends { id: number }>
     this.leftWidth = snapshot.data['leftWidth'] ?? this.leftWidth;
     this.previousIsSplit = this.configuration?.useSplit ?? false;
     this.maxScanDepth = snapshot.data['maxScanDepth'] ?? this.maxScanDepth;
+    this.allowSplitScreenResize =
+      snapshot.data['allowSplitScreenResize'] ?? true;
     this.checkChildrenRules();
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
@@ -212,15 +215,17 @@ export class DynamicLayoutComponent<TDto extends { id: number }>
   }
 
   startResize(event: MouseEvent) {
-    this.isResizing = true;
-    this.startX = event.clientX;
-    this.startWidthLeft = this.leftContainer.nativeElement.offsetWidth;
-    this.startWidthRight = this.rightContainer.nativeElement.offsetWidth;
+    if (this.allowSplitScreenResize) {
+      this.isResizing = true;
+      this.startX = event.clientX;
+      this.startWidthLeft = this.leftContainer.nativeElement.offsetWidth;
+      this.startWidthRight = this.rightContainer.nativeElement.offsetWidth;
+    }
   }
 
   @HostListener('document:mousemove', ['$event'])
   onMouseMove(event: MouseEvent) {
-    if (this.isResizing) {
+    if (this.allowSplitScreenResize && this.isResizing) {
       const deltaX = event.clientX - this.startX;
       const newWidthLeft = this.startWidthLeft + deltaX;
       const newWidthRight = this.startWidthRight - deltaX;
