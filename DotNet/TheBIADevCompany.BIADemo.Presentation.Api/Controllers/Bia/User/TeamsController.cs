@@ -19,9 +19,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.Bia.User;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// The API controller used to manage Teams.
@@ -36,7 +33,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// <summary>
         /// The user application service.
         /// </summary>
-        private readonly IUserAppService<UserExtendedDto, UserExtended> userService;
+        private readonly UserExtendedAppService userService;
 
         /// <summary>
         /// The plane application service.
@@ -62,7 +59,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// <param name="teamService">The team application service.</param>
         /// <param name="memberService">The member application service.</param>
         /// <param name="userService">The user application service.</param>
-        public TeamsController(ITeamAppService teamService, IMemberAppService memberService, IUserAppService<UserExtendedDto, UserExtended> userService)
+        public TeamsController(ITeamAppService teamService, IMemberAppService memberService, UserExtendedAppService userService)
 #endif
         {
 #if UseHubForClientInTeam

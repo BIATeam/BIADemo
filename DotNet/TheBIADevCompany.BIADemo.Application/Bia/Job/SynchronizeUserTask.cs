@@ -18,6 +18,8 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.Job
     /// <summary>
     /// Task to synchronize users from LDAP.
     /// </summary>
+    /// <typeparam name="TUserDto">The type of user dto.</typeparam>
+    /// <typeparam name="TUser">The type of user.</typeparam>
     [AutomaticRetry(Attempts = 2, LogEvents = true)]
     public class SynchronizeUserTask<TUserDto, TUser> : BaseJob
         where TUserDto : UserDto, new()
@@ -31,7 +33,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.Job
         private readonly BiaNetSection biaNetSection;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SynchronizeUserTask"/> class.
+        /// Initializes a new instance of the <see cref="SynchronizeUserTask{TUserDto, TUser}"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="userService">The user app service.</param>
