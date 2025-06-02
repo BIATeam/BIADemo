@@ -25,7 +25,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Application.Bia.User;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// The API controller used to manage users.
@@ -35,7 +34,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// <summary>
         /// The service user.
         /// </summary>
-        private readonly IUserAppService<UserExtendedDto, UserExtended> userService;
+        private readonly UserExtendedAppService userService;
 
 #if UseHubForClientInUser
         private readonly IClientForHubService clientForHubService;
@@ -61,7 +60,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// </summary>
         /// <param name="userService">The user service.</param>
         /// <param name="configuration">The configuration.</param>
-        public UsersController(IUserAppService<UserExtendedDto, UserExtended> userService, IOptions<BiaNetSection> configuration)
+        public UsersController(UserExtendedAppService userService, IOptions<BiaNetSection> configuration)
 #endif
         {
 #if UseHubForClientInUser
