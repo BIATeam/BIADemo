@@ -15,7 +15,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     /// <summary>
     /// WorkInstruction Repository.
     /// </summary>
-    /// <seealso cref="BIA.BIADemo.Domain.RepoContract.IWorkInstructionRepository" />
     public class WakeUpWebApps : WebApiRepository, IWakeUpWebApps
     {
         private readonly List<WakeUpWebApp> wakeUpWebApps;
@@ -42,7 +41,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <inheritdoc/>
         public List<Task<(bool IsSuccessStatusCode, string ReasonPhrase)>> WakeUp()
         {
-            List<Task<(bool IsSuccessStatusCode, string ReasonPhrase)>> wakeUpWebAppTasks = new ();
+            List<Task<(bool IsSuccessStatusCode, string ReasonPhrase)>> wakeUpWebAppTasks = new();
             foreach (WakeUpWebApp wakeUpWebApp in this.wakeUpWebApps)
             {
                 wakeUpWebAppTasks.Add(wakeUpWebApp.WakeUp());
