@@ -96,7 +96,11 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
         /// <inheritdoc/>
         public override async Task<MaintenanceTeamDto> AddAsync(MaintenanceTeamDto dto, string mapperMode = null)
         {
-            dto.AircraftMaintenanceCompanyId = this.currentAncestorTeamId;
+            if (dto.AircraftMaintenanceCompanyId != this.currentAncestorTeamId)
+            {
+                throw new ForbiddenException();
+            }
+
             return await base.AddAsync(dto, mapperMode);
         }
     }

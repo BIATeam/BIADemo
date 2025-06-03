@@ -5,8 +5,6 @@
 
 namespace TheBIADevCompany.BIADemo.Application.Fleet
 {
-    using System.Security.Principal;
-    using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
@@ -15,8 +13,11 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
+    using System.Security.Principal;
+    using System.Threading.Tasks;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Maintenance;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Mappers;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
@@ -110,6 +111,17 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
                 await this.Repository.UnitOfWork.CommitAsync();
                 return await this.GetAsync(id);
             });
+        }
+
+        /// <inheritdoc/>
+        public override async Task<PlaneDto> AddAsync(PlaneDto dto, string mapperMode = null)
+        {
+            if (dto.SiteId != this.currentAncestorTeamId)
+            {
+                throw new ForbiddenException();
+            }
+
+            return await base.AddAsync(dto, mapperMode);
         }
     }
 }
