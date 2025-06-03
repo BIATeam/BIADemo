@@ -4,10 +4,9 @@
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
 {
+    using BIA.Net.Core.Domain.Notification.Entities;
     using Microsoft.EntityFrameworkCore;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
 
     /// <summary>
     /// Class used to update the model builder for notification domain.

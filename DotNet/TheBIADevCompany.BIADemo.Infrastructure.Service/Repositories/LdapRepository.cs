@@ -14,11 +14,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.User.Models;
+    using BIA.Net.Core.Domain.User.Services;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Models;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Services;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// Class the manipulate AD.
@@ -28,7 +29,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <summary>
         /// The user identity key domain service.
         /// </summary>
-        private readonly IUserIdentityKeyDomainService userIdentityKeyDomainService;
+        private readonly IUserIdentityKeyDomainService<User> userIdentityKeyDomainService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LdapRepository"/> class.
@@ -41,7 +42,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
             ILogger<LdapRepository> logger,
             IOptions<BiaNetSection> configuration,
             ILdapRepositoryHelper ldapRepositoryHelper,
-            IUserIdentityKeyDomainService userIdentityKeyDomainService)
+            IUserIdentityKeyDomainService<User> userIdentityKeyDomainService)
             : base(logger, configuration, ldapRepositoryHelper)
         {
             this.userIdentityKeyDomainService = userIdentityKeyDomainService;
@@ -50,7 +51,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <summary>
         /// Gets the user identity key domain service.
         /// </summary>
-        protected IUserIdentityKeyDomainService UserIdentityKeyDomainService => this.userIdentityKeyDomainService;
+        protected IUserIdentityKeyDomainService<User> UserIdentityKeyDomainService => this.userIdentityKeyDomainService;
 
         /// <summary>
         /// Convert the Ad entry in a UserInfoDirectory Object.

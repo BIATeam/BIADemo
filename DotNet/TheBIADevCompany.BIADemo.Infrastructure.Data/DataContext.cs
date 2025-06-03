@@ -7,17 +7,17 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using System.Threading.Tasks;
 #if BIA_FRONT_FEATURE
     using Audit.EntityFramework;
+    using BIA.Net.Core.Domain.Audit;
+    using BIA.Net.Core.Domain.Notification.Entities;
+    using BIA.Net.Core.Domain.Translation.Entities;
+    using BIA.Net.Core.Domain.User.Entities;
+    using BIA.Net.Core.Domain.View.Entities;
 #endif
     using BIA.Net.Core.Infrastructure.Data;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
 #if BIA_FRONT_FEATURE
-    using TheBIADevCompany.BIADemo.Domain.Bia.Audit.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Bia.Notification.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Bia.Translation.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Bia.View.Entities;
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
@@ -25,7 +25,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     // End BIADemo
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
 
     // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.Site.Entities;
@@ -195,7 +194,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
 
             TranslationModelBuilder.CreateModel(modelBuilder);
             SiteModelBuilder.CreateSiteModel(modelBuilder);
-            UserModelBuilder.CreateModel(modelBuilder);
+            new UserModelBuilder().CreateModel(modelBuilder);
             ViewModelBuilder.CreateModel(modelBuilder);
             NotificationModelBuilder.CreateModel(modelBuilder);
             AuditModelBuilder.CreateModel(modelBuilder);

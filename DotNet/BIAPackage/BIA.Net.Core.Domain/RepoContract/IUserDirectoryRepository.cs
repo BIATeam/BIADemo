@@ -65,8 +65,9 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="userInfoDto">The user information dto.</param>
         /// <param name="sid">The sid.</param>
         /// <param name="domain">The domain.</param>
+        /// <param name="withCredentials">True if use standard credential.</param>
         /// <returns>The list of roles.</returns>
-        Task<List<string>> GetUserRolesAsync(BiaClaimsPrincipal claimsPrincipal, UserInfoDto userInfoDto, string sid, string domain);
+        Task<List<string>> GetUserRolesAsync(BiaClaimsPrincipal claimsPrincipal, UserInfoDto userInfoDto, string sid, string domain, bool withCredentials);
 
         /// <summary>
         /// Resolves the user by sid.

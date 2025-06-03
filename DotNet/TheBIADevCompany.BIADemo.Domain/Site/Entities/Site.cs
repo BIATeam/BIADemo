@@ -6,7 +6,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Site.Entities
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
+    using BIA.Net.Core.Domain.User.Entities;
 
     /// <summary>
     /// The site entity.

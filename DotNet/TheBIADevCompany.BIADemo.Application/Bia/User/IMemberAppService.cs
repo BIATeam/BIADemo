@@ -9,7 +9,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
+    using BIA.Net.Core.Domain.User.Entities;
 
     /// <summary>
     /// The interface defining the application service for member.

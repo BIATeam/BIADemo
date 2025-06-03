@@ -9,18 +9,18 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.Notification
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
+    using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
+    using BIA.Net.Core.Domain.Notification.Entities;
+    using BIA.Net.Core.Domain.Notification.Mappers;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract;
-    using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Notification.Mappers;
 
     /// <summary>
     /// The application service used to manage views.
@@ -55,7 +55,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.Notification
             this.Repository.QueryCustomizer = queryCustomizer;
             this.clientForHubService = clientForHubService;
             this.userId = (principal as BiaClaimsPrincipal).GetUserId();
-            bool isTeamAccesAll = (principal as BiaClaimsPrincipal).GetUserPermissions().Any(x => x == Rights.Teams.AccessAll);
+            bool isTeamAccesAll = (principal as BiaClaimsPrincipal).GetUserPermissions().Any(x => x == BiaRights.Teams.AccessAll);
 
             this.FiltersContext.Add(
                  AccessMode.Read,

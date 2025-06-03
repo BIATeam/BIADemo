@@ -14,11 +14,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features.Bia
     using BIA.Net.Core.Domain.Audit;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.User.Entities;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Options;
-    using TheBIADevCompany.BIADemo.Domain.Bia.Audit.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
 
     /// <summary>
     /// The Audit Feature.

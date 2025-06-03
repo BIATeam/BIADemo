@@ -10,8 +10,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.Common
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
+    using BIA.Net.Core.Domain.User.Entities;
 
     /// <summary>
     /// The search expression service.
@@ -40,7 +39,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.Common
 
             this.Dictionary = new BiaDictionary<SearchExpressionItem>
             {
-                 { "[Me]", new SearchExpressionItem() { EntityType = typeof(User), Expression = (Expression<Func<User, bool>>)(t => t.Id == this.userId) } },
+                 { "[Me]", new SearchExpressionItem() { EntityType = typeof(BaseUser), Expression = (Expression<Func<BaseUser, bool>>)(t => t.Id == this.userId) } },
                  { "[MyRole]", new SearchExpressionItem() { EntityType = typeof(Role), Expression = (Expression<Func<Role, bool>>)(t => this.userDataDto.CurrentTeams.Any(team => team.CurrentRoleIds.Any(id => t.Id == id))) } },
             };
         }

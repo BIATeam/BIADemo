@@ -15,6 +15,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.RepoContract;
+#if BIA_FRONT_FEATURE
+    using BIA.Net.Core.Domain.User.Models;
+#endif
     using BIA.Net.Core.Infrastructure.Data;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.Ioc;
@@ -28,18 +31,14 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
 #if BIA_FRONT_FEATURE
-    using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract;
-
-    // Begin BIADemo
-    using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract.DocumentAnalysis;
-
-    // End BIADemo
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Models;
+    using TheBIADevCompany.BIADemo.Domain.Dto.User;
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
+    using TheBIADevCompany.BIADemo.Domain.RepoContract.DocumentAnalysis;
 
     // End BIADemo
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features.Bia;
 #endif
 
@@ -89,11 +88,16 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
         private static void ConfigureApplicationContainer(IServiceCollection collection, bool isApi)
         {
+            collection.AddTransient(typeof(IUserSynchronizeDomainService<User>), typeof(UserSynchronizeDomainService));
+            collection.AddTransient(typeof(IBaseUserAppService<UserDto, User>), typeof(UserAppService));
+            collection.AddTransient(typeof(IUserAppService), typeof(UserAppService));
+            collection.AddTransient(typeof(IAuthAppService), typeof(AuthAppService<UserDto, User>));
+
             // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
             BiaIocContainer.RegisterServicesFromAssembly(
                 collection: collection,
                 assemblyName: "TheBIADevCompany.BIADemo.Application",
-                excludedServiceNames: new List<string>() { nameof(AuthAppService) },
+                excludedServiceNames: new List<string>() { nameof(AuthAppService<UserDto, User>) },
                 serviceLifetime: ServiceLifetime.Transient);
 
             if (isApi)
@@ -101,7 +105,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 BiaIocContainer.RegisterServicesFromAssembly(
                 collection: collection,
                 assemblyName: "TheBIADevCompany.BIADemo.Application",
-                includedServiceNames: new List<string>() { nameof(AuthAppService) },
+                includedServiceNames: new List<string>() { nameof(AuthAppService<UserDto, User>) },
                 serviceLifetime: ServiceLifetime.Transient);
             }
 

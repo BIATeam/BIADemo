@@ -12,6 +12,8 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
+    using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
@@ -19,12 +21,12 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Specification;
+    using BIA.Net.Core.Domain.User.Entities;
+    using BIA.Net.Core.Domain.User.Mappers;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.Bia.Base.Interface;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Mappers;
     using TheBIADevCompany.BIADemo.Domain.User;
+    using TheBIADevCompany.BIADemo.Domain.User.Mappers;
 
     /// <summary>
     /// The application service used for team.
@@ -60,7 +62,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         {
             var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
             IEnumerable<string> currentUserPermissions = (principal as BiaClaimsPrincipal).GetUserPermissions();
-            bool accessAll = currentUserPermissions?.Any(x => x == Rights.Teams.AccessAll) == true;
+            bool accessAll = currentUserPermissions?.Any(x => x == BiaRights.Teams.AccessAll) == true;
             int userId = (principal as BiaClaimsPrincipal).GetUserId();
 
             return ReadSpecification<TTeam>(teamTypeId, userData, accessAll, userId);
@@ -240,7 +242,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             userId = userId > 0 ? userId : this.principal.GetUserId();
 
             TeamMapper mapper = this.InitMapper<BaseDtoVersionedTeam, TeamMapper>();
-            if (userPermissions?.Any(x => x == Rights.Teams.AccessAll) == true)
+            if (userPermissions?.Any(x => x == BiaRights.Teams.AccessAll) == true)
             {
                 return await this.Repository.GetAllResultAsync(mapper.EntityToDto(userId));
             }

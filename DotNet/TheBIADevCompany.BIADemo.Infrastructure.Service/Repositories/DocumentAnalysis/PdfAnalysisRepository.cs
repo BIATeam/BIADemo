@@ -10,8 +10,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories.DocumentA
     using System.IO;
     using System.Linq;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum.DocumentAnalysis;
-    using TheBIADevCompany.BIADemo.Domain.Bia.RepoContract.DocumentAnalysis;
     using TheBIADevCompany.BIADemo.Domain.DocumentAnalysis.Models;
+    using TheBIADevCompany.BIADemo.Domain.RepoContract.DocumentAnalysis;
     using UglyToad.PdfPig;
     using UglyToad.PdfPig.DocumentLayoutAnalysis.WordExtractor;
 

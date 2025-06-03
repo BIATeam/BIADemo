@@ -11,6 +11,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Notification
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
@@ -69,7 +70,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Notification
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Notifications.ListAccess)]
+        [Authorize(Roles = BiaRights.Notifications.ListAccess)]
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
             var (results, total) = await this.notificationService.GetRangeAsync(filters);
@@ -86,7 +87,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Notification
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Notifications.ListAccess)]
+        [Authorize(Roles = BiaRights.Notifications.ListAccess)]
         public async Task<IActionResult> GetAllCrossSite([FromBody] PagingFilterFormatDto filters)
         {
             var (results, total) = await this.notificationService.GetRangeWithAllAccessAsync(filters);
@@ -103,7 +104,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Notification
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Notifications.Create)]
+        [Authorize(Roles = BiaRights.Notifications.Create)]
         public async Task<IActionResult> Add([FromBody] NotificationDto dto)
         {
             try
@@ -128,7 +129,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Notification
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Notifications.Update)]
+        [Authorize(Roles = BiaRights.Notifications.Update)]
         public async Task<IActionResult> Update(int id, [FromBody] NotificationDto dto)
         {
             if (id == 0 || dto == null || dto.Id != id)
@@ -161,7 +162,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Notification
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Notifications.Read)]
+        [Authorize(Roles = BiaRights.Notifications.Read)]
         public async Task<IActionResult> SetAsRead(int id)
         {
             if (id == 0)
@@ -201,7 +202,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Notification
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Notifications.Delete)]
+        [Authorize(Roles = BiaRights.Notifications.Delete)]
         public async Task<IActionResult> Remove(int id)
         {
             if (id == 0)
@@ -230,7 +231,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Notification
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Notifications.Delete)]
+        [Authorize(Roles = BiaRights.Notifications.Delete)]
         public async Task<IActionResult> Remove([FromQuery] List<int> ids)
         {
             if (ids?.Any() != true)
@@ -260,7 +261,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Notification
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Notifications.Read)]
+        [Authorize(Roles = BiaRights.Notifications.Read)]
         public async Task<IActionResult> Get(int id)
         {
             if (id == 0)
@@ -297,7 +298,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Notification
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Notifications.Read)]
+        [Authorize(Roles = BiaRights.Notifications.Read)]
         public async Task<IActionResult> SetUnread(int id)
         {
             if (id == 0)
@@ -332,7 +333,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Notification
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Notifications.ListAccess)]
+        [Authorize(Roles = BiaRights.Notifications.ListAccess)]
         public async Task<IActionResult> GetUnreadIds()
         {
             int userId = this.biaClaimsPrincipalService.GetUserId();

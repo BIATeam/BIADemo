@@ -18,9 +18,9 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.Base.Mappers
     using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Entity.Interface;
+    using BIA.Net.Core.Domain.Mapper;
+    using BIA.Net.Core.Domain.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.Bia.Base.Interface;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User;
     using TheBIADevCompany.BIADemo.Domain.User;
 
     /// <summary>

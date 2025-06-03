@@ -9,12 +9,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Enum;
+    using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.Dto.Base;
 #if UseHubForClientInAircraftMaintenanceCompany
     using BIA.Net.Core.Application.Services;
 #endif
-    using BIA.Net.Core.Common;
-    using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;

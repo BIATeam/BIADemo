@@ -4,8 +4,8 @@
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
 {
+    using BIA.Net.Core.Domain.View.Entities;
     using Microsoft.EntityFrameworkCore;
-    using TheBIADevCompany.BIADemo.Domain.Bia.View.Entities;
 
     /// <summary>
     /// Class used to update the model builder for view domain.

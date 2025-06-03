@@ -5,7 +5,7 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
 {
-    using TheBIADevCompany.BIADemo.Domain.Bia.Base.Mappers;
+    using BIA.Net.Core.Domain.Mapper;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 

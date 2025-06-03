@@ -6,8 +6,8 @@ namespace TheBIADevCompany.BIADemo.Domain.User
     using System.Collections.Immutable;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Helpers;
+    using BIA.Net.Core.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
 
     /// <summary>
     /// Team prefixe.

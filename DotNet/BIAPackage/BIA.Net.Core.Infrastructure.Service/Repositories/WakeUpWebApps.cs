@@ -15,7 +15,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     /// <summary>
     /// WorkInstruction Repository.
     /// </summary>
-    /// <seealso cref="BIA.BIADemo.Domain.RepoContract.IWorkInstructionRepository" />
     public class WakeUpWebApps : WebApiRepository, IWakeUpWebApps
     {
         private readonly List<WakeUpWebApp> wakeUpWebApps;

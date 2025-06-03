@@ -8,7 +8,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Entities
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using TheBIADevCompany.BIADemo.Domain.Bia.User.Entities;
+    using BIA.Net.Core.Domain.User.Entities;
 
     /// <summary>
     /// The AircraftMaintenanceCompany entity.

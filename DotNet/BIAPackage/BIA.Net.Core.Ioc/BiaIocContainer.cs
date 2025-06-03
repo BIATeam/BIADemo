@@ -16,6 +16,7 @@ namespace BIA.Net.Core.IocContainer
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Data.Repositories;
+    using BIA.Net.Core.Infrastructure.Data.Repositories.QueryCustomizer;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Ldap;
@@ -112,20 +113,23 @@ namespace BIA.Net.Core.IocContainer
 
             foreach (var (classType, interfaceType) in mappings)
             {
-                switch (serviceLifetime)
+                if (!collection.Any(s => s.ServiceType == interfaceType))
                 {
-                    case ServiceLifetime.Singleton:
-                        collection.AddSingleton(interfaceType, classType);
-                        break;
-                    case ServiceLifetime.Scoped:
-                        collection.AddScoped(interfaceType, classType);
-                        break;
-                    case ServiceLifetime.Transient:
-                        collection.AddTransient(interfaceType, classType);
-                        break;
-                    default:
-                        collection.AddScoped(interfaceType, classType);
-                        break;
+                    switch (serviceLifetime)
+                    {
+                        case ServiceLifetime.Singleton:
+                            collection.AddSingleton(interfaceType, classType);
+                            break;
+                        case ServiceLifetime.Scoped:
+                            collection.AddScoped(interfaceType, classType);
+                            break;
+                        case ServiceLifetime.Transient:
+                            collection.AddTransient(interfaceType, classType);
+                            break;
+                        default:
+                            collection.AddScoped(interfaceType, classType);
+                            break;
+                    }
                 }
             }
         }
@@ -141,6 +145,12 @@ namespace BIA.Net.Core.IocContainer
 
         private static void ConfigureDomainContainer(IServiceCollection collection)
         {
+            // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
+            BiaIocContainer.RegisterServicesFromAssembly(
+                collection: collection,
+                assemblyName: "BIA.Net.Core.Domain",
+                serviceLifetime: ServiceLifetime.Transient);
+
             // Domain
             Type templateType = typeof(BiaBaseMapper<,,>);
             Assembly assembly = Assembly.Load("BIA.Net.Core.Domain");
@@ -162,6 +172,8 @@ namespace BIA.Net.Core.IocContainer
             collection.AddScoped(typeof(ITGenericRepository<,>), typeof(TGenericRepositoryEF<,>));
             collection.AddScoped(typeof(ITGenericArchiveRepository<,>), typeof(TGenericArchiveRepository<,>));
             collection.AddScoped(typeof(ITGenericCleanRepository<,>), typeof(TGenericCleanRepository<,>));
+            collection.AddScoped<INotificationQueryCustomizer, NotificationQueryCustomizer>();
+            collection.AddScoped<IViewQueryCustomizer, ViewQueryCustomizer>();
 
             // Infrastructure Data
         }

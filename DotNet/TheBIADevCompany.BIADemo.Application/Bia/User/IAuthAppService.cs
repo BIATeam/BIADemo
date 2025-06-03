@@ -6,11 +6,14 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
 {
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using BIA.Net.Core.Domain.Entity.Interface;
+    using BIA.Net.Core.Domain.User.Entities;
 
     /// <summary>
     /// Interface AuthService.
     /// </summary>
+    /// <typeparam name="TUserDto">The type of user dto.</typeparam>
+    /// <typeparam name="TUser">The type of user.</typeparam>
     public interface IAuthAppService
     {
 #if BIA_BACK_TO_BACK_AUTH

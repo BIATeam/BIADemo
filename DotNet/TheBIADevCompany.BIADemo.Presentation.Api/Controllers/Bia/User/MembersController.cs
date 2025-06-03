@@ -16,11 +16,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.Bia.User;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Base;
@@ -104,7 +102,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         {
             if (filters.ParentIds != null && filters.ParentIds.Length > 0 && filters.ParentIds[0] != null)
             {
-                if (!this.IsAuthorizeForTeam(int.Parse(filters.ParentIds[0]), Rights.Members.ListAccessSuffix).Result)
+                if (!this.IsAuthorizeForTeam(int.Parse(filters.ParentIds[0]), BiaRights.Members.ListAccessSuffix).Result)
                 {
                     return this.StatusCode(StatusCodes.Status403Forbidden);
                 }
@@ -140,7 +138,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
             try
             {
                 var dto = await this.memberService.GetAsync(id);
-                if (!this.IsAuthorizeForTeam(dto.TeamId, Rights.Members.ReadSuffix).Result)
+                if (!this.IsAuthorizeForTeam(dto.TeamId, BiaRights.Members.ReadSuffix).Result)
                 {
                     return this.StatusCode(StatusCodes.Status403Forbidden);
                 }
@@ -169,7 +167,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         {
             try
             {
-                if (!this.IsAuthorizeForTeam(dto.TeamId, Rights.Members.CreateSuffix).Result)
+                if (!this.IsAuthorizeForTeam(dto.TeamId, BiaRights.Members.CreateSuffix).Result)
                 {
                     return this.StatusCode(StatusCodes.Status403Forbidden);
                 }
@@ -216,7 +214,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         {
             try
             {
-                if (!this.IsAuthorizeForTeam(dtos.TeamId, Rights.Members.CreateSuffix).Result)
+                if (!this.IsAuthorizeForTeam(dtos.TeamId, BiaRights.Members.CreateSuffix).Result)
                 {
                     return this.StatusCode(StatusCodes.Status403Forbidden);
                 }
@@ -256,7 +254,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
 
             try
             {
-                if (!this.IsAuthorizeForTeam(dto.TeamId, Rights.Members.UpdateSuffix).Result)
+                if (!this.IsAuthorizeForTeam(dto.TeamId, BiaRights.Members.UpdateSuffix).Result)
                 {
                     return this.StatusCode(StatusCodes.Status403Forbidden);
                 }
@@ -310,7 +308,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
             try
             {
                 var toDeleteDto = await this.memberService.GetAsync(id);
-                if (!this.IsAuthorizeForTeam(toDeleteDto.TeamId, Rights.Members.DeleteSuffix).Result)
+                if (!this.IsAuthorizeForTeam(toDeleteDto.TeamId, BiaRights.Members.DeleteSuffix).Result)
                 {
                     return this.StatusCode(StatusCodes.Status403Forbidden);
                 }
@@ -353,7 +351,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
                 foreach (var id in ids)
                 {
                     var toDeleteDto = await this.memberService.GetAsync(id);
-                    if (!this.IsAuthorizeForTeam(toDeleteDto.TeamId, Rights.Members.DeleteSuffix).Result)
+                    if (!this.IsAuthorizeForTeam(toDeleteDto.TeamId, BiaRights.Members.DeleteSuffix).Result)
                     {
                         return this.StatusCode(StatusCodes.Status403Forbidden);
                     }
@@ -398,7 +396,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
             {
                 foreach (var dto in dtos)
                 {
-                    if (!this.IsAuthorizeForTeam(dto.TeamId, Rights.Members.SaveSuffix).Result)
+                    if (!this.IsAuthorizeForTeam(dto.TeamId, BiaRights.Members.SaveSuffix).Result)
                     {
                         return this.StatusCode(StatusCodes.Status403Forbidden);
                     }
@@ -443,7 +441,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         {
             if (filters.ParentIds != null && filters.ParentIds.Length > 0 && filters.ParentIds[0] != null)
             {
-                if (!this.IsAuthorizeForTeam(int.Parse(filters.ParentIds[0]), Rights.Members.ListAccessSuffix).Result)
+                if (!this.IsAuthorizeForTeam(int.Parse(filters.ParentIds[0]), BiaRights.Members.ListAccessSuffix).Result)
                 {
                     return this.StatusCode(StatusCodes.Status403Forbidden);
                 }
@@ -473,7 +471,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
                     return null;
                 }
 
-                if (!this.IsAuthorize(Rights.Users.Add))
+                if (!this.IsAuthorize(BiaRights.Users.Add))
                 {
                     return this.StatusCode(StatusCodes.Status403Forbidden);
                 }
