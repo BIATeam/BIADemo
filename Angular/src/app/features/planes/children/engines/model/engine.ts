@@ -44,7 +44,6 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
     Object.assign(new BiaFieldConfig('reference', 'engine.reference'), {
       type: PropType.String,
       isRequired: true,
-      validators: [Validators.required],
     }),
     Object.assign(new BiaFieldConfig('manufacturer', 'engine.manufacturer'), {
       type: PropType.String,
@@ -54,7 +53,6 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
       {
         type: PropType.DateTime,
         isRequired: true,
-        validators: [Validators.required],
       }
     ),
     Object.assign(
@@ -66,7 +64,6 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
     Object.assign(new BiaFieldConfig('deliveryDate', 'engine.deliveryDate'), {
       type: PropType.Date,
       isRequired: true,
-      validators: [Validators.required],
     }),
     Object.assign(new BiaFieldConfig('exchangeDate', 'engine.exchangeDate'), {
       type: PropType.Date,
@@ -74,7 +71,6 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
     Object.assign(new BiaFieldConfig('syncTime', 'engine.syncTime'), {
       type: PropType.TimeSecOnly,
       isRequired: true,
-      validators: [Validators.required],
     }),
     Object.assign(new BiaFieldConfig('ignitionTime', 'engine.ignitionTime'), {
       type: PropType.TimeSecOnly,
@@ -88,7 +84,6 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
     Object.assign(new BiaFieldConfig('noiseLevel', 'engine.noiseLevel'), {
       type: PropType.Number,
       isRequired: true,
-      validators: [Validators.required],
       // Begin BIAToolKit Generation Ignore
       filterMode: PrimeNGFiltering.Equals,
       // End BIAToolKit Generation Ignore
@@ -96,7 +91,6 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
     Object.assign(new BiaFieldConfig('flightHours', 'engine.flightHours'), {
       type: PropType.Number,
       isRequired: true,
-      validators: [Validators.required],
       // Begin BIAToolKit Generation Ignore
       filterMode: PrimeNGFiltering.Equals,
       displayFormat: Object.assign(new BiaFieldNumberFormat(), {
@@ -125,7 +119,6 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
       {
         type: PropType.Number,
         isRequired: true,
-        validators: [Validators.required],
         // Begin BIAToolKit Generation Ignore
         filterMode: PrimeNGFiltering.Equals,
         displayFormat: Object.assign(new BiaFieldNumberFormat(), {
@@ -157,7 +150,6 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
     Object.assign(new BiaFieldConfig('originalPrice', 'engine.originalPrice'), {
       type: PropType.Number,
       isRequired: true,
-      validators: [Validators.required],
       // Begin BIAToolKit Generation Ignore
       filterMode: PrimeNGFiltering.Equals,
       displayFormat: Object.assign(new BiaFieldNumberFormat(), {
@@ -189,7 +181,6 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
       {
         type: PropType.Boolean,
         isRequired: true,
-        validators: [Validators.required],
         // Begin BIAToolKit Generation Ignore
         isSearchable: true,
         // End BIAToolKit Generation Ignore
@@ -209,7 +200,6 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
       {
         type: PropType.ManyToMany,
         isRequired: true,
-        validators: [Validators.required],
       }
     ),
     Object.assign(new BiaFieldConfig('rowVersion', 'engine.rowVersion'), {

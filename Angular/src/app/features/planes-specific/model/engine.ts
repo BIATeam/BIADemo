@@ -40,7 +40,6 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
     Object.assign(new BiaFieldConfig('reference', 'engine.reference'), {
       type: PropType.String,
       isRequired: true,
-      validators: [Validators.required],
     }),
     Object.assign(new BiaFieldConfig('manufacturer', 'engine.manufacturer'), {
       type: PropType.String,
@@ -50,7 +49,6 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
       {
         type: PropType.DateTime,
         isRequired: true,
-        validators: [Validators.required],
       }
     ),
     Object.assign(
@@ -62,7 +60,6 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
     Object.assign(new BiaFieldConfig('syncTime', 'engine.syncTime'), {
       type: PropType.TimeSecOnly,
       isRequired: true,
-      validators: [Validators.required],
     }),
     Object.assign(new BiaFieldConfig('ignitionTime', 'engine.ignitionTime'), {
       type: PropType.TimeSecOnly,
@@ -75,7 +72,6 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
       type: PropType.Number,
       filterMode: PrimeNGFiltering.Equals,
       isRequired: true,
-      validators: [Validators.required],
     }),
     Object.assign(new BiaFieldConfig('flightHours', 'engine.flightHours'), {
       isRequired: true,
@@ -86,7 +82,7 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
         minFractionDigits: 6,
         maxFractionDigits: 6,
       }),
-      validators: [Validators.required, Validators.min(0)],
+      validators: [Validators.min(0)],
     }),
     Object.assign(
       new BiaFieldConfig('averageFlightHours', 'engine.averageFlightHours'),
@@ -111,7 +107,7 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
           minFractionDigits: 2,
           maxFractionDigits: 2,
         }),
-        validators: [Validators.required, Validators.min(0)],
+        validators: [Validators.min(0)],
       }
     ),
     Object.assign(
@@ -140,7 +136,7 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
         maxFractionDigits: 2,
         currency: 'EUR',
       }),
-      validators: [Validators.required, Validators.min(0)],
+      validators: [Validators.min(0)],
     }),
     Object.assign(
       new BiaFieldConfig('estimatedPrice', 'engine.estimatedPrice'),
@@ -166,7 +162,6 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
         isRequired: true,
         isSearchable: true,
         type: PropType.Boolean,
-        validators: [Validators.required],
       }
     ),
     Object.assign(new BiaFieldConfig('principalPart', 'engine.principalPart'), {

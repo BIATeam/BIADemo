@@ -57,7 +57,6 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       {
         isRequired: true,
         type: PropType.TimeSecOnly,
-        validators: [Validators.required],
         minWidth: '50px',
         isHideByDefault: true,
       }
@@ -68,7 +67,7 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       specificOutput: true,
       specificInput: true,
       isRequired: true,
-      validators: [Validators.required, Validators.min(1)],
+      validators: [Validators.min(1)],
       minWidth: '50px',
     }),
     Object.assign(new BiaFieldConfig('planeType', 'plane.planeType'), {
@@ -80,7 +79,6 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       {
         isRequired: true,
         type: PropType.OneToMany,
-        validators: [Validators.required],
         minWidth: '50px',
       }
     ),

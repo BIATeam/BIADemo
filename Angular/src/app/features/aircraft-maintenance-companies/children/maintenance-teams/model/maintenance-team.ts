@@ -61,7 +61,6 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
           {
             type: PropType.Boolean,
             isRequired: true,
-            validators: [Validators.required],
           }
         ),
         Object.assign(
@@ -82,7 +81,6 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
           {
             type: PropType.DateTime,
             isRequired: true,
-            validators: [Validators.required],
           }
         ),
         Object.assign(
@@ -102,7 +100,6 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
           {
             type: PropType.Date,
             isRequired: true,
-            validators: [Validators.required],
           }
         ),
         Object.assign(
@@ -122,7 +119,6 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
           {
             type: PropType.TimeSecOnly,
             isRequired: true,
-            validators: [Validators.required],
           }
         ),
         Object.assign(
@@ -133,7 +129,6 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
           {
             type: PropType.Number,
             isRequired: true,
-            validators: [Validators.required],
             // Begin BIAToolKit Generation Ignore
             filterMode: PrimeNGFiltering.Equals,
             // End BIAToolKit Generation Ignore
@@ -156,7 +151,6 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
           {
             type: PropType.Number,
             isRequired: true,
-            validators: [Validators.required],
             // Begin BIAToolKit Generation Ignore
             filterMode: PrimeNGFiltering.Equals,
             displayFormat: Object.assign(new BiaFieldNumberFormat(), {
@@ -192,7 +186,6 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
           {
             type: PropType.Number,
             isRequired: true,
-            validators: [Validators.required],
             // Begin BIAToolKit Generation Ignore
             filterMode: PrimeNGFiltering.Equals,
             displayFormat: Object.assign(new BiaFieldNumberFormat(), {
@@ -229,7 +222,6 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
           {
             type: PropType.Number,
             isRequired: true,
-            validators: [Validators.required],
             // Begin BIAToolKit Generation Ignore
             filterMode: PrimeNGFiltering.Equals,
             displayFormat: Object.assign(new BiaFieldNumberFormat(), {
@@ -268,7 +260,6 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
           {
             type: PropType.OneToMany,
             isRequired: true,
-            validators: [Validators.required],
           }
         ),
         Object.assign(
@@ -279,7 +270,6 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
           {
             type: PropType.ManyToMany,
             isRequired: true,
-            validators: [Validators.required],
           }
         ),
         Object.assign(
