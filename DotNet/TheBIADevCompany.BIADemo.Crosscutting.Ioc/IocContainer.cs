@@ -89,8 +89,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         private static void ConfigureApplicationContainer(IServiceCollection collection, bool isApi)
         {
             collection.AddTransient(typeof(IUserSynchronizeDomainService<User>), typeof(UserSynchronizeDomainService));
-            collection.AddTransient(typeof(IUserAppService<UserDto, User>), typeof(UserAppService));
-            collection.AddTransient(typeof(UserAppService));
+            collection.AddTransient(typeof(IBaseUserAppService<UserDto, User>), typeof(UserAppService));
+            collection.AddTransient(typeof(IUserAppService), typeof(UserAppService));
             collection.AddTransient(typeof(IAuthAppService), typeof(AuthAppService<UserDto, User>));
 
             // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)

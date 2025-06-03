@@ -85,7 +85,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <summary>
         /// The user application service.
         /// </summary>
-        private readonly IUserAppService<Domain.User.Entities.UserExtended> userAppService;
+        private readonly IBaseUserAppService<TUserDto, TUser> userAppService;
 
         /// <summary>
         /// The team application service.
@@ -115,7 +115,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="ldapRepositoryHelper">The LDAP repository helper.</param>
         public AuthAppService(
 #if BIA_FRONT_FEATURE
-            IUserAppService<Domain.User.Entities.UserExtended> userAppService,
+            IUserAppService<TUserDto, TUser> userAppService,
             ITeamAppService teamAppService,
             IRoleAppService roleAppService,
             IIdentityProviderRepository identityProviderRepository,

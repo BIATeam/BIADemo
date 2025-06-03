@@ -38,7 +38,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     /// <typeparam name="TUserDto">The type of user dto.</typeparam>
     /// <typeparam name="TUser">The type of user.</typeparam>
     /// <typeparam name="TUserMapper">The type of user mapper.</typeparam>
-    public class BaseUserAppService<TUserDto, TUser, TUserMapper> : CrudAppServiceBase<TUserDto, TUser, int, PagingFilterFormatDto, TUserMapper>, IUserAppService<TUserDto, TUser>
+    public class BaseUserAppService<TUserDto, TUser, TUserMapper> : CrudAppServiceBase<TUserDto, TUser, int, PagingFilterFormatDto, TUserMapper>, IBaseUserAppService<TUserDto, TUser>
         where TUserDto : BaseUserDto, new()
         where TUser : BaseUser, IEntity<int>, new()
         where TUserMapper : BaseUserMapper<TUserDto, TUser>
@@ -124,7 +124,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             return await this.GetAllAsync<OptionDto, UserOptionMapper<TUser>>(specification: specification, queryOrder: new QueryOrder<TUser>().OrderBy(o => o.LastName).ThenBy(o => o.FirstName));
         }
 
-        /// <inheritdoc cref="IUserAppService.AddUserFromUserDirectoryAsync"/>
+        /// <inheritdoc cref="IBaseUserAppService.AddUserFromUserDirectoryAsync"/>
         public async Task<TUser> AddUserFromUserDirectoryAsync(string identityKey, UserFromDirectory userFromDirectory)
         {
             if (userFromDirectory != null)
@@ -147,7 +147,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             return null;
         }
 
-        /// <inheritdoc cref="IUserAppService.CreateUserInfo"/>
+        /// <inheritdoc cref="IBaseUserAppService.CreateUserInfo"/>
         public UserInfoDto CreateUserInfo(TUser user)
         {
             if (user != null)
@@ -166,7 +166,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             return null;
         }
 
-        /// <inheritdoc cref="IUserAppService.GetUserInfoAsync"/>
+        /// <inheritdoc cref="IBaseUserAppService.GetUserInfoAsync"/>
         public async Task<UserInfoDto> GetUserInfoAsync(string identityKey)
         {
             return await this.Repository.GetResultAsync(UserSelectBuilder<TUser>.SelectUserInfo(), filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(identityKey));
@@ -180,7 +180,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             return this.configuration.Authentication.LdapDomains.Where(d => d.ContainsUser).Select(d => d.Name).ToList();
         }
 
-        /// <inheritdoc cref="IUserAppService.GetAllADUserAsync"/>
+        /// <inheritdoc cref="IBaseUserAppService.GetAllADUserAsync"/>
         public async Task<IEnumerable<UserFromDirectoryDto>> GetAllADUserAsync(string filter, string ldapName = null, int max = 10)
         {
             return await Task.FromResult(this.userDirectoryHelper.SearchUsers(filter, ldapName, max).OrderBy(o => o.LastName).ThenBy(o => o.FirstName)
@@ -188,7 +188,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
                 .ToList());
         }
 
-        /// <inheritdoc cref="IUserAppService.GetAllIdpUserAsync"/>
+        /// <inheritdoc cref="IBaseUserAppService.GetAllIdpUserAsync"/>
         public async Task<IEnumerable<UserFromDirectoryDto>> GetAllIdpUserAsync(string filter, int first = 0, int max = 10)
         {
             string formattedFilter = "*" + filter.Replace(" ", " *");
@@ -196,7 +196,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             return userFromDirectories.Select(UserFromDirectoryMapper.EntityToDto());
         }
 
-        /// <inheritdoc cref="IUserAppService.AddByIdentityKeyAsync"/>
+        /// <inheritdoc cref="IBaseUserAppService.AddByIdentityKeyAsync"/>
         public async Task<ResultAddUsersFromDirectoryDto> AddByIdentityKeyAsync(TUserDto userDto)
         {
             UserFromDirectoryDto userFromDirectoryDto = new UserFromDirectoryDto();
@@ -216,7 +216,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             return result;
         }
 
-        /// <inheritdoc cref="IUserAppService.AddFromDirectory"/>
+        /// <inheritdoc cref="IBaseUserAppService.AddFromDirectory"/>
         public async Task<ResultAddUsersFromDirectoryDto> AddFromDirectory(IEnumerable<UserFromDirectoryDto> users)
         {
             ResultAddUsersFromDirectoryDto result = new ResultAddUsersFromDirectoryDto();
@@ -301,7 +301,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             return result;
         }
 
-        /// <inheritdoc cref="IUserAppService.RemoveInGroupAsync"/>
+        /// <inheritdoc cref="IBaseUserAppService.RemoveInGroupAsync"/>
         public async Task<string> RemoveInGroupAsync(int id)
         {
             var ldapGroups = this.userDirectoryHelper.GetLdapGroupsForRole("User");
@@ -340,19 +340,19 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             return string.Empty;
         }
 
-        /// <inheritdoc cref="IUserAppService.SynchronizeWithADAsync"/>
+        /// <inheritdoc cref="IBaseUserAppService.SynchronizeWithADAsync"/>
         public async Task SynchronizeWithADAsync(bool fullSynchro = false)
         {
             await this.userSynchronizeDomainService.SynchronizeFromADGroupAsync(fullSynchro);
         }
 
-        /// <inheritdoc cref="IUserAppService.SynchronizeWithIdpAsync"/>
+        /// <inheritdoc cref="IBaseUserAppService.SynchronizeWithIdpAsync"/>
         public async Task SynchronizeWithIdpAsync()
         {
             await this.userSynchronizeDomainService.SynchronizeFromIdpAsync();
         }
 
-        /// <inheritdoc cref="IUserAppService.UpdateLastLoginDateAndActivate"/>
+        /// <inheritdoc cref="IBaseUserAppService.UpdateLastLoginDateAndActivate"/>
         public async Task UpdateLastLoginDateAndActivate(int userId, bool activate)
         {
             if (userId > 0)
@@ -366,7 +366,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             }
         }
 
-        /// <inheritdoc cref="IUserAppService.SaveAsync"/>
+        /// <inheritdoc cref="IBaseUserAppService.SaveAsync"/>
         public async Task<string> SaveAsync(List<TUserDto> userDtos)
         {
             StringBuilder strBldr = new StringBuilder();
@@ -466,13 +466,13 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             }
         }
 
-        /// <inheritdoc cref="IUserAppService.GetCsvAsync"/>
+        /// <inheritdoc cref="IBaseUserAppService.GetCsvAsync"/>
         public virtual async Task<byte[]> GetCsvAsync(PagingFilterFormatDto filters)
         {
             return await this.GetCsvAsync<TUserDto, TUserMapper, PagingFilterFormatDto>(filters: filters);
         }
 
-        /// <inheritdoc cref="IUserAppService.SetDefaultSite"/>
+        /// <inheritdoc cref="IBaseUserAppService.SetDefaultSite"/>
         public async Task SetDefaultTeamAsync(int teamId, int teamTypeId)
         {
             int userId = this.principal.GetUserId();
@@ -496,7 +496,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             }
         }
 
-        /// <inheritdoc cref="IUserAppService.ResetDefaultSite"/>
+        /// <inheritdoc cref="IBaseUserAppService.ResetDefaultSite"/>
         public async Task ResetDefaultTeamAsync(int teamTypeId)
         {
             int userId = this.principal.GetUserId();

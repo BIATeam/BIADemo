@@ -34,7 +34,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// <summary>
         /// The service user.
         /// </summary>
-        private readonly UserAppService userService;
+        private readonly IUserAppService userService;
 
 #if UseHubForClientInUser
         private readonly IClientForHubService clientForHubService;
@@ -60,7 +60,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// </summary>
         /// <param name="userService">The user service.</param>
         /// <param name="configuration">The configuration.</param>
-        public UsersController(UserAppService userService, IOptions<BiaNetSection> configuration)
+        public UsersController(IUserAppService userService, IOptions<BiaNetSection> configuration)
 #endif
         {
 #if UseHubForClientInUser
