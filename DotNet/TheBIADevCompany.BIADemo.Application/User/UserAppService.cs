@@ -19,7 +19,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     /// <summary>
     /// The application service used for user.
     /// </summary>
-    public class UserAppService : BaseUserAppService<UserDto, User, UserMapper>
+    public class UserAppService : BaseUserAppService<UserDto, User, UserMapper>, IUserAppService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UserAppService"/> class.

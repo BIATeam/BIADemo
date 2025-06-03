@@ -25,7 +25,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.Job
         where TUserDto : BaseUserDto, new()
         where TUser : BaseUser, IEntity<int>, new()
     {
-        private readonly IUserAppService<TUserDto, TUser> userService;
+        private readonly IBaseUserAppService<TUserDto, TUser> userService;
 
         /// <summary>
         /// The configuration of the BiaNet section.
@@ -38,7 +38,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.Job
         /// <param name="configuration">The configuration.</param>
         /// <param name="userService">The user app service.</param>
         /// <param name="logger">logger.</param>
-        public SynchronizeUserTask(IConfiguration configuration, IUserAppService<TUserDto, TUser> userService, ILogger<SynchronizeUserTask<TUserDto, TUser>> logger)
+        public SynchronizeUserTask(IConfiguration configuration, IBaseUserAppService<TUserDto, TUser> userService, ILogger<SynchronizeUserTask<TUserDto, TUser>> logger)
             : base(configuration, logger)
         {
             this.userService = userService;

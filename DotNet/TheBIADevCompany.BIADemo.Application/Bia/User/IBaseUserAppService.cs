@@ -1,4 +1,4 @@
-// <copyright file="IUserAppService.cs" company="TheBIADevCompany">
+// <copyright file="IBaseUserAppService.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -19,7 +19,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     /// </summary>
     /// <typeparam name="TUserDto">The type of user dto.</typeparam>
     /// <typeparam name="TUser">The type of user.</typeparam>
-    public interface IUserAppService<TUserDto, TUser> : ICrudAppServiceBase<TUserDto, TUser, int, PagingFilterFormatDto>
+    public interface IBaseUserAppService<TUserDto, TUser> : ICrudAppServiceBase<TUserDto, TUser, int, PagingFilterFormatDto>
         where TUserDto : BaseUserDto, new()
         where TUser : BaseUser, IEntity<int>, new()
     {

@@ -33,7 +33,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// <summary>
         /// The user application service.
         /// </summary>
-        private readonly UserAppService userService;
+        private readonly IUserAppService userService;
 
         /// <summary>
         /// The plane application service.
@@ -59,7 +59,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// <param name="teamService">The team application service.</param>
         /// <param name="memberService">The member application service.</param>
         /// <param name="userService">The user application service.</param>
-        public TeamsController(ITeamAppService teamService, IMemberAppService memberService, UserAppService userService)
+        public TeamsController(ITeamAppService teamService, IMemberAppService memberService, IUserAppService userService)
 #endif
         {
 #if UseHubForClientInTeam
