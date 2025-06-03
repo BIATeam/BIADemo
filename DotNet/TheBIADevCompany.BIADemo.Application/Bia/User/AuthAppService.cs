@@ -347,7 +347,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <exception cref="UnauthorizedException">No roles found.</exception>
         private async Task<List<string>> GetGlobalRolesAsync(string sid, string domain, UserInfoDto userInfo = default, bool withCredentials = true)
         {
-            List<string> globalRoles = await this.userDirectoryHelper.GetUserRolesAsync(claimsPrincipal: withCredentials ? this.claimsPrincipal : null, userInfoDto: userInfo, sid: sid, domain: domain);
+            List<string> globalRoles = await this.userDirectoryHelper.GetUserRolesAsync(claimsPrincipal: this.claimsPrincipal, userInfoDto: userInfo, sid: sid, domain: domain, withCredentials: withCredentials);
 
             // If the user has no role
             if (globalRoles?.Any() != true)

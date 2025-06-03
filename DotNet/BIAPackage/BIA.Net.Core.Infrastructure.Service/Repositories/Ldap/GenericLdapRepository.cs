@@ -740,7 +740,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="sid">The sid.</param>
         /// <param name="domain">The domain.</param>
         /// <returns>The list of roles.</returns>
-        public async Task<List<string>> GetUserRolesAsync(BiaClaimsPrincipal claimsPrincipal, UserInfoDto userInfoDto, string sid, string domain)
+        public async Task<List<string>> GetUserRolesAsync(BiaClaimsPrincipal claimsPrincipal, UserInfoDto userInfoDto, string sid, string domain, bool withCredentials)
         {
             this.cacheGroupPrincipal.Clear();
             IEnumerable<BIA.Net.Core.Common.Configuration.Role> rolesSection = this.configuration.Roles;
@@ -754,7 +754,11 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     switch (role.Type)
                     {
                         case BiaConstants.RoleType.Fake:
-                            return role.Label;
+                            if (withCredentials)
+                            {
+                                return role.Label;
+                            }
+                            break;
 
                         case BiaConstants.RoleType.UserInDB:
                             if (userInfoDto?.IsActive == true)
@@ -764,7 +768,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                             break;
 
                         case BiaConstants.RoleType.ClaimsToRole:
-                            if (role.RequireClaim?.AllowedValues?.Any() == true && claimsPrincipal != null)
+                            if (withCredentials && role.RequireClaim?.AllowedValues?.Any() == true && claimsPrincipal != null)
                             {
                                 List<string> claimValues = claimsPrincipal.FindAll(role.RequireClaim.Type).Select(c => c.Value).ToList();
                                 if (role.RequireClaim.AllowedValues.Intersect(claimValues).Any())
@@ -776,19 +780,22 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
                         case BiaConstants.RoleType.Ldap:
                         case BiaConstants.RoleType.LdapWithSidHistory:
-                            bool result = await this.IsSidInGroups(role.LdapGroups, sid);
-                            if (result)
+                            if (withCredentials)
                             {
-                                return role.Label;
-                            }
-                            else if (role.Type.Equals(BiaConstants.RoleType.LdapWithSidHistory))
-                            {
-                                string sidHistory = GetSidHistory(sid, domain).Result;
-                                if (!string.IsNullOrEmpty(sidHistory))
+                                bool result = await this.IsSidInGroups(role.LdapGroups, sid);
+                                if (result)
                                 {
-                                    if (IsSidInGroups(role.LdapGroups, sidHistory).Result)
+                                    return role.Label;
+                                }
+                                else if (role.Type.Equals(BiaConstants.RoleType.LdapWithSidHistory))
+                                {
+                                    string sidHistory = GetSidHistory(sid, domain).Result;
+                                    if (!string.IsNullOrEmpty(sidHistory))
                                     {
-                                        return role.Label;
+                                        if (IsSidInGroups(role.LdapGroups, sidHistory).Result)
+                                        {
+                                            return role.Label;
+                                        }
                                     }
                                 }
                             }

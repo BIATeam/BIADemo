@@ -49,7 +49,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
             this.principal = principal;
 
             // update permission with the service account roles.
-            List<string> globalRoles = userDirectoryHelper.GetUserRolesAsync(claimsPrincipal: principal as BiaClaimsPrincipal, userInfoDto: null, sid: null, domain: null).Result;
+            List<string> globalRoles = userDirectoryHelper.GetUserRolesAsync(claimsPrincipal: principal as BiaClaimsPrincipal, userInfoDto: null, sid: null, domain: null, withCredentials: true).Result;
             List<string> userPermissions = userPermissionDomainService.TranslateRolesInPermissions(globalRoles, false);
 
             var newIdentity = (ClaimsIdentity)principal.Identity;
