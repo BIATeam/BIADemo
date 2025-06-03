@@ -58,10 +58,11 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
         public override void DtoToEntity(PlaneDto dto, ref Plane entity)
         {
+            var isCreation = entity == null;
             base.DtoToEntity(dto, ref entity);
 
             // Map parent relationship 1-* : SiteId
-            if (dto.SiteId != 0)
+            if (isCreation && dto.SiteId != 0)
             {
                 entity.SiteId = dto.SiteId;
             }

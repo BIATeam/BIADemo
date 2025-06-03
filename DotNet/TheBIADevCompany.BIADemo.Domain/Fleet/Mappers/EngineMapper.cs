@@ -58,7 +58,14 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
         public override void DtoToEntity(EngineDto dto, ref Engine entity)
         {
+            var isCreation = entity == null;
             base.DtoToEntity(dto, ref entity);
+
+            // Map parent relationship 1-* : SiteId
+            if (isCreation && dto.PlaneId != 0)
+            {
+                entity.PlaneId = dto.PlaneId;
+            }
 
             entity.Reference = dto.Reference;
             entity.Manufacturer = dto.Manufacturer;
@@ -78,12 +85,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             entity.EstimatedPrice = dto.EstimatedPrice;
             entity.IsToBeMaintained = dto.IsToBeMaintained;
             entity.IsHybrid = dto.IsHybrid;
-
-            // Mapping relationship 1-* : Plane
-            if (dto.PlaneId != 0)
-            {
-                entity.PlaneId = dto.PlaneId;
-            }
 
             entity.PrincipalPartId = dto.PrincipalPart?.Id;
             if (dto.InstalledParts != null && dto.InstalledParts?.Any() == true)
