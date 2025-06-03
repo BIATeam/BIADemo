@@ -54,7 +54,6 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
     Object.assign(new BiaFieldConfig('msn', 'plane.msn'), {
       type: PropType.String,
       isRequired: true,
-      validators: [Validators.required],
     }),
     Object.assign(new BiaFieldConfig('manufacturer', 'plane.manufacturer'), {
       type: PropType.String,
@@ -62,7 +61,6 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
     Object.assign(new BiaFieldConfig('isActive', 'plane.isActive'), {
       type: PropType.Boolean,
       isRequired: true,
-      validators: [Validators.required],
       // Begin BIAToolKit Generation Ignore
       isSearchable: true,
       isSortable: false,
@@ -80,7 +78,6 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       {
         type: PropType.DateTime,
         isRequired: true,
-        validators: [Validators.required],
       }
     ),
     Object.assign(
@@ -103,24 +100,21 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       {
         type: PropType.Date,
         isRequired: true,
-        validators: [Validators.required],
       }
     ),
     Object.assign(new BiaFieldConfig('syncTime', 'plane.syncTime'), {
       type: PropType.TimeSecOnly,
-      isRequired: true,
-      validators: [Validators.required],
     }),
     Object.assign(
       new BiaFieldConfig('syncFlightDataTime', 'plane.syncFlightDataTime'),
       {
         type: PropType.TimeSecOnly,
+        isRequired: true,
       }
     ),
     Object.assign(new BiaFieldConfig('capacity', 'plane.capacity'), {
       type: PropType.Number,
       isRequired: true,
-      validators: [Validators.required],
       // Begin BIAToolKit Generation Ignore
       filterMode: PrimeNGFiltering.Equals,
       // End BIAToolKit Generation Ignore
@@ -136,7 +130,6 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       {
         type: PropType.Number,
         isRequired: true,
-        validators: [Validators.required],
         // Begin BIAToolKit Generation Ignore
         filterMode: PrimeNGFiltering.Equals,
         displayFormat: Object.assign(new BiaFieldNumberFormat(), {
@@ -161,7 +154,6 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
     Object.assign(new BiaFieldConfig('fuelCapacity', 'plane.fuelCapacity'), {
       type: PropType.Number,
       isRequired: true,
-      validators: [Validators.required],
       // Begin BIAToolKit Generation Ignore
       filterMode: PrimeNGFiltering.Equals,
       displayFormat: Object.assign(new BiaFieldNumberFormat(), {
@@ -186,7 +178,6 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
     Object.assign(new BiaFieldConfig('originalPrice', 'plane.originalPrice'), {
       type: PropType.Number,
       isRequired: true,
-      validators: [Validators.required],
       // Begin BIAToolKit Generation Ignore
       filterMode: PrimeNGFiltering.Equals,
       displayFormat: Object.assign(new BiaFieldNumberFormat(), {
@@ -224,7 +215,6 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       {
         type: PropType.OneToMany,
         isRequired: true,
-        validators: [Validators.required],
       }
     ),
     Object.assign(

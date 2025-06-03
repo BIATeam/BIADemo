@@ -432,17 +432,19 @@ export class BiaFormComponent<TDto extends { id: number }>
     fields: { [key: string]: any },
     formField: BiaFieldConfig<TDto>
   ) {
+    const validators: ValidatorFn[] = [];
     if (formField.validators && formField.validators.length > 0) {
+      validators.push(...formField.validators);
+    }
+    if (formField.isRequired) {
+      validators.push(Validators.required);
+    }
+    if (validators)
       fields[formField.field as string] = [
         this.element ? this.element[formField.field] : null,
-        formField.validators,
+        validators,
       ];
-    } else if (formField.isRequired) {
-      fields[formField.field as string] = [
-        this.element ? this.element[formField.field] : null,
-        Validators.required,
-      ];
-    } else {
+    else {
       fields[formField.field as string] = [
         this.element ? this.element[formField.field] : null,
       ];

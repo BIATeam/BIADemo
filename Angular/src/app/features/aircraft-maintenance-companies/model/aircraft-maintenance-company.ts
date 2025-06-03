@@ -1,4 +1,3 @@
-import { Validators } from '@angular/forms';
 import {
   BiaFieldConfig,
   BiaFieldsConfig,
@@ -32,7 +31,6 @@ export const aircraftMaintenanceCompanyFieldsConfiguration: BiaFieldsConfig<Airc
           {
             type: PropType.ManyToMany,
             isRequired: true,
-            validators: [Validators.required],
             // Begin BIAToolKit Generation Ignore
             isEditable: false,
             // End BIAToolKit Generation Ignore
