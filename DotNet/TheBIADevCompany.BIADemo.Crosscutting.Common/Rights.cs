@@ -417,52 +417,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
 
         // Begin BIADemo
 
-            /// <summary>
-            /// The right to access to the list of users.
-            /// </summary>
-            public const string ListAccess = "User_List_Access";
-
-            /// <summary>
-            /// The right to get the list of users.
-            /// </summary>
-            public const string List = "User_List";
-
-            /// <summary>
-            /// The right to get the list of AD users.
-            /// </summary>
-            public const string ListAD = "User_ListAD";
-
-            /// <summary>
-            /// The right to get the list of AD users.
-            /// </summary>
-            public const string Read = "User_Read";
-
-            /// <summary>
-            /// The right to add users.
-            /// </summary>
-            public const string Add = "User_Add";
-
-            /// <summary>
-            /// The right to delete users.
-            /// </summary>
-            public const string Delete = "User_Delete";
-
-            /// <summary>
-            /// The right to delete users.
-            /// </summary>
-            public const string Save = "User_Save";
-
-            /// <summary>
-            /// The right to synchronize users.
-            /// </summary>
-            public const string Sync = "User_Sync";
-
-            /// <summary>
-            /// The right to add users.
-            /// </summary>
-            public const string UpdateRoles = "User_UpdateRoles";
-        }
-
         /// <summary>
         /// The views rights.
         /// </summary>

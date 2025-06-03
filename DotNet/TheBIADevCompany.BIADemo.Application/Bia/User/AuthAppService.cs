@@ -17,7 +17,11 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.User.Entities;
+    using BIA.Net.Core.Domain.User.Models;
+    using BIA.Net.Core.Domain.User.Services;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
@@ -39,7 +43,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <summary>
         /// The logger.
         /// </summary>
-        private readonly ILogger<AuthAppService> logger;
+        private readonly ILogger<AuthAppService<TUserDto, TUser>> logger;
 
         /// <summary>
         /// The principal.
@@ -115,7 +119,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="ldapRepositoryHelper">The LDAP repository helper.</param>
         public AuthAppService(
 #if BIA_FRONT_FEATURE
-            IUserAppService<TUserDto, TUser> userAppService,
+            IBaseUserAppService<TUserDto, TUser> userAppService,
             ITeamAppService teamAppService,
             IRoleAppService roleAppService,
             IIdentityProviderRepository identityProviderRepository,
@@ -123,7 +127,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             IJwtFactory jwtFactory,
             IPrincipal principal,
             IUserPermissionDomainService userPermissionDomainService,
-            ILogger<AuthAppService> logger,
+            ILogger<AuthAppService<TUserDto, TUser>> logger,
             IConfiguration configuration,
             IOptions<BiaNetSection> biaNetconfiguration,
             IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
@@ -524,7 +528,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
 
                         if (userFromDirectory != null)
                         {
-                            Domain.User.Entities.UserExtended user = await this.userAppService.AddUserFromUserDirectoryAsync(identityKey, userFromDirectory);
+                            TUser user = await this.userAppService.AddUserFromUserDirectoryAsync(identityKey, userFromDirectory);
                             userInfo = this.userAppService.CreateUserInfo(user);
                         }
                     }
