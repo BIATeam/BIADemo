@@ -31,13 +31,15 @@ export const maintenanceContractFieldsConfiguration: BiaFieldsConfig<Maintenance
           'maintenanceContract.contractNumber'
         ),
         {
+          maxlength: 64,
           isRequired: true,
-          validators: [Validators.required, Validators.maxLength(64)],
+          validators: [Validators.maxLength(64)],
         }
       ),
       Object.assign(
         new BiaFieldConfig('description', 'maintenanceContract.description'),
         {
+          maxlength: 64,
           validators: [Validators.maxLength(64)],
         }
       ),
