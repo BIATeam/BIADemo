@@ -415,7 +415,92 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Options = "Site_Options";
         }
 
-        // Begin BIADemo
+        /// <summary>
+        /// The teams rights.
+        /// </summary>
+        public static class Teams
+        {
+            /// <summary>
+            /// The right to access to the list of teams (options only).
+            /// </summary>
+            public const string Options = "Team_Options";
+
+            /// <summary>
+            /// The right to access to all sites.
+            /// </summary>
+            public const string AccessAll = "Team_Access_All";
+
+            /// <summary>
+            /// The right to access to the list of sites.
+            /// </summary>
+            public const string ListAccess = "Team_List_Access";
+
+            /// <summary>
+            /// The right to set default site.
+            /// </summary>
+            public const string SetDefaultTeam = "Team_Set_Default_Team";
+
+            /// <summary>
+            /// The right to set default role.
+            /// </summary>
+            public const string SetDefaultRoles = "Team_Set_Default_Roles";
+        }
+
+        /// <summary>
+        /// The users rights.
+        /// </summary>
+        public static class Users
+        {
+            /// <summary>
+            /// The right to access to the list of user (options only).
+            /// </summary>
+            public const string Options = "User_Options";
+
+            /// <summary>
+            /// The right to access to the list of users.
+            /// </summary>
+            public const string ListAccess = "User_List_Access";
+
+            /// <summary>
+            /// The right to get the list of users.
+            /// </summary>
+            public const string List = "User_List";
+
+            /// <summary>
+            /// The right to get the list of AD users.
+            /// </summary>
+            public const string ListAD = "User_ListAD";
+
+            /// <summary>
+            /// The right to get the list of AD users.
+            /// </summary>
+            public const string Read = "User_Read";
+
+            /// <summary>
+            /// The right to add users.
+            /// </summary>
+            public const string Add = "User_Add";
+
+            /// <summary>
+            /// The right to delete users.
+            /// </summary>
+            public const string Delete = "User_Delete";
+
+            /// <summary>
+            /// The right to delete users.
+            /// </summary>
+            public const string Save = "User_Save";
+
+            /// <summary>
+            /// The right to synchronize users.
+            /// </summary>
+            public const string Sync = "User_Sync";
+
+            /// <summary>
+            /// The right to add users.
+            /// </summary>
+            public const string UpdateRoles = "User_UpdateRoles";
+        }
 
         /// <summary>
         /// The views rights.
