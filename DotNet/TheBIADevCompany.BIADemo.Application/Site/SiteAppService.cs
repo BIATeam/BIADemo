@@ -40,11 +40,11 @@ namespace TheBIADevCompany.BIADemo.Application.Site
         {
             this.FiltersContext.Add(
                 AccessMode.Read,
-                TeamAppService.ReadSpecification<Site>(TeamTypeId.Site, principal));
+                TeamAppService<TeamTypeId>.ReadSpecification<Site>(TeamTypeId.Site, principal));
 
             this.FiltersContext.Add(
                 AccessMode.Update,
-                TeamAppService.UpdateSpecification<Site>(TeamTypeId.Site, principal));
+                TeamAppService<TeamTypeId>.UpdateSpecification<Site>(TeamTypeId.Site, principal));
         }
 
         /// <inheritdoc/>

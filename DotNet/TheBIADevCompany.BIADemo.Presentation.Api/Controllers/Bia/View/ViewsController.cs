@@ -16,6 +16,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.Bia.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Base;
 
     /// <summary>
@@ -33,7 +34,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         /// </summary>
         /// <param name="viewAppService">The view service.</param>
         /// <param name="teamAppService">The team service.</param>
-        public ViewsController(IViewAppService viewAppService, ITeamAppService teamAppService)
+        public ViewsController(IViewAppService viewAppService, ITeamAppService<TeamTypeId> teamAppService)
             : base(teamAppService)
         {
             this.viewAppService = viewAppService;

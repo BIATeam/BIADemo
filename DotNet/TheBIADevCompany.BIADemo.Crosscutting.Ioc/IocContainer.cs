@@ -33,6 +33,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Application.Bia.User;
 #if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Application.User;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
 #endif
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
@@ -71,7 +72,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             BiaNetSection biaNetSection = new BiaNetSection();
             configuration?.GetSection("BiaNet").Bind(biaNetSection);
 
-
             ConfigureInfrastructureServiceContainer(collection, biaNetSection, isUnitTest);
             ConfigureDomainContainer(collection);
             ConfigureApplicationContainer(collection, isApi);
@@ -98,22 +98,16 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient(typeof(IBaseUserSynchronizeDomainService<User>), typeof(UserSynchronizeDomainService));
             collection.AddTransient(typeof(IBaseUserAppService<UserDto, User>), typeof(UserAppService));
             collection.AddTransient(typeof(IUserAppService), typeof(UserAppService));
-            collection.AddTransient(typeof(IAuthAppService), typeof(AuthAppService<UserDto, User>));
 
             // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
             BiaIocContainer.RegisterServicesFromAssembly(
                 collection: collection,
                 assemblyName: "TheBIADevCompany.BIADemo.Application",
-                excludedServiceNames: new List<string>() { nameof(AuthAppService<UserDto, User>) },
                 serviceLifetime: ServiceLifetime.Transient);
 
             if (isApi)
             {
-                BiaIocContainer.RegisterServicesFromAssembly(
-                collection: collection,
-                assemblyName: "TheBIADevCompany.BIADemo.Application",
-                includedServiceNames: new List<string>() { nameof(AuthAppService<UserDto, User>) },
-                serviceLifetime: ServiceLifetime.Transient);
+                collection.AddTransient(typeof(IAuthAppService), typeof(AuthAppService<UserDto, User, RoleId, TeamTypeId>));
             }
 
             collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();

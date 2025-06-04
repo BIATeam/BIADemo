@@ -11,12 +11,12 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.User.Entities;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
 
     /// <summary>
     /// The interface defining the application service for team.
     /// </summary>
-    public interface ITeamAppService : ICrudAppServiceBase<BaseDtoVersionedTeam, Team, int, PagingFilterFormatDto>
+    /// <typeparam name="TEnumTeamTypeId">The type of enum for TeamTypeId.</typeparam>
+    public interface ITeamAppService<TEnumTeamTypeId> : ICrudAppServiceBase<BaseDtoVersionedTeam, Team, int, PagingFilterFormatDto>
     {
         /// <summary>
         /// Gets all option that I can see.
@@ -40,6 +40,6 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="teamId">the team Id.</param>
         /// <param name="roleSuffix">the last part of the permission.</param>
         /// <returns>true if authorized.</returns>
-        bool IsAuthorizeForTeamType(ClaimsPrincipal principal, TeamTypeId teamTypeId, int teamId, string roleSuffix);
+        bool IsAuthorizeForTeamType(ClaimsPrincipal principal, TEnumTeamTypeId teamTypeId, int teamId, string roleSuffix);
     }
 }

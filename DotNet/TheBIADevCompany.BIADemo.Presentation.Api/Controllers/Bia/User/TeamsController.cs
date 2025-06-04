@@ -20,6 +20,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.Bia.User;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
 
     /// <summary>
     /// The API controller used to manage Teams.
@@ -39,7 +40,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// <summary>
         /// The plane application service.
         /// </summary>
-        private readonly ITeamAppService teamService;
+        private readonly ITeamAppService<TeamTypeId> teamService;
 
 #if UseHubForClientInTeam
         private readonly IClientForHubService clientForHubService;
@@ -60,7 +61,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// <param name="teamService">The team application service.</param>
         /// <param name="memberService">The member application service.</param>
         /// <param name="userService">The user application service.</param>
-        public TeamsController(ITeamAppService teamService, IMemberAppService memberService, IUserAppService userService)
+        public TeamsController(ITeamAppService<TeamTypeId> teamService, IMemberAppService memberService, IUserAppService userService)
 #endif
         {
 #if UseHubForClientInTeam

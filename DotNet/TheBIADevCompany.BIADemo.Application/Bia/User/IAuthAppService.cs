@@ -4,9 +4,10 @@
 
 namespace TheBIADevCompany.BIADemo.Application.Bia.User
 {
+    using System.Collections.Immutable;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Domain.Dto.User;
-    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.User.Entities;
 
     /// <summary>
@@ -29,8 +30,9 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// Logins the on teams asynchronous.
         /// </summary>
         /// <param name="loginParam">The login parameter.</param>
+        /// <param name="teamsConfig">The teams configuration.</param>
         /// <returns>AuthInfo.</returns>
-        Task<AuthInfoDto<AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam);
+        Task<AuthInfoDto<AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam, ImmutableList<BiaTeamConfig<Team>> teamsConfig);
 #endif
     }
 }

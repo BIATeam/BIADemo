@@ -54,11 +54,11 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
         {
             this.FiltersContext.Add(
                 AccessMode.Read,
-                TeamAppService.ReadSpecification<MaintenanceTeam>(TeamTypeId.MaintenanceTeam, principal));
+                TeamAppService<TeamTypeId>.ReadSpecification<MaintenanceTeam>(TeamTypeId.MaintenanceTeam, principal));
 
             this.FiltersContext.Add(
                 AccessMode.Update,
-                TeamAppService.UpdateSpecification<MaintenanceTeam>(TeamTypeId.MaintenanceTeam, principal));
+                TeamAppService<TeamTypeId>.UpdateSpecification<MaintenanceTeam>(TeamTypeId.MaintenanceTeam, principal));
             var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
             this.currentAncestorTeamId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.AircraftMaintenanceCompany) : 0;
 

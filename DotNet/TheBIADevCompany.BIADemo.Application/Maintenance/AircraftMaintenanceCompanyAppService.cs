@@ -38,11 +38,11 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
         {
             this.FiltersContext.Add(
                 AccessMode.Read,
-                TeamAppService.ReadSpecification<AircraftMaintenanceCompany>(TeamTypeId.AircraftMaintenanceCompany, principal));
+                TeamAppService<TeamTypeId>.ReadSpecification<AircraftMaintenanceCompany>(TeamTypeId.AircraftMaintenanceCompany, principal));
 
             this.FiltersContext.Add(
                 AccessMode.Update,
-                TeamAppService.UpdateSpecification<AircraftMaintenanceCompany>(TeamTypeId.AircraftMaintenanceCompany, principal));
+                TeamAppService<TeamTypeId>.UpdateSpecification<AircraftMaintenanceCompany>(TeamTypeId.AircraftMaintenanceCompany, principal));
         }
 
         /// <inheritdoc/>

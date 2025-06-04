@@ -18,13 +18,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Base
         /// <summary>
         /// The service team.
         /// </summary>
-        private readonly ITeamAppService teamAppService;
+        private readonly ITeamAppService<TeamTypeId> teamAppService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamLinkedControllerBase"/> class.
         /// </summary>
         /// <param name="teamAppService">The team service.</param>
-        protected TeamLinkedControllerBase(ITeamAppService teamAppService)
+        protected TeamLinkedControllerBase(ITeamAppService<TeamTypeId> teamAppService)
         {
             this.teamAppService = teamAppService;
         }
