@@ -164,13 +164,13 @@
       // Country
       {
         "Name": "Country_Options",
-        "Roles": [ "Admin", "Site_Member" ]
+        "Roles": [ "Admin", "User" ]
       },
       // BIAToolKit - End Partial ConfigForOption Country
       // Airport
       {
         "Name": "Airport_Options",
-        "Roles": [ "Admin", "Site_Member" ]
+        "Roles": [ "Admin", "User" ]
       },
       {
         "Names": [ "Airport_List_Access", "Airport_Create", "Airport_Read", "Airport_Update", "Airport_Delete", "Airport_Save" ],
@@ -230,7 +230,7 @@
       // PlaneType
       {
         "Name": "PlaneType_Options",
-        "Roles": [ "Admin", "Site_Member" ]
+        "Roles": [ "Admin", "User" ]
       },
       // BIAToolKit - End Partial ConfigForOption PlaneType
       // BIAToolKit - Begin Partial Config MaintenanceTeam
@@ -301,17 +301,17 @@
       // Site
       {
         "Name": "Site_Options",
-        "Roles": [ "Admin", "Site_Member" ]
+        "Roles": [ "Admin", "User" ]
       },
       // AircraftMaintenanceCompany
       {
         "Name": "AircraftMaintenanceCompany_Options",
-        "Roles": [ "Admin", "Site_Member" ]
+        "Roles": [ "Admin", "User" ]
       },
       // Plane
       {
         "Name": "Plane_Options",
-        "Roles": [ "Admin", "Site_Member" ]
+        "Roles": [ "Admin", "User" ]
       },
       // MaintenanceContract
       {
@@ -409,11 +409,11 @@
       },
       // Team
       {
-        "Names": [ "Team_Access_All", "Team_Options" ],
+        "Names": [ "Team_Access_All" ],
         "Roles": [ "Admin" ]
       },
       {
-        "Names": [ "Team_List_Access" ],
+        "Names": [ "Team_List_Access", "Team_Options" ],
         "Roles": [ "User" ]
       },
       {
@@ -445,11 +445,11 @@
       //},
       // Notifications
       {
-        "Names": [ "Notification_List_Access", "Notification_Delete", "Notification_Read" ],
+        "Names": [ "Notification_List_Access", "Notification_Delete", "Notification_Read", "NotificationType_Options" ],
         "Roles": [ "Admin", "User" ]
       },
       {
-        "Names": [ "Notification_Update", "Notification_Create", "NotificationType_Options" ],
+        "Names": [ "Notification_Update", "Notification_Create" ],
         "Roles": [ "Admin" ]
       },
       // SupportAdmin

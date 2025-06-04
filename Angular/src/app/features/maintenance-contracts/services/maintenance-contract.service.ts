@@ -32,7 +32,10 @@ export class MaintenanceContractService extends CrudItemService<MaintenanceContr
 
   public getParentIds(): any[] {
     // TODO after creation of CRUD MaintenanceContract : adapt the parent Key tothe context. It can be null if root crud
-    return [this.authService.getCurrentTeamId(TeamTypeId.Site)];
+    return [
+      this.authService.getCurrentTeamId(TeamTypeId.Site),
+      this.authService.getCurrentTeamId(TeamTypeId.AircraftMaintenanceCompany),
+    ];
   }
 
   public getFeatureName() {
@@ -84,6 +87,8 @@ export class MaintenanceContractService extends CrudItemService<MaintenanceContr
     );
   }
   public update(crudItem: MaintenanceContract) {
+    crudItem.siteId = this.getParentIds()[0];
+    crudItem.aircraftMaintenanceCompanyId = this.getParentIds()[1];
     this.store.dispatch(
       FeatureMaintenanceContractsActions.update({
         maintenanceContract: crudItem,
@@ -91,6 +96,10 @@ export class MaintenanceContractService extends CrudItemService<MaintenanceContr
     );
   }
   public save(crudItems: MaintenanceContract[]) {
+    crudItems.map(x => {
+      x.siteId = this.getParentIds()[0];
+      x.aircraftMaintenanceCompanyId = this.getParentIds()[1];
+    });
     this.store.dispatch(
       FeatureMaintenanceContractsActions.save({
         maintenanceContracts: crudItems,

@@ -1734,7 +1734,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AircraftMaintenanceCompanyId")
+                    b.Property<int>("AircraftMaintenanceCompanyId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("ArchivedDate")
@@ -1763,7 +1763,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<int?>("SiteId")
+                    b.Property<int>("SiteId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -2372,12 +2372,16 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceContract", b =>
                 {
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.AircraftMaintenanceCompany", "AircraftMaintenanceCompany")
-                        .WithMany()
-                        .HasForeignKey("AircraftMaintenanceCompanyId");
+                        .WithMany("MaintenanceContracts")
+                        .HasForeignKey("AircraftMaintenanceCompanyId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
 
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.Site.Entities.Site", "Site")
-                        .WithMany()
-                        .HasForeignKey("SiteId");
+                        .WithMany("MaintenanceContracts")
+                        .HasForeignKey("SiteId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
 
                     b.Navigation("AircraftMaintenanceCompany");
 
@@ -2573,6 +2577,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.AircraftMaintenanceCompany", b =>
                 {
+                    b.Navigation("MaintenanceContracts");
+
                     b.Navigation("MaintenanceTeams");
                 });
 
@@ -2581,6 +2587,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("OperationMaintenanceTeamAirports");
 
                     b.Navigation("OperationMaintenanceTeamCountries");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Site.Entities.Site", b =>
+                {
+                    b.Navigation("MaintenanceContracts");
                 });
 #pragma warning restore 612, 618
         }

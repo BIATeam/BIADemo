@@ -30,11 +30,9 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
             {
                 return new ExpressionCollection<MaintenanceContract>(base.ExpressionCollection)
                 {
-                    { HeaderName.AircraftMaintenanceCompany, x => x.AircraftMaintenanceCompany != null ? x.AircraftMaintenanceCompany.Title : null },
                     { HeaderName.ContractNumber, x => x.ContractNumber },
                     { HeaderName.Description, x => x.Description },
                     { HeaderName.Planes, x => x.Planes.Select(y => y.Msn).OrderBy(y => y) },
-                    { HeaderName.Site, x => x.Site != null ? x.Site.Title : null },
                 };
             }
         }
@@ -42,9 +40,16 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
         /// <inheritdoc/>
         public override void DtoToEntity(MaintenanceContractDto dto, ref MaintenanceContract entity)
         {
+            var isCreation = entity == null;
             base.DtoToEntity(dto, ref entity);
 
-            entity.AircraftMaintenanceCompanyId = dto.AircraftMaintenanceCompany?.Id;
+            // Map parent relationship 1-* : AircraftMaintenanceCompanyId & SiteId
+            if (isCreation && dto.AircraftMaintenanceCompanyId != 0 && dto.SiteId != 0)
+            {
+                entity.AircraftMaintenanceCompanyId = dto.AircraftMaintenanceCompanyId;
+                entity.SiteId = dto.SiteId;
+            }
+
             entity.ContractNumber = dto.ContractNumber;
             entity.Description = dto.Description;
             if (dto.Planes != null && dto.Planes.Count != 0)
@@ -68,8 +73,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
                     });
                 }
             }
-
-            entity.SiteId = dto.Site?.Id;
         }
 
         /// <inheritdoc/>
@@ -77,18 +80,14 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
         {
             return base.EntityToDto().CombineMapping(entity => new MaintenanceContractDto
             {
-                AircraftMaintenanceCompany = entity.AircraftMaintenanceCompany != null ?
-                  new OptionDto { Id = entity.AircraftMaintenanceCompany.Id, Display = entity.AircraftMaintenanceCompany.Title } :
-                  null,
+                AircraftMaintenanceCompanyId = entity.AircraftMaintenanceCompanyId,
                 ContractNumber = entity.ContractNumber,
                 Description = entity.Description,
                 Planes = entity.Planes
                 .Select(x => new OptionDto { Id = x.Id, Display = x.Msn })
                 .OrderBy(x => x.Display)
                 .ToList(),
-                Site = entity.Site != null ?
-                  new OptionDto { Id = entity.Site.Id, Display = entity.Site.Title } :
-                  null,
+                SiteId = entity.SiteId,
             });
         }
 
@@ -108,11 +107,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
         private struct HeaderName
         {
             /// <summary>
-            /// Header Name AircraftMaintenanceCompany.
-            /// </summary>
-            public const string AircraftMaintenanceCompany = "aircraftMaintenanceCompany";
-
-            /// <summary>
             /// Header Name ContractNumber.
             /// </summary>
             public const string ContractNumber = "contractNumber";
@@ -126,11 +120,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
             /// Header Name Planes.
             /// </summary>
             public const string Planes = "planes";
-
-            /// <summary>
-            /// Header Name Site.
-            /// </summary>
-            public const string Site = "site";
         }
     }
 }

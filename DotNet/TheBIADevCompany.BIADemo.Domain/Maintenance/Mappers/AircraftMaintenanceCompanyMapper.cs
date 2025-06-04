@@ -5,6 +5,8 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
 {
+    using System;
+    using System.Linq.Expressions;
     using System.Security.Principal;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Bia.Base.Mappers;
@@ -27,5 +29,15 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
         public override int TeamType => (int)TeamTypeId.AircraftMaintenanceCompany;
+
+        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesBeforeDelete"/>
+        public override Expression<Func<AircraftMaintenanceCompany, object>>[] IncludesBeforeDelete()
+        {
+            return
+            [
+                x => x.MaintenanceTeams,
+                x => x.MaintenanceContracts
+            ];
+        }
     }
 }

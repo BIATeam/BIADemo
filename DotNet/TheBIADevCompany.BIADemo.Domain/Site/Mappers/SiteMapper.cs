@@ -4,10 +4,12 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Site.Mappers
 {
+    using System.Linq.Expressions;
     using System.Security.Principal;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Bia.Base.Mappers;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
+    using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
     using TheBIADevCompany.BIADemo.Domain.Site.Entities;
 
     /// <summary>
@@ -30,6 +32,15 @@ namespace TheBIADevCompany.BIADemo.Domain.Site.Mappers
         public override int TeamType
         {
             get { return (int)TeamTypeId.Site; }
+        }
+
+        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesBeforeDelete"/>
+        public override Expression<Func<Site, object>>[] IncludesBeforeDelete()
+        {
+            return
+            [
+                x => x.MaintenanceContracts
+            ];
         }
     }
 }

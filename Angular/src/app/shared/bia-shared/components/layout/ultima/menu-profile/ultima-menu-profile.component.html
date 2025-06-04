@@ -61,20 +61,23 @@
     @if (
       authService.hasPermission(permissions.Impersonation_Connection_Rights)
     ) {
-      <div class="flex mt-3">
-        <input
-          type="text"
-          pInputText
-          [(ngModel)]="signInAs"
-          placeholder="{{ 'bia.signInAs' | translate }}" />
-        <button
-          [disabled]="!signInAs"
-          pButton
-          type="button"
-          icon="pi pi-user"
-          pTooltip="{{ 'bia.signIn' | translate }}"
-          (click)="connectWithSpecificRights()"></button>
-      </div>
+      <form (ngSubmit)="connectWithSpecificRights()">
+        <div class="flex mt-3">
+          <input
+            type="text"
+            name="signInAs"
+            pInputText
+            [(ngModel)]="signInAs"
+            placeholder="{{ 'bia.signInAs' | translate }}" />
+          <button
+            [disabled]="!signInAs"
+            pButton
+            type="submit"
+            icon="pi pi-user"
+            pTooltip="{{ 'bia.signIn' | translate }}"
+            (click)="connectWithSpecificRights()"></button>
+        </div>
+      </form>
     }
     <div>
       <ng-content select="[menu-profile-panel]"></ng-content>
