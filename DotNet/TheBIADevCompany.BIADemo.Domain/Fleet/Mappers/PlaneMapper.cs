@@ -5,16 +5,16 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq.Expressions;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Mapper;
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq.Expressions;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 

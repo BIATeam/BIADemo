@@ -29,4 +29,8 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.10.*" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="User\" />
+  </ItemGroup>
+
 </Project>

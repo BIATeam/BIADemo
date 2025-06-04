@@ -135,9 +135,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 return this.ValidationProblem();
             }
-            catch (ForbiddenException)
+            catch (ForbiddenException ex)
             {
-                return this.Forbid();
+                return this.Problem(
+                        type: "/docs/errors/forbidden",
+                        title: "User is not authorized to make this action.",
+                        detail: ex.Message,
+                        statusCode: StatusCodes.Status403Forbidden);
             }
         }
 
@@ -174,9 +178,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 return this.ValidationProblem();
             }
-            catch (ForbiddenException)
+            catch (ForbiddenException ex)
             {
-                return this.Forbid();
+                return this.Problem(
+                        type: "/docs/errors/forbidden",
+                        title: "User is not authorized to make this action.",
+                        detail: ex.Message,
+                        statusCode: StatusCodes.Status403Forbidden);
             }
             catch (ElementNotFoundException)
             {

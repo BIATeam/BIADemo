@@ -98,7 +98,7 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
         {
             if (dto.AircraftMaintenanceCompanyId != this.currentAncestorTeamId)
             {
-                throw new ForbiddenException();
+                throw new ForbiddenException("Can only add MaintenanceTeam on current parent Team.");
             }
 
             return await base.AddAsync(dto, mapperMode);

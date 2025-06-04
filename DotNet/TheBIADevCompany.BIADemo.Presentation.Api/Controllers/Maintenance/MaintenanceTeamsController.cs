@@ -23,7 +23,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
     using TheBIADevCompany.BIADemo.Application.Maintenance;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.Dto.Maintenance;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// The API controller used to manage MaintenanceTeams.
@@ -177,12 +176,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
             }
             catch (ForbiddenException ex)
             {
-                return Problem(
+                return this.Problem(
                         type: "/docs/errors/forbidden",
                         title: "User is not authorized to make this action.",
                         detail: ex.Message,
-                        statusCode: StatusCodes.Status403Forbidden
-                    );
+                        statusCode: StatusCodes.Status403Forbidden);
             }
             catch (ElementNotFoundException)
             {

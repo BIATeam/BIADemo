@@ -118,7 +118,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
             var planeParent = await this.planeRepository.GetEntityAsync(dto.PlaneId, isReadOnlyMode: true);
             if (planeParent.SiteId != this.currentAncestorTeamId)
             {
-                throw new ForbiddenException();
+                throw new ForbiddenException("Can only add Engine on current parent Team.");
             }
 
             if (planeParent.IsFixed)
