@@ -20,6 +20,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.Bia.User;
+    using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
 
     /// <summary>

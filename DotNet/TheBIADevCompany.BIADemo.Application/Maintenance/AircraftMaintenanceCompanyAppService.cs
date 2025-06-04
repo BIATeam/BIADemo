@@ -20,6 +20,8 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
     using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
     using TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
+    using TheBIADevCompany.BIADemo.Domain.User;
+    using TheBIADevCompany.BIADemo.Domain.User.Mappers;
 
     /// <summary>
     /// The application service used for aircraftMaintenanceCompany.
@@ -38,11 +40,11 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
         {
             this.FiltersContext.Add(
                 AccessMode.Read,
-                TeamAppService<TeamTypeId>.ReadSpecification<AircraftMaintenanceCompany>(TeamTypeId.AircraftMaintenanceCompany, principal));
+                TeamAppService<TeamTypeId, TeamMapper>.ReadSpecification<AircraftMaintenanceCompany>(TeamTypeId.AircraftMaintenanceCompany, principal, TeamConfig.Config));
 
             this.FiltersContext.Add(
                 AccessMode.Update,
-                TeamAppService<TeamTypeId>.UpdateSpecification<AircraftMaintenanceCompany>(TeamTypeId.AircraftMaintenanceCompany, principal));
+                TeamAppService<TeamTypeId, TeamMapper>.UpdateSpecification<AircraftMaintenanceCompany>(TeamTypeId.AircraftMaintenanceCompany, principal));
         }
 
         /// <inheritdoc/>

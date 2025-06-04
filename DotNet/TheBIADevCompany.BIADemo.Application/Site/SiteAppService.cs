@@ -24,6 +24,8 @@ namespace TheBIADevCompany.BIADemo.Application.Site
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
     using TheBIADevCompany.BIADemo.Domain.Site.Entities;
     using TheBIADevCompany.BIADemo.Domain.Site.Mappers;
+    using TheBIADevCompany.BIADemo.Domain.User;
+    using TheBIADevCompany.BIADemo.Domain.User.Mappers;
 
     /// <summary>
     /// The application service used for site.
@@ -40,11 +42,11 @@ namespace TheBIADevCompany.BIADemo.Application.Site
         {
             this.FiltersContext.Add(
                 AccessMode.Read,
-                TeamAppService<TeamTypeId>.ReadSpecification<Site>(TeamTypeId.Site, principal));
+                TeamAppService<TeamTypeId, TeamMapper>.ReadSpecification<Site>(TeamTypeId.Site, principal, TeamConfig.Config));
 
             this.FiltersContext.Add(
                 AccessMode.Update,
-                TeamAppService<TeamTypeId>.UpdateSpecification<Site>(TeamTypeId.Site, principal));
+                TeamAppService<TeamTypeId, TeamMapper>.UpdateSpecification<Site>(TeamTypeId.Site, principal));
         }
 
         /// <inheritdoc/>

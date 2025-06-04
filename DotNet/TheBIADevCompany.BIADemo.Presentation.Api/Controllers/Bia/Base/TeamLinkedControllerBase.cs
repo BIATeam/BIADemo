@@ -9,6 +9,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Base
     using BIA.Net.Presentation.Api.Controllers.Base;
     using TheBIADevCompany.BIADemo.Application.Bia.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+    using TheBIADevCompany.BIADemo.Domain.User;
 
     /// <summary>
     /// The API controller used to manage views.
@@ -55,7 +56,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Base
         /// <returns>true if authorized.</returns>
         private bool IsAuthorizeForTeamType(TeamTypeId teamTypeId, int teamId, string roleSuffix)
         {
-            return this.teamAppService.IsAuthorizeForTeamType(this.HttpContext.User, teamTypeId, teamId, roleSuffix);
+            return this.teamAppService.IsAuthorizeForTeamType(this.HttpContext.User, teamTypeId, teamId, roleSuffix, TeamConfig.Config);
         }
     }
 }

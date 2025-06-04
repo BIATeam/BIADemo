@@ -46,6 +46,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
     // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.User.Mappers;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features.Bia;
 #endif
 
@@ -98,6 +99,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient(typeof(IBaseUserSynchronizeDomainService<User>), typeof(UserSynchronizeDomainService));
             collection.AddTransient(typeof(IBaseUserAppService<UserDto, User>), typeof(UserAppService));
             collection.AddTransient(typeof(IUserAppService), typeof(UserAppService));
+            collection.AddTransient(typeof(ITeamAppService<TeamTypeId>), typeof(TeamAppService<TeamTypeId, TeamMapper>));
 
             // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
             BiaIocContainer.RegisterServicesFromAssembly(

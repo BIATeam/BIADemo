@@ -30,7 +30,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
     /// Initializes a new instance of the <see cref="TeamMapper"/> class.
     /// </remarks>
     /// <param name="userContext">the user context.</param>
-    public class TeamMapper(UserContext userContext) : BaseMapper<BaseDtoVersionedTeam, Team, int>
+    public class TeamMapper(UserContext userContext) : BaseMapper<BaseDtoVersionedTeam, Team, int>, ITeamMapper
     {
         /// <summary>
         /// The user context language and culture.

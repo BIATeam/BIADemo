@@ -28,7 +28,6 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using TheBIADevCompany.BIADemo.Domain.User;
 
     /// <summary>
     /// Auth App Service.
@@ -267,7 +266,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             if (loginParam.FineGrainedPermission && userInfo?.Id > 0)
             {
                 // Get All Teams
-                allTeams = await this.teamAppService.GetAllAsync(userInfo.Id, userPermissions);
+                allTeams = await this.teamAppService.GetAllAsync(teamsConfig, userInfo.Id, userPermissions);
 
                 // Get Fine Grained Roles
                 List<string> fineGrainedRoles = await this.GetFineRolesAsync(loginParam, userData, userInfo, allTeams, teamsConfig);
@@ -298,7 +297,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             };
 
             // Get AdditionalInfoDto
-            AdditionalInfoDto additionalInfo = this.GetAdditionalInfo(loginParam, userInfo, allTeams, userData);
+            AdditionalInfoDto additionalInfo = this.GetAdditionalInfo(loginParam, userInfo, allTeams, userData, teamsConfig);
 
             // Create AuthInfo
             AuthInfoDto<AdditionalInfoDto> authInfo = await this.jwtFactory.GenerateAuthInfoAsync(tokenDto, additionalInfo, loginParam);
@@ -479,14 +478,15 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="userInfo">The user information.</param>
         /// <param name="allTeams">All teams.</param>
         /// <param name="userData">The user data.</param>
+        /// <param name="teamsConfig">The teams configuration.</param>
         /// <returns>A AdditionalInfo Dto.</returns>
-        private AdditionalInfoDto GetAdditionalInfo(LoginParamDto loginParam, UserInfoDto userInfo, IEnumerable<BaseDtoVersionedTeam> allTeams, UserDataDto userData)
+        private AdditionalInfoDto GetAdditionalInfo(LoginParamDto loginParam, UserInfoDto userInfo, IEnumerable<BaseDtoVersionedTeam> allTeams, UserDataDto userData, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
         {
             AdditionalInfoDto additionalInfo = default;
 
             if (loginParam.AdditionalInfos)
             {
-                var allTeamsFilteredByCurrentParent = allTeams.Where(t => TeamConfig.Config.Exists(tc => tc.TeamTypeId == t.TeamTypeId && (
+                var allTeamsFilteredByCurrentParent = allTeams.Where(t => teamsConfig.Exists(tc => tc.TeamTypeId == t.TeamTypeId && (
                     tc.Parents == null
                     ||
                     tc.Parents.Exists(p => userData.CurrentTeams.Any(ct => ct.TeamId == t.ParentTeamId))))).ToList();
