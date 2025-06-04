@@ -26,5 +26,10 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Entities
         /// Gets or sets the Maintenance teams.
         /// </summary>
         public virtual ICollection<MaintenanceTeam> MaintenanceTeams { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Maintenance contracts.
+        /// </summary>
+        public virtual ICollection<MaintenanceContract> MaintenanceContracts { get; set; }
     }
 }

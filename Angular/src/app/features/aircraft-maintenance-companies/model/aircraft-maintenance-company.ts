@@ -30,7 +30,6 @@ export const aircraftMaintenanceCompanyFieldsConfiguration: BiaFieldsConfig<Airc
           new BiaFieldConfig('admins', 'aircraftMaintenanceCompany.admins'),
           {
             type: PropType.ManyToMany,
-            isRequired: true,
             // Begin BIAToolKit Generation Ignore
             isEditable: false,
             // End BIAToolKit Generation Ignore

@@ -44,7 +44,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Entities
         /// <summary>
         /// Gets or sets the site id.
         /// </summary>
-        public int? SiteId { get; set; }
+        public int SiteId { get; set; }
 
         /// <summary>
         /// Gets or sets the AircraftMaintenanceCompany.
@@ -54,6 +54,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Entities
         /// <summary>
         /// Gets or sets the AircraftMaintenanceCompany id.
         /// </summary>
-        public int? AircraftMaintenanceCompanyId { get; set; }
+        public int AircraftMaintenanceCompanyId { get; set; }
     }
 }
