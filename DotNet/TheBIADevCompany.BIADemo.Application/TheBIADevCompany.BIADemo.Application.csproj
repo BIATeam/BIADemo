@@ -63,4 +63,7 @@
     <Compile Remove="**\LdapDomainsController.cs" />
     <Compile Remove="**\*ProfileImageController*.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Bia\User\" />
+  </ItemGroup>
 </Project>

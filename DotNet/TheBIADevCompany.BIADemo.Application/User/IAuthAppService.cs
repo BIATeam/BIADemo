@@ -5,8 +5,8 @@
 namespace TheBIADevCompany.BIADemo.Application.User
 {
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.User;
     using BIA.Net.Core.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Application.Bia.User;
 
     /// <summary>
     /// Interface AuthService.

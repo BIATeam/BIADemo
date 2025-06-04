@@ -2,7 +2,7 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Application.Bia.User
+namespace BIA.Net.Core.Application.User
 {
     using System.Collections.Immutable;
     using System.Threading.Tasks;
@@ -17,14 +17,14 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     /// <typeparam name="TUser">The type of user.</typeparam>
     public interface IBaseAuthAppService
     {
-#if BIA_BACK_TO_BACK_AUTH
+//#ifBIA_BACK_TO_BACK_AUTH
         /// <summary>
         /// Logins.
         /// </summary>
         /// <returns>The JWT.</returns>
         Task<string> LoginAsync();
-#endif
-#if BIA_FRONT_FEATURE
+//#endif
+//#ifBIA_FRONT_FEATURE
 
         /// <summary>
         /// Logins the on teams asynchronous.
@@ -33,6 +33,6 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="teamsConfig">The teams configuration.</param>
         /// <returns>AuthInfo.</returns>
         Task<AuthInfoDto<AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam, ImmutableList<BiaTeamConfig<Team>> teamsConfig);
-#endif
+//#endif
     }
 }

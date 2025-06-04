@@ -2,8 +2,9 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Application.Bia.User
+namespace BIA.Net.Core.Application.User
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.Immutable;
     using System.Security.Claims;

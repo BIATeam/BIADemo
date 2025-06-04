@@ -55,32 +55,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         }
 
         /// <summary>
-        /// Role.
-        /// </summary>
-        public static class Role
-        {
-            /// <summary>
-            /// The admin role code.
-            /// </summary>
-            public const string Admin = "Admin";
-
-            /// <summary>
-            /// The user role code.
-            /// </summary>
-            public const string User = "User";
-
-            /// <summary>
-            /// The right to access to the list of members.
-            /// </summary>
-            public const string TeamMemberSuffix = "_Member";
-
-            /// <summary>
-            /// The right to access to the list of members.
-            /// </summary>
-            public const string TeamMemberOfOneSuffix = "_MemberOfOne";
-        }
-
-        /// <summary>
         /// Language Id.
         /// </summary>
         public static class LanguageId

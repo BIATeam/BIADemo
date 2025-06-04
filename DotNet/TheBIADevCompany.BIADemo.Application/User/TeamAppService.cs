@@ -6,9 +6,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
 {
     using System.Security.Claims;
     using System.Security.Principal;
+    using BIA.Net.Core.Application.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;
-    using TheBIADevCompany.BIADemo.Application.Bia.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.User;
     using TheBIADevCompany.BIADemo.Domain.User.Mappers;
