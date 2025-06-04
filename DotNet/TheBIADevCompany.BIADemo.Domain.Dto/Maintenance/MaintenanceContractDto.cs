@@ -16,10 +16,10 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Maintenance
     public class MaintenanceContractDto : BaseDtoVersioned<int>
     {
         /// <summary>
-        /// Gets or sets the AircraftMaintenanceCompany.
+        /// Gets or sets the AircraftMaintenanceCompany Id.
         /// </summary>
-        [BiaDtoField(Required = false, ItemType = "AircraftMaintenanceCompany")]
-        public OptionDto AircraftMaintenanceCompany { get; set; }
+        [BiaDtoField(Required = false, IsParent = true)]
+        public int AircraftMaintenanceCompanyId { get; set; }
 
         /// <summary>
         /// Gets or sets the ContractNumber.
@@ -40,9 +40,9 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Maintenance
         public ICollection<OptionDto> Planes { get; set; }
 
         /// <summary>
-        /// Gets or sets the Site.
+        /// Gets or sets the Site Id.
         /// </summary>
-        [BiaDtoField(Required = false, ItemType = "Site")]
-        public OptionDto Site { get; set; }
+        [BiaDtoField(Required = false, IsParent = true)]
+        public int SiteId { get; set; }
     }
 }

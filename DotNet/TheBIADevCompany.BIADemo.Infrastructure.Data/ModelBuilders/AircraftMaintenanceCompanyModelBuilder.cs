@@ -96,12 +96,14 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<MaintenanceContract>().Property(p => p.ContractNumber).IsRequired().HasMaxLength(64).UseCollation("SQL_Latin1_General_CP1_CS_AS");
             modelBuilder.Entity<MaintenanceContract>()
                 .HasOne(x => x.Site)
-                .WithMany()
-                .HasForeignKey(x => x.SiteId);
+                .WithMany(x => x.MaintenanceContracts)
+                .HasForeignKey(x => x.SiteId)
+                .OnDelete(DeleteBehavior.ClientCascade);
             modelBuilder.Entity<MaintenanceContract>()
                 .HasOne(x => x.AircraftMaintenanceCompany)
-                .WithMany()
-                .HasForeignKey(x => x.AircraftMaintenanceCompanyId);
+                .WithMany(x => x.MaintenanceContracts)
+                .HasForeignKey(x => x.AircraftMaintenanceCompanyId)
+                .OnDelete(DeleteBehavior.ClientCascade);
         }
     }
 }

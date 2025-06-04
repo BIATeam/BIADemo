@@ -14,11 +14,11 @@ export interface MaintenanceContract
   extends BaseDto,
     ArchivableDto,
     FixableDto {
-  aircraftMaintenanceCompany: OptionDto | null;
+  aircraftMaintenanceCompanyId: number;
   contractNumber: string;
   description: string | null;
   planes: OptionDto[] | null;
-  site: OptionDto | null;
+  siteId: number;
 }
 
 // TODO after creation of CRUD MaintenanceContract : adapt the field configuration
@@ -41,18 +41,6 @@ export const maintenanceContractFieldsConfiguration: BiaFieldsConfig<Maintenance
         {
           maxlength: 64,
           validators: [Validators.maxLength(64)],
-        }
-      ),
-      Object.assign(new BiaFieldConfig('site', 'maintenanceContract.site'), {
-        type: PropType.OneToMany,
-      }),
-      Object.assign(
-        new BiaFieldConfig(
-          'aircraftMaintenanceCompany',
-          'maintenanceContract.aircraftMaintenanceCompany'
-        ),
-        {
-          type: PropType.OneToMany,
         }
       ),
       Object.assign(

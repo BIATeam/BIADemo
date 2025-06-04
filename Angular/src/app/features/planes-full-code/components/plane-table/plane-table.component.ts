@@ -101,8 +101,8 @@ export class PlaneTableComponent
       plane.planeType = BiaOptionService.clone(plane.planeType);
 
       // force the parent key => siteId from authService or other Id from 'parent'Service
-      (plane.siteId = this.authService.getCurrentTeamId(TeamTypeId.Site)),
-        this.save.emit(plane);
+      plane.siteId = this.authService.getCurrentTeamId(TeamTypeId.Site);
+      this.save.emit(plane);
       this.form.reset();
     }
   }
