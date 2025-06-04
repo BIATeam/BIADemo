@@ -6,6 +6,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
 {
     using System;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.View;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
@@ -14,7 +15,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.Bia.User;
-    using TheBIADevCompany.BIADemo.Application.Bia.View;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Base;
 

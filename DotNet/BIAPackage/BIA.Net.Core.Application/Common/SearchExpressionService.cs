@@ -1,7 +1,7 @@
 ﻿// <copyright file="SearchExpressionService.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
-namespace TheBIADevCompany.BIADemo.Application.Bia.Common
+namespace BIA.Net.Core.Application.Common
 {
     using System;
     using System.Linq;

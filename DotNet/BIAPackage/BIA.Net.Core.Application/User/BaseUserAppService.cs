@@ -2,7 +2,7 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Application.Bia.User
+namespace BIA.Net.Core.Application.User
 {
     using System;
     using System.Collections.Generic;
@@ -46,7 +46,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <summary>
         /// The user synchronize domain service.
         /// </summary>
-        private readonly IUserSynchronizeDomainService<TUser> userSynchronizeDomainService;
+        private readonly IBaseUserSynchronizeDomainService<TUser> userSynchronizeDomainService;
 
         /// <summary>
         /// The configuration of the BiaNet section.
@@ -91,7 +91,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="principal">The principal.</param>
         public BaseUserAppService(
             ITGenericRepository<TUser, int> repository,
-            IUserSynchronizeDomainService<TUser> userSynchronizeDomainService,
+            IBaseUserSynchronizeDomainService<TUser> userSynchronizeDomainService,
             IOptions<BiaNetSection> configuration,
             IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
             ITGenericRepository<UserDefaultTeam, int> userDefaultTeamRepository,

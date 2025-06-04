@@ -2,19 +2,18 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Application.Bia.User
+namespace BIA.Net.Core.Application.User
 {
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Application.Services;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.User.Entities;
     using BIA.Net.Core.Domain.User.Mappers;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
 
     /// <summary>
     /// The application service used for role.
@@ -38,7 +37,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="teamTypeId">The team type id.</param>
         public Task<IEnumerable<OptionDto>> GetAllOptionsAsync(int teamTypeId)
         {
-            return this.GetAllAsync<OptionDto, RoleOptionMapper>(filter: teamTypeId == (int)TeamTypeId.All ? null : r => r.TeamTypes.Any(t => t.Id == teamTypeId));
+            return this.GetAllAsync<OptionDto, RoleOptionMapper>(filter: teamTypeId == (int)BiaTeamTypeId.All ? null : r => r.TeamTypes.Any(t => t.Id == teamTypeId));
         }
 
         /// <summary>

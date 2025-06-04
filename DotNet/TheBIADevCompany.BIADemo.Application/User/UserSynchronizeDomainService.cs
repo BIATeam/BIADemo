@@ -2,8 +2,9 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Application.Bia.User
+namespace TheBIADevCompany.BIADemo.Application.User
 {
+    using BIA.Net.Core.Application.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Models;
     using BIA.Net.Core.Domain.User.Services;

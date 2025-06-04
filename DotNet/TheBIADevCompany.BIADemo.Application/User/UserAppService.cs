@@ -5,6 +5,7 @@
 namespace TheBIADevCompany.BIADemo.Application.Bia.User
 {
     using System.Security.Principal;
+    using BIA.Net.Core.Application.User;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;
@@ -35,7 +36,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="principal">The principal.</param>
         public UserAppService(
             ITGenericRepository<User, int> repository,
-            IUserSynchronizeDomainService<User> userSynchronizeDomainService,
+            IBaseUserSynchronizeDomainService<User> userSynchronizeDomainService,
             IOptions<BiaNetSection> configuration,
             IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
             ITGenericRepository<UserDefaultTeam, int> userDefaultTeamRepository,

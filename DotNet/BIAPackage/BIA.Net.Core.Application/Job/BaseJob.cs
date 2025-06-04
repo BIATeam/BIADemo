@@ -6,6 +6,7 @@ namespace BIA.Net.Core.Application.Job
 {
     using System;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common.Exceptions;
     using Hangfire;
     using Hangfire.Storage;
     using Microsoft.Extensions.Configuration;
@@ -64,7 +65,7 @@ namespace BIA.Net.Core.Application.Job
             {
                 message = "{time}: End {taskName} with Fail.";
                 this.Logger.LogError(ex, message, DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"), taskName);
-                throw new Common.Exceptions.JobException("Job Run Failed", ex);
+                throw new JobException("Job Run Failed", ex);
             }
             finally
             {
@@ -79,7 +80,7 @@ namespace BIA.Net.Core.Application.Job
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         protected virtual async Task RunMonitoredTask()
         {
-            throw new Common.Exceptions.JobException($"Method RunMonitoredTask should be define in {this.GetType().Name}.");
+            throw new JobException($"Method RunMonitoredTask should be define in {this.GetType().Name}.");
         }
 
         /// <summary>

@@ -136,11 +136,11 @@ namespace BIA.Net.Core.IocContainer
 
         private static void ConfigureApplicationContainer(IServiceCollection collection)
         {
-            collection.AddTransient<ILanguageAppService, LanguageAppService>();
-            collection.AddTransient<IClientForHubService, ClientForHubService>();
-            collection.AddTransient<IBiaClaimsPrincipalService, BiaClaimsPrincipalService>();
-            collection.AddTransient<IUserContextService, UserContextService>();
-            collection.AddTransient<IProfileImageService, ProfileImageService>();
+            // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
+            BiaIocContainer.RegisterServicesFromAssembly(
+                collection: collection,
+                assemblyName: "BIA.Net.Core.Application",
+                serviceLifetime: ServiceLifetime.Transient);
         }
 
         private static void ConfigureDomainContainer(IServiceCollection collection)

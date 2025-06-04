@@ -2,13 +2,12 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Application.Bia.Job
+namespace BIA.Net.Core.Application.Job
 {
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Application.Job;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.RepoContract;
     using Hangfire;

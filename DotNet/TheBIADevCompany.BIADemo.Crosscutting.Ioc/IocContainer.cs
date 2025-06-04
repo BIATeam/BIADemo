@@ -9,6 +9,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using System.Reflection;
     using Audit.Core;
     using Audit.EntityFramework;
+#if BIA_FRONT_FEATURE
+    using BIA.Net.Core.Application.User;
+#endif
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
@@ -28,6 +31,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using TheBIADevCompany.BIADemo.Application.Bia.User;
+#if BIA_FRONT_FEATURE
+    using TheBIADevCompany.BIADemo.Application.User;
+#endif
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
 #if BIA_FRONT_FEATURE
@@ -65,11 +71,12 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             BiaNetSection biaNetSection = new BiaNetSection();
             configuration?.GetSection("BiaNet").Bind(biaNetSection);
 
-            BiaIocContainer.ConfigureContainer(collection, configuration, isUnitTest);
 
             ConfigureInfrastructureServiceContainer(collection, biaNetSection, isUnitTest);
             ConfigureDomainContainer(collection);
             ConfigureApplicationContainer(collection, isApi);
+
+            BiaIocContainer.ConfigureContainer(collection, configuration, isUnitTest);
 
             if (!isUnitTest)
             {
@@ -88,7 +95,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
         private static void ConfigureApplicationContainer(IServiceCollection collection, bool isApi)
         {
-            collection.AddTransient(typeof(IUserSynchronizeDomainService<User>), typeof(UserSynchronizeDomainService));
+            collection.AddTransient(typeof(IBaseUserSynchronizeDomainService<User>), typeof(UserSynchronizeDomainService));
             collection.AddTransient(typeof(IBaseUserAppService<UserDto, User>), typeof(UserAppService));
             collection.AddTransient(typeof(IUserAppService), typeof(UserAppService));
             collection.AddTransient(typeof(IAuthAppService), typeof(AuthAppService<UserDto, User>));

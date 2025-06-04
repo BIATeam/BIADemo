@@ -2,7 +2,7 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Application.Bia.Notification
+namespace BIA.Net.Core.Application.Notification
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;

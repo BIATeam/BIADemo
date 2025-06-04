@@ -2,10 +2,10 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Application.Bia.Job
+namespace BIA.Net.Core.Application.Job
 {
     using System.Threading.Tasks;
-    using BIA.Net.Core.Application.Job;
+    using BIA.Net.Core.Application.User;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Entity.Interface;
@@ -13,7 +13,6 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.Job
     using Hangfire;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
-    using TheBIADevCompany.BIADemo.Application.Bia.User;
 
     /// <summary>
     /// Task to synchronize users from LDAP.

@@ -4,14 +4,13 @@
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Notification
 {
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Notification;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using TheBIADevCompany.BIADemo.Application.Bia.Notification;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common;
 
     /// <summary>
     /// The API controller used to manage notification type.

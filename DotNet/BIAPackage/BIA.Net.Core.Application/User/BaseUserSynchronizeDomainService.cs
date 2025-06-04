@@ -2,7 +2,7 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Application.Bia.User
+namespace BIA.Net.Core.Application.User
 {
     using System;
     using System.Collections.Concurrent;
@@ -19,7 +19,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     /// The service used for synchronization between AD and DB.
     /// </summary>
     /// <typeparam name="TUser">The type of user.</typeparam>
-    public class BaseUserSynchronizeDomainService<TUser> : IUserSynchronizeDomainService<TUser>
+    public class BaseUserSynchronizeDomainService<TUser> : IBaseUserSynchronizeDomainService<TUser>
         where TUser : BaseUser, new()
     {
         /// <summary>
@@ -58,7 +58,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             this.identityProviderRepository = identityProviderRepository;
         }
 
-        /// <inheritdoc cref="IUserSynchronizeDomainService.SynchronizeFromIdpAsync"/>
+        /// <inheritdoc cref="IBaseUserSynchronizeDomainService.SynchronizeFromIdpAsync"/>
         public async Task SynchronizeFromIdpAsync()
         {
             IEnumerable<TUser> users = await this.repository.GetAllEntityAsync(filter: user => !string.IsNullOrWhiteSpace(user.Login) && user.IsActive);
@@ -79,7 +79,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             }
         }
 
-        /// <inheritdoc cref="IUserSynchronizeDomainService.SynchronizeFromADGroupAsync"/>
+        /// <inheritdoc cref="IBaseUserSynchronizeDomainService.SynchronizeFromADGroupAsync"/>
         public async Task SynchronizeFromADGroupAsync(bool fullSynchro = false)
         {
             List<TUser> users = (await this.repository.GetAllEntityAsync(includes: new Expression<Func<TUser, object>>[] { x => x.Roles })).ToList();
@@ -142,7 +142,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
                 foreach (UserFromDirectory userFromDirectory in usersFromDirectory)
                 {
 #pragma warning disable S6602 // "Find" method should be used instead of the "FirstOrDefault" extension
-                    TUser foundUser = users.FirstOrDefault<TUser>(this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(this.userIdentityKeyDomainService.GetDirectoryIdentityKey(userFromDirectory)).Compile());
+                    TUser foundUser = users.FirstOrDefault(this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(this.userIdentityKeyDomainService.GetDirectoryIdentityKey(userFromDirectory)).Compile());
 #pragma warning restore S6602 // "Find" method should be used instead of the "FirstOrDefault" extension
 
                     this.AddOrActiveUserFromDirectory(userFromDirectory, foundUser);

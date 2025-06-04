@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Archive;
     using BIA.Net.Core.Application.Clean;
+    using BIA.Net.Core.Application.Job;
     using BIA.Net.Core.Common.Configuration;
     using Hangfire;
     using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,6 @@ namespace TheBIADevCompany.BIADemo.DeployDB
     using NLog;
     using NLog.Extensions.Hosting;
     using NLog.Extensions.Logging;
-    using TheBIADevCompany.BIADemo.Application.Bia.Job;
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Application.Job;

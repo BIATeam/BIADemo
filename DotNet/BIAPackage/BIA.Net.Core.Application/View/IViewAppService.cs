@@ -2,7 +2,7 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Application.Bia.View
+namespace BIA.Net.Core.Application.View
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;

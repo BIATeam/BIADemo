@@ -1,8 +1,8 @@
-// <copyright file="IUserSynchronizeDomainService.cs" company="TheBIADevCompany">
+// <copyright file="IBaseUserSynchronizeDomainService.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Application.Bia.User
+namespace BIA.Net.Core.Application.User
 {
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.User.Entities;
@@ -12,7 +12,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     /// The interface defining the user synchronize domain service.
     /// </summary>
     /// <typeparam name="TUser">The type of user.</typeparam>
-    public interface IUserSynchronizeDomainService<TUser>
+    public interface IBaseUserSynchronizeDomainService<TUser>
         where TUser : BaseUser, new()
     {
         /// <summary>

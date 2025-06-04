@@ -4,6 +4,7 @@
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
 {
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.User.Entities;
     using Microsoft.EntityFrameworkCore;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
@@ -100,7 +101,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
         {
             modelBuilder.Entity<TeamType>().HasKey(t => t.Id);
             modelBuilder.Entity<TeamType>().Property(r => r.Name).IsRequired().HasMaxLength(32);
-            modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.Root, Name = "Root" });
+            modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)BiaTeamTypeId.Root, Name = "Root" });
             modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.Site, Name = "Site" });
 
             // Begin BIAToolKit Generation Ignore
@@ -178,9 +179,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
                 .UsingEntity(rt =>
                 {
                     rt.ToTable("RoleTeamTypes");
-                    rt.HasData(new { TeamTypesId = (int)TeamTypeId.Root, RolesId = (int)RoleId.Admin });
-                    rt.HasData(new { TeamTypesId = (int)TeamTypeId.Root, RolesId = (int)RoleId.BackAdmin });
-                    rt.HasData(new { TeamTypesId = (int)TeamTypeId.Root, RolesId = (int)RoleId.BackReadOnly });
+                    rt.HasData(new { TeamTypesId = (int)BiaTeamTypeId.Root, RolesId = (int)RoleId.Admin });
+                    rt.HasData(new { TeamTypesId = (int)BiaTeamTypeId.Root, RolesId = (int)RoleId.BackAdmin });
+                    rt.HasData(new { TeamTypesId = (int)BiaTeamTypeId.Root, RolesId = (int)RoleId.BackReadOnly });
                     rt.HasData(new { TeamTypesId = (int)TeamTypeId.Site, RolesId = (int)RoleId.SiteAdmin });
 
                     // Begin BIADemo

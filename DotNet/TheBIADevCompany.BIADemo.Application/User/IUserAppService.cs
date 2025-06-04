@@ -4,6 +4,7 @@
 
 namespace TheBIADevCompany.BIADemo.Application.Bia.User
 {
+    using BIA.Net.Core.Application.User;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
 

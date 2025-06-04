@@ -10,7 +10,6 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
-    using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
 
