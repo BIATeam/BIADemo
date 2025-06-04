@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Presentation.Api.Controller.Base;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.Bia.User;
@@ -16,8 +17,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
     using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Base;
 
     /// <summary>
-    /// The API controller used to authenticate users.
+    /// AAA The API controller used to authenticate users.
     /// </summary>
+    [SwaggerControllerOrder(1)]
     public class AuthController : AuthControllerBase
     {
         /// <summary>

@@ -13,6 +13,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
 #pragma warning disable BIA001 // Forbidden reference to Domain layer in Presentation layer
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Service;
+    using BIA.Net.Core.Presentation.Api.Controller.Base;
 #pragma warning restore BIA001 // Forbidden reference to Domain layer in Presentation layer
     using BIA.Net.Core.Presentation.Api.Features.HangfireDashboard;
     using BIA.Net.Core.Presentation.Api.StartupConfiguration;
@@ -25,6 +26,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
     using Hangfire.SqlServer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.OpenApi.Models;
@@ -61,6 +63,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
             // Swagger
             if (apiFeatures.Swagger?.IsActive == true)
             {
+                SwaggerControllerOrder<ControllerBase> swaggerControllerOrder = new SwaggerControllerOrder<ControllerBase>(Assembly.GetEntryAssembly());
                 services.AddSwaggerGen(a =>
                 {
                     var apiScheme = new OpenApiSecurityScheme
@@ -87,8 +90,8 @@ namespace BIA.Net.Core.Presentation.Api.Features
                         apiScheme);
                     a.AddSecurityRequirement(securityRequirement);
 
-                    string filePath = Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetEntryAssembly().GetName().Name}.xml");
-                    a.IncludeXmlComments(filePath, true);
+                    a.OrderActionsBy((apiDesc) => $"{swaggerControllerOrder.SortKey(apiDesc.ActionDescriptor.RouteValues["controller"])}");
+                    a.IncludeXmlComments(Assembly.GetEntryAssembly(), false);
                 });
             }
 
