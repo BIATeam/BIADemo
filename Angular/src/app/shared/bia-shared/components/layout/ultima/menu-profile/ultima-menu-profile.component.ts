@@ -196,6 +196,6 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
       ...this.authService.getLoginParameters(),
       baseUserLogin: this.signInAs,
     });
-    this.sub.add(this.authService.login().subscribe());
+    location.reload();
   }
 }
