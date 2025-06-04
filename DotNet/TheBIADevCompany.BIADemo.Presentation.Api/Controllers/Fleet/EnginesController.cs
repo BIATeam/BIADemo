@@ -118,6 +118,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.Engines.Create)]
         public async Task<IActionResult> Add([FromBody] EngineDto dto)
@@ -134,6 +135,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 return this.ValidationProblem();
             }
+            catch (ForbiddenException)
+            {
+                return this.Forbid();
+            }
         }
 
         /// <summary>
@@ -145,6 +150,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -167,6 +173,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             catch (ArgumentNullException)
             {
                 return this.ValidationProblem();
+            }
+            catch (ForbiddenException)
+            {
+                return this.Forbid();
             }
             catch (ElementNotFoundException)
             {

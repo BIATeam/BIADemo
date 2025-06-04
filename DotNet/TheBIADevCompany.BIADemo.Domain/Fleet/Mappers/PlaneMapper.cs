@@ -5,15 +5,16 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq.Expressions;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Mapper;
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq.Expressions;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
@@ -62,9 +63,18 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             base.DtoToEntity(dto, ref entity);
 
             // Map parent relationship 1-* : SiteId
-            if (isCreation && dto.SiteId != 0)
+            if (isCreation)
             {
+                if (dto.SiteId == 0)
+                {
+                    throw new BadRequestException("The parent is mandatory.");
+                }
+
                 entity.SiteId = dto.SiteId;
+            }
+            else if (entity.SiteId != dto.SiteId && dto.SiteId != 0)
+            {
+                throw new ForbiddenException("It is forbidden to change the parent.");
             }
 
             entity.Msn = dto.Msn;

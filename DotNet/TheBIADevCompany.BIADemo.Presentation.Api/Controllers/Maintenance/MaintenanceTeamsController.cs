@@ -23,6 +23,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
     using TheBIADevCompany.BIADemo.Application.Maintenance;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.Dto.Maintenance;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// The API controller used to manage MaintenanceTeams.
@@ -118,6 +119,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.MaintenanceTeams.Create)]
         public async Task<IActionResult> Add([FromBody] MaintenanceTeamDto dto)
@@ -134,6 +136,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
             {
                 return this.ValidationProblem();
             }
+            catch (ForbiddenException)
+            {
+                return this.Forbid();
+            }
         }
 
         /// <summary>
@@ -145,6 +151,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -167,6 +174,15 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
             catch (ArgumentNullException)
             {
                 return this.ValidationProblem();
+            }
+            catch (ForbiddenException ex)
+            {
+                return Problem(
+                        type: "/docs/errors/forbidden",
+                        title: "User is not authorized to make this action.",
+                        detail: ex.Message,
+                        statusCode: StatusCodes.Status403Forbidden
+                    );
             }
             catch (ElementNotFoundException)
             {

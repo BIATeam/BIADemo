@@ -5,16 +5,17 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-    using System.Linq.Expressions;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Mapper;
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Linq.Expressions;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
@@ -61,10 +62,19 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             var isCreation = entity == null;
             base.DtoToEntity(dto, ref entity);
 
-            // Map parent relationship 1-* : SiteId
-            if (isCreation && dto.PlaneId != 0)
+            // Map parent relationship 1-* : PlaneId
+            if (isCreation)
             {
+                if (dto.PlaneId == 0)
+                {
+                    throw new BadRequestException("The parent is mandatory.");
+                }
+
                 entity.PlaneId = dto.PlaneId;
+            }
+            else if (entity.PlaneId != dto.PlaneId && dto.PlaneId != 0)
+            {
+                throw new ForbiddenException("It is forbidden to change the parent.");
             }
 
             entity.Reference = dto.Reference;

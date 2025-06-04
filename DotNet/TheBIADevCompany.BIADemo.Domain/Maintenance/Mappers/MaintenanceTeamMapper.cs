@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
     using System.Globalization;
     using System.Linq.Expressions;
     using System.Security.Principal;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
@@ -75,9 +76,18 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
             base.DtoToEntity(dto, ref entity);
 
             // Map parent relationship 1-* : AircraftMaintenanceCompanyId
-            if (isCreation && dto.AircraftMaintenanceCompanyId != 0)
+            if (isCreation)
             {
+                if (dto.AircraftMaintenanceCompanyId == 0)
+                {
+                    throw new BadRequestException("The parent is mandatory.");
+                }
+
                 entity.AircraftMaintenanceCompanyId = dto.AircraftMaintenanceCompanyId;
+            }
+            else if (entity.AircraftMaintenanceCompanyId != dto.AircraftMaintenanceCompanyId && dto.AircraftMaintenanceCompanyId != 0)
+            {
+                throw new ForbiddenException("It is forbidden to change the parent.");
             }
 
             entity.Code = dto.Code;
