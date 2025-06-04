@@ -1,4 +1,4 @@
-// <copyright file="TeamAppService.cs" company="TheBIADevCompany">
+// <copyright file="BaseTeamAppService.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -31,7 +31,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     /// </summary>
     /// <typeparam name="TEnumTeamTypeId">The type for enum Team Type Id.</typeparam>
     /// <typeparam name="TTeamMapper">The type of team Mapper.</typeparam>
-    public class TeamAppService<TEnumTeamTypeId, TTeamMapper> : CrudAppServiceBase<BaseDtoVersionedTeam, Team, int, PagingFilterFormatDto, TTeamMapper>, ITeamAppService<TEnumTeamTypeId>
+    public class BaseTeamAppService<TEnumTeamTypeId, TTeamMapper> : CrudAppServiceBase<BaseDtoVersionedTeam, Team, int, PagingFilterFormatDto, TTeamMapper>, IBaseTeamAppService<TEnumTeamTypeId>
         where TEnumTeamTypeId : struct, Enum
         where TTeamMapper : BiaBaseMapper<BaseDtoVersionedTeam, Team, int>, ITeamMapper
     {
@@ -41,11 +41,11 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         private readonly BiaClaimsPrincipal principal;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TeamAppService{TEnumTeamTypeId, TTeamMapper}"/> class.
+        /// Initializes a new instance of the <see cref="BaseTeamAppService{TEnumTeamTypeId, TTeamMapper}"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The claims principal.</param>
-        public TeamAppService(ITGenericRepository<Team, int> repository, IPrincipal principal)
+        public BaseTeamAppService(ITGenericRepository<Team, int> repository, IPrincipal principal)
             : base(repository)
         {
             this.principal = principal as BiaClaimsPrincipal;

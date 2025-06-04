@@ -19,6 +19,7 @@ namespace TheBIADevCompany.BIADemo.Application.Site
     using BIA.Net.Core.Domain.Specification;
     using BIA.Net.Core.Domain.User.Specifications;
     using TheBIADevCompany.BIADemo.Application.Bia.User;
+    using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
@@ -42,11 +43,11 @@ namespace TheBIADevCompany.BIADemo.Application.Site
         {
             this.FiltersContext.Add(
                 AccessMode.Read,
-                TeamAppService<TeamTypeId, TeamMapper>.ReadSpecification<Site>(TeamTypeId.Site, principal, TeamConfig.Config));
+                TeamAppService.ReadSpecification<Site>(TeamTypeId.Site, principal, TeamConfig.Config));
 
             this.FiltersContext.Add(
                 AccessMode.Update,
-                TeamAppService<TeamTypeId, TeamMapper>.UpdateSpecification<Site>(TeamTypeId.Site, principal));
+                TeamAppService.UpdateSpecification<Site>(TeamTypeId.Site, principal));
         }
 
         /// <inheritdoc/>

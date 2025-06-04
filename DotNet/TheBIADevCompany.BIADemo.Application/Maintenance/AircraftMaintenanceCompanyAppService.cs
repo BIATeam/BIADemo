@@ -15,6 +15,7 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
     using BIA.Net.Core.Domain.Specification;
     using BIA.Net.Core.Domain.User.Specifications;
     using TheBIADevCompany.BIADemo.Application.Bia.User;
+    using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Maintenance;
     using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
@@ -40,11 +41,11 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
         {
             this.FiltersContext.Add(
                 AccessMode.Read,
-                TeamAppService<TeamTypeId, TeamMapper>.ReadSpecification<AircraftMaintenanceCompany>(TeamTypeId.AircraftMaintenanceCompany, principal, TeamConfig.Config));
+                TeamAppService.ReadSpecification<AircraftMaintenanceCompany>(TeamTypeId.AircraftMaintenanceCompany, principal, TeamConfig.Config));
 
             this.FiltersContext.Add(
                 AccessMode.Update,
-                TeamAppService<TeamTypeId, TeamMapper>.UpdateSpecification<AircraftMaintenanceCompany>(TeamTypeId.AircraftMaintenanceCompany, principal));
+                TeamAppService.UpdateSpecification<AircraftMaintenanceCompany>(TeamTypeId.AircraftMaintenanceCompany, principal));
         }
 
         /// <inheritdoc/>

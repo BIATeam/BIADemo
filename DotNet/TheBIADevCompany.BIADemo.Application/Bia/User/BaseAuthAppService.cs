@@ -1,4 +1,4 @@
-﻿// <copyright file="AuthAppService.cs" company="TheBIADevCompany">
+﻿// <copyright file="BaseAuthAppService.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 namespace TheBIADevCompany.BIADemo.Application.Bia.User
@@ -36,7 +36,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     /// <typeparam name="TUser">The type of user.</typeparam>
     /// <typeparam name="TEnumRoleId">The type for enum Role Id.</typeparam>
     /// <typeparam name="TEnumTeamTypeId">The type for enum Team Type Id.</typeparam>
-    public class AuthAppService<TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId> : IAuthAppService
+    public class BaseAuthAppService<TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId> : IBaseAuthAppService
         where TUserDto : BaseUserDto, new()
         where TUser : BaseUser, IEntity<int>, new()
         where TEnumRoleId : struct, Enum
@@ -45,7 +45,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <summary>
         /// The logger.
         /// </summary>
-        private readonly ILogger<AuthAppService<TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId>> logger;
+        private readonly ILogger<BaseAuthAppService<TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId>> logger;
 
         /// <summary>
         /// The principal.
@@ -96,7 +96,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <summary>
         /// The team application service.
         /// </summary>
-        private readonly ITeamAppService<TEnumTeamTypeId> teamAppService;
+        private readonly IBaseTeamAppService<TEnumTeamTypeId> teamAppService;
 
         /// <summary>
         /// The role application service.
@@ -105,7 +105,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
 #endif
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AuthAppService{TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId}" /> class.
+        /// Initializes a new instance of the <see cref="BaseAuthAppService{TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId}" /> class.
         /// </summary>
         /// <param name="userAppService">The user application service.</param>
         /// <param name="teamAppService">The team application service.</param>
@@ -119,17 +119,17 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="biaNetconfiguration">The bia netconfiguration.</param>
         /// <param name="userDirectoryHelper">The user directory helper.</param>
         /// <param name="ldapRepositoryHelper">The LDAP repository helper.</param>
-        public AuthAppService(
+        public BaseAuthAppService(
 #if BIA_FRONT_FEATURE
             IBaseUserAppService<TUserDto, TUser> userAppService,
-            ITeamAppService<TEnumTeamTypeId> teamAppService,
+            IBaseTeamAppService<TEnumTeamTypeId> teamAppService,
             IRoleAppService roleAppService,
             IIdentityProviderRepository identityProviderRepository,
 #endif
             IJwtFactory jwtFactory,
             IPrincipal principal,
             IUserPermissionDomainService userPermissionDomainService,
-            ILogger<AuthAppService<TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId>> logger,
+            ILogger<BaseAuthAppService<TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId>> logger,
             IConfiguration configuration,
             IOptions<BiaNetSection> biaNetconfiguration,
             IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,

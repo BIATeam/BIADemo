@@ -8,8 +8,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Base
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using TheBIADevCompany.BIADemo.Application.Bia.User;
+    using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.User;
 
     /// <summary>
     /// The API controller used to manage views.
@@ -19,13 +19,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Base
         /// <summary>
         /// The service team.
         /// </summary>
-        private readonly ITeamAppService<TeamTypeId> teamAppService;
+        private readonly ITeamAppService teamAppService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamLinkedControllerBase"/> class.
         /// </summary>
         /// <param name="teamAppService">The team service.</param>
-        protected TeamLinkedControllerBase(ITeamAppService<TeamTypeId> teamAppService)
+        protected TeamLinkedControllerBase(ITeamAppService teamAppService)
         {
             this.teamAppService = teamAppService;
         }
@@ -56,7 +56,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Base
         /// <returns>true if authorized.</returns>
         private bool IsAuthorizeForTeamType(TeamTypeId teamTypeId, int teamId, string roleSuffix)
         {
-            return this.teamAppService.IsAuthorizeForTeamType(this.HttpContext.User, teamTypeId, teamId, roleSuffix, TeamConfig.Config);
+            return this.teamAppService.IsAuthorizeForTeamType(this.HttpContext.User, teamTypeId, teamId, roleSuffix);
         }
     }
 }

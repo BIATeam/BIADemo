@@ -99,7 +99,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient(typeof(IBaseUserSynchronizeDomainService<User>), typeof(UserSynchronizeDomainService));
             collection.AddTransient(typeof(IBaseUserAppService<UserDto, User>), typeof(UserAppService));
             collection.AddTransient(typeof(IUserAppService), typeof(UserAppService));
-            collection.AddTransient(typeof(ITeamAppService<TeamTypeId>), typeof(TeamAppService<TeamTypeId, TeamMapper>));
+            collection.AddTransient(typeof(IBaseTeamAppService<TeamTypeId>), typeof(TeamAppService));
+            collection.AddTransient(typeof(ITeamAppService), typeof(TeamAppService));
 
             // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
             BiaIocContainer.RegisterServicesFromAssembly(
@@ -109,7 +110,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
             if (isApi)
             {
-                collection.AddTransient(typeof(IAuthAppService), typeof(AuthAppService<UserDto, User, RoleId, TeamTypeId>));
+                collection.AddTransient(typeof(IAuthAppService), typeof(AuthAppService));
             }
 
             collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();

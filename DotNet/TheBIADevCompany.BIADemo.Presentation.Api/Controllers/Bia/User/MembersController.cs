@@ -80,7 +80,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
             IUserAppService userService,
             IMemberAppService memberService,
             IUserContextService userContextService,
-            ITeamAppService<TeamTypeId> teamAppService)
+            ITeamAppService teamAppService)
 #endif
             : base(teamAppService)
         {

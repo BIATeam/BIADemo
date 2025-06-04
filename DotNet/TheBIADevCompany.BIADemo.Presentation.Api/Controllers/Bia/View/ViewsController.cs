@@ -35,7 +35,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         /// </summary>
         /// <param name="viewAppService">The view service.</param>
         /// <param name="teamAppService">The team service.</param>
-        public ViewsController(IViewAppService viewAppService, ITeamAppService<TeamTypeId> teamAppService)
+        public ViewsController(IViewAppService viewAppService, ITeamAppService teamAppService)
             : base(teamAppService)
         {
             this.viewAppService = viewAppService;

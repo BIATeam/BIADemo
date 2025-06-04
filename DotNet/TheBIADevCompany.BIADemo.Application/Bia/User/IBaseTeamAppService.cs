@@ -1,4 +1,4 @@
-// <copyright file="ITeamAppService.cs" company="TheBIADevCompany">
+// <copyright file="IBaseTeamAppService.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -18,7 +18,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     /// The interface defining the application service for team.
     /// </summary>
     /// <typeparam name="TEnumTeamTypeId">The type of enum for TeamTypeId.</typeparam>
-    public interface ITeamAppService<TEnumTeamTypeId> : ICrudAppServiceBase<BaseDtoVersionedTeam, Team, int, PagingFilterFormatDto>
+    public interface IBaseTeamAppService<TEnumTeamTypeId> : ICrudAppServiceBase<BaseDtoVersionedTeam, Team, int, PagingFilterFormatDto>
         where TEnumTeamTypeId : struct, Enum
     {
         /// <summary>
