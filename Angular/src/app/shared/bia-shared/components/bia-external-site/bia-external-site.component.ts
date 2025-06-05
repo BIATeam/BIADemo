@@ -45,6 +45,7 @@ export class BiaExternalSiteComponent implements OnInit, OnDestroy {
     protected readonly authService: AuthService
   ) {
     effect(() => {
+      this.layoutService.config();
       this.sendConfigToIframe();
     });
 
