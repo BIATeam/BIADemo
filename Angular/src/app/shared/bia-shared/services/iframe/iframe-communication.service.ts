@@ -14,7 +14,7 @@ interface MessageHandler<T extends IframeMessage> {
   providedIn: 'root',
 })
 export class IframeCommunicationService {
-  private handlers = new Map<string, MessageHandler<IframeMessage>>();
+  protected handlers = new Map<string, MessageHandler<IframeMessage>>();
 
   constructor(
     protected readonly appSettingsService: AppSettingsService,

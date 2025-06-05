@@ -110,14 +110,14 @@ export class BiaLayoutService {
   config = signal<AppConfig>(this._config);
   configDisplay = signal<ConfigDisplay>(this._configDisplay);
 
-  private configUpdate = new BehaviorSubject<AppConfig>(this._config);
-  private configDisplayUpdate = new BehaviorSubject<ConfigDisplay>(
+  protected configUpdate = new BehaviorSubject<AppConfig>(this._config);
+  protected configDisplayUpdate = new BehaviorSubject<ConfigDisplay>(
     this._configDisplay
   );
-  private overlayOpen = new Subject<any>();
-  private overlayFooterOpen = new Subject<any>();
-  private topbarMenuOpen = new Subject<any>();
-  private menuProfileOpen = new Subject<any>();
+  protected overlayOpen = new Subject<any>();
+  protected overlayFooterOpen = new Subject<any>();
+  protected topbarMenuOpen = new Subject<any>();
+  protected menuProfileOpen = new Subject<any>();
 
   protected footerPortal = new BehaviorSubject<Portal<any> | null>(null);
   protected mainBarPortal = new BehaviorSubject<Portal<any> | null>(null);

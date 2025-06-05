@@ -102,7 +102,7 @@ export class BiaFormComponent<TDto extends { id: number }>
   specificOutputTemplate: TemplateRef<any>;
 
   form?: UntypedFormGroup;
-  private _readOnly = false;
+  protected _readOnly = false;
   protected sub = new Subscription();
   fieldsWithoutLayoutConfig: BiaFieldConfig<TDto>[] = [];
   isFixed = false;
@@ -290,7 +290,7 @@ export class BiaFormComponent<TDto extends { id: number }>
     }
   }
 
-  private applyFormReadOnlyMode() {
+  protected applyFormReadOnlyMode() {
     if (!this.form) {
       return;
     }
@@ -312,7 +312,7 @@ export class BiaFormComponent<TDto extends { id: number }>
     });
   }
 
-  private initFieldsWithLayoutConfig(
+  protected initFieldsWithLayoutConfig(
     formLayoutConfig?: BiaFormLayoutConfig<TDto>
   ) {
     const formFields: { [key: string]: any } = { id: [this.element?.id] };
@@ -340,7 +340,7 @@ export class BiaFormComponent<TDto extends { id: number }>
     this.form = this.formBuilder.group(formFields);
   }
 
-  private getFieldsFromRow(
+  protected getFieldsFromRow(
     row: BiaFormLayoutConfigRow<TDto>,
     formFields: { [key: string]: any }
   ): BiaFormLayoutConfigField<TDto>[] {
@@ -389,14 +389,14 @@ export class BiaFormComponent<TDto extends { id: number }>
     return fields;
   }
 
-  private getFieldsFromRows(
+  protected getFieldsFromRows(
     rows: BiaFormLayoutConfigRow<TDto>[],
     formFields: { [key: string]: any }
   ): BiaFormLayoutConfigField<TDto>[] {
     return rows.flatMap(row => this.getFieldsFromRow(row, formFields));
   }
 
-  private getFieldsFromTab(
+  protected getFieldsFromTab(
     tabGroup: BiaFormLayoutConfigTabGroup<TDto>,
     formFields: { [key: string]: any }
   ): BiaFormLayoutConfigField<TDto>[] {
@@ -410,7 +410,7 @@ export class BiaFormComponent<TDto extends { id: number }>
     return tabConfigFields;
   }
 
-  private getFieldsFromItems(
+  protected getFieldsFromItems(
     items: BiaFormLayoutConfigItem<TDto>[],
     formFields: { [key: string]: any }
   ): BiaFormLayoutConfigField<TDto>[] {
@@ -565,7 +565,7 @@ export class BiaFormComponent<TDto extends { id: number }>
     );
   }
 
-  private applyFixedState(): void {
+  protected applyFixedState(): void {
     this.isFixed = (this.element as any)?.isFixed === true;
   }
 

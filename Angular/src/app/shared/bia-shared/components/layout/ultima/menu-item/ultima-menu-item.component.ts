@@ -104,7 +104,7 @@ export class BiaUltimaMenuItemComponent
   constructor(
     public layoutService: BiaLayoutService,
     public router: Router,
-    private menuService: MenuService
+    protected menuService: MenuService
   ) {
     this.menuSourceSubscription = this.menuService.menuSource$.subscribe(
       value => {

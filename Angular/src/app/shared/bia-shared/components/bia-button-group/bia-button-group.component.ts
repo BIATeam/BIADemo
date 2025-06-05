@@ -23,10 +23,10 @@ export class BiaButtonGroupComponent implements AfterViewInit, OnDestroy {
   @Input() compact = false;
   @Input() autoCompact = true;
 
-  private parentContainerResizeObserver!: ResizeObserver;
-  private containerWidth: number;
+  protected parentContainerResizeObserver!: ResizeObserver;
+  protected containerWidth: number;
 
-  private get menubarNativeElement(): HTMLElement {
+  protected get menubarNativeElement(): HTMLElement {
     return this.menubar.el.nativeElement as HTMLElement;
   }
 
@@ -44,7 +44,7 @@ export class BiaButtonGroupComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  private initParentContainerResizeObserver() {
+  protected initParentContainerResizeObserver() {
     // Container -> BiaButtonGroup -> Menubar
     const container = this.menubarNativeElement.parentElement?.parentElement;
     if (!container) {
@@ -62,7 +62,7 @@ export class BiaButtonGroupComponent implements AfterViewInit, OnDestroy {
     this.parentContainerResizeObserver.observe(parentContainer);
   }
 
-  private onParentContainerResized(container: Element) {
+  protected onParentContainerResized(container: Element) {
     const offset = 10;
 
     // Handle case when burger button is displayed by native primeng menubar

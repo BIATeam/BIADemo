@@ -231,7 +231,7 @@ export class CrudItemImportFormComponent<TDto extends { id: number }> {
     }
   }
 
-  private getVisibleColumnsFromFieldsConfig(
+  protected getVisibleColumnsFromFieldsConfig(
     fields: BiaFieldsConfig<TDto>
   ): KeyValuePair[] {
     return fields.columns

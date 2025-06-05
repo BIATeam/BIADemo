@@ -24,7 +24,7 @@ export class BiaThemeService {
   );
 
   constructor(
-    private readonly layoutService: BiaLayoutService,
+    protected readonly layoutService: BiaLayoutService,
     rendererFactory: RendererFactory2,
     @Inject(DOCUMENT) document: any
   ) {

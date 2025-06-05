@@ -50,7 +50,7 @@ export class BiaTableBehaviorControllerComponent<TDto extends BaseDto>
 
   @ViewChild(Popover) popover: Popover;
 
-  private sub = new Subscription();
+  protected sub = new Subscription();
 
   constructor(
     protected readonly translateService: TranslateService,
@@ -80,7 +80,7 @@ export class BiaTableBehaviorControllerComponent<TDto extends BaseDto>
     this.sub.unsubscribe();
   }
 
-  private updateSelectedLayout(): void {
+  protected updateSelectedLayout(): void {
     if (this.visibleLayouts) {
       this.selectedLayout = this.visibleLayouts.find(button => {
         if (this.crudConfiguration.useCalcMode) {
@@ -104,7 +104,7 @@ export class BiaTableBehaviorControllerComponent<TDto extends BaseDto>
     }
   }
 
-  private loadActions() {
+  protected loadActions() {
     this.visibleLayouts = [];
     this.addButtonIfVisible('CalcMode', 'pi-table');
     this.addButtonIfVisible('Popup', 'pi-clone');
@@ -112,7 +112,7 @@ export class BiaTableBehaviorControllerComponent<TDto extends BaseDto>
     this.addFullPageButtonIfVisible();
   }
 
-  private addButtonIfVisible(
+  protected addButtonIfVisible(
     name: 'CalcMode' | 'Popup' | 'Split',
     icon: string
   ): void {
@@ -137,7 +137,7 @@ export class BiaTableBehaviorControllerComponent<TDto extends BaseDto>
     }
   }
 
-  private addFullPageButtonIfVisible(): void {
+  protected addFullPageButtonIfVisible(): void {
     if (
       this.crudConfiguration.showIcons.showSplit ||
       this.crudConfiguration.showIcons.showCalcMode ||
@@ -162,7 +162,7 @@ export class BiaTableBehaviorControllerComponent<TDto extends BaseDto>
     }
   }
 
-  private setActiveLayout(
+  protected setActiveLayout(
     activeFlag: keyof typeof this.crudConfiguration | null,
     button: BiaBehaviorIcon
   ): void {

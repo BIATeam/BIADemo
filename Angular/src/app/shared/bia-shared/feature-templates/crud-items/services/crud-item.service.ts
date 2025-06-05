@@ -26,7 +26,7 @@ export abstract class CrudItemService<
     this.biaMessageService = injector.get(BiaMessageService);
   }
 
-  private biaMessageService: BiaMessageService;
+  protected biaMessageService: BiaMessageService;
 
   abstract crudItems$: Observable<ListCrudItem[]>;
   abstract totalCount$: Observable<number>;
