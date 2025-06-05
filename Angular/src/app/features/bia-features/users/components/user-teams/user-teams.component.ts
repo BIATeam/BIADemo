@@ -15,11 +15,11 @@ import { UserTeam } from '../../model/user-team';
 })
 export class UserTeamsComponent {
   @Input() userTeams: UserTeam[];
-  private loginParam: LoginParamDto;
+  protected loginParam: LoginParamDto;
 
   constructor(
-    private translateService: TranslateService,
-    private authService: AuthService
+    protected translateService: TranslateService,
+    protected authService: AuthService
   ) {
     this.loginParam = this.authService.getLoginParameters();
   }

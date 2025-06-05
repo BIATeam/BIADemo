@@ -120,7 +120,7 @@ export class BiaTableControllerComponent
 
   constructor(
     public translateService: TranslateService,
-    private renderer: Renderer2
+    protected renderer: Renderer2
   ) {}
 
   ngAfterContentInit() {
@@ -293,7 +293,7 @@ export class BiaTableControllerComponent
     }
   }
 
-  private overflowingContentSubscription() {
+  protected overflowingContentSubscription() {
     this.overflowingContentOutsideClickListener = this.renderer.listen(
       'document',
       'click',

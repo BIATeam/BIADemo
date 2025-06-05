@@ -93,7 +93,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
   constructor(
     protected biaTranslation: BiaTranslationService,
     protected biaTheme: BiaThemeService,
-    private menuService: MenuService,
+    protected menuService: MenuService,
     public layoutService: BiaLayoutService,
     public renderer: Renderer2,
     protected translateService: TranslateService,
@@ -133,7 +133,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
     );
   }
 
-  private menuProfileSubscription() {
+  protected menuProfileSubscription() {
     this.sub.add(
       this.layoutService.menuProfileOpen$.subscribe(() => {
         this.hideMenu();
@@ -160,7 +160,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
     );
   }
 
-  private topBarMenuSubscription() {
+  protected topBarMenuSubscription() {
     this.sub.add(
       this.layoutService.topbarMenuOpen$.subscribe(() => {
         if (!this.topbarMenuOutsideClickListener) {
@@ -192,7 +192,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
     );
   }
 
-  private overlayFooterSubscription() {
+  protected overlayFooterSubscription() {
     this.sub.add(
       this.layoutService.overlayFooterOpen$.subscribe(() => {
         if (!this.footerOutsideClickListener) {
@@ -214,7 +214,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
     );
   }
 
-  private overlayMenuSubscription() {
+  protected overlayMenuSubscription() {
     this.sub.add(
       this.layoutService.overlayOpen$.subscribe(() => {
         this.hideTopbarMenu();
@@ -479,7 +479,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
     return environmentType !== EnvironmentType.PRD;
   }
 
-  private getEnvironmentName(environmentType: EnvironmentType | undefined) {
+  protected getEnvironmentName(environmentType: EnvironmentType | undefined) {
     switch (environmentType) {
       case EnvironmentType.DEV:
         return 'Development';

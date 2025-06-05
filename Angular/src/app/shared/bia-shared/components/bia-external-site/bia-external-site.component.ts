@@ -83,7 +83,7 @@ export class BiaExternalSiteComponent implements OnInit, OnDestroy {
     }
   }
 
-  private sendConfigToIframe() {
+  protected sendConfigToIframe() {
     if (this.iframe?.nativeElement?.contentWindow && this.isIframeReady) {
       const config: IframeConfig = {
         type: 'CONFIG',
