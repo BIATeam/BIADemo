@@ -70,6 +70,9 @@ export class IframeCommunicationService {
   }
 
   protected getConfigFromParent() {
-    window.parent.postMessage('IFRAME_READY', location.ancestorOrigins[0]);
+    window.parent.postMessage(
+      { type: 'IFRAME_READY' },
+      location.ancestorOrigins[0]
+    );
   }
 }
