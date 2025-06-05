@@ -462,7 +462,7 @@ export class CrudItemsIndexComponent<
     }
   }
 
-  private handleCrudOperation(
+  protected handleCrudOperation(
     crudItem: CrudItem,
     successActionType: string | undefined,
     failureActionType: string | undefined,
@@ -501,7 +501,7 @@ export class CrudItemsIndexComponent<
     }
   }
 
-  private resetEditableRow() {
+  protected resetEditableRow() {
     this.crudItemTableComponent.resetEditableRow();
   }
 

@@ -109,7 +109,8 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
     }
   }
 
-  private readonly defaultProfileImage = 'assets/bia/img/PersonPlaceholder.png';
+  protected readonly defaultProfileImage =
+    'assets/bia/img/PersonPlaceholder.png';
 
   externalImage = false;
   avatarUrl: string | SafeUrl = this.defaultProfileImage;
@@ -117,7 +118,7 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
   usernameParam?: { name: string };
   menuProfileHtml: string;
 
-  private sub: Subscription = new Subscription();
+  protected sub: Subscription = new Subscription();
 
   urlEditAvatar: string;
   signInAs: string;

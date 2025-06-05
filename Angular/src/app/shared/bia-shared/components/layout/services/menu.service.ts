@@ -6,8 +6,8 @@ import { MenuChangeEvent } from '../api/menuchangeevent';
   providedIn: 'root',
 })
 export class MenuService {
-  private menuSource = new Subject<MenuChangeEvent>();
-  private resetSource = new Subject();
+  protected menuSource = new Subject<MenuChangeEvent>();
+  protected resetSource = new Subject();
 
   menuSource$ = this.menuSource.asObservable();
   resetSource$ = this.resetSource.asObservable();

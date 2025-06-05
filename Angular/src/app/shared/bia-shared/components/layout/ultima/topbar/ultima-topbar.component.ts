@@ -114,10 +114,10 @@ export class BiaUltimaTopbarComponent
     protected store: Store<AppState>,
     public biaTranslationService: BiaTranslationService,
     protected router: Router,
-    @Inject(DOCUMENT) private document: Document,
+    @Inject(DOCUMENT) protected document: Document,
     public el: ElementRef,
-    private readonly biaMessageService: BiaMessageService,
-    private renderer: Renderer2
+    protected readonly biaMessageService: BiaMessageService,
+    protected renderer: Renderer2
   ) {}
 
   ngOnInit() {

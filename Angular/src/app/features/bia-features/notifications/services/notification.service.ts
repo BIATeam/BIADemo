@@ -27,7 +27,7 @@ export class NotificationService extends CrudItemService<
   _updateFailureActionType = FeatureNotificationsActions.failure.type;
 
   constructor(
-    private store: Store<AppState>,
+    protected store: Store<AppState>,
     public dasService: NotificationDas,
     public signalRService: NotificationsSignalRService,
     public optionsService: NotificationOptionsService,
