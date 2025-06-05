@@ -1,11 +1,12 @@
-// <copyright file="TeamAppService.cs" company="TheBIADevCompany">
+// <copyright file="BaseTeamAppService.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Application.Bia.User
+namespace BIA.Net.Core.Application.User
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.Immutable;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Security.Claims;
@@ -19,18 +20,20 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Entity.Interface;
+    using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Specification;
     using BIA.Net.Core.Domain.User.Entities;
     using BIA.Net.Core.Domain.User.Mappers;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.User;
-    using TheBIADevCompany.BIADemo.Domain.User.Mappers;
 
     /// <summary>
     /// The application service used for team.
     /// </summary>
-    public class TeamAppService : CrudAppServiceBase<BaseDtoVersionedTeam, Team, int, PagingFilterFormatDto, TeamMapper>, ITeamAppService
+    /// <typeparam name="TEnumTeamTypeId">The type for enum Team Type Id.</typeparam>
+    /// <typeparam name="TTeamMapper">The type of team Mapper.</typeparam>
+    public class BaseTeamAppService<TEnumTeamTypeId, TTeamMapper> : CrudAppServiceBase<BaseDtoVersionedTeam, Team, int, PagingFilterFormatDto, TTeamMapper>, IBaseTeamAppService<TEnumTeamTypeId>
+        where TEnumTeamTypeId : struct, Enum
+        where TTeamMapper : BiaBaseMapper<BaseDtoVersionedTeam, Team, int>, ITeamMapper
     {
         /// <summary>
         /// The claims principal.
@@ -38,11 +41,11 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         private readonly BiaClaimsPrincipal principal;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TeamAppService"/> class.
+        /// Initializes a new instance of the <see cref="BaseTeamAppService{TEnumTeamTypeId, TTeamMapper}"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The claims principal.</param>
-        public TeamAppService(ITGenericRepository<Team, int> repository, IPrincipal principal)
+        public BaseTeamAppService(ITGenericRepository<Team, int> repository, IPrincipal principal)
             : base(repository)
         {
             this.principal = principal as BiaClaimsPrincipal;
@@ -55,8 +58,9 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <typeparam name="TTeam">the team type.</typeparam>
         /// <param name="teamTypeId">the team type id.</param>
         /// <param name="principal">the user claims.</param>
+        /// <param name="teamsConfig">The teams configuration.</param>
         /// <returns>the Standard Read Specification.</returns>
-        public static Specification<TTeam> ReadSpecification<TTeam>(TeamTypeId teamTypeId, IPrincipal principal)
+        public static Specification<TTeam> ReadSpecification<TTeam>(TEnumTeamTypeId teamTypeId, IPrincipal principal, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
             where TTeam : class, IEntity<int>, IEntityTeam
         {
             var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
@@ -64,7 +68,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             bool accessAll = currentUserPermissions?.Any(x => x == BiaRights.Teams.AccessAll) == true;
             int userId = (principal as BiaClaimsPrincipal).GetUserId();
 
-            return ReadSpecification<TTeam>(teamTypeId, userData, accessAll, userId);
+            return ReadSpecification<TTeam>(teamTypeId, userData, accessAll, userId, teamsConfig);
         }
 
         /// <summary>
@@ -76,13 +80,14 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="userData">the user data.</param>
         /// <param name="viewAll">flag that give access to all elements.</param>
         /// <param name="userId">the user id.</param>
+        /// <param name="teamsConfig">The teams configuration.</param>
         /// <returns>the Standard Read Specification.</returns>
-        public static Specification<TTeam> ReadSpecification<TTeam>(TeamTypeId teamTypeId, UserDataDto userData, bool viewAll, int userId)
+        public static Specification<TTeam> ReadSpecification<TTeam>(TEnumTeamTypeId teamTypeId, UserDataDto userData, bool viewAll, int userId, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
             where TTeam : class, IEntity<int>, IEntityTeam
         {
             // You can a team if your are member or have the viewAll permission
             Specification<TTeam> specification = new DirectSpecification<TTeam>(team => viewAll || team.Members.Any(m => m.UserId == userId));
-            var teamConfig = TeamConfig.Config.Find(tc => tc.TeamTypeId == (int)teamTypeId);
+            var teamConfig = teamsConfig.Find(tc => tc.TeamTypeId == System.Convert.ToInt32(teamTypeId));
             if (teamConfig?.Parents != null)
             {
                 // You can see a team if member of parent
@@ -125,11 +130,11 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="teamTypeId">the team type id.</param>
         /// <param name="principal">the user claims.</param>
         /// <returns>the Standard Update Specification.</returns>
-        public static Specification<TTeam> UpdateSpecification<TTeam>(TeamTypeId teamTypeId, IPrincipal principal)
+        public static Specification<TTeam> UpdateSpecification<TTeam>(TEnumTeamTypeId teamTypeId, IPrincipal principal)
             where TTeam : class, IEntity<int>, IEntityTeam
         {
             var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
-            var currentTeamId = userData != null ? userData.GetCurrentTeamId((int)teamTypeId) : 0;
+            var currentTeamId = userData != null ? userData.GetCurrentTeamId(System.Convert.ToInt32(teamTypeId)) : 0;
             return new DirectSpecification<TTeam>(p => p.Id == currentTeamId);
         }
 
@@ -235,12 +240,12 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         }
 
         /// <inheritdoc cref="ITeamAppService.GetAllAsync"/>
-        public async Task<IEnumerable<BaseDtoVersionedTeam>> GetAllAsync(int userId = 0, IEnumerable<string> userPermissions = null)
+        public async Task<IEnumerable<BaseDtoVersionedTeam>> GetAllAsync(ImmutableList<BiaTeamConfig<Team>> teamsConfig, int userId = 0, IEnumerable<string> userPermissions = null)
         {
             userPermissions = userPermissions != null ? userPermissions : this.principal.GetUserPermissions();
             userId = userId > 0 ? userId : this.principal.GetUserId();
 
-            TeamMapper mapper = this.InitMapper<BaseDtoVersionedTeam, TeamMapper>();
+            TTeamMapper mapper = this.InitMapper<BaseDtoVersionedTeam, TTeamMapper>();
             if (userPermissions?.Any(x => x == BiaRights.Teams.AccessAll) == true)
             {
                 return await this.Repository.GetAllResultAsync(mapper.EntityToDto(userId));
@@ -249,7 +254,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             {
                 Specification<Team> specification = new DirectSpecification<Team>(team => team.Members.Any(member => member.UserId == userId));
 
-                foreach (var teamConfig in TeamConfig.Config)
+                foreach (var teamConfig in teamsConfig)
                 {
                     if (teamConfig.Children != null)
                     {
@@ -277,9 +282,9 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         }
 
         /// <inheritdoc/>
-        public bool IsAuthorizeForTeamType(ClaimsPrincipal principal, TeamTypeId teamTypeId, int teamId, string roleSuffix)
+        public bool IsAuthorizeForTeamType(ClaimsPrincipal principal, TEnumTeamTypeId teamTypeId, int teamId, string roleSuffix, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
         {
-            var config = TeamConfig.Config.Find(tc => tc.TeamTypeId == (int)teamTypeId);
+            var config = teamsConfig.Find(tc => tc.TeamTypeId == System.Convert.ToInt32(teamTypeId));
             if (config != null)
             {
                 if (!principal.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == config.RightPrefix + roleSuffix))
@@ -288,7 +293,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
                 }
 
                 var userData = new BiaClaimsPrincipal(principal).GetUserData<UserDataDto>();
-                if (userData.GetCurrentTeamId((int)teamTypeId) != teamId)
+                if (userData.GetCurrentTeamId(System.Convert.ToInt32(teamTypeId)) != teamId)
                 {
                     return false;
                 }

@@ -1,16 +1,17 @@
-﻿// <copyright file="AuthAppService.cs" company="TheBIADevCompany">
+﻿// <copyright file="BaseAuthAppService.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
-namespace TheBIADevCompany.BIADemo.Application.Bia.User
+namespace BIA.Net.Core.Application.User
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.Immutable;
     using System.Linq;
     using System.Security.Claims;
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Authentication;
-    using BIA.Net.Core.Application.User;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
@@ -26,23 +27,24 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.User;
 
     /// <summary>
     /// Auth App Service.
     /// </summary>
     /// <typeparam name="TUserDto">The type of user dto.</typeparam>
     /// <typeparam name="TUser">The type of user.</typeparam>
-    public class AuthAppService<TUserDto, TUser> : IAuthAppService
+    /// <typeparam name="TEnumRoleId">The type for enum Role Id.</typeparam>
+    /// <typeparam name="TEnumTeamTypeId">The type for enum Team Type Id.</typeparam>
+    public class BaseAuthAppService<TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId> : IBaseAuthAppService
         where TUserDto : BaseUserDto, new()
         where TUser : BaseUser, IEntity<int>, new()
+        where TEnumRoleId : struct, Enum
+        where TEnumTeamTypeId : struct, Enum
     {
         /// <summary>
         /// The logger.
         /// </summary>
-        private readonly ILogger<AuthAppService<TUserDto, TUser>> logger;
+        private readonly ILogger<BaseAuthAppService<TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId>> logger;
 
         /// <summary>
         /// The principal.
@@ -73,7 +75,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// The ldap repository service.
         /// </summary>
         private readonly ILdapRepositoryHelper ldapRepositoryHelper;
-#if BIA_FRONT_FEATURE
+//#if BIA_FRONT_FEATURE
 
         /// <summary>
         /// The role section in the BiaNet configuration.
@@ -93,16 +95,16 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <summary>
         /// The team application service.
         /// </summary>
-        private readonly ITeamAppService teamAppService;
+        private readonly IBaseTeamAppService<TEnumTeamTypeId> teamAppService;
 
         /// <summary>
         /// The role application service.
         /// </summary>
         private readonly IRoleAppService roleAppService;
-#endif
+//#endif
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AuthAppService{TUserDto, TUser}" /> class.
+        /// Initializes a new instance of the <see cref="BaseAuthAppService{TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId}" /> class.
         /// </summary>
         /// <param name="userAppService">The user application service.</param>
         /// <param name="teamAppService">The team application service.</param>
@@ -116,29 +118,29 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="biaNetconfiguration">The bia netconfiguration.</param>
         /// <param name="userDirectoryHelper">The user directory helper.</param>
         /// <param name="ldapRepositoryHelper">The LDAP repository helper.</param>
-        public AuthAppService(
-#if BIA_FRONT_FEATURE
+        public BaseAuthAppService(
+//#if BIA_FRONT_FEATURE
             IBaseUserAppService<TUserDto, TUser> userAppService,
-            ITeamAppService teamAppService,
+            IBaseTeamAppService<TEnumTeamTypeId> teamAppService,
             IRoleAppService roleAppService,
             IIdentityProviderRepository identityProviderRepository,
-#endif
+//#endif
             IJwtFactory jwtFactory,
             IPrincipal principal,
             IUserPermissionDomainService userPermissionDomainService,
-            ILogger<AuthAppService<TUserDto, TUser>> logger,
+            ILogger<BaseAuthAppService<TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId>> logger,
             IConfiguration configuration,
             IOptions<BiaNetSection> biaNetconfiguration,
             IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
             ILdapRepositoryHelper ldapRepositoryHelper)
         {
-#if BIA_FRONT_FEATURE
+//#if BIA_FRONT_FEATURE
             this.userAppService = userAppService;
             this.teamAppService = teamAppService;
             this.roleAppService = roleAppService;
             this.identityProviderRepository = identityProviderRepository;
             this.rolesConfiguration = biaNetconfiguration.Value.Roles;
-#endif
+//#endif
             this.jwtFactory = jwtFactory;
             this.claimsPrincipal = principal as BiaClaimsPrincipal;
             this.userPermissionDomainService = userPermissionDomainService;
@@ -147,7 +149,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             this.ldapDomains = biaNetconfiguration.Value.Authentication.LdapDomains;
             this.ldapRepositoryHelper = ldapRepositoryHelper;
         }
-#if BIA_BACK_TO_BACK_AUTH
+//#if BIA_BACK_TO_BACK_AUTH
 
         /// <inheritdoc cref="IAuthAppService.LoginAsync"/>
         public async Task<string> LoginAsync()
@@ -186,20 +188,20 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
 
             return authInfo?.Token;
         }
-#endif
-#if BIA_FRONT_FEATURE
+//#endif
+//#if BIA_FRONT_FEATURE
 
         /// <inheritdoc cref="IAuthAppService.LoginOnTeamsAsync"/>
-        public async Task<AuthInfoDto<AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam)
+        public async Task<AuthInfoDto<AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
         {
             // Check if current user is authenticated
             this.CheckIsAuthenticated();
 
-            AuthInfoDto<AdditionalInfoDto> authInfo = await this.GetLoginToken(loginParam, true);
+            AuthInfoDto<AdditionalInfoDto> authInfo = await this.GetLoginToken(loginParam, true, teamsConfig);
 
-            if (!string.IsNullOrWhiteSpace(loginParam.BaseUserLogin) && JwtFactory.HasRole(authInfo.Token, Rights.Impersonation.ConnectionRights))
+            if (!string.IsNullOrWhiteSpace(loginParam.BaseUserLogin) && JwtFactory.HasRole(authInfo.Token, BiaRights.Impersonation.ConnectionRights))
             {
-                return await this.GetLoginToken(loginParam, false);
+                return await this.GetLoginToken(loginParam, false, teamsConfig);
             }
             else
             {
@@ -217,16 +219,16 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             List<int> roleIds = new List<int>();
             foreach (string role in roles)
             {
-                if (Enum.TryParse<RoleId>(role, out var roleId) && !roleIds.Contains((int)roleId))
+                if (Enum.TryParse<TEnumRoleId>(role, out var roleId) && !roleIds.Contains(Convert.ToInt32(roleId)))
                 {
-                    roleIds.Add((int)roleId);
+                    roleIds.Add(Convert.ToInt32(roleId));
                 }
             }
 
             return roleIds;
         }
 
-        private async Task<AuthInfoDto<AdditionalInfoDto>> GetLoginToken(LoginParamDto loginParam, bool withCredentials)
+        private async Task<AuthInfoDto<AdditionalInfoDto>> GetLoginToken(LoginParamDto loginParam, bool withCredentials, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
         {
             // Get informations in Claims
             string sid = this.GetSid();
@@ -245,7 +247,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             this.userAppService.SelectDefaultLanguage(userInfo);
 
             // Get User AppRoot Roles
-            if (userInfo?.Id > 0 && globalRoles.Contains(Crosscutting.Common.Constants.Role.User))
+            if (userInfo?.Id > 0 && globalRoles.Contains(BiaConstants.Role.User))
             {
                 IEnumerable<string> userAppRootRoles = await this.roleAppService.GetUserRolesAsync(userInfo.Id);
                 globalRoles.AddRange(userAppRootRoles);
@@ -263,10 +265,10 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             if (loginParam.FineGrainedPermission && userInfo?.Id > 0)
             {
                 // Get All Teams
-                allTeams = await this.teamAppService.GetAllAsync(userInfo.Id, userPermissions);
+                allTeams = await this.teamAppService.GetAllAsync(teamsConfig, userInfo.Id, userPermissions);
 
                 // Get Fine Grained Roles
-                List<string> fineGrainedRoles = await this.GetFineRolesAsync(loginParam, userData, userInfo, allTeams);
+                List<string> fineGrainedRoles = await this.GetFineRolesAsync(loginParam, userData, userInfo, allTeams, teamsConfig);
                 List<int> fineGrainedRoleIds = GetRoleIds(fineGrainedRoles);
                 roleIds = roleIds.Union(fineGrainedRoleIds).ToList();
 
@@ -294,14 +296,14 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             };
 
             // Get AdditionalInfoDto
-            AdditionalInfoDto additionalInfo = this.GetAdditionalInfo(loginParam, userInfo, allTeams, userData);
+            AdditionalInfoDto additionalInfo = this.GetAdditionalInfo(loginParam, userInfo, allTeams, userData, teamsConfig);
 
             // Create AuthInfo
             AuthInfoDto<AdditionalInfoDto> authInfo = await this.jwtFactory.GenerateAuthInfoAsync(tokenDto, additionalInfo, loginParam);
 
             return authInfo;
         }
-#endif
+//#endif
 
         /// <summary>
         /// Checks the user permissions.
@@ -416,7 +418,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
 
             return domain;
         }
-#if BIA_FRONT_FEATURE
+//#if BIA_FRONT_FEATURE
 
         /// <summary>
         /// Gets the user information.
@@ -465,7 +467,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         private bool UseUserRole()
         {
             return this.rolesConfiguration != null && this.rolesConfiguration.Any(r =>
-                r.Label == Crosscutting.Common.Constants.Role.User);
+                r.Label == BiaConstants.Role.User);
         }
 
         /// <summary>
@@ -475,14 +477,15 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="userInfo">The user information.</param>
         /// <param name="allTeams">All teams.</param>
         /// <param name="userData">The user data.</param>
+        /// <param name="teamsConfig">The teams configuration.</param>
         /// <returns>A AdditionalInfo Dto.</returns>
-        private AdditionalInfoDto GetAdditionalInfo(LoginParamDto loginParam, UserInfoDto userInfo, IEnumerable<BaseDtoVersionedTeam> allTeams, UserDataDto userData)
+        private AdditionalInfoDto GetAdditionalInfo(LoginParamDto loginParam, UserInfoDto userInfo, IEnumerable<BaseDtoVersionedTeam> allTeams, UserDataDto userData, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
         {
             AdditionalInfoDto additionalInfo = default;
 
             if (loginParam.AdditionalInfos)
             {
-                var allTeamsFilteredByCurrentParent = allTeams.Where(t => TeamConfig.Config.Exists(tc => tc.TeamTypeId == t.TeamTypeId && (
+                var allTeamsFilteredByCurrentParent = allTeams.Where(t => teamsConfig.Exists(tc => tc.TeamTypeId == t.TeamTypeId && (
                     tc.Parents == null
                     ||
                     tc.Parents.Exists(p => userData.CurrentTeams.Any(ct => ct.TeamId == t.ParentTeamId))))).ToList();
@@ -507,7 +510,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <returns>A UserInfoDto.</returns>
         private async Task<UserInfoDto> CreateOrUpdateUserInDatabase(string sid, string identityKey, UserInfoDto userInfo, List<string> globalRoles)
         {
-            if (globalRoles.Contains(Crosscutting.Common.Constants.Role.User))
+            if (globalRoles.Contains(BiaConstants.Role.User))
             {
                 if (!(userInfo?.Id > 0))
                 {
@@ -561,7 +564,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="userInfo">The user information.</param>
         /// <param name="allTeams">All teams.</param>
         /// <returns>List of role.</returns>
-        private async Task<List<string>> GetFineRolesAsync(LoginParamDto loginParam, UserDataDto userData, UserInfoDto userInfo, IEnumerable<BaseDtoVersionedTeam> allTeams)
+        private async Task<List<string>> GetFineRolesAsync(LoginParamDto loginParam, UserDataDto userData, UserInfoDto userInfo, IEnumerable<BaseDtoVersionedTeam> allTeams, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
         {
             // the main roles
             var allRoles = new List<string>();
@@ -571,7 +574,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             {
                 foreach (var loginTeamConfigTeamTypeId in loginParam.TeamsConfig.Select(x => x.TeamTypeId))
                 {
-                    var teamConfig = TeamConfig.Config.Single(tc => tc.TeamTypeId == loginTeamConfigTeamTypeId);
+                    var teamConfig = teamsConfig.Single(tc => tc.TeamTypeId == loginTeamConfigTeamTypeId);
                     var correspondingTeams = allTeams.Where(t => t.TeamTypeId == loginTeamConfigTeamTypeId);
                     var automaticallySelectedTeam = teamConfig.TeamSelectionMode switch
                     {
@@ -668,23 +671,23 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
 
                     // add the sites roles (filter if singleRole mode is used)
                     allRoles.AddRange(roles.Where(r => currentTeam.CurrentRoleIds.Exists(id => id == r.Id)).Select(r => r.Code).ToList());
-                    allRoles.Add(teamConfig.RightPrefix + Crosscutting.Common.Constants.Role.TeamMemberSuffix);
-                    allRoles.Add(teamConfig.RightPrefix + Crosscutting.Common.Constants.Role.TeamMemberOfOneSuffix);
+                    allRoles.Add(teamConfig.RightPrefix + BiaConstants.Role.TeamMemberSuffix);
+                    allRoles.Add(teamConfig.RightPrefix + BiaConstants.Role.TeamMemberOfOneSuffix);
 
                     // add computed roles (can be customized)
                 }
 
-                foreach (var teamConfig in TeamConfig.Config)
+                foreach (var teamConfig in teamsConfig)
                 {
                     if (teamConfig.Parents == null && allTeams.Any(t => t.TeamTypeId == teamConfig.TeamTypeId))
                     {
-                        allRoles.Add(teamConfig.RightPrefix + Crosscutting.Common.Constants.Role.TeamMemberOfOneSuffix);
+                        allRoles.Add(teamConfig.RightPrefix + BiaConstants.Role.TeamMemberOfOneSuffix);
                     }
                 }
             }
 
             return allRoles;
         }
-#endif
+//#endif
     }
 }

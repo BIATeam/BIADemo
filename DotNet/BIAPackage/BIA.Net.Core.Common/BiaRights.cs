@@ -311,5 +311,16 @@ namespace BIA.Net.Core.Common
             /// </summary>
             public const string Options = "NotificationType_Options";
         }
+
+        /// <summary>
+        /// The maintenanceContracts rights.
+        /// </summary>
+        public static class Impersonation
+        {
+            /// <summary>
+            /// The right to connect with same rights of another user.
+            /// </summary>
+            public const string ConnectionRights = "Impersonation_Connection_Rights";
+        }
     }
 }
