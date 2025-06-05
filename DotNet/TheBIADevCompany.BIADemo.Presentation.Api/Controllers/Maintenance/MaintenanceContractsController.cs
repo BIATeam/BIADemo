@@ -129,6 +129,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.MaintenanceContracts.Create)]
         public async Task<IActionResult> Add([FromBody] MaintenanceContractDto dto)
@@ -145,6 +146,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
             {
                 return this.ValidationProblem();
             }
+            catch (ForbiddenException ex)
+            {
+                return this.Problem(
+                        type: "/docs/errors/forbidden",
+                        title: "User is not authorized to make this action.",
+                        detail: ex.Message,
+                        statusCode: StatusCodes.Status403Forbidden);
+            }
         }
 
         /// <summary>
@@ -156,6 +165,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.MaintenanceContracts.Update)]
@@ -182,6 +192,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
+            }
+            catch (ForbiddenException ex)
+            {
+                return this.Problem(
+                        type: "/docs/errors/forbidden",
+                        title: "User is not authorized to make this action.",
+                        detail: ex.Message,
+                        statusCode: StatusCodes.Status403Forbidden);
             }
         }
 
@@ -258,6 +276,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         [HttpPost("save")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -289,6 +308,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
+            }
+            catch (ForbiddenException ex)
+            {
+                return this.Problem(
+                        type: "/docs/errors/forbidden",
+                        title: "User is not authorized to make this action.",
+                        detail: ex.Message,
+                        statusCode: StatusCodes.Status403Forbidden);
             }
         }
 

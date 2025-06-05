@@ -271,6 +271,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [HttpPost("save")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -301,6 +302,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
+            }
+            catch (ForbiddenException ex)
+            {
+                return this.Problem(
+                        type: "/docs/errors/forbidden",
+                        title: "User is not authorized to make this action.",
+                        detail: ex.Message,
+                        statusCode: StatusCodes.Status403Forbidden);
             }
         }
 
