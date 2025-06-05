@@ -66,7 +66,7 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
         {
             if (dto.AircraftMaintenanceCompanyId != this.currentAircraftMaintenanceCompanyId && dto.SiteId != this.currentSiteId)
             {
-                throw new ForbiddenException();
+                throw new ForbiddenException("Can only add MaintenanceContract on current parent Teams.");
             }
 
             return await base.UpdateAsync(dto, accessMode, queryMode, mapperMode);
