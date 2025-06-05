@@ -129,7 +129,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                             },
                         },
                     },
-                    Route = new string[] { "examples", "planes", targetPlaneId.ToString(), "edit" },
+                    Route = new string[] { "planes", targetPlaneId.ToString(), "edit" },
                 };
 
                 var roles = targetRoleId != -1 ? new List<OptionDto>
