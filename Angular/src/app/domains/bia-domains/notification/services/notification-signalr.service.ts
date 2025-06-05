@@ -44,7 +44,9 @@ export class NotificationSignalRService {
 
     this.signalRService.addMethod('notification-addUnread', args => {
       const notification: Notification = JSON.parse(args);
-      notification.data = JSON.parse(notification.jData);
+      notification.data = notification.jData
+        ? JSON.parse(notification.jData)
+        : { route: null, display: '', teams: null };
       if (this.isInMyDisplay(notification)) {
         this.messageService.showNotification(notification);
         this.store.dispatch(
