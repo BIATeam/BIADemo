@@ -15,6 +15,7 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { ExternalSiteConfig } from '../../model/external-site-config';
 import { IframeConfig } from '../../model/iframe-config';
+import { IframeMessage } from '../../model/iframe-message';
 import { LayoutHelperService } from '../../services/layout-helper.service';
 import { BiaLayoutService } from '../layout/services/layout.service';
 
@@ -77,8 +78,11 @@ export class BiaExternalSiteComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('window:message', ['$event'])
-  receiveMessage(event: MessageEvent<string>) {
-    if (event.origin === this.config.baseUrl && event.data === 'IFRAME_READY') {
+  receiveMessage(event: MessageEvent<IframeMessage>) {
+    if (
+      event.origin === this.config.baseUrl &&
+      event.data?.type === 'IFRAME_READY'
+    ) {
       this.isIframeReady = true;
       this.sendConfigToIframe();
     }
