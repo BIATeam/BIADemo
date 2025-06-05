@@ -143,6 +143,7 @@ export class DynamicLayoutComponent<TDto extends { id: number }>
     this.displayPageComponent = true;
     this.configuration = snapshot.data['configuration'];
     this.leftWidth = snapshot.data['leftWidth'] ?? this.leftWidth;
+    this.heightOffset = snapshot.data['heightOffset'] ?? this.heightOffset;
     this.previousIsSplit = this.configuration?.useSplit ?? false;
     this.maxScanDepth = snapshot.data['maxScanDepth'] ?? this.maxScanDepth;
     this.allowSplitScreenResize =
