@@ -1,8 +1,8 @@
-﻿// <copyright file="AuditFeature.cs" company="TheBIADevCompany">
+﻿// <copyright file="BaseAuditFeature.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features.Bia
+namespace BIA.Net.Core.Infrastructure.Data.Features
 {
     using System;
     using System.Security.Principal;
@@ -22,32 +22,32 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features.Bia
     /// <summary>
     /// The Audit Feature.
     /// </summary>
-    public class AuditFeature : IAuditFeature
+    public class BaseAuditFeature : IAuditFeature
     {
-        private readonly bool isActive;
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="AuditFeature" /> class.
+        /// Initializes a new instance of the <see cref="BaseAuditFeature" /> class.
         /// </summary>
         /// <param name="configuration">the application configuration.</param>
         /// <param name="commonFeaturesConfigurationOptions">The common features configuration options.</param>
         /// <param name="serviceProvider">The <see cref="IServiceProvider"/>.</param>
-        public AuditFeature(IConfiguration configuration, IOptions<CommonFeatures> commonFeaturesConfigurationOptions, IServiceProvider serviceProvider)
+        public BaseAuditFeature(IConfiguration configuration, IOptions<CommonFeatures> commonFeaturesConfigurationOptions, IServiceProvider serviceProvider)
         {
             Audit.Core.Configuration.AuditDisabled = true;
             AuditConfiguration auditConfiguration = commonFeaturesConfigurationOptions.Value.AuditConfiguration;
-            this.isActive = auditConfiguration?.IsActive == true;
+            this.IsActive = auditConfiguration?.IsActive == true;
 
             // Audit
-            if (this.isActive)
+            if (this.IsActive)
             {
+#pragma warning disable CA2214 // Do not call overridable methods in constructors
                 this.UseAuditFeatures(serviceProvider);
+#pragma warning restore CA2214 // Do not call overridable methods in constructors
                 Audit.Core.Configuration.AuditDisabled = false;
 
                 // Log some Audit in dedicated table and all other in AuditLog
                 Audit.Core.Configuration.Setup()
                     .UseEntityFramework(_ => _
-                        .AuditTypeMapper(type => AuditTypeMapper(type))
+                        .AuditTypeMapper(type => this.AuditTypeMapper(type))
                         .AuditEntityAction<IAuditEntity>((evt, entry, auditEntity) =>
                         {
                             if (evt.Environment.Exception != null)
@@ -57,49 +57,33 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features.Bia
 
                             if (auditEntity.GetType() == typeof(AuditLog))
                             {
-                                return GeneralAudit(evt, entry, (AuditLog)auditEntity);
+                                return this.GeneralAudit(evt, entry, (AuditLog)auditEntity);
                             }
                             else
                             {
-                                return DedicatedAudit(evt, entry, auditEntity);
+                                return this.DedicatedAudit(evt, entry, auditEntity);
                             }
                         })
                         .IgnoreMatchedProperties(t => t.Name == "AuditLog")); // do not copy properties for generic audit
-
-#pragma warning disable S125 // Sections of code should not be commented out
-
-                // Log Audit in dedicated table
-                // Audit.Core.Configuration.Setup()
-                //    .UseEntityFramework(_ => _
-                //        .AuditTypeNameMapper(typeName => typeName + "Audit")
-                //        .AuditEntityAction<IAuditEntity>((evt, entry, auditEntity) =>
-                //        {
-                //            return DedicatedAudit(evt, entry, auditEntity);
-                //        })
-                //    );
-
-                // Log all Audit in AuditLog table
-                // Audit.Core.Configuration.Setup()
-                //    .UseEntityFramework(_ => _
-                //        .AuditTypeMapper(t => typeof(AuditLog))
-                //        .AuditEntityAction<AuditLog>((evt, entry, auditEntity) =>
-                //        {
-                //            return GeneralAudit(evt, entry, auditEntity);
-                //        })
-                //        .IgnoreMatchedProperties(true)
-                //    );
-#pragma warning restore S125 // Sections of code should not be commented out
             }
         }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is active.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is active; otherwise, <c>false</c>.
+        /// </value>
+        protected bool IsActive { get; }
 
         /// <summary>
         /// Configure the Audit feature in order to retrieve
         /// the current (associated to the request) user.
         /// </summary>
         /// <param name="serviceProvider">The serviceProvider.</param>
-        public void UseAuditFeatures(IServiceProvider serviceProvider)
+        public virtual void UseAuditFeatures(IServiceProvider serviceProvider)
         {
-            if (this.isActive)
+            if (this.IsActive)
             {
                 Audit.Core.Configuration.AddOnSavingAction(scope =>
                 {
@@ -109,7 +93,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features.Bia
             }
         }
 
-        private static Type AuditTypeMapper(Type type)
+        /// <summary>
+        /// Audits the type mapper.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>The type of the Audit entity.</returns>
+        protected virtual Type AuditTypeMapper(Type type)
         {
             switch (type.Name)
             {
@@ -120,7 +109,14 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features.Bia
             }
         }
 
-        private static Task<bool> GeneralAudit(AuditEvent evt, EventEntry entry, AuditLog auditEntity)
+        /// <summary>
+        /// Generals the audit.
+        /// </summary>
+        /// <param name="evt">The evt.</param>
+        /// <param name="entry">The entry.</param>
+        /// <param name="auditEntity">The audit entity.</param>
+        /// <returns>True if a change is logged in audit table.</returns>
+        protected virtual Task<bool> GeneralAudit(AuditEvent evt, EventEntry entry, AuditLog auditEntity)
         {
             if (entry.Changes?.Count > 0 || entry.Action != "Update")
             {
@@ -151,7 +147,14 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features.Bia
             }
         }
 
-        private static Task<bool> DedicatedAudit(AuditEvent evt, EventEntry entry, IAuditEntity auditEntity)
+        /// <summary>
+        /// Dedicateds the audit.
+        /// </summary>
+        /// <param name="evt">The evt.</param>
+        /// <param name="entry">The entry.</param>
+        /// <param name="auditEntity">The audit entity.</param>
+        /// <returns>True if a change is logged in audit table.</returns>
+        protected virtual Task<bool> DedicatedAudit(AuditEvent evt, EventEntry entry, IAuditEntity auditEntity)
         {
             if (entry.Changes?.Count > 0 || entry.Action != "Update")
             {
