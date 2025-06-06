@@ -4,7 +4,7 @@
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 {
-    using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia;
+    using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
 
     /// <summary
     /// Class used to update the model builder for notification domain.

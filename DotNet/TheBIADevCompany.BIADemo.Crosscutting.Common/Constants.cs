@@ -74,10 +74,14 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             public const int Spanish = 3;
 
+            // Begin BIADemo
+
             /// <summary>
             /// The german language Id.
             /// </summary>
             public const int German = 4;
+
+            // End BIADemo
         }
     }
 }

@@ -5,11 +5,11 @@
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 {
     using System.Diagnostics;
+    using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
     using Microsoft.EntityFrameworkCore;
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
-    using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia;
 
     // End BIADemo
 

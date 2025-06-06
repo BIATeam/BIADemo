@@ -7,9 +7,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
     using System.Diagnostics;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Translation.Entities;
+    using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
     using Microsoft.EntityFrameworkCore;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia;
     using static TheBIADevCompany.BIADemo.Crosscutting.Common.Constants;
 
     /// <summary>
@@ -56,15 +56,25 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 
             modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)BiaRoleId.Admin, LanguageId = LanguageId.French, Id = 1000101, Label = "Administrateur" });
             modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)BiaRoleId.Admin, LanguageId = LanguageId.Spanish, Id = 1000102, Label = "Administrador" });
+
+            // Begin BIADemo
             modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)BiaRoleId.Admin, LanguageId = LanguageId.German, Id = 1000103, Label = "Administrator" });
 
+            // End BIADemo
             modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)BiaRoleId.BackAdmin, LanguageId = LanguageId.French, Id = 1000201, Label = "Administrateur des tâches en arrière-plan" });
             modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)BiaRoleId.BackAdmin, LanguageId = LanguageId.Spanish, Id = 1000202, Label = "Administrador de tareas en segundo plano" });
+
+            // Begin BIADemo
             modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)BiaRoleId.BackAdmin, LanguageId = LanguageId.German, Id = 1000203, Label = "Administrator für Hintergrundaufgaben" });
 
+            // End BIADemo
             modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)BiaRoleId.BackReadOnly, LanguageId = LanguageId.French, Id = 1000301, Label = "Visualisation des tâches en arrière-plan" });
             modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)BiaRoleId.BackReadOnly, LanguageId = LanguageId.Spanish, Id = 1000302, Label = "Visualización de tareas en segundo plano" });
+
+            // Begin BIADemo
             modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)BiaRoleId.BackReadOnly, LanguageId = LanguageId.German, Id = 1000303, Label = "Visualisierung von Hintergrundaufgaben" });
+
+            // End BIADemo
 
             // Begin BIADemo
             if (false)
@@ -74,7 +84,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             // End BIADemo
             modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.SiteAdmin, LanguageId = LanguageId.French, Id = 101, Label = "Administrateur du site" });
             modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.SiteAdmin, LanguageId = LanguageId.Spanish, Id = 102, Label = "Administrador del sitio" });
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.SiteAdmin, LanguageId = LanguageId.German, Id = 103, Label = "Seitenadministrator" });
 
             // Begin BIADemo
 #pragma warning restore CS0162 // Unreachable code detected
@@ -105,6 +114,49 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.Operator, LanguageId = LanguageId.German, Id = 20203, Label = "Operator" });
 
             // End BIADemo
+        }
+
+        /// <summary>
+        /// Create the model for notification.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected override void CreateNotificationTypeTranslationModel(ModelBuilder modelBuilder)
+        {
+            base.CreateNotificationTypeTranslationModel(modelBuilder);
+
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)BiaNotificationTypeId.Task, LanguageId = LanguageId.French, Id = 101, Label = "Tâche" });
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)BiaNotificationTypeId.Task, LanguageId = LanguageId.Spanish, Id = 102, Label = "Tarea" });
+
+            // Begin BIADemo
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)BiaNotificationTypeId.Task, LanguageId = LanguageId.German, Id = 103, Label = "Aufgabe" });
+
+            // End BIADemo
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)BiaNotificationTypeId.Info, LanguageId = LanguageId.French, Id = 201, Label = "Information" });
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)BiaNotificationTypeId.Info, LanguageId = LanguageId.Spanish, Id = 202, Label = "Información" });
+
+            // Begin BIADemo
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)BiaNotificationTypeId.Info, LanguageId = LanguageId.German, Id = 203, Label = "Information" });
+
+            // End BIADemo
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)BiaNotificationTypeId.Success, LanguageId = LanguageId.French, Id = 301, Label = "Succès" });
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)BiaNotificationTypeId.Success, LanguageId = LanguageId.Spanish, Id = 302, Label = "Éxito" });
+
+            // Begin BIADemo
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)BiaNotificationTypeId.Success, LanguageId = LanguageId.German, Id = 303, Label = "Erfolg" });
+
+            // End BIADemo
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)BiaNotificationTypeId.Warning, LanguageId = LanguageId.French, Id = 401, Label = "Avertissement" });
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)BiaNotificationTypeId.Warning, LanguageId = LanguageId.Spanish, Id = 402, Label = "Advertencia" });
+
+            // Begin BIADemo
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)BiaNotificationTypeId.Warning, LanguageId = LanguageId.German, Id = 403, Label = "Erwärmen" });
+
+            // End BIADemo
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)BiaNotificationTypeId.Error, LanguageId = LanguageId.French, Id = 501, Label = "Erreur" });
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)BiaNotificationTypeId.Error, LanguageId = LanguageId.Spanish, Id = 502, Label = "Culpa" });
+
+            // Begin BIADemo
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)BiaNotificationTypeId.Error, LanguageId = LanguageId.German, Id = 503, Label = "Fehler" });
         }
     }
 }

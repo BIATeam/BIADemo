@@ -2,7 +2,7 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
+namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
 {
     using BIA.Net.Core.Domain.Audit;
     using BIA.Net.Core.Domain.User.Entities;
