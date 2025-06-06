@@ -349,7 +349,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     );
   }
 
-  private registerToken(
+  protected registerToken(
     authResult: Observable<AuthInfo>
   ): Observable<AuthInfo> {
     return authResult.pipe(

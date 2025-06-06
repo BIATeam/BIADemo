@@ -76,11 +76,11 @@ export class DynamicLayoutComponent<TDto extends { id: number }>
   style: any;
   maximizable: boolean;
 
-  private maxScanDepth = 2;
-  private isResizing = false;
-  private startX: number;
-  private startWidthLeft: number;
-  private startWidthRight: number;
+  protected maxScanDepth = 2;
+  protected isResizing = false;
+  protected startX: number;
+  protected startWidthLeft: number;
+  protected startWidthRight: number;
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -143,6 +143,7 @@ export class DynamicLayoutComponent<TDto extends { id: number }>
     this.displayPageComponent = true;
     this.configuration = snapshot.data['configuration'];
     this.leftWidth = snapshot.data['leftWidth'] ?? this.leftWidth;
+    this.heightOffset = snapshot.data['heightOffset'] ?? this.heightOffset;
     this.previousIsSplit = this.configuration?.useSplit ?? false;
     this.maxScanDepth = snapshot.data['maxScanDepth'] ?? this.maxScanDepth;
     this.allowSplitScreenResize =

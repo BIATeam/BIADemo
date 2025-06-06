@@ -700,7 +700,7 @@ export class BiaTableComponent<TDto extends { id: number }>
 
   // Override of function saveState from PrimeNg table component to avoid saving column resize and selection and always save columnOrder even when column not reorderable.
   // Original source : https://github.com/primefaces/primeng/blob/v17-prod/src/app/components/table/table.ts#L2800
-  private saveState() {
+  protected saveState() {
     const table: Table = this as unknown as Table;
 
     const storage = table.getStorage();
