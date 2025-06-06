@@ -22,6 +22,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
     [SwaggerControllerOrder(1)]
     public class AuthController : AuthControllerBase
     {
+#if BIA_FRONT_FEATURE || BIA_BACK_TO_BACK_AUTH
         /// <summary>
         /// The authentication service.
         /// </summary>
@@ -35,6 +36,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         {
             this.authService = authService;
         }
+#endif
+
 #if BIA_FRONT_FEATURE
 
         /// <summary>

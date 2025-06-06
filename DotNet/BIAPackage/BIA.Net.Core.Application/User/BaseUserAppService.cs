@@ -70,7 +70,7 @@ namespace BIA.Net.Core.Application.User
 
         private readonly IIdentityProviderRepository identityProviderRepository;
 
-        private readonly IUserIdentityKeyDomainService<TUser> userIdentityKeyDomainService;
+        private readonly IUserIdentityKeyDomainService userIdentityKeyDomainService;
 
         /// <summary>
         /// The claims principal.
@@ -97,7 +97,7 @@ namespace BIA.Net.Core.Application.User
             ITGenericRepository<UserDefaultTeam, int> userDefaultTeamRepository,
             ILogger<BaseUserAppService<TUserDto, TUser, TUserMapper>> logger,
             IIdentityProviderRepository identityProviderRepository,
-            IUserIdentityKeyDomainService<TUser> userIdentityKeyDomainService,
+            IUserIdentityKeyDomainService userIdentityKeyDomainService,
             IPrincipal principal)
             : base(repository)
         {
@@ -132,7 +132,7 @@ namespace BIA.Net.Core.Application.User
                 TUser user = new TUser();
                 this.userSynchronizeDomainService.UpdateUserFieldFromDirectory(user, userFromDirectory);
 
-                var func = this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(identityKey).Compile();
+                var func = this.userIdentityKeyDomainService.CheckDatabaseIdentityKey<TUser>(identityKey).Compile();
                 if (!func(user))
                 {
                     throw new ForbiddenException("The identityKey in ldap do not correspond to identityKey in identity.");
@@ -169,7 +169,7 @@ namespace BIA.Net.Core.Application.User
         /// <inheritdoc cref="IBaseUserAppService.GetUserInfoAsync"/>
         public async Task<UserInfoDto> GetUserInfoAsync(string identityKey)
         {
-            return await this.Repository.GetResultAsync(UserSelectBuilder<TUser>.SelectUserInfo(), filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(identityKey));
+            return await this.Repository.GetResultAsync(UserSelectBuilder<TUser>.SelectUserInfo(), filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey<TUser>(identityKey));
         }
 
         /// <inheritdoc/>
@@ -231,7 +231,7 @@ namespace BIA.Net.Core.Application.User
                 {
                     await this.SynchronizeWithADAsync();
                     List<string> usersIdentityKey = users.Select(u => this.userIdentityKeyDomainService.GetDirectoryIdentityKey(u)).ToList();
-                    result.UsersAddedDtos = (await this.Repository.GetAllEntityAsync(filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(usersIdentityKey))).Select(entity => new OptionDto
+                    result.UsersAddedDtos = (await this.Repository.GetAllEntityAsync(filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey<TUser>(usersIdentityKey))).Select(entity => new OptionDto
                     {
                         Id = entity.Id,
                         Display = entity.LastName + " " + entity.FirstName + " (" + entity.Login + ")",
@@ -251,7 +251,7 @@ namespace BIA.Net.Core.Application.User
                 {
                     try
                     {
-                        TUser foundUser = (await this.Repository.GetAllEntityAsync(filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(this.userIdentityKeyDomainService.GetDirectoryIdentityKey(userFormDirectoryDto)))).FirstOrDefault();
+                        TUser foundUser = (await this.Repository.GetAllEntityAsync(filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey<TUser>(this.userIdentityKeyDomainService.GetDirectoryIdentityKey(userFormDirectoryDto)))).FirstOrDefault();
 
                         UserFromDirectory userFormDirectory = null;
 

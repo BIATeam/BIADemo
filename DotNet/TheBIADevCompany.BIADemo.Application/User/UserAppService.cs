@@ -42,7 +42,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             ITGenericRepository<UserDefaultTeam, int> userDefaultTeamRepository,
             ILogger<UserAppService> logger,
             IIdentityProviderRepository identityProviderRepository,
-            IUserIdentityKeyDomainService<User> userIdentityKeyDomainService,
+            IUserIdentityKeyDomainService userIdentityKeyDomainService,
             IPrincipal principal)
             : base(repository, userSynchronizeDomainService, configuration, userDirectoryHelper, userDefaultTeamRepository, logger, identityProviderRepository, userIdentityKeyDomainService, principal)
         {

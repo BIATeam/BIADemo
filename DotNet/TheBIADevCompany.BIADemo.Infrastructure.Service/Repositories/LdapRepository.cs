@@ -19,7 +19,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// Class the manipulate AD.
@@ -29,7 +28,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <summary>
         /// The user identity key domain service.
         /// </summary>
-        private readonly IUserIdentityKeyDomainService<User> userIdentityKeyDomainService;
+        private readonly IUserIdentityKeyDomainService userIdentityKeyDomainService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LdapRepository"/> class.
@@ -42,7 +41,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
             ILogger<LdapRepository> logger,
             IOptions<BiaNetSection> configuration,
             ILdapRepositoryHelper ldapRepositoryHelper,
-            IUserIdentityKeyDomainService<User> userIdentityKeyDomainService)
+            IUserIdentityKeyDomainService userIdentityKeyDomainService)
             : base(logger, configuration, ldapRepositoryHelper)
         {
             this.userIdentityKeyDomainService = userIdentityKeyDomainService;
@@ -51,7 +50,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <summary>
         /// Gets the user identity key domain service.
         /// </summary>
-        protected IUserIdentityKeyDomainService<User> UserIdentityKeyDomainService => this.userIdentityKeyDomainService;
+        protected IUserIdentityKeyDomainService UserIdentityKeyDomainService => this.userIdentityKeyDomainService;
 
         /// <summary>
         /// Convert the Ad entry in a UserInfoDirectory Object.

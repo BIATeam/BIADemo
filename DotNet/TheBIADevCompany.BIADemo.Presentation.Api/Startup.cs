@@ -9,6 +9,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Configuration.ApiFeature;
     using BIA.Net.Core.Presentation.Api.Features;
     using BIA.Net.Core.Presentation.Api.Features.HangfireDashboard;
     using BIA.Net.Core.Presentation.Api.StartupConfiguration;
@@ -130,9 +131,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             hangfireDashboardAuthorizations.Authorization = new[] { new HangfireAuthorizationFilter(false, "Background_Task_Admin", this.biaNetSection.Jwt.SecretKey, jwtFactory) };
             hangfireDashboardAuthorizations.AuthorizationReadOnly = new[] { new HangfireAuthorizationFilter(true, "Background_Task_Read_Only", this.biaNetSection.Jwt.SecretKey, jwtFactory) };
 
-#if BIA_FRONT_FEATURE
-            app.ApplicationServices.GetRequiredService<IAuditFeatureService>().EnableAuditFeatures();
-#endif
+            if (this.biaNetSection.CommonFeatures?.AuditConfiguration?.IsActive == true)
+            {
+                app.ApplicationServices.GetRequiredService<IAuditFeatureService>().EnableAuditFeatures();
+            }
+
             app.UseBiaApiFeatures(this.biaNetSection.ApiFeatures, hangfireDashboardAuthorizations);
         }
     }

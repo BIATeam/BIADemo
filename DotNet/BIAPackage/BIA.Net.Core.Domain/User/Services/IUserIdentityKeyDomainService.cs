@@ -14,30 +14,34 @@ namespace BIA.Net.Core.Domain.User.Services
     /// <summary>
     /// Interface UserIdentityKey Domain Service.
     /// </summary>
-    /// <typeparam name="TUser">The type of user.</typeparam>
-    public interface IUserIdentityKeyDomainService<TUser>
-        where TUser : BaseUser
+    public interface IUserIdentityKeyDomainService
     {
         /// <summary>
         /// Checks the database identity key.
         /// </summary>
         /// <param name="identityKey">The identity key.</param>
+        /// <typeparam name="TUser">The type of user.</typeparam>
         /// <returns>The checks the database identity key.</returns>
-        Expression<Func<TUser, bool>> CheckDatabaseIdentityKey(string identityKey);
+        Expression<Func<TUser, bool>> CheckDatabaseIdentityKey<TUser>(string identityKey)
+                where TUser : BaseUser;
 
         /// <summary>
         /// Checks the database identity key.
         /// </summary>
         /// <param name="identityKeys">The identity keys.</param>
+        /// <typeparam name="TUser">The type of user.</typeparam>
         /// <returns>The checks the database identity key.</returns>
-        Expression<Func<TUser, bool>> CheckDatabaseIdentityKey(List<string> identityKeys);
+        Expression<Func<TUser, bool>> CheckDatabaseIdentityKey<TUser>(List<string> identityKeys)
+                where TUser : BaseUser;
 
         /// <summary>
         /// Gets the database identity key.
         /// </summary>
         /// <param name="user">The user.</param>
+        /// <typeparam name="TUser">The type of user.</typeparam>
         /// <returns>The database identity key.</returns>
-        string GetDatabaseIdentityKey(TUser user);
+        string GetDatabaseIdentityKey<TUser>(TUser user)
+                where TUser : BaseUser;
 
         /// <summary>
         /// Gets the userDto identity key.

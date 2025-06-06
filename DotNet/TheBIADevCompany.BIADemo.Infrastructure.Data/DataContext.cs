@@ -5,9 +5,9 @@
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data
 {
     using System.Threading.Tasks;
-#if BIA_FRONT_FEATURE
     using Audit.EntityFramework;
     using BIA.Net.Core.Domain.Audit;
+#if BIA_FRONT_FEATURE
     using BIA.Net.Core.Domain.Notification.Entities;
     using BIA.Net.Core.Domain.Translation.Entities;
     using BIA.Net.Core.Domain.User.Entities;
@@ -36,9 +36,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     /// <summary>
     /// The database context.
     /// </summary>
-#if BIA_FRONT_FEATURE
     [AuditDbContext(Mode = AuditOptionMode.OptIn, IncludeEntityObjects = false, AuditEventType = "{database}_{context}")]
-#endif
     public class DataContext : BiaDataContext
     {
         /// <summary>
@@ -59,12 +57,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
             this.logger.LogDebug("----------------Create Context--------------");
         }
 
-#if BIA_FRONT_FEATURE
         /// <summary>
         /// Gets or sets the Plane DBSet.
         /// </summary>
         public DbSet<AuditLog> AuditLogs { get; set; }
 
+#if BIA_FRONT_FEATURE
         /// <summary>
         /// Gets or sets the Site DBSet.
         /// </summary>

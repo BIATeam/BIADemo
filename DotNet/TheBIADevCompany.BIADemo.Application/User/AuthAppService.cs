@@ -4,30 +4,37 @@
 namespace TheBIADevCompany.BIADemo.Application.User
 {
     using System.Security.Principal;
+#if BIA_FRONT_FEATURE
     using System.Threading.Tasks;
+#endif
     using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Application.User;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.User.Entities;
     using BIA.Net.Core.Domain.User.Models;
     using BIA.Net.Core.Domain.User.Services;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
+#if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
+#endif
 
     /// <summary>
     /// Auth App Service.
     /// </summary>
     public class AuthAppService(
+#if BIA_FRONT_FEATURE
         IBaseUserAppService<UserDto, User> userAppService,
         IBaseTeamAppService<TeamTypeId> teamAppService,
         IRoleAppService roleAppService,
         IIdentityProviderRepository identityProviderRepository,
+#endif
         IJwtFactory jwtFactory,
         IPrincipal principal,
         IUserPermissionDomainService userPermissionDomainService,
@@ -35,8 +42,14 @@ namespace TheBIADevCompany.BIADemo.Application.User
         IConfiguration configuration,
         IOptions<BiaNetSection> biaNetconfiguration,
         IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
-        ILdapRepositoryHelper ldapRepositoryHelper) : BaseAuthAppService<UserDto, User, RoleId, TeamTypeId>(userAppService, teamAppService, roleAppService, identityProviderRepository, jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper), IAuthAppService
+        ILdapRepositoryHelper ldapRepositoryHelper)
+#if BIA_FRONT_FEATURE
+        : BaseFrontAuthAppService<UserDto, User, RoleId, TeamTypeId>(userAppService, teamAppService, roleAppService, identityProviderRepository, jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper), IAuthAppService
+#else
+        : BaseAuthAppService(jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper), IAuthAppService
+#endif
     {
+#if BIA_FRONT_FEATURE
         /// <summary>
         /// Logins the on teams asynchronous.
         /// </summary>
@@ -48,5 +61,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
         {
             return this.LoginOnTeamsAsync(loginParam, TeamConfig.Config);
         }
+#endif
     }
 }

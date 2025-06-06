@@ -35,7 +35,7 @@ namespace BIA.Net.Core.Application.User
         /// <summary>
         /// The user IdentityKey Domain Service.
         /// </summary>
-        private readonly IUserIdentityKeyDomainService<TUser> userIdentityKeyDomainService;
+        private readonly IUserIdentityKeyDomainService userIdentityKeyDomainService;
 
         private readonly IIdentityProviderRepository identityProviderRepository;
 
@@ -49,7 +49,7 @@ namespace BIA.Net.Core.Application.User
         public BaseUserSynchronizeDomainService(
             ITGenericRepository<TUser, int> repository,
             IUserDirectoryRepository<UserFromDirectory> adHelper,
-            IUserIdentityKeyDomainService<TUser> userIdentityKeyDomainService,
+            IUserIdentityKeyDomainService userIdentityKeyDomainService,
             IIdentityProviderRepository identityProviderRepository)
         {
             this.repository = repository;
@@ -142,7 +142,7 @@ namespace BIA.Net.Core.Application.User
                 foreach (UserFromDirectory userFromDirectory in usersFromDirectory)
                 {
 #pragma warning disable S6602 // "Find" method should be used instead of the "FirstOrDefault" extension
-                    TUser foundUser = users.FirstOrDefault(this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(this.userIdentityKeyDomainService.GetDirectoryIdentityKey(userFromDirectory)).Compile());
+                    TUser foundUser = users.FirstOrDefault(this.userIdentityKeyDomainService.CheckDatabaseIdentityKey<TUser>(this.userIdentityKeyDomainService.GetDirectoryIdentityKey(userFromDirectory)).Compile());
 #pragma warning restore S6602 // "Find" method should be used instead of the "FirstOrDefault" extension
 
                     this.AddOrActiveUserFromDirectory(userFromDirectory, foundUser);

@@ -13,26 +13,12 @@ namespace BIA.Net.Core.Application.User
     /// <summary>
     /// Interface AuthService.
     /// </summary>
-    /// <typeparam name="TUserDto">The type of user dto.</typeparam>
-    /// <typeparam name="TUser">The type of user.</typeparam>
     public interface IBaseAuthAppService
     {
-//#ifBIA_BACK_TO_BACK_AUTH
         /// <summary>
         /// Logins.
         /// </summary>
         /// <returns>The JWT.</returns>
         Task<string> LoginAsync();
-//#endif
-//#ifBIA_FRONT_FEATURE
-
-        /// <summary>
-        /// Logins the on teams asynchronous.
-        /// </summary>
-        /// <param name="loginParam">The login parameter.</param>
-        /// <param name="teamsConfig">The teams configuration.</param>
-        /// <returns>AuthInfo.</returns>
-        Task<AuthInfoDto<AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam, ImmutableList<BiaTeamConfig<Team>> teamsConfig);
-//#endif
     }
 }

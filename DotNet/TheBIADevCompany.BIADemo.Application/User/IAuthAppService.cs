@@ -13,7 +13,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
     /// </summary>
     /// <typeparam name="TUserDto">The type of user dto.</typeparam>
     /// <typeparam name="TUser">The type of user.</typeparam>
-    public interface IAuthAppService : IBaseAuthAppService
+    public interface IAuthAppService
+#if BIA_FRONT_FEATURE
+        : IBaseFrontAuthAppService
+#else
+        : IBaseAuthAppService
+#endif
     {
 #if BIA_FRONT_FEATURE
 

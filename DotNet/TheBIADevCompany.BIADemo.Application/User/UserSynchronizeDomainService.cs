@@ -25,7 +25,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         public UserSynchronizeDomainService(
             ITGenericRepository<User, int> repository,
             IUserDirectoryRepository<UserFromDirectory> adHelper,
-            IUserIdentityKeyDomainService<User> userIdentityKeyDomainService,
+            IUserIdentityKeyDomainService userIdentityKeyDomainService,
             IIdentityProviderRepository identityProviderRepository)
             : base(repository, adHelper, userIdentityKeyDomainService, identityProviderRepository)
         {

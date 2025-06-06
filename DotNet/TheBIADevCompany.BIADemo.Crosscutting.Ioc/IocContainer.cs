@@ -18,9 +18,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.RepoContract;
-#if BIA_FRONT_FEATURE
     using BIA.Net.Core.Domain.User.Models;
-#endif
     using BIA.Net.Core.Infrastructure.Data;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.Ioc;
@@ -30,9 +28,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using TheBIADevCompany.BIADemo.Application.Bia.User;
 #if BIA_FRONT_FEATURE
+    using TheBIADevCompany.BIADemo.Application.Bia.User;
+#endif
     using TheBIADevCompany.BIADemo.Application.User;
+#if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
 #endif
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
@@ -47,8 +47,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Mappers;
-    using TheBIADevCompany.BIADemo.Infrastructure.Data.Features.Bia;
 #endif
+    using TheBIADevCompany.BIADemo.Infrastructure.Data.Features.Bia;
 
     /// <summary>
     /// The IoC Container.
@@ -96,11 +96,13 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
         private static void ConfigureApplicationContainer(IServiceCollection collection, bool isApi)
         {
+#if BIA_FRONT_FEATURE
             collection.AddTransient(typeof(IBaseUserSynchronizeDomainService<User>), typeof(UserSynchronizeDomainService));
             collection.AddTransient(typeof(IBaseUserAppService<UserDto, User>), typeof(UserAppService));
             collection.AddTransient(typeof(IUserAppService), typeof(UserAppService));
             collection.AddTransient(typeof(IBaseTeamAppService<TeamTypeId>), typeof(TeamAppService));
             collection.AddTransient(typeof(ITeamAppService), typeof(TeamAppService));
+#endif
 
             // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
             BiaIocContainer.RegisterServicesFromAssembly(
@@ -173,10 +175,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 serviceLifetime: ServiceLifetime.Transient);
 
             collection.AddScoped<DataContextFactory>();
-#if BIA_FRONT_FEATURE
+
             collection.AddSingleton<IAuditFeature, AuditFeature>();
             collection.AddSingleton<BIA.Net.Core.Application.Services.IAuditFeatureService, BIA.Net.Core.Application.Services.AuditFeatureService>();
-#endif
         }
 
 #pragma warning disable S1172 // Unused method parameters should be removed

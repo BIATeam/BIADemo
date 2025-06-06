@@ -14,9 +14,7 @@ namespace BIA.Net.Core.Domain.User.Services
     /// <summary>
     /// This class MAnage the identity key during authentication and relation beetween Database, Directory and identity Provider.
     /// </summary>
-    /// <typeparam name="TUser">The type of user.</typeparam>
-    public class UserIdentityKeyDomainService<TUser> : IUserIdentityKeyDomainService<TUser>
-        where TUser : BaseUser
+    public class UserIdentityKeyDomainService : IUserIdentityKeyDomainService
     {
         // -------------------------------- DataBase EntityKey --------------------------------------
 
@@ -25,8 +23,10 @@ namespace BIA.Net.Core.Domain.User.Services
         /// If you change it parse all other #IdentityKey to be sure thare is a match (Database => Directory, Idp & WindowsIdentity).
         /// </summary>
         /// <param name="identityKey">the identity Key.</param>
+        /// <typeparam name="TUser">The type of user.</typeparam>
         /// <returns>Expression to compare.</returns>
-        public Expression<Func<TUser, bool>> CheckDatabaseIdentityKey(string identityKey)
+        public Expression<Func<TUser, bool>> CheckDatabaseIdentityKey<TUser>(string identityKey)
+            where TUser : BaseUser
         {
             return user => user.Login == identityKey;
         }
@@ -36,8 +36,10 @@ namespace BIA.Net.Core.Domain.User.Services
         /// If you change it parse all other #IdentityKey to be sure thare is a match (Database => Directory, Idp & WindowsIdentity).
         /// </summary>
         /// <param name="identityKeys">the list of identity Keys.</param>
+        /// <typeparam name="TUser">The type of user.</typeparam>
         /// <returns>Expression to compare.</returns>
-        public Expression<Func<TUser, bool>> CheckDatabaseIdentityKey(List<string> identityKeys)
+        public Expression<Func<TUser, bool>> CheckDatabaseIdentityKey<TUser>(List<string> identityKeys)
+             where TUser : BaseUser
         {
             return user => identityKeys.Contains(user.Login);
         }
@@ -48,8 +50,10 @@ namespace BIA.Net.Core.Domain.User.Services
         /// If you change it parse all other #IdentityKey to be sure thare is a match (Database, Ldap, Idp, WindowsIdentity).
         /// </summary>
         /// <param name="user">the user.</param>
+        /// <typeparam name="TUser">The type of user.</typeparam>
         /// <returns>Return the Identity Key.</returns>
-        public string GetDatabaseIdentityKey(TUser user)
+        public string GetDatabaseIdentityKey<TUser>(TUser user)
+            where TUser : BaseUser
         {
             return user.Login;
         }

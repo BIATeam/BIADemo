@@ -64,7 +64,8 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                 .UseWindowsService()
                 .Build();
 
-                Startup.Configure(host);
+                var config = host.Services.GetRequiredService<IConfiguration>();
+                Startup.Configure(host, config);
 
                 await host.RunAsync();
             }

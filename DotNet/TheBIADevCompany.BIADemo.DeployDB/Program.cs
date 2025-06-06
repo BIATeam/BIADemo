@@ -24,8 +24,10 @@ namespace TheBIADevCompany.BIADemo.DeployDB
 
     // End BIADemo
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+#if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
+#endif
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
 
     /// <summary>
