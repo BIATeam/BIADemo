@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
+using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
 
 #nullable disable
 
@@ -10,6 +11,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.Sql("DELETE FROM[dbo].[MaintenanceContract] WHERE SiteId is null or AircraftMaintenanceCompanyId is null");
+            
             migrationBuilder.DropForeignKey(
                 name: "FK_MaintenanceContract_AircraftMaintenanceCompanies_AircraftMaintenanceCompanyId",
                 table: "MaintenanceContract");
