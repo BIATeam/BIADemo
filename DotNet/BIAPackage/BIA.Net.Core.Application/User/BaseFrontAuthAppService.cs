@@ -42,31 +42,6 @@ namespace BIA.Net.Core.Application.User
         where TEnumTeamTypeId : struct, Enum
     {
         /// <summary>
-        /// The role section in the BiaNet configuration.
-        /// </summary>
-        protected readonly IEnumerable<BIA.Net.Core.Common.Configuration.Role> rolesConfiguration;
-
-        /// <summary>
-        /// The identity provider repository.
-        /// </summary>
-        protected readonly IIdentityProviderRepository identityProviderRepository;
-
-        /// <summary>
-        /// The user application service.
-        /// </summary>
-        protected readonly IBaseUserAppService<TUserDto, TUser> userAppService;
-
-        /// <summary>
-        /// The team application service.
-        /// </summary>
-        protected readonly IBaseTeamAppService<TEnumTeamTypeId> teamAppService;
-
-        /// <summary>
-        /// The role application service.
-        /// </summary>
-        protected readonly IRoleAppService roleAppService;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="BaseFrontAuthAppService{TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId}" /> class.
         /// </summary>
         /// <param name="userAppService">The user application service.</param>
@@ -96,12 +71,37 @@ namespace BIA.Net.Core.Application.User
             ILdapRepositoryHelper ldapRepositoryHelper)
             : base(jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper)
         {
-            this.userAppService = userAppService;
-            this.teamAppService = teamAppService;
-            this.roleAppService = roleAppService;
-            this.identityProviderRepository = identityProviderRepository;
-            this.rolesConfiguration = biaNetconfiguration.Value.Roles;
+            this.UserAppService = userAppService;
+            this.TeamAppService = teamAppService;
+            this.RoleAppService = roleAppService;
+            this.IdentityProviderRepository = identityProviderRepository;
+            this.RolesConfiguration = biaNetconfiguration.Value.Roles;
         }
+
+        /// <summary>
+        /// The role section in the BiaNet configuration.
+        /// </summary>
+        protected IEnumerable<BIA.Net.Core.Common.Configuration.Role> RolesConfiguration { get; }
+
+        /// <summary>
+        /// The identity provider repository.
+        /// </summary>
+        protected IIdentityProviderRepository IdentityProviderRepository { get; }
+
+        /// <summary>
+        /// The user application service.
+        /// </summary>
+        protected IBaseUserAppService<TUserDto, TUser> UserAppService { get; }
+
+        /// <summary>
+        /// The team application service.
+        /// </summary>
+        protected IBaseTeamAppService<TEnumTeamTypeId> TeamAppService { get; }
+
+        /// <summary>
+        /// The role application service.
+        /// </summary>
+        protected IRoleAppService RoleAppService { get; }
 
         /// <inheritdoc cref="IAuthAppService.LoginOnTeamsAsync"/>
         public async Task<AuthInfoDto<AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
@@ -111,7 +111,7 @@ namespace BIA.Net.Core.Application.User
 
             AuthInfoDto<AdditionalInfoDto> authInfo = await this.GetLoginToken(loginParam, true, teamsConfig);
 
-            if (!string.IsNullOrWhiteSpace(loginParam.BaseUserLogin) && JwtFactory.HasRole(authInfo.Token, BiaRights.Impersonation.ConnectionRights))
+            if (!string.IsNullOrWhiteSpace(loginParam.BaseUserLogin) && Application.Authentication.JwtFactory.HasRole(authInfo.Token, BiaRights.Impersonation.ConnectionRights))
             {
                 return await this.GetLoginToken(loginParam, false, teamsConfig);
             }
@@ -156,19 +156,19 @@ namespace BIA.Net.Core.Application.User
 
             // Fill UserInfo
             userInfo = await this.CreateOrUpdateUserInDatabase(sid, identityKey, userInfo, globalRoles);
-            this.userAppService.SelectDefaultLanguage(userInfo);
+            this.UserAppService.SelectDefaultLanguage(userInfo);
 
             // Get User AppRoot Roles
             if (userInfo?.Id > 0 && globalRoles.Contains(BiaConstants.Role.User))
             {
-                IEnumerable<string> userAppRootRoles = await this.roleAppService.GetUserRolesAsync(userInfo.Id);
+                IEnumerable<string> userAppRootRoles = await this.RoleAppService.GetUserRolesAsync(userInfo.Id);
                 globalRoles.AddRange(userAppRootRoles);
             }
 
             List<int> roleIds = GetRoleIds(globalRoles);
 
             // Get Permissions
-            List<string> userPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(globalRoles, loginParam.LightToken);
+            List<string> userPermissions = this.UserPermissionDomainService.TranslateRolesInPermissions(globalRoles, loginParam.LightToken);
 
             IEnumerable<BaseDtoVersionedTeam> allTeams = new List<BaseDtoVersionedTeam>();
             UserDataDto userData = new UserDataDto();
@@ -177,7 +177,7 @@ namespace BIA.Net.Core.Application.User
             if (loginParam.FineGrainedPermission && userInfo?.Id > 0)
             {
                 // Get All Teams
-                allTeams = await this.teamAppService.GetAllAsync(teamsConfig, userInfo.Id, userPermissions);
+                allTeams = await this.TeamAppService.GetAllAsync(teamsConfig, userInfo.Id, userPermissions);
 
                 // Get Fine Grained Roles
                 List<string> fineGrainedRoles = await this.GetFineRolesAsync(loginParam, userData, userInfo, allTeams, teamsConfig);
@@ -185,7 +185,7 @@ namespace BIA.Net.Core.Application.User
                 roleIds = roleIds.Union(fineGrainedRoleIds).ToList();
 
                 // Translate Roles in Permissions
-                List<string> fineGrainedUserPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(fineGrainedRoles, loginParam.LightToken);
+                List<string> fineGrainedUserPermissions = this.UserPermissionDomainService.TranslateRolesInPermissions(fineGrainedRoles, loginParam.LightToken);
 
                 // Concat global permissions and fine grained permissions
                 userPermissions = userPermissions.Union(fineGrainedUserPermissions).ToList();
@@ -211,7 +211,7 @@ namespace BIA.Net.Core.Application.User
             AdditionalInfoDto additionalInfo = this.GetAdditionalInfo(loginParam, userInfo, allTeams, userData, teamsConfig);
 
             // Create AuthInfo
-            AuthInfoDto<AdditionalInfoDto> authInfo = await this.jwtFactory.GenerateAuthInfoAsync(tokenDto, additionalInfo, loginParam);
+            AuthInfoDto<AdditionalInfoDto> authInfo = await this.JwtFactory.GenerateAuthInfoAsync(tokenDto, additionalInfo, loginParam);
 
             return authInfo;
         }
@@ -230,7 +230,7 @@ namespace BIA.Net.Core.Application.User
 
             if (loginParam.FineGrainedPermission || loginParam.AdditionalInfos || this.UseUserRole())
             {
-                userInfo = await this.userAppService.GetUserInfoAsync(identityKey);
+                userInfo = await this.UserAppService.GetUserInfoAsync(identityKey);
             }
 
             // If the user does not exist in the database
@@ -238,9 +238,9 @@ namespace BIA.Net.Core.Application.User
             userInfo ??= new UserInfoDto
             {
                 Login = login,
-                FirstName = this.claimsPrincipal.GetClaimValue(ClaimTypes.GivenName),
-                LastName = this.claimsPrincipal.GetClaimValue(ClaimTypes.Surname),
-                Country = this.claimsPrincipal.GetClaimValue(ClaimTypes.Country),
+                FirstName = this.ClaimsPrincipal.GetClaimValue(ClaimTypes.GivenName),
+                LastName = this.ClaimsPrincipal.GetClaimValue(ClaimTypes.Surname),
+                Country = this.ClaimsPrincipal.GetClaimValue(ClaimTypes.Country),
             };
 
             return userInfo;
@@ -262,7 +262,7 @@ namespace BIA.Net.Core.Application.User
         /// <returns>Return true if the rolesConfiguration contains the 'User' role.</returns>
         private bool UseUserRole()
         {
-            return this.rolesConfiguration != null && this.rolesConfiguration.Any(r =>
+            return this.RolesConfiguration != null && this.RolesConfiguration.Any(r =>
                 r.Label == BiaConstants.Role.User);
         }
 
@@ -317,22 +317,22 @@ namespace BIA.Net.Core.Application.User
 
                         if (!string.IsNullOrWhiteSpace(sid))
                         {
-                            userFromDirectory = await this.userDirectoryHelper.ResolveUserByIdentityKey(identityKey);
+                            userFromDirectory = await this.UserDirectoryHelper.ResolveUserByIdentityKey(identityKey);
                         }
                         else
                         {
-                            userFromDirectory = await this.identityProviderRepository.FindUserAsync(identityKey);
+                            userFromDirectory = await this.IdentityProviderRepository.FindUserAsync(identityKey);
                         }
 
                         if (userFromDirectory != null)
                         {
-                            TUser user = await this.userAppService.AddUserFromUserDirectoryAsync(identityKey, userFromDirectory);
-                            userInfo = this.userAppService.CreateUserInfo(user);
+                            TUser user = await this.UserAppService.AddUserFromUserDirectoryAsync(identityKey, userFromDirectory);
+                            userInfo = this.UserAppService.CreateUserInfo(user);
                         }
                     }
                     catch (Exception ex)
                     {
-                        this.logger.LogError(ex, "Cannot create user... Probably database is read only...");
+                        this.Logger.LogError(ex, "Cannot create user... Probably database is read only...");
                     }
                 }
                 else
@@ -340,11 +340,11 @@ namespace BIA.Net.Core.Application.User
                     try
                     {
                         // The date of the last connection is updated in the database
-                        await this.userAppService.UpdateLastLoginDateAndActivate(userInfo.Id, true);
+                        await this.UserAppService.UpdateLastLoginDateAndActivate(userInfo.Id, true);
                     }
                     catch (Exception ex)
                     {
-                        this.logger.LogError(ex, "Cannot update last login date... Probably database is read only...");
+                        this.Logger.LogError(ex, "Cannot update last login date... Probably database is read only...");
                     }
                 }
             }
@@ -414,7 +414,7 @@ namespace BIA.Net.Core.Application.User
                         continue;
                     }
 
-                    IEnumerable<RoleDto> roles = await this.roleAppService.GetMemberRolesAsync(currentTeam.TeamId, userInfo.Id);
+                    IEnumerable<RoleDto> roles = await this.RoleAppService.GetMemberRolesAsync(currentTeam.TeamId, userInfo.Id);
                     RoleMode roleMode = Array.Find(loginParam.TeamsConfig, r => r.TeamTypeId == currentTeam.TeamTypeId)?.RoleMode ?? RoleMode.AllRoles;
 
                     if (roleMode == RoleMode.AllRoles)

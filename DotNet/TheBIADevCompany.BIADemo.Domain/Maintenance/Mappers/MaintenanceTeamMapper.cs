@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
     using System.Globalization;
     using System.Linq.Expressions;
     using System.Security.Principal;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain;
@@ -216,10 +217,10 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
 
                 CanUpdate =
                     this.UserRoleIds.Contains((int)RoleId.MaintenanceTeamAdmin) ||
-                    this.UserRoleIds.Contains((int)RoleId.Admin),
+                    this.UserRoleIds.Contains((int)BiaRoleId.Admin),
 
                 CanMemberListAccess =
-                    this.UserRoleIds.Contains((int)RoleId.Admin) ||
+                    this.UserRoleIds.Contains((int)BiaRoleId.Admin) ||
                     entity.AircraftMaintenanceCompany.Members.Any(m => m.UserId == this.UserId) ||
                     entity.Members.Any(m => m.UserId == this.UserId),
             });

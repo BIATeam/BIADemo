@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Job;
     using BIA.Net.Core.Application.Notification;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Dto.Option;
@@ -143,7 +144,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                     CreatedDate = DateTime.Now,
                     Description = "Review the plane with id " + targetPlaneId + ".",
                     Title = "Review plane",
-                    Type = new OptionDto { Id = (int)NotificationTypeId.Task },
+                    Type = new OptionDto { Id = (int)BiaNotificationTypeId.Task },
                     NotifiedTeams = targetedTeam != null ? new List<NotificationTeamDto>
                     {
                        new NotificationTeamDto
@@ -180,7 +181,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                     CreatedDate = DateTime.Now,
                     Description = "There is no plane to review on site '" + selectPlaneOnSiteTitle + "'.",
                     Title = "No plane to review",
-                    Type = new OptionDto { Id = (int)NotificationTypeId.Info },
+                    Type = new OptionDto { Id = (int)BiaNotificationTypeId.Info },
 
                     NotifiedTeams = targetedTeam != null ? new List<NotificationTeamDto>
                     {

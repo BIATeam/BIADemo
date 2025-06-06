@@ -190,12 +190,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
             base.OnModelCreating(modelBuilder);
 #if BIA_FRONT_FEATURE
 
-            TranslationModelBuilder.CreateModel(modelBuilder);
+            new TranslationModelBuilder().CreateModel(modelBuilder);
             SiteModelBuilder.CreateSiteModel(modelBuilder);
             new UserModelBuilder().CreateModel(modelBuilder);
             ViewModelBuilder.CreateModel(modelBuilder);
-            NotificationModelBuilder.CreateModel(modelBuilder);
-            AuditModelBuilder.CreateModel(modelBuilder);
+            new NotificationModelBuilder().CreateModel(modelBuilder);
 
             // Begin BIADemo
             PlaneModelBuilder.CreateModel(modelBuilder);
@@ -203,6 +202,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
 
             // End BIADemo
 #endif
+            new AuditModelBuilder().CreateModel(modelBuilder);
             this.OnEndModelCreating(modelBuilder);
         }
     }

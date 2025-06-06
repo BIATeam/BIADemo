@@ -38,41 +38,6 @@ namespace BIA.Net.Core.Application.User
     public class BaseAuthAppService : IBaseAuthAppService
     {
         /// <summary>
-        /// The logger.
-        /// </summary>
-        protected readonly ILogger<BaseAuthAppService> logger;
-
-        /// <summary>
-        /// The principal.
-        /// </summary>
-        protected readonly BiaClaimsPrincipal claimsPrincipal;
-
-        /// <summary>
-        /// The JWT factory.
-        /// </summary>
-        protected readonly IJwtFactory jwtFactory;
-
-        /// <summary>
-        /// The user permission domain service.
-        /// </summary>
-        protected readonly IUserPermissionDomainService userPermissionDomainService;
-
-        /// <summary>
-        /// The helper used for AD.
-        /// </summary>
-        protected readonly IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper;
-
-        /// <summary>
-        /// The domain section in the BiaNet configuration.
-        /// </summary>
-        protected readonly IEnumerable<LdapDomain> ldapDomains;
-
-        /// <summary>
-        /// The ldap repository service.
-        /// </summary>
-        protected readonly ILdapRepositoryHelper ldapRepositoryHelper;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="BaseAuthAppService" /> class.
         /// </summary>
         /// <param name="userAppService">The user application service.</param>
@@ -97,14 +62,49 @@ namespace BIA.Net.Core.Application.User
             IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
             ILdapRepositoryHelper ldapRepositoryHelper)
         {
-            this.jwtFactory = jwtFactory;
-            this.claimsPrincipal = principal as BiaClaimsPrincipal;
-            this.userPermissionDomainService = userPermissionDomainService;
-            this.logger = logger;
-            this.userDirectoryHelper = userDirectoryHelper;
-            this.ldapDomains = biaNetconfiguration.Value.Authentication.LdapDomains;
-            this.ldapRepositoryHelper = ldapRepositoryHelper;
+            this.JwtFactory = jwtFactory;
+            this.ClaimsPrincipal = principal as BiaClaimsPrincipal;
+            this.UserPermissionDomainService = userPermissionDomainService;
+            this.Logger = logger;
+            this.UserDirectoryHelper = userDirectoryHelper;
+            this.LdapDomains = biaNetconfiguration.Value.Authentication.LdapDomains;
+            this.LdapRepositoryHelper = ldapRepositoryHelper;
         }
+
+        /// <summary>
+        /// The logger.
+        /// </summary>
+        protected ILogger<BaseAuthAppService> Logger { get; }
+
+        /// <summary>
+        /// The principal.
+        /// </summary>
+        protected BiaClaimsPrincipal ClaimsPrincipal { get; }
+
+        /// <summary>
+        /// The JWT factory.
+        /// </summary>
+        protected IJwtFactory JwtFactory { get; }
+
+        /// <summary>
+        /// The user permission domain service.
+        /// </summary>
+        protected IUserPermissionDomainService UserPermissionDomainService { get; }
+
+        /// <summary>
+        /// The helper used for AD.
+        /// </summary>
+        protected IUserDirectoryRepository<UserFromDirectory> UserDirectoryHelper { get; }
+
+        /// <summary>
+        /// The domain section in the BiaNet configuration.
+        /// </summary>
+        protected IEnumerable<LdapDomain> LdapDomains { get; }
+
+        /// <summary>
+        /// The ldap repository service.
+        /// </summary>
+        protected ILdapRepositoryHelper LdapRepositoryHelper { get; }
 
         /// <inheritdoc cref="IAuthAppService.LoginAsync"/>
         public async Task<string> LoginAsync()
@@ -121,7 +121,7 @@ namespace BIA.Net.Core.Application.User
             List<string> globalRoles = await this.GetGlobalRolesAsync(sid: sid, domain: domain);
 
             // Get Permissions
-            List<string> userPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(globalRoles);
+            List<string> userPermissions = this.UserPermissionDomainService.TranslateRolesInPermissions(globalRoles);
 
             // Check User Permissions
             this.CheckUserPermissions(userPermissions);
@@ -139,7 +139,7 @@ namespace BIA.Net.Core.Application.User
             };
 
             // Create AuthInfo
-            AuthInfoDto<AdditionalInfoDto> authInfo = await this.jwtFactory.GenerateAuthInfoAsync(tokenDto, default(AdditionalInfoDto), new LoginParamDto());
+            AuthInfoDto<AdditionalInfoDto> authInfo = await this.JwtFactory.GenerateAuthInfoAsync(tokenDto, default(AdditionalInfoDto), new LoginParamDto());
 
             return authInfo?.Token;
         }
@@ -153,7 +153,7 @@ namespace BIA.Net.Core.Application.User
         {
             if (!userPermissions.Any())
             {
-                this.logger.LogInformation("Unauthorized because no permission found");
+                this.Logger.LogInformation("Unauthorized because no permission found");
                 throw new UnauthorizedException("No permission found");
             }
         }
@@ -164,15 +164,15 @@ namespace BIA.Net.Core.Application.User
         /// <param name="claimsPrincipal">The identity.</param>
         protected void CheckIsAuthenticated()
         {
-            if (this.claimsPrincipal.Identity?.IsAuthenticated != true)
+            if (this.ClaimsPrincipal.Identity?.IsAuthenticated != true)
             {
-                if (this.claimsPrincipal.Identity == null)
+                if (this.ClaimsPrincipal.Identity == null)
                 {
-                    this.logger.LogInformation("Unauthorized because identity is null");
+                    this.Logger.LogInformation("Unauthorized because identity is null");
                 }
                 else
                 {
-                    this.logger.LogInformation("Unauthorized because not authenticated");
+                    this.Logger.LogInformation("Unauthorized because not authenticated");
                 }
 
                 throw new UnauthorizedException();
@@ -190,12 +190,12 @@ namespace BIA.Net.Core.Application.User
         /// <exception cref="UnauthorizedException">No roles found.</exception>
         protected async Task<List<string>> GetGlobalRolesAsync(string sid, string domain, UserInfoDto userInfo = default, bool withCredentials = true)
         {
-            List<string> globalRoles = await this.userDirectoryHelper.GetUserRolesAsync(claimsPrincipal: this.claimsPrincipal, userInfoDto: userInfo, sid: sid, domain: domain, withCredentials: withCredentials);
+            List<string> globalRoles = await this.UserDirectoryHelper.GetUserRolesAsync(claimsPrincipal: this.ClaimsPrincipal, userInfoDto: userInfo, sid: sid, domain: domain, withCredentials: withCredentials);
 
             // If the user has no role
             if (globalRoles?.Any() != true)
             {
-                this.logger.LogInformation("Unauthorized because No roles found");
+                this.Logger.LogInformation("Unauthorized because No roles found");
                 throw new UnauthorizedException("No roles found");
             }
 
@@ -208,7 +208,7 @@ namespace BIA.Net.Core.Application.User
         /// <returns>The sid.</returns>
         protected string GetSid()
         {
-            return this.claimsPrincipal.GetClaimValue(ClaimTypes.PrimarySid);
+            return this.ClaimsPrincipal.GetClaimValue(ClaimTypes.PrimarySid);
         }
 
         /// <summary>
@@ -217,10 +217,10 @@ namespace BIA.Net.Core.Application.User
         /// <returns>The login.</returns>
         protected string GetLogin()
         {
-            var login = this.claimsPrincipal.GetUserLogin()?.Split('\\').LastOrDefault()?.ToUpper();
+            var login = this.ClaimsPrincipal.GetUserLogin()?.Split('\\').LastOrDefault()?.ToUpper();
             if (string.IsNullOrEmpty(login))
             {
-                this.logger.LogWarning("Unauthorized because bad login");
+                this.Logger.LogWarning("Unauthorized because bad login");
                 throw new BadRequestException("Incorrect login");
             }
 
@@ -235,23 +235,23 @@ namespace BIA.Net.Core.Application.User
         {
             string domain = null;
 
-            if (this.claimsPrincipal.Identity.Name?.Contains('\\') == true)
+            if (this.ClaimsPrincipal.Identity.Name?.Contains('\\') == true)
             {
-                domain = this.claimsPrincipal.Identity.Name.Split('\\').FirstOrDefault();
+                domain = this.ClaimsPrincipal.Identity.Name.Split('\\').FirstOrDefault();
                 if (
-                        !this.ldapDomains.Any(ld => ld.Name.Equals(domain))
+                        !this.LdapDomains.Any(ld => ld.Name.Equals(domain))
                         &&
                         !(
-                            this.ldapDomains.Any(ld => this.ldapRepositoryHelper.IsLocalMachineName(ld.Name, true))
+                            this.LdapDomains.Any(ld => this.LdapRepositoryHelper.IsLocalMachineName(ld.Name, true))
                             &&
-                            this.ldapRepositoryHelper.IsLocalMachineName(domain, false))
+                            this.LdapRepositoryHelper.IsLocalMachineName(domain, false))
                         &&
                         !(
-                            this.ldapDomains.Any(ld => this.ldapRepositoryHelper.IsServerDomain(ld.Name, true))
+                            this.LdapDomains.Any(ld => this.LdapRepositoryHelper.IsServerDomain(ld.Name, true))
                             &&
-                            this.ldapRepositoryHelper.IsServerDomain(domain, false)))
+                            this.LdapRepositoryHelper.IsServerDomain(domain, false)))
                 {
-                    this.logger.LogInformation("Unauthorized because bad domain");
+                    this.Logger.LogInformation("Unauthorized because bad domain");
                     throw new UnauthorizedException();
                 }
             }

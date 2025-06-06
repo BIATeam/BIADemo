@@ -7,8 +7,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.User.Entities;
     using Microsoft.EntityFrameworkCore;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
 
     /// <summary>
     /// Class used to update the model builder for user domain.
@@ -36,7 +34,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
         /// Create the model for members.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        public virtual void CreateMemberModel(ModelBuilder modelBuilder)
+        protected virtual void CreateMemberModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Member>().HasKey(m => m.Id);
             modelBuilder.Entity<Member>().Property(m => m.TeamId).IsRequired();
@@ -52,7 +50,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
         /// Create the model for users.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        public virtual void CreateUserModel(ModelBuilder modelBuilder)
+        protected virtual void CreateUserModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<BaseUser>().ToTable("Users");
             modelBuilder.Entity<BaseUser>().HasKey(u => u.Id);
@@ -70,7 +68,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
         ///  Create the model for user role.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        public virtual void CreateUserRoleModel(ModelBuilder modelBuilder)
+        protected virtual void CreateUserRoleModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<BaseUser>()
                     .HasMany(p => p.Roles)
@@ -85,135 +83,49 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
         /// Create the model for teams.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        public virtual void CreateTeamModel(ModelBuilder modelBuilder)
+        protected virtual void CreateTeamModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Team>().ToTable("Teams");
             modelBuilder.Entity<Team>().HasKey(t => t.Id);
             modelBuilder.Entity<Team>().Property(t => t.Title).IsRequired().HasMaxLength(256);
-            modelBuilder.Entity<Team>().Property(u => u.TeamTypeId).IsRequired().HasDefaultValue(TeamTypeId.Site);
+            modelBuilder.Entity<Team>().Property(u => u.TeamTypeId).IsRequired();
         }
 
         /// <summary>
         /// Create the model for teams.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        public virtual void CreateTeamTypeModel(ModelBuilder modelBuilder)
+        protected virtual void CreateTeamTypeModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TeamType>().HasKey(t => t.Id);
             modelBuilder.Entity<TeamType>().Property(r => r.Name).IsRequired().HasMaxLength(32);
             modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)BiaTeamTypeId.Root, Name = "Root" });
-            modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.Site, Name = "Site" });
-
-            // Begin BIAToolKit Generation Ignore
-            // BIAToolKit - Begin Partial TeamTypeModelBuilder AircraftMaintenanceCompany
-            modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.AircraftMaintenanceCompany, Name = "AircraftMaintenanceCompany" });
-
-            // BIAToolKit - End Partial TeamTypeModelBuilder AircraftMaintenanceCompany
-            // BIAToolKit - Begin Partial TeamTypeModelBuilder MaintenanceTeam
-            modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.MaintenanceTeam, Name = "MaintenanceTeam" });
-
-            // BIAToolKit - End Partial TeamTypeModelBuilder MaintenanceTeam
-            // End BIAToolKit Generation Ignore
-
-            // BIAToolKit - Begin TeamTypeModelBuilder
-            // BIAToolKit - End TeamTypeModelBuilder
         }
 
         /// <summary>
         /// Create the model for roles.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        public virtual void CreateRoleModel(ModelBuilder modelBuilder)
+        protected virtual void CreateRoleModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Role>().HasKey(r => r.Id);
             modelBuilder.Entity<Role>().Property(r => r.Code).IsRequired().HasMaxLength(50);
             modelBuilder.Entity<Role>().Property(r => r.Label).IsRequired().HasMaxLength(50);
-            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.Admin, Code = "Admin", Label = "Administrator" });
-            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.BackAdmin, Code = "Back_Admin", Label = "Background task administrator" });
-            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.BackReadOnly, Code = "Back_Read_Only", Label = "Visualization of background tasks" });
-
-            // Begin BIADemo
-            if (false)
-            {
-#pragma warning disable CS0162 // Unreachable code detected
-            // DO NOT CHANGE INDENTATION (For BIATemplate)
-            // End BIADemo
-            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.SiteAdmin, Code = "Site_Admin", Label = "Site administrator" });
-
-            // Begin BIADemo
-#pragma warning restore CS0162 // Unreachable code detected
-            }
-
-            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.SiteAdmin, Code = "Site_Admin", Label = "Airline administrator" });
-            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.Pilot, Code = "Pilot", Label = "Pilot" });
-            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.Supervisor, Code = "Supervisor", Label = "Supervisor" });
-            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.Expert, Code = "Expert", Label = "Expert" });
-            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.Operator, Code = "Operator", Label = "Operator" });
-            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.TeamLeader, Code = "Team_Leader", Label = "Team leader" });
-
-            // End BIADemo
-            // Begin BIAToolKit Generation Ignore
-            // BIAToolKit - Begin Partial RoleModelBuilder AircraftMaintenanceCompany
-            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.AircraftMaintenanceCompanyAdmin, Code = "AircraftMaintenanceCompany_Admin", Label = "AircraftMaintenanceCompany administrator" });
-
-            // BIAToolKit - End Partial RoleModelBuilder AircraftMaintenanceCompany
-            // BIAToolKit - Begin Partial RoleModelBuilder MaintenanceTeam
-            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.MaintenanceTeamAdmin, Code = "MaintenanceTeam_Admin", Label = "MaintenanceTeam administrator" });
-
-            // BIAToolKit - End Partial RoleModelBuilder MaintenanceTeam
-            // End BIAToolKit Generation Ignore
-
-            // BIAToolKit - Begin RoleModelBuilder
-            // BIAToolKit - End RoleModelBuilder
         }
 
         /// <summary>
         /// Create the model for member roles.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        public virtual void CreateTeamTypeRoleModel(ModelBuilder modelBuilder)
+        protected virtual void CreateTeamTypeRoleModel(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Role>()
-                .HasMany(p => p.TeamTypes)
-                .WithMany(r => r.Roles)
-                .UsingEntity(rt =>
-                {
-                    rt.ToTable("RoleTeamTypes");
-                    rt.HasData(new { TeamTypesId = (int)BiaTeamTypeId.Root, RolesId = (int)RoleId.Admin });
-                    rt.HasData(new { TeamTypesId = (int)BiaTeamTypeId.Root, RolesId = (int)RoleId.BackAdmin });
-                    rt.HasData(new { TeamTypesId = (int)BiaTeamTypeId.Root, RolesId = (int)RoleId.BackReadOnly });
-                    rt.HasData(new { TeamTypesId = (int)TeamTypeId.Site, RolesId = (int)RoleId.SiteAdmin });
-
-                    // Begin BIADemo
-                    rt.HasData(new { TeamTypesId = (int)TeamTypeId.Site, RolesId = (int)RoleId.Pilot });
-                    rt.HasData(new { TeamTypesId = (int)TeamTypeId.AircraftMaintenanceCompany, RolesId = (int)RoleId.Supervisor });
-                    rt.HasData(new { TeamTypesId = (int)TeamTypeId.AircraftMaintenanceCompany, RolesId = (int)RoleId.Expert });
-                    rt.HasData(new { TeamTypesId = (int)TeamTypeId.MaintenanceTeam, RolesId = (int)RoleId.Operator });
-                    rt.HasData(new { TeamTypesId = (int)TeamTypeId.MaintenanceTeam, RolesId = (int)RoleId.Expert });
-                    rt.HasData(new { TeamTypesId = (int)TeamTypeId.MaintenanceTeam, RolesId = (int)RoleId.TeamLeader });
-
-                    // End BIADemo
-                    // Begin BIAToolKit Generation Ignore
-                    // BIAToolKit - Begin Partial TeamTypeRoleModelBuilder AircraftMaintenanceCompany
-                    rt.HasData(new { TeamTypesId = (int)TeamTypeId.AircraftMaintenanceCompany, RolesId = (int)RoleId.AircraftMaintenanceCompanyAdmin });
-
-                    // BIAToolKit - End Partial TeamTypeRoleModelBuilder AircraftMaintenanceCompany
-                    // BIAToolKit - Begin Partial TeamTypeRoleModelBuilder MaintenanceTeam
-                    rt.HasData(new { TeamTypesId = (int)TeamTypeId.MaintenanceTeam, RolesId = (int)RoleId.MaintenanceTeamAdmin });
-
-                    // BIAToolKit - End Partial TeamTypeRoleModelBuilder MaintenanceTeam
-                    // End BIAToolKit Generation Ignore
-
-                    // BIAToolKit - Begin TeamTypeRoleModelBuilder
-                    // BIAToolKit - End TeamTypeRoleModelBuilder
-                });
         }
 
         /// <summary>
         /// Create the model for member roles.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        public virtual void CreateMemberRoleModel(ModelBuilder modelBuilder)
+        protected virtual void CreateMemberRoleModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<MemberRole>().HasKey(mr => new { mr.MemberId, mr.RoleId });
             modelBuilder.Entity<MemberRole>().HasOne(mr => mr.Member).WithMany(m => m.MemberRoles).HasForeignKey(mr => mr.MemberId);
@@ -224,7 +136,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
         /// Create the model for user default teams.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        public virtual void CreateUserDefaultTeamModel(ModelBuilder modelBuilder)
+        protected virtual void CreateUserDefaultTeamModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserDefaultTeam>().HasIndex(udt => new { udt.UserId, udt.TeamId }).IsUnique();
         }

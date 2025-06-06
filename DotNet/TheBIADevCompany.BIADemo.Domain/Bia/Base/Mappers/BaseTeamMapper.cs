@@ -7,10 +7,10 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.Base.Mappers
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Formats.Asn1;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Security.Principal;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Authentication;
@@ -20,7 +20,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.Base.Mappers
     using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.User;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.User;
 
     /// <summary>
@@ -111,11 +110,11 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.Base.Mappers
 
                 // Should correspond to TTeam_Update permission (but without use the roles *_Member that is not determined at list display)
                 CanUpdate =
-                    this.UserRoleIds.Contains((int)RoleId.Admin),
+                    this.UserRoleIds.Contains((int)BiaRoleId.Admin),
 
                 // Should correspond to TTeam_Member_List_Access (but without use the roles *_Member that is not determined at list display)
                 CanMemberListAccess =
-                    this.UserRoleIds.Contains((int)RoleId.Admin) ||
+                    this.UserRoleIds.Contains((int)BiaRoleId.Admin) ||
                     entity.Members.Any(m => m.UserId == this.UserId),
             });
         }

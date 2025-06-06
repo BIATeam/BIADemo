@@ -9,6 +9,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
     /// </summary>
     public enum TeamTypeId
     {
+        // Reserved values in BiaTeamTypeId
+        // All = 0,
+        // Root = 1,
+
         /// <summary>
         /// Value for site.
         /// </summary>
