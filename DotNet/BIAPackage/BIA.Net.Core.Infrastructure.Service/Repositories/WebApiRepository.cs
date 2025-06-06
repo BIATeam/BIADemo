@@ -477,6 +477,11 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                             await this.distributedCache.Add(cacheKey, res, cacheDurationInMinute);
                         }
 
+                        if (typeof(T) == typeof(string))
+                        {
+                            return ((T)(object)res, response.IsSuccessStatusCode, default(string));
+                        }
+
                         T result = JsonConvert.DeserializeObject<T>(res);
                         return (result, response.IsSuccessStatusCode, default(string));
                     }
