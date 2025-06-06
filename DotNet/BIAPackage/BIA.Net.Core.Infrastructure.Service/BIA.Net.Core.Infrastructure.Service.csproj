@@ -22,7 +22,7 @@
     <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="[8.0.*,9.0.0)" />
     <PackageReference Include="System.DirectoryServices" Version="[8.0.*,9.0.0)" />
     <PackageReference Include="System.DirectoryServices.AccountManagement" Version="[8.0.*,9.0.0)" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.10.*" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.12.*" />
   </ItemGroup>
 
   <ItemGroup>
