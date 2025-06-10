@@ -59,15 +59,6 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
             };
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesForUpdate"/>
-        public override Expression<Func<User, object>>[] IncludesForUpdate()
-        {
-            return
-            [
-                x => x.Roles,
-            ];
-        }
-
         /// <summary>
         /// Header Name.
         /// </summary>
