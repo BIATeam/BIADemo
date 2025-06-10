@@ -215,7 +215,7 @@ export class BiaUltimaTopbarComponent
   }
 
   closeFullscreen() {
-    if (this.document.exitFullscreen) {
+    if (this.document.exitFullscreen && this.document.fullscreenElement) {
       this.document.exitFullscreen();
     }
   }
