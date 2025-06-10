@@ -31,14 +31,12 @@ namespace BIA.Net.Core.Application.User
     /// <summary>
     /// Auth App Service.
     /// </summary>
-    /// <typeparam name="TUserDto">The type of user dto.</typeparam>
-    /// <typeparam name="TUser">The type of user.</typeparam>
-    /// <typeparam name="TEnumRoleId">The type for enum Role Id.</typeparam>
-    /// <typeparam name="TEnumTeamTypeId">The type for enum Team Type Id.</typeparam>
-    public class BaseAuthAppService : IBaseAuthAppService
+    /// <typeparam name="TUserFromDirectory">The type of user from directory.</typeparam>
+    public class BaseAuthAppService<TUserFromDirectory> : IBaseAuthAppService
+        where TUserFromDirectory : IUserFromDirectory, new()
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseAuthAppService" /> class.
+        /// Initializes a new instance of the <see cref="BaseAuthAppService{}" /> class.
         /// </summary>
         /// <param name="userAppService">The user application service.</param>
         /// <param name="teamAppService">The team application service.</param>
@@ -56,10 +54,10 @@ namespace BIA.Net.Core.Application.User
             IJwtFactory jwtFactory,
             IPrincipal principal,
             IUserPermissionDomainService userPermissionDomainService,
-            ILogger<BaseAuthAppService> logger,
+            ILogger<BaseAuthAppService<TUserFromDirectory>> logger,
             IConfiguration configuration,
             IOptions<BiaNetSection> biaNetconfiguration,
-            IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
+            IUserDirectoryRepository<TUserFromDirectory> userDirectoryHelper,
             ILdapRepositoryHelper ldapRepositoryHelper)
         {
             this.JwtFactory = jwtFactory;
@@ -74,7 +72,7 @@ namespace BIA.Net.Core.Application.User
         /// <summary>
         /// The logger.
         /// </summary>
-        protected ILogger<BaseAuthAppService> Logger { get; }
+        protected ILogger<BaseAuthAppService<TUserFromDirectory>> Logger { get; }
 
         /// <summary>
         /// The principal.
@@ -94,7 +92,7 @@ namespace BIA.Net.Core.Application.User
         /// <summary>
         /// The helper used for AD.
         /// </summary>
-        protected IUserDirectoryRepository<UserFromDirectory> UserDirectoryHelper { get; }
+        protected IUserDirectoryRepository<TUserFromDirectory> UserDirectoryHelper { get; }
 
         /// <summary>
         /// The domain section in the BiaNet configuration.

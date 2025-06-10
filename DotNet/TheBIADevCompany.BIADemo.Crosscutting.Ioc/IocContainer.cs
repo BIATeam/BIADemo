@@ -18,7 +18,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Domain.User.Models;
     using BIA.Net.Core.Infrastructure.Data;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.Ioc;
@@ -46,7 +45,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
     // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
-    using TheBIADevCompany.BIADemo.Domain.User.Mappers;
+    using TheBIADevCompany.BIADemo.Domain.User.Models;
 #endif
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features.Bia;
 
@@ -97,8 +96,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         private static void ConfigureApplicationContainer(IServiceCollection collection, bool isApi)
         {
 #if BIA_FRONT_FEATURE
-            collection.AddTransient(typeof(IBaseUserSynchronizeDomainService<User>), typeof(UserSynchronizeDomainService));
-            collection.AddTransient(typeof(IBaseUserAppService<UserDto, User>), typeof(UserAppService));
+            collection.AddTransient(typeof(IBaseUserSynchronizeDomainService<User, UserFromDirectory>), typeof(UserSynchronizeDomainService));
+            collection.AddTransient(typeof(IBaseUserAppService<UserDto, User, UserFromDirectory>), typeof(UserAppService));
             collection.AddTransient(typeof(IUserAppService), typeof(UserAppService));
             collection.AddTransient(typeof(IBaseTeamAppService<TeamTypeId>), typeof(TeamAppService));
             collection.AddTransient(typeof(ITeamAppService), typeof(TeamAppService));
@@ -186,7 +185,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         {
             collection.AddSingleton<IUserDirectoryRepository<UserFromDirectory>, LdapRepository>();
 #if BIA_FRONT_FEATURE
-            collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
+            collection.AddHttpClient<IIdentityProviderRepository<UserFromDirectory>, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
             collection.AddTransient<IMailRepository, MailRepository>();
 
             if (isUnitTest || !string.IsNullOrEmpty(biaNetSection.CommonFeatures.ClientForHub?.SignalRUrl))

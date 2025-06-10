@@ -9,6 +9,7 @@ namespace BIA.Net.Core.Application.Job
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Entity.Interface;
+    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;
     using Hangfire;
     using Microsoft.Extensions.Configuration;
@@ -19,12 +20,14 @@ namespace BIA.Net.Core.Application.Job
     /// </summary>
     /// <typeparam name="TUserDto">The type of user dto.</typeparam>
     /// <typeparam name="TUser">The type of user.</typeparam>
+    /// <typeparam name="TUserFromDirectory">The type of user from directory.</typeparam>
     [AutomaticRetry(Attempts = 2, LogEvents = true)]
-    public class SynchronizeUserTask<TUserDto, TUser> : BaseJob
+    public class SynchronizeUserTask<TUserDto, TUser, TUserFromDirectory> : BaseJob
         where TUserDto : BaseUserDto, new()
         where TUser : BaseUser, IEntity<int>, new()
+        where TUserFromDirectory : IUserFromDirectory, new()
     {
-        private readonly IBaseUserAppService<TUserDto, TUser> userService;
+        private readonly IBaseUserAppService<TUserDto, TUser, TUserFromDirectory> userService;
 
         /// <summary>
         /// The configuration of the BiaNet section.
@@ -32,12 +35,12 @@ namespace BIA.Net.Core.Application.Job
         private readonly BiaNetSection biaNetSection;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SynchronizeUserTask{TUserDto, TUser}"/> class.
+        /// Initializes a new instance of the <see cref="SynchronizeUserTask{TUserDto, TUser, TUserFromDirectory}"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="userService">The user app service.</param>
         /// <param name="logger">logger.</param>
-        public SynchronizeUserTask(IConfiguration configuration, IBaseUserAppService<TUserDto, TUser> userService, ILogger<SynchronizeUserTask<TUserDto, TUser>> logger)
+        public SynchronizeUserTask(IConfiguration configuration, IBaseUserAppService<TUserDto, TUser, TUserFromDirectory> userService, ILogger<SynchronizeUserTask<TUserDto, TUser, TUserFromDirectory>> logger)
             : base(configuration, logger)
         {
             this.userService = userService;

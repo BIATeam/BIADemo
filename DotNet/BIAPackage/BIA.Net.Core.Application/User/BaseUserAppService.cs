@@ -38,15 +38,17 @@ namespace BIA.Net.Core.Application.User
     /// <typeparam name="TUserDto">The type of user dto.</typeparam>
     /// <typeparam name="TUser">The type of user.</typeparam>
     /// <typeparam name="TUserMapper">The type of user mapper.</typeparam>
-    public class BaseUserAppService<TUserDto, TUser, TUserMapper> : CrudAppServiceBase<TUserDto, TUser, int, PagingFilterFormatDto, TUserMapper>, IBaseUserAppService<TUserDto, TUser>
+    /// <typeparam name="TUserFromDirectory">The type of user from directory.</typeparam>
+    public class BaseUserAppService<TUserDto, TUser, TUserMapper, TUserFromDirectory> : CrudAppServiceBase<TUserDto, TUser, int, PagingFilterFormatDto, TUserMapper>, IBaseUserAppService<TUserDto, TUser, TUserFromDirectory>
         where TUserDto : BaseUserDto, new()
         where TUser : BaseUser, IEntity<int>, new()
         where TUserMapper : BaseUserMapper<TUserDto, TUser>
+        where TUserFromDirectory : IUserFromDirectory, new()
     {
         /// <summary>
         /// The user synchronize domain service.
         /// </summary>
-        private readonly IBaseUserSynchronizeDomainService<TUser> userSynchronizeDomainService;
+        private readonly IBaseUserSynchronizeDomainService<TUser, TUserFromDirectory> userSynchronizeDomainService;
 
         /// <summary>
         /// The configuration of the BiaNet section.
@@ -56,7 +58,7 @@ namespace BIA.Net.Core.Application.User
         /// <summary>
         /// The helper used for AD.
         /// </summary>
-        private readonly IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper;
+        private readonly IUserDirectoryRepository<TUserFromDirectory> userDirectoryHelper;
 
         /// <summary>
         /// The user default team repository.
@@ -66,9 +68,9 @@ namespace BIA.Net.Core.Application.User
         /// <summary>
         /// The logger.
         /// </summary>
-        private readonly ILogger<BaseUserAppService<TUserDto, TUser, TUserMapper>> logger;
+        private readonly ILogger<BaseUserAppService<TUserDto, TUser, TUserMapper, TUserFromDirectory>> logger;
 
-        private readonly IIdentityProviderRepository identityProviderRepository;
+        private readonly IIdentityProviderRepository<TUserFromDirectory> identityProviderRepository;
 
         private readonly IUserIdentityKeyDomainService userIdentityKeyDomainService;
 
@@ -78,7 +80,7 @@ namespace BIA.Net.Core.Application.User
         private readonly BiaClaimsPrincipal principal;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseUserAppService{TUserDto, TUser, TUserMapper}"/> class.
+        /// Initializes a new instance of the <see cref="BaseUserAppService{TUserDto, TUser, TUserMapper, TUserFromDirectory}"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="userSynchronizeDomainService">The user synchronize domain service.</param>
@@ -91,12 +93,12 @@ namespace BIA.Net.Core.Application.User
         /// <param name="principal">The principal.</param>
         public BaseUserAppService(
             ITGenericRepository<TUser, int> repository,
-            IBaseUserSynchronizeDomainService<TUser> userSynchronizeDomainService,
+            IBaseUserSynchronizeDomainService<TUser, TUserFromDirectory> userSynchronizeDomainService,
             IOptions<BiaNetSection> configuration,
-            IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
+            IUserDirectoryRepository<TUserFromDirectory> userDirectoryHelper,
             ITGenericRepository<UserDefaultTeam, int> userDefaultTeamRepository,
-            ILogger<BaseUserAppService<TUserDto, TUser, TUserMapper>> logger,
-            IIdentityProviderRepository identityProviderRepository,
+            ILogger<BaseUserAppService<TUserDto, TUser, TUserMapper, TUserFromDirectory>> logger,
+            IIdentityProviderRepository<TUserFromDirectory> identityProviderRepository,
             IUserIdentityKeyDomainService userIdentityKeyDomainService,
             IPrincipal principal)
             : base(repository)
@@ -125,7 +127,7 @@ namespace BIA.Net.Core.Application.User
         }
 
         /// <inheritdoc cref="IBaseUserAppService.AddUserFromUserDirectoryAsync"/>
-        public async Task<TUser> AddUserFromUserDirectoryAsync(string identityKey, UserFromDirectory userFromDirectory)
+        public async Task<TUser> AddUserFromUserDirectoryAsync(string identityKey, TUserFromDirectory userFromDirectory)
         {
             if (userFromDirectory != null)
             {
@@ -184,7 +186,7 @@ namespace BIA.Net.Core.Application.User
         public async Task<IEnumerable<UserFromDirectoryDto>> GetAllADUserAsync(string filter, string ldapName = null, int max = 10)
         {
             return await Task.FromResult(this.userDirectoryHelper.SearchUsers(filter, ldapName, max).OrderBy(o => o.LastName).ThenBy(o => o.FirstName)
-                .Select(UserFromDirectoryMapper.EntityToDto())
+                .Select(UserFromDirectoryMapper<TUserFromDirectory>.EntityToDto())
                 .ToList());
         }
 
@@ -192,8 +194,8 @@ namespace BIA.Net.Core.Application.User
         public async Task<IEnumerable<UserFromDirectoryDto>> GetAllIdpUserAsync(string filter, int first = 0, int max = 10)
         {
             string formattedFilter = "*" + filter.Replace(" ", " *");
-            List<UserFromDirectory> userFromDirectories = await this.identityProviderRepository.SearchUserAsync(formattedFilter, first, max);
-            return userFromDirectories.Select(UserFromDirectoryMapper.EntityToDto());
+            List<TUserFromDirectory> userFromDirectories = await this.identityProviderRepository.SearchUserAsync(formattedFilter, first, max);
+            return userFromDirectories.Select(UserFromDirectoryMapper<TUserFromDirectory>.EntityToDto());
         }
 
         /// <inheritdoc cref="IBaseUserAppService.AddByIdentityKeyAsync"/>
@@ -253,7 +255,7 @@ namespace BIA.Net.Core.Application.User
                     {
                         TUser foundUser = (await this.Repository.GetAllEntityAsync(filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey<TUser>(this.userIdentityKeyDomainService.GetDirectoryIdentityKey(userFormDirectoryDto)))).FirstOrDefault();
 
-                        UserFromDirectory userFormDirectory = null;
+                        TUserFromDirectory userFormDirectory = default;
 
                         if (this.configuration?.Authentication?.Keycloak?.IsActive == true)
                         {

@@ -35,14 +35,16 @@ namespace BIA.Net.Core.Application.User
     /// <typeparam name="TUser">The type of user.</typeparam>
     /// <typeparam name="TEnumRoleId">The type for enum Role Id.</typeparam>
     /// <typeparam name="TEnumTeamTypeId">The type for enum Team Type Id.</typeparam>
-    public class BaseFrontAuthAppService<TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId> : BaseAuthAppService, IBaseFrontAuthAppService
+    /// <typeparam name="TUserFromDirectory">The type of user from directory.</typeparam>
+    public class BaseFrontAuthAppService<TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId, TUserFromDirectory> : BaseAuthAppService<TUserFromDirectory>, IBaseFrontAuthAppService
         where TUserDto : BaseUserDto, new()
         where TUser : BaseUser, IEntity<int>, new()
         where TEnumRoleId : struct, Enum
         where TEnumTeamTypeId : struct, Enum
+        where TUserFromDirectory : IUserFromDirectory, new()
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseFrontAuthAppService{TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId}" /> class.
+        /// Initializes a new instance of the <see cref="BaseFrontAuthAppService{TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId, TUserFromDirectory}" /> class.
         /// </summary>
         /// <param name="userAppService">The user application service.</param>
         /// <param name="teamAppService">The team application service.</param>
@@ -57,17 +59,17 @@ namespace BIA.Net.Core.Application.User
         /// <param name="userDirectoryHelper">The user directory helper.</param>
         /// <param name="ldapRepositoryHelper">The LDAP repository helper.</param>
         public BaseFrontAuthAppService(
-            IBaseUserAppService<TUserDto, TUser> userAppService,
+            IBaseUserAppService<TUserDto, TUser, TUserFromDirectory> userAppService,
             IBaseTeamAppService<TEnumTeamTypeId> teamAppService,
             IRoleAppService roleAppService,
-            IIdentityProviderRepository identityProviderRepository,
+            IIdentityProviderRepository<TUserFromDirectory> identityProviderRepository,
             IJwtFactory jwtFactory,
             IPrincipal principal,
             IUserPermissionDomainService userPermissionDomainService,
-            ILogger<BaseFrontAuthAppService<TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId>> logger,
+            ILogger<BaseFrontAuthAppService<TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId, TUserFromDirectory>> logger,
             IConfiguration configuration,
             IOptions<BiaNetSection> biaNetconfiguration,
-            IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
+            IUserDirectoryRepository<TUserFromDirectory> userDirectoryHelper,
             ILdapRepositoryHelper ldapRepositoryHelper)
             : base(jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper)
         {
@@ -86,12 +88,12 @@ namespace BIA.Net.Core.Application.User
         /// <summary>
         /// The identity provider repository.
         /// </summary>
-        protected IIdentityProviderRepository IdentityProviderRepository { get; }
+        protected IIdentityProviderRepository<TUserFromDirectory> IdentityProviderRepository { get; }
 
         /// <summary>
         /// The user application service.
         /// </summary>
-        protected IBaseUserAppService<TUserDto, TUser> UserAppService { get; }
+        protected IBaseUserAppService<TUserDto, TUser, TUserFromDirectory> UserAppService { get; }
 
         /// <summary>
         /// The team application service.
@@ -313,7 +315,7 @@ namespace BIA.Net.Core.Application.User
                     // automatic creation from ldap, only use if user do not need fine Role on team.
                     try
                     {
-                        UserFromDirectory userFromDirectory = null;
+                        TUserFromDirectory userFromDirectory = default;
 
                         if (!string.IsNullOrWhiteSpace(sid))
                         {

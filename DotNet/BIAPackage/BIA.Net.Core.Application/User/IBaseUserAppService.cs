@@ -11,17 +11,19 @@ namespace BIA.Net.Core.Application.User
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Entity.Interface;
+    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;
-    using BIA.Net.Core.Domain.User.Models;
 
     /// <summary>
     /// The interface defining the application service for user.
     /// </summary>
     /// <typeparam name="TUserDto">The type of user dto.</typeparam>
     /// <typeparam name="TUser">The type of user.</typeparam>
-    public interface IBaseUserAppService<TUserDto, TUser> : ICrudAppServiceBase<TUserDto, TUser, int, PagingFilterFormatDto>
+    /// <typeparam name="TUserFromDirectory">The type of user from directory.</typeparam>
+    public interface IBaseUserAppService<TUserDto, TUser, TUserFromDirectory> : ICrudAppServiceBase<TUserDto, TUser, int, PagingFilterFormatDto>
         where TUserDto : BaseUserDto, new()
         where TUser : BaseUser, IEntity<int>, new()
+        where TUserFromDirectory : IUserFromDirectory, new()
     {
         /// <summary>
         /// Gets all option that I can see.
@@ -36,7 +38,7 @@ namespace BIA.Net.Core.Application.User
         /// <param name="identityKey">The identity key.</param>
         /// <param name="userFromDirectory">The user from directory.</param>
         /// <returns>The user in DB.</returns>
-        Task<TUser> AddUserFromUserDirectoryAsync(string identityKey, UserFromDirectory userFromDirectory);
+        Task<TUser> AddUserFromUserDirectoryAsync(string identityKey, TUserFromDirectory userFromDirectory);
 
         /// <summary>
         /// Creates the user information from user.

@@ -9,18 +9,18 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;
-    using BIA.Net.Core.Domain.User.Models;
     using BIA.Net.Core.Domain.User.Services;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Mappers;
+    using TheBIADevCompany.BIADemo.Domain.User.Models;
 
     /// <summary>
     /// The application service used for user.
     /// </summary>
-    public class UserAppService : BaseUserAppService<UserDto, User, UserMapper>, IUserAppService
+    public class UserAppService : BaseUserAppService<UserDto, User, UserMapper, UserFromDirectory>, IUserAppService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UserAppService"/> class.
@@ -36,12 +36,12 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
         /// <param name="principal">The principal.</param>
         public UserAppService(
             ITGenericRepository<User, int> repository,
-            IBaseUserSynchronizeDomainService<User> userSynchronizeDomainService,
+            IBaseUserSynchronizeDomainService<User, UserFromDirectory> userSynchronizeDomainService,
             IOptions<BiaNetSection> configuration,
             IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
             ITGenericRepository<UserDefaultTeam, int> userDefaultTeamRepository,
             ILogger<UserAppService> logger,
-            IIdentityProviderRepository identityProviderRepository,
+            IIdentityProviderRepository<UserFromDirectory> identityProviderRepository,
             IUserIdentityKeyDomainService userIdentityKeyDomainService,
             IPrincipal principal)
             : base(repository, userSynchronizeDomainService, configuration, userDirectoryHelper, userDefaultTeamRepository, logger, identityProviderRepository, userIdentityKeyDomainService, principal)

@@ -8,6 +8,7 @@ namespace BIA.Net.Core.Domain.User.Services
     using System.Collections.Generic;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;
     using BIA.Net.Core.Domain.User.Models;
 
@@ -54,15 +55,17 @@ namespace BIA.Net.Core.Domain.User.Services
         /// Checks the directory identity key.
         /// </summary>
         /// <param name="identityKey">The identity key.</param>
+        /// <typeparam name="TUserFromDirectory">The type of user from directory.</typeparam>
         /// <returns>The checks the directory identity key.</returns>
-        Expression<Func<UserFromDirectory, bool>> CheckDirectoryIdentityKey(string identityKey);
+        Expression<Func<TUserFromDirectory, bool>> CheckDirectoryIdentityKey<TUserFromDirectory>(string identityKey)
+            where TUserFromDirectory : IUserFromDirectory;
 
         /// <summary>
         /// Gets the directory identity key.
         /// </summary>
         /// <param name="userFromDirectory">The user from directory.</param>
         /// <returns>The directory identity key.</returns>
-        string GetDirectoryIdentityKey(UserFromDirectory userFromDirectory);
+        string GetDirectoryIdentityKey(IUserFromDirectory userFromDirectory);
 
         /// <summary>
         /// Gets the directory identity key.

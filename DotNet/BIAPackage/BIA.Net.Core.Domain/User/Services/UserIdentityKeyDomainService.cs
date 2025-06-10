@@ -8,6 +8,7 @@ namespace BIA.Net.Core.Domain.User.Services
     using System.Collections.Generic;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;
     using BIA.Net.Core.Domain.User.Models;
 
@@ -78,8 +79,10 @@ namespace BIA.Net.Core.Domain.User.Services
         /// If you change it parse all other #IdentityKey to be sure thare is a match (Database => Directory, Idp & WindowsIdentity).
         /// </summary>
         /// <param name="identityKey">the identityKey.</param>
+        /// <typeparam name="TUserFromDirectory">The type of user from directory.</typeparam>
         /// <returns>Expression to compare.</returns>
-        public Expression<Func<UserFromDirectory, bool>> CheckDirectoryIdentityKey(string identityKey)
+        public Expression<Func<TUserFromDirectory, bool>> CheckDirectoryIdentityKey<TUserFromDirectory>(string identityKey)
+            where TUserFromDirectory : IUserFromDirectory
         {
             return userFromDirectory => userFromDirectory.Login == identityKey;
         }
@@ -91,7 +94,7 @@ namespace BIA.Net.Core.Domain.User.Services
         /// </summary>
         /// <param name="userFromDirectory">the userFromDirectory.</param>
         /// <returns>Return the Identity Key.</returns>
-        public string GetDirectoryIdentityKey(UserFromDirectory userFromDirectory)
+        public string GetDirectoryIdentityKey(IUserFromDirectory userFromDirectory)
         {
             return userFromDirectory.Login;
         }

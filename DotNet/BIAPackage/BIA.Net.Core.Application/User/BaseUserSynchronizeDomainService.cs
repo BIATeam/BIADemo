@@ -12,15 +12,16 @@ namespace BIA.Net.Core.Application.User
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;
-    using BIA.Net.Core.Domain.User.Models;
     using BIA.Net.Core.Domain.User.Services;
 
     /// <summary>
     /// The service used for synchronization between AD and DB.
     /// </summary>
     /// <typeparam name="TUser">The type of user.</typeparam>
-    public class BaseUserSynchronizeDomainService<TUser> : IBaseUserSynchronizeDomainService<TUser>
+    /// <typeparam name="TUserFromDirectory">The type of user from directory.</typeparam>
+    public class BaseUserSynchronizeDomainService<TUser, TUserFromDirectory> : IBaseUserSynchronizeDomainService<TUser, TUserFromDirectory>
         where TUser : BaseUser, new()
+        where TUserFromDirectory : IUserFromDirectory, new()
     {
         /// <summary>
         /// The repository.
@@ -30,17 +31,17 @@ namespace BIA.Net.Core.Application.User
         /// <summary>
         /// The AD helper.
         /// </summary>
-        private readonly IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper;
+        private readonly IUserDirectoryRepository<TUserFromDirectory> userDirectoryHelper;
 
         /// <summary>
         /// The user IdentityKey Domain Service.
         /// </summary>
         private readonly IUserIdentityKeyDomainService userIdentityKeyDomainService;
 
-        private readonly IIdentityProviderRepository identityProviderRepository;
+        private readonly IIdentityProviderRepository<TUserFromDirectory> identityProviderRepository;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseUserSynchronizeDomainService{TUser}" /> class.
+        /// Initializes a new instance of the <see cref="BaseUserSynchronizeDomainService{TUser, TUserFromDirectory}" /> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="adHelper">The AD helper.</param>
@@ -48,9 +49,9 @@ namespace BIA.Net.Core.Application.User
         /// <param name="identityProviderRepository">The identity provider repository.</param>
         public BaseUserSynchronizeDomainService(
             ITGenericRepository<TUser, int> repository,
-            IUserDirectoryRepository<UserFromDirectory> adHelper,
+            IUserDirectoryRepository<TUserFromDirectory> adHelper,
             IUserIdentityKeyDomainService userIdentityKeyDomainService,
-            IIdentityProviderRepository identityProviderRepository)
+            IIdentityProviderRepository<TUserFromDirectory> identityProviderRepository)
         {
             this.repository = repository;
             this.userDirectoryHelper = adHelper;
@@ -67,10 +68,10 @@ namespace BIA.Net.Core.Application.User
             {
                 foreach (TUser user in users)
                 {
-                    List<UserFromDirectory> userFromDirectories = await this.identityProviderRepository.SearchUserAsync(user.Login, 0, 1);
+                    List<TUserFromDirectory> userFromDirectories = await this.identityProviderRepository.SearchUserAsync(user.Login, 0, 1);
                     if (userFromDirectories.Count == 1 && string.Equals(userFromDirectories[0].Login, user.Login, StringComparison.OrdinalIgnoreCase))
                     {
-                        UserFromDirectory userFromDirectory = userFromDirectories[0];
+                        TUserFromDirectory userFromDirectory = userFromDirectories[0];
                         this.ResynchronizeUser(user, userFromDirectory);
                     }
                 }
@@ -112,7 +113,7 @@ namespace BIA.Net.Core.Application.User
             }
             else if (usersSidInDirectory.Count > 0)
             {
-                ConcurrentBag<UserFromDirectory> usersFromDirectory = new ConcurrentBag<UserFromDirectory>();
+                ConcurrentBag<TUserFromDirectory> usersFromDirectory = new ConcurrentBag<TUserFromDirectory>();
 
                 Parallel.ForEach(usersSidInDirectory, sid =>
                 {
@@ -125,7 +126,7 @@ namespace BIA.Net.Core.Application.User
 
                 foreach (TUser user in users)
                 {
-                    var userFromDirectory = usersFromDirectory.FirstOrDefault(this.userIdentityKeyDomainService.CheckDirectoryIdentityKey(this.userIdentityKeyDomainService.GetDatabaseIdentityKey(user)).Compile());
+                    var userFromDirectory = usersFromDirectory.FirstOrDefault(this.userIdentityKeyDomainService.CheckDirectoryIdentityKey<TUserFromDirectory>(this.userIdentityKeyDomainService.GetDatabaseIdentityKey(user)).Compile());
                     if (userFromDirectory == null)
                     {
                         if (user.IsActive)
@@ -139,7 +140,7 @@ namespace BIA.Net.Core.Application.User
                     }
                 }
 
-                foreach (UserFromDirectory userFromDirectory in usersFromDirectory)
+                foreach (TUserFromDirectory userFromDirectory in usersFromDirectory)
                 {
 #pragma warning disable S6602 // "Find" method should be used instead of the "FirstOrDefault" extension
                     TUser foundUser = users.FirstOrDefault(this.userIdentityKeyDomainService.CheckDatabaseIdentityKey<TUser>(this.userIdentityKeyDomainService.GetDirectoryIdentityKey(userFromDirectory)).Compile());
@@ -168,11 +169,11 @@ namespace BIA.Net.Core.Application.User
         /// <param name="userFormDirectory">the user in Directory.</param>
         /// <param name="foundUser">the User if exist in repository.</param>
         /// <returns>The async task.</returns>
-        public TUser AddOrActiveUserFromDirectory(UserFromDirectory userFormDirectory, TUser foundUser)
+        public TUser AddOrActiveUserFromDirectory(TUserFromDirectory userFormDirectory, TUser foundUser)
         {
             if (foundUser == null)
             {
-                if (this.userIdentityKeyDomainService.GetDirectoryIdentityKey(userFormDirectory) != this.userIdentityKeyDomainService.GetDirectoryIdentityKey(new UserFromDirectory()))
+                if (this.userIdentityKeyDomainService.GetDirectoryIdentityKey(userFormDirectory) != this.userIdentityKeyDomainService.GetDirectoryIdentityKey(new TUserFromDirectory()))
                 {
                     // Create the missing user
                     TUser user = new TUser();
@@ -194,7 +195,7 @@ namespace BIA.Net.Core.Application.User
         /// </summary>
         /// <param name="user">the user object to update.</param>
         /// <param name="userDirectory">the user from directory object containing values.</param>
-        public virtual void UpdateUserFieldFromDirectory(TUser user, UserFromDirectory userDirectory)
+        public virtual void UpdateUserFieldFromDirectory(TUser user, TUserFromDirectory userDirectory)
         {
             user.Login = userDirectory.Login?.ToUpper();
             user.FirstName = userDirectory.FirstName?.Length > 50 ? userDirectory.FirstName?.Substring(0, 50) : userDirectory.FirstName ?? string.Empty;
@@ -203,7 +204,7 @@ namespace BIA.Net.Core.Application.User
             user.LastSyncDate = DateTime.Now;
         }
 
-        private void ResynchronizeUser(TUser user, UserFromDirectory userFromDirectory)
+        private void ResynchronizeUser(TUser user, TUserFromDirectory userFromDirectory)
         {
             if (userFromDirectory != null)
             {

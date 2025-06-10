@@ -25,7 +25,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
             modelBuilder.Entity<User>(entity =>
             {
                 entity.Property(u => u.Email).HasMaxLength(256);
-#if BIA_USER_CUSTOM_FILEDS
+#if BIA_USER_CUSTOM_FIELDS_BACK
                 entity.Property(u => u.DistinguishedName).IsRequired().HasMaxLength(250);
                 entity.Property(u => u.IsEmployee);
                 entity.Property(u => u.IsExternal);

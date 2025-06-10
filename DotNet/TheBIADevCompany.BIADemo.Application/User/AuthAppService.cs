@@ -13,7 +13,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;
-    using BIA.Net.Core.Domain.User.Models;
     using BIA.Net.Core.Domain.User.Services;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
@@ -23,6 +22,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.User.Models;
 #endif
 
     /// <summary>
@@ -30,10 +30,10 @@ namespace TheBIADevCompany.BIADemo.Application.User
     /// </summary>
     public class AuthAppService(
 #if BIA_FRONT_FEATURE
-        IBaseUserAppService<UserDto, User> userAppService,
+        IBaseUserAppService<UserDto, User, UserFromDirectory> userAppService,
         IBaseTeamAppService<TeamTypeId> teamAppService,
         IRoleAppService roleAppService,
-        IIdentityProviderRepository identityProviderRepository,
+        IIdentityProviderRepository<UserFromDirectory> identityProviderRepository,
 #endif
         IJwtFactory jwtFactory,
         IPrincipal principal,
@@ -44,7 +44,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
         ILdapRepositoryHelper ldapRepositoryHelper)
 #if BIA_FRONT_FEATURE
-        : BaseFrontAuthAppService<UserDto, User, RoleId, TeamTypeId>(userAppService, teamAppService, roleAppService, identityProviderRepository, jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper), IAuthAppService
+        : BaseFrontAuthAppService<UserDto, User, RoleId, TeamTypeId, UserFromDirectory>(userAppService, teamAppService, roleAppService, identityProviderRepository, jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper), IAuthAppService
 #else
         : BaseAuthAppService(jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper), IAuthAppService
 #endif

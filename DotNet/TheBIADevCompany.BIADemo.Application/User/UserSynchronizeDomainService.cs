@@ -6,14 +6,14 @@ namespace TheBIADevCompany.BIADemo.Application.User
 {
     using BIA.Net.Core.Application.User;
     using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Domain.User.Models;
     using BIA.Net.Core.Domain.User.Services;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.User.Models;
 
     /// <summary>
     /// The service used for synchronization between AD and DB.
     /// </summary>
-    public class UserSynchronizeDomainService : BaseUserSynchronizeDomainService<User>
+    public class UserSynchronizeDomainService : BaseUserSynchronizeDomainService<User, UserFromDirectory>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UserSynchronizeDomainService" /> class.
@@ -26,7 +26,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             ITGenericRepository<User, int> repository,
             IUserDirectoryRepository<UserFromDirectory> adHelper,
             IUserIdentityKeyDomainService userIdentityKeyDomainService,
-            IIdentityProviderRepository identityProviderRepository)
+            IIdentityProviderRepository<UserFromDirectory> identityProviderRepository)
             : base(repository, adHelper, userIdentityKeyDomainService, identityProviderRepository)
         {
         }
@@ -40,7 +40,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         {
             base.UpdateUserFieldFromDirectory(user, userDirectory);
             user.Email = userDirectory.Email?.Length > 256 ? userDirectory.Email?.Substring(0, 256) : userDirectory.Email ?? string.Empty;
-#if BIA_USER_CUSTOM_FILEDS
+#if BIA_USER_CUSTOM_FIELDS_BACK
             user.Country = userDirectory.Country?.Length > 10 ? userDirectory.Country?.Substring(0, 10) : userDirectory.Country ?? string.Empty;
             user.Department = userDirectory.Department?.Length > 50 ? userDirectory.Department?.Substring(0, 50) : userDirectory.Department ?? string.Empty;
             user.DistinguishedName = userDirectory.DistinguishedName?.Length > 250 ? userDirectory.DistinguishedName?.Substring(0, 250) : userDirectory.DistinguishedName ?? string.Empty;

@@ -27,6 +27,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
 #if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.User.Models;
 #endif
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
 
@@ -76,7 +77,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
 #if BIA_FRONT_FEATURE
                         string projectName = configuration["Project:Name"];
                         RecurringJob.AddOrUpdate<WakeUpTask>($"{projectName}.{typeof(WakeUpTask).Name}", t => t.Run(), configuration["Tasks:WakeUp:CRON"]);
-                        RecurringJob.AddOrUpdate<SynchronizeUserTask<UserDto, User>>($"{projectName}.{typeof(SynchronizeUserTask<UserDto, User>).Name}", t => t.Run(), configuration["Tasks:SynchronizeUser:CRON"]);
+                        RecurringJob.AddOrUpdate<SynchronizeUserTask<UserDto, User, UserFromDirectory>>($"{projectName}.{typeof(SynchronizeUserTask<UserDto, User, UserFromDirectory>).Name}", t => t.Run(), configuration["Tasks:SynchronizeUser:CRON"]);
 
                         // Begin BIADemo
                         RecurringJob.AddOrUpdate<WithPermissionTask>($"{projectName}.{typeof(WithPermissionTask).Name}", t => t.Run(), Cron.Never);

@@ -23,5 +23,15 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// Gets or sets the sid.
         /// </summary>
         public string Sid { get; set; }
+
+        /// <summary>
+        /// Gets or sets the last name.
+        /// </summary>
+        public string LastName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the first name.
+        /// </summary>
+        public string FirstName { get; set; }
     }
 }

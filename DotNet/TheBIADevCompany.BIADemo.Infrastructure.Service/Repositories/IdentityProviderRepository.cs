@@ -13,19 +13,19 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.AuthenticationSection;
     using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Domain.User.Models;
     using BIA.Net.Core.Infrastructure.Service.Dto.Keycloak;
     using BIA.Net.Core.Infrastructure.Service.Dto.Keycloak.SearchUserResponse;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
+    using TheBIADevCompany.BIADemo.Domain.User.Models;
 
     /// <summary>
     /// WorkInstruction Repository.
     /// </summary>
     /// <seealso cref="Domain.RepoContract.IWorkInstructionRepository" />
-    public class IdentityProviderRepository : WebApiRepository, IIdentityProviderRepository
+    public class IdentityProviderRepository : WebApiRepository, IIdentityProviderRepository<UserFromDirectory>
     {
         /// <summary>
         /// The configuration of the BiaNet section.
@@ -130,7 +130,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
                         userFromDirectory.Sid = new System.Security.Principal.SecurityIdentifier(Convert.FromBase64String(searchUserResponseDto.Attribute.ObjectSid), 0).ToString();
                     }
 
+                    if (Guid.TryParse(searchUserResponseDto.Attribute.LdapId, out Guid resultLdapId))
+                    {
+                        userFromDirectory.Guid = resultLdapId;
+                    }
+
                     userFromDirectory.Domain = !string.IsNullOrWhiteSpace(searchUserResponseDto.Attribute.LdapEntryDn) ? Array.Find(searchUserResponseDto.Attribute.LdapEntryDn.Split(','), x => x.StartsWith("DC="))?.Split('=').LastOrDefault()?.ToUpper() : default;
+#if BIA_USER_CUSTOM_FIELDS_BACK
                     userFromDirectory.Country = searchUserResponseDto.Attribute.Country;
                     userFromDirectory.Company = searchUserResponseDto.Attribute.Company;
                     userFromDirectory.Department = searchUserResponseDto.Attribute.Department;
@@ -138,12 +144,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
                     userFromDirectory.Manager = searchUserResponseDto.Attribute.Manager;
                     userFromDirectory.Office = searchUserResponseDto.Attribute.PhysicalDeliveryOfficeName;
                     userFromDirectory.Site = searchUserResponseDto.Attribute.Description;
-
-                    if (Guid.TryParse(searchUserResponseDto.Attribute.LdapId, out Guid resultLdapId))
-                    {
-                        userFromDirectory.Guid = resultLdapId;
-                    }
-
                     userFromDirectory.IsEmployee = true;
 
                     // Set external company
@@ -171,6 +171,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
                             userFromDirectory.SubDepartment = fullDepartment.Substring(fullDepartment.IndexOf('-') + 3);
                         }
                     }
+#endif
                 }
 
                 if (userFromDirectory.Guid == Guid.Empty && Guid.TryParse(searchUserResponseDto.Id, out Guid resultId))

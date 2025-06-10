@@ -11,7 +11,8 @@ namespace BIA.Net.Core.Domain.RepoContract
     /// <summary>
     /// Interface IdentityProviderRepository.
     /// </summary>
-    public interface IIdentityProviderRepository
+    /// <typeparam name="TUserFromDirectory">The type of user from directory.</typeparam>
+    public interface IIdentityProviderRepository<TUserFromDirectory>
     {
         /// <summary>
         /// Finds user by identityKey.
@@ -19,7 +20,7 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="identityKey">The identity key.</param>
         /// <param name="paramName">Name of the parameter on the IdP side.</param>
         /// <returns>Get a <see cref="UserFromDirectory"/>.</returns>
-        Task<UserFromDirectory> FindUserAsync(string identityKey, string paramName = "username");
+        Task<TUserFromDirectory> FindUserAsync(string identityKey, string paramName = "username");
 
         /// <summary>
         /// Returns the list of users matching the search value.
@@ -28,6 +29,6 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="first">Index start.</param>
         /// <param name="max">Size of the return.</param>
         /// <returns>List of <see cref="UserFromDirectory"/>.</returns>
-        Task<List<UserFromDirectory>> SearchUserAsync(string search, int first = 0, int max = 10);
+        Task<List<TUserFromDirectory>> SearchUserAsync(string search, int first = 0, int max = 10);
     }
 }

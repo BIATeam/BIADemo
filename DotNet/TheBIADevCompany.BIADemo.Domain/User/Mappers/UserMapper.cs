@@ -32,7 +32,8 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
             {
                 return new ExpressionCollection<User>(base.ExpressionCollection)
                 {
-#if BIA_USER_CUSTOM_FILEDS
+                    // Place here the custom user fields to retrieve in front.
+#if BIA_USER_CUSTOM_FIELDS_FRONT
                     { HeaderNameExtended.Country, user => user.Country },
 #endif
                 };
@@ -48,7 +49,8 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         {
             return base.EntityToDto(mapperMode).CombineMapping(entity => new UserDto
             {
-#if BIA_USER_CUSTOM_FILEDS
+                // Place here the mapping for custom user fields to retrieve in front.
+#if BIA_USER_CUSTOM_FIELDS_FRONT
                 Country = entity.Country,
 #endif
             });
@@ -59,7 +61,8 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         {
             return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
             {
-#if BIA_USER_CUSTOM_FILEDS
+                // Place here the CSV mapping for custom user fields to retrieve in front.
+#if BIA_USER_CUSTOM_FIELDS_FRONT
                 { HeaderNameExtended.Country, () => CSVString(dto.Country) },
 #endif
             };
@@ -70,7 +73,8 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         /// </summary>
         public struct HeaderNameExtended
         {
-#if BIA_USER_CUSTOM_FILEDS
+            // Place here the headers for custom user fields to retrieve in front.
+#if BIA_USER_CUSTOM_FIELDS_FRONT
             /// <summary>
             /// header name LastName.
             /// </summary>

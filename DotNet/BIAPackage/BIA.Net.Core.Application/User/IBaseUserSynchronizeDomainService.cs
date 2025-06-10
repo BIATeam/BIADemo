@@ -5,15 +5,17 @@
 namespace BIA.Net.Core.Application.User
 {
     using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;
-    using BIA.Net.Core.Domain.User.Models;
 
     /// <summary>
     /// The interface defining the user synchronize domain service.
     /// </summary>
     /// <typeparam name="TUser">The type of user.</typeparam>
-    public interface IBaseUserSynchronizeDomainService<TUser>
+    /// <typeparam name="TUserFromDirectory">The type of user from directory.</typeparam>
+    public interface IBaseUserSynchronizeDomainService<TUser, TUserFromDirectory>
         where TUser : BaseUser, new()
+        where TUserFromDirectory : IUserFromDirectory, new()
     {
         /// <summary>
         /// Synchronize the users in DB from the Idp.
@@ -34,7 +36,7 @@ namespace BIA.Net.Core.Application.User
         /// <param name="userFormDirectory">the user in Directory.</param>
         /// <param name="foundUser">the User if exist in repository.</param>
         /// <returns>The async task.</returns>
-        TUser AddOrActiveUserFromDirectory(UserFromDirectory userFormDirectory, TUser foundUser);
+        TUser AddOrActiveUserFromDirectory(TUserFromDirectory userFormDirectory, TUser foundUser);
 
         /// <summary>
         /// Deactivaye a user.
@@ -47,6 +49,6 @@ namespace BIA.Net.Core.Application.User
         /// </summary>
         /// <param name="user">The user.</param>
         /// <param name="userDirectory">The user directory.</param>
-        void UpdateUserFieldFromDirectory(TUser user, UserFromDirectory userDirectory);
+        void UpdateUserFieldFromDirectory(TUser user, TUserFromDirectory userDirectory);
     }
 }

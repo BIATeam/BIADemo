@@ -14,11 +14,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Domain.User.Models;
     using BIA.Net.Core.Domain.User.Services;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
+    using TheBIADevCompany.BIADemo.Domain.User.Models;
 
     /// <summary>
     /// Class the manipulate AD.
@@ -89,16 +89,20 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
                     Domain = domainKey,
                     Sid = sid,
                     Guid = (byte[])entry.Properties["objectGuid"].Value != null ? new Guid((byte[])entry.Properties["objectGuid"].Value) : Guid.NewGuid(),
+                    Email = entry.Properties["mail"].Value?.ToString(),
+#if BIA_USER_CUSTOM_FIELDS_BACK
                     Country = entry.Properties["c"].Value?.ToString(),
                     Company = entry.Properties["company"].Value?.ToString(),
                     Department = entry.Properties["department"].Value?.ToString(),
                     DistinguishedName = entry.Properties["distinguishedName"].Value?.ToString(),
-                    Email = entry.Properties["mail"].Value?.ToString(),
                     IsEmployee = true,
                     Manager = entry.Properties["manager"].Value?.ToString(),
                     Office = entry.Properties["physicalDeliveryOfficeName"].Value?.ToString(),
                     Site = entry.Properties["description"].Value?.ToString(),
+#endif
                 };
+
+#if BIA_USER_CUSTOM_FIELDS_BACK
 
                 // Set external company
                 var name = entry.Properties["cn"].Value?.ToString();
@@ -124,6 +128,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
                         user.SubDepartment = fullDepartment.Substring(fullDepartment.IndexOf('-') + 3);
                     }
                 }
+#endif
             }
 
             return user;
