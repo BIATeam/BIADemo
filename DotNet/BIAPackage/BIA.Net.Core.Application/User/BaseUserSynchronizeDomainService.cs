@@ -200,8 +200,7 @@ namespace BIA.Net.Core.Application.User
             user.FirstName = userDirectory.FirstName?.Length > 50 ? userDirectory.FirstName?.Substring(0, 50) : userDirectory.FirstName ?? string.Empty;
             user.LastName = userDirectory.LastName?.Length > 50 ? userDirectory.LastName?.Substring(0, 50) : userDirectory.LastName ?? string.Empty;
             user.IsActive = true;
-            user.Email = userDirectory.Email?.Length > 256 ? userDirectory.Email?.Substring(0, 256) : userDirectory.Email ?? string.Empty;
-            user.DaiDate = DateTime.Now;
+            user.LastSyncDate = DateTime.Now;
         }
 
         private void ResynchronizeUser(TUser user, UserFromDirectory userFromDirectory)

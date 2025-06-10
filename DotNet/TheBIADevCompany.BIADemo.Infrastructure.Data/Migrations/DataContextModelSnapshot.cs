@@ -731,17 +731,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("DaiDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasMaxLength(8)
                         .HasColumnType("nvarchar(8)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -758,6 +751,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("LastSyncDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Login")
                         .IsRequired()
@@ -1837,48 +1833,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                 {
                     b.HasBaseType("BIA.Net.Core.Domain.User.Entities.BaseUser");
 
-                    b.Property<string>("Company")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Country")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("Department")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("DistinguishedName")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("ExternalCompany")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool>("IsEmployee")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsExternal")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Manager")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("Office")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("Site")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("SubDepartment")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasDiscriminator().HasValue("User");
                 });

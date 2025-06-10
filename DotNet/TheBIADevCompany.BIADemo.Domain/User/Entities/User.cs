@@ -14,6 +14,11 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Entities
     public class User : BaseUser
     {
         /// <summary>
+        /// Gets or sets the email.
+        /// </summary>
+        public string Email { get; set; }
+#if BIA_USER_CUSTOM_FILEDS
+        /// <summary>
         /// Gets or sets the distinguished name.
         /// </summary>
         public string DistinguishedName { get; set; }
@@ -67,5 +72,6 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Entities
         /// Gets or sets the country.
         /// </summary>
         public string Country { get; set; }
+#endif
     }
 }

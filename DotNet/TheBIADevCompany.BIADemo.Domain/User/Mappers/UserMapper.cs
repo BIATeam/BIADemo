@@ -32,7 +32,9 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
             {
                 return new ExpressionCollection<User>(base.ExpressionCollection)
                 {
+#if BIA_USER_CUSTOM_FILEDS
                     { HeaderNameExtended.Country, user => user.Country },
+#endif
                 };
             }
         }
@@ -46,7 +48,9 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         {
             return base.EntityToDto(mapperMode).CombineMapping(entity => new UserDto
             {
+#if BIA_USER_CUSTOM_FILEDS
                 Country = entity.Country,
+#endif
             });
         }
 
@@ -55,7 +59,9 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         {
             return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
             {
+#if BIA_USER_CUSTOM_FILEDS
                 { HeaderNameExtended.Country, () => CSVString(dto.Country) },
+#endif
             };
         }
 
@@ -64,10 +70,12 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         /// </summary>
         public struct HeaderNameExtended
         {
+#if BIA_USER_CUSTOM_FILEDS
             /// <summary>
             /// header name LastName.
             /// </summary>
             public const string Country = "country";
+#endif
         }
     }
 }

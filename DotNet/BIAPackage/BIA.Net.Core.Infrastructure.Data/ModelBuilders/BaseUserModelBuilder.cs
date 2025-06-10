@@ -54,11 +54,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
         {
             modelBuilder.Entity<BaseUser>().ToTable("Users");
             modelBuilder.Entity<BaseUser>().HasKey(u => u.Id);
-            modelBuilder.Entity<BaseUser>().Property(u => u.Email).HasMaxLength(256);
             modelBuilder.Entity<BaseUser>().Property(u => u.FirstName).IsRequired().HasMaxLength(50);
             modelBuilder.Entity<BaseUser>().Property(u => u.LastName).IsRequired().HasMaxLength(50);
             modelBuilder.Entity<BaseUser>().Property(u => u.Login).IsRequired().HasMaxLength(50);
-            modelBuilder.Entity<BaseUser>().Property(u => u.DaiDate).IsRequired();
+            modelBuilder.Entity<BaseUser>().Property(u => u.LastSyncDate).IsRequired();
             modelBuilder.Entity<BaseUser>().Property(u => u.IsActive).IsRequired();
 
             modelBuilder.Entity<BaseUser>().HasIndex(u => new { u.Login }).IsUnique();

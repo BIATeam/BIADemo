@@ -24,6 +24,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
             base.CreateUserModel(modelBuilder);
             modelBuilder.Entity<User>(entity =>
             {
+                entity.Property(u => u.Email).HasMaxLength(256);
+#if BIA_USER_CUSTOM_FILEDS
                 entity.Property(u => u.DistinguishedName).IsRequired().HasMaxLength(250);
                 entity.Property(u => u.IsEmployee);
                 entity.Property(u => u.IsExternal);
@@ -35,6 +37,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
                 entity.Property(u => u.SubDepartment).HasMaxLength(50);
                 entity.Property(u => u.Office).HasMaxLength(20);
                 entity.Property(u => u.Country).HasMaxLength(10);
+#endif
             });
         }
 

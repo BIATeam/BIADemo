@@ -18,11 +18,6 @@ namespace BIA.Net.Core.Domain.User.Entities
     public abstract class BaseUser : BaseEntityVersioned<int>
     {
         /// <summary>
-        /// Gets or sets the email.
-        /// </summary>
-        public string Email { get; set; }
-
-        /// <summary>
         /// Gets or sets the first name.
         /// </summary>
         public string FirstName { get; set; }
@@ -41,7 +36,7 @@ namespace BIA.Net.Core.Domain.User.Entities
         /// Gets or sets the DAI date.
         /// </summary>
         [AuditIgnore]
-        public DateTime DaiDate { get; set; }
+        public DateTime LastSyncDate { get; set; }
 
         /// <summary>
         /// Gets or sets the members.
