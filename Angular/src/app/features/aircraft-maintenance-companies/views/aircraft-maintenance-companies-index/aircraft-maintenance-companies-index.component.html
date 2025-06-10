@@ -9,6 +9,7 @@
       [canDelete]="canDelete"
       [canEdit]="canEdit"
       [canFix]="canFix"
+      [canImport]="canEdit && crudConfiguration.useImport"
       [canExportCSV]="true"
       (create)="onCreate()"
       (exportCSV)="onExportCSV('aircraftMaintenanceCompany.listOf')"

@@ -3137,7 +3137,7 @@ const MyPreset = definePreset(Material, {
         borderColor: '{content.border.color}',
         borderRadius: '{content.border.radius}',
         color: '{content.color}',
-        gap: '0.5rem',
+        gap: '0',
         padding: '0.5rem 0.75rem',
         transitionDuration: '{transition.duration}',
       },
