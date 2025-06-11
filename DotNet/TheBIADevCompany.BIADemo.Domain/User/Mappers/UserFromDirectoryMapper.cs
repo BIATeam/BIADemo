@@ -6,6 +6,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
 {
     using System;
     using BIA.Net.Core.Domain.User.Mappers;
+    using BIA.Net.Core.Domain.User.Services;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User.Models;
 
@@ -14,8 +15,10 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
     /// </summary>
     /// <typeparam name="TUserFromDirectoryDto">Type of the user from directory dto.</typeparam>
     /// <typeparam name="TUserFromDirectory">Type of the user from directory.</typeparam>
-    public class UserFromDirectoryMapper : IUserFromDirectoryMapper<UserFromDirectoryDto, UserFromDirectory>
+    public class UserFromDirectoryMapper(IUserIdentityKeyDomainService userIdentityKeyDomainService) : IUserFromDirectoryMapper<UserFromDirectoryDto, UserFromDirectory>
     {
+        private readonly IUserIdentityKeyDomainService userIdentityKeyDomainService = userIdentityKeyDomainService;
+
         /// <summary>
         /// Create a user DTO from an entity.
         /// </summary>
@@ -24,8 +27,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         {
             return entity => new UserFromDirectoryDto
             {
-                // If you change it parse all other #IdentityKey to align all (Database, Ldap, Idp, WindowsIdentity).
-                IdentityKey = entity.Login,
+                IdentityKey = this.userIdentityKeyDomainService.GetDirectoryIdentityKey(entity),
                 DisplayName = entity.LastName + " " + entity.FirstName + "(" + entity.Domain + "\\" + entity.Login + ")",
                 Domain = entity.Domain,
             };

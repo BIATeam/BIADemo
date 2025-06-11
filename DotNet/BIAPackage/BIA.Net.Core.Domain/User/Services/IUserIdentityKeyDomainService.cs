@@ -70,7 +70,6 @@ namespace BIA.Net.Core.Domain.User.Services
         /// <summary>
         /// Gets the Identity Type to search object with the identity key from Directory.
         /// It is use by the function UserPrincipal.FindByIdentity.
-        /// If you change it parse all other #IdentityKey to align all (Database, Ldap, Idp, WindowsIdentity).
         /// </summary>
         /// <returns>Return the Identity Key.</returns>
         public int GetIdentityKeyType();
