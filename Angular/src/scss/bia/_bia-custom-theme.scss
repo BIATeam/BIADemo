@@ -265,8 +265,7 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
         border-radius: 4px;
         flex-wrap: nowrap;
         gap: 0.5rem;
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
+
         .p-menubar-item {
           opacity: 100%;
         }
@@ -290,6 +289,8 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
         0 4px 5px 0 rgba(0, 0, 0, 0.14),
         0 1px 10px 0 rgba(0, 0, 0, 0.12);
       width: 100%;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
     }
     .p-menubar.p-menubar-mobile-active .p-menubar-root-list {
       display: flex;

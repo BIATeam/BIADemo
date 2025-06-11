@@ -77,7 +77,7 @@ export class BiaButtonGroupComponent implements AfterViewInit, OnDestroy {
       }
     }
 
-    if (!this.containerWidth) {
+    if (!this.containerWidth || !this.compact) {
       this.containerWidth = container.getBoundingClientRect().width;
     }
 
