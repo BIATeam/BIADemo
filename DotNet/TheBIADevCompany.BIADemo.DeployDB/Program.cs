@@ -8,7 +8,9 @@ namespace TheBIADevCompany.BIADemo.DeployDB
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Archive;
     using BIA.Net.Core.Application.Clean;
+#if BIA_FRONT_FEATURE
     using BIA.Net.Core.Application.Job;
+#endif
     using BIA.Net.Core.Common.Configuration;
     using Hangfire;
     using Microsoft.EntityFrameworkCore;
@@ -19,16 +21,12 @@ namespace TheBIADevCompany.BIADemo.DeployDB
     using NLog.Extensions.Hosting;
     using NLog.Extensions.Logging;
 
-    // Begin BIADemo
+#if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Application.Job;
 
-    // End BIADemo
-    using TheBIADevCompany.BIADemo.Crosscutting.Common;
-#if BIA_FRONT_FEATURE
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
-    using TheBIADevCompany.BIADemo.Domain.User.Models;
 #endif
+    using TheBIADevCompany.BIADemo.Crosscutting.Common;
+
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
 
     /// <summary>
@@ -77,7 +75,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
 #if BIA_FRONT_FEATURE
                         string projectName = configuration["Project:Name"];
                         RecurringJob.AddOrUpdate<WakeUpTask>($"{projectName}.{typeof(WakeUpTask).Name}", t => t.Run(), configuration["Tasks:WakeUp:CRON"]);
-                        RecurringJob.AddOrUpdate<SynchronizeUserTask<UserDto, User, UserFromDirectoryDto, UserFromDirectory>>($"{projectName}.{typeof(SynchronizeUserTask<UserDto, User, UserFromDirectoryDto, UserFromDirectory>).Name}", t => t.Run(), configuration["Tasks:SynchronizeUser:CRON"]);
+                        RecurringJob.AddOrUpdate<SynchronizeUserTask>($"{projectName}.{typeof(SynchronizeUserTask).Name}", t => t.Run(), configuration["Tasks:SynchronizeUser:CRON"]);
 
                         // Begin BIADemo
                         RecurringJob.AddOrUpdate<WithPermissionTask>($"{projectName}.{typeof(WithPermissionTask).Name}", t => t.Run(), Cron.Never);
