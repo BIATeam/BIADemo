@@ -11,17 +11,19 @@ namespace BIA.Net.Core.Domain.User.Mappers
     /// <summary>
     /// The mapper used from directory for user from directory dto.
     /// </summary>
+    /// <typeparam name="TUserFromDirectoryDto">Type of the user from directory dto.</typeparam>
     /// <typeparam name="TUserFromDirectory">Type of the user from directory.</typeparam>
-    public static class UserFromDirectoryMapper<TUserFromDirectory>
+    public static class UserFromDirectoryMapper<TUserFromDirectoryDto, TUserFromDirectory>
+        where TUserFromDirectoryDto : BaseUserFromDirectoryDto, new()
         where TUserFromDirectory : IUserFromDirectory
     {
         /// <summary>
         /// Create a user DTO from an entity.
         /// </summary>
         /// <returns>The user DTO.</returns>
-        public static Func<TUserFromDirectory, UserFromDirectoryDto> EntityToDto()
+        public static Func<TUserFromDirectory, TUserFromDirectoryDto> EntityToDto()
         {
-            return entity => new UserFromDirectoryDto
+            return entity => new TUserFromDirectoryDto
             {
                 // If you change it parse all other #IdentityKey to be sure thare is a match (Database, Ldap, Idp, WindowsIdentity).
                 IdentityKey = entity.Login,

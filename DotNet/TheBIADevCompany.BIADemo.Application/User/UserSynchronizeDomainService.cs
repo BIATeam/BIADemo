@@ -5,6 +5,7 @@
 namespace TheBIADevCompany.BIADemo.Application.User
 {
     using BIA.Net.Core.Application.User;
+    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Services;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
@@ -13,7 +14,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     /// <summary>
     /// The service used for synchronization between AD and DB.
     /// </summary>
-    public class UserSynchronizeDomainService : BaseUserSynchronizeDomainService<User, UserFromDirectory>
+    public class UserSynchronizeDomainService : BaseUserSynchronizeDomainService<User, UserFromDirectoryDto, UserFromDirectory>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UserSynchronizeDomainService" /> class.
@@ -24,7 +25,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="identityProviderRepository">The identity provider repository.</param>
         public UserSynchronizeDomainService(
             ITGenericRepository<User, int> repository,
-            IUserDirectoryRepository<UserFromDirectory> adHelper,
+            IUserDirectoryRepository<UserFromDirectoryDto, UserFromDirectory> adHelper,
             IUserIdentityKeyDomainService userIdentityKeyDomainService,
             IIdentityProviderRepository<UserFromDirectory> identityProviderRepository)
             : base(repository, adHelper, userIdentityKeyDomainService, identityProviderRepository)

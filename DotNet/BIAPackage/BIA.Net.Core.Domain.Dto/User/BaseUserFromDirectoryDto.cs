@@ -1,4 +1,4 @@
-// <copyright file="UserFromDirectoryDto.cs" company="BIA">
+// <copyright file="BaseUserFromDirectoryDto.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -7,7 +7,7 @@ namespace BIA.Net.Core.Domain.Dto.User
     /// <summary>
     /// The DTO used for user coming from AD.
     /// </summary>
-    public class UserFromDirectoryDto
+    public class BaseUserFromDirectoryDto
     {
         /// <summary>
         /// Gets or sets the Display Name.

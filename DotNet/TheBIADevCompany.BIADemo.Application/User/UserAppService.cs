@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     using System.Security.Principal;
     using BIA.Net.Core.Application.User;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;
     using BIA.Net.Core.Domain.User.Services;
@@ -20,7 +21,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
     /// <summary>
     /// The application service used for user.
     /// </summary>
-    public class UserAppService : BaseUserAppService<UserDto, User, UserMapper, UserFromDirectory>, IUserAppService
+    public class UserAppService : BaseUserAppService<UserDto, User, UserMapper, UserFromDirectoryDto, UserFromDirectory>, IUserAppService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UserAppService"/> class.
@@ -38,7 +39,7 @@ namespace TheBIADevCompany.BIADemo.Application.Bia.User
             ITGenericRepository<User, int> repository,
             IBaseUserSynchronizeDomainService<User, UserFromDirectory> userSynchronizeDomainService,
             IOptions<BiaNetSection> configuration,
-            IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
+            IUserDirectoryRepository<UserFromDirectoryDto, UserFromDirectory> userDirectoryHelper,
             ITGenericRepository<UserDefaultTeam, int> userDefaultTeamRepository,
             ILogger<UserAppService> logger,
             IIdentityProviderRepository<UserFromDirectory> identityProviderRepository,

@@ -14,6 +14,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Services;
     using Hangfire;
@@ -42,7 +43,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
             IConfiguration configuration,
             ILogger<WithPermissionTask> logger,
             IPrincipal principal,
-            IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
+            IUserDirectoryRepository<UserFromDirectoryDto, UserFromDirectory> userDirectoryHelper,
             IUserPermissionDomainService userPermissionDomainService)
             : base(configuration, logger)
         {

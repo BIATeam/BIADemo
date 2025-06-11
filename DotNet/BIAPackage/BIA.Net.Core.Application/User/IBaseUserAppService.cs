@@ -13,16 +13,19 @@ namespace BIA.Net.Core.Application.User
     using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;
+    using BIA.Net.Core.Domain.User.Models;
 
     /// <summary>
     /// The interface defining the application service for user.
     /// </summary>
     /// <typeparam name="TUserDto">The type of user dto.</typeparam>
     /// <typeparam name="TUser">The type of user.</typeparam>
+    /// <typeparam name="TUserFromDirectoryDto">The type of user from directory dto.</typeparam>
     /// <typeparam name="TUserFromDirectory">The type of user from directory.</typeparam>
-    public interface IBaseUserAppService<TUserDto, TUser, TUserFromDirectory> : ICrudAppServiceBase<TUserDto, TUser, int, PagingFilterFormatDto>
+    public interface IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory> : ICrudAppServiceBase<TUserDto, TUser, int, PagingFilterFormatDto>
         where TUserDto : BaseUserDto, new()
         where TUser : BaseUser, IEntity<int>, new()
+        where TUserFromDirectoryDto : BaseUserFromDirectoryDto, new()
         where TUserFromDirectory : IUserFromDirectory, new()
     {
         /// <summary>
@@ -61,7 +64,7 @@ namespace BIA.Net.Core.Application.User
         /// <param name="ldapName">The name of the LDAP domain to search in.</param>
         /// <param name="max">The max number of items to return.</param>
         /// <returns>The top 10 users found.</returns>
-        Task<IEnumerable<UserFromDirectoryDto>> GetAllADUserAsync(string filter, string ldapName = null, int max = 10);
+        Task<IEnumerable<TUserFromDirectoryDto>> GetAllADUserAsync(string filter, string ldapName = null, int max = 10);
 
         /// <summary>
         /// Gets all IdP user corresponding to a filter.
@@ -70,14 +73,14 @@ namespace BIA.Net.Core.Application.User
         /// <param name="first">Index start.</param>
         /// <param name="max">The max number of items to return.</param>
         /// <returns>The top 10 users found.</returns>
-        Task<IEnumerable<UserFromDirectoryDto>> GetAllIdpUserAsync(string filter, int first = 0, int max = 10);
+        Task<IEnumerable<TUserFromDirectoryDto>> GetAllIdpUserAsync(string filter, int first = 0, int max = 10);
 
         /// <summary>
         /// Add a list of users in a group in AD.
         /// </summary>
         /// <param name="users">The list of users to add.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<ResultAddUsersFromDirectoryDto> AddFromDirectory(IEnumerable<UserFromDirectoryDto> users);
+        Task<ResultAddUsersFromDirectoryDto> AddFromDirectory(IEnumerable<TUserFromDirectoryDto> users);
 
         /// <summary>
         /// Add a list of users in a group in AD.

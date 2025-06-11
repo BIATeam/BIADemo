@@ -30,7 +30,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     /// </summary>
     public class AuthAppService(
 #if BIA_FRONT_FEATURE
-        IBaseUserAppService<UserDto, User, UserFromDirectory> userAppService,
+        IBaseUserAppService<UserDto, User, UserFromDirectoryDto, UserFromDirectory> userAppService,
         IBaseTeamAppService<TeamTypeId> teamAppService,
         IRoleAppService roleAppService,
         IIdentityProviderRepository<UserFromDirectory> identityProviderRepository,
@@ -41,10 +41,10 @@ namespace TheBIADevCompany.BIADemo.Application.User
         ILogger<AuthAppService> logger,
         IConfiguration configuration,
         IOptions<BiaNetSection> biaNetconfiguration,
-        IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
+        IUserDirectoryRepository<UserFromDirectoryDto, UserFromDirectory> userDirectoryHelper,
         ILdapRepositoryHelper ldapRepositoryHelper)
 #if BIA_FRONT_FEATURE
-        : BaseFrontAuthAppService<UserDto, User, RoleId, TeamTypeId, UserFromDirectory>(userAppService, teamAppService, roleAppService, identityProviderRepository, jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper), IAuthAppService
+        : BaseFrontAuthAppService<UserDto, User, RoleId, TeamTypeId, UserFromDirectoryDto, UserFromDirectory>(userAppService, teamAppService, roleAppService, identityProviderRepository, jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper), IAuthAppService
 #else
         : BaseAuthAppService(jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper), IAuthAppService
 #endif

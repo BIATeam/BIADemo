@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
     using BIA.Net.Core.Application.Clean;
     using BIA.Net.Core.Application.Job;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Domain.Dto.User;
     using Hangfire;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
@@ -77,7 +78,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
 #if BIA_FRONT_FEATURE
                         string projectName = configuration["Project:Name"];
                         RecurringJob.AddOrUpdate<WakeUpTask>($"{projectName}.{typeof(WakeUpTask).Name}", t => t.Run(), configuration["Tasks:WakeUp:CRON"]);
-                        RecurringJob.AddOrUpdate<SynchronizeUserTask<UserDto, User, UserFromDirectory>>($"{projectName}.{typeof(SynchronizeUserTask<UserDto, User, UserFromDirectory>).Name}", t => t.Run(), configuration["Tasks:SynchronizeUser:CRON"]);
+                        RecurringJob.AddOrUpdate<SynchronizeUserTask<UserDto, User, UserFromDirectoryDto, UserFromDirectory>>($"{projectName}.{typeof(SynchronizeUserTask<UserDto, User, UserFromDirectoryDto, UserFromDirectory>).Name}", t => t.Run(), configuration["Tasks:SynchronizeUser:CRON"]);
 
                         // Begin BIADemo
                         RecurringJob.AddOrUpdate<WithPermissionTask>($"{projectName}.{typeof(WithPermissionTask).Name}", t => t.Run(), Cron.Never);

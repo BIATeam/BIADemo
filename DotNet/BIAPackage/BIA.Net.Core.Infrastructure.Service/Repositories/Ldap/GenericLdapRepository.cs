@@ -31,7 +31,8 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     /// <summary>
     /// Helper to get information from Ldap.
     /// </summary>
-    abstract public class GenericLdapRepository<TUserFromDirectory> : IUserDirectoryRepository<TUserFromDirectory>
+    abstract public class GenericLdapRepository<TUserFromDirectoryDto, TUserFromDirectory> : IUserDirectoryRepository<TUserFromDirectoryDto, TUserFromDirectory>
+        where TUserFromDirectoryDto : BaseUserFromDirectoryDto, new()
         where TUserFromDirectory : class, IUserFromDirectory, new()
     {
 
@@ -51,7 +52,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <summary>
         /// The logger.
         /// </summary>
-        protected readonly ILogger<GenericLdapRepository<TUserFromDirectory>> logger;
+        protected readonly ILogger<GenericLdapRepository<TUserFromDirectoryDto, TUserFromDirectory>> logger;
 
         /// <summary>
         /// The configuration of the BiaNet section.
@@ -89,7 +90,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// </summary>
         /// <param name="logger">The logger.</param>
         /// <param name="configuration">The configuration.</param>
-        public GenericLdapRepository(ILogger<GenericLdapRepository<TUserFromDirectory>> logger, IOptions<BiaNetSection> configuration, ILdapRepositoryHelper ldapRepositoryHelper)
+        public GenericLdapRepository(ILogger<GenericLdapRepository<TUserFromDirectoryDto, TUserFromDirectory>> logger, IOptions<BiaNetSection> configuration, ILdapRepositoryHelper ldapRepositoryHelper)
         {
             this.logger = logger;
             this.configuration = configuration.Value;
@@ -161,7 +162,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// </summary>
         /// <param name="userFromDirectory">the userFromDirectory.</param>
         /// <returns>Return the Identity Key.</returns>
-        protected abstract string GetIdentityKey(UserFromDirectoryDto userFromDirectory);
+        protected abstract string GetIdentityKey(TUserFromDirectoryDto userFromDirectory);
 
         /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.IsUserInGroup"/>
         private async Task<bool> IsUserSidInGroups(string sid, IEnumerable<LdapGroup> ldapGroups)
@@ -297,7 +298,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         }
 
         /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.AddUsersInGroup"/>
-        public async Task<List<string>> AddUsersInGroup(IEnumerable<UserFromDirectoryDto> usersFromDirectory, string roleLabel)
+        public async Task<List<string>> AddUsersInGroup(IEnumerable<TUserFromDirectoryDto> usersFromDirectory, string roleLabel)
         {
             List<string> listGroupCacheSidToRemove = new List<string>();
             List<string> errors = new List<string>();
@@ -322,7 +323,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return errors;
         }
 
-        private bool AddUserInGroup(UserFromDirectoryDto user, string roleLabel, List<string> listGroupCacheSidToRemove)
+        private bool AddUserInGroup(TUserFromDirectoryDto user, string roleLabel, List<string> listGroupCacheSidToRemove)
         {
 
             try
@@ -383,7 +384,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return userToAdd;
         }
 
-        public async Task<TUserFromDirectory> ResolveUser(UserFromDirectoryDto userFromDirectoryDto)
+        public async Task<TUserFromDirectory> ResolveUser(TUserFromDirectoryDto userFromDirectoryDto)
         {
             UserPrincipal userPrincipal = null;
             if (userFromDirectoryDto.Domain != null)
@@ -533,11 +534,11 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         }
 
         /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.RemoveUsersInGroup"/>
-        public async Task<List<UserFromDirectoryDto>> RemoveUsersInGroup(List<UserFromDirectoryDto> usersFromRepositoryToRemove, string roleLabel)
+        public async Task<List<TUserFromDirectoryDto>> RemoveUsersInGroup(List<TUserFromDirectoryDto> usersFromRepositoryToRemove, string roleLabel)
         {
             List<string> listGroupCacheSidToRemove = new List<string>();
 
-            List<UserFromDirectoryDto> notRemovedUser = new List<UserFromDirectoryDto>();
+            List<TUserFromDirectoryDto> notRemovedUser = new List<TUserFromDirectoryDto>();
 
             try
             {

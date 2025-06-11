@@ -71,7 +71,9 @@ namespace BIA.Net.Core.Domain.User.Services
         /// Gets the directory identity key.
         /// </summary>
         /// <param name="userFromDirectory">The user from directory.</param>
+        /// <typeparam name="TUserFromDirectoryDto">The type of user from directory dto.</typeparam>
         /// <returns>The directory identity key.</returns>
-        string GetDirectoryIdentityKey(UserFromDirectoryDto userFromDirectory);
+        string GetDirectoryIdentityKey<TUserFromDirectoryDto>(TUserFromDirectoryDto userFromDirectory)
+            where TUserFromDirectoryDto : BaseUserFromDirectoryDto;
     }
 }

@@ -10,6 +10,7 @@ namespace BIA.Net.Core.Application.User
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;
     using BIA.Net.Core.Domain.User.Services;
@@ -18,9 +19,11 @@ namespace BIA.Net.Core.Application.User
     /// The service used for synchronization between AD and DB.
     /// </summary>
     /// <typeparam name="TUser">The type of user.</typeparam>
+    /// <typeparam name="TUserFromDirectoryDto">The type of user from directory dto.</typeparam>
     /// <typeparam name="TUserFromDirectory">The type of user from directory.</typeparam>
-    public class BaseUserSynchronizeDomainService<TUser, TUserFromDirectory> : IBaseUserSynchronizeDomainService<TUser, TUserFromDirectory>
+    public class BaseUserSynchronizeDomainService<TUser, TUserFromDirectoryDto, TUserFromDirectory> : IBaseUserSynchronizeDomainService<TUser, TUserFromDirectory>
         where TUser : BaseUser, new()
+        where TUserFromDirectoryDto : BaseUserFromDirectoryDto, new()
         where TUserFromDirectory : IUserFromDirectory, new()
     {
         /// <summary>
@@ -31,7 +34,7 @@ namespace BIA.Net.Core.Application.User
         /// <summary>
         /// The AD helper.
         /// </summary>
-        private readonly IUserDirectoryRepository<TUserFromDirectory> userDirectoryHelper;
+        private readonly IUserDirectoryRepository<TUserFromDirectoryDto, TUserFromDirectory> userDirectoryHelper;
 
         /// <summary>
         /// The user IdentityKey Domain Service.
@@ -41,7 +44,7 @@ namespace BIA.Net.Core.Application.User
         private readonly IIdentityProviderRepository<TUserFromDirectory> identityProviderRepository;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseUserSynchronizeDomainService{TUser, TUserFromDirectory}" /> class.
+        /// Initializes a new instance of the <see cref="BaseUserSynchronizeDomainService{TUser, TUserFromDirectoryDto, TUserFromDirectory}" /> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="adHelper">The AD helper.</param>
@@ -49,7 +52,7 @@ namespace BIA.Net.Core.Application.User
         /// <param name="identityProviderRepository">The identity provider repository.</param>
         public BaseUserSynchronizeDomainService(
             ITGenericRepository<TUser, int> repository,
-            IUserDirectoryRepository<TUserFromDirectory> adHelper,
+            IUserDirectoryRepository<TUserFromDirectoryDto, TUserFromDirectory> adHelper,
             IUserIdentityKeyDomainService userIdentityKeyDomainService,
             IIdentityProviderRepository<TUserFromDirectory> identityProviderRepository)
         {

@@ -105,8 +105,10 @@ namespace BIA.Net.Core.Domain.User.Services
         /// If you change it parse all other #IdentityKey to be sure thare is a match (Database, Ldap, Idp, WindowsIdentity).
         /// </summary>
         /// <param name="userFromDirectory">the userFromDirectory.</param>
+        /// <typeparam name="TUserFromDirectoryDto">The type of user from directory dto.</typeparam>
         /// <returns>Return the Identity Key.</returns>
-        public string GetDirectoryIdentityKey(UserFromDirectoryDto userFromDirectory)
+        public string GetDirectoryIdentityKey<TUserFromDirectoryDto>(TUserFromDirectoryDto userFromDirectory)
+            where TUserFromDirectoryDto : BaseUserFromDirectoryDto
         {
             return userFromDirectory.IdentityKey;
         }

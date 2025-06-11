@@ -35,16 +35,18 @@ namespace BIA.Net.Core.Application.User
     /// <typeparam name="TUser">The type of user.</typeparam>
     /// <typeparam name="TEnumRoleId">The type for enum Role Id.</typeparam>
     /// <typeparam name="TEnumTeamTypeId">The type for enum Team Type Id.</typeparam>
+    /// <typeparam name="TUserFromDirectoryDto">The type of user from directory dto.</typeparam>
     /// <typeparam name="TUserFromDirectory">The type of user from directory.</typeparam>
-    public class BaseFrontAuthAppService<TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId, TUserFromDirectory> : BaseAuthAppService<TUserFromDirectory>, IBaseFrontAuthAppService
+    public class BaseFrontAuthAppService<TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId, TUserFromDirectoryDto, TUserFromDirectory> : BaseAuthAppService<TUserFromDirectoryDto, TUserFromDirectory>, IBaseFrontAuthAppService
         where TUserDto : BaseUserDto, new()
         where TUser : BaseUser, IEntity<int>, new()
         where TEnumRoleId : struct, Enum
         where TEnumTeamTypeId : struct, Enum
+        where TUserFromDirectoryDto : BaseUserFromDirectoryDto, new()
         where TUserFromDirectory : IUserFromDirectory, new()
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseFrontAuthAppService{TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId, TUserFromDirectory}" /> class.
+        /// Initializes a new instance of the <see cref="BaseFrontAuthAppService{TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId, TUserFromDirectoryDto, TUserFromDirectory}" /> class.
         /// </summary>
         /// <param name="userAppService">The user application service.</param>
         /// <param name="teamAppService">The team application service.</param>
@@ -59,17 +61,17 @@ namespace BIA.Net.Core.Application.User
         /// <param name="userDirectoryHelper">The user directory helper.</param>
         /// <param name="ldapRepositoryHelper">The LDAP repository helper.</param>
         public BaseFrontAuthAppService(
-            IBaseUserAppService<TUserDto, TUser, TUserFromDirectory> userAppService,
+            IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory> userAppService,
             IBaseTeamAppService<TEnumTeamTypeId> teamAppService,
             IRoleAppService roleAppService,
             IIdentityProviderRepository<TUserFromDirectory> identityProviderRepository,
             IJwtFactory jwtFactory,
             IPrincipal principal,
             IUserPermissionDomainService userPermissionDomainService,
-            ILogger<BaseFrontAuthAppService<TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId, TUserFromDirectory>> logger,
+            ILogger<BaseFrontAuthAppService<TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId, TUserFromDirectoryDto, TUserFromDirectory>> logger,
             IConfiguration configuration,
             IOptions<BiaNetSection> biaNetconfiguration,
-            IUserDirectoryRepository<TUserFromDirectory> userDirectoryHelper,
+            IUserDirectoryRepository<TUserFromDirectoryDto, TUserFromDirectory> userDirectoryHelper,
             ILdapRepositoryHelper ldapRepositoryHelper)
             : base(jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper)
         {
@@ -93,7 +95,7 @@ namespace BIA.Net.Core.Application.User
         /// <summary>
         /// The user application service.
         /// </summary>
-        protected IBaseUserAppService<TUserDto, TUser, TUserFromDirectory> UserAppService { get; }
+        protected IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory> UserAppService { get; }
 
         /// <summary>
         /// The team application service.

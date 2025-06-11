@@ -23,7 +23,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     /// <summary>
     /// Class the manipulate AD.
     /// </summary>
-    public class LdapRepository : GenericLdapRepository<UserFromDirectory>
+    public class LdapRepository : GenericLdapRepository<UserFromDirectoryDto, UserFromDirectory>
     {
         /// <summary>
         /// The user identity key domain service.
