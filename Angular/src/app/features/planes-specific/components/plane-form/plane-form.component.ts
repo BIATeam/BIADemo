@@ -99,6 +99,7 @@ export class PlaneFormComponent
   onEngineSave(engine: Engine) {
     this.crudItem ??= <PlaneSpecific>{};
     this.crudItem.engines ??= [];
+    engine.planeId = this.crudItem?.id;
     this.newId = CrudHelperService.onEmbeddedItemSave(
       engine,
       this.crudItem.engines,
@@ -123,5 +124,10 @@ export class PlaneFormComponent
   onReadOnlyChanged(readOnly: boolean): void {
     this.isEngineTableReadOnly = readOnly;
     super.onReadOnlyChanged(readOnly);
+  }
+
+  onSave(crudItem: PlaneSpecific) {
+    crudItem.engines = this.crudItem?.engines ?? [];
+    super.onSave(crudItem);
   }
 }
