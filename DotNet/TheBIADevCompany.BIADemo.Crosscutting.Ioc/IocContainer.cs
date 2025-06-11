@@ -108,6 +108,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             BiaIocContainer.RegisterServicesFromAssembly(
                 collection: collection,
                 assemblyName: "TheBIADevCompany.BIADemo.Application",
+                excludedServiceNames: new List<string>() { nameof(AuthAppService) },
                 serviceLifetime: ServiceLifetime.Transient);
 
             if (isApi)
