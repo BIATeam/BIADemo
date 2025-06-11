@@ -57,19 +57,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         /// <inheritdoc/>
         async Task<List<PlaneDto>> IPlaneAppService.SaveSafeAsync(IEnumerable<PlaneDto> dtos, BiaClaimsPrincipal principal, string rightAdd, string rightUpdate, string rightDelete, string accessMode, string queryMode, string mapperMode)
         {
-            var saveSafeReturn = await this.SaveSafeAsync(dtos, principal, rightAdd, rightUpdate, rightDelete, accessMode, queryMode, mapperMode);
-
-            if (saveSafeReturn.AggregateException != null)
-            {
-                throw new FrontUserException(saveSafeReturn.AggregateException);
-            }
-
-            if (!string.IsNullOrEmpty(saveSafeReturn.ErrorMessage))
-            {
-                throw new FrontUserException(saveSafeReturn.ErrorMessage);
-            }
-
-            return saveSafeReturn.DtosSaved;
+            throw new NotImplementedException();
         }
     }
 }
