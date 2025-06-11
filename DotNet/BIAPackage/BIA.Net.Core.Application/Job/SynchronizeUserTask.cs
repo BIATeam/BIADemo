@@ -1,5 +1,5 @@
-// <copyright file="SynchronizeUserTask.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+// <copyright file="SynchronizeUserTask.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Application.Job

@@ -1,5 +1,5 @@
-// <copyright file="ViewModelBuilder.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+// <copyright file="ViewModelBuilder.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia

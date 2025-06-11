@@ -1,5 +1,5 @@
-// <copyright file="NotificationTypeAppService.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+// <copyright file="NotificationTypeAppService.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Application.Notification

@@ -1,5 +1,5 @@
-﻿// <copyright file="AppSettingsController.cs" company="BIA">
-// Copyright (c) BIA. All rights reserved.
+﻿// <copyright file="AppSettingsController.cs" company="TheBIADevCompany">
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
 {

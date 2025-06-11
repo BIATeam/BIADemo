@@ -1,5 +1,5 @@
-﻿// <copyright file="BiaTeamTypeId.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+﻿// <copyright file="BiaTeamTypeId.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Common.Enum

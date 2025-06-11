@@ -1,5 +1,5 @@
-// <copyright file="BaseUserModelBuilder.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+// <copyright file="BaseUserModelBuilder.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia

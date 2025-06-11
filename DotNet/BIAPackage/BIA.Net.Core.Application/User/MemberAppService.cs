@@ -1,5 +1,5 @@
-// <copyright file="MemberAppService.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+// <copyright file="MemberAppService.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Application.User

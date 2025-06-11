@@ -1,4 +1,4 @@
-﻿// <copyright file="LdapDomainsController.cs" company="BIA">
+﻿// <copyright file="LdapDomainsController.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia

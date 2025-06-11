@@ -1,5 +1,5 @@
-// <copyright file="UserFromDirectory.cs" company="BIA">
-// Copyright (c) BIA. All rights reserved.
+// <copyright file="UserFromDirectory.cs" company="TheBIADevCompany">
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Domain.User.Models

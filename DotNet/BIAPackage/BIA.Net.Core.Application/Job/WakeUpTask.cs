@@ -1,5 +1,5 @@
-// <copyright file="WakeUpTask.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+// <copyright file="WakeUpTask.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Application.Job
@@ -49,7 +49,7 @@ namespace BIA.Net.Core.Application.Job
 
             await Task.WhenAll(wakeUpWebAppTasks);
 
-            StringBuilder bld = new ();
+            StringBuilder bld = new();
 
             foreach (var (isSuccessStatusCode, reasonPhrase) in wakeUpWebAppTasks.Select(t => t.Result))
             {
