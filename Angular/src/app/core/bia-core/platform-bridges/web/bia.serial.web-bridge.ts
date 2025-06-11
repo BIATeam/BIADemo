@@ -53,6 +53,7 @@ export class BiaSerialWebBridge implements BiaSerialPlatformBridge {
 
     try {
       await port.open({ baudRate: 9600 });
+      await port.setSignals({ dataTerminalReady: true, requestToSend: true });
       while (port.readable) {
         const reader = port.readable.getReader();
         try {
@@ -63,7 +64,6 @@ export class BiaSerialWebBridge implements BiaSerialPlatformBridge {
               console.log('End of port read');
               break;
             }
-            console.log(value);
             onDataReceivedCallback(port, value);
           }
         } catch (error) {

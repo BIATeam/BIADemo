@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { BiaPlatformBridge } from 'src/app/core/bia-core/platform-bridges/bia.platform-bridge';
 import { BiaDirectorySystemService } from 'src/app/core/bia-core/services/bia-directory-system.service';
 import { BiaFileSystemService } from 'src/app/core/bia-core/services/bia-file-system.service';
 import { biaDatabase } from 'src/app/core/bia-core/services/bia.database';
@@ -12,7 +13,7 @@ import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/se
 export class HomeIndexComponent implements OnInit, OnDestroy {
   constructor(
     private layoutService: BiaLayoutService,
-    //private platformBridge: BiaPlatformBridge,
+    private platformBridge: BiaPlatformBridge,
     private fileSystemService: BiaFileSystemService,
     private directorySystemService: BiaDirectorySystemService
   ) {}
@@ -61,25 +62,24 @@ export class HomeIndexComponent implements OnInit, OnDestroy {
     // });
 
     //=== Platform Bridge Serial Port ===
-    // console.log(
-    //   'Serial Ports',
-    //   await this.platformBridge.serialPort.getSerialPorts()
-    // );
+    console.log(
+      'Serial Ports',
+      await this.platformBridge.serialPort.getSerialPorts()
+    );
 
-    // this.platformBridge.serialPort.onSerialPortConnected(portInfo => {
-    //   console.log('Serial Port connected', portInfo);
-    //   this.platformBridge.serialPort.listenPort(
-    //     portInfo,
-    //     (portPath, err) =>
-    //       console.log(`Error on listening Serial Port ${portPath}`, err),
-    //     (portPath, data) =>
-    //       console.log(`Serial Port ${portPath} data received`, data)
-    //   );
-    // });
+    this.platformBridge.serialPort.onSerialPortConnected(portInfo => {
+      console.log('Serial Port connected', portInfo);
+      this.platformBridge.serialPort.listenPort(
+        portInfo,
+        (portPath, err) =>
+          console.log(`Error on listening Serial Port ${portPath}`, err),
+        (portPath, data) => this.eInsertPortRead(data)
+      );
+    });
 
-    // this.platformBridge.serialPort.onSerialPortDisconnected(portInfo => {
-    //   console.log('Serial Port disconnected', portInfo);
-    // });
+    this.platformBridge.serialPort.onSerialPortDisconnected(portInfo => {
+      console.log('Serial Port disconnected', portInfo);
+    });
 
     document.getElementById('connect-usb')?.addEventListener('click', () => {
       (navigator as any).usb
@@ -150,5 +150,14 @@ export class HomeIndexComponent implements OnInit, OnDestroy {
   async listFiles() {
     this.folderContents =
       await this.directorySystemService.readDirectoryContents();
+  }
+
+  private eInsertPortRead(data: any) {
+    if (data instanceof Uint8Array) {
+      const dataArray = data as Uint8Array;
+      if (dataArray.buffer.byteLength === 10) {
+        console.log('data', dataArray);
+      }
+    }
   }
 }
