@@ -16,9 +16,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using BIA.Net.Core.Common.Configuration.ApiFeature;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
-    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.User.Mappers;
+    using BIA.Net.Core.Domain.User.Services;
     using BIA.Net.Core.Infrastructure.Data;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.Ioc;
@@ -44,6 +45,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
     // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.User.Mappers;
     using TheBIADevCompany.BIADemo.Domain.User.Models;
 #endif
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
@@ -121,6 +123,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
         private static void ConfigureDomainContainer(IServiceCollection collection)
         {
+#if BIA_FRONT_FEATURE
+            collection.AddTransient(typeof(IUserFromDirectoryMapper<UserFromDirectoryDto, UserFromDirectory>), typeof(UserFromDirectoryMapper));
+#endif
+
             // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
             BiaIocContainer.RegisterServicesFromAssembly(
                 collection: collection,
@@ -185,8 +191,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         private static void ConfigureInfrastructureServiceContainer(IServiceCollection collection, BiaNetSection biaNetSection, bool isUnitTest = false)
 #pragma warning restore S1172 // Unused method parameters should be removed
         {
-            collection.AddSingleton<IUserDirectoryRepository<UserFromDirectoryDto, UserFromDirectory>, LdapRepository>();
 #if BIA_FRONT_FEATURE
+            collection.AddSingleton<IUserDirectoryRepository<UserFromDirectoryDto, UserFromDirectory>, LdapRepository>();
+            collection.AddSingleton<IUserIdentityKeyDomainService, UserIdentityKeyDomainService>();
             collection.AddHttpClient<IIdentityProviderRepository<UserFromDirectory>, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
             collection.AddTransient<IMailRepository, MailRepository>();
 

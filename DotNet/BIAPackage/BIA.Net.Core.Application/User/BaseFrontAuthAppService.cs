@@ -37,7 +37,7 @@ namespace BIA.Net.Core.Application.User
     /// <typeparam name="TEnumTeamTypeId">The type for enum Team Type Id.</typeparam>
     /// <typeparam name="TUserFromDirectoryDto">The type of user from directory dto.</typeparam>
     /// <typeparam name="TUserFromDirectory">The type of user from directory.</typeparam>
-    public class BaseFrontAuthAppService<TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId, TUserFromDirectoryDto, TUserFromDirectory> : BaseAuthAppService<TUserFromDirectoryDto, TUserFromDirectory>, IBaseFrontAuthAppService
+    public abstract class BaseFrontAuthAppService<TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId, TUserFromDirectoryDto, TUserFromDirectory> : BaseAuthAppService<TUserFromDirectoryDto, TUserFromDirectory>, IBaseFrontAuthAppService
         where TUserDto : BaseUserDto, new()
         where TUser : BaseUser, IEntity<int>, new()
         where TEnumRoleId : struct, Enum
@@ -130,7 +130,7 @@ namespace BIA.Net.Core.Application.User
         /// </summary>
         /// <param name="roles">The roles.</param>
         /// <returns>Role ids.</returns>
-        private static List<int> GetRoleIds(List<string> roles)
+        protected static List<int> GetRoleIds(List<string> roles)
         {
             List<int> roleIds = new List<int>();
             foreach (string role in roles)
@@ -144,7 +144,14 @@ namespace BIA.Net.Core.Application.User
             return roleIds;
         }
 
-        private async Task<AuthInfoDto<AdditionalInfoDto>> GetLoginToken(LoginParamDto loginParam, bool withCredentials, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
+        /// <summary>
+        /// Gets the login token.
+        /// </summary>
+        /// <param name="loginParam">The login parameter.</param>
+        /// <param name="withCredentials">if set to <c>true</c> [with credentials].</param>
+        /// <param name="teamsConfig">The teams configuration.</param>
+        /// <returns>Return a token to authenticate user with permition.</returns>
+        protected virtual async Task<AuthInfoDto<AdditionalInfoDto>> GetLoginToken(LoginParamDto loginParam, bool withCredentials, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
         {
             // Get informations in Claims
             string sid = this.GetSid();
@@ -227,7 +234,7 @@ namespace BIA.Net.Core.Application.User
         /// <param name="login">The login.</param>
         /// <param name="identityKey">The identity key.</param>
         /// <returns>A UserInfo Dto.</returns>
-        private async Task<UserInfoDto> GetUserInfo(LoginParamDto loginParam, string login, string identityKey)
+        protected virtual async Task<UserInfoDto> GetUserInfo(LoginParamDto loginParam, string login, string identityKey)
         {
             // Get userInfo if needed (it requires an user in database)
             UserInfoDto userInfo = null;
@@ -254,17 +261,16 @@ namespace BIA.Net.Core.Application.User
         /// Gets the identity key.
         /// </summary>
         /// <returns>The identity key.</returns>
-        private string GetIdentityKey()
+        protected virtual string GetIdentityKey()
         {
-            // If you change it parse all other #IdentityKey to be sure thare is a match (Database, Ldap, Idp, WindowsIdentity).
-            return this.GetLogin();
+            throw new NotImplementedException("The function GetIdentityKey should be define in the project.");
         }
 
         /// <summary>
         /// Checks if the rolesConfiguration contains the 'User' role.
         /// </summary>
         /// <returns>Return true if the rolesConfiguration contains the 'User' role.</returns>
-        private bool UseUserRole()
+        protected virtual bool UseUserRole()
         {
             return this.RolesConfiguration != null && this.RolesConfiguration.Any(r =>
                 r.Label == BiaConstants.Role.User);
@@ -279,7 +285,7 @@ namespace BIA.Net.Core.Application.User
         /// <param name="userData">The user data.</param>
         /// <param name="teamsConfig">The teams configuration.</param>
         /// <returns>A AdditionalInfo Dto.</returns>
-        private AdditionalInfoDto GetAdditionalInfo(LoginParamDto loginParam, UserInfoDto userInfo, IEnumerable<BaseDtoVersionedTeam> allTeams, UserDataDto userData, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
+        protected virtual AdditionalInfoDto GetAdditionalInfo(LoginParamDto loginParam, UserInfoDto userInfo, IEnumerable<BaseDtoVersionedTeam> allTeams, UserDataDto userData, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
         {
             AdditionalInfoDto additionalInfo = default;
 
@@ -308,7 +314,7 @@ namespace BIA.Net.Core.Application.User
         /// <param name="userInfo">The user information.</param>
         /// <param name="globalRoles">The global roles.</param>
         /// <returns>A UserInfoDto.</returns>
-        private async Task<UserInfoDto> CreateOrUpdateUserInDatabase(string sid, string identityKey, UserInfoDto userInfo, List<string> globalRoles)
+        protected virtual async Task<UserInfoDto> CreateOrUpdateUserInDatabase(string sid, string identityKey, UserInfoDto userInfo, List<string> globalRoles)
         {
             if (globalRoles.Contains(BiaConstants.Role.User))
             {
@@ -363,8 +369,9 @@ namespace BIA.Net.Core.Application.User
         /// <param name="userData">The user data.</param>
         /// <param name="userInfo">The user information.</param>
         /// <param name="allTeams">All teams.</param>
+        /// <param name="teamsConfig">The teams config.</param>
         /// <returns>List of role.</returns>
-        private async Task<List<string>> GetFineRolesAsync(LoginParamDto loginParam, UserDataDto userData, UserInfoDto userInfo, IEnumerable<BaseDtoVersionedTeam> allTeams, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
+        protected virtual async Task<List<string>> GetFineRolesAsync(LoginParamDto loginParam, UserDataDto userData, UserInfoDto userInfo, IEnumerable<BaseDtoVersionedTeam> allTeams, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
         {
             // the main roles
             var allRoles = new List<string>();

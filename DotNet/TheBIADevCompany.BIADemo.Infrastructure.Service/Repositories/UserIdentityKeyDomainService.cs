@@ -2,15 +2,17 @@
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Domain.User.Services
+namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
 {
     using System;
     using System.Collections.Generic;
+    using System.DirectoryServices.AccountManagement;
     using System.Linq.Expressions;
+    using System.Runtime.Versioning;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;
-    using BIA.Net.Core.Domain.User.Models;
+    using BIA.Net.Core.Domain.User.Services;
 
     /// <summary>
     /// This class MAnage the identity key during authentication and relation beetween Database, Directory and identity Provider.
@@ -21,7 +23,7 @@ namespace BIA.Net.Core.Domain.User.Services
 
         /// <summary>
         /// Check the Identity Key from the User in database.
-        /// If you change it parse all other #IdentityKey to be sure thare is a match (Database => Directory, Idp & WindowsIdentity).
+        /// If you change it parse all other #IdentityKey to align all (Database => Directory, Idp & WindowsIdentity).
         /// </summary>
         /// <param name="identityKey">the identity Key.</param>
         /// <typeparam name="TUser">The type of user.</typeparam>
@@ -34,7 +36,7 @@ namespace BIA.Net.Core.Domain.User.Services
 
         /// <summary>
         /// Check the Identity Key from the User in database.
-        /// If you change it parse all other #IdentityKey to be sure thare is a match (Database => Directory, Idp & WindowsIdentity).
+        /// If you change it parse all other #IdentityKey to align all (Database => Directory, Idp & WindowsIdentity).
         /// </summary>
         /// <param name="identityKeys">the list of identity Keys.</param>
         /// <typeparam name="TUser">The type of user.</typeparam>
@@ -48,7 +50,7 @@ namespace BIA.Net.Core.Domain.User.Services
         /// <summary>
         /// Gets the Identity Key to compare with User in database.
         /// It is use to specify the unique identifier that is compare during the authentication process.
-        /// If you change it parse all other #IdentityKey to be sure thare is a match (Database, Ldap, Idp, WindowsIdentity).
+        /// If you change it parse all other #IdentityKey to align all (Database, Ldap, Idp, WindowsIdentity).
         /// </summary>
         /// <param name="user">the user.</param>
         /// <typeparam name="TUser">The type of user.</typeparam>
@@ -62,7 +64,7 @@ namespace BIA.Net.Core.Domain.User.Services
         /// <summary>
         /// Gets the Identity Key to compare with UserDto.
         /// It is use to specify the unique identifier that is compare during the authentication process.
-        /// If you change it parse all other #IdentityKey to be sure thare is a match (Database, Ldap, Idp, WindowsIdentity).
+        /// If you change it parse all other #IdentityKey to align all (Database, Ldap, Idp, WindowsIdentity).
         /// </summary>
         /// <param name="user">the user.</param>
         /// <returns>Return the Identity Key.</returns>
@@ -76,7 +78,7 @@ namespace BIA.Net.Core.Domain.User.Services
         /// <summary>
         /// Check the Identity Key from the User in database.
         /// It is use to specify the unique identifier that is compare during the authentication process.
-        /// If you change it parse all other #IdentityKey to be sure thare is a match (Database => Directory, Idp & WindowsIdentity).
+        /// If you change it parse all other #IdentityKey to align all (Database => Directory, Idp & WindowsIdentity).
         /// </summary>
         /// <param name="identityKey">the identityKey.</param>
         /// <typeparam name="TUserFromDirectory">The type of user from directory.</typeparam>
@@ -90,7 +92,7 @@ namespace BIA.Net.Core.Domain.User.Services
         /// <summary>
         /// Gets the Identity Key to compare with User in database.
         /// It is use to specify the unique identifier that is compare during the authentication process.
-        /// If you change it parse all other #IdentityKey to be sure thare is a match (Database, Ldap, Idp, WindowsIdentity).
+        /// If you change it parse all other #IdentityKey to align all (Database, Ldap, Idp, WindowsIdentity).
         /// </summary>
         /// <param name="userFromDirectory">the userFromDirectory.</param>
         /// <returns>Return the Identity Key.</returns>
@@ -100,19 +102,15 @@ namespace BIA.Net.Core.Domain.User.Services
         }
 
         /// <summary>
-        /// Gets the Identity Key to compare with User in database.
-        /// It is use to specify the unique identifier that is compare during the authentication process.
-        /// If you change it parse all other #IdentityKey to be sure thare is a match (Database, Ldap, Idp, WindowsIdentity).
+        /// Gets the Identity Type to search object with the identity key from Directory.
+        /// It is use by the function UserPrincipal.FindByIdentity.
+        /// If you change it parse all other #IdentityKey to align all (Database, Ldap, Idp, WindowsIdentity).
         /// </summary>
-        /// <param name="userFromDirectory">the userFromDirectory.</param>
-        /// <typeparam name="TUserFromDirectoryDto">The type of user from directory dto.</typeparam>
         /// <returns>Return the Identity Key.</returns>
-        public string GetDirectoryIdentityKey<TUserFromDirectoryDto>(TUserFromDirectoryDto userFromDirectory)
-            where TUserFromDirectoryDto : BaseUserFromDirectoryDto
+        [SupportedOSPlatform("windows")]
+        public int GetIdentityKeyType()
         {
-            return userFromDirectory.IdentityKey;
+            return (int)IdentityType.SamAccountName;
         }
-
-        // -------------------------------- Identity Provider --------------------------------------
     }
 }

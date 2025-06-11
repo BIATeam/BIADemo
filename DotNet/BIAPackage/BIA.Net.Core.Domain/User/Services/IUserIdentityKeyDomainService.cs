@@ -68,12 +68,11 @@ namespace BIA.Net.Core.Domain.User.Services
         string GetDirectoryIdentityKey(IUserFromDirectory userFromDirectory);
 
         /// <summary>
-        /// Gets the directory identity key.
+        /// Gets the Identity Type to search object with the identity key from Directory.
+        /// It is use by the function UserPrincipal.FindByIdentity.
+        /// If you change it parse all other #IdentityKey to align all (Database, Ldap, Idp, WindowsIdentity).
         /// </summary>
-        /// <param name="userFromDirectory">The user from directory.</param>
-        /// <typeparam name="TUserFromDirectoryDto">The type of user from directory dto.</typeparam>
-        /// <returns>The directory identity key.</returns>
-        string GetDirectoryIdentityKey<TUserFromDirectoryDto>(TUserFromDirectoryDto userFromDirectory)
-            where TUserFromDirectoryDto : BaseUserFromDirectoryDto;
+        /// <returns>Return the Identity Key.</returns>
+        public int GetIdentityKeyType();
     }
 }

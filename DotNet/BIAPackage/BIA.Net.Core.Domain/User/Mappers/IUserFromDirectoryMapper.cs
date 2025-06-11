@@ -1,4 +1,4 @@
-// <copyright file="UserFromDirectoryMapper.cs" company="BIA">
+// <copyright file="IUserFromDirectoryMapper.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -13,7 +13,7 @@ namespace BIA.Net.Core.Domain.User.Mappers
     /// </summary>
     /// <typeparam name="TUserFromDirectoryDto">Type of the user from directory dto.</typeparam>
     /// <typeparam name="TUserFromDirectory">Type of the user from directory.</typeparam>
-    public static class UserFromDirectoryMapper<TUserFromDirectoryDto, TUserFromDirectory>
+    public interface IUserFromDirectoryMapper<TUserFromDirectoryDto, TUserFromDirectory>
         where TUserFromDirectoryDto : BaseUserFromDirectoryDto, new()
         where TUserFromDirectory : IUserFromDirectory
     {
@@ -21,15 +21,6 @@ namespace BIA.Net.Core.Domain.User.Mappers
         /// Create a user DTO from an entity.
         /// </summary>
         /// <returns>The user DTO.</returns>
-        public static Func<TUserFromDirectory, TUserFromDirectoryDto> EntityToDto()
-        {
-            return entity => new TUserFromDirectoryDto
-            {
-                // If you change it parse all other #IdentityKey to be sure thare is a match (Database, Ldap, Idp, WindowsIdentity).
-                IdentityKey = entity.Login,
-                DisplayName = entity.LastName + " " + entity.FirstName + "(" + entity.Domain + "\\" + entity.Login + ")",
-                Domain = entity.Domain,
-            };
-        }
+        Func<TUserFromDirectory, TUserFromDirectoryDto> EntityToDto();
     }
 }

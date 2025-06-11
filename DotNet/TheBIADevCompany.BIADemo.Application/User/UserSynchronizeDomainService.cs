@@ -5,9 +5,9 @@
 namespace TheBIADevCompany.BIADemo.Application.User
 {
     using BIA.Net.Core.Application.User;
-    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Services;
+    using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Models;
 

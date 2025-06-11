@@ -10,7 +10,6 @@ namespace TheBIADevCompany.BIADemo.DeployDB
     using BIA.Net.Core.Application.Clean;
     using BIA.Net.Core.Application.Job;
     using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.Domain.Dto.User;
     using Hangfire;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;

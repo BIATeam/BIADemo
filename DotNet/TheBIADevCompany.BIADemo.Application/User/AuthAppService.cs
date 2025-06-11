@@ -61,6 +61,16 @@ namespace TheBIADevCompany.BIADemo.Application.User
         {
             return this.LoginOnTeamsAsync(loginParam, TeamConfig.Config);
         }
+
+        /// <summary>
+        /// Gets the identity key.
+        /// </summary>
+        /// <returns>The identity key.</returns>
+        protected override string GetIdentityKey()
+        {
+            // If you change it parse all other #IdentityKey to align all (Database, Ldap, Idp, WindowsIdentity).
+            return this.GetLogin();
+        }
 #endif
     }
 }

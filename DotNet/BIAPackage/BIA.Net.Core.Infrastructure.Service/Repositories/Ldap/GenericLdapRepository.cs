@@ -5,6 +5,16 @@
 
 namespace BIA.Net.Core.Infrastructure.Service.Repositories
 {
+    using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.User.Services;
+    using BIA.Net.Core.Infrastructure.Service.Repositories.Ldap;
+    using Meziantou.Framework.Win32;
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Options;
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
@@ -13,20 +23,12 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     using System.DirectoryServices.AccountManagement;
     using System.DirectoryServices.ActiveDirectory;
     using System.Linq;
+    using System.Runtime.InteropServices;
     using System.Security.Cryptography;
     using System.Security.Principal;
     using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Common;
-    using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.Dto.User;
-    using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Infrastructure.Service.Repositories.Ldap;
-    using Meziantou.Framework.Win32;
-    using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Options;
 
     /// <summary>
     /// Helper to get information from Ldap.
@@ -35,6 +37,10 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         where TUserFromDirectoryDto : BaseUserFromDirectoryDto, new()
         where TUserFromDirectory : class, IUserFromDirectory, new()
     {
+        /// <summary>
+        /// The user identity key domain service.
+        /// </summary>
+        protected readonly IUserIdentityKeyDomainService userIdentityKeyDomainService;
 
         protected const string KeyPrefixCacheGroup = "BIAGroupSid:";
 
@@ -90,7 +96,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// </summary>
         /// <param name="logger">The logger.</param>
         /// <param name="configuration">The configuration.</param>
-        public GenericLdapRepository(ILogger<GenericLdapRepository<TUserFromDirectoryDto, TUserFromDirectory>> logger, IOptions<BiaNetSection> configuration, ILdapRepositoryHelper ldapRepositoryHelper)
+        public GenericLdapRepository(ILogger<GenericLdapRepository<TUserFromDirectoryDto, TUserFromDirectory>> logger, IOptions<BiaNetSection> configuration, ILdapRepositoryHelper ldapRepositoryHelper, IUserIdentityKeyDomainService userIdentityKeyDomainService)
         {
             this.logger = logger;
             this.configuration = configuration.Value;
@@ -100,6 +106,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             this.ldapDomainsUsers = this.ldapDomains?.Where(l => l.ContainsUser == true);
             this.LdapCacheGroupDuration = configuration.Value.Authentication.LdapCacheGroupDuration;
             this.LdapCacheUserDuration = configuration.Value.Authentication.LdapCacheUserDuration;
+            this.userIdentityKeyDomainService = userIdentityKeyDomainService;
         }
 
         /// <summary>
@@ -149,23 +156,8 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="domainKey">Domain Name in config file where domain found.</param>
         protected abstract TUserFromDirectory ConvertToUserDirectory(DirectoryEntry entry, string domainKey);
 
-        /// <summary>
-        /// Gets the Identity Type to extract identity key from Directory.
-        /// </summary>
-        /// <abstract>Return the Identity Key.</returns>
-        protected abstract IdentityType GetIdentityKeyType();
-
-        /// <summary>
-        /// Gets the Identity Key to compare with User in database.
-        /// It is use to specify the unique identifier that is compare during the authentication process.
-        /// If you change it parse all other #IdentityKey to be sure thare is a match (Database, Ldap, Idp, WindowsIdentity).
-        /// </summary>
-        /// <param name="userFromDirectory">the userFromDirectory.</param>
-        /// <returns>Return the Identity Key.</returns>
-        protected abstract string GetIdentityKey(TUserFromDirectoryDto userFromDirectory);
-
         /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.IsUserInGroup"/>
-        private async Task<bool> IsUserSidInGroups(string sid, IEnumerable<LdapGroup> ldapGroups)
+        protected virtual async Task<bool> IsUserSidInGroups(string sid, IEnumerable<LdapGroup> ldapGroups)
         {
             if (ldapGroups == null || ldapGroups.Count() == 0)
             {
@@ -189,7 +181,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         }
 
         /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.SearchUsers"/>
-        public List<TUserFromDirectory> SearchUsers(string search, string ldapName = null, int max = 10)
+        public virtual List<TUserFromDirectory> SearchUsers(string search, string ldapName = null, int max = 10)
         {
             List<TUserFromDirectory> usersInfo = new List<TUserFromDirectory>();
 
@@ -230,7 +222,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return usersInfo;
         }
 
-        private IEnumerable<TUserFromDirectory> SearchUsersInDomain(string search, LdapDomain domain, int max)
+        protected virtual IEnumerable<TUserFromDirectory> SearchUsersInDomain(string search, LdapDomain domain, int max)
         {
             if (domain == null || string.IsNullOrEmpty(domain.LdapName))
             {
@@ -298,7 +290,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         }
 
         /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.AddUsersInGroup"/>
-        public async Task<List<string>> AddUsersInGroup(IEnumerable<TUserFromDirectoryDto> usersFromDirectory, string roleLabel)
+        public virtual async Task<List<string>> AddUsersInGroup(IEnumerable<TUserFromDirectoryDto> usersFromDirectory, string roleLabel)
         {
             List<string> listGroupCacheSidToRemove = new List<string>();
             List<string> errors = new List<string>();
@@ -323,12 +315,12 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return errors;
         }
 
-        private bool AddUserInGroup(TUserFromDirectoryDto user, string roleLabel, List<string> listGroupCacheSidToRemove)
+        protected virtual bool AddUserInGroup(TUserFromDirectoryDto user, string roleLabel, List<string> listGroupCacheSidToRemove)
         {
 
             try
             {
-                UserPrincipal userToAdd = ResolveUserPrincipal(user.Domain, this.GetIdentityKey(user)).Result;
+                UserPrincipal userToAdd = ResolveUserPrincipal(user.Domain,user.IdentityKey).Result;
 
                 if (userToAdd != null)
                 {
@@ -368,7 +360,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return false;
         }
 
-        private async Task<UserPrincipal> ResolveUserPrincipal(string domain, string identityKey)
+        protected virtual async Task<UserPrincipal> ResolveUserPrincipal(string domain, string identityKey)
         {
             PrincipalContext contextUser;
 
@@ -378,24 +370,24 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
             if (contextUser != null)
             {
-                userToAdd = UserPrincipal.FindByIdentity(contextUser, this.GetIdentityKeyType(), identityKey);
+                userToAdd = UserPrincipal.FindByIdentity(contextUser, (IdentityType)this.userIdentityKeyDomainService.GetIdentityKeyType(), identityKey);
             }
 
             return userToAdd;
         }
 
-        public async Task<TUserFromDirectory> ResolveUser(TUserFromDirectoryDto userFromDirectoryDto)
+        public virtual async Task<TUserFromDirectory> ResolveUser(TUserFromDirectoryDto userFromDirectoryDto)
         {
             UserPrincipal userPrincipal = null;
             if (userFromDirectoryDto.Domain != null)
             {
-                userPrincipal = await ResolveUserPrincipal(userFromDirectoryDto.Domain, this.GetIdentityKey(userFromDirectoryDto));
+                userPrincipal = await ResolveUserPrincipal(userFromDirectoryDto.Domain, userFromDirectoryDto.IdentityKey);
             }
             else
             {
                 foreach (var ldapDomainsUser in ldapDomainsUsers)
                 {
-                    userPrincipal = await ResolveUserPrincipal(ldapDomainsUser.Name, this.GetIdentityKey(userFromDirectoryDto));
+                    userPrincipal = await ResolveUserPrincipal(ldapDomainsUser.Name, userFromDirectoryDto.IdentityKey);
                     if (userPrincipal != null)
                     {
                         break;
@@ -406,7 +398,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return GetUser(userPrincipal, userFromDirectoryDto.Domain);
         }
 
-        private GroupPrincipal PrepareGroupOfRoleForUser(string domainWhereUserFound, string roleLabel)
+        protected virtual GroupPrincipal PrepareGroupOfRoleForUser(string domainWhereUserFound, string roleLabel)
         {
             var userLdapGroups = this.GetLdapGroupsForRole(roleLabel);
             // Role role = this.configuration.Roles.Where(w => w.Type == BIAConstants.RoleType.Ldap && w.Label == roleLabel).FirstOrDefault();
@@ -450,7 +442,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return pc;
         }
 
-        private async Task<PrincipalContext> PrepareDomainContext(LdapDomain domain)
+        protected virtual async Task<PrincipalContext> PrepareDomainContext(LdapDomain domain)
         {
             await mutex.WaitAsync().ConfigureAwait(false);
             try
@@ -503,7 +495,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// </summary>
         /// <param name="domain"></param>
         /// <returns>true if ok</returns>
-        private bool PrepareCredential(LdapDomain domain)
+        protected virtual bool PrepareCredential(LdapDomain domain)
         {
             lock (syncPrepareCredential)
             {
@@ -534,7 +526,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         }
 
         /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.RemoveUsersInGroup"/>
-        public async Task<List<TUserFromDirectoryDto>> RemoveUsersInGroup(List<TUserFromDirectoryDto> usersFromRepositoryToRemove, string roleLabel)
+        public virtual async Task<List<TUserFromDirectoryDto>> RemoveUsersInGroup(List<TUserFromDirectoryDto> usersFromRepositoryToRemove, string roleLabel)
         {
             List<string> listGroupCacheSidToRemove = new List<string>();
 
@@ -550,7 +542,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                         // If the domain is not contains in user database all domain should be parsed to clean the group.
                         if (userToRemove.Domain == null || userToRemove.Domain.Equals(domain.Name))
                         {
-                            UserPrincipal userPrincipalToRemove = await ResolveUserPrincipal(domain.Name, this.GetIdentityKey(userToRemove));
+                            UserPrincipal userPrincipalToRemove = await ResolveUserPrincipal(domain.Name, userToRemove.IdentityKey);
 
                             if (userPrincipalToRemove != null)
                             {
@@ -575,7 +567,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     if (!userRemoved)
                     {
                         notRemovedUser.Add(userToRemove);
-                        this.logger.LogError("[RemoveUsersInGroup] user not found in all adDomains : {userToRemove}({domain}\\{identityKey})", userToRemove.DisplayName, userToRemove.Domain, this.GetIdentityKey(userToRemove));
+                        this.logger.LogError("[RemoveUsersInGroup] user not found in all adDomains : {userToRemove}({domain}\\{identityKey})", userToRemove.DisplayName, userToRemove.Domain, userToRemove.IdentityKey);
                     }
                 }
                 foreach (var cacheSidToRemove in listGroupCacheSidToRemove)
@@ -599,7 +591,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="ldapGroups">The groups to search in.</param>
         /// <param name="login">The user login.</param>
         /// <returns>A boolean indicating whether the user is in the group.</returns>
-        public async Task<bool> IsSidInGroups(IEnumerable<LdapGroup> ldapGroups, string sid)
+        public virtual async Task<bool> IsSidInGroups(IEnumerable<LdapGroup> ldapGroups, string sid)
         {
             if (string.IsNullOrWhiteSpace(sid))
             {
@@ -612,7 +604,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         }
 
         /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.GetAllUsersInGroup"/>
-        public async Task<IEnumerable<string>> GetAllUsersSidInRoleToSync(string role, bool forceRefresh = false)
+        public virtual async Task<IEnumerable<string>> GetAllUsersSidInRoleToSync(string role, bool forceRefresh = false)
         {
             this.cacheGroupPrincipal.Clear();
             List<LdapGroup> userLdapGroups = this.GetLdapGroupsForRole(role);
@@ -638,14 +630,14 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         }
 
         /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.GetLdapGroupsForRole"/>
-        public List<LdapGroup> GetLdapGroupsForRole(string roleLabel)
+        public virtual List<LdapGroup> GetLdapGroupsForRole(string roleLabel)
         {
             return this.configuration.Roles.Where(w => (w.Type == BiaConstants.RoleType.Ldap || w.Type == BiaConstants.RoleType.Synchro) && w.Label == roleLabel).Select(r => r.LdapGroups).SelectMany(x => x).ToList();
         }
 
         static Dictionary<string, string> localCacheGroupSid = new Dictionary<string, string>();
         object syncLocalCacheGroupSid = new Object();
-        private async Task GetAllUsersSidInLdapGroup(ConcurrentBag<string> listUsersSid, ConcurrentBag<string> listTreatedGroupSid, LdapGroup ldapGroup, bool forceRefresh = false)
+        protected virtual async Task GetAllUsersSidInLdapGroup(ConcurrentBag<string> listUsersSid, ConcurrentBag<string> listTreatedGroupSid, LdapGroup ldapGroup, bool forceRefresh = false)
         {
             string sid = "";
             lock (syncLocalCacheGroupSid)
@@ -695,7 +687,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="rootLdapGroup">the root ldapGroup to limite the scope of the search (ldap users and ldap for groups).</param>
         /// <param name="listUsers">The users found.</param>
         /// <param name="listTreatedGroups">The group already treated.</param>
-        private async Task GetAllUsersSidFromGroupRecursivelyAsync(GroupDomainSid groupSid, LdapGroup rootLdapGroup, ConcurrentBag<string> listUsersSid, ConcurrentBag<string> listTreatedGroupSid)
+        protected virtual async Task GetAllUsersSidFromGroupRecursivelyAsync(GroupDomainSid groupSid, LdapGroup rootLdapGroup, ConcurrentBag<string> listUsersSid, ConcurrentBag<string> listTreatedGroupSid)
         {
             SidResolvedGroup resolvedGroup = await ResolveGroupMember(groupSid, rootLdapGroup);
             if (resolvedGroup != null)
@@ -741,7 +733,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="sid">The sid.</param>
         /// <param name="domain">The domain.</param>
         /// <returns>The list of roles.</returns>
-        public async Task<List<string>> GetUserRolesAsync(BiaClaimsPrincipal claimsPrincipal, UserInfoDto userInfoDto, string sid, string domain, bool withCredentials)
+        public virtual async Task<List<string>> GetUserRolesAsync(BiaClaimsPrincipal claimsPrincipal, UserInfoDto userInfoDto, string sid, string domain, bool withCredentials)
         {
             this.cacheGroupPrincipal.Clear();
             IEnumerable<BIA.Net.Core.Common.Configuration.Role> rolesSection = this.configuration.Roles;
@@ -824,7 +816,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return gobalRoles.ToList();
         }
 
-        private async Task<string> GetSidHistory(string sid, string userDomain)
+        protected virtual async Task<string> GetSidHistory(string sid, string userDomain)
         {
             string sidHistory = (string)await this.ldapRepositoryHelper.LocalCache.Get<string>(KeyPrefixCacheUserSidHistory + sid);
             if (sidHistory != null)
@@ -848,7 +840,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return sidHistory;
         }
 
-        private async Task<SidResolvedGroup> ResolveGroupMember(GroupDomainSid groupDomainSid, LdapGroup rootLdapGroup)
+        protected virtual async Task<SidResolvedGroup> ResolveGroupMember(GroupDomainSid groupDomainSid, LdapGroup rootLdapGroup)
         {
             SidResolvedGroup itemResolve;
             itemResolve = await this.ldapRepositoryHelper.DistributedCache.Get<SidResolvedGroup>(KeyPrefixCacheGroup + groupDomainSid.Sid);
@@ -1015,7 +1007,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return null;
         }
 
-        private GroupDomainSid TestIfIsGroup(string memberSid, string[] recursiveGroupsOfDomains, string currentDomain, bool isForeignSecurity)
+        protected virtual GroupDomainSid TestIfIsGroup(string memberSid, string[] recursiveGroupsOfDomains, string currentDomain, bool isForeignSecurity)
         {
             GroupDomainSid memberGroupSid = null;
             DomainGroupPrincipal testIsGroup = isForeignSecurity ?
@@ -1030,13 +1022,13 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return memberGroupSid;
         }
 
-        struct DomainDirectoryEntry
+        protected struct DomainDirectoryEntry
         {
             public LdapDomain domain;
             public DirectoryEntry de;
         }
 
-        private DomainDirectoryEntry GetDirectoryEntry(string sDN)
+        protected virtual DomainDirectoryEntry GetDirectoryEntry(string sDN)
         {
             DomainDirectoryEntry domainDirectoryEntry = new DomainDirectoryEntry() { domain = null, de = null };
             LdapDomain adDomain = ldapDomains.Where(d => d.LdapName.Split('.').All(subD => sDN.Contains("DC=" + subD))).FirstOrDefault();
@@ -1068,7 +1060,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return domainDirectoryEntry;
         }
 
-        struct DomainGroupPrincipal
+        protected struct DomainGroupPrincipal
         {
             public string domain;
             public GroupPrincipal groupPrincipal;
@@ -1076,7 +1068,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
         Dictionary<string, DomainGroupPrincipal> cacheGroupPrincipal = new Dictionary<string, DomainGroupPrincipal>();
         object syncLocalGroupPrincipal = new Object();
-        private DomainGroupPrincipal ResolveGroupPrincipal(string[] groupDomains, string sid)
+        protected virtual DomainGroupPrincipal ResolveGroupPrincipal(string[] groupDomains, string sid)
         {
             DomainGroupPrincipal domainGroupPrincipal = new DomainGroupPrincipal() { domain = null, groupPrincipal = null };
             lock (syncLocalGroupPrincipal)
@@ -1124,19 +1116,19 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return domainGroupPrincipal;
         }
 
-        public async Task<TUserFromDirectory> ResolveUserBySid(string sid, bool forceRefresh = false)
+        public virtual async Task<TUserFromDirectory> ResolveUserBySid(string sid, bool forceRefresh = false)
         {
             string KeyCache = KeyPrefixCacheUserSid + sid;
             return await ResolveUser(KeyCache, IdentityType.Sid, sid, forceRefresh);
         }
 
-        public async Task<TUserFromDirectory> ResolveUserByIdentityKey(string identityKey, bool forceRefresh = false)
+        public virtual async Task<TUserFromDirectory> ResolveUserByIdentityKey(string identityKey, bool forceRefresh = false)
         {
             string KeyCache = KeyPrefixCacheUserIdentityKey + identityKey;
-            return await ResolveUser(KeyCache, GetIdentityKeyType(), identityKey, forceRefresh);
+            return await ResolveUser(KeyCache, (IdentityType)this.userIdentityKeyDomainService.GetIdentityKeyType(), identityKey, forceRefresh);
         }
 
-        private async Task<TUserFromDirectory> ResolveUser(string KeyCache, IdentityType identityType, string key, bool forceRefresh = false)
+        protected virtual async Task<TUserFromDirectory> ResolveUser(string KeyCache, IdentityType identityType, string key, bool forceRefresh = false)
         {
 
             TUserFromDirectory itemResolve;

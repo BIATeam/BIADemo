@@ -25,9 +25,9 @@ namespace BIA.Net.Core.Application.User
     using BIA.Net.Core.Domain.User;
     using BIA.Net.Core.Domain.User.Entities;
     using BIA.Net.Core.Domain.User.Mappers;
-    using BIA.Net.Core.Domain.User.Models;
     using BIA.Net.Core.Domain.User.Services;
     using BIA.Net.Core.Domain.User.Specifications;
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using static BIA.Net.Core.Common.BiaRights;
@@ -187,17 +187,19 @@ namespace BIA.Net.Core.Application.User
         /// <inheritdoc cref="IBaseUserAppService.GetAllADUserAsync"/>
         public async Task<IEnumerable<TUserFromDirectoryDto>> GetAllADUserAsync(string filter, string ldapName = null, int max = 10)
         {
+            IUserFromDirectoryMapper<TUserFromDirectoryDto, TUserFromDirectory> userFromDirectoryMapper = this.Repository.ServiceProvider.GetService<IUserFromDirectoryMapper<TUserFromDirectoryDto, TUserFromDirectory>>();
             return await Task.FromResult(this.userDirectoryHelper.SearchUsers(filter, ldapName, max).OrderBy(o => o.LastName).ThenBy(o => o.FirstName)
-                .Select(UserFromDirectoryMapper<TUserFromDirectoryDto, TUserFromDirectory>.EntityToDto())
+                .Select(userFromDirectoryMapper.EntityToDto())
                 .ToList());
         }
 
         /// <inheritdoc cref="IBaseUserAppService.GetAllIdpUserAsync"/>
         public async Task<IEnumerable<TUserFromDirectoryDto>> GetAllIdpUserAsync(string filter, int first = 0, int max = 10)
         {
+            IUserFromDirectoryMapper<TUserFromDirectoryDto, TUserFromDirectory> userFromDirectoryMapper = this.Repository.ServiceProvider.GetService<IUserFromDirectoryMapper<TUserFromDirectoryDto, TUserFromDirectory>>();
             string formattedFilter = "*" + filter.Replace(" ", " *");
             List<TUserFromDirectory> userFromDirectories = await this.identityProviderRepository.SearchUserAsync(formattedFilter, first, max);
-            return userFromDirectories.Select(UserFromDirectoryMapper<TUserFromDirectoryDto, TUserFromDirectory>.EntityToDto());
+            return userFromDirectories.Select(userFromDirectoryMapper.EntityToDto());
         }
 
         /// <inheritdoc cref="IBaseUserAppService.AddByIdentityKeyAsync"/>
@@ -234,7 +236,7 @@ namespace BIA.Net.Core.Application.User
                 try
                 {
                     await this.SynchronizeWithADAsync();
-                    List<string> usersIdentityKey = users.Select(u => this.userIdentityKeyDomainService.GetDirectoryIdentityKey(u)).ToList();
+                    List<string> usersIdentityKey = users.Select(u => u.IdentityKey).ToList();
                     result.UsersAddedDtos = (await this.Repository.GetAllEntityAsync(filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey<TUser>(usersIdentityKey))).Select(entity => new OptionDto
                     {
                         Id = entity.Id,
@@ -255,7 +257,7 @@ namespace BIA.Net.Core.Application.User
                 {
                     try
                     {
-                        TUser foundUser = (await this.Repository.GetAllEntityAsync(filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey<TUser>(this.userIdentityKeyDomainService.GetDirectoryIdentityKey(userFormDirectoryDto)))).FirstOrDefault();
+                        TUser foundUser = (await this.Repository.GetAllEntityAsync(filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey<TUser>(userFormDirectoryDto.IdentityKey))).FirstOrDefault();
 
                         TUserFromDirectory userFormDirectory = default;
 
