@@ -1,7 +1,6 @@
 {
   "root": true,
   "ignorePatterns": ["projects/**/*"],
-  "plugins": ["deprecation"],
   "overrides": [
     {
       "files": ["*.ts"],
@@ -22,6 +21,7 @@
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-unused-vars": "error",
         "@typescript-eslint/naming-convention": "error",
+        "@typescript-eslint/no-deprecated": "warn",
         "@angular-eslint/directive-selector": [
           "error",
           {
@@ -38,7 +38,6 @@
             "style": "kebab-case"
           }
         ],
-        "deprecation/deprecation": "warn",
         "eqeqeq": ["error", "always", { "null": "ignore" }]
       }
     },

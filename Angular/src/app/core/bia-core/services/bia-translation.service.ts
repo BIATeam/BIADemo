@@ -130,7 +130,7 @@ export class BiaTranslationService {
       const translateServices = [this.translate, ...this.lazyTranslateServices];
       if (!this.translationsLoaded[lang]) {
         for (const translateService of translateServices) {
-          translationLoaders$.push(translateService.getTranslation(lang));
+          translationLoaders$.push(translateService.use(lang));
         }
       }
       let lang$: Observable<any> = of(undefined);
@@ -158,9 +158,9 @@ export class BiaTranslationService {
 
   registerLazyTranslateService(translateService: TranslateService) {
     if (this.translate.defaultLang !== this.translate.currentLang) {
-      translateService.getTranslation(this.translate.defaultLang);
+      translateService.use(this.translate.defaultLang);
     }
-    translateService.getTranslation(this.translate.currentLang);
+    translateService.use(this.translate.currentLang);
     this.lazyTranslateServices.push(translateService);
   }
 

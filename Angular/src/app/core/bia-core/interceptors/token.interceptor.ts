@@ -25,6 +25,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
   constructor(
     public authService: AuthService,
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     public keycloakService: KeycloakService,
     protected appSettingsService: AppSettingsService
   ) {}

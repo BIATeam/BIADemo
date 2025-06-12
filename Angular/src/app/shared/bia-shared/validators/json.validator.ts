@@ -5,7 +5,7 @@ export class JsonValidator {
     if (control.value) {
       try {
         JSON.parse(control.value);
-      } catch (e) {
+      } catch {
         return { jsonInvalid: true };
       }
     }

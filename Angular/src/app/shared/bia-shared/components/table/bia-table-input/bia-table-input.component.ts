@@ -105,7 +105,6 @@ export class BiaTableInputComponent<CrudItem>
           break;
       }
     });
-    this.focusByDefault;
   }
 
   public onChange() {

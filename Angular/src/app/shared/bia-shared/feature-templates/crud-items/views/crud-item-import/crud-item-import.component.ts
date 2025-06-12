@@ -16,11 +16,11 @@ import {
   ImportData,
   ImportParam,
 } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-import.service';
-import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
 import {
   BiaFieldConfig,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
+import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
 import { clone } from 'src/app/shared/bia-shared/utils';
 import { CrudConfig } from '../../model/crud-config';
 import { CrudItemService } from '../../services/crud-item.service';
