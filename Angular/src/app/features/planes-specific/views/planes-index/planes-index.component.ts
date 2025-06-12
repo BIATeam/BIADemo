@@ -12,6 +12,7 @@ import { PrimeTemplate } from 'primeng/api';
 import { TableModule, TableRowExpandEvent } from 'primeng/table';
 import { map, take } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { BiaSignalRService } from 'src/app/core/bia-core/services/bia-signalr.service';
 import { EngineDas } from 'src/app/features/planes/children/engines/services/engine-das.service';
 import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { BiaTableBehaviorControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
@@ -64,6 +65,7 @@ export class PlanesIndexComponent extends CrudItemsIndexComponent<
   enginesDic: { [key: string]: Engine[] } = {};
   engineConfig: BiaFieldsConfig<Engine> = engineCRUDConfiguration.fieldsConfig;
   displayedEngineColumns: KeyValuePair[];
+  biaSignalRService: BiaSignalRService;
 
   constructor(
     protected injector: Injector,
@@ -76,6 +78,19 @@ export class PlanesIndexComponent extends CrudItemsIndexComponent<
     this.displayedEngineColumns = this.engineConfig.columns
       .filter(col => !col.isHideByDefault)
       .map(col => <KeyValuePair>{ key: col.field, value: col.header });
+    this.biaSignalRService =
+      this.injector.get<BiaSignalRService>(BiaSignalRService);
+    this.registerSignalRMethods();
+  }
+
+  protected registerSignalRMethods() {
+    this.biaSignalRService.addMethod(
+      this.planeService.getSignalRRefreshEvent() + '-plane-engines',
+      (args: any) => {
+        const data: { id: number; engines: Engine[] } = JSON.parse(args);
+        this.enginesDic[data.id.toString()] = data.engines;
+      }
+    );
   }
 
   protected setPermissions() {
@@ -85,6 +100,10 @@ export class PlanesIndexComponent extends CrudItemsIndexComponent<
   }
 
   onRowExpand(event: TableRowExpandEvent) {
+    this.getPlaneEngines(event.data.id);
+  }
+
+  private getPlaneEngines(planeId: number) {
     const pagingAndFilter: PagingFilterFormatDto = {
       filters: {},
       first: 0,
@@ -93,18 +112,16 @@ export class PlanesIndexComponent extends CrudItemsIndexComponent<
       rows: null,
       sortField: 'reference',
       sortOrder: 1,
-      parentIds: [event.data.id.toString()],
+      parentIds: [planeId.toString()],
     };
-    if (!this.enginesDic[event.data.id.toString()]) {
-      this.engineDasService
-        .getListByPost({ event: pagingAndFilter })
-        .pipe(
-          take(1),
-          map((result: DataResult<Engine[]>) => {
-            this.enginesDic[event.data.id.toString()] = result.data;
-          })
-        )
-        .subscribe();
-    }
+    this.engineDasService
+      .getListByPost({ event: pagingAndFilter })
+      .pipe(
+        take(1),
+        map((result: DataResult<Engine[]>) => {
+          this.enginesDic[planeId.toString()] = result.data;
+        })
+      )
+      .subscribe();
   }
 }

@@ -22,15 +22,14 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
     public class PlaneSpecificMapper : BaseMapper<PlaneSpecificDto, Plane, int>
     {
         private readonly PlaneMapper planeMapper;
-        private readonly EngineMapper engineMapper;
+        private readonly EngineSpecificMapper engineMapper;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlaneSpecificMapper"/> class.
         /// </summary>
         /// <param name="planeMapper">base plane mapper.</param>
-        /// <param name="engineMapper">engine mapper.</param>
-        /// <param name="engineRepository">engine repository.</param>
-        public PlaneSpecificMapper(PlaneMapper planeMapper, EngineMapper engineMapper)
+        /// <param name="engineMapper">engine mapper (specific).</param>
+        public PlaneSpecificMapper(PlaneMapper planeMapper, EngineSpecificMapper engineMapper)
         {
             this.planeMapper = planeMapper;
             this.engineMapper = engineMapper;

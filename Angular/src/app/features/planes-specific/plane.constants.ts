@@ -19,7 +19,7 @@ export const planeCRUDConfiguration: CrudConfig<Plane> = new CrudConfig({
   fieldsConfig: planeFieldsConfiguration,
   formEditReadOnlyMode: FormReadOnlyMode.clickToEdit,
   useCalcMode: false,
-  useSignalR: false,
+  useSignalR: true,
   useView: false,
   useViewTeamWithTypeId: TeamTypeId.Site, // use to filter view by teams => should know the type of team
   usePopup: true,
