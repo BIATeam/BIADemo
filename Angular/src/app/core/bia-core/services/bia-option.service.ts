@@ -1,5 +1,5 @@
-import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
+import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
 
 export class BiaOptionService {
   public static clone<T>(value: any) {
