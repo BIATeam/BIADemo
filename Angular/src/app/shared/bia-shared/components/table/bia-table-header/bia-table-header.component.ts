@@ -112,9 +112,11 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   }
 
   onBack() {
-    window.history.length > 1
-      ? this.location.back()
-      : this.router.navigate(['/']);
+    if (window.history.length > 1) {
+      this.location.back();
+    } else {
+      this.router.navigate(['/']);
+    }
   }
 
   onCreate() {

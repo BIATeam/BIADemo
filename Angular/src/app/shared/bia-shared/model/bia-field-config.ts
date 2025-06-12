@@ -28,7 +28,6 @@ export enum PropType {
 }
 
 export enum NumberMode {
-  Default = 'decimal',
   Decimal = 'decimal',
   Currency = 'currency',
 }
@@ -44,7 +43,7 @@ export class BiaFieldNumberFormat {
   max: number | null;
   constructor() {
     this.autoLocale = '';
-    this.mode = NumberMode.Default;
+    this.mode = NumberMode.Decimal;
     this.currency = 'USD';
     this.currencyDisplay = 'symbol';
     this.minFractionDigits = null;
