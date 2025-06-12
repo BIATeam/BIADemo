@@ -34,7 +34,7 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
   public formReadOnlyMode: FormReadOnlyMode;
   public canFix: boolean;
 
-  protected isCrudItemOutdated: boolean = false;
+  protected isCrudItemOutdated = false;
   protected authService: AuthService;
 
   constructor(
