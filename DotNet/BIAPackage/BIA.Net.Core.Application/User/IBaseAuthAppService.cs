@@ -4,11 +4,8 @@
 
 namespace BIA.Net.Core.Application.User
 {
-    using System.Collections.Immutable;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Common;
     using BIA.Net.Core.Domain.Dto.User;
-    using BIA.Net.Core.Domain.User.Entities;
 
     /// <summary>
     /// Interface AuthService.
@@ -19,6 +16,8 @@ namespace BIA.Net.Core.Application.User
         /// Logins.
         /// </summary>
         /// <returns>The JWT.</returns>
-        Task<string> LoginAsync();
+        /// <typeparam name="TAdditionalInfoDto">The type of AdditionalInfoDto.</typeparam>
+        Task<string> LoginAsync<TAdditionalInfoDto>()
+             where TAdditionalInfoDto : BaseAdditionalInfoDto, new();
     }
 }

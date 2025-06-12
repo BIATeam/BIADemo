@@ -107,7 +107,8 @@ namespace BIA.Net.Core.Application.User
         protected ILdapRepositoryHelper LdapRepositoryHelper { get; }
 
         /// <inheritdoc cref="IAuthAppService.LoginAsync"/>
-        public async Task<string> LoginAsync()
+        public async Task<string> LoginAsync<TAdditionalInfoDto>()
+             where TAdditionalInfoDto : BaseAdditionalInfoDto, new()
         {
             // Check if current user is authenticated
             this.CheckIsAuthenticated();
@@ -139,7 +140,7 @@ namespace BIA.Net.Core.Application.User
             };
 
             // Create AuthInfo
-            AuthInfoDto<AdditionalInfoDto> authInfo = await this.JwtFactory.GenerateAuthInfoAsync(tokenDto, default(AdditionalInfoDto), new LoginParamDto());
+            AuthInfoDto<TAdditionalInfoDto> authInfo = await this.JwtFactory.GenerateAuthInfoAsync(tokenDto, default(TAdditionalInfoDto), new LoginParamDto());
 
             return authInfo?.Token;
         }

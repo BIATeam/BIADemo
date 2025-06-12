@@ -108,16 +108,17 @@ namespace BIA.Net.Core.Application.User
         protected IRoleAppService RoleAppService { get; }
 
         /// <inheritdoc cref="IAuthAppService.LoginOnTeamsAsync"/>
-        public async Task<AuthInfoDto<AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
+        public async Task<AuthInfoDto<TAdditionalInfoDto>> LoginOnTeamsAsync<TAdditionalInfoDto>(LoginParamDto loginParam, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
+            where TAdditionalInfoDto : BaseAdditionalInfoDto, new()
         {
             // Check if current user is authenticated
             this.CheckIsAuthenticated();
 
-            AuthInfoDto<AdditionalInfoDto> authInfo = await this.GetLoginToken(loginParam, true, teamsConfig);
+            AuthInfoDto<TAdditionalInfoDto> authInfo = await this.GetLoginToken<TAdditionalInfoDto>(loginParam, true, teamsConfig);
 
             if (!string.IsNullOrWhiteSpace(loginParam.BaseUserLogin) && Application.Authentication.JwtFactory.HasRole(authInfo.Token, BiaRights.Impersonation.ConnectionRights))
             {
-                return await this.GetLoginToken(loginParam, false, teamsConfig);
+                return await this.GetLoginToken<TAdditionalInfoDto>(loginParam, false, teamsConfig);
             }
             else
             {
@@ -150,8 +151,10 @@ namespace BIA.Net.Core.Application.User
         /// <param name="loginParam">The login parameter.</param>
         /// <param name="withCredentials">if set to <c>true</c> [with credentials].</param>
         /// <param name="teamsConfig">The teams configuration.</param>
+        /// <typeparam name="TAdditionalInfoDto">The type of AdditionalInfoDto.</typeparam>
         /// <returns>Return a token to authenticate user with permition.</returns>
-        protected virtual async Task<AuthInfoDto<AdditionalInfoDto>> GetLoginToken(LoginParamDto loginParam, bool withCredentials, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
+        protected virtual async Task<AuthInfoDto<TAdditionalInfoDto>> GetLoginToken<TAdditionalInfoDto>(LoginParamDto loginParam, bool withCredentials, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
+            where TAdditionalInfoDto : BaseAdditionalInfoDto, new()
         {
             // Get informations in Claims
             string sid = this.GetSid();
@@ -219,10 +222,10 @@ namespace BIA.Net.Core.Application.User
             };
 
             // Get AdditionalInfoDto
-            AdditionalInfoDto additionalInfo = this.GetAdditionalInfo(loginParam, userInfo, allTeams, userData, teamsConfig);
+            TAdditionalInfoDto additionalInfo = this.GetAdditionalInfo<TAdditionalInfoDto>(loginParam, userInfo, allTeams, userData, teamsConfig);
 
             // Create AuthInfo
-            AuthInfoDto<AdditionalInfoDto> authInfo = await this.JwtFactory.GenerateAuthInfoAsync(tokenDto, additionalInfo, loginParam);
+            AuthInfoDto<TAdditionalInfoDto> authInfo = await this.JwtFactory.GenerateAuthInfoAsync(tokenDto, additionalInfo, loginParam);
 
             return authInfo;
         }
@@ -284,10 +287,12 @@ namespace BIA.Net.Core.Application.User
         /// <param name="allTeams">All teams.</param>
         /// <param name="userData">The user data.</param>
         /// <param name="teamsConfig">The teams configuration.</param>
+        /// <typeparam name="TAdditionalInfoDto">The type of AdditionalInfoDto.</typeparam>
         /// <returns>A AdditionalInfo Dto.</returns>
-        protected virtual AdditionalInfoDto GetAdditionalInfo(LoginParamDto loginParam, UserInfoDto userInfo, IEnumerable<BaseDtoVersionedTeam> allTeams, UserDataDto userData, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
+        protected virtual TAdditionalInfoDto GetAdditionalInfo<TAdditionalInfoDto>(LoginParamDto loginParam, UserInfoDto userInfo, IEnumerable<BaseDtoVersionedTeam> allTeams, UserDataDto userData, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
+            where TAdditionalInfoDto : BaseAdditionalInfoDto, new()
         {
-            AdditionalInfoDto additionalInfo = default;
+            TAdditionalInfoDto additionalInfo = default;
 
             if (loginParam.AdditionalInfos)
             {
@@ -296,7 +301,7 @@ namespace BIA.Net.Core.Application.User
                     ||
                     tc.Parents.Exists(p => userData.CurrentTeams.Any(ct => ct.TeamId == t.ParentTeamId))))).ToList();
 
-                additionalInfo = new AdditionalInfoDto
+                additionalInfo = new TAdditionalInfoDto
                 {
                     UserInfo = userInfo,
                     Teams = allTeamsFilteredByCurrentParent.OrderBy(x => x.Title).ToList(),
