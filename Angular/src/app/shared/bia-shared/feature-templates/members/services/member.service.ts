@@ -71,24 +71,24 @@ export class MemberService extends CrudItemService<Member> {
   }
   public create(crudItem: Member) {
     // TODO after creation of CRUD Member : map parent Key on the corresponding field
-    (crudItem.teamId = this.getParentIds()[0]),
-      this.store.dispatch(FeatureMembersActions.create({ member: crudItem }));
+    crudItem.teamId = this.getParentIds()[0];
+    this.store.dispatch(FeatureMembersActions.create({ member: crudItem }));
   }
   public save(crudItems: Member[]) {
     // TODO after creation of CRUD Member : map parent Key on the corresponding field
-    crudItems.map(x => (x.teamId = this.getParentIds()[0])),
-      this.store.dispatch(FeatureMembersActions.save({ members: crudItems }));
+    crudItems.map(x => (x.teamId = this.getParentIds()[0]));
+    this.store.dispatch(FeatureMembersActions.save({ members: crudItems }));
   }
   public createMulti(membersToCreate: Members) {
     // TODO after creation of CRUD Member : map parent Key on the corresponding field
-    (membersToCreate.teamId = this.getParentIds()[0]),
-      this.store.dispatch(
-        FeatureMembersActions.createMulti({ members: membersToCreate })
-      );
+    membersToCreate.teamId = this.getParentIds()[0];
+    this.store.dispatch(
+      FeatureMembersActions.createMulti({ members: membersToCreate })
+    );
   }
   public update(crudItem: Member) {
-    (crudItem.teamId = this.getParentIds()[0]),
-      this.store.dispatch(FeatureMembersActions.update({ member: crudItem }));
+    crudItem.teamId = this.getParentIds()[0];
+    this.store.dispatch(FeatureMembersActions.update({ member: crudItem }));
   }
   public remove(id: any) {
     this.store.dispatch(FeatureMembersActions.remove({ id }));

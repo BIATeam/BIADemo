@@ -76,8 +76,8 @@ export class PlaneService extends CrudItemService<Plane, PlaneSpecific> {
   public create(crudItem: PlaneSpecific) {
     // TODO after creation of CRUD Plane : map parent Key on the corresponding field
     this.resetNewItemsIds(crudItem.engines);
-    (crudItem.siteId = this.getParentIds()[0]),
-      this.store.dispatch(FeaturePlanesActions.create({ plane: crudItem }));
+    crudItem.siteId = this.getParentIds()[0];
+    this.store.dispatch(FeaturePlanesActions.create({ plane: crudItem }));
   }
   public update(crudItem: PlaneSpecific) {
     this.resetNewItemsIds(crudItem.engines);

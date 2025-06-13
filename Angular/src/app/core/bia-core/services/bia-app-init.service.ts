@@ -32,6 +32,7 @@ export class BiaAppInitService implements OnDestroy {
     protected appSettingsDas: AppSettingsDas,
     protected store: Store<AppState>,
     protected notificationSignalRService: NotificationSignalRService,
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     protected keycloakService: KeycloakService,
     protected appSettingsService: AppSettingsService
   ) {}
@@ -92,8 +93,11 @@ export class BiaAppInitService implements OnDestroy {
   protected initEventKeycloakSuccess(): Observable<AuthInfo> {
     return this.keycloakService.keycloakEvents$.asObservable().pipe(
       filter(
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         (keycloakEvent: KeycloakEventLegacy) =>
+          // eslint-disable-next-line @typescript-eslint/no-deprecated
           keycloakEvent?.type === KeycloakEventTypeLegacy.OnAuthSuccess ||
+          // eslint-disable-next-line @typescript-eslint/no-deprecated
           keycloakEvent?.type === KeycloakEventTypeLegacy.OnAuthRefreshSuccess
       ),
       first(),
@@ -107,10 +111,14 @@ export class BiaAppInitService implements OnDestroy {
     this.sub.add(
       this.keycloakService.keycloakEvents$
         .asObservable()
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         .subscribe(async (keycloakEvent: KeycloakEventLegacy) => {
           if (
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
             keycloakEvent?.type === KeycloakEventTypeLegacy.OnAuthLogout ||
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
             keycloakEvent?.type === KeycloakEventTypeLegacy.OnReady ||
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
             keycloakEvent?.type === KeycloakEventTypeLegacy.OnTokenExpired
           ) {
             if (this.keycloakService.isLoggedIn() !== true) {

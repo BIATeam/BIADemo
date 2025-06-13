@@ -41,6 +41,7 @@ const MODULES = [
   TeamModule,
   AppSettingsModule,
   ServiceWorkerModule,
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
   KeycloakAngularModule,
 ];
 
