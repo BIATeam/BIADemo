@@ -59,7 +59,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </returns>
         public Task<AuthInfoDto<AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam)
         {
-            return this.LoginOnTeamsAsync<AdditionalInfoDto>(loginParam, TeamConfig.Config);
+            return this.LoginOnTeamsAsync<AdditionalInfoDto, UserDataDto>(loginParam, TeamConfig.Config);
         }
 
         /// <summary>

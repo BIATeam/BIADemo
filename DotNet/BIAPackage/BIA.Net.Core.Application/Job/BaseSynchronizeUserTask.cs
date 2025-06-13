@@ -43,7 +43,7 @@ namespace BIA.Net.Core.Application.Job
         /// <param name="configuration">The configuration.</param>
         /// <param name="userService">The user app service.</param>
         /// <param name="logger">logger.</param>
-        public BaseSynchronizeUserTask(IConfiguration configuration, IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory> userService, ILogger<BaseSynchronizeUserTask<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory>> logger)
+        protected BaseSynchronizeUserTask(IConfiguration configuration, IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory> userService, ILogger<BaseSynchronizeUserTask<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory>> logger)
             : base(configuration, logger)
         {
             this.userService = userService;

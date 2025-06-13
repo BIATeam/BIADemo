@@ -45,7 +45,7 @@ namespace BIA.Net.Core.Application.User
         where TUser : BaseUser, IEntity<int>, new()
         where TUserMapper : BaseUserMapper<TUserDto, TUser>
         where TUserFromDirectoryDto : BaseUserFromDirectoryDto, new()
-        where TUserFromDirectory : IUserFromDirectory, new()
+        where TUserFromDirectory : class, IUserFromDirectory, new()
     {
         /// <summary>
         /// The user synchronize domain service.
@@ -131,7 +131,7 @@ namespace BIA.Net.Core.Application.User
         /// <inheritdoc cref="IBaseUserAppService.AddUserFromUserDirectoryAsync"/>
         public async Task<TUser> AddUserFromUserDirectoryAsync(string identityKey, TUserFromDirectory userFromDirectory)
         {
-            if (userFromDirectory != null)
+            if (userFromDirectory != default(TUserFromDirectory))
             {
                 TUser user = new TUser();
                 this.userSynchronizeDomainService.UpdateUserFieldFromDirectory(user, userFromDirectory);
@@ -259,7 +259,7 @@ namespace BIA.Net.Core.Application.User
                     {
                         TUser foundUser = (await this.Repository.GetAllEntityAsync(filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey<TUser>(userFormDirectoryDto.IdentityKey))).FirstOrDefault();
 
-                        TUserFromDirectory userFormDirectory = default;
+                        TUserFromDirectory userFormDirectory;
 
                         if (this.configuration?.Authentication?.Keycloak?.IsActive == true)
                         {
@@ -270,7 +270,7 @@ namespace BIA.Net.Core.Application.User
                             userFormDirectory = await this.userDirectoryHelper.ResolveUser(userFormDirectoryDto);
                         }
 
-                        if (userFormDirectory != null)
+                        if (userFormDirectory != default(TUserFromDirectory))
                         {
                             var addedUser = this.userSynchronizeDomainService.AddOrActiveUserFromDirectory(userFormDirectory, foundUser);
 

@@ -24,7 +24,7 @@ namespace BIA.Net.Core.Application.User
     public class BaseUserSynchronizeDomainService<TUser, TUserFromDirectoryDto, TUserFromDirectory> : IBaseUserSynchronizeDomainService<TUser, TUserFromDirectory>
         where TUser : BaseUser, new()
         where TUserFromDirectoryDto : BaseUserFromDirectoryDto, new()
-        where TUserFromDirectory : IUserFromDirectory, new()
+        where TUserFromDirectory : class, IUserFromDirectory, new()
     {
         /// <summary>
         /// The repository.
@@ -99,7 +99,7 @@ namespace BIA.Net.Core.Application.User
                         try
                         {
                             var userFromDirectory = await this.userDirectoryHelper.ResolveUserByIdentityKey(this.userIdentityKeyDomainService.GetDatabaseIdentityKey(user), fullSynchro);
-                            if (userFromDirectory != null)
+                            if (userFromDirectory != default(TUserFromDirectory))
                             {
                                 this.ResynchronizeUser(user, userFromDirectory);
                             }
@@ -121,7 +121,7 @@ namespace BIA.Net.Core.Application.User
                 Parallel.ForEach(usersSidInDirectory, sid =>
                 {
                     var userFromDirectory = this.userDirectoryHelper.ResolveUserBySid(sid, fullSynchro).Result;
-                    if (userFromDirectory != null)
+                    if (userFromDirectory != default(TUserFromDirectory))
                     {
                         usersFromDirectory.Add(userFromDirectory);
                     }
@@ -130,7 +130,7 @@ namespace BIA.Net.Core.Application.User
                 foreach (TUser user in users)
                 {
                     var userFromDirectory = usersFromDirectory.FirstOrDefault(this.userIdentityKeyDomainService.CheckDirectoryIdentityKey<TUserFromDirectory>(this.userIdentityKeyDomainService.GetDatabaseIdentityKey(user)).Compile());
-                    if (userFromDirectory == null)
+                    if (userFromDirectory == default(TUserFromDirectory))
                     {
                         if (user.IsActive)
                         {
@@ -209,7 +209,7 @@ namespace BIA.Net.Core.Application.User
 
         private void ResynchronizeUser(TUser user, TUserFromDirectory userFromDirectory)
         {
-            if (userFromDirectory != null)
+            if (userFromDirectory != default(TUserFromDirectory))
             {
                 this.UpdateUserFieldFromDirectory(user, userFromDirectory);
             }

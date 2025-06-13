@@ -13,6 +13,7 @@ namespace BIA.Net.Core.Application.User
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.User.Entities;
 
     /// <summary>

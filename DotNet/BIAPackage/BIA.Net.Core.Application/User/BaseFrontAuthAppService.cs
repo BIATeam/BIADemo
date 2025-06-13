@@ -43,7 +43,7 @@ namespace BIA.Net.Core.Application.User
         where TEnumRoleId : struct, Enum
         where TEnumTeamTypeId : struct, Enum
         where TUserFromDirectoryDto : BaseUserFromDirectoryDto, new()
-        where TUserFromDirectory : IUserFromDirectory, new()
+        where TUserFromDirectory : class, IUserFromDirectory, new()
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseFrontAuthAppService{TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId, TUserFromDirectoryDto, TUserFromDirectory}" /> class.
@@ -60,7 +60,7 @@ namespace BIA.Net.Core.Application.User
         /// <param name="biaNetconfiguration">The bia netconfiguration.</param>
         /// <param name="userDirectoryHelper">The user directory helper.</param>
         /// <param name="ldapRepositoryHelper">The LDAP repository helper.</param>
-        public BaseFrontAuthAppService(
+        protected BaseFrontAuthAppService(
             IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory> userAppService,
             IBaseTeamAppService<TEnumTeamTypeId> teamAppService,
             IRoleAppService roleAppService,
@@ -108,17 +108,18 @@ namespace BIA.Net.Core.Application.User
         protected IRoleAppService RoleAppService { get; }
 
         /// <inheritdoc cref="IAuthAppService.LoginOnTeamsAsync"/>
-        public async Task<AuthInfoDto<TAdditionalInfoDto>> LoginOnTeamsAsync<TAdditionalInfoDto>(LoginParamDto loginParam, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
+        public async Task<AuthInfoDto<TAdditionalInfoDto>> LoginOnTeamsAsync<TAdditionalInfoDto, TUserDataDto>(LoginParamDto loginParam, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
             where TAdditionalInfoDto : BaseAdditionalInfoDto, new()
+            where TUserDataDto : BaseUserDataDto, new()
         {
             // Check if current user is authenticated
             this.CheckIsAuthenticated();
 
-            AuthInfoDto<TAdditionalInfoDto> authInfo = await this.GetLoginToken<TAdditionalInfoDto>(loginParam, true, teamsConfig);
+            AuthInfoDto<TAdditionalInfoDto> authInfo = await this.GetLoginToken<TAdditionalInfoDto, TUserDataDto>(loginParam, true, teamsConfig);
 
             if (!string.IsNullOrWhiteSpace(loginParam.BaseUserLogin) && Application.Authentication.JwtFactory.HasRole(authInfo.Token, BiaRights.Impersonation.ConnectionRights))
             {
-                return await this.GetLoginToken<TAdditionalInfoDto>(loginParam, false, teamsConfig);
+                return await this.GetLoginToken<TAdditionalInfoDto, TUserDataDto>(loginParam, false, teamsConfig);
             }
             else
             {
@@ -152,9 +153,11 @@ namespace BIA.Net.Core.Application.User
         /// <param name="withCredentials">if set to <c>true</c> [with credentials].</param>
         /// <param name="teamsConfig">The teams configuration.</param>
         /// <typeparam name="TAdditionalInfoDto">The type of AdditionalInfoDto.</typeparam>
+        /// <typeparam name="TUserDataDto">The type of UserDataDto.</typeparam>
         /// <returns>Return a token to authenticate user with permition.</returns>
-        protected virtual async Task<AuthInfoDto<TAdditionalInfoDto>> GetLoginToken<TAdditionalInfoDto>(LoginParamDto loginParam, bool withCredentials, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
+        protected virtual async Task<AuthInfoDto<TAdditionalInfoDto>> GetLoginToken<TAdditionalInfoDto, TUserDataDto>(LoginParamDto loginParam, bool withCredentials, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
             where TAdditionalInfoDto : BaseAdditionalInfoDto, new()
+            where TUserDataDto : BaseUserDataDto, new()
         {
             // Get informations in Claims
             string sid = this.GetSid();
@@ -185,7 +188,7 @@ namespace BIA.Net.Core.Application.User
             List<string> userPermissions = this.UserPermissionDomainService.TranslateRolesInPermissions(globalRoles, loginParam.LightToken);
 
             IEnumerable<BaseDtoVersionedTeam> allTeams = new List<BaseDtoVersionedTeam>();
-            UserDataDto userData = new UserDataDto();
+            TUserDataDto userData = new TUserDataDto();
 
             // Get Fine Grained Permissions
             if (loginParam.FineGrainedPermission && userInfo?.Id > 0)
@@ -212,7 +215,7 @@ namespace BIA.Net.Core.Application.User
             userPermissions.Sort();
 
             // Create Token Dto
-            TokenDto<UserDataDto> tokenDto = new TokenDto<UserDataDto>()
+            TokenDto<TUserDataDto> tokenDto = new TokenDto<TUserDataDto>()
             {
                 Login = login,
                 Id = (userInfo?.Id).GetValueOrDefault(),
@@ -222,7 +225,7 @@ namespace BIA.Net.Core.Application.User
             };
 
             // Get AdditionalInfoDto
-            TAdditionalInfoDto additionalInfo = this.GetAdditionalInfo<TAdditionalInfoDto>(loginParam, userInfo, allTeams, userData, teamsConfig);
+            TAdditionalInfoDto additionalInfo = this.GetAdditionalInfo<TAdditionalInfoDto, TUserDataDto>(loginParam, userInfo, allTeams, userData, teamsConfig);
 
             // Create AuthInfo
             AuthInfoDto<TAdditionalInfoDto> authInfo = await this.JwtFactory.GenerateAuthInfoAsync(tokenDto, additionalInfo, loginParam);
@@ -288,9 +291,11 @@ namespace BIA.Net.Core.Application.User
         /// <param name="userData">The user data.</param>
         /// <param name="teamsConfig">The teams configuration.</param>
         /// <typeparam name="TAdditionalInfoDto">The type of AdditionalInfoDto.</typeparam>
+        /// <typeparam name="TUserDataDto">The type of UserDataDto.</typeparam>
         /// <returns>A AdditionalInfo Dto.</returns>
-        protected virtual TAdditionalInfoDto GetAdditionalInfo<TAdditionalInfoDto>(LoginParamDto loginParam, UserInfoDto userInfo, IEnumerable<BaseDtoVersionedTeam> allTeams, UserDataDto userData, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
+        protected virtual TAdditionalInfoDto GetAdditionalInfo<TAdditionalInfoDto, TUserDataDto>(LoginParamDto loginParam, UserInfoDto userInfo, IEnumerable<BaseDtoVersionedTeam> allTeams, TUserDataDto userData, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
             where TAdditionalInfoDto : BaseAdditionalInfoDto, new()
+            where TUserDataDto : BaseUserDataDto, new()
         {
             TAdditionalInfoDto additionalInfo = default;
 
@@ -328,7 +333,7 @@ namespace BIA.Net.Core.Application.User
                     // automatic creation from ldap, only use if user do not need fine Role on team.
                     try
                     {
-                        TUserFromDirectory userFromDirectory = default;
+                        TUserFromDirectory userFromDirectory;
 
                         if (!string.IsNullOrWhiteSpace(sid))
                         {
@@ -339,7 +344,7 @@ namespace BIA.Net.Core.Application.User
                             userFromDirectory = await this.IdentityProviderRepository.FindUserAsync(identityKey);
                         }
 
-                        if (userFromDirectory != null)
+                        if (userFromDirectory != default(TUserFromDirectory))
                         {
                             TUser user = await this.UserAppService.AddUserFromUserDirectoryAsync(identityKey, userFromDirectory);
                             userInfo = this.UserAppService.CreateUserInfo(user);
@@ -375,8 +380,10 @@ namespace BIA.Net.Core.Application.User
         /// <param name="userInfo">The user information.</param>
         /// <param name="allTeams">All teams.</param>
         /// <param name="teamsConfig">The teams config.</param>
+        /// <typeparam name="TUserDataDto">The type of UserDataDto.</typeparam>
         /// <returns>List of role.</returns>
-        protected virtual async Task<List<string>> GetFineRolesAsync(LoginParamDto loginParam, UserDataDto userData, UserInfoDto userInfo, IEnumerable<BaseDtoVersionedTeam> allTeams, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
+        protected virtual async Task<List<string>> GetFineRolesAsync<TUserDataDto>(LoginParamDto loginParam, TUserDataDto userData, UserInfoDto userInfo, IEnumerable<BaseDtoVersionedTeam> allTeams, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
+            where TUserDataDto : BaseUserDataDto, new()
         {
             // the main roles
             var allRoles = new List<string>();

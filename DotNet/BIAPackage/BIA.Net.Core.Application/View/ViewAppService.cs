@@ -69,7 +69,7 @@ namespace BIA.Net.Core.Application.View
             }
             else
             {
-                UserDataDto userData = this.principal.GetUserData<UserDataDto>();
+                BaseUserDataDto userData = this.principal.GetUserData<BaseUserDataDto>();
 
                 return await this.Repository.GetAllResultAsync(
                     ViewMapper.EntityToDto(currentUserId),

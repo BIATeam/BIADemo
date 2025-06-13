@@ -63,7 +63,7 @@ namespace BIA.Net.Core.Application.User
         public static Specification<TTeam> ReadSpecification<TTeam>(TEnumTeamTypeId teamTypeId, IPrincipal principal, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
             where TTeam : class, IEntity<int>, IEntityTeam
         {
-            var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
+            var userData = (principal as BiaClaimsPrincipal).GetUserData<BaseUserDataDto>();
             IEnumerable<string> currentUserPermissions = (principal as BiaClaimsPrincipal).GetUserPermissions();
             bool accessAll = currentUserPermissions?.Any(x => x == BiaRights.Teams.AccessAll) == true;
             int userId = (principal as BiaClaimsPrincipal).GetUserId();
@@ -82,7 +82,7 @@ namespace BIA.Net.Core.Application.User
         /// <param name="userId">the user id.</param>
         /// <param name="teamsConfig">The teams configuration.</param>
         /// <returns>the Standard Read Specification.</returns>
-        public static Specification<TTeam> ReadSpecification<TTeam>(TEnumTeamTypeId teamTypeId, UserDataDto userData, bool viewAll, int userId, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
+        public static Specification<TTeam> ReadSpecification<TTeam>(TEnumTeamTypeId teamTypeId, BaseUserDataDto userData, bool viewAll, int userId, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
             where TTeam : class, IEntity<int>, IEntityTeam
         {
             // You can a team if your are member or have the viewAll permission
@@ -133,7 +133,7 @@ namespace BIA.Net.Core.Application.User
         public static Specification<TTeam> UpdateSpecification<TTeam>(TEnumTeamTypeId teamTypeId, IPrincipal principal)
             where TTeam : class, IEntity<int>, IEntityTeam
         {
-            var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
+            var userData = (principal as BiaClaimsPrincipal).GetUserData<BaseUserDataDto>();
             var currentTeamId = userData != null ? userData.GetCurrentTeamId(System.Convert.ToInt32(teamTypeId)) : 0;
             return new DirectSpecification<TTeam>(p => p.Id == currentTeamId);
         }
@@ -292,7 +292,7 @@ namespace BIA.Net.Core.Application.User
                     return false;
                 }
 
-                var userData = new BiaClaimsPrincipal(principal).GetUserData<UserDataDto>();
+                var userData = new BiaClaimsPrincipal(principal).GetUserData<BaseUserDataDto>();
                 if (userData.GetCurrentTeamId(System.Convert.ToInt32(teamTypeId)) != teamId)
                 {
                     return false;

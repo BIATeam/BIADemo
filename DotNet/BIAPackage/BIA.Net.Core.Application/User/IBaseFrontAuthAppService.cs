@@ -22,7 +22,9 @@ namespace BIA.Net.Core.Application.User
         /// <param name="teamsConfig">The teams configuration.</param>
         /// <returns>AuthInfo.</returns>
         /// <typeparam name="TAdditionalInfoDto">The type of AdditionalInfoDto.</typeparam>
-        Task<AuthInfoDto<TAdditionalInfoDto>> LoginOnTeamsAsync<TAdditionalInfoDto>(LoginParamDto loginParam, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
-             where TAdditionalInfoDto : BaseAdditionalInfoDto, new();
+        /// <typeparam name="TUserDataDto">The type of UserDataDto.</typeparam>
+        Task<AuthInfoDto<TAdditionalInfoDto>> LoginOnTeamsAsync<TAdditionalInfoDto, TUserDataDto>(LoginParamDto loginParam, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
+             where TAdditionalInfoDto : BaseAdditionalInfoDto, new()
+             where TUserDataDto : BaseUserDataDto, new();
     }
 }

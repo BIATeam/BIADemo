@@ -9,7 +9,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Hangfire;
     using Hangfire.States;
@@ -19,6 +18,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
     using TheBIADevCompany.BIADemo.Application.Job;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+    using TheBIADevCompany.BIADemo.Domain.Dto.User;
 
     /// <summary>
     /// The API controller used to manage hangfire.

@@ -25,7 +25,7 @@ namespace BIA.Net.Core.Application.Common
         /// <summary>
         /// The user data.
         /// </summary>
-        private readonly UserDataDto userDataDto;
+        private readonly BaseUserDataDto userDataDto;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SearchExpressionService"/> class.
@@ -35,7 +35,7 @@ namespace BIA.Net.Core.Application.Common
         public SearchExpressionService(IPrincipal principal)
         {
             this.userId = (principal as BiaClaimsPrincipal).GetUserId();
-            this.userDataDto = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
+            this.userDataDto = (principal as BiaClaimsPrincipal).GetUserData<BaseUserDataDto>();
 
             this.Dictionary = new BiaDictionary<SearchExpressionItem>
             {
