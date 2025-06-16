@@ -13,7 +13,9 @@ namespace BIA.Net.Core.Application.User
     /// <summary>
     /// Interface AuthService.
     /// </summary>
-    public interface IBaseFrontAuthAppService : IBaseAuthAppService
+    /// <typeparam name="TAdditionalInfoDto">The type of additional info dto.</typeparam>
+    public interface IBaseFrontAuthAppService<TAdditionalInfoDto> : IBaseAuthAppService
+        where TAdditionalInfoDto : BaseAdditionalInfoDto, new()
     {
         /// <summary>
         /// Logins the on teams asynchronous.
@@ -23,8 +25,6 @@ namespace BIA.Net.Core.Application.User
         /// <returns>AuthInfo.</returns>
         /// <typeparam name="TAdditionalInfoDto">The type of AdditionalInfoDto.</typeparam>
         /// <typeparam name="TUserDataDto">The type of UserDataDto.</typeparam>
-        Task<AuthInfoDto<TAdditionalInfoDto>> LoginOnTeamsAsync<TAdditionalInfoDto, TUserDataDto>(LoginParamDto loginParam, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
-             where TAdditionalInfoDto : BaseAdditionalInfoDto, new()
-             where TUserDataDto : BaseUserDataDto, new();
+        Task<AuthInfoDto<TAdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam, ImmutableList<BiaTeamConfig<Team>> teamsConfig);
     }
 }

@@ -11,21 +11,13 @@ namespace BIA.Net.Core.Domain.Dto.User
     /// <summary>
     /// UserData Dto.
     /// </summary>
-    public class BaseUserDataDto
+    public abstract class BaseUserDataDto
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BaseUserDataDto"/> class.
-        /// </summary>
-        public BaseUserDataDto()
-        {
-            this.CurrentTeams = new List<CurrentTeamDto>();
-        }
-
         /// <summary>
         /// Gets or sets the current team.
         /// </summary>
         [JsonProperty("currentTeams")]
-        public ICollection<CurrentTeamDto> CurrentTeams { get; set; }
+        public ICollection<CurrentTeamDto> CurrentTeams { get; set; } = new List<CurrentTeamDto>();
 
         /// <summary>
         /// Gets the current team identifier.

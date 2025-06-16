@@ -5,18 +5,22 @@
 namespace TheBIADevCompany.BIADemo.Domain.Dto.User
 {
     using BIA.Net.Core.Domain.Dto.User;
+    using Microsoft.Identity.Client;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// UserData Dto.
     /// </summary>
-    public partial class UserDataDto : BaseUserDataDto
+    public class UserDataDto : BaseUserDataDto
     {
+        // Begin BIADemo
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="UserDataDto"/> class.
+        /// Example custom data.
         /// </summary>
-        public UserDataDto()
-            : base()
-        {
-        }
+        [JsonProperty("customData")]
+        public string CustomData { get; set; }
+
+        // End BIADemo
     }
 }

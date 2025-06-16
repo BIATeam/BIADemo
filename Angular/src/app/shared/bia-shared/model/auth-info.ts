@@ -37,6 +37,9 @@ export interface UserProfile {
 
 export interface UserData {
   currentTeams: CurrentTeamDto[];
+  // Begin BIADemo
+  customData?: string | undefined;
+  // End BIADemo
 }
 
 export class CurrentTeamDto {
@@ -51,6 +54,9 @@ export interface AdditionalInfos {
   userInfo: UserInfo;
   userProfile: UserProfile;
   teams: Team[];
+  // Begin BIADemo
+  customInfo?: string | undefined;
+  // End BIADemo
 }
 
 export interface Token {

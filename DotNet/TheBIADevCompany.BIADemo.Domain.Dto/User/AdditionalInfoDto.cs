@@ -11,5 +11,13 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.User
     /// </summary>
     public class AdditionalInfoDto : BaseAdditionalInfoDto
     {
+        // Begin BIADemo
+
+        /// <summary>
+        /// Example custom info.
+        /// </summary>
+        public string CustomInfo { get; set; }
+
+        // End BIADemo
     }
 }

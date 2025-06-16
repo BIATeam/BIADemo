@@ -10,7 +10,7 @@ namespace BIA.Net.Core.Domain.Dto.User
     /// <summary>
     /// Adtitionnal Information send to the front. Cannot be customized.
     /// </summary>
-    public class BaseAdditionalInfoDto
+    public abstract class BaseAdditionalInfoDto
     {
         /// <summary>
         /// Gets or sets the user info.

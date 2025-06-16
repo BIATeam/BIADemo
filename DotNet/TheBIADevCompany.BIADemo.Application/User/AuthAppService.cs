@@ -3,13 +3,17 @@
 // </copyright>
 namespace TheBIADevCompany.BIADemo.Application.User
 {
+    using System.Collections.Generic;
+    using System.Collections.Immutable;
     using System.Security.Principal;
 #if BIA_FRONT_FEATURE
     using System.Threading.Tasks;
 #endif
     using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Application.User;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;
@@ -17,12 +21,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
+    using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.User.Models;
 #if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
-    using TheBIADevCompany.BIADemo.Domain.User.Models;
 #endif
 
     /// <summary>
@@ -44,9 +48,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
         IUserDirectoryRepository<UserFromDirectoryDto, UserFromDirectory> userDirectoryHelper,
         ILdapRepositoryHelper ldapRepositoryHelper)
 #if BIA_FRONT_FEATURE
-        : BaseFrontAuthAppService<UserDto, User, RoleId, TeamTypeId, UserFromDirectoryDto, UserFromDirectory>(userAppService, teamAppService, roleAppService, identityProviderRepository, jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper), IAuthAppService
+        : BaseFrontAuthAppService<UserDto, User, RoleId, TeamTypeId, UserFromDirectoryDto, UserFromDirectory, AdditionalInfoDto, UserDataDto>(userAppService, teamAppService, roleAppService, identityProviderRepository, jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper), IAuthAppService
 #else
-        : BaseAuthAppService(jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper), IAuthAppService
+        : BaseAuthAppService<UserFromDirectoryDto, UserFromDirectory, AdditionalInfoDto, UserDataDto>(jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper), IAuthAppService
 #endif
     {
 #if BIA_FRONT_FEATURE
@@ -59,7 +63,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </returns>
         public Task<AuthInfoDto<AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam)
         {
-            return this.LoginOnTeamsAsync<AdditionalInfoDto, UserDataDto>(loginParam, TeamConfig.Config);
+            return this.LoginOnTeamsAsync(loginParam, TeamConfig.Config);
         }
 
         /// <summary>
@@ -71,6 +75,28 @@ namespace TheBIADevCompany.BIADemo.Application.User
             // If you change it parse all other #IdentityKey to align all (Database, Ldap, Idp, WindowsIdentity).
             return this.GetLogin();
         }
+
+        // Begin BIADemo
+
+        /// <inheritdoc/>
+        protected override UserDataDto CreateUserData()
+        {
+            return new UserDataDto
+            {
+                CustomData = $"This is a custom user data for user {this.GetLogin()}",
+            };
+        }
+
+        /// <inheritdoc/>
+        protected override AdditionalInfoDto CreateAdditionalInfo()
+        {
+            return new AdditionalInfoDto
+            {
+                CustomInfo = $"This is a custom additional info for user {this.GetLogin()}",
+            };
+        }
+
+        // End BIADemo
 #endif
     }
 }

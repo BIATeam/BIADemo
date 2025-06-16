@@ -33,12 +33,16 @@ namespace BIA.Net.Core.Application.User
     /// </summary>
     /// <typeparam name="TUserFromDirectoryDto">The type of user from directory dto.</typeparam>
     /// <typeparam name="TUserFromDirectory">The type of user from directory.</typeparam>
-    public class BaseAuthAppService<TUserFromDirectoryDto, TUserFromDirectory> : IBaseAuthAppService
+    /// <typeparam name="TAdditionalInfoDto">The type of additional info dto.</typeparam>
+    /// <typeparam name="TUserDataDto">The type of user data dto.</typeparam>
+    public class BaseAuthAppService<TUserFromDirectoryDto, TUserFromDirectory, TAdditionalInfoDto, TUserDataDto> : IBaseAuthAppService
         where TUserFromDirectoryDto : BaseUserFromDirectoryDto, new()
         where TUserFromDirectory : IUserFromDirectory, new()
+        where TAdditionalInfoDto : BaseAdditionalInfoDto, new()
+        where TUserDataDto : BaseUserDataDto, new()
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseAuthAppService{TUserFromDirectoryDto, TUserFromDirectory}" /> class.
+        /// Initializes a new instance of the <see cref="BaseAuthAppService{TUserFromDirectoryDto, TUserFromDirectory, TAdditionalInfoDto, TUserDataDto}" /> class.
         /// </summary>
         /// <param name="userAppService">The user application service.</param>
         /// <param name="teamAppService">The team application service.</param>
@@ -56,7 +60,7 @@ namespace BIA.Net.Core.Application.User
             IJwtFactory jwtFactory,
             IPrincipal principal,
             IUserPermissionDomainService userPermissionDomainService,
-            ILogger<BaseAuthAppService<TUserFromDirectoryDto, TUserFromDirectory>> logger,
+            ILogger<BaseAuthAppService<TUserFromDirectoryDto, TUserFromDirectory, TAdditionalInfoDto, TUserDataDto>> logger,
             IConfiguration configuration,
             IOptions<BiaNetSection> biaNetconfiguration,
             IUserDirectoryRepository<TUserFromDirectoryDto, TUserFromDirectory> userDirectoryHelper,
@@ -74,7 +78,7 @@ namespace BIA.Net.Core.Application.User
         /// <summary>
         /// The logger.
         /// </summary>
-        protected ILogger<BaseAuthAppService<TUserFromDirectoryDto, TUserFromDirectory>> Logger { get; }
+        protected ILogger<BaseAuthAppService<TUserFromDirectoryDto, TUserFromDirectory, TAdditionalInfoDto, TUserDataDto>> Logger { get; }
 
         /// <summary>
         /// The principal.
@@ -106,10 +110,8 @@ namespace BIA.Net.Core.Application.User
         /// </summary>
         protected ILdapRepositoryHelper LdapRepositoryHelper { get; }
 
-        /// <inheritdoc cref="IAuthAppService.LoginAsync"/>
-        public async Task<string> LoginAsync<TAdditionalInfoDto, TUserDataDto>()
-             where TAdditionalInfoDto : BaseAdditionalInfoDto, new()
-             where TUserDataDto : BaseUserDataDto, new()
+        /// <inheritdoc/>
+        public async Task<string> LoginAsync()
         {
             // Check if current user is authenticated
             this.CheckIsAuthenticated();
@@ -137,11 +139,11 @@ namespace BIA.Net.Core.Application.User
                 Login = login,
                 RoleIds = new List<int>(),
                 Permissions = userPermissions,
-                UserData = new TUserDataDto(),
+                UserData = this.CreateUserData(),
             };
 
             // Create AuthInfo
-            AuthInfoDto<TAdditionalInfoDto> authInfo = await this.JwtFactory.GenerateAuthInfoAsync(tokenDto, default(TAdditionalInfoDto), new LoginParamDto());
+            AuthInfoDto<TAdditionalInfoDto> authInfo = await this.JwtFactory.GenerateAuthInfoAsync(tokenDto, this.CreateAdditionalInfo(), new LoginParamDto());
 
             return authInfo?.Token;
         }
@@ -259,6 +261,24 @@ namespace BIA.Net.Core.Application.User
             }
 
             return domain;
+        }
+
+        /// <summary>
+        /// Create a new instance of <typeparamref name="TUserDataDto"/> added into login token of <see cref="AuthInfoDto{TAdditionalInfoDto}"/>.
+        /// </summary>
+        /// <returns>New <typeparamref name="TUserDataDto"/>.</returns>
+        protected virtual TUserDataDto CreateUserData()
+        {
+            return new TUserDataDto();
+        }
+
+        /// <summary>
+        /// Create a new instance of <typeparamref name="TAdditionalInfoDto"/> added beside login token of <see cref="AuthInfoDto{TAdditionalInfoDto}"/>.
+        /// </summary>
+        /// <returns>New <typeparamref name="TAdditionalInfoDto"/>.</returns>
+        protected virtual TAdditionalInfoDto CreateAdditionalInfo()
+        {
+            return new TAdditionalInfoDto();
         }
     }
 }

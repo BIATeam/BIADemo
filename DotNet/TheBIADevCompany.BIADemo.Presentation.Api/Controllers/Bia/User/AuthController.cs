@@ -162,7 +162,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         {
             try
             {
-                string token = await this.authService.LoginAsync<AdditionalInfoDto, UserDataDto>();
+                string token = await this.authService.LoginAsync();
                 return this.Ok(token);
             }
             catch (UnauthorizedException ex)
