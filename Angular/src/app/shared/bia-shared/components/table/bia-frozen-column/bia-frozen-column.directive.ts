@@ -26,12 +26,13 @@ export class BiaFrozenColumn implements AfterViewInit, OnDestroy {
     this._frozen = val;
     Promise.resolve(null).then(() => {
       this.listenToSibling();
-      this.updateStickyPosition();
+      this.updateStickyPosition(true);
     });
   }
 
   @Input() alignFrozen: string = 'left';
 
+  isFirstRow = false;
   private observer: ResizeObserver | null = null;
 
   constructor(
@@ -42,8 +43,12 @@ export class BiaFrozenColumn implements AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     this.zone.runOutsideAngular(() => {
       setTimeout(() => {
-        this.listenToSibling();
-        this.recalculateColumns();
+        this.isFirstRow =
+          this.el.nativeElement?.parentElement?.previousElementSibling == null;
+        if (this.isFirstRow) {
+          this.listenToSibling();
+        }
+        this.recalculateColumns(false);
       }, 1000);
     });
   }
@@ -53,7 +58,7 @@ export class BiaFrozenColumn implements AfterViewInit, OnDestroy {
     this.el.nativeElement.dispatchEvent(new CustomEvent('isDestroyed'));
   }
 
-  recalculateColumns() {
+  recalculateColumns(cascading: boolean) {
     if (this.el?.nativeElement?.parentNode) {
       const siblings = DomHandler.siblings(this.el.nativeElement);
       const index = DomHandler.index(this.el.nativeElement);
@@ -63,15 +68,15 @@ export class BiaFrozenColumn implements AfterViewInit, OnDestroy {
           : (siblings.length - index + 1) * 50;
 
       setTimeout(() => {
-        this.updateStickyPosition();
+        this.updateStickyPosition(cascading);
       }, time);
     }
   }
 
   _frozen: boolean = true;
 
-  updateStickyPosition() {
-    if (this._frozen) {
+  updateStickyPosition(cascading: boolean) {
+    if ((this.isFirstRow || !cascading) && this._frozen) {
       if (this.alignFrozen === 'right') {
         let right = 0;
         let sibling = this.el.nativeElement.nextElementSibling;
@@ -91,12 +96,27 @@ export class BiaFrozenColumn implements AfterViewInit, OnDestroy {
         this.el.nativeElement.style.left = left + 'px';
         this.el.nativeElement.dispatchEvent(new CustomEvent('positionChanged'));
       }
+
+      if (cascading) {
+        let nextRow = this.el.nativeElement?.parentElement?.nextElementSibling;
+        while (nextRow) {
+          let index = DomHandler.index(this.el.nativeElement);
+          if (nextRow.children && nextRow.children[index]) {
+            nextRow.children[index].style.left =
+              this.el.nativeElement.style.left;
+            nextRow.children[index].style.right =
+              this.el.nativeElement.style.right;
+          }
+
+          nextRow = nextRow.nextElementSibling;
+        }
+      }
     }
   }
 
   listenToSibling() {
     this.removeListener();
-    if (this._frozen) {
+    if (this.isFirstRow && this._frozen) {
       this.sibling =
         this.alignFrozen === 'left'
           ? this.el.nativeElement.previousElementSibling
@@ -105,7 +125,7 @@ export class BiaFrozenColumn implements AfterViewInit, OnDestroy {
       if (this.sibling) {
         this.setupObserver(this.sibling);
         this.sibling.addEventListener('positionChanged', () =>
-          this.recalculateColumns()
+          this.recalculateColumns(true)
         );
         this.sibling.addEventListener('isDestroyed', () =>
           this.listenToSibling()
@@ -116,7 +136,7 @@ export class BiaFrozenColumn implements AfterViewInit, OnDestroy {
 
   setupObserver(observedElement: HTMLElement) {
     this.observer = new ResizeObserver(() => {
-      this.recalculateColumns();
+      this.recalculateColumns(true);
     });
 
     this.observer.observe(observedElement);
@@ -124,8 +144,9 @@ export class BiaFrozenColumn implements AfterViewInit, OnDestroy {
 
   removeListener() {
     if (this.sibling) {
+      this.observer?.unobserve(this.sibling);
       this.sibling.removeEventListener('positionChanged', () =>
-        this.recalculateColumns()
+        this.recalculateColumns(true)
       );
       this.sibling.removeEventListener('isDestroyed', () =>
         this.listenToSibling()
