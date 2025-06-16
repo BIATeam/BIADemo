@@ -18,22 +18,30 @@ import { DomHandler } from 'primeng/dom';
 })
 export class BiaFrozenColumn implements AfterViewInit, OnDestroy {
   sibling: any;
+  firstCellMaster: any;
+  _frozen: boolean = true;
+
   @Input() get frozen(): boolean {
     return this._frozen;
   }
 
   set frozen(val: boolean) {
     this._frozen = val;
-    Promise.resolve(null).then(() => {
-      this.listenToSibling();
-      this.updateStickyPosition(true);
-    });
+    if (val) {
+      Promise.resolve(null).then(() => {
+        this.listenToSibling();
+        this.updateStickyPosition(true);
+      });
+    } else {
+      this.removeListeners();
+    }
   }
 
   @Input() alignFrozen: string = 'left';
 
   isFirstRow = false;
-  private observer: ResizeObserver | null = null;
+  resizeObserver: ResizeObserver | null = null;
+  mutationObserver: MutationObserver;
 
   constructor(
     private el: ElementRef,
@@ -43,19 +51,49 @@ export class BiaFrozenColumn implements AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     this.zone.runOutsideAngular(() => {
       setTimeout(() => {
-        this.isFirstRow =
-          this.el.nativeElement?.parentElement?.previousElementSibling == null;
-        if (this.isFirstRow) {
-          this.listenToSibling();
-        }
+        this.initSiblings();
         this.recalculateColumns(false);
-      }, 1000);
+      }, 200);
     });
   }
 
+  initSiblings() {
+    this.getFrozenMaster();
+    if (this.isFirstRow) {
+      this.listenToSibling();
+    }
+  }
+
   ngOnDestroy() {
-    this.removeListener();
+    this.removeListeners();
     this.el.nativeElement.dispatchEvent(new CustomEvent('isDestroyed'));
+  }
+
+  getFrozenMaster() {
+    if (this.el?.nativeElement?.parentNode) {
+      this.firstCellMaster = null;
+      const index = DomHandler.index(this.el.nativeElement);
+      const childNodes =
+        this.el.nativeElement.parentNode?.parentNode?.childNodes;
+
+      if (childNodes) {
+        for (var i = 0; i < childNodes.length; i++) {
+          if (childNodes[i].children) {
+            const children = childNodes[i].children[index];
+            if (children && children.hasAttribute('biaFrozenColumn')) {
+              if (children != this.el.nativeElement) {
+                this.firstCellMaster = childNodes[i].children[index];
+              } else {
+                this.isFirstRow =
+                  this.el.nativeElement?.parentElement
+                    ?.previousElementSibling == null;
+              }
+              break;
+            }
+          }
+        }
+      }
+    }
   }
 
   recalculateColumns(cascading: boolean) {
@@ -72,8 +110,6 @@ export class BiaFrozenColumn implements AfterViewInit, OnDestroy {
       }, time);
     }
   }
-
-  _frozen: boolean = true;
 
   updateStickyPosition(cascading: boolean) {
     if ((this.isFirstRow || !cascading) && this._frozen) {
@@ -115,36 +151,62 @@ export class BiaFrozenColumn implements AfterViewInit, OnDestroy {
   }
 
   listenToSibling() {
-    this.removeListener();
-    if (this.isFirstRow && this._frozen) {
-      this.sibling =
-        this.alignFrozen === 'left'
-          ? this.el.nativeElement.previousElementSibling
-          : this.el.nativeElement.nextElementSibling;
+    this.removeListeners();
+    if (this._frozen) {
+      this.firstCellMaster?.addEventListener('masterDestroyed', () =>
+        this.initSiblings()
+      );
+      if (this.isFirstRow) {
+        this.sibling =
+          this.alignFrozen === 'left'
+            ? this.el.nativeElement.previousElementSibling
+            : this.el.nativeElement.nextElementSibling;
 
-      if (this.sibling) {
-        this.setupObserver(this.sibling);
-        this.sibling.addEventListener('positionChanged', () =>
-          this.recalculateColumns(true)
-        );
-        this.sibling.addEventListener('isDestroyed', () =>
-          this.listenToSibling()
-        );
+        if (this.sibling) {
+          this.setupResizeObserver(this.sibling);
+          this.sibling.addEventListener('positionChanged', () =>
+            this.recalculateColumns(true)
+          );
+          this.sibling.addEventListener('isDestroyed', () =>
+            this.listenToSibling()
+          );
+        }
+        this.setupMutationObserver(this.el.nativeElement.parentNode);
       }
     }
   }
 
-  setupObserver(observedElement: HTMLElement) {
-    this.observer = new ResizeObserver(() => {
-      this.recalculateColumns(true);
-    });
-
-    this.observer.observe(observedElement);
+  setupResizeObserver(observedElement: HTMLElement) {
+    if (observedElement) {
+      this.resizeObserver = new ResizeObserver(() => {
+        this.recalculateColumns(true);
+      });
+      this.resizeObserver.observe(observedElement);
+    }
   }
 
-  removeListener() {
+  setupMutationObserver(observedElement: HTMLElement) {
+    if (observedElement) {
+      this.mutationObserver = new MutationObserver(mutations => {
+        mutations.forEach(mutation => {
+          if (mutation.type === 'childList') {
+            this.initSiblings();
+          }
+        });
+      });
+      this.mutationObserver.observe(observedElement, {
+        childList: true,
+        subtree: false,
+      });
+    }
+  }
+
+  removeListeners() {
+    this.firstCellMaster?.removeEventListener('masterDestroyed', () =>
+      this.initSiblings()
+    );
     if (this.sibling) {
-      this.observer?.unobserve(this.sibling);
+      this.resizeObserver?.unobserve(this.sibling);
       this.sibling.removeEventListener('positionChanged', () =>
         this.recalculateColumns(true)
       );
@@ -152,5 +214,6 @@ export class BiaFrozenColumn implements AfterViewInit, OnDestroy {
         this.listenToSibling()
       );
     }
+    this.mutationObserver?.disconnect();
   }
 }
