@@ -23,6 +23,7 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { BiaCalcTableComponent } from 'src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component';
+import { BiaFrozenColumn } from 'src/app/shared/bia-shared/components/table/bia-frozen-column/bia-frozen-column.directive';
 import { BiaTableFilterComponent } from 'src/app/shared/bia-shared/components/table/bia-table-filter/bia-table-filter.component';
 import { BiaTableFooterControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-footer-controller/bia-table-footer-controller.component';
 import { BiaTableInputComponent } from 'src/app/shared/bia-shared/components/table/bia-table-input/bia-table-input.component';
@@ -57,6 +58,7 @@ import { Plane } from '../../model/plane';
     BiaTableInputComponent,
     BiaTableOutputComponent,
     BiaTableFooterControllerComponent,
+    BiaFrozenColumn,
   ],
 })
 export class PlaneTableComponent
