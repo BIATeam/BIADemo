@@ -24,6 +24,7 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { BiaCalcTableComponent } from 'src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component';
+import { BiaFrozenColumn } from 'src/app/shared/bia-shared/components/table/bia-frozen-column/bia-frozen-column.directive';
 import { PropType } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
@@ -59,6 +60,7 @@ import { BiaTableOutputComponent } from '../../../../components/table/bia-table-
     BiaTableFooterControllerComponent,
     AsyncPipe,
     TranslateModule,
+    BiaFrozenColumn,
   ],
 })
 export class CrudItemTableComponent<CrudItem extends BaseDto>

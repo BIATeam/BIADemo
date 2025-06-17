@@ -20,6 +20,7 @@ import { TableModule } from 'primeng/table';
 import { Tooltip } from 'primeng/tooltip';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
+import { BiaFrozenColumn } from 'src/app/shared/bia-shared/components/table/bia-frozen-column/bia-frozen-column.directive';
 import { BiaTableFilterComponent } from 'src/app/shared/bia-shared/components/table/bia-table-filter/bia-table-filter.component';
 import { BiaTableFooterControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-footer-controller/bia-table-footer-controller.component';
 import { BiaTableInputComponent } from 'src/app/shared/bia-shared/components/table/bia-table-input/bia-table-input.component';
@@ -54,6 +55,7 @@ import { Site } from '../../model/site';
     BiaTableInputComponent,
     BiaTableOutputComponent,
     BiaTableFooterControllerComponent,
+    BiaFrozenColumn,
   ],
 })
 export class SiteTableComponent extends CrudItemTableComponent<Site> {

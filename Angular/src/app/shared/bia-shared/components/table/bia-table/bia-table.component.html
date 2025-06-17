@@ -41,7 +41,7 @@
         *ngIf="canSelectElement === true && !readOnly"
         [style.width]="widthSelect"
         [alignFrozen]="alignFrozenSelect"
-        pFrozenColumn
+        biaFrozenColumn
         [frozen]="isSelectFrozen">
         <p-tableHeaderCheckbox
           *ngIf="canSelectMultipleElement"></p-tableHeaderCheckbox>
@@ -50,13 +50,13 @@
         *ngIf="canExpandRow"
         [style.width]="widthExpand"
         [alignFrozen]="alignFrozenSelect"
-        pFrozenColumn
+        biaFrozenColumn
         [frozen]="isSelectFrozen"></th>
       <th
         *ngIf="showFixableState"
         [style.width]="widthSelect"
         [alignFrozen]="alignFrozenSelect"
-        pFrozenColumn
+        biaFrozenColumn
         [frozen]="isSelectFrozen">
         {{ 'bia.fixed' | translate }}
       </th>
@@ -68,7 +68,7 @@
           pResizableColumn
           [style.min-width]="col.minWidth"
           [alignFrozen]="col.alignFrozen"
-          pFrozenColumn
+          biaFrozenColumn
           [frozen]="col.isFrozen"
           pTooltip="{{
             isResizableColumn && !col?.icon ? (col?.header | translate) : ''
@@ -93,7 +93,7 @@
           pResizableColumn
           [style.min-width]="col.minWidth"
           [alignFrozen]="col.alignFrozen"
-          pFrozenColumn
+          biaFrozenColumn
           [frozen]="col.isFrozen"
           pTooltip="{{
             isResizableColumn && !col?.icon ? (col?.header | translate) : ''
@@ -118,14 +118,14 @@
         *ngIf="canSelectElement === true && !readOnly"
         [style.width]="widthSelect"
         [alignFrozen]="alignFrozenSelect"
-        pFrozenColumn
+        biaFrozenColumn
         pResizableColumn
         [frozen]="isSelectFrozen"></th>
       <th
         *ngIf="showFixableState"
         [style.width]="widthSelect"
         [alignFrozen]="alignFrozenSelect"
-        pFrozenColumn
+        biaFrozenColumn
         pResizableColumn
         [frozen]="isSelectFrozen"></th>
       <th
@@ -135,7 +135,7 @@
         pResizableColumn
         [style.min-width]="col.minWidth"
         [alignFrozen]="col.alignFrozen"
-        pFrozenColumn
+        biaFrozenColumn
         [frozen]="col.isFrozen">
         <bia-table-filter
           [field]="col"
@@ -156,7 +156,7 @@
         *ngIf="canSelectElement === true && !readOnly"
         [style.width]="widthSelect"
         [alignFrozen]="alignFrozenSelect"
-        pFrozenColumn
+        biaFrozenColumn
         [frozen]="isSelectFrozen">
         <ng-container *ngIf="rowData.id > 0">
           <ng-container
@@ -174,7 +174,7 @@
         [class]="'bia-column-expand'"
         [style.width]="widthExpand"
         [alignFrozen]="alignFrozenSelect"
-        pFrozenColumn
+        biaFrozenColumn
         [frozen]="isSelectFrozen">
         <i
           [pRowToggler]="rowData"
@@ -184,7 +184,7 @@
         *ngIf="showFixableState"
         [style.width]="widthSelect"
         [alignFrozen]="alignFrozenSelect"
-        pFrozenColumn
+        biaFrozenColumn
         [frozen]="isSelectFrozen">
         <ng-container *ngIf="rowData.isFixed === true">
           <div class="flex justify-content-center">
@@ -198,7 +198,7 @@
         (click)="clickElementData(rowData)"
         [style.min-width]="col.minWidth"
         [alignFrozen]="col.alignFrozen"
-        pFrozenColumn
+        biaFrozenColumn
         [frozen]="col.isFrozen">
         <bia-table-output
           [field]="col"
@@ -236,7 +236,7 @@
         *ngIf="canSelectElement === true && !readOnly"
         [style.width]="widthSelect"
         [alignFrozen]="alignFrozenSelect"
-        pFrozenColumn
+        biaFrozenColumn
         [frozen]="isSelectFrozen">
         <p-skeleton
           [ngStyle]="{
