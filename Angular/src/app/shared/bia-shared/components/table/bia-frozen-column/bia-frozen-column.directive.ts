@@ -12,12 +12,14 @@ import { DomHandler } from 'primeng/dom';
   selector: '[biaFrozenColumn]',
   standalone: true,
   host: {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     '[class.p-datatable-frozen-column]': 'frozen',
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     '[class.p-datatable-frozen-column-left]': 'alignFrozen === "left"',
   },
 })
-export class BiaFrozenColumn implements AfterViewInit, OnDestroy {
-  _frozen: boolean = true;
+export class BiaFrozenColumnDirective implements AfterViewInit, OnDestroy {
+  _frozen = true;
 
   @Input() get frozen(): boolean {
     return this._frozen;
@@ -85,11 +87,11 @@ export class BiaFrozenColumn implements AfterViewInit, OnDestroy {
 
       // Check the row until first frozen cell at same index in row as current element is found
       if (childNodes) {
-        for (var i = 0; i < childNodes.length; i++) {
+        for (let i = 0; i < childNodes.length; i++) {
           if (childNodes[i].children) {
             const children = childNodes[i].children[index];
             if (children && children.hasAttribute('biaFrozenColumn')) {
-              if (children != this.el.nativeElement) {
+              if (children !== this.el.nativeElement) {
                 this.firstFrozenCellInColumn = childNodes[i].children[index];
                 this.isfirstFrozenCellInColumn = false;
               } else {
@@ -143,9 +145,9 @@ export class BiaFrozenColumn implements AfterViewInit, OnDestroy {
 
       // Only first frozen cell is setting all the others cells position when cascading is on
       if (cascading) {
+        const index = DomHandler.index(this.el.nativeElement);
         let nextRow = this.el.nativeElement?.parentElement?.nextElementSibling;
         while (nextRow) {
-          let index = DomHandler.index(this.el.nativeElement);
           if (
             nextRow.children &&
             nextRow.children[index] &&

@@ -20,7 +20,7 @@ import { TableModule } from 'primeng/table';
 import { Tooltip } from 'primeng/tooltip';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
-import { BiaFrozenColumn } from 'src/app/shared/bia-shared/components/table/bia-frozen-column/bia-frozen-column.directive';
+import { BiaFrozenColumnDirective } from 'src/app/shared/bia-shared/components/table/bia-frozen-column/bia-frozen-column.directive';
 import { BiaTableFilterComponent } from 'src/app/shared/bia-shared/components/table/bia-table-filter/bia-table-filter.component';
 import { BiaTableFooterControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-footer-controller/bia-table-footer-controller.component';
 import { BiaTableInputComponent } from 'src/app/shared/bia-shared/components/table/bia-table-input/bia-table-input.component';
@@ -54,7 +54,7 @@ import { AircraftMaintenanceCompany } from '../../model/aircraft-maintenance-com
     BiaTableInputComponent,
     BiaTableOutputComponent,
     BiaTableFooterControllerComponent,
-    BiaFrozenColumn,
+    BiaFrozenColumnDirective,
   ],
 })
 export class AircraftMaintenanceCompanyTableComponent extends CrudItemTableComponent<AircraftMaintenanceCompany> {

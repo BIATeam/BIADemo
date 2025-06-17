@@ -34,7 +34,7 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import { BiaFieldConfig } from '../../../model/bia-field-config';
-import { BiaFrozenColumn } from '../bia-frozen-column/bia-frozen-column.directive';
+import { BiaFrozenColumnDirective } from '../bia-frozen-column/bia-frozen-column.directive';
 import { BiaTableFilterComponent } from '../bia-table-filter/bia-table-filter.component';
 import { BiaTableFooterControllerComponent } from '../bia-table-footer-controller/bia-table-footer-controller.component';
 import { BiaTableInputComponent } from '../bia-table-input/bia-table-input.component';
@@ -64,7 +64,7 @@ import { DictOptionDto } from '../bia-table/dict-option-dto';
     BiaTableFooterControllerComponent,
     AsyncPipe,
     TranslateModule,
-    BiaFrozenColumn,
+    BiaFrozenColumnDirective,
   ],
 })
 export class BiaCalcTableComponent<TDto extends { id: number }>
