@@ -17,8 +17,6 @@ import { DomHandler } from 'primeng/dom';
   },
 })
 export class BiaFrozenColumn implements AfterViewInit, OnDestroy {
-  sibling: any;
-  firstCellMaster: any;
   _frozen: boolean = true;
 
   @Input() get frozen(): boolean {
@@ -29,7 +27,7 @@ export class BiaFrozenColumn implements AfterViewInit, OnDestroy {
     this._frozen = val;
     if (val) {
       Promise.resolve(null).then(() => {
-        this.listenToSibling();
+        this.listenToOtherTableElements();
         this.updateStickyPosition(true);
       });
     } else {
@@ -39,9 +37,17 @@ export class BiaFrozenColumn implements AfterViewInit, OnDestroy {
 
   @Input() alignFrozen: string = 'left';
 
-  isFirstRow = false;
-  resizeObserver: ResizeObserver | null = null;
-  mutationObserver: MutationObserver;
+  sibling: any;
+  firstFrozenCellInColumn: any;
+  isfirstFrozenCellInColumn = false;
+  siblingResizeObserver: ResizeObserver | null = null;
+  rowMutationObserver: MutationObserver;
+  isFirstFrozenCellInColumnDestroyedHandler: () => void = () =>
+    this.initSiblings();
+  positionChangedHandler: () => void = () =>
+    this.updateStickyPositionWithDelay(true);
+  isSiblingDestroyedHandler: () => void = () =>
+    this.listenToOtherTableElements();
 
   constructor(
     private el: ElementRef,
@@ -52,15 +58,15 @@ export class BiaFrozenColumn implements AfterViewInit, OnDestroy {
     this.zone.runOutsideAngular(() => {
       setTimeout(() => {
         this.initSiblings();
-        this.recalculateColumns(false);
+        this.updateStickyPositionWithDelay(false);
       }, 200);
     });
   }
 
   initSiblings() {
-    this.getFrozenMaster();
-    if (this.isFirstRow) {
-      this.listenToSibling();
+    this.setFirstFrozenColumnCell();
+    if (this.isfirstFrozenCellInColumn) {
+      this.listenToOtherTableElements();
     }
   }
 
@@ -69,24 +75,26 @@ export class BiaFrozenColumn implements AfterViewInit, OnDestroy {
     this.el.nativeElement.dispatchEvent(new CustomEvent('isDestroyed'));
   }
 
-  getFrozenMaster() {
+  setFirstFrozenColumnCell() {
     if (this.el?.nativeElement?.parentNode) {
-      this.firstCellMaster = null;
+      this.firstFrozenCellInColumn = null;
       const index = DomHandler.index(this.el.nativeElement);
+      // get the thead, tbody, tfooter, etc. node
       const childNodes =
         this.el.nativeElement.parentNode?.parentNode?.childNodes;
 
+      // Check the row until first frozen cell at same index in row as current element is found
       if (childNodes) {
         for (var i = 0; i < childNodes.length; i++) {
           if (childNodes[i].children) {
             const children = childNodes[i].children[index];
             if (children && children.hasAttribute('biaFrozenColumn')) {
               if (children != this.el.nativeElement) {
-                this.firstCellMaster = childNodes[i].children[index];
+                this.firstFrozenCellInColumn = childNodes[i].children[index];
+                this.isfirstFrozenCellInColumn = false;
               } else {
-                this.isFirstRow =
-                  this.el.nativeElement?.parentElement
-                    ?.previousElementSibling == null;
+                this.isfirstFrozenCellInColumn = true;
+                this.firstFrozenCellInColumn = null;
               }
               break;
             }
@@ -96,7 +104,7 @@ export class BiaFrozenColumn implements AfterViewInit, OnDestroy {
     }
   }
 
-  recalculateColumns(cascading: boolean) {
+  updateStickyPositionWithDelay(cascading: boolean) {
     if (this.el?.nativeElement?.parentNode) {
       const siblings = DomHandler.siblings(this.el.nativeElement);
       const index = DomHandler.index(this.el.nativeElement);
@@ -112,7 +120,7 @@ export class BiaFrozenColumn implements AfterViewInit, OnDestroy {
   }
 
   updateStickyPosition(cascading: boolean) {
-    if ((this.isFirstRow || !cascading) && this._frozen) {
+    if ((this.isfirstFrozenCellInColumn || !cascading) && this._frozen) {
       if (this.alignFrozen === 'right') {
         let right = 0;
         let sibling = this.el.nativeElement.nextElementSibling;
@@ -133,68 +141,77 @@ export class BiaFrozenColumn implements AfterViewInit, OnDestroy {
         this.el.nativeElement.dispatchEvent(new CustomEvent('positionChanged'));
       }
 
+      // Only first frozen cell is setting all the others cells position when cascading is on
       if (cascading) {
         let nextRow = this.el.nativeElement?.parentElement?.nextElementSibling;
         while (nextRow) {
           let index = DomHandler.index(this.el.nativeElement);
-          if (nextRow.children && nextRow.children[index]) {
+          if (
+            nextRow.children &&
+            nextRow.children[index] &&
+            nextRow.children[index].hasAttribute('biaFrozenColumn')
+          ) {
             nextRow.children[index].style.left =
               this.el.nativeElement.style.left;
             nextRow.children[index].style.right =
               this.el.nativeElement.style.right;
           }
-
           nextRow = nextRow.nextElementSibling;
         }
       }
     }
   }
 
-  listenToSibling() {
+  listenToOtherTableElements() {
     this.removeListeners();
     if (this._frozen) {
-      this.firstCellMaster?.addEventListener('masterDestroyed', () =>
-        this.initSiblings()
+      this.firstFrozenCellInColumn?.addEventListener(
+        'isDestroyed',
+        this.isFirstFrozenCellInColumnDestroyedHandler
       );
-      if (this.isFirstRow) {
+      if (this.isfirstFrozenCellInColumn) {
         this.sibling =
           this.alignFrozen === 'left'
             ? this.el.nativeElement.previousElementSibling
             : this.el.nativeElement.nextElementSibling;
 
         if (this.sibling) {
-          this.setupResizeObserver(this.sibling);
-          this.sibling.addEventListener('positionChanged', () =>
-            this.recalculateColumns(true)
+          this.setupSiblingResizeObserver(this.sibling);
+          this.sibling.addEventListener(
+            'positionChanged',
+            this.positionChangedHandler
           );
-          this.sibling.addEventListener('isDestroyed', () =>
-            this.listenToSibling()
+          this.sibling.addEventListener(
+            'isDestroyed',
+            this.isSiblingDestroyedHandler
           );
         }
-        this.setupMutationObserver(this.el.nativeElement.parentNode);
+        this.setupRowMutationObserver(this.el.nativeElement.parentNode);
       }
     }
   }
 
-  setupResizeObserver(observedElement: HTMLElement) {
+  setupSiblingResizeObserver(observedElement: HTMLElement) {
+    // Observe the right (or left) element to adapt position if it changed width
     if (observedElement) {
-      this.resizeObserver = new ResizeObserver(() => {
-        this.recalculateColumns(true);
+      this.siblingResizeObserver = new ResizeObserver(() => {
+        this.updateStickyPositionWithDelay(true);
       });
-      this.resizeObserver.observe(observedElement);
+      this.siblingResizeObserver.observe(observedElement);
     }
   }
 
-  setupMutationObserver(observedElement: HTMLElement) {
+  setupRowMutationObserver(observedElement: HTMLElement) {
+    // Observe if a column is moved, added or removed in the row of the Frozen cell
     if (observedElement) {
-      this.mutationObserver = new MutationObserver(mutations => {
+      this.rowMutationObserver = new MutationObserver(mutations => {
         mutations.forEach(mutation => {
           if (mutation.type === 'childList') {
             this.initSiblings();
           }
         });
       });
-      this.mutationObserver.observe(observedElement, {
+      this.rowMutationObserver.observe(observedElement, {
         childList: true,
         subtree: false,
       });
@@ -202,18 +219,21 @@ export class BiaFrozenColumn implements AfterViewInit, OnDestroy {
   }
 
   removeListeners() {
-    this.firstCellMaster?.removeEventListener('masterDestroyed', () =>
-      this.initSiblings()
+    this.firstFrozenCellInColumn?.removeEventListener(
+      'isDestroyed',
+      this.isFirstFrozenCellInColumnDestroyedHandler
     );
     if (this.sibling) {
-      this.resizeObserver?.unobserve(this.sibling);
-      this.sibling.removeEventListener('positionChanged', () =>
-        this.recalculateColumns(true)
+      this.siblingResizeObserver?.unobserve(this.sibling);
+      this.sibling.removeEventListener(
+        'positionChanged',
+        this.positionChangedHandler
       );
-      this.sibling.removeEventListener('isDestroyed', () =>
-        this.listenToSibling()
+      this.sibling.removeEventListener(
+        'isDestroyed',
+        this.isSiblingDestroyedHandler
       );
     }
-    this.mutationObserver?.disconnect();
+    this.rowMutationObserver?.disconnect();
   }
 }
