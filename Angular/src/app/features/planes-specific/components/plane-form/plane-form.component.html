@@ -14,7 +14,9 @@
     <div [formGroup]="form">
       <ng-container [ngSwitch]="field.field">
         <div *ngSwitchCase="'isActive'" class="flex items-center">
-          <p-checkbox binary="true"></p-checkbox>
+          <p-checkbox
+            binary="true"
+            [formControlName]="field.field"></p-checkbox>
           <label class="ml-2">{{ field.header | translate }}</label>
         </div>
         <!-- isActive -->
