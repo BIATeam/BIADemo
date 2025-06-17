@@ -98,26 +98,28 @@ namespace TheBIADevCompany.BIADemo.Test.Data
             User user = new User()
             {
                 Id = id,
+                Email = $"{firstName}{lastName}@fake.com",
+                FirstName = firstName,
+                IsActive = true,
+                LastLoginDate = DateTime.Now.AddDays(-2),
+                LastName = lastName,
+                Login = firstName + lastName,
+                Members = new List<Member>(),
+                ViewUsers = new List<ViewUser>(),
+#if BIA_USER_CUSTOM_FIELDS_BACK
                 Company = "TheBIADevCompany",
                 Country = "France",
                 DaiDate = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc),
                 Department = "DM",
                 DistinguishedName = "DistinguishedName",
-                Email = $"{firstName}{lastName}@fake.com",
                 ExternalCompany = string.Empty,
-                FirstName = firstName,
-                IsActive = true,
                 IsEmployee = true,
                 IsExternal = false,
-                LastLoginDate = DateTime.Now.AddDays(-2),
-                LastName = lastName,
-                Login = firstName + lastName,
                 Manager = "Big BOSS",
-                Members = new List<Member>(),
                 Office = "101",
                 Site = DataConstants.DefaultSitesTitles[0],
                 SubDepartment = "BIA",
-                ViewUsers = new List<ViewUser>(),
+#endif
             };
 
             this.GetDbContext().Users.Add(user);
