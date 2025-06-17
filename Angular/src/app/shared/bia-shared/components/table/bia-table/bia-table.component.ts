@@ -46,7 +46,7 @@ import {
 import { BiaTableState } from '../../../model/bia-table-state';
 import { KeyValuePair } from '../../../model/key-value-pair';
 import { TableHelperService } from '../../../services/table-helper.service';
-import { BiaFrozenColumn } from '../bia-frozen-column/bia-frozen-column.directive';
+import { BiaFrozenColumnDirective } from '../bia-frozen-column/bia-frozen-column.directive';
 import { BiaTableFilterComponent } from '../bia-table-filter/bia-table-filter.component';
 import { BiaTableFooterControllerComponent } from '../bia-table-footer-controller/bia-table-footer-controller.component';
 import { BiaTableOutputComponent } from '../bia-table-output/bia-table-output.component';
@@ -82,7 +82,7 @@ const arraysEqual = (a1: any, a2: any) =>
     BiaTableFooterControllerComponent,
     AsyncPipe,
     TranslateModule,
-    BiaFrozenColumn,
+    BiaFrozenColumnDirective,
   ],
 })
 export class BiaTableComponent<TDto extends { id: number }>
