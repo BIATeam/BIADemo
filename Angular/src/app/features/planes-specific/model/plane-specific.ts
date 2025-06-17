@@ -46,6 +46,9 @@ export const planeSpecificFormLayoutConfiguration: BiaFormLayoutConfig<PlaneSpec
               new BiaFormLayoutConfigRow([
                 new BiaFormLayoutConfigField('isActive', 2),
               ]),
+              new BiaFormLayoutConfigRow([
+                new BiaFormLayoutConfigField('connectingAirports'),
+              ]),
             ]),
           ]),
           new BiaFormLayoutConfigRow([

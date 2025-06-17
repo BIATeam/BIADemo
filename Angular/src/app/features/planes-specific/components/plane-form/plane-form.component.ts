@@ -14,6 +14,7 @@ import { PrimeTemplate } from 'primeng/api';
 import { Checkbox } from 'primeng/checkbox';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
+import { MultiSelect } from 'primeng/multiselect';
 import { BiaFormComponent } from 'src/app/shared/bia-shared/components/form/bia-form/bia-form.component';
 import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
 import { CrudItemFormComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component';
@@ -47,6 +48,7 @@ import { PlaneSpecific } from '../../model/plane-specific';
     BiaFormComponent,
     BiaTableHeaderComponent,
     FloatLabel,
+    MultiSelect,
   ],
 })
 export class PlaneFormComponent
