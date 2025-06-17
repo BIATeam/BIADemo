@@ -142,7 +142,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
         {
             return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
             {
-                { HeaderName.Id, () => CSVNumber(dto.Id) },
                 { HeaderName.Msn, () => CSVString(dto.Msn) },
                 { HeaderName.Manufacturer, () => CSVString(dto.Manufacturer) },
                 { HeaderName.IsActive, () => CSVBool(dto.IsActive) },
