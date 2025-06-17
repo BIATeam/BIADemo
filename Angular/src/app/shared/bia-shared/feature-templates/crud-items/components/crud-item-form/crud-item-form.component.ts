@@ -74,4 +74,8 @@ export class CrudItemFormComponent<CrudItem extends BaseDto> {
   onFixableStateChanged(fixed: boolean) {
     this.fixedChanged.emit(fixed);
   }
+
+  getOptionDto(key: string) {
+    return this.dictOptionDtos?.filter(x => x.key === key)[0]?.value;
+  }
 }
