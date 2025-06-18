@@ -143,6 +143,11 @@ namespace BIA.Net.Core.Application.User
                 {
                     roleIds.Add(Convert.ToInt32(roleId));
                 }
+
+                if (Enum.TryParse<BiaRoleId>(role, out var biaRoleId) && !roleIds.Contains(Convert.ToInt32(biaRoleId)))
+                {
+                    roleIds.Add(Convert.ToInt32(biaRoleId));
+                }
             }
 
             return roleIds;
