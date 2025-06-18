@@ -130,7 +130,8 @@ export class BiaTranslationService {
       const translateServices = [this.translate, ...this.lazyTranslateServices];
       if (!this.translationsLoaded[lang]) {
         for (const translateService of translateServices) {
-          translationLoaders$.push(translateService.use(lang));
+          // eslint-disable-next-line @typescript-eslint/no-deprecated
+          translationLoaders$.push(translateService.getTranslation(lang));
         }
       }
       let lang$: Observable<any> = of(undefined);
@@ -154,14 +155,6 @@ export class BiaTranslationService {
         if (reLoginIfRequiered) this.authService.reLogin();
       }
     }
-  }
-
-  registerLazyTranslateService(translateService: TranslateService) {
-    if (this.translate.defaultLang !== this.translate.currentLang) {
-      translateService.use(this.translate.defaultLang);
-    }
-    translateService.use(this.translate.currentLang);
-    this.lazyTranslateServices.push(translateService);
   }
 
   protected loadTranslations(
