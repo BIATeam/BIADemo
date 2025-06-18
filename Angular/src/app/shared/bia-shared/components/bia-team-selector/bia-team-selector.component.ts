@@ -153,7 +153,7 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
   protected initDropdownTeam() {
     this.displayTeamList = false;
     const currentTeamId = this.authService
-      .getUncryptedToken()
+      .getDecryptedToken()
       ?.userData?.currentTeams?.find(
         t => t.teamTypeId === this.teamType.teamTypeId
       )?.teamId;
@@ -223,7 +223,7 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
     this.defaultRoleIds = [];
     if (this.singleRoleMode || this.multiRoleMode) {
       const currentRoleIds = this.authService
-        .getUncryptedToken()
+        .getDecryptedToken()
         ?.userData?.currentTeams?.find(
           t => t.teamTypeId === this.teamType.teamTypeId
         )?.currentRoleIds;

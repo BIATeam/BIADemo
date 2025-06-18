@@ -63,6 +63,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </returns>
         public Task<AuthInfoDto<AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam)
         {
+            this.Logger.LogWarning("Test Gwen");
+            this.Logger.LogError("Test Error Gwen");
             return this.LoginOnTeamsAsync(loginParam, TeamConfig.Config);
         }
 

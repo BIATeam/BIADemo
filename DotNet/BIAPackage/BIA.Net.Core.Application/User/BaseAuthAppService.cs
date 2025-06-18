@@ -192,7 +192,7 @@ namespace BIA.Net.Core.Application.User
         /// <param name="withCredentials">Connection with standard authentication.</param>
         /// <returns>Global roles.</returns>
         /// <exception cref="UnauthorizedException">No roles found.</exception>
-        protected async Task<List<string>> GetGlobalRolesAsync(string sid, string domain, UserInfoDto userInfo = default, bool withCredentials = true)
+        protected async Task<List<string>> GetGlobalRolesAsync(string sid, string domain, UserInfoFromDBDto userInfo = default, bool withCredentials = true)
         {
             List<string> globalRoles = await this.UserDirectoryHelper.GetUserRolesAsync(claimsPrincipal: this.ClaimsPrincipal, userInfoDto: userInfo, sid: sid, domain: domain, withCredentials: withCredentials);
 

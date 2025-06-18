@@ -57,9 +57,9 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       if (
         authInfo &&
         authInfo.additionalInfos &&
-        authInfo.uncryptedToken.userData
+        authInfo.decryptedToken.userData
       ) {
-        authInfo.uncryptedToken.userData.currentTeams.forEach(team => {
+        authInfo.decryptedToken.userData.currentTeams.forEach(team => {
           this.setCurrentTeamId(team.teamTypeId, team.teamId);
           this.setCurrentRoleIds(
             team.teamTypeId,
@@ -132,10 +132,10 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     return '';
   }
 
-  public getUncryptedToken(): Token {
+  public getDecryptedToken(): Token {
     const authInfo = this.authInfoSubject.value;
     if (authInfo) {
-      return authInfo.uncryptedToken;
+      return authInfo.decryptedToken;
     }
     return <Token>{};
   }
@@ -334,7 +334,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     }
     if (authInfo) {
       return (
-        authInfo.uncryptedToken.permissions.some(p => p === permission) === true
+        authInfo.decryptedToken.permissions.some(p => p === permission) === true
       );
     }
     return false;
@@ -355,7 +355,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     return authResult.pipe(
       map((authInfo: AuthInfo) => {
         if (authInfo) {
-          authInfo.uncryptedToken = this.decodeToken(authInfo.token);
+          authInfo.decryptedToken = this.decodeToken(authInfo.token);
         }
         RefreshTokenService.shouldRefreshToken = false;
         this.isInLogin = false;
@@ -397,7 +397,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       .pipe(
         map((authInfo: AuthInfo) => {
           if (authInfo) {
-            authInfo.uncryptedToken = this.decodeToken(authInfo.token);
+            authInfo.decryptedToken = this.decodeToken(authInfo.token);
           }
           return authInfo;
         }),

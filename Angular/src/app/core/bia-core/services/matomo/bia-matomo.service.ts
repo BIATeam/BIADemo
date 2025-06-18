@@ -50,7 +50,7 @@ export class BiaMatomoService implements OnDestroy {
             appSettings.environment.urlMatomo,
             appSettings.environment.siteIdMatomo,
             this.authService
-              .getUncryptedToken()
+              .getDecryptedToken()
               .userData.currentTeams.map(a => a.teamTitle)
               .join()
           );

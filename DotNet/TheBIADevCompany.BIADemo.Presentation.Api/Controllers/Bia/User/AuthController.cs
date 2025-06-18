@@ -11,6 +11,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
     using BIA.Net.Core.Presentation.Api.Controller.Base;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using NLog;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;

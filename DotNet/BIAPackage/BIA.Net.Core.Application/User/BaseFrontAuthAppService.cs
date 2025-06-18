@@ -7,6 +7,7 @@ namespace BIA.Net.Core.Application.User
     using System.Collections.Generic;
     using System.Collections.Immutable;
     using System.Linq;
+    using System.Reflection.Metadata.Ecma335;
     using System.Security.Claims;
     using System.Security.Principal;
     using System.Threading.Tasks;
@@ -170,20 +171,21 @@ namespace BIA.Net.Core.Application.User
             string domain = this.GetDomain();
             string identityKey = withCredentials ? this.GetIdentityKey() : loginParam.BaseUserLogin;
 
-            // Get UserInfo
-            UserInfoDto userInfo = await this.GetUserInfo(loginParam, login, identityKey);
+            // Get UserInfo from database
+            UserInfoFromDBDto userInfoFromDB = await this.GetUserInfoFromDB(loginParam, login, identityKey);
 
             // Get Global Roles
-            List<string> globalRoles = await this.GetGlobalRolesAsync(sid: sid, domain: domain, userInfo: userInfo, withCredentials);
+            List<string> globalRoles = await this.GetGlobalRolesAsync(sid: sid, domain: domain, userInfo: userInfoFromDB, withCredentials);
 
-            // Fill UserInfo
-            userInfo = await this.CreateOrUpdateUserInDatabase(sid, identityKey, userInfo, globalRoles);
-            this.UserAppService.SelectDefaultLanguage(userInfo);
+            // If the user has the User role
+            // Automatic creation from ldap, usefull if user do not need fine Role on team.
+            // Else update last login date and activate the user.
+            userInfoFromDB = await this.CreateOrUpdateUserInDatabase(sid, identityKey, userInfoFromDB, globalRoles);
 
             // Get User AppRoot Roles
-            if (userInfo?.Id > 0 && globalRoles.Contains(BiaConstants.Role.User))
+            if (userInfoFromDB?.Id > 0 && globalRoles.Contains(BiaConstants.Role.User))
             {
-                IEnumerable<string> userAppRootRoles = await this.RoleAppService.GetUserRolesAsync(userInfo.Id);
+                IEnumerable<string> userAppRootRoles = await this.RoleAppService.GetUserRolesAsync(userInfoFromDB.Id);
                 globalRoles.AddRange(userAppRootRoles);
             }
 
@@ -196,13 +198,13 @@ namespace BIA.Net.Core.Application.User
             TUserDataDto userData = this.CreateUserData();
 
             // Get Fine Grained Permissions
-            if (loginParam.FineGrainedPermission && userInfo?.Id > 0)
+            if (loginParam.FineGrainedPermission && userInfoFromDB?.Id > 0)
             {
                 // Get All Teams
-                allTeams = await this.TeamAppService.GetAllAsync(teamsConfig, userInfo.Id, userPermissions);
+                allTeams = await this.TeamAppService.GetAllAsync(teamsConfig, userInfoFromDB.Id, userPermissions);
 
                 // Get Fine Grained Roles
-                List<string> fineGrainedRoles = await this.GetFineRolesAsync(loginParam, userData, userInfo, allTeams, teamsConfig);
+                List<string> fineGrainedRoles = await this.GetFineRolesAsync(loginParam, userData, userInfoFromDB.Id, allTeams, teamsConfig);
                 List<int> fineGrainedRoleIds = GetRoleIds(fineGrainedRoles);
                 roleIds = roleIds.Union(fineGrainedRoleIds).ToList();
 
@@ -223,14 +225,14 @@ namespace BIA.Net.Core.Application.User
             TokenDto<TUserDataDto> tokenDto = new ()
             {
                 Login = login,
-                Id = (userInfo?.Id).GetValueOrDefault(),
+                Id = (userInfoFromDB?.Id).GetValueOrDefault(),
                 RoleIds = roleIds,
                 Permissions = userPermissions,
                 UserData = userData,
             };
 
             // Get AdditionalInfoDto
-            TAdditionalInfoDto additionalInfo = this.GetAdditionalInfo(loginParam, userInfo, allTeams, userData, teamsConfig);
+            TAdditionalInfoDto additionalInfo = this.GetAdditionalInfo(loginParam, userInfoFromDB.UserInfo, allTeams, userData, teamsConfig);
 
             // Create AuthInfo
             AuthInfoDto<TAdditionalInfoDto> authInfo = await this.JwtFactory.GenerateAuthInfoAsync(tokenDto, additionalInfo, loginParam);
@@ -245,10 +247,10 @@ namespace BIA.Net.Core.Application.User
         /// <param name="login">The login.</param>
         /// <param name="identityKey">The identity key.</param>
         /// <returns>A UserInfo Dto.</returns>
-        protected virtual async Task<UserInfoDto> GetUserInfo(LoginParamDto loginParam, string login, string identityKey)
+        protected virtual async Task<UserInfoFromDBDto> GetUserInfoFromDB(LoginParamDto loginParam, string login, string identityKey)
         {
             // Get userInfo if needed (it requires an user in database)
-            UserInfoDto userInfo = null;
+            UserInfoFromDBDto userInfo = null;
 
             if (loginParam.FineGrainedPermission || loginParam.AdditionalInfos || this.UseUserRole())
             {
@@ -257,12 +259,16 @@ namespace BIA.Net.Core.Application.User
 
             // If the user does not exist in the database
             // We create a UserInfoDto object from principal
-            userInfo ??= new UserInfoDto
+            userInfo ??= new UserInfoFromDBDto
             {
+                Id = 0,
                 Login = login,
-                FirstName = this.ClaimsPrincipal.GetClaimValue(ClaimTypes.GivenName),
-                LastName = this.ClaimsPrincipal.GetClaimValue(ClaimTypes.Surname),
-                Country = this.ClaimsPrincipal.GetClaimValue(ClaimTypes.Country),
+                IsActive = false,
+                UserInfo = new UserInfoDto
+                {
+                    FirstName = this.ClaimsPrincipal.GetClaimValue(ClaimTypes.GivenName),
+                    LastName = this.ClaimsPrincipal.GetClaimValue(ClaimTypes.Surname),
+                },
             };
 
             return userInfo;
@@ -321,14 +327,14 @@ namespace BIA.Net.Core.Application.User
         /// </summary>
         /// <param name="sid">The sid.</param>
         /// <param name="identityKey">The identity key.</param>
-        /// <param name="userInfo">The user information.</param>
+        /// <param name="userInfoFromDB">The user information.</param>
         /// <param name="globalRoles">The global roles.</param>
         /// <returns>A UserInfoDto.</returns>
-        protected virtual async Task<UserInfoDto> CreateOrUpdateUserInDatabase(string sid, string identityKey, UserInfoDto userInfo, List<string> globalRoles)
+        protected virtual async Task<UserInfoFromDBDto> CreateOrUpdateUserInDatabase(string sid, string identityKey, UserInfoFromDBDto userInfoFromDB, List<string> globalRoles)
         {
             if (globalRoles.Contains(BiaConstants.Role.User))
             {
-                if (!(userInfo?.Id > 0))
+                if (!(userInfoFromDB?.Id > 0))
                 {
                     // automatic creation from ldap, only use if user do not need fine Role on team.
                     try
@@ -347,7 +353,7 @@ namespace BIA.Net.Core.Application.User
                         if (userFromDirectory != default(TUserFromDirectory))
                         {
                             TUser user = await this.UserAppService.AddUserFromUserDirectoryAsync(identityKey, userFromDirectory);
-                            userInfo = this.UserAppService.CreateUserInfo(user);
+                            userInfoFromDB = this.UserAppService.CreateUserInfo(user);
                         }
                     }
                     catch (Exception ex)
@@ -360,7 +366,7 @@ namespace BIA.Net.Core.Application.User
                     try
                     {
                         // The date of the last connection is updated in the database
-                        await this.UserAppService.UpdateLastLoginDateAndActivate(userInfo.Id, true);
+                        await this.UserAppService.UpdateLastLoginDateAndActivate(userInfoFromDB.Id, true);
                     }
                     catch (Exception ex)
                     {
@@ -369,7 +375,7 @@ namespace BIA.Net.Core.Application.User
                 }
             }
 
-            return userInfo;
+            return userInfoFromDB;
         }
 
         /// <summary>
@@ -377,12 +383,12 @@ namespace BIA.Net.Core.Application.User
         /// </summary>
         /// <param name="loginParam">The login parameter.</param>
         /// <param name="userData">The user data.</param>
-        /// <param name="userInfo">The user information.</param>
+        /// <param name="userInfoId">The id of the user.</param>
         /// <param name="allTeams">All teams.</param>
         /// <param name="teamsConfig">The teams config.</param>
         /// <typeparam name="TUserDataDto">The type of UserDataDto.</typeparam>
         /// <returns>List of role.</returns>
-        protected virtual async Task<List<string>> GetFineRolesAsync(LoginParamDto loginParam, TUserDataDto userData, UserInfoDto userInfo, IEnumerable<BaseDtoVersionedTeam> allTeams, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
+        protected virtual async Task<List<string>> GetFineRolesAsync(LoginParamDto loginParam, TUserDataDto userData, int userInfoId, IEnumerable<BaseDtoVersionedTeam> allTeams, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
         {
             // the main roles
             var allRoles = new List<string>();
@@ -436,7 +442,7 @@ namespace BIA.Net.Core.Application.User
                         continue;
                     }
 
-                    IEnumerable<RoleDto> roles = await this.RoleAppService.GetMemberRolesAsync(currentTeam.TeamId, userInfo.Id);
+                    IEnumerable<RoleDto> roles = await this.RoleAppService.GetMemberRolesAsync(currentTeam.TeamId, userInfoId);
                     RoleMode roleMode = Array.Find(loginParam.TeamsConfig, r => r.TeamTypeId == currentTeam.TeamTypeId)?.RoleMode ?? RoleMode.AllRoles;
 
                     if (roleMode == RoleMode.AllRoles)

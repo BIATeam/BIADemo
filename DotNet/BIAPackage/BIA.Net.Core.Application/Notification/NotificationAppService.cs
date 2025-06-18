@@ -60,11 +60,30 @@ namespace BIA.Net.Core.Application.Notification
             this.FiltersContext.Add(
                  AccessMode.Read,
                  new DirectSpecification<Notification>(n =>
-                    (n.NotifiedTeams.Count == 0 || n.NotifiedTeams.Any(nt =>
-                        (nt.Roles.Count == 0 && (isTeamAccesAll || nt.Team.Members.Any(member => member.UserId == this.userId)))
-                        ||
-                        (nt.Roles.Count > 0 && nt.Team.Members.Any(member => member.UserId == this.userId && member.MemberRoles.Any(mr => nt.Roles.Any(ntr => mr.RoleId == ntr.RoleId))))))
-                    && (n.NotifiedUsers.Count == 0 || n.NotifiedUsers.Any(u => u.UserId == this.userId))));
+                    (
+                        n.NotifiedUsers.Count == 0
+                        &&
+                        n.NotifiedTeams.Count == 0
+                    )
+                    ||
+                    (
+
+                        // V5: see my team notification even if I am not the user.
+                        n.NotifiedTeams.Count != 0
+                        &&
+                        n.NotifiedTeams.Any(nt =>
+                            (nt.Roles.Count == 0 && (isTeamAccesAll || nt.Team.Members.Any(member => member.UserId == this.userId)))
+                            ||
+                            (nt.Roles.Count > 0 && nt.Team.Members.Any(member => member.UserId == this.userId && member.MemberRoles.Any(mr => nt.Roles.Any(ntr => mr.RoleId == ntr.RoleId)))))
+                    )
+                    ||
+                    (
+
+                        // V5: see nominative notification even if not in the team or role
+                        n.NotifiedUsers.Count != 0
+                        &&
+                        n.NotifiedUsers.Any(u => u.UserId == this.userId)
+                    )));
         }
 
         /// <inheritdoc/>

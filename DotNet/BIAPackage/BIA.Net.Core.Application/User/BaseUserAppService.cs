@@ -152,16 +152,19 @@ namespace BIA.Net.Core.Application.User
         }
 
         /// <inheritdoc cref="IBaseUserAppService.CreateUserInfo"/>
-        public UserInfoDto CreateUserInfo(TUser user)
+        public UserInfoFromDBDto CreateUserInfo(TUser user)
         {
             if (user != null)
             {
-                UserInfoDto userInfo = new UserInfoDto
+                UserInfoFromDBDto userInfo = new UserInfoFromDBDto
                 {
                     Id = user.Id,
                     Login = user.Login,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
+                    UserInfo = new UserInfoDto
+                    {
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                    },
                     IsActive = user.IsActive,
                 };
                 return userInfo;
@@ -171,7 +174,7 @@ namespace BIA.Net.Core.Application.User
         }
 
         /// <inheritdoc cref="IBaseUserAppService.GetUserInfoAsync"/>
-        public async Task<UserInfoDto> GetUserInfoAsync(string identityKey)
+        public async Task<UserInfoFromDBDto> GetUserInfoAsync(string identityKey)
         {
             return await this.Repository.GetResultAsync(UserSelectBuilder<TUser>.SelectUserInfo(), filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey<TUser>(identityKey));
         }
@@ -451,25 +454,6 @@ namespace BIA.Net.Core.Application.User
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// Selects the default language.
-        /// </summary>
-        /// <param name="userInfo">The user information.</param>
-        public void SelectDefaultLanguage(UserInfoDto userInfo)
-        {
-            userInfo.Language = this.configuration.Cultures.Where(w => Array.Exists(w.IsDefaultForCountryCodes, cc => cc == userInfo.Country))
-                .Select(s => s.Code)
-                .FirstOrDefault();
-
-            if (userInfo.Language == null)
-            {
-                // Select the default culture
-                userInfo.Language = this.configuration.Cultures.Where(w => Array.Exists(w.AcceptedCodes, cc => cc == "default"))
-                    .Select(s => s.Code)
-                    .FirstOrDefault();
-            }
         }
 
         /// <inheritdoc cref="IBaseUserAppService.GetCsvAsync"/>

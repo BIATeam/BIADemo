@@ -35,15 +35,18 @@ namespace BIA.Net.Core.Domain.User
         /// Gets the expression used to select user.
         /// </summary>
         /// <returns>The expression.</returns>
-        public static Expression<Func<TUser, UserInfoDto>> SelectUserInfo()
+        public static Expression<Func<TUser, UserInfoFromDBDto>> SelectUserInfo()
         {
-            return user => new UserInfoDto
+            return user => new UserInfoFromDBDto
             {
                 Id = user.Id,
-                FirstName = user.FirstName,
                 Login = user.Login,
-                LastName = user.LastName,
                 IsActive = user.IsActive,
+                UserInfo = new UserInfoDto
+                {
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                },
             };
         }
     }

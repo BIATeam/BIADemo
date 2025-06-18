@@ -48,14 +48,14 @@ namespace BIA.Net.Core.Application.User
         /// </summary>
         /// <param name="user">The user.</param>
         /// <returns>A UserInfoDto.</returns>
-        UserInfoDto CreateUserInfo(TUser user);
+        UserInfoFromDBDto CreateUserInfo(TUser user);
 
         /// <summary>
         /// Gets user info with its login.
         /// </summary>
         /// <param name="identityKey">The identityKey to search with.</param>
         /// <returns>The user.</returns>
-        Task<UserInfoDto> GetUserInfoAsync(string identityKey);
+        Task<UserInfoFromDBDto> GetUserInfoAsync(string identityKey);
 
         /// <summary>
         /// Gets all AD user corresponding to a filter.
@@ -129,12 +129,6 @@ namespace BIA.Net.Core.Application.User
         /// <param name="userDtos">List of users dto.</param>
         /// <returns>Error message.</returns>
         Task<string> SaveAsync(List<TUserDto> userDtos);
-
-        /// <summary>
-        /// Selects the default language.
-        /// </summary>
-        /// <param name="userInfo">The user information.</param>
-        void SelectDefaultLanguage(UserInfoDto userInfo);
 
         /// <summary>
         /// Get Csv.

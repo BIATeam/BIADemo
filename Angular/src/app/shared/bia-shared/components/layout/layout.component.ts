@@ -94,10 +94,10 @@ export class LayoutComponent implements OnInit {
       authInfo.additionalInfos &&
       authInfo.additionalInfos.userInfo
     ) {
-      this.login = authInfo.additionalInfos.userInfo.login;
+      this.login = authInfo.decryptedToken.login;
       this.username = authInfo.additionalInfos.userInfo.firstName
         ? authInfo.additionalInfos.userInfo.firstName
-        : authInfo.additionalInfos.userInfo.login;
+        : authInfo.decryptedToken.login;
     } else {
       this.username = '?';
     }

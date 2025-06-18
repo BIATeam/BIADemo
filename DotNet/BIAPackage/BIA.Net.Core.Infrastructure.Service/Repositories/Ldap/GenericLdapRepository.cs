@@ -733,7 +733,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="sid">The sid.</param>
         /// <param name="domain">The domain.</param>
         /// <returns>The list of roles.</returns>
-        public virtual async Task<List<string>> GetUserRolesAsync(BiaClaimsPrincipal claimsPrincipal, UserInfoDto userInfoDto, string sid, string domain, bool withCredentials)
+        public virtual async Task<List<string>> GetUserRolesAsync(BiaClaimsPrincipal claimsPrincipal, UserInfoFromDBDto userInfoDto, string sid, string domain, bool withCredentials)
         {
             this.cacheGroupPrincipal.Clear();
             IEnumerable<BIA.Net.Core.Common.Configuration.Role> rolesSection = this.configuration.Roles;

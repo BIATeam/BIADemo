@@ -102,13 +102,13 @@ export class NotificationsSignalRService extends CrudItemSignalRService<
   }
 
   protected isInMyDisplay(notification: Notification) {
-    const additionalInfo = this.authService.getAdditionalInfos();
+    const decryptedToken = this.authService.getDecryptedToken();
 
     // OK if no notifiedUsers are specified or if the current user is amongst the notifiedUsers
     const okUser: boolean =
       !notification.notifiedUsers ||
       notification.notifiedUsers.length === 0 ||
-      notification.notifiedUsers.some(u => u.id === additionalInfo.userInfo.id);
+      notification.notifiedUsers.some(u => u.id === decryptedToken.id);
 
     // OK if no notifiedTeams are specified or if the current user is part of one of the notifiedTeams.
     // If the notifiedTeam targets specific roles, the current user must have one of these roles assigned in the given team
