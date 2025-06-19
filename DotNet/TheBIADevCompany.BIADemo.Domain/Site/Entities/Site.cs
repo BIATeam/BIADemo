@@ -7,7 +7,11 @@ namespace TheBIADevCompany.BIADemo.Domain.Site.Entities
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using BIA.Net.Core.Domain.User.Entities;
+
+    // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
+
+    // End BIADemo
 
     /// <summary>
     /// The site entity.
@@ -21,9 +25,13 @@ namespace TheBIADevCompany.BIADemo.Domain.Site.Entities
         [Column("RowVersion")]
         public byte[] RowVersionSite { get; set; }
 
+        // Begin BIADemo
+
         /// <summary>
         /// Gets or sets the Maintenance contracts.
         /// </summary>
         public virtual ICollection<MaintenanceContract> MaintenanceContracts { get; set; }
+
+        // End BIADemo
     }
 }

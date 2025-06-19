@@ -313,7 +313,7 @@ namespace BIA.Net.Core.Common
         }
 
         /// <summary>
-        /// The maintenanceContracts rights.
+        /// The Impersonation rights.
         /// </summary>
         public static class Impersonation
         {

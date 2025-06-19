@@ -31,7 +31,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             // Begin BIADemo
             CreateAirportAuditModel(modelBuilder);
 
-            // End BIADem
+            // End BIADemo
         }
 
         // Begin BIADemo

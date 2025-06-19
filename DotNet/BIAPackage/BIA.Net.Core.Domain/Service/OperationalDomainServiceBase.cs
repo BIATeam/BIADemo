@@ -808,13 +808,12 @@ namespace BIA.Net.Core.Domain.Service
             {
                 bool multiSort = false;
                 var multiOrder = new QueryOrder<TEntity>();
-                foreach (var sortMeta in multiSortMeta)
+                foreach (var sortMeta in from sortMeta in multiSortMeta
+                                         where !string.IsNullOrWhiteSpace(sortMeta.Field) && collection.ContainsKey(sortMeta.Field)
+                                         select sortMeta)
                 {
-                    if (!string.IsNullOrWhiteSpace(sortMeta.Field) && collection.ContainsKey(sortMeta.Field))
-                    {
-                        multiSort = true;
-                        multiOrder.GetByExpression(collection[sortMeta.Field], sortMeta.Order == 1);
-                    }
+                    multiSort = true;
+                    multiOrder.GetByExpression(collection[sortMeta.Field], sortMeta.Order == 1);
                 }
 
                 if (multiSort)
