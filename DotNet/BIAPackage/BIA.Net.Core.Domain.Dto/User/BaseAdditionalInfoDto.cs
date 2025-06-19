@@ -13,11 +13,6 @@ namespace BIA.Net.Core.Domain.Dto.User
     public abstract class BaseAdditionalInfoDto
     {
         /// <summary>
-        /// Gets or sets the user info.
-        /// </summary>
-        public UserInfoDto UserInfo { get; set; }
-
-        /// <summary>
         /// Gets or sets the teams.
         /// </summary>
         public ICollection<BaseDtoVersionedTeam> Teams { get; set; }

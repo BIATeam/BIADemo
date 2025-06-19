@@ -139,7 +139,7 @@ namespace BIA.Net.Core.Application.User
                 Login = login,
                 RoleIds = new List<int>(),
                 Permissions = userPermissions,
-                UserData = this.CreateUserData(),
+                UserData = this.CreateUserData(null),
             };
 
             // Create AuthInfo
@@ -266,10 +266,15 @@ namespace BIA.Net.Core.Application.User
         /// <summary>
         /// Create a new instance of <typeparamref name="TUserDataDto"/> added into login token of <see cref="AuthInfoDto{TAdditionalInfoDto}"/>.
         /// </summary>
+        /// <param name="userInfoFromDBDto">User info from db.</param>
         /// <returns>New <typeparamref name="TUserDataDto"/>.</returns>
-        protected virtual TUserDataDto CreateUserData()
+        protected virtual TUserDataDto CreateUserData(UserInfoFromDBDto userInfoFromDBDto)
         {
-            return new TUserDataDto();
+            return new TUserDataDto()
+            {
+                FirstName = userInfoFromDBDto?.FirstName ?? string.Empty,
+                LastName = userInfoFromDBDto?.LastName ?? string.Empty,
+            };
         }
 
         /// <summary>

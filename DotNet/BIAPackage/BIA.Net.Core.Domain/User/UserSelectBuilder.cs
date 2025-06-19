@@ -42,11 +42,8 @@ namespace BIA.Net.Core.Domain.User
                 Id = user.Id,
                 Login = user.Login,
                 IsActive = user.IsActive,
-                UserInfo = new UserInfoDto
-                {
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                },
+                FirstName = user.FirstName,
+                LastName = user.LastName,
             };
         }
     }

@@ -160,11 +160,8 @@ namespace BIA.Net.Core.Application.User
                 {
                     Id = user.Id,
                     Login = user.Login,
-                    UserInfo = new UserInfoDto
-                    {
-                        FirstName = user.FirstName,
-                        LastName = user.LastName,
-                    },
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
                     IsActive = user.IsActive,
                 };
                 return userInfo;

@@ -63,8 +63,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </returns>
         public Task<AuthInfoDto<AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam)
         {
-            this.Logger.LogWarning("Test Gwen");
-            this.Logger.LogError("Test Error Gwen");
             return this.LoginOnTeamsAsync(loginParam, TeamConfig.Config);
         }
 
@@ -81,12 +79,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
         // Begin BIADemo
 
         /// <inheritdoc/>
-        protected override UserDataDto CreateUserData()
+        protected override UserDataDto CreateUserData(UserInfoFromDBDto userInfoFromDBDto)
         {
-            return new UserDataDto
-            {
-                CustomData = $"This is a custom user data for user {this.GetLogin()}",
-            };
+            UserDataDto userDataDto = base.CreateUserData(userInfoFromDBDto);
+            userDataDto.CustomData = $"This is a custom user data for user {this.GetLogin()}";
+            return userDataDto;
         }
 
         /// <inheritdoc/>

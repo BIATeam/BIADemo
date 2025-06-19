@@ -40,7 +40,9 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
             if (this.IsActive)
             {
 #pragma warning disable CA2214 // Do not call overridable methods in constructors
+#pragma warning disable S1699 // Constructors should only call non-overridable methods
                 this.UseAuditFeatures(serviceProvider);
+#pragma warning restore S1699 // Constructors should only call non-overridable methods
 #pragma warning restore CA2214 // Do not call overridable methods in constructors
                 Audit.Core.Configuration.AuditDisabled = false;
 

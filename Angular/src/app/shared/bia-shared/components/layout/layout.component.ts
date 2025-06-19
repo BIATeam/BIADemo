@@ -91,12 +91,12 @@ export class LayoutComponent implements OnInit {
   protected setUserName(authInfo: AuthInfo) {
     if (
       authInfo &&
-      authInfo.additionalInfos &&
-      authInfo.additionalInfos.userInfo
+      authInfo.decryptedToken &&
+      authInfo.decryptedToken.userData
     ) {
       this.login = authInfo.decryptedToken.login;
-      this.username = authInfo.additionalInfos.userInfo.firstName
-        ? authInfo.additionalInfos.userInfo.firstName
+      this.username = authInfo.decryptedToken.userData.firstName
+        ? authInfo.decryptedToken.userData.firstName
         : authInfo.decryptedToken.login;
     } else {
       this.username = '?';

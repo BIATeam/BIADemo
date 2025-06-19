@@ -22,16 +22,13 @@ export class TeamConfigDto {
   teamSelectionCanBeEmpty?: boolean;
 }
 
-export interface UserInfo {
-  lastName?: string;
-  firstName?: string;
-}
-
 export interface UserProfile {
   theme: string;
 }
 
 export interface UserData {
+  lastName?: string;
+  firstName?: string;
   currentTeams: CurrentTeamDto[];
   // Begin BIADemo
   customData?: string | undefined;
@@ -47,7 +44,6 @@ export class CurrentTeamDto {
 }
 
 export interface AdditionalInfos {
-  userInfo: UserInfo;
   userProfile: UserProfile;
   teams: Team[];
   // Begin BIADemo
@@ -71,7 +67,6 @@ export class AuthInfo {
     userData: { currentTeams: [] },
   };
   additionalInfos: AdditionalInfos = {
-    userInfo: {},
     teams: [],
     userProfile: { theme: '' },
   };

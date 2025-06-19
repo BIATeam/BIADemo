@@ -22,7 +22,12 @@ namespace BIA.Net.Core.Domain.Dto.User
         /// <summary>
         /// Gets or sets the last name.
         /// </summary>
-        public UserInfoDto UserInfo { get; set; }
+        public string LastName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the first name.
+        /// </summary>
+        public string FirstName { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating where the user is active.

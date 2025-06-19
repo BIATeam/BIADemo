@@ -37,8 +37,10 @@ namespace BIA.Net.Core.Application.Authentication
         /// Generate an encoded JWT.
         /// </summary>
         /// <param name="identity">The identity of the current user.</param>
+        /// <typeparam name="TUserDataDto">The type of the user data dto.</typeparam>
         /// <returns>The encoded JWT as string.</returns>
-        Task<string> GenerateEncodedTokenAsync(ClaimsIdentity identity);
+        Task<string> GenerateEncodedTokenAsync<TUserDataDto>(ClaimsIdentity identity)
+            where TUserDataDto : BaseUserDataDto;
 
         /// <summary>
         /// Generate a JWT.

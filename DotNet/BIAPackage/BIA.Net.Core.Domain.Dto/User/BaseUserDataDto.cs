@@ -14,6 +14,18 @@ namespace BIA.Net.Core.Domain.Dto.User
     public class BaseUserDataDto
     {
         /// <summary>
+        /// Gets or sets the last name.
+        /// </summary>
+        [JsonProperty("lastName")]
+        public string LastName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the first name.
+        /// </summary>
+        [JsonProperty("firstName")]
+        public string FirstName { get; set; }
+
+        /// <summary>
         /// Gets or sets the current team.
         /// </summary>
         [JsonProperty("currentTeams")]

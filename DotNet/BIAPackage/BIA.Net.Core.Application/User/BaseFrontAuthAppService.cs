@@ -195,7 +195,7 @@ namespace BIA.Net.Core.Application.User
             List<string> userPermissions = this.UserPermissionDomainService.TranslateRolesInPermissions(globalRoles, loginParam.LightToken);
 
             IEnumerable<BaseDtoVersionedTeam> allTeams = [];
-            TUserDataDto userData = this.CreateUserData();
+            TUserDataDto userData = this.CreateUserData(userInfoFromDB);
 
             // Get Fine Grained Permissions
             if (loginParam.FineGrainedPermission && userInfoFromDB?.Id > 0)
@@ -232,7 +232,7 @@ namespace BIA.Net.Core.Application.User
             };
 
             // Get AdditionalInfoDto
-            TAdditionalInfoDto additionalInfo = this.GetAdditionalInfo(loginParam, userInfoFromDB.UserInfo, allTeams, userData, teamsConfig);
+            TAdditionalInfoDto additionalInfo = this.GetAdditionalInfo(loginParam, allTeams, userData, teamsConfig);
 
             // Create AuthInfo
             AuthInfoDto<TAdditionalInfoDto> authInfo = await this.JwtFactory.GenerateAuthInfoAsync(tokenDto, additionalInfo, loginParam);
@@ -264,11 +264,8 @@ namespace BIA.Net.Core.Application.User
                 Id = 0,
                 Login = login,
                 IsActive = false,
-                UserInfo = new UserInfoDto
-                {
-                    FirstName = this.ClaimsPrincipal.GetClaimValue(ClaimTypes.GivenName),
-                    LastName = this.ClaimsPrincipal.GetClaimValue(ClaimTypes.Surname),
-                },
+                FirstName = this.ClaimsPrincipal.GetClaimValue(ClaimTypes.GivenName),
+                LastName = this.ClaimsPrincipal.GetClaimValue(ClaimTypes.Surname),
             };
 
             return userInfo;
@@ -297,14 +294,13 @@ namespace BIA.Net.Core.Application.User
         /// Gets the additional information.
         /// </summary>
         /// <param name="loginParam">The login parameter.</param>
-        /// <param name="userInfo">The user information.</param>
         /// <param name="allTeams">All teams.</param>
         /// <param name="userData">The user data.</param>
         /// <param name="teamsConfig">The teams configuration.</param>
         /// <typeparam name="TAdditionalInfoDto">The type of AdditionalInfoDto.</typeparam>
         /// <typeparam name="TUserDataDto">The type of UserDataDto.</typeparam>
         /// <returns>A AdditionalInfo Dto.</returns>
-        protected virtual TAdditionalInfoDto GetAdditionalInfo(LoginParamDto loginParam, UserInfoDto userInfo, IEnumerable<BaseDtoVersionedTeam> allTeams, TUserDataDto userData, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
+        protected virtual TAdditionalInfoDto GetAdditionalInfo(LoginParamDto loginParam, IEnumerable<BaseDtoVersionedTeam> allTeams, TUserDataDto userData, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
         {
             TAdditionalInfoDto additionalInfo = this.CreateAdditionalInfo();
 
@@ -315,7 +311,6 @@ namespace BIA.Net.Core.Application.User
                     ||
                     tc.Parents.Exists(p => userData.CurrentTeams.Any(ct => ct.TeamId == t.ParentTeamId))))).ToList();
 
-                additionalInfo.UserInfo = userInfo;
                 additionalInfo.Teams = [.. allTeamsFilteredByCurrentParent.OrderBy(x => x.Title)];
             }
 

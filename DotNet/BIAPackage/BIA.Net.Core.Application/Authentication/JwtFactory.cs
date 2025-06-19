@@ -110,9 +110,10 @@ namespace BIA.Net.Core.Application.Authentication
         }
 
         /// <inheritdoc cref="IJwtFactory.GenerateEncodedTokenAsync"/>
-        public async Task<string> GenerateEncodedTokenAsync(ClaimsIdentity identity)
+        public async Task<string> GenerateEncodedTokenAsync<TUserDataDto>(ClaimsIdentity identity)
+            where TUserDataDto : BaseUserDataDto
         {
-            return await this.GenerateEncodedTokenAsync(identity, null);
+            return await this.GenerateEncodedTokenAsync<TUserDataDto>(identity, null);
         }
 
         /// <inheritdoc cref="IJwtFactory.GenerateAuthInfoAsync"/>
@@ -128,7 +129,7 @@ namespace BIA.Net.Core.Application.Authentication
 
             var response = new AuthInfoDto<TAdditionalInfoDto>
             {
-                Token = await this.GenerateEncodedTokenAsync(claimsIdentity, additionalInfos),
+                Token = await this.GenerateEncodedTokenAsync(claimsIdentity, tokenDto),
                 AdditionalInfos = !loginParam.AdditionalInfos ? null : additionalInfos,
             };
 
@@ -166,7 +167,8 @@ namespace BIA.Net.Core.Application.Authentication
                                DateTimeOffset.UnixEpoch)
                               .TotalSeconds);
 
-        private async Task<string> GenerateEncodedTokenAsync(ClaimsIdentity identity, BaseAdditionalInfoDto additionalInfos)
+        private async Task<string> GenerateEncodedTokenAsync<TUserDataDto>(ClaimsIdentity identity, TokenDto<TUserDataDto> tokenDto)
+            where TUserDataDto : BaseUserDataDto
         {
             var claims = identity.Claims.ToList();
             claims.AddRange(
@@ -176,12 +178,12 @@ namespace BIA.Net.Core.Application.Authentication
                 new (JwtRegisteredClaimNames.Iat, ToUnixEpochDate(this.jwt.IssuedAt).ToString(), ClaimValueTypes.Integer64),
             ]);
 
-            if (additionalInfos != null)
+            if (tokenDto != null)
             {
                 claims.AddRange(
                 [
-                    new (ClaimTypes.GivenName, additionalInfos.UserInfo.FirstName),
-                    new (ClaimTypes.Surname, additionalInfos.UserInfo.LastName),
+                    new (ClaimTypes.GivenName, tokenDto.UserData.FirstName),
+                    new (ClaimTypes.Surname, tokenDto.UserData.LastName),
                 ]);
             }
 
