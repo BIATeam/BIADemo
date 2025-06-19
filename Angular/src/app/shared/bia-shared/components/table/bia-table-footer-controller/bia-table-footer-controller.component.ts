@@ -27,7 +27,7 @@ import { Select } from 'primeng/select';
   ],
 })
 export class BiaTableFooterControllerComponent implements OnInit, OnChanges {
-  @Input() pageSizeOptions: number[] = [10, 25, 50, 100];
+  @Input() pageSizeOptions: number[] | undefined = [10, 25, 50, 100];
   @Input() pageSize: number;
   @Input() length: number;
   @Input() canChangePageSize = true;
