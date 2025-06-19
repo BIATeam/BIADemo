@@ -6,6 +6,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
 {
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.User.Entities;
+    using BIA.Net.Core.Infrastructure.Data.ModelBuilders.Bia;
     using Microsoft.EntityFrameworkCore;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
@@ -82,11 +83,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia
             if (false)
             {
 #pragma warning disable CS0162 // Unreachable code detected
-                // DO NOT CHANGE INDENTATION (For BIATemplate)
-                // End BIADemo
-                modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.SiteAdmin, Code = "Site_Admin", Label = "Site administrator" });
+            // DO NOT CHANGE INDENTATION (For BIATemplate)
+            // End BIADemo
+            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.SiteAdmin, Code = "Site_Admin", Label = "Site administrator" });
 
-                // Begin BIADemo
+            // Begin BIADemo
 #pragma warning restore CS0162 // Unreachable code detected
             }
 

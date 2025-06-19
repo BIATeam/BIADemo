@@ -9,8 +9,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
     /// </summary>
     public static class Rights
     {
-        // Begin BIADemo
-
         // Begin BIAToolKit Generation Ignore
         // BIAToolKit - Begin Partial RightsForOption Country
 
@@ -414,8 +412,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             public const string Options = "Site_Options";
         }
-
-        // End BIADemo
 
         // BIAToolKit - Begin Rights
         // BIAToolKit - End Rights

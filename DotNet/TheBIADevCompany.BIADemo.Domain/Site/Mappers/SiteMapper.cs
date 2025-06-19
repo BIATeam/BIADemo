@@ -9,7 +9,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Site.Mappers
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Bia.Base.Mappers;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
-    using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
     using TheBIADevCompany.BIADemo.Domain.Site.Entities;
 
     /// <summary>
@@ -34,6 +33,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Site.Mappers
             get { return (int)TeamTypeId.Site; }
         }
 
+        // Begin BIADemo
+
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesBeforeDelete"/>
         public override Expression<Func<Site, object>>[] IncludesBeforeDelete()
         {
@@ -42,5 +43,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Site.Mappers
                 x => x.MaintenanceContracts
             ];
         }
+
+        // End BIADemo
     }
 }
