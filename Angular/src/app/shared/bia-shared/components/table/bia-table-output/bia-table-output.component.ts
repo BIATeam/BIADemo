@@ -60,6 +60,10 @@ export class BiaTableOutputComponent<CrudItem>
     });
   }
 
+  isArray(data: any): boolean {
+    return Array.isArray(data);
+  }
+
   protected filterDtoState(data: any) {
     if (!Array.isArray(data)) {
       return data;

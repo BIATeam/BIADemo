@@ -26,6 +26,7 @@ import { FileUpload } from 'primeng/fileupload';
 import { FloatLabel } from 'primeng/floatlabel';
 import { Ripple } from 'primeng/ripple';
 import { Select } from 'primeng/select';
+import { TablePageEvent } from 'primeng/table';
 import { AppSettings } from 'src/app/domains/bia-domains/app-settings/model/app-settings';
 import {
   BiaFieldConfig,
@@ -80,6 +81,8 @@ export class CrudItemImportFormComponent<TDto extends { id: number }> {
   dateFormats: FormatExample[];
   timeFormats: FormatExample[];
   form: UntypedFormGroup;
+  importDataTablesPageSize = 50;
+  pageSizeOptions = [50];
 
   displayedColumns: KeyValuePair[];
   displayedColumnErrors: KeyValuePair[];
@@ -103,6 +106,12 @@ export class CrudItemImportFormComponent<TDto extends { id: number }> {
   }
   @Input() set importData(value: any) {
     this._importData = value;
+    if (value) {
+      this.importDataErrorsToDisplayInTable = [...value.errorToSaves];
+      this.importDataToInsertToDisplayInTable = [...value.toInserts];
+      this.importDataToUpdateToDisplayInTable = [...value.toUpdates];
+      this.importDataToDeleteToDisplayInTable = [...value.toDeletes];
+    }
     if (this.fileUpload) {
       this.fileUpload.clear();
     }
@@ -134,6 +143,11 @@ export class CrudItemImportFormComponent<TDto extends { id: number }> {
   @Output() cancelled = new EventEmitter<void>();
   @Output() fileSelected = new EventEmitter<File>();
   @Output() changeImportParam = new EventEmitter<ImportParam>();
+
+  importDataErrorsToDisplayInTable: any[] = [];
+  importDataToInsertToDisplayInTable: any[] = [];
+  importDataToUpdateToDisplayInTable: any[] = [];
+  importDataToDeleteToDisplayInTable: any[] = [];
 
   constructor(
     public formBuilder: UntypedFormBuilder,
@@ -301,5 +315,23 @@ export class CrudItemImportFormComponent<TDto extends { id: number }> {
       this._importParam = <ImportParam>this.form.value;
       this.changeImportParam.next(this._importParam);
     }
+  }
+
+  onTablePageChanges(
+    tablePageEvent: TablePageEvent,
+    importDataElementsToDisplayInTable: any[],
+    importDataElementsReference: any[]
+  ) {
+    importDataElementsToDisplayInTable.splice(
+      0,
+      importDataElementsToDisplayInTable.length
+    );
+    importDataElementsToDisplayInTable.push(
+      ...importDataElementsReference.filter(
+        (_: any, index: number) =>
+          index >= tablePageEvent.first &&
+          index < tablePageEvent.first + tablePageEvent.rows
+      )
+    );
   }
 }

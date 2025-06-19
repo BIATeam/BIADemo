@@ -74,11 +74,12 @@
       <p-accordion-content>
         <p class="m-0">
           <bia-table
-            [elements]="importData.errorToSaves"
-            [paginator]="false"
+            [elements]="importDataErrorsToDisplayInTable"
+            [paginator]="true"
+            [pageSizeOptions]="undefined"
             [totalRecord]="importData.errorToSaves.length"
             [columnToDisplays]="displayedColumnErrors"
-            [pageSize]="importData.errorToSaves.length"
+            [pageSize]="importDataTablesPageSize"
             [configuration]="crudConfigurationError.fieldsConfig"
             [showColSearch]="false"
             [globalSearchValue]="''"
@@ -86,8 +87,14 @@
             [canSelectElement]="false"
             [loading]="false"
             scrollHeightValue="calc( 100vh - 440px)"
-            [isScrollable]="true"
-            [ignoreSpecificOutput]="true"></bia-table>
+            [ignoreSpecificOutput]="true"
+            (pageChange)="
+              onTablePageChanges(
+                $event,
+                importDataErrorsToDisplayInTable,
+                importData.errorToSaves
+              )
+            "></bia-table>
         </p>
       </p-accordion-content>
     </p-accordion-panel>
@@ -120,11 +127,12 @@
         <p class="m-0">
           <bia-table
             *ngIf="importData.toInserts.length > 0"
-            [elements]="importData.toInserts"
-            [paginator]="false"
+            [elements]="importDataToInsertToDisplayInTable"
+            [paginator]="true"
+            [pageSizeOptions]="undefined"
             [totalRecord]="importData.toInserts.length"
             [columnToDisplays]="displayedColumns"
-            [pageSize]="importData.toInserts.length"
+            [pageSize]="importDataTablesPageSize"
             [configuration]="crudConfiguration.fieldsConfig"
             [showColSearch]="false"
             [globalSearchValue]="''"
@@ -132,8 +140,14 @@
             [canSelectElement]="false"
             [loading]="false"
             scrollHeightValue="calc( 100vh - 440px)"
-            [isScrollable]="true"
-            [ignoreSpecificOutput]="true"></bia-table>
+            [ignoreSpecificOutput]="true"
+            (pageChange)="
+              onTablePageChanges(
+                $event,
+                importDataToInsertToDisplayInTable,
+                importData.toInserts
+              )
+            "></bia-table>
         </p>
       </p-accordion-content>
     </p-accordion-panel>
@@ -163,11 +177,12 @@
         <p class="m-0">
           <bia-table
             *ngIf="importData.toUpdates.length > 0"
-            [elements]="importData.toUpdates"
-            [paginator]="false"
+            [elements]="importDataToUpdateToDisplayInTable"
+            [paginator]="true"
+            [pageSizeOptions]="undefined"
             [totalRecord]="importData.toUpdates.length"
             [columnToDisplays]="displayedColumns"
-            [pageSize]="importData.toUpdates.length"
+            [pageSize]="importDataTablesPageSize"
             [configuration]="crudConfiguration.fieldsConfig"
             [showColSearch]="false"
             [globalSearchValue]="''"
@@ -175,8 +190,14 @@
             [canSelectElement]="false"
             [loading]="false"
             scrollHeightValue="calc( 100vh - 440px)"
-            [isScrollable]="true"
-            [ignoreSpecificOutput]="true"></bia-table>
+            [ignoreSpecificOutput]="true"
+            (pageChange)="
+              onTablePageChanges(
+                $event,
+                importDataToUpdateToDisplayInTable,
+                importData.toUpdates
+              )
+            "></bia-table>
         </p>
       </p-accordion-content>
     </p-accordion-panel>
@@ -206,11 +227,12 @@
         <p class="m-0">
           <bia-table
             *ngIf="importData.toDeletes.length > 0"
-            [elements]="importData.toDeletes"
-            [paginator]="false"
+            [elements]="importDataToDeleteToDisplayInTable"
+            [paginator]="true"
+            [pageSizeOptions]="undefined"
             [totalRecord]="importData.toDeletes.length"
             [columnToDisplays]="displayedColumns"
-            [pageSize]="importData.toDeletes.length"
+            [pageSize]="importDataTablesPageSize"
             [configuration]="crudConfiguration.fieldsConfig"
             [showColSearch]="false"
             [globalSearchValue]="''"
@@ -218,8 +240,14 @@
             [canSelectElement]="false"
             [loading]="false"
             scrollHeightValue="calc( 100vh - 440px)"
-            [isScrollable]="true"
-            [ignoreSpecificOutput]="true"></bia-table>
+            [ignoreSpecificOutput]="true"
+            (pageChange)="
+              onTablePageChanges(
+                $event,
+                importDataToDeleteToDisplayInTable,
+                importData.toDeletes
+              )
+            "></bia-table>
         </p>
       </p-accordion-content>
     </p-accordion-panel>

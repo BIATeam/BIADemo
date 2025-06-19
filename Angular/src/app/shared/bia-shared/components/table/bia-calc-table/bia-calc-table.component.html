@@ -35,7 +35,8 @@
     dataKey="id"
     [expandedRowKeys]="expandedRows"
     (onRowExpand)="onRowExpand($event)"
-    (onRowCollapse)="onRowCollapse($event)">
+    (onRowCollapse)="onRowCollapse($event)"
+    (onPage)="pageChange.emit($event)">
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th
@@ -415,6 +416,8 @@
       <bia-table-footer-controller
         [length]="totalRecord"
         [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions"
+        [canChangePageSize]="!!pageSizeOptions"
         (pageSizeChange)="
           onPageSizeValueChange($event)
         "></bia-table-footer-controller>
