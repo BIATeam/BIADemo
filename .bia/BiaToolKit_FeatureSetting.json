@@ -37,5 +37,15 @@
     "FoldersToExcludes": [
       ".*WorkerService$"
     ]
+  },
+  {
+    "Id": 0,
+    "DisplayName": "UserCustomFields",
+    "Description": "Add custom fields for User",
+    "IsSelected": false,
+    "Tags": [
+      "BIA_USER_CUSTOM_FIELDS_FRONT",
+      "BIA_USER_CUSTOM_FIELDS_BACK"
+    ]
   }
 ]
