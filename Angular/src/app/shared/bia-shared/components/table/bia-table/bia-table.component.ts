@@ -28,6 +28,7 @@ import {
   Table,
   TableLazyLoadEvent,
   TableModule,
+  TablePageEvent,
   TableRowCollapseEvent,
   TableRowExpandEvent,
 } from 'primeng/table';
@@ -91,7 +92,7 @@ export class BiaTableComponent<TDto extends { id: number }>
   @Input() pageSize: number;
   @Input() totalRecord: number;
   @Input() paginator = true;
-  @Input() pageSizeOptions: number[] = [10, 25, 50, 100];
+  @Input() pageSizeOptions: number[] | undefined = [10, 25, 50, 100];
   @Input() virtualScroll = false;
   @Input() elements: TDto[];
   @Input() columnToDisplays: KeyValuePair[];
@@ -153,6 +154,7 @@ export class BiaTableComponent<TDto extends { id: number }>
   @Output() pageSizeChange = new EventEmitter<number>();
   @Output() rowExpand = new EventEmitter<TableRowExpandEvent>();
   @Output() rowCollapse = new EventEmitter<TableRowCollapseEvent>();
+  @Output() pageChange = new EventEmitter<TablePageEvent>();
 
   @ViewChild('dt', { static: false }) table: Table | undefined;
 
