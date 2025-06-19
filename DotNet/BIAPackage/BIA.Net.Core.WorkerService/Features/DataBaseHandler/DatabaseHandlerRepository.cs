@@ -425,14 +425,9 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
                 }
             }
 
-            foreach (var currentDataIndexKey in currentDataDictionary.Keys)
-            {
-                if (!previousDataDictionary.ContainsKey(currentDataIndexKey))
-                {
-                    changedData.Add(new DataBaseHandlerChangedData(DatabaseHandlerChangeType.Add, currentData: currentDataDictionary[currentDataIndexKey]));
-                }
-            }
-
+            changedData.AddRange(from currentDataIndexKey in currentDataDictionary.Keys
+                                 where !previousDataDictionary.ContainsKey(currentDataIndexKey)
+                                 select new DataBaseHandlerChangedData(DatabaseHandlerChangeType.Add, currentData: currentDataDictionary[currentDataIndexKey]));
             return changedData;
         }
 

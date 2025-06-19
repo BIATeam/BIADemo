@@ -429,15 +429,20 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 HttpResponseMessage response = default;
                 string cacheKey = $"{nameof(WebApiRepository)}|{httpMethod?.Method}|{url}";
 
-                if (request != default) // POST, PUT
+                // POST, PUT
+                if (request != default)
                 {
                     response = await this.httpClient.SendAsync(request);
                 }
-                else if (httpMethod?.Method == HttpMethod.Delete.Method) // DELETE
+
+                // DELETE
+                else if (httpMethod?.Method == HttpMethod.Delete.Method)
                 {
                     response = await this.httpClient.DeleteAsync(url);
                 }
-                else // GET
+
+                // GET
+                else
                 {
                     if (cacheDurationInMinute > 0)
                     {
