@@ -8,6 +8,7 @@ namespace BIA.Net.Core.Domain.User
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.User.Entities;
+    using BIA.Net.Core.Domain.User.Services;
 
     /// <summary>
     /// The select builder of the user entity.
@@ -34,13 +35,14 @@ namespace BIA.Net.Core.Domain.User
         /// <summary>
         /// Gets the expression used to select user.
         /// </summary>
+        /// <param name="userIdentityKeyDomainService">The userIdentityKeyDomain Service.</param>
         /// <returns>The expression.</returns>
-        public static Expression<Func<TUser, UserInfoFromDBDto>> SelectUserInfo()
+        public static Expression<Func<TUser, UserInfoFromDBDto>> SelectUserInfo(IUserIdentityKeyDomainService userIdentityKeyDomainService)
         {
             return user => new UserInfoFromDBDto
             {
                 Id = user.Id,
-                Login = user.Login,
+                IdentityKey = userIdentityKeyDomainService.GetDatabaseIdentityKey(user),
                 IsActive = user.IsActive,
                 FirstName = user.FirstName,
                 LastName = user.LastName,

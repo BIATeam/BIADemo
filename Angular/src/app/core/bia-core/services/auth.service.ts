@@ -146,7 +146,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       id: +objDecodedToken[
         'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid'
       ],
-      login:
+      identityKey:
         objDecodedToken[
           'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'
         ],

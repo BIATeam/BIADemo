@@ -17,7 +17,7 @@ namespace BIA.Net.Core.Domain.Dto.User
         /// <summary>
         /// Gets or sets the login.
         /// </summary>
-        public string Login { get; set; }
+        public string IdentityKey { get; set; }
 
         /// <summary>
         /// Gets or sets the last name.

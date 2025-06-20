@@ -42,6 +42,6 @@ namespace BIA.Net.Core.Domain.Dto.User
         /// <summary>
         /// User to copy rights and roles from.
         /// </summary>
-        public string BaseUserLogin { get; set; }
+        public string BaseUserIdentity { get; set; }
     }
 }

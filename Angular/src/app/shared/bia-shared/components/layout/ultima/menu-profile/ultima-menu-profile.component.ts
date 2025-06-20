@@ -195,7 +195,7 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
   connectWithSpecificRights() {
     this.authService.setLoginParameters({
       ...this.authService.getLoginParameters(),
-      baseUserLogin: this.signInAs,
+      baseUserIdentity: this.signInAs,
     });
     location.reload();
   }

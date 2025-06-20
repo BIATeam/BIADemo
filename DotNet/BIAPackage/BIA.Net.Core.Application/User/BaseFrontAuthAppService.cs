@@ -120,7 +120,7 @@ namespace BIA.Net.Core.Application.User
 
             AuthInfoDto<TAdditionalInfoDto> authInfo = await this.GetLoginToken(loginParam, true, teamsConfig);
 
-            if (!string.IsNullOrWhiteSpace(loginParam.BaseUserLogin) && Application.Authentication.JwtFactory.HasRole(authInfo.Token, BiaRights.Impersonation.ConnectionRights))
+            if (!string.IsNullOrWhiteSpace(loginParam.BaseUserIdentity) && Application.Authentication.JwtFactory.HasRole(authInfo.Token, BiaRights.Impersonation.ConnectionRights))
             {
                 return await this.GetLoginToken(loginParam, false, teamsConfig);
             }
@@ -167,12 +167,11 @@ namespace BIA.Net.Core.Application.User
         {
             // Get informations in Claims
             string sid = this.GetSid();
-            string login = withCredentials ? this.GetLogin() : loginParam.BaseUserLogin;
             string domain = this.GetDomain();
-            string identityKey = withCredentials ? this.GetIdentityKey() : loginParam.BaseUserLogin;
+            string identityKey = withCredentials ? this.GetIdentityKey() : loginParam.BaseUserIdentity;
 
             // Get UserInfo from database
-            UserInfoFromDBDto userInfoFromDB = await this.GetUserInfoFromDB(loginParam, login, identityKey);
+            UserInfoFromDBDto userInfoFromDB = await this.GetUserInfoFromDB(loginParam, identityKey);
 
             // Get Global Roles
             List<string> globalRoles = await this.GetGlobalRolesAsync(sid: sid, domain: domain, userInfo: userInfoFromDB, withCredentials);
@@ -224,7 +223,7 @@ namespace BIA.Net.Core.Application.User
             // Create Token Dto
             TokenDto<TUserDataDto> tokenDto = new ()
             {
-                Login = login,
+                IdentityKey = identityKey,
                 Id = (userInfoFromDB?.Id).GetValueOrDefault(),
                 RoleIds = roleIds,
                 Permissions = userPermissions,
@@ -244,10 +243,9 @@ namespace BIA.Net.Core.Application.User
         /// Gets the user information.
         /// </summary>
         /// <param name="loginParam">The login parameter.</param>
-        /// <param name="login">The login.</param>
         /// <param name="identityKey">The identity key.</param>
         /// <returns>A UserInfo Dto.</returns>
-        protected virtual async Task<UserInfoFromDBDto> GetUserInfoFromDB(LoginParamDto loginParam, string login, string identityKey)
+        protected virtual async Task<UserInfoFromDBDto> GetUserInfoFromDB(LoginParamDto loginParam, string identityKey)
         {
             // Get userInfo if needed (it requires an user in database)
             UserInfoFromDBDto userInfo = null;
@@ -262,7 +260,7 @@ namespace BIA.Net.Core.Application.User
             userInfo ??= new UserInfoFromDBDto
             {
                 Id = 0,
-                Login = login,
+                IdentityKey = identityKey,
                 IsActive = false,
                 FirstName = this.ClaimsPrincipal.GetClaimValue(ClaimTypes.GivenName),
                 LastName = this.ClaimsPrincipal.GetClaimValue(ClaimTypes.Surname),

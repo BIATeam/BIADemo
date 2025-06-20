@@ -159,7 +159,7 @@ namespace BIA.Net.Core.Application.User
                 UserInfoFromDBDto userInfo = new UserInfoFromDBDto
                 {
                     Id = user.Id,
-                    Login = user.Login,
+                    IdentityKey = this.userIdentityKeyDomainService.GetDatabaseIdentityKey(user),
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     IsActive = user.IsActive,
@@ -173,7 +173,7 @@ namespace BIA.Net.Core.Application.User
         /// <inheritdoc cref="IBaseUserAppService.GetUserInfoAsync"/>
         public async Task<UserInfoFromDBDto> GetUserInfoAsync(string identityKey)
         {
-            return await this.Repository.GetResultAsync(UserSelectBuilder<TUser>.SelectUserInfo(), filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey<TUser>(identityKey));
+            return await this.Repository.GetResultAsync(UserSelectBuilder<TUser>.SelectUserInfo(this.userIdentityKeyDomainService), filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey<TUser>(identityKey));
         }
 
         /// <inheritdoc/>

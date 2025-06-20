@@ -136,7 +136,7 @@ namespace BIA.Net.Core.Application.User
             // Create Token Dto
             TokenDto<TUserDataDto> tokenDto = new TokenDto<TUserDataDto>()
             {
-                Login = login,
+                IdentityKey = login,
                 RoleIds = new List<int>(),
                 Permissions = userPermissions,
                 UserData = this.CreateUserData(null),

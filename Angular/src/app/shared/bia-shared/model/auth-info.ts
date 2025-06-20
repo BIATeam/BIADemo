@@ -8,7 +8,7 @@ export class LoginParamDto {
   fineGrainedPermission: boolean;
   additionalInfos: boolean;
   isFirstLogin: boolean;
-  baseUserLogin?: string;
+  baseUserIdentity?: string;
 }
 
 export class TeamConfigDto {
@@ -52,7 +52,7 @@ export interface AdditionalInfos {
 }
 
 export interface Token {
-  login: string;
+  identityKey: string;
   id: number;
   permissions: string[];
   userData: UserData;
@@ -61,7 +61,7 @@ export interface Token {
 export class AuthInfo {
   token = '';
   decryptedToken: Token = {
-    login: '',
+    identityKey: '',
     id: 0,
     permissions: [],
     userData: { currentTeams: [] },

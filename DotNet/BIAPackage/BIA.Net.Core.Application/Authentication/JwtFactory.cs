@@ -106,7 +106,7 @@ namespace BIA.Net.Core.Application.Authentication
                 claims.Add(new Claim(ClaimTypes.UserData, JsonConvert.SerializeObject(tokenDto.UserData)));
             }
 
-            return new ClaimsIdentity(new GenericIdentity(tokenDto.Login, "Token"), claims);
+            return new ClaimsIdentity(new GenericIdentity(tokenDto.IdentityKey, "Token"), claims);
         }
 
         /// <inheritdoc cref="IJwtFactory.GenerateEncodedTokenAsync"/>
