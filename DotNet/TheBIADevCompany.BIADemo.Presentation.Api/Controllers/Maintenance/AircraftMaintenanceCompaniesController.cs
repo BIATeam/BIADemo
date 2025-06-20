@@ -9,13 +9,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Common;
-    using BIA.Net.Core.Common.Enum;
-    using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Domain.Dto.Base;
 #if UseHubForClientInAircraftMaintenanceCompany
     using BIA.Net.Core.Application.Services;
 #endif
+    using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -118,6 +117,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.AircraftMaintenanceCompanies.Create)]
         public async Task<IActionResult> Add([FromBody] AircraftMaintenanceCompanyDto dto)
@@ -134,6 +134,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
             {
                 return this.ValidationProblem();
             }
+            catch (ForbiddenException)
+            {
+                return this.Forbid();
+            }
         }
 
         /// <summary>
@@ -145,6 +149,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -175,6 +180,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
             catch (OutdateException)
             {
                 return this.Conflict();
+            }
+            catch (ForbiddenException)
+            {
+                return this.Forbid();
             }
         }
 
@@ -253,6 +262,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         [HttpPost("save")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -283,6 +293,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
+            }
+            catch (ForbiddenException)
+            {
+                return this.Forbid();
             }
         }
 
