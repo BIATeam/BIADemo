@@ -13,7 +13,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
     using BIA.Net.Core.Application.Services;
 #endif
     using BIA.Net.Core.Common;
-    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Presentation.Api.Controllers.Base;
@@ -135,13 +134,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 return this.ValidationProblem();
             }
-            catch (ForbiddenException ex)
+            catch (ForbiddenException)
             {
-                return this.Problem(
-                        type: "/docs/errors/forbidden",
-                        title: "User is not authorized to make this action.",
-                        detail: ex.Message,
-                        statusCode: StatusCodes.Status403Forbidden);
+                return this.Forbid();
             }
         }
 
@@ -178,14 +173,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 return this.ValidationProblem();
             }
-            catch (ForbiddenException ex)
-            {
-                return this.Problem(
-                        type: "/docs/errors/forbidden",
-                        title: "User is not authorized to make this action.",
-                        detail: ex.Message,
-                        statusCode: StatusCodes.Status403Forbidden);
-            }
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
@@ -193,6 +180,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             catch (OutdateException)
             {
                 return this.Conflict();
+            }
+            catch (ForbiddenException)
+            {
+                return this.Forbid();
             }
         }
 
@@ -303,13 +294,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 return this.NotFound();
             }
-            catch (ForbiddenException ex)
+            catch (ForbiddenException)
             {
-                return this.Problem(
-                        type: "/docs/errors/forbidden",
-                        title: "User is not authorized to make this action.",
-                        detail: ex.Message,
-                        statusCode: StatusCodes.Status403Forbidden);
+                return this.Forbid();
             }
         }
 
@@ -324,6 +311,30 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         {
             byte[] buffer = await this.engineService.GetCsvAsync(filters);
             return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Engines{BiaConstants.Csv.Extension}");
+        }
+
+        /// <summary>
+        /// Update the fixed status of an item by its id.
+        /// </summary>
+        /// <param name="id">ID of the item to update.</param>
+        /// <param name="isFixed">Fixed status.</param>
+        /// <returns>Updated item.</returns>
+        [HttpPut("{id}/[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = Rights.Engines.Fix)]
+        public virtual async Task<IActionResult> Fix(int id, [FromBody] bool isFixed)
+        {
+            try
+            {
+                var dto = await this.engineService.UpdateFixedAsync(id, isFixed);
+                return this.Ok(dto);
+            }
+            catch (ElementNotFoundException)
+            {
+                return this.NotFound();
+            }
         }
 
         // Begin BIADemo
