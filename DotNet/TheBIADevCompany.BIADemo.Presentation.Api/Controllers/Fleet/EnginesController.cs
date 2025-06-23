@@ -313,6 +313,30 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Engines{BiaConstants.Csv.Extension}");
         }
 
+        /// <summary>
+        /// Update the fixed status of an item by its id.
+        /// </summary>
+        /// <param name="id">ID of the item to update.</param>
+        /// <param name="isFixed">Fixed status.</param>
+        /// <returns>Updated item.</returns>
+        [HttpPut("{id}/[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = Rights.Engines.Fix)]
+        public virtual async Task<IActionResult> Fix(int id, [FromBody] bool isFixed)
+        {
+            try
+            {
+                var dto = await this.engineService.UpdateFixedAsync(id, isFixed);
+                return this.Ok(dto);
+            }
+            catch (ElementNotFoundException)
+            {
+                return this.NotFound();
+            }
+        }
+
         // Begin BIADemo
 
         /// <summary>

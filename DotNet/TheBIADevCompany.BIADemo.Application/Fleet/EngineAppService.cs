@@ -1,4 +1,3 @@
-// BIADemo only
 // <copyright file="EngineAppService.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
@@ -15,13 +14,6 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
-
-    // Begin BIADemo
-    using Hangfire;
-    using Microsoft.Extensions.Configuration;
-    using TheBIADevCompany.BIADemo.Application.Job;
-
-    // End BIADemo
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
@@ -50,32 +42,23 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
         /// </summary>
         private readonly ITGenericRepository<Plane, int> planeRepository;
 
-        // Begin BIADemo
-
-        /// <summary>
-        /// The configuration.
-        /// </summary>
-        private readonly IConfiguration configuration;
-
+        // BIAToolKit - Begin FixedChildrenRepositoryDefinitionEngine
+        // BIAToolKit - End FixedChildrenRepositoryDefinitionEngine
 #pragma warning disable SA1515 // Single-line comment should be preceded by blank line
 #pragma warning disable SA1611 // Element parameters should be documented
-        // End BIADemo
-
         /// <summary>
         /// Initializes a new instance of the <see cref="EngineAppService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="planeRepository">The plane repository.</param>
-        // Begin BIADemo
-        /// <param name="configuration">The configuration.</param>
-        // End BIADemo
+        // BIAToolKit - Begin FixedChildrenRepositoryConstructorParamEngine
+        // BIAToolKit - End FixedChildrenRepositoryConstructorParamEngine
         /// <param name="principal">The claims principal.</param>
         public EngineAppService(
             IEngineRepository repository,
             ITGenericRepository<Plane, int> planeRepository,
-            // Begin BIADemo
-            IConfiguration configuration,
-            // End BIADemo
+            // BIAToolKit - Begin FixedChildrenRepositoryInjectionEngine
+            // BIAToolKit - End FixedChildrenRepositoryInjectionEngine
             IPrincipal principal)
             : base(repository)
         {
@@ -87,30 +70,27 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
             // For child : set the TeamId of the Ancestor that contain a team Parent
             this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<Engine>(x => x.Plane.SiteId == this.currentAncestorTeamId));
 
-            // Begin BIADemo
-            this.configuration = configuration;
-
-            // End BIADemo
+            // BIAToolKit - Begin FixedChildrenRepositorySetEngine
+            // BIAToolKit - End FixedChildrenRepositorySetEngine
         }
-
-        // Begin BIADemo
 #pragma warning restore SA1611 // Element parameters should be documented
 #pragma warning restore SA1515 // Single-line comment should be preceded by blank line
 
-        /// <inheritdoc cref="IEngineAppService.CheckToBeMaintainedAsync"/>
-        public async Task CheckToBeMaintainedAsync()
+        /// <inheritdoc/>
+        public override async Task<EngineDto> UpdateFixedAsync(int id, bool isFixed)
         {
-            await this.repository.FillIsToBeMaintainedAsync(6);
-        }
+            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
+            {
+                // Update entity fixed status
+                var entity = await this.Repository.GetEntityAsync(id) ?? throw new ElementNotFoundException();
+                this.Repository.UpdateFixedAsync(entity, isFixed);
 
-        /// <inheritdoc cref="IEngineAppService.LaunchJobManuallyExample"/>
-        public void LaunchJobManuallyExample()
-        {
-            string projectName = this.configuration["Project:Name"];
-            RecurringJob.TriggerJob($"{projectName}.{typeof(EngineManageTask).Name}");
+                // BIAToolKit - Begin UpdateFixedChildrenEngine
+                // BIAToolKit - End UpdateFixedChildrenEngine
+                await this.Repository.UnitOfWork.CommitAsync();
+                return await this.GetAsync(id);
+            });
         }
-
-        // End BIADemo
 
         /// <inheritdoc/>
         public override async Task<EngineDto> AddAsync(EngineDto dto, string mapperMode = null)

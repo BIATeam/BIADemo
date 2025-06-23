@@ -156,7 +156,7 @@
         "Roles": [ "Site_Admin" ]
       },
       {
-        "Names": [ "Engine_Create", "Engine_Delete" ],
+        "Names": [ "Engine_Create", "Engine_Delete", "Engine_Fix" ],
         "Roles": [ "Site_Admin" ]
       },
       // BIAToolKit - End Partial Config Engine

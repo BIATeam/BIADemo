@@ -100,4 +100,9 @@ export class EngineService extends CrudItemService<Engine> {
     this._currentCrudItemId = 0;
     this.store.dispatch(FeatureEnginesActions.clearCurrent());
   }
+  public updateFixedStatus(id: any, isFixed: boolean): void {
+    this.store.dispatch(
+      FeatureEnginesActions.updateFixedStatus({ id: id, isFixed: isFixed })
+    );
+  }
 }

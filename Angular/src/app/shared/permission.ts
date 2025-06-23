@@ -34,6 +34,7 @@ export enum Permission {
   Engine_Read = 'Engine_Read',
   Engine_Save = 'Engine_Save',
   Engine_Update = 'Engine_Update',
+  Engine_Fix = 'Engine_Fix',
   // BIAToolKit - End Partial Permission Engine
   // BIAToolKit - Begin Partial Permission AircraftMaintenanceCompany
   AircraftMaintenanceCompany_Create = 'AircraftMaintenanceCompany_Create',
