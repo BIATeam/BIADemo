@@ -5,8 +5,11 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
 {
+    // Begin BIADemo
     using System;
     using System.Linq.Expressions;
+
+    // End BIADemo
     using System.Security.Principal;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Bia.Base.Mappers;
@@ -30,6 +33,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
         public override int TeamType => (int)TeamTypeId.AircraftMaintenanceCompany;
 
+        // Begin BIADemo
+
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesBeforeDelete"/>
         public override Expression<Func<AircraftMaintenanceCompany, object>>[] IncludesBeforeDelete()
         {
@@ -39,5 +44,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
                 x => x.MaintenanceContracts
             ];
         }
+
+        // End BIADemo
     }
 }
