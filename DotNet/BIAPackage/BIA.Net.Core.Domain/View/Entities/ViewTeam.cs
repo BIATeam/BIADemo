@@ -20,7 +20,7 @@ namespace BIA.Net.Core.Domain.View.Entities
         /// <summary>
         /// Gets or sets the site.
         /// </summary>
-        public virtual Team Team { get; set; }
+        public virtual BaseEntityTeam Team { get; set; }
 
         /// <summary>
         /// Gets or sets the view identifier.

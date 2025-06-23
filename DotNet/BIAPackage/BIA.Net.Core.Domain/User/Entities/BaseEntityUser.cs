@@ -15,7 +15,7 @@ namespace BIA.Net.Core.Domain.User.Entities
     /// The user entity.
     /// </summary>
     [AuditInclude]
-    public abstract class BaseUser : BaseEntityVersioned<int>
+    public abstract class BaseEntityUser : BaseEntityVersioned<int>
     {
         /// <summary>
         /// Gets or sets the first name.

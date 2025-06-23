@@ -12,7 +12,7 @@ namespace BIA.Net.Core.Domain.User.Specifications
     /// </summary>
     /// <typeparam name="TUser">The type of user.</typeparam>
     public static class UserSpecification<TUser>
-        where TUser : BaseUser
+        where TUser : BaseEntityUser
     {
         /// <summary>
         /// Search users using the filter on lastname, firstname or login.

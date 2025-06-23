@@ -35,7 +35,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     {
         private readonly INotificationAppService notificationAppService;
 
-        private readonly ITGenericRepository<Team, int> teamRepository;
+        private readonly ITGenericRepository<BaseEntityTeam, int> teamRepository;
 
         private readonly IPlaneAppService planeAppService;
 
@@ -52,7 +52,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
             IConfiguration configuration,
             ILogger<BiaDemoTestHangfireService> logger,
             INotificationAppService notificationAppService,
-            ITGenericRepository<Team, int> teamRepository,
+            ITGenericRepository<BaseEntityTeam, int> teamRepository,
             IPlaneAppService planeAppService)
             : base(configuration, logger)
         {
@@ -82,7 +82,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         {
             await Task.Delay(2000);
 
-            Team targetedTeam = null;
+            BaseEntityTeam targetedTeam = null;
             if (teamId > 0)
             {
                 targetedTeam = await this.teamRepository.GetEntityAsync(teamId);

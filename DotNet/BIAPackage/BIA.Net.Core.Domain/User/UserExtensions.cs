@@ -16,7 +16,7 @@ namespace BIA.Net.Core.Domain.User
         /// </summary>
         /// <param name="user">The user.</param>
         /// <returns>The formated display.</returns>
-        public static string Display(this BaseUser user)
+        public static string Display(this BaseEntityUser user)
         {
             string display = null;
 
@@ -33,7 +33,7 @@ namespace BIA.Net.Core.Domain.User
         /// </summary>
         /// <param name="user">The user.</param>
         /// <returns>The formated display.</returns>
-        public static string DisplayShort(this BaseUser user)
+        public static string DisplayShort(this BaseEntityUser user)
         {
             string display = null;
 

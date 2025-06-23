@@ -15,7 +15,7 @@ namespace BIA.Net.Core.Domain.User.Entities
         /// <summary>
         /// Gets or sets the user.
         /// </summary>
-        public virtual BaseUser User { get; set; }
+        public virtual BaseEntityUser User { get; set; }
 
         /// <summary>
         /// Gets or sets the user id.
@@ -25,7 +25,7 @@ namespace BIA.Net.Core.Domain.User.Entities
         /// <summary>
         /// Gets or sets the team.
         /// </summary>
-        public virtual Team Team { get; set; }
+        public virtual BaseEntityTeam Team { get; set; }
 
         /// <summary>
         /// Gets or sets the team id.

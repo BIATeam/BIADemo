@@ -31,7 +31,7 @@ namespace BIA.Net.Core.Domain.Notification.Entities
         /// <summary>
         /// Gets or sets the team.
         /// </summary>
-        public virtual Team Team { get; set; }
+        public virtual BaseEntityTeam Team { get; set; }
 
         /// <summary>
         /// Gets or sets the specific roles to target.

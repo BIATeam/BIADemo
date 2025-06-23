@@ -14,10 +14,10 @@ namespace BIA.Net.Core.Domain.User.Mappers
     /// <summary>
     /// The mapper used for team option.
     /// </summary>
-    public class TeamOptionMapper : BaseMapper<OptionDto, Team, int>
+    public class TeamOptionMapper : BaseMapper<OptionDto, BaseEntityTeam, int>
     {
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
-        public override Expression<Func<Team, OptionDto>> EntityToDto()
+        public override Expression<Func<BaseEntityTeam, OptionDto>> EntityToDto()
         {
             return base.EntityToDto().CombineMapping(entity => new OptionDto
             {

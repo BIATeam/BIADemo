@@ -20,7 +20,7 @@ namespace BIA.Net.Core.Application.User
     /// The interface defining the application service for team.
     /// </summary>
     /// <typeparam name="TEnumTeamTypeId">The type of enum for TeamTypeId.</typeparam>
-    public interface IBaseTeamAppService<TEnumTeamTypeId> : ICrudAppServiceBase<BaseDtoVersionedTeam, Team, int, PagingFilterFormatDto>
+    public interface IBaseTeamAppService<TEnumTeamTypeId> : ICrudAppServiceBase<BaseDtoVersionedTeam, BaseEntityTeam, int, PagingFilterFormatDto>
         where TEnumTeamTypeId : struct, Enum
     {
         /// <summary>
@@ -36,7 +36,7 @@ namespace BIA.Net.Core.Application.User
         /// <param name="userId">The user identifier.</param>
         /// <param name="userPermissions">The user rights.</param>
         /// <returns>all teams.</returns>
-        Task<IEnumerable<BaseDtoVersionedTeam>> GetAllAsync(ImmutableList<BiaTeamConfig<Team>> teamsConfig, int userId = 0, IEnumerable<string> userPermissions = null);
+        Task<IEnumerable<BaseDtoVersionedTeam>> GetAllAsync(ImmutableList<BiaTeamConfig<BaseEntityTeam>> teamsConfig, int userId = 0, IEnumerable<string> userPermissions = null);
 
         /// <summary>
         /// Check autorize based on teamTypeId.
@@ -47,6 +47,6 @@ namespace BIA.Net.Core.Application.User
         /// <param name="roleSuffix">the last part of the permission.</param>
         /// <param name="teamsConfig">The teams configuration.</param>
         /// <returns>true if authorized.</returns>
-        bool IsAuthorizeForTeamType(ClaimsPrincipal principal, TEnumTeamTypeId teamTypeId, int teamId, string roleSuffix, ImmutableList<BiaTeamConfig<Team>> teamsConfig);
+        bool IsAuthorizeForTeamType(ClaimsPrincipal principal, TEnumTeamTypeId teamTypeId, int teamId, string roleSuffix, ImmutableList<BiaTeamConfig<BaseEntityTeam>> teamsConfig);
     }
 }

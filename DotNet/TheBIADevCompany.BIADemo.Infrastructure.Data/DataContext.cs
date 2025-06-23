@@ -82,7 +82,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// <summary>
         /// Gets or sets the type of team DBSet.
         /// </summary>
-        public DbSet<Team> Teams { get; set; }
+        public DbSet<BaseEntityTeam> Teams { get; set; }
 
         /// <summary>
         /// Gets or sets the type of team DBSet.

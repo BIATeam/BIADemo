@@ -42,7 +42,7 @@ namespace BIA.Net.Core.Application.User
     /// <typeparam name="TUserDataDto">The type of user data dto.</typeparam>
     public abstract class BaseFrontAuthAppService<TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId, TUserFromDirectoryDto, TUserFromDirectory, TAdditionalInfoDto, TUserDataDto> : BaseAuthAppService<TUserFromDirectoryDto, TUserFromDirectory, TAdditionalInfoDto, TUserDataDto>, IBaseFrontAuthAppService<TAdditionalInfoDto>
         where TUserDto : BaseUserDto, new()
-        where TUser : BaseUser, IEntity<int>, new()
+        where TUser : BaseEntityUser, IEntity<int>, new()
         where TEnumRoleId : struct, Enum
         where TEnumTeamTypeId : struct, Enum
         where TUserFromDirectoryDto : BaseUserFromDirectoryDto, new()
@@ -113,7 +113,7 @@ namespace BIA.Net.Core.Application.User
         protected IRoleAppService RoleAppService { get; }
 
         /// <inheritdoc cref="IAuthAppService.LoginOnTeamsAsync"/>
-        public virtual async Task<AuthInfoDto<TAdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
+        public virtual async Task<AuthInfoDto<TAdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam, ImmutableList<BiaTeamConfig<BaseEntityTeam>> teamsConfig)
         {
             // Check if current user is authenticated
             this.CheckIsAuthenticated();
@@ -163,7 +163,7 @@ namespace BIA.Net.Core.Application.User
         /// <typeparam name="TAdditionalInfoDto">The type of AdditionalInfoDto.</typeparam>
         /// <typeparam name="TUserDataDto">The type of UserDataDto.</typeparam>
         /// <returns>Return a token to authenticate user with permition.</returns>
-        protected virtual async Task<AuthInfoDto<TAdditionalInfoDto>> GetLoginToken(LoginParamDto loginParam, bool withCredentials, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
+        protected virtual async Task<AuthInfoDto<TAdditionalInfoDto>> GetLoginToken(LoginParamDto loginParam, bool withCredentials, ImmutableList<BiaTeamConfig<BaseEntityTeam>> teamsConfig)
         {
             // Get informations in Claims
             string sid = this.GetSid();
@@ -298,7 +298,7 @@ namespace BIA.Net.Core.Application.User
         /// <typeparam name="TAdditionalInfoDto">The type of AdditionalInfoDto.</typeparam>
         /// <typeparam name="TUserDataDto">The type of UserDataDto.</typeparam>
         /// <returns>A AdditionalInfo Dto.</returns>
-        protected virtual TAdditionalInfoDto GetAdditionalInfo(LoginParamDto loginParam, IEnumerable<BaseDtoVersionedTeam> allTeams, TUserDataDto userData, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
+        protected virtual TAdditionalInfoDto GetAdditionalInfo(LoginParamDto loginParam, IEnumerable<BaseDtoVersionedTeam> allTeams, TUserDataDto userData, ImmutableList<BiaTeamConfig<BaseEntityTeam>> teamsConfig)
         {
             TAdditionalInfoDto additionalInfo = this.CreateAdditionalInfo();
 
@@ -381,7 +381,7 @@ namespace BIA.Net.Core.Application.User
         /// <param name="teamsConfig">The teams config.</param>
         /// <typeparam name="TUserDataDto">The type of UserDataDto.</typeparam>
         /// <returns>List of role.</returns>
-        protected virtual async Task<List<string>> GetFineRolesAsync(LoginParamDto loginParam, TUserDataDto userData, int userInfoId, IEnumerable<BaseDtoVersionedTeam> allTeams, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
+        protected virtual async Task<List<string>> GetFineRolesAsync(LoginParamDto loginParam, TUserDataDto userData, int userInfoId, IEnumerable<BaseDtoVersionedTeam> allTeams, ImmutableList<BiaTeamConfig<BaseEntityTeam>> teamsConfig)
         {
             // the main roles
             var allRoles = new List<string>();

@@ -39,7 +39,7 @@ namespace BIA.Net.Core.Application.Common
 
             this.Dictionary = new BiaDictionary<SearchExpressionItem>
             {
-                 { "[Me]", new SearchExpressionItem() { EntityType = typeof(BaseUser), Expression = (Expression<Func<BaseUser, bool>>)(t => t.Id == this.userId) } },
+                 { "[Me]", new SearchExpressionItem() { EntityType = typeof(BaseEntityUser), Expression = (Expression<Func<BaseEntityUser, bool>>)(t => t.Id == this.userId) } },
                  { "[MyRole]", new SearchExpressionItem() { EntityType = typeof(Role), Expression = (Expression<Func<Role, bool>>)(t => this.userDataDto.CurrentTeams.Any(team => team.CurrentRoleIds.Any(id => t.Id == id))) } },
             };
         }

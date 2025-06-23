@@ -16,7 +16,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Site.Entities
     /// <summary>
     /// The site entity.
     /// </summary>
-    public class Site : Team
+    public class Site : BaseEntityTeam
     {
         /// <summary>
         /// Add row version timestamp in table Site.

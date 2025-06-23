@@ -11,7 +11,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Entities
     /// The user entity.
     /// </summary>
     [AuditInclude]
-    public class User : BaseUser
+    public class User : BaseEntityUser
     {
         /// <summary>
         /// Gets or sets the email.

@@ -31,9 +31,9 @@ namespace BIA.Net.Core.Application.User
     /// </summary>
     /// <typeparam name="TEnumTeamTypeId">The type for enum Team Type Id.</typeparam>
     /// <typeparam name="TTeamMapper">The type of team Mapper.</typeparam>
-    public class BaseTeamAppService<TEnumTeamTypeId, TTeamMapper> : CrudAppServiceBase<BaseDtoVersionedTeam, Team, int, PagingFilterFormatDto, TTeamMapper>, IBaseTeamAppService<TEnumTeamTypeId>
+    public class BaseTeamAppService<TEnumTeamTypeId, TTeamMapper> : CrudAppServiceBase<BaseDtoVersionedTeam, BaseEntityTeam, int, PagingFilterFormatDto, TTeamMapper>, IBaseTeamAppService<TEnumTeamTypeId>
         where TEnumTeamTypeId : struct, Enum
-        where TTeamMapper : BiaBaseMapper<BaseDtoVersionedTeam, Team, int>, ITeamMapper
+        where TTeamMapper : BiaBaseMapper<BaseDtoVersionedTeam, BaseEntityTeam, int>, ITeamMapper
     {
         /// <summary>
         /// The claims principal.
@@ -45,7 +45,7 @@ namespace BIA.Net.Core.Application.User
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The claims principal.</param>
-        public BaseTeamAppService(ITGenericRepository<Team, int> repository, IPrincipal principal)
+        public BaseTeamAppService(ITGenericRepository<BaseEntityTeam, int> repository, IPrincipal principal)
             : base(repository)
         {
             this.principal = principal as BiaClaimsPrincipal;
@@ -60,7 +60,7 @@ namespace BIA.Net.Core.Application.User
         /// <param name="principal">the user claims.</param>
         /// <param name="teamsConfig">The teams configuration.</param>
         /// <returns>the Standard Read Specification.</returns>
-        public static Specification<TTeam> ReadSpecification<TTeam>(TEnumTeamTypeId teamTypeId, IPrincipal principal, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
+        public static Specification<TTeam> ReadSpecification<TTeam>(TEnumTeamTypeId teamTypeId, IPrincipal principal, ImmutableList<BiaTeamConfig<BaseEntityTeam>> teamsConfig)
             where TTeam : class, IEntity<int>, IEntityTeam
         {
             var userData = (principal as BiaClaimsPrincipal).GetUserData<BaseUserDataDto>();
@@ -82,7 +82,7 @@ namespace BIA.Net.Core.Application.User
         /// <param name="userId">the user id.</param>
         /// <param name="teamsConfig">The teams configuration.</param>
         /// <returns>the Standard Read Specification.</returns>
-        public static Specification<TTeam> ReadSpecification<TTeam>(TEnumTeamTypeId teamTypeId, BaseUserDataDto userData, bool viewAll, int userId, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
+        public static Specification<TTeam> ReadSpecification<TTeam>(TEnumTeamTypeId teamTypeId, BaseUserDataDto userData, bool viewAll, int userId, ImmutableList<BiaTeamConfig<BaseEntityTeam>> teamsConfig)
             where TTeam : class, IEntity<int>, IEntityTeam
         {
             // You can a team if your are member or have the viewAll permission
@@ -144,10 +144,10 @@ namespace BIA.Net.Core.Application.User
         /// <typeparam name="TTeam">the team type.</typeparam>
         /// <param name="getTeams">the list of teams.</param>
         /// <returns>list of teams casted in Team.</returns>
-        public static Expression<Func<TTeam, IEnumerable<Team>>> Convert<TTeam>(Expression<Func<Team, IEnumerable<Team>>> getTeams)
+        public static Expression<Func<TTeam, IEnumerable<BaseEntityTeam>>> Convert<TTeam>(Expression<Func<BaseEntityTeam, IEnumerable<BaseEntityTeam>>> getTeams)
             where TTeam : class, IEntity<int>, IEntityTeam
         {
-            var typeConverter = (Expression<Func<TTeam, Team>>)(team => team as Team);
+            var typeConverter = (Expression<Func<TTeam, BaseEntityTeam>>)(team => team as BaseEntityTeam);
 
             return Combine(typeConverter, getTeams);
         }
@@ -158,10 +158,10 @@ namespace BIA.Net.Core.Application.User
         /// <typeparam name="TTeam">the team type.</typeparam>
         /// <param name="getTeam">the team.</param>
         /// <returns>team casted in Team.</returns>
-        public static Expression<Func<TTeam, Team>> Convert<TTeam>(Expression<Func<Team, Team>> getTeam)
+        public static Expression<Func<TTeam, BaseEntityTeam>> Convert<TTeam>(Expression<Func<BaseEntityTeam, BaseEntityTeam>> getTeam)
             where TTeam : class, IEntity<int>, IEntityTeam
         {
-            var typeConverter = (Expression<Func<TTeam, Team>>)(team => team as Team);
+            var typeConverter = (Expression<Func<TTeam, BaseEntityTeam>>)(team => team as BaseEntityTeam);
 
             return Combine(typeConverter, getTeam);
         }
@@ -173,10 +173,10 @@ namespace BIA.Net.Core.Application.User
         /// <param name="getTeam">the team.</param>
         /// <param name="userId">the user Id.</param>
         /// <returns>expresion that return true if user is member of the team.</returns>
-        public static Expression<Func<TTeam, bool>> IsMemberOfTeam<TTeam>(Expression<Func<TTeam, Team>> getTeam, int userId)
+        public static Expression<Func<TTeam, bool>> IsMemberOfTeam<TTeam>(Expression<Func<TTeam, BaseEntityTeam>> getTeam, int userId)
             where TTeam : class, IEntity<int>, IEntityTeam
         {
-            var isMember = (Expression<Func<Team, bool>>)(team => team.Members.Any(b => b.UserId == userId));
+            var isMember = (Expression<Func<BaseEntityTeam, bool>>)(team => team.Members.Any(b => b.UserId == userId));
 
             return Combine(getTeam, isMember);
         }
@@ -188,10 +188,10 @@ namespace BIA.Net.Core.Application.User
         /// <param name="getTeams">the list of teams.</param>
         /// <param name="userId">the user Id.</param>
         /// <returns>expresion that return true if user is member of one of the teams.</returns>
-        public static Expression<Func<TTeam, bool>> IsMemberOfOneOfTeams<TTeam>(Expression<Func<TTeam, IEnumerable<Team>>> getTeams, int userId)
+        public static Expression<Func<TTeam, bool>> IsMemberOfOneOfTeams<TTeam>(Expression<Func<TTeam, IEnumerable<BaseEntityTeam>>> getTeams, int userId)
              where TTeam : class, IEntity<int>, IEntityTeam
         {
-            var isMemberOfOne = (Expression<Func<IEnumerable<Team>, bool>>)(teams => teams.Any(a => a.Members.Any(b => b.UserId == userId)));
+            var isMemberOfOne = (Expression<Func<IEnumerable<BaseEntityTeam>, bool>>)(teams => teams.Any(a => a.Members.Any(b => b.UserId == userId)));
 
             return Combine(getTeams, isMemberOfOne);
         }
@@ -203,10 +203,10 @@ namespace BIA.Net.Core.Application.User
         /// <param name="getTeam">the team.</param>
         /// <param name="teamId">the team Id to check.</param>
         /// <returns>expresion that return true if the team id correspond.</returns>
-        public static Expression<Func<TTeam, bool>> IsCorrectId<TTeam>(Expression<Func<TTeam, Team>> getTeam, int teamId)
+        public static Expression<Func<TTeam, bool>> IsCorrectId<TTeam>(Expression<Func<TTeam, BaseEntityTeam>> getTeam, int teamId)
             where TTeam : class, IEntity<int>, IEntityTeam
         {
-            var isCorrectId = (Expression<Func<Team, bool>>)(team => team.Id == teamId);
+            var isCorrectId = (Expression<Func<BaseEntityTeam, bool>>)(team => team.Id == teamId);
 
             return Combine(getTeam, isCorrectId);
         }
@@ -240,7 +240,7 @@ namespace BIA.Net.Core.Application.User
         }
 
         /// <inheritdoc cref="ITeamAppService.GetAllAsync"/>
-        public async Task<IEnumerable<BaseDtoVersionedTeam>> GetAllAsync(ImmutableList<BiaTeamConfig<Team>> teamsConfig, int userId = 0, IEnumerable<string> userPermissions = null)
+        public async Task<IEnumerable<BaseDtoVersionedTeam>> GetAllAsync(ImmutableList<BiaTeamConfig<BaseEntityTeam>> teamsConfig, int userId = 0, IEnumerable<string> userPermissions = null)
         {
             userPermissions = userPermissions != null ? userPermissions : this.principal.GetUserPermissions();
             userId = userId > 0 ? userId : this.principal.GetUserId();
@@ -252,7 +252,7 @@ namespace BIA.Net.Core.Application.User
             }
             else
             {
-                Specification<Team> specification = new DirectSpecification<Team>(team => team.Members.Any(member => member.UserId == userId));
+                Specification<BaseEntityTeam> specification = new DirectSpecification<BaseEntityTeam>(team => team.Members.Any(member => member.UserId == userId));
 
                 foreach (var teamConfig in teamsConfig)
                 {
@@ -260,8 +260,8 @@ namespace BIA.Net.Core.Application.User
                     {
                         foreach (var child in teamConfig.Children)
                         {
-                            specification |= new DirectSpecification<Team>(team => team.TeamTypeId == teamConfig.TeamTypeId)
-                                          && new DirectSpecification<Team>(IsMemberOfOneOfTeams(child.GetChilds, userId));
+                            specification |= new DirectSpecification<BaseEntityTeam>(team => team.TeamTypeId == teamConfig.TeamTypeId)
+                                          && new DirectSpecification<BaseEntityTeam>(IsMemberOfOneOfTeams(child.GetChilds, userId));
                         }
                     }
 
@@ -269,8 +269,8 @@ namespace BIA.Net.Core.Application.User
                     {
                         foreach (var parent in teamConfig.Parents)
                         {
-                            specification |= new DirectSpecification<Team>(team => team.TeamTypeId == teamConfig.TeamTypeId)
-                                          && new DirectSpecification<Team>(IsMemberOfTeam(parent.GetParent, userId));
+                            specification |= new DirectSpecification<BaseEntityTeam>(team => team.TeamTypeId == teamConfig.TeamTypeId)
+                                          && new DirectSpecification<BaseEntityTeam>(IsMemberOfTeam(parent.GetParent, userId));
                         }
                     }
                 }
@@ -282,7 +282,7 @@ namespace BIA.Net.Core.Application.User
         }
 
         /// <inheritdoc/>
-        public bool IsAuthorizeForTeamType(ClaimsPrincipal principal, TEnumTeamTypeId teamTypeId, int teamId, string roleSuffix, ImmutableList<BiaTeamConfig<Team>> teamsConfig)
+        public bool IsAuthorizeForTeamType(ClaimsPrincipal principal, TEnumTeamTypeId teamTypeId, int teamId, string roleSuffix, ImmutableList<BiaTeamConfig<BaseEntityTeam>> teamsConfig)
         {
             var config = teamsConfig.Find(tc => tc.TeamTypeId == System.Convert.ToInt32(teamTypeId));
             if (config != null)

@@ -29,7 +29,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <typeparam name="TUser">The type of user.</typeparam>
         /// <returns>Expression to compare.</returns>
         public Expression<Func<TUser, bool>> CheckDatabaseIdentityKey<TUser>(string identityKey)
-            where TUser : BaseUser
+            where TUser : BaseEntityUser
         {
             return user => user.Login == identityKey;
         }
@@ -42,7 +42,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <typeparam name="TUser">The type of user.</typeparam>
         /// <returns>Expression to compare.</returns>
         public Expression<Func<TUser, bool>> CheckDatabaseIdentityKey<TUser>(List<string> identityKeys)
-             where TUser : BaseUser
+             where TUser : BaseEntityUser
         {
             return user => identityKeys.Contains(user.Login);
         }
@@ -56,7 +56,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <typeparam name="TUser">The type of user.</typeparam>
         /// <returns>Return the Identity Key.</returns>
         public string GetDatabaseIdentityKey<TUser>(TUser user)
-            where TUser : BaseUser
+            where TUser : BaseEntityUser
         {
             return user.Login;
         }

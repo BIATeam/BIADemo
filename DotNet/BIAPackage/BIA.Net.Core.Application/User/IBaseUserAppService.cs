@@ -24,7 +24,7 @@ namespace BIA.Net.Core.Application.User
     /// <typeparam name="TUserFromDirectory">The type of user from directory.</typeparam>
     public interface IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory> : ICrudAppServiceBase<TUserDto, TUser, int, PagingFilterFormatDto>
         where TUserDto : BaseUserDto, new()
-        where TUser : BaseUser, IEntity<int>, new()
+        where TUser : BaseEntityUser, IEntity<int>, new()
         where TUserFromDirectoryDto : BaseUserFromDirectoryDto, new()
         where TUserFromDirectory : IUserFromDirectory, new()
     {

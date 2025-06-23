@@ -25,6 +25,6 @@ namespace BIA.Net.Core.Application.User
         /// <returns>AuthInfo.</returns>
         /// <typeparam name="TAdditionalInfoDto">The type of AdditionalInfoDto.</typeparam>
         /// <typeparam name="TUserDataDto">The type of UserDataDto.</typeparam>
-        Task<AuthInfoDto<TAdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam, ImmutableList<BiaTeamConfig<Team>> teamsConfig);
+        Task<AuthInfoDto<TAdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam, ImmutableList<BiaTeamConfig<BaseEntityTeam>> teamsConfig);
     }
 }

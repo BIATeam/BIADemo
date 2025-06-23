@@ -17,7 +17,7 @@ namespace BIA.Net.Core.Domain.User.Mappers
     /// </summary>
     /// <typeparam name="TUser">The type of user.</typeparam>
     public class UserOptionMapper<TUser> : BaseMapper<OptionDto, TUser, int>
-        where TUser : BaseUser, new()
+        where TUser : BaseEntityUser, new()
     {
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
         public override Expression<Func<TUser, OptionDto>> EntityToDto()

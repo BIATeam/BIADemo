@@ -15,7 +15,7 @@ namespace BIA.Net.Core.Domain.User
     /// </summary>
     /// <typeparam name="TUser">The type of user.</typeparam>
     public static class UserSelectBuilder<TUser>
-        where TUser : BaseUser
+        where TUser : BaseEntityUser
     {
         /// <summary>
         /// Gets the expression used to select user.

@@ -13,7 +13,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Entities
     /// <summary>
     /// The AircraftMaintenanceCompany entity.
     /// </summary>
-    public class AircraftMaintenanceCompany : Team
+    public class AircraftMaintenanceCompany : BaseEntityTeam
     {
         /// <summary>
         /// Add row version timestamp in table Site.

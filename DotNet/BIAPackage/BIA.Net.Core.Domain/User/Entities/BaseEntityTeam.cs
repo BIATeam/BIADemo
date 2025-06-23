@@ -13,7 +13,7 @@ namespace BIA.Net.Core.Domain.User.Entities
     /// <summary>
     /// The team.
     /// </summary>
-    public class Team : BaseEntityVersioned<int>, IEntityTeam
+    public class BaseEntityTeam : BaseEntityVersioned<int>, IEntityTeam
     {
         /// <summary>
         /// Gets or sets the title.

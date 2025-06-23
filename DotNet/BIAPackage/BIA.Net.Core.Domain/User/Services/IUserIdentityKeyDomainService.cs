@@ -24,7 +24,7 @@ namespace BIA.Net.Core.Domain.User.Services
         /// <typeparam name="TUser">The type of user.</typeparam>
         /// <returns>The checks the database identity key.</returns>
         Expression<Func<TUser, bool>> CheckDatabaseIdentityKey<TUser>(string identityKey)
-                where TUser : BaseUser;
+                where TUser : BaseEntityUser;
 
         /// <summary>
         /// Checks the database identity key.
@@ -33,7 +33,7 @@ namespace BIA.Net.Core.Domain.User.Services
         /// <typeparam name="TUser">The type of user.</typeparam>
         /// <returns>The checks the database identity key.</returns>
         Expression<Func<TUser, bool>> CheckDatabaseIdentityKey<TUser>(List<string> identityKeys)
-                where TUser : BaseUser;
+                where TUser : BaseEntityUser;
 
         /// <summary>
         /// Gets the database identity key.
@@ -42,7 +42,7 @@ namespace BIA.Net.Core.Domain.User.Services
         /// <typeparam name="TUser">The type of user.</typeparam>
         /// <returns>The database identity key.</returns>
         string GetDatabaseIdentityKey<TUser>(TUser user)
-                where TUser : BaseUser;
+                where TUser : BaseEntityUser;
 
         /// <summary>
         /// Gets the userDto identity key.

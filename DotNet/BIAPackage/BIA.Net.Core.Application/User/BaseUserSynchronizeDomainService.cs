@@ -22,7 +22,7 @@ namespace BIA.Net.Core.Application.User
     /// <typeparam name="TUserFromDirectoryDto">The type of user from directory dto.</typeparam>
     /// <typeparam name="TUserFromDirectory">The type of user from directory.</typeparam>
     public class BaseUserSynchronizeDomainService<TUser, TUserFromDirectoryDto, TUserFromDirectory> : IBaseUserSynchronizeDomainService<TUser, TUserFromDirectory>
-        where TUser : BaseUser, new()
+        where TUser : BaseEntityUser, new()
         where TUserFromDirectoryDto : BaseUserFromDirectoryDto, new()
         where TUserFromDirectory : class, IUserFromDirectory, new()
     {

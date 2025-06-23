@@ -17,7 +17,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.16")
+                .HasAnnotation("ProductVersion", "8.0.17")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -723,7 +723,37 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("BIA.Net.Core.Domain.User.Entities.BaseUser", b =>
+            modelBuilder.Entity("BIA.Net.Core.Domain.User.Entities.BaseEntityTeam", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int>("TeamTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TeamTypeId");
+
+                    b.ToTable("Teams", (string)null);
+
+                    b.UseTptMappingStrategy();
+                });
+
+            modelBuilder.Entity("BIA.Net.Core.Domain.User.Entities.BaseEntityUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -733,8 +763,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -772,7 +802,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.ToTable("Users", (string)null);
 
-                    b.HasDiscriminator().HasValue("BaseUser");
+                    b.HasDiscriminator().HasValue("BaseEntityUser");
 
                     b.UseTphMappingStrategy();
                 });
@@ -923,36 +953,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                             Code = "MaintenanceTeam_Admin",
                             Label = "MaintenanceTeam administrator"
                         });
-                });
-
-            modelBuilder.Entity("BIA.Net.Core.Domain.User.Entities.Team", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<int>("TeamTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TeamTypeId");
-
-                    b.ToTable("Teams", (string)null);
-
-                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("BIA.Net.Core.Domain.User.Entities.TeamType", b =>
@@ -1178,7 +1178,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("ViewUser");
                 });
 
-            modelBuilder.Entity("BaseUserRole", b =>
+            modelBuilder.Entity("BaseEntityUserRole", b =>
                 {
                     b.Property<int>("RolesId")
                         .HasColumnType("int");
@@ -1829,20 +1829,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("MaintenanceTeamCountry");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.User", b =>
-                {
-                    b.HasBaseType("BIA.Net.Core.Domain.User.Entities.BaseUser");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasDiscriminator().HasValue("User");
-                });
-
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.AircraftMaintenanceCompany", b =>
                 {
-                    b.HasBaseType("BIA.Net.Core.Domain.User.Entities.Team");
+                    b.HasBaseType("BIA.Net.Core.Domain.User.Entities.BaseEntityTeam");
 
                     b.Property<byte[]>("RowVersionAircraftMaintenanceCompany")
                         .IsConcurrencyToken()
@@ -1855,7 +1844,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceTeam", b =>
                 {
-                    b.HasBaseType("BIA.Net.Core.Domain.User.Entities.Team");
+                    b.HasBaseType("BIA.Net.Core.Domain.User.Entities.BaseEntityTeam");
 
                     b.Property<int>("AircraftMaintenanceCompanyId")
                         .HasColumnType("int");
@@ -1947,7 +1936,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Site.Entities.Site", b =>
                 {
-                    b.HasBaseType("BIA.Net.Core.Domain.User.Entities.Team");
+                    b.HasBaseType("BIA.Net.Core.Domain.User.Entities.BaseEntityTeam");
 
                     b.Property<byte[]>("RowVersionSite")
                         .IsConcurrencyToken()
@@ -1958,9 +1947,20 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("Sites", (string)null);
                 });
 
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.User", b =>
+                {
+                    b.HasBaseType("BIA.Net.Core.Domain.User.Entities.BaseEntityUser");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasDiscriminator().HasValue("User");
+                });
+
             modelBuilder.Entity("BIA.Net.Core.Domain.Notification.Entities.Notification", b =>
                 {
-                    b.HasOne("BIA.Net.Core.Domain.User.Entities.BaseUser", "CreatedBy")
+                    b.HasOne("BIA.Net.Core.Domain.User.Entities.BaseEntityUser", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById");
 
@@ -1983,7 +1983,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BIA.Net.Core.Domain.User.Entities.Team", "Team")
+                    b.HasOne("BIA.Net.Core.Domain.User.Entities.BaseEntityTeam", "Team")
                         .WithMany("NotificationTeams")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -2021,7 +2021,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BIA.Net.Core.Domain.User.Entities.BaseUser", "User")
+                    b.HasOne("BIA.Net.Core.Domain.User.Entities.BaseEntityUser", "User")
                         .WithMany("NotificationUsers")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -2089,15 +2089,26 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("BIA.Net.Core.Domain.User.Entities.BaseEntityTeam", b =>
+                {
+                    b.HasOne("BIA.Net.Core.Domain.User.Entities.TeamType", "TeamType")
+                        .WithMany()
+                        .HasForeignKey("TeamTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TeamType");
+                });
+
             modelBuilder.Entity("BIA.Net.Core.Domain.User.Entities.Member", b =>
                 {
-                    b.HasOne("BIA.Net.Core.Domain.User.Entities.Team", "Team")
+                    b.HasOne("BIA.Net.Core.Domain.User.Entities.BaseEntityTeam", "Team")
                         .WithMany("Members")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BIA.Net.Core.Domain.User.Entities.BaseUser", "User")
+                    b.HasOne("BIA.Net.Core.Domain.User.Entities.BaseEntityUser", "User")
                         .WithMany("Members")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2127,26 +2138,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("BIA.Net.Core.Domain.User.Entities.Team", b =>
-                {
-                    b.HasOne("BIA.Net.Core.Domain.User.Entities.TeamType", "TeamType")
-                        .WithMany()
-                        .HasForeignKey("TeamTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TeamType");
-                });
-
             modelBuilder.Entity("BIA.Net.Core.Domain.User.Entities.UserDefaultTeam", b =>
                 {
-                    b.HasOne("BIA.Net.Core.Domain.User.Entities.Team", "Team")
+                    b.HasOne("BIA.Net.Core.Domain.User.Entities.BaseEntityTeam", "Team")
                         .WithMany("UserDefaultTeams")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BIA.Net.Core.Domain.User.Entities.BaseUser", "User")
+                    b.HasOne("BIA.Net.Core.Domain.User.Entities.BaseEntityUser", "User")
                         .WithMany("DefaultTeams")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2159,7 +2159,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("BIA.Net.Core.Domain.View.Entities.ViewTeam", b =>
                 {
-                    b.HasOne("BIA.Net.Core.Domain.User.Entities.Team", "Team")
+                    b.HasOne("BIA.Net.Core.Domain.User.Entities.BaseEntityTeam", "Team")
                         .WithMany("ViewTeams")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2178,7 +2178,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("BIA.Net.Core.Domain.View.Entities.ViewUser", b =>
                 {
-                    b.HasOne("BIA.Net.Core.Domain.User.Entities.BaseUser", "User")
+                    b.HasOne("BIA.Net.Core.Domain.User.Entities.BaseEntityUser", "User")
                         .WithMany("ViewUsers")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2195,7 +2195,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("View");
                 });
 
-            modelBuilder.Entity("BaseUserRole", b =>
+            modelBuilder.Entity("BaseEntityUserRole", b =>
                 {
                     b.HasOne("BIA.Net.Core.Domain.User.Entities.Role", null)
                         .WithMany()
@@ -2203,7 +2203,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BIA.Net.Core.Domain.User.Entities.BaseUser", null)
+                    b.HasOne("BIA.Net.Core.Domain.User.Entities.BaseEntityUser", null)
                         .WithMany()
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2402,7 +2402,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.AircraftMaintenanceCompany", b =>
                 {
-                    b.HasOne("BIA.Net.Core.Domain.User.Entities.Team", null)
+                    b.HasOne("BIA.Net.Core.Domain.User.Entities.BaseEntityTeam", null)
                         .WithOne()
                         .HasForeignKey("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.AircraftMaintenanceCompany", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2427,7 +2427,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .WithMany()
                         .HasForeignKey("CurrentCountryId");
 
-                    b.HasOne("BIA.Net.Core.Domain.User.Entities.Team", null)
+                    b.HasOne("BIA.Net.Core.Domain.User.Entities.BaseEntityTeam", null)
                         .WithOne()
                         .HasForeignKey("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceTeam", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2442,7 +2442,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Site.Entities.Site", b =>
                 {
-                    b.HasOne("BIA.Net.Core.Domain.User.Entities.Team", null)
+                    b.HasOne("BIA.Net.Core.Domain.User.Entities.BaseEntityTeam", null)
                         .WithOne()
                         .HasForeignKey("TheBIADevCompany.BIADemo.Domain.Site.Entities.Site", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2468,7 +2468,18 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("NotificationTypeTranslations");
                 });
 
-            modelBuilder.Entity("BIA.Net.Core.Domain.User.Entities.BaseUser", b =>
+            modelBuilder.Entity("BIA.Net.Core.Domain.User.Entities.BaseEntityTeam", b =>
+                {
+                    b.Navigation("Members");
+
+                    b.Navigation("NotificationTeams");
+
+                    b.Navigation("UserDefaultTeams");
+
+                    b.Navigation("ViewTeams");
+                });
+
+            modelBuilder.Entity("BIA.Net.Core.Domain.User.Entities.BaseEntityUser", b =>
                 {
                     b.Navigation("DefaultTeams");
 
@@ -2491,17 +2502,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("NotificationTeamRoles");
 
                     b.Navigation("RoleTranslations");
-                });
-
-            modelBuilder.Entity("BIA.Net.Core.Domain.User.Entities.Team", b =>
-                {
-                    b.Navigation("Members");
-
-                    b.Navigation("NotificationTeams");
-
-                    b.Navigation("UserDefaultTeams");
-
-                    b.Navigation("ViewTeams");
                 });
 
             modelBuilder.Entity("BIA.Net.Core.Domain.View.Entities.View", b =>

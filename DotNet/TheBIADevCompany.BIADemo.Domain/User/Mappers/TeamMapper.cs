@@ -30,7 +30,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
     /// Initializes a new instance of the <see cref="TeamMapper"/> class.
     /// </remarks>
     /// <param name="userContext">the user context.</param>
-    public class TeamMapper(UserContext userContext) : BaseMapper<BaseDtoVersionedTeam, Team, int>, ITeamMapper
+    public class TeamMapper(UserContext userContext) : BaseMapper<BaseDtoVersionedTeam, BaseEntityTeam, int>, ITeamMapper
     {
         /// <summary>
         /// The user context language and culture.
@@ -41,7 +41,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         /// Create a site DTO from a entity.
         /// </summary>
         /// <returns>The site DTO.</returns>
-        public override Expression<Func<Team, BaseDtoVersionedTeam>> EntityToDto()
+        public override Expression<Func<BaseEntityTeam, BaseDtoVersionedTeam>> EntityToDto()
         {
             return entity => new BaseDtoVersionedTeam { Id = entity.Id, Title = entity.Title, TeamTypeId = entity.TeamTypeId };
         }
@@ -53,7 +53,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         /// <returns>
         /// The site DTO.
         /// </returns>
-        public Expression<Func<Team, BaseDtoVersionedTeam>> EntityToDto(int userId)
+        public Expression<Func<BaseEntityTeam, BaseDtoVersionedTeam>> EntityToDto(int userId)
         {
             return entity => new BaseDtoVersionedTeam
             {
@@ -78,9 +78,9 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         /// <summary>
         /// Retrieve the parent team id.
         /// </summary>
-        /// <param name="team">Child <see cref="Team"/>.</param>
+        /// <param name="team">Child <see cref="BaseEntityTeam"/>.</param>
         /// <returns>Parent Team id as <see cref="int"/>.</returns>
-        private static int GetParentTeamId(Team team)
+        private static int GetParentTeamId(BaseEntityTeam team)
         {
             return team switch
             {
@@ -99,9 +99,9 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         /// <summary>
         /// Retrieve the parent team title.
         /// </summary>
-        /// <param name="team">Child <see cref="Team"/>.</param>
+        /// <param name="team">Child <see cref="BaseEntityTeam"/>.</param>
         /// <returns>Parent Team title as <see cref="string"/>.</returns>
-        private static string GetParentTeamTitle(Team team)
+        private static string GetParentTeamTitle(BaseEntityTeam team)
         {
             return team switch
             {

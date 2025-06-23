@@ -29,7 +29,7 @@ namespace BIA.Net.Core.Domain.User.Mappers
     /// <typeparam name="TUserDto">The type of user dto.</typeparam>
     /// <typeparam name="TUser">The type of user.</typeparam>
     public abstract class BaseUserMapper<TUserDto, TUser>(UserContext userContext) : BaseMapper<TUserDto, TUser, int>()
-        where TUser : BaseUser, IEntity<int>, new()
+        where TUser : BaseEntityUser, IEntity<int>, new()
         where TUserDto : BaseUserDto, new()
     {
         /// <summary>

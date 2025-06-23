@@ -19,6 +19,6 @@ namespace BIA.Net.Core.Domain.Mapper
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns>the Dto.</returns>
-        Expression<Func<Team, BaseDtoVersionedTeam>> EntityToDto(int userId);
+        Expression<Func<BaseEntityTeam, BaseDtoVersionedTeam>> EntityToDto(int userId);
     }
 }

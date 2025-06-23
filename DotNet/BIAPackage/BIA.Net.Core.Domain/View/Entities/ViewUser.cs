@@ -20,7 +20,7 @@ namespace BIA.Net.Core.Domain.View.Entities
         /// <summary>
         /// Gets or sets the user.
         /// </summary>
-        public virtual BaseUser User { get; set; }
+        public virtual BaseEntityUser User { get; set; }
 
         /// <summary>
         /// Gets or sets the view identifier.

@@ -52,15 +52,15 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders.Bia
         /// <param name="modelBuilder">The model builder.</param>
         protected virtual void CreateUserModel(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BaseUser>().ToTable("Users");
-            modelBuilder.Entity<BaseUser>().HasKey(u => u.Id);
-            modelBuilder.Entity<BaseUser>().Property(u => u.FirstName).IsRequired().HasMaxLength(50);
-            modelBuilder.Entity<BaseUser>().Property(u => u.LastName).IsRequired().HasMaxLength(50);
-            modelBuilder.Entity<BaseUser>().Property(u => u.Login).IsRequired().HasMaxLength(50);
-            modelBuilder.Entity<BaseUser>().Property(u => u.LastSyncDate).IsRequired();
-            modelBuilder.Entity<BaseUser>().Property(u => u.IsActive).IsRequired();
+            modelBuilder.Entity<BaseEntityUser>().ToTable("Users");
+            modelBuilder.Entity<BaseEntityUser>().HasKey(u => u.Id);
+            modelBuilder.Entity<BaseEntityUser>().Property(u => u.FirstName).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<BaseEntityUser>().Property(u => u.LastName).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<BaseEntityUser>().Property(u => u.Login).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<BaseEntityUser>().Property(u => u.LastSyncDate).IsRequired();
+            modelBuilder.Entity<BaseEntityUser>().Property(u => u.IsActive).IsRequired();
 
-            modelBuilder.Entity<BaseUser>().HasIndex(u => new { u.Login }).IsUnique();
+            modelBuilder.Entity<BaseEntityUser>().HasIndex(u => new { u.Login }).IsUnique();
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders.Bia
         /// <param name="modelBuilder">The model builder.</param>
         protected virtual void CreateUserRoleModel(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BaseUser>()
+            modelBuilder.Entity<BaseEntityUser>()
                     .HasMany(p => p.Roles)
                     .WithMany(r => r.Users)
                     .UsingEntity(mc =>
@@ -84,10 +84,10 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders.Bia
         /// <param name="modelBuilder">The model builder.</param>
         protected virtual void CreateTeamModel(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Team>().ToTable("Teams");
-            modelBuilder.Entity<Team>().HasKey(t => t.Id);
-            modelBuilder.Entity<Team>().Property(t => t.Title).IsRequired().HasMaxLength(256);
-            modelBuilder.Entity<Team>().Property(u => u.TeamTypeId).IsRequired();
+            modelBuilder.Entity<BaseEntityTeam>().ToTable("Teams");
+            modelBuilder.Entity<BaseEntityTeam>().HasKey(t => t.Id);
+            modelBuilder.Entity<BaseEntityTeam>().Property(t => t.Title).IsRequired().HasMaxLength(256);
+            modelBuilder.Entity<BaseEntityTeam>().Property(u => u.TeamTypeId).IsRequired();
         }
 
         /// <summary>

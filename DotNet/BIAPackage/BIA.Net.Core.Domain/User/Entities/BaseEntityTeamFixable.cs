@@ -1,4 +1,4 @@
-// <copyright file="TeamFixableArchivable.cs" company="BIA">
+// <copyright file="TeamFixable.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -10,16 +10,16 @@ namespace BIA.Net.Core.Domain.User.Entities
     /// <summary>
     /// The team.
     /// </summary>
-    public class TeamFixableArchivable : TeamFixable, IEntityArchivable
+    public class BaseEntityTeamFixable : BaseEntityTeam, IEntityFixable
     {
         /// <summary>
-        /// Gets or sets the is archived.
+        /// Gets or sets the is fixed.
         /// </summary>
-        public bool IsArchived { get; set; }
+        public bool IsFixed { get; set; }
 
         /// <summary>
-        /// Gets or sets the archived date.
+        /// Gets or sets the fixed date.
         /// </summary>
-        public DateTime? ArchivedDate { get; set; }
+        public DateTime? FixedDate { get; set; }
     }
 }

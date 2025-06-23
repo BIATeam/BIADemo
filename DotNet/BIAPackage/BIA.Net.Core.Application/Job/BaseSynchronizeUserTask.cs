@@ -23,7 +23,7 @@ namespace BIA.Net.Core.Application.Job
     /// <typeparam name="TUserFromDirectory">The type of user from directory.</typeparam>
     public abstract class BaseSynchronizeUserTask<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory> : BaseJob
         where TUserDto : BaseUserDto, new()
-        where TUser : BaseUser, IEntity<int>, new()
+        where TUser : BaseEntityUser, IEntity<int>, new()
         where TUserFromDirectoryDto : BaseUserFromDirectoryDto, new()
         where TUserFromDirectory : IUserFromDirectory, new()
     {

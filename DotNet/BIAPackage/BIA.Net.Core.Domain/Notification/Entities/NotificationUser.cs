@@ -31,6 +31,6 @@ namespace BIA.Net.Core.Domain.Notification.Entities
         /// <summary>
         /// Gets or sets the user.
         /// </summary>
-        public virtual BaseUser User { get; set; }
+        public virtual BaseEntityUser User { get; set; }
     }
 }
