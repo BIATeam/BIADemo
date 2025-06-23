@@ -21,7 +21,7 @@ import { VersionedDto } from 'src/app/shared/bia-shared/model/dto/versioned-dto'
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 // TODO after creation of CRUD Plane : adapt the model
-export interface Plane extends BaseDto, FixableDto, VersionedDto {
+export interface Plane extends BaseDto, VersionedDto, FixableDto {
   siteId: number;
   msn: string;
   manufacturer: string | null;
@@ -45,7 +45,6 @@ export interface Plane extends BaseDto, FixableDto, VersionedDto {
   similarTypes: OptionDto[] | null;
   currentAirport: OptionDto;
   connectingAirports: OptionDto[];
-  blabla: string;
 }
 
 // TODO after creation of CRUD Plane : adapt the field configuration
@@ -104,12 +103,12 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
     ),
     Object.assign(new BiaFieldConfig('syncTime', 'plane.syncTime'), {
       type: PropType.TimeSecOnly,
+      isRequired: true,
     }),
     Object.assign(
       new BiaFieldConfig('syncFlightDataTime', 'plane.syncFlightDataTime'),
       {
         type: PropType.TimeSecOnly,
-        isRequired: true,
       }
     ),
     Object.assign(new BiaFieldConfig('capacity', 'plane.capacity'), {
@@ -222,7 +221,6 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       {
         type: PropType.ManyToMany,
         isRequired: true,
-        validators: [Validators.required],
       }
     ),
     Object.assign(new BiaFieldConfig('rowVersion', 'plane.rowVersion'), {

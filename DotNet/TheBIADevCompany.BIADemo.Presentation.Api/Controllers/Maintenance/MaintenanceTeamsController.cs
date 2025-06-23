@@ -13,7 +13,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
     using BIA.Net.Core.Application.Services;
 #endif
     using BIA.Net.Core.Common;
-    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Presentation.Api.Controllers.Base;
@@ -174,14 +173,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
             {
                 return this.ValidationProblem();
             }
-            catch (ForbiddenException ex)
-            {
-                return this.Problem(
-                        type: "/docs/errors/forbidden",
-                        title: "User is not authorized to make this action.",
-                        detail: ex.Message,
-                        statusCode: StatusCodes.Status403Forbidden);
-            }
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
@@ -189,6 +180,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
             catch (OutdateException)
             {
                 return this.Conflict();
+            }
+            catch (ForbiddenException)
+            {
+                return this.Forbid();
             }
         }
 
@@ -299,13 +294,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
             {
                 return this.NotFound();
             }
-            catch (ForbiddenException ex)
+            catch (ForbiddenException)
             {
-                return this.Problem(
-                        type: "/docs/errors/forbidden",
-                        title: "User is not authorized to make this action.",
-                        detail: ex.Message,
-                        statusCode: StatusCodes.Status403Forbidden);
+                return this.Forbid();
             }
         }
 

@@ -62,4 +62,9 @@ export namespace FeatureEnginesActions {
   export const clearCurrent = createAction(
     '[' + engineCRUDConfiguration.storeKey + '] Clear current'
   );
+
+  export const updateFixedStatus = createAction(
+    '[' + engineCRUDConfiguration.storeKey + '] Update fixed status',
+    props<{ id: number; isFixed: boolean }>()
+  );
 }

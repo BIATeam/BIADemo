@@ -20,9 +20,9 @@ import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 // TODO after creation of CRUD Team MaintenanceTeam : adapt the model
 export interface MaintenanceTeam
   extends BaseDto,
+    VersionedDto,
     TeamDto,
-    FixableDto,
-    VersionedDto {
+    FixableDto {
   code: string | null;
   isActive: boolean;
   isApproved: boolean | null;
