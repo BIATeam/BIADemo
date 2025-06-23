@@ -41,21 +41,27 @@ namespace BIA.Net.Core.WorkerService.Features
             configuration.GetSection("BiaNet").Bind(biaNetSection);
 
             // Hub For Clients
-            if (biaNetSection.CommonFeatures.ClientForHub?.IsActive == true
-                && !string.IsNullOrEmpty(biaNetSection.CommonFeatures.ClientForHub.RedisConnectionString))
+            if (biaNetSection.CommonFeatures.ClientForHub?.IsActive == true)
             {
-                if (string.IsNullOrEmpty(biaNetSection.CommonFeatures.ClientForHub.RedisChannelPrefix))
+                if (!string.IsNullOrEmpty(biaNetSection.CommonFeatures.ClientForHub.RedisConnectionString))
                 {
-                    services.AddSignalR().AddStackExchangeRedis(biaNetSection.CommonFeatures.ClientForHub.RedisConnectionString);
+                    if (string.IsNullOrEmpty(biaNetSection.CommonFeatures.ClientForHub.RedisChannelPrefix))
+                    {
+                        services.AddSignalR().AddStackExchangeRedis(biaNetSection.CommonFeatures.ClientForHub.RedisConnectionString);
+                    }
+                    else
+                    {
+                        services.AddSignalR().AddStackExchangeRedis(
+                            biaNetSection.CommonFeatures.ClientForHub.RedisConnectionString,
+                            redisOptions =>
+                            {
+                                redisOptions.Configuration.ChannelPrefix = RedisChannel.Literal(biaNetSection.CommonFeatures.ClientForHub.RedisChannelPrefix);
+                            });
+                    }
                 }
                 else
                 {
-                    services.AddSignalR().AddStackExchangeRedis(
-                        biaNetSection.CommonFeatures.ClientForHub.RedisConnectionString,
-                        redisOptions =>
-                        {
-                            redisOptions.Configuration.ChannelPrefix = RedisChannel.Literal(biaNetSection.CommonFeatures.ClientForHub.RedisChannelPrefix);
-                        });
+                    services.AddSignalR();
                 }
             }
 

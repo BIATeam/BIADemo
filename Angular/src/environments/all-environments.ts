@@ -11,7 +11,7 @@ export const allEnvironments = {
   urlErrorPage: './assets/bia/html/error.html',
   // Except BIADemo version: '0.0.0',
   // Begin BIADemo
-  version: '4.0.5',
+  version: '4.0.7',
   // End BIADemo
 
   teams: [

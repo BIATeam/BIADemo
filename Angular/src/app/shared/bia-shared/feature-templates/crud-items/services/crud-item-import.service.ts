@@ -532,7 +532,9 @@ export class CrudItemImportService<T extends BaseDto> {
     const idCount = new Map<any, number>();
 
     arr.forEach(obj => {
-      idCount.set(obj.id, (idCount.get(obj.id) || 0) + 1);
+      if (obj.id !== undefined && obj.id !== null) {
+        idCount.set(obj.id, (idCount.get(obj.id) || 0) + 1);
+      }
     });
 
     arr
