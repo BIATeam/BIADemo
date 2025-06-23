@@ -197,13 +197,16 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddHttpClient<IIdentityProviderRepository<UserFromDirectory>, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
             collection.AddTransient<IMailRepository, MailRepository>();
 
-            if (isUnitTest || !string.IsNullOrEmpty(biaNetSection.CommonFeatures.ClientForHub?.SignalRUrl))
+            if (biaNetSection.CommonFeatures.ClientForHub?.IsActive == true)
             {
-                collection.AddTransient<IClientForHubRepository, ExternalClientForSignalRRepository>();
-            }
-            else
-            {
-                collection.AddTransient<IClientForHubRepository, InternalClientForSignalRRepository<HubForClients>>();
+                if (isUnitTest || !string.IsNullOrEmpty(biaNetSection.CommonFeatures.ClientForHub.SignalRUrl))
+                {
+                    collection.AddTransient<IClientForHubRepository, ExternalClientForSignalRRepository>();
+                }
+                else
+                {
+                    collection.AddTransient<IClientForHubRepository, InternalClientForSignalRRepository<HubForClients>>();
+                }
             }
 
             // Begin BIADemo
