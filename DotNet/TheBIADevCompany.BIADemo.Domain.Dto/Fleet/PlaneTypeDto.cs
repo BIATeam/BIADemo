@@ -7,7 +7,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Fleet
 {
     using System;
     using BIA.Net.Core.Domain.Dto.Base;
-    using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Dto.CustomAttribute;
 
     /// <summary>
