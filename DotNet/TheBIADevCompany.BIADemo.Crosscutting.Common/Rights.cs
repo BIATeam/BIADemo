@@ -121,6 +121,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// The right to save engine.
             /// </summary>
             public const string Save = "Engine_Save";
+
+            /// <summary>
+            /// The right to fixe engine.
+            /// </summary>
+            public const string Fix = "EngineFix";
         }
 
         // BIAToolKit - End Partial Rights Engines
