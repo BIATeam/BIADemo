@@ -56,7 +56,7 @@ namespace BIA.Net.Core.Domain.User.Mappers
             }
         }
 
-        /// <inheritdoc cref="BaseEntityMapper{Member}.ExpressionCollectionFilter"/>
+        /// <inheritdoc />
         public override ExpressionCollection<Member> ExpressionCollectionFilterIn
         {
             get
@@ -120,7 +120,7 @@ namespace BIA.Net.Core.Domain.User.Mappers
             });
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCellMapping"/>
+        /// <inheritdoc />
         public override Dictionary<string, Func<string>> DtoToCellMapping(MemberDto dto)
         {
             return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
@@ -141,7 +141,7 @@ namespace BIA.Net.Core.Domain.User.Mappers
             dto.TeamId = entity.TeamId;
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesForUpdate"/>
+        /// <inheritdoc />
         public override Expression<Func<Member, object>>[] IncludesForUpdate()
         {
             return

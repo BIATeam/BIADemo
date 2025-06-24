@@ -239,7 +239,7 @@ namespace BIA.Net.Core.Application.User
             return this.GetAllAsync<OptionDto, TeamOptionMapper>();
         }
 
-        /// <inheritdoc cref="ITeamAppService.GetAllAsync"/>
+        /// <inheritdoc />
         public async Task<IEnumerable<BaseDtoVersionedTeam>> GetAllAsync(ImmutableList<BiaTeamConfig<BaseEntityTeam>> teamsConfig, int userId = 0, IEnumerable<string> userPermissions = null)
         {
             userPermissions = userPermissions != null ? userPermissions : this.principal.GetUserPermissions();

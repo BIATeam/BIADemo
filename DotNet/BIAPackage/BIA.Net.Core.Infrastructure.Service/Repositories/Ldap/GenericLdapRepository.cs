@@ -156,7 +156,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="domainKey">Domain Name in config file where domain found.</param>
         protected abstract TUserFromDirectory ConvertToUserDirectory(DirectoryEntry entry, string domainKey);
 
-        /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.IsUserInGroup"/>
+        /// <inheritdoc />
         protected virtual async Task<bool> IsUserSidInGroups(string sid, IEnumerable<LdapGroup> ldapGroups)
         {
             if (ldapGroups == null || ldapGroups.Count() == 0)
@@ -180,7 +180,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
         }
 
-        /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.SearchUsers"/>
+        /// <inheritdoc />
         public virtual List<TUserFromDirectory> SearchUsers(string search, string ldapName = null, int max = 10)
         {
             List<TUserFromDirectory> usersInfo = new List<TUserFromDirectory>();
@@ -289,7 +289,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return usersMatches.Select((um) => ConvertToUserDirectory(um, domain.Name));
         }
 
-        /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.AddUsersInGroup"/>
+        /// <inheritdoc />
         public virtual async Task<List<string>> AddUsersInGroup(IEnumerable<TUserFromDirectoryDto> usersFromDirectory, string roleLabel)
         {
             List<string> listGroupCacheSidToRemove = new List<string>();
@@ -525,7 +525,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             }
         }
 
-        /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.RemoveUsersInGroup"/>
+        /// <inheritdoc />
         public virtual async Task<List<TUserFromDirectoryDto>> RemoveUsersInGroup(List<TUserFromDirectoryDto> usersFromRepositoryToRemove, string roleLabel)
         {
             List<string> listGroupCacheSidToRemove = new List<string>();
@@ -603,7 +603,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return await IsUserSidInGroups(sid, ldapGroups);
         }
 
-        /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.GetAllUsersInGroup"/>
+        /// <inheritdoc />
         public virtual async Task<IEnumerable<string>> GetAllUsersSidInRoleToSync(string role, bool forceRefresh = false)
         {
             this.cacheGroupPrincipal.Clear();
@@ -629,7 +629,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return listUsersSid.ToList();
         }
 
-        /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.GetLdapGroupsForRole"/>
+        /// <inheritdoc />
         public virtual List<LdapGroup> GetLdapGroupsForRole(string roleLabel)
         {
             return this.configuration.Roles.Where(w => (w.Type == BiaConstants.RoleType.Ldap || w.Type == BiaConstants.RoleType.Synchro) && w.Label == roleLabel).Select(r => r.LdapGroups).SelectMany(x => x).ToList();

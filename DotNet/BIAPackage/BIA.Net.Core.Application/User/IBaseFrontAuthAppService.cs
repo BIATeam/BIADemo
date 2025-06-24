@@ -18,7 +18,7 @@ namespace BIA.Net.Core.Application.User
         where TAdditionalInfoDto : BaseAdditionalInfoDto, new()
     {
         /// <summary>
-        /// Logins the on teams asynchronous.
+        /// Login on teams asynchronous.
         /// </summary>
         /// <param name="loginParam">The login parameter.</param>
         /// <param name="teamsConfig">The teams configuration.</param>

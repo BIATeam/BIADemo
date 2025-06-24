@@ -87,7 +87,7 @@ namespace BIA.Net.Core.Infrastructure.Data
             }
         }
 
-        /// <inheritdoc cref="IQueryableUnitOfWork.CommitAsync"/>
+        /// <inheritdoc />
         public async Task<int> CommitAsync()
         {
             return await this.SaveChangesAsync();
@@ -225,7 +225,7 @@ namespace BIA.Net.Core.Infrastructure.Data
             this.Entry(item).State = EntityState.Modified;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEntityType FindEntityType(Type entityType)
         {
             return this.Model.FindEntityType(entityType);

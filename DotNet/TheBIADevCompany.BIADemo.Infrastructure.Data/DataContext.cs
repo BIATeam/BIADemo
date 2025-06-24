@@ -184,7 +184,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
             return base.DisposeAsync();
         }
 
-        /// <inheritdoc cref="DbContext.OnModelCreating"/>
+        /// <inheritdoc />
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // modelBuilder.HasDefaultSchema("dbo")

@@ -29,7 +29,7 @@ namespace BIA.Net.Core.Domain.User.Services
             this.configuration = configuration.Value;
         }
 
-        /// <inheritdoc cref="IUserPermissionDomainService.TranslateRolesInPermissions"/>
+        /// <inheritdoc />
         public List<string> TranslateRolesInPermissions(List<string> roles, bool lightToken = false)
         {
             IEnumerable<Permission> rights = default;

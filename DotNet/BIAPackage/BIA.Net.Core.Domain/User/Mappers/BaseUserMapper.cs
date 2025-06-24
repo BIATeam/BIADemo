@@ -61,7 +61,7 @@ namespace BIA.Net.Core.Domain.User.Mappers
             }
         }
 
-        /// <inheritdoc cref="BaseEntityMapper{TUser}.ExpressionCollectionFilterIn"/>
+        /// <inheritdoc />
         public override ExpressionCollection<TUser> ExpressionCollectionFilterIn
         {
             get
@@ -80,7 +80,7 @@ namespace BIA.Net.Core.Domain.User.Mappers
         /// </summary>
         protected UserContext UserContext { get; set; } = userContext;
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
+        /// <inheritdoc />
         public override void DtoToEntity(TUserDto dto, ref TUser entity, string mapperMode, IUnitOfWork context)
         {
             base.DtoToEntity(dto, ref entity, mapperMode, context);
@@ -135,7 +135,7 @@ namespace BIA.Net.Core.Domain.User.Mappers
             });
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCellMapping"/>
+        /// <inheritdoc />
         public override Dictionary<string, Func<string>> DtoToCellMapping(TUserDto dto)
         {
             return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
@@ -149,7 +149,7 @@ namespace BIA.Net.Core.Domain.User.Mappers
             };
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesForUpdate"/>
+        /// <inheritdoc />
         public override Expression<Func<TUser, object>>[] IncludesForUpdate()
         {
             return

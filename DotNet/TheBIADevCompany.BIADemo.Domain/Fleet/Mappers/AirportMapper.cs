@@ -19,7 +19,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
     /// </summary>
     public class AirportMapper : BaseMapper<AirportDto, Airport, int>
     {
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
+        /// <inheritdoc />
         public override ExpressionCollection<Airport> ExpressionCollection
         {
             get
@@ -32,7 +32,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             }
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
+        /// <inheritdoc />
         public override void DtoToEntity(AirportDto dto, ref Airport entity)
         {
             base.DtoToEntity(dto, ref entity);
@@ -41,7 +41,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             entity.City = dto.City;
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
+        /// <inheritdoc />
         public override Expression<Func<Airport, AirportDto>> EntityToDto()
         {
             return base.EntityToDto().CombineMapping(entity => new AirportDto
@@ -51,7 +51,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             });
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCellMapping"/>
+        /// <inheritdoc />
         public override Dictionary<string, Func<string>> DtoToCellMapping(AirportDto dto)
         {
             return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))

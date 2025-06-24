@@ -26,7 +26,7 @@ namespace BIA.Net.Core.Domain.Notification.Mappers
     /// <param name="userContext">the user context.</param>
     public class NotificationListItemMapper(UserContext userContext) : BaseMapper<NotificationListItemDto, Notification, int>
     {
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
+        /// <inheritdoc />
         public override ExpressionCollection<Notification> ExpressionCollection
         {
             get
@@ -46,7 +46,7 @@ namespace BIA.Net.Core.Domain.Notification.Mappers
             }
         }
 
-        /// <inheritdoc cref="BaseEntityMapper{Notification}.ExpressionCollectionFilterIn"/>
+        /// <inheritdoc />
         public override ExpressionCollection<Notification> ExpressionCollectionFilterIn
         {
             get
@@ -67,7 +67,7 @@ namespace BIA.Net.Core.Domain.Notification.Mappers
         /// </summary>
         private UserContext UserContext { get; set; } = userContext;
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
+        /// <inheritdoc />
         public override Expression<Func<Notification, NotificationListItemDto>> EntityToDto(string mapperMode)
         {
             return this.EntityToDto().CombineMapping(entity => new NotificationListItemDto
@@ -107,7 +107,7 @@ namespace BIA.Net.Core.Domain.Notification.Mappers
             });
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCellMapping"/>
+        /// <inheritdoc />
         public override Dictionary<string, Func<string>> DtoToCellMapping(NotificationListItemDto dto)
         {
             return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))

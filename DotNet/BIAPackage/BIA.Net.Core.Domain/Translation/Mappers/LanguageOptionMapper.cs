@@ -15,7 +15,7 @@ namespace BIA.Net.Core.Domain.Translation.Mappers
     /// </summary>
     public class LanguageOptionMapper : BiaBaseMapper<OptionDto, Language, int>
     {
-        /// <inheritdoc cref="BiaBaseMapper{TDto,TEntity}.EntityToDto"/>
+        /// <inheritdoc />
         public override Expression<Func<Language, OptionDto>> EntityToDto()
         {
             return entity => new OptionDto

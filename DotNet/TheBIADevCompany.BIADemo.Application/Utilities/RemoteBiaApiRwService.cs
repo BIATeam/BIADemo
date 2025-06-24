@@ -27,7 +27,7 @@ namespace TheBIADevCompany.BIADemo.Application.Utilities
             this.remoteBiaApiRwRepository = remoteBiaApiRwRepository;
         }
 
-        /// <inheritdoc cref="IRemoteBiaApiRwService.PingAsync"/>
+        /// <inheritdoc />
         public async Task<bool> PingAsync()
         {
             return await this.remoteBiaApiRwRepository.PingAsync();

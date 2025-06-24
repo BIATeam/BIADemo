@@ -23,7 +23,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
     /// </summary>
     public class PlaneMapper : BaseMapper<PlaneDto, Plane, int>
     {
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
+        /// <inheritdoc />
         public override ExpressionCollection<Plane> ExpressionCollection
         {
             get
@@ -56,7 +56,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             }
         }
 
-        /// <inheritdoc cref="BaseEntityMapper{Plane}.ExpressionCollectionFilterIn"/>
+        /// <inheritdoc />
         public override ExpressionCollection<Plane> ExpressionCollectionFilterIn
         {
             get
@@ -73,7 +73,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             }
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
+        /// <inheritdoc />
         public override void DtoToEntity(PlaneDto dto, ref Plane entity)
         {
             var isCreation = entity == null;
@@ -166,7 +166,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             }
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
+        /// <inheritdoc />
         public override Expression<Func<Plane, PlaneDto>> EntityToDto()
         {
             return base.EntityToDto().CombineMapping(entity => new PlaneDto
@@ -222,7 +222,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             });
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCellMapping"/>
+        /// <inheritdoc />
         public override Dictionary<string, Func<string>> DtoToCellMapping(PlaneDto dto)
         {
             return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
@@ -259,7 +259,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             dto.SiteId = entity.SiteId;
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesForUpdate"/>
+        /// <inheritdoc />
         public override Expression<Func<Plane, object>>[] IncludesForUpdate()
         {
             return

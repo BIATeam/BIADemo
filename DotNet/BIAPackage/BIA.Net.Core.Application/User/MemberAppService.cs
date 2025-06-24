@@ -44,13 +44,13 @@ namespace BIA.Net.Core.Application.User
             this.principal = principal as BiaClaimsPrincipal;
         }
 
-        /// <inheritdoc cref="IMemberAppService.GetRangeByTeamAsync"/>
+        /// <inheritdoc />
         public async Task<(IEnumerable<MemberDto> Members, int Total)> GetRangeByTeamAsync(PagingFilterFormatDto filters)
         {
             return await this.GetRangeAsync(filters: filters, specification: MemberSpecification.SearchGetAll(filters));
         }
 
-        /// <inheritdoc cref="IMemberAppService.AddUsers"/>
+        /// <inheritdoc />
         public async Task<IEnumerable<MemberDto>> AddUsers(MembersDto membersDto)
         {
             IEnumerable<MemberDto> dtoActualList = await this.GetAllAsync(specification: new DirectSpecification<Member>(s => s.TeamId == membersDto.TeamId));
@@ -85,7 +85,7 @@ namespace BIA.Net.Core.Application.User
             return await this.SaveAsync(dtoList);
         }
 
-        /// <inheritdoc cref="IMemberAppService.SetDefaultRoleAsync(int)"/>
+        /// <inheritdoc />
         public async Task SetDefaultRoleAsync(int teamId, List<int> roleIds)
         {
             int userId = this.principal.GetUserId();
@@ -105,7 +105,7 @@ namespace BIA.Net.Core.Application.User
             }
         }
 
-        /// <inheritdoc cref="IMemberAppService.ResetDefaultRoleAsync(int)"/>
+        /// <inheritdoc />
         public async Task ResetDefaultRoleAsync(int teamId)
         {
             int userId = this.principal.GetUserId();
@@ -125,7 +125,7 @@ namespace BIA.Net.Core.Application.User
             }
         }
 
-        /// <inheritdoc cref="IMemberAppService.GetCsvAsync"/>
+        /// <inheritdoc />
         public async Task<byte[]> GetCsvAsync(PagingFilterFormatDto filters)
         {
             return await this.GetCsvAsync<MemberDto, MemberMapper, PagingFilterFormatDto>(filters: filters, specification: MemberSpecification.SearchGetAll(filters));
