@@ -249,6 +249,37 @@ export class EnginesEffects {
     )
   );
 
+  updateFixedStatus$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(FeatureEnginesActions.updateFixedStatus),
+      map(x => x),
+      concatMap(x =>
+        of(x).pipe(
+          withLatestFrom(
+            this.store.select(FeatureEnginesStore.getLastLazyLoadEvent)
+          )
+        )
+      ),
+      switchMap(([x, event]) => {
+        return this.engineDas
+          .updateFixedStatus({ id: x.id, fixed: x.isFixed })
+          .pipe(
+            map(engine => {
+              this.biaMessageService.showUpdateSuccess();
+              this.store.dispatch(
+                FeatureEnginesActions.loadAllByPost({ event: event })
+              );
+              return FeatureEnginesActions.loadSuccess({ engine });
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(FeatureEnginesActions.failure({ error: err }));
+            })
+          );
+      })
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private engineDas: EngineDas,

@@ -35,7 +35,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
         public override void DtoToEntity(PlaneTypeDto dto, ref PlaneType entity)
         {
             base.DtoToEntity(dto, ref entity);
-
             entity.Title = dto.Title;
             entity.CertificationDate = dto.CertificationDate;
         }

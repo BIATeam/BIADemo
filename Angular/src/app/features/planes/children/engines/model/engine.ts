@@ -14,7 +14,7 @@ import { VersionedDto } from 'src/app/shared/bia-shared/model/dto/versioned-dto'
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 // TODO after creation of CRUD Engine : adapt the model
-export interface Engine extends BaseDto, FixableDto, VersionedDto {
+export interface Engine extends BaseDto, VersionedDto, FixableDto {
   reference: string;
   manufacturer: string | null;
   nextMaintenanceDate: Date;
