@@ -35,15 +35,14 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             this.engineMapper = engineMapper;
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
+        /// <inheritdoc cref="BaseEntityMapper{Plane}.ExpressionCollection"/>
         public override ExpressionCollection<Plane> ExpressionCollection
         {
             // It is not necessary to implement this function if you to not use the mapper for filtered list. In BIADemo it is use only for Calc SpreadSheet.
             get
             {
-                return new ExpressionCollection<Plane>
+                return new ExpressionCollection<Plane>(base.ExpressionCollection)
                 {
-                    { HeaderName.Id, plane => plane.Id },
                     { HeaderName.Msn, plane => plane.Msn },
                     { HeaderName.Manufacturer, plane => plane.Manufacturer },
                     { HeaderName.IsActive, plane => plane.IsActive },
@@ -67,6 +66,23 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
                     { HeaderName.CurrentAirport, plane => plane.CurrentAirport != null ? plane.CurrentAirport.Name : null },
                     { HeaderName.SimilarTypes, plane => plane.SimilarTypes.Select(x => x.Title).OrderBy(x => x) },
                 };
+            }
+        }
+
+        /// <inheritdoc cref="BaseEntityMapper{Plane}.ExpressionCollectionFilterIn"/>
+        public override ExpressionCollection<Plane> ExpressionCollectionFilterIn
+        {
+            get
+            {
+                return new ExpressionCollection<Plane>(
+                    base.ExpressionCollectionFilterIn,
+                    new ExpressionCollection<Plane>()
+                    {
+                        { HeaderName.PlaneType, plane => plane.PlaneType.Id },
+                        { HeaderName.SimilarTypes, plane => plane.SimilarTypes.Select(x => x.Id) },
+                        { HeaderName.CurrentAirport, plane => plane.CurrentAirport.Id },
+                        { HeaderName.ConnectingAirports, plane => plane.ConnectingAirports.Select(x => x.Id) },
+                    });
             }
         }
 

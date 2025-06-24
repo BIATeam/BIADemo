@@ -57,13 +57,21 @@ namespace BIA.Net.Core.Domain.User.Mappers
                             .Select(role => role.Label))
                         .OrderBy(x => x)
                     },
-                    {
-                        HeaderName.Teams,
-                        user => user.Members
-                        .SelectMany(member => member.Team.Title)
-                        .OrderBy(x => x)
-                    },
                 };
+            }
+        }
+
+        /// <inheritdoc cref="BaseEntityMapper{TUser}.ExpressionCollectionFilterIn"/>
+        public override ExpressionCollection<TUser> ExpressionCollectionFilterIn
+        {
+            get
+            {
+                return new ExpressionCollection<TUser>(
+                    base.ExpressionCollectionFilterIn,
+                    new ExpressionCollection<TUser>()
+                    {
+                        { HeaderName.Roles, user => user.Roles.Select(x => x.Id) },
+                    });
             }
         }
 

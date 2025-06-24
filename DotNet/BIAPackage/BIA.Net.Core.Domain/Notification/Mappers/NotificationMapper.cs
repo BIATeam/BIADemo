@@ -50,6 +50,22 @@ namespace BIA.Net.Core.Domain.Notification.Mappers
             }
         }
 
+        /// <inheritdoc cref="BaseEntityMapper{Notification}.ExpressionCollectionFilterIn"/>
+        public override ExpressionCollection<Notification> ExpressionCollectionFilterIn
+        {
+            get
+            {
+                return new ExpressionCollection<Notification>(
+                    base.ExpressionCollectionFilterIn,
+                    new ExpressionCollection<Notification>()
+                    {
+                        { HeaderName.Type, notification => notification.Type.Id },
+                        { HeaderName.CreatedBy, notification => notification.CreatedBy.Id },
+                        { HeaderName.NotifiedUsers, notification => notification.NotifiedUsers.Select(x => x.User.Id) },
+                    });
+            }
+        }
+
         /// <summary>
         /// The user context language and culture.
         /// </summary>

@@ -86,7 +86,7 @@ namespace BIA.Net.Core.Domain.Service
                     mapper,
                     filters);
 
-                var queryOrder = this.GetQueryOrder(mapper.ExpressionCollection, filters?.SortField, filters?.SortOrder == 1, filters?.MultiSortMeta);
+                var queryOrder = this.GetQueryOrder(mapper.ExpressionCollectionOrder, filters?.SortField, filters?.SortOrder == 1, filters?.MultiSortMeta);
 
                 var results = await this.Repository.GetRangeResultAsync(
                     mapper.EntityToDto(mapperMode),
