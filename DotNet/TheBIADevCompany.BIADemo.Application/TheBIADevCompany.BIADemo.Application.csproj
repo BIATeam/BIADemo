@@ -63,6 +63,6 @@
     <Compile Remove="**\*ProfileImageController*.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="BIA.Net.Core.Application" Version="4.0.7" />
+    <PackageReference Include="BIA.Net.Core.Application" Version="4.1.0" />
   </ItemGroup>
 </Project>
