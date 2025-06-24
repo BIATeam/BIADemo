@@ -1,4 +1,4 @@
-// <copyright file="TeamFixableArchivable.cs" company="BIA">
+// <copyright file="BaseEntityTeamFixableArchivable.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 

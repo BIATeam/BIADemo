@@ -106,10 +106,10 @@ namespace TheBIADevCompany.BIADemo.Test.Data
                 Login = firstName + lastName,
                 Members = new List<Member>(),
                 ViewUsers = new List<ViewUser>(),
+                LastSyncDate = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc),
 #if BIA_USER_CUSTOM_FIELDS_BACK
                 Company = "TheBIADevCompany",
                 Country = "France",
-                DaiDate = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc),
                 Department = "DM",
                 DistinguishedName = "DistinguishedName",
                 ExternalCompany = string.Empty,

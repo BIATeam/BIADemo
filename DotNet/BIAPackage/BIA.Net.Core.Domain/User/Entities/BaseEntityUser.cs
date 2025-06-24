@@ -1,4 +1,4 @@
-// <copyright file="BaseUser.cs" company="BIA">
+// <copyright file="BaseEntityUser.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 

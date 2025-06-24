@@ -1,4 +1,4 @@
-// <copyright file="Team.cs" company="BIA">
+// <copyright file="BaseEntityTeam.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
