@@ -83,5 +83,10 @@ namespace BIA.Net.Core.Common.Configuration
         /// Gets or sets the cultures configuration.
         /// </summary>
         public IEnumerable<Culture> Cultures { get; set; }
+
+        /// <summary>
+        /// The lheader label to add to any CSV.
+        /// </summary>
+        public string CsvHeaderLabel { get; set; }
     }
 }

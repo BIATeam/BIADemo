@@ -74,7 +74,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="BIA.Net.Core.Test" Version="4.0.7" />
+		<PackageReference Include="BIA.Net.Core.Test" Version="4.1.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.*" />
 		<PackageReference Include="Moq" Version="4.20.*" />
 		<PackageReference Include="MSTest.TestAdapter" Version="3.8.*" />

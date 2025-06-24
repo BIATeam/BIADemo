@@ -230,12 +230,12 @@ namespace BIA.Net.Core.Domain.Service
         {
             return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
             {
-                List<string> columnHeaderKeys = null;
-                List<string> columnHeaderValues = null;
+                var columnHeaderKeys = new List<string>();
+                var columnHeaderValues = new List<string>();
                 if (filters is PagingFilterFormatDto fileFilters)
                 {
-                    columnHeaderKeys = fileFilters.Columns.Select(x => x.Key).ToList();
-                    columnHeaderValues = fileFilters.Columns.Select(x => x.Value).ToList();
+                    columnHeaderKeys.AddRange(fileFilters.Columns.Select(x => x.Key));
+                    columnHeaderValues.AddRange(fileFilters.Columns.Select(x => x.Value));
                 }
 
                 // We reset these parameters, used for paging, in order to recover the totality of the data.
@@ -248,13 +248,19 @@ namespace BIA.Net.Core.Domain.Service
                 List<object[]> records = results.Select(mapper.DtoToRecord(mapperMode, columnHeaderKeys)).ToList();
 
                 var csvBuilder = new StringBuilder();
+                csvBuilder.AppendLine($"sep={BiaConstants.Csv.Separator}");
+                if (!string.IsNullOrWhiteSpace(this.BiaNetSection.CsvHeaderLabel))
+                {
+                    csvBuilder.AppendLine(this.BiaNetSection.CsvHeaderLabel);
+                }
+
+                csvBuilder.AppendLine(string.Join(BiaConstants.Csv.Separator, columnHeaderValues));
                 records.ForEach(line =>
                 {
                     csvBuilder.AppendLine(string.Join(BiaConstants.Csv.Separator, line));
                 });
 
-                string csvSep = $"sep={BiaConstants.Csv.Separator}\n";
-                return Encoding.GetEncoding("iso-8859-1").GetBytes($"{csvSep}{string.Join(BiaConstants.Csv.Separator, columnHeaderValues ?? new List<string>())}\r\n{csvBuilder}");
+                return Encoding.GetEncoding("iso-8859-1").GetBytes(csvBuilder.ToString());
             });
         }
 
