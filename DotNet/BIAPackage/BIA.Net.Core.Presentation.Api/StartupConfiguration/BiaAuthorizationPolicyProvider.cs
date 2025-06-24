@@ -35,7 +35,7 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
             configuration.GetSection("BiaNet").Bind(this.biaNetSection);
         }
 
-        /// <inheritdoc cref="DefaultAuthorizationPolicyProvider.GetPolicyAsync(string)"/>
+        /// <inheritdoc />
         public override async Task<AuthorizationPolicy> GetPolicyAsync(string policyName)
         {
             var basePolicy = await base.GetPolicyAsync(policyName);

@@ -62,7 +62,7 @@ namespace BIA.Net.Core.Application.User
             this.identityProviderRepository = identityProviderRepository;
         }
 
-        /// <inheritdoc cref="IBaseUserSynchronizeDomainService.SynchronizeFromIdpAsync"/>
+        /// <inheritdoc />
         public async Task SynchronizeFromIdpAsync()
         {
             IEnumerable<TUser> users = await this.repository.GetAllEntityAsync(filter: user => !string.IsNullOrWhiteSpace(user.Login) && user.IsActive);
@@ -83,7 +83,7 @@ namespace BIA.Net.Core.Application.User
             }
         }
 
-        /// <inheritdoc cref="IBaseUserSynchronizeDomainService.SynchronizeFromADGroupAsync"/>
+        /// <inheritdoc />
         public async Task SynchronizeFromADGroupAsync(bool fullSynchro = false)
         {
             List<TUser> users = (await this.repository.GetAllEntityAsync(includes: new Expression<Func<TUser, object>>[] { x => x.Roles })).ToList();

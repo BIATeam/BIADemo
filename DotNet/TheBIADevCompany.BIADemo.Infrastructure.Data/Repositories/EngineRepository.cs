@@ -29,7 +29,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories
         {
         }
 
-        /// <inheritdoc cref="IEngineRepository.FillIsToBeMaintainedAsync"/>
+        /// <inheritdoc />
         public async Task FillIsToBeMaintainedAsync(int nbMonth)
         {
             await this.RetrieveSetNoTracking()

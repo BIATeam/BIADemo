@@ -112,7 +112,7 @@ namespace BIA.Net.Core.Application.User
         /// </summary>
         protected IRoleAppService RoleAppService { get; }
 
-        /// <inheritdoc cref="IAuthAppService.LoginOnTeamsAsync"/>
+        /// <inheritdoc />
         public virtual async Task<AuthInfoDto<TAdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam, ImmutableList<BiaTeamConfig<BaseEntityTeam>> teamsConfig)
         {
             // Check if current user is authenticated

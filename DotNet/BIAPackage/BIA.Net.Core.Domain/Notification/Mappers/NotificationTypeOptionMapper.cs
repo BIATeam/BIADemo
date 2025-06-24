@@ -32,7 +32,7 @@ namespace BIA.Net.Core.Domain.Notification.Mappers
         /// </summary>
         private UserContext UserContext { get; set; }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
+        /// <inheritdoc />
         public override Expression<Func<NotificationType, OptionDto>> EntityToDto()
         {
             return base.EntityToDto().CombineMapping(entity => new OptionDto

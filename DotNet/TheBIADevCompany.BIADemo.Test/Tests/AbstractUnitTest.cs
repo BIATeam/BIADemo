@@ -27,7 +27,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests
             // - or with some default data in the DB (inserted through IMockEntityFramework.InitDefaultData())
         }
 
-        /// <inheritdoc cref="BIAAbstractUnitTest{TMockEF, TDbContext}.InitServiceCollection"/>
+        /// <inheritdoc />
         protected override void InitServiceCollection()
         {
             this.ServicesCollection = new ServiceCollection();

@@ -35,7 +35,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Site.Mappers
 
         // Begin BIADemo
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesBeforeDelete"/>
+        /// <inheritdoc />
         public override Expression<Func<Site, object>>[] IncludesBeforeDelete()
         {
             return

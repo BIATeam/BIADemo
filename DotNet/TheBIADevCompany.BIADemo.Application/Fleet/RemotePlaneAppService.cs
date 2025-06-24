@@ -28,7 +28,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
             this.remotePlaneRepository = remotePlaneRepository;
         }
 
-        /// <inheritdoc cref="IRemotePlaneAppService.GetRemoteAsync"/>
+        /// <inheritdoc />
         public async Task<bool> CheckExistAsync(int id)
         {
             var plane = new Plane();

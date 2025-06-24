@@ -35,7 +35,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             this.engineMapper = engineMapper;
         }
 
-        /// <inheritdoc cref="BaseEntityMapper{Plane}.ExpressionCollection"/>
+        /// <inheritdoc />
         public override ExpressionCollection<Plane> ExpressionCollection
         {
             // It is not necessary to implement this function if you to not use the mapper for filtered list. In BIADemo it is use only for Calc SpreadSheet.
@@ -69,7 +69,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             }
         }
 
-        /// <inheritdoc cref="BaseEntityMapper{Plane}.ExpressionCollectionFilterIn"/>
+        /// <inheritdoc />
         public override ExpressionCollection<Plane> ExpressionCollectionFilterIn
         {
             get
@@ -86,7 +86,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             }
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
+        /// <inheritdoc />
         public override void DtoToEntity(PlaneSpecificDto dto, ref Plane entity)
         {
             this.planeMapper.DtoToEntity(dto, ref entity);
@@ -94,7 +94,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             MapEmbeddedItemToEntityCollection(dto.Engines, entity.Engines, this.engineMapper);
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
+        /// <inheritdoc />
         public override Expression<Func<Plane, PlaneSpecificDto>> EntityToDto()
         {
             return base.EntityToDto().CombineMapping(entity => new PlaneSpecificDto
@@ -153,7 +153,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             });
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCellMapping"/>
+        /// <inheritdoc />
         public override Dictionary<string, Func<string>> DtoToCellMapping(PlaneSpecificDto dto)
         {
             return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
@@ -190,7 +190,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             dto.SiteId = entity.SiteId;
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesForUpdate"/>
+        /// <inheritdoc />
         public override Expression<Func<Plane, object>>[] IncludesForUpdate()
         {
             return

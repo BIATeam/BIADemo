@@ -44,7 +44,18 @@ namespace BIA.Net.Core.Application.Services
         {
         }
 
-        /// <inheritdoc cref="CrudAppServiceListAndItemBase{TDto,TFilterDto}.GetRangeAsync"/>
+        /// <summary>
+        /// Gets all asynchronous.
+        /// </summary>
+        /// <param name="filters">The filter.</param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="specification">The specification.</param>
+        /// <param name="filter">Filter Query.</param>
+        /// <param name="accessMode">The access mode.</param>
+        /// <param name="queryMode">The query mode.</param>
+        /// <param name="mapperMode">The mapper mode.</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [is read only mode].</param>
+        /// <returns>All items.</returns>
         public new virtual async Task<(IEnumerable<TDtoListItem> Results, int Total)> GetRangeAsync(
             TFilterDto filters = null,
             TKey id = default,

@@ -37,7 +37,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
             }
         }
 
-        /// <inheritdoc cref="BaseEntityMapper{MaintenanceContract}.ExpressionCollectionFilterIn"/>
+        /// <inheritdoc />
         public override ExpressionCollection<MaintenanceContract> ExpressionCollectionFilterIn
         {
             get
@@ -105,7 +105,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
             });
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCellMapping"/>
+        /// <inheritdoc />
         public override Dictionary<string, Func<string>> DtoToCellMapping(MaintenanceContractDto dto)
         {
             return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))

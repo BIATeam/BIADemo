@@ -45,14 +45,14 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
             this.configuration = configuration.Value;
         }
 
-        /// <inheritdoc cref="IIdentityProviderRepository.FindUserAsync"/>
+        /// <inheritdoc />
         public virtual async Task<UserFromDirectory> FindUserAsync(string identityKey, string paramName = "username")
         {
             string param = $"{paramName}={identityKey}";
             return (await this.QueryUserAsync(param))?.SingleOrDefault();
         }
 
-        /// <inheritdoc cref="IIdentityProviderRepository.SearchUserAsync"/>
+        /// <inheritdoc />
         public virtual async Task<List<UserFromDirectory>> SearchUserAsync(string search, int first = 0, int max = 10)
         {
             string param = $"first={first}&max={max}&search={search}";

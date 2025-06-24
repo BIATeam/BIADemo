@@ -56,7 +56,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
             });
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCellMapping"/>
+        /// <inheritdoc />
         public override Dictionary<string, Func<string>> DtoToCellMapping(UserDto dto)
         {
             return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))

@@ -204,7 +204,7 @@ namespace TheBIADevCompany.BIADemo.Test.Data
 #endif
         #region AbstractMockEntityFrameworkInMemory methods
 
-        /// <inheritdoc cref="AbstractMockEntityFramework{TDbContext}.InitDefaultData" />
+        /// <inheritdoc />
         public override void InitDefaultData()
         {
 #if BIA_FRONT_FEATURE

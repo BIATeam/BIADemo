@@ -52,7 +52,7 @@ namespace BIA.Net.Core.Application.View
             this.Repository.QueryCustomizer = queryCustomizer;
         }
 
-        /// <inheritdoc cref="IViewAppService.GetAllAsync"/>
+        /// <inheritdoc />
         public async Task<IEnumerable<ViewDto>> GetAllAsync()
         {
             int currentUserId = this.principal.GetUserId();
@@ -81,7 +81,7 @@ namespace BIA.Net.Core.Application.View
             }
         }
 
-        /// <inheritdoc cref="IViewAppService.RemoveTeamViewAsync"/>
+        /// <inheritdoc />
         public async Task RemoveTeamViewAsync(int id)
         {
             View entity = await this.Repository.GetEntityAsync(id: id, queryMode: QueryCustomMode.ModeUpdateViewTeams);
@@ -107,7 +107,7 @@ namespace BIA.Net.Core.Application.View
             await this.Repository.UnitOfWork.CommitAsync();
         }
 
-        /// <inheritdoc cref="IViewAppService.RemoveUserViewAsync"/>
+        /// <inheritdoc />
         public async Task RemoveUserViewAsync(int id)
         {
             var entity = await this.Repository.GetEntityAsync(id: id, queryMode: QueryCustomMode.ModeUpdateViewUsers);
@@ -135,7 +135,7 @@ namespace BIA.Net.Core.Application.View
             await this.Repository.UnitOfWork.CommitAsync();
         }
 
-        /// <inheritdoc cref="IViewAppService.SetDefaultUserViewAsync"/>
+        /// <inheritdoc />
         public async Task SetDefaultUserViewAsync(DefaultViewDto dto)
         {
             var entity = await this.Repository.GetEntityAsync(id: dto.Id, queryMode: QueryCustomMode.ModeUpdateViewUsers);
@@ -208,7 +208,7 @@ namespace BIA.Net.Core.Application.View
             await this.Repository.UnitOfWork.CommitAsync();
         }
 
-        /// <inheritdoc cref="IViewAppService.SetDefaultTeamViewAsync"/>
+        /// <inheritdoc />
         public async Task SetDefaultTeamViewAsync(DefaultTeamViewDto dto)
         {
             if (dto != null && dto.Id > 0 && dto.TeamId > 0 && !string.IsNullOrWhiteSpace(dto.TableId))
@@ -274,7 +274,7 @@ namespace BIA.Net.Core.Application.View
             }
         }
 
-        /// <inheritdoc cref="IViewAppService.AddUserViewAsync"/>
+        /// <inheritdoc />
         public async Task<ViewDto> AddUserViewAsync(ViewDto dto)
         {
             if (dto != null)
@@ -292,7 +292,7 @@ namespace BIA.Net.Core.Application.View
             return dto;
         }
 
-        /// <inheritdoc cref="IViewAppService.AddTeamViewAsync"/>
+        /// <inheritdoc />
         public async Task<TeamViewDto> AddTeamViewAsync(TeamViewDto dto)
         {
             if (dto != null)
@@ -308,7 +308,7 @@ namespace BIA.Net.Core.Application.View
             return dto;
         }
 
-        /// <inheritdoc cref="IViewAppService.UpdateViewAsync"/>
+        /// <inheritdoc />
         public async Task<ViewDto> UpdateViewAsync(ViewDto dto)
         {
             if (dto != null)
@@ -336,7 +336,7 @@ namespace BIA.Net.Core.Application.View
             return dto;
         }
 
-        /// <inheritdoc cref="IViewAppService.AssignViewToTeamAsync"/>
+        /// <inheritdoc />
         public async Task AssignViewToTeamAsync(AssignViewToTeamDto dto)
         {
             if (dto != null)

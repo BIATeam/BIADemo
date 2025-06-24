@@ -17,7 +17,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
     /// </summary>
     public class PartOptionMapper : BaseMapper<OptionDto, Part, int>
     {
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
+        /// <inheritdoc />
         public override Expression<Func<Part, OptionDto>> EntityToDto()
         {
             return base.EntityToDto().CombineMapping(entity => new OptionDto

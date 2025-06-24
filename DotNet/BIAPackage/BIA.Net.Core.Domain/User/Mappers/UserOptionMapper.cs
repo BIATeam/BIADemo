@@ -19,7 +19,7 @@ namespace BIA.Net.Core.Domain.User.Mappers
     public class UserOptionMapper<TUser> : BaseMapper<OptionDto, TUser, int>
         where TUser : BaseEntityUser, new()
     {
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
+        /// <inheritdoc />
         public override Expression<Func<TUser, OptionDto>> EntityToDto()
         {
             return base.EntityToDto().CombineMapping(entity => new OptionDto
