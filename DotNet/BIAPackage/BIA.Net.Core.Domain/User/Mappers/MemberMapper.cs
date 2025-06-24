@@ -56,6 +56,21 @@ namespace BIA.Net.Core.Domain.User.Mappers
             }
         }
 
+        /// <inheritdoc cref="BaseEntityMapper{Member}.ExpressionCollectionFilter"/>
+        public override ExpressionCollection<Member> ExpressionCollectionFilterIn
+        {
+            get
+            {
+                return new ExpressionCollection<Member>(
+                    base.ExpressionCollectionFilterIn,
+                    new ExpressionCollection<Member>()
+                    {
+                        { HeaderName.Roles, member => member.MemberRoles.Select(memberRole => memberRole.Role.Id) },
+                        { HeaderName.User, member => member.User.Id },
+                    });
+            }
+        }
+
         /// <summary>
         /// The user context language and culture.
         /// </summary>

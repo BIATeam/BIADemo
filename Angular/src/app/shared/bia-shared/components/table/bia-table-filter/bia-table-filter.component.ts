@@ -71,9 +71,7 @@ export class BiaTableFilterComponent<CrudItem>
   @Input() table: Table;
   @Input() options?: OptionDto[];
 
-  get optionValues() {
-    return this.options?.map(x => x.display) ?? [];
-  }
+  PropType = PropType;
 
   public columnFilterType = '';
   protected matchModeOptions: SelectItem[] | undefined = undefined;
@@ -93,6 +91,12 @@ export class BiaTableFilterComponent<CrudItem>
     return displayFormat && displayFormat instanceof BiaFieldNumberFormat
       ? displayFormat
       : null;
+  }
+
+  getOptionsLabels(value: number[]): string {
+    return value
+      .map(v => this.options?.find(o => o.id === v)?.display)
+      .join(',');
   }
 
   ngOnInit() {

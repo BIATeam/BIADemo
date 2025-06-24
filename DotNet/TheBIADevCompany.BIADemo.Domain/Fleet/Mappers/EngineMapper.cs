@@ -56,6 +56,21 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             }
         }
 
+        /// <inheritdoc cref="BaseEntityMapper{Engine}.ExpressionCollectionFilterIn"/>
+        public override ExpressionCollection<Engine> ExpressionCollectionFilterIn
+        {
+            get
+            {
+                return new ExpressionCollection<Engine>(
+                    base.ExpressionCollectionFilterIn,
+                    new ExpressionCollection<Engine>()
+                    {
+                        { HeaderName.PrincipalPart, engine => engine.PrincipalPart.Id },
+                        { HeaderName.InstalledParts, engine => engine.InstalledParts.Select(x => x.Id) },
+                    });
+            }
+        }
+
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
         public override void DtoToEntity(EngineDto dto, ref Engine entity)
         {

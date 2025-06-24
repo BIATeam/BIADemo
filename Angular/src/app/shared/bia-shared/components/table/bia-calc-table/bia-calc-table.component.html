@@ -124,6 +124,13 @@
           biaFrozenColumn
           [frozen]="isSelectFrozen"></th>
         <th
+          *ngIf="canExpandRow"
+          [style.width]="widthExpand"
+          [alignFrozen]="alignFrozenSelect"
+          biaFrozenColumn
+          pResizableColumn
+          [frozen]="isSelectFrozen"></th>
+        <th
           *ngIf="showFixableState"
           [style.width]="widthSelect"
           [alignFrozen]="alignFrozenSelect"

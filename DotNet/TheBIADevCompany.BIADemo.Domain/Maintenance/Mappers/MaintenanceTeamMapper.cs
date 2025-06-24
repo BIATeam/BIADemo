@@ -70,6 +70,23 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
             }
         }
 
+        /// <inheritdoc cref="BaseEntityMapper{MaintenanceTeam}.ExpressionCollectionFilterIn"/>
+        public override ExpressionCollection<MaintenanceTeam> ExpressionCollectionFilterIn
+        {
+            get
+            {
+                return new ExpressionCollection<MaintenanceTeam>(
+                    base.ExpressionCollectionFilterIn,
+                    new ExpressionCollection<MaintenanceTeam>()
+                    {
+                        { HeaderName.CurrentAirport, plane => plane.CurrentAirport.Id },
+                        { HeaderName.OperationAirports, plane => plane.OperationAirports.Select(x => x.Id) },
+                        { HeaderName.CurrentCountry, plane => plane.CurrentCountry.Id },
+                        { HeaderName.OperationCountries, plane => plane.OperationCountries.Select(x => x.Id) },
+                    });
+            }
+        }
+
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
         public override void DtoToEntity(MaintenanceTeamDto dto, ref MaintenanceTeam entity)
         {

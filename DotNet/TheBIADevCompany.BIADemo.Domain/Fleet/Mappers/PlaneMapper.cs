@@ -56,6 +56,23 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             }
         }
 
+        /// <inheritdoc cref="BaseEntityMapper{Plane}.ExpressionCollectionFilterIn"/>
+        public override ExpressionCollection<Plane> ExpressionCollectionFilterIn
+        {
+            get
+            {
+                return new ExpressionCollection<Plane>(
+                    base.ExpressionCollectionFilterIn,
+                    new ExpressionCollection<Plane>()
+                    {
+                        { HeaderName.PlaneType, plane => plane.PlaneType.Id },
+                        { HeaderName.SimilarTypes, plane => plane.SimilarTypes.Select(x => x.Id) },
+                        { HeaderName.CurrentAirport, plane => plane.CurrentAirport.Id },
+                        { HeaderName.ConnectingAirports, plane => plane.ConnectingAirports.Select(x => x.Id) },
+                    });
+            }
+        }
+
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
         public override void DtoToEntity(PlaneDto dto, ref Plane entity)
         {

@@ -37,6 +37,20 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
             }
         }
 
+        /// <inheritdoc cref="BaseEntityMapper{MaintenanceContract}.ExpressionCollectionFilterIn"/>
+        public override ExpressionCollection<MaintenanceContract> ExpressionCollectionFilterIn
+        {
+            get
+            {
+                return new ExpressionCollection<MaintenanceContract>(
+                    base.ExpressionCollectionFilterIn,
+                    new ExpressionCollection<MaintenanceContract>()
+                    {
+                        { HeaderName.Planes, x => x.Planes.Select(y => y.Id) },
+                    });
+            }
+        }
+
         /// <inheritdoc/>
         public override void DtoToEntity(MaintenanceContractDto dto, ref MaintenanceContract entity)
         {
