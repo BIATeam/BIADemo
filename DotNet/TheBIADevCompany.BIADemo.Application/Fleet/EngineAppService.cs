@@ -57,10 +57,12 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
         /// </summary>
         private readonly IConfiguration configuration;
 
-#pragma warning disable SA1515 // Single-line comment should be preceded by blank line
-#pragma warning disable SA1611 // Element parameters should be documented
         // End BIADemo
 
+        // BIAToolKit - Begin FixedChildrenRepositoryDefinitionEngine
+        // BIAToolKit - End FixedChildrenRepositoryDefinitionEngine
+#pragma warning disable SA1515 // Single-line comment should be preceded by blank line
+#pragma warning disable SA1611 // Element parameters should be documented
         /// <summary>
         /// Initializes a new instance of the <see cref="EngineAppService"/> class.
         /// </summary>
@@ -69,10 +71,14 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
         // Begin BIADemo
         /// <param name="configuration">The configuration.</param>
         // End BIADemo
+        // BIAToolKit - Begin FixedChildrenRepositoryConstructorParamEngine
+        // BIAToolKit - End FixedChildrenRepositoryConstructorParamEngine
         /// <param name="principal">The claims principal.</param>
         public EngineAppService(
             IEngineRepository repository,
             ITGenericRepository<Plane, int> planeRepository,
+            // BIAToolKit - Begin FixedChildrenRepositoryInjectionEngine
+            // BIAToolKit - End FixedChildrenRepositoryInjectionEngine
             // Begin BIADemo
             IConfiguration configuration,
             // End BIADemo
@@ -87,13 +93,13 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
             // For child : set the TeamId of the Ancestor that contain a team Parent
             this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<Engine>(x => x.Plane.SiteId == this.currentAncestorTeamId));
 
+            // BIAToolKit - Begin FixedChildrenRepositorySetEngine
+            // BIAToolKit - End FixedChildrenRepositorySetEngine
             // Begin BIADemo
             this.configuration = configuration;
 
             // End BIADemo
         }
-
-        // Begin BIADemo
 #pragma warning restore SA1611 // Element parameters should be documented
 #pragma warning restore SA1515 // Single-line comment should be preceded by blank line
 
@@ -112,6 +118,8 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
                 return await this.GetAsync(id);
             });
         }
+
+        // Begin BIADemo
 
         /// <inheritdoc cref="IEngineAppService.CheckToBeMaintainedAsync"/>
         public async Task CheckToBeMaintainedAsync()
