@@ -79,10 +79,10 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
                     base.ExpressionCollectionFilterIn,
                     new ExpressionCollection<MaintenanceTeam>()
                     {
-                        { HeaderName.CurrentAirport, plane => plane.CurrentAirport.Id },
-                        { HeaderName.OperationAirports, plane => plane.OperationAirports.Select(x => x.Id) },
-                        { HeaderName.CurrentCountry, plane => plane.CurrentCountry.Id },
-                        { HeaderName.OperationCountries, plane => plane.OperationCountries.Select(x => x.Id) },
+                        { HeaderName.CurrentAirport, maintenanceTeam => maintenanceTeam.CurrentAirport.Id },
+                        { HeaderName.OperationAirports, maintenanceTeam => maintenanceTeam.OperationAirports.Select(x => x.Id) },
+                        { HeaderName.CurrentCountry, maintenanceTeam => maintenanceTeam.CurrentCountry.Id },
+                        { HeaderName.OperationCountries, maintenanceTeam => maintenanceTeam.OperationCountries.Select(x => x.Id) },
                     });
             }
         }
