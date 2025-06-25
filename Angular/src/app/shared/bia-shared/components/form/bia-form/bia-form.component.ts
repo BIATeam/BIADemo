@@ -277,7 +277,7 @@ export class BiaFormComponent<TDto extends { id: number }>
         });
       }
     }
-    const element = this.form ? this.getElement(this.form) : {};
+    const element = this.form ? this.getElement() : {};
     return { element, errorMessages };
   }
 
@@ -481,45 +481,47 @@ export class BiaFormComponent<TDto extends { id: number }>
     }
 
     if (this.form?.valid) {
-      const element: any = this.getElement(this.form);
+      const element: any = this.getElement();
       this.save.emit(element);
     }
   }
 
-  public getElement(form: UntypedFormGroup) {
-    const element: TDto = this.flattenFormGroup(form) as TDto;
-    element.id = element.id > 0 ? element.id : 0;
-    for (const col of this.fields) {
-      switch (col.type) {
-        case PropType.Boolean:
-          Reflect.set(
-            element,
-            col.field,
-            element[col.field] ? element[col.field] : false
-          );
-          break;
-        case PropType.ManyToMany:
-          Reflect.set(
-            element,
-            col.field,
-            BiaOptionService.differential(
-              Reflect.get(element, col.field) as BaseDto[],
-              (this.element && this.element.id
-                ? (Reflect.get(this.element, col.field) ?? [])
-                : []) as BaseDto[]
-            )
-          );
-          break;
-        case PropType.OneToMany:
-          Reflect.set(
-            element,
-            col.field,
-            BiaOptionService.clone(element[col.field])
-          );
-          break;
+  public getElement() {
+    if (this.form) {
+      const element: TDto = this.flattenFormGroup(this.form) as TDto;
+      element.id = element.id > 0 ? element.id : 0;
+      for (const col of this.fields) {
+        switch (col.type) {
+          case PropType.Boolean:
+            Reflect.set(
+              element,
+              col.field,
+              element[col.field] ? element[col.field] : false
+            );
+            break;
+          case PropType.ManyToMany:
+            Reflect.set(
+              element,
+              col.field,
+              BiaOptionService.differential(
+                Reflect.get(element, col.field) as BaseDto[],
+                (this.element && this.element.id
+                  ? (Reflect.get(this.element, col.field) ?? [])
+                  : []) as BaseDto[]
+              )
+            );
+            break;
+          case PropType.OneToMany:
+            Reflect.set(
+              element,
+              col.field,
+              BiaOptionService.clone(element[col.field])
+            );
+            break;
+        }
       }
+      return element;
     }
-    return element;
   }
 
   flattenFormGroup(
