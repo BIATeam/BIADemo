@@ -15,7 +15,7 @@
   [showFullPageButton]="showFullPageButton"
   (save)="onSave($event)"
   (cancelled)="onCancel()"
-  (readOnlyChanged)="onReadOnlyChanged($event)"
+  (readOnlyChanged)="readOnlyChanged.emit($event)"
   (fixableStateChanged)="onFixableStateChanged($event)"
   (layoutChanged)="layoutChanged.emit($event)">
 </bia-form>

@@ -15,7 +15,6 @@
   [showFullPageButton]="showFullPageButton"
   (save)="onSave($event)"
   (cancelled)="onCancel()"
-  (readOnlyChanged)="onReadOnlyChanged($event)"
   (fixableStateChanged)="onFixableStateChanged($event)"
   (layoutChanged)="layoutChanged.emit($event)">
   <ng-template pTemplate="specificOutput" let-field="field" let-data="data">

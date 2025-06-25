@@ -11,9 +11,8 @@
   [canFix]="canFix"
   (cancelled)="onCancelled()"
   (save)="onSubmitted($event)"
-  (fixedChanged)="
-    crudItemService.updateFixedStatus(crudItem.id, $event)
-  "></app-plane-form>
+  (fixedChanged)="crudItemService.updateFixedStatus(crudItem.id, $event)"
+  (readOnlyChanged)="onReadOnlyChanged($event)"></app-plane-form>
 <bia-spinner
   *ngIf="planeService.loadingGet$ | async"
   [overlay]="true"></bia-spinner>

@@ -8,7 +8,6 @@ import {
   WritableSignal,
 } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
 import { Checkbox } from 'primeng/checkbox';
@@ -66,11 +65,8 @@ export class PlaneFormComponent
   isEditingEngines = false;
   isEngineTableReadOnly = false;
 
-  constructor(
-    protected router: Router,
-    protected activatedRoute: ActivatedRoute
-  ) {
-    super(router, activatedRoute);
+  constructor() {
+    super();
     this.engineColumnsToDisplay = this.engineCrudConfig.columns
       .filter(col => !col.isHideByDefault)
       .map(col => <KeyValuePair>{ key: col.field, value: col.header });
@@ -125,7 +121,6 @@ export class PlaneFormComponent
 
   onReadOnlyChanged(readOnly: boolean): void {
     this.isEngineTableReadOnly = readOnly;
-    super.onReadOnlyChanged(readOnly);
   }
 
   onSave(crudItem: PlaneSpecific) {
