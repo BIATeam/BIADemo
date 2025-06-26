@@ -3334,10 +3334,6 @@ body {
   display: none;
 }
 
-.p-datatable-scrollable > .p-datatable-table-container {
-  min-height: 16rem;
-}
-
 body .p-datatable .p-datatable-tbody > tr.p-datatable-row-selected {
   background: var(--p-datatable-row-selected-background) !important;
   color: var(--p-datatable-row-selected-color);
