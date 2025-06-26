@@ -101,6 +101,7 @@ export class BiaFieldConfig<TDto> {
   maxConstraints = 10;
   isVisibleInTable: boolean;
   filterWithDisplay: boolean;
+  customDisplayFormat: boolean = true;
 
   get isDate() {
     return (
@@ -173,6 +174,7 @@ export class BiaFieldConfig<TDto> {
         displayFormat: this.displayFormat,
         isVisibleInTable: this.isVisibleInTable,
         filterWithDisplay: this.filterWithDisplay,
+        customDisplayFormat: this.customDisplayFormat,
       }
     );
   }
