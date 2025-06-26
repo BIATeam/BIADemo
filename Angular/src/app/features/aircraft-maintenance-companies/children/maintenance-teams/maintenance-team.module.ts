@@ -10,6 +10,9 @@ import {
   LayoutMode,
 } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { Permission } from 'src/app/shared/permission';
+import { aircraftMaintenanceCompanyCRUDConfiguration } from '../../aircraft-maintenance-company.constants';
+import { AircraftMaintenanceCompaniesEffects } from '../../store/aircraft-maintenance-companies-effects';
+import { FeatureAircraftMaintenanceCompaniesStore } from '../../store/aircraft-maintenance-company.state';
 import { maintenanceTeamCRUDConfiguration } from './maintenance-team.constants';
 import { FeatureMaintenanceTeamsStore } from './store/maintenance-team.state';
 import { MaintenanceTeamsEffects } from './store/maintenance-teams-effects';
@@ -96,7 +99,15 @@ export const ROUTES: Routes = [
       maintenanceTeamCRUDConfiguration.storeKey,
       FeatureMaintenanceTeamsStore.reducers
     ),
-    EffectsModule.forFeature([MaintenanceTeamsEffects]),
+    // Team Parent Store:
+    StoreModule.forFeature(
+      aircraftMaintenanceCompanyCRUDConfiguration.storeKey,
+      FeatureAircraftMaintenanceCompaniesStore.reducers
+    ),
+    EffectsModule.forFeature([
+      MaintenanceTeamsEffects,
+      AircraftMaintenanceCompaniesEffects,
+    ]),
     // Domain Modules:
     AirportOptionModule,
     CountryOptionModule,

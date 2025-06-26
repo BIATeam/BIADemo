@@ -15,6 +15,7 @@ import { TeamAdvancedFilterComponent } from 'src/app/shared/bia-shared/component
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
 import { TeamAdvancedFilterDto } from 'src/app/shared/bia-shared/model/team-advanced-filter-dto';
+import { TeamTypeId } from 'src/app/shared/constants';
 import { Permission } from 'src/app/shared/permission';
 import { MaintenanceTeamTableComponent } from '../../components/maintenance-team-table/maintenance-team-table.component';
 import { maintenanceTeamCRUDConfiguration } from '../../maintenance-team.constants';
@@ -74,6 +75,10 @@ export class MaintenanceTeamsIndexComponent
 
   ngOnInit(): void {
     super.ngOnInit();
+    this.maintenanceTeamService.aircraftMaintenanceCompanyService.currentCrudItemId =
+      this.authService.getCurrentTeam(
+        TeamTypeId.AircraftMaintenanceCompany
+      )?.teamId;
     this.parentDisplayItemName$ =
       this.maintenanceTeamService.aircraftMaintenanceCompanyService.displayItemName$;
     this.sub.add(
