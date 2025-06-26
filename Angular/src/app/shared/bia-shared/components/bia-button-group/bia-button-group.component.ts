@@ -14,7 +14,6 @@ import { Tooltip } from 'primeng/tooltip';
 @Component({
   selector: 'bia-button-group',
   templateUrl: './bia-button-group.component.html',
-  styleUrl: './bia-button-group.component.scss',
   imports: [Menubar, NgClass, NgIf, ButtonDirective, Tooltip],
 })
 export class BiaButtonGroupComponent implements AfterViewInit, OnDestroy {
