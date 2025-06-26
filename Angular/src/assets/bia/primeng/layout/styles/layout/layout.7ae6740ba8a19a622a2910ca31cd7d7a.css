@@ -3155,6 +3155,7 @@ body {
 }
 
 .layout-container.layout-footer-overlay .layout-footer {
+  z-index: 999;
   transform: translateY(0);
   transition: transform 0.3s cubic-bezier(0, 0, 0.2, 1);
 }
@@ -3331,6 +3332,10 @@ body {
 
 .p-datatable .p-datatable-footer:empty {
   display: none;
+}
+
+.p-datatable-scrollable > .p-datatable-table-container {
+  min-height: 16rem;
 }
 
 body .p-datatable .p-datatable-tbody > tr.p-datatable-row-selected {
