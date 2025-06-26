@@ -765,7 +765,7 @@ const MyPreset = definePreset(Material, {
         selectedColor: '{list.option.selected.color}',
         selectedFocusColor: '{list.option.selected.focus.color}',
         padding: '{list.option.padding}',
-        borderRadius: '{list.option.border.radius}',
+        borderRadius: '{form.field.border.radius}',
       },
       optionGroup: {
         background: '{list.option.group.background}',
@@ -1782,7 +1782,7 @@ const MyPreset = definePreset(Material, {
         selectedColor: '{list.option.selected.color}',
         selectedFocusColor: '{list.option.selected.focus.color}',
         padding: '{list.option.padding}',
-        borderRadius: '{list.option.border.radius}',
+        borderRadius: '{form.field.border.radius}',
         icon: {
           color: '{list.option.icon.color}',
           focusColor: '{list.option.icon.focus.color}',
@@ -2191,7 +2191,7 @@ const MyPreset = definePreset(Material, {
             borderColor: '{content.border.color}',
           },
           padding: '{list.option.padding}',
-          borderRadius: '{list.option.border.radius}',
+          borderRadius: '{overlay.select.border.radius}',
         },
       },
       paginatorTop: {
@@ -2342,7 +2342,7 @@ const MyPreset = definePreset(Material, {
         color: '{list.option.color}',
         focusColor: '{list.option.focus.color}',
         padding: '{list.option.padding}',
-        borderRadius: '{list.option.border.radius}',
+        borderRadius: '{content.border.radius}',
       },
       content: {
         background: '{content.background}',
@@ -2988,7 +2988,7 @@ const MyPreset = definePreset(Material, {
         selectedColor: '{list.option.selected.color}',
         selectedFocusColor: '{list.option.selected.focus.color}',
         padding: '{list.option.padding}',
-        borderRadius: '{list.option.border.radius}',
+        borderRadius: '{form.field.border.radius}',
       },
       optionGroup: {
         background: '{list.option.group.background}',
@@ -3592,7 +3592,7 @@ const MyPreset = definePreset(Material, {
         selectedColor: '{list.option.selected.color}',
         selectedFocusColor: '{list.option.selected.focus.color}',
         padding: '{list.option.padding}',
-        borderRadius: '{list.option.border.radius}',
+        borderRadius: '{form.field.border.radius}',
         gap: '0.75rem',
       },
       optionGroup: {
@@ -4023,7 +4023,7 @@ const MyPreset = definePreset(Material, {
         selectedColor: '{list.option.selected.color}',
         selectedFocusColor: '{list.option.selected.color}',
         padding: '{list.option.padding}',
-        borderRadius: '{list.option.border.radius}',
+        borderRadius: '{form.field.border.radius}',
       },
       optionGroup: {
         background: '{list.option.group.background}',
