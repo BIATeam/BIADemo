@@ -42,9 +42,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                 type: "nvarchar(8)",
                 maxLength: 8,
                 nullable: false,
-                defaultValue: "");
-
-            migrationBuilder.Sql("UPDATE Users SET [Discriminator] = 'User'");
+                defaultValue: "User");
         }
 
         /// <inheritdoc />
