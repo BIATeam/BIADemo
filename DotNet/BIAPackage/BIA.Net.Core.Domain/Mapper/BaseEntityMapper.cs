@@ -8,10 +8,7 @@ namespace BIA.Net.Core.Domain.Mapper
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
-    using System.Linq.Expressions;
-    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
 
     /// <summary>
@@ -32,6 +29,42 @@ namespace BIA.Net.Core.Domain.Mapper
                 throw new BadBiaFrameworkUsageException("This mapper is not build for list, or the implementation of ExpressionCollection is missing.");
 #pragma warning restore S2372 // Exceptions should not be thrown from property getters
 #pragma warning restore CA1065 // Ne pas lever d'exceptions dans les emplacements inattendus
+            }
+        }
+
+        /// <summary>
+        /// Gets the collection used for expressions to order fields.
+        /// By default, same value as ExpressionCollection.
+        /// </summary>
+        public virtual ExpressionCollection<TEntity> ExpressionCollectionOrder
+        {
+            get
+            {
+                return this.ExpressionCollection;
+            }
+        }
+
+        /// <summary>
+        /// Gets the collection used for expressions to filter fields.
+        /// By default, same value as ExpressionCollection.
+        /// </summary>
+        public virtual ExpressionCollection<TEntity> ExpressionCollectionFilter
+        {
+            get
+            {
+                return this.ExpressionCollection;
+            }
+        }
+
+        /// <summary>
+        /// Gets the collection used for expressions to filter fields in "In" matchMode.
+        /// By default, same value as ExpressionCollectionFilter.
+        /// </summary>
+        public virtual ExpressionCollection<TEntity> ExpressionCollectionFilterIn
+        {
+            get
+            {
+                return this.ExpressionCollectionFilter;
             }
         }
 

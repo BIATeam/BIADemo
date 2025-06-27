@@ -121,13 +121,13 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
 
         // Begin BIADemo
 
-        /// <inheritdoc cref="IEngineAppService.CheckToBeMaintainedAsync"/>
+        /// <inheritdoc />
         public async Task CheckToBeMaintainedAsync()
         {
             await this.repository.FillIsToBeMaintainedAsync(6);
         }
 
-        /// <inheritdoc cref="IEngineAppService.LaunchJobManuallyExample"/>
+        /// <inheritdoc />
         public void LaunchJobManuallyExample()
         {
             string projectName = this.configuration["Project:Name"];

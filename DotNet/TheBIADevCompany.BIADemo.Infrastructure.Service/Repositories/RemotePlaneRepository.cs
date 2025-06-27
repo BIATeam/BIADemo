@@ -49,21 +49,21 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
             this.urlPlane = "/api/Planes/";
         }
 
-        /// <inheritdoc cref="IRemotePlaneRepository.GetAsync"/>
+        /// <inheritdoc />
         public async Task<Plane> GetAsync(int id)
         {
             var result = await this.GetAsync<Plane>($"{this.BaseAddress}{this.urlPlane}{id}");
             return result.IsSuccessStatusCode ? result.Result : null;
         }
 
-        /// <inheritdoc cref="IRemotePlaneRepository.DeleteAsync"/>
+        /// <inheritdoc />
         public async Task<bool> DeleteAsync(int id)
         {
             var result = await this.DeleteAsync<Plane>($"{this.BaseAddress}{this.urlPlane}{id}");
             return result.IsSuccessStatusCode;
         }
 
-        /// <inheritdoc cref="IRemotePlaneRepository.PostAsync"/>
+        /// <inheritdoc />
         public async Task<Plane> PostAsync(Plane plane)
         {
             RemotePlaneDto dto = new RemotePlaneDto();
@@ -82,7 +82,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
             }
         }
 
-        /// <inheritdoc cref="IRemotePlaneRepository.PutAsync"/>
+        /// <inheritdoc />
         public async Task<Plane> PutAsync(Plane plane)
         {
             RemotePlaneDto dto = new RemotePlaneDto();

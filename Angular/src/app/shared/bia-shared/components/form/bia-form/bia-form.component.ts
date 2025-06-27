@@ -277,7 +277,7 @@ export class BiaFormComponent<TDto extends { id: number }>
         });
       }
     }
-    const element = this.form ? this.getElement(this.form) : {};
+    const element = this.form ? this.getElement() : {};
     return { element, errorMessages };
   }
 
@@ -481,13 +481,17 @@ export class BiaFormComponent<TDto extends { id: number }>
     }
 
     if (this.form?.valid) {
-      const element: any = this.getElement(this.form);
+      const element: any = this.getElement();
       this.save.emit(element);
     }
   }
 
-  public getElement(form: UntypedFormGroup) {
-    const element: TDto = this.flattenFormGroup(form) as TDto;
+  public getElement(): TDto {
+    if (!this.form) {
+      throw Error('Form must be initialized');
+    }
+
+    const element: TDto = this.flattenFormGroup(this.form) as TDto;
     element.id = element.id > 0 ? element.id : 0;
     for (const col of this.fields) {
       switch (col.type) {

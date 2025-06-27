@@ -20,6 +20,7 @@ export const siteFieldsConfiguration: BiaFieldsConfig<Site> = {
       isEditable: false,
       isVisible: false,
       type: PropType.ManyToMany,
+      filterWithDisplay: false,
     }),
     Object.assign(new BiaFieldConfig('rowVersion', 'site.rowVersion'), {
       isVisible: false,

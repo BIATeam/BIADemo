@@ -82,7 +82,7 @@ namespace BIA.Net.Core.Common.Extensions
         private sealed class ExpressionParameterReplacer(ParameterExpression oldParameterExpression, ParameterExpression newParameterExpression)
             : ExpressionVisitor
         {
-            /// <inheritdoc cref="ExpressionVisitor.VisitParameter(ParameterExpression)"/>
+            /// <inheritdoc />
             protected override Expression VisitParameter(ParameterExpression node)
             {
                 return node == oldParameterExpression ? newParameterExpression : base.VisitParameter(node);

@@ -30,12 +30,12 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
         {
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
+        /// <inheritdoc />
         public override int TeamType => (int)TeamTypeId.AircraftMaintenanceCompany;
 
         // Begin BIADemo
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesBeforeDelete"/>
+        /// <inheritdoc />
         public override Expression<Func<AircraftMaintenanceCompany, object>>[] IncludesBeforeDelete()
         {
             return

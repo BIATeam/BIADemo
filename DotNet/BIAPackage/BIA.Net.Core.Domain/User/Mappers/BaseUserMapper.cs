@@ -57,13 +57,21 @@ namespace BIA.Net.Core.Domain.User.Mappers
                             .Select(role => role.Label))
                         .OrderBy(x => x)
                     },
-                    {
-                        HeaderName.Teams,
-                        user => user.Members
-                        .SelectMany(member => member.Team.Title)
-                        .OrderBy(x => x)
-                    },
                 };
+            }
+        }
+
+        /// <inheritdoc />
+        public override ExpressionCollection<TUser> ExpressionCollectionFilterIn
+        {
+            get
+            {
+                return new ExpressionCollection<TUser>(
+                    base.ExpressionCollectionFilterIn,
+                    new ExpressionCollection<TUser>()
+                    {
+                        { HeaderName.Roles, user => user.Roles.Select(x => x.Id) },
+                    });
             }
         }
 
@@ -72,7 +80,7 @@ namespace BIA.Net.Core.Domain.User.Mappers
         /// </summary>
         protected UserContext UserContext { get; set; } = userContext;
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
+        /// <inheritdoc />
         public override void DtoToEntity(TUserDto dto, ref TUser entity, string mapperMode, IUnitOfWork context)
         {
             base.DtoToEntity(dto, ref entity, mapperMode, context);
@@ -127,7 +135,7 @@ namespace BIA.Net.Core.Domain.User.Mappers
             });
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCellMapping"/>
+        /// <inheritdoc />
         public override Dictionary<string, Func<string>> DtoToCellMapping(TUserDto dto)
         {
             return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
@@ -141,7 +149,7 @@ namespace BIA.Net.Core.Domain.User.Mappers
             };
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesForUpdate"/>
+        /// <inheritdoc />
         public override Expression<Func<TUser, object>>[] IncludesForUpdate()
         {
             return

@@ -94,7 +94,7 @@ namespace BIA.Net.Core.Application.Authentication
             }
         }
 
-        /// <inheritdoc cref="IJwtFactory.GenerateClaimsIdentity"/>
+        /// <inheritdoc />
         public ClaimsIdentity GenerateClaimsIdentity<TUserDataDto>(TokenDto<TUserDataDto> tokenDto)
             where TUserDataDto : BaseUserDataDto
         {
@@ -109,14 +109,14 @@ namespace BIA.Net.Core.Application.Authentication
             return new ClaimsIdentity(new GenericIdentity(tokenDto.IdentityKey, "Token"), claims);
         }
 
-        /// <inheritdoc cref="IJwtFactory.GenerateEncodedTokenAsync"/>
+        /// <inheritdoc />
         public async Task<string> GenerateEncodedTokenAsync<TUserDataDto>(ClaimsIdentity identity)
             where TUserDataDto : BaseUserDataDto
         {
             return await this.GenerateEncodedTokenAsync<TUserDataDto>(identity, null);
         }
 
-        /// <inheritdoc cref="IJwtFactory.GenerateAuthInfoAsync"/>
+        /// <inheritdoc />
         public async Task<AuthInfoDto<TAdditionalInfoDto>> GenerateAuthInfoAsync<TUserDataDto, TAdditionalInfoDto>(TokenDto<TUserDataDto> tokenDto, TAdditionalInfoDto additionalInfos, LoginParamDto loginParam)
             where TUserDataDto : BaseUserDataDto
             where TAdditionalInfoDto : BaseAdditionalInfoDto

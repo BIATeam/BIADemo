@@ -35,15 +35,14 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             this.engineMapper = engineMapper;
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
+        /// <inheritdoc />
         public override ExpressionCollection<Plane> ExpressionCollection
         {
             // It is not necessary to implement this function if you to not use the mapper for filtered list. In BIADemo it is use only for Calc SpreadSheet.
             get
             {
-                return new ExpressionCollection<Plane>
+                return new ExpressionCollection<Plane>(base.ExpressionCollection)
                 {
-                    { HeaderName.Id, plane => plane.Id },
                     { HeaderName.Msn, plane => plane.Msn },
                     { HeaderName.Manufacturer, plane => plane.Manufacturer },
                     { HeaderName.IsActive, plane => plane.IsActive },
@@ -70,7 +69,24 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             }
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
+        /// <inheritdoc />
+        public override ExpressionCollection<Plane> ExpressionCollectionFilterIn
+        {
+            get
+            {
+                return new ExpressionCollection<Plane>(
+                    base.ExpressionCollectionFilterIn,
+                    new ExpressionCollection<Plane>()
+                    {
+                        { HeaderName.PlaneType, plane => plane.PlaneType.Id },
+                        { HeaderName.SimilarTypes, plane => plane.SimilarTypes.Select(x => x.Id) },
+                        { HeaderName.CurrentAirport, plane => plane.CurrentAirport.Id },
+                        { HeaderName.ConnectingAirports, plane => plane.ConnectingAirports.Select(x => x.Id) },
+                    });
+            }
+        }
+
+        /// <inheritdoc />
         public override void DtoToEntity(PlaneSpecificDto dto, ref Plane entity)
         {
             this.planeMapper.DtoToEntity(dto, ref entity);
@@ -78,7 +94,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             MapEmbeddedItemToEntityCollection(dto.Engines, entity.Engines, this.engineMapper);
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
+        /// <inheritdoc />
         public override Expression<Func<Plane, PlaneSpecificDto>> EntityToDto()
         {
             return base.EntityToDto().CombineMapping(entity => new PlaneSpecificDto
@@ -137,7 +153,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             });
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCellMapping"/>
+        /// <inheritdoc />
         public override Dictionary<string, Func<string>> DtoToCellMapping(PlaneSpecificDto dto)
         {
             return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
@@ -174,7 +190,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             dto.SiteId = entity.SiteId;
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesForUpdate"/>
+        /// <inheritdoc />
         public override Expression<Func<Plane, object>>[] IncludesForUpdate()
         {
             return

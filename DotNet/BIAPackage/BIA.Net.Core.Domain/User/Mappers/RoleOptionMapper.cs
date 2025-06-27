@@ -27,7 +27,7 @@ namespace BIA.Net.Core.Domain.User.Mappers
         /// </summary>
         private UserContext UserContext { get; set; } = userContext;
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
+        /// <inheritdoc />
         public override Expression<Func<Role, OptionDto>> EntityToDto()
         {
             return base.EntityToDto().CombineMapping(entity => new OptionDto

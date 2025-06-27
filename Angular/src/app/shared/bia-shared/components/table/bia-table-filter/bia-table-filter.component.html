@@ -8,8 +8,8 @@
             matchMode="in"
             display="menu"
             [showMatchModes]="false"
-            [showOperator]="true"
-            [showAddButton]="true"
+            [showOperator]="field.type === PropType.OneToMany ? false : true"
+            [showAddButton]="field.type === PropType.OneToMany ? false : true"
             [maxConstraints]="field.maxConstraints">
             <ng-template
               pTemplate="filter"
@@ -17,12 +17,14 @@
               let-filterConstraint="filterConstraint"
               let-filter="filterCallback">
               <p-multiSelect
-                [options]="optionValues"
+                [options]="options"
+                optionLabel="display"
+                [optionValue]="field.filterWithDisplay ? 'display' : 'id'"
                 [(ngModel)]="filterConstraint.value"
                 (onChange)="onMultiSelectChange(filterConstraint)">
                 <ng-template let-option pTemplate="item">
                   <div class="inline-block vertical-align-middle">
-                    <span class="ml-1 mt-1">{{ option }}</span>
+                    <span class="ml-1 mt-1">{{ option.display }}</span>
                   </div>
                 </ng-template>
               </p-multiSelect>
@@ -51,31 +53,6 @@
             display="menu"
             [hideOnClear]="true"
             [maxConstraints]="field.maxConstraints">
-            <!-- @if (
-              columnFilterType === 'date' || columnFilterType === 'boolean'
-            ) {
-              <ng-template
-                pTemplate="filter"
-                let-filterConstraint="filterConstraint"
-                let-value
-                let-filter="filterCallback">
-                @if (columnFilterType === 'date') {
-                  <p-date-picker
-                    [ngModel]="value"
-                    (ngModelChange)="
-                      filterConstraint.value = $event
-                    "></p-date-picker>
-                }
-                @if (columnFilterType === 'boolean') {
-                  <p-checkbox
-                    [indeterminate]="true"
-                    [ngModel]="value"
-                    (ngModelChange)="
-                      filterConstraint.value = $event
-                    "></p-checkbox>
-                }
-              </ng-template>
-            } -->
           </p-columnFilter>
         }
       </ng-container>
@@ -149,6 +126,11 @@
               <ng-container *ngSwitchCase="'gte'">
                 [>={{ filter.value }}]
               </ng-container>
+              <ng-container *ngSwitchCase="'in'">{{
+                field.filterWithDisplay
+                  ? filter.value
+                  : getOptionsLabels(filter.value)
+              }}</ng-container>
               <ng-container *ngSwitchDefault>{{
                 filter.matchMode + ' ' + filter.value
               }}</ng-container>
@@ -166,7 +148,7 @@
           *ngIf="columnFilterType !== 'boolean'"
           pInputText
           class="input-search"
-          type="{{ field.type === 'Number' ? 'number' : 'text' }}"
+          type="{{ field.type === PropType.Number ? 'number' : 'text' }}"
           placeholder="{{
             field.searchPlaceholder !== undefined
               ? field.searchPlaceholder

@@ -35,10 +35,10 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
         {
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
+        /// <inheritdoc />
         public override int TeamType => (int)TeamTypeId.MaintenanceTeam;
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
+        /// <inheritdoc />
         public override ExpressionCollection<MaintenanceTeam> ExpressionCollection
         {
             get
@@ -70,7 +70,24 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
             }
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
+        /// <inheritdoc />
+        public override ExpressionCollection<MaintenanceTeam> ExpressionCollectionFilterIn
+        {
+            get
+            {
+                return new ExpressionCollection<MaintenanceTeam>(
+                    base.ExpressionCollectionFilterIn,
+                    new ExpressionCollection<MaintenanceTeam>()
+                    {
+                        { HeaderName.CurrentAirport, maintenanceTeam => maintenanceTeam.CurrentAirport.Id },
+                        { HeaderName.OperationAirports, maintenanceTeam => maintenanceTeam.OperationAirports.Select(x => x.Id) },
+                        { HeaderName.CurrentCountry, maintenanceTeam => maintenanceTeam.CurrentCountry.Id },
+                        { HeaderName.OperationCountries, maintenanceTeam => maintenanceTeam.OperationCountries.Select(x => x.Id) },
+                    });
+            }
+        }
+
+        /// <inheritdoc />
         public override void DtoToEntity(MaintenanceTeamDto dto, ref MaintenanceTeam entity)
         {
             var isCreation = entity == null;
@@ -162,7 +179,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
             }
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
+        /// <inheritdoc />
         public override Expression<Func<MaintenanceTeam, MaintenanceTeamDto>> EntityToDto()
         {
             return base.EntityToDto().CombineMapping(entity => new MaintenanceTeamDto
@@ -226,7 +243,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
             });
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCellMapping"/>
+        /// <inheritdoc />
         public override Dictionary<string, Func<string>> DtoToCellMapping(MaintenanceTeamDto dto)
         {
             return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
@@ -262,7 +279,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
             dto.AircraftMaintenanceCompanyId = entity.AircraftMaintenanceCompanyId;
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesForUpdate"/>
+        /// <inheritdoc />
         public override Expression<Func<MaintenanceTeam, object>>[] IncludesForUpdate()
         {
             return

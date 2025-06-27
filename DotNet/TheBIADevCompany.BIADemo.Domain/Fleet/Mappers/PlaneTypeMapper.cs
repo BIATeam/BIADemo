@@ -18,7 +18,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
     /// </summary>
     public class PlaneTypeMapper : BaseMapper<PlaneTypeDto, PlaneType, int>
     {
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
+        /// <inheritdoc />
         public override ExpressionCollection<PlaneType> ExpressionCollection
         {
             get
@@ -31,7 +31,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             }
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
+        /// <inheritdoc />
         public override void DtoToEntity(PlaneTypeDto dto, ref PlaneType entity)
         {
             base.DtoToEntity(dto, ref entity);
@@ -39,7 +39,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             entity.CertificationDate = dto.CertificationDate;
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
+        /// <inheritdoc />
         public override Expression<Func<PlaneType, PlaneTypeDto>> EntityToDto()
         {
             return base.EntityToDto().CombineMapping(entity => new PlaneTypeDto
@@ -49,7 +49,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             });
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCellMapping"/>
+        /// <inheritdoc />
         public override Dictionary<string, Func<string>> DtoToCellMapping(PlaneTypeDto dto)
         {
             return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))

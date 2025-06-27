@@ -16,7 +16,7 @@ namespace BIA.Net.Core.Domain.User.Mappers
     /// </summary>
     public class TeamOptionMapper : BaseMapper<OptionDto, BaseEntityTeam, int>
     {
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
+        /// <inheritdoc />
         public override Expression<Func<BaseEntityTeam, OptionDto>> EntityToDto()
         {
             return base.EntityToDto().CombineMapping(entity => new OptionDto

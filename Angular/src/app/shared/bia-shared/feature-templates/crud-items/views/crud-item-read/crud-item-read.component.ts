@@ -36,4 +36,15 @@ export class CrudItemReadComponent<CrudItem extends BaseDto>
     super.setPermissions();
     this.canEdit = true;
   }
+
+  onReadOnlyChanged(readOnly: boolean) {
+    if (
+      this.formReadOnlyMode === FormReadOnlyMode.clickToEdit &&
+      readOnly === false
+    ) {
+      this.router.navigate(['../edit'], {
+        relativeTo: this.activatedRoute,
+      });
+    }
+  }
 }

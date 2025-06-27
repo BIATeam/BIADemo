@@ -62,7 +62,7 @@ namespace BIA.Net.Core.Domain.Mapper
             }
         }
 
-        /// <inheritdoc cref="BaseEntityMapper{TEntity}.ExpressionCollection"/>
+        /// <inheritdoc />
         public override ExpressionCollection<TEntity> ExpressionCollection
         {
             get
@@ -366,10 +366,10 @@ namespace BIA.Net.Core.Domain.Mapper
         }
 
         /// <summary>
-        /// List of exprestion to translate dto in csv cell.
+        /// List of expressions to translate dto in csv cell.
         /// </summary>
         /// <param name="dto">The dto.</param>
-        /// <returns>The list of expression.</returns>
+        /// <returns>The list of expressions.</returns>
         public virtual Dictionary<string, Func<string>> DtoToCellMapping(TDto dto)
         {
             return new Dictionary<string, Func<string>>

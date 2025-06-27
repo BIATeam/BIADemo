@@ -37,6 +37,20 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
             }
         }
 
+        /// <inheritdoc />
+        public override ExpressionCollection<MaintenanceContract> ExpressionCollectionFilterIn
+        {
+            get
+            {
+                return new ExpressionCollection<MaintenanceContract>(
+                    base.ExpressionCollectionFilterIn,
+                    new ExpressionCollection<MaintenanceContract>()
+                    {
+                        { HeaderName.Planes, x => x.Planes.Select(y => y.Id) },
+                    });
+            }
+        }
+
         /// <inheritdoc/>
         public override void DtoToEntity(MaintenanceContractDto dto, ref MaintenanceContract entity)
         {
@@ -91,7 +105,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
             });
         }
 
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToCellMapping"/>
+        /// <inheritdoc />
         public override Dictionary<string, Func<string>> DtoToCellMapping(MaintenanceContractDto dto)
         {
             return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
