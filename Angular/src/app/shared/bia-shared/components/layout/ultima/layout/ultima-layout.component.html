@@ -31,9 +31,13 @@
       select="[menu-profile-panel]"
       ngProjectAs="[menu-profile-panel]">
     </ng-content>
+    <ng-content select="[sidebar-top]" ngProjectAs="[sidebar-top]"></ng-content>
     <ng-content select="[menu-top]" ngProjectAs="[menu-top]"></ng-content>
     <ng-content select="[menu-bottom]" ngProjectAs="[menu-bottom]">
     </ng-content>
+    <ng-content
+      select="[sidebar-bottom]"
+      ngProjectAs="[sidebar-bottom]"></ng-content>
   </bia-ultima-sidebar>
   <bia-ultima-config [supportedLangs]="supportedLangs">
     <ng-content select="[app-config-top]" ngProjectAs="[app-config-top]">
