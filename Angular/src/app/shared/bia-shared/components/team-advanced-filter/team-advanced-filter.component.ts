@@ -26,6 +26,7 @@ import { Tooltip } from 'primeng/tooltip';
 import { Observable } from 'rxjs';
 import { getAllUserOptions } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
 import { DomainUserOptionsActions } from 'src/app/domains/bia-domains/user-option/store/user-options-actions';
+import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { AppState } from 'src/app/store/state';
 import { TeamAdvancedFilterDto } from '../../model/team-advanced-filter-dto';
@@ -43,6 +44,7 @@ import { TeamAdvancedFilterDto } from '../../model/team-advanced-filter-dto';
     AsyncPipe,
     TranslateModule,
     FloatLabel,
+    UserOptionModule,
   ],
 })
 export class TeamAdvancedFilterComponent implements OnInit, OnChanges {
