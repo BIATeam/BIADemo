@@ -221,6 +221,16 @@ export class CrudItemImportService<T extends BaseDto> {
 
     const lines = cleanedData.split('\n');
 
+    const separator = this.findCsvFileSeparator(lines, expectedColumns);
+    const filteredLines = lines.filter(line => {
+      const columns = line.split(separator);
+      return columns.length === expectedColumns.length;
+    });
+
+    return filteredLines.join('\n');
+  }
+
+  protected findCsvFileSeparator(lines: string[], expectedColumns: string[]) {
     let separator = ',';
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i].trim();
@@ -232,7 +242,7 @@ export class CrudItemImportService<T extends BaseDto> {
 
         if (containsAllHeaders) {
           const firstHeaderIndex = line.indexOf(expectedColumns[0]);
-          let startSecondHeaderIndex = line.indexOf(
+          const startSecondHeaderIndex = line.indexOf(
             expectedColumns[1],
             firstHeaderIndex + expectedColumns[0].length
           );
@@ -253,12 +263,7 @@ export class CrudItemImportService<T extends BaseDto> {
         }
       }
     }
-    const filteredLines = lines.filter(line => {
-      const columns = line.split(separator);
-      return columns.length === expectedColumns.length;
-    });
-
-    return filteredLines.join('\n');
+    return separator;
   }
 
   protected parseCSVString(csvObj: T, column: BiaFieldConfig<T>) {
