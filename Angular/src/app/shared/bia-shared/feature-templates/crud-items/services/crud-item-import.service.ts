@@ -99,7 +99,10 @@ export class CrudItemImportService<T extends BaseDto> {
   }
 
   protected parseCSV(csv: string): Observable<ImportData<T>> {
-    const cleanedCSVData = this.cleanCSVFormat(csv);
+    const cleanedCSVData = this.cleanCSVFormat(
+      csv,
+      this.crudConfig.fieldsConfig.columns.length
+    );
     const columnMapping = this.getColumnMapping();
 
     const result = Papa.parse<T>(cleanedCSVData, {
@@ -205,7 +208,7 @@ export class CrudItemImportService<T extends BaseDto> {
     );
   }
 
-  protected cleanCSVFormat(csvData: string): string {
+  protected cleanCSVFormat(csvData: string, expectedColumns: number): string {
     // Check if the first line starts with "sep="
     const firstLine = csvData.substring(0, csvData.indexOf('\n'));
     if (firstLine.startsWith('sep=')) {
@@ -219,7 +222,15 @@ export class CrudItemImportService<T extends BaseDto> {
     // Replace each occurrence of formatted strings with the desired values
     const cleanedData = csvData.replace(regex, (match, p1) => p1);
 
-    return cleanedData;
+    const lines = cleanedData.split('\n');
+    const separator = firstLine.startsWith('sep=')
+      ? firstLine.substring(4, 5)
+      : ',';
+    const filteredLines = lines.filter(line => {
+      const columns = line.split(separator);
+      return columns.length === expectedColumns;
+    });
+    return filteredLines.join('\n');
   }
 
   protected parseCSVString(csvObj: T, column: BiaFieldConfig<T>) {

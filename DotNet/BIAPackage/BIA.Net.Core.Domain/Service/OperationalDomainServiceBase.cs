@@ -249,9 +249,9 @@ namespace BIA.Net.Core.Domain.Service
 
                 var csvBuilder = new StringBuilder();
                 csvBuilder.AppendLine($"sep={BiaConstants.Csv.Separator}");
-                if (!string.IsNullOrWhiteSpace(this.BiaNetSection.CsvHeaderLabel))
+                foreach (string line in this.BiaNetSection.CsvAdditionalContent.Headers)
                 {
-                    csvBuilder.AppendLine(this.BiaNetSection.CsvHeaderLabel);
+                    csvBuilder.AppendLine(line);
                 }
 
                 csvBuilder.AppendLine(string.Join(BiaConstants.Csv.Separator, columnHeaderValues));
@@ -259,6 +259,11 @@ namespace BIA.Net.Core.Domain.Service
                 {
                     csvBuilder.AppendLine(string.Join(BiaConstants.Csv.Separator, line));
                 });
+
+                foreach (string line in this.BiaNetSection.CsvAdditionalContent.Footers)
+                {
+                    csvBuilder.AppendLine(line);
+                }
 
                 return Encoding.GetEncoding("iso-8859-1").GetBytes(csvBuilder.ToString());
             });
