@@ -99,11 +99,8 @@ export class CrudItemImportService<T extends BaseDto> {
   }
 
   protected parseCSV(csv: string): Observable<ImportData<T>> {
-    const cleanedCSVData = this.cleanCSVFormat(
-      csv,
-      this.crudConfig.fieldsConfig.columns.length
-    );
     const columnMapping = this.getColumnMapping();
+    const cleanedCSVData = this.cleanCSVFormat(csv, Object.keys(columnMapping));
 
     const result = Papa.parse<T>(cleanedCSVData, {
       skipEmptyLines: 'greedy',
@@ -208,7 +205,7 @@ export class CrudItemImportService<T extends BaseDto> {
     );
   }
 
-  protected cleanCSVFormat(csvData: string, expectedColumns: number): string {
+  protected cleanCSVFormat(csvData: string, expectedColumns: string[]): string {
     // Check if the first line starts with "sep="
     const firstLine = csvData.substring(0, csvData.indexOf('\n'));
     if (firstLine.startsWith('sep=')) {
@@ -223,13 +220,44 @@ export class CrudItemImportService<T extends BaseDto> {
     const cleanedData = csvData.replace(regex, (match, p1) => p1);
 
     const lines = cleanedData.split('\n');
-    const separator = firstLine.startsWith('sep=')
-      ? firstLine.substring(4, 5)
-      : ',';
+
+    let separator = ',';
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (line) {
+        // Check if all expected headers are present in the line
+        const containsAllHeaders = expectedColumns.every(header =>
+          line.includes(header)
+        );
+
+        if (containsAllHeaders) {
+          const firstHeaderIndex = line.indexOf(expectedColumns[0]);
+          let startSecondHeaderIndex = line.indexOf(
+            expectedColumns[1],
+            firstHeaderIndex + expectedColumns[0].length
+          );
+
+          if (firstHeaderIndex !== -1 && startSecondHeaderIndex !== -1) {
+            const substringBetweenHeaders = line
+              .substring(
+                firstHeaderIndex + expectedColumns[0].length,
+                startSecondHeaderIndex
+              )
+              .trim();
+
+            if (substringBetweenHeaders) {
+              separator = substringBetweenHeaders[0] || ',';
+            }
+          }
+          break;
+        }
+      }
+    }
     const filteredLines = lines.filter(line => {
       const columns = line.split(separator);
-      return columns.length === expectedColumns;
+      return columns.length === expectedColumns.length;
     });
+
     return filteredLines.join('\n');
   }
 
