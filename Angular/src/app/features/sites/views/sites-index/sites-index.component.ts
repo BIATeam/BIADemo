@@ -3,7 +3,6 @@ import { Component, Injector, ViewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
 import {
   BiaButtonGroupComponent,
   BiaButtonGroupItem,
@@ -38,7 +37,6 @@ import { siteCRUDConfiguration } from '../../site.constants';
     BiaTableControllerComponent,
     BiaTableBehaviorControllerComponent,
     BiaTableComponent,
-    UserOptionModule,
     BiaButtonGroupComponent,
   ],
   providers: [{ provide: CrudItemService, useExisting: SiteService }],
