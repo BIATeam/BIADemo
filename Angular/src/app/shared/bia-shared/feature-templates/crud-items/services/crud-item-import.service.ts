@@ -232,6 +232,7 @@ export class CrudItemImportService<T extends BaseDto> {
 
   protected findCsvFileSeparator(lines: string[], expectedColumns: string[]) {
     let separator = ',';
+    let headerIndex = 0;
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i].trim();
       if (line) {
@@ -241,6 +242,7 @@ export class CrudItemImportService<T extends BaseDto> {
         );
 
         if (containsAllHeaders) {
+          headerIndex = i;
           const firstHeaderIndex = line.indexOf(expectedColumns[0]);
           const startSecondHeaderIndex = line.indexOf(
             expectedColumns[1],
@@ -263,6 +265,7 @@ export class CrudItemImportService<T extends BaseDto> {
         }
       }
     }
+    lines.splice(0, headerIndex);
     return separator;
   }
 
