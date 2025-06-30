@@ -22,7 +22,6 @@ export const airportFieldsConfiguration: BiaFieldsConfig<Airport> = {
     }),
     Object.assign(new BiaFieldConfig('rowVersion', 'airport.rowVersion'), {
       isVisible: false,
-      isHideByDefault: true,
       isVisibleInTable: false,
     }),
   ],
