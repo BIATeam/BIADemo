@@ -245,7 +245,11 @@ export class BiaFormComponent<TDto extends { id: number }>
   /**
    * Find the first active form element and set the focus on it.
    */
-  protected setFocus() {
+  protected setAutoFocus() {
+    if (this.formLayoutConfig?.autoFocusFirstField === false) {
+      return;
+    }
+
     const formElement = 'input, textarea, select';
     const firstActiveField = this.formElements
       .map(element => element.nativeElement.querySelector(formElement))
@@ -308,7 +312,7 @@ export class BiaFormComponent<TDto extends { id: number }>
     }
 
     setTimeout(() => {
-      this.setFocus();
+      this.setAutoFocus();
     });
   }
 

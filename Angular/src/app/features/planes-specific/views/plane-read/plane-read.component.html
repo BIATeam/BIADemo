@@ -8,7 +8,8 @@
   [isCrudItemOutdated]="isCrudItemOutdated"
   [showSubmitButton]="canEdit"
   (cancelled)="onCancelled()"
-  (save)="onSubmitted($event)"></app-plane-specific-form>
+  (save)="onSubmitted($event)"
+  (readOnlyChanged)="onReadOnlyChanged($event)"></app-plane-specific-form>
 <bia-spinner
   *ngIf="planeService.loadingGet$ | async"
   [overlay]="true"></bia-spinner>
