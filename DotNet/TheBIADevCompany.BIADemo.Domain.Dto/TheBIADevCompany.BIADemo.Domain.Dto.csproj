@@ -7,7 +7,6 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Crosscutting.Common\TheBIADevCompany.BIADemo.Crosscutting.Common.csproj" />
-    <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Domain.Dto\BIA.Net.Core.Domain.Dto.csproj" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>$(DefineConstants);BIA_BACK_TO_BACK_AUTH;BIA_FRONT_FEATURE</DefineConstants>
@@ -60,5 +59,8 @@
     <Compile Remove="**\LanguagesController.cs" />
     <Compile Remove="**\LdapDomainsController.cs" />
     <Compile Remove="**\*ProfileImageController*.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="BIA.Net.Core.Domain.Dto" Version="4.1.1" />
   </ItemGroup>
 </Project>
