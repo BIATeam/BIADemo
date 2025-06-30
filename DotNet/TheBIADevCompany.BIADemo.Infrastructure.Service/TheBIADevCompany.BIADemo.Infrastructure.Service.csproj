@@ -6,7 +6,7 @@
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="BIA.Net.Core.Infrastructure.Service" Version="4.1.0" />
+    <PackageReference Include="BIA.Net.Core.Infrastructure.Service" Version="4.1.1" />
     <PackageReference Include="PdfPig" Version="0.1.*" />
   </ItemGroup>
   <ItemGroup>
