@@ -8,8 +8,8 @@
             matchMode="in"
             display="menu"
             [showMatchModes]="false"
-            [showOperator]="field.type === PropType.OneToMany ? false : true"
-            [showAddButton]="field.type === PropType.OneToMany ? false : true"
+            [showOperator]="field.type === propType.OneToMany ? false : true"
+            [showAddButton]="field.type === propType.OneToMany ? false : true"
             [maxConstraints]="field.maxConstraints">
             <ng-template
               pTemplate="filter"
@@ -148,7 +148,7 @@
           *ngIf="columnFilterType !== 'boolean'"
           pInputText
           class="input-search"
-          type="{{ field.type === PropType.Number ? 'number' : 'text' }}"
+          type="{{ field.type === propType.Number ? 'number' : 'text' }}"
           placeholder="{{
             field.searchPlaceholder !== undefined
               ? field.searchPlaceholder

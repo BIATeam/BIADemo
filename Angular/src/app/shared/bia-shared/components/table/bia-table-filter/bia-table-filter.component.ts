@@ -71,7 +71,7 @@ export class BiaTableFilterComponent<CrudItem>
   @Input() table: Table;
   @Input() options?: OptionDto[];
 
-  PropType = PropType;
+  propType = PropType;
 
   public columnFilterType = '';
   protected matchModeOptions: SelectItem[] | undefined = undefined;
