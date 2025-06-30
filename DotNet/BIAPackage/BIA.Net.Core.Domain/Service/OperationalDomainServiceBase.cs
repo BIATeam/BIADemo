@@ -45,6 +45,16 @@ namespace BIA.Net.Core.Domain.Service
         }
 
         /// <summary>
+        /// CSVs the string.
+        /// </summary>
+        /// <param name="x">The x.</param>
+        /// <returns>A string for a string cell.</returns>
+        public static string CSVString(string x)
+        {
+            return "\"" + x?.Replace("\"", "\"\"") + "\"";
+        }
+
+        /// <summary>
         /// The filters.
         /// </summary>
         protected Dictionary<string, Specification<TEntity>> FiltersContext { get; set; }
@@ -253,9 +263,9 @@ namespace BIA.Net.Core.Domain.Service
 
                 var csvBuilder = new StringBuilder();
                 csvBuilder.AppendLine($"sep={BiaConstants.Csv.Separator}");
-                if (!string.IsNullOrWhiteSpace(this.BiaNetSection.CsvHeaderLabel))
+                foreach (string line in this.BiaNetSection.CsvAdditionalContent.Headers)
                 {
-                    csvBuilder.AppendLine(this.BiaNetSection.CsvHeaderLabel);
+                    csvBuilder.AppendLine(CSVString(line));
                 }
 
                 csvBuilder.AppendLine(string.Join(BiaConstants.Csv.Separator, columnHeaderValues));
@@ -263,6 +273,11 @@ namespace BIA.Net.Core.Domain.Service
                 {
                     csvBuilder.AppendLine(string.Join(BiaConstants.Csv.Separator, line));
                 });
+
+                foreach (string line in this.BiaNetSection.CsvAdditionalContent.Footers)
+                {
+                    csvBuilder.AppendLine(CSVString(line));
+                }
 
                 return Encoding.GetEncoding("iso-8859-1").GetBytes(csvBuilder.ToString());
             });

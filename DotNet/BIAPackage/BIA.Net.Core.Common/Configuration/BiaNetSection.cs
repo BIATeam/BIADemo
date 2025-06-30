@@ -92,9 +92,9 @@ namespace BIA.Net.Core.Common.Configuration
         public IEnumerable<Culture> Cultures { get; set; }
 
         /// <summary>
-        /// The lheader label to add to any CSV.
+        /// Gets or sets the CSV additinal infos for generated CSV files.
         /// </summary>
-        public string CsvHeaderLabel { get; set; }
+        public CsvAdditionalContent CsvAdditionalContent { get; set; }
 
         /// <summary>
         /// Gets or sets the configuration when front called in iframe.
