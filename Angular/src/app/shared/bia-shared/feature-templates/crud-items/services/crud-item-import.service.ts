@@ -154,13 +154,12 @@ export class CrudItemImportService<T extends BaseDto> {
   }
 
   protected getColumnMapping() {
-    return this.crudConfig.fieldsConfig.columns.reduce(
-      (map: { [key: string]: string }, obj) => {
+    return this.crudConfig.fieldsConfig.columns
+      .filter(c => c.isVisibleInTable)
+      .reduce((map: { [key: string]: string }, obj) => {
         map[this.translateService.instant(obj.header)] = obj.field.toString();
         return map;
-      },
-      {}
-    );
+      }, {});
   }
 
   protected parseCSVBia(csvObjs: T[]): Observable<T[]> {
