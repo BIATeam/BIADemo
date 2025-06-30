@@ -206,11 +206,11 @@
     ],
     "CsvAdditionalContent": {
       "Headers": [ "CONFIDENTIAL" ],
-        "Footers": [
-            "Controlled by: TheBIADevCompany",
-            "Data in this file are highly sensitive and should not be shared or divulged",
-            "CONFIDENTIAL"
-        ]
+      "Footers": [
+        "Controlled by: TheBIADevCompany",
+        "Data in this file are highly sensitive and should not be shared or divulged",
+        "CONFIDENTIAL"
+      ]
     }
   }
 }

@@ -263,7 +263,7 @@ namespace BIA.Net.Core.Domain.Service
 
                 var csvBuilder = new StringBuilder();
                 csvBuilder.AppendLine($"sep={BiaConstants.Csv.Separator}");
-                foreach (string line in this.BiaNetSection.CsvAdditionalContent.Headers)
+                foreach (string line in this.BiaNetSection.CsvAdditionalContent?.Headers ?? new List<string>())
                 {
                     csvBuilder.AppendLine(CSVString(line));
                 }
@@ -274,7 +274,7 @@ namespace BIA.Net.Core.Domain.Service
                     csvBuilder.AppendLine(string.Join(BiaConstants.Csv.Separator, line));
                 });
 
-                foreach (string line in this.BiaNetSection.CsvAdditionalContent.Footers)
+                foreach (string line in this.BiaNetSection.CsvAdditionalContent?.Footers ?? new List<string>())
                 {
                     csvBuilder.AppendLine(CSVString(line));
                 }
