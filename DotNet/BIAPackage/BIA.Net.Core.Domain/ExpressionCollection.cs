@@ -47,6 +47,7 @@ namespace BIA.Net.Core.Domain
             {
                 this.InternalDictionary.Add(elem.Key, elem.Value);
             }
+
             foreach (var elem in newElements)
             {
                 if (this.InternalDictionary.ContainsKey(elem.Key))

@@ -45,6 +45,11 @@ namespace BIA.Net.Core.Domain.Service
         }
 
         /// <summary>
+        /// The filters.
+        /// </summary>
+        protected Dictionary<string, Specification<TEntity>> FiltersContext { get; set; }
+
+        /// <summary>
         /// CSVs the string.
         /// </summary>
         /// <param name="x">The x.</param>
@@ -53,11 +58,6 @@ namespace BIA.Net.Core.Domain.Service
         {
             return "\"" + x?.Replace("\"", "\"\"") + "\"";
         }
-
-        /// <summary>
-        /// The filters.
-        /// </summary>
-        protected Dictionary<string, Specification<TEntity>> FiltersContext { get; set; }
 
         /// <summary>
         /// Get the DTO list with paging and sorting.
