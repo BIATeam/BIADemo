@@ -29,7 +29,6 @@ export const aircraftMaintenanceCompanyFieldsConfiguration: BiaFieldsConfig<Airc
           ),
           {
             isVisible: false,
-            isHideByDefault: true,
             isVisibleInTable: false,
           }
         ),

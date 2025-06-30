@@ -294,7 +294,6 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
           new BiaFieldConfig('rowVersion', 'maintenanceTeam.rowVersion'),
           {
             isVisible: false,
-            isHideByDefault: true,
             isVisibleInTable: false,
           }
         ),

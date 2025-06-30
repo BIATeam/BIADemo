@@ -76,7 +76,7 @@ export class PlanesIndexComponent extends CrudItemsIndexComponent<
     super(injector, planeService);
     this.crudConfiguration = planeCRUDConfiguration;
     this.displayedEngineColumns = this.engineConfig.columns
-      .filter(col => !col.isHideByDefault)
+      .filter(col => col.isVisibleInTable && !col.isHideByDefault)
       .map(col => <KeyValuePair>{ key: col.field, value: col.header });
     this.biaSignalRService =
       this.injector.get<BiaSignalRService>(BiaSignalRService);

@@ -626,7 +626,7 @@ export class CrudItemsIndexComponent<
       .filter(col => col.isVisibleInTable)
       .map(col => <KeyValuePair>{ key: col.field, value: col.header });
     this.displayedColumns = this.crudConfiguration.fieldsConfig.columns
-      .filter(col => !col.isHideByDefault)
+      .filter(col => col.isVisibleInTable && !col.isHideByDefault)
       .map(col => <KeyValuePair>{ key: col.field, value: col.header });
     this.sortFieldValue = this.columns[0].key;
 
@@ -637,7 +637,7 @@ export class CrudItemsIndexComponent<
       sortOrder: 1,
       filters: {},
       columnOrder: this.crudConfiguration.fieldsConfig.columns
-        .filter(col => !col.isHideByDefault)
+        .filter(col => col.isVisibleInTable && !col.isHideByDefault)
         .map(x => x.field),
       advancedFilter: undefined,
     };
