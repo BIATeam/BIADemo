@@ -121,6 +121,7 @@ export class PlaneFormComponent
 
   onReadOnlyChanged(readOnly: boolean): void {
     this.isEngineTableReadOnly = readOnly;
+    this.readOnlyChanged.emit(readOnly);
   }
 
   onSave(crudItem: PlaneSpecific) {

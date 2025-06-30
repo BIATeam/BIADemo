@@ -1,7 +1,10 @@
 import { BiaFieldConfig } from './bia-field-config';
 
 export class BiaFormLayoutConfig<TDto> {
-  constructor(public items: BiaFormLayoutConfigItem<TDto>[] = []) {}
+  constructor(
+    public items: BiaFormLayoutConfigItem<TDto>[] = [],
+    public autoFocusFirstField: boolean = true
+  ) {}
 }
 
 export type BiaFormLayoutConfigItem<TDto> =
