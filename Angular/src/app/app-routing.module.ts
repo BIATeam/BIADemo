@@ -1,16 +1,8 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes, UrlMatcher, UrlSegment } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { HOME_ROUTES } from './features/home/home.module';
 import { LayoutComponent } from './shared/bia-shared/components/layout/layout.component';
 import { PageLayoutComponent } from './shared/bia-shared/components/layout/page-layout.component';
-
-export function startsWith(path: string): UrlMatcher {
-  return (segments: UrlSegment[]) => {
-    return segments[0].path === path
-      ? { consumed: segments }
-      : { consumed: [] };
-  };
-}
 
 const routes: Routes = [
   {
