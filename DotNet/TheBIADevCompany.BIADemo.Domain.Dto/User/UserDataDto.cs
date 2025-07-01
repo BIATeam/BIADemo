@@ -11,7 +11,9 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.User
     /// <summary>
     /// UserData Dto.
     /// </summary>
+#pragma warning disable S2094 // Classes should not be empty
     public class UserDataDto : BaseUserDataDto
+#pragma warning restore S2094 // Classes should not be empty
     {
         // Begin BIADemo
 
