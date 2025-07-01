@@ -43,7 +43,6 @@ bia-classic-header {
 }
 
 // classic-layout-theme
-bia-classic-layout,
 bia-ultima-layout {
   .content,
   .layout-content {
@@ -55,20 +54,22 @@ bia-ultima-layout {
       url('../../assets/bia/img/bg-default.jpg');
   }
 
-  &.no-margin {
-    section.content {
-      display: flex;
-      flex-flow: column;
-      bia-classic-page-layout {
-        align-items: stretch;
+  &.no-padding {
+    bia-classic-page-layout {
+      align-items: stretch;
 
-        div.mat-elevation-z2 {
-          margin-top: 0;
-          max-width: 100% !important;
-          padding: 0;
-          background-color: transparent;
-        }
+      div.mat-elevation-z2 {
+        margin-top: 0;
+        max-width: 100% !important;
+        padding: 0;
+        background-color: transparent;
       }
+    }
+  }
+
+  &.no-margin {
+    bia-page-layout.bia-flex {
+      padding: 0;
     }
   }
 }

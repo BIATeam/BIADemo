@@ -50,6 +50,6 @@ export class HangfireContainerComponent implements OnInit, OnDestroy {
   }
 
   getIFrameHeight(): string {
-    return `calc(${LayoutHelperService.defaultContainerHeight(this.layoutService)})`;
+    return `calc(${LayoutHelperService.defaultContainerHeight(this.layoutService, ' + 3.5rem')})`;
   }
 }

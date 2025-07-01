@@ -29,6 +29,7 @@ import {
   ROUTE_DATA_BREADCRUMB,
   ROUTE_DATA_CAN_NAVIGATE,
   ROUTE_DATA_NO_MARGIN,
+  ROUTE_DATA_NO_PADDING,
 } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
 import { BiaLayoutService } from '../../services/layout.service';
@@ -57,6 +58,7 @@ import { BiaUltimaTopbarComponent } from '../topbar/ultima-topbar.component';
 })
 export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
   @HostBinding('class.no-margin') noMargin = false;
+  @HostBinding('class.no-padding') noPadding = false;
   @Input() version: string;
   @Input() appTitle: string;
   @Input() menus: BiaNavigation[];
@@ -273,6 +275,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.setNoMargin(this.activatedRoute);
+    this.setNoPadding(this.activatedRoute);
     this.sub.add(
       this.translateService
         .stream('bia.language')
@@ -282,12 +285,14 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
         this.setNoMargin(this.activatedRoute);
+        this.setNoPadding(this.activatedRoute);
         this.updateMenuItems();
       });
 
     this.sub.add(
       this.layoutService.breadcrumbRefresh$.subscribe(() => {
         this.setNoMargin(this.activatedRoute);
+        this.setNoPadding(this.activatedRoute);
         this.updateMenuItems();
       })
     );
@@ -344,11 +349,26 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
 
     if (activatedRoute.snapshot.data[ROUTE_DATA_NO_MARGIN] === true) {
       this.noMargin = true;
-      return;
     }
 
     for (const child of children) {
       this.setNoMargin(child, false);
+    }
+  }
+
+  protected setNoPadding(activatedRoute: ActivatedRoute, firstPass = true) {
+    if (firstPass) {
+      this.noPadding = false;
+    }
+
+    const children: ActivatedRoute[] = activatedRoute.children;
+
+    if (activatedRoute.snapshot.data[ROUTE_DATA_NO_PADDING] === true) {
+      this.noPadding = true;
+    }
+
+    for (const child of children) {
+      this.setNoPadding(child, false);
     }
   }
 

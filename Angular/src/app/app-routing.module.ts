@@ -169,6 +169,8 @@ const routes: Routes = [
             data: {
               breadcrumb: 'bia.backgroundtasks',
               canNavigate: true,
+              noMargin: true,
+              noPadding: true,
             },
             loadChildren: () =>
               import(
