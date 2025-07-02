@@ -132,7 +132,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
 
         // BIAToolKit - End Partial Rights Plane
 
-        // BIAToolKit - Begin Partial Rights Engines
+        // BIAToolKit - Begin Partial Rights Engine
 
         /// <summary>
         /// The engines rights.
@@ -172,10 +172,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// <summary>
             /// The right to fixe engine.
             /// </summary>
-            public const string Fix = "EngineFix";
+            public const string Fix = "Engine_Fix";
         }
 
-        // BIAToolKit - End Partial Rights Engines
+        // BIAToolKit - End Partial Rights Engine
 
         // BIAToolKit - Begin Partial Rights AircraftMaintenanceCompany
 
