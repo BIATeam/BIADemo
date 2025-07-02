@@ -403,6 +403,7 @@ export class CrudItemsIndexComponent<
         ...clone(this.selectedCrudItems[0]),
         id: 0,
       });
+      this.crudItemTableComponent.hasChanged = true;
     }
   }
 

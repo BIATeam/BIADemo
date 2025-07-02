@@ -117,6 +117,7 @@ export class PlaneFormComponent
       ...clone(this.selectedEngines[0]),
       id: 0,
     });
+    this.engineTableComponent.hasChanged = true;
   }
 
   onReadOnlyChanged(readOnly: boolean): void {
