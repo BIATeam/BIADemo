@@ -38,12 +38,8 @@ export class BiaFieldBaseComponent<CrudItem> implements OnInit, OnDestroy {
           if (culture) {
             if (this.field instanceof BiaFieldConfig) {
               const field = this.field.clone();
-              if (
-                !(field.displayFormat instanceof BiaFieldNumberFormat) ||
-                !field.customDisplayFormat
-              ) {
-                field.customDisplayFormat = false;
-                field.displayFormat = new BiaFieldNumberFormat();
+              field.displayFormat ||= new BiaFieldNumberFormat();
+              if (field.displayFormat instanceof BiaFieldNumberFormat) {
                 field.displayFormat.autoLocale = culture;
               }
               this.field = field;
