@@ -62,7 +62,7 @@
       [configuration]="crudConfiguration.fieldsConfig"
       [(showColSearch)]="showColSearch"
       [globalSearchValue]="globalSearchValue"
-      [canClickRow]="canEdit"
+      [canClickRow]="canEdit || crudConfiguration.hasReadView"
       [canSelectElement]="canDelete"
       [loading]="(loading$ | async) ?? false"
       (clickRowId)="onClickRow($event)"

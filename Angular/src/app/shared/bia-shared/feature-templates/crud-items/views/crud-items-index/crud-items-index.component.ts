@@ -412,19 +412,33 @@ export class CrudItemsIndexComponent<
   }
 
   onClickRow(crudItemId: any) {
-    this.onEdit(crudItemId);
+    if (this.crudConfiguration.useCalcMode) {
+      return;
+    }
+
+    if (
+      this.crudConfiguration.formEditReadOnlyMode === FormReadOnlyMode.off &&
+      this.canEdit
+    ) {
+      this.onEdit(crudItemId);
+      return;
+    }
+
+    if (this.crudConfiguration.hasReadView) {
+      this.onRead(crudItemId);
+    }
   }
 
   onEdit(crudItemId: any) {
-    if (!this.crudConfiguration.useCalcMode) {
-      const target =
-        this.crudConfiguration.formEditReadOnlyMode !== FormReadOnlyMode.off
-          ? 'read'
-          : 'edit';
-      this.router.navigate([crudItemId, target], {
-        relativeTo: this.activatedRoute,
-      });
-    }
+    this.router.navigate([crudItemId, 'edit'], {
+      relativeTo: this.activatedRoute,
+    });
+  }
+
+  onRead(crudItemId: any) {
+    this.router.navigate([crudItemId, 'read'], {
+      relativeTo: this.activatedRoute,
+    });
   }
 
   onChange() {

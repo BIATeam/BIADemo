@@ -69,7 +69,7 @@
       [configuration]="crudConfiguration.fieldsConfig"
       [(showColSearch)]="showColSearch"
       [globalSearchValue]="globalSearchValue"
-      [canClickRow]="canEdit"
+      [canClickRow]="canEdit || crudConfiguration.hasReadView"
       [canSelectElement]="canSelect"
       [canSelectMultipleElement]="canDelete"
       [loading]="(loading$ | async) ?? false"

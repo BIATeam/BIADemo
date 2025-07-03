@@ -31,7 +31,15 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
 {
   @Output() displayChange = new EventEmitter<boolean>();
   protected permissionSub = new Subscription();
-  public formReadOnlyMode: FormReadOnlyMode;
+  private _formReadOnlyMode: FormReadOnlyMode;
+  protected set formReadOnlyMode(value: FormReadOnlyMode) {
+    this._formReadOnlyMode = value;
+    this.onFormReadOnlySet(value);
+  }
+  public get formReadOnlyMode(): FormReadOnlyMode {
+    return this._formReadOnlyMode;
+  }
+  protected initialFormReadOnlyMode: FormReadOnlyMode;
   public canFix: boolean;
 
   protected isCrudItemOutdated = false;
@@ -58,6 +66,7 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
     const snapshot = this.activatedRoute.snapshot;
     this.formReadOnlyMode =
       snapshot.data['readOnlyMode'] ?? FormReadOnlyMode.off;
+    this.initialFormReadOnlyMode = this.formReadOnlyMode;
 
     this.sub.add(
       this.biaTranslationService.currentCulture$.subscribe(() => {
@@ -132,4 +141,6 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
     this.permissionSub = new Subscription();
     this.canFix = false;
   }
+
+  protected onFormReadOnlySet(_value: FormReadOnlyMode) {}
 }
