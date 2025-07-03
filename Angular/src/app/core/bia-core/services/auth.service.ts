@@ -4,7 +4,15 @@ import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { jwtDecode } from 'jwt-decode';
 import { BehaviorSubject, NEVER, Observable, Subscription, of } from 'rxjs';
-import { catchError, filter, map, skip, switchMap, take } from 'rxjs/operators';
+import {
+  catchError,
+  filter,
+  finalize,
+  map,
+  skip,
+  switchMap,
+  take,
+} from 'rxjs/operators';
 import { DomainTeamsActions } from 'src/app/domains/bia-domains/team/store/teams-actions';
 import {
   AdditionalInfos,
@@ -97,6 +105,10 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
           this.getLatestVersion();
           return NEVER;
         }
+      }),
+      finalize(() => {
+        console.info('Finalize login');
+        this.isInLogin = false;
       })
     );
   }
@@ -358,7 +370,6 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
           authInfo.decryptedToken = this.decodeToken(authInfo.token);
         }
         RefreshTokenService.shouldRefreshToken = false;
-        this.isInLogin = false;
         this.authInfoSubject.next(authInfo);
 
         this.store.dispatch(
@@ -375,7 +386,6 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
         }
 
         RefreshTokenService.shouldRefreshToken = true;
-        this.isInLogin = false;
         const authInfo: AuthInfo = <AuthInfo>{};
         this.authInfoSubject.next(authInfo);
         this.store.dispatch(
