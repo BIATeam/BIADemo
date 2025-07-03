@@ -85,11 +85,6 @@ export class MaintenanceTeamsIndexComponent
       this.parentDisplayItemName$ =
         this.maintenanceTeamService.aircraftMaintenanceCompanyService.displayItemName$;
     }
-    this.sub.add(
-      this.biaTranslationService.currentCulture$.subscribe(() => {
-        this.maintenanceTeamOptionsService.loadAllOptions();
-      })
-    );
   }
 
   protected setPermissions() {

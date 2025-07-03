@@ -29,15 +29,6 @@ export class MaintenanceTeamEditComponent
     this.crudConfiguration = maintenanceTeamCRUDConfiguration;
   }
 
-  ngOnInit(): void {
-    super.ngOnInit();
-    this.sub.add(
-      this.biaTranslationService.currentCulture$.subscribe(() => {
-        this.maintenanceTeamOptionsService.loadAllOptions();
-      })
-    );
-  }
-
   protected setPermissions(): void {
     super.setPermissions();
 

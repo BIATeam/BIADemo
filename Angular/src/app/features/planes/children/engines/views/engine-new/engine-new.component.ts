@@ -24,13 +24,4 @@ export class EngineNewComponent
     super(injector, engineService);
     this.crudConfiguration = engineCRUDConfiguration;
   }
-
-  ngOnInit(): void {
-    super.ngOnInit();
-    this.sub.add(
-      this.biaTranslationService.currentCulture$.subscribe(() => {
-        this.engineOptionsService.loadAllOptions();
-      })
-    );
-  }
 }

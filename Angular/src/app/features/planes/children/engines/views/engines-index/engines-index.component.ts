@@ -61,11 +61,6 @@ export class EnginesIndexComponent
     super.ngOnInit();
     this.parentDisplayItemName$ =
       this.engineService.planeService.displayItemName$;
-    this.sub.add(
-      this.biaTranslationService.currentCulture$.subscribe(() => {
-        this.engineOptionsService.loadAllOptions();
-      })
-    );
   }
 
   protected setPermissions() {
