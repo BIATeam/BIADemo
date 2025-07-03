@@ -78,10 +78,6 @@ export class AircraftMaintenanceCompaniesIndexComponent
     this.crudConfiguration = aircraftMaintenanceCompanyCRUDConfiguration;
   }
 
-  ngOnInit(): void {
-    super.ngOnInit();
-  }
-
   protected setPermissions() {
     this.canEdit = this.authService.hasPermission(
       Permission.AircraftMaintenanceCompany_Update

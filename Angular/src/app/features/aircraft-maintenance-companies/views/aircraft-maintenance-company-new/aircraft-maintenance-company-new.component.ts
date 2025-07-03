@@ -22,8 +22,4 @@ export class AircraftMaintenanceCompanyNewComponent
     super(injector, aircraftMaintenanceCompanyService);
     this.crudConfiguration = aircraftMaintenanceCompanyCRUDConfiguration;
   }
-
-  ngOnInit(): void {
-    super.ngOnInit();
-  }
 }
