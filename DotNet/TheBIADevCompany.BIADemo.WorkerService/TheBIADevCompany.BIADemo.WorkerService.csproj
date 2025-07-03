@@ -11,16 +11,16 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="BIA.Net.Core.WorkerService" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="[8.0.*,9.0.0)" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.2" />
-    <PackageReference Include="NLog.Extensions.Hosting" Version="5.5.*" />
-    <PackageReference Include="NLog.Extensions.Logging" Version="5.5.*" />
+    <PackageReference Include="NLog.Extensions.Hosting" Version="6.0.*" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="6.0.*" />
     <PackageReference Include="Bonura.NLog.HangfireLayouts" Version="1.1.*" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="[8.0.*,9.0.0)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Crosscutting.Ioc\TheBIADevCompany.BIADemo.Crosscutting.Ioc.csproj" />
+    <ProjectReference Include="..\BIAPackage\BIA.Net.Core.WorkerService\BIA.Net.Core.WorkerService.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="appsettings.*.json">
