@@ -29,11 +29,16 @@ export class TableHelperService {
   public hasFilter<TDto extends { id: number }>(
     biaTableComponent: BiaTableComponent<TDto>
   ): boolean {
-    if (this.isNullUndefEmptyStr(biaTableComponent)) {
+    if (TableHelperService.isNullUndefEmptyStr(biaTableComponent)) {
       return false;
     }
     if (biaTableComponent.table && biaTableComponent.table.hasFilter()) {
-      if (this.isNullUndefEmptyFilters(biaTableComponent.table.filters, true)) {
+      if (
+        TableHelperService.isNullUndefEmptyFilters(
+          biaTableComponent.table.filters,
+          true
+        )
+      ) {
         return false;
       } else {
         return true;
@@ -43,7 +48,7 @@ export class TableHelperService {
     }
   }
 
-  public isNullUndefEmptyFilters(
+  public static isNullUndefEmptyFilters(
     filters: { [s: string]: FilterMetadata | FilterMetadata[] | undefined },
     ignoreGlobalFilter: boolean
   ): boolean {
@@ -80,15 +85,17 @@ export class TableHelperService {
     return true;
   }
 
-  public isSimpleFilter(filter: FilterMetadata | FilterMetadata[] | undefined) {
+  public static isSimpleFilter(
+    filter: FilterMetadata | FilterMetadata[] | undefined
+  ) {
     return !Array.isArray(filter);
   }
 
-  protected isNullUndefEmptyStr(obj: any): boolean {
+  public static isNullUndefEmptyStr(obj: any): boolean {
     return obj === null || obj === undefined || obj === '';
   }
 
-  public isEmptyFilter(obj: FilterMetadata): boolean {
+  public static isEmptyFilter(obj: FilterMetadata): boolean {
     return (
       obj === null ||
       obj === undefined ||

@@ -598,14 +598,16 @@ export class BiaTableComponent<TDto extends { id: number }>
           this.showColSearchChange.emit(false);
         });
         if (this.table.hasFilter()) {
-          for (const key in this.table.filters) {
-            if (!key.startsWith(TABLE_FILTER_GLOBAL)) {
-              setTimeout(() => {
-                this.showColSearch = true;
-                this.showColSearchChange.emit(true);
-              });
-              break;
-            }
+          if (
+            !TableHelperService.isNullUndefEmptyFilters(
+              this.table.filters,
+              true
+            )
+          ) {
+            setTimeout(() => {
+              this.showColSearch = true;
+              this.showColSearchChange.emit(true);
+            });
           }
         }
       }
