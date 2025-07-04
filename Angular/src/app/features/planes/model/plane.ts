@@ -31,8 +31,8 @@ export interface Plane extends BaseDto, VersionedDto, FixableDto {
   lastFlightDate: Date | null;
   deliveryDate: Date | null;
   nextMaintenanceDate: Date;
-  syncTime: string;
-  syncFlightDataTime: string | null;
+  syncTime: string | null;
+  syncFlightDataTime: string;
   capacity: number;
   motorsCount: number | null;
   totalFlightHours: number;
@@ -103,12 +103,12 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
     ),
     Object.assign(new BiaFieldConfig('syncTime', 'plane.syncTime'), {
       type: PropType.TimeSecOnly,
-      isRequired: true,
     }),
     Object.assign(
       new BiaFieldConfig('syncFlightDataTime', 'plane.syncFlightDataTime'),
       {
         type: PropType.TimeSecOnly,
+        isRequired: true,
       }
     ),
     Object.assign(new BiaFieldConfig('capacity', 'plane.capacity'), {
