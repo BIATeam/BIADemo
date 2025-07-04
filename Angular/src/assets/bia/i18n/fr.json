@@ -7,6 +7,7 @@
     "administer": "Administrer",
     "administration": "Administration",
     "all": "Tous",
+    "analyze": "Analyser",
     "back": "Retour",
     "backgroundTaskAdmin": "Administrer les taches",
     "backgroundTaskReadOnly": "Voir les taches",
@@ -202,8 +203,24 @@
       "Vendredi",
       "Samedi"
     ],
-    "dayNamesMin": ["Di", "Lu", "Ma", "Me", "Je", "Ve", "Sa"],
-    "dayNamesShort": ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
+    "dayNamesMin": [
+      "Di",
+      "Lu",
+      "Ma",
+      "Me",
+      "Je",
+      "Ve",
+      "Sa"
+    ],
+    "dayNamesShort": [
+      "Dim",
+      "Lun",
+      "Mar",
+      "Mer",
+      "Jeu",
+      "Ven",
+      "Sam"
+    ],
     "empty": "Vide",
     "emptyFilterMessage": "Aucun résultat trouvé",
     "emptyMessage": "Aucun résultat trouvé",
