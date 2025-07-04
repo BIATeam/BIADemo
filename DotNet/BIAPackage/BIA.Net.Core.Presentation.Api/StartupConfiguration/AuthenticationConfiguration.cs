@@ -78,7 +78,7 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
                     context.Response.OnStarting(async () =>
                     {
                         context.NoResult();
-                        context.Response.Headers.Append("Token-Expired-Or-Invalid", "true");
+                        context.Response.Headers.AccessControlAllowOrigin = context.Request.Headers.Origin.ToString();
                         context.Response.ContentType = "text/plain";
                         context.Response.StatusCode = 498; // 498 = Token expired/invalid
                         await context.Response.WriteAsync("Un-Authorized");
