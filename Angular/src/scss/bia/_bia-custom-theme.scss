@@ -529,3 +529,7 @@ bia-form-layout .p-tabs .p-tabpanel > .bia-form-row {
 .layout-container.layout-horizontal .layout-menu::-webkit-scrollbar {
   display: none;
 }
+
+.p-toast.p-toast-top-right {
+  top: 4.5rem !important;
+}

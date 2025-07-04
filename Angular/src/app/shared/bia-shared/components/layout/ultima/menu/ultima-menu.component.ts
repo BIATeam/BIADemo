@@ -85,11 +85,6 @@ export class BiaUltimaMenuComponent implements AfterViewInit {
     if (this.scrollContent) {
       const content = this.scrollContent.nativeElement;
       this.isAtStart = content.scrollLeft <= 0;
-
-      console.error(
-        content.scrollLeft + content.clientWidth,
-        content.scrollWidth
-      );
       this.isAtEnd =
         content.scrollLeft + content.clientWidth >= content.scrollWidth;
     }
