@@ -61,15 +61,6 @@ export class PlanesIndexComponent
     this.crudConfiguration = planeCRUDConfiguration;
   }
 
-  ngOnInit(): void {
-    super.ngOnInit();
-    this.sub.add(
-      this.biaTranslationService.currentCulture$.subscribe(() => {
-        this.planeOptionsService.loadAllOptions();
-      })
-    );
-  }
-
   protected setPermissions() {
     this.canEdit = this.authService.hasPermission(Permission.Plane_Update);
     this.canDelete = this.authService.hasPermission(Permission.Plane_Delete);

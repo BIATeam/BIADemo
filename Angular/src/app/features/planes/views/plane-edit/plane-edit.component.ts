@@ -29,15 +29,6 @@ export class PlaneEditComponent
     this.crudConfiguration = planeCRUDConfiguration;
   }
 
-  ngOnInit(): void {
-    super.ngOnInit();
-    this.sub.add(
-      this.biaTranslationService.currentCulture$.subscribe(() => {
-        this.planeOptionsService.loadAllOptions();
-      })
-    );
-  }
-
   protected setPermissions(): void {
     super.setPermissions();
 

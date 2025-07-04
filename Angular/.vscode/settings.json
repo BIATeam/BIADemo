@@ -9,5 +9,5 @@
     { "name": "app", "path": "./src/assets/i18n/app" }
   ],
   "i18n-ally.localesPaths": ["./src/assets/i18n/app"],
-  "cSpell.words": ["Dtos", "matomo"]
+  "cSpell.words": ["Dtos", "matomo", "primeng"]
 }

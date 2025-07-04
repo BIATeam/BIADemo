@@ -24,13 +24,4 @@ export class PlaneNewComponent
     super(injector, planeService);
     this.crudConfiguration = planeCRUDConfiguration;
   }
-
-  ngOnInit(): void {
-    super.ngOnInit();
-    this.sub.add(
-      this.biaTranslationService.currentCulture$.subscribe(() => {
-        this.planeOptionsService.loadAllOptions();
-      })
-    );
-  }
 }
