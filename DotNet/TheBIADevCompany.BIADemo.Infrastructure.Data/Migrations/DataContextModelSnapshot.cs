@@ -2230,7 +2230,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Plane", "Plane")
                         .WithMany("Engines")
                         .HasForeignKey("PlaneId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Part", "PrincipalPart")

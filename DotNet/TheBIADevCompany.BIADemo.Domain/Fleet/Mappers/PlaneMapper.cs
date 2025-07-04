@@ -269,19 +269,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             ];
         }
 
-        // Begin BIADemo
-
-        /// <inheritdoc/>
-        public override Expression<Func<Plane, object>>[] IncludesBeforeDelete()
-        {
-            return
-            [
-                x => x.Engines
-            ];
-        }
-
-        // End BIADemo
-
         /// <summary>
         /// Header names.
         /// </summary>
