@@ -1,4 +1,16 @@
-<ul class="layout-menu">
+<p-button
+  *ngIf="isScrollable"
+  class="left-button"
+  icon="pi pi-angle-left"
+  severity="secondary"
+  [styleClass]="'w-2rem'"
+  [outlined]="true"
+  [disabled]="isAtStart"
+  (mousedown)="startScrolling($event, 'left')"
+  (mouseup)="stopScrolling()"
+  (mouseleave)="stopScrolling()"
+  (click)="$event.preventDefault()"></p-button>
+<ul class="layout-menu" #scrollContent>
   <ng-content select="[menu-top]"></ng-content>
   <ng-container *ngFor="let item of menuItems; let i = index">
     <li
@@ -11,3 +23,15 @@
   </ng-container>
   <ng-content select="[menu-bottom]"></ng-content>
 </ul>
+<p-button
+  *ngIf="isScrollable"
+  class="right-button"
+  icon="pi pi-angle-right"
+  severity="secondary"
+  [styleClass]="'w-2rem'"
+  [outlined]="true"
+  [disabled]="isAtEnd"
+  (mousedown)="startScrolling($event, 'right')"
+  (mouseup)="stopScrolling()"
+  (mouseleave)="stopScrolling()"
+  (click)="$event.preventDefault()"></p-button>

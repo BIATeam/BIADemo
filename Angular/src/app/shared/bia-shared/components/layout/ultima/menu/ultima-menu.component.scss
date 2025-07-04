@@ -1,0 +1,14 @@
+.scroll-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.left-button {
+  left: 0;
+}
+
+.right-button {
+  right: 0;
+}

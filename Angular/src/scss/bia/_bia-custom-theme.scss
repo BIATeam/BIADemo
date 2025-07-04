@@ -516,3 +516,16 @@ bia-form-layout .p-tabs .p-tabpanel > .bia-form-row {
 .bia-form-group .p-panel-content {
   padding-bottom: 0.75rem;
 }
+
+.layout-container.layout-horizontal .bia-ultima-menu {
+  display: flex;
+  align-items: center;
+}
+
+.layout-container.layout-horizontal .layout-menu {
+  overflow: auto;
+}
+
+.layout-container.layout-horizontal .layout-menu::-webkit-scrollbar {
+  display: none;
+}
