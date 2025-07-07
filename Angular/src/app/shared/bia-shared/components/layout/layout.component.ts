@@ -34,6 +34,7 @@ export class LayoutComponent implements OnInit {
   enableNotifications = allEnvironments.enableNotifications;
   login = '';
   username = '';
+  lastname?: string;
   headerLogos: string[];
   footerLogo = 'assets/bia/img/Footer.png';
   supportedLangs = APP_SUPPORTED_TRANSLATIONS;
@@ -98,6 +99,7 @@ export class LayoutComponent implements OnInit {
       this.username = authInfo.decryptedToken.userData.firstName
         ? authInfo.decryptedToken.userData.firstName
         : authInfo.decryptedToken.identityKey;
+      this.lastname = authInfo.decryptedToken.userData.lastName;
     } else {
       this.username = '?';
     }

@@ -63,6 +63,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
   @Input() appTitle: string;
   @Input() menus: BiaNavigation[];
   @Input() username?: string;
+  @Input() lastname?: string;
   @Input() login: string;
   @Input() headerLogos: string[];
   @Input() footerLogo = 'assets/bia/img/Footer.png';
