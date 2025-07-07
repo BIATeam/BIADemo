@@ -2,7 +2,7 @@
 //  Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.IocContainer
+namespace BIA.Net.Core.Ioc
 {
     using System;
     using System.Collections.Generic;
@@ -15,12 +15,13 @@ namespace BIA.Net.Core.IocContainer
     using BIA.Net.Core.Common.Configuration.AuthenticationSection;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.RepoContract.BiaApi;
     using BIA.Net.Core.Infrastructure.Data.Repositories;
     using BIA.Net.Core.Infrastructure.Data.Repositories.QueryCustomizer;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
+    using BIA.Net.Core.Infrastructure.Service.Repositories.BiaApi;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Ldap;
-    using BIA.Net.Core.Ioc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -137,7 +138,7 @@ namespace BIA.Net.Core.IocContainer
         private static void ConfigureApplicationContainer(IServiceCollection collection)
         {
             // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
-            BiaIocContainer.RegisterServicesFromAssembly(
+            RegisterServicesFromAssembly(
                 collection: collection,
                 assemblyName: "BIA.Net.Core.Application",
                 serviceLifetime: ServiceLifetime.Transient);
@@ -146,7 +147,7 @@ namespace BIA.Net.Core.IocContainer
         private static void ConfigureDomainContainer(IServiceCollection collection)
         {
             // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
-            BiaIocContainer.RegisterServicesFromAssembly(
+            RegisterServicesFromAssembly(
                 collection: collection,
                 assemblyName: "BIA.Net.Core.Domain",
                 serviceLifetime: ServiceLifetime.Transient);

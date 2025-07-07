@@ -5,7 +5,7 @@
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Utilities
 {
-    using BIA.Net.Presentation.Api.Controllers.Base;
+    using BIA.Net.Core.Presentation.Api.Controller.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.Fleet;

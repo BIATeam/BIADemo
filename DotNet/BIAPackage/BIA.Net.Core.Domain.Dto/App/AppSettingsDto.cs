@@ -2,7 +2,7 @@
 //     BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Domain.Dto.Option
+namespace BIA.Net.Core.Domain.Dto.App
 {
     using System.Collections.Generic;
     using BIA.Net.Core.Common.Configuration;

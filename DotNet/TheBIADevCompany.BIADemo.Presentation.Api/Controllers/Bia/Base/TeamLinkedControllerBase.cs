@@ -6,8 +6,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Base
 {
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.Base;
-    using BIA.Net.Presentation.Api.Controllers.Base;
-    using TheBIADevCompany.BIADemo.Application.Bia.User;
+    using BIA.Net.Core.Presentation.Api.Controller.Base;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
 

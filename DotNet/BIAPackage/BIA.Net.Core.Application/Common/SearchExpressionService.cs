@@ -7,7 +7,7 @@ namespace BIA.Net.Core.Application.Common
     using System.Linq;
     using System.Linq.Expressions;
     using System.Security.Principal;
-    using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.User.Entities;
