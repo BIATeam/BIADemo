@@ -2,7 +2,7 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features.Bia
+namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
 {
     using System;
     using BIA.Net.Core.Common.Configuration.CommonFeature;

@@ -2,7 +2,7 @@
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Domain.RepoContract
+namespace BIA.Net.Core.Domain.RepoContract.BiaApi
 {
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration.BiaWebApi;

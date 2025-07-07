@@ -6,7 +6,7 @@ namespace BIA.Net.Core.Domain
 {
     using System;
     using System.Linq.Expressions;
-    using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Helpers;
 
     /// <summary>
     /// Expression Collection.

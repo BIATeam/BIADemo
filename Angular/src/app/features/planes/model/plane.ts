@@ -83,22 +83,28 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       new BiaFieldConfig('lastFlightDate', 'plane.lastFlightDate'),
       {
         type: PropType.DateTime,
-        // Begin BIAToolKit Generation Ignore
-        displayFormat: Object.assign(new BiaFieldDateFormat(), {
-          autoFormatDate: 'yyyy',
-          autoPrimeDateFormat: 'yyyy',
-        }),
-        // End BIAToolKit Generation Ignore
       }
     ),
     Object.assign(new BiaFieldConfig('deliveryDate', 'plane.deliveryDate'), {
       type: PropType.Date,
+      // Begin BIAToolKit Generation Ignore
+      displayFormat: Object.assign(new BiaFieldDateFormat(), {
+        autoFormatDate: 'yyyy',
+        autoPrimeDateFormat: 'yy',
+      }),
+      // End BIAToolKit Generation Ignore
     }),
     Object.assign(
       new BiaFieldConfig('nextMaintenanceDate', 'plane.nextMaintenanceDate'),
       {
         type: PropType.Date,
         isRequired: true,
+        // Begin BIAToolKit Generation Ignore
+        displayFormat: Object.assign(new BiaFieldDateFormat(), {
+          autoFormatDate: 'yyyy/MM',
+          autoPrimeDateFormat: 'yy/mm',
+        }),
+        // End BIAToolKit Generation Ignore
       }
     ),
     Object.assign(new BiaFieldConfig('syncTime', 'plane.syncTime'), {

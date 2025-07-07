@@ -2,7 +2,7 @@
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders.Bia
+namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
 {
     using BIA.Net.Core.Domain.View.Entities;
     using Microsoft.EntityFrameworkCore;

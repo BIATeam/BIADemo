@@ -20,7 +20,6 @@ namespace BIA.Net.Core.Presentation.Api.Features
     using BIA.Net.Core.Presentation.Common.Features.HubForClients;
     using Hangfire;
     using Hangfire.Dashboard;
-    using Hangfire.Dashboard.JobLogs;
     using Hangfire.PostgreSql;
     using Hangfire.PostgreSql.Factories;
     using Hangfire.SqlServer;

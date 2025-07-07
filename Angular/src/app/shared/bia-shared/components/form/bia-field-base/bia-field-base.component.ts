@@ -31,6 +31,19 @@ export class BiaFieldBaseComponent<CrudItem> implements OnInit, OnDestroy {
     }
   }
 
+  protected getDateView(dateFormat: string) {
+    const hasY = /[yY]/.test(dateFormat);
+    const hasM = /[mM]/.test(dateFormat);
+    const hasD = /[dD]/.test(dateFormat);
+    if (hasY && !hasM && !hasD) {
+      return 'year';
+    } else if (hasM && !hasD) {
+      return 'month';
+    } else {
+      return 'date';
+    }
+  }
+
   protected initFieldConfiguration() {
     if (this.field.type === PropType.Number) {
       this.sub.add(

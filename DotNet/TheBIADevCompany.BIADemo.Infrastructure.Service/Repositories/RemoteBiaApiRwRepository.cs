@@ -7,7 +7,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
 {
     using System.Net.Http;
     using BIA.Net.Core.Common.Configuration.BiaWebApi;
-    using BIA.Net.Core.Infrastructure.Service.Repositories;
+    using BIA.Net.Core.Infrastructure.Service.Repositories.BiaApi;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;

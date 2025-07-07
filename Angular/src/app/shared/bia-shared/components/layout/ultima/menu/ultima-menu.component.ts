@@ -7,6 +7,7 @@ import {
   ElementRef,
   HostBinding,
   Input,
+  OnDestroy,
   ViewChild,
 } from '@angular/core';
 import { MenuItem } from 'primeng/api';
@@ -44,7 +45,7 @@ import { BiaUltimaMenuItemComponent } from '../menu-item/ultima-menu-item.compon
   ],
   imports: [NgFor, NgIf, BiaUltimaMenuItemComponent, ButtonModule],
 })
-export class BiaUltimaMenuComponent implements AfterViewInit {
+export class BiaUltimaMenuComponent implements AfterViewInit, OnDestroy {
   @HostBinding('class') classes = 'bia-ultima-menu';
 
   @Input() menuItems: MenuItem[] = [];

@@ -2,7 +2,7 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Application.Bia.User
+namespace TheBIADevCompany.BIADemo.Application.User
 {
     using BIA.Net.Core.Application.User;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;

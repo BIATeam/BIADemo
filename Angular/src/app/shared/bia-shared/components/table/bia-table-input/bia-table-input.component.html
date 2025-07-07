@@ -86,7 +86,13 @@
           getDisplayDateFormat(field.displayFormat)?.autoPrimeDateFormat ??
           'yy-mm-dd'
         "
-        [autofocus]="focusByDefault"></p-date-picker>
+        [autofocus]="focusByDefault"
+        [view]="
+          getDateView(
+            getDisplayDateFormat(field.displayFormat)?.autoPrimeDateFormat ??
+              'yy-mm-dd'
+          )
+        "></p-date-picker>
     </ng-container>
     <ng-container *ngSwitchCase="'Time'">
       <p-date-picker

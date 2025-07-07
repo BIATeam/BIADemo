@@ -34,7 +34,6 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
   private _formReadOnlyMode: FormReadOnlyMode;
   protected set formReadOnlyMode(value: FormReadOnlyMode) {
     this._formReadOnlyMode = value;
-    this.onFormReadOnlySet(value);
   }
   public get formReadOnlyMode(): FormReadOnlyMode {
     return this._formReadOnlyMode;
@@ -141,6 +140,4 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
     this.permissionSub = new Subscription();
     this.canFix = false;
   }
-
-  protected onFormReadOnlySet(_value: FormReadOnlyMode) {}
 }

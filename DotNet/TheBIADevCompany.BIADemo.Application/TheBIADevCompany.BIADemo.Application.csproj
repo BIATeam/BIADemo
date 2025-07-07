@@ -40,7 +40,6 @@
     <Compile Remove="**\*LogsController*.cs" />
     <Compile Remove="**\*Mapper*.cs" />
     <Compile Remove="**\*Member*.cs" />
-    <Compile Remove="**\*ModelBuilder*.cs" />
     <Compile Remove="**\*Notification*.cs" />
     <Compile Remove="**\*Query*.cs" />
     <Compile Remove="**\*SearchExpressionService*.cs" />
@@ -64,5 +63,6 @@
     <Compile Remove="**\LanguagesController.cs" />
     <Compile Remove="**\LdapDomainsController.cs" />
     <Compile Remove="**\*ProfileImageController*.cs" />
+    <Compile Remove="**\UserModelBuilder.cs" />
   </ItemGroup>
 </Project>

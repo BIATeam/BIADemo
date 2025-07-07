@@ -35,7 +35,10 @@
 </div>
 
 <ng-template #menuProfile>
-  <bia-ultima-menu-profile [username]="username" [login]="login">
+  <bia-ultima-menu-profile
+    [username]="username"
+    [lastname]="lastname"
+    [login]="login">
     <ng-content
       select="[menu-profile-replace]"
       ngProjectAs="[menu-profile-replace]">
