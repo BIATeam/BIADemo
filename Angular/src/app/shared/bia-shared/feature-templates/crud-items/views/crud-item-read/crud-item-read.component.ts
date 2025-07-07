@@ -19,6 +19,15 @@ export class CrudItemReadComponent<CrudItem extends BaseDto>
 {
   public canEdit: boolean;
 
+  protected set formReadOnlyMode(value: FormReadOnlyMode) {
+    super.formReadOnlyMode = value;
+    this.onFormReadOnlySet(value);
+  }
+
+  public get formReadOnlyMode() {
+    return super.formReadOnlyMode;
+  }
+
   constructor(
     protected injector: Injector,
     public crudItemService: CrudItemSingleService<CrudItem>
