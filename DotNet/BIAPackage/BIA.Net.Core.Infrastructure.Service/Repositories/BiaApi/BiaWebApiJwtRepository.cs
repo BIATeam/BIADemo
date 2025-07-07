@@ -2,13 +2,14 @@
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Infrastructure.Service.Repositories
+namespace BIA.Net.Core.Infrastructure.Service.Repositories.BiaApi
 {
     using System.Net.Http;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration.AuthenticationSection;
     using BIA.Net.Core.Common.Configuration.BiaWebApi;
-    using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.RepoContract.BiaApi;
+    using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using Microsoft.Extensions.Logging;
 

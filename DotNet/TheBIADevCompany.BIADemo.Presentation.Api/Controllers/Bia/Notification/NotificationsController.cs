@@ -16,7 +16,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Notification
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
-    using BIA.Net.Presentation.Api.Controllers.Base;
+    using BIA.Net.Core.Presentation.Api.Controller.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
