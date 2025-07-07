@@ -87,7 +87,10 @@
           appendTo="body"
           [dateFormat]="displayDateFormat.autoPrimeDateFormat"
           [inputStyle]="{ width: '100%' }"
-          [showClear]="true"></p-date-picker>
+          [showClear]="true"
+          [view]="
+            getDateView(displayDateFormat.autoPrimeDateFormat)
+          "></p-date-picker>
         <label
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
           >{{ field.header | translate }}</label
