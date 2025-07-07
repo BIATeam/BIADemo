@@ -30,9 +30,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.Site.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
-    using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders.Bia;
 #endif
+    using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders;
 
     /// <summary>
     /// The database context.
