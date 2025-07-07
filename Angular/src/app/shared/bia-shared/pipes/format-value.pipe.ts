@@ -1,5 +1,5 @@
 import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
-import { Pipe, PipeTransform } from '@angular/core';
+import { Injectable, Pipe, PipeTransform } from '@angular/core';
 import {
   BiaFieldConfig,
   BiaFieldDateFormat,
@@ -9,6 +9,7 @@ import {
 } from '../model/bia-field-config';
 
 @Pipe({ name: 'formatValue' })
+@Injectable({ providedIn: 'root' })
 export class FormatValuePipe implements PipeTransform {
   constructor(
     protected datePipe: DatePipe,

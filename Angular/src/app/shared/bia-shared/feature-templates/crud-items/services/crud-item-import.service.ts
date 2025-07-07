@@ -10,9 +10,15 @@ import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
 import { BiaFormComponent } from '../../../components/form/bia-form/bia-form.component';
 import { DictOptionDto } from '../../../components/table/bia-table/dict-option-dto';
-import { BiaFieldConfig, PropType } from '../../../model/bia-field-config';
+import {
+  BiaFieldConfig,
+  BiaFieldDateFormat,
+  PropType,
+} from '../../../model/bia-field-config';
 import { clone, isEmpty } from '../../../utils';
 import { CrudConfig } from '../model/crud-config';
+import { FormatValuePipe } from '../../../pipes/format-value.pipe';
+import { parse } from 'date-fns';
 
 export interface ImportParam {
   useCurrentView: boolean;
@@ -51,7 +57,8 @@ export class CrudItemImportService<T extends BaseDto> {
 
   constructor(
     protected translateService: TranslateService,
-    protected biaTranslationService: BiaTranslationService
+    protected biaTranslationService: BiaTranslationService,
+    protected formatValuePipe: FormatValuePipe
   ) {
     this.initImportParam();
   }
@@ -496,6 +503,34 @@ export class CrudItemImportService<T extends BaseDto> {
           // to facilitate comparison with JSON.stringify
           newObj[prop] = oldObj[prop];
         }
+      }
+      if (field?.isDate) {
+        const formattedNewValue = this.formatValuePipe.transform(
+          newObj[prop],
+          field
+        );
+        Object.assign(newObj, {
+          [prop]: formattedNewValue
+            ? parse(
+                formattedNewValue,
+                (field.displayFormat as BiaFieldDateFormat)?.autoFormatDate,
+                new Date()
+              )
+            : null,
+        });
+        const formattedOldValue = this.formatValuePipe.transform(
+          oldObj[prop],
+          field
+        );
+        Object.assign(oldObj, {
+          [prop]: formattedOldValue
+            ? parse(
+                formattedOldValue,
+                (field.displayFormat as BiaFieldDateFormat)?.autoFormatDate,
+                new Date()
+              )
+            : null,
+        });
       }
     }
 
