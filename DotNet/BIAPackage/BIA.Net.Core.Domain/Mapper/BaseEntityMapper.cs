@@ -130,6 +130,26 @@ namespace BIA.Net.Core.Domain.Mapper
         }
 
         /// <summary>
+        /// CSVs the date.
+        /// </summary>
+        /// <param name="x">The DateTime.</param>
+        /// <returns>A string for a date cell.</returns>
+        public static string CSVDateMonth(DateTime? x)
+        {
+            return x?.ToString("yyyy-MM");
+
+        }
+        /// <summary>
+        /// CSVs the date.
+        /// </summary>
+        /// <param name="x">The DateTime.</param>
+        /// <returns>A string for a date cell.</returns>
+        public static string CSVDateYear(DateTime? x)
+        {
+            return x?.ToString("yyyy");
+        }
+
+        /// <summary>
         /// CSVs the time.
         /// </summary>
         /// <param name="x">The DateTime.</param>

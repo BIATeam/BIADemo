@@ -317,10 +317,37 @@ export class CrudItemImportService<T extends BaseDto> {
       if (DateHelperService.isValidDate(date)) {
         csvObj[column.field] = <any>date;
       } else {
-        this.addErrorToSave(
-          csvObj,
-          column.field.toString() + ': unsupported date format: ' + csvValue
+        // retry with field date format
+        let format = (column.displayFormat as BiaFieldDateFormat)
+          ?.autoFormatDate;
+        const containsTargetDash = format.indexOf('-') > 0;
+        if (containsDash && !containsTargetDash) {
+          if (format.startsWith('yyyy')) {
+            format = format.split('/').join('-');
+          } else {
+            format = format.split('/').reverse().join('-');
+          }
+        }
+        if (!containsDash && containsTargetDash) {
+          if (format.startsWith('yyyy')) {
+            format = format.split('-').reverse().join('/');
+          } else {
+            format = format.split('-').join('/');
+          }
+        }
+        const date2: Date = DateHelperService.parseDate(
+          dateString,
+          format,
+          null
         );
+        if (DateHelperService.isValidDate(date2)) {
+          csvObj[column.field] = <any>date2;
+        } else {
+          this.addErrorToSave(
+            csvObj,
+            column.field.toString() + ': unsupported date format: ' + csvValue
+          );
+        }
       }
     }
   }

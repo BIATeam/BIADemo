@@ -101,8 +101,8 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
         isRequired: true,
         // Begin BIAToolKit Generation Ignore
         displayFormat: Object.assign(new BiaFieldDateFormat(), {
-          autoFormatDate: 'yyyy/MM',
-          autoPrimeDateFormat: 'yy/mm',
+          autoFormatDate: 'MM/yyyy',
+          autoPrimeDateFormat: 'mm/yy',
         }),
         // End BIAToolKit Generation Ignore
       }
