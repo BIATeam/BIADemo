@@ -182,7 +182,12 @@
             field.displayFormat
           )?.autoHourFormat?.toString() ?? '24'
         "
-        [autofocus]="focusByDefault"></p-date-picker>
+        [autofocus]="focusByDefault"
+        [showSeconds]="
+          showSeconds(
+            getDisplayDateFormat(field.displayFormat)?.autoFormatDate ?? ''
+          )
+        "></p-date-picker>
     </ng-container>
     <ng-container *ngSwitchDefault>
       <input

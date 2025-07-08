@@ -44,6 +44,10 @@ export class BiaFieldBaseComponent<CrudItem> implements OnInit, OnDestroy {
     }
   }
 
+  protected showSeconds(dateFormat: string) {
+    return /[s]/.test(dateFormat);
+  }
+
   protected initFieldConfiguration() {
     if (this.field.type === PropType.Number) {
       this.sub.add(

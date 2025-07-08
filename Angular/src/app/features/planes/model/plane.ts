@@ -83,6 +83,13 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       new BiaFieldConfig('lastFlightDate', 'plane.lastFlightDate'),
       {
         type: PropType.DateTime,
+        // Begin BIAToolKit Generation Ignore
+        displayFormat: Object.assign(new BiaFieldDateFormat(), {
+          autoFormatDate: 'dd/MM/yyyy HH:mm:ss',
+          autoPrimeDateFormat: 'dd/mm/yy',
+          autoHourFormat: '24',
+        }),
+        // End BIAToolKit Generation Ignore
       }
     ),
     Object.assign(new BiaFieldConfig('deliveryDate', 'plane.deliveryDate'), {

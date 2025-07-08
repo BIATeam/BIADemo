@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { parse } from 'date-fns';
 import * as Papa from 'papaparse';
 import { Observable, combineLatest, from, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -15,10 +16,9 @@ import {
   BiaFieldDateFormat,
   PropType,
 } from '../../../model/bia-field-config';
+import { FormatValuePipe } from '../../../pipes/format-value.pipe';
 import { clone, isEmpty } from '../../../utils';
 import { CrudConfig } from '../model/crud-config';
-import { FormatValuePipe } from '../../../pipes/format-value.pipe';
-import { parse } from 'date-fns';
 
 export interface ImportParam {
   useCurrentView: boolean;
@@ -337,8 +337,8 @@ export class CrudItemImportService<T extends BaseDto> {
         }
         const date2: Date = DateHelperService.parseDate(
           dateString,
-          format,
-          null
+          format.split(' ')[0],
+          format.split(' ')[1]
         );
         if (DateHelperService.isValidDate(date2)) {
           csvObj[column.field] = <any>date2;

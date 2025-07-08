@@ -232,7 +232,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
                 { HeaderName.IsActive, () => CSVBool(dto.IsActive) },
                 { HeaderName.IsMaintenance, () => CSVBool(dto.IsMaintenance) },
                 { HeaderName.FirstFlightDate, () => CSVDateTime(dto.FirstFlightDate) },
-                { HeaderName.LastFlightDate, () => CSVDateTime(dto.LastFlightDate) },
+                { HeaderName.LastFlightDate, () => CSVDateTimeSeconds(dto.LastFlightDate) },
                 { HeaderName.DeliveryDate, () => CSVDateYear(dto.DeliveryDate) },
                 { HeaderName.NextMaintenanceDate, () => CSVDateMonth(dto.NextMaintenanceDate) },
                 { HeaderName.SyncTime, () => CSVTime(dto.SyncTime) },
