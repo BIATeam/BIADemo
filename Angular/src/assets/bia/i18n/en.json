@@ -31,6 +31,7 @@
     "editProfileImage": "Edit your profile image",
     "environmentDescription": "{{envName}}",
     "error": "Error",
+    "errorDateFormat": "Invalid date format",
     "errors": "Error(s)",
     "export": "Export",
     "false": "false",
@@ -203,24 +204,8 @@
       "Friday",
       "Saturday"
     ],
-    "dayNamesMin": [
-      "Su",
-      "Mo",
-      "Tu",
-      "We",
-      "Th",
-      "Fr",
-      "Sa"
-    ],
-    "dayNamesShort": [
-      "Sun",
-      "Mon",
-      "Tue",
-      "Wed",
-      "Thu",
-      "Fri",
-      "Sat"
-    ],
+    "dayNamesMin": ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+    "dayNamesShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
     "empty": "Empty",
     "emptyFilterMessage": "No results found",
     "emptyMessage": "No results found",

@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, take } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+import { BiaFieldHelperService } from 'src/app/shared/bia-shared/components/form/bia-field-base/bia-field-helper.service';
 import { BiaFormComponent } from 'src/app/shared/bia-shared/components/form/bia-form/bia-form.component';
 import {
   CrudItemImportService,
@@ -24,7 +25,6 @@ import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
 import { clone } from 'src/app/shared/bia-shared/utils';
 import { CrudConfig } from '../../model/crud-config';
 import { CrudItemService } from '../../services/crud-item.service';
-import { BiaFieldHelperService } from 'src/app/shared/bia-shared/components/form/bia-field-base/bia-field-helper.service';
 
 @Component({
   template: '',
@@ -96,13 +96,13 @@ export abstract class CrudItemImportComponent<CrudItem extends BaseDto>
         c => {
           const field = c.clone();
           this.sub.add(
-            this.biaTranslationService.currentCultureDateFormat$.subscribe(
-              dateFormat => {
+            this.biaTranslationService.currentCultureDateFormat$
+              .pipe(take(1))
+              .subscribe(dateFormat => {
                 if (field instanceof BiaFieldConfig) {
                   BiaFieldHelperService.setDateFormat(field, dateFormat);
                 }
-              }
-            )
+              })
           );
           return field;
         }

@@ -31,6 +31,7 @@
     "editProfileImage": "Cambia tu foto de perfil",
     "environmentDescription": "{{envName}}",
     "error": "Error",
+    "errorDateFormat": "Formato de fecha inválido",
     "errors": "Error(es)",
     "export": "Exportar",
     "false": "falso",
@@ -203,24 +204,8 @@
       "Viernes",
       "Sábado"
     ],
-    "dayNamesMin": [
-      "Do",
-      "Lu",
-      "Ma",
-      "Mi",
-      "Ju",
-      "Vi",
-      "Sá"
-    ],
-    "dayNamesShort": [
-      "Dom",
-      "Lun",
-      "Mar",
-      "Mié",
-      "Jue",
-      "Vie",
-      "Sáb"
-    ],
+    "dayNamesMin": ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sá"],
+    "dayNamesShort": ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
     "empty": "Vacío",
     "emptyFilterMessage": "Ningún resultado encontrado",
     "emptyMessage": "Ningún resultado encontrado",
