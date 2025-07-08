@@ -137,8 +137,8 @@ namespace BIA.Net.Core.Domain.Mapper
         public static string CSVDateMonth(DateTime? x)
         {
             return x?.ToString("yyyy-MM");
-
         }
+
         /// <summary>
         /// CSVs the date.
         /// </summary>
