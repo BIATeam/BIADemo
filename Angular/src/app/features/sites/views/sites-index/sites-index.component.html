@@ -1,4 +1,112 @@
 <div class="flex flex-row bia-page-remove-margin bia-responsive-flex-row">
+  <div
+    class="flex-grow-1 bia-page-margin"
+    [ngClass]="{ 'table-compact': crudConfiguration.useCompactMode }">
+    <bia-table-header
+      [headerTitle]="'site.listOf' | translate"
+      [canAdd]="canAdd && !crudConfiguration.useCalcMode"
+      [canClone]="canAdd && crudConfiguration.isCloneable"
+      [canDelete]="canDelete"
+      [canExportCSV]="true"
+      (create)="onCreate()"
+      (exportCSV)="onExportCSV('site.listOf')"
+      (clone)="onClone()"
+      (delete)="onDelete()"
+      [selectedElements]="selectedCrudItems"
+      [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
+      [tableControllerVisible]="showTableController"
+      (toggleTableControllerVisibility)="toggleTableControllerVisibility()">
+      <ng-template pTemplate="actionOnSelected">
+        <bia-button-group
+          [buttons]="selectedButtonGroup"
+          [compact]="false"></bia-button-group>
+      </ng-template>
+    </bia-table-header>
+    <bia-table-controller
+      [ngClass]="{ 'table-controller-hidden': !showTableController }"
+      [defaultPageSize]="defaultPageSize"
+      [columns]="columns"
+      [columnToDisplays]="displayedColumns"
+      (displayedColumnsChange)="displayedColumnsChanged($event)"
+      [showBtnFilter]="true"
+      [showFilter]="showAdvancedFilter"
+      [hasFilter]="hasAdvancedFilter"
+      (openFilter)="onOpenFilter()"
+      (filter)="searchGlobalChanged($event)"
+      (clearFilters)="onClearFilters()"
+      (toggleSearch)="onToggleSearch()"
+      (viewChange)="onViewChange($event)"
+      [tableStateKey]="tableStateKey"
+      [tableState]="tableState"
+      [useViewTeamWithTypeId]="useViewTeamWithTypeId"
+      [hasColumnFilter]="hasColumnFilter">
+      <ng-template pTemplate="customControl">
+        <bia-table-behavior-controller
+          [crudConfiguration]="crudConfiguration"
+          (useCalcModeChanged)="useCalcModeChange($event)"
+          (usePopupChanged)="usePopupChange($event)"
+          (useSplitChanged)="useSplitChange($event)"
+          (useSignalRChanged)="useSignalRChange($event)"
+          (useViewChanged)="useViewChange($event)"
+          (useCompactModeChanged)="useCompactModeChange($event)"
+          (useVirtualScrollChanged)="useVirtualScrollChange($event)"
+          (useResizableColumnChanged)="
+            useResizableColumnChange($event)
+          "></bia-table-behavior-controller>
+      </ng-template>
+    </bia-table-controller>
+    <bia-table
+      *ngIf="!crudConfiguration.useCalcMode"
+      [elements]="(crudItems$ | async) ?? []"
+      [dictOptionDtos]="
+        (siteService.optionsService.dictOptionDtos$ | async) ?? []
+      "
+      [totalRecord]="(totalCount$ | async) ?? 0"
+      [columnToDisplays]="displayedColumns"
+      [pageSize]="pageSize"
+      (pageSizeChange)="onPageSizeChange($event)"
+      [configuration]="crudConfiguration.fieldsConfig"
+      [(showColSearch)]="showColSearch"
+      [globalSearchValue]="globalSearchValue"
+      [canClickRow]="canViewMembers"
+      [canSelectElement]="canSelectElement"
+      [canSelectMultipleElement]="false"
+      [loading]="(loading$ | async) ?? false"
+      (clickRowData)="onClickRowData($event)"
+      (loadLazy)="onLoadLazy($event)"
+      [viewPreference]="viewPreference"
+      [tableStateKey]="tableStateKey"
+      (selectedElementsChanged)="onSelectedElementsChanged($event)"
+      [sortFieldValue]="sortFieldValue"
+      (stateSave)="onStateSave($event)"
+      [scrollHeightValue]="getFillScrollHeightValue()"></bia-table>
+    <app-site-table
+      *ngIf="crudConfiguration.useCalcMode"
+      [elements]="(crudItems$ | async) ?? []"
+      [dictOptionDtos]="
+        (siteService.optionsService.dictOptionDtos$ | async) ?? []
+      "
+      [totalRecord]="(totalCount$ | async) ?? 0"
+      [columnToDisplays]="displayedColumns"
+      [pageSize]="pageSize"
+      (pageSizeChange)="onPageSizeChange($event)"
+      [configuration]="crudConfiguration.fieldsConfig"
+      [(showColSearch)]="showColSearch"
+      [globalSearchValue]="globalSearchValue"
+      [canEdit]="canEdit"
+      [canAdd]="canAdd"
+      [canSelectElement]="canSelectElement"
+      [canSelectMultipleElement]="false"
+      [loading]="(loading$ | async) ?? false"
+      (loadLazy)="onLoadLazy($event)"
+      [viewPreference]="viewPreference"
+      [tableStateKey]="tableStateKey"
+      (selectedElementsChanged)="onSelectedElementsChanged($event)"
+      [sortFieldValue]="sortFieldValue"
+      (stateSave)="onStateSave($event)"
+      (save)="onSave($event)"
+      [scrollHeightValue]="getFillScrollHeightValue()"></app-site-table>
+  </div>
   <bia-team-advanced-filter
     *ngIf="showAdvancedFilter"
     (filter)="onFilter($event)"
@@ -6,124 +114,4 @@
     [advancedFilter]="
       crudConfiguration.fieldsConfig.advancedFilter
     "></bia-team-advanced-filter>
-  <div class="flex-grow-1 bia-page-margin">
-    <div [ngClass]="{ 'table-compact': crudConfiguration.useCompactMode }">
-      <bia-table-header
-        [headerTitle]="'site.listOf' | translate"
-        [canAdd]="canAdd && !crudConfiguration.useCalcMode"
-        [canDelete]="canDelete"
-        [canExportCSV]="true"
-        (create)="onCreate()"
-        (exportCSV)="onExportCSV('site.listOf')"
-        (delete)="onDelete()"
-        [selectedElements]="selectedCrudItems"
-        [showBtnFilter]="true"
-        [showFilter]="showAdvancedFilter"
-        [hasFilter]="hasAdvancedFilter"
-        (openFilter)="onOpenFilter()"
-        [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
-        [tableControllerVisible]="showTableController"
-        (toggleTableControllerVisibility)="toggleTableControllerVisibility()">
-        <!-- // Custo for teams -->
-        <ng-template pTemplate="actionOnSelected">
-          <button
-            pButton
-            [disabled]="selectedCrudItems.length !== 1"
-            *ngIf="canEdit"
-            class="p-button-outlined"
-            label="{{ 'site.edit' | translate }}"
-            (click)="onEdit(selectedCrudItems[0].id)"></button>
-          <button
-            pButton
-            [disabled]="
-              selectedCrudItems.length !== 1 ||
-              !selectedCrudItems[0].canMemberListAccess
-            "
-            *ngIf="canViewMembers"
-            class="p-button-outlined"
-            label="{{ 'app.members' | translate }}"
-            (click)="onViewMembers(selectedCrudItems[0].id)"></button>
-        </ng-template>
-      </bia-table-header>
-      <bia-table-controller
-        [ngClass]="{ 'table-controller-hidden': !showTableController }"
-        [defaultPageSize]="defaultPageSize"
-        [columns]="columns"
-        [columnToDisplays]="displayedColumns"
-        (displayedColumnsChange)="displayedColumnsChanged($event)"
-        (filter)="searchGlobalChanged($event)"
-        (clearFilters)="onClearFilters()"
-        (toggleSearch)="onToggleSearch()"
-        (viewChange)="onViewChange($event)"
-        [tableStateKey]="tableStateKey"
-        [tableState]="tableState"
-        [useViewTeamWithTypeId]="useViewTeamWithTypeId"
-        [hasColumnFilter]="hasColumnFilter">
-        <ng-template pTemplate="customControl">
-          <bia-table-behavior-controller
-            [crudConfiguration]="crudConfiguration"
-            (useCalcModeChanged)="useCalcModeChange($event)"
-            (usePopupChanged)="usePopupChange($event)"
-            (useSignalRChanged)="useSignalRChange($event)"
-            (useViewChanged)="useViewChange($event)"
-            (useCompactModeChanged)="useCompactModeChange($event)"
-            (useVirtualScrollChanged)="useVirtualScrollChange($event)"
-            (useResizableColumnChanged)="
-              useResizableColumnChange($event)
-            "></bia-table-behavior-controller>
-        </ng-template>
-      </bia-table-controller>
-      <bia-table
-        *ngIf="!crudConfiguration.useCalcMode"
-        [elements]="(crudItems$ | async) ?? []"
-        [dictOptionDtos]="
-          (siteService.optionsService.dictOptionDtos$ | async) ?? []
-        "
-        [totalRecord]="(totalCount$ | async) ?? 0"
-        [columnToDisplays]="displayedColumns"
-        [pageSize]="pageSize"
-        (pageSizeChange)="onPageSizeChange($event)"
-        [configuration]="crudConfiguration.fieldsConfig"
-        [showColSearch]="showColSearch"
-        [globalSearchValue]="globalSearchValue"
-        [canClickRow]="canViewMembers"
-        [canSelectElement]="canSelectElement"
-        [loading]="(loading$ | async) ?? false"
-        (clickRowData)="onClickRowData($event)"
-        (loadLazy)="onLoadLazy($event)"
-        [viewPreference]="viewPreference"
-        [tableStateKey]="tableStateKey"
-        (selectedElementsChanged)="onSelectedElementsChanged($event)"
-        [sortFieldValue]="sortFieldValue"
-        (stateSave)="onStateSave($event)"
-        [canSelectMultipleElement]="false"
-        [scrollHeightValue]="getFillScrollHeightValue()"></bia-table>
-      <app-site-table
-        *ngIf="crudConfiguration.useCalcMode"
-        [elements]="(crudItems$ | async) ?? []"
-        [dictOptionDtos]="
-          (siteService.optionsService.dictOptionDtos$ | async) ?? []
-        "
-        [totalRecord]="(totalCount$ | async) ?? 0"
-        [columnToDisplays]="displayedColumns"
-        [pageSize]="pageSize"
-        (pageSizeChange)="onPageSizeChange($event)"
-        [configuration]="crudConfiguration.fieldsConfig"
-        [showColSearch]="showColSearch"
-        [globalSearchValue]="globalSearchValue"
-        [canEdit]="canEdit"
-        [canAdd]="canAdd"
-        [canSelectElement]="canDelete"
-        [loading]="(loading$ | async) ?? false"
-        (loadLazy)="onLoadLazy($event)"
-        [viewPreference]="viewPreference"
-        [tableStateKey]="tableStateKey"
-        (selectedElementsChanged)="onSelectedElementsChanged($event)"
-        [sortFieldValue]="sortFieldValue"
-        (stateSave)="onStateSave($event)"
-        (save)="onSave($event)"
-        [canSelectMultipleElement]="false"
-        [scrollHeightValue]="getFillScrollHeightValue()"></app-site-table>
-    </div>
-  </div>
 </div>

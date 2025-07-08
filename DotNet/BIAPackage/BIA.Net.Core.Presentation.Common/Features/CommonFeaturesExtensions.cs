@@ -1,5 +1,5 @@
 ﻿// <copyright file="CommonFeaturesExtensions.cs" company="BIA">
-//     Copyright (c) BIA. All rights reserved.
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 namespace BIA.Net.Core.Presentation.Common.Features
 {
@@ -36,7 +36,7 @@ namespace BIA.Net.Core.Presentation.Common.Features
                 {
                     services.AddDistributedSqlServerCache(config =>
                     {
-                        config.ConnectionString = configuration.GetConnectionString(commonFeatures.DistributedCache.ConnectionStringName);
+                        config.ConnectionString = configuration.GetDatabaseConnectionString(commonFeatures.DistributedCache.ConnectionStringName);
                         config.TableName = "DistCache";
                         config.SchemaName = "dbo";
                     });
@@ -45,7 +45,7 @@ namespace BIA.Net.Core.Presentation.Common.Features
                 {
                     services.AddDistributedPostgreSqlCache(config =>
                     {
-                        config.ConnectionString = configuration.GetConnectionString(commonFeatures.DistributedCache.ConnectionStringName);
+                        config.ConnectionString = configuration.GetDatabaseConnectionString(commonFeatures.DistributedCache.ConnectionStringName);
                         config.TableName = "DistCache";
                         config.SchemaName = "dbo";
                     });

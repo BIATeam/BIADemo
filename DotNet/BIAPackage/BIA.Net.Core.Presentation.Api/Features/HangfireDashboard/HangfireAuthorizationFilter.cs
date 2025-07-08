@@ -1,5 +1,5 @@
-// <copyright file="HangfireAuthorizationFilter.cs" company="TheBIADevCompany">
-//     Copyright (c) BIA.Net. All rights reserved.
+// <copyright file="HangfireAuthorizationFilter.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Presentation.Api.Features.HangfireDashboard

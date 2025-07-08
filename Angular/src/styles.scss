@@ -1,5 +1,8 @@
-@import './scss/bia/bia-typography';
-@import './scss/bia/bia-global-utils';
+@use './scss/bia/bia-typography';
+@use './scss/bia/bia-global-utils';
+@use './scss/bia/bia-variables';
+@use './scss/bia/bia-custom-theme';
+@use './scss/app-custom-theme';
 
 html,
 body {
@@ -10,14 +13,4 @@ body {
   min-height: 100vh;
   line-height: 1.5em !important;
   letter-spacing: 0.25px;
-
-  @import './scss/bia/bia-variables';
-  @import './scss/bia/light-variables';
-  @import './scss/bia/bia-custom-theme';
-  @import './scss/app-custom-theme';
-  &.dark-theme {
-    @import './scss/bia/dark-variables';
-    @import './scss/bia/bia-custom-theme';
-    @import './scss/app-custom-theme';
-  }
 }

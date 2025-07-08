@@ -1,5 +1,12 @@
 <app-site-form
+  [crudItem]="(itemTemplate$ | async) ?? undefined"
+  [isAdd]="true"
   [fields]="crudConfiguration.fieldsConfig.columns"
+  [formLayoutConfig]="crudConfiguration.formLayoutConfig"
   [dictOptionDtos]="(siteService.optionsService.dictOptionDtos$ | async) ?? []"
-  (cancel)="onCancelled()"
-  (save)="onSubmitted($event)"></app-site-form>
+  (cancelled)="onCancelled()"
+  (save)="onSubmitted($event)"
+  [showPopupButton]="showPopupButton"
+  [showSplitButton]="showSplitButton"
+  [showFullPageButton]="showFullPageButton"
+  (layoutChanged)="notifyLayoutChange($event)"></app-site-form>

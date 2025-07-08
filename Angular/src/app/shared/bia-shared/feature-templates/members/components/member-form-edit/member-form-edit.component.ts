@@ -7,13 +7,20 @@ import {
   Output,
 } from '@angular/core';
 import {
+  FormsModule,
+  ReactiveFormsModule,
   UntypedFormBuilder,
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ButtonDirective } from 'primeng/button';
+import { FloatLabel } from 'primeng/floatlabel';
+import { InputText } from 'primeng/inputtext';
+import { Listbox } from 'primeng/listbox';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+import { UserAddFromLdapComponent } from '../../../../../../features/bia-features/users-from-directory/views/user-add-from-directory-dialog/user-add-from-directory-dialog.component';
 import { Member } from '../../model/member';
 
 @Component({
@@ -21,6 +28,16 @@ import { Member } from '../../model/member';
   templateUrl: './member-form-edit.component.html',
   styleUrls: ['./member-form-edit.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    InputText,
+    ButtonDirective,
+    Listbox,
+    UserAddFromLdapComponent,
+    TranslateModule,
+    FloatLabel,
+  ],
 })
 export class MemberFormEditComponent implements OnChanges {
   @Input() member: Member | null = null;
@@ -29,11 +46,16 @@ export class MemberFormEditComponent implements OnChanges {
   @Input() canAddFromDirectory = false;
 
   @Output() save = new EventEmitter<Member>();
-  @Output() cancel = new EventEmitter<void>();
+  @Output() cancelled = new EventEmitter<void>();
 
   form: UntypedFormGroup;
   displayUserAddFromDirectoryDialog = false;
 
+  get userData(): string | null {
+    return !this.member || Object.keys(this.member).length === 0
+      ? null
+      : `${this.member?.lastName} ${this.member?.firstName} (${this.member?.login})`;
+  }
   constructor(
     public formBuilder: UntypedFormBuilder,
     public translateService: TranslateService
@@ -61,7 +83,7 @@ export class MemberFormEditComponent implements OnChanges {
 
   onCancel() {
     this.form.reset();
-    this.cancel.next();
+    this.cancelled.next();
   }
 
   addUserFromDirectory() {

@@ -1,4 +1,4 @@
-import { APP_BASE_HREF } from '@angular/common';
+import { APP_BASE_HREF, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,8 +7,12 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MultiSelect } from 'primeng/multiselect';
+import { Select } from 'primeng/select';
+import { Tooltip } from 'primeng/tooltip';
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
@@ -17,8 +21,7 @@ import { getAllTeamsOfType } from 'src/app/domains/bia-domains/team/store/team.s
 import { DomainTeamsActions } from 'src/app/domains/bia-domains/team/store/teams-actions';
 import { RoleMode } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
-import { allEnvironments } from 'src/environments/all-environments';
-import { AuthInfo } from '../../model/auth-info';
+import { AuthInfo, TeamConfigDto } from '../../model/auth-info';
 import { RoleDto } from '../../model/role';
 import { BiaLayoutService } from '../layout/services/layout.service';
 
@@ -27,9 +30,10 @@ import { BiaLayoutService } from '../layout/services/layout.service';
   templateUrl: './bia-team-selector.component.html',
   styleUrls: ['./bia-team-selector.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
+  imports: [NgIf, Select, FormsModule, Tooltip, MultiSelect, TranslateModule],
 })
 export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
-  @Input() teamType: any;
+  @Input() teamType: TeamConfigDto;
 
   displayTeamList = false;
   defaultTeamId = 0;
@@ -47,6 +51,7 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
   languageId: number;
   singleRoleMode: boolean;
   multiRoleMode: boolean;
+  canClear: boolean | undefined;
 
   protected sub = new Subscription();
 
@@ -63,18 +68,27 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.canClear = this.authService
+      .getLoginParameters()
+      .teamsConfig.find(
+        t => t.teamTypeId === this.teamType.teamTypeId
+      )?.teamSelectionCanBeEmpty;
     this.singleRoleMode =
-      allEnvironments.teams.find(
-        t =>
-          t.teamTypeId == this.teamType.teamTypeId &&
-          t.roleMode == RoleMode.SingleRole
-      ) != undefined;
+      this.authService
+        .getLoginParameters()
+        .teamsConfig.find(
+          t =>
+            t.teamTypeId === this.teamType.teamTypeId &&
+            t.roleMode === RoleMode.SingleRole
+        ) !== undefined;
     this.multiRoleMode =
-      allEnvironments.teams.find(
-        t =>
-          t.teamTypeId == this.teamType.teamTypeId &&
-          t.roleMode == RoleMode.MultiRoles
-      ) != undefined;
+      this.authService
+        .getLoginParameters()
+        .teamsConfig.find(
+          t =>
+            t.teamTypeId === this.teamType.teamTypeId &&
+            t.roleMode === RoleMode.MultiRoles
+        ) !== undefined;
     this.teams$ = this.store.select(
       getAllTeamsOfType(this.teamType.teamTypeId)
     );
@@ -111,17 +125,27 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
   onTeamChange() {
     this.authService.changeCurrentTeamId(
       this.teamType.teamTypeId,
-      this.currentTeam.id
+      this.currentTeam ? this.currentTeam.id : 0
     );
     this.authService.clearSessionExceptLoginInfos();
     location.reload();
   }
 
   onSetDefaultTeam() {
+    if (this.currentTeam.id) {
+      this.store.dispatch(
+        DomainTeamsActions.setDefaultTeam({
+          teamTypeId: this.teamType.teamTypeId,
+          teamId: this.currentTeam.id,
+        })
+      );
+    }
+  }
+
+  onResetDefaultTeam() {
     this.store.dispatch(
-      DomainTeamsActions.setDefaultTeam({
+      DomainTeamsActions.resetDefaultTeam({
         teamTypeId: this.teamType.teamTypeId,
-        teamId: this.currentTeam.id,
       })
     );
   }
@@ -129,9 +153,9 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
   protected initDropdownTeam() {
     this.displayTeamList = false;
     const currentTeamId = this.authService
-      .getUncryptedToken()
+      .getDecryptedToken()
       ?.userData?.currentTeams?.find(
-        t => t.teamTypeId == this.teamType.teamTypeId
+        t => t.teamTypeId === this.teamType.teamTypeId
       )?.teamId;
     const defaultTeamId = this.teams.find(t => t.isDefault)?.id;
     if (currentTeamId && currentTeamId > 0) {
@@ -150,8 +174,12 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
   }
 
   onRolesChange() {
-    if (this.singleRoleMode) {
-      if (this.currentRole) this.currentRoles = [this.currentRole];
+    if (!this.currentRoles) {
+      this.currentRoles = [];
+    }
+
+    if (this.singleRoleMode && this.currentRole) {
+      this.currentRoles = [this.currentRole];
     }
 
     this.authService.changeCurrentRoleIds(
@@ -171,6 +199,14 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
     );
   }
 
+  onResetDefaultRoles() {
+    this.store.dispatch(
+      DomainTeamsActions.resetDefaultRoles({
+        teamId: this.currentTeam.id,
+      })
+    );
+  }
+
   isDefaultRoles(): boolean {
     return (
       this.defaultRoleIds?.sort().toString() ===
@@ -184,13 +220,14 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
   protected initDropdownRole() {
     this.displayRoleList = false;
     this.displayRoleMultiSelect = false;
+    this.defaultRoleIds = [];
     if (this.singleRoleMode || this.multiRoleMode) {
       const currentRoleIds = this.authService
-        .getUncryptedToken()
+        .getDecryptedToken()
         ?.userData?.currentTeams?.find(
-          t => t.teamTypeId == this.teamType.teamTypeId
+          t => t.teamTypeId === this.teamType.teamTypeId
         )?.currentRoleIds;
-      let roles = this.teams.find(t => t.id == this.currentTeam?.id)?.roles;
+      let roles = this.teams.find(t => t.id === this.currentTeam?.id)?.roles;
       roles = roles ? [...roles] : roles;
       const defaultRoleIds = roles?.filter(r => r.isDefault).map(r => r.id);
       if (roles && (this.multiRoleMode || roles.length > 1)) {

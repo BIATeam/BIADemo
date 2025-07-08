@@ -2,8 +2,20 @@
   [element]="crudItem"
   [isAdd]="isAdd"
   [fields]="fields"
+  [formLayoutConfig]="formLayoutConfig"
   [formValidators]="formValidators"
+  [formReadOnlyMode]="formReadOnlyMode"
   [dictOptionDtos]="dictOptionDtos"
+  [isCrudItemOutdated]="isCrudItemOutdated"
+  [showSubmitButton]="showSubmitButton"
+  [showFixableState]="showFixableState"
+  [canFix]="canFix"
+  [showPopupButton]="showPopupButton"
+  [showSplitButton]="showSplitButton"
+  [showFullPageButton]="showFullPageButton"
   (save)="onSave($event)"
-  (cancel)="onCancel()">
+  (cancelled)="onCancel()"
+  (readOnlyChanged)="readOnlyChanged.emit($event)"
+  (fixableStateChanged)="onFixableStateChanged($event)"
+  (layoutChanged)="layoutChanged.emit($event)">
 </bia-form>

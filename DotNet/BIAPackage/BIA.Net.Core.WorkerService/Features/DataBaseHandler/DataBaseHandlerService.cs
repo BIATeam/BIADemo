@@ -1,5 +1,5 @@
-﻿// <copyright file="DataBaseHandlerService.cs" company="BIA.Net">
-// Copyright (c) BIA.Net. All rights reserved.
+﻿// <copyright file="DataBaseHandlerService.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
@@ -47,7 +47,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// </summary>
         protected List<IDatabaseHandlerRepository> DatabaseHandlerRepositories => this.databaseHandlerRepositories;
 
-        /// <inheritdoc cref="IHostedService.StartAsync"/>
+        /// <inheritdoc />
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             this.logger.LogInformation($"{nameof(DataBaseHandlerService)}.{nameof(this.StartAsync)}");
@@ -59,7 +59,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             }
         }
 
-        /// <inheritdoc cref="IHostedService.StopAsync"/>
+        /// <inheritdoc />
         public async Task StopAsync(CancellationToken cancellationToken)
         {
             this.logger.LogInformation($"{nameof(DataBaseHandlerService)}.{nameof(this.StopAsync)}");

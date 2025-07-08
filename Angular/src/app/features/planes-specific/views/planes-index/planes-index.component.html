@@ -3,10 +3,12 @@
     <bia-table-header
       [headerTitle]="'plane.listOf' | translate"
       [canAdd]="canAdd && !crudConfiguration.useCalcMode"
+      [canClone]="canAdd && crudConfiguration.isCloneable"
       [canDelete]="canDelete"
       [canExportCSV]="true"
       (create)="onCreate()"
       (exportCSV)="onExportCSV('plane.listOf')"
+      (clone)="onClone()"
       (delete)="onDelete()"
       [selectedElements]="selectedCrudItems"
       [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
@@ -34,6 +36,7 @@
           [crudConfiguration]="crudConfiguration"
           (useCalcModeChanged)="useCalcModeChange($event)"
           (usePopupChanged)="usePopupChange($event)"
+          (useSplitChanged)="useSplitChange($event)"
           (useSignalRChanged)="useSignalRChange($event)"
           (useViewChanged)="useViewChange($event)"
           (useCompactModeChanged)="useCompactModeChange($event)"
@@ -57,9 +60,9 @@
       [pageSize]="pageSize"
       (pageSizeChange)="onPageSizeChange($event)"
       [configuration]="crudConfiguration.fieldsConfig"
-      [showColSearch]="showColSearch"
+      [(showColSearch)]="showColSearch"
       [globalSearchValue]="globalSearchValue"
-      [canClickRow]="canEdit"
+      [canClickRow]="canEdit || crudConfiguration.hasReadView"
       [canSelectElement]="canDelete"
       [loading]="(loading$ | async) ?? false"
       (clickRowId)="onClickRow($event)"
@@ -73,7 +76,10 @@
       [isScrollable]="true"
       [virtualScroll]="crudConfiguration.useVirtualScroll"
       [isResizableColumn]="crudConfiguration.useResizableColumn"
-      [rowHeight]="defaultRowHeight">
+      [rowHeight]="defaultRowHeight"
+      [canExpandRow]="true"
+      [expandedRowTemplate]="detailRow"
+      (rowExpand)="onRowExpand($event)">
       <ng-template pTemplate="specificOutput" let-field="field" let-data="data">
         <ng-container [ngSwitch]="field.field">
           <!-- isActive -->
@@ -102,3 +108,27 @@
     </bia-table>
   </div>
 </div>
+
+<ng-template #detailRow let-data="data"
+  ><div style="text-wrap: auto" class="m-3">
+    <h3>{{ 'app.engines' | translate }}</h3>
+    <bia-table
+      *ngIf="data?.id && enginesDic[data.id.toString()]; else loading"
+      [elements]="enginesDic[data.id.toString()]"
+      [configuration]="engineConfig"
+      [columnToDisplays]="displayedEngineColumns"
+      [dictOptionDtos]="[]"
+      [totalRecord]="enginesDic[data.id.toString()].length"
+      [paginator]="false"
+      [showColSearch]="false"
+      [canSelectElement]="false"
+      [loading]="false"
+      [readOnly]="true">
+    </bia-table>
+    <ng-template #loading>
+      <div class="m-6">
+        <bia-spinner [overlay]="false"></bia-spinner>
+      </div>
+    </ng-template>
+  </div>
+</ng-template>

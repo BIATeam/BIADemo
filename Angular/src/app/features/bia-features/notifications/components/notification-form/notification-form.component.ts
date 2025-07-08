@@ -1,3 +1,4 @@
+import { NgFor, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,14 +8,32 @@ import {
   Output,
 } from '@angular/core';
 import {
+  FormsModule,
+  ReactiveFormsModule,
   UntypedFormArray,
   UntypedFormBuilder,
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
+import { PrimeTemplate } from 'primeng/api';
+import { ButtonDirective } from 'primeng/button';
+import { Checkbox } from 'primeng/checkbox';
+import { DatePicker } from 'primeng/datepicker';
+import { Fieldset } from 'primeng/fieldset';
+import { FloatLabel } from 'primeng/floatlabel';
+import { InputText } from 'primeng/inputtext';
+import { Textarea } from 'primeng/inputtextarea';
+import { MultiSelect } from 'primeng/multiselect';
+import { Ripple } from 'primeng/ripple';
+import { Select } from 'primeng/select';
+import { TableModule } from 'primeng/table';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
+import { Tooltip } from 'primeng/tooltip';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
-import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
+import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
+import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { JsonValidator } from 'src/app/shared/bia-shared/validators/json.validator';
 import { APP_TANSLATION_IDS_TO_NOT_ADD_MANUALY } from 'src/app/shared/constants';
@@ -29,17 +48,38 @@ import {
   templateUrl: './notification-form.component.html',
   styleUrls: ['./notification-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    Fieldset,
+    Tabs,
+    TabList,
+    Ripple,
+    Tab,
+    NgFor,
+    NgIf,
+    TabPanels,
+    TabPanel,
+    InputText,
+    ButtonDirective,
+    PrimeTemplate,
+    Select,
+    Checkbox,
+    DatePicker,
+    TableModule,
+    Tooltip,
+    MultiSelect,
+    Textarea,
+    TranslateModule,
+    FloatLabel,
+  ],
 })
 export class NotificationFormComponent implements OnChanges {
   @Input() notification: Notification = <Notification>{};
-  @Input() teamOptions: OptionDto[];
-  @Input() userOptions: OptionDto[];
-  @Input() roleOptions: OptionDto[];
-  @Input() notificationTypeOptions: OptionDto[];
-  @Input() languageOptions: OptionDto[];
+  @Input() dictOptionDtos: DictOptionDto[];
 
   @Output() save = new EventEmitter<Notification>();
-  @Output() cancel = new EventEmitter<void>();
+  @Output() cancelled = new EventEmitter<void>();
 
   form: UntypedFormGroup;
   notificationTranslations: UntypedFormArray;
@@ -123,6 +163,10 @@ export class NotificationFormComponent implements OnChanges {
     return this.form.get('notifiedTeams') as UntypedFormArray;
   }
 
+  get hasMissingLanguageOptions(): boolean {
+    return (this.missingLanguageOptions?.length ?? 0) > 0;
+  }
+
   addNewRow(): void {
     this.notifiedTeams.push(this.createNotifiedTeams());
   }
@@ -195,7 +239,7 @@ export class NotificationFormComponent implements OnChanges {
   }
 
   protected computeMissingTranslation() {
-    this.missingLanguageOptions = this.languageOptions.filter(
+    this.missingLanguageOptions = this.getOptionDto('language').filter(
       lo =>
         !this.notificationTranslations.value.find(
           (nt: { languageId: number }) => nt.languageId === lo.id
@@ -209,12 +253,14 @@ export class NotificationFormComponent implements OnChanges {
   }
 
   labelTranslation(id: number): string {
-    return this.languageOptions.find(lo => lo.id === id)?.display ?? '';
+    return (
+      this.getOptionDto('language').find(lo => lo.id === id)?.display ?? ''
+    );
   }
 
   onCancel() {
     this.form.reset();
-    this.cancel.next();
+    this.cancelled.next();
   }
 
   onSubmit() {
@@ -319,14 +365,14 @@ export class NotificationFormComponent implements OnChanges {
       // TODO set to modified when role change
 
       const toCheckModified = newList
-        .filter(newNT => oldList.some(oldNT => oldNT.team.id == newNT.team.id))
+        .filter(newNT => oldList.some(oldNT => oldNT.team.id === newNT.team.id))
         .map(
           s =>
             <NotificationTeam>{
               ...s,
               roles: BiaOptionService.differential(
                 s.roles,
-                oldList.filter(oldNT => oldNT.team.id == s.team.id)[0].roles
+                oldList.filter(oldNT => oldNT.team.id === s.team.id)[0].roles
               ),
             }
         );
@@ -347,5 +393,9 @@ export class NotificationFormComponent implements OnChanges {
     }
 
     return differential;
+  }
+
+  public getOptionDto(key: string) {
+    return this.dictOptionDtos?.filter(x => x.key === key)[0]?.value;
   }
 }

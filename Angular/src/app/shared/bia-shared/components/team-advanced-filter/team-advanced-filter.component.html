@@ -9,17 +9,16 @@
       class="p-button-rounded p-button-text flat"
       pButton
       (click)="onClose()"
-      pTooltip="{{ 'msg.showFilters' | translate }}"></button>
+      pTooltip="{{ 'bia.hideAdvancedFilters' | translate }}"></button>
     <form (submit)="onFilter()" class="flex flex-column" [formGroup]="form">
       <div
         class="header flex flex-row align-items-center align-content-center align-self-stretch">
-        <!--  <i class="pi pi-times bia-pointer" (click)="onClose()" pTooltip="{{ 'msg.hideFilters' | translate }}"></i> -->
         <h1>{{ 'bia.filters' | translate }}</h1>
       </div>
       <div class="flex flex-row justify-content-center">
         <div class="app-filter-container flex-1" style="max-width: 90%">
-          <span class="p-float-label">
-            <p-dropdown
+          <p-floatlabel variant="on">
+            <p-select
               [options]="(userOptions$ | async) ?? []"
               placeholder="&nbsp;"
               formControlName="userSelected"
@@ -29,9 +28,9 @@
               [style]="{ width: '100%' }"
               [showClear]="true"
               appendTo="body"
-              filter="true"></p-dropdown>
+              filter="true"></p-select>
             <label>{{ 'bia.filterMember' | translate }}</label>
-          </span>
+          </p-floatlabel>
         </div>
       </div>
 

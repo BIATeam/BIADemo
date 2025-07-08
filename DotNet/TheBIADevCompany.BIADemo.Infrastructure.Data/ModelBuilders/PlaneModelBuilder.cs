@@ -1,12 +1,12 @@
 // BIADemo only
 // <copyright file="PlaneModelBuilder.cs" company="TheBIADevCompany">
-//     Copyright (c) TheBIADevCompany. All rights reserved.
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 {
     using Microsoft.EntityFrameworkCore;
-    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
     /// <summary>
     /// Class used to update the model builder for plane domain.
@@ -88,7 +88,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<Engine>()
                 .HasOne(x => x.Plane)
                 .WithMany(x => x.Engines)
-                .OnDelete(DeleteBehavior.ClientCascade);
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Engine>().HasOne(x => x.PrincipalPart).WithMany().HasForeignKey(x => x.PrincipalPartId);
             modelBuilder.Entity<Engine>()
                .HasMany(e => e.InstalledParts)

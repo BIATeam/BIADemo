@@ -86,13 +86,13 @@ export class NotificationSignalRService {
   }
 
   protected isInMyDisplay(notification: Notification) {
-    const additionalInfo = this.authService.getAdditionalInfos();
+    const decryptedToken = this.authService.getDecryptedToken();
 
     // OK if no notifiedUsers are specified or if the current user is amongst the notifiedUsers
     const okUser: boolean =
-      !notification.notifiedUsers ||
-      notification.notifiedUsers.length === 0 ||
-      notification.notifiedUsers.some(u => u.id === additionalInfo.userInfo.id);
+      notification.notifiedUsers &&
+      notification.notifiedUsers.length >= 0 &&
+      notification.notifiedUsers.some(u => u.id === decryptedToken.id);
 
     // OK if no notifiedTeams are specified or if the current user is part of one of the notifiedTeams.
     // If the notifiedTeam targets specific roles, the current user must have one of these roles assigned in the given team
@@ -101,7 +101,10 @@ export class NotificationSignalRService {
       notification.notifiedTeams.length === 0 ||
       notification.notifiedTeams.some(notifiedTeam =>
         this.myTeams.some(myTeam => {
-          if (myTeam.id === notifiedTeam.team.id || notifiedTeam.team.id == 0) {
+          if (
+            myTeam.id === notifiedTeam.team.id ||
+            notifiedTeam.team.id === 0
+          ) {
             if (notifiedTeam.roles && notifiedTeam.roles.length > 0) {
               return notifiedTeam.roles.some(notifiedRole =>
                 myTeam.roles.some(myRole => myRole.id === notifiedRole.id)
@@ -114,7 +117,13 @@ export class NotificationSignalRService {
         })
       );
 
-    return okUser && okTeam;
+    // V5: see nominative notification even if not in the team or role
+    const noTeamAndNoUser: boolean =
+      (!notification.notifiedUsers ||
+        notification.notifiedUsers.length === 0) &&
+      (!notification.notifiedTeams || notification.notifiedTeams.length === 0);
+
+    return noTeamAndNoUser || okUser || okTeam;
   }
 
   destroy() {

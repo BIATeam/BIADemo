@@ -1,5 +1,5 @@
 // <copyright file="OperationalDomainServiceBase.cs" company="BIA">
-//     Copyright (c) BIA. All rights reserved.
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Domain.Service
@@ -15,7 +15,11 @@ namespace BIA.Net.Core.Domain.Service
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Base.Interface;
+    using BIA.Net.Core.Domain.Entity.Interface;
+    using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
@@ -41,6 +45,11 @@ namespace BIA.Net.Core.Domain.Service
         }
 
         /// <summary>
+        /// The filters.
+        /// </summary>
+        protected Dictionary<string, Specification<TEntity>> FiltersContext { get; set; }
+
+        /// <summary>
         /// CSVs the string.
         /// </summary>
         /// <param name="x">The x.</param>
@@ -49,11 +58,6 @@ namespace BIA.Net.Core.Domain.Service
         {
             return "\"" + x?.Replace("\"", "\"\"") + "\"";
         }
-
-        /// <summary>
-        /// The filters.
-        /// </summary>
-        protected Dictionary<string, Specification<TEntity>> FiltersContext { get; set; }
 
         /// <summary>
         /// Get the DTO list with paging and sorting.
@@ -79,7 +83,7 @@ namespace BIA.Net.Core.Domain.Service
             string queryMode = QueryMode.ReadList,
             string mapperMode = null,
             bool isReadOnlyMode = false)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherFilterDto : LazyLoadDto, new()
         {
@@ -92,7 +96,7 @@ namespace BIA.Net.Core.Domain.Service
                     mapper,
                     filters);
 
-                var queryOrder = this.GetQueryOrder(mapper.ExpressionCollection, filters?.SortField, filters?.SortOrder == 1, filters?.MultiSortMeta);
+                var queryOrder = this.GetQueryOrder(mapper.ExpressionCollectionOrder, filters?.SortField, filters?.SortOrder == 1, filters?.MultiSortMeta);
 
                 var results = await this.Repository.GetRangeResultAsync(
                     mapper.EntityToDto(mapperMode),
@@ -138,7 +142,7 @@ namespace BIA.Net.Core.Domain.Service
             string queryMode = null,
             string mapperMode = null,
             bool isReadOnlyMode = false)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
@@ -189,7 +193,7 @@ namespace BIA.Net.Core.Domain.Service
             string queryMode = null,
             string mapperMode = null,
             bool isReadOnlyMode = false)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
@@ -234,7 +238,7 @@ namespace BIA.Net.Core.Domain.Service
             string queryMode = QueryMode.ReadList,
             string mapperMode = "Csv",
             bool isReadOnlyMode = false)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherFilterDto : LazyLoadDto, new()
         {
@@ -303,7 +307,7 @@ namespace BIA.Net.Core.Domain.Service
             string mapperMode = MapperMode.Item,
             bool isReadOnlyMode = false)
 
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
@@ -337,7 +341,7 @@ namespace BIA.Net.Core.Domain.Service
         protected virtual async Task<TOtherDto> AddAsync<TOtherDto, TOtherMapper>(
             TOtherDto dto,
             string mapperMode = null)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
@@ -345,8 +349,8 @@ namespace BIA.Net.Core.Domain.Service
                 if (dto != null)
                 {
                     TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
-                    var entity = new TEntity();
-                    mapper.DtoToEntity(dto, entity, mapperMode, this.Repository.UnitOfWork);
+                    var entity = default(TEntity);
+                    mapper.DtoToEntity(dto, ref entity, mapperMode, this.Repository.UnitOfWork);
                     this.Repository.Add(entity);
                     await this.Repository.UnitOfWork.CommitAsync();
                     mapper.MapEntityKeysInDto(entity, dto);
@@ -371,7 +375,7 @@ namespace BIA.Net.Core.Domain.Service
             string accessMode = AccessMode.Update,
             string queryMode = QueryMode.Update,
             string mapperMode = null)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
@@ -380,13 +384,22 @@ namespace BIA.Net.Core.Domain.Service
                 {
                     TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
 
-                    var entity = await this.Repository.GetEntityAsync(id: dto.Id, specification: this.GetFilterSpecification(accessMode, this.FiltersContext), includes: mapper.IncludesForUpdate(mapperMode), queryMode: queryMode);
-                    if (entity == null)
+                    var entity = await this.Repository.GetEntityAsync(id: dto.Id, specification: this.GetFilterSpecification(accessMode, this.FiltersContext), includes: mapper.IncludesForUpdate(mapperMode), queryMode: queryMode)
+                        ?? throw new ElementNotFoundException();
+
+                    if (entity is IEntityFixable entityFixable && entityFixable.IsFixed)
                     {
-                        throw new ElementNotFoundException();
+                        throw new FrontUserException("Item is fixed and cannot be edited.");
                     }
 
-                    mapper.DtoToEntity(dto, entity, mapperMode, this.Repository.UnitOfWork);
+                    if (entity is IEntityVersioned versionedEntity && dto is IDtoVersioned dtoVersioned
+                    && !string.IsNullOrWhiteSpace(dtoVersioned.RowVersion)
+                    && !Convert.ToBase64String(versionedEntity.RowVersion).SequenceEqual(dtoVersioned.RowVersion))
+                    {
+                        throw new OutdateException();
+                    }
+
+                    mapper.DtoToEntity(dto, ref entity, mapperMode, this.Repository.UnitOfWork);
 
                     await this.Repository.UnitOfWork.CommitAsync();
                     dto.DtoState = DtoState.Unchanged;
@@ -406,13 +419,15 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="bypassFixed">Indicates weither the fixed security should be bypassed or not.</param>
         /// <returns>The deleted DTO.</returns>
         protected virtual async Task<TOtherDto> RemoveAsync<TOtherDto, TOtherMapper>(
             TKey id,
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,
-            string mapperMode = null)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            string mapperMode = null,
+            bool bypassFixed = false)
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
@@ -423,6 +438,11 @@ namespace BIA.Net.Core.Domain.Service
                 if (entity == null)
                 {
                     throw new ElementNotFoundException();
+                }
+
+                if (!bypassFixed && entity is IEntityFixable entityFixable && entityFixable.IsFixed)
+                {
+                    throw new FrontUserException("Item is fixed and cannot be deleted.");
                 }
 
                 var dto = new TOtherDto();
@@ -443,13 +463,15 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="bypassFixed">Indicates weither the fixed security should be bypassed or not.</param>
         /// <returns>The deleted DTOs.</returns>
         protected virtual async Task<List<TOtherDto>> RemoveAsync<TOtherDto, TOtherMapper>(
             List<TKey> ids,
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,
-            string mapperMode = null)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            string mapperMode = null,
+            bool bypassFixed = false)
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             var dtos = new List<TOtherDto>();
@@ -484,7 +506,7 @@ namespace BIA.Net.Core.Domain.Service
             string accessMode = null,
             string queryMode = null,
             string mapperMode = null)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             StringBuilder strBldr = new StringBuilder();
@@ -633,7 +655,7 @@ namespace BIA.Net.Core.Domain.Service
             string accessMode = null,
             string queryMode = null,
             string mapperMode = null)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             var dtoList = dtos.ToList();
@@ -669,7 +691,7 @@ namespace BIA.Net.Core.Domain.Service
             string accessMode = null,
             string queryMode = null,
             string mapperMode = null)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             TOtherDto returnDto = dto;
@@ -713,16 +735,16 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="dtoList">The list of element to add.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         protected virtual async Task AddBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             if (dtoList != null)
             {
                 List<TEntity> entities = dtoList.AsParallel().Select(item =>
                     {
-                        var converted = new TEntity();
+                        var converted = default(TEntity);
                         TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
-                        mapper.DtoToEntity(item, converted);
+                        mapper.DtoToEntity(item, ref converted);
                         return converted;
                     }).ToList();
 
@@ -743,7 +765,7 @@ namespace BIA.Net.Core.Domain.Service
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         protected virtual async Task UpdateBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             throw new NotImplementedException();
@@ -762,7 +784,7 @@ namespace BIA.Net.Core.Domain.Service
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         protected virtual async Task RemoveBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             throw new NotImplementedException();
@@ -801,13 +823,12 @@ namespace BIA.Net.Core.Domain.Service
             {
                 bool multiSort = false;
                 var multiOrder = new QueryOrder<TEntity>();
-                foreach (var sortMeta in multiSortMeta)
+                foreach (var sortMeta in from sortMeta in multiSortMeta
+                                         where !string.IsNullOrWhiteSpace(sortMeta.Field) && collection.ContainsKey(sortMeta.Field)
+                                         select sortMeta)
                 {
-                    if (!string.IsNullOrWhiteSpace(sortMeta.Field) && collection.ContainsKey(sortMeta.Field))
-                    {
-                        multiSort = true;
-                        multiOrder.GetByExpression(collection[sortMeta.Field], sortMeta.Order == 1);
-                    }
+                    multiSort = true;
+                    multiOrder.GetByExpression(collection[sortMeta.Field], sortMeta.Order == 1);
                 }
 
                 if (multiSort)

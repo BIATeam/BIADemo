@@ -1,0 +1,12 @@
+:host {
+  .app-field-container {
+    margin-bottom: 1.25rem;
+  }
+
+  .user-teams-label {
+    font-weight: var(--p-floatlabel-font-weight);
+    color: var(--p-floatlabel-color);
+    font-size: var(--p-floatlabel-active-font-size);
+    margin-left: 0.8rem;
+  }
+}

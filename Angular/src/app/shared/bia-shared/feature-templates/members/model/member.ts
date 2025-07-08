@@ -1,9 +1,9 @@
-import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import {
   BiaFieldConfig,
   BiaFieldsConfig,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
+import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { FieldValidator } from '../../../validators/field.validator';
 

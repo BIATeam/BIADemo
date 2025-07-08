@@ -1,8 +1,8 @@
 ﻿// <copyright file="BiaControllerBase.cs" company="BIA">
-//     Copyright (c) BIA.Net. All rights reserved.
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Presentation.Api.Controllers.Base
+namespace BIA.Net.Core.Presentation.Api.Controller.Base
 {
     using System.Linq;
     using System.Security.Claims;

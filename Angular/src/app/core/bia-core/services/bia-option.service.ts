@@ -1,5 +1,5 @@
-import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
+import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
 
 export class BiaOptionService {
   public static clone<T>(value: any) {
@@ -35,8 +35,8 @@ export class BiaOptionService {
 
     if (oldList && newList) {
       // Other Items
-      const unchangeds = newList.filter(n =>
-        oldList.map(o => o.id).includes(n.id)
+      const unchangeds = oldList.filter(n =>
+        newList.map(o => o.id).includes(n.id)
       );
 
       if (unchangeds) {

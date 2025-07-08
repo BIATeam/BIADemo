@@ -1,5 +1,18 @@
-import { Component, Injector, ViewChild } from '@angular/core';
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { Component, Injector, OnInit, ViewChild } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { PrimeTemplate } from 'primeng/api';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import {
+  BiaButtonGroupComponent,
+  BiaButtonGroupItem,
+} from 'src/app/shared/bia-shared/components/bia-button-group/bia-button-group.component';
+import { BiaTableBehaviorControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
+import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
+import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
+import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
+import { TeamAdvancedFilterComponent } from 'src/app/shared/bia-shared/components/team-advanced-filter/team-advanced-filter.component';
+import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
 import { TeamAdvancedFilterDto } from 'src/app/shared/bia-shared/model/team-advanced-filter-dto';
 import { Permission } from 'src/app/shared/permission';
@@ -12,23 +25,49 @@ import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maint
   selector: 'app-aircraft-maintenance-companies-index',
   templateUrl: './aircraft-maintenance-companies-index.component.html',
   styleUrls: ['./aircraft-maintenance-companies-index.component.scss'],
+  imports: [
+    NgClass,
+    PrimeTemplate,
+    NgIf,
+    BiaButtonGroupComponent,
+    AircraftMaintenanceCompanyTableComponent,
+    AsyncPipe,
+    TranslateModule,
+    TeamAdvancedFilterComponent,
+    BiaTableHeaderComponent,
+    BiaTableControllerComponent,
+    BiaTableBehaviorControllerComponent,
+    BiaTableComponent,
+  ],
+  providers: [
+    {
+      provide: CrudItemService,
+      useExisting: AircraftMaintenanceCompanyService,
+    },
+  ],
 })
-export class AircraftMaintenanceCompaniesIndexComponent extends CrudItemsIndexComponent<AircraftMaintenanceCompany> {
-  // Custo for teams
+export class AircraftMaintenanceCompaniesIndexComponent
+  extends CrudItemsIndexComponent<AircraftMaintenanceCompany>
+  implements OnInit
+{
+  @ViewChild(AircraftMaintenanceCompanyTableComponent, { static: false })
+  crudItemTableComponent: AircraftMaintenanceCompanyTableComponent;
+
+  // Customization for teams
   canViewMembers = false;
-  canSelectElement = false;
-  // Begin Child MaintenanceTeam
+  // BIAToolKit - Begin AircraftMaintenanceCompanyIndexTsCanViewChildDeclaration
+  // Begin BIAToolKit Generation Ignore
+  // BIAToolKit - Begin Partial AircraftMaintenanceCompanyIndexTsCanViewChildDeclaration MaintenanceTeam
   canViewMaintenanceTeams = false;
-  // End Child MaintenanceTeam
+  // BIAToolKit - End Partial AircraftMaintenanceCompanyIndexTsCanViewChildDeclaration MaintenanceTeam
+  // End BIAToolKit Generation Ignore
+  // BIAToolKit - End AircraftMaintenanceCompanyIndexTsCanViewChildDeclaration
 
   checkhasAdvancedFilter() {
     this.hasAdvancedFilter = TeamAdvancedFilterDto.hasFilter(
       this.crudConfiguration.fieldsConfig.advancedFilter
     );
   }
-
-  @ViewChild(AircraftMaintenanceCompanyTableComponent, { static: false })
-  crudItemTableComponent: AircraftMaintenanceCompanyTableComponent;
 
   constructor(
     protected injector: Injector,
@@ -49,21 +88,65 @@ export class AircraftMaintenanceCompaniesIndexComponent extends CrudItemsIndexCo
     this.canAdd = this.authService.hasPermission(
       Permission.AircraftMaintenanceCompany_Create
     );
-    // Custo for teams
-    this.canViewMembers = this.authService.hasPermission(
-      Permission.AircraftMaintenanceCompany_Member_List_Access
-    );
-    // Begin Child MaintenanceTeam
+    // BIAToolKit - Begin AircraftMaintenanceCompanyIndexTsCanViewChildSet
+    // Begin BIAToolKit Generation Ignore
+    // BIAToolKit - Begin Partial AircraftMaintenanceCompanyIndexTsCanViewChildSet MaintenanceTeam
     this.canViewMaintenanceTeams = this.authService.hasPermission(
       Permission.MaintenanceTeam_List_Access
     );
-    // End Child MaintenanceTeam
-    this.canSelectElement =
-      // Begin Child MaintenanceTeam
+    // BIAToolKit - End Partial AircraftMaintenanceCompanyIndexTsCanViewChildSet MaintenanceTeam
+    // End BIAToolKit Generation Ignore
+    // BIAToolKit - End AircraftMaintenanceCompanyIndexTsCanViewChildSet
+    this.canViewMembers = this.authService.hasPermission(
+      Permission.AircraftMaintenanceCompany_Member_List_Access
+    );
+    this.canSelect =
+      // BIAToolKit - Begin AircraftMaintenanceCompanyIndexTsCanSelectElementChildSet
+      // Begin BIAToolKit Generation Ignore
+      // BIAToolKit - Begin Partial AircraftMaintenanceCompanyIndexTsCanSelectElementChildSet MaintenanceTeam
       this.canViewMaintenanceTeams ||
-      // End Child MaintenanceTeam
+      // BIAToolKit - End Partial AircraftMaintenanceCompanyIndexTsCanSelectElementChildSet MaintenanceTeam
+      // End BIAToolKit Generation Ignore
+      // BIAToolKit - End AircraftMaintenanceCompanyIndexTsCanSelectElementChildSet
       this.canViewMembers ||
       this.canDelete;
+  }
+
+  protected initSelectedButtonGroup() {
+    this.selectedButtonGroup = [
+      new BiaButtonGroupItem(
+        this.translateService.instant('aircraftMaintenanceCompany.edit'),
+        () => this.onEdit(this.selectedCrudItems[0].id),
+        this.canEdit,
+        this.selectedCrudItems.length !== 1,
+        this.translateService.instant('aircraftMaintenanceCompany.edit')
+      ),
+      // BIAToolKit - Begin AircraftMaintenanceCompanyIndexTsChildTeamButton
+      // Begin BIAToolKit Generation Ignore
+      // BIAToolKit - Begin Partial AircraftMaintenanceCompanyIndexTsChildTeamButton MaintenanceTeam
+      new BiaButtonGroupItem(
+        this.translateService.instant(
+          'aircraftMaintenanceCompany.maintenanceTeams'
+        ),
+        () => this.onViewMaintenanceTeams(),
+        this.canViewMaintenanceTeams,
+        this.selectedCrudItems.length !== 1,
+        this.translateService.instant(
+          'aircraftMaintenanceCompany.maintenanceTeams'
+        )
+      ),
+      // BIAToolKit - End Partial AircraftMaintenanceCompanyIndexTsChildTeamButton MaintenanceTeam
+      // End BIAToolKit Generation Ignore
+      // BIAToolKit - End AircraftMaintenanceCompanyIndexTsChildTeamButton
+      new BiaButtonGroupItem(
+        this.translateService.instant('app.members'),
+        () => this.onViewMembers(this.selectedCrudItems[0].id),
+        this.canViewMembers,
+        this.selectedCrudItems.length !== 1 ||
+          !this.selectedCrudItems[0].canMemberListAccess,
+        this.translateService.instant('app.members')
+      ),
+    ];
   }
 
   onClickRowData(crudItem: AircraftMaintenanceCompany) {
@@ -93,14 +176,18 @@ export class AircraftMaintenanceCompaniesIndexComponent extends CrudItemsIndexCo
     this.authService.reLogin();
   }
 
-  // Begin Child MaintenanceTeam
+  // BIAToolKit - Begin AircraftMaintenanceCompanyIndexTsOnViewChild
+  // Begin BIAToolKit Generation Ignore
+  // BIAToolKit - Begin Partial AircraftMaintenanceCompanyIndexTsOnViewChild MaintenanceTeam
   onViewMaintenanceTeams() {
-    if (this.selectedCrudItems.length == 1) {
+    if (this.selectedCrudItems.length === 1) {
       this.router.navigate(
         [this.selectedCrudItems[0].id, 'maintenance-teams'],
         { relativeTo: this.activatedRoute }
       );
     }
   }
-  // End Child MaintenanceTeam
+  // BIAToolKit - End Partial AircraftMaintenanceCompanyIndexTsOnViewChild MaintenanceTeam
+  // End BIAToolKit Generation Ignore
+  // BIAToolKit - End AircraftMaintenanceCompanyIndexTsOnViewChild
 }

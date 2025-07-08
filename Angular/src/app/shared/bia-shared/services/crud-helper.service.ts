@@ -1,5 +1,5 @@
-import { BaseDto } from '../model/base-dto';
 import { DtoState } from '../model/dto-state.enum';
+import { BaseDto } from '../model/dto/base-dto';
 
 export class CrudHelperService {
   public static readonly newIdStartingValue: number = -1;
@@ -13,7 +13,7 @@ export class CrudHelperService {
       embeddedItem.dtoState = DtoState.Modified;
       embeddedItemArray[
         embeddedItemArray.findIndex(
-          oldEmbeddedItem => embeddedItem.id == oldEmbeddedItem.id
+          oldEmbeddedItem => embeddedItem.id === oldEmbeddedItem.id
         )
       ] = embeddedItem;
     } else {

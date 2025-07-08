@@ -6,6 +6,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { LayoutHelperService } from '../../services/layout-helper.service';
@@ -15,6 +16,7 @@ import { BiaLayoutService } from '../layout/services/layout.service';
   selector: 'bia-hangfire-container',
   templateUrl: './hangfire-container.component.html',
   styleUrls: ['./hangfire-container.component.scss'],
+  imports: [FormsModule],
 })
 export class HangfireContainerComponent implements OnInit, OnDestroy {
   @Input() url = '';
@@ -48,6 +50,6 @@ export class HangfireContainerComponent implements OnInit, OnDestroy {
   }
 
   getIFrameHeight(): string {
-    return `calc(${LayoutHelperService.defaultContainerHeight(this.layoutService)})`;
+    return `calc(${LayoutHelperService.defaultContainerHeight(this.layoutService, ' + 3.5rem')})`;
   }
 }

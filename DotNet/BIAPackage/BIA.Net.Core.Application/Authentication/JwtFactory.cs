@@ -1,5 +1,5 @@
 ﻿// <copyright file="JwtFactory.cs" company="BIA">
-//     Copyright (c) BIA.Net. All rights reserved.
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Application.Authentication
@@ -49,6 +49,19 @@ namespace BIA.Net.Core.Application.Authentication
         public SigningCredentials SigningCredentials { get; set; }
 
         /// <summary>
+        /// Check if a role is in a given jwt token.
+        /// </summary>
+        /// <param name="jwtToken">The jwt token.</param>
+        /// <param name="roleToCheck">The role to look for in the token.</param>
+        /// <returns>If the role is in the token.</returns>
+        public static bool HasRole(string jwtToken, string roleToCheck)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.ReadJwtToken(jwtToken);
+            return token.Claims.Any(c => c.Type == BiaClaimsPrincipal.Role && c.Value == roleToCheck);
+        }
+
+        /// <summary>
         /// Extract the claims from token.
         /// </summary>
         /// <param name="token">the token.</param>
@@ -81,9 +94,9 @@ namespace BIA.Net.Core.Application.Authentication
             }
         }
 
-        /// <inheritdoc cref="IJwtFactory.GenerateClaimsIdentity"/>
+        /// <inheritdoc />
         public ClaimsIdentity GenerateClaimsIdentity<TUserDataDto>(TokenDto<TUserDataDto> tokenDto)
-            where TUserDataDto : UserDataDto
+            where TUserDataDto : BaseUserDataDto
         {
             var claims = tokenDto.Permissions.Select(s => new Claim(ClaimTypes.Role, s)).ToList();
             claims.AddRange(tokenDto.RoleIds.Select(s => new Claim(BiaClaimsPrincipal.RoleId, s.ToString())).ToList());
@@ -93,19 +106,20 @@ namespace BIA.Net.Core.Application.Authentication
                 claims.Add(new Claim(ClaimTypes.UserData, JsonConvert.SerializeObject(tokenDto.UserData)));
             }
 
-            return new ClaimsIdentity(new GenericIdentity(tokenDto.Login, "Token"), claims);
+            return new ClaimsIdentity(new GenericIdentity(tokenDto.IdentityKey, "Token"), claims);
         }
 
-        /// <inheritdoc cref="IJwtFactory.GenerateEncodedTokenAsync"/>
-        public async Task<string> GenerateEncodedTokenAsync(ClaimsIdentity identity)
+        /// <inheritdoc />
+        public async Task<string> GenerateEncodedTokenAsync<TUserDataDto>(ClaimsIdentity identity)
+            where TUserDataDto : BaseUserDataDto
         {
-            return await this.GenerateEncodedTokenAsync(identity, null);
+            return await this.GenerateEncodedTokenAsync<TUserDataDto>(identity, null);
         }
 
-        /// <inheritdoc cref="IJwtFactory.GenerateAuthInfoAsync"/>
+        /// <inheritdoc />
         public async Task<AuthInfoDto<TAdditionalInfoDto>> GenerateAuthInfoAsync<TUserDataDto, TAdditionalInfoDto>(TokenDto<TUserDataDto> tokenDto, TAdditionalInfoDto additionalInfos, LoginParamDto loginParam)
-            where TUserDataDto : UserDataDto
-            where TAdditionalInfoDto : AdditionalInfoDto
+            where TUserDataDto : BaseUserDataDto
+            where TAdditionalInfoDto : BaseAdditionalInfoDto
         {
             var claimsIdentity = await Task.FromResult(this.GenerateClaimsIdentity(tokenDto));
             if (claimsIdentity == null)
@@ -115,7 +129,7 @@ namespace BIA.Net.Core.Application.Authentication
 
             var response = new AuthInfoDto<TAdditionalInfoDto>
             {
-                Token = await this.GenerateEncodedTokenAsync(claimsIdentity, additionalInfos),
+                Token = await this.GenerateEncodedTokenAsync(claimsIdentity, tokenDto),
                 AdditionalInfos = !loginParam.AdditionalInfos ? null : additionalInfos,
             };
 
@@ -153,7 +167,8 @@ namespace BIA.Net.Core.Application.Authentication
                                DateTimeOffset.UnixEpoch)
                               .TotalSeconds);
 
-        private async Task<string> GenerateEncodedTokenAsync(ClaimsIdentity identity, AdditionalInfoDto additionalInfos)
+        private async Task<string> GenerateEncodedTokenAsync<TUserDataDto>(ClaimsIdentity identity, TokenDto<TUserDataDto> tokenDto)
+            where TUserDataDto : BaseUserDataDto
         {
             var claims = identity.Claims.ToList();
             claims.AddRange(
@@ -163,12 +178,12 @@ namespace BIA.Net.Core.Application.Authentication
                 new (JwtRegisteredClaimNames.Iat, ToUnixEpochDate(this.jwt.IssuedAt).ToString(), ClaimValueTypes.Integer64),
             ]);
 
-            if (additionalInfos != null)
+            if (tokenDto != null)
             {
                 claims.AddRange(
                 [
-                    new (ClaimTypes.GivenName, additionalInfos.UserInfo.FirstName),
-                    new (ClaimTypes.Surname, additionalInfos.UserInfo.LastName),
+                    new (ClaimTypes.GivenName, tokenDto.UserData.FirstName),
+                    new (ClaimTypes.Surname, tokenDto.UserData.LastName),
                 ]);
             }
 

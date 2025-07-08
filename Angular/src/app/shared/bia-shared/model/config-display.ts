@@ -5,5 +5,5 @@ export interface ConfigDisplay {
   showTheme: boolean;
   showMenuStyle: boolean;
   showFooterStyle: boolean;
-  showToggleStyle: boolean;
+  showMenuProfilePosition: boolean;
 }

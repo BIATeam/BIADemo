@@ -1,0 +1,84 @@
+﻿    /* button styles */
+.sal-button {
+    align-items: center;
+
+    border: none;
+    border-radius: 50%;
+    bottom: 20px;
+    box-shadow: 0 1px 1.5px 0 rgba(0,0,0,.12), 0 1px 1px 0 rgba(0,0,0,.24);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    font-family: 'Droid Sans', sans-serif;
+    height: 60px;
+    justify-content: center;
+    outline: none;
+    position: fixed;
+    right: 20px;
+    width: 60px;
+    z-index: 10000;
+}
+    .sal-button.sal-light-button {
+        bottom: 90px;
+        height: 45px;
+        width: 45px;
+        font-size: x-small;
+    }
+
+    .sal-button.sal-keycloak-button {
+        right: 68px;
+    }
+
+    .sal-button.sal-logout-button {
+        bottom: 140px;
+        height: 20px;
+        width: 20px;
+        font-size: x-small;
+        background-color: #A41E22;
+    }
+
+    .sal-button.sal-ready {
+        background-color: #61affe;
+    }
+
+    .sal-button.sal-logged {
+        background-color: #85ea2d;
+    }
+
+    .sal-button.sal-error {
+        background-color: #A41E22;
+    }
+
+
+
+    /* button loading spinner animation */
+    .sal-button.sal-spinner {
+        background-color: #61affe !important;
+        animation: spinner 4s infinite;
+        border: 0px transparent solid;
+        border-radius: 100px;
+        border-top: 6px white solid;
+        cursor: not-allowed;
+    }
+
+    @keyframes spinner {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        25% {
+            transform: rotate(360deg);
+        }
+
+        50% {
+            transform: rotate(720deg);
+        }
+
+        75% {
+            transform: rotate(1080deg);
+        }
+
+        100% {
+            transform: rotate(1440deg);
+        }
+    }

@@ -1,12 +1,13 @@
 ﻿// <copyright file="BiaDictionary.cs" company="BIA">
-//     Copyright (c) BIA. All rights reserved.
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Common
+namespace BIA.Net.Core.Common.Helpers
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Linq.Expressions;
 
     /// <summary>

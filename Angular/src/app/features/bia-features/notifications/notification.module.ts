@@ -12,10 +12,8 @@ import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-o
 import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
 import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
 import { Permission } from 'src/app/shared/permission';
-import { SharedModule } from 'src/app/shared/shared.module';
-import { NotificationFormComponent } from './components/notification-form/notification-form.component';
-import { NotificationTableComponent } from './components/notification-table/notification-table.component';
-import { reducers } from './store/notification.state';
+
+import { FeatureNotificationsStore } from './store/notification.state';
 import { NotificationsEffects } from './store/notifications-effects';
 import { NotificationDetailComponent } from './views/notification-detail/notification-detail.component';
 import { NotificationEditComponent } from './views/notification-edit/notification-edit.component';
@@ -33,7 +31,6 @@ const ROUTES: Routes = [
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
-    // [Calc] : The children are not used in calc
     children: [
       {
         path: 'create',
@@ -45,7 +42,6 @@ const ROUTES: Routes = [
           injectComponent: NotificationNewComponent,
         },
         component: PopupLayoutComponent,
-        // component: FullPageLayoutComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -66,7 +62,6 @@ const ROUTES: Routes = [
               title: 'notification.edit',
               injectComponent: NotificationEditComponent,
             },
-            // component: PopupLayoutComponent,
             component: FullPageLayoutComponent,
             canActivate: [PermissionGuard],
           },
@@ -80,7 +75,6 @@ const ROUTES: Routes = [
               injectComponent: NotificationDetailComponent,
             },
             component: PopupLayoutComponent,
-            // component: FullPageLayoutComponent,
             canActivate: [PermissionGuard],
           },
           {
@@ -96,23 +90,10 @@ const ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    NotificationItemComponent,
-    // [Calc] : NOT used only for calc (4 lines).
-    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-    NotificationFormComponent,
-    NotificationsIndexComponent,
-    NotificationNewComponent,
-    NotificationEditComponent,
-    NotificationDetailComponent,
-    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-    NotificationTableComponent,
-  ],
   imports: [
-    SharedModule,
     ReactiveFormsModule,
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature('notifications', reducers),
+    StoreModule.forFeature('notifications', FeatureNotificationsStore.reducers),
     EffectsModule.forFeature([NotificationsEffects]),
     // Domain Modules:
     NotificationTypeOptionModule,

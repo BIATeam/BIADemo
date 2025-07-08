@@ -52,9 +52,15 @@ export class BiaMessageService {
     });
   }
 
-  showErrorHttpResponse(err: HttpErrorResponse) {
-    if (err.status == HttpStatusCode.UnprocessableEntity) {
-      this.showErrorDetail(err.error);
+  async showErrorHttpResponse(err: HttpErrorResponse) {
+    if (err.status === HttpStatusCode.UnprocessableEntity) {
+      let errorMessage: string;
+      if (err.error instanceof Blob) {
+        errorMessage = await err.error.text();
+      } else {
+        errorMessage = err.error;
+      }
+      this.showErrorDetail(errorMessage);
     } else {
       this.showError();
     }

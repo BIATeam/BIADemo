@@ -12,10 +12,6 @@ bia-ultima-layout bia-page-layout.bia-flex {
   padding: 1rem;
 }
 
-bia-classic-layout bia-page-layout bia-classic-page-layout > div {
-  margin-top: 10px;
-}
-
 .bia-page-margin {
   padding-left: 35px;
   padding-right: 35px;
@@ -28,6 +24,37 @@ bia-classic-layout bia-page-layout bia-classic-page-layout > div {
 
 bia-ultima-layout .bia-page-margin {
   padding: 0.75rem 2.5rem;
+  min-width: 0.75rem;
+  width: 100%;
+
+  bia-table-controller {
+    left: -2.5rem;
+    width: calc(100% + 5rem);
+  }
+}
+
+.bia-split-page-layout {
+  display: flex;
+}
+
+.bia-classic-page-margin:not(:has(.bia-split-page-layout)) {
+  padding-left: 35px;
+  padding-right: 35px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.bia-classic-page-margin {
+  min-width: 10px;
+  width: calc(95vw);
+  left: calc(2.5vw);
+}
+
+bia-ultima-layout .bia-classic-page-margin:not(:has(.bia-split-page-layout)) {
+  padding: 0.75rem 2.5rem;
+}
+
+bia-ultima-layout .bia-classic-page-margin {
   min-width: 0.75rem;
   width: 100%;
 
@@ -101,4 +128,12 @@ i.bia-pointer:before {
   .bia-responsive-flex-row {
     flex-wrap: wrap;
   }
+}
+
+.bia-behavior-icon-overlay {
+  transform: translateX(-0.75rem) !important;
+}
+
+.bia-form-badge {
+  padding: 0;
 }

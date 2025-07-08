@@ -1,5 +1,5 @@
-﻿// <copyright file="BiaTeamConfig.cs" company="BIA.Net">
-// Copyright (c) BIA.Net. All rights reserved.
+﻿// <copyright file="BiaTeamConfig.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 namespace BIA.Net.Core.Common
 {
@@ -8,6 +8,7 @@ namespace BIA.Net.Core.Common
     using System.Collections.Immutable;
     using System.Linq.Expressions;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Enum;
 
     /// <summary>
     /// Structure to store config of a team.
@@ -44,5 +45,10 @@ namespace BIA.Net.Core.Common
         /// The id of roles that can administrate the team that come from parent or root level.
         /// </summary>
         public int[] ParentsAdminRoleIds { get; set; }
+
+        /// <summary>
+        /// Gets or sets the team selection mode.
+        /// </summary>
+        public TeamSelectionMode TeamSelectionMode { get; set; }
     }
 }

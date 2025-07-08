@@ -1,5 +1,5 @@
 ﻿// <copyright file="BiaAuthorizationPolicyProvider.cs" company="BIA">
-//     Copyright (c) BIA. All rights reserved.
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
@@ -35,7 +35,7 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
             configuration.GetSection("BiaNet").Bind(this.biaNetSection);
         }
 
-        /// <inheritdoc cref="DefaultAuthorizationPolicyProvider.GetPolicyAsync(string)"/>
+        /// <inheritdoc />
         public override async Task<AuthorizationPolicy> GetPolicyAsync(string policyName)
         {
             var basePolicy = await base.GetPolicyAsync(policyName);

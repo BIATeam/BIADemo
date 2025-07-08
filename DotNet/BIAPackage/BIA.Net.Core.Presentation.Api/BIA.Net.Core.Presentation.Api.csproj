@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Copyright>Copyright © BIA 2025</Copyright>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-    <Version>4.1.1</Version>
+    <Version>5.0.1</Version>
     <PackageIcon>LogoBIA.png</PackageIcon>
     <PackageIconUrl />
     <Authors>BIA Team</Authors>
@@ -24,8 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hangfire.Dashboard.Customize" Version="1.0.*" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="7.3.*" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="[8.1.*,9.0.0)" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="[8.1.*,9.0.0)" />
   </ItemGroup>
 
   <ItemGroup>

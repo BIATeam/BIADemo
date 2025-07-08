@@ -4,21 +4,38 @@
       [headerTitle]="'engine.listOf' | translate"
       [parentDisplayName]="(parentDisplayItemName$ | async) ?? ''"
       [canAdd]="canAdd && !crudConfiguration.useCalcMode"
+      [canClone]="canAdd && crudConfiguration.isCloneable"
       [canDelete]="canDelete"
       [canEdit]="canEdit"
+      [canFix]="canFix"
       [canImport]="canSave && crudConfiguration.useImport"
       [canExportCSV]="true"
       (create)="onCreate()"
       (exportCSV)="onExportCSV('engine.listOf')"
       (fullExportCSV)="onExportCSV('engine.listOf', true)"
+      (clone)="onClone()"
       (delete)="onDelete()"
       (import)="onImport()"
       [selectedElements]="selectedCrudItems"
       [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
       [tableControllerVisible]="showTableController"
-      (toggleTableControllerVisibility)="
-        toggleTableControllerVisibility()
-      "></bia-table-header>
+      [showFixedButtons]="crudConfiguration.isFixable"
+      (toggleTableControllerVisibility)="toggleTableControllerVisibility()"
+      (crudItemFixedChanged)="
+        crudItemService.updateFixedStatus($event.crudItemId, $event.fixed)
+      ">
+      <ng-template pTemplate="customControl">
+        <button
+          *ngIf="isParentFixed"
+          pButton
+          icon="pi pi-lock"
+          label="{{ 'bia.fixed' | translate }}"
+          type="button"
+          [disabled]="true"></button>
+      </ng-template>
+      <!-- BIAToolKit - Begin EngineIndexHtml -->
+      <!-- BIAToolKit - End EngineIndexHtml -->
+    </bia-table-header>
     <bia-table-controller
       [ngClass]="{ 'table-controller-hidden': !showTableController }"
       [defaultPageSize]="defaultPageSize"
@@ -39,6 +56,7 @@
           [crudConfiguration]="crudConfiguration"
           (useCalcModeChanged)="useCalcModeChange($event)"
           (usePopupChanged)="usePopupChange($event)"
+          (useSplitChanged)="useSplitChange($event)"
           (useSignalRChanged)="useSignalRChange($event)"
           (useViewChanged)="useViewChange($event)"
           (useCompactModeChanged)="useCompactModeChange($event)"
@@ -50,9 +68,13 @@
     </bia-table-controller>
     <bia-table
       *ngIf="!crudConfiguration.useCalcMode"
-      [elements]="(crudItems$ | async) ?? []"
+      [elements]="
+        crudConfiguration.useVirtualScroll
+          ? virtualCrudItems
+          : ((crudItems$ | async) ?? [])
+      "
       [dictOptionDtos]="
-        (engineService.optionsService.dictOptionDtos$ | async) ?? []
+        (crudItemService.optionsService.dictOptionDtos$ | async) ?? []
       "
       [totalRecord]="(totalCount$ | async) ?? 0"
       [columnToDisplays]="displayedColumns"
@@ -60,10 +82,11 @@
       [pageSize]="pageSize"
       (pageSizeChange)="onPageSizeChange($event)"
       [configuration]="crudConfiguration.fieldsConfig"
-      [showColSearch]="showColSearch"
+      [(showColSearch)]="showColSearch"
       [globalSearchValue]="globalSearchValue"
       [canClickRow]="canEdit"
-      [canSelectElement]="canDelete"
+      [canSelectElement]="canSelect"
+      [canSelectMultipleElement]="canDelete"
       [loading]="(loading$ | async) ?? false"
       (clickRowId)="onClickRow($event)"
       (loadLazy)="onLoadLazy($event)"
@@ -72,12 +95,22 @@
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
-      [scrollHeightValue]="getFillScrollHeightValue()"></bia-table>
+      [scrollHeightValue]="getFillScrollHeightValue()"
+      [frozeSelectColumn]="true"
+      [virtualScroll]="crudConfiguration.useVirtualScroll"
+      [isResizableColumn]="crudConfiguration.useResizableColumn"
+      [readOnly]="isParentFixed"
+      [rowHeight]="defaultRowHeight"
+      [showFixableState]="crudConfiguration.isFixable"></bia-table>
     <app-engine-table
       *ngIf="crudConfiguration.useCalcMode"
-      [elements]="(crudItems$ | async) ?? []"
+      [elements]="
+        crudConfiguration.useVirtualScroll
+          ? virtualCrudItems
+          : ((crudItems$ | async) ?? [])
+      "
       [dictOptionDtos]="
-        (engineService.optionsService.dictOptionDtos$ | async) ?? []
+        (crudItemService.optionsService.dictOptionDtos$ | async) ?? []
       "
       [totalRecord]="(totalCount$ | async) ?? 0"
       [columnToDisplays]="displayedColumns"
@@ -85,11 +118,12 @@
       [pageSize]="pageSize"
       (pageSizeChange)="onPageSizeChange($event)"
       [configuration]="crudConfiguration.fieldsConfig"
-      [showColSearch]="showColSearch"
+      [(showColSearch)]="showColSearch"
       [globalSearchValue]="globalSearchValue"
       [canEdit]="canEdit"
       [canAdd]="canAdd"
-      [canSelectElement]="canDelete"
+      [canSelectElement]="canSelect"
+      [canSelectMultipleElement]="canDelete"
       [loading]="(loading$ | async) ?? false"
       (loadLazy)="onLoadLazy($event)"
       [viewPreference]="viewPreference"
@@ -98,6 +132,12 @@
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
       (save)="onSave($event)"
-      [scrollHeightValue]="getFillScrollHeightValue()"></app-engine-table>
+      [frozeSelectColumn]="true"
+      [scrollHeightValue]="getFillScrollHeightValue()"
+      [virtualScroll]="crudConfiguration.useVirtualScroll"
+      [isResizableColumn]="crudConfiguration.useResizableColumn"
+      [readOnly]="isParentFixed"
+      [rowHeight]="defaultRowHeight"
+      [showFixableState]="crudConfiguration.isFixable"></app-engine-table>
   </div>
 </div>

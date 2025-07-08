@@ -1,12 +1,13 @@
 ﻿// <copyright file="DomainServiceBase.cs" company="BIA">
-//     Copyright (c) BIA. All rights reserved.
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Domain.Service
 {
     using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Entity.Interface;
+    using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.RepoContract;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +18,7 @@ namespace BIA.Net.Core.Domain.Service
     /// <typeparam name="TEntity">Entity type.</typeparam>
     /// <typeparam name="TKey">Primary key type for the entity.</typeparam>
     public abstract class DomainServiceBase<TEntity, TKey>
-                where TEntity : class, IEntity<TKey>
+                where TEntity : class, IEntity<TKey>, new()
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DomainServiceBase{TEntity, TKey}"/> class.
@@ -49,7 +50,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <returns>The mapper.</returns>
         protected virtual TOtherMapper InitMapper<TOtherDto, TOtherMapper>()
             where TOtherDto : BaseDto<TKey>, new()
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
         {
             TOtherMapper mapper = this.Repository.ServiceProvider.GetService<TOtherMapper>();
 

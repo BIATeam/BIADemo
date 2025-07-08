@@ -1,16 +1,17 @@
 import { Validators } from '@angular/forms';
 import { PrimeIcons } from 'primeng/api';
-import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import {
   BiaFieldConfig,
   BiaFieldsConfig,
   PrimeNGFiltering,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
+import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
+import { VersionedDto } from 'src/app/shared/bia-shared/model/dto/versioned-dto';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 // TODO after creation of CRUD Plane : adapt the model
-export interface Plane extends BaseDto {
+export interface Plane extends BaseDto, VersionedDto {
   msn: string;
   isActive: boolean;
   lastFlightDate: Date;
@@ -56,7 +57,6 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       {
         isRequired: true,
         type: PropType.TimeSecOnly,
-        validators: [Validators.required],
         minWidth: '50px',
         isHideByDefault: true,
       }
@@ -67,7 +67,7 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       specificOutput: true,
       specificInput: true,
       isRequired: true,
-      validators: [Validators.required, Validators.min(1)],
+      validators: [Validators.min(1)],
       minWidth: '50px',
     }),
     Object.assign(new BiaFieldConfig('planeType', 'plane.planeType'), {
@@ -79,7 +79,6 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       {
         isRequired: true,
         type: PropType.OneToMany,
-        validators: [Validators.required],
         minWidth: '50px',
       }
     ),
@@ -88,7 +87,12 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       {
         type: PropType.ManyToMany,
         minWidth: '50px',
+        specificInput: true,
       }
     ),
+    Object.assign(new BiaFieldConfig('rowVersion', 'plane.rowVersion'), {
+      isVisible: false,
+      isVisibleInTable: false,
+    }),
   ],
 };

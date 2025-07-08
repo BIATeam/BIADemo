@@ -3,10 +3,9 @@
     "members": "Miembros",
     "sites": "Sitios",
     "Begin BIADemo": "To remove in project from here",
-    "aircraft-maintenance-companies": "Empresas de mantenimiento de aeronaves",
+    "aircraftMaintenanceCompanies": "Empresas de mantenimiento de aeronaves",
     "airports": "Aeropuertos",
     "engines": "Motor",
-    "examples": "Ejemplos",
     "hangfire": "Hangfire",
     "planes": "Aviones",
     "planesFullCode": "Aviones (Full code)",
@@ -19,7 +18,8 @@
     "teams": "Equipos",
     "users": "Usuarios",
     "notifications": "Notificaciones",
-    "maintenance-teams": "Mantenimiento equipos"
+    "maintenanceTeams": "Mantenimiento equipos",
+    "maintenanceContracts": "Contratos de mantenimiento"
   },
   "Begin BIADemo": "To remove in project from here",
   "aircraftMaintenanceCompany": {
@@ -29,7 +29,8 @@
     "goto": "Ver empresa",
     "listOf": "Lista de empresas de mantenimiento de aeronaves",
     "maintenanceTeams": "Equipos de mantenimiento",
-    "title": "Name"
+    "title": "Name",
+    "headerLabel": "Empresa de mantenimiento de aeronaves"
   },
   "airport": {
     "add": "Añadir aeropuerto",
@@ -64,6 +65,14 @@
     "principalPart": "Parte principal",
     "installedParts": "Partes instaladas",
     "import": "Importar motors"
+  },
+  "maintenanceContract": {
+    "listOf": "Listado de contratos de mantenimiento",
+    "contractNumber": "Número de contrato",
+    "description": "Descripción",
+    "site": "Aerolínea",
+    "aircraftMaintenanceCompany": "Empresa de mantenimiento de aeronaves",
+    "planes": "Aviones"
   },
   "maintenanceTeam": {
     "add": "Añadir equipo de mantenimiento",
@@ -101,16 +110,18 @@
     "currentAirport": "Aeropuerto actual",
     "deliveryDate": "Fecha de entrega",
     "edit": "Editar avión",
-    "engines": "motors",
+    "engines": "Motors",
     "estimatedPrice": "Precio estimado",
     "fuelLevel": "Nivel de combustible",
     "isActive": "Activo",
+    "information": "Información",
     "import": "Importar aviones",
     "lastFlightDate": "Última fecha de vuelo",
     "listOf": "Lista de aviones",
     "msn": "Msn",
     "planeType": "Tipos de aviones",
     "probability": "Oportunidad",
+    "read": "Avión detalls",
     "similarTypes": "Tipos de aviones similares",
     "site": "Aerolínea",
     "syncTime": "Tiempo de sincronización",
@@ -122,7 +133,10 @@
     "motorsCount": "Número de motores",
     "totalFlightHours": "Horas totales de vuelo",
     "fuelCapacity": "Capacidad de combustible",
-    "originalPrice": "Precio original"
+    "originalPrice": "Precio original",
+    "groupIdentification": "Identificación",
+    "groupStatus": "Estado",
+    "groupTracking": "Seguimiento"
   },
   "planeType": {
     "add": "Añadir tipos de aviones",
@@ -139,7 +153,8 @@
     "listOf": "Lista de miembros",
     "manage": "Gestionar miembro",
     "roles": "Roles",
-    "user": "Usuario"
+    "user": "Usuario",
+    "teams": "Equipos"
   },
   "msg": {
     "hideFilters": "Ocultar filtros",
@@ -152,11 +167,9 @@
     "edit": "Editar sitios",
     "listOf": "Lista de sitios",
     "Begin BIADemo": "To remove in project from here",
-    "add": "Añadir aerolínea",
-    "edit": "Editar aerolínea",
-    "listOf": "Lista de aerolíneas",
     "End BIADemo": "To remove in project up to here",
-    "title": "Title"
+    "title": "Title",
+    "headerLabel": "Sitios"
   },
   "translation": {
     "defaultLanguage": "Defecto (Inglés)"

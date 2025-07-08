@@ -3,19 +3,27 @@
     <bia-table-header
       [headerTitle]="'plane.listOf' | translate"
       [canAdd]="canAdd && !crudConfiguration.useCalcMode"
+      [canClone]="canAdd && crudConfiguration.isCloneable"
       [canDelete]="canDelete"
       [canEdit]="canEdit"
+      [canFix]="canFix"
       [canImport]="canSave && crudConfiguration.useImport"
       [canExportCSV]="true"
       (create)="onCreate()"
       (exportCSV)="onExportCSV('plane.listOf')"
       (fullExportCSV)="onExportCSV('plane.listOf', true)"
+      (clone)="onClone()"
       (delete)="onDelete()"
       (import)="onImport()"
       [selectedElements]="selectedCrudItems"
       [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
       [tableControllerVisible]="showTableController"
-      (toggleTableControllerVisibility)="toggleTableControllerVisibility()">
+      [showFixedButtons]="crudConfiguration.isFixable"
+      (toggleTableControllerVisibility)="toggleTableControllerVisibility()"
+      (crudItemFixedChanged)="
+        crudItemService.updateFixedStatus($event.crudItemId, $event.fixed)
+      ">
+      <!-- Begin BIAToolKit Generation Ignore -->
       <!-- BIAToolKit - Begin Partial PlaneIndexHtml Engine -->
       <ng-template pTemplate="actionOnSelected">
         <button
@@ -27,6 +35,7 @@
           (click)="onViewEngines(selectedCrudItems[0].id)"></button>
       </ng-template>
       <!-- BIAToolKit - End Partial PlaneIndexHtml Engine -->
+      <!-- End BIAToolKit Generation Ignore -->
       <!-- BIAToolKit - Begin PlaneIndexHtml -->
       <!-- BIAToolKit - End PlaneIndexHtml -->
     </bia-table-header>
@@ -45,19 +54,20 @@
       [defaultViewPref]="defaultViewPref"
       [useViewTeamWithTypeId]="useViewTeamWithTypeId"
       [hasColumnFilter]="hasColumnFilter">
-      <ng-template pTemplate="customControl"
-        ><bia-table-behavior-controller
+      <ng-template pTemplate="customControl">
+        <bia-table-behavior-controller
           [crudConfiguration]="crudConfiguration"
           (useCalcModeChanged)="useCalcModeChange($event)"
           (usePopupChanged)="usePopupChange($event)"
+          (useSplitChanged)="useSplitChange($event)"
           (useSignalRChanged)="useSignalRChange($event)"
           (useViewChanged)="useViewChange($event)"
           (useCompactModeChanged)="useCompactModeChange($event)"
           (useVirtualScrollChanged)="useVirtualScrollChange($event)"
           (useResizableColumnChanged)="
             useResizableColumnChange($event)
-          "></bia-table-behavior-controller
-      ></ng-template>
+          "></bia-table-behavior-controller>
+      </ng-template>
     </bia-table-controller>
     <bia-table
       *ngIf="!crudConfiguration.useCalcMode"
@@ -67,17 +77,19 @@
           : ((crudItems$ | async) ?? [])
       "
       [dictOptionDtos]="
-        (planeService.optionsService.dictOptionDtos$ | async) ?? []
+        (crudItemService.optionsService.dictOptionDtos$ | async) ?? []
       "
       [totalRecord]="(totalCount$ | async) ?? 0"
       [columnToDisplays]="displayedColumns"
+      [reorderableColumns]="reorderableColumns"
       [pageSize]="pageSize"
       (pageSizeChange)="onPageSizeChange($event)"
       [configuration]="crudConfiguration.fieldsConfig"
       [(showColSearch)]="showColSearch"
       [globalSearchValue]="globalSearchValue"
-      [canClickRow]="canEdit"
+      [canClickRow]="canEdit || crudConfiguration.hasReadView"
       [canSelectElement]="canSelect"
+      [canSelectMultipleElement]="canDelete"
       [loading]="(loading$ | async) ?? false"
       (clickRowId)="onClickRow($event)"
       (loadLazy)="onLoadLazy($event)"
@@ -90,7 +102,8 @@
       [frozeSelectColumn]="true"
       [virtualScroll]="crudConfiguration.useVirtualScroll"
       [isResizableColumn]="crudConfiguration.useResizableColumn"
-      [rowHeight]="defaultRowHeight"></bia-table>
+      [rowHeight]="defaultRowHeight"
+      [showFixableState]="crudConfiguration.isFixable"></bia-table>
     <app-plane-table
       *ngIf="crudConfiguration.useCalcMode"
       [elements]="
@@ -99,10 +112,11 @@
           : ((crudItems$ | async) ?? [])
       "
       [dictOptionDtos]="
-        (planeService.optionsService.dictOptionDtos$ | async) ?? []
+        (crudItemService.optionsService.dictOptionDtos$ | async) ?? []
       "
       [totalRecord]="(totalCount$ | async) ?? 0"
       [columnToDisplays]="displayedColumns"
+      [reorderableColumns]="reorderableColumns"
       [pageSize]="pageSize"
       (pageSizeChange)="onPageSizeChange($event)"
       [configuration]="crudConfiguration.fieldsConfig"
@@ -124,6 +138,7 @@
       [scrollHeightValue]="getFillScrollHeightValue()"
       [virtualScroll]="crudConfiguration.useVirtualScroll"
       [isResizableColumn]="crudConfiguration.useResizableColumn"
-      [rowHeight]="defaultRowHeight"></app-plane-table>
+      [rowHeight]="defaultRowHeight"
+      [showFixableState]="crudConfiguration.isFixable"></app-plane-table>
   </div>
 </div>

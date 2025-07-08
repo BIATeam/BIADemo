@@ -1,5 +1,5 @@
 ﻿// <copyright file="BiaConstants.cs" company="BIA">
-//     Copyright (c) BIA. All rights reserved.
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Common
@@ -63,6 +63,32 @@ namespace BIA.Net.Core.Common
         }
 
         /// <summary>
+        /// Role.
+        /// </summary>
+        public static class Role
+        {
+            /// <summary>
+            /// The admin role code.
+            /// </summary>
+            public const string Admin = "Admin";
+
+            /// <summary>
+            /// The user role code.
+            /// </summary>
+            public const string User = "User";
+
+            /// <summary>
+            /// The right to access to the list of members.
+            /// </summary>
+            public const string TeamMemberSuffix = "_Member";
+
+            /// <summary>
+            /// The right to access to the list of members.
+            /// </summary>
+            public const string TeamMemberOfOneSuffix = "_MemberOfOne";
+        }
+
+        /// <summary>
         /// The class containing HTTP headers constants.
         /// </summary>
         public static class HttpHeaders
@@ -107,6 +133,17 @@ namespace BIA.Net.Core.Common
             /// Synchro.
             /// </summary>
             public const string Synchro = "Synchro";
+        }
+
+        /// <summary>
+        /// Policy.
+        /// </summary>
+        public static class Policy
+        {
+            /// <summary>
+            /// Policy for  service API RW.
+            /// </summary>
+            public const string ServiceApiRW = "ServiceApiRW";
         }
     }
 }

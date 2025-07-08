@@ -1,7 +1,7 @@
 <form (submit)="onSubmit()" class="flex flex-column" [formGroup]="form">
   <div class="flex flex-row justify-content-center">
     <div class="app-field-container flex-1" style="max-width: 90%">
-      <span class="p-float-label">
+      <p-floatlabel variant="on">
         <input
           formControlName="msn"
           type="text"
@@ -12,21 +12,21 @@
           ><span class="bia-star-mandatory">*</span
           >{{ 'plane.msn' | translate }}</label
         >
-      </span>
+      </p-floatlabel>
+    </div>
+  </div>
+  <div class="flex flex-row justify-content-center">
+    <div
+      class="app-field-container flex-1 flex items-center"
+      style="max-width: 90%">
+      <p-checkbox binary="true" formControlName="isActive"></p-checkbox>
+      <label class="ml-2">{{ 'plane.isActive' | translate }}</label>
     </div>
   </div>
   <div class="flex flex-row justify-content-center">
     <div class="app-field-container flex-1" style="max-width: 90%">
-      <p-checkbox
-        binary="true"
-        formControlName="isActive"
-        label="{{ 'plane.isActive' | translate }}"></p-checkbox>
-    </div>
-  </div>
-  <div class="flex flex-row justify-content-center">
-    <div class="app-field-container flex-1" style="max-width: 90%">
-      <span class="p-float-label">
-        <p-calendar
+      <p-floatlabel variant="on">
+        <p-date-picker
           biaLocale
           formControlName="lastFlightDate"
           [showTime]="true"
@@ -34,30 +34,30 @@
           dateFormat="yy-mm-dd"
           placeholder="&nbsp;"
           [inputStyle]="{ width: '100%' }"
-          appendTo="body"></p-calendar>
+          appendTo="body"></p-date-picker>
         <label>{{ 'plane.lastFlightDate' | translate }}</label>
-      </span>
+      </p-floatlabel>
     </div>
   </div>
   <div class="flex flex-row justify-content-center">
     <div class="app-field-container flex-1" style="max-width: 90%">
-      <span class="p-float-label">
-        <p-calendar
+      <p-floatlabel variant="on">
+        <p-date-picker
           biaLocale
           formControlName="deliveryDate"
           placeholder="&nbsp;"
           [showButtonBar]="true"
           appendTo="body"
           dateFormat="yy-mm-dd"
-          [inputStyle]="{ width: '100%' }"></p-calendar>
+          [inputStyle]="{ width: '100%' }"></p-date-picker>
         <label>{{ 'plane.deliveryDate' | translate }}</label>
-      </span>
+      </p-floatlabel>
     </div>
   </div>
   <div class="flex flex-row justify-content-center">
     <div class="app-field-container flex-1" style="max-width: 90%">
-      <span class="p-float-label">
-        <p-calendar
+      <p-floatlabel variant="on">
+        <p-date-picker
           formControlName="syncTime"
           [showTime]="true"
           showSeconds="true"
@@ -65,14 +65,14 @@
           placeholder="&nbsp;"
           dataType="string"
           [inputStyle]="{ width: '100%' }"
-          appendTo="body"></p-calendar>
+          appendTo="body"></p-date-picker>
         <label>{{ 'plane.syncTime' | translate }}</label>
-      </span>
+      </p-floatlabel>
     </div>
   </div>
   <div class="flex flex-row justify-content-center">
     <div class="app-field-container flex-1" style="max-width: 90%">
-      <span class="p-float-label">
+      <p-floatlabel variant="on">
         <input
           formControlName="capacity"
           type="number"
@@ -82,13 +82,13 @@
           ><span class="bia-star-mandatory">*</span
           >{{ 'plane.capacity' | translate }}</label
         >
-      </span>
+      </p-floatlabel>
     </div>
   </div>
   <div class="flex flex-row justify-content-center">
     <div class="app-field-container flex-1" style="max-width: 90%">
-      <span class="p-float-label">
-        <p-dropdown
+      <p-floatlabel variant="on">
+        <p-select
           [options]="planeTypeOptions"
           placeholder="&nbsp;"
           formControlName="planeType"
@@ -96,14 +96,14 @@
           datakey="id"
           [style]="{ width: '100%' }"
           [showClear]="true"
-          appendTo="body"></p-dropdown>
+          appendTo="body"></p-select>
         <label>{{ 'plane.planeType' | translate }}</label>
-      </span>
+      </p-floatlabel>
     </div>
   </div>
   <div class="flex flex-row justify-content-center">
     <div class="app-field-container flex-1" style="max-width: 90%">
-      <span class="p-float-label">
+      <p-floatlabel variant="on">
         <p-multiSelect
           [options]="airportOptions"
           formControlName="connectingAirports"
@@ -113,7 +113,7 @@
           [style]="{ width: '100%' }"
           appendTo="body"></p-multiSelect>
         <label>{{ 'plane.connectingAirports' | translate }}</label>
-      </span>
+      </p-floatlabel>
     </div>
   </div>
   <div class="flex flex-row gap-1 justify-content-end">

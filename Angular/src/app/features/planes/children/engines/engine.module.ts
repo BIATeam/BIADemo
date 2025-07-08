@@ -1,18 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-// import { ReducerManager, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { PartOptionModule } from 'src/app/domains/part-option/part-option.module';
-import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
-import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
-import { CrudItemImportModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item-import.module';
-import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
+import {
+  DynamicLayoutComponent,
+  LayoutMode,
+} from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { Permission } from 'src/app/shared/permission';
-import { SharedModule } from 'src/app/shared/shared.module';
-import { EngineFormComponent } from './components/engine-form/engine-form.component';
-import { EngineTableComponent } from './components/engine-table/engine-table.component';
 import { engineCRUDConfiguration } from './engine.constants';
 import { FeatureEnginesStore } from './store/engine.state';
 import { EnginesEffects } from './store/engines-effects';
@@ -29,8 +25,9 @@ export const ROUTES: Routes = [
       breadcrumb: null,
       permission: Permission.Engine_List_Access,
       injectComponent: EnginesIndexComponent,
+      configuration: engineCRUDConfiguration,
     },
-    component: FullPageLayoutComponent,
+    component: DynamicLayoutComponent,
     canActivate: [PermissionGuard],
     // [Calc] : The children are not used in calc
     children: [
@@ -41,15 +38,8 @@ export const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.Engine_Create,
           title: 'engine.add',
-          injectComponent: EngineNewComponent,
-          dynamicComponent: () =>
-            engineCRUDConfiguration.usePopup
-              ? PopupLayoutComponent
-              : FullPageLayoutComponent,
         },
-        component: engineCRUDConfiguration.usePopup
-          ? PopupLayoutComponent
-          : FullPageLayoutComponent,
+        component: EngineNewComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -57,6 +47,7 @@ export const ROUTES: Routes = [
         data: {
           breadcrumb: 'engine.import',
           canNavigate: false,
+          layoutMode: LayoutMode.popup,
           style: {
             minWidth: '80vw',
             maxWidth: '80vw',
@@ -64,15 +55,8 @@ export const ROUTES: Routes = [
           },
           permission: Permission.Engine_Save,
           title: 'engine.import',
-          injectComponent: EngineImportComponent,
-          dynamicComponent: () =>
-            engineCRUDConfiguration.usePopup
-              ? PopupLayoutComponent
-              : FullPageLayoutComponent,
         },
-        component: engineCRUDConfiguration.usePopup
-          ? PopupLayoutComponent
-          : FullPageLayoutComponent,
+        component: EngineImportComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -91,15 +75,8 @@ export const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.Engine_Update,
               title: 'engine.edit',
-              injectComponent: EngineEditComponent,
-              dynamicComponent: () =>
-                engineCRUDConfiguration.usePopup
-                  ? PopupLayoutComponent
-                  : FullPageLayoutComponent,
             },
-            component: engineCRUDConfiguration.usePopup
-              ? PopupLayoutComponent
-              : FullPageLayoutComponent,
+            component: EngineEditComponent,
             canActivate: [PermissionGuard],
           },
           {
@@ -107,6 +84,8 @@ export const ROUTES: Routes = [
             pathMatch: 'full',
             redirectTo: 'edit',
           },
+          // BIAToolKit - Begin EngineModuleChildPath
+          // BIAToolKit - End EngineModuleChildPath
         ],
       },
     ],
@@ -115,29 +94,13 @@ export const ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    EngineItemComponent,
-    EnginesIndexComponent,
-    // [Calc] : NOT used for calc (3 lines).
-    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-    EngineFormComponent,
-    EngineNewComponent,
-    EngineEditComponent,
-    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-    EngineTableComponent,
-    EngineImportComponent,
-  ],
   imports: [
-    SharedModule,
-    CrudItemModule,
-    CrudItemImportModule,
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature(
       engineCRUDConfiguration.storeKey,
       FeatureEnginesStore.reducers
     ),
     EffectsModule.forFeature([EnginesEffects]),
-    // TODO after creation of CRUD Engine : select the optioDto dommain module required for link
     // Domain Modules:
     PartOptionModule,
   ],

@@ -1,41 +1,67 @@
-<div class="bia-table-controller-container">
-  <div>
-    <span>{{ 'bia.display' | translate }} </span>
-    <p-multiSelect
-      [options]="listedColumns"
-      optionLabel="label"
-      optionValue="value"
-      [(ngModel)]="displayedColumns"
-      (onChange)="onChangeSelectColumn()"
-      autoWidth="false"
-      [style]="{ width: '300px' }"
-      scrollHeight="50vh"></p-multiSelect>
+<div
+  #contentContainer
+  class="bia-table-controller-container"
+  [ngClass]="overflowingClass">
+  <bia-view-list
+    *ngIf="tableStateKey"
+    [tableStateKey]="tableStateKey"
+    [tableState]="tableState"
+    [defaultViewPref]="defaultViewPref"
+    [useViewTeamWithTypeId]="useViewTeamWithTypeId"
+    [displayedColumns]="displayedColumns"
+    [columns]="columns"
+    (viewChange)="onViewChange($event)"></bia-view-list>
+  <div #overflowingContent class="bia-overflow-hidden">
+    <div class="bia-overflow-hidden-container">
+      <div>
+        <p-floatlabel variant="on">
+          <p-multiSelect
+            [options]="listedColumns"
+            optionLabel="label"
+            optionValue="value"
+            [(ngModel)]="displayedColumns"
+            (onChange)="onChangeSelectColumn()"
+            autoWidth="false"
+            [style]="{ width: '17rem' }"
+            scrollHeight="50vh"></p-multiSelect>
+          <label>{{ 'bia.display' | translate }}</label></p-floatlabel
+        >
+      </div>
+      <div class="flex align-items-center">
+        <ng-container *ngTemplateOutlet="customControlTemplate"></ng-container>
+      </div>
+      <div class="flex align-items-center gap-1">
+        <p-floatlabel variant="on">
+          <input
+            id="bia-input-search"
+            pInputText
+            type="text"
+            [formControl]="filterCtrl"
+            [value]="globalFilter" />
+          <label for="name">{{ 'bia.search' | translate }}</label>
+        </p-floatlabel>
+        <i class="pi pi-search bia-pointer"></i>
+      </div>
+    </div>
   </div>
-  <div *ngIf="tableStateKey">
-    <span>{{ 'bia.views.view' | translate }} : </span>
-    <bia-view-list
-      [tableStateKey]="tableStateKey"
-      [tableState]="tableState"
-      [defaultViewPref]="defaultViewPref"
-      [useViewTeamWithTypeId]="useViewTeamWithTypeId"
-      [displayedColumns]="displayedColumns"
-      [columns]="columns"
-      (viewChange)="onViewChange($event)"></bia-view-list>
-  </div>
-  <div>
-    <ng-container *ngTemplateOutlet="customControlTemplate"></ng-container>
-  </div>
-  <div class="p-float-label" style="margin-top: -15px">
-    <input
-      id="bia-input-search"
-      pInputText
-      type="text"
-      [formControl]="filterCtrl"
-      [value]="globalFilter" />
-    <label for="name">{{ 'bia.search' | translate }}</label>
-    <i class="pi pi-search bia-pointer"></i>
-  </div>
-  <div class="flex gap-3">
+  <div class="flex align-items-center ml-auto">
+    <div class="bia-overflow-visible">
+      <p-button
+        #overflowingContentButton
+        [style]="{ overflow: 'visible' }"
+        icon="pi pi-ellipsis-v"
+        [text]="true"
+        (click)="toggleOverflowingContent()"
+        pTooltip="{{ 'bia.openMoreOptions' | translate }}"
+        tooltipPosition="top">
+      </p-button>
+    </div>
+    <p-button
+      icon="pi pi-filter-slash"
+      [text]="true"
+      (onClick)="onClearFilters()"
+      pTooltip="{{ 'bia.deleteFilters' | translate }}"
+      tooltipPosition="top" />
     <p-button
       [style]="{ overflow: 'visible' }"
       icon="pi pi-filter"
@@ -45,15 +71,24 @@
       pTooltip="{{ 'bia.showHideFilters' | translate }}"
       tooltipPosition="top">
       @if (hasColumnFilter) {
-        <span class="p-badge p-component p-badge-dot p-badge-warning"></span>
+        <p-badge severity="warn"></p-badge>
       }
     </p-button>
-    <p-button
-      styleClass="bia-btn-del-filter"
-      icon="pi pi-filter-slash"
-      [text]="true"
-      (onClick)="onClearFilters()"
-      pTooltip="{{ 'bia.deleteFilters' | translate }}"
-      tooltipPosition="top" />
+    <ng-container *ngIf="showBtnFilter">
+      <p-button
+        *ngIf="showFilter === false"
+        [style]="{ overflow: 'visible' }"
+        icon="pi pi-filter"
+        styleClass="p-overlay-badge"
+        [text]="true"
+        (click)="toggleFilter()"
+        pTooltip="{{ 'bia.showAdvancedFilters' | translate }}"
+        tooltipPosition="top">
+        <div class="cog pi pi-cog"></div>
+        @if (hasFilter) {
+          <p-badge severity="warn"></p-badge>
+        }
+      </p-button>
+    </ng-container>
   </div>
 </div>

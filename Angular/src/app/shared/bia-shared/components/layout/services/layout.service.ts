@@ -38,13 +38,16 @@ export type FooterMode = 'bottom' | 'overlay';
 
 export type ColorScheme = 'light' | 'dark';
 
+export type MenuProfilePosition = 'start' | 'end';
+
 export interface AppConfig {
-  classicStyle: boolean;
   colorScheme: ColorScheme;
   menuMode: MenuMode;
   scale: number;
   showAvatar: boolean;
+  alwaysShowInitials: boolean;
   footerMode: FooterMode;
+  menuProfilePosition: MenuProfilePosition;
 }
 
 interface LayoutState {
@@ -60,15 +63,17 @@ interface LayoutState {
   anchored: boolean;
   fullscreen: boolean;
   isSmallScreen: boolean;
+  isInIframe: boolean;
 }
 
 const DEFAULT_LAYOUT_CONFIG: AppConfig = {
-  classicStyle: false,
   colorScheme: 'light',
   menuMode: 'static',
   scale: 14,
   showAvatar: true,
   footerMode: 'overlay',
+  menuProfilePosition: 'end',
+  alwaysShowInitials: false,
 };
 
 const DEFAULT_CONFIG_DISPLAY: ConfigDisplay = {
@@ -78,7 +83,7 @@ const DEFAULT_CONFIG_DISPLAY: ConfigDisplay = {
   showTheme: true,
   showMenuStyle: false,
   showFooterStyle: false,
-  showToggleStyle: false,
+  showMenuProfilePosition: false,
 };
 
 @Injectable({
@@ -101,19 +106,20 @@ export class BiaLayoutService {
     fullscreen: false,
     menuProfileActive: false,
     isSmallScreen: false,
+    isInIframe: false,
   };
 
   config = signal<AppConfig>(this._config);
   configDisplay = signal<ConfigDisplay>(this._configDisplay);
 
-  private configUpdate = new BehaviorSubject<AppConfig>(this._config);
-  private configDisplayUpdate = new BehaviorSubject<ConfigDisplay>(
+  protected configUpdate = new BehaviorSubject<AppConfig>(this._config);
+  protected configDisplayUpdate = new BehaviorSubject<ConfigDisplay>(
     this._configDisplay
   );
-  private overlayOpen = new Subject<any>();
-  private overlayFooterOpen = new Subject<any>();
-  private topbarMenuOpen = new Subject<any>();
-  private menuProfileOpen = new Subject<any>();
+  protected overlayOpen = new Subject<any>();
+  protected overlayFooterOpen = new Subject<any>();
+  protected topbarMenuOpen = new Subject<any>();
+  protected menuProfileOpen = new Subject<any>();
 
   protected footerPortal = new BehaviorSubject<Portal<any> | null>(null);
   protected mainBarPortal = new BehaviorSubject<Portal<any> | null>(null);
@@ -139,6 +145,10 @@ export class BiaLayoutService {
     .pipe(debounceTime(0));
   breadcrumbRefresh$ = this.breadcrumbRefresh.asObservable();
 
+  get isBreadcrumbVisible(): boolean {
+    return !this.breadcrumbHidden.value;
+  }
+
   constructor() {
     effect(() => {
       const config = this.config();
@@ -157,7 +167,7 @@ export class BiaLayoutService {
       const newHref = themeLinkHref
         .split('/')
         .map(el =>
-          el == `theme-${this._config.colorScheme}`
+          el === `theme-${this._config.colorScheme}`
             ? (el = `theme-${colorScheme}`)
             : el
         )
@@ -335,7 +345,7 @@ export class BiaLayoutService {
   processMenuTranslation(children: MenuItem[], translations: any) {
     for (const item of children) {
       if (item.separator) continue;
-      item.label = item.id == undefined ? '---' : translations[item.id];
+      item.label = item.id === undefined ? '---' : translations[item.id];
       if (item.items) {
         this.processMenuTranslation(item.items, translations);
       }
@@ -450,15 +460,6 @@ export class BiaLayoutService {
       this.menuProfileOpen.next(null);
     }
   }
-
-  toggleStyle() {
-    this.config.update(config => ({
-      ...config,
-      classicStyle: !this._config.classicStyle,
-      scale: this._config.classicStyle ? 14 : 16,
-    }));
-  }
-
   clearSession() {
     const culture = localStorage.getItem(STORAGE_CULTURE_KEY);
     const theme = localStorage.getItem(STORAGE_THEME_KEY);
@@ -472,5 +473,13 @@ export class BiaLayoutService {
 
   checkSmallScreen() {
     this.state.isSmallScreen = window.matchMedia('(max-width:991px)').matches;
+  }
+
+  isConfigSidebarActive(): boolean {
+    return this.state.configSidebarVisible;
+  }
+
+  openConfigSidebar(): void {
+    this.state.configSidebarVisible = true;
   }
 }

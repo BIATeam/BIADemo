@@ -1,10 +1,9 @@
 import { CrudConfig } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
-// BIAToolKit - Begin AncestorTeam AircraftMaintenanceCompany
 import { TeamTypeId } from 'src/app/shared/constants';
-// BIAToolKit - End AncestorTeam AircraftMaintenanceCompany
 import {
   MaintenanceTeam,
   maintenanceTeamFieldsConfiguration,
+  maintenanceTeamFormLayoutConfiguration,
 } from './model/maintenance-team';
 
 // TODO after creation of CRUD Team MaintenanceTeam : adapt the global configuration
@@ -13,14 +12,17 @@ export const maintenanceTeamCRUDConfiguration: CrudConfig<MaintenanceTeam> =
     // IMPORTANT: this key should be unique in all the application.
     featureName: 'maintenance-teams',
     fieldsConfig: maintenanceTeamFieldsConfiguration,
+    formLayoutConfig: maintenanceTeamFormLayoutConfiguration,
+    isFixable: true,
     useCalcMode: false,
     useSignalR: false,
-    useView: false,
-    // BIAToolKit - Begin AncestorTeam AircraftMaintenanceCompany
+    useView: true,
     useViewTeamWithTypeId: TeamTypeId.AircraftMaintenanceCompany, // use to filter view by teams => should know the type of team
-    // BIAToolKit - End AncestorTeam AircraftMaintenanceCompany
     usePopup: true,
+    useSplit: false,
     useOfflineMode: false,
+    useCompactMode: false,
+    useVirtualScroll: false,
     // IMPORTANT: this key should be unique in all the application.
     // storeKey: 'feature-' + featureName,
     // IMPORTANT: this is the key used for the view management it should be unique in all the application (except if share same views).

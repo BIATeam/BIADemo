@@ -1,4 +1,13 @@
 import {
+  AsyncPipe,
+  NgClass,
+  NgFor,
+  NgIf,
+  NgStyle,
+  NgSwitch,
+  NgTemplateOutlet,
+} from '@angular/common';
+import {
   AfterContentInit,
   AfterViewInit,
   Component,
@@ -12,9 +21,18 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { PrimeTemplate, TableState } from 'primeng/api';
-import { Table, TableLazyLoadEvent } from 'primeng/table';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { PrimeTemplate, SortMeta, TableState } from 'primeng/api';
+import { Skeleton } from 'primeng/skeleton';
+import {
+  Table,
+  TableLazyLoadEvent,
+  TableModule,
+  TablePageEvent,
+  TableRowCollapseEvent,
+  TableRowExpandEvent,
+} from 'primeng/table';
+import { Tooltip } from 'primeng/tooltip';
 import { Observable, of, timer } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import {
@@ -29,6 +47,10 @@ import {
 import { BiaTableState } from '../../../model/bia-table-state';
 import { KeyValuePair } from '../../../model/key-value-pair';
 import { TableHelperService } from '../../../services/table-helper.service';
+import { BiaFrozenColumnDirective } from '../bia-frozen-column/bia-frozen-column.directive';
+import { BiaTableFilterComponent } from '../bia-table-filter/bia-table-filter.component';
+import { BiaTableFooterControllerComponent } from '../bia-table-footer-controller/bia-table-footer-controller.component';
+import { BiaTableOutputComponent } from '../bia-table-output/bia-table-output.component';
 import { DictOptionDto } from './dict-option-dto';
 
 const objectsEqual = (o1: any, o2: any) =>
@@ -45,6 +67,24 @@ const arraysEqual = (a1: any, a2: any) =>
   selector: 'bia-table',
   templateUrl: './bia-table.component.html',
   styleUrls: ['./bia-table.component.scss'],
+  imports: [
+    NgIf,
+    TableModule,
+    PrimeTemplate,
+    NgFor,
+    Tooltip,
+    NgSwitch,
+    BiaTableFilterComponent,
+    NgClass,
+    BiaTableOutputComponent,
+    NgTemplateOutlet,
+    Skeleton,
+    NgStyle,
+    BiaTableFooterControllerComponent,
+    AsyncPipe,
+    TranslateModule,
+    BiaFrozenColumnDirective,
+  ],
 })
 export class BiaTableComponent<TDto extends { id: number }>
   implements OnChanges, AfterContentInit, AfterViewInit
@@ -52,7 +92,7 @@ export class BiaTableComponent<TDto extends { id: number }>
   @Input() pageSize: number;
   @Input() totalRecord: number;
   @Input() paginator = true;
-  @Input() pageSizeOptions: number[] = [10, 25, 50, 100];
+  @Input() pageSizeOptions: number[] | undefined = [10, 25, 50, 100];
   @Input() virtualScroll = false;
   @Input() elements: TDto[];
   @Input() columnToDisplays: KeyValuePair[];
@@ -72,15 +112,29 @@ export class BiaTableComponent<TDto extends { id: number }>
   @Input() scrollHeightValue = 'calc( 100vh - 460px)';
   @Input() isScrollable = true;
   @Input() isResizableColumn = false;
-  @Input() frozeSelectColumn = true;
+  protected _frozeSelectColumn = true;
+  get frozeSelectColumn() {
+    return this._frozeSelectColumn;
+  }
+  @Input() set frozeSelectColumn(value: boolean) {
+    this._frozeSelectColumn = value;
+    this.manageSelectFrozen(this._configuration);
+  }
   @Input() canSelectMultipleElement = true;
   @Input() rowHeight = 33.56;
   @Input() virtualScrollPageSize = 100;
   @Input() dictOptionDtos: DictOptionDto[] = [];
+  @Input() readOnly = false;
+  @Input() showFixableState = false;
+  @Input() sortMode: 'single' | 'multiple' = 'multiple';
+  @Input() multiSortMeta?: SortMeta[] | null;
   @Input() ignoreSpecificOutput = false;
+  @Input() canExpandRow = false;
+  @Input() expandedRowTemplate: TemplateRef<any>;
 
   protected isSelectFrozen = false;
   protected widthSelect: string;
+  protected widthExpand: string;
   protected alignFrozenSelect = 'left';
   protected _configuration: BiaFieldsConfig<TDto>;
   get configuration(): BiaFieldsConfig<TDto> {
@@ -98,6 +152,9 @@ export class BiaTableComponent<TDto extends { id: number }>
   @Output() selectedElementsChanged = new EventEmitter<any[]>();
   @Output() stateSave = new EventEmitter<string>();
   @Output() pageSizeChange = new EventEmitter<number>();
+  @Output() rowExpand = new EventEmitter<TableRowExpandEvent>();
+  @Output() rowCollapse = new EventEmitter<TableRowCollapseEvent>();
+  @Output() pageChange = new EventEmitter<TablePageEvent>();
 
   @ViewChild('dt', { static: false }) table: Table | undefined;
 
@@ -120,6 +177,8 @@ export class BiaTableComponent<TDto extends { id: number }>
   protected defaultSortOrder: number;
   protected defaultPageSize: number;
   protected defaultColumns: string[];
+
+  protected expandedRows = {};
 
   constructor(
     public authService: AuthService,
@@ -382,9 +441,9 @@ export class BiaTableComponent<TDto extends { id: number }>
       if (this.table.sortMode === 'multiple') {
         if (
           viewPreference.multiSortMeta === undefined &&
-          viewPreference.sortField != null &&
-          viewPreference.sortField != '' &&
-          viewPreference.sortOrder != null
+          viewPreference.sortField !== undefined &&
+          viewPreference.sortField !== '' &&
+          viewPreference.sortOrder !== undefined
         ) {
           viewPreference.multiSortMeta = [
             {
@@ -422,13 +481,13 @@ export class BiaTableComponent<TDto extends { id: number }>
   }
 
   clickElementId(itemId: number) {
-    if (this.canClickRow === true) {
+    if (this.canClickRow === true && !this.readOnly) {
       this.clickRowId.emit(itemId);
     }
   }
 
   clickElementData(rowData: any) {
-    if (this.canClickRow === true) {
+    if (this.canClickRow === true && !this.readOnly) {
       this.clickRowData.emit(rowData);
       if (
         rowData &&
@@ -539,14 +598,16 @@ export class BiaTableComponent<TDto extends { id: number }>
           this.showColSearchChange.emit(false);
         });
         if (this.table.hasFilter()) {
-          for (const key in this.table.filters) {
-            if (!key.startsWith(TABLE_FILTER_GLOBAL)) {
-              setTimeout(() => {
-                this.showColSearch = true;
-                this.showColSearchChange.emit(true);
-              });
-              break;
-            }
+          if (
+            !TableHelperService.isNullUndefEmptyFilters(
+              this.table.filters,
+              true
+            )
+          ) {
+            setTimeout(() => {
+              this.showColSearch = true;
+              this.showColSearchChange.emit(true);
+            });
           }
         }
       }
@@ -592,13 +653,16 @@ export class BiaTableComponent<TDto extends { id: number }>
       if (biaFieldsConfig?.columns?.some(x => x.isFrozen === true) === true) {
         this.isSelectFrozen = true;
         this.widthSelect = '50px';
+        this.widthExpand = '38px';
       } else {
         this.isSelectFrozen = false;
         this.widthSelect = '';
+        this.widthExpand = '';
       }
     } else {
       this.isSelectFrozen = true;
       this.widthSelect = '50px';
+      this.widthExpand = '38px';
     }
   }
 
@@ -626,7 +690,7 @@ export class BiaTableComponent<TDto extends { id: number }>
     const nestedProperties: string[] = col.field.split('.');
     let value: any = rowData;
     for (const prop of nestedProperties) {
-      if (value == null) {
+      if (!value) {
         return null;
       }
 
@@ -642,7 +706,7 @@ export class BiaTableComponent<TDto extends { id: number }>
 
   // Override of function saveState from PrimeNg table component to avoid saving column resize and selection and always save columnOrder even when column not reorderable.
   // Original source : https://github.com/primefaces/primeng/blob/v17-prod/src/app/components/table/table.ts#L2800
-  private saveState() {
+  protected saveState() {
     const table: Table = this as unknown as Table;
 
     const storage = table.getStorage();
@@ -677,5 +741,13 @@ export class BiaTableComponent<TDto extends { id: number }>
 
     storage.setItem(<string>table.stateKey, JSON.stringify(state));
     table.onStateSave.emit(state);
+  }
+
+  onRowExpand(event: TableRowExpandEvent) {
+    this.rowExpand.emit(event);
+  }
+
+  onRowCollapse(event: TableRowCollapseEvent) {
+    this.rowCollapse.emit(event);
   }
 }

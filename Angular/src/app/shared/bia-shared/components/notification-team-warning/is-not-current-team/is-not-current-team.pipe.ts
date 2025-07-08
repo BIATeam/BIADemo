@@ -2,9 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { Notification } from 'src/app/domains/bia-domains/notification/model/notification';
 
-@Pipe({
-  name: 'isNotCurrentTeam',
-})
+@Pipe({ name: 'isNotCurrentTeam' })
 export class IsNotCurrentTeamPipe implements PipeTransform {
   constructor(public auth: AuthService) {}
 

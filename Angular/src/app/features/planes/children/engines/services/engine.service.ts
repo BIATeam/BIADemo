@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { map, Observable } from 'rxjs';
@@ -17,15 +17,19 @@ import { EngineOptionsService } from './engine-options.service';
   providedIn: 'root',
 })
 export class EngineService extends CrudItemService<Engine> {
+  _updateSuccessActionType = FeatureEnginesActions.loadAllByPost.type;
+  _createSuccessActionType = FeatureEnginesActions.loadAllByPost.type;
+  _updateFailureActionType = FeatureEnginesActions.failure.type;
+
   constructor(
     private store: Store<AppState>,
     public dasService: EngineDas,
     public signalRService: CrudItemSignalRService<Engine>,
+    public planeService: PlaneService,
     public optionsService: EngineOptionsService,
-    // required only for parent key
-    public planeService: PlaneService
+    protected injector: Injector
   ) {
-    super(dasService, signalRService, optionsService);
+    super(dasService, signalRService, optionsService, injector);
   }
 
   public getParentIds(): any[] {
@@ -56,9 +60,7 @@ export class EngineService extends CrudItemService<Engine> {
   );
 
   public displayItemName$: Observable<string> = this.crudItem$.pipe(
-    /// BIAToolKit - Begin Display reference
     map(engine => engine?.reference?.toString() ?? '')
-    /// BIAToolKit - End Display reference
   );
 
   public loadingGet$: Observable<boolean> = this.store.select(
@@ -73,17 +75,13 @@ export class EngineService extends CrudItemService<Engine> {
   }
   public create(crudItem: Engine) {
     // TODO after creation of CRUD Engine : map parent Key on the corresponding field
-    // BIAToolKit - Begin Parent planeId
-    (crudItem.planeId = this.getParentIds()[0]),
-      // BIAToolKit - End Parent planeId
-      this.store.dispatch(FeatureEnginesActions.create({ engine: crudItem }));
+    crudItem.planeId = this.getParentIds()[0];
+    this.store.dispatch(FeatureEnginesActions.create({ engine: crudItem }));
   }
   public save(crudItems: Engine[]) {
     // TODO after creation of CRUD Engine : map parent Key on the corresponding field
-    // BIAToolKit - Begin Parent planeId
-    crudItems.map(x => (x.planeId = this.getParentIds()[0])),
-      // BIAToolKit - End Parent planeId
-      this.store.dispatch(FeatureEnginesActions.save({ engines: crudItems }));
+    crudItems.map(x => (x.planeId = this.getParentIds()[0]));
+    this.store.dispatch(FeatureEnginesActions.save({ engines: crudItems }));
   }
   public update(crudItem: Engine) {
     this.store.dispatch(FeatureEnginesActions.update({ engine: crudItem }));
@@ -101,5 +99,10 @@ export class EngineService extends CrudItemService<Engine> {
     this._currentCrudItem = <Engine>{};
     this._currentCrudItemId = 0;
     this.store.dispatch(FeatureEnginesActions.clearCurrent());
+  }
+  public updateFixedStatus(id: any, isFixed: boolean): void {
+    this.store.dispatch(
+      FeatureEnginesActions.updateFixedStatus({ id: id, isFixed: isFixed })
+    );
   }
 }

@@ -1,4 +1,11 @@
 import {
+  AsyncPipe,
+  NgIf,
+  NgSwitch,
+  NgSwitchCase,
+  NgTemplateOutlet,
+} from '@angular/common';
+import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
@@ -33,6 +40,7 @@ import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.servic
   `,
   styleUrls: ['./spinner.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgIf, NgTemplateOutlet, NgSwitch, NgSwitchCase, AsyncPipe],
 })
 export class SpinnerComponent implements OnInit {
   @Input()

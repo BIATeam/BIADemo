@@ -1,7 +1,14 @@
 <app-maintenance-team-form
+  [crudItem]="(itemTemplate$ | async) ?? undefined"
+  [isAdd]="true"
   [fields]="crudConfiguration.fieldsConfig.columns"
+  [formLayoutConfig]="crudConfiguration.formLayoutConfig"
   [dictOptionDtos]="
     (maintenanceTeamService.optionsService.dictOptionDtos$ | async) ?? []
   "
-  (cancel)="onCancelled()"
-  (save)="onSubmitted($event)"></app-maintenance-team-form>
+  (cancelled)="onCancelled()"
+  (save)="onSubmitted($event)"
+  [showPopupButton]="showPopupButton"
+  [showSplitButton]="showSplitButton"
+  [showFullPageButton]="showFullPageButton"
+  (layoutChanged)="notifyLayoutChange($event)"></app-maintenance-team-form>

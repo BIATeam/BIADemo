@@ -2,11 +2,21 @@
   *ngIf="crudItemService.crudItem$ | async; let crudItem"
   [crudItem]="crudItem"
   [fields]="crudConfiguration.fieldsConfig.columns"
+  [formLayoutConfig]="crudConfiguration.formLayoutConfig"
+  [formReadOnlyMode]="formReadOnlyMode"
   [dictOptionDtos]="
     (crudItemService.optionsService.dictOptionDtos$ | async) ?? []
   "
-  (cancel)="onCancelled()"
-  (save)="onSubmitted($event)"></bia-crud-item-form>
+  [isCrudItemOutdated]="isCrudItemOutdated"
+  [showFixableState]="crudConfiguration.isFixable"
+  [canFix]="canFix"
+  [showPopupButton]="showPopupButton"
+  [showSplitButton]="showSplitButton"
+  [showFullPageButton]="showFullPageButton"
+  (cancelled)="onCancelled()"
+  (save)="onSubmitted($event)"
+  (fixedChanged)="crudItemService.updateFixedStatus(crudItem.id, $event)"
+  (layoutChanged)="notifyLayoutChange($event)"></bia-crud-item-form>
 <bia-spinner
   *ngIf="crudItemService.loadingGet$ | async"
   [overlay]="true"></bia-spinner>

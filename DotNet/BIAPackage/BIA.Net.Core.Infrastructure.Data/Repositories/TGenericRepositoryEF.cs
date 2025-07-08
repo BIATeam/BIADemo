@@ -1,5 +1,5 @@
 ﻿// <copyright file="TGenericRepositoryEF.cs" company="BIA">
-//     Copyright (c) BIA. All rights reserved.
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Infrastructure.Data.Repositories
@@ -11,7 +11,8 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
     using System.Linq.Expressions;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
@@ -352,6 +353,19 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             return result;
         }
 
+        /// <inheritdoc/>
+        public void UpdateFixedAsync(TEntity item, bool isFixed)
+        {
+            if (item is not IEntityFixable fixableEntity)
+            {
+                throw new BadBiaFrameworkUsageException($"Entity {item.GetType()} is not a fixable entity");
+            }
+
+            fixableEntity.IsFixed = isFixed;
+            fixableEntity.FixedDate = isFixed ? DateTime.UtcNow : null;
+            this.SetModified(fixableEntity as TEntity);
+        }
+
         /// <summary>
         /// Retrieve a DBSet.
         /// </summary>
@@ -360,7 +374,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         {
             if (this.unitOfWork == null)
             {
-                throw new DataException("The context must not be null");
+                throw new Common.Exceptions.DataException("The context must not be null");
             }
 
             return this.unitOfWork.RetrieveSet<TEntity>();

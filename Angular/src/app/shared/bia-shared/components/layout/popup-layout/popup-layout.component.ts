@@ -8,12 +8,16 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterOutlet } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { SharedModule } from 'primeng/api';
+import { Dialog } from 'primeng/dialog';
 import { BiaInjectorService } from 'src/app/core/bia-core/services/bia-injector.service';
 
 @Component({
   selector: 'bia-popup-layout',
   templateUrl: './popup-layout.component.html',
+  imports: [Dialog, SharedModule, RouterOutlet, TranslateModule],
 })
 export class PopupLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('dynamic', {

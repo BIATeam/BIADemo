@@ -7,21 +7,19 @@ export class LoginParamDto {
   lightToken: boolean;
   fineGrainedPermission: boolean;
   additionalInfos: boolean;
+  isFirstLogin: boolean;
+  baseUserIdentity?: string;
 }
 
 export class TeamConfigDto {
   teamTypeId: number;
   roleMode: RoleMode;
   inHeader: boolean;
-}
-
-export interface UserInfo {
-  id: number;
-  lastName?: string;
-  firstName?: string;
-  login: string;
-  country: string;
-  language: string;
+  displayOne?: boolean;
+  displayAlways?: boolean;
+  label?: string;
+  displayLabel?: boolean;
+  teamSelectionCanBeEmpty?: boolean;
 }
 
 export interface UserProfile {
@@ -29,7 +27,12 @@ export interface UserProfile {
 }
 
 export interface UserData {
+  lastName?: string;
+  firstName?: string;
   currentTeams: CurrentTeamDto[];
+  // Begin BIADemo
+  customData?: string | undefined;
+  // End BIADemo
 }
 
 export class CurrentTeamDto {
@@ -41,13 +44,15 @@ export class CurrentTeamDto {
 }
 
 export interface AdditionalInfos {
-  userInfo: UserInfo;
   userProfile: UserProfile;
   teams: Team[];
+  // Begin BIADemo
+  customInfo?: string | undefined;
+  // End BIADemo
 }
 
 export interface Token {
-  login: string;
+  identityKey: string;
   id: number;
   permissions: string[];
   userData: UserData;
@@ -55,14 +60,13 @@ export interface Token {
 
 export class AuthInfo {
   token = '';
-  uncryptedToken: Token = {
-    login: '',
+  decryptedToken: Token = {
+    identityKey: '',
     id: 0,
     permissions: [],
     userData: { currentTeams: [] },
   };
   additionalInfos: AdditionalInfos = {
-    userInfo: { login: '', country: '', id: 0, language: '' },
     teams: [],
     userProfile: { theme: '' },
   };

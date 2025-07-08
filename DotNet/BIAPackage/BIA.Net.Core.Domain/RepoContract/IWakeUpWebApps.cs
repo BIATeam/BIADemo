@@ -1,5 +1,5 @@
 ﻿// <copyright file="IWakeUpWebApps.cs" company="BIA">
-//     Copyright (c) BIA. All rights reserved.
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Domain.RepoContract
@@ -8,7 +8,7 @@ namespace BIA.Net.Core.Domain.RepoContract
     using System.Threading.Tasks;
 
     /// <summary>
-    /// Interface BIADemoWebApiRepository.
+    /// Interface WakeUpWebApps.
     /// </summary>
     public interface IWakeUpWebApps
     {

@@ -1,4 +1,4 @@
-@import '../../../../../scss/bia/bia-variables';
+@use 'bia-variables';
 
 :host {
   display: contents;
@@ -13,7 +13,7 @@ i {
 }
 
 .offline {
-  color: $biaRed;
+  color: bia-variables.$biaRed;
   position: relative;
 
   .pi-minus {
@@ -25,7 +25,7 @@ i {
 }
 
 .online {
-  color: $biaGreen;
+  color: bia-variables.$biaGreen;
 }
 
 .rotate-icon {

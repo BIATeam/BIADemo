@@ -1,8 +1,8 @@
 ﻿// <copyright file="HangfireConfigurationExtensions.cs" company="BIA">
-//     Copyright (c) BIA. All rights reserved.
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace Hangfire.Dashboard.JobLogs
+namespace BIA.Net.Core.Presentation.Api.Features.HangfireDashboard
 {
     using System;
     using System.Collections.Generic;
@@ -12,6 +12,8 @@ namespace Hangfire.Dashboard.JobLogs
     using System.Text;
     using System.Text.RegularExpressions;
     using BIA.Net.Core.Presentation.Api.Features;
+    using Hangfire;
+    using Hangfire.Dashboard;
 
     /// <summary>
     /// Provides extension methods to setup Hangfire.JobLogs.

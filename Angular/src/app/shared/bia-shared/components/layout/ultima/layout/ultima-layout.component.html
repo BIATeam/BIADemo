@@ -1,21 +1,51 @@
-<div
-  class="layout-container layout-menu-profile-start"
-  [ngClass]="containerClass">
+<div class="layout-container" [ngClass]="containerClass">
   <bia-ultima-topbar
     [version]="version"
     [appTitle]="appTitle"
     [helpUrl]="helpUrl"
     [reportUrl]="reportUrl"
-    [enableNotifications]="enableNotifications"></bia-ultima-topbar>
+    [enableNotifications]="enableNotifications">
+    <ng-content select="[topbar-left]" ngProjectAs="[topbar-left]">
+    </ng-content>
+    <ng-content select="[topbar-right]" ngProjectAs="[topbar-right]">
+    </ng-content>
+    <ng-content
+      select="[custom-topbar-icons]"
+      ngProjectAs="[custom-topbar-icons]">
+    </ng-content>
+  </bia-ultima-topbar>
   <bia-ultima-sidebar
+    *ngIf="!layoutService.state.isInIframe"
     [version]="version"
     [appTitle]="appTitle"
     [menus]="menus"
     [username]="username"
+    [lastname]="lastname"
     [login]="login"
-    [supportedLangs]="supportedLangs"
     [allowThemeChange]="allowThemeChange"
-    [logos]="headerLogos"></bia-ultima-sidebar>
+    [logos]="headerLogos">
+    <ng-content
+      select="[menu-profile-replace]"
+      ngProjectAs="[menu-profile-replace]">
+    </ng-content>
+    <ng-content
+      select="[menu-profile-panel]"
+      ngProjectAs="[menu-profile-panel]">
+    </ng-content>
+    <ng-content select="[sidebar-top]" ngProjectAs="[sidebar-top]"></ng-content>
+    <ng-content select="[menu-top]" ngProjectAs="[menu-top]"></ng-content>
+    <ng-content select="[menu-bottom]" ngProjectAs="[menu-bottom]">
+    </ng-content>
+    <ng-content
+      select="[sidebar-bottom]"
+      ngProjectAs="[sidebar-bottom]"></ng-content>
+  </bia-ultima-sidebar>
+  <bia-ultima-config [supportedLangs]="supportedLangs">
+    <ng-content select="[app-config-top]" ngProjectAs="[app-config-top]">
+    </ng-content>
+    <ng-content select="[app-config-bottom]" ngProjectAs="[app-config-bottom]">
+    </ng-content>
+  </bia-ultima-config>
 
   <div class="layout-content-wrapper">
     <div
@@ -26,12 +56,14 @@
           | translate: { envName: (envName$ | async) }
       }}
     </div>
+    <ng-content select="[breadcrumb-top]"></ng-content>
     <p-breadcrumb
       *ngIf="
         (layoutService.breadcrumbHidden$ | async) === false &&
         !layoutService.state.fullscreen
       "
       [model]="menuItems"></p-breadcrumb>
+    <ng-content select="[breadcrumb-bottom]"></ng-content>
 
     <div class="layout-content">
       <router-outlet></router-outlet>
@@ -40,7 +72,11 @@
     <bia-ultima-footer
       *ngIf="(layoutService.footerHidden$ | async) === false"
       [companyName]="companyName"
-      [logos]="headerLogos"></bia-ultima-footer>
+      [logos]="headerLogos">
+      <ng-content
+        select="[footer-content]"
+        ngProjectAs="[footer-content]"></ng-content>
+    </bia-ultima-footer>
   </div>
 
   <div

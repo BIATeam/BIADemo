@@ -1,22 +1,37 @@
 import { animate, style, transition, trigger } from '@angular/animations';
+import { NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
+  AfterViewInit,
   Component,
   ContentChildren,
+  ElementRef,
   EventEmitter,
+  HostListener,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   Output,
   QueryList,
+  Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  UntypedFormControl,
+} from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { FilterMetadata, PrimeTemplate, SelectItem } from 'primeng/api';
+import { Badge } from 'primeng/badge';
+import { Button } from 'primeng/button';
+import { FloatLabel } from 'primeng/floatlabel';
+import { InputText } from 'primeng/inputtext';
+import { MultiSelect } from 'primeng/multiselect';
+import { Tooltip } from 'primeng/tooltip';
 import { Subscription } from 'rxjs';
 import { TABLE_FILTER_GLOBAL, TeamTypeId } from 'src/app/shared/constants';
 import { ViewListComponent } from '../../../features/view/views/view-list/view-list.component';
@@ -39,9 +54,24 @@ import { KeyValuePair } from '../../../model/key-value-pair';
       ]),
     ]),
   ],
+  imports: [
+    NgClass,
+    NgIf,
+    ViewListComponent,
+    MultiSelect,
+    FormsModule,
+    NgTemplateOutlet,
+    InputText,
+    ReactiveFormsModule,
+    Button,
+    Tooltip,
+    TranslateModule,
+    FloatLabel,
+    Badge,
+  ],
 })
 export class BiaTableControllerComponent
-  implements OnChanges, OnInit, OnDestroy, AfterContentInit
+  implements OnChanges, OnInit, OnDestroy, AfterContentInit, AfterViewInit
 {
   @Input() defaultPageSize: number;
   @Input() columns: KeyValuePair[];
@@ -52,15 +82,25 @@ export class BiaTableControllerComponent
   @Input() defaultViewPref: BiaTableState;
   @Input() hasColumnFilter = false;
 
+  @Input() hasFilter = false;
+  @Input() showFilter = false;
+  @Input() showBtnFilter = false;
+
   @Output() displayedColumnsChange = new EventEmitter<KeyValuePair[]>();
   @Output() filter = new EventEmitter<string>();
   @Output() toggleSearch = new EventEmitter<void>();
   @Output() viewChange = new EventEmitter<string>();
   @Output() clearFilters = new EventEmitter<void>();
+  @Output() openFilter = new EventEmitter<void>();
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   @ViewChild(ViewListComponent, { static: false })
   viewListComponent: ViewListComponent;
+
+  @ViewChild('contentContainer') contentContainer: ElementRef;
+  @ViewChild('overflowingContent') overflowingContent: ElementRef;
+  @ViewChild('overflowingContentButton', { static: false })
+  overflowingContentButton: Button;
 
   customControlTemplate: TemplateRef<any>;
   selectedViewName: string | null;
@@ -72,8 +112,16 @@ export class BiaTableControllerComponent
   firstChange = true;
 
   protected sub = new Subscription();
+  isOverflowing: boolean;
+  overflowingContentActive = false;
+  resizeObserver: ResizeObserver;
+  overflowingWidth: number;
+  overflowingContentOutsideClickListener: any;
 
-  constructor(public translateService: TranslateService) {}
+  constructor(
+    public translateService: TranslateService,
+    protected renderer: Renderer2
+  ) {}
 
   ngAfterContentInit() {
     this.templates.forEach(item => {
@@ -105,10 +153,32 @@ export class BiaTableControllerComponent
     this.onColumnsChange(changes);
   }
 
+  ngAfterViewInit() {
+    this.resizeObserver = new ResizeObserver(() => {
+      this.checkOverflow();
+    });
+
+    this.resizeObserver.observe(this.contentContainer.nativeElement);
+  }
+
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
     }
+
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
+  }
+
+  get overflowingClass() {
+    const styleClass: { [key: string]: any } = {
+      /* eslint-disable @typescript-eslint/naming-convention */
+      'bia-overflowing-content': this.isOverflowing,
+      'bia-overflowing-content-active': this.overflowingContentActive,
+    };
+    /* eslint-enable @typescript-eslint/naming-convention */
+    return styleClass;
   }
 
   onChangeSelectColumn() {
@@ -170,7 +240,7 @@ export class BiaTableControllerComponent
   protected initFilterCtrl() {
     this.sub.add(
       this.filterCtrl.valueChanges.subscribe(filterValue => {
-        this.filter.emit(filterValue.trim().toLowerCase());
+        this.filter.emit(filterValue.trim());
       })
     );
   }
@@ -187,6 +257,66 @@ export class BiaTableControllerComponent
         this.globalFilter = (state.filters[key] as FilterMetadata).value;
         break;
       }
+    }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.checkOverflow();
+  }
+
+  checkOverflow() {
+    const container = this.contentContainer.nativeElement;
+    if (!this.isOverflowing) {
+      this.overflowingWidth = container.scrollWidth;
+    }
+
+    if (this.overflowingWidth > container.clientWidth) {
+      this.isOverflowing = true;
+    } else {
+      this.isOverflowing = false;
+    }
+  }
+
+  toggleOverflowingContent() {
+    this.overflowingContentActive = !this.overflowingContentActive;
+    if (this.overflowingContentActive) {
+      this.overflowingContentSubscription();
+    }
+  }
+
+  hideOverflowingContent() {
+    this.overflowingContentActive = false;
+    if (this.overflowingContentOutsideClickListener) {
+      this.overflowingContentOutsideClickListener();
+      this.overflowingContentOutsideClickListener = null;
+    }
+  }
+
+  protected overflowingContentSubscription() {
+    this.overflowingContentOutsideClickListener = this.renderer.listen(
+      'document',
+      'click',
+      event => {
+        const isOutsideClicked = !(
+          this.overflowingContent.nativeElement.isSameNode(event.target) ||
+          this.overflowingContent.nativeElement.contains(event.target) ||
+          this.overflowingContentButton.el.nativeElement.isSameNode(
+            event.target
+          ) ||
+          this.overflowingContentButton.el.nativeElement.contains(event.target)
+        );
+        if (isOutsideClicked) {
+          this.hideOverflowingContent();
+        }
+      }
+    );
+  }
+
+  toggleFilter() {
+    this.showFilter = !this.showFilter;
+    if (this.showFilter === true) {
+      this.openFilter.emit();
     }
   }
 }

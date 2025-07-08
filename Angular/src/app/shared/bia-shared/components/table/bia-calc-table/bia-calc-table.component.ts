@@ -1,4 +1,13 @@
 import {
+  AsyncPipe,
+  NgClass,
+  NgFor,
+  NgIf,
+  NgStyle,
+  NgSwitch,
+  NgTemplateOutlet,
+} from '@angular/common';
+import {
   AfterContentInit,
   Component,
   EventEmitter,
@@ -9,18 +18,54 @@ import {
   SimpleChanges,
   TemplateRef,
 } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  UntypedFormBuilder,
+  UntypedFormGroup,
+} from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { PrimeTemplate } from 'primeng/api';
+import { Skeleton } from 'primeng/skeleton';
+import { TableModule } from 'primeng/table';
+import { Tooltip } from 'primeng/tooltip';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
+import { BiaFieldConfig } from '../../../model/bia-field-config';
+import { BiaFrozenColumnDirective } from '../bia-frozen-column/bia-frozen-column.directive';
+import { BiaTableFilterComponent } from '../bia-table-filter/bia-table-filter.component';
+import { BiaTableFooterControllerComponent } from '../bia-table-footer-controller/bia-table-footer-controller.component';
+import { BiaTableInputComponent } from '../bia-table-input/bia-table-input.component';
+import { BiaTableOutputComponent } from '../bia-table-output/bia-table-output.component';
 import { DictOptionDto } from '../bia-table/dict-option-dto';
 
 @Component({
   selector: 'bia-calc-table',
   templateUrl: './bia-calc-table.component.html',
   styleUrls: ['../bia-table/bia-table.component.scss'],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    NgIf,
+    TableModule,
+    PrimeTemplate,
+    NgFor,
+    Tooltip,
+    NgSwitch,
+    BiaTableFilterComponent,
+    NgClass,
+    BiaTableInputComponent,
+    NgTemplateOutlet,
+    BiaTableOutputComponent,
+    Skeleton,
+    NgStyle,
+    BiaTableFooterControllerComponent,
+    AsyncPipe,
+    TranslateModule,
+    BiaFrozenColumnDirective,
+  ],
 })
 export class BiaCalcTableComponent<TDto extends { id: number }>
   extends BiaTableComponent<TDto>
@@ -28,8 +73,9 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
 {
   @Input() canAdd = true;
   @Input() canEdit = true;
-  @Output() save = new EventEmitter<any>();
   @Input() dictOptionDtos: DictOptionDto[];
+  @Output() save = new EventEmitter<any>();
+  @Output() isEditing = new EventEmitter<boolean>();
 
   public formId: string;
   public form: UntypedFormGroup;
@@ -53,6 +99,10 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
     super(authService, translateService);
   }
 
+  get isInEditing() {
+    return this.hasChanged || this.editFooter;
+  }
+
   ngAfterContentInit() {
     this.templates.forEach(item => {
       switch (item.getType()) {
@@ -69,6 +119,12 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
   ngOnInit() {
     this.initForm();
     this.addFooterEmptyObject();
+  }
+
+  firstEditableField(columns: BiaFieldConfig<TDto>[]): number {
+    return columns.findIndex(
+      col => col.isEditable === true || col.isOnlyInitializable === true
+    );
   }
 
   public getOptionDto(key: string) {
@@ -88,6 +144,12 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
     }
   }
 
+  public addFooterClonedObject(itemTemplate: TDto) {
+    if (this.canAdd === true) {
+      this.footerRowData = itemTemplate;
+    }
+  }
+
   public initForm() {
     throw new Error('initForm not Implemented');
   }
@@ -101,6 +163,10 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
   }
 
   public initEditableRowAndFocus(rowData: any, event: MouseEvent) {
+    if (this.readOnly) {
+      return;
+    }
+
     if (this.canSelectElement && !this.canSelectMultipleElement) {
       this.selectedElements = rowData;
       this.onSelectionChange();
@@ -118,18 +184,19 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
       (!rowData ||
         (rowData &&
           ((rowData.id !== 0 &&
-            this.table?.editingRowKeys[rowData.id] !== true) ||
+            this.table?.editingRowKeys[rowData.id] !== true &&
+            rowData.isFixed !== true) ||
             (rowData.id === 0 && this.editFooter !== true))))
     ) {
       if (this.hasChanged === true) {
-        if (this.form.valid) {
-          this.onSave();
-          this.cancel();
-          this.initRowEdit(rowData);
-        } else {
-          this.biaMessageService.showWarning(
-            this.translateService.instant('biaMsg.invalidForm')
-          );
+        if (!rowData) {
+          if (this.form.valid) {
+            this.onSubmit();
+          } else {
+            this.biaMessageService.showWarning(
+              this.translateService.instant('biaMsg.invalidForm')
+            );
+          }
         }
       } else {
         this.cancel();
@@ -144,23 +211,19 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
       if (rowData.id === 0) {
         if (this.canAdd === true) {
           this.editFooter = true;
+          this.isEditing.emit(true);
         }
       } else {
         this.editFooter = false;
         if (this.canEdit === true) {
           this.table?.initRowEdit(rowData);
+          this.isEditing.emit(true);
+        } else {
+          this.isEditing.emit(false);
         }
       }
       this.form.reset();
       this.form.patchValue({ ...rowData });
-    }
-  }
-
-  public onSave() {
-    if (this.hasChanged === true) {
-      this.onSubmit();
-      this.hasChanged = false;
-      setTimeout(() => this.escape(), 0);
     }
   }
 
@@ -171,10 +234,16 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
       this.table.editingRowKeys = {};
     }
     this.editFooter = false;
+    this.isEditing.emit(false);
   }
 
   public escape() {
     this.cancel();
+    this.initEditableRow(null);
+  }
+
+  public resetEditableRow() {
+    this.hasChanged = false;
     this.initEditableRow(null);
   }
 
@@ -195,7 +264,7 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
           this.isInComplexInput !== true &&
           this.getParentComponent(document.activeElement, 'bia-calc-form') ===
             null &&
-          !document.activeElement?.className?.includes('p-dropdown') /*&&
+          !document.activeElement?.className?.includes('p-select') /*&&
           this.getParentComponent(document.activeElement, 'p-datepicker') === null*/
         ) {
           this.initEditableRow(null);

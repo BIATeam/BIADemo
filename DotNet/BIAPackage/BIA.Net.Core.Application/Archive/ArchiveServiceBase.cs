@@ -1,10 +1,11 @@
-﻿// <copyright file="ArchiveServiceBase.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+﻿// <copyright file="ArchiveServiceBase.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Application.Archive
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
@@ -13,7 +14,7 @@ namespace BIA.Net.Core.Application.Archive
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.RepoContract;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -27,9 +28,14 @@ namespace BIA.Net.Core.Application.Archive
     /// <typeparam name="TEntity">The entity type.</typeparam>
     /// <typeparam name="TKey">The entity key type.</typeparam>
     public abstract class ArchiveServiceBase<TEntity, TKey> : IArchiveService
-        where TEntity : class, IEntityArchivable<TKey>
+        where TEntity : class, IEntityArchivable, IEntity<TKey>
     {
-        private readonly JsonSerializerSettings jsonSerializerSettings;
+        /// <summary>
+        /// The JSON serializer settings.
+        /// </summary>
+#pragma warning disable SA1401 // Fields should be private
+        protected readonly JsonSerializerSettings jsonSerializerSettings;
+#pragma warning restore SA1401 // Fields should be private
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ArchiveServiceBase{TEntity, TKey}"/> class.
@@ -93,6 +99,31 @@ namespace BIA.Net.Core.Application.Archive
         }
 
         /// <summary>
+        /// Append additional entries to the given <paramref name="archive"/>.
+        /// </summary>
+        /// <param name="archive">The archive.</param>
+        /// <param name="archiveEntries">Optionnal entries to add to the archive.</param>
+        /// <returns>A <see cref="Task"/> representing the result of the asynchronous operation.</returns>
+#pragma warning disable S2325 // Methods and properties that don't access instance data should be static
+        protected async Task AppendEntriesToArchiveAsync(ZipArchive archive, IEnumerable<ArchiveEntry> archiveEntries)
+#pragma warning restore S2325 // Methods and properties that don't access instance data should be static
+        {
+            foreach (var archiveEntry in archiveEntries)
+            {
+                try
+                {
+                    var entry = archive.CreateEntry(archiveEntry.EntryName);
+                    await using var entryStream = entry.Open();
+                    await archiveEntry.ContentStream.CopyToAsync(entryStream);
+                }
+                catch (Exception ex)
+                {
+                    throw new JobException($"Error when adding entry {archiveEntry.EntryName} into archive : {ex.Message}", ex);
+                }
+            }
+        }
+
+        /// <summary>
         /// Retrive the archive file name template for an entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
@@ -117,7 +148,7 @@ namespace BIA.Net.Core.Application.Archive
         {
             try
             {
-                if (await this.SaveItemAsFlatTextCompressedAsync(item, this.ArchiveEntityConfiguration.TargetDirectoryPath))
+                if (await this.CreateArchiveAsync(item, this.ArchiveEntityConfiguration.TargetDirectoryPath))
                 {
                     await this.ArchiveRepository.SetAsArchivedAsync(item);
                     this.Logger.LogInformation("Item {ItemId} archived successfully", item.Id);
@@ -133,38 +164,38 @@ namespace BIA.Net.Core.Application.Archive
         /// Save an entity to the target as flat text JSON into a ZIP archive.
         /// </summary>
         /// <param name="item">The entity to save.</param>
-        /// <param name="targetDirectoryPath">Target directory path.</param>
+        /// <param name="targetArchiveDirectoryPath">Target directory path.</param>
         /// <returns><see cref="Task{bool}"/> that indicates success.</returns>
-        protected async Task<bool> SaveItemAsFlatTextCompressedAsync(TEntity item, string targetDirectoryPath)
+        protected virtual async Task<bool> CreateArchiveAsync(TEntity item, string targetArchiveDirectoryPath)
         {
-            var targetZipFileName = $"{this.GetArchiveNameTemplate(item)}.zip";
-            var targetZipFilePath = Path.Combine(targetDirectoryPath, targetZipFileName);
-            var sourceZipFilePath = Path.GetRandomFileName();
+            var targetArchiveFileName = $"{this.GetArchiveNameTemplate(item)}.zip";
+            var targetArchiveFilePath = Path.Combine(targetArchiveDirectoryPath, targetArchiveFileName);
+            var sourceArchiveFilePath = Path.GetRandomFileName();
 
             try
             {
-                var jsonContent = JsonConvert.SerializeObject(item, this.jsonSerializerSettings);
+                var jsonContent = await this.SerializeItem(item);
 
-                var targerDirectoryPath = Path.GetDirectoryName(targetZipFilePath);
-                if (!Directory.Exists(targerDirectoryPath))
+                if (!Directory.Exists(targetArchiveDirectoryPath))
                 {
-                    Directory.CreateDirectory(targerDirectoryPath);
+                    Directory.CreateDirectory(targetArchiveDirectoryPath);
                 }
 
-                await using (var zipStream = new FileStream(sourceZipFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                await using (var zipStream = new FileStream(sourceArchiveFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
                 {
                     using var archive = new ZipArchive(zipStream, ZipArchiveMode.Create, leaveOpen: false);
-                    var jsonEntry = archive.CreateEntry(targetZipFileName.Replace(".zip", ".json"));
+                    var jsonEntry = archive.CreateEntry(targetArchiveFileName.Replace(".zip", ".json"));
                     await using var entryStream = jsonEntry.Open();
                     await using var writer = new StreamWriter(entryStream);
                     await writer.WriteAsync(jsonContent);
+                    await this.AddEntriesToArchiveAsync(item, archive);
                 }
 
-                var sourceHash = ComputeHash(sourceZipFilePath);
+                var sourceHash = ComputeHash(sourceArchiveFilePath);
 
-                File.Copy(sourceZipFilePath, targetZipFilePath, true);
+                File.Copy(sourceArchiveFilePath, targetArchiveFilePath, true);
 
-                var targetHash = ComputeHash(targetZipFilePath);
+                var targetHash = ComputeHash(targetArchiveFilePath);
                 if (targetHash != sourceHash)
                 {
                     throw new JobException("Integrity compromised after copy");
@@ -176,20 +207,41 @@ namespace BIA.Net.Core.Application.Archive
             {
                 this.Logger.LogError(ex, "Failed to save item {ItemId} : {ExceptionMessage}", item.Id, ex.Message);
 
-                if (File.Exists(targetZipFilePath))
+                if (File.Exists(targetArchiveFilePath))
                 {
-                    File.Delete(targetZipFilePath);
+                    File.Delete(targetArchiveFilePath);
                 }
 
                 return false;
             }
             finally
             {
-                if (File.Exists(sourceZipFilePath))
+                if (File.Exists(sourceArchiveFilePath))
                 {
-                    File.Delete(sourceZipFilePath);
+                    File.Delete(sourceArchiveFilePath);
                 }
             }
+        }
+
+        /// <summary>
+        /// Serialize the <typeparamref name="TEntity"/> item.
+        /// </summary>
+        /// <param name="item">The item to serialize.</param>
+        /// <returns>A <see cref="Task"/> resulting of the serialized item as <see cref="string"/>.</returns>
+        protected virtual Task<string> SerializeItem(TEntity item)
+        {
+            return Task.FromResult(JsonConvert.SerializeObject(item, this.jsonSerializerSettings));
+        }
+
+        /// <summary>
+        /// Override this method to allow the add of new <see cref="ArchiveEntry"/> entries to the given <paramref name="archive"/> based on current <typeparamref name="TEntity"/> item when creating the archive into <see cref="CreateArchiveAsync(TEntity, string)"/>.
+        /// </summary>
+        /// <param name="item">Current <typeparamref name="TEntity"/> item to archive.</param>
+        /// <param name="archive">The archive.</param>
+        /// <returns>A <see cref="Task"/> representing the result of the asynchronous operation.</returns>
+        protected virtual Task AddEntriesToArchiveAsync(TEntity item, ZipArchive archive)
+        {
+            return Task.CompletedTask;
         }
 
         private static string ComputeHash(string filePath)

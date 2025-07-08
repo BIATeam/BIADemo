@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable } from 'rxjs';
@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { AppState } from 'src/app/store/state';
-import { BaseDto } from '../../../model/base-dto';
+import { BaseDto } from '../../../model/dto/base-dto';
 import { memberCRUDConfiguration } from '../member.constants';
 import { Member, Members } from '../model/member';
 import { FeatureMembersStore } from '../store/member.state';
@@ -23,10 +23,11 @@ export class MemberService extends CrudItemService<Member> {
     public dasService: MemberDas,
     public signalRService: CrudItemSignalRService<Member>,
     public optionsService: MemberOptionsService,
+    protected injector: Injector,
     // required only for parent key
     protected authService: AuthService
   ) {
-    super(dasService, signalRService, optionsService);
+    super(dasService, signalRService, optionsService, injector);
   }
 
   teamTypeId: number;
@@ -70,24 +71,24 @@ export class MemberService extends CrudItemService<Member> {
   }
   public create(crudItem: Member) {
     // TODO after creation of CRUD Member : map parent Key on the corresponding field
-    (crudItem.teamId = this.getParentIds()[0]),
-      this.store.dispatch(FeatureMembersActions.create({ member: crudItem }));
+    crudItem.teamId = this.getParentIds()[0];
+    this.store.dispatch(FeatureMembersActions.create({ member: crudItem }));
   }
   public save(crudItems: Member[]) {
     // TODO after creation of CRUD Member : map parent Key on the corresponding field
-    crudItems.map(x => (x.teamId = this.getParentIds()[0])),
-      this.store.dispatch(FeatureMembersActions.save({ members: crudItems }));
+    crudItems.map(x => (x.teamId = this.getParentIds()[0]));
+    this.store.dispatch(FeatureMembersActions.save({ members: crudItems }));
   }
   public createMulti(membersToCreate: Members) {
     // TODO after creation of CRUD Member : map parent Key on the corresponding field
-    (membersToCreate.teamId = this.getParentIds()[0]),
-      this.store.dispatch(
-        FeatureMembersActions.createMulti({ members: membersToCreate })
-      );
+    membersToCreate.teamId = this.getParentIds()[0];
+    this.store.dispatch(
+      FeatureMembersActions.createMulti({ members: membersToCreate })
+    );
   }
   public update(crudItem: Member) {
-    (crudItem.teamId = this.getParentIds()[0]),
-      this.store.dispatch(FeatureMembersActions.update({ member: crudItem }));
+    crudItem.teamId = this.getParentIds()[0];
+    this.store.dispatch(FeatureMembersActions.update({ member: crudItem }));
   }
   public remove(id: any) {
     this.store.dispatch(FeatureMembersActions.remove({ id }));

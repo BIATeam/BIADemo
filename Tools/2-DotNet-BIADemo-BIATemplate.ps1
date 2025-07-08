@@ -21,7 +21,7 @@ function ReplaceProjectName {
     [string]$oldName,
     [string]$newName
   )
-  Get-ChildItem -File -Recurse -include *.csproj, *.cs, *.sln, *.json, *.config | Where-Object { $_.FullName -NotLike "*/bin/*" -and $_.FullName -NotLike "*/obj/*" } | ForEach-Object { 
+  Get-ChildItem -File -Recurse -include *.csproj, *.cs, *.sln, *.json, *.config, *.sql | Where-Object { $_.FullName -NotLike "*/bin/*" -and $_.FullName -NotLike "*/obj/*" } | ForEach-Object { 
     $file = $_.FullName
     $oldContent = [System.IO.File]::ReadAllText($file);
     $newContent = $oldContent.Replace($oldName, $newName);
@@ -40,31 +40,13 @@ function RemoveCommentExceptBIADemo {
   ReplaceProjectName -oldName "// Except BIADemo " -newName ""
 }
 
-# Deletes lines between // Begin BIADemo and // End BIADemo 
+# Deletes lines between : 
+# // Begin BIADemo and // End BIADemo 
+# // Begin BIAToolKit Generation Ignore and // End BIAToolKit Generation Ignore
 function RemoveCodeExample {
-  Get-ChildItem -File -Recurse -include *.csproj, *.cs, *.sln, *.json | Where-Object { $_.FullName -NotLike "*/bin/*" -and $_.FullName -NotLike "*/obj/*" } | ForEach-Object { 
-    $lineBegin = @()
-    $file = $_.FullName
-  
-    $searchWord = 'Begin BIADemo'
-    $starts = GetLineNumber -pattern $searchWord -file $file
-    $lineBegin += $starts
-  
-    $searchWord = 'End BIADemo'
-    $ends = GetLineNumber -pattern $searchWord -file $file
-    $lineBegin += $ends
-  
-    if ($lineBegin -and $lineBegin.Length -gt 0) {
-
-      Write-Host "Delete BIADemo code for file $file"
-
-      $lineBegin = $lineBegin | Sort-Object
-      for ($i = $lineBegin.Length - 1; $i -gt 0; $i = $i - 2) {
-        $start = [int]$lineBegin[$i - 1]
-        $end = [int]$lineBegin[$i]
-        DeleteLine -start $start -end $end -file $file
-      }
-    }
+  Get-ChildItem -File -Recurse -include *.csproj, *.cs, *.sln, *.json, *.sql | Where-Object { $_.FullName -NotLike "*/bin/*" -and $_.FullName -NotLike "*/obj/*" } | ForEach-Object { 
+    RemoveCodeBetweenMarkers -file $_.FullName -marker "BIADemo"
+    RemoveCodeBetweenMarkers -file $_.FullName -marker "BIAToolKit Generation Ignore"
   }
 }
 
@@ -126,15 +108,6 @@ $biaPackage = $newPath + "\BIAPackage"
 RemoveFolder -path $biaPackage
 
 Set-Location -Path $newPath
-
-Write-Host "Zip elements"
-
-# Read Json settings to generate archive
-$myJson = Get-Content "$oldPath\$jsonFileName" -Raw | ConvertFrom-Json 
-ForEach ($settings in $myJson) {
-  GenerateZipArchive -settings $settings -settingsName $jsonFileName -oldPath $oldPath -newPath $newPath
-}
-Copy-Item -Path "$oldPath\$jsonFileName" -Destination "$newPath\$docsFolder\$jsonFileName" -Force
 
 Write-Host "Remove .vs"
 RemoveItemFolder -path '.vs'

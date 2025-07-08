@@ -1,5 +1,5 @@
 // <copyright file="CrudAppServiceListAndItemBase.cs" company="BIA">
-//     Copyright (c) BIA. All rights reserved.
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Application.Services
@@ -8,8 +8,9 @@ namespace BIA.Net.Core.Application.Services
     using System.Collections.Generic;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Entity.Interface;
+    using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
@@ -31,8 +32,8 @@ namespace BIA.Net.Core.Application.Services
         where TDtoListItem : BaseDto<TKey>, new()
         where TEntity : class, IEntity<TKey>, new()
         where TFilterDto : LazyLoadDto, new()
-        where TMapper : BaseMapper<TDto, TEntity, TKey>
-        where TMapperListItem : BaseMapper<TDtoListItem, TEntity, TKey>
+        where TMapper : BiaBaseMapper<TDto, TEntity, TKey>
+        where TMapperListItem : BiaBaseMapper<TDtoListItem, TEntity, TKey>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CrudAppServiceListAndItemBase{TDto, TDtoListItem, TEntity, TKey, TFilterDto, TMapper, TMapperListItem}"/> class.
@@ -43,7 +44,18 @@ namespace BIA.Net.Core.Application.Services
         {
         }
 
-        /// <inheritdoc cref="CrudAppServiceListAndItemBase{TDto,TFilterDto}.GetRangeAsync"/>
+        /// <summary>
+        /// Gets all asynchronous.
+        /// </summary>
+        /// <param name="filters">The filter.</param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="specification">The specification.</param>
+        /// <param name="filter">Filter Query.</param>
+        /// <param name="accessMode">The access mode.</param>
+        /// <param name="queryMode">The query mode.</param>
+        /// <param name="mapperMode">The mapper mode.</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [is read only mode].</param>
+        /// <returns>All items.</returns>
         public new virtual async Task<(IEnumerable<TDtoListItem> Results, int Total)> GetRangeAsync(
             TFilterDto filters = null,
             TKey id = default,

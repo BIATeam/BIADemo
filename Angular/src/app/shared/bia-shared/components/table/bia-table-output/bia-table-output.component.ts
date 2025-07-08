@@ -1,4 +1,11 @@
 import {
+  NgIf,
+  NgSwitch,
+  NgSwitchCase,
+  NgSwitchDefault,
+  NgTemplateOutlet,
+} from '@angular/common';
+import {
   AfterContentInit,
   ChangeDetectionStrategy,
   Component,
@@ -11,6 +18,9 @@ import {
 } from '@angular/core';
 import { PrimeTemplate } from 'primeng/api';
 import { DtoState } from '../../../model/dto-state.enum';
+import { FormatValuePipe } from '../../../pipes/format-value.pipe';
+import { JoinPipe } from '../../../pipes/join.pipe';
+import { PluckPipe } from '../../../pipes/pluck.pipe';
 import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.component';
 
 @Component({
@@ -18,6 +28,16 @@ import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.
   templateUrl: './bia-table-output.component.html',
   styleUrls: ['./bia-table-output.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
+  imports: [
+    NgIf,
+    NgTemplateOutlet,
+    NgSwitch,
+    NgSwitchCase,
+    NgSwitchDefault,
+    PluckPipe,
+    JoinPipe,
+    FormatValuePipe,
+  ],
 })
 export class BiaTableOutputComponent<CrudItem>
   extends BiaFieldBaseComponent<CrudItem>
@@ -38,6 +58,10 @@ export class BiaTableOutputComponent<CrudItem>
           break;
       }
     });
+  }
+
+  isArray(data: any): boolean {
+    return Array.isArray(data);
   }
 
   protected filterDtoState(data: any) {

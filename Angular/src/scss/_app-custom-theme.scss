@@ -1,14 +1,15 @@
-p-table {
-  .p-datatable .p-datatable-tbody > tr > td {
-    font-weight: 300;
-    padding: 0.414em 0.857em;
-
-    .pi pi-check {
-      font-size: 1.1em;
-    }
-  }
-}
-
 bia-ultima-layout {
   --footer-height: 4rem;
+}
+
+:root {
+  // Customize your topbar menu button color
+  --topbar-menu-button-bg: #98d404;
+  --topbar-menu-button-hover-bg: #5ea204;
+
+  // Customize your logo filter color
+  // Use https://codepen.io/sosuke/pen/Pjoqqp
+  // -> Choose the hexadecimal value of --topbar-menu-button-bg
+  --topbar-logo-filter: invert(76%) sepia(18%) saturate(4644%) hue-rotate(30deg)
+    brightness(101%) contrast(97%);
 }

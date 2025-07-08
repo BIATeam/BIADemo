@@ -1,9 +1,13 @@
-import { CrudConfig } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
+import {
+  CrudConfig,
+  FormReadOnlyMode,
+} from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { Plane, planeFieldsConfiguration } from './model/plane';
 import {
   PlaneSpecific,
   planeSpecificFieldsConfiguration,
+  planeSpecificFormLayoutConfiguration,
 } from './model/plane-specific';
 
 // IMPORTANT: this key should be unique in all the application.
@@ -13,8 +17,10 @@ export const featureName = 'planes-specific';
 export const planeCRUDConfiguration: CrudConfig<Plane> = new CrudConfig({
   featureName: 'planes-specific',
   fieldsConfig: planeFieldsConfiguration,
+  formEditReadOnlyMode: FormReadOnlyMode.clickToEdit,
+  hasReadView: true,
   useCalcMode: false,
-  useSignalR: false,
+  useSignalR: true,
   useView: false,
   useViewTeamWithTypeId: TeamTypeId.Site, // use to filter view by teams => should know the type of team
   usePopup: true,
@@ -37,4 +43,5 @@ export const planeSpecificCRUDConfiguration: CrudConfig<PlaneSpecific> =
   new CrudConfig({
     ...planeCRUDConfiguration,
     fieldsConfig: planeSpecificFieldsConfiguration,
+    formLayoutConfig: planeSpecificFormLayoutConfiguration,
   });

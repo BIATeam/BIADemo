@@ -10,6 +10,7 @@ import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/ser
 })
 export class BiaNgxLoggerServerService extends NGXLoggerServerService {
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     protected keycloakService: KeycloakService,
     protected httpBackend: HttpBackend,
     protected appSettingsService: AppSettingsService,

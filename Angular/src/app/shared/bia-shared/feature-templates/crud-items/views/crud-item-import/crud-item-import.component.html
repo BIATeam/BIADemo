@@ -1,6 +1,7 @@
 <bia-form
-  [hidden]="true"
+  [shown]="false"
   [fields]="crudConfiguration.fieldsConfig.columns"
+  [formLayoutConfig]="crudConfiguration.formLayoutConfig"
   [formValidators]="crudConfiguration.fieldsConfig.formValidators"
   [dictOptionDtos]="
     (crudItemService.optionsService.dictOptionDtos$ | async) ?? []
@@ -15,7 +16,7 @@
   [canEdit]="canEdit"
   [importParam]="crudItemImportService.importParam"
   (save)="onSave($event)"
-  (cancel)="onCancel()"
+  (cancelled)="onCancel()"
   (fileSelected)="onFileSelected($event)"
   (changeImportParam)="onChangeImportParam($event)">
 </bia-crud-item-import-form>

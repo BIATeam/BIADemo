@@ -1,40 +1,83 @@
 import { Platform } from '@angular/cdk/platform';
-import { DOCUMENT } from '@angular/common';
 import {
+  AsyncPipe,
+  DOCUMENT,
+  NgClass,
+  NgFor,
+  NgIf,
+  NgSwitch,
+  NgSwitchCase,
+  NgSwitchDefault,
+} from '@angular/common';
+import {
+  AfterViewInit,
   Component,
   ElementRef,
   Inject,
   Input,
   OnDestroy,
   OnInit,
+  Renderer2,
   ViewChild,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
-import { Message } from 'primeng/api';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { PrimeTemplate, ToastMessageOptions } from 'primeng/api';
+import { ButtonDirective } from 'primeng/button';
+import { Ripple } from 'primeng/ripple';
 import { Toast } from 'primeng/toast';
+import { Tooltip } from 'primeng/tooltip';
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import {
   Notification,
   NotificationData,
   NotificationType,
 } from 'src/app/domains/bia-domains/notification/model/notification';
+import { NotificationModule } from 'src/app/domains/bia-domains/notification/notification.module';
 import { getUnreadNotificationCount } from 'src/app/domains/bia-domains/notification/store/notification.state';
 import { DomainNotificationsActions } from 'src/app/domains/bia-domains/notification/store/notifications-actions';
 import { BiaNavigation } from 'src/app/shared/bia-shared/model/bia-navigation';
 import { AppState } from 'src/app/store/state';
 import { allEnvironments } from 'src/environments/all-environments';
+import { BiaOnlineOfflineIconComponent } from '../../../bia-online-offline-icon/bia-online-offline-icon.component';
+import { BiaTeamSelectorComponent } from '../../../bia-team-selector/bia-team-selector.component';
+import { NotificationTeamWarningComponent } from '../../../notification-team-warning/notification-team-warning.component';
+import { IeWarningComponent } from '../../ie-warning/ie-warning.component';
 import { BiaLayoutService } from '../../services/layout.service';
 
 @Component({
   selector: 'bia-ultima-topbar',
   templateUrl: './ultima-topbar.component.html',
   styleUrls: ['./ultima-topbar.component.scss'],
+  imports: [
+    RouterLink,
+    Ripple,
+    NgIf,
+    IeWarningComponent,
+    NgFor,
+    BiaTeamSelectorComponent,
+    Tooltip,
+    BiaOnlineOfflineIconComponent,
+    Toast,
+    PrimeTemplate,
+    NgSwitch,
+    NgSwitchCase,
+    NgSwitchDefault,
+    ButtonDirective,
+    NotificationTeamWarningComponent,
+    NgClass,
+    AsyncPipe,
+    TranslateModule,
+    NotificationModule,
+  ],
 })
-export class BiaUltimaTopbarComponent implements OnInit, OnDestroy {
+export class BiaUltimaTopbarComponent
+  implements OnInit, OnDestroy, AfterViewInit
+{
   @Input() appTitle: string;
   @Input() version: string;
   @Input() helpUrl?: string;
@@ -71,14 +114,16 @@ export class BiaUltimaTopbarComponent implements OnInit, OnDestroy {
     protected store: Store<AppState>,
     public biaTranslationService: BiaTranslationService,
     protected router: Router,
-    @Inject(DOCUMENT) private document: Document,
-    public el: ElementRef
+    @Inject(DOCUMENT) protected document: Document,
+    public el: ElementRef,
+    protected readonly biaMessageService: BiaMessageService,
+    protected renderer: Renderer2
   ) {}
 
   ngOnInit() {
-    this.teamTypeSelectors = allEnvironments.teams.filter(
-      t => t.inHeader === true
-    );
+    this.teamTypeSelectors = this.authService
+      .getLoginParameters()
+      .teamsConfig.filter(t => t.inHeader === true);
 
     if (allEnvironments.enableNotifications === true) {
       this.unreadNotificationCount$ = this.store.select(
@@ -90,13 +135,17 @@ export class BiaUltimaTopbarComponent implements OnInit, OnDestroy {
     }
   }
 
+  ngAfterViewInit(): void {
+    this.positionClearButton();
+  }
+
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
     }
   }
 
-  onNotificationClick(message: Message) {
+  onNotificationClick(message: ToastMessageOptions) {
     if (message.data?.notification) {
       const notification: Notification = message.data.notification;
       const data: NotificationData | undefined = notification.data;
@@ -124,11 +173,11 @@ export class BiaUltimaTopbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  onIgnoreClick(message: Message) {
+  onIgnoreClick(message: ToastMessageOptions) {
     this.removeMessage(message, true);
   }
 
-  protected removeMessage(message: Message, setRead = false) {
+  protected removeMessage(message: ToastMessageOptions, setRead = false) {
     this.toast.messages?.splice(this.toast.messages?.indexOf(message), 1);
 
     if (setRead && message.data?.notification?.id > 0) {
@@ -138,6 +187,10 @@ export class BiaUltimaTopbarComponent implements OnInit, OnDestroy {
         })
       );
     }
+  }
+
+  clearAllMessages() {
+    this.biaMessageService.clear('bia');
   }
 
   toggleFullscreenMode() {
@@ -162,7 +215,7 @@ export class BiaUltimaTopbarComponent implements OnInit, OnDestroy {
   }
 
   closeFullscreen() {
-    if (this.document.exitFullscreen) {
+    if (this.document.exitFullscreen && this.document.fullscreenElement) {
       this.document.exitFullscreen();
     }
   }
@@ -192,11 +245,22 @@ export class BiaUltimaTopbarComponent implements OnInit, OnDestroy {
     return this.layoutService.state.topbarMenuActive;
   }
 
-  get showToggleStyle(): boolean {
-    return this.layoutService.configDisplay().showToggleStyle;
+  openSettings() {
+    this.layoutService.openConfigSidebar();
   }
 
-  toggleStyle() {
-    this.layoutService.toggleStyle();
+  positionClearButton() {
+    const parentElement = document
+      .getElementById('toast')
+      ?.querySelector('.p-toast.p-component');
+
+    if (parentElement) {
+      const clearButton = document.getElementById('clearButton');
+      this.renderer.insertBefore(
+        parentElement,
+        clearButton,
+        parentElement.firstChild
+      );
+    }
   }
 }

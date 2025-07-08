@@ -23,6 +23,16 @@ export namespace DomainTeamsActions {
     props<{ teamTypeId: number; teamId: number }>()
   );
 
+  export const resetDefaultTeam = createAction(
+    '[' + storeKey + '] Reset default team',
+    props<{ teamTypeId: number }>()
+  );
+
+  export const resetDefaultTeamSuccess = createAction(
+    '[' + storeKey + '] Reset default team success',
+    props<{ teamTypeId: number }>()
+  );
+
   export const setDefaultRoles = createAction(
     '[' + storeKey + '] Set default role',
     props<{ teamId: number; roleIds: number[] }>()
@@ -31,5 +41,15 @@ export namespace DomainTeamsActions {
   export const setDefaultRolesSuccess = createAction(
     '[' + storeKey + '] Set default role success',
     props<{ teamId: number; roleIds: number[] }>()
+  );
+
+  export const resetDefaultRoles = createAction(
+    '[' + storeKey + '] Reset default role',
+    props<{ teamId: number }>()
+  );
+
+  export const resetDefaultRolesSuccess = createAction(
+    '[' + storeKey + '] Reset default role success',
+    props<{ teamId: number }>()
   );
 }

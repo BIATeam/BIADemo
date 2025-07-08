@@ -1,5 +1,5 @@
 ﻿// <copyright file="BaseDto.cs" company="BIA">
-//     Copyright (c) BIA. All rights reserved.
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Domain.Dto.Base
@@ -8,7 +8,7 @@ namespace BIA.Net.Core.Domain.Dto.Base
     /// The base class for DTO.
     /// </summary>
     /// <typeparam name="TKey">Type of the key.</typeparam>
-    public class BaseDto<TKey>
+    public abstract class BaseDto<TKey>
     {
         /// <summary>
         /// Gets or sets the identifier.

@@ -1,19 +1,22 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/services/layout.service';
+import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { AppState } from 'src/app/store/state';
 import { Notification } from '../../model/notification';
 import { NotificationService } from '../../services/notification.service';
-import { getCurrentNotification } from '../../store/notification.state';
+import { FeatureNotificationsStore } from '../../store/notification.state';
 
 @Component({
   selector: 'bia-notifications-item',
   templateUrl: './notification-item.component.html',
   styleUrls: ['./notification-item.component.scss'],
+  imports: [RouterOutlet, NgIf, AsyncPipe, SpinnerComponent],
 })
 export class NotificationItemComponent implements OnInit, OnDestroy {
   notification$: Observable<Notification>;
@@ -30,20 +33,22 @@ export class NotificationItemComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.sub.add(
       this.biaTranslationService.currentCulture$.subscribe(() => {
-        this.notificationService.currentNotificationId =
+        this.notificationService.currentCrudItemId =
           this.route.snapshot.params.notificationId;
       })
     );
 
     this.sub.add(
-      this.store.select(getCurrentNotification).subscribe(notification => {
-        if (notification?.title) {
-          this.route.data.pipe(first()).subscribe(routeData => {
-            (routeData as any)['breadcrumb'] = notification.title;
-          });
-          this.layoutService.refreshBreadcrumb();
-        }
-      })
+      this.store
+        .select(FeatureNotificationsStore.getCurrentNotification)
+        .subscribe(notification => {
+          if (notification?.title) {
+            this.route.data.pipe(first()).subscribe(routeData => {
+              (routeData as any)['breadcrumb'] = notification.title;
+            });
+            this.layoutService.refreshBreadcrumb();
+          }
+        })
     );
   }
 

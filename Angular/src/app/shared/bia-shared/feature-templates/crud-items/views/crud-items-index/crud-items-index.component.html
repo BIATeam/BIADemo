@@ -3,17 +3,23 @@
     <bia-table-header
       [headerTitle]="'crudItem.listOf' | translate"
       [canAdd]="canAdd && !crudConfiguration.useCalcMode"
+      [canClone]="canAdd && crudConfiguration.isCloneable"
       [canDelete]="canDelete"
+      [canFix]="canFix"
       [canExportCSV]="true"
       (create)="onCreate()"
       (exportCSV)="onExportCSV('bia.crud.listOf')"
+      (clone)="onClone()"
       (delete)="onDelete()"
       [selectedElements]="selectedCrudItems"
       [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
       [tableControllerVisible]="showTableController"
-      (toggleTableControllerVisibility)="
-        toggleTableControllerVisibility()
-      "></bia-table-header>
+      [showFixedButtons]="crudConfiguration.isFixable"
+      (toggleTableControllerVisibility)="toggleTableControllerVisibility()"
+      (crudItemFixedChanged)="
+        crudItemService.updateFixedStatus($event.crudItemId, $event.fixed)
+      ">
+    </bia-table-header>
     <bia-table-controller
       [ngClass]="{ 'table-controller-hidden': !showTableController }"
       [defaultPageSize]="defaultPageSize"
@@ -29,19 +35,20 @@
       [defaultViewPref]="defaultViewPref"
       [useViewTeamWithTypeId]="useViewTeamWithTypeId"
       [hasColumnFilter]="hasColumnFilter">
-      <ng-template pTemplate="customControl">
-        <bia-table-behavior-controller
+      <ng-template pTemplate="customControl"
+        ><bia-table-behavior-controller
           [crudConfiguration]="crudConfiguration"
           (useCalcModeChanged)="useCalcModeChange($event)"
           (usePopupChanged)="usePopupChange($event)"
+          (useSplitChanged)="useSplitChange($event)"
           (useSignalRChanged)="useSignalRChange($event)"
           (useViewChanged)="useViewChange($event)"
           (useCompactModeChanged)="useCompactModeChange($event)"
           (useVirtualScrollChanged)="useVirtualScrollChange($event)"
           (useResizableColumnChanged)="
             useResizableColumnChange($event)
-          "></bia-table-behavior-controller>
-      </ng-template>
+          "></bia-table-behavior-controller
+      ></ng-template>
     </bia-table-controller>
     <bia-table
       *ngIf="!crudConfiguration.useCalcMode"
@@ -60,10 +67,11 @@
       [pageSize]="pageSize"
       (pageSizeChange)="onPageSizeChange($event)"
       [configuration]="crudConfiguration.fieldsConfig"
-      [showColSearch]="showColSearch"
+      [(showColSearch)]="showColSearch"
       [globalSearchValue]="globalSearchValue"
-      [canClickRow]="canEdit"
-      [canSelectElement]="canDelete"
+      [canClickRow]="canEdit || crudConfiguration.hasReadView"
+      [canSelectElement]="canSelect"
+      [canSelectMultipleElement]="canDelete"
       [loading]="(loading$ | async) ?? false"
       (clickRowId)="onClickRow($event)"
       (loadLazy)="onLoadLazy($event)"
@@ -71,11 +79,12 @@
       [tableStateKey]="tableStateKey"
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
       [sortFieldValue]="sortFieldValue"
-      [scrollHeightValue]="getFillScrollHeightValue()"
       (stateSave)="onStateSave($event)"
+      [scrollHeightValue]="getFillScrollHeightValue()"
       [virtualScroll]="crudConfiguration.useVirtualScroll"
       [isResizableColumn]="crudConfiguration.useResizableColumn"
-      [rowHeight]="defaultRowHeight"></bia-table>
+      [rowHeight]="defaultRowHeight"
+      [showFixableState]="crudConfiguration.isFixable"></bia-table>
     <bia-crud-item-table
       *ngIf="crudConfiguration.useCalcMode"
       [elements]="
@@ -92,11 +101,12 @@
       [pageSize]="pageSize"
       (pageSizeChange)="onPageSizeChange($event)"
       [configuration]="crudConfiguration.fieldsConfig"
-      [showColSearch]="showColSearch"
+      [(showColSearch)]="showColSearch"
       [globalSearchValue]="globalSearchValue"
       [canEdit]="canEdit"
       [canAdd]="canAdd"
-      [canSelectElement]="canDelete"
+      [canSelectElement]="canSelect"
+      [canSelectMultipleElement]="canDelete"
       [loading]="(loading$ | async) ?? false"
       (loadLazy)="onLoadLazy($event)"
       [viewPreference]="viewPreference"
@@ -105,8 +115,9 @@
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
       (save)="onSave($event)"
+      [scrollHeightValue]="getFillScrollHeightValue()"
       [virtualScroll]="crudConfiguration.useVirtualScroll"
       [rowHeight]="defaultRowHeight"
-      [scrollHeightValue]="getFillScrollHeightValue()"></bia-crud-item-table>
+      [showFixableState]="crudConfiguration.isFixable"></bia-crud-item-table>
   </div>
 </div>

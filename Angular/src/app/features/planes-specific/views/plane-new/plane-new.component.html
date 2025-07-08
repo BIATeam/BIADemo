@@ -1,5 +1,12 @@
 <app-plane-specific-form
+  [crudItem]="crudItem"
+  [isAdd]="true"
   [fields]="crudConfiguration.fieldsConfig.columns"
+  [formLayoutConfig]="crudConfiguration.formLayoutConfig"
   [dictOptionDtos]="(planeService.optionsService.dictOptionDtos$ | async) ?? []"
-  (cancel)="onCancelled()"
-  (save)="onSubmitted($event)"></app-plane-specific-form>
+  (cancelled)="onCancelled()"
+  (save)="onSubmitted($event)"
+  [showPopupButton]="showPopupButton"
+  [showSplitButton]="showSplitButton"
+  [showFullPageButton]="showFullPageButton"
+  (layoutChanged)="notifyLayoutChange($event)"></app-plane-specific-form>

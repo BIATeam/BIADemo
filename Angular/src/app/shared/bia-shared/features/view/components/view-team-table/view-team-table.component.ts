@@ -1,3 +1,4 @@
+import { NgIf } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -7,8 +8,12 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { Confirmation, ConfirmationService } from 'primeng/api';
-import { Table } from 'primeng/table';
+import { TranslateModule } from '@ngx-translate/core';
+import { Confirmation, ConfirmationService, PrimeTemplate } from 'primeng/api';
+import { ButtonDirective } from 'primeng/button';
+import { ConfirmDialog } from 'primeng/confirmdialog';
+import { Table, TableModule } from 'primeng/table';
+import { Tooltip } from 'primeng/tooltip';
 import { BiaDialogService } from 'src/app/core/bia-core/services/bia-dialog.service';
 import { Team } from 'src/app/domains/bia-domains/team/model/team';
 import { AssignViewToTeam } from '../../model/assign-view-to-team';
@@ -19,6 +24,15 @@ import { ViewTeam } from '../../model/view-team';
   selector: 'bia-view-team-table',
   templateUrl: './view-team-table.component.html',
   styleUrls: ['./view-team-table.component.scss'],
+  imports: [
+    NgIf,
+    ButtonDirective,
+    Tooltip,
+    TableModule,
+    PrimeTemplate,
+    ConfirmDialog,
+    TranslateModule,
+  ],
 })
 export class ViewTeamTableComponent implements OnChanges {
   @Input() views: TeamView[];

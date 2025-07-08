@@ -8,7 +8,7 @@
   </ng-container>
   <ng-container [ngSwitch]="field.type" *ngIf="field.specificInput !== true">
     <ng-container *ngSwitchCase="'OneToMany'">
-      <p-dropdown
+      <p-select
         class="bia-simple-input"
         placeholder="&nbsp;"
         [formControlName]="field.field"
@@ -16,11 +16,12 @@
         optionLabel="display"
         dataKey="id"
         showClear="true"
+        [autofocus]="focusByDefault"
         (onChange)="onChange()"
         appendTo="body"
         [style]="{ width: '100%' }"
         [editable]="field.isEditableChoice"
-        scrollHeight="50vh"></p-dropdown>
+        scrollHeight="50vh"></p-select>
     </ng-container>
     <ng-container *ngSwitchCase="'ManyToMany'">
       <p-multiSelect
@@ -31,6 +32,7 @@
         [options]="getOptionDto(field.field)"
         optionLabel="display"
         datakey="id"
+        [autofocus]="focusByDefault"
         (onChange)="onChange()"
         (onPanelShow)="onComplexInput(true)"
         (onPanelHide)="onPanelHide(multiselect)"
@@ -39,11 +41,15 @@
         scrollHeight="50vh"></p-multiSelect>
     </ng-container>
     <ng-container *ngSwitchCase="'Boolean'">
-      <p-checkbox
-        class="bia-simple-input"
-        [binary]="true"
-        [formControlName]="field.field"
-        (onChange)="onChange()"></p-checkbox>
+      <div class="flex">
+        <p-checkbox
+          class="bia-simple-input"
+          [binary]="true"
+          [formControlName]="field.field"
+          [autofocus]="focusByDefault"
+          (onChange)="onChange()"></p-checkbox>
+        <span *ngIf="field.isRequired" class="bia-star-mandatory">*</span>
+      </div>
     </ng-container>
     <ng-container *ngSwitchCase="'Number'">
       <p-inputNumber
@@ -59,10 +65,11 @@
         [maxFractionDigits]="displayNumberFormat.maxFractionDigits"
         [min]="displayNumberFormat.min"
         [max]="displayNumberFormat.max"
-        [locale]="displayNumberFormat.autoLocale || 'en-US'" />
+        [locale]="displayNumberFormat.autoLocale || 'en-US'"
+        [autofocus]="focusByDefault" />
     </ng-container>
     <ng-container *ngSwitchCase="'Date'">
-      <p-calendar
+      <p-date-picker
         biaLocale
         [formControlName]="field.field"
         placeholder="&nbsp;"
@@ -78,10 +85,17 @@
         [dateFormat]="
           getDisplayDateFormat(field.displayFormat)?.autoPrimeDateFormat ??
           'yy-mm-dd'
-        "></p-calendar>
+        "
+        [autofocus]="focusByDefault"
+        [view]="
+          getDateView(
+            getDisplayDateFormat(field.displayFormat)?.autoPrimeDateFormat ??
+              'yy-mm-dd'
+          )
+        "></p-date-picker>
     </ng-container>
     <ng-container *ngSwitchCase="'Time'">
-      <p-calendar
+      <p-date-picker
         biaLocale
         [formControlName]="field.field"
         placeholder="&nbsp;"
@@ -99,11 +113,12 @@
           getDisplayDateFormat(field.displayFormat)?.autoPrimeDateFormat ??
           'yy-mm-dd'
         "
-        [hourFormat]="'24'"></p-calendar>
+        [hourFormat]="'24'"
+        [autofocus]="focusByDefault"></p-date-picker>
       <!-- [hourFormat]="field.displayFormat.autoHourFormat?field.displayFormat.autoHourFormat:24" not work for 12 (PrimeNG 13)-->
     </ng-container>
     <ng-container *ngSwitchCase="'TimeOnly'">
-      <p-calendar
+      <p-date-picker
         biaLocale
         [formControlName]="field.field"
         placeholder="&nbsp;"
@@ -118,11 +133,12 @@
         [showTime]="true"
         dataType="string"
         [timeOnly]="true"
-        [hourFormat]="'24'"></p-calendar>
+        [hourFormat]="'24'"
+        [autofocus]="focusByDefault"></p-date-picker>
       <!-- [hourFormat]="field.displayFormat.autoHourFormat?field.displayFormat.autoHourFormat:24" not work for 12 (PrimeNG 13)-->
     </ng-container>
     <ng-container *ngSwitchCase="'TimeSecOnly'">
-      <p-calendar
+      <p-date-picker
         biaLocale
         [formControlName]="field.field"
         placeholder="&nbsp;"
@@ -138,11 +154,12 @@
         showSeconds="true"
         dataType="string"
         [timeOnly]="true"
-        [hourFormat]="'24'"></p-calendar>
+        [hourFormat]="'24'"
+        [autofocus]="focusByDefault"></p-date-picker>
       <!-- [hourFormat]="field.displayFormat.autoHourFormat?field.displayFormat.autoHourFormat:24" not work for 12 (PrimeNG 13)-->
     </ng-container>
     <ng-container *ngSwitchCase="'DateTime'">
-      <p-calendar
+      <p-date-picker
         biaLocale
         [formControlName]="field.field.toString()"
         placeholder="&nbsp;"
@@ -164,7 +181,13 @@
           getDisplayDateFormat(
             field.displayFormat
           )?.autoHourFormat?.toString() ?? '24'
-        "></p-calendar>
+        "
+        [autofocus]="focusByDefault"
+        [showSeconds]="
+          showSeconds(
+            getDisplayDateFormat(field.displayFormat)?.autoFormatDate ?? ''
+          )
+        "></p-date-picker>
     </ng-container>
     <ng-container *ngSwitchDefault>
       <input
@@ -173,8 +196,13 @@
         type="text"
         [maxlength]="field.maxlength"
         [formControlName]="field.field.toString()"
+        [pAutoFocus]="focusByDefault"
         (change)="onChange()" />
     </ng-container>
   </ng-container>
-  <span *ngIf="field.isRequired" class="bia-star-mandatory">*</span>
+  <span
+    *ngIf="field.isRequired && field.type !== 'Boolean'"
+    class="bia-star-mandatory"
+    >*</span
+  >
 </div>

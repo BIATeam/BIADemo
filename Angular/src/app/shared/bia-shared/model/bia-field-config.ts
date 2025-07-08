@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Validator, ValidatorFn } from '@angular/forms';
+import { ValidatorFn } from '@angular/forms';
 
 export enum PrimeNGFiltering {
   StartsWith = 'startsWith',
@@ -28,7 +28,6 @@ export enum PropType {
 }
 
 export enum NumberMode {
-  Default = 'decimal',
   Decimal = 'decimal',
   Currency = 'currency',
 }
@@ -44,7 +43,7 @@ export class BiaFieldNumberFormat {
   max: number | null;
   constructor() {
     this.autoLocale = '';
-    this.mode = NumberMode.Default;
+    this.mode = NumberMode.Decimal;
     this.currency = 'USD';
     this.currencyDisplay = 'symbol';
     this.minFractionDigits = null;
@@ -92,7 +91,7 @@ export class BiaFieldConfig<TDto> {
   translateKey: string;
   searchPlaceholder: string;
   isRequired: boolean;
-  validators: Validator[];
+  validators: ValidatorFn[];
   specificOutput: boolean;
   specificInput: boolean;
   minWidth: string;
@@ -100,6 +99,9 @@ export class BiaFieldConfig<TDto> {
   alignFrozen: string;
   displayFormat: BiaFieldNumberFormat | BiaFieldDateFormat | null;
   maxConstraints = 10;
+  isVisibleInTable: boolean;
+  filterWithDisplay: boolean;
+  customDisplayFormat: boolean = true;
 
   get isDate() {
     return (
@@ -141,6 +143,8 @@ export class BiaFieldConfig<TDto> {
     this.isFrozen = false;
     this.alignFrozen = 'left';
     this.displayFormat = null;
+    this.isVisibleInTable = true;
+    this.filterWithDisplay = false;
   }
 
   public clone(): BiaFieldConfig<TDto> {
@@ -168,6 +172,9 @@ export class BiaFieldConfig<TDto> {
         isFrozen: this.isFrozen,
         alignFrozen: this.alignFrozen,
         displayFormat: this.displayFormat,
+        isVisibleInTable: this.isVisibleInTable,
+        filterWithDisplay: this.filterWithDisplay,
+        customDisplayFormat: this.customDisplayFormat,
       }
     );
   }

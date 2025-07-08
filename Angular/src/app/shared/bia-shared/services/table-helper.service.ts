@@ -29,11 +29,16 @@ export class TableHelperService {
   public hasFilter<TDto extends { id: number }>(
     biaTableComponent: BiaTableComponent<TDto>
   ): boolean {
-    if (this.isNullUndefEmptyStr(biaTableComponent)) {
+    if (TableHelperService.isNullUndefEmptyStr(biaTableComponent)) {
       return false;
     }
     if (biaTableComponent.table && biaTableComponent.table.hasFilter()) {
-      if (this.isNullUndefEmptyFilters(biaTableComponent.table.filters, true)) {
+      if (
+        TableHelperService.isNullUndefEmptyFilters(
+          biaTableComponent.table.filters,
+          true
+        )
+      ) {
         return false;
       } else {
         return true;
@@ -43,7 +48,7 @@ export class TableHelperService {
     }
   }
 
-  public isNullUndefEmptyFilters(
+  public static isNullUndefEmptyFilters(
     filters: { [s: string]: FilterMetadata | FilterMetadata[] | undefined },
     ignoreGlobalFilter: boolean
   ): boolean {
@@ -80,21 +85,23 @@ export class TableHelperService {
     return true;
   }
 
-  public isSimpleFilter(filter: FilterMetadata | FilterMetadata[] | undefined) {
+  public static isSimpleFilter(
+    filter: FilterMetadata | FilterMetadata[] | undefined
+  ) {
     return !Array.isArray(filter);
   }
 
-  protected isNullUndefEmptyStr(obj: any): boolean {
+  public static isNullUndefEmptyStr(obj: any): boolean {
     return obj === null || obj === undefined || obj === '';
   }
 
-  public isEmptyFilter(obj: FilterMetadata): boolean {
+  public static isEmptyFilter(obj: FilterMetadata): boolean {
     return (
       obj === null ||
       obj === undefined ||
       (this.isNullUndefEmptyStr(obj.value) &&
-        obj.matchMode != 'empty' &&
-        obj.matchMode != 'notEmpty')
+        obj.matchMode !== 'empty' &&
+        obj.matchMode !== 'notEmpty')
     );
   }
 
@@ -128,31 +135,27 @@ export class TableHelperService {
       layoutService,
       offset
     );
-    // table header height = 2.14rem
+    // table header height = 2.24rem
 
     // Non compact mode :
     // table header margin = 1.25rem
-    // controller height is approximately ~= 2.5rem + 31px
-    // paginator = 4.05rem
+    // controller height = 4.5rem
+    // paginator = 3.75rem
 
     // Compact mode :
     // table header margin = -0.25rem
-    // controller height is approximately ~= 2.75rem + 5px
-    // paginator = 3.3rem
+    // controller height = 3.25rem
+    // paginator = 2.6rem
 
-    if (layoutService._config.classicStyle) {
-      height += ' - 200px';
-    } else {
-      height += ' - 31px - 9.94rem';
-    }
+    height += ' - 11.74rem';
     if (compactMode) {
-      height += ' + 2rem + 26px';
+      height += ' + 3.75rem';
 
       if (!showTableController) {
-        height += ' + 2.75rem + 5px';
+        height += ' + 3.25rem';
       }
     } else if (!showTableController) {
-      height += ' + 2.5rem + 31px';
+      height += ' + 4.5rem';
     }
 
     return `calc(${height})`;

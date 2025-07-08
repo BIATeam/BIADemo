@@ -1,8 +1,8 @@
-﻿// <copyright file="RecuringJobsHelper.cs" company="BIA.Net">
-// Copyright (c) BIA.Net. All rights reserved.
+﻿// <copyright file="RecuringJobsHelper.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.WorkerService
+namespace BIA.Net.Core.WorkerService.Helpers
 {
     using System;
     using System.Collections.Generic;

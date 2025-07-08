@@ -1,5 +1,5 @@
 ﻿// <copyright file="BiaClaimsPrincipal.cs" company="BIA">
-// Copyright (c) BIA.Net. All rights reserved.
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Domain.Authentication
@@ -23,6 +23,11 @@ namespace BIA.Net.Core.Domain.Authentication
         /// The role identifier.
         /// </summary>
         public const string RoleId = "http://schemas.microsoft.com/ws/2008/06/identity/claims/roleid";
+
+        /// <summary>
+        /// The role name key.
+        /// </summary>
+        public const string Role = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BiaClaimsPrincipal"/> class.

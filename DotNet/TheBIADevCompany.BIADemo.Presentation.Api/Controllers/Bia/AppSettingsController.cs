@@ -1,12 +1,12 @@
-﻿// <copyright file="AppSettingsController.cs" company="BIA">
-//     Copyright (c) BIA. All rights reserved.
+﻿// <copyright file="AppSettingsController.cs" company="TheBIADevCompany">
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
 {
     using System;
     using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.Domain.Dto.Option;
-    using BIA.Net.Presentation.Api.Controllers.Base;
+    using BIA.Net.Core.Domain.Dto.App;
+    using BIA.Net.Core.Presentation.Api.Controller.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -36,6 +36,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
                 Cultures = configuration.Value.Cultures,
                 MonitoringUrl = configuration.Value.ApiFeatures?.DelegateJobToWorker?.MonitoringUrl,
                 ProfileConfiguration = configuration.Value.ProfileConfiguration,
+                IframeConfiguration = configuration.Value.IframeConfiguration,
             };
         }
 

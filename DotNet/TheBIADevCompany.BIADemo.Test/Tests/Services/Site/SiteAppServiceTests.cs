@@ -1,5 +1,5 @@
 // <copyright file="SiteAppServiceTests.cs" company="TheBIADevCompany">
-//     Copyright (c) TheBIADevCompany. All rights reserved.
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
 {
@@ -7,15 +7,18 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
     using System.Linq;
     using System.Text.Json;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Domain.User.Specifications;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using TheBIADevCompany.BIADemo.Application.Site;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
+    using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.Site.Entities;
-    using TheBIADevCompany.BIADemo.Domain.User.Specifications;
     using TheBIADevCompany.BIADemo.Test.Data;
 
     /// <summary>
@@ -44,7 +47,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
             // Mock authentication data (IPrincipal).
             this.PrincipalBuilder.MockPrincipalUserPermissions(new List<string>
                 {
-                    Rights.Teams.AccessAll,
+                    BiaRights.Teams.AccessAll,
                 });
 
             // Initialize the service to test.
@@ -178,7 +181,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
             // Mock authentication data (IPrincipal).
             this.PrincipalBuilder.MockPrincipalUserPermissions(new List<string>
                 {
-                    Rights.Teams.AccessAll,
+                    BiaRights.Teams.AccessAll,
                 });
 
             // Initialize the service to test.
@@ -226,7 +229,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
             // Mock authentication data (IPrincipal).
             this.PrincipalBuilder.MockPrincipalUserPermissions(new List<string>
                 {
-                    Rights.Teams.AccessAll,
+                    BiaRights.Teams.AccessAll,
                 })
                 .MockPrincipalUserData(new UserDataDto()
                 {
@@ -265,7 +268,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
             // Mock authentication data (IPrincipal).
             this.PrincipalBuilder.MockPrincipalUserPermissions(new List<string>
                 {
-                    Rights.Teams.AccessAll,
+                    BiaRights.Teams.AccessAll,
                 })
                 .MockPrincipalUserData(new UserDataDto()
                 {

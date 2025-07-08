@@ -1,5 +1,3 @@
-@import '../../../../../../scss/bia/bia-variables';
-
 :host {
   display: block;
   position: relative;
@@ -7,62 +5,31 @@
   width: calc(100% + 70px);
   padding-left: 35px;
   padding-right: 35px;
-  padding-top: 8px;
-  padding-bottom: 17px;
-}
-
-:host ::ng-deep {
-  p-dropdown {
-    .p-dropdown-label {
-      padding: 0.125rem !important;
-    }
-  }
-
-  p-multiselect {
-    .p-multiselect-label {
-      padding: 0.125rem !important;
-    }
-  }
-
-  .bia-btn-del-filter {
-    color: $biaRed !important;
-  }
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
 }
 
 .bia-table-controller-container {
-  padding-top: 10px;
-  padding-right: 20px;
   display: flex;
+  gap: 2rem;
   flex-direction: row;
-  flex-wrap: wrap;
   justify-content: space-between;
+
+  .cog {
+    position: absolute;
+    top: 1rem;
+    right: 0.5rem;
+    background: transparent;
+    font-size: 0.7rem;
+  }
 }
 
 .bia-column-filter-icon {
   margin-top: 5px;
 }
 
-.bia-table-controller-container > div {
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-.bia-table-controller-container .p-float-label {
-  margin-top: -10px;
-}
-
 .options {
   padding-top: 20px;
-}
-
-strong {
-  font-family: 'oswald-bold';
-}
-
-input,
-span,
-label {
-  font-family: 'oswald-light';
 }
 
 .result {
@@ -73,7 +40,7 @@ label {
   margin-bottom: 10px;
 }
 
-.p-dropdown-label {
+.p-select-label {
   padding: 0.125rem !important;
 }
 
@@ -82,5 +49,60 @@ label {
 }
 
 #bia-input-search {
-  width: 15vw;
+  width: 17rem;
+}
+
+.bia-overflowing-content-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  cursor: pointer;
+}
+
+.bia-overflow-hidden,
+.bia-overflowing-content.bia-overflowing-content-active .bia-overflow-hidden {
+  display: flex;
+  flex-grow: 1;
+
+  .bia-overflow-hidden-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 1;
+  }
+}
+
+.bia-overflowing-content .bia-overflow-hidden {
+  display: none;
+  padding: 0;
+  min-width: 100%;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  z-index: 10;
+  background-color: var(--active-menuitem-bg);
+  box-shadow:
+    0px 4px 5px rgba(0, 0, 0, 0.14),
+    0px 4px 4px -1px rgba(0, 0, 0, 0.2);
+
+  .bia-overflow-hidden-container {
+    display: flex;
+    padding: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 1;
+  }
+}
+
+.bia-overflow-visible {
+  display: none;
+}
+
+.bia-overflowing-content .bia-overflow-visible {
+  display: flex;
+  align-items: center;
 }

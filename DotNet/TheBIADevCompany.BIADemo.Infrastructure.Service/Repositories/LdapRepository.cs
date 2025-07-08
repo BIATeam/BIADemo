@@ -1,5 +1,5 @@
 // <copyright file="LdapRepository.cs" company="TheBIADevCompany">
-//     Copyright (c) BIA.Net. All rights reserved.
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
@@ -12,24 +12,19 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     using System.Runtime.Versioning;
     using System.Security.Principal;
     using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.User.Services;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
+    using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User.Models;
-    using TheBIADevCompany.BIADemo.Domain.User.Services;
 
     /// <summary>
     /// Class the manipulate AD.
     /// </summary>
-    public class LdapRepository : GenericLdapRepository<UserFromDirectory>
+    public class LdapRepository : GenericLdapRepository<UserFromDirectoryDto, UserFromDirectory>
     {
-        /// <summary>
-        /// The user identity key domain service.
-        /// </summary>
-        private readonly IUserIdentityKeyDomainService userIdentityKeyDomainService;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="LdapRepository"/> class.
         /// </summary>
@@ -42,15 +37,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
             IOptions<BiaNetSection> configuration,
             ILdapRepositoryHelper ldapRepositoryHelper,
             IUserIdentityKeyDomainService userIdentityKeyDomainService)
-            : base(logger, configuration, ldapRepositoryHelper)
+            : base(logger, configuration, ldapRepositoryHelper, userIdentityKeyDomainService)
         {
-            this.userIdentityKeyDomainService = userIdentityKeyDomainService;
         }
-
-        /// <summary>
-        /// Gets the user identity key domain service.
-        /// </summary>
-        protected IUserIdentityKeyDomainService UserIdentityKeyDomainService => this.userIdentityKeyDomainService;
 
         /// <summary>
         /// Convert the Ad entry in a UserInfoDirectory Object.
@@ -89,16 +78,20 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
                     Domain = domainKey,
                     Sid = sid,
                     Guid = (byte[])entry.Properties["objectGuid"].Value != null ? new Guid((byte[])entry.Properties["objectGuid"].Value) : Guid.NewGuid(),
+                    Email = entry.Properties["mail"].Value?.ToString(),
+#if BIA_USER_CUSTOM_FIELDS_BACK
                     Country = entry.Properties["c"].Value?.ToString(),
                     Company = entry.Properties["company"].Value?.ToString(),
                     Department = entry.Properties["department"].Value?.ToString(),
                     DistinguishedName = entry.Properties["distinguishedName"].Value?.ToString(),
-                    Email = entry.Properties["mail"].Value?.ToString(),
                     IsEmployee = true,
                     Manager = entry.Properties["manager"].Value?.ToString(),
                     Office = entry.Properties["physicalDeliveryOfficeName"].Value?.ToString(),
                     Site = entry.Properties["description"].Value?.ToString(),
+#endif
                 };
+
+#if BIA_USER_CUSTOM_FIELDS_BACK
 
                 // Set external company
                 var name = entry.Properties["cn"].Value?.ToString();
@@ -124,32 +117,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
                         user.SubDepartment = fullDepartment.Substring(fullDepartment.IndexOf('-') + 3);
                     }
                 }
+#endif
             }
 
             return user;
-        }
-
-        /// <summary>
-        /// Gets the Identity Type to search object with the identity key from Directory.
-        /// It is use by the function UserPrincipal.FindByIdentity.
-        /// If you change it parse all other #IdentityKey to be sure thare is a match (Database, Ldap, Idp, WindowsIdentity).
-        /// </summary>
-        /// <returns>Return the Identity Key.</returns>
-        protected override IdentityType GetIdentityKeyType()
-        {
-            return RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? IdentityType.SamAccountName : default;
-        }
-
-        /// <summary>
-        /// Gets the Identity Key to compare with User in database.
-        /// It is use to specify the unique identifier that is compare during the authentication process.
-        /// If you change it parse all other #IdentityKey to be sure thare is a match (Database, Ldap, Idp, WindowsIdentity).
-        /// </summary>
-        /// <param name="userFromDirectory">the userFromDirectory.</param>
-        /// <returns>Return the Identity Key.</returns>
-        protected override string GetIdentityKey(UserFromDirectoryDto userFromDirectory)
-        {
-            return this.userIdentityKeyDomainService.GetDirectoryIdentityKey(userFromDirectory);
         }
     }
 }

@@ -4,33 +4,15 @@
     <div class="app-field-container flex-1" style="max-width: 90%">
       <div class="flex flex-row justify-content-center">
         <div class="app-field-container flex-1" style="max-width: 90%">
-          <span class="p-float-label">
-            <p-dropdown
-              [options]="userOptions"
-              placeholder="&nbsp;"
-              formControlName="user"
-              optionLabel="display"
-              datakey="id"
+          <p-floatlabel variant="on">
+            <input
+              [value]="userData"
               [style]="{ width: '100%' }"
-              [filter]="true"
-              [showClear]="true"></p-dropdown>
-            <label
-              ><span class="bia-star-mandatory">*</span
-              >{{ 'member.user' | translate }}</label
-            >
-          </span>
-        </div>
-        <div
-          class="app-field-container flex-1"
-          style="max-width: 10%"
-          *ngIf="canAddFromDirectory">
-          <button
-            pButton
-            pRipple
-            type="button"
-            icon="pi pi-plus"
-            class="p-button-sm p-button-rounded p-button-text align-right"
-            (click)="addUserFromDirectory()"></button>
+              type="text"
+              pInputText
+              [readOnly]="true" />
+            <label>{{ 'member.user' | translate }}</label>
+          </p-floatlabel>
         </div>
       </div>
     </div>

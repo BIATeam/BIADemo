@@ -10,17 +10,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, take } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+import { BiaFieldHelperService } from 'src/app/shared/bia-shared/components/form/bia-field-base/bia-field-helper.service';
 import { BiaFormComponent } from 'src/app/shared/bia-shared/components/form/bia-form/bia-form.component';
 import {
   CrudItemImportService,
   ImportData,
   ImportParam,
 } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-import.service';
-import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import {
   BiaFieldConfig,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
+import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
 import { clone } from 'src/app/shared/bia-shared/utils';
 import { CrudConfig } from '../../model/crud-config';
 import { CrudItemService } from '../../services/crud-item.service';
@@ -91,6 +92,21 @@ export abstract class CrudItemImportComponent<CrudItem extends BaseDto>
 
     if (columnIdExists !== true) {
       const crudConfigCopy = clone(crudConfig, false);
+      crudConfigCopy.fieldsConfig.columns = crudConfig.fieldsConfig.columns.map(
+        c => {
+          const field = c.clone();
+          this.sub.add(
+            this.biaTranslationService.currentCultureDateFormat$
+              .pipe(take(1))
+              .subscribe(dateFormat => {
+                if (field instanceof BiaFieldConfig) {
+                  BiaFieldHelperService.setDateFormat(field, dateFormat);
+                }
+              })
+          );
+          return field;
+        }
+      );
       crudConfigCopy.fieldsConfig.columns.unshift(this.getColumnId());
       return crudConfigCopy;
     } else {

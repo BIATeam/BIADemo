@@ -1,9 +1,11 @@
+import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
   Input,
 } from '@angular/core';
+import { Ripple } from 'primeng/ripple';
 import { FRAMEWORK_VERSION } from 'src/app/shared/bia-shared/framework-version';
 import { BiaLayoutService } from '../../services/layout.service';
 
@@ -12,6 +14,7 @@ import { BiaLayoutService } from '../../services/layout.service';
   templateUrl: './ultima-footer.component.html',
   styleUrls: ['./ultima-footer.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
+  imports: [NgIf, NgClass, Ripple, NgFor, AsyncPipe],
 })
 export class BiaUltimaFooterComponent {
   @Input() companyName: string;

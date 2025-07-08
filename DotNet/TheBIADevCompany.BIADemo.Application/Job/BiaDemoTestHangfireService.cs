@@ -1,6 +1,6 @@
 // BIADemo only
 // <copyright file="BiaDemoTestHangfireService.cs" company="TheBIADevCompany">
-//     Copyright (c) TheBIADevCompany. All rights reserved.
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 namespace TheBIADevCompany.BIADemo.Application.Job
 {
@@ -9,22 +9,23 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     using System.Linq;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Job;
+    using BIA.Net.Core.Application.Notification;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
+    using BIA.Net.Core.Domain.User.Entities;
     using Hangfire.Server;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
-    using TheBIADevCompany.BIADemo.Application.Notification;
-    using TheBIADevCompany.BIADemo.Application.Plane;
+    using TheBIADevCompany.BIADemo.Application.Fleet;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
     using static TheBIADevCompany.BIADemo.Crosscutting.Common.Constants;
 
     /// <summary>
@@ -34,7 +35,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     {
         private readonly INotificationAppService notificationAppService;
 
-        private readonly ITGenericRepository<Team, int> teamRepository;
+        private readonly ITGenericRepository<BaseEntityTeam, int> teamRepository;
 
         private readonly IPlaneAppService planeAppService;
 
@@ -51,7 +52,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
             IConfiguration configuration,
             ILogger<BiaDemoTestHangfireService> logger,
             INotificationAppService notificationAppService,
-            ITGenericRepository<Team, int> teamRepository,
+            ITGenericRepository<BaseEntityTeam, int> teamRepository,
             IPlaneAppService planeAppService)
             : base(configuration, logger)
         {
@@ -81,7 +82,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         {
             await Task.Delay(2000);
 
-            Team targetedTeam = null;
+            BaseEntityTeam targetedTeam = null;
             if (teamId > 0)
             {
                 targetedTeam = await this.teamRepository.GetEntityAsync(teamId);
@@ -129,7 +130,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                             },
                         },
                     },
-                    Route = new string[] { "examples", "planes", targetPlaneId.ToString(), "edit" },
+                    Route = new string[] { "planes", targetPlaneId.ToString(), "edit" },
                 };
 
                 var roles = targetRoleId != -1 ? new List<OptionDto>
@@ -143,7 +144,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                     CreatedDate = DateTime.Now,
                     Description = "Review the plane with id " + targetPlaneId + ".",
                     Title = "Review plane",
-                    Type = new OptionDto { Id = (int)NotificationTypeId.Task },
+                    Type = new OptionDto { Id = (int)BiaNotificationTypeId.Task },
                     NotifiedTeams = targetedTeam != null ? new List<NotificationTeamDto>
                     {
                        new NotificationTeamDto
@@ -180,7 +181,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                     CreatedDate = DateTime.Now,
                     Description = "There is no plane to review on site '" + selectPlaneOnSiteTitle + "'.",
                     Title = "No plane to review",
-                    Type = new OptionDto { Id = (int)NotificationTypeId.Info },
+                    Type = new OptionDto { Id = (int)BiaNotificationTypeId.Info },
 
                     NotifiedTeams = targetedTeam != null ? new List<NotificationTeamDto>
                     {

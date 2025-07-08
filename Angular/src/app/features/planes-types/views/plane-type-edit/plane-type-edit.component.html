@@ -2,11 +2,17 @@
   *ngIf="crudItemService.crudItem$ | async; let crudItem"
   [crudItem]="crudItem"
   [fields]="crudConfiguration.fieldsConfig.columns"
+  [formLayoutConfig]="crudConfiguration.formLayoutConfig"
   [dictOptionDtos]="
     (planeTypeService.optionsService.dictOptionDtos$ | async) ?? []
   "
-  (cancel)="onCancelled()"
-  (save)="onSubmitted($event)"></app-plane-type-form>
+  [isCrudItemOutdated]="isCrudItemOutdated"
+  (cancelled)="onCancelled()"
+  (save)="onSubmitted($event)"
+  [showPopupButton]="showPopupButton"
+  [showSplitButton]="showSplitButton"
+  [showFullPageButton]="showFullPageButton"
+  (layoutChanged)="notifyLayoutChange($event)"></app-plane-type-form>
 <bia-spinner
   *ngIf="planeTypeService.loadingGet$ | async"
   [overlay]="true"></bia-spinner>

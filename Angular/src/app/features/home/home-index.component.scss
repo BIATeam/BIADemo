@@ -5,8 +5,8 @@
   background-image:
     linear-gradient(
       to bottom,
-      rgba(255, 255, 255, 0.1) 70vh,
-      rgb(255, 255, 255)
+      color-mix(in srgb, var(--p-content-background) 10%, transparent) 70vh,
+      var(--p-content-background)
     ),
     url('../../../assets/bia/img/bg-default.jpg');
   background-repeat: no-repeat;

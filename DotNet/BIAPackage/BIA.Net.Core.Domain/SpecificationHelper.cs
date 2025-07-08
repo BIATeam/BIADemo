@@ -1,11 +1,10 @@
 ﻿// <copyright file="SpecificationHelper.cs" company="BIA">
-//     Copyright (c) BIA. All rights reserved.
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Domain
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Globalization;
@@ -14,6 +13,8 @@ namespace BIA.Net.Core.Domain
     using System.Reflection;
     using System.Text.Json;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Entity.Interface;
+    using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.Specification;
     using Newtonsoft.Json.Linq;
 
@@ -38,7 +39,8 @@ namespace BIA.Net.Core.Domain
         where TEntity : class, IEntity<TKey>, new()
         where TMapper : BaseEntityMapper<TEntity>
         {
-            ExpressionCollection<TEntity> whereClauses = matcher.ExpressionCollection;
+            ExpressionCollection<TEntity> whereClausesFilter = matcher.ExpressionCollectionFilter;
+            ExpressionCollection<TEntity> whereClausesFilterIn = matcher.ExpressionCollectionFilterIn;
 
             if (dto?.Filters == null)
             {
@@ -49,21 +51,35 @@ namespace BIA.Net.Core.Domain
 
             foreach (var (key, json) in dto.Filters)
             {
-                if (json.ValueKind == System.Text.Json.JsonValueKind.Array)
+                if (json.ValueKind == JsonValueKind.Array)
                 {
                     var values = JsonSerializer.Deserialize<Dictionary<string, object>[]>(json);
                     Specification<TEntity> ruleSpecification = null;
                     foreach (var value in values)
                     {
-                        AddSpecByValue<TEntity, TKey>(ref ruleSpecification, whereClauses, ref globalFilterSpecification, key, value);
+                        if (value["matchMode"]?.ToString() == "in")
+                        {
+                            AddSpecByValue<TEntity, TKey>(ref ruleSpecification, whereClausesFilterIn, ref globalFilterSpecification, key, value);
+                        }
+                        else
+                        {
+                            AddSpecByValue<TEntity, TKey>(ref ruleSpecification, whereClausesFilter, ref globalFilterSpecification, key, value);
+                        }
                     }
 
                     specification &= ruleSpecification;
                 }
-                else if (json.ValueKind == System.Text.Json.JsonValueKind.Object)
+                else if (json.ValueKind == JsonValueKind.Object)
                 {
                     var value = JsonSerializer.Deserialize<Dictionary<string, object>>(json);
-                    AddSpecByValue<TEntity, TKey>(ref specification, whereClauses, ref globalFilterSpecification, key, value);
+                    if (value["matchMode"]?.ToString() == "in")
+                    {
+                        AddSpecByValue<TEntity, TKey>(ref specification, whereClausesFilterIn, ref globalFilterSpecification, key, value);
+                    }
+                    else
+                    {
+                        AddSpecByValue<TEntity, TKey>(ref specification, whereClausesFilter, ref globalFilterSpecification, key, value);
+                    }
                 }
             }
 
@@ -172,7 +188,7 @@ namespace BIA.Net.Core.Domain
             ConstantExpression valueExpression;
             ParameterExpression parameterExpression = expression.Parameters.FirstOrDefault();
             var expressionBody = expression.Body;
-            var expressionBodyGenericArgumentType = expressionBody.Type.GenericTypeArguments.FirstOrDefault() ?? typeof(string);
+            var expressionBodyGenericArgumentType = expressionBody.Type.GenericTypeArguments.FirstOrDefault() ?? expressionBody.Type;
 
             Expression binaryExpression;
 
@@ -301,11 +317,10 @@ namespace BIA.Net.Core.Domain
                     break;
 
                 case "in":
-                    var inExp = Expression.Not(ComputeExpression(expressionBody, "EndsWith", value));
-
                     JObject o = JObject.Parse(@"{ array : " + value + " }");
                     JArray a = (JArray)o["array"];
-                    IList<string> values = a.ToObject<IList<string>>();
+                    Type genericListType = typeof(IList<>).MakeGenericType(expressionBodyGenericArgumentType);
+                    var values = a.ToObject(genericListType);
 
                     if (IsCollectionType(expressionBody.Type))
                     {
@@ -313,28 +328,26 @@ namespace BIA.Net.Core.Domain
                         var method = typeof(Enumerable)
                             .GetMethods()
                             .Single(m => m.Name == "Intersect" && m.GetParameters().Length == 2)
-                            .MakeGenericMethod(typeof(string));
+                            .MakeGenericMethod(expressionBodyGenericArgumentType);
                         var intersect = Expression.Call(method ?? throw new InvalidOperationException(), expressionBody, valueExpression);
-                        var lengthValueExpression = Expression.Constant(values.Count);
-                        var count = Expression.Call(typeof(Enumerable), "Count", new[] { typeof(string) }, intersect);
+                        dynamic dynamicList = values;
+                        int valuesCount = dynamicList.Count;
+                        var lengthValueExpression = Expression.Constant(valuesCount);
+                        var count = Expression.Call(typeof(Enumerable), "Count", new[] { expressionBodyGenericArgumentType }, intersect);
                         var equals = Expression.Equal(count, lengthValueExpression);
 
                         binaryExpression = equals;
                     }
-                    else if (expressionBody.Type == typeof(string))
+                    else
                     {
                         var filterExpression = Expression.Constant(values);
                         var method = typeof(Enumerable)
                             .GetMethods()
                             .Single(m => m.Name == "Contains" && m.GetParameters().Length == 2)
-                            .MakeGenericMethod(typeof(string));
+                            .MakeGenericMethod(expressionBodyGenericArgumentType);
                         var contains = Expression.Call(method, filterExpression, expressionBody);
 
                         binaryExpression = contains;
-                    }
-                    else
-                    {
-                        binaryExpression = inExp;
                     }
 
                     break;

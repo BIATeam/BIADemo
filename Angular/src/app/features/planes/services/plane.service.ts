@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { map, Observable } from 'rxjs';
@@ -18,19 +18,23 @@ import { PlaneOptionsService } from './plane-options.service';
   providedIn: 'root',
 })
 export class PlaneService extends CrudItemService<Plane> {
+  _updateSuccessActionType = FeaturePlanesActions.loadAllByPost.type;
+  _createSuccessActionType = FeaturePlanesActions.loadAllByPost.type;
+  _updateFailureActionType = FeaturePlanesActions.failure.type;
+
   constructor(
     private store: Store<AppState>,
     public dasService: PlaneDas,
     public signalRService: CrudItemSignalRService<Plane>,
+    protected authService: AuthService,
     public optionsService: PlaneOptionsService,
-    // required only for parent key
-    protected authService: AuthService
+    protected injector: Injector
   ) {
-    super(dasService, signalRService, optionsService);
+    super(dasService, signalRService, optionsService, injector);
   }
 
   public getParentIds(): any[] {
-    // TODO after creation of CRUD Plane : adapt the parent Key tothe context. It can be null if root crud
+    // TODO after creation of CRUD Plane : adapt the parent Key to the context. It can be null if root crud
     return [this.authService.getCurrentTeamId(TeamTypeId.Site)];
   }
 
@@ -56,9 +60,7 @@ export class PlaneService extends CrudItemService<Plane> {
   );
 
   public displayItemName$: Observable<string> = this.crudItem$.pipe(
-    /// BIAToolKit - Begin Display msn
     map(plane => plane?.msn?.toString() ?? '')
-    /// BIAToolKit - End Display msn
   );
 
   public loadingGet$: Observable<boolean> = this.store.select(
@@ -72,29 +74,15 @@ export class PlaneService extends CrudItemService<Plane> {
     this.store.dispatch(FeaturePlanesActions.loadAllByPost({ event }));
   }
   public create(crudItem: Plane) {
-    // TODO after creation of CRUD Plane : map parent Key on the corresponding field
-    /// BIAToolKit - Begin Parent
-    let indexParent = 0;
-    /// BIAToolKit - End Parent
-    /// BIAToolKit - Begin Parent siteId
-    crudItem.siteId = this.getParentIds()[indexParent++];
-    /// BIAToolKit - End Parent siteId
+    crudItem.siteId = this.getParentIds()[0];
     this.store.dispatch(FeaturePlanesActions.create({ plane: crudItem }));
+  }
+  public save(crudItems: Plane[]) {
+    crudItems.map(x => (x.siteId = this.getParentIds()[0]));
+    this.store.dispatch(FeaturePlanesActions.save({ planes: crudItems }));
   }
   public update(crudItem: Plane) {
     this.store.dispatch(FeaturePlanesActions.update({ plane: crudItem }));
-  }
-  public save(crudItems: Plane[]) {
-    /// BIAToolKit - Begin Parent
-    let indexParent = 0;
-    /// BIAToolKit - End Parent
-    /// BIAToolKit - Begin Parent siteId
-    const siteIdIndexParent = indexParent++;
-    crudItems
-      .filter(x => !x.id)
-      .map(x => (x.siteId = this.getParentIds()[siteIdIndexParent]));
-    /// BIAToolKit - End Parent siteId
-    this.store.dispatch(FeaturePlanesActions.save({ planes: crudItems }));
   }
   public remove(id: any) {
     this.store.dispatch(FeaturePlanesActions.remove({ id }));
@@ -109,5 +97,10 @@ export class PlaneService extends CrudItemService<Plane> {
     this._currentCrudItem = <Plane>{};
     this._currentCrudItemId = 0;
     this.store.dispatch(FeaturePlanesActions.clearCurrent());
+  }
+  public updateFixedStatus(id: any, isFixed: boolean): void {
+    this.store.dispatch(
+      FeaturePlanesActions.updateFixedStatus({ id: id, isFixed: isFixed })
+    );
   }
 }

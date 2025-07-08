@@ -214,6 +214,39 @@ export class MaintenanceTeamsEffects {
     )
   );
 
+  updateFixedStatus$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(FeatureMaintenanceTeamsActions.updateFixedStatus),
+      map(x => x),
+      concatMap(x =>
+        of(x).pipe(
+          withLatestFrom(
+            this.store.select(FeatureMaintenanceTeamsStore.getLastLazyLoadEvent)
+          )
+        )
+      ),
+      switchMap(([x, event]) => {
+        return this.maintenanceTeamDas
+          .updateFixedStatus({ id: x.id, fixed: x.isFixed })
+          .pipe(
+            map(maintenanceTeam => {
+              this.biaMessageService.showUpdateSuccess();
+              this.store.dispatch(
+                FeatureMaintenanceTeamsActions.loadAllByPost({ event: event })
+              );
+              return FeatureMaintenanceTeamsActions.loadSuccess({
+                maintenanceTeam,
+              });
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(FeatureMaintenanceTeamsActions.failure({ error: err }));
+            })
+          );
+      })
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private maintenanceTeamDas: MaintenanceTeamDas,

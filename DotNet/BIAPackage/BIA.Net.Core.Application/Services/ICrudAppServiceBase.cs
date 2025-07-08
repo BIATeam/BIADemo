@@ -1,5 +1,5 @@
 ﻿// <copyright file="ICrudAppServiceBase.cs" company="BIA">
-//     Copyright (c) BIA. All rights reserved.
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Application.Services
@@ -8,11 +8,10 @@ namespace BIA.Net.Core.Application.Services
     using System.Collections.Generic;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.QueryOrder;
-    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
@@ -208,8 +207,9 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="bypassFixed">Indicates weither the fixed security should be bypassed or not.</param>
         /// <returns>The deleted DTO.</returns>
-        Task<TDto> RemoveAsync(TKey id, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete, string mapperMode = null);
+        Task<TDto> RemoveAsync(TKey id, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete, string mapperMode = null, bool bypassFixed = false);
 
         /// <summary>
         /// Remove an entity with its identifier.
@@ -218,8 +218,9 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="bypassFixed">Indicates weither the fixed security should be bypassed or not.</param>
         /// <returns>The deleted DTO.</returns>
-        Task<List<TDto>> RemoveAsync(List<TKey> ids, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete, string mapperMode = null);
+        Task<List<TDto>> RemoveAsync(List<TKey> ids, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete, string mapperMode = null, bool bypassFixed = false);
 
         /// <summary>
         /// Save several entity with its identifier safe asynchronous.
@@ -295,5 +296,13 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="dtos">The dto list.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task RemoveBulkAsync(IEnumerable<TDto> dtos);
+
+        /// <summary>
+        /// Update the fixed status of an <see cref="IEntityFixable{TKey}"/>.
+        /// </summary>
+        /// <param name="id">ID of the entity.</param>
+        /// <param name="isFixed">Fixed status.</param>
+        /// <returns>Updated DTO.</returns>
+        Task<TDto> UpdateFixedAsync(TKey id, bool isFixed);
     }
 }

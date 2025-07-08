@@ -3,20 +3,20 @@
   class="flex flex-row justify-content-around align-items-end align-content-end"
   [formGroup]="form">
   <div class="flex-1" style="max-width: 22%">
-    <span class="p-float-label">
+    <p-floatlabel variant="on">
       <input formControlName="name" type="text" pInputText maxlength="50" />
       <label>{{ 'bia.views.name' | translate }}</label>
-    </span>
+    </p-floatlabel>
   </div>
   <div class="flex-1" style="max-width: 70%">
-    <span class="p-float-label">
+    <p-floatlabel variant="on">
       <input
         formControlName="description"
         type="text"
         pInputText
         maxlength="500" />
       <label>{{ 'bia.views.description' | translate }}</label>
-    </span>
+    </p-floatlabel>
   </div>
   <div class="flex-1" style="max-width: 8%">
     <button

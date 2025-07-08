@@ -1,22 +1,46 @@
 <bia-form
   [element]="crudItem"
   [fields]="fields"
+  [formLayoutConfig]="formLayoutConfig"
   [formValidators]="formValidators"
   [dictOptionDtos]="dictOptionDtos"
+  [disableSubmitButton]="isEditingEngines"
+  [showSubmitButton]="showSubmitButton"
+  [formReadOnlyMode]="formReadOnlyMode"
   (save)="onSave($event)"
-  (cancel)="onCancel()">
+  (cancelled)="onCancel()"
+  (readOnlyChanged)="onReadOnlyChanged($event)">
   <ng-template pTemplate="specificInput" let-field="field" let-form="form">
     <div [formGroup]="form">
       <ng-container [ngSwitch]="field.field">
-        <ng-container *ngSwitchCase="'isActive'">
+        <div *ngSwitchCase="'isActive'" class="flex items-center">
           <p-checkbox
             binary="true"
-            [formControlName]="field.field"
-            label="{{ field.header | translate }}"></p-checkbox>
-        </ng-container>
+            [formControlName]="field.field"></p-checkbox>
+          <label class="ml-2">{{ field.header | translate }}</label>
+        </div>
+        <div *ngSwitchCase="'connectingAirports'">
+          <p-floatlabel variant="on">
+            <p-multiSelect
+              [formControlName]="field.field"
+              [options]="getOptionDto(field.field)"
+              optionLabel="display"
+              plane
+              datakey="id"
+              appendTo="body"
+              [showClear]="true"
+              [style]="{ width: '100%' }"
+              scrollHeight="50vh"
+              [maxSelectedLabels]="7"></p-multiSelect>
+            <label
+              ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
+              >{{ field.header | translate }}</label
+            >
+          </p-floatlabel>
+        </div>
         <!-- isActive -->
         <ng-container *ngSwitchCase="'capacity'">
-          <span class="p-float-label">
+          <p-floatlabel variant="on">
             <input
               [formControlName]="field.field"
               type="number"
@@ -26,7 +50,7 @@
               ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
               >{{ field.header | translate }}</label
             >
-          </span>
+          </p-floatlabel>
         </ng-container>
 
         <!-- capacity -->
@@ -37,23 +61,26 @@
         [headerTitle]="field.header | translate"
         [canAdd]="false"
         [canDelete]="true"
+        [canClone]="true"
         (delete)="onDeleteEngines()"
-        [selectedElements]="selectedEngines"></bia-table-header>
-      <span class="p-float-label">
-        <app-engine-specific-table
-          [elements]="displayedEngines()"
-          [configuration]="engineCrudConfig"
-          [dictOptionDtos]="[]"
-          [totalRecord]="crudItem?.engines?.length ?? 0"
-          [paginator]="false"
-          [showColSearch]="false"
-          [canEdit]="true"
-          [canAdd]="true"
-          [canSelectElement]="true"
-          [loading]="false"
-          (selectedElementsChanged)="onSelectedEnginesChanged($event)"
-          (save)="onEngineSave($event)" />
-      </span>
+        [selectedElements]="selectedEngines"
+        (clone)="onCloneEngines()"></bia-table-header>
+      <app-engine-specific-table
+        [elements]="displayedEngines()"
+        [configuration]="engineCrudConfig"
+        [columnToDisplays]="engineColumnsToDisplay"
+        [dictOptionDtos]="[]"
+        [totalRecord]="crudItem?.engines?.length ?? 0"
+        [paginator]="false"
+        [showColSearch]="false"
+        [canEdit]="true"
+        [canAdd]="true"
+        [canSelectElement]="true"
+        [loading]="false"
+        [readOnly]="isEngineTableReadOnly"
+        (selectedElementsChanged)="onSelectedEnginesChanged($event)"
+        (save)="onEngineSave($event)"
+        (isEditing)="onIsEditingChange($event)" />
     </ng-container>
   </ng-template>
 </bia-form>

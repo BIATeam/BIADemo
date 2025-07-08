@@ -1,5 +1,5 @@
-﻿// <copyright file="FrontUserExceptionErrorMessageKey.cs" company="TheBIADevCompany">
-//     Copyright (c) TheBIADevCompany. All rights reserved.
+﻿// <copyright file="FrontUserExceptionErrorMessageKey.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 namespace BIA.Net.Core.Common.Enum
 {

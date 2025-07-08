@@ -2,45 +2,46 @@ import { createAction, props } from '@ngrx/store';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { Notification } from '../model/notification';
-import { NotificationListItem } from '../model/notificationListItem';
+import { NotificationListItem } from '../model/notification-list-item';
+import { notificationCRUDConfiguration } from '../notification.constants';
+
 export namespace FeatureNotificationsActions {
   export const loadAllByPost = createAction(
-    '[Notifications] Load all by post',
+    '[' + notificationCRUDConfiguration.storeKey + '] Load all by post',
     props<{ event: TableLazyLoadEvent }>()
   );
 
   export const load = createAction(
-    '[Notifications] Load',
+    '[' + notificationCRUDConfiguration.storeKey + '] Load',
     props<{ id: number }>()
   );
 
   export const setUnread = createAction(
-    '[Notifications] Set Unread',
+    '[' + notificationCRUDConfiguration.storeKey + '] Set Unread',
     props<{ id: number }>()
   );
-
   export const create = createAction(
-    '[Notifications] Create',
+    '[' + notificationCRUDConfiguration.storeKey + '] Create',
     props<{ notification: Notification }>()
   );
 
   export const update = createAction(
-    '[Notifications] Update',
+    '[' + notificationCRUDConfiguration.storeKey + '] Update',
     props<{ notification: Notification }>()
   );
 
   export const remove = createAction(
-    '[Notifications] Remove',
+    '[' + notificationCRUDConfiguration.storeKey + '] Remove',
     props<{ id: number }>()
   );
 
   export const multiRemove = createAction(
-    '[Notifications] Multi Remove',
+    '[' + notificationCRUDConfiguration.storeKey + '] Multi Remove',
     props<{ ids: number[] }>()
   );
 
   export const loadAllByPostSuccess = createAction(
-    '[Notifications] Load all by post success',
+    '[' + notificationCRUDConfiguration.storeKey + '] Load all by post success',
     props<{
       result: DataResult<NotificationListItem[]>;
       event: TableLazyLoadEvent;
@@ -48,12 +49,20 @@ export namespace FeatureNotificationsActions {
   );
 
   export const loadSuccess = createAction(
-    '[Notifications] Load success',
+    '[' + notificationCRUDConfiguration.storeKey + '] Load success',
     props<{ notification: Notification }>()
   );
 
   export const failure = createAction(
-    '[Notifications] Failure',
+    '[' + notificationCRUDConfiguration.storeKey + '] Failure',
     props<{ error: any }>()
+  );
+
+  export const clearAll = createAction(
+    '[' + notificationCRUDConfiguration.storeKey + '] Clear all in state'
+  );
+
+  export const clearCurrent = createAction(
+    '[' + notificationCRUDConfiguration.storeKey + '] Clear current'
   );
 }

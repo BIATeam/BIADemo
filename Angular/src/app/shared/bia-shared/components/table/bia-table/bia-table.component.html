@@ -21,25 +21,45 @@
   [sortOrder]="sortOrderValue"
   (onStateSave)="onStateSave($event)"
   (selectionChange)="onSelectionChange()"
-  [styleClass]="'p-datatable-striped'"
-  sortMode="multiple"
+  stripedRows
+  [sortMode]="sortMode"
+  [multiSortMeta]="multiSortMeta"
   [scrollHeight]="scrollHeightValue"
   [scrollable]="isScrollable"
   [(selection)]="selectedElements"
   [virtualScroll]="virtualScroll"
   [virtualScrollItemSize]="rowHeight"
-  [virtualScrollOptions]="{ scrollHeight: scrollHeightValue }">
+  [virtualScrollOptions]="{ scrollHeight: scrollHeightValue }"
+  dataKey="id"
+  [expandedRowKeys]="expandedRows"
+  (onRowExpand)="onRowExpand($event)"
+  (onRowCollapse)="onRowCollapse($event)"
+  (onPage)="pageChange.emit($event)">
   <ng-template pTemplate="header" let-columns>
     <tr>
       <th
         class="bia-table-select-col"
-        *ngIf="canSelectElement === true"
+        *ngIf="canSelectElement === true && !readOnly"
         [style.width]="widthSelect"
         [alignFrozen]="alignFrozenSelect"
-        pFrozenColumn
+        biaFrozenColumn
         [frozen]="isSelectFrozen">
         <p-tableHeaderCheckbox
           *ngIf="canSelectMultipleElement"></p-tableHeaderCheckbox>
+      </th>
+      <th
+        *ngIf="canExpandRow"
+        [style.width]="widthExpand"
+        [alignFrozen]="alignFrozenSelect"
+        biaFrozenColumn
+        [frozen]="isSelectFrozen"></th>
+      <th
+        *ngIf="showFixableState"
+        [style.width]="widthSelect"
+        [alignFrozen]="alignFrozenSelect"
+        biaFrozenColumn
+        [frozen]="isSelectFrozen">
+        {{ 'bia.fixed' | translate }}
       </th>
       <ng-container *ngFor="let col of columns">
         <th
@@ -49,7 +69,7 @@
           pResizableColumn
           [style.min-width]="col.minWidth"
           [alignFrozen]="col.alignFrozen"
-          pFrozenColumn
+          biaFrozenColumn
           [frozen]="col.isFrozen"
           pTooltip="{{
             isResizableColumn && !col?.icon ? (col?.header | translate) : ''
@@ -74,7 +94,7 @@
           pResizableColumn
           [style.min-width]="col.minWidth"
           [alignFrozen]="col.alignFrozen"
-          pFrozenColumn
+          biaFrozenColumn
           [frozen]="col.isFrozen"
           pTooltip="{{
             isResizableColumn && !col?.icon ? (col?.header | translate) : ''
@@ -96,10 +116,24 @@
     </tr>
     <tr *ngIf="showColSearch === true" class="searchTR">
       <th
-        *ngIf="canSelectElement === true"
+        *ngIf="canSelectElement === true && !readOnly"
         [style.width]="widthSelect"
         [alignFrozen]="alignFrozenSelect"
-        pFrozenColumn
+        biaFrozenColumn
+        pResizableColumn
+        [frozen]="isSelectFrozen"></th>
+      <th
+        *ngIf="canExpandRow"
+        [style.width]="widthExpand"
+        [alignFrozen]="alignFrozenSelect"
+        biaFrozenColumn
+        pResizableColumn
+        [frozen]="isSelectFrozen"></th>
+      <th
+        *ngIf="showFixableState"
+        [style.width]="widthSelect"
+        [alignFrozen]="alignFrozenSelect"
+        biaFrozenColumn
         pResizableColumn
         [frozen]="isSelectFrozen"></th>
       <th
@@ -109,7 +143,7 @@
         pResizableColumn
         [style.min-width]="col.minWidth"
         [alignFrozen]="col.alignFrozen"
-        pFrozenColumn
+        biaFrozenColumn
         [frozen]="col.isFrozen">
         <bia-table-filter
           [field]="col"
@@ -123,24 +157,47 @@
     pTemplate="body"
     let-rowData
     let-columns="columns"
-    let-ri="rowIndex">
+    let-ri="rowIndex"
+    let-expanded="expanded">
     <tr [pSelectableRow]="rowData" [ngClass]="{ 'p-even-row': ri % 2 === 0 }">
       <td
-        *ngIf="canSelectElement === true"
+        *ngIf="canSelectElement === true && !readOnly"
         [style.width]="widthSelect"
         [alignFrozen]="alignFrozenSelect"
-        pFrozenColumn
+        biaFrozenColumn
         [frozen]="isSelectFrozen">
         <ng-container *ngIf="rowData.id > 0">
-          <ng-template
-            #selectMultipleElement
-            [ngIf]="canSelectMultipleElement === true"
-            [ngIfElse]="selectSingleElement">
+          <ng-container
+            *ngIf="canSelectMultipleElement === true; else selectSingleElement">
             <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
-          </ng-template>
+          </ng-container>
+
           <ng-template #selectSingleElement>
             <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
           </ng-template>
+        </ng-container>
+      </td>
+      <td
+        *ngIf="canExpandRow"
+        [class]="'bia-column-expand'"
+        [style.width]="widthExpand"
+        [alignFrozen]="alignFrozenSelect"
+        biaFrozenColumn
+        [frozen]="isSelectFrozen">
+        <i
+          [pRowToggler]="rowData"
+          [class]="expanded ? 'pi pi-angle-down' : 'pi pi-angle-right'"></i>
+      </td>
+      <td
+        *ngIf="showFixableState"
+        [style.width]="widthSelect"
+        [alignFrozen]="alignFrozenSelect"
+        biaFrozenColumn
+        [frozen]="isSelectFrozen">
+        <ng-container *ngIf="rowData.isFixed === true">
+          <div class="flex justify-content-center">
+            <i class="pi pi-lock"></i>
+          </div>
         </ng-container>
       </td>
       <td
@@ -149,7 +206,7 @@
         (click)="clickElementData(rowData)"
         [style.min-width]="col.minWidth"
         [alignFrozen]="col.alignFrozen"
-        pFrozenColumn
+        biaFrozenColumn
         [frozen]="col.isFrozen">
         <bia-table-output
           [field]="col"
@@ -170,15 +227,24 @@
       </td>
     </tr>
   </ng-template>
+  <ng-template *ngIf="canExpandRow" pTemplate="expandedrow" let-rowData>
+    <tr>
+      <td colspan="100%">
+        <ng-container
+          [ngTemplateOutlet]="expandedRowTemplate"
+          [ngTemplateOutletContext]="{ data: rowData }"></ng-container>
+      </td>
+    </tr>
+  </ng-template>
   <ng-template pTemplate="loadingbody" let-columns="columns" let-ri="rowIndex">
     <tr
       [style]="'height: ' + rowHeight + 'px'"
       [ngClass]="{ 'p-even-row': ri % 2 !== 0 }">
       <td
-        *ngIf="canSelectElement === true"
+        *ngIf="canSelectElement === true && !readOnly"
         [style.width]="widthSelect"
         [alignFrozen]="alignFrozenSelect"
-        pFrozenColumn
+        biaFrozenColumn
         [frozen]="isSelectFrozen">
         <p-skeleton
           [ngStyle]="{
@@ -209,13 +275,17 @@
     <bia-table-footer-controller
       [length]="totalRecord"
       [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      [canChangePageSize]="!!pageSizeOptions"
       (pageSizeChange)="
         onPageSizeValueChange($event)
       "></bia-table-footer-controller>
   </ng-template>
   <ng-template pTemplate="emptymessage" let-columns>
     <tr>
-      <td class="app-empty-message" [attr.colspan]="columns?.length + 1">
+      <td
+        class="app-empty-message"
+        [attr.colspan]="columns?.length + (showFixableState ? 2 : 1)">
         {{ 'bia.NoRecordsFound' | translate }}
       </td>
     </tr>

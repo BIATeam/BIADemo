@@ -13,9 +13,12 @@ foreach ($file in $csprojFiles) {
 <Compile Remove="**\*Aircraft*.cs" />
 <Compile Remove="**\*Airport*.cs" />
 <Compile Remove="**\*BiaDemo*.cs" />
+<Compile Remove="**\*BiaRemote*.cs" />
+<Compile Remove="**\*RemoteBiaApi*.cs" />
 <Compile Remove="**\*Engine*.cs" />
 <Compile Remove="**\*Example*.cs" />
 <Compile Remove="**\*Plane*.cs" />
+<Compile Remove="**\*MaintenanceContract*.cs" />
 <Compile Remove="**\*Worker*.cs" />
 <Compile Remove="**\*HangfiresController*.cs" />
 <Compile Remove="**\*Part*.cs" />
@@ -23,7 +26,6 @@ foreach ($file in $csprojFiles) {
 <Compile Remove="**\*Document*.cs" />
 <Compile Remove="**\*Analysis*.cs" />
 <!--BIATEMPLATE-->
-<Compile Remove="**\*Audit*.cs" />
 <Compile Remove="**\*Error*.cs" />
 <Compile Remove="**\*IdentityProvider*.cs" />
 <Compile Remove="**\*LogsController*.cs" />

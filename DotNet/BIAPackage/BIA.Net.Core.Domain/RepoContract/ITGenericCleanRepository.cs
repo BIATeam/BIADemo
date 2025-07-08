@@ -1,5 +1,5 @@
-﻿// <copyright file="ITGenericCleanRepository.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+﻿// <copyright file="ITGenericCleanRepository.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Domain.RepoContract
@@ -7,6 +7,7 @@ namespace BIA.Net.Core.Domain.RepoContract
     using System;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.Entity.Interface;
 
     /// <summary>
     /// Interface for generic clean repositories of an entity.

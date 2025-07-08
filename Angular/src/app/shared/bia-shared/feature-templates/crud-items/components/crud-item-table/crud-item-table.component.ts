@@ -1,14 +1,38 @@
+import {
+  AsyncPipe,
+  NgClass,
+  NgFor,
+  NgIf,
+  NgStyle,
+  NgSwitch,
+  NgTemplateOutlet,
+} from '@angular/common';
 import { Component, OnChanges } from '@angular/core';
-import { UntypedFormBuilder, Validators } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  UntypedFormBuilder,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { PrimeTemplate } from 'primeng/api';
+import { Skeleton } from 'primeng/skeleton';
+import { TableModule } from 'primeng/table';
+import { Tooltip } from 'primeng/tooltip';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { BiaCalcTableComponent } from 'src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component';
-import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
+import { BiaFrozenColumnDirective } from 'src/app/shared/bia-shared/components/table/bia-frozen-column/bia-frozen-column.directive';
 import { PropType } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
+import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+import { BiaTableFilterComponent } from '../../../../components/table/bia-table-filter/bia-table-filter.component';
+import { BiaTableFooterControllerComponent } from '../../../../components/table/bia-table-footer-controller/bia-table-footer-controller.component';
+import { BiaTableInputComponent } from '../../../../components/table/bia-table-input/bia-table-input.component';
+import { BiaTableOutputComponent } from '../../../../components/table/bia-table-output/bia-table-output.component';
 
 @Component({
   selector: 'bia-crud-item-table',
@@ -16,6 +40,27 @@ import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
     '../../../../components/table/bia-calc-table/bia-calc-table.component.html',
   styleUrls: [
     '../../../../components/table/bia-calc-table/bia-calc-table.component.scss',
+  ],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    NgIf,
+    TableModule,
+    PrimeTemplate,
+    NgFor,
+    Tooltip,
+    NgSwitch,
+    BiaTableFilterComponent,
+    NgClass,
+    BiaTableInputComponent,
+    NgTemplateOutlet,
+    BiaTableOutputComponent,
+    Skeleton,
+    NgStyle,
+    BiaTableFooterControllerComponent,
+    AsyncPipe,
+    TranslateModule,
+    BiaFrozenColumnDirective,
   ],
 })
 export class CrudItemTableComponent<CrudItem extends BaseDto>
@@ -37,20 +82,20 @@ export class CrudItemTableComponent<CrudItem extends BaseDto>
       this.form.addValidators(this.configuration.formValidators);
     }
   }
+
   protected formFields() {
     const fields: { [key: string]: any } = { id: [this.element.id] };
     for (const col of this.configuration.columns) {
+      const validators: ValidatorFn[] = [];
       if (col.validators && col.validators.length > 0) {
-        fields[col.field.toString()] = [
-          this.element[col.field],
-          col.validators,
-        ];
-      } else if (col.isRequired) {
-        fields[col.field.toString()] = [
-          this.element[col.field],
-          Validators.required,
-        ];
-      } else {
+        validators.push(...col.validators);
+      }
+      if (col.isRequired) {
+        validators.push(Validators.required);
+      }
+      if (validators)
+        fields[col.field.toString()] = [this.element[col.field], validators];
+      else {
         fields[col.field.toString()] = [this.element[col.field]];
       }
     }
@@ -108,7 +153,6 @@ export class CrudItemTableComponent<CrudItem extends BaseDto>
       }
 
       this.save.emit(crudItem);
-      this.form.reset();
     }
   }
 }

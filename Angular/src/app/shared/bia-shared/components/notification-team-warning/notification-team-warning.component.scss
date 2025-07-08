@@ -1,4 +1,4 @@
-@import '../../../../../scss/bia/bia-variables';
+@use 'bia-variables';
 
 .notification-teams {
   display: flex;
@@ -6,7 +6,7 @@
   justify-content: flex-start;
   align-items: center;
   margin-top: 0px;
-  background: $biaOrange;
+  background: bia-variables.$biaOrange;
   padding: 0px 12px;
   line-height: 2.143em;
 

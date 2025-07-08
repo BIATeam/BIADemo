@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Copyright>Copyright © BIA 2025</Copyright>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-    <Version>4.1.1</Version>
+    <Version>5.0.1</Version>
     <PackageIcon>LogoBIA.png</PackageIcon>
     <Authors>BIA Team</Authors>
     <Company>BIA</Company>
@@ -13,6 +13,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Audit.EntityFramework.Core" Version="30.0.*" />
+    <PackageReference Include="Audit.NET.SqlServer" Version="30.0.*" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.*" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="[8.0.*,9.0.0)" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[8.0.*,9.0.0)" />

@@ -1,3 +1,4 @@
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   Component,
   ElementRef,
@@ -5,6 +6,7 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuItem } from 'primeng/api';
 import { Subscription } from 'rxjs';
@@ -13,25 +15,31 @@ import { BiaNavigation } from 'src/app/shared/bia-shared/model/bia-navigation';
 import { allEnvironments } from 'src/environments/all-environments';
 import { BiaLayoutService } from '../../services/layout.service';
 import { BiaUltimaMenuProfileComponent } from '../menu-profile/ultima-menu-profile.component';
+import { BiaUltimaMenuComponent } from '../menu/ultima-menu.component';
 
 @Component({
   selector: 'bia-ultima-sidebar',
   templateUrl: './ultima-sidebar.component.html',
   styleUrls: ['./ultima-sidebar.component.scss'],
+  imports: [
+    RouterLink,
+    BiaUltimaMenuProfileComponent,
+    BiaUltimaMenuComponent,
+    NgIf,
+    NgTemplateOutlet,
+  ],
 })
 export class BiaUltimaSidebarComponent implements OnDestroy {
   timeout: any = null;
   @Input() appTitle: string;
   @Input() version: string;
   @Input() username: string | undefined;
+  @Input() lastname: string | undefined;
   @Input() login: string;
-  @Input() supportedLangs: string[];
   @Input()
   set menus(navigations: BiaNavigation[]) {
-    if (navigations && navigations.length > 0) {
-      this.navigations = navigations;
-      this.buildNavigation();
-    }
+    this.navigations = navigations ?? [];
+    this.buildNavigation();
   }
   @Input() allowThemeChange = true;
   @Input() logos: string[];
@@ -70,14 +78,18 @@ export class BiaUltimaSidebarComponent implements OnDestroy {
       true
     );
 
-    this.sub.add(
-      this.translateService.stream(translationKeys).subscribe(translations => {
-        this.layoutService.processMenuTranslation(
-          this.navMenuItems,
-          translations
-        );
-      })
-    );
+    if (translationKeys.length > 0) {
+      this.sub.add(
+        this.translateService
+          .stream(translationKeys)
+          .subscribe(translations => {
+            this.layoutService.processMenuTranslation(
+              this.navMenuItems,
+              translations
+            );
+          })
+      );
+    }
   }
 
   resetOverlay() {

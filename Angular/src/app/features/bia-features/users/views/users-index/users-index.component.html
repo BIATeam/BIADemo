@@ -10,6 +10,7 @@
       (create)="onCreate()"
       (exportCSV)="onExportCSV('user.listOf')"
       (fullExportCSV)="onExportCSV('user.listOf', true)"
+      (clone)="onClone()"
       (delete)="onDelete()"
       (import)="onImport()"
       [selectedElements]="selectedCrudItems"
@@ -45,6 +46,7 @@
           [crudConfiguration]="crudConfiguration"
           (useCalcModeChanged)="useCalcModeChange($event)"
           (usePopupChanged)="usePopupChange($event)"
+          (useSplitChanged)="useSplitChange($event)"
           (useSignalRChanged)="useSignalRChange($event)"
           (useViewChanged)="useViewChange($event)"
           (useCompactModeChanged)="useCompactModeChange($event)"
@@ -64,7 +66,7 @@
       [pageSize]="pageSize"
       (pageSizeChange)="onPageSizeChange($event)"
       [configuration]="crudConfiguration.fieldsConfig"
-      [showColSearch]="showColSearch"
+      [(showColSearch)]="showColSearch"
       [globalSearchValue]="globalSearchValue"
       [canClickRow]="canEdit"
       [canSelectElement]="canDelete"
@@ -76,7 +78,15 @@
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
-      [scrollHeightValue]="getFillScrollHeightValue()"></bia-table>
+      [scrollHeightValue]="getFillScrollHeightValue()">
+      <ng-template pTemplate="specificOutput" let-field="field" let-data="data">
+        <ng-container [ngSwitch]="field.field">
+          <ng-container *ngSwitchCase="'teams'">
+            <bia-user-teams [userTeams]="data"></bia-user-teams>
+          </ng-container>
+        </ng-container>
+      </ng-template>
+    </bia-table>
     <bia-user-table
       *ngIf="crudConfiguration.useCalcMode"
       [elements]="(crudItems$ | async) ?? []"
@@ -88,7 +98,7 @@
       [pageSize]="pageSize"
       (pageSizeChange)="onPageSizeChange($event)"
       [configuration]="crudConfiguration.fieldsConfig"
-      [showColSearch]="showColSearch"
+      [(showColSearch)]="showColSearch"
       [globalSearchValue]="globalSearchValue"
       [canEdit]="canEdit"
       [canAdd]="canAdd"
@@ -101,7 +111,15 @@
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
       (save)="onSave($event)"
-      [scrollHeightValue]="getFillScrollHeightValue()"></bia-user-table>
+      [scrollHeightValue]="getFillScrollHeightValue()">
+      <ng-template pTemplate="specificOutput" let-field="field" let-data="data">
+        <ng-container [ngSwitch]="field.field">
+          <ng-container *ngSwitchCase="'teams'">
+            <bia-user-teams [userTeams]="data"></bia-user-teams>
+          </ng-container>
+        </ng-container>
+      </ng-template>
+    </bia-user-table>
   </div>
 </div>
 <bia-user-add-from-directory-dialog

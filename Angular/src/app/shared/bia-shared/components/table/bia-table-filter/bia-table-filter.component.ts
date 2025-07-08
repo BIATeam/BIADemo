@@ -1,4 +1,12 @@
 import {
+  NgClass,
+  NgFor,
+  NgIf,
+  NgSwitch,
+  NgSwitchCase,
+  NgSwitchDefault,
+} from '@angular/common';
+import {
   ChangeDetectionStrategy,
   Component,
   // EventEmitter,
@@ -7,9 +15,18 @@ import {
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { FilterMatchMode, FilterMetadata, SelectItem } from 'primeng/api';
-import { Table } from 'primeng/table';
+import { FormsModule } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import {
+  FilterMatchMode,
+  FilterMetadata,
+  PrimeTemplate,
+  SelectItem,
+} from 'primeng/api';
+import { FloatLabel } from 'primeng/floatlabel';
+import { InputText } from 'primeng/inputtext';
+import { MultiSelect } from 'primeng/multiselect';
+import { Table, TableModule } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import {
@@ -20,6 +37,7 @@ import {
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { OptionDto } from '../../../model/option-dto';
+import { FormatValuePipe } from '../../../pipes/format-value.pipe';
 import { TableHelperService } from '../../../services/table-helper.service';
 import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.component';
 
@@ -29,6 +47,22 @@ import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.
   styleUrls: ['./bia-table-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
   encapsulation: ViewEncapsulation.None,
+  imports: [
+    NgIf,
+    TableModule,
+    PrimeTemplate,
+    MultiSelect,
+    FormsModule,
+    NgFor,
+    NgSwitch,
+    NgSwitchCase,
+    NgSwitchDefault,
+    InputText,
+    NgClass,
+    TranslateModule,
+    FormatValuePipe,
+    FloatLabel,
+  ],
 })
 export class BiaTableFilterComponent<CrudItem>
   extends BiaFieldBaseComponent<CrudItem>
@@ -37,9 +71,7 @@ export class BiaTableFilterComponent<CrudItem>
   @Input() table: Table;
   @Input() options?: OptionDto[];
 
-  get optionValues() {
-    return this.options?.map(x => x.display) ?? [];
-  }
+  propType = PropType;
 
   public columnFilterType = '';
   protected matchModeOptions: SelectItem[] | undefined = undefined;
@@ -61,6 +93,12 @@ export class BiaTableFilterComponent<CrudItem>
       : null;
   }
 
+  getOptionsLabels(value: number[]): string {
+    return value
+      .map(v => this.options?.find(o => o.id === v)?.display)
+      .join(',');
+  }
+
   ngOnInit() {
     this.initFiterConfiguration();
   }
@@ -79,7 +117,7 @@ export class BiaTableFilterComponent<CrudItem>
     ) {
       if (
         (this.table.filters[col.field] as FilterMetadata[]).some(
-          element => !this.tableHelperService.isEmptyFilter(element)
+          element => !TableHelperService.isEmptyFilter(element)
         )
       ) {
         return this.table.filters[col.field] as FilterMetadata[];
@@ -101,7 +139,7 @@ export class BiaTableFilterComponent<CrudItem>
           col.field
         ] as FilterMetadata;
         if (filter) {
-          return !this.tableHelperService.isEmptyFilter(filter);
+          return !TableHelperService.isEmptyFilter(filter);
         }
       }
     }
@@ -134,21 +172,21 @@ export class BiaTableFilterComponent<CrudItem>
 
   protected initFiterConfiguration() {
     this.initFieldConfiguration();
-    if (this.field.type == PropType.Number) {
+    if (this.field.type === PropType.Number) {
       this.columnFilterType = 'numeric';
       this.generateMatchModeOptions(this.filterMatchModeOptions.numeric);
-    } else if (this.field.type == PropType.Boolean) {
+    } else if (this.field.type === PropType.Boolean) {
       this.columnFilterType = 'boolean';
     } else if (
-      this.field.type == PropType.DateTime ||
-      this.field.type == PropType.Date
+      this.field.type === PropType.DateTime ||
+      this.field.type === PropType.Date
     ) {
       this.generateMatchModeOptions(this.filterMatchModeOptions.date);
       this.columnFilterType = 'date';
     } else if (
-      this.field.type == PropType.Time ||
-      this.field.type == PropType.TimeOnly ||
-      this.field.type == PropType.TimeSecOnly
+      this.field.type === PropType.Time ||
+      this.field.type === PropType.TimeOnly ||
+      this.field.type === PropType.TimeSecOnly
     ) {
       this.generateMatchModeOptions(this.filterMatchModeOptions.date);
       this.columnFilterType = 'text';

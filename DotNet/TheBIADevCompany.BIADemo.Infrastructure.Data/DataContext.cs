@@ -1,42 +1,42 @@
 // <copyright file="DataContext.cs" company="TheBIADevCompany">
-//     Copyright (c) TheBIADevCompany. All rights reserved.
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data
 {
     using System.Threading.Tasks;
-#if BIA_FRONT_FEATURE
     using Audit.EntityFramework;
+    using BIA.Net.Core.Domain.Audit;
+#if BIA_FRONT_FEATURE
+    using BIA.Net.Core.Domain.Notification.Entities;
+    using BIA.Net.Core.Domain.Translation.Entities;
+    using BIA.Net.Core.Domain.User.Entities;
+    using BIA.Net.Core.Domain.View.Entities;
 #endif
     using BIA.Net.Core.Infrastructure.Data;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
 #if BIA_FRONT_FEATURE
+
     // Begin BIADemo
-    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
     // End BIADemo
-    using TheBIADevCompany.BIADemo.Domain.Audit.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
-
     // Begin BIADemo
-    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
 
     // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.Site.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Translation.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
-    using TheBIADevCompany.BIADemo.Domain.View.Entities;
-    using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders;
 #endif
+    using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
+    using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders;
 
     /// <summary>
     /// The database context.
     /// </summary>
-#if BIA_FRONT_FEATURE
     [AuditDbContext(Mode = AuditOptionMode.OptIn, IncludeEntityObjects = false, AuditEventType = "{database}_{context}")]
-#endif
     public class DataContext : BiaDataContext
     {
         /// <summary>
@@ -57,12 +57,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
             this.logger.LogDebug("----------------Create Context--------------");
         }
 
-#if BIA_FRONT_FEATURE
         /// <summary>
         /// Gets or sets the Plane DBSet.
         /// </summary>
         public DbSet<AuditLog> AuditLogs { get; set; }
 
+#if BIA_FRONT_FEATURE
         /// <summary>
         /// Gets or sets the Site DBSet.
         /// </summary>
@@ -81,7 +81,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// <summary>
         /// Gets or sets the type of team DBSet.
         /// </summary>
-        public DbSet<Team> Teams { get; set; }
+        public DbSet<BaseEntityTeam> Teams { get; set; }
 
         /// <summary>
         /// Gets or sets the type of team DBSet.
@@ -165,6 +165,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// </summary>
         public DbSet<Part> Parts { get; set; }
 
+        /// <summary>
+        /// Gets or sets the user team defaults.
+        /// </summary>
+        public DbSet<UserDefaultTeam> UserDefaultTeams { get; set; }
+
         // End BIADemo
 #endif
 
@@ -178,19 +183,18 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
             return base.DisposeAsync();
         }
 
-        /// <inheritdoc cref="DbContext.OnModelCreating"/>
+        /// <inheritdoc />
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // modelBuilder.HasDefaultSchema("dbo")
             base.OnModelCreating(modelBuilder);
 #if BIA_FRONT_FEATURE
 
-            TranslationModelBuilder.CreateModel(modelBuilder);
+            new TranslationModelBuilder().CreateModel(modelBuilder);
             SiteModelBuilder.CreateSiteModel(modelBuilder);
-            UserModelBuilder.CreateModel(modelBuilder);
+            new UserModelBuilder().CreateModel(modelBuilder);
             ViewModelBuilder.CreateModel(modelBuilder);
-            NotificationModelBuilder.CreateModel(modelBuilder);
-            AuditModelBuilder.CreateModel(modelBuilder);
+            new NotificationModelBuilder().CreateModel(modelBuilder);
 
             // Begin BIADemo
             PlaneModelBuilder.CreateModel(modelBuilder);
@@ -198,6 +202,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
 
             // End BIADemo
 #endif
+            new AuditModelBuilder().CreateModel(modelBuilder);
             this.OnEndModelCreating(modelBuilder);
         }
     }

@@ -14,110 +14,115 @@ const routes: Routes = [
         path: '',
         component: PageLayoutComponent,
         children: [
-          /// BIAToolKit - Begin Routing
-          /// BIAToolKit - End Routing
+          // BIAToolKit - Begin Routing
+          // BIAToolKit - End Routing
+
+          // Begin BIAToolKit Generation Ignore
+          // BIAToolKit - Begin Partial Routing Plane
+          {
+            path: 'planes',
+            data: {
+              breadcrumb: 'app.planes',
+              canNavigate: true,
+            },
+            loadChildren: () =>
+              import('./features/planes/plane.module').then(m => m.PlaneModule),
+          },
+          // BIAToolKit - End Partial Routing Plane
+          // BIAToolKit - Begin Partial Routing AircraftMaintenanceCompany
+          {
+            path: 'aircraft-maintenance-companies',
+            data: {
+              breadcrumb: 'app.aircraftMaintenanceCompanies',
+              canNavigate: true,
+            },
+            loadChildren: () =>
+              import(
+                './features/aircraft-maintenance-companies/aircraft-maintenance-company.module'
+              ).then(m => m.AircraftMaintenanceCompanyModule),
+          },
+          // BIAToolKit - End Partial Routing AircraftMaintenanceCompany
+          // BIAToolKit - Begin Partial Routing MaintenanceTeam
+          {
+            path: 'maintenance-teams',
+            data: {
+              breadcrumb: 'app.maintenanceTeams',
+              canNavigate: true,
+            },
+            loadChildren: () =>
+              import(
+                './features/aircraft-maintenance-companies/children/maintenance-teams/maintenance-team.module'
+              ).then(m => m.MaintenanceTeamModule),
+          },
+          // BIAToolKit - End Partial Routing MaintenanceTeam
+          // End BIAToolKit Generation Ignore
+
           // Begin BIADemo
           {
-            path: 'examples',
+            path: 'maintenance-contracts',
             data: {
-              breadcrumb: 'app.examples',
-              canNavigate: false,
+              breadcrumb: 'app.maintenanceContracts',
+              canNavigate: true,
             },
-            children: [
-              {
-                path: 'aircraft-maintenance-companies',
-                data: {
-                  breadcrumb: 'app.aircraft-maintenance-companies',
-                  canNavigate: true,
-                },
-                loadChildren: () =>
-                  import(
-                    './features/aircraft-maintenance-companies/aircraft-maintenance-company.module'
-                  ).then(m => m.AircraftMaintenanceCompanyModule),
-              },
-              /// BIAToolKit - Begin Partial Routing MaintenanceTeam
-              {
-                path: 'maintenance-teams',
-                data: {
-                  breadcrumb: 'app.maintenance-teams',
-                  canNavigate: true,
-                },
-                loadChildren: () =>
-                  import(
-                    './features/aircraft-maintenance-companies/children/maintenance-teams/maintenance-team.module'
-                  ).then(m => m.MaintenanceTeamModule),
-              },
-              /// BIAToolKit - End Partial Routing MaintenanceTeam
-
-              /// BIAToolKit - Begin Partial Routing Plane
-              {
-                path: 'planes',
-                data: {
-                  breadcrumb: 'app.planes',
-                  canNavigate: true,
-                },
-                loadChildren: () =>
-                  import('./features/planes/plane.module').then(
-                    m => m.PlaneModule
-                  ),
-              },
-              /// BIAToolKit - End Partial Routing Plane
-              {
-                path: 'planes-full-code',
-                data: {
-                  breadcrumb: 'app.planesFullCode',
-                  canNavigate: true,
-                },
-                loadChildren: () =>
-                  import('./features/planes-full-code/plane.module').then(
-                    m => m.PlaneModule
-                  ),
-              },
-              {
-                path: 'planes-specific',
-                data: {
-                  breadcrumb: 'app.planesSpecific',
-                  canNavigate: true,
-                },
-                loadChildren: () =>
-                  import('./features/planes-specific/plane.module').then(
-                    m => m.PlaneModule
-                  ),
-              },
-              {
-                path: 'airports',
-                data: {
-                  breadcrumb: 'app.airports',
-                  canNavigate: true,
-                },
-                loadChildren: () =>
-                  import('./features/airports/airport.module').then(
-                    m => m.AirportModule
-                  ),
-              },
-              {
-                path: 'planes-types',
-                data: {
-                  breadcrumb: 'app.planesTypes',
-                  canNavigate: true,
-                },
-                loadChildren: () =>
-                  import('./features/planes-types/plane-type.module').then(
-                    m => m.PlaneTypeModule
-                  ),
-              },
-              {
-                path: 'hangfire',
-                data: {
-                  breadcrumb: 'app.hangfire',
-                  canNavigate: true,
-                },
-                loadChildren: () =>
-                  import('./features/hangfire/hangfire.module').then(
-                    m => m.HangfireModule
-                  ),
-              },
-            ],
+            loadChildren: () =>
+              import(
+                './features/maintenance-contracts/maintenance-contract.module'
+              ).then(m => m.MaintenanceContractModule),
+          },
+          {
+            path: 'planes-full-code',
+            data: {
+              breadcrumb: 'app.planesFullCode',
+              canNavigate: true,
+            },
+            loadChildren: () =>
+              import('./features/planes-full-code/plane.module').then(
+                m => m.PlaneModule
+              ),
+          },
+          {
+            path: 'planes-specific',
+            data: {
+              breadcrumb: 'app.planesSpecific',
+              canNavigate: true,
+            },
+            loadChildren: () =>
+              import('./features/planes-specific/plane.module').then(
+                m => m.PlaneModule
+              ),
+          },
+          {
+            path: 'airports',
+            data: {
+              breadcrumb: 'app.airports',
+              canNavigate: true,
+            },
+            loadChildren: () =>
+              import('./features/airports/airport.module').then(
+                m => m.AirportModule
+              ),
+          },
+          {
+            path: 'planes-types',
+            data: {
+              breadcrumb: 'app.planesTypes',
+              canNavigate: true,
+            },
+            loadChildren: () =>
+              import('./features/planes-types/plane-type.module').then(
+                m => m.PlaneTypeModule
+              ),
+          },
+          {
+            path: 'hangfire',
+            data: {
+              breadcrumb: 'app.hangfire',
+              canNavigate: true,
+            },
+            loadChildren: () =>
+              import('./features/hangfire/hangfire.module').then(
+                m => m.HangfireModule
+              ),
           },
           // End BIADemo
           {
@@ -156,6 +161,8 @@ const routes: Routes = [
             data: {
               breadcrumb: 'bia.backgroundtasks',
               canNavigate: true,
+              noMargin: true,
+              noPadding: true,
             },
             loadChildren: () =>
               import(

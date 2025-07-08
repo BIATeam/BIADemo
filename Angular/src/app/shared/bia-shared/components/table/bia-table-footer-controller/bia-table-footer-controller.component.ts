@@ -1,3 +1,4 @@
+import { DecimalPipe, I18nPluralPipe, NgIf } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -7,16 +8,26 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { FormsModule } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SelectItem } from 'primeng/api';
+import { Select } from 'primeng/select';
 
 @Component({
   selector: 'bia-table-footer-controller',
   templateUrl: './bia-table-footer-controller.component.html',
   styleUrls: ['./bia-table-footer-controller.component.scss'],
+  imports: [
+    NgIf,
+    Select,
+    FormsModule,
+    DecimalPipe,
+    I18nPluralPipe,
+    TranslateModule,
+  ],
 })
 export class BiaTableFooterControllerComponent implements OnInit, OnChanges {
-  @Input() pageSizeOptions: number[] = [10, 25, 50, 100];
+  @Input() pageSizeOptions: number[] | undefined = [10, 25, 50, 100];
   @Input() pageSize: number;
   @Input() length: number;
   @Input() canChangePageSize = true;

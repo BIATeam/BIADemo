@@ -1,5 +1,5 @@
 ﻿// <copyright file="WorkerFeaturesExtensions.cs" company="BIA">
-//     Copyright (c) BIA. All rights reserved.
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 namespace BIA.Net.Core.WorkerService.Features
 {
@@ -90,6 +90,8 @@ namespace BIA.Net.Core.WorkerService.Features
                     services.AddHangfirePerformContextAccessor();
                 }
 
+                GlobalJobFilters.Filters.Add(new ProlongExpirationTimeAttribute(workerFeatures.HangfireServer.SucceededTasksRetentionDays));
+
                 services.AddHangfireServer(hfOptions =>
                 {
                     hfOptions.ServerName = workerFeatures.HangfireServer.ServerName;
@@ -101,7 +103,7 @@ namespace BIA.Net.Core.WorkerService.Features
                     {
                         config.UseSimpleAssemblyNameTypeSerializer()
                               .UseRecommendedSerializerSettings()
-                              .UseSqlServerStorage(configuration.GetConnectionString(workerFeatures.HangfireServer.ConnectionStringName));
+                              .UseSqlServerStorage(configuration.GetDatabaseConnectionString(workerFeatures.HangfireServer.ConnectionStringName));
                     }
                     else if (dbEngine.ToLower().Equals("postgresql"))
                     {
@@ -112,7 +114,7 @@ namespace BIA.Net.Core.WorkerService.Features
 
                         config.UseSimpleAssemblyNameTypeSerializer()
                               .UseRecommendedSerializerSettings()
-                              .UsePostgreSqlStorage(options => options.UseNpgsqlConnection(configuration.GetConnectionString(workerFeatures.HangfireServer.ConnectionStringName)), optionsTime);
+                              .UsePostgreSqlStorage(options => options.UseNpgsqlConnection(configuration.GetDatabaseConnectionString(workerFeatures.HangfireServer.ConnectionStringName)), optionsTime);
                     }
 
                     // Log in hangfire dashboard

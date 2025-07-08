@@ -1,3 +1,4 @@
+import { NgIf } from '@angular/common';
 import {
   AfterViewInit,
   Component,
@@ -13,7 +14,9 @@ import {
   ActivatedRouteSnapshot,
   NavigationEnd,
   Router,
+  RouterOutlet,
 } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { BiaInjectorService } from 'src/app/core/bia-core/services/bia-injector.service';
@@ -22,6 +25,7 @@ import { BiaInjectorService } from 'src/app/core/bia-core/services/bia-injector.
   selector: 'bia-full-page-layout',
   templateUrl: './fullpage-layout.component.html',
   styleUrls: ['./fullpage-layout.component.scss'],
+  imports: [NgIf, RouterOutlet, TranslateModule],
 })
 export class FullPageLayoutComponent
   implements OnInit, OnDestroy, AfterViewInit

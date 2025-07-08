@@ -1,8 +1,17 @@
 <app-aircraft-maintenance-company-form
+  [crudItem]="(itemTemplate$ | async) ?? undefined"
+  [isAdd]="true"
   [fields]="crudConfiguration.fieldsConfig.columns"
+  [formLayoutConfig]="crudConfiguration.formLayoutConfig"
   [dictOptionDtos]="
     (aircraftMaintenanceCompanyService.optionsService.dictOptionDtos$
       | async) ?? []
   "
-  (cancel)="onCancelled()"
-  (save)="onSubmitted($event)"></app-aircraft-maintenance-company-form>
+  (cancelled)="onCancelled()"
+  (save)="onSubmitted($event)"
+  [showPopupButton]="showPopupButton"
+  [showSplitButton]="showSplitButton"
+  [showFullPageButton]="showFullPageButton"
+  (layoutChanged)="
+    notifyLayoutChange($event)
+  "></app-aircraft-maintenance-company-form>

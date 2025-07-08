@@ -8,6 +8,10 @@ namespace TheBIADevCompany.BIADemo.DeployDB
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Archive;
     using BIA.Net.Core.Application.Clean;
+#if BIA_FRONT_FEATURE
+    using BIA.Net.Core.Application.Job;
+#endif
+    using BIA.Net.Core.Common.Configuration;
     using Hangfire;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
@@ -16,8 +20,13 @@ namespace TheBIADevCompany.BIADemo.DeployDB
     using NLog;
     using NLog.Extensions.Hosting;
     using NLog.Extensions.Logging;
+
+#if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Application.Job;
+
+#endif
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
 
     /// <summary>
@@ -32,11 +41,14 @@ namespace TheBIADevCompany.BIADemo.DeployDB
         /// <returns>Task.</returns>
         public static async Task Main(string[] args)
         {
+            var env = Environment.GetEnvironmentVariable(Constants.Application.Environment);
             await new HostBuilder()
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
-                    config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-                    config.AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable(Constants.Application.Environment)}.json", optional: true, reloadOnChange: true);
+                    config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                    config.AddJsonFile($"appsettings.{env}.json", optional: true, reloadOnChange: true);
+                    config.AddJsonFile("bianetconfig.json", optional: false, reloadOnChange: true);
+                    config.AddJsonFile($"bianetconfig.{env}.json", optional: true, reloadOnChange: true);
                     config.AddEnvironmentVariables();
                 })
                 .ConfigureServices((hostingContext, services) =>
@@ -45,7 +57,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
 
                     services.AddDbContext<DataContext>(options =>
                     {
-                        options.UseSqlServer(configuration.GetConnectionString("ProjectDatabase"));
+                        options.UseSqlServer(configuration.GetDatabaseConnectionString("ProjectDatabase"));
                     });
                     services.AddHostedService<DeployDBService>();
 
@@ -57,7 +69,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                     });
                     services.AddHangfire(config =>
                     {
-                        config.UseSqlServerStorage(configuration.GetConnectionString("ProjectDatabase"));
+                        config.UseSqlServerStorage(configuration.GetDatabaseConnectionString("ProjectDatabase"));
 
                         // Initialize here the recuring jobs
 #if BIA_FRONT_FEATURE

@@ -12,14 +12,40 @@
         </div>
       </a>
     </div>
-    <div class="layout-sidebar-anchor p-link" (click)="anchor()"></div>
+    <div class="layout-sidebar-anchor" (click)="anchor()"></div>
   </div>
-  <bia-ultima-menu-profile
-    #menuProfileStart
-    [username]="username"
-    [login]="login"
-    [supportedLangs]="supportedLangs"></bia-ultima-menu-profile>
+  <ng-container *ngIf="layoutService.config().menuProfilePosition === 'start'">
+    <ng-container *ngTemplateOutlet="menuProfile"></ng-container>
+  </ng-container>
+  <ng-content select="[sidebar-top]" ngProjectAs="[sidebar-top]"></ng-content>
   <div #menuContainer class="layout-menu-container">
-    <bia-ultima-menu [menuItems]="navMenuItems"></bia-ultima-menu>
+    <bia-ultima-menu [menuItems]="navMenuItems">
+      <ng-content select="[menu-top]" ngProjectAs="[menu-top]"></ng-content>
+      <ng-content
+        select="[menu-bottom]"
+        ngProjectAs="[menu-bottom]"></ng-content>
+    </bia-ultima-menu>
   </div>
+  <ng-content
+    select="[sidebar-bottom]"
+    ngProjectAs="[sidebar-bottom]"></ng-content>
+  <ng-container *ngIf="layoutService.config().menuProfilePosition === 'end'">
+    <ng-container *ngTemplateOutlet="menuProfile"></ng-container>
+  </ng-container>
 </div>
+
+<ng-template #menuProfile>
+  <bia-ultima-menu-profile
+    [username]="username"
+    [lastname]="lastname"
+    [login]="login">
+    <ng-content
+      select="[menu-profile-replace]"
+      ngProjectAs="[menu-profile-replace]">
+    </ng-content>
+    <ng-content
+      select="[menu-profile-panel]"
+      ngProjectAs="[menu-profile-panel]">
+    </ng-content>
+  </bia-ultima-menu-profile>
+</ng-template>

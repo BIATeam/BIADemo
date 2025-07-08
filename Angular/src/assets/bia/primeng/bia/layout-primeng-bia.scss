@@ -1,3 +1,7 @@
-@import './overrides/_layout_variables';
+/* primeng layout */
 @import '../sass/layout/layout.scss';
+/* bia overrides */
 @import './overrides/layout_styles';
+@import './overrides/_theme_styles';
+@import './overrides/customs/table';
+@import './overrides/customs/data';

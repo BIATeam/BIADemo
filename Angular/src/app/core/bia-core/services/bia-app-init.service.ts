@@ -1,8 +1,8 @@
 import { Injectable, isDevMode, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
-  KeycloakEvent,
-  KeycloakEventType,
+  KeycloakEventLegacy,
+  KeycloakEventTypeLegacy,
   KeycloakService,
 } from 'keycloak-angular';
 import { Observable, Subscription, throwError } from 'rxjs';
@@ -32,6 +32,7 @@ export class BiaAppInitService implements OnDestroy {
     protected appSettingsDas: AppSettingsDas,
     protected store: Store<AppState>,
     protected notificationSignalRService: NotificationSignalRService,
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     protected keycloakService: KeycloakService,
     protected appSettingsService: AppSettingsService
   ) {}
@@ -92,9 +93,12 @@ export class BiaAppInitService implements OnDestroy {
   protected initEventKeycloakSuccess(): Observable<AuthInfo> {
     return this.keycloakService.keycloakEvents$.asObservable().pipe(
       filter(
-        (keycloakEvent: KeycloakEvent) =>
-          keycloakEvent?.type == KeycloakEventType.OnAuthSuccess ||
-          keycloakEvent?.type == KeycloakEventType.OnAuthRefreshSuccess
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        (keycloakEvent: KeycloakEventLegacy) =>
+          // eslint-disable-next-line @typescript-eslint/no-deprecated
+          keycloakEvent?.type === KeycloakEventTypeLegacy.OnAuthSuccess ||
+          // eslint-disable-next-line @typescript-eslint/no-deprecated
+          keycloakEvent?.type === KeycloakEventTypeLegacy.OnAuthRefreshSuccess
       ),
       first(),
       switchMap(() => {
@@ -107,11 +111,15 @@ export class BiaAppInitService implements OnDestroy {
     this.sub.add(
       this.keycloakService.keycloakEvents$
         .asObservable()
-        .subscribe(async (keycloakEvent: KeycloakEvent) => {
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        .subscribe(async (keycloakEvent: KeycloakEventLegacy) => {
           if (
-            keycloakEvent?.type == KeycloakEventType.OnAuthLogout ||
-            keycloakEvent?.type == KeycloakEventType.OnReady ||
-            keycloakEvent?.type == KeycloakEventType.OnTokenExpired
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            keycloakEvent?.type === KeycloakEventTypeLegacy.OnAuthLogout ||
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            keycloakEvent?.type === KeycloakEventTypeLegacy.OnReady ||
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            keycloakEvent?.type === KeycloakEventTypeLegacy.OnTokenExpired
           ) {
             if (this.keycloakService.isLoggedIn() !== true) {
               this.keycloakService.login({

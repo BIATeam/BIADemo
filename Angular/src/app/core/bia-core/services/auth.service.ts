@@ -4,7 +4,15 @@ import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { jwtDecode } from 'jwt-decode';
 import { BehaviorSubject, NEVER, Observable, Subscription, of } from 'rxjs';
-import { catchError, filter, map, skip, switchMap, take } from 'rxjs/operators';
+import {
+  catchError,
+  filter,
+  finalize,
+  map,
+  skip,
+  switchMap,
+  take,
+} from 'rxjs/operators';
 import { DomainTeamsActions } from 'src/app/domains/bia-domains/team/store/teams-actions';
 import {
   AdditionalInfos,
@@ -57,9 +65,9 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       if (
         authInfo &&
         authInfo.additionalInfos &&
-        authInfo.uncryptedToken.userData
+        authInfo.decryptedToken.userData
       ) {
-        authInfo.uncryptedToken.userData.currentTeams.forEach(team => {
+        authInfo.decryptedToken.userData.currentTeams.forEach(team => {
           this.setCurrentTeamId(team.teamTypeId, team.teamId);
           this.setCurrentRoleIds(
             team.teamTypeId,
@@ -97,6 +105,10 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
           this.getLatestVersion();
           return NEVER;
         }
+      }),
+      finalize(() => {
+        console.info('Finalize login');
+        this.isInLogin = false;
       })
     );
   }
@@ -132,10 +144,10 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     return '';
   }
 
-  public getUncryptedToken(): Token {
+  public getDecryptedToken(): Token {
     const authInfo = this.authInfoSubject.value;
     if (authInfo) {
-      return authInfo.uncryptedToken;
+      return authInfo.decryptedToken;
     }
     return <Token>{};
   }
@@ -146,7 +158,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       id: +objDecodedToken[
         'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid'
       ],
-      login:
+      identityKey:
         objDecodedToken[
           'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'
         ],
@@ -184,6 +196,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       loginParam.lightToken = false;
       loginParam.fineGrainedPermission = true;
       loginParam.additionalInfos = true;
+      loginParam.isFirstLogin = false;
       return loginParam;
     }
 
@@ -193,6 +206,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       fineGrainedPermission: true,
       additionalInfos: true,
       teamsConfig: allEnvironments.teams,
+      isFirstLogin: true,
     };
   }
 
@@ -253,13 +267,15 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   protected setCurrentTeamId(teamTypeId: number, teamId: number): boolean {
     teamId = +teamId;
     const loginParam = this.getLoginParameters();
-    let teamsLogin = loginParam.currentTeamLogins;
+    const teamsLogin = loginParam.currentTeamLogins;
     const team = teamsLogin.find(i => i.teamTypeId === teamTypeId);
     if (team) {
       if (+team.teamId !== +teamId) {
-        if (teamId == 0) {
+        if (teamId === 0) {
           // TODO check if there is a remove in array;
-          teamsLogin = teamsLogin.filter(i => i.teamTypeId !== teamTypeId);
+          loginParam.currentTeamLogins = teamsLogin.filter(
+            i => i.teamTypeId !== teamTypeId
+          );
         } else {
           team.teamId = teamId;
           team.useDefaultRoles = true;
@@ -269,13 +285,13 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
         return true;
       }
     } else {
-      if (teamId != 0) {
+      if (teamId !== 0) {
         const newTeam = new CurrentTeamDto();
         newTeam.teamTypeId = teamTypeId;
         newTeam.useDefaultRoles = true;
         newTeam.currentRoleIds = [];
         newTeam.teamId = teamId;
-        teamsLogin.push(newTeam);
+        loginParam.currentTeamLogins.push(newTeam);
         this.setLoginParameters(loginParam);
         return true;
       }
@@ -299,11 +315,11 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     roleIds: number[]
   ): boolean {
     roleIds = roleIds.map(roleId => +roleId);
+    const loginParam = this.getLoginParameters();
     const roleMode =
-      allEnvironments.teams.find(r => r.teamTypeId == teamTypeId)?.roleMode ||
+      loginParam.teamsConfig.find(r => r.teamTypeId === teamTypeId)?.roleMode ||
       RoleMode.AllRoles;
     if (roleMode !== RoleMode.AllRoles) {
-      const loginParam = this.getLoginParameters();
       const teamsLogin = loginParam.currentTeamLogins;
       const team = teamsLogin.find(i => i.teamId === teamId);
       if (team) {
@@ -330,50 +346,57 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     }
     if (authInfo) {
       return (
-        authInfo.uncryptedToken.permissions.some(p => p === permission) === true
+        authInfo.decryptedToken.permissions.some(p => p === permission) === true
       );
     }
     return false;
   }
 
   protected getAuthInfo() {
-    return this.http
-      .post<AuthInfo>(`${this.route}LoginAndTeams`, this.getLoginParameters())
-      .pipe(
-        map((authInfo: AuthInfo) => {
-          if (authInfo) {
-            authInfo.uncryptedToken = this.decodeToken(authInfo.token);
-          }
-          RefreshTokenService.shouldRefreshToken = false;
-          this.isInLogin = false;
-          this.authInfoSubject.next(authInfo);
+    return this.registerToken(
+      this.http.post<AuthInfo>(
+        `${this.route}LoginAndTeams`,
+        this.getLoginParameters()
+      )
+    );
+  }
 
-          this.store.dispatch(
-            DomainTeamsActions.loadAllSuccess({
-              teams: authInfo.additionalInfos.teams,
-            })
-          );
-          return authInfo;
-        }),
-        catchError(err => {
-          if (err.status === HttpStatusCode.Unauthorized) {
-            window.location.href =
-              allEnvironments.urlErrorPage + '?num=' + err.status;
-          }
+  protected registerToken(
+    authResult: Observable<AuthInfo>
+  ): Observable<AuthInfo> {
+    return authResult.pipe(
+      map((authInfo: AuthInfo) => {
+        if (authInfo) {
+          authInfo.decryptedToken = this.decodeToken(authInfo.token);
+        }
+        RefreshTokenService.shouldRefreshToken = false;
+        this.authInfoSubject.next(authInfo);
 
-          RefreshTokenService.shouldRefreshToken = true;
-          this.isInLogin = false;
-          const authInfo: AuthInfo = <AuthInfo>{};
-          this.authInfoSubject.next(authInfo);
-          this.store.dispatch(
-            DomainTeamsActions.loadAllSuccess({
-              teams: authInfo?.additionalInfos?.teams ?? [],
-            })
-          );
+        this.store.dispatch(
+          DomainTeamsActions.loadAllSuccess({
+            teams: authInfo.additionalInfos.teams,
+          })
+        );
+        return authInfo;
+      }),
+      catchError(err => {
+        if (err.status === HttpStatusCode.Unauthorized) {
+          window.location.href =
+            allEnvironments.urlErrorPage + '?num=' + err.status;
+        }
 
-          return of(authInfo);
-        })
-      );
+        RefreshTokenService.shouldRefreshToken = true;
+        const authInfo: AuthInfo = <AuthInfo>{};
+        this.authInfoSubject.next(authInfo);
+        this.store.dispatch(
+          DomainTeamsActions.loadAllSuccess({
+            teams: authInfo?.additionalInfos?.teams ?? [],
+          })
+        );
+
+        return of(authInfo);
+      })
+    );
   }
 
   public getLightToken() {
@@ -384,7 +407,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       .pipe(
         map((authInfo: AuthInfo) => {
           if (authInfo) {
-            authInfo.uncryptedToken = this.decodeToken(authInfo.token);
+            authInfo.decryptedToken = this.decodeToken(authInfo.token);
           }
           return authInfo;
         }),

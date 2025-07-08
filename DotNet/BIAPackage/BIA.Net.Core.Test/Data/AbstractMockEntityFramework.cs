@@ -1,5 +1,5 @@
 ﻿// <copyright file="AbstractMockEntityFramework.cs" company="BIA">
-//     Copyright (c) BIA.Net. All rights reserved.
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 namespace BIA.Net.Core.Test.Data
 {
@@ -39,21 +39,21 @@ namespace BIA.Net.Core.Test.Data
             this.dbContextReadOnly = dbContextReadOnly as TDbContextReadOnly;
         }
 
-        /// <inheritdoc cref="IMockEntityFramework{TDbContext}.GetDbContext"/>
+        /// <inheritdoc />
         /// <returns>The "in memory" database context.</returns>
         public TDbContext GetDbContext()
         {
             return this.dbContext;
         }
 
-        /// <inheritdoc cref="IMockEntityFramework{TDbContext}.GetDbContextReadOnly"/>
+        /// <inheritdoc />
         /// <returns>The "in memory" database context read only.</returns>
         public TDbContextReadOnly GetDbContextReadOnly()
         {
             return this.dbContextReadOnly;
         }
 
-        /// <inheritdoc cref="IMockEntityFramework{TDbContext}.InitDefaultData"/>
+        /// <inheritdoc />
         public abstract void InitDefaultData();
     }
 }

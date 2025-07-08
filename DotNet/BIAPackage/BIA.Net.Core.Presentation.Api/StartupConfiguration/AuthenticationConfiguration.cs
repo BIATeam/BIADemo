@@ -1,5 +1,5 @@
 ﻿// <copyright file="AuthenticationConfiguration.cs" company="BIA">
-//     Copyright (c) BIA.Net. All rights reserved.
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
@@ -11,6 +11,7 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
     using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Authentication;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -77,6 +78,7 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
                     context.Response.OnStarting(async () =>
                     {
                         context.NoResult();
+                        context.Response.Headers.AccessControlAllowOrigin = context.Request.Headers.Origin.ToString();
                         context.Response.Headers.Append("Token-Expired-Or-Invalid", "true");
                         context.Response.ContentType = "text/plain";
                         context.Response.StatusCode = 498; // 498 = Token expired/invalid
@@ -165,11 +167,7 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(JwtBearerDefaults.AuthenticationScheme, policy => policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).RequireAuthenticatedUser().Build());
-
-                if (configuration.Policies != default)
-                {
-                    AddConfigurationPolicies(configuration, options);
-                }
+                AddConfigurationPolicies(configuration, options);
             });
 
             services.AddSingleton<IAuthorizationPolicyProvider, BiaAuthorizationPolicyProvider>();
@@ -177,12 +175,24 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
 
         private static void AddConfigurationPolicies(BiaNetSection configuration, AuthorizationOptions options)
         {
-            foreach (Policy confPolicy in
-                                configuration.Policies.Where(confPolicy => !string.IsNullOrWhiteSpace(confPolicy.Name) &&
-                                    !string.IsNullOrWhiteSpace(confPolicy.RequireClaim?.Type) &&
-                                    confPolicy.RequireClaim?.AllowedValues?.Any() == true))
+            if (configuration?.Policies != null)
             {
-                options.AddPolicy(confPolicy.Name, policy => policy.RequireClaim(confPolicy.RequireClaim.Type, confPolicy.RequireClaim.AllowedValues));
+                foreach (Policy policy in configuration.Policies.Where(p => !string.IsNullOrWhiteSpace(p.Name) && p.RequireClaims?.Any() == true))
+                {
+                    options.AddPolicy(policy.Name, policyBuilder =>
+                    {
+                        policyBuilder.RequireAssertion(context =>
+                        {
+                            return policy.RequireClaims.Any(requireClaim =>
+                                context.User.HasClaim(claim => claim.Type == requireClaim.Type && requireClaim.AllowedValues.Contains(claim.Value)));
+                        });
+                    });
+                }
+            }
+
+            if (configuration?.Policies?.Any(confPolicy => confPolicy.Name == BiaConstants.Policy.ServiceApiRW) != true)
+            {
+                options.AddPolicy(BiaConstants.Policy.ServiceApiRW, policy => policy.RequireAssertion(_ => true));
             }
         }
 

@@ -1,5 +1,5 @@
-﻿// <copyright file="DatabaseConfiguration.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+﻿// <copyright file="DatabaseConfiguration.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Common.Configuration
@@ -23,5 +23,10 @@ namespace BIA.Net.Core.Common.Configuration
         /// The database connection string.
         /// </summary>
         public string ConnectionString { get; set; }
+
+        /// <summary>
+        /// The use of SQL Data broker.
+        /// </summary>
+        public bool SQLDataBroker { get; set; }
     }
 }

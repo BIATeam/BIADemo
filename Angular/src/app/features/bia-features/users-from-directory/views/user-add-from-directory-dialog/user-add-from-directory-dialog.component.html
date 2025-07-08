@@ -1,5 +1,6 @@
 <p-dialog
-  [focusOnShow]="true"
+  header="{{ 'user.add' | translate }}"
+  [focusOnShow]="false"
   [(visible)]="_display"
   [modal]="true"
   [closable]="false"
@@ -8,13 +9,10 @@
   [draggable]="false"
   [style]="{ minWidth: '50vw' }"
   [contentStyle]="{ overflow: 'auto' }">
-  <p-header>
-    {{ 'user.add' | translate }}
-  </p-header>
   <bia-user-from-directory-form
     [users]="(usersFromDirectory$ | async) ?? []"
     [domains]="(ldapDomains$ | async) ?? []"
     (searchUsers)="onSearchUsers($event)"
-    (cancel)="onCancelled()"
+    (cancelled)="onCancelled()"
     (save)="onSubmitted($event)"></bia-user-from-directory-form>
 </p-dialog>

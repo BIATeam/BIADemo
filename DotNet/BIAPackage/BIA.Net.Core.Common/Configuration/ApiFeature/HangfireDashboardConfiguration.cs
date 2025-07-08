@@ -1,5 +1,5 @@
-﻿// <copyright file="HangfireDashboardConfiguration.cs" company="BIA.Net">
-// Copyright (c) BIA.Net. All rights reserved.
+﻿// <copyright file="HangfireDashboardConfiguration.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Common.Configuration.ApiFeature

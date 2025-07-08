@@ -1,5 +1,5 @@
-﻿// <copyright file="LoginParamDto.cs" company="BIA.Net">
-// Copyright (c) BIA.Net. All rights reserved.
+﻿// <copyright file="LoginParamDto.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Domain.Dto.User
@@ -33,5 +33,15 @@ namespace BIA.Net.Core.Domain.Dto.User
         /// Gets or sets if it required aditionnal users (from database or ad and user profile) info in the token.
         /// </summary>
         public bool AdditionalInfos { get; set; }
+
+        /// <summary>
+        /// Inidcates wheither is ifrst login or not.
+        /// </summary>
+        public bool IsFirstLogin { get; set; }
+
+        /// <summary>
+        /// User to copy rights and roles from.
+        /// </summary>
+        public string BaseUserIdentity { get; set; }
     }
 }

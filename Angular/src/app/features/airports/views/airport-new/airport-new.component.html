@@ -1,7 +1,14 @@
 <app-airport-form
+  [crudItem]="(itemTemplate$ | async) ?? undefined"
+  [isAdd]="true"
   [fields]="crudConfiguration.fieldsConfig.columns"
+  [formLayoutConfig]="crudConfiguration.formLayoutConfig"
   [dictOptionDtos]="
     (airportService.optionsService.dictOptionDtos$ | async) ?? []
   "
-  (cancel)="onCancelled()"
-  (save)="onSubmitted($event)"></app-airport-form>
+  (cancelled)="onCancelled()"
+  (save)="onSubmitted($event)"
+  [showPopupButton]="showPopupButton"
+  [showSplitButton]="showSplitButton"
+  [showFullPageButton]="showFullPageButton"
+  (layoutChanged)="notifyLayoutChange($event)"></app-airport-form>

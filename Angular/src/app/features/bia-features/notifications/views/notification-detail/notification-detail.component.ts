@@ -1,3 +1,4 @@
+import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -7,8 +8,10 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { ButtonDirective } from 'primeng/button';
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
 import { Permission } from 'src/app/shared/permission';
 import { AppState } from 'src/app/store/state';
@@ -16,10 +19,23 @@ import { Notification, NotificationData } from '../../model/notification';
 import { NotificationService } from '../../services/notification.service';
 import { FeatureNotificationsActions } from '../../store/notifications-actions';
 
+import { TranslateModule } from '@ngx-translate/core';
+import { NotificationTeamWarningComponent } from '../../../../../shared/bia-shared/components/notification-team-warning/notification-team-warning.component';
+
 @Component({
   selector: 'bia-notification-detail',
   templateUrl: './notification-detail.component.html',
   styleUrls: ['./notification-detail.component.scss'],
+  imports: [
+    NgIf,
+    ButtonDirective,
+    NotificationTeamWarningComponent,
+
+    AsyncPipe,
+    DatePipe,
+    TranslateModule,
+    SpinnerComponent,
+  ],
 })
 export class NotificationDetailComponent implements OnInit, OnDestroy {
   @Output() displayChange = new EventEmitter<boolean>();
@@ -37,7 +53,7 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.notification$ = this.notificationService.notification$;
+    this.notification$ = this.notificationService.crudItem$;
     this.sub.add(
       this.authService.authInfo$.subscribe((authInfo: AuthInfo) => {
         if (authInfo && authInfo.token !== '') {
@@ -100,6 +116,7 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
       }
     }
   }
+
   onSetUnread(id: number) {
     this.store.dispatch(FeatureNotificationsActions.setUnread({ id }));
   }

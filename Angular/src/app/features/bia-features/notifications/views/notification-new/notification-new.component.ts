@@ -1,51 +1,23 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
-import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
-import { AppState } from 'src/app/store/state';
+import { AsyncPipe } from '@angular/common';
+import { Component, Injector } from '@angular/core';
+import { CrudItemNewComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-new/crud-item-new.component';
+import { NotificationFormComponent } from '../../components/notification-form/notification-form.component';
 import { Notification } from '../../model/notification';
-import { NotificationOptionsService } from '../../services/notification-options.service';
-import { FeatureNotificationsActions } from '../../store/notifications-actions';
+import { notificationCRUDConfiguration } from '../../notification.constants';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'bia-notification-new',
   templateUrl: './notification-new.component.html',
   styleUrls: ['./notification-new.component.scss'],
+  imports: [NotificationFormComponent, AsyncPipe],
 })
-export class NotificationNewComponent implements OnInit, OnDestroy {
-  protected sub = new Subscription();
-
+export class NotificationNewComponent extends CrudItemNewComponent<Notification> {
   constructor(
-    protected store: Store<AppState>,
-    protected router: Router,
-    protected activatedRoute: ActivatedRoute,
-    public notificationOptionsService: NotificationOptionsService,
-    protected biaTranslationService: BiaTranslationService
-  ) {}
-
-  ngOnInit() {
-    this.sub.add(
-      this.biaTranslationService.currentCulture$.subscribe(() => {
-        this.notificationOptionsService.loadAllOptions();
-      })
-    );
-  }
-
-  ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
-  }
-
-  onSubmitted(notificationToCreate: Notification) {
-    this.store.dispatch(
-      FeatureNotificationsActions.create({ notification: notificationToCreate })
-    );
-    this.router.navigate(['../'], { relativeTo: this.activatedRoute });
-  }
-
-  onCancelled() {
-    this.router.navigate(['../'], { relativeTo: this.activatedRoute });
+    protected injector: Injector,
+    public notificationService: NotificationService
+  ) {
+    super(injector, notificationService);
+    this.crudConfiguration = notificationCRUDConfiguration;
   }
 }

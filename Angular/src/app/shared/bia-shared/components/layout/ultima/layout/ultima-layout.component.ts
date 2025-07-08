@@ -1,3 +1,4 @@
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import {
   Component,
   HostBinding,
@@ -7,10 +8,16 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  Router,
+  RouterOutlet,
+} from '@angular/router';
 import { Store } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MenuItem } from 'primeng/api';
+import { Breadcrumb } from 'primeng/breadcrumb';
 import { Observable, Subscription, filter, map } from 'rxjs';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
@@ -22,10 +29,12 @@ import {
   ROUTE_DATA_BREADCRUMB,
   ROUTE_DATA_CAN_NAVIGATE,
   ROUTE_DATA_NO_MARGIN,
+  ROUTE_DATA_NO_PADDING,
 } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
 import { BiaLayoutService } from '../../services/layout.service';
 import { MenuService } from '../../services/menu.service';
+import { BiaUltimaConfigComponent } from '../config/ultima-config.component';
 import { BiaUltimaFooterComponent } from '../footer/ultima-footer.component';
 import { BiaUltimaSidebarComponent } from '../sidebar/ultima-sidebar.component';
 import { BiaUltimaTopbarComponent } from '../topbar/ultima-topbar.component';
@@ -34,13 +43,27 @@ import { BiaUltimaTopbarComponent } from '../topbar/ultima-topbar.component';
   selector: 'bia-ultima-layout',
   templateUrl: './ultima-layout.component.html',
   styleUrls: ['./ultima-layout.component.scss'],
+  imports: [
+    NgClass,
+    BiaUltimaTopbarComponent,
+    BiaUltimaSidebarComponent,
+    NgIf,
+    Breadcrumb,
+    RouterOutlet,
+    BiaUltimaFooterComponent,
+    AsyncPipe,
+    TranslateModule,
+    BiaUltimaConfigComponent,
+  ],
 })
 export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
   @HostBinding('class.no-margin') noMargin = false;
+  @HostBinding('class.no-padding') noPadding = false;
   @Input() version: string;
   @Input() appTitle: string;
   @Input() menus: BiaNavigation[];
   @Input() username?: string;
+  @Input() lastname?: string;
   @Input() login: string;
   @Input() headerLogos: string[];
   @Input() footerLogo = 'assets/bia/img/Footer.png';
@@ -73,7 +96,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
   constructor(
     protected biaTranslation: BiaTranslationService,
     protected biaTheme: BiaThemeService,
-    private menuService: MenuService,
+    protected menuService: MenuService,
     public layoutService: BiaLayoutService,
     public renderer: Renderer2,
     protected translateService: TranslateService,
@@ -113,7 +136,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
     );
   }
 
-  private menuProfileSubscription() {
+  protected menuProfileSubscription() {
     this.sub.add(
       this.layoutService.menuProfileOpen$.subscribe(() => {
         this.hideMenu();
@@ -140,7 +163,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
     );
   }
 
-  private topBarMenuSubscription() {
+  protected topBarMenuSubscription() {
     this.sub.add(
       this.layoutService.topbarMenuOpen$.subscribe(() => {
         if (!this.topbarMenuOutsideClickListener) {
@@ -172,7 +195,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
     );
   }
 
-  private overlayFooterSubscription() {
+  protected overlayFooterSubscription() {
     this.sub.add(
       this.layoutService.overlayFooterOpen$.subscribe(() => {
         if (!this.footerOutsideClickListener) {
@@ -194,7 +217,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
     );
   }
 
-  private overlayMenuSubscription() {
+  protected overlayMenuSubscription() {
     this.sub.add(
       this.layoutService.overlayOpen$.subscribe(() => {
         this.hideTopbarMenu();
@@ -253,6 +276,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.setNoMargin(this.activatedRoute);
+    this.setNoPadding(this.activatedRoute);
     this.sub.add(
       this.translateService
         .stream('bia.language')
@@ -262,12 +286,14 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
         this.setNoMargin(this.activatedRoute);
+        this.setNoPadding(this.activatedRoute);
         this.updateMenuItems();
       });
 
     this.sub.add(
       this.layoutService.breadcrumbRefresh$.subscribe(() => {
         this.setNoMargin(this.activatedRoute);
+        this.setNoPadding(this.activatedRoute);
         this.updateMenuItems();
       })
     );
@@ -324,11 +350,26 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
 
     if (activatedRoute.snapshot.data[ROUTE_DATA_NO_MARGIN] === true) {
       this.noMargin = true;
-      return;
     }
 
     for (const child of children) {
       this.setNoMargin(child, false);
+    }
+  }
+
+  protected setNoPadding(activatedRoute: ActivatedRoute, firstPass = true) {
+    if (firstPass) {
+      this.noPadding = false;
+    }
+
+    const children: ActivatedRoute[] = activatedRoute.children;
+
+    if (activatedRoute.snapshot.data[ROUTE_DATA_NO_PADDING] === true) {
+      this.noPadding = true;
+    }
+
+    for (const child of children) {
+      this.setNoPadding(child, false);
     }
   }
 
@@ -424,8 +465,12 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
       'layout-topbar-menu-active': this.layoutService.state.topbarMenuActive,
       'layout-menu-profile-active': this.layoutService.state.menuProfileActive,
       'layout-content-wrapper-fullscreen': this.layoutService.state.fullscreen,
+      'layout-content-wrapper-iframe': this.layoutService.state.isInIframe,
     };
     styleClass['layout-menu-' + this.layoutService.config().colorScheme] = true;
+    styleClass[
+      'layout-menu-profile-' + this.layoutService.config().menuProfilePosition
+    ] = true;
     styleClass[this.cssClassEnv] = true;
     /* eslint-enable @typescript-eslint/naming-convention */
     return styleClass;
@@ -455,7 +500,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
     return environmentType !== EnvironmentType.PRD;
   }
 
-  private getEnvironmentName(environmentType: EnvironmentType | undefined) {
+  protected getEnvironmentName(environmentType: EnvironmentType | undefined) {
     switch (environmentType) {
       case EnvironmentType.DEV:
         return 'Development';

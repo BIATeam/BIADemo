@@ -4,6 +4,8 @@
 
 namespace BIA.Net.Core.Common.Configuration
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Policy.
     /// </summary>
@@ -15,8 +17,8 @@ namespace BIA.Net.Core.Common.Configuration
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the require claim.
+        /// Gets or sets the require claims.
         /// </summary>
-        public RequireClaim RequireClaim { get; set; }
+        public IEnumerable<RequireClaim> RequireClaims { get; set; }
     }
 }

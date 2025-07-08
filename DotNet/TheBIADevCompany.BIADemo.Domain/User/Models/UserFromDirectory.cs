@@ -1,52 +1,23 @@
 // <copyright file="UserFromDirectory.cs" company="TheBIADevCompany">
-//     Copyright (c) BIA.Net. All rights reserved.
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Domain.User.Models
 {
     using System;
-    using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.User.Models;
 
     /// <summary>
     /// The class representing a user from AD.
     /// </summary>
     [Serializable]
-    public class UserFromDirectory : IUserFromDirectory
+    public class UserFromDirectory : BaseUserFromDirectory
     {
-        /// <summary>
-        /// Gets or sets the security Id.
-        /// </summary>
-        public string Sid { get; set; }
-
-        /// <summary>
-        /// Gets or sets the last name.
-        /// </summary>
-        public string LastName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the first name.
-        /// </summary>
-        public string FirstName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the login.
-        /// </summary>
-        public string Login { get; set; }
-
-        /// <summary>
-        /// Gets or sets the login.
-        /// </summary>
-        public string Domain { get; set; }
-
-        /// <summary>
-        /// Gets or sets the GUID.
-        /// </summary>
-        public Guid Guid { get; set; }
-
         /// <summary>
         /// Gets or sets the email.
         /// </summary>
         public string Email { get; set; }
+#if BIA_USER_CUSTOM_FIELDS_BACK
 
         /// <summary>
         /// Gets or sets the distinguished name.
@@ -102,5 +73,6 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Models
         /// Gets or sets the country.
         /// </summary>
         public string Country { get; set; }
+#endif
     }
 }

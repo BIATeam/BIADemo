@@ -1,22 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-// import { ReducerManager, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
-// BIAToolKit - Begin Option Airport
 import { AirportOptionModule } from 'src/app/domains/airport-option/airport-option.module';
-// BIAToolKit - End Option Airport
-// BIAToolKit - Begin Option Country
 import { CountryOptionModule } from 'src/app/domains/country-option/country-option.module';
-// BIAToolKit - End Option Country
-import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
-import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
-import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
+import {
+  DynamicLayoutComponent,
+  LayoutMode,
+} from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { Permission } from 'src/app/shared/permission';
-import { SharedModule } from 'src/app/shared/shared.module';
-import { MaintenanceTeamFormComponent } from './components/maintenance-team-form/maintenance-team-form.component';
-import { MaintenanceTeamTableComponent } from './components/maintenance-team-table/maintenance-team-table.component';
+import { aircraftMaintenanceCompanyCRUDConfiguration } from '../../aircraft-maintenance-company.constants';
+import { AircraftMaintenanceCompaniesEffects } from '../../store/aircraft-maintenance-companies-effects';
+import { FeatureAircraftMaintenanceCompaniesStore } from '../../store/aircraft-maintenance-company.state';
 import { maintenanceTeamCRUDConfiguration } from './maintenance-team.constants';
 import { FeatureMaintenanceTeamsStore } from './store/maintenance-team.state';
 import { MaintenanceTeamsEffects } from './store/maintenance-teams-effects';
@@ -32,8 +28,9 @@ export const ROUTES: Routes = [
       breadcrumb: null,
       permission: Permission.MaintenanceTeam_List_Access,
       injectComponent: MaintenanceTeamsIndexComponent,
+      configuration: maintenanceTeamCRUDConfiguration,
     },
-    component: FullPageLayoutComponent,
+    component: DynamicLayoutComponent,
     canActivate: [PermissionGuard],
     // [Calc] : The children are not used in calc
     children: [
@@ -44,15 +41,8 @@ export const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.MaintenanceTeam_Create,
           title: 'maintenanceTeam.add',
-          injectComponent: MaintenanceTeamNewComponent,
-          dynamicComponent: () =>
-            maintenanceTeamCRUDConfiguration.usePopup
-              ? PopupLayoutComponent
-              : FullPageLayoutComponent,
         },
-        component: maintenanceTeamCRUDConfiguration.usePopup
-          ? PopupLayoutComponent
-          : FullPageLayoutComponent,
+        component: MaintenanceTeamNewComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -70,6 +60,7 @@ export const ROUTES: Routes = [
               breadcrumb: 'app.members',
               canNavigate: true,
               permission: Permission.MaintenanceTeam_Member_List_Access,
+              layoutMode: LayoutMode.fullPage,
             },
             loadChildren: () =>
               import('./children/members/maintenance-team-member.module').then(
@@ -83,15 +74,8 @@ export const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.MaintenanceTeam_Update,
               title: 'maintenanceTeam.edit',
-              injectComponent: MaintenanceTeamEditComponent,
-              dynamicComponent: () =>
-                maintenanceTeamCRUDConfiguration.usePopup
-                  ? PopupLayoutComponent
-                  : FullPageLayoutComponent,
             },
-            component: maintenanceTeamCRUDConfiguration.usePopup
-              ? PopupLayoutComponent
-              : FullPageLayoutComponent,
+            component: MaintenanceTeamEditComponent,
             canActivate: [PermissionGuard],
           },
           {
@@ -99,6 +83,8 @@ export const ROUTES: Routes = [
             pathMatch: 'full',
             redirectTo: 'edit',
           },
+          // BIAToolKit - Begin MaintenanceTeamModuleChildPath
+          // BIAToolKit - End MaintenanceTeamModuleChildPath
         ],
       },
     ],
@@ -107,34 +93,24 @@ export const ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    MaintenanceTeamItemComponent,
-    MaintenanceTeamsIndexComponent,
-    // [Calc] : NOT used for calc (3 lines).
-    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-    MaintenanceTeamFormComponent,
-    MaintenanceTeamNewComponent,
-    MaintenanceTeamEditComponent,
-    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
-    MaintenanceTeamTableComponent,
-  ],
   imports: [
-    SharedModule,
-    CrudItemModule,
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature(
       maintenanceTeamCRUDConfiguration.storeKey,
       FeatureMaintenanceTeamsStore.reducers
     ),
-    EffectsModule.forFeature([MaintenanceTeamsEffects]),
-    // TODO after creation of CRUD Team MaintenanceTeam : select the optioDto dommain module required for link
+    // Team Parent Store:
+    StoreModule.forFeature(
+      aircraftMaintenanceCompanyCRUDConfiguration.storeKey,
+      FeatureAircraftMaintenanceCompaniesStore.reducers
+    ),
+    EffectsModule.forFeature([
+      MaintenanceTeamsEffects,
+      AircraftMaintenanceCompaniesEffects,
+    ]),
     // Domain Modules:
-    // BIAToolKit - Begin Option Airport
     AirportOptionModule,
-    // BIAToolKit - End Option Airport
-    // BIAToolKit - Begin Option Country
     CountryOptionModule,
-    // BIAToolKit - End Option Country
   ],
 })
 export class MaintenanceTeamModule {}

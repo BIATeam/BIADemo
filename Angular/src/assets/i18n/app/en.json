@@ -3,10 +3,9 @@
     "members": "Members",
     "sites": "Sites",
     "Begin BIADemo": "To remove in project from here",
-    "aircraft-maintenance-companies": "Aircraft maintenance companies",
+    "aircraftMaintenanceCompanies": "Aircraft maintenance companies",
     "airports": "Airports",
     "engines": "Engines",
-    "examples": "Examples",
     "hangfire": "Hangfire",
     "planes": "Planes",
     "planesFullCode": "Planes (Full code)",
@@ -19,7 +18,8 @@
     "teams": "Teams",
     "users": "Users",
     "notifications": "Notifications",
-    "maintenance-teams": "Maintenance Teams"
+    "maintenanceTeams": "Maintenance Teams",
+    "maintenanceContracts": "Maintenance contracts"
   },
   "Begin BIADemo": "To remove in project from here",
   "aircraftMaintenanceCompany": {
@@ -29,7 +29,8 @@
     "goto": "View Company",
     "listOf": "List of aircraft maintenance companies",
     "maintenanceTeams": "Maintenance teams",
-    "title": "Name"
+    "title": "Name",
+    "headerLabel": "Aircraft maintenance company"
   },
   "airport": {
     "add": "Add airport",
@@ -64,6 +65,14 @@
     "principalPart": "Principal part",
     "installedParts": "Installed parts",
     "import": "Import engines"
+  },
+  "maintenanceContract": {
+    "listOf": "Liste of maintenance contracts",
+    "contractNumber": "Contract number",
+    "description": "Description",
+    "site": "Airlines",
+    "aircraftMaintenanceCompany": "Aircraft maintenance company",
+    "planes": "Planes"
   },
   "maintenanceTeam": {
     "add": "Add maintenance team",
@@ -106,11 +115,13 @@
     "fuelLevel": "Fuel level",
     "isActive": "Active",
     "import": "Import planes",
+    "information": "Information",
     "lastFlightDate": "Last flight date",
     "listOf": "List of planes",
     "msn": "Msn",
     "planeType": "Plane Type",
     "probability": "Probability",
+    "read": "Plane details",
     "similarTypes": "Similar Planes Types",
     "site": "Airline",
     "syncTime": "Synchronization time",
@@ -122,7 +133,10 @@
     "motorsCount": "Motors count",
     "totalFlightHours": "Total flight hours",
     "fuelCapacity": "Fuel capacity",
-    "originalPrice": "Original price"
+    "originalPrice": "Original price",
+    "groupIdentification": "Identification",
+    "groupStatus": "Status",
+    "groupTracking": "Tracking"
   },
   "planeType": {
     "add": "Add type of planes",
@@ -139,7 +153,8 @@
     "listOf": "List of members",
     "manage": "Manage member",
     "roles": "Roles",
-    "user": "User"
+    "user": "User",
+    "teams": "Teams"
   },
   "msg": {
     "hideFilters": "Hide filters",
@@ -152,11 +167,9 @@
     "edit": "Edit site",
     "listOf": "List of sites",
     "Begin BIADemo": "To remove in project from here",
-    "add": "Add airline",
-    "edit": "Edit airline",
-    "listOf": "List of airlines",
     "End BIADemo": "To remove in project up to here",
-    "title": "Title"
+    "title": "Title",
+    "headerLabel": "Site"
   },
   "translation": {
     "defaultLanguage": "Default (English)"

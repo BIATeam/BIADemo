@@ -5,20 +5,22 @@
 namespace TheBIADevCompany.BIADemo.Application.User
 {
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.User;
     using BIA.Net.Core.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.Dto.User;
 
     /// <summary>
     /// Interface AuthService.
     /// </summary>
+    /// <typeparam name="TUserDto">The type of user dto.</typeparam>
+    /// <typeparam name="TUser">The type of user.</typeparam>
     public interface IAuthAppService
-    {
-#if BIA_BACK_TO_BACK_AUTH
-        /// <summary>
-        /// Logins.
-        /// </summary>
-        /// <returns>The JWT.</returns>
-        Task<string> LoginAsync();
+#if BIA_FRONT_FEATURE
+        : IBaseFrontAuthAppService<AdditionalInfoDto>
+#else
+        : IBaseAuthAppService
 #endif
+    {
 #if BIA_FRONT_FEATURE
 
         /// <summary>

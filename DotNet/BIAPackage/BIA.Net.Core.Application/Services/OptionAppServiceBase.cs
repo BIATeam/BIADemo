@@ -1,13 +1,14 @@
-﻿// <copyright file="OptionAppServiceBase.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+﻿// <copyright file="OptionAppServiceBase.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Application.Services
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Entity.Interface;
+    using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
 
@@ -21,7 +22,7 @@ namespace BIA.Net.Core.Application.Services
     public abstract class OptionAppServiceBase<TOptionDto, TEntity, TKey, TMapper> : OperationalDomainServiceBase<TEntity, TKey>, IOptionAppServiceBase<TOptionDto, TKey>
         where TOptionDto : TOptionDto<TKey>, new()
         where TEntity : class, IEntity<TKey>, new()
-        where TMapper : BaseMapper<TOptionDto, TEntity, TKey>
+        where TMapper : BiaBaseMapper<TOptionDto, TEntity, TKey>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="OptionAppServiceBase{TOptionDto, TEntity, TKey, TMapper}"/> class.

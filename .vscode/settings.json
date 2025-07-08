@@ -20,5 +20,6 @@
     { "name": "app", "path": "./Angular/src/assets/i18n/app" }
   ],
   "i18n-ally.localesPaths": ["./Angular/src/assets/i18n/app"],
-  "dotnet.defaultSolution": "DotNet/BIADemo.sln"
+  "dotnet.defaultSolution": "DotNet/BIADemo.sln",
+  "cSpell.words": ["Dtos", "matomo", "primeng"]
 }

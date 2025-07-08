@@ -1,4 +1,11 @@
 import {
+  NgIf,
+  NgSwitch,
+  NgSwitchCase,
+  NgSwitchDefault,
+  NgTemplateOutlet,
+} from '@angular/common';
+import {
   AfterContentInit,
   ChangeDetectionStrategy,
   Component,
@@ -9,8 +16,20 @@ import {
   QueryList,
   TemplateRef,
 } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  UntypedFormGroup,
+} from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
+import { Checkbox } from 'primeng/checkbox';
+import { DatePicker } from 'primeng/datepicker';
+import { FloatLabel } from 'primeng/floatlabel';
+import { InputNumber } from 'primeng/inputnumber';
+import { InputText } from 'primeng/inputtext';
+import { MultiSelect } from 'primeng/multiselect';
+import { Select } from 'primeng/select';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 import {
   BiaFieldConfig,
@@ -24,12 +43,30 @@ import { BiaFieldBaseComponent } from '../bia-field-base/bia-field-base.componen
   templateUrl: './bia-input.component.html',
   styleUrls: ['./bia-input.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    NgIf,
+    NgTemplateOutlet,
+    NgSwitch,
+    NgSwitchCase,
+    Select,
+    MultiSelect,
+    Checkbox,
+    InputNumber,
+    DatePicker,
+    NgSwitchDefault,
+    InputText,
+    TranslateModule,
+    FloatLabel,
+  ],
 })
 export class BiaInputComponent<CrudItem>
   extends BiaFieldBaseComponent<CrudItem>
   implements OnInit, OnDestroy, AfterContentInit
 {
   @Input() field: BiaFieldConfig<CrudItem>;
+  @Input() readOnly: boolean;
   @Input() form: UntypedFormGroup;
   @Input() dictOptionDtos: DictOptionDto[];
 

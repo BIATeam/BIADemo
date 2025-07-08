@@ -1,18 +1,35 @@
 <div class="layout-menu-profile">
   <button
-    class="p-link"
     (click)="toggleMenu()"
     pTooltip="Profile"
     [tooltipDisabled]="isTooltipDisabled">
-    <img
-      *ngIf="layoutService.config().showAvatar"
-      [src]="avatarUrl"
-      (error)="onImgError()"
-      alt="avatar"
-      class="avatar" />
-    <span>
-      <strong>{{ displayName }}</strong>
-    </span>
+    <div #menuProfile>
+      <ng-content select="[menu-profile-replace]"></ng-content>
+    </div>
+    @if (!menuProfile.innerHTML.length) {
+      @if (layoutService.config().showAvatar) {
+        @if (
+          !layoutService.config().alwaysShowInitials &&
+          this.avatarUrl !== this.defaultProfileImage
+        ) {
+          <img
+            [src]="avatarUrl"
+            (error)="onImgError()"
+            alt="avatar"
+            class="avatar"
+            [pTooltip]="`${usernameParam.name} ${usernameParam.lastname}`" />
+        } @else {
+          <p-avatar
+            styleClass="layout-menu-profile-avatar"
+            [label]="initials"
+            shape="circle"
+            [pTooltip]="
+              `${usernameParam.name} ${usernameParam.lastname}`
+            "></p-avatar>
+        }
+      }
+      <span class="text-start" [innerHTML]="menuProfileHtml"></span>
+    }
     <i class="layout-menu-profile-toggler pi pi-fw pi-angle-down"></i>
   </button>
 
@@ -30,6 +47,7 @@
         layoutService.isDrawer())
     ) {
       <p-dialog
+        header="{{ 'bia.settings' | translate }}"
         [focusOnShow]="false"
         [(visible)]="menuProfileActive"
         [modal]="true"
@@ -38,14 +56,46 @@
         [maximizable]="false"
         [closeOnEscape]="true"
         [contentStyle]="{ overflow: 'auto' }">
-        <p-header>
-          {{ 'bia.settings' | translate }}
-        </p-header>
-        <bia-ultima-config
-          [supportedLangs]="supportedLangs"></bia-ultima-config>
+        <ng-container *ngTemplateOutlet="ultimaConfig"></ng-container>
       </p-dialog>
     } @else {
-      <bia-ultima-config [supportedLangs]="supportedLangs"></bia-ultima-config>
+      <ng-container *ngTemplateOutlet="ultimaConfig"></ng-container>
     }
   </div>
 </div>
+
+<ng-template #ultimaConfig>
+  <div class="p-3">
+    <small
+      *ngIf="layoutService.configDisplay().showEditAvatar && urlEditAvatar">
+      <i class="pi pi-pencil"></i
+      ><a class="edit-avatar" [href]="urlEditAvatar" target="_blank">{{
+        'bia.editProfileImage' | translate
+      }}</a>
+    </small>
+    @if (
+      authService.hasPermission(permissions.Impersonation_Connection_Rights)
+    ) {
+      <form (ngSubmit)="connectWithSpecificRights()">
+        <div class="flex mt-3">
+          <input
+            type="text"
+            name="signInAs"
+            pInputText
+            [(ngModel)]="signInAs"
+            placeholder="{{ 'bia.signInAs' | translate }}" />
+          <button
+            [disabled]="!signInAs"
+            pButton
+            type="submit"
+            icon="pi pi-user"
+            pTooltip="{{ 'bia.signIn' | translate }}"
+            (click)="connectWithSpecificRights()"></button>
+        </div>
+      </form>
+    }
+    <div>
+      <ng-content select="[menu-profile-panel]"></ng-content>
+    </div>
+  </div>
+</ng-template>

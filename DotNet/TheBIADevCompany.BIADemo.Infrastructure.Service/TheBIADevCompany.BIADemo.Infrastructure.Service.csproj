@@ -6,7 +6,7 @@
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="BIA.Net.Core.Infrastructure.Service" Version="4.1.1" />
+    <PackageReference Include="BIA.Net.Core.Infrastructure.Service" Version="5.0.1" />
     <PackageReference Include="PdfPig" Version="0.1.*" />
   </ItemGroup>
   <ItemGroup>
@@ -19,49 +19,51 @@
     <DefineConstants>$(DefineConstants);BIA_BACK_TO_BACK_AUTH;BIA_FRONT_FEATURE</DefineConstants>
   </PropertyGroup>
   <ItemGroup Label="Bia_ItemGroup_BIA_FRONT_FEATURE" Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bBIA_FRONT_FEATURE\b'))">
-    <!--BIADEMO-->
-    <Compile Remove="**\*Aircraft*.cs" />
-    <Compile Remove="**\*Airport*.cs" />
-    <Compile Remove="**\*BiaDemo*.cs" />
-    <Compile Remove="**\*Engine*.cs" />
-    <Compile Remove="**\*Example*.cs" />
-    <Compile Remove="**\*Plane*.cs" />
-    <Compile Remove="**\*Worker*.cs" />
-    <Compile Remove="**\*HangfiresController*.cs" />
-    <Compile Remove="**\*Part*.cs" />
-    <Compile Remove="**\*Country*.cs" />
-    <Compile Remove="**\*Document*.cs" />
-    <Compile Remove="**\*Analysis*.cs" />
-    <!--BIATEMPLATE-->
-    <Compile Remove="**\*Audit*.cs" />
-    <Compile Remove="**\*Error*.cs" />
-    <Compile Remove="**\*IdentityProvider*.cs" />
-    <Compile Remove="**\*LogsController*.cs" />
-    <Compile Remove="**\*Mapper*.cs" />
-    <Compile Remove="**\*Member*.cs" />
-    <Compile Remove="**\*ModelBuilder*.cs" />
-    <Compile Remove="**\*Notification*.cs" />
-    <Compile Remove="**\*Query*.cs" />
-    <Compile Remove="**\*SearchExpressionService*.cs" />
-    <Compile Remove="**\*Site*.cs" />
-    <Compile Remove="**\*Synchronize*.cs" />
-    <Compile Remove="**\*Team*.cs" />
-    <Compile Remove="**\*Translation*.cs" />
-    <Compile Remove="**\*View*.cs" />
-    <Compile Remove="**\Role.cs" />
-    <Compile Remove="**\RoleAppService.cs" />
-    <Compile Remove="**\IRoleAppService.cs" />
-    <Compile Remove="**\RolesController.cs" />
-    <Compile Remove="**\User.cs" />
-    <Compile Remove="**\UsersController.cs" />
-    <Compile Remove="**\UserAppService.cs" />
-    <Compile Remove="**\IUserAppService.cs" />
-    <Compile Remove="**\UserExtensions.cs" />
-    <Compile Remove="**\UserSelectBuilder.cs" />
-    <Compile Remove="**\UserSpecification.cs" />
-    <Compile Remove="**\WakeUpTask.cs" />
-    <Compile Remove="**\LanguagesController.cs" />
-    <Compile Remove="**\LdapDomainsController.cs" />
-    <Compile Remove="**\*ProfileImageController*.cs" />
+	  <!--BIADEMO-->
+	  <Compile Remove="**\*Aircraft*.cs" />
+	  <Compile Remove="**\*Airport*.cs" />
+	  <Compile Remove="**\*BiaDemo*.cs" />
+	  <Compile Remove="**\*BiaRemote*.cs" />
+	  <Compile Remove="**\*RemoteBiaApi*.cs" />
+	  <Compile Remove="**\*Engine*.cs" />
+	  <Compile Remove="**\*Example*.cs" />
+	  <Compile Remove="**\*Plane*.cs" />
+	  <Compile Remove="**\*MaintenanceContract*.cs" />
+	  <Compile Remove="**\*Worker*.cs" />
+	  <Compile Remove="**\*HangfiresController*.cs" />
+	  <Compile Remove="**\*Part*.cs" />
+	  <Compile Remove="**\*Country*.cs" />
+	  <Compile Remove="**\*Document*.cs" />
+	  <Compile Remove="**\*Analysis*.cs" />
+	  <!--BIATEMPLATE-->
+	  <Compile Remove="**\*Error*.cs" />
+	  <Compile Remove="**\*IdentityProvider*.cs" />
+	  <Compile Remove="**\*LogsController*.cs" />
+	  <Compile Remove="**\*Mapper*.cs" />
+	  <Compile Remove="**\*Member*.cs" />
+	  <Compile Remove="**\*Notification*.cs" />
+	  <Compile Remove="**\*Query*.cs" />
+	  <Compile Remove="**\*SearchExpressionService*.cs" />
+	  <Compile Remove="**\*Site*.cs" />
+	  <Compile Remove="**\*Synchronize*.cs" />
+	  <Compile Remove="**\*Team*.cs" />
+	  <Compile Remove="**\*Translation*.cs" />
+	  <Compile Remove="**\*View*.cs" />
+	  <Compile Remove="**\Role.cs" />
+	  <Compile Remove="**\RoleAppService.cs" />
+	  <Compile Remove="**\IRoleAppService.cs" />
+	  <Compile Remove="**\RolesController.cs" />
+	  <Compile Remove="**\User.cs" />
+	  <Compile Remove="**\UsersController.cs" />
+	  <Compile Remove="**\UserAppService.cs" />
+	  <Compile Remove="**\IUserAppService.cs" />
+	  <Compile Remove="**\UserExtensions.cs" />
+	  <Compile Remove="**\UserSelectBuilder.cs" />
+	  <Compile Remove="**\UserSpecification.cs" />
+	  <Compile Remove="**\WakeUpTask.cs" />
+	  <Compile Remove="**\LanguagesController.cs" />
+	  <Compile Remove="**\LdapDomainsController.cs" />
+	  <Compile Remove="**\*ProfileImageController*.cs" />
+	  <Compile Remove="**\UserModelBuilder.cs" />
   </ItemGroup>
 </Project>

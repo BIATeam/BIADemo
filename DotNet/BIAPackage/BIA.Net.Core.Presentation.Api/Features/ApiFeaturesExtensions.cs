@@ -1,5 +1,5 @@
 ﻿// <copyright file="ApiFeaturesExtensions.cs" company="BIA">
-//     Copyright (c) BIA. All rights reserved.
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 namespace BIA.Net.Core.Presentation.Api.Features
 {
@@ -13,18 +13,19 @@ namespace BIA.Net.Core.Presentation.Api.Features
 #pragma warning disable BIA001 // Forbidden reference to Domain layer in Presentation layer
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Service;
+    using BIA.Net.Core.Presentation.Api.Controller.Base;
 #pragma warning restore BIA001 // Forbidden reference to Domain layer in Presentation layer
     using BIA.Net.Core.Presentation.Api.Features.HangfireDashboard;
     using BIA.Net.Core.Presentation.Api.StartupConfiguration;
     using BIA.Net.Core.Presentation.Common.Features.HubForClients;
     using Hangfire;
     using Hangfire.Dashboard;
-    using Hangfire.Dashboard.JobLogs;
     using Hangfire.PostgreSql;
     using Hangfire.PostgreSql.Factories;
     using Hangfire.SqlServer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.OpenApi.Models;
@@ -61,6 +62,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
             // Swagger
             if (apiFeatures.Swagger?.IsActive == true)
             {
+                SwaggerControllerOrder<ControllerBase> swaggerControllerOrder = new SwaggerControllerOrder<ControllerBase>(Assembly.GetEntryAssembly());
                 services.AddSwaggerGen(a =>
                 {
                     var apiScheme = new OpenApiSecurityScheme
@@ -87,8 +89,8 @@ namespace BIA.Net.Core.Presentation.Api.Features
                         apiScheme);
                     a.AddSecurityRequirement(securityRequirement);
 
-                    string filePath = Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetEntryAssembly().GetName().Name}.xml");
-                    a.IncludeXmlComments(filePath, true);
+                    a.OrderActionsBy((apiDesc) => $"{swaggerControllerOrder.SortKey(apiDesc.ActionDescriptor.RouteValues["controller"])}");
+                    a.IncludeXmlComments(Assembly.GetEntryAssembly(), false);
                 });
             }
 
@@ -124,7 +126,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
 
                 if (dbEngine.ToLower().Equals("sqlserver"))
                 {
-                    JobStorage.Current = new SqlServerStorage(configuration.GetConnectionString(apiFeatures.DelegateJobToWorker.ConnectionStringName));
+                    JobStorage.Current = new SqlServerStorage(configuration.GetDatabaseConnectionString(apiFeatures.DelegateJobToWorker.ConnectionStringName));
                 }
                 else if (dbEngine.ToLower().Equals("postgresql"))
                 {
@@ -133,7 +135,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
                         InvisibilityTimeout = TimeSpan.FromDays(5),
                     };
 
-                    JobStorage.Current = new PostgreSqlStorage(new NpgsqlConnectionFactory(configuration.GetConnectionString(apiFeatures.DelegateJobToWorker.ConnectionStringName), optionsTime, null), optionsTime);
+                    JobStorage.Current = new PostgreSqlStorage(new NpgsqlConnectionFactory(configuration.GetDatabaseConnectionString(apiFeatures.DelegateJobToWorker.ConnectionStringName), optionsTime, null), optionsTime);
                 }
             }
 
@@ -146,7 +148,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
                     {
                         config.UseSimpleAssemblyNameTypeSerializer()
                               .UseRecommendedSerializerSettings()
-                              .UseSqlServerStorage(configuration.GetConnectionString(apiFeatures.HangfireDashboard.ConnectionStringName));
+                              .UseSqlServerStorage(configuration.GetDatabaseConnectionString(apiFeatures.HangfireDashboard.ConnectionStringName));
                     }
                     else if (dbEngine.ToLower().Equals("postgresql"))
                     {
@@ -157,7 +159,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
 
                         config.UseSimpleAssemblyNameTypeSerializer()
                               .UseRecommendedSerializerSettings()
-                              .UsePostgreSqlStorage(options => options.UseNpgsqlConnection(configuration.GetConnectionString(apiFeatures.HangfireDashboard.ConnectionStringName)), optionsTime);
+                              .UsePostgreSqlStorage(options => options.UseNpgsqlConnection(configuration.GetDatabaseConnectionString(apiFeatures.HangfireDashboard.ConnectionStringName)), optionsTime);
                     }
 
                     if (apiFeatures.HangfireDashboard.LogsVisibleInDashboard)
@@ -199,19 +201,14 @@ namespace BIA.Net.Core.Presentation.Api.Features
                 app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint("BIAApi/swagger.json", "v1.0");
-                    c.InjectJavascript("./jquery.min.js");
-                    c.InjectJavascript("./AutoLoginV3.8.0.js");
-                    c.InjectStylesheet("./AutoLoginV3.8.0.css");
+                    c.InjectJavascript("./AutoLogin.c0c914df432ec8edfa27c6c4d05ce98c.js");
+                    c.InjectStylesheet("./AutoLogin.1379b731dd73c3456a0ce0aab0c01a83.css");
                 });
             }
 
             // Hangfire Server
             if (apiFeatures.HangfireDashboard.IsActive)
             {
-                app.UseHangfireDashboardCustomOptions(new HangfireDashboardCustomOptions
-                {
-                    DashboardTitle = () => apiFeatures.HangfireDashboard.ServerName,
-                });
                 app.UseHangfireDashboard("/hangfireAdmin", new DashboardOptions
                 {
                     Authorization = hangfireServerAuthorizations.Authorization,

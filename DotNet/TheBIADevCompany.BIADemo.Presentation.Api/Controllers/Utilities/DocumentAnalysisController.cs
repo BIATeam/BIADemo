@@ -1,12 +1,12 @@
 ﻿// BIADemo only
-// <copyright file="DocumentAnalysisController.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+// <copyright file="DocumentAnalysisController.cs" company="TheBIADevCompany">
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Utilities
 {
     using System;
-    using BIA.Net.Presentation.Api.Controllers.Base;
+    using BIA.Net.Core.Presentation.Api.Controller.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;

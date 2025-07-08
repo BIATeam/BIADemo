@@ -1,7 +1,6 @@
-import { APP_BASE_HREF } from '@angular/common';
-import { Component, HostBinding, Inject, OnInit } from '@angular/core';
+import { APP_BASE_HREF, NgIf } from '@angular/common';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { tap } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import {
   BiaTranslationService,
@@ -15,15 +14,16 @@ import { environment } from 'src/environments/environment';
 import { APP_SUPPORTED_TRANSLATIONS } from '../../../constants';
 import { AuthInfo } from '../../model/auth-info';
 import { BiaNavigation } from '../../model/bia-navigation';
+import { SpinnerComponent } from '../spinner/spinner.component';
 import { BiaLayoutService } from './services/layout.service';
+import { BiaUltimaLayoutComponent } from './ultima/layout/ultima-layout.component';
 
 @Component({
   selector: 'bia-layout',
   templateUrl: './layout.component.html',
+  imports: [NgIf, SpinnerComponent, BiaUltimaLayoutComponent],
 })
 export class LayoutComponent implements OnInit {
-  @HostBinding('class.bia-flex') classicStyle = false;
-
   isLoadingUserInfo = false;
   menus = new Array<BiaNavigation>();
   version = allEnvironments.version;
@@ -34,6 +34,7 @@ export class LayoutComponent implements OnInit {
   enableNotifications = allEnvironments.enableNotifications;
   login = '';
   username = '';
+  lastname?: string;
   headerLogos: string[];
   footerLogo = 'assets/bia/img/Footer.png';
   supportedLangs = APP_SUPPORTED_TRANSLATIONS;
@@ -46,16 +47,7 @@ export class LayoutComponent implements OnInit {
     protected readonly store: Store,
     // protected notificationSignalRService: NotificationSignalRService,
     @Inject(APP_BASE_HREF) public baseHref: string
-  ) {
-    this.classicStyle = layoutService.config().classicStyle;
-    this.layoutService.configUpdate$
-      .pipe(
-        tap(update => {
-          this.classicStyle = update.classicStyle;
-        })
-      )
-      .subscribe();
-  }
+  ) {}
 
   public showEnvironmentMessage(environmentType: EnvironmentType | undefined) {
     return environmentType !== EnvironmentType.PRD;
@@ -100,13 +92,14 @@ export class LayoutComponent implements OnInit {
   protected setUserName(authInfo: AuthInfo) {
     if (
       authInfo &&
-      authInfo.additionalInfos &&
-      authInfo.additionalInfos.userInfo
+      authInfo.decryptedToken &&
+      authInfo.decryptedToken.userData
     ) {
-      this.login = authInfo.additionalInfos.userInfo.login;
-      this.username = authInfo.additionalInfos.userInfo.firstName
-        ? authInfo.additionalInfos.userInfo.firstName
-        : authInfo.additionalInfos.userInfo.login;
+      this.login = authInfo.decryptedToken.identityKey;
+      this.username = authInfo.decryptedToken.userData.firstName
+        ? authInfo.decryptedToken.userData.firstName
+        : authInfo.decryptedToken.identityKey;
+      this.lastname = authInfo.decryptedToken.userData.lastName;
     } else {
       this.username = '?';
     }

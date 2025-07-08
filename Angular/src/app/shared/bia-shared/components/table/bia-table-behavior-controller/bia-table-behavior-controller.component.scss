@@ -1,0 +1,25 @@
+.icon-label {
+  padding-left: 0.75rem;
+  cursor: pointer;
+}
+
+.bia-table-behavior-container {
+  height: 3rem;
+  align-items: center;
+}
+
+.pi.enable {
+  color: var(--primary-color);
+}
+
+.pi.disabled {
+  opacity: var(--p-disabled-opacity);
+}
+
+.split-icon {
+  position: absolute;
+  top: 0rem;
+  left: 0rem;
+  background: transparent;
+  rotate: 90deg;
+}

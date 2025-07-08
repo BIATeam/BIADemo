@@ -1,5 +1,5 @@
-﻿// <copyright file="WakeUpWebApps.cs" company="BIA.Net">
-//  Copyright (c) BIA.Net. All rights reserved.
+﻿// <copyright file="WakeUpWebApps.cs" company="BIA">
+//  Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Infrastructure.Service.Repositories
@@ -15,7 +15,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     /// <summary>
     /// WorkInstruction Repository.
     /// </summary>
-    /// <seealso cref="TheBIADevCompany.BIADemo.Domain.RepoContract.IWorkInstructionRepository" />
     public class WakeUpWebApps : WebApiRepository, IWakeUpWebApps
     {
         private readonly List<WakeUpWebApp> wakeUpWebApps;

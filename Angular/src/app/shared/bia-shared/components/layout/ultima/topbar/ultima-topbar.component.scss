@@ -1,4 +1,4 @@
-@import '../../../../../../../scss/bia/bia-variables';
+@use 'bia-variables';
 
 :host {
   display: flex;
@@ -56,9 +56,6 @@ bia-notification-team-warning {
     padding: 0px;
   }
 
-  .p-component {
-    border-width: 0px !important;
-  }
   .p-megamenu,
   .p-megamenu-root-list {
     background-color: transparent !important;
@@ -141,10 +138,7 @@ bia-notification-team-warning {
   height: 4rem;
   width: 4rem;
   margin-right: 0.5em;
-  // https://codepen.io/sosuke/pen/Pjoqqp
-  // hexa: #f8a92b
-  filter: invert(60%) sepia(92%) saturate(376%) hue-rotate(356deg)
-    brightness(98%) contrast(98%);
+  filter: var(--topbar-logo-filter);
 }
 
 .layout-topbar-items {
@@ -158,11 +152,26 @@ bia-notification-team-warning {
       right: 1.5rem;
       z-index: 10;
       color: white;
-      background: $biaRed;
+      background: bia-variables.$biaRed;
       border-radius: 14%;
       font-size: 0.7rem;
       line-height: 0.75rem;
       padding: 1px 3px;
     }
   }
+}
+
+.clear-button {
+  right: -100%;
+  transform: translateX(-100%);
+  z-index: 1000;
+  background: var(--p-primary-400);
+  display: none;
+  margin-bottom: 1rem;
+  color: var(--p-neutral-50);
+}
+
+.clear-button:hover {
+  background: var(--p-primary-300) !important;
+  color: var(--p-neutral-50) !important;
 }

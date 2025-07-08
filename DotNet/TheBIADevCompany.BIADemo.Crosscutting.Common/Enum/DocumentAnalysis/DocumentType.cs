@@ -1,6 +1,6 @@
 ﻿// BIADemo only
-// <copyright file="DocumentType.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+// <copyright file="DocumentType.cs" company="TheBIADevCompany">
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum.DocumentAnalysis

@@ -1,5 +1,5 @@
 ﻿// <copyright file="IUserDirectoryRepository.cs" company="BIA">
-//     Copyright (c) BIA.Net. All rights reserved.
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Domain.RepoContract
@@ -14,8 +14,10 @@ namespace BIA.Net.Core.Domain.RepoContract
     /// <summary>
     /// The interface defining the User directory repository.
     /// </summary>
+    /// <typeparam name="TUserFromDirectoryDto">The type of the user from directory dto.</typeparam>
     /// <typeparam name="TUserFromDirectory">The type of the user from directory.</typeparam>
-    public interface IUserDirectoryRepository<TUserFromDirectory>
+    public interface IUserDirectoryRepository<TUserFromDirectoryDto, TUserFromDirectory>
+        where TUserFromDirectoryDto : BaseUserFromDirectoryDto, new()
         where TUserFromDirectory : IUserFromDirectory, new()
     {
         /// <summary>
@@ -33,7 +35,7 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="usersFromDirectory">The users list.</param>
         /// <param name="roleLabel">List of error message.</param>
         /// <returns>List of of error message.</returns>
-        Task<List<string>> AddUsersInGroup(IEnumerable<UserFromDirectoryDto> usersFromDirectory, string roleLabel);
+        Task<List<string>> AddUsersInGroup(IEnumerable<TUserFromDirectoryDto> usersFromDirectory, string roleLabel);
 
         /// <summary>
         /// Remove a user in a group of the Ldap.
@@ -41,7 +43,7 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="usersFromRepositoryToRemove">The users from repository to remove.</param>
         /// <param name="roleLabel">Label of the role.</param>
         /// <returns>List of not removed user.</returns>
-        Task<List<UserFromDirectoryDto>> RemoveUsersInGroup(List<UserFromDirectoryDto> usersFromRepositoryToRemove, string roleLabel);
+        Task<List<TUserFromDirectoryDto>> RemoveUsersInGroup(List<TUserFromDirectoryDto> usersFromRepositoryToRemove, string roleLabel);
 
         /// <summary>
         /// Return all users recursively in a role. To use only for synchronisation.
@@ -65,8 +67,9 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="userInfoDto">The user information dto.</param>
         /// <param name="sid">The sid.</param>
         /// <param name="domain">The domain.</param>
+        /// <param name="withCredentials">True if use standard credential.</param>
         /// <returns>The list of roles.</returns>
-        Task<List<string>> GetUserRolesAsync(BiaClaimsPrincipal claimsPrincipal, UserInfoDto userInfoDto, string sid, string domain);
+        Task<List<string>> GetUserRolesAsync(BiaClaimsPrincipal claimsPrincipal, UserInfoFromDBDto userInfoDto, string sid, string domain, bool withCredentials);
 
         /// <summary>
         /// Resolves the user by sid.
@@ -89,7 +92,7 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// </summary>
         /// <param name="userFromDirectoryDto">The user from directory dto.</param>
         /// <returns>The user.</returns>
-        Task<TUserFromDirectory> ResolveUser(UserFromDirectoryDto userFromDirectoryDto);
+        Task<TUserFromDirectory> ResolveUser(TUserFromDirectoryDto userFromDirectoryDto);
 
         /// <summary>
         /// Determines whether [is sid in groups] [the specified LDAP groups].

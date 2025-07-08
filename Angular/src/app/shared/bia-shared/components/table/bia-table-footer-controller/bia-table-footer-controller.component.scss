@@ -18,19 +18,9 @@
 }
 
 :host ::ng-deep {
-  p-dropdown {
-    .p-dropdown {
+  p-select {
+    .p-select {
       height: auto;
-    }
-
-    .p-dropdown-label {
-      padding: 0.125rem !important;
-    }
-  }
-
-  p-multiselect {
-    .p-multiselect-label {
-      padding: 0.125rem !important;
     }
   }
 }

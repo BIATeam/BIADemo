@@ -21,6 +21,7 @@ import {
   PostParam,
   PutParam,
   SaveParam,
+  UpdateFixedStatusParam,
 } from '../models/http-params';
 import { BiaEnvironmentService } from './bia-environment.service';
 import { BiaOnlineOfflineService } from './bia-online-offline.service';
@@ -76,7 +77,7 @@ export abstract class GenericDas {
         if (
           error.status === HttpStatusCode.Unauthorized ||
           error.status === HttpStatusCode.Forbidden ||
-          error.status == HttpStatusCode.NotFound
+          error.status === HttpStatusCode.NotFound
         ) {
           location.assign(this.baseHref);
         }
@@ -253,6 +254,20 @@ export abstract class GenericDas {
 
   translateItem<TOut>(item: TOut) {
     return item;
+  }
+
+  protected updateFixedStatusItem<TOut>(param: UpdateFixedStatusParam) {
+    param.endpoint = param.endpoint ?? '';
+
+    const url = `${this.route}${param.endpoint}${param.id}/fix`;
+    if (param.offlineMode === true) {
+      param.options = BiaOnlineOfflineService.addHttpHeaderRetry(param.options);
+      return this.setWithCatchErrorOffline(
+        this.http.put<TOut>(url, param.fixed, param.options)
+      );
+    } else {
+      return this.http.put<TOut>(url, param.fixed, param.options);
+    }
   }
 
   protected setWithCatchErrorOffline(obs$: Observable<any>) {

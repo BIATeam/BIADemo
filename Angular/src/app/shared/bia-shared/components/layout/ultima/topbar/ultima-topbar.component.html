@@ -1,6 +1,10 @@
 <div
   class="flex-1 flex-column"
-  [style.display]="fullscreenMode ? 'none' : 'flex'"
+  [style.display]="
+    layoutService.state.fullscreen || layoutService.state.isInIframe
+      ? 'none'
+      : 'flex'
+  "
   style="width: calc(100vw)">
   <!-- topbar -->
   <div class="layout-topbar">
@@ -34,6 +38,7 @@
     <div class="layout-topbar-end">
       <div
         class="layout-topbar-actions-start flex flex-1 justify-content-center">
+        <ng-content select="[topbar-left]"></ng-content>
         <bia-ie-warning *ngIf="isIE"></bia-ie-warning>
         <ng-template
           ngFor
@@ -45,16 +50,18 @@
             *ngIf="!last"
             class="flex align-self-center bia-separator"></span>
         </ng-template>
+        <ng-content select="[topbar-right]"></ng-content>
       </div>
       <div class="layout-topbar-actions-end flex flex-0">
         <ul class="layout-topbar-items">
+          <ng-content select="[custom-topbar-icons]"></ng-content>
           <li
             *ngIf="enableNotifications"
             pTooltip="{{ 'bia.notifications' | translate }}"
             tooltipPosition="left"
             [routerLink]="['/notifications']">
             <a class="notifications">
-              <i class="pi pi-bell bia-mat-tiny-fab bia-pointer"></i>
+              <i class="pi pi-bell bia-pointer"></i>
               <ng-container
                 *ngIf="
                   unreadNotificationCount$ | async as unreadNotificationCount
@@ -62,7 +69,7 @@
                 <div
                   *ngIf="unreadNotificationCount > 0"
                   class="notification-count">
-                  {{ unreadNotificationCount$ | async }}
+                  {{ unreadNotificationCount }}
                 </div>
               </ng-container>
             </a>
@@ -72,23 +79,18 @@
             pTooltip="{{ 'bia.report' | translate }}"
             tooltipPosition="left"
             (click)="openReport()">
-            <a> <i class="pi pi-chart-bar bia-mat-tiny-fab bia-pointer"></i></a>
+            <a> <i class="pi pi-chart-bar bia-pointer"></i></a>
           </li>
           <li
             *ngIf="helpUrl"
             pTooltip="{{ 'bia.help' | translate }}"
             (click)="openHelp()">
-            <a>
-              <i class="pi pi-question-circle bia-mat-tiny-fab bia-pointer"></i
-            ></a>
+            <a> <i class="pi pi-question-circle bia-pointer"></i></a>
           </li>
           <li
-            *ngIf="showToggleStyle"
-            pTooltip="{{ 'bia.toggleStyle' | translate }}"
-            (click)="toggleStyle()">
-            <a>
-              <i class="pi pi-arrow-down-left bia-mat-tiny-fab bia-pointer"></i
-            ></a>
+            pTooltip="{{ 'bia.settings' | translate }}"
+            (click)="openSettings()">
+            <a> <i class="pi pi-cog bia-pointer"></i></a>
           </li>
           <bia-online-offline-icon></bia-online-offline-icon>
           <li
@@ -113,7 +115,7 @@
 </div>
 <a class="fullscreen-exit" *ngIf="fullscreenMode"
   ><i
-    class="pi pi-window-minimize bia-mat-tiny-fab bia-pointer"
+    class="pi pi-window-minimize bia-pointer"
     (click)="toggleFullscreenMode()"></i>
 </a>
 
@@ -132,7 +134,7 @@
   </div>
 </div>
 
-<p-toast key="bia" #toast>
+<p-toast key="bia" #toast id="toast">
   <ng-template let-message pTemplate="message">
     <div class="flex flex-column flex-1" style="max-width: 100%">
       <div class="flex flex-row">
@@ -173,7 +175,7 @@
         class="notification-actions flex flex-row justify-content-between align-content-between">
         <button
           pButton
-          [label]="message.data?.notification?.data.display | translate"
+          [label]="message.data?.notification?.data?.display | translate"
           (click)="onNotificationClick(message)"
           class="p-button-primary"></button>
         <button
@@ -189,3 +191,13 @@
     </div>
   </ng-template>
 </p-toast>
+<button
+  #clearButton
+  id="clearButton"
+  pButton
+  [text]="true"
+  [raised]="true"
+  class="clear-button"
+  label="{{ 'bia.clearAll' | translate }}"
+  [ngClass]="{ block: toast.messages?.length ?? 0 > 0 }"
+  (click)="clearAllMessages()"></button>

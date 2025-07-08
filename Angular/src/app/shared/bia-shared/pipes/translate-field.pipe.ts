@@ -1,9 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
-@Pipe({
-  name: 'translateField',
-})
+@Pipe({ name: 'translateField' })
 export class TranslateFieldPipe extends TranslatePipe implements PipeTransform {
   transform(
     input: any,
@@ -27,7 +25,7 @@ export class TranslateFieldPipe extends TranslatePipe implements PipeTransform {
     const translation: any = (input[translationkey] as any[]).filter(
       t => t.languageId === languageId
     )[0];
-    if (translation == null || translation === undefined) {
+    if (translation === null || translation === undefined) {
       return input[key];
     }
     return translation[key];

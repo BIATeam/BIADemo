@@ -1,7 +1,15 @@
+import { AsyncPipe, NgIf, UpperCasePipe } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
-import { ConfirmationService } from 'primeng/api';
+import { TranslateModule } from '@ngx-translate/core';
+import { ConfirmationService, SharedModule } from 'primeng/api';
+import { ButtonDirective } from 'primeng/button';
+import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Dialog } from 'primeng/dialog';
+import { Ripple } from 'primeng/ripple';
+import { Select } from 'primeng/select';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 import { Observable, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -14,6 +22,9 @@ import {
 } from 'src/app/shared/constants';
 import { Permission } from 'src/app/shared/permission';
 import { AppState } from 'src/app/store/state';
+import { ViewFormComponent } from '../../components/view-form/view-form.component';
+import { ViewTeamTableComponent } from '../../components/view-team-table/view-team-table.component';
+import { ViewUserTableComponent } from '../../components/view-user-table/view-user-table.component';
 import { AssignViewToTeam } from '../../model/assign-view-to-team';
 import { DefaultView } from '../../model/default-view';
 import { TeamDefaultView } from '../../model/team-default-view';
@@ -38,6 +49,27 @@ import {
   templateUrl: './view-dialog.component.html',
   styleUrls: ['./view-dialog.component.scss'],
   providers: [ConfirmationService],
+  imports: [
+    Dialog,
+    SharedModule,
+    NgIf,
+    Tabs,
+    TabList,
+    Ripple,
+    Tab,
+    TabPanels,
+    TabPanel,
+    ViewFormComponent,
+    ViewUserTableComponent,
+    Select,
+    FormsModule,
+    ViewTeamTableComponent,
+    ButtonDirective,
+    ConfirmDialog,
+    AsyncPipe,
+    UpperCasePipe,
+    TranslateModule,
+  ],
 })
 export class ViewDialogComponent implements OnInit, OnDestroy {
   display = false;
@@ -106,7 +138,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
 
   protected initViewUsers() {
     const currentTeamId =
-      this.useViewTeamWithTypeId == null
+      this.useViewTeamWithTypeId === null
         ? -1
         : this.authService.getCurrentTeamId(this.useViewTeamWithTypeId);
     this.viewUsers$ = this.views$.pipe(
@@ -115,7 +147,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
           view =>
             view.viewType === ViewType.User ||
             (view.viewType === ViewType.Team &&
-              view.viewTeams.some(t => t.teamId == currentTeamId))
+              view.viewTeams.some(t => t.teamId === currentTeamId))
         )
       )
     );
@@ -129,11 +161,11 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
 
   initTeams() {
     const currentTeamId =
-      this.useViewTeamWithTypeId == null
+      this.useViewTeamWithTypeId === null
         ? -1
         : this.authService.getCurrentTeamId(this.useViewTeamWithTypeId);
     this.teams$ = this.store.select(getAllTeams).pipe(
-      map(teams => teams.filter(team => currentTeamId == team.id)),
+      map(teams => teams.filter(team => currentTeamId === team.id)),
       tap(teams => {
         if (teams.length === 1) {
           this.teamSelected = teams[0];
@@ -247,7 +279,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
     return stateString;
   }
 
-  canSetUserView() {
+  get canSetUserView(): boolean {
     return (
       this.canAddUserView ||
       this.canDeleteUserView ||
@@ -256,7 +288,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
     );
   }
 
-  canSetTeamView() {
+  get canSetTeamView(): boolean {
     return (
       this.canAddTeamView ||
       this.canSetDefaultTeamView ||
@@ -266,9 +298,9 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
   }
 
   protected setPermissions() {
-    if (this.useViewTeamWithTypeId != null) {
+    if (this.useViewTeamWithTypeId !== null) {
       const teamTypeRightPrefix = TeamTypeRightPrefix.find(
-        t => t.key == this.useViewTeamWithTypeId
+        t => t.key === this.useViewTeamWithTypeId
       )?.value;
       this.canAddTeamView = this.authService.hasPermission(
         teamTypeRightPrefix + Permission.View_AddTeamViewSuffix

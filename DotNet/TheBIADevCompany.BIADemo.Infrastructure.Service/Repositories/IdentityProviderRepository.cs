@@ -11,22 +11,21 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     using System.Runtime.InteropServices;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Configuration.AuthenticationSection;
+    using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Infrastructure.Service.Dto.Keycloak;
+    using BIA.Net.Core.Infrastructure.Service.Dto.Keycloak.SearchUserResponse;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
-    using Meziantou.Framework.Win32;
-    using Microsoft.Extensions.Caching.Distributed;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.User.Models;
-    using TheBIADevCompany.BIADemo.Infrastructure.Service.Dto.Keycloak;
-    using TheBIADevCompany.BIADemo.Infrastructure.Service.Dto.Keycloak.SearchUserResponse;
 
     /// <summary>
     /// WorkInstruction Repository.
     /// </summary>
-    /// <seealso cref="TheBIADevCompany.BIADemo.Domain.RepoContract.IWorkInstructionRepository" />
-    public class IdentityProviderRepository : WebApiRepository, IIdentityProviderRepository
+    /// <seealso cref="Domain.RepoContract.IWorkInstructionRepository" />
+    public class IdentityProviderRepository : WebApiRepository, IIdentityProviderRepository<UserFromDirectory>
     {
         /// <summary>
         /// The configuration of the BiaNet section.
@@ -41,19 +40,19 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <param name="logger">The logger.</param>
         /// <param name="distributedCache">The distributed cache.</param>
         public IdentityProviderRepository(HttpClient httpClient, IOptions<BiaNetSection> configuration, ILogger<IdentityProviderRepository> logger, IBiaDistributedCache distributedCache)
-            : base(httpClient, logger, distributedCache)
+            : base(httpClient, logger, distributedCache, new AuthenticationConfiguration() { Mode = AuthenticationMode.Token })
         {
             this.configuration = configuration.Value;
         }
 
-        /// <inheritdoc cref="IIdentityProviderRepository.FindUserAsync"/>
+        /// <inheritdoc />
         public virtual async Task<UserFromDirectory> FindUserAsync(string identityKey, string paramName = "username")
         {
             string param = $"{paramName}={identityKey}";
             return (await this.QueryUserAsync(param))?.SingleOrDefault();
         }
 
-        /// <inheritdoc cref="IIdentityProviderRepository.SearchUserAsync"/>
+        /// <inheritdoc />
         public virtual async Task<List<UserFromDirectory>> SearchUserAsync(string search, int first = 0, int max = 10)
         {
             string param = $"first={first}&max={max}&search={search}";
@@ -63,28 +62,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <inheritdoc />
         protected override async Task<string> GetBearerTokenAsync()
         {
-            string token = null;
-
-            if (!string.IsNullOrWhiteSpace(this.configuration.Authentication.Keycloak.BaseUrl))
-            {
-                string url = $"{this.configuration.Authentication.Keycloak.BaseUrl}{this.configuration.Authentication.Keycloak.Api.TokenConf.RelativeUrl}";
-
-                TokenRequestDto tokenRequestDto = new TokenRequestDto()
-                {
-                    ClientId = this.configuration.Authentication.Keycloak.Api.TokenConf.ClientId,
-                    GrantType = this.configuration.Authentication.Keycloak.Api.TokenConf.GrantType,
-                };
-
-                (string Login, string Password) credential = CredentialRepository.RetrieveCredentials(this.configuration.Authentication.Keycloak.Api.TokenConf.CredentialSource);
-
-                tokenRequestDto.Username = credential.Login;
-                tokenRequestDto.Password = credential.Password;
-
-                TokenResponseDto tokenResponseDto = (await this.PostAsync<TokenResponseDto, TokenRequestDto>(url: url, body: tokenRequestDto, isFormUrlEncoded: true, useBearerToken: false)).Result;
-
-                token = tokenResponseDto?.AccessToken;
-            }
-
+            string token = await BiaKeycloakHelper.GetBearerTokenAsync(this.configuration.Authentication.Keycloak, this.PostAsync<TokenResponseDto, TokenRequestDto>);
             return token;
         }
 
@@ -102,7 +80,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
 
             string searchUrl = $"{this.configuration.Authentication.Keycloak.BaseUrl}{this.configuration.Authentication.Keycloak.Api.SearchUserRelativeUrl}?{param}";
 
-            List<SearchUserResponseDto> searchUserResponseDtos = (await this.GetAsync<List<SearchUserResponseDto>>(url: searchUrl, useBearerToken: true)).Result;
+            List<SearchUserResponseDto> searchUserResponseDtos = (await this.GetAsync<List<SearchUserResponseDto>>(url: searchUrl)).Result;
             List<UserFromDirectory> userFromDirectories = this.ConvertToUserDirectories(searchUserResponseDtos);
 
             return userFromDirectories;
@@ -152,7 +130,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
                         userFromDirectory.Sid = new System.Security.Principal.SecurityIdentifier(Convert.FromBase64String(searchUserResponseDto.Attribute.ObjectSid), 0).ToString();
                     }
 
+                    if (Guid.TryParse(searchUserResponseDto.Attribute.LdapId, out Guid resultLdapId))
+                    {
+                        userFromDirectory.Guid = resultLdapId;
+                    }
+
                     userFromDirectory.Domain = !string.IsNullOrWhiteSpace(searchUserResponseDto.Attribute.LdapEntryDn) ? Array.Find(searchUserResponseDto.Attribute.LdapEntryDn.Split(','), x => x.StartsWith("DC="))?.Split('=').LastOrDefault()?.ToUpper() : default;
+#if BIA_USER_CUSTOM_FIELDS_BACK
                     userFromDirectory.Country = searchUserResponseDto.Attribute.Country;
                     userFromDirectory.Company = searchUserResponseDto.Attribute.Company;
                     userFromDirectory.Department = searchUserResponseDto.Attribute.Department;
@@ -160,12 +144,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
                     userFromDirectory.Manager = searchUserResponseDto.Attribute.Manager;
                     userFromDirectory.Office = searchUserResponseDto.Attribute.PhysicalDeliveryOfficeName;
                     userFromDirectory.Site = searchUserResponseDto.Attribute.Description;
-
-                    if (Guid.TryParse(searchUserResponseDto.Attribute.LdapId, out Guid resultLdapId))
-                    {
-                        userFromDirectory.Guid = resultLdapId;
-                    }
-
                     userFromDirectory.IsEmployee = true;
 
                     // Set external company
@@ -193,6 +171,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
                             userFromDirectory.SubDepartment = fullDepartment.Substring(fullDepartment.IndexOf('-') + 3);
                         }
                     }
+#endif
                 }
 
                 if (userFromDirectory.Guid == Guid.Empty && Guid.TryParse(searchUserResponseDto.Id, out Guid resultId))

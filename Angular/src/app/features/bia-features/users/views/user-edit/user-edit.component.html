@@ -2,9 +2,15 @@
   *ngIf="userService.crudItem$ | async; let crudItem"
   [crudItem]="crudItem"
   [fields]="crudConfiguration.fieldsConfig.columns"
+  [formLayoutConfig]="crudConfiguration.formLayoutConfig"
   [dictOptionDtos]="(userService.optionsService.dictOptionDtos$ | async) ?? []"
-  (cancel)="onCancelled()"
-  (save)="onSubmitted($event)"></bia-user-form>
+  [isCrudItemOutdated]="isCrudItemOutdated"
+  (cancelled)="onCancelled()"
+  (save)="onSubmitted($event)"
+  [showPopupButton]="showPopupButton"
+  [showSplitButton]="showSplitButton"
+  [showFullPageButton]="showFullPageButton"
+  (layoutChanged)="notifyLayoutChange($event)"></bia-user-form>
 <bia-spinner
   *ngIf="userService.loadingGet$ | async"
   [overlay]="true"></bia-spinner>

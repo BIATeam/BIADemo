@@ -1,0 +1,20 @@
+<p-menubar
+  class="bia-button-group"
+  [ngClass]="{ 'bia-button-group-compact': compact }"
+  [model]="buttons"
+  (click)="onMenubarClick()"
+  [autoDisplay]="true"
+  [autoHide]="true">
+  <ng-template #item let-item>
+    <button
+      pButton
+      [disabled]="item.disabled"
+      *ngIf="item.visible"
+      class="p-button-outlined"
+      [label]="item.label"
+      (click)="item.command($event)"
+      [pTooltip]="item.tooltip"
+      [tooltipPosition]="item.tooltipPosition"
+      [icon]="item.icon"></button>
+  </ng-template>
+</p-menubar>

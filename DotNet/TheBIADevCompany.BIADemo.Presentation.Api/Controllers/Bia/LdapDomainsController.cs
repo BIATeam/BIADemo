@@ -1,5 +1,5 @@
-﻿// <copyright file="LdapDomainsController.cs" company="BIA">
-//     Copyright (c) BIA.Net. All rights reserved.
+﻿// <copyright file="LdapDomainsController.cs" company="TheBIADevCompany">
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
 {
@@ -7,7 +7,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
     using System.Linq;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Presentation.Api.Controllers.Base;
+    using BIA.Net.Core.Presentation.Api.Controller.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;

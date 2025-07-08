@@ -1,5 +1,5 @@
 // <copyright file="Constants.cs" company="TheBIADevCompany">
-//     Copyright (c) TheBIADevCompany. All rights reserved.
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Crosscutting.Common
@@ -19,7 +19,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             // Except BIADemo public const string BackEndVersion = "0.0.0";
             // Begin BIADemo
-            public const string BackEndVersion = "4.1.1";
+            public const string BackEndVersion = "5.0.1";
 
             // End BIADemo
 
@@ -28,14 +28,14 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             // Except BIADemo public const string FrontEndVersion = "0.0.0";
             // Begin BIADemo
-            public const string FrontEndVersion = "4.1.1";
+            public const string FrontEndVersion = "5.0.1";
 
             // End BIADemo
 
             /// <summary>
             /// The framework version.
             /// </summary>
-            public const string FrameworkVersion = "4.1.1";
+            public const string FrameworkVersion = "5.0.1";
 
             /// <summary>
             /// The environment.
@@ -52,32 +52,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// The default theme.
             /// </summary>
             public const string Theme = "Light";
-        }
-
-        /// <summary>
-        /// Role.
-        /// </summary>
-        public static class Role
-        {
-            /// <summary>
-            /// The admin role code.
-            /// </summary>
-            public const string Admin = "Admin";
-
-            /// <summary>
-            /// The user role code.
-            /// </summary>
-            public const string User = "User";
-
-            /// <summary>
-            /// The right to access to the list of members.
-            /// </summary>
-            public const string TeamMemberSuffix = "_Member";
-
-            /// <summary>
-            /// The right to access to the list of members.
-            /// </summary>
-            public const string TeamMemberOfOneSuffix = "_MemberOfOne";
         }
 
         /// <summary>
@@ -100,10 +74,14 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             public const int Spanish = 3;
 
+            // Begin BIADemo
+
             /// <summary>
             /// The german language Id.
             /// </summary>
             public const int German = 4;
+
+            // End BIADemo
         }
     }
 }

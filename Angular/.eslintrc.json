@@ -1,7 +1,6 @@
 {
   "root": true,
   "ignorePatterns": ["projects/**/*"],
-  "plugins": ["deprecation"],
   "overrides": [
     {
       "files": ["*.ts"],
@@ -22,6 +21,7 @@
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-unused-vars": "error",
         "@typescript-eslint/naming-convention": "error",
+        "@typescript-eslint/no-deprecated": "warn",
         "@angular-eslint/directive-selector": [
           "error",
           {
@@ -38,7 +38,7 @@
             "style": "kebab-case"
           }
         ],
-        "deprecation/deprecation": "warn"
+        "eqeqeq": ["error", "always", { "null": "ignore" }]
       }
     },
     {
@@ -62,7 +62,8 @@
             "prefix": "bia",
             "style": "camelCase"
           }
-        ]
+        ],
+        "eqeqeq": ["error", "always", { "null": "ignore" }]
       }
     },
     {
@@ -78,12 +79,14 @@
         "@angular-eslint/template/interactive-supports-focus": "off",
         "@angular-eslint/template/elements-content": "off",
         "@angular-eslint/template/label-has-associated-control": "off",
+        "@angular-eslint/template/no-autofocus": "off",
         "prettier/prettier": [
           "error",
           {
             "parser": "angular"
           }
-        ]
+        ],
+        "eqeqeq": ["error", "always", { "null": "ignore" }]
       }
     }
   ]

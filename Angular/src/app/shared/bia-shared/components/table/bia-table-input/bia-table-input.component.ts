@@ -1,4 +1,11 @@
 import {
+  NgIf,
+  NgSwitch,
+  NgSwitchCase,
+  NgSwitchDefault,
+  NgTemplateOutlet,
+} from '@angular/common';
+import {
   AfterContentInit,
   ChangeDetectionStrategy,
   Component,
@@ -11,9 +18,19 @@ import {
   QueryList,
   TemplateRef,
 } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  UntypedFormGroup,
+} from '@angular/forms';
 import { PrimeTemplate } from 'primeng/api';
+import { AutoFocusModule } from 'primeng/autofocus';
+import { Checkbox } from 'primeng/checkbox';
+import { DatePicker } from 'primeng/datepicker';
+import { InputNumber } from 'primeng/inputnumber';
+import { InputText } from 'primeng/inputtext';
 import { MultiSelect } from 'primeng/multiselect';
+import { Select } from 'primeng/select';
 import { Subscription } from 'rxjs';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 import {
@@ -28,6 +45,22 @@ import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.
   templateUrl: './bia-table-input.component.html',
   styleUrls: ['./bia-table-input.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    NgIf,
+    NgTemplateOutlet,
+    NgSwitch,
+    NgSwitchCase,
+    Select,
+    MultiSelect,
+    Checkbox,
+    InputNumber,
+    DatePicker,
+    NgSwitchDefault,
+    InputText,
+    AutoFocusModule,
+  ],
 })
 export class BiaTableInputComponent<CrudItem>
   extends BiaFieldBaseComponent<CrudItem>
@@ -36,6 +69,7 @@ export class BiaTableInputComponent<CrudItem>
   @Input() field: BiaFieldConfig<CrudItem>;
   @Input() form: UntypedFormGroup;
   @Input() dictOptionDtos: DictOptionDto[];
+  @Input() focusByDefault = false;
 
   @Output() valueChange = new EventEmitter<void>();
   @Output() complexInput = new EventEmitter<boolean>();

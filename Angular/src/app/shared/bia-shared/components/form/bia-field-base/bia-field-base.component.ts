@@ -3,10 +3,10 @@ import { Subscription } from 'rxjs';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import {
   BiaFieldConfig,
-  BiaFieldDateFormat,
   BiaFieldNumberFormat,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
+import { BiaFieldHelperService } from './bia-field-helper.service';
 
 @Component({
   selector: 'bia-field-base',
@@ -31,11 +31,28 @@ export class BiaFieldBaseComponent<CrudItem> implements OnInit, OnDestroy {
     }
   }
 
+  protected getDateView(dateFormat: string) {
+    const hasY = /[yY]/.test(dateFormat);
+    const hasM = /[mM]/.test(dateFormat);
+    const hasD = /[dD]/.test(dateFormat);
+    if (hasY && !hasM && !hasD) {
+      return 'year';
+    } else if (hasM && !hasD) {
+      return 'month';
+    } else {
+      return 'date';
+    }
+  }
+
+  protected showSeconds(dateFormat: string) {
+    return /[s]/.test(dateFormat);
+  }
+
   protected initFieldConfiguration() {
-    if (this.field.type == PropType.Number) {
+    if (this.field.type === PropType.Number) {
       this.sub.add(
         this.biaTranslationService.currentCulture$.subscribe(culture => {
-          if (culture != null) {
+          if (culture) {
             if (this.field instanceof BiaFieldConfig) {
               const field = this.field.clone();
               field.displayFormat ||= new BiaFieldNumberFormat();
@@ -49,53 +66,18 @@ export class BiaFieldBaseComponent<CrudItem> implements OnInit, OnDestroy {
       );
     }
     if (
-      this.field.type == PropType.DateTime ||
-      this.field.type == PropType.Date ||
-      this.field.type == PropType.Time ||
-      this.field.type == PropType.TimeOnly ||
-      this.field.type == PropType.TimeSecOnly
+      this.field.type === PropType.DateTime ||
+      this.field.type === PropType.Date ||
+      this.field.type === PropType.Time ||
+      this.field.type === PropType.TimeOnly ||
+      this.field.type === PropType.TimeSecOnly
     ) {
       this.sub.add(
         this.biaTranslationService.currentCultureDateFormat$.subscribe(
           dateFormat => {
             if (this.field instanceof BiaFieldConfig) {
               const field = this.field.clone();
-              field.displayFormat ||= new BiaFieldDateFormat();
-              if (field.displayFormat instanceof BiaFieldDateFormat) {
-                switch (field.type) {
-                  case PropType.DateTime:
-                    field.displayFormat.autoPrimeDateFormat =
-                      dateFormat.primeDateFormat;
-                    field.displayFormat.autoHourFormat = dateFormat.hourFormat;
-                    field.displayFormat.autoFormatDate =
-                      dateFormat.dateTimeFormat;
-                    break;
-                  case PropType.Date:
-                    field.displayFormat.autoPrimeDateFormat =
-                      dateFormat.primeDateFormat;
-                    field.displayFormat.autoFormatDate = dateFormat.dateFormat;
-                    break;
-                  case PropType.Time:
-                    field.displayFormat.autoPrimeDateFormat =
-                      dateFormat.timeFormat;
-                    field.displayFormat.autoHourFormat = dateFormat.hourFormat;
-                    field.displayFormat.autoFormatDate = dateFormat.timeFormat;
-                    break;
-                  case PropType.TimeOnly:
-                    field.displayFormat.autoPrimeDateFormat =
-                      dateFormat.timeFormat;
-                    field.displayFormat.autoHourFormat = dateFormat.hourFormat;
-                    field.displayFormat.autoFormatDate = dateFormat.timeFormat;
-                    break;
-                  case PropType.TimeSecOnly:
-                    field.displayFormat.autoPrimeDateFormat =
-                      dateFormat.timeFormatSec;
-                    field.displayFormat.autoHourFormat = dateFormat.hourFormat;
-                    field.displayFormat.autoFormatDate =
-                      dateFormat.timeFormatSec;
-                    break;
-                }
-              }
+              BiaFieldHelperService.setDateFormat(field, dateFormat);
               this.field = field;
             }
           }

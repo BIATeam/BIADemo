@@ -8,7 +8,7 @@
 <ng-container
   [ngSwitch]="field.type"
   *ngIf="field !== undefined && field.specificOutput !== true">
-  <span class="p-float-label">
+  <p-floatlabel variant="on">
     <input
       type="text"
       pInputText
@@ -31,5 +31,5 @@
       ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
       >{{ field.header | translate }}</label
     >
-  </span>
+  </p-floatlabel>
 </ng-container>

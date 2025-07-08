@@ -2,31 +2,46 @@
   class="header flex flex-row gap-2 justify-content-between align-content-between">
   <div
     class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
-    <ng-container *ngIf="showBtnFilter">
-      <p-button
-        *ngIf="showFilter === false"
-        [style]="{ overflow: 'visible' }"
-        icon="pi pi-filter"
-        styleClass="p-overlay-badge"
-        [text]="true"
-        (click)="toggleFilter()"
-        pTooltip="{{ 'msg.showFilters' | translate }}"
-        tooltipPosition="top">
-        <span class="cog pi pi-cog"></span>
-        @if (hasFilter) {
-          <span class="p-badge p-component p-badge-dot p-badge-warning"></span>
-        }
-      </p-button>
-    </ng-container>
     <button
       type="button"
       pButton
-      [disabled]="nbSelectedElements === 0"
+      [disabled]="isDeleteButtonDisabled"
       *ngIf="canDelete"
       icon="pi pi-trash"
       pTooltip="{{ 'bia.delete' | translate }}"
       tooltipPosition="top"
       (click)="onDelete()"></button>
+    <button
+      type="button"
+      *ngIf="canClone"
+      pButton
+      [disabled]="nbSelectedElements !== 1"
+      class="p-button-outlined"
+      label="{{ 'bia.clone' | translate }}"
+      icon="pi pi-copy"
+      (click)="onClone()"></button>
+    <ng-container *ngIf="showFixedButtons && canFix">
+      <p-divider class="fixed-buttons-separator" layout="vertical" />
+      <button
+        type="button"
+        pButton
+        [disabled]="nbSelectedElements !== 1 || isSelectedElementFixed"
+        icon="pi pi-lock"
+        pTooltip="{{ 'bia.fix' | translate }}"
+        tooltipPosition="top"
+        (click)="onFixedChanged(true)"></button>
+      <button
+        type="button"
+        pButton
+        [disabled]="nbSelectedElements !== 1 || !isSelectedElementFixed"
+        icon="pi pi-unlock"
+        pTooltip="{{ 'bia.unfix' | translate }}"
+        tooltipPosition="top"
+        class="p-button-outlined"
+        (click)="onFixedChanged(false)"></button>
+      <p-divider class="fixed-buttons-separator" layout="vertical" />
+    </ng-container>
+
     <ng-container *ngTemplateOutlet="actionOnSelectedTemplate"></ng-container>
   </div>
   <div

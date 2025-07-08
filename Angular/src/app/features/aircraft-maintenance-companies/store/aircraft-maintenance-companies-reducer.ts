@@ -1,6 +1,9 @@
-import { EntityState, createEntityAdapter } from '@ngrx/entity';
+import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { TableLazyLoadEvent } from 'primeng/table';
+import {
+  CrudState,
+  DEFAULT_CRUD_STATE,
+} from 'src/app/shared/bia-shared/model/crud-state';
 import { AircraftMaintenanceCompany } from '../model/aircraft-maintenance-company';
 import { FeatureAircraftMaintenanceCompaniesActions } from './aircraft-maintenance-companies-actions';
 
@@ -12,34 +15,16 @@ export const aircraftMaintenanceCompaniesAdapter =
     sortComparer: false,
   });
 
-// -----------------------------------------
-// The shape of EntityState
-// ------------------------------------------
-// interface EntityState<AircraftMaintenanceCompany> {
-//   ids: string[] | number[];
-//   entities: { [id: string]: AircraftMaintenanceCompany };
-// }
-// -----------------------------------------
-// -> ids arrays allow us to sort data easily
-// -> entities map allows us to access the data quickly without iterating/filtering though an array of objects
-
-export interface State extends EntityState<AircraftMaintenanceCompany> {
+export interface State
+  extends CrudState<AircraftMaintenanceCompany>,
+    EntityState<AircraftMaintenanceCompany> {
   // additional props here
-  totalCount: number;
-  currentAircraftMaintenanceCompany: AircraftMaintenanceCompany;
-  lastLazyLoadEvent: TableLazyLoadEvent;
-  loadingGet: boolean;
-  loadingGetAll: boolean;
 }
 
 export const INIT_STATE: State =
   aircraftMaintenanceCompaniesAdapter.getInitialState({
+    ...DEFAULT_CRUD_STATE(),
     // additional props default values here
-    totalCount: 0,
-    currentAircraftMaintenanceCompany: <AircraftMaintenanceCompany>{},
-    lastLazyLoadEvent: <TableLazyLoadEvent>{},
-    loadingGet: false,
-    loadingGetAll: false,
   });
 
 export const aircraftMaintenanceCompanyReducers = createReducer<State>(
@@ -50,10 +35,7 @@ export const aircraftMaintenanceCompanyReducers = createReducer<State>(
     return stateUpdated;
   }),
   on(FeatureAircraftMaintenanceCompaniesActions.clearCurrent, state => {
-    return {
-      ...state,
-      currentAircraftMaintenanceCompany: <AircraftMaintenanceCompany>{},
-    };
+    return { ...state, currentItem: <AircraftMaintenanceCompany>{} };
   }),
   on(FeatureAircraftMaintenanceCompaniesActions.loadAllByPost, state => {
     return { ...state, loadingGetAll: true };
@@ -79,7 +61,7 @@ export const aircraftMaintenanceCompanyReducers = createReducer<State>(
     (state, { aircraftMaintenanceCompany }) => {
       return {
         ...state,
-        currentAircraftMaintenanceCompany: aircraftMaintenanceCompany,
+        currentItem: aircraftMaintenanceCompany,
         loadingGet: false,
       };
     }

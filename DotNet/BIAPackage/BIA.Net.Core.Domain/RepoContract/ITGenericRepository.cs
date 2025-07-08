@@ -1,5 +1,5 @@
 ﻿// <copyright file="ITGenericRepository.cs" company="BIA">
-//     Copyright (c) BIA. All rights reserved.
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Domain.RepoContract
@@ -9,6 +9,7 @@ namespace BIA.Net.Core.Domain.RepoContract
     using System.Linq.Expressions;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using BIA.Net.Core.Domain.Specification;
@@ -179,5 +180,12 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="item">The item.</param>
         void SetModified(TEntity item);
+
+        /// <summary>
+        /// Update the fixed status of an <see cref="IEntityFixable{TKey}"/>.
+        /// </summary>
+        /// <param name="item">The entity.</param>
+        /// <param name="isFixed">Fixed status.</param>
+        void UpdateFixedAsync(TEntity item, bool isFixed);
     }
 }

@@ -1,38 +1,45 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
-import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
-import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
-import { AppState } from 'src/app/store/state';
-import { CrudConfig } from '../../model/crud-config';
+import { filter, first, map, Observable, skip, take } from 'rxjs';
+import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
+import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
+import { clone } from 'src/app/shared/bia-shared/utils';
+import { CrudItemFormComponent } from '../../components/crud-item-form/crud-item-form.component';
 import { CrudItemSingleService } from '../../services/crud-item-single.service';
+import { CrudItemComponent } from '../crud-item/crud-item.component';
 
 @Component({
   selector: 'bia-crud-item-new',
   templateUrl: './crud-item-new.component.html',
   styleUrls: ['./crud-item-new.component.scss'],
+  imports: [CrudItemFormComponent, AsyncPipe],
 })
 export class CrudItemNewComponent<CrudItem extends BaseDto>
+  extends CrudItemComponent<CrudItem>
   implements OnInit, OnDestroy
 {
-  protected sub = new Subscription();
-  public crudConfiguration: CrudConfig<CrudItem>;
+  itemTemplate$?: Observable<CrudItem | undefined>;
 
-  protected store: Store<AppState>;
-  protected router: Router;
-  protected activatedRoute: ActivatedRoute;
-  protected biaTranslationService: BiaTranslationService;
   constructor(
     protected injector: Injector,
     public crudItemService: CrudItemSingleService<CrudItem>
   ) {
-    this.store = this.injector.get<Store<AppState>>(Store);
-    this.router = this.injector.get<Router>(Router);
-    this.activatedRoute = this.injector.get<ActivatedRoute>(ActivatedRoute);
-    this.biaTranslationService = this.injector.get<BiaTranslationService>(
-      BiaTranslationService
-    );
+    super(injector, crudItemService);
+
+    const itemTemplateId: any | undefined =
+      this.router.getCurrentNavigation()?.extras.state?.itemTemplateId;
+    if (itemTemplateId) {
+      this.itemTemplate$ = this.crudItemService.crudItem$.pipe(
+        skip(1),
+        take(1),
+        map(crudItem => {
+          const item = clone(crudItem);
+          item.id = 0;
+          return item;
+        })
+      );
+      this.crudItemService.load(itemTemplateId);
+    }
   }
 
   ngOnInit() {
@@ -52,11 +59,31 @@ export class CrudItemNewComponent<CrudItem extends BaseDto>
   }
 
   onSubmitted(crudItemToCreate: CrudItem) {
+    const successActionType = this.crudItemService.createSuccessActionType;
+
+    if (successActionType) {
+      this.actions
+        .pipe(
+          filter(
+            (action: any) =>
+              action.type === successActionType ||
+              action.type === biaSuccessWaitRefreshSignalR.type
+          ),
+          first()
+        )
+        .subscribe(() => {
+          this.navigateBack();
+        });
+    }
+
     this.crudItemService.create(crudItemToCreate);
-    this.router.navigate(['../'], { relativeTo: this.activatedRoute });
+
+    if (!successActionType) {
+      this.navigateBack();
+    }
   }
 
-  onCancelled() {
+  protected navigateBack() {
     this.router.navigate(['../'], { relativeTo: this.activatedRoute });
   }
 }

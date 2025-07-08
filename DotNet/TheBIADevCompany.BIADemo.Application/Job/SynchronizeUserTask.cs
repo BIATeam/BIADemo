@@ -4,55 +4,27 @@
 
 namespace TheBIADevCompany.BIADemo.Application.Job
 {
-    using System.Threading.Tasks;
     using BIA.Net.Core.Application.Job;
-    using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Application.User;
     using Hangfire;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
-    using TheBIADevCompany.BIADemo.Application.User;
+    using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.User.Models;
 
     /// <summary>
     /// Task to synchronize users from LDAP.
     /// </summary>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="SynchronizeUserTask"/> class.
+    /// </remarks>
+    /// <param name="configuration">The configuration.</param>
+    /// <param name="userService">The user app service.</param>
+    /// <param name="logger">logger.</param>
     [AutomaticRetry(Attempts = 2, LogEvents = true)]
-    public class SynchronizeUserTask : BaseJob
+    public class SynchronizeUserTask(IConfiguration configuration, IBaseUserAppService<UserDto, User, UserFromDirectoryDto, UserFromDirectory> userService, ILogger<BaseSynchronizeUserTask<UserDto, User, UserFromDirectoryDto, UserFromDirectory>> logger)
+        : BaseSynchronizeUserTask<UserDto, User, UserFromDirectoryDto, UserFromDirectory>(configuration, userService, logger)
     {
-        private readonly IUserAppService userService;
-
-        /// <summary>
-        /// The configuration of the BiaNet section.
-        /// </summary>
-        private readonly BiaNetSection biaNetSection;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SynchronizeUserTask"/> class.
-        /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        /// <param name="userService">The user app service.</param>
-        /// <param name="logger">logger.</param>
-        public SynchronizeUserTask(IConfiguration configuration, IUserAppService userService, ILogger<SynchronizeUserTask> logger)
-            : base(configuration, logger)
-        {
-            this.userService = userService;
-            this.biaNetSection = new BiaNetSection();
-            configuration?.GetSection("BiaNet").Bind(this.biaNetSection);
-        }
-
-        /// <summary>
-        /// Call the synchronization service.
-        /// </summary>
-        /// <returns>The <see cref="Task"/> representing the operation to perform.</returns>
-        protected override async Task RunMonitoredTask()
-        {
-            if (this.biaNetSection?.Authentication?.Keycloak?.IsActive == true)
-            {
-                await this.userService.SynchronizeWithIdpAsync();
-            }
-            else
-            {
-                await this.userService.SynchronizeWithADAsync(true);
-            }
-        }
     }
 }

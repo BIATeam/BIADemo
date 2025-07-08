@@ -4,7 +4,7 @@ import {
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
-import { storeKey } from '../country-option.contants';
+import { storeKey } from '../country-option.constants';
 import * as fromCountryOptions from './country-options-reducer';
 
 export interface CountryOptionsState {

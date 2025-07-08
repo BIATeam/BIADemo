@@ -1,3 +1,4 @@
+import { NgIf } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -8,10 +9,13 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
-import { FilterMetadata, SelectItemGroup } from 'primeng/api';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { FilterMetadata, PrimeTemplate, SelectItemGroup } from 'primeng/api';
+import { FloatLabel } from 'primeng/floatlabel';
+import { Select } from 'primeng/select';
 import { Subscription, combineLatest } from 'rxjs';
 import { map, skip } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -33,6 +37,7 @@ import {
   getLastViewChanged,
 } from '../../store/view.state';
 import { openViewDialog } from '../../store/views-actions';
+import { ViewDialogComponent } from '../view-dialog/view-dialog.component';
 
 const currentView = -1;
 const undefinedView = -2;
@@ -41,6 +46,15 @@ const undefinedView = -2;
   selector: 'bia-view-list',
   templateUrl: './view-list.component.html',
   styleUrls: ['./view-list.component.scss'],
+  imports: [
+    Select,
+    FormsModule,
+    PrimeTemplate,
+    NgIf,
+    ViewDialogComponent,
+    TranslateModule,
+    FloatLabel,
+  ],
 })
 export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   groupedViews: SelectItemGroup[];
@@ -88,7 +102,10 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
         .pipe(skip(1))
         .subscribe(([dataLoaded, views, view]) => {
           if (dataLoaded === true && views && view) {
-            if (this.views === undefined || this.views.length != views.length) {
+            if (
+              this.views === undefined ||
+              this.views.length !== views.length
+            ) {
               // the list of view change, so we reset the view selection.
               this.selectedView = undefinedView;
             }
@@ -165,7 +182,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   protected getCorrespondingViewId(preference: string): number {
     const pref: BiaTableState = JSON.parse(preference);
     pref.columnWidths = undefined;
-    if (this.defaultViewPref != undefined) {
+    if (this.defaultViewPref !== undefined) {
       if (this.areViewsEgals(pref, this.defaultViewPref)) {
         return 0;
       }
@@ -204,14 +221,14 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     return (
       view1.first === view2.first &&
       this.areFilterEgals(view1.filters, view2.filters) &&
+      ((this.isNullUndefEmptyStr(view1.advancedFilter) &&
+        this.isNullUndefEmptyStr(view2.advancedFilter)) ||
+        JSON.stringify(view1.advancedFilter) ===
+          JSON.stringify(view2.advancedFilter)) &&
       JSON.stringify(view1.columnOrder) === JSON.stringify(view2.columnOrder) &&
       view1.rows === view2.rows &&
       ((view1.sortField === view2.sortField &&
         view1.sortOrder === view2.sortOrder &&
-        ((this.isNullUndefEmptyStr(view1.advancedFilter) &&
-          this.isNullUndefEmptyStr(view2.advancedFilter)) ||
-          JSON.stringify(view1.advancedFilter) ===
-            JSON.stringify(view2.advancedFilter)) &&
         ((this.isNullUndefEmptyStr(view1.multiSortMeta) &&
           this.isNullUndefEmptyStr(view2.multiSortMeta)) ||
           JSON.stringify(view1.multiSortMeta) ===
@@ -254,9 +271,9 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
       }
     }
     for (const key in filters2) {
-      if (filters1 == undefined || !(key in filters1)) {
+      if (filters1 === undefined || !(key in filters1)) {
         if (
-          JSON.stringify(this.standardizeFilterMetadata(filters2[key])) !=
+          JSON.stringify(this.standardizeFilterMetadata(filters2[key])) !==
           JSON.stringify([])
         ) {
           return false;
@@ -276,15 +293,13 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     }
     if (Array.isArray(filterMetadata)) {
       (filterMetadata as FilterMetadata[]).forEach(element => {
-        if (!this.tableHelperService.isEmptyFilter(element)) {
+        if (!TableHelperService.isEmptyFilter(element)) {
           standardized.push(this.tableHelperService.cleanFilter(element));
         }
       });
     }
 
-    if (
-      !this.tableHelperService.isEmptyFilter(filterMetadata as FilterMetadata)
-    ) {
+    if (!TableHelperService.isEmptyFilter(filterMetadata as FilterMetadata)) {
       standardized.push(
         this.tableHelperService.cleanFilter(filterMetadata as FilterMetadata)
       );
@@ -335,14 +350,14 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
 
     let defaultView = 0;
     const currentTeamId =
-      this.useViewTeamWithTypeId == null
+      this.useViewTeamWithTypeId === null
         ? -1
         : this.authService.getCurrentTeamId(this.useViewTeamWithTypeId);
     const systemViews = this.views.filter(v => v.viewType === ViewType.System);
     const teamViews = this.views.filter(
       v =>
         v.viewType === ViewType.Team &&
-        v.viewTeams.some(vs => currentTeamId == vs.teamId)
+        v.viewTeams.some(vs => currentTeamId === vs.teamId)
     );
     const userViews = this.views.filter(v => v.viewType === ViewType.User);
     if (systemViews.length > 0) {
@@ -378,7 +393,9 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
       });
 
       const teamDefault = teamViews.filter(v =>
-        v.viewTeams.some(y => currentTeamId == y.teamId && y.isDefault === true)
+        v.viewTeams.some(
+          y => currentTeamId === y.teamId && y.isDefault === true
+        )
       )[0];
       if (teamDefault) {
         defaultView = teamDefault.id;
@@ -407,7 +424,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
   protected initViewByQueryParam(views: View[]) {
-    //<a [routerLink]="['/examples/planes-view']" [queryParams]="{ view: 'test2' }">link to plane view</a>
+    //<a [routerLink]="['/planes-view']" [queryParams]="{ view: 'test2' }">link to plane view</a>
     if (views?.length > 0) {
       const viewName = this.route.snapshot.queryParamMap.get(QUERY_STRING_VIEW);
       if (viewName && viewName.length > 0) {
@@ -438,7 +455,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
         });
       }
     } else {
-      if (this.selectedView == undefinedView) {
+      if (this.selectedView === undefinedView) {
         this.selectedView = this.defaultView;
       }
       if (this.selectedView !== 0) {
@@ -481,9 +498,9 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
 
   showEditButton() {
     let canSetTeamView = false;
-    if (this.useViewTeamWithTypeId != null) {
+    if (this.useViewTeamWithTypeId !== null) {
       const teamTypeRightPrefix = TeamTypeRightPrefix.find(
-        t => t.key == this.useViewTeamWithTypeId
+        t => t.key === this.useViewTeamWithTypeId
       )?.value;
       canSetTeamView =
         this.authService.hasPermission(

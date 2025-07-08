@@ -1,4 +1,4 @@
-import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
+import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
 import { RoleDto } from 'src/app/shared/bia-shared/model/role';
 
 export interface Team extends BaseDto {

@@ -1,5 +1,5 @@
 // <copyright file="IocContainer.cs" company="TheBIADevCompany">
-//     Copyright (c) TheBIADevCompany. All rights reserved.
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
@@ -9,29 +9,46 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using System.Reflection;
     using Audit.Core;
     using Audit.EntityFramework;
+#if BIA_FRONT_FEATURE
+    using BIA.Net.Core.Application.User;
+#endif
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.User.Mappers;
+    using BIA.Net.Core.Domain.User.Services;
     using BIA.Net.Core.Infrastructure.Data;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.Ioc;
-    using BIA.Net.Core.IocContainer;
     using BIA.Net.Core.Presentation.Common.Features.HubForClients;
     using Hangfire;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using TheBIADevCompany.BIADemo.Application.User;
-    using TheBIADevCompany.BIADemo.Domain.User.Models;
-    using TheBIADevCompany.BIADemo.Infrastructure.Data;
-    using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
 #if BIA_FRONT_FEATURE
-    using TheBIADevCompany.BIADemo.Domain.RepoContract;
-    using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
 #endif
+    using TheBIADevCompany.BIADemo.Application.User;
+#if BIA_FRONT_FEATURE
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+#endif
+#if BIA_FRONT_FEATURE
+    using TheBIADevCompany.BIADemo.Domain.Dto.User;
+
+    // Begin BIADemo
+    using TheBIADevCompany.BIADemo.Domain.RepoContract;
+    using TheBIADevCompany.BIADemo.Domain.RepoContract.DocumentAnalysis;
+
+    // End BIADemo
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.User.Mappers;
+    using TheBIADevCompany.BIADemo.Domain.User.Models;
+#endif
+    using TheBIADevCompany.BIADemo.Infrastructure.Data;
+    using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
+    using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
 
     /// <summary>
     /// The IoC Container.
@@ -56,11 +73,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             BiaNetSection biaNetSection = new BiaNetSection();
             configuration?.GetSection("BiaNet").Bind(biaNetSection);
 
-            BiaIocContainer.ConfigureContainer(collection, configuration, isUnitTest);
-
             ConfigureInfrastructureServiceContainer(collection, biaNetSection, isUnitTest);
             ConfigureDomainContainer(collection);
             ConfigureApplicationContainer(collection, isApi);
+
+            BiaIocContainer.ConfigureContainer(collection, configuration, isUnitTest);
 
             if (!isUnitTest)
             {
@@ -79,6 +96,14 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
         private static void ConfigureApplicationContainer(IServiceCollection collection, bool isApi)
         {
+#if BIA_FRONT_FEATURE
+            collection.AddTransient(typeof(IBaseUserSynchronizeDomainService<User, UserFromDirectory>), typeof(UserSynchronizeDomainService));
+            collection.AddTransient(typeof(IBaseUserAppService<UserDto, User, UserFromDirectoryDto, UserFromDirectory>), typeof(UserAppService));
+            collection.AddTransient(typeof(IUserAppService), typeof(UserAppService));
+            collection.AddTransient(typeof(IBaseTeamAppService<TeamTypeId>), typeof(TeamAppService));
+            collection.AddTransient(typeof(ITeamAppService), typeof(TeamAppService));
+#endif
+
             // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
             BiaIocContainer.RegisterServicesFromAssembly(
                 collection: collection,
@@ -88,11 +113,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
             if (isApi)
             {
-                BiaIocContainer.RegisterServicesFromAssembly(
-                collection: collection,
-                assemblyName: "TheBIADevCompany.BIADemo.Application",
-                includedServiceNames: new List<string>() { nameof(AuthAppService) },
-                serviceLifetime: ServiceLifetime.Transient);
+                collection.AddTransient(typeof(IAuthAppService), typeof(AuthAppService));
             }
 
             collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
@@ -100,13 +121,17 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
         private static void ConfigureDomainContainer(IServiceCollection collection)
         {
+#if BIA_FRONT_FEATURE
+            collection.AddTransient(typeof(IUserFromDirectoryMapper<UserFromDirectoryDto, UserFromDirectory>), typeof(UserFromDirectoryMapper));
+#endif
+
             // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
             BiaIocContainer.RegisterServicesFromAssembly(
                 collection: collection,
                 assemblyName: "TheBIADevCompany.BIADemo.Domain",
                 serviceLifetime: ServiceLifetime.Transient);
 
-            Type templateType = typeof(BaseMapper<,,>);
+            Type templateType = typeof(BiaBaseMapper<,,>);
             Assembly assembly = Assembly.Load("TheBIADevCompany.BIADemo.Domain");
             List<Type> derivedTypes = ReflectiveEnumerator.GetDerivedTypes(assembly, templateType);
             foreach (var type in derivedTypes)
@@ -122,7 +147,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
         private static void ConfigureInfrastructureDataContainer(IServiceCollection collection, IConfiguration configuration)
         {
-            string connectionString = configuration.GetConnectionString("ProjectDatabase");
+            string connectionString = configuration.GetDatabaseConnectionString("ProjectDatabase");
 
             // Infrastructure Data Layer
             collection.AddDbContext<IQueryableUnitOfWork, DataContext>(options =>
@@ -155,19 +180,19 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 serviceLifetime: ServiceLifetime.Transient);
 
             collection.AddScoped<DataContextFactory>();
-#if BIA_FRONT_FEATURE
+
             collection.AddSingleton<IAuditFeature, AuditFeature>();
             collection.AddSingleton<BIA.Net.Core.Application.Services.IAuditFeatureService, BIA.Net.Core.Application.Services.AuditFeatureService>();
-#endif
         }
 
 #pragma warning disable S1172 // Unused method parameters should be removed
         private static void ConfigureInfrastructureServiceContainer(IServiceCollection collection, BiaNetSection biaNetSection, bool isUnitTest = false)
 #pragma warning restore S1172 // Unused method parameters should be removed
         {
-            collection.AddSingleton<IUserDirectoryRepository<UserFromDirectory>, LdapRepository>();
 #if BIA_FRONT_FEATURE
-            collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
+            collection.AddSingleton<IUserDirectoryRepository<UserFromDirectoryDto, UserFromDirectory>, LdapRepository>();
+            collection.AddSingleton<IUserIdentityKeyDomainService, UserIdentityKeyDomainService>();
+            collection.AddHttpClient<IIdentityProviderRepository<UserFromDirectory>, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
             collection.AddTransient<IMailRepository, MailRepository>();
 
             if (biaNetSection.CommonFeatures.ClientForHub?.IsActive == true)
@@ -182,12 +207,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 }
             }
 
-            collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
-
             // Begin BIADemo
-            collection.AddHttpClient<IRemotePlaneRepository, RemotePlaneRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection));
+            collection.AddHttpClient<IRemoteBiaApiRwRepository, RemoteBiaApiRwRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection));
+            collection.AddHttpClient<IRemotePlaneRepository, RemotePlaneRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
             collection.AddSingleton<Infrastructure.Service.Repositories.DocumentAnalysis.PdfAnalysisRepository>();
-            collection.AddSingleton<Domain.RepoContract.DocumentAnalysis.IDocumentAnalysisRepositoryFactory, Infrastructure.Service.Repositories.DocumentAnalysis.DocumentAnalysisRepositoryFactory>();
+            collection.AddSingleton<IDocumentAnalysisRepositoryFactory, Infrastructure.Service.Repositories.DocumentAnalysis.DocumentAnalysisRepositoryFactory>();
 
             // End BIADemo
 #endif

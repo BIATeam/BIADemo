@@ -1,5 +1,5 @@
 // <copyright file="MockEntityFrameWorkInMemory.cs" company="TheBIADevCompany">
-//     Copyright (c) TheBIADevCompany. All rights reserved.
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 namespace TheBIADevCompany.BIADemo.Test.Data
 {
@@ -7,16 +7,17 @@ namespace TheBIADevCompany.BIADemo.Test.Data
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
+    using BIA.Net.Core.Domain.User.Entities;
+    using BIA.Net.Core.Domain.View.Entities;
     using BIA.Net.Core.Infrastructure.Data;
     using BIA.Net.Core.Test.Data;
 #if BIA_FRONT_FEATURE
     // Begin BIADemo
-    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
     // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.Site.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
-    using TheBIADevCompany.BIADemo.Domain.View.Entities;
 #endif
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
 
@@ -97,26 +98,28 @@ namespace TheBIADevCompany.BIADemo.Test.Data
             User user = new User()
             {
                 Id = id,
-                Company = "TheBIADevCompany",
-                Country = "France",
-                DaiDate = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc),
-                Department = "DM",
-                DistinguishedName = "DistinguishedName",
                 Email = $"{firstName}{lastName}@fake.com",
-                ExternalCompany = string.Empty,
                 FirstName = firstName,
                 IsActive = true,
-                IsEmployee = true,
-                IsExternal = false,
                 LastLoginDate = DateTime.Now.AddDays(-2),
                 LastName = lastName,
                 Login = firstName + lastName,
-                Manager = "Big BOSS",
                 Members = new List<Member>(),
+                ViewUsers = new List<ViewUser>(),
+                LastSyncDate = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+#if BIA_USER_CUSTOM_FIELDS_BACK
+                Company = "TheBIADevCompany",
+                Country = "France",
+                Department = "DM",
+                DistinguishedName = "DistinguishedName",
+                ExternalCompany = string.Empty,
+                IsEmployee = true,
+                IsExternal = false,
+                Manager = "Big BOSS",
                 Office = "101",
                 Site = DataConstants.DefaultSitesTitles[0],
                 SubDepartment = "BIA",
-                ViewUsers = new List<ViewUser>(),
+#endif
             };
 
             this.GetDbContext().Users.Add(user);
@@ -201,7 +204,7 @@ namespace TheBIADevCompany.BIADemo.Test.Data
 #endif
         #region AbstractMockEntityFrameworkInMemory methods
 
-        /// <inheritdoc cref="AbstractMockEntityFramework{TDbContext}.InitDefaultData" />
+        /// <inheritdoc />
         public override void InitDefaultData()
         {
 #if BIA_FRONT_FEATURE

@@ -8,11 +8,12 @@
   </div>
   <div *ngIf="canChangePageSize">
     <span>{{ 'bia.itemsPerPage' | translate }} : </span>
-    <p-dropdown
+    <p-select
+      [class]="'p-variant-filled'"
       [options]="pageSizes"
       [(ngModel)]="pageSize"
       (onChange)="onPageSizeChange()"
       [style]="{ 'min-width': 'initial' }"
-      scrollHeight="50vh"></p-dropdown>
+      scrollHeight="50vh"></p-select>
   </div>
 </div>

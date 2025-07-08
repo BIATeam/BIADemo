@@ -42,12 +42,19 @@ table {
   text-align: right !important;
 }
 
+.bia-column-expand > i {
+  vertical-align: middle;
+}
+
 .p-sortable-column[aria-sort='none'] {
   p-sorticon {
     display: none;
   }
 }
 
-::ng-deep .p-datatable.singleSort .p-sortable-column .p-sortable-column-badge {
+::ng-deep
+  .p-datatable
+  .p-datatable-sortable-column:not(.p-datatable-column-sorted)
+  .p-sortable-column-icon {
   display: none;
 }

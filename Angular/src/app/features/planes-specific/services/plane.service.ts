@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { map, Observable } from 'rxjs';
@@ -20,15 +20,20 @@ import { PlaneOptionsService } from './plane-options.service';
   providedIn: 'root',
 })
 export class PlaneService extends CrudItemService<Plane, PlaneSpecific> {
+  _updateSuccessActionType = FeaturePlanesActions.loadAllByPost.type;
+  _createSuccessActionType = FeaturePlanesActions.loadAllByPost.type;
+  _updateFailureActionType = FeaturePlanesActions.failure.type;
+
   constructor(
     private store: Store<AppState>,
     public dasService: PlaneDas,
     public signalRService: CrudItemSignalRService<Plane>,
     public optionsService: PlaneOptionsService,
+    protected injector: Injector,
     // required only for parent key
     protected authService: AuthService
   ) {
-    super(dasService, signalRService, optionsService);
+    super(dasService, signalRService, optionsService, injector);
   }
 
   public getParentIds(): any[] {
@@ -71,8 +76,8 @@ export class PlaneService extends CrudItemService<Plane, PlaneSpecific> {
   public create(crudItem: PlaneSpecific) {
     // TODO after creation of CRUD Plane : map parent Key on the corresponding field
     this.resetNewItemsIds(crudItem.engines);
-    (crudItem.siteId = this.getParentIds()[0]),
-      this.store.dispatch(FeaturePlanesActions.create({ plane: crudItem }));
+    crudItem.siteId = this.getParentIds()[0];
+    this.store.dispatch(FeaturePlanesActions.create({ plane: crudItem }));
   }
   public update(crudItem: PlaneSpecific) {
     this.resetNewItemsIds(crudItem.engines);

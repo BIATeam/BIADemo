@@ -21,8 +21,5 @@
   height: 4rem;
   width: 4rem;
   margin-right: 0.5em;
-  // https://codepen.io/sosuke/pen/Pjoqqp
-  // hexa: #f8a92b
-  filter: invert(60%) sepia(92%) saturate(376%) hue-rotate(356deg)
-    brightness(98%) contrast(98%);
+  filter: var(--topbar-logo-filter);
 }

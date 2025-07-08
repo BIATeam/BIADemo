@@ -9,14 +9,14 @@
     (onSelect)="onFileSelected()">
   </p-fileUpload>
   <button
-    [disabled]="this.fileUpload.hasFiles() !== true"
+    [disabled]="this.fileUpload?.hasFiles() !== true"
     pButton
-    label="{{ 'primeng.apply' | translate }}"
+    label="{{ 'bia.analyze' | translate }}"
     type="button"
     (click)="onApply()"></button>
   <ng-container *ngIf="hasDate === true">
-    <span class="p-float-label">
-      <p-dropdown
+    <p-floatlabel variant="on">
+      <p-select
         formControlName="dateFormat"
         [options]="dateFormats"
         (ngModelChange)="onSubmit()"
@@ -24,12 +24,12 @@
         optionLabel="example"
         optionValue="format"
         placeholder="Select Date Format">
-      </p-dropdown>
+      </p-select>
       <label>{{ 'import.dateFormat' | translate }}</label>
-    </span>
+    </p-floatlabel>
 
-    <span class="p-float-label">
-      <p-dropdown
+    <p-floatlabel variant="on">
+      <p-select
         formControlName="timeFormat"
         [options]="timeFormats"
         (ngModelChange)="onSubmit()"
@@ -37,22 +37,20 @@
         optionLabel="example"
         optionValue="format"
         placeholder="Select Time Format">
-      </p-dropdown>
+      </p-select>
       <label>{{ 'import.timeFormat' | translate }}</label>
-    </span>
+    </p-floatlabel>
   </ng-container>
 
   <ng-container *ngIf="crudConfiguration.importMode?.useDelete === true">
-    <div>
+    <div class="flex items-center">
       <p-checkbox
         formControlName="useCurrentView"
         class="mr-2"
         (onChange)="onSubmit()"
         [binary]="true"
         inputId="chkUseCurrentView"></p-checkbox>
-      <label for="chkUseCurrentView">{{
-        'import.useCurrentView' | translate
-      }}</label>
+      <label class="ml-2">{{ 'import.useCurrentView' | translate }}</label>
     </div>
   </ng-container>
 </form>
@@ -62,8 +60,8 @@
   <p-accordion
     *ngIf="importData.errorToSaves.length > 0"
     class="w-full bia-import-accordion">
-    <p-accordionTab class="bia-import-tab-error">
-      <ng-template pTemplate="header">
+    <p-accordion-panel class="bia-import-tab-error" [value]="0">
+      <p-accordion-header>
         <div class="flex align-items-center">
           <i class="pi pi-exclamation-triangle mr-2"></i>
           <span class="vertical-align-middle"
@@ -72,15 +70,16 @@
             }})</span
           >
         </div>
-      </ng-template>
-      <ng-template pTemplate="content">
+      </p-accordion-header>
+      <p-accordion-content>
         <p class="m-0">
           <bia-table
-            [elements]="importData.errorToSaves"
-            [paginator]="false"
+            [elements]="importDataErrorsToDisplayInTable"
+            [paginator]="true"
+            [pageSizeOptions]="undefined"
             [totalRecord]="importData.errorToSaves.length"
             [columnToDisplays]="displayedColumnErrors"
-            [pageSize]="importData.errorToSaves.length"
+            [pageSize]="importDataTablesPageSize"
             [configuration]="crudConfigurationError.fieldsConfig"
             [showColSearch]="false"
             [globalSearchValue]="''"
@@ -88,19 +87,26 @@
             [canSelectElement]="false"
             [loading]="false"
             scrollHeightValue="calc( 100vh - 440px)"
-            [isScrollable]="true"
-            [ignoreSpecificOutput]="true"></bia-table>
+            [ignoreSpecificOutput]="true"
+            (pageChange)="
+              onTablePageChanges(
+                $event,
+                importDataErrorsToDisplayInTable,
+                importData.errorToSaves
+              )
+            "></bia-table>
         </p>
-      </ng-template>
-    </p-accordionTab>
+      </p-accordion-content>
+    </p-accordion-panel>
   </p-accordion>
   <br />
   <p-accordion class="w-full bia-import-accordion">
-    <p-accordionTab
+    <p-accordion-panel
+      [value]="0"
       [ngClass]="{ 'bia-import-selected': insertChecked === true }"
       [disabled]="importData.toInserts.length === 0"
       *ngIf="canUseInsert() === true">
-      <ng-template pTemplate="header">
+      <p-accordion-header>
         <div class="flex align-items-center">
           <p-checkbox
             [(ngModel)]="insertChecked"
@@ -116,16 +122,17 @@
             }})</span
           >
         </div>
-      </ng-template>
-      <ng-template pTemplate="content">
+      </p-accordion-header>
+      <p-accordion-content>
         <p class="m-0">
           <bia-table
             *ngIf="importData.toInserts.length > 0"
-            [elements]="importData.toInserts"
-            [paginator]="false"
+            [elements]="importDataToInsertToDisplayInTable"
+            [paginator]="true"
+            [pageSizeOptions]="undefined"
             [totalRecord]="importData.toInserts.length"
             [columnToDisplays]="displayedColumns"
-            [pageSize]="importData.toInserts.length"
+            [pageSize]="importDataTablesPageSize"
             [configuration]="crudConfiguration.fieldsConfig"
             [showColSearch]="false"
             [globalSearchValue]="''"
@@ -133,16 +140,23 @@
             [canSelectElement]="false"
             [loading]="false"
             scrollHeightValue="calc( 100vh - 440px)"
-            [isScrollable]="true"
-            [ignoreSpecificOutput]="true"></bia-table>
+            [ignoreSpecificOutput]="true"
+            (pageChange)="
+              onTablePageChanges(
+                $event,
+                importDataToInsertToDisplayInTable,
+                importData.toInserts
+              )
+            "></bia-table>
         </p>
-      </ng-template>
-    </p-accordionTab>
-    <p-accordionTab
+      </p-accordion-content>
+    </p-accordion-panel>
+    <p-accordion-panel
+      [value]="1"
       [ngClass]="{ 'bia-import-selected': updateChecked === true }"
       [disabled]="importData.toUpdates.length === 0"
       *ngIf="canUseUpdate() === true">
-      <ng-template pTemplate="header">
+      <p-accordion-header>
         <div class="flex align-items-center">
           <p-checkbox
             [(ngModel)]="updateChecked"
@@ -158,16 +172,17 @@
             }})</span
           >
         </div>
-      </ng-template>
-      <ng-template pTemplate="content">
+      </p-accordion-header>
+      <p-accordion-content>
         <p class="m-0">
           <bia-table
             *ngIf="importData.toUpdates.length > 0"
-            [elements]="importData.toUpdates"
-            [paginator]="false"
+            [elements]="importDataToUpdateToDisplayInTable"
+            [paginator]="true"
+            [pageSizeOptions]="undefined"
             [totalRecord]="importData.toUpdates.length"
             [columnToDisplays]="displayedColumns"
-            [pageSize]="importData.toUpdates.length"
+            [pageSize]="importDataTablesPageSize"
             [configuration]="crudConfiguration.fieldsConfig"
             [showColSearch]="false"
             [globalSearchValue]="''"
@@ -175,16 +190,23 @@
             [canSelectElement]="false"
             [loading]="false"
             scrollHeightValue="calc( 100vh - 440px)"
-            [isScrollable]="true"
-            [ignoreSpecificOutput]="true"></bia-table>
+            [ignoreSpecificOutput]="true"
+            (pageChange)="
+              onTablePageChanges(
+                $event,
+                importDataToUpdateToDisplayInTable,
+                importData.toUpdates
+              )
+            "></bia-table>
         </p>
-      </ng-template>
-    </p-accordionTab>
-    <p-accordionTab
+      </p-accordion-content>
+    </p-accordion-panel>
+    <p-accordion-panel
+      [value]="2"
       [ngClass]="{ 'bia-import-selected': deleteChecked === true }"
       [disabled]="importData.toDeletes.length === 0"
       *ngIf="canUseDelete() === true">
-      <ng-template pTemplate="header">
+      <p-accordion-header>
         <div class="flex align-items-center">
           <p-checkbox
             [(ngModel)]="deleteChecked"
@@ -200,16 +222,17 @@
             }})</span
           >
         </div>
-      </ng-template>
-      <ng-template pTemplate="content">
+      </p-accordion-header>
+      <p-accordion-content>
         <p class="m-0">
           <bia-table
             *ngIf="importData.toDeletes.length > 0"
-            [elements]="importData.toDeletes"
-            [paginator]="false"
+            [elements]="importDataToDeleteToDisplayInTable"
+            [paginator]="true"
+            [pageSizeOptions]="undefined"
             [totalRecord]="importData.toDeletes.length"
             [columnToDisplays]="displayedColumns"
-            [pageSize]="importData.toDeletes.length"
+            [pageSize]="importDataTablesPageSize"
             [configuration]="crudConfiguration.fieldsConfig"
             [showColSearch]="false"
             [globalSearchValue]="''"
@@ -217,11 +240,17 @@
             [canSelectElement]="false"
             [loading]="false"
             scrollHeightValue="calc( 100vh - 440px)"
-            [isScrollable]="true"
-            [ignoreSpecificOutput]="true"></bia-table>
+            [ignoreSpecificOutput]="true"
+            (pageChange)="
+              onTablePageChanges(
+                $event,
+                importDataToDeleteToDisplayInTable,
+                importData.toDeletes
+              )
+            "></bia-table>
         </p>
-      </ng-template>
-    </p-accordionTab>
+      </p-accordion-content>
+    </p-accordion-panel>
   </p-accordion>
 </ng-container>
 <br />

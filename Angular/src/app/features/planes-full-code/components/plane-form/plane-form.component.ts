@@ -7,10 +7,20 @@ import {
   Output,
 } from '@angular/core';
 import {
+  FormsModule,
+  ReactiveFormsModule,
   UntypedFormBuilder,
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
+import { ButtonDirective } from 'primeng/button';
+import { Checkbox } from 'primeng/checkbox';
+import { DatePicker } from 'primeng/datepicker';
+import { FloatLabel } from 'primeng/floatlabel';
+import { InputText } from 'primeng/inputtext';
+import { MultiSelect } from 'primeng/multiselect';
+import { Select } from 'primeng/select';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
@@ -22,6 +32,18 @@ import { Plane } from '../../model/plane';
   templateUrl: './plane-form.component.html',
   styleUrls: ['./plane-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    InputText,
+    Checkbox,
+    DatePicker,
+    Select,
+    MultiSelect,
+    ButtonDirective,
+    TranslateModule,
+    FloatLabel,
+  ],
 })
 export class PlaneFormComponent implements OnChanges {
   @Input() plane: Plane = <Plane>{};
@@ -29,7 +51,7 @@ export class PlaneFormComponent implements OnChanges {
   @Input() planeTypeOptions: OptionDto[];
 
   @Output() save = new EventEmitter<Plane>();
-  @Output() cancel = new EventEmitter<void>();
+  @Output() cancelled = new EventEmitter<void>();
 
   form: UntypedFormGroup;
 
@@ -65,7 +87,7 @@ export class PlaneFormComponent implements OnChanges {
 
   onCancel() {
     this.form.reset();
-    this.cancel.next();
+    this.cancelled.next();
   }
 
   onSubmit() {
@@ -80,8 +102,8 @@ export class PlaneFormComponent implements OnChanges {
       plane.planeType = BiaOptionService.clone(plane.planeType);
 
       // force the parent key => siteId from authService or other Id from 'parent'Service
-      (plane.siteId = this.authService.getCurrentTeamId(TeamTypeId.Site)),
-        this.save.emit(plane);
+      plane.siteId = this.authService.getCurrentTeamId(TeamTypeId.Site);
+      this.save.emit(plane);
       this.form.reset();
     }
   }

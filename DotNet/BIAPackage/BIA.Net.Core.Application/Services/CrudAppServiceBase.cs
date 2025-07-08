@@ -1,22 +1,18 @@
 // <copyright file="CrudAppServiceBase.cs" company="BIA">
-//     Copyright (c) BIA. All rights reserved.
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Application.Services
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
-    using System.Text;
     using System.Threading.Tasks;
-    using System.Transactions;
-    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Entity.Interface;
+    using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
@@ -35,7 +31,7 @@ namespace BIA.Net.Core.Application.Services
         where TDto : BaseDto<TKey>, new()
         where TEntity : class, IEntity<TKey>, new()
         where TFilterDto : LazyLoadDto, new()
-        where TMapper : BaseMapper<TDto, TEntity, TKey>
+        where TMapper : BiaBaseMapper<TDto, TEntity, TKey>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CrudAppServiceBase{TDto, TEntity, TKey, TFilterDto, TMapper}"/> class.
@@ -46,7 +42,7 @@ namespace BIA.Net.Core.Application.Services
         {
         }
 
-        /// <inheritdoc cref="ICrudAppServiceBase{TDto,TFilterDto}.GetRangeAsync"/>
+        /// <inheritdoc />
         public virtual async Task<(IEnumerable<TDto> Results, int Total)> GetRangeAsync(
             TFilterDto filters = null,
             TKey id = default,
@@ -182,7 +178,7 @@ namespace BIA.Net.Core.Application.Services
             return await this.GetCsvAsync<TDto, TMapper, TOtherFilter>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, isReadOnlyMode: isReadOnlyMode);
         }
 
-        /// <inheritdoc cref="ICrudAppServiceBase{TDto,TFilterDto}.GetAsync"/>
+        /// <inheritdoc />
         public virtual async Task<TDto> GetAsync(
             TKey id = default,
             Specification<TEntity> specification = null,
@@ -196,13 +192,13 @@ namespace BIA.Net.Core.Application.Services
             return await this.GetAsync<TDto, TMapper>(id: id, specification: specification, filter: filter, includes: includes, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, isReadOnlyMode: isReadOnlyMode);
         }
 
-        /// <inheritdoc cref="ICrudAppServiceBase{TDto,TFilterDto}.AddAsync"/>
+        /// <inheritdoc />
         public virtual async Task<TDto> AddAsync(TDto dto, string mapperMode = null)
         {
             return await this.AddAsync<TDto, TMapper>(dto, mapperMode: mapperMode);
         }
 
-        /// <inheritdoc cref="ICrudAppServiceBase{TDto,TFilterDto}.UpdateAsync"/>
+        /// <inheritdoc />
         public virtual async Task<TDto> UpdateAsync(
             TDto dto,
             string accessMode = AccessMode.Update,
@@ -212,27 +208,29 @@ namespace BIA.Net.Core.Application.Services
             return await this.UpdateAsync<TDto, TMapper>(dto, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
         }
 
-        /// <inheritdoc cref="ICrudAppServiceBase{TDto,TFilterDto}.RemoveAsync"/>
+        /// <inheritdoc />
         public virtual async Task<TDto> RemoveAsync(
             TKey id,
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,
-            string mapperMode = null)
+            string mapperMode = null,
+            bool bypassFixed = false)
         {
-            return await this.RemoveAsync<TDto, TMapper>(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
+            return await this.RemoveAsync<TDto, TMapper>(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, bypassFixed: bypassFixed);
         }
 
-        /// <inheritdoc cref="ICrudAppServiceBase{TDto,TFilterDto}.RemoveAsync"/>
+        /// <inheritdoc />
         public virtual async Task<List<TDto>> RemoveAsync(
             List<TKey> ids,
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,
-            string mapperMode = null)
+            string mapperMode = null,
+            bool bypassFixed = false)
         {
-            return await this.RemoveAsync<TDto, TMapper>(ids, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
+            return await this.RemoveAsync<TDto, TMapper>(ids, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, bypassFixed: bypassFixed);
         }
 
-        /// <inheritdoc cref="ICrudAppServiceBase{TDto,TEntity,TFilterDto}.BulkAddAsync"/>
+        /// <inheritdoc />
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public virtual async Task AddBulkAsync(IEnumerable<TDto> dtos)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
@@ -240,7 +238,7 @@ namespace BIA.Net.Core.Application.Services
             await this.AddBulkAsync<TDto, TMapper>(dtos);
         }
 
-        /// <inheritdoc cref="ICrudAppServiceBase{TDto,TEntity,TFilterDto}.UpdateBulkAsync"/>  Obsolete in V3.9.0.
+        /// <inheritdoc />  Obsolete in V3.9.0.
 #pragma warning disable S1133 // Deprecated code should be removed
         [Obsolete(message: "UpdateBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteUpdateAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
 #pragma warning restore S1133 // Deprecated code should be removed
@@ -251,7 +249,7 @@ namespace BIA.Net.Core.Application.Services
             throw new NotImplementedException();
         }
 
-        /// <inheritdoc cref="ICrudAppServiceBase{TDto,TEntity,TFilterDto}.RemoveBulkAsync(System.Collections.Generic.IEnumerable{TDto})"/>  Obsolete in V3.9.0.
+        /// <inheritdoc />  Obsolete in V3.9.0.
 #pragma warning disable S1133 // Deprecated code should be removed
         [Obsolete(message: "RemoveBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteDeleteAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
 #pragma warning restore S1133 // Deprecated code should be removed
@@ -316,7 +314,7 @@ namespace BIA.Net.Core.Application.Services
             return await this.SaveAsync<TDto, TMapper>(dto, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
         }
 
-        /// <inheritdoc cref="ICrudAppServiceBase{TDto,TFilterDto}.SaveAsync"/>
+        /// <inheritdoc />
         public virtual async Task<IEnumerable<TDto>> SaveAsync(
             IEnumerable<TDto> dtos,
             string accessMode = null,
@@ -324,6 +322,18 @@ namespace BIA.Net.Core.Application.Services
             string mapperMode = null)
         {
             return await this.SaveAsync<TDto, TMapper>(dtos, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
+        }
+
+        /// <inheritdoc/>
+        public virtual async Task<TDto> UpdateFixedAsync(TKey id, bool isFixed)
+        {
+            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
+            {
+                var entity = await this.Repository.GetEntityAsync(id) ?? throw new ElementNotFoundException();
+                this.Repository.UpdateFixedAsync(entity, isFixed);
+                await this.Repository.UnitOfWork.CommitAsync();
+                return await this.GetAsync(id);
+            });
         }
     }
 }

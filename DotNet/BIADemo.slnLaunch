@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Api and WorkerService",
+    "Projects": [
+      {
+        "Path": "TheBIADevCompany.BIADemo.Presentation.Api\\TheBIADevCompany.BIADemo.Presentation.Api.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "TheBIADevCompany.BIADemo.WorkerService\\TheBIADevCompany.BIADemo.WorkerService.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

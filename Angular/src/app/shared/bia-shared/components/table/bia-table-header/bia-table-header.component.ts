@@ -1,4 +1,4 @@
-import { Location } from '@angular/common';
+import { Location, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -13,7 +13,12 @@ import {
   TemplateRef,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { Confirmation, ConfirmationService, PrimeTemplate } from 'primeng/api';
+import { Button, ButtonDirective } from 'primeng/button';
+import { ConfirmDialog } from 'primeng/confirmdialog';
+import { Divider } from 'primeng/divider';
+import { Tooltip } from 'primeng/tooltip';
 import { BiaDialogService } from 'src/app/core/bia-core/services/bia-dialog.service';
 
 @Component({
@@ -22,14 +27,23 @@ import { BiaDialogService } from 'src/app/core/bia-core/services/bia-dialog.serv
   styleUrls: ['./bia-table-header.component.scss'],
   providers: [ConfirmationService],
   changeDetection: ChangeDetectionStrategy.Default,
+  imports: [
+    NgIf,
+    Button,
+    Tooltip,
+    ButtonDirective,
+    Divider,
+    NgTemplateOutlet,
+    ConfirmDialog,
+    TranslateModule,
+  ],
 })
 export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
-  @Input() hasFilter = false;
-  @Input() showFilter = false;
-  @Input() showBtnFilter = false;
   @Input() canAdd = true;
+  @Input() canClone = false;
   @Input() canDelete = true;
   @Input() canEdit = true;
+  @Input() canFix = false;
   @Input() canImport = false;
   @Input() canBack = false;
   @Input() canExportCSV = false;
@@ -38,9 +52,14 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   @Input() selectedElements: any[];
   @Input() showTableControllerButton = false;
   @Input() tableControllerVisible = false;
+  @Input() showFixedButtons = false;
   @Output() create = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
-  @Output() openFilter = new EventEmitter<void>();
+  @Output() clone = new EventEmitter<void>();
+  @Output() crudItemFixedChanged = new EventEmitter<{
+    crudItemId: any;
+    fixed: boolean;
+  }>();
   @Output() exportCSV = new EventEmitter<void>();
   @Output() fullExportCSV = new EventEmitter<void>();
   @Output() import = new EventEmitter<void>();
@@ -78,11 +97,7 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.selectedElements) {
-      this.nbSelectedElements = this.selectedElements.length;
-    } else {
-      this.nbSelectedElements = 0;
-    }
+    this.nbSelectedElements = this.selectedElements?.length ?? 0;
 
     if (changes.parentDisplayName || changes.headerTitle) {
       this.updateHeaderTitle();
@@ -97,13 +112,19 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   }
 
   onBack() {
-    window.history.length > 1
-      ? this.location.back()
-      : this.router.navigate(['/']);
+    if (window.history.length > 1) {
+      this.location.back();
+    } else {
+      this.router.navigate(['/']);
+    }
   }
 
   onCreate() {
     this.create.next();
+  }
+
+  onClone() {
+    this.clone.next();
   }
 
   onDelete() {
@@ -116,17 +137,34 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
     this.confirmationService.confirm(confirmation);
   }
 
-  toggleFilter() {
-    this.showFilter = !this.showFilter;
-    if (this.showFilter === true) {
-      this.openFilter.emit();
-    }
-  }
-
   displayImportButton(): boolean {
     return (
       this.canImport === true &&
       (this.canDelete === true || this.canAdd === true || this.canEdit === true)
     );
+  }
+
+  get isSelectedElementFixed(): boolean {
+    return (
+      this.selectedElements?.length === 1 &&
+      this.selectedElements[0].isFixed === true
+    );
+  }
+
+  onFixedChanged(fixed: boolean): void {
+    this.crudItemFixedChanged.emit({
+      crudItemId: this.selectedElements
+        ? this.selectedElements[0].id
+        : undefined,
+      fixed: fixed,
+    });
+  }
+
+  get isDeleteButtonDisabled(): boolean {
+    const selectedElements =
+      (this.showFixedButtons === true
+        ? this.selectedElements?.filter(e => e.isFixed !== true)
+        : this.selectedElements) ?? [];
+    return selectedElements.length === 0;
   }
 }

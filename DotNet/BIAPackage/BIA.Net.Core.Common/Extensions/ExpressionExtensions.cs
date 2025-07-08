@@ -1,5 +1,5 @@
-﻿// <copyright file="ExpressionExtensions.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+﻿// <copyright file="ExpressionExtensions.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Common.Extensions
@@ -82,7 +82,7 @@ namespace BIA.Net.Core.Common.Extensions
         private sealed class ExpressionParameterReplacer(ParameterExpression oldParameterExpression, ParameterExpression newParameterExpression)
             : ExpressionVisitor
         {
-            /// <inheritdoc cref="ExpressionVisitor.VisitParameter(ParameterExpression)"/>
+            /// <inheritdoc />
             protected override Expression VisitParameter(ParameterExpression node)
             {
                 return node == oldParameterExpression ? newParameterExpression : base.VisitParameter(node);

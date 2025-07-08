@@ -15,7 +15,7 @@ export class NavigationService {
       const found =
         !element.permissions ||
         element.permissions.some(
-          r => authInfo?.uncryptedToken?.permissions?.indexOf(r) >= 0
+          r => authInfo?.decryptedToken?.permissions?.indexOf(r) >= 0
         );
       if (found) {
         biaNavigationFiltered.push(element);

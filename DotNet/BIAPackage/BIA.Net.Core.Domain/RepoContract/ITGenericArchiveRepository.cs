@@ -1,5 +1,5 @@
-﻿// <copyright file="ITGenericArchiveRepository.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+﻿// <copyright file="ITGenericArchiveRepository.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Domain.RepoContract
@@ -8,7 +8,7 @@ namespace BIA.Net.Core.Domain.RepoContract
     using System.Collections.Generic;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity.Interface;
 
     /// <summary>
     /// Interface for generic archive repository of an entity.
@@ -16,7 +16,7 @@ namespace BIA.Net.Core.Domain.RepoContract
     /// <typeparam name="TEntity">Entity type.</typeparam>
     /// <typeparam name="TKey">Entity key type.</typeparam>
     public interface ITGenericArchiveRepository<TEntity, TKey>
-        where TEntity : class, IEntityArchivable<TKey>
+        where TEntity : class, IEntityArchivable, IEntity<TKey>
     {
         /// <summary>
         /// Return the items to archive according to the filter rule.

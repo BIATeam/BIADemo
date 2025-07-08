@@ -1,33 +1,17 @@
 <bia-spinner [overlay]="true" *ngIf="isLoadingUserInfo"></bia-spinner>
-@if (classicStyle) {
-  <bia-classic-layout
-    [menus]="menus"
-    [version]="version"
-    [username]="username"
-    [headerLogos]="headerLogos"
-    [footerLogo]="footerLogo"
-    [supportedLangs]="supportedLangs"
-    [appTitle]="appTitle"
-    [helpUrl]="helpUrl"
-    [reportUrl]="reportUrl"
-    [enableNotifications]="enableNotifications"
-    [companyName]="companyName"
-    class="p-input-filled">
-    <router-outlet></router-outlet>
-  </bia-classic-layout>
-} @else {
-  <bia-ultima-layout
-    [menus]="menus"
-    [version]="version"
-    [username]="username"
-    [login]="login"
-    [headerLogos]="headerLogos"
-    [footerLogo]="footerLogo"
-    [supportedLangs]="supportedLangs"
-    [appTitle]="appTitle"
-    [helpUrl]="helpUrl"
-    [reportUrl]="reportUrl"
-    [enableNotifications]="enableNotifications"
-    [companyName]="companyName"
-    class="p-input-filled"></bia-ultima-layout>
-}
+<bia-ultima-layout
+  [menus]="menus"
+  [version]="version"
+  [username]="username"
+  [lastname]="lastname"
+  [login]="login"
+  [headerLogos]="headerLogos"
+  [footerLogo]="footerLogo"
+  [supportedLangs]="supportedLangs"
+  [appTitle]="appTitle"
+  [helpUrl]="helpUrl"
+  [reportUrl]="reportUrl"
+  [enableNotifications]="enableNotifications"
+  [companyName]="companyName"
+  class="p-input-filled">
+</bia-ultima-layout>

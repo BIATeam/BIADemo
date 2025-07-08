@@ -11,14 +11,17 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Job;
+    using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.User.Services;
     using Hangfire;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User.Models;
-    using TheBIADevCompany.BIADemo.Domain.User.Services;
 
     /// <summary>
     /// Example of task lanched manualy with hangfire.
@@ -40,14 +43,14 @@ namespace TheBIADevCompany.BIADemo.Application.Job
             IConfiguration configuration,
             ILogger<WithPermissionTask> logger,
             IPrincipal principal,
-            IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
+            IUserDirectoryRepository<UserFromDirectoryDto, UserFromDirectory> userDirectoryHelper,
             IUserPermissionDomainService userPermissionDomainService)
             : base(configuration, logger)
         {
             this.principal = principal;
 
             // update permission with the service account roles.
-            List<string> globalRoles = userDirectoryHelper.GetUserRolesAsync(claimsPrincipal: principal as BiaClaimsPrincipal, userInfoDto: null, sid: null, domain: null).Result;
+            List<string> globalRoles = userDirectoryHelper.GetUserRolesAsync(claimsPrincipal: principal as BiaClaimsPrincipal, userInfoDto: null, sid: null, domain: null, withCredentials: true).Result;
             List<string> userPermissions = userPermissionDomainService.TranslateRolesInPermissions(globalRoles, false);
 
             var newIdentity = (ClaimsIdentity)principal.Identity;
@@ -65,7 +68,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         protected override async Task RunMonitoredTask()
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            bool accessAll = (this.principal as BiaClaimsPrincipal).GetUserPermissions().Any(x => x == Rights.Teams.AccessAll);
+            bool accessAll = (this.principal as BiaClaimsPrincipal).GetUserPermissions().Any(x => x == BiaRights.Teams.AccessAll);
 
             if (accessAll)
             {

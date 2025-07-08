@@ -1,5 +1,5 @@
 // <copyright file="UserDto.cs" company="TheBIADevCompany">
-//     Copyright (c) TheBIADevCompany. All rights reserved.
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Domain.Dto.User
@@ -8,35 +8,19 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.User
     using System.Collections.Generic;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Dto.User;
 
     /// <summary>
     /// The DTO used for user.
     /// </summary>
-    public class UserDto : BaseDto<int>
+    public class UserDto : BaseUserDto
     {
+        // Place here the custom user fields to retrieve in front.
+#if BIA_USER_CUSTOM_FIELDS_FRONT
         /// <summary>
-        /// Gets or sets the last name.
+        /// Gets or sets the country.
         /// </summary>
-        public string LastName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the first name.
-        /// </summary>
-        public string FirstName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the login.
-        /// </summary>
-        public string Login { get; set; }
-
-        /// <summary>
-        /// Gets or sets the GUID.
-        /// </summary>
-        public Guid Guid { get; set; }
-
-        /// <summary>
-        /// Gets or sets the roles.
-        /// </summary>
-        public ICollection<OptionDto> Roles { get; set; }
+        public string Country { get; set; }
+#endif
     }
 }

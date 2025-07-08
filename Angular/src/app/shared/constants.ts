@@ -13,6 +13,7 @@ export const DEFAULT_PAGE_SIZE = 10;
 export const ROUTE_DATA_BREADCRUMB = 'breadcrumb';
 export const ROUTE_DATA_CAN_NAVIGATE = 'canNavigate';
 export const ROUTE_DATA_NO_MARGIN = 'noMargin';
+export const ROUTE_DATA_NO_PADDING = 'noPadding';
 
 export const THEME_LIGHT = 'light';
 export const THEME_DARK = 'dark';
@@ -46,29 +47,32 @@ export enum TeamTypeId {
   All = 0,
   Root = 1,
   Site = 2,
-  // Begin BIADemo
-  AircraftMaintenanceCompany = 3,
-  /// BIAToolKit - Begin Partial TeamTypeIdConstants MaintenanceTeam
-  // TODO after creation of team MaintenanceTeam : adapt enum value
-  MaintenanceTeam = 4,
-  /// BIAToolKit - End Partial TeamTypeIdConstants MaintenanceTeam
-  // End BIADemo
   // BIAToolKit - Begin TeamTypeIdConstants
+  // Begin BIAToolKit Generation Ignore
+  // BIAToolKit - Begin Partial TeamTypeIdConstants AircraftMaintenanceCompany
+  AircraftMaintenanceCompany = 3,
+  // BIAToolKit - End Partial TeamTypeIdConstants AircraftMaintenanceCompany
+  // BIAToolKit - Begin Partial TeamTypeIdConstants MaintenanceTeam
+  MaintenanceTeam = 4,
+  // BIAToolKit - End Partial TeamTypeIdConstants MaintenanceTeam
+  // End BIAToolKit Generation Ignore
   // BIAToolKit - End TeamTypeIdConstants
 }
 
 const TeamTypeRightPrefix: { key: TeamTypeId; value: string }[] = [
   { key: TeamTypeId.Site, value: 'Site' },
-  // Begin BIADemo
+  // BIAToolKit - Begin TeamTypeRightPrefixConstants
+  // Begin BIAToolKit Generation Ignore
+  // BIAToolKit - Begin Partial TeamTypeRightPrefixConstants AircraftMaintenanceCompany
   {
     key: TeamTypeId.AircraftMaintenanceCompany,
     value: 'AircraftMaintenanceCompany',
   },
-  /// BIAToolKit - Begin Partial TeamTypeRightPrefixConstants MaintenanceTeam
+  // BIAToolKit - End Partial TeamTypeRightPrefixConstants AircraftMaintenanceCompany
+  // BIAToolKit - Begin Partial TeamTypeRightPrefixConstants MaintenanceTeam
   { key: TeamTypeId.MaintenanceTeam, value: 'MaintenanceTeam' },
-  /// BIAToolKit - End Partial TeamTypeRightPrefixConstants MaintenanceTeam
-  // End BIADemo
-  // BIAToolKit - Begin TeamTypeRightPrefixConstants
+  // BIAToolKit - End Partial TeamTypeRightPrefixConstants MaintenanceTeam
+  // End BIAToolKit Generation Ignore
   // BIAToolKit - End TeamTypeRightPrefixConstants
 ];
 export { TeamTypeRightPrefix };

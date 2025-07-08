@@ -1,5 +1,4 @@
-import { APP_BASE_HREF } from '@angular/common';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
@@ -57,7 +56,6 @@ export class EnginesEffects {
           map(engine => FeatureEnginesActions.loadSuccess({ engine })),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
-            location.assign(this.baseHref);
             return of(FeatureEnginesActions.failure({ error: err }));
           })
         );
@@ -251,11 +249,41 @@ export class EnginesEffects {
     )
   );
 
+  updateFixedStatus$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(FeatureEnginesActions.updateFixedStatus),
+      map(x => x),
+      concatMap(x =>
+        of(x).pipe(
+          withLatestFrom(
+            this.store.select(FeatureEnginesStore.getLastLazyLoadEvent)
+          )
+        )
+      ),
+      switchMap(([x, event]) => {
+        return this.engineDas
+          .updateFixedStatus({ id: x.id, fixed: x.isFixed })
+          .pipe(
+            map(engine => {
+              this.biaMessageService.showUpdateSuccess();
+              this.store.dispatch(
+                FeatureEnginesActions.loadAllByPost({ event: event })
+              );
+              return FeatureEnginesActions.loadSuccess({ engine });
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(FeatureEnginesActions.failure({ error: err }));
+            })
+          );
+      })
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private engineDas: EngineDas,
     private biaMessageService: BiaMessageService,
-    private store: Store<AppState>,
-    @Inject(APP_BASE_HREF) public baseHref: string
+    private store: Store<AppState>
   ) {}
 }

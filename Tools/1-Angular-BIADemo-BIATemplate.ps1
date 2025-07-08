@@ -35,25 +35,8 @@ function RemoveCodeExample {
   }	
 	
   Get-ChildItem -Path $Path -File | Where-Object { $_.FullName -NotLike "*.ps1" -and $_.FullName -NotLike "*.md" } | ForEach-Object { 
-    $lineBegin = @()
-    $file = $_.FullName
-  
-    $searchWord = 'Begin BIADemo'
-    $starts = GetLineNumber -pattern $searchWord -file $file
-    $lineBegin += $starts
-  
-    $searchWord = 'End BIADemo'
-    $ends = GetLineNumber -pattern $searchWord -file $file
-    $lineBegin += $ends
-  
-    if ($lineBegin -and $lineBegin.Length -gt 0) {
-      $lineBegin = $lineBegin | Sort-Object
-      for ($i = $lineBegin.Length - 1; $i -gt 0; $i = $i - 2) {
-        $start = [int]$lineBegin[$i - 1]
-        $end = [int]$lineBegin[$i]
-        DeleteLine -start $start -end $end -file $file
-      }
-    }
+    RemoveCodeBetweenMarkers -file $_.FullName -marker "BIADemo"
+    RemoveCodeBetweenMarkers -file $_.FullName -marker "BIAToolKit Generation Ignore"
   }
 }
 
@@ -104,15 +87,6 @@ Set-Location -Path $newPath
 
 #New-Item -ItemType Directory -Path $docsFolder
 
-# Read Json settings to generate archive
-$myJson = Get-Content "$oldPath\$jsonFileName" -Raw | ConvertFrom-Json 
-ForEach ($settings in $myJson) {
-  GenerateZipArchive -settings $settings -settingsName $jsonFileName -oldPath $oldPath -newPath $newPath
-}
-
-Write-Host "Copy-Item -Path $oldPath\$jsonFileName -Destination $newPath\$docsFolder\$jsonFileName -Force"
-Copy-Item -Path "$oldPath\$jsonFileName" -Destination "$newPath\$docsFolder\$jsonFileName" -Force
-
 #Write-Host "RemoveFolder dist"
 #RemoveFolder -path 'dist'
 #Write-Host "RemoveFolder node_modules"
@@ -133,6 +107,8 @@ Write-Host "RemoveFolder src\app\features\airports"
 RemoveFolder -path 'src\app\features\airports'
 Write-Host "RemoveFolder src\app\features\hangfire"
 RemoveFolder -path 'src\app\features\hangfire'
+Write-Host "RemoveFolder src\app\features\maintenance-contracts"
+RemoveFolder -path 'src\app\features\maintenance-contracts'
 
 Write-Host "RemoveFolder src\app\domains\airport-option"
 RemoveFolder -path 'src\app\domains\airport-option'
@@ -140,6 +116,17 @@ Write-Host "RemoveFolder src\app\domains\plane-type-option"
 RemoveFolder -path 'src\app\domains\plane-type-option'
 Write-Host "RemoveFolder src\app\domains\country-option"
 RemoveFolder -path 'src\app\domains\country-option'
+Write-Host "RemoveFolder src\app\domains\plane-option"
+RemoveFolder -path 'src\app\domains\plane-option'
+Write-Host "RemoveFolder src\app\domains\site-option"
+RemoveFolder -path 'src\app\domains\site-option'
+Write-Host "RemoveFolder src\app\domains\part-option"
+RemoveFolder -path 'src\app\domains\part-option'
+Write-Host "RemoveFolder src\app\domains\aircraft-maintenance-company-option"
+RemoveFolder -path 'src\app\domains\aircraft-maintenance-company-option'
+
+Write-Host "RemoveFolder src\app\shared\components\custom-layout"
+RemoveFolder -path 'src\app\shared\components\custom-layout'
 
 #Write-Host "RemoveFolder src\assets\bia\primeng\sass"
 #RemoveFolder -path 'src\assets\bia\primeng\sass'

@@ -1,11 +1,11 @@
 ﻿// <copyright file="QueryableExtensions.cs" company="BIA">
-//     Copyright (c) BIA. All rights reserved.
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Infrastructure.Data
 {
     using System.Linq;
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.QueryOrder;
 
     /// <summary>
