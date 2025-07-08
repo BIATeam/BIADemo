@@ -34,6 +34,7 @@ export class BiaUltimaSidebarComponent implements OnDestroy {
   @Input() appTitle: string;
   @Input() version: string;
   @Input() username: string | undefined;
+  @Input() lastname: string | undefined;
   @Input() login: string;
   @Input()
   set menus(navigations: BiaNavigation[]) {

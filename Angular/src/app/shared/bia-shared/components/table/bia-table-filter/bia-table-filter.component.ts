@@ -117,7 +117,7 @@ export class BiaTableFilterComponent<CrudItem>
     ) {
       if (
         (this.table.filters[col.field] as FilterMetadata[]).some(
-          element => !this.tableHelperService.isEmptyFilter(element)
+          element => !TableHelperService.isEmptyFilter(element)
         )
       ) {
         return this.table.filters[col.field] as FilterMetadata[];
@@ -139,7 +139,7 @@ export class BiaTableFilterComponent<CrudItem>
           col.field
         ] as FilterMetadata;
         if (filter) {
-          return !this.tableHelperService.isEmptyFilter(filter);
+          return !TableHelperService.isEmptyFilter(filter);
         }
       }
     }

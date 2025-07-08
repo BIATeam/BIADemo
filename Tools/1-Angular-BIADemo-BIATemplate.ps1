@@ -118,10 +118,15 @@ Write-Host "RemoveFolder src\app\domains\country-option"
 RemoveFolder -path 'src\app\domains\country-option'
 Write-Host "RemoveFolder src\app\domains\plane-option"
 RemoveFolder -path 'src\app\domains\plane-option'
+Write-Host "RemoveFolder src\app\domains\site-option"
+RemoveFolder -path 'src\app\domains\site-option'
 Write-Host "RemoveFolder src\app\domains\part-option"
 RemoveFolder -path 'src\app\domains\part-option'
 Write-Host "RemoveFolder src\app\domains\aircraft-maintenance-company-option"
 RemoveFolder -path 'src\app\domains\aircraft-maintenance-company-option'
+
+Write-Host "RemoveFolder src\app\shared\components\custom-layout"
+RemoveFolder -path 'src\app\shared\components\custom-layout'
 
 #Write-Host "RemoveFolder src\assets\bia\primeng\sass"
 #RemoveFolder -path 'src\assets\bia\primeng\sass'

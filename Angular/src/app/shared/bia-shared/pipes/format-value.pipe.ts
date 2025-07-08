@@ -1,5 +1,6 @@
 import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
-import { Pipe, PipeTransform } from '@angular/core';
+import { Injectable, Pipe, PipeTransform } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import {
   BiaFieldConfig,
   BiaFieldDateFormat,
@@ -9,11 +10,13 @@ import {
 } from '../model/bia-field-config';
 
 @Pipe({ name: 'formatValue' })
+@Injectable({ providedIn: 'root' })
 export class FormatValuePipe implements PipeTransform {
   constructor(
     protected datePipe: DatePipe,
     protected currencyPipe: CurrencyPipe,
-    protected decimalPipe: DecimalPipe
+    protected decimalPipe: DecimalPipe,
+    protected translateService: TranslateService
   ) {}
 
   transform<TDto>(value: any, col: BiaFieldConfig<TDto>): string | null {
@@ -52,7 +55,11 @@ export class FormatValuePipe implements PipeTransform {
           col.displayFormat.autoFormatDate
         );
       }
-      return this.datePipe.transform(value, col.displayFormat.autoFormatDate);
+      try {
+        return this.datePipe.transform(value, col.displayFormat.autoFormatDate);
+      } catch {
+        return this.translateService.instant('bia.errorDateFormat');
+      }
     }
     return value;
   }

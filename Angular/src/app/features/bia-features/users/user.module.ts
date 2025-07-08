@@ -1,13 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-// import { ReducerManager, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { RoleOptionModule } from 'src/app/domains/bia-domains/role-option/role-option.module';
 import { DynamicLayoutComponent } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { Permission } from 'src/app/shared/permission';
-
 import { UserFromDirectoryModule } from '../users-from-directory/user-from-directory.module';
 import { FeatureUsersStore } from './store/user.state';
 import { UsersEffects } from './store/users-effects';

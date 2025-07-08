@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from 'primeng/api';
+import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
@@ -67,6 +68,7 @@ import { BiaMenuProfileService } from '../../services/menu-profile.service';
     InputTextModule,
     FormsModule,
     CommonModule,
+    AvatarModule,
   ],
 })
 export class BiaUltimaMenuProfileComponent implements OnDestroy {
@@ -80,9 +82,14 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
   @Input()
   set username(name: string | undefined) {
     if (name) {
-      this.usernameParam = { name };
+      this.usernameParam.name = name;
     }
     this.buildTopBarMenu();
+  }
+
+  @Input()
+  set lastname(lastname: string | undefined) {
+    this.usernameParam.lastname = lastname ?? '';
   }
 
   @Input() set login(value: string) {
@@ -115,7 +122,18 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
   externalImage = false;
   avatarUrl: string | SafeUrl = this.defaultProfileImage;
 
-  usernameParam?: { name: string };
+  usernameParam: { name: string; lastname: string } = {
+    name: '',
+    lastname: '',
+  };
+  get initials(): string {
+    const { name, lastname } = this.usernameParam;
+    const nameInitial = name.length ? name[0] : '';
+    const lastnameInitial = lastname.length ? lastname[0] : '';
+
+    return nameInitial + lastnameInitial;
+  }
+
   menuProfileHtml: string;
 
   protected sub: Subscription = new Subscription();

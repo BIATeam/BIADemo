@@ -7,12 +7,27 @@
       <ng-content select="[menu-profile-replace]"></ng-content>
     </div>
     @if (!menuProfile.innerHTML.length) {
-      <img
-        *ngIf="layoutService.config().showAvatar"
-        [src]="avatarUrl"
-        (error)="onImgError()"
-        alt="avatar"
-        class="avatar" />
+      @if (layoutService.config().showAvatar) {
+        @if (
+          !layoutService.config().alwaysShowInitials &&
+          this.avatarUrl !== this.defaultProfileImage
+        ) {
+          <img
+            [src]="avatarUrl"
+            (error)="onImgError()"
+            alt="avatar"
+            class="avatar"
+            [pTooltip]="`${usernameParam.name} ${usernameParam.lastname}`" />
+        } @else {
+          <p-avatar
+            styleClass="layout-menu-profile-avatar"
+            [label]="initials"
+            shape="circle"
+            [pTooltip]="
+              `${usernameParam.name} ${usernameParam.lastname}`
+            "></p-avatar>
+        }
+      }
       <span class="text-start" [innerHTML]="menuProfileHtml"></span>
     }
     <i class="layout-menu-profile-toggler pi pi-fw pi-angle-down"></i>

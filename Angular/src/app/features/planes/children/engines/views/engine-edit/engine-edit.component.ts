@@ -28,15 +28,6 @@ export class EngineEditComponent
     this.crudConfiguration = engineCRUDConfiguration;
   }
 
-  ngOnInit(): void {
-    super.ngOnInit();
-    this.sub.add(
-      this.biaTranslationService.currentCulture$.subscribe(() => {
-        this.engineOptionsService.loadAllOptions();
-      })
-    );
-  }
-
   protected setPermissions(): void {
     super.setPermissions();
 

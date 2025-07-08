@@ -107,7 +107,12 @@ export class BiaTranslationService {
     // force language initialization to avoid double authentication.
     this.loadAndChangeLanguage(getCurrentCulture(), false);
     this.currentCultureDateFormat$.subscribe(dateFormat => {
-      DatePicker.prototype.getDateFormat = () => dateFormat.primeDateFormat;
+      DatePicker.prototype.getDateFormat = function () {
+        return (
+          (this as unknown as DatePicker).dateFormat ||
+          dateFormat.primeDateFormat
+        );
+      };
     });
   }
 

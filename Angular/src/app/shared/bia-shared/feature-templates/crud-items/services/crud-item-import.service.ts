@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { parse } from 'date-fns';
 import * as Papa from 'papaparse';
 import { Observable, combineLatest, from, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -10,7 +11,12 @@ import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
 import { BiaFormComponent } from '../../../components/form/bia-form/bia-form.component';
 import { DictOptionDto } from '../../../components/table/bia-table/dict-option-dto';
-import { BiaFieldConfig, PropType } from '../../../model/bia-field-config';
+import {
+  BiaFieldConfig,
+  BiaFieldDateFormat,
+  PropType,
+} from '../../../model/bia-field-config';
+import { FormatValuePipe } from '../../../pipes/format-value.pipe';
 import { clone, isEmpty } from '../../../utils';
 import { CrudConfig } from '../model/crud-config';
 
@@ -51,7 +57,8 @@ export class CrudItemImportService<T extends BaseDto> {
 
   constructor(
     protected translateService: TranslateService,
-    protected biaTranslationService: BiaTranslationService
+    protected biaTranslationService: BiaTranslationService,
+    protected formatValuePipe: FormatValuePipe
   ) {
     this.initImportParam();
   }
@@ -310,10 +317,37 @@ export class CrudItemImportService<T extends BaseDto> {
       if (DateHelperService.isValidDate(date)) {
         csvObj[column.field] = <any>date;
       } else {
-        this.addErrorToSave(
-          csvObj,
-          column.field.toString() + ': unsupported date format: ' + csvValue
+        // retry with field date format
+        let format = (column.displayFormat as BiaFieldDateFormat)
+          ?.autoFormatDate;
+        const containsTargetDash = format.indexOf('-') > 0;
+        if (containsDash && !containsTargetDash) {
+          if (format.startsWith('yyyy')) {
+            format = format.split('/').join('-');
+          } else {
+            format = format.split('/').reverse().join('-');
+          }
+        }
+        if (!containsDash && containsTargetDash) {
+          if (format.startsWith('yyyy')) {
+            format = format.split('-').reverse().join('/');
+          } else {
+            format = format.split('-').join('/');
+          }
+        }
+        const date2: Date = DateHelperService.parseDate(
+          dateString,
+          format.split(' ')[0],
+          format.split(' ')[1]
         );
+        if (DateHelperService.isValidDate(date2)) {
+          csvObj[column.field] = <any>date2;
+        } else {
+          this.addErrorToSave(
+            csvObj,
+            column.field.toString() + ': unsupported date format: ' + csvValue
+          );
+        }
       }
     }
   }
@@ -496,6 +530,34 @@ export class CrudItemImportService<T extends BaseDto> {
           // to facilitate comparison with JSON.stringify
           newObj[prop] = oldObj[prop];
         }
+      }
+      if (field?.isDate) {
+        const formattedNewValue = this.formatValuePipe.transform(
+          newObj[prop],
+          field
+        );
+        Object.assign(newObj, {
+          [prop]: formattedNewValue
+            ? parse(
+                formattedNewValue,
+                (field.displayFormat as BiaFieldDateFormat)?.autoFormatDate,
+                new Date()
+              )
+            : null,
+        });
+        const formattedOldValue = this.formatValuePipe.transform(
+          oldObj[prop],
+          field
+        );
+        Object.assign(oldObj, {
+          [prop]: formattedOldValue
+            ? parse(
+                formattedOldValue,
+                (field.displayFormat as BiaFieldDateFormat)?.autoFormatDate,
+                new Date()
+              )
+            : null,
+        });
       }
     }
 

@@ -88,7 +88,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<Engine>()
                 .HasOne(x => x.Plane)
                 .WithMany(x => x.Engines)
-                .OnDelete(DeleteBehavior.ClientCascade);
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Engine>().HasOne(x => x.PrincipalPart).WithMany().HasForeignKey(x => x.PrincipalPartId);
             modelBuilder.Entity<Engine>()
                .HasMany(e => e.InstalledParts)

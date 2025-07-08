@@ -516,3 +516,60 @@ bia-form-layout .p-tabs .p-tabpanel > .bia-form-row {
 .bia-form-group .p-panel-content {
   padding-bottom: 0.75rem;
 }
+
+.layout-container.layout-horizontal .bia-ultima-menu {
+  display: flex;
+  align-items: center;
+}
+
+.layout-container.layout-horizontal .layout-menu {
+  overflow: auto;
+}
+
+.layout-container.layout-horizontal .layout-menu::-webkit-scrollbar {
+  display: none;
+}
+
+.p-toast.p-toast-top-right {
+  top: 4.5rem !important;
+}
+
+@media screen and (min-width: 992px) {
+  .layout-container.layout-slim-plus
+    .layout-menu-profile
+    > button
+    .layout-menu-profile-avatar
+    span,
+  .layout-container.layout-slim
+    .layout-menu-profile
+    > button
+    .layout-menu-profile-avatar
+    span {
+    display: block;
+  }
+
+  .layout-drawer
+    .layout-sidebar
+    .layout-menu-profile
+    > button
+    .layout-menu-profile-avatar {
+    opacity: 0;
+    white-space: nowrap;
+    transition: all 0.1s;
+  }
+
+  .layout-drawer.layout-sidebar-active
+    .layout-sidebar
+    .layout-menu-profile
+    > button
+    .layout-menu-profile-avatar {
+    opacity: 1;
+    white-space: nowrap;
+    transition: all 0.1s;
+  }
+}
+
+.p-avatar.layout-menu-profile-avatar {
+  background-color: var(--p-button-primary-background);
+  color: var(--p-button-primary-color);
+}

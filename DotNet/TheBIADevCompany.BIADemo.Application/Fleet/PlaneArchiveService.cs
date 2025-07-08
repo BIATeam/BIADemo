@@ -5,6 +5,8 @@
 
 namespace TheBIADevCompany.BIADemo.Application.Fleet
 {
+    using System.IO.Compression;
+    using System.Threading.Tasks;
     using BIA.Net.Core.Application.Archive;
     using BIA.Net.Core.Domain.RepoContract;
     using Microsoft.Extensions.Configuration;
@@ -31,6 +33,20 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
         protected override string GetArchiveNameTemplate(Plane entity)
         {
             return $"plane_{entity.Msn}";
+        }
+
+        /// <inheritdoc/>
+        protected override Task<string> SerializeItem(Plane item)
+        {
+            // Customize the content before serializing the item to archive, or return your own JSON
+            return base.SerializeItem(item);
+        }
+
+        /// <inheritdoc/>
+        protected override async Task AddEntriesToArchiveAsync(Plane item, ZipArchive archive)
+        {
+            // Fill here the list of additional entries to add to the archive
+            await this.AppendEntriesToArchiveAsync(archive, []);
         }
     }
 }

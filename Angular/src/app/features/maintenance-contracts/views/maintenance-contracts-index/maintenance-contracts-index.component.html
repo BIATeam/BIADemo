@@ -71,6 +71,7 @@
       [globalSearchValue]="globalSearchValue"
       [canClickRow]="canEdit"
       [canSelectElement]="canSelect"
+      [canSelectMultipleElement]="canDelete"
       [loading]="(loading$ | async) ?? false"
       (clickRowId)="onClickRow($event)"
       (loadLazy)="onLoadLazy($event)"

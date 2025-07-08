@@ -45,6 +45,7 @@ export interface AppConfig {
   menuMode: MenuMode;
   scale: number;
   showAvatar: boolean;
+  alwaysShowInitials: boolean;
   footerMode: FooterMode;
   menuProfilePosition: MenuProfilePosition;
 }
@@ -72,6 +73,7 @@ const DEFAULT_LAYOUT_CONFIG: AppConfig = {
   showAvatar: true,
   footerMode: 'overlay',
   menuProfilePosition: 'end',
+  alwaysShowInitials: false,
 };
 
 const DEFAULT_CONFIG_DISPLAY: ConfigDisplay = {

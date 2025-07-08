@@ -10,7 +10,6 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
-    using TheBIADevCompany.BIADemo.Application.Bia.User;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;

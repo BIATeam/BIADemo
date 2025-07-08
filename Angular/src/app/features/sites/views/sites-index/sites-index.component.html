@@ -1,4 +1,4 @@
-<div class="flex flex-row bia-page-remove-margin">
+<div class="flex flex-row bia-page-remove-margin bia-responsive-flex-row">
   <div
     class="flex-grow-1 bia-page-margin"
     [ngClass]="{ 'table-compact': crudConfiguration.useCompactMode }">
@@ -66,10 +66,11 @@
       [pageSize]="pageSize"
       (pageSizeChange)="onPageSizeChange($event)"
       [configuration]="crudConfiguration.fieldsConfig"
-      [showColSearch]="showColSearch"
+      [(showColSearch)]="showColSearch"
       [globalSearchValue]="globalSearchValue"
       [canClickRow]="canViewMembers"
       [canSelectElement]="canSelectElement"
+      [canSelectMultipleElement]="false"
       [loading]="(loading$ | async) ?? false"
       (clickRowData)="onClickRowData($event)"
       (loadLazy)="onLoadLazy($event)"
@@ -78,7 +79,6 @@
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
-      [canSelectMultipleElement]="false"
       [scrollHeightValue]="getFillScrollHeightValue()"></bia-table>
     <app-site-table
       *ngIf="crudConfiguration.useCalcMode"
@@ -91,11 +91,12 @@
       [pageSize]="pageSize"
       (pageSizeChange)="onPageSizeChange($event)"
       [configuration]="crudConfiguration.fieldsConfig"
-      [showColSearch]="showColSearch"
+      [(showColSearch)]="showColSearch"
       [globalSearchValue]="globalSearchValue"
       [canEdit]="canEdit"
       [canAdd]="canAdd"
-      [canSelectElement]="canDelete"
+      [canSelectElement]="canSelectElement"
+      [canSelectMultipleElement]="false"
       [loading]="(loading$ | async) ?? false"
       (loadLazy)="onLoadLazy($event)"
       [viewPreference]="viewPreference"
@@ -104,7 +105,6 @@
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
       (save)="onSave($event)"
-      [canSelectMultipleElement]="false"
       [scrollHeightValue]="getFillScrollHeightValue()"></app-site-table>
   </div>
   <bia-team-advanced-filter

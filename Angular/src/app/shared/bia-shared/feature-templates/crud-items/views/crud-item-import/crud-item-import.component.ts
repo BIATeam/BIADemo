@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, take } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+import { BiaFieldHelperService } from 'src/app/shared/bia-shared/components/form/bia-field-base/bia-field-helper.service';
 import { BiaFormComponent } from 'src/app/shared/bia-shared/components/form/bia-form/bia-form.component';
 import {
   CrudItemImportService,
@@ -91,6 +92,21 @@ export abstract class CrudItemImportComponent<CrudItem extends BaseDto>
 
     if (columnIdExists !== true) {
       const crudConfigCopy = clone(crudConfig, false);
+      crudConfigCopy.fieldsConfig.columns = crudConfig.fieldsConfig.columns.map(
+        c => {
+          const field = c.clone();
+          this.sub.add(
+            this.biaTranslationService.currentCultureDateFormat$
+              .pipe(take(1))
+              .subscribe(dateFormat => {
+                if (field instanceof BiaFieldConfig) {
+                  BiaFieldHelperService.setDateFormat(field, dateFormat);
+                }
+              })
+          );
+          return field;
+        }
+      );
       crudConfigCopy.fieldsConfig.columns.unshift(this.getColumnId());
       return crudConfigCopy;
     } else {

@@ -18,18 +18,21 @@ export class CrudItemReadComponent<CrudItem extends BaseDto>
   implements OnInit
 {
   public canEdit: boolean;
-  protected initialFormReadOnlyMode: FormReadOnlyMode;
+
+  protected set formReadOnlyMode(value: FormReadOnlyMode) {
+    super.formReadOnlyMode = value;
+    this.onFormReadOnlySet(value);
+  }
+
+  public get formReadOnlyMode() {
+    return super.formReadOnlyMode;
+  }
 
   constructor(
     protected injector: Injector,
     public crudItemService: CrudItemSingleService<CrudItem>
   ) {
     super(injector, crudItemService);
-  }
-
-  ngOnInit(): void {
-    super.ngOnInit();
-    this.initialFormReadOnlyMode = this.formReadOnlyMode;
   }
 
   protected setPermissions(): void {
@@ -42,6 +45,23 @@ export class CrudItemReadComponent<CrudItem extends BaseDto>
       this.formReadOnlyMode === FormReadOnlyMode.clickToEdit &&
       readOnly === false
     ) {
+      this.router.navigate(['../edit'], {
+        relativeTo: this.activatedRoute,
+      });
+    }
+  }
+
+  protected onFormReadOnlySet(value: FormReadOnlyMode): void {
+    if (this.canEdit === undefined) {
+      return;
+    }
+
+    if (value === FormReadOnlyMode.off) {
+      if (!this.canEdit) {
+        this.formReadOnlyMode = FormReadOnlyMode.on;
+        return;
+      }
+
       this.router.navigate(['../edit'], {
         relativeTo: this.activatedRoute,
       });

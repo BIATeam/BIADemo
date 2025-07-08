@@ -18,7 +18,6 @@ namespace TheBIADevCompany.BIADemo.Application.Site
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
     using BIA.Net.Core.Domain.User.Specifications;
-    using TheBIADevCompany.BIADemo.Application.Bia.User;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;

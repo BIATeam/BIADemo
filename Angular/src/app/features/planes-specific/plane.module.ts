@@ -1,15 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-// import { ReducerManager, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { AirportOptionModule } from 'src/app/domains/airport-option/airport-option.module';
 import { PlaneTypeOptionModule } from 'src/app/domains/plane-type-option/plane-type-option.module';
 import { DynamicLayoutComponent } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
-
 import { Permission } from 'src/app/shared/permission';
-
 import { planeCRUDConfiguration } from './plane.constants';
 import { FeaturePlanesStore } from './store/plane.state';
 import { PlanesEffects } from './store/planes-effects';
