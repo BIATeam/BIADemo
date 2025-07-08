@@ -30,7 +30,12 @@ namespace BIA.Net.Core.Application.Archive
     public abstract class ArchiveServiceBase<TEntity, TKey> : IArchiveService
         where TEntity : class, IEntityArchivable, IEntity<TKey>
     {
-        private readonly JsonSerializerSettings jsonSerializerSettings;
+        /// <summary>
+        /// The JSON serializer settings.
+        /// </summary>
+#pragma warning disable SA1401 // Fields should be private
+        protected readonly JsonSerializerSettings jsonSerializerSettings;
+#pragma warning restore SA1401 // Fields should be private
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ArchiveServiceBase{TEntity, TKey}"/> class.
