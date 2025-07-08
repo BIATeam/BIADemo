@@ -57,7 +57,7 @@ export class FormatValuePipe implements PipeTransform {
       }
       try {
         return this.datePipe.transform(value, col.displayFormat.autoFormatDate);
-      } catch (error) {
+      } catch {
         return this.translateService.instant('bia.errorDateFormat');
       }
     }
