@@ -62,7 +62,7 @@
             "sourceMap": true,
             "optimization": false,
             "namedChunks": true,
-            "serviceWorker": "ngsw-config.json",
+            "serviceWorker": false,
             "allowedCommonJsDependencies": ["keycloak-js"],
             "browser": "src/main.ts"
           },
