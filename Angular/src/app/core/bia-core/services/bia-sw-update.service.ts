@@ -25,13 +25,13 @@ export class BiaSwUpdateService {
   }
 
   public async checkForUpdate() {
-    if (this.swUpdate?.isEnabled === true) {
+    if (await this.isWorkerRegistered()) {
       await this.swUpdate.checkForUpdate();
     }
   }
 
   public async activateUpdate() {
-    if (this.swUpdate?.isEnabled === true) {
+    if (await this.isWorkerRegistered()) {
       await this.swUpdate.activateUpdate();
     }
   }
@@ -45,5 +45,17 @@ export class BiaSwUpdateService {
         available: evt.latestVersion,
       }))
     );
+  }
+
+  protected async isWorkerRegistered(): Promise<boolean> {
+    if ('serviceWorker' in navigator) {
+      return await navigator.serviceWorker
+        .getRegistrations()
+        .then(registrations => {
+          return registrations.length > 0;
+        });
+    } else {
+      return false;
+    }
   }
 }
