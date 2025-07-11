@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<Version>5.0.1</Version>
+		<Version>5.0.2</Version>
 		<Description>Common classes for BIA.Net Core Framework</Description>
 		<Copyright>Copyright © BIA 2025</Copyright>
 		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
@@ -28,11 +28,6 @@
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.*" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<!--c references this one in a version that contains a vulnerability-->
-		<PackageReference Include="Microsoft.Identity.Client" Version="4.73.*" />
-		<PackageReference Include="Azure.Identity" Version="1.14.*" />
-	</ItemGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
 	</Target>

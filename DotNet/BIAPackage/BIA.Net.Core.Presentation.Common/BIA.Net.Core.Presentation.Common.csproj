@@ -4,7 +4,7 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<Copyright>Copyright © BIA 2025</Copyright>
 		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-		<Version>5.0.1</Version>
+		<Version>5.0.2</Version>
 		<PackageIcon>LogoBIA.png</PackageIcon>
 		<Authors>BIA Team</Authors>
 		<Company>BIA</Company>
@@ -20,7 +20,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Community.Microsoft.Extensions.Caching.PostgreSql" Version="[4.0.*,5.0.0)" />
+		<PackageReference Include="Community.Microsoft.Extensions.Caching.PostgreSql" Version="5.0.*" />
 		<PackageReference Include="Hangfire.PostgreSql" Version="1.20.*" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="[8.0.*,9.0.0)" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="[8.0.*,9.0.0)" />
@@ -30,14 +30,13 @@
 		<PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="[8.0.*,9.0.0)" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<!--installed here because one of the packages references this one in a version that contains a vulnerability-->
-		<PackageReference Include="Microsoft.Identity.Client" Version="4.73.*" />
-		<PackageReference Include="Npgsql" Version="[8.0.*,9.0.0)" />
-		<PackageReference Include="System.Drawing.Common" Version="[8.0.*,9.0.0)" />
-		<PackageReference Include="System.Formats.Asn1" Version="[8.0.*,9.0.0)" />
-		<PackageReference Include="Azure.Identity" Version="1.14.*" />
-	</ItemGroup>
+  <ItemGroup>
+    <!--installed here because one of the packages references this one in a version that contains a vulnerability-->
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.73.*" />
+    <PackageReference Include="System.Drawing.Common" Version="[8.0.*,9.0.0)" />
+    <PackageReference Include="System.Formats.Asn1" Version="[8.0.*,9.0.0)" />
+    <PackageReference Include="Azure.Identity" Version="1.14.*" />
+  </ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\BIA.Net.Core.Domain.Dto\BIA.Net.Core.Domain.Dto.csproj" />
