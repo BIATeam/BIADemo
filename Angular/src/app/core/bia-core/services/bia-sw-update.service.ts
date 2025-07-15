@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
 import { filter, map } from 'rxjs/operators';
+import { allEnvironments } from 'src/environments/all-environments';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +17,10 @@ export class BiaSwUpdateService {
   }
 
   public init() {
-    if (this.swUpdate?.isEnabled === true) {
+    if (
+      this.swUpdate?.isEnabled === true &&
+      allEnvironments.enableWorkerService === true
+    ) {
       const updatesAvailable$ = this.getUpdatesAvailable();
       updatesAvailable$.subscribe(async () => {
         this._newVersionAvailable = true;
@@ -25,13 +29,19 @@ export class BiaSwUpdateService {
   }
 
   public async checkForUpdate() {
-    if (this.swUpdate?.isEnabled === true) {
+    if (
+      this.swUpdate?.isEnabled === true &&
+      allEnvironments.enableWorkerService === true
+    ) {
       await this.swUpdate.checkForUpdate();
     }
   }
 
   public async activateUpdate() {
-    if (this.swUpdate?.isEnabled === true) {
+    if (
+      this.swUpdate?.isEnabled === true &&
+      allEnvironments.enableWorkerService === true
+    ) {
       await this.swUpdate.activateUpdate();
     }
   }
