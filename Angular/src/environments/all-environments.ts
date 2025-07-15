@@ -4,6 +4,7 @@ export const allEnvironments = {
   appTitle: 'BIADemo',
   companyName: 'TheBIADevCompany',
   enableNotifications: true,
+  enableWorkerService: true,
   urlAuth: '/api/Auth',
   urlLog: '/api/logs',
   urlEnv: '/api/Environment',
@@ -11,7 +12,7 @@ export const allEnvironments = {
   urlErrorPage: './assets/bia/html/error.html',
   // Except BIADemo version: '0.0.0',
   // Begin BIADemo
-  version: '5.0.3',
+  version: '5.0.2',
   // End BIADemo
 
   teams: [

@@ -155,6 +155,7 @@ ReplaceProjectNameRecurse -oldName $oldName.ToLower() -newName $newName.ToLower(
 $a = Get-Content $newPath'\angular.json' -raw | ConvertFrom-Json
 $a.projects.BIATemplate.architect.build.options.serviceWorker = $false
 $a | ConvertTo-Json -depth 32 | Format-Json | set-content $newPath'\angular.json'
+(Get-Content -Path "src\environments\all-environments.ts") -replace 'enableWorkerService: true', 'enableWorkerService: false' | Set-Content -Path "src\environments\all-environments.ts"
 
 Write-Host "npm install"
 npm install

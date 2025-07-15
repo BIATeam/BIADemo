@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>5.0.1</Version>
+    <Version>5.0.2</Version>
     <Authors>BIA Team</Authors>
     <Company>BIA</Company>
     <Description>Dto for BIA.Net Core Framework</Description>
