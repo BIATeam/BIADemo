@@ -67,7 +67,7 @@
 	  <Compile Remove="**\UserModelBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="BIA.Net.Core.Test" Version="5.0.1" />
+    <PackageReference Include="BIA.Net.Core.Test" Version="5.0.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.*" />
     <PackageReference Include="Moq" Version="4.20.*" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.9.*" />

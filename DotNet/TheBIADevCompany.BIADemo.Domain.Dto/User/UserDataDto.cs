@@ -5,7 +5,6 @@
 namespace TheBIADevCompany.BIADemo.Domain.Dto.User
 {
     using BIA.Net.Core.Domain.Dto.User;
-    using Microsoft.Identity.Client;
     using Newtonsoft.Json;
 
     /// <summary>
