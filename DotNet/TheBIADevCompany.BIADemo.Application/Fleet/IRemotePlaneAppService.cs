@@ -18,5 +18,11 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
         /// <param name="id">The identifier.</param>
         /// <returns>Return true if plane exist.</returns>
         Task<bool> CheckExistAsync(int id);
+
+        /// <summary>
+        /// Creates a Plane.
+        /// </summary>
+        /// <returns>Return true if plane created.</returns>
+        Task<bool> CreateAsync();
     }
 }

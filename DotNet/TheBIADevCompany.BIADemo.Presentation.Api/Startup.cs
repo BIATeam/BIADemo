@@ -62,6 +62,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
 
             services.AddCors();
             services.AddResponseCompression();
+            services.AddRequestDecompression();
 
             services.AddHsts(options =>
             {
@@ -121,6 +122,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             }
 
             app.UseResponseCompression();
+            app.UseRequestDecompression();
 
             app.UseRouting();
 
