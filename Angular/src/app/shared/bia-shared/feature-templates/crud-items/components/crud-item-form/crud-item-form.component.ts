@@ -13,7 +13,6 @@ import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-ta
 import { BiaFieldConfig } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { BiaFormLayoutConfig } from 'src/app/shared/bia-shared/model/bia-form-layout-config';
 import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
-import { BiaFormComponent as BiaFormComponent_1 } from '../../../../components/form/bia-form/bia-form.component';
 import { FormReadOnlyMode } from '../../model/crud-config';
 
 @Component({
@@ -21,7 +20,7 @@ import { FormReadOnlyMode } from '../../model/crud-config';
   templateUrl: './crud-item-form.component.html',
   styleUrls: ['./crud-item-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
-  imports: [BiaFormComponent_1, BiaFormComponent],
+  imports: [BiaFormComponent],
 })
 export class CrudItemFormComponent<CrudItem extends BaseDto> {
   @Input() crudItem?: CrudItem;
