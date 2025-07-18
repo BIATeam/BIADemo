@@ -5,6 +5,7 @@
 namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
 {
     using System;
+    using System.Net;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.Keycloak;
@@ -26,7 +27,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
         /// </returns>
         public static async Task<string> GetBearerTokenAsync(
            Keycloak keycloak,
-           Func<string, TokenRequestDto, bool, Task<(TokenResponseDto Result, bool IsSuccessStatusCode, string ReasonPhrase)>> postAsync,
+           Func<string, TokenRequestDto, bool, Task<(TokenResponseDto Result, bool IsSuccessStatusCode, string ReasonPhrase, HttpStatusCode StatusCode)>> postAsync,
            CredentialSource credentialSource = null)
         {
             string token = null;

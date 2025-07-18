@@ -10,6 +10,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
+    using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Net.Mime;
@@ -126,7 +127,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <returns>
         /// Result, IsSuccessStatusCode, ReasonPhrase.
         /// </returns>
-        protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase)> GetAsync<T>(string url, double cacheDurationInMinute = default)
+        protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase, HttpStatusCode StatusCode)> GetAsync<T>(string url, double cacheDurationInMinute = default)
         {
             return await this.SendAsync<T>(url: url, httpMethod: HttpMethod.Get, retry: false, cacheDurationInMinute: cacheDurationInMinute);
         }
@@ -194,7 +195,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <typeparam name="T">The result type.</typeparam>
         /// <param name="url">The URL.</param>
         /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
-        protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase)> DeleteAsync<T>(string url)
+        protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase, HttpStatusCode StatusCode)> DeleteAsync<T>(string url)
         {
             return await this.SendAsync<T>(url: url, httpMethod: HttpMethod.Delete, retry: false);
         }
@@ -208,7 +209,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="body">The body.</param>
         /// <param name="isFormUrlEncoded">if set to <c>true</c> [is form URL encoded].</param>
         /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
-        protected virtual async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase)> PutAsync<TResult, TBody>(string url, TBody body, bool isFormUrlEncoded = false)
+        protected virtual async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase, HttpStatusCode StatusCode)> PutAsync<TResult, TBody>(string url, TBody body, bool isFormUrlEncoded = false)
         {
             return await this.SendAsync<TResult, TBody>(url: url, body: body, httpMethod: HttpMethod.Put, isFormUrlEncoded: isFormUrlEncoded, retry: false);
         }
@@ -221,7 +222,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="httpContent">Content of the HTTP.</param>
         /// <param name="isFormUrlEncoded">if set to <c>true</c> [is form URL encoded].</param>
         /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
-        protected virtual async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase)> PutAsync<TResult>(string url, HttpContent httpContent, bool isFormUrlEncoded = false)
+        protected virtual async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase, HttpStatusCode StatusCode)> PutAsync<TResult>(string url, HttpContent httpContent, bool isFormUrlEncoded = false)
         {
             return await this.SendAsync<TResult, object>(url: url, httpContent: httpContent, httpMethod: HttpMethod.Put, retry: false);
         }
@@ -235,7 +236,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="body">The body.</param>
         /// <param name="isFormUrlEncoded">if set to <c>true</c> [is form URL encoded].</param>
         /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
-        protected virtual async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase)> PostAsync<TResult, TBody>(string url, TBody body, bool isFormUrlEncoded = false)
+        protected virtual async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase, HttpStatusCode StatusCode)> PostAsync<TResult, TBody>(string url, TBody body, bool isFormUrlEncoded = false)
         {
             return await this.SendAsync<TResult, TBody>(url: url, body: body, httpMethod: HttpMethod.Post, isFormUrlEncoded: isFormUrlEncoded, retry: false);
         }
@@ -248,7 +249,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="httpContent">Content of the HTTP.</param>
         /// <param name="isFormUrlEncoded">if set to <c>true</c> [is form URL encoded].</param>
         /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
-        protected virtual async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase)> PostAsync<TResult>(string url, HttpContent httpContent, bool isFormUrlEncoded = false)
+        protected virtual async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase, HttpStatusCode StatusCode)> PostAsync<TResult>(string url, HttpContent httpContent, bool isFormUrlEncoded = false)
         {
             return await this.SendAsync<TResult, object>(url: url, httpContent: httpContent, httpMethod: HttpMethod.Post, retry: false);
         }
@@ -372,7 +373,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <typeparam name="T">The result type.</typeparam>
         /// <param name="request">The request.</param>
         /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
-        protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase)> SendAsync<T>(HttpRequestMessage request)
+        protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase, HttpStatusCode StatusCode)> SendAsync<T>(HttpRequestMessage request)
         {
             return await this.SendAsync<T>(request: request, retry: false);
         }
@@ -389,7 +390,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <returns>
         /// Result, IsSuccessStatusCode, ReasonPhrase.
         /// </returns>
-        protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase)> SendAsync<T>(
+        protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase, HttpStatusCode StatusCode)> SendAsync<T>(
             string url = default,
             HttpMethod httpMethod = default,
             HttpRequestMessage request = default,
@@ -477,16 +478,16 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
                         if (typeof(T) == typeof(string))
                         {
-                            return ((T)(object)res, response.IsSuccessStatusCode, default(string));
+                            return ((T)(object)res, response.IsSuccessStatusCode, default(string), response.StatusCode);
                         }
 
                         T result = JsonConvert.DeserializeObject<T>(res);
-                        return (result, response.IsSuccessStatusCode, default(string));
+                        return (result, response.IsSuccessStatusCode, default(string), response.StatusCode);
                     }
                     else
                     {
                         this.Logger.LogWarning("Expected JSON but got '{ContentType}'. Returning default value.", contentType);
-                        return (default(T), response.IsSuccessStatusCode, "Response is not JSON.");
+                        return (default(T), response.IsSuccessStatusCode, "Response is not JSON.", response.StatusCode);
                     }
                 }
                 else
@@ -500,11 +501,11 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
                     string message = $"Url:{url} ReasonPhrase:{response.ReasonPhrase}";
                     this.Logger.LogError(message);
-                    return (default(T), response.IsSuccessStatusCode, response.ReasonPhrase);
+                    return (default(T), response.IsSuccessStatusCode, response.ReasonPhrase, response.StatusCode);
                 }
             }
 
-            return (default(T), default(bool), default(string));
+            return (default(T), default(bool), default(string), default(HttpStatusCode));
         }
 
         /// <summary>
@@ -519,7 +520,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="isFormUrlEncoded">specify if form url is encoded.</param>
         /// <param name="retry">if true it is a retry operation.</param>
         /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
-        protected virtual async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase)> SendAsync<TResult, TBody>(
+        protected virtual async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase, HttpStatusCode StatusCode)> SendAsync<TResult, TBody>(
             string url,
             HttpMethod httpMethod,
             TBody body = default,
@@ -572,7 +573,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     string res = await response.Content.ReadAsStringAsync();
                     TResult result = JsonConvert.DeserializeObject<TResult>(res);
                     httpContent?.Dispose();
-                    return (result, response.IsSuccessStatusCode, default(string));
+                    return (result, response.IsSuccessStatusCode, default(string), response.StatusCode);
                 }
                 else
                 {
@@ -586,11 +587,11 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     string errorMessage = $"Url:{url} ReasonPhrase:{response.ReasonPhrase}";
                     this.Logger.LogError(errorMessage);
                     httpContent?.Dispose();
-                    return (default(TResult), response.IsSuccessStatusCode, response.ReasonPhrase);
+                    return (default(TResult), response.IsSuccessStatusCode, response.ReasonPhrase, response.StatusCode);
                 }
             }
 
-            return (default(TResult), default(bool), default(string));
+            return (default(TResult), default(bool), default(string), default(HttpStatusCode));
         }
 
         /// <summary>
