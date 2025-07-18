@@ -5,5 +5,17 @@
   "lib": {
     "entryFile": "src/public-api.ts"
   },
-  "assets": [{ "input": "scss", "glob": "**/*.scss", "output": "styles" }]
+  "assets": [
+    { "input": "scss", "glob": "**/*.scss", "output": "styles" },
+    {
+      "input": "shared/components/table",
+      "glob": "**/*.html",
+      "output": "templates/table"
+    },
+    {
+      "input": "shared/feature-templates",
+      "glob": "**/*.html",
+      "output": "templates/feature-templates"
+    }
+  ]
 }
