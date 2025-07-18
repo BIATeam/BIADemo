@@ -180,6 +180,45 @@
           "options": {}
         }
       }
+    },
+    "biang": {
+      "projectType": "library",
+      "root": "packages/biang",
+      "sourceRoot": "packages/biang/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "packages/biang/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "packages/biang/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "packages/biang/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "packages/biang/tsconfig.spec.json",
+            "polyfills": ["zone.js", "zone.js/testing"]
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "packages/biang/**/*.ts",
+              "packages/biang/**/*.html"
+            ]
+          }
+        }
+      }
     }
   },
   "cli": {

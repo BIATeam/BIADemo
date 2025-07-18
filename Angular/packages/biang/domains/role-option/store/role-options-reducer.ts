@@ -1,0 +1,38 @@
+import { EntityState, createEntityAdapter } from '@ngrx/entity';
+import { createReducer, on } from '@ngrx/store';
+import { OptionDto } from 'biang/models';
+import { DomainRoleOptionsActions } from './role-options-actions';
+
+// This adapter will allow is to manipulate roles (mostly CRUD operations)
+export const roleOptionsAdapter = createEntityAdapter<OptionDto>({
+  selectId: (role: OptionDto) => role.id,
+  sortComparer: false,
+});
+
+// -----------------------------------------
+// The shape of EntityState
+// ------------------------------------------
+// interface EntityState<Role> {
+//   ids: string[] | number[];
+//   entities: { [id: string]: Role };
+// }
+// -----------------------------------------
+// -> ids arrays allow us to sort data easily
+// -> entities map allows us to access the data quickly without iterating/filtering though an array of objects
+
+export type RoleOptionState = EntityState<OptionDto>;
+
+export const INIT_ROLEOPTION_STATE: RoleOptionState =
+  roleOptionsAdapter.getInitialState({
+    // additional props default values here
+  });
+
+export const roleOptionReducers = createReducer<RoleOptionState>(
+  INIT_ROLEOPTION_STATE,
+  on(DomainRoleOptionsActions.loadAllSuccess, (state, { roles }) =>
+    roleOptionsAdapter.setAll(roles, state)
+  )
+);
+
+export const getRoleOptionById = (id: number) => (state: RoleOptionState) =>
+  state.entities[id];
