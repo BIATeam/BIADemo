@@ -77,10 +77,8 @@ export class BiaAppInitService implements OnDestroy {
       enableBearerInterceptor: false,
       initOptions: {
         onLoad: 'check-sso',
-        // checkLoginIframe: false,
+        checkLoginIframe: false,
         enableLogging: isDevMode(),
-        silentCheckSsoRedirectUri:
-          window.location.origin + '/assets/bia/html/silent-check-sso.html',
         // token: token ?? undefined,
         // refreshToken: refreshToken ?? undefined,
         // idToken: idToken ?? undefined,
@@ -122,6 +120,7 @@ export class BiaAppInitService implements OnDestroy {
             keycloakEvent?.type === KeycloakEventTypeLegacy.OnTokenExpired
           ) {
             if (this.keycloakService.isLoggedIn() !== true) {
+              // Force la connexion immédiatement avec idpHint pour auth automatique
               this.keycloakService.login({
                 redirectUri: window.location.href,
                 idpHint:
