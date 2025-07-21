@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { BiaMessageService } from '../../services/bia-message.service';
 import { TeamDas } from '../services/team-das.service';
-import { DomainTeamsActions } from './teams-actions';
+import { BiaTeamsActions } from './teams-actions';
 /**
  * Effects file is for isolating and managing side effects of the application in one place
  * Http requests, Sockets, Routing, LocalStorage, etc
@@ -14,16 +14,16 @@ import { DomainTeamsActions } from './teams-actions';
 export class TeamsEffects {
   setDefaultTeam$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(DomainTeamsActions.setDefaultTeam),
+      ofType(BiaTeamsActions.setDefaultTeam),
       switchMap(data =>
         this.teamDas.setDefaultTeam(data.teamTypeId, data.teamId).pipe(
           switchMap(() => {
             this.biaMessageService.showUpdateSuccess();
-            return [DomainTeamsActions.setDefaultTeamSuccess(data)];
+            return [BiaTeamsActions.setDefaultTeamSuccess(data)];
           }),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
-            return of(DomainTeamsActions.failure({ error: err }));
+            return of(BiaTeamsActions.failure({ error: err }));
           })
         )
       )
@@ -31,16 +31,16 @@ export class TeamsEffects {
   );
   resetDefaultTeam$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(DomainTeamsActions.resetDefaultTeam),
+      ofType(BiaTeamsActions.resetDefaultTeam),
       switchMap(data =>
         this.teamDas.resetDefaultTeam(data.teamTypeId).pipe(
           switchMap(() => {
             this.biaMessageService.showUpdateSuccess();
-            return [DomainTeamsActions.resetDefaultTeamSuccess(data)];
+            return [BiaTeamsActions.resetDefaultTeamSuccess(data)];
           }),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
-            return of(DomainTeamsActions.failure({ error: err }));
+            return of(BiaTeamsActions.failure({ error: err }));
           })
         )
       )
@@ -48,16 +48,16 @@ export class TeamsEffects {
   );
   setDefaultRoles$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(DomainTeamsActions.setDefaultRoles),
+      ofType(BiaTeamsActions.setDefaultRoles),
       switchMap(data =>
         this.teamDas.setDefaultRoles(data.teamId, data.roleIds).pipe(
           switchMap(() => {
             this.biaMessageService.showUpdateSuccess();
-            return [DomainTeamsActions.setDefaultRolesSuccess(data)];
+            return [BiaTeamsActions.setDefaultRolesSuccess(data)];
           }),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
-            return of(DomainTeamsActions.failure({ error: err }));
+            return of(BiaTeamsActions.failure({ error: err }));
           })
         )
       )
@@ -65,16 +65,16 @@ export class TeamsEffects {
   );
   resetDefaultRoles$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(DomainTeamsActions.resetDefaultRoles),
+      ofType(BiaTeamsActions.resetDefaultRoles),
       switchMap(data =>
         this.teamDas.resetDefaultRoles(data.teamId).pipe(
           switchMap(() => {
             this.biaMessageService.showUpdateSuccess();
-            return [DomainTeamsActions.resetDefaultRolesSuccess(data)];
+            return [BiaTeamsActions.resetDefaultRolesSuccess(data)];
           }),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
-            return of(DomainTeamsActions.failure({ error: err }));
+            return of(BiaTeamsActions.failure({ error: err }));
           })
         )
       )

@@ -5,7 +5,7 @@ import { BiaAppState } from 'biang/store';
 import { AuthService } from '../../services/auth.service';
 import { BiaMessageService } from '../../services/bia-message.service';
 import { BiaSignalRService } from '../../services/bia-signalr.service';
-import { DomainTeamsStore } from '../../team/store/team.state';
+import { BiaTeamsStore } from '../../team/store/team.state';
 import { Notification } from '../model/notification';
 import { DomainNotificationsActions } from '../store/notifications-actions';
 
@@ -37,7 +37,7 @@ export class NotificationSignalRService {
    * Note: this method has been created so that we have to call one method on this class, otherwise dependency injection is not working.
    */
   initialize() {
-    this.store.select(DomainTeamsStore.getAllTeams).subscribe(teams => {
+    this.store.select(BiaTeamsStore.getAllTeams).subscribe(teams => {
       this.myTeams = teams;
     });
 

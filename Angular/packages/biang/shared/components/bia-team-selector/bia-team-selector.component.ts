@@ -12,9 +12,9 @@ import { Store } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
   AuthService,
+  BiaTeamsStore,
   BiaTranslationService,
   DomainTeamsActions,
-  DomainTeamsStore,
 } from 'biang/core';
 import { AuthInfo, RoleDto, RoleMode, Team, TeamConfigDto } from 'biang/models';
 import { BiaAppState } from 'biang/store';
@@ -89,7 +89,7 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
             t.roleMode === RoleMode.MultiRoles
         ) !== undefined;
     this.teams$ = this.store.select(
-      DomainTeamsStore.getAllTeamsOfType(this.teamType.teamTypeId)
+      BiaTeamsStore.getAllTeamsOfType(this.teamType.teamTypeId)
     );
     this.sub.add(
       this.biaTranslationService.languageId$.subscribe(languageId => {

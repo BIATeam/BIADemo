@@ -1,6 +1,6 @@
 import { Injectable, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AuthService, BiaSignalRService, DomainTeamsStore } from 'biang/core';
+import { AuthService, BiaSignalRService, BiaTeamsStore } from 'biang/core';
 import { TargetedFeature, Team } from 'biang/models';
 import { CrudItemSignalRService } from 'biang/shared';
 import { BiaAppState } from 'biang/store';
@@ -46,7 +46,7 @@ export class NotificationsSignalRService extends CrudItemSignalRService<
    * Note: this method has been created so that we have to call one method on this class, otherwise dependency injection is not working.
    */
   initialize() {
-    this.store.select(DomainTeamsStore.getAllTeams).subscribe(teams => {
+    this.store.select(BiaTeamsStore.getAllTeams).subscribe(teams => {
       this.myTeams = teams;
     });
 

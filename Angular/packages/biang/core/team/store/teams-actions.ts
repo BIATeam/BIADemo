@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { Team } from 'biang/models';
 import { storeKey } from '../team.contants';
 
-export namespace DomainTeamsActions {
+export namespace BiaTeamsActions {
   export const loadAllSuccess = createAction(
     '[' + storeKey + '] Load all success',
     props<{ teams: Team[] }>()

@@ -7,7 +7,7 @@ import {
 import { storeKey } from '../team.contants';
 import * as fromTeams from './teams-reducer';
 
-export namespace DomainTeamsStore {
+export namespace BiaTeamsStore {
   export interface TeamsState {
     teams: fromTeams.TeamState;
   }

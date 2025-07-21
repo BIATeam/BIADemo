@@ -1,7 +1,7 @@
 import { EntityState, Update, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { RoleDto, Team } from 'biang/models';
-import { DomainTeamsActions } from './teams-actions';
+import { BiaTeamsActions } from './teams-actions';
 
 // This adapter will allow is to manipulate teams (mostly CRUD operations)
 export const teamsAdapter = createEntityAdapter<Team>({
@@ -28,28 +28,25 @@ export const INIT_TEAM_STATE: TeamState = teamsAdapter.getInitialState({
 
 export const teamReducers = createReducer<TeamState>(
   INIT_TEAM_STATE,
-  on(DomainTeamsActions.loadAllSuccess, (state, { teams }) =>
+  on(BiaTeamsActions.loadAllSuccess, (state, { teams }) =>
     teamsAdapter.setAll(teams, state)
   ),
-  on(
-    DomainTeamsActions.setDefaultTeamSuccess,
-    (state, { teamTypeId, teamId }) => {
-      const updates: Update<Team>[] = [];
-      for (const key in state.entities) {
-        const value = state.entities[key];
-        // Use `key` and `value`
-        if (value?.teamTypeId === teamTypeId) {
-          if (value.id === teamId) {
-            updates.push({ id: key, changes: { isDefault: true } });
-          } else if (value.isDefault) {
-            updates.push({ id: key, changes: { isDefault: false } });
-          }
+  on(BiaTeamsActions.setDefaultTeamSuccess, (state, { teamTypeId, teamId }) => {
+    const updates: Update<Team>[] = [];
+    for (const key in state.entities) {
+      const value = state.entities[key];
+      // Use `key` and `value`
+      if (value?.teamTypeId === teamTypeId) {
+        if (value.id === teamId) {
+          updates.push({ id: key, changes: { isDefault: true } });
+        } else if (value.isDefault) {
+          updates.push({ id: key, changes: { isDefault: false } });
         }
       }
-      return teamsAdapter.updateMany(updates, state);
     }
-  ),
-  on(DomainTeamsActions.resetDefaultTeamSuccess, (state, { teamTypeId }) => {
+    return teamsAdapter.updateMany(updates, state);
+  }),
+  on(BiaTeamsActions.resetDefaultTeamSuccess, (state, { teamTypeId }) => {
     const updates: Update<Team>[] = [];
     for (const key in state.entities) {
       const value = state.entities[key];
@@ -60,28 +57,25 @@ export const teamReducers = createReducer<TeamState>(
     }
     return teamsAdapter.updateMany(updates, state);
   }),
-  on(
-    DomainTeamsActions.setDefaultRolesSuccess,
-    (state, { teamId, roleIds }) => {
-      for (const key in state.entities) {
-        const value = state.entities[key];
-        // Use `key` and `value`
-        if (value?.id === teamId) {
-          const roles: RoleDto[] = value.roles.map(role => ({
-            ...role,
-            isDefault: roleIds.includes(role.id),
-          }));
+  on(BiaTeamsActions.setDefaultRolesSuccess, (state, { teamId, roleIds }) => {
+    for (const key in state.entities) {
+      const value = state.entities[key];
+      // Use `key` and `value`
+      if (value?.id === teamId) {
+        const roles: RoleDto[] = value.roles.map(role => ({
+          ...role,
+          isDefault: roleIds.includes(role.id),
+        }));
 
-          return teamsAdapter.updateOne(
-            { id: key, changes: { roles: roles } },
-            state
-          );
-        }
+        return teamsAdapter.updateOne(
+          { id: key, changes: { roles: roles } },
+          state
+        );
       }
-      return state;
     }
-  ),
-  on(DomainTeamsActions.resetDefaultRolesSuccess, (state, { teamId }) => {
+    return state;
+  }),
+  on(BiaTeamsActions.resetDefaultRolesSuccess, (state, { teamId }) => {
     const updates: Update<Team>[] = [];
     for (const key in state.entities) {
       const value = state.entities[key];

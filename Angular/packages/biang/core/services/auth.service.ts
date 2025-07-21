@@ -22,7 +22,7 @@ import {
   switchMap,
   take,
 } from 'rxjs/operators';
-import { DomainTeamsActions } from '../team/store/teams-actions';
+import { BiaTeamsActions } from '../team/store/teams-actions';
 import { AbstractDas } from './abstract-das.service';
 import { BiaEnvironmentService } from './bia-environment.service';
 import { BiaMessageService } from './bia-message.service';
@@ -371,7 +371,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
         this.authInfoSubject.next(authInfo);
 
         this.store.dispatch(
-          DomainTeamsActions.loadAllSuccess({
+          BiaTeamsActions.loadAllSuccess({
             teams: authInfo.additionalInfos.teams,
           })
         );
@@ -389,7 +389,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
         const authInfo: AuthInfo = <AuthInfo>{};
         this.authInfoSubject.next(authInfo);
         this.store.dispatch(
-          DomainTeamsActions.loadAllSuccess({
+          BiaTeamsActions.loadAllSuccess({
             teams: authInfo?.additionalInfos?.teams ?? [],
           })
         );

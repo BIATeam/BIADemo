@@ -6,7 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import {
   AuthService,
   BiaAppConstantsService,
-  DomainTeamsStore,
+  BiaTeamsStore,
   Permission,
   ViewType,
 } from 'biang/core';
@@ -163,7 +163,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
       this.useViewTeamWithTypeId === null
         ? -1
         : this.authService.getCurrentTeamId(this.useViewTeamWithTypeId);
-    this.teams$ = this.store.select(DomainTeamsStore.getAllTeams).pipe(
+    this.teams$ = this.store.select(BiaTeamsStore.getAllTeams).pipe(
       map(teams => teams.filter(team => currentTeamId === team.id)),
       tap(teams => {
         if (teams.length === 1) {
