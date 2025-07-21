@@ -12,9 +12,9 @@ import { Store } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
   AuthService,
+  BiaTeamsActions,
   BiaTeamsStore,
   BiaTranslationService,
-  DomainTeamsActions,
 } from 'biang/core';
 import { AuthInfo, RoleDto, RoleMode, Team, TeamConfigDto } from 'biang/models';
 import { BiaAppState } from 'biang/store';
@@ -133,7 +133,7 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
   onSetDefaultTeam() {
     if (this.currentTeam.id) {
       this.store.dispatch(
-        DomainTeamsActions.setDefaultTeam({
+        BiaTeamsActions.setDefaultTeam({
           teamTypeId: this.teamType.teamTypeId,
           teamId: this.currentTeam.id,
         })
@@ -143,7 +143,7 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
 
   onResetDefaultTeam() {
     this.store.dispatch(
-      DomainTeamsActions.resetDefaultTeam({
+      BiaTeamsActions.resetDefaultTeam({
         teamTypeId: this.teamType.teamTypeId,
       })
     );
@@ -191,7 +191,7 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
 
   onSetDefaultRoles() {
     this.store.dispatch(
-      DomainTeamsActions.setDefaultRoles({
+      BiaTeamsActions.setDefaultRoles({
         teamId: this.currentTeam.id,
         roleIds: this.currentRoles.map(r => r.id),
       })
@@ -200,7 +200,7 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
 
   onResetDefaultRoles() {
     this.store.dispatch(
-      DomainTeamsActions.resetDefaultRoles({
+      BiaTeamsActions.resetDefaultRoles({
         teamId: this.currentTeam.id,
       })
     );
