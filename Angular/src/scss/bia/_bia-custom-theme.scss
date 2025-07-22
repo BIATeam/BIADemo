@@ -120,35 +120,35 @@ bia-ultima-layout {
   &.env-dev {
     --environment-color: #{color-mix(
         in srgb,
-        var(--p-primary-800) 100%,
+        var(--p-surface-300) 100%,
         bia-variables.$biaBlue 100%
       )};
   }
   &.env-int {
     --environment-color: #{color-mix(
         in srgb,
-        var(--p-primary-800) 100%,
+        var(--p-surface-300) 100%,
         bia-variables.$biaGreen 100%
       )};
   }
   &.env-uat {
     --environment-color: #{color-mix(
         in srgb,
-        var(--p-primary-800) 100%,
+        var(--p-surface-300) 100%,
         bia-variables.$biaOrange 100%
       )};
   }
   &.env-pra {
     --environment-color: #{color-mix(
         in srgb,
-        var(--p-primary-800) 100%,
+        var(--p-surface-300) 100%,
         bia-variables.$biaRed 100%
       )};
   }
   &.env-ppd {
     --environment-color: #{color-mix(
         in srgb,
-        var(--p-primary-800) 100%,
+        var(--p-surface-300) 100%,
         bia-variables.$biaYellow 100%
       )};
   }
