@@ -180,6 +180,7 @@
           "options": {}
         }
       }
+      // Begin BIADemo
     },
     "biang": {
       "projectType": "library",
@@ -219,6 +220,7 @@
           }
         }
       }
+      // End BIADemo
     }
   },
   "cli": {

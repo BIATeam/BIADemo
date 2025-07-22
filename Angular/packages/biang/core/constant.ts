@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export const ROUTE_DATA_BREADCRUMB = 'breadcrumb';
 export const ROUTE_DATA_CAN_NAVIGATE = 'canNavigate';
 export const ROUTE_DATA_NO_MARGIN = 'noMargin';
