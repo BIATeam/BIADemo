@@ -100,4 +100,4 @@ export const ROUTES: Routes = [
     UserFromDirectoryModule,
   ],
 })
-export class UserModule {}
+export class BiaUserModule {}

@@ -30,4 +30,4 @@ const ROUTES: Routes = [
   imports: [RouterModule.forChild(ROUTES)],
   providers: [],
 })
-export class BackgroundTaskModule {}
+export class BiaBackgroundTaskModule {}

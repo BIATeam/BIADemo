@@ -102,4 +102,4 @@ const ROUTES: Routes = [
     TeamOptionModule,
   ],
 })
-export class NotificationModule {}
+export class BiaNotificationModule {}
