@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { BiaMessageService, BiaOnlineOfflineService } from 'biang/core';
 import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
-import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
 import { SiteOptionDas } from '../services/site-option-das.service';
 import { DomainSiteOptionsActions } from './site-options-actions';
 /**

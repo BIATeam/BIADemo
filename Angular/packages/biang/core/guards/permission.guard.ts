@@ -5,8 +5,8 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 //import { allEnvironments } from 'src/environments/all-environments';
-import { BiaEnvironmentService } from '../public-api';
 import { AuthService } from '../services/auth.service';
+import { BiaAppConstantsService } from '../services/bia-app-constants.service';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +24,7 @@ export class PermissionGuard {
         if (hasPermission !== true) {
           if (window.location.href === this.baseHref) {
             window.location.href =
-              BiaEnvironmentService.allEnvironments.urlErrorPage +
+              BiaAppConstantsService.allEnvironments.urlErrorPage +
               '?num=' +
               HttpStatusCode.Forbidden;
           } else {

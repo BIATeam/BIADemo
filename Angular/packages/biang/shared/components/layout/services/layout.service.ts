@@ -13,13 +13,14 @@ import {
   effect,
   signal,
 } from '@angular/core';
-import { BiaEnvironmentService, STORAGE_CULTURE_KEY } from 'biang/core';
+import { BiaAppConstantsService, STORAGE_CULTURE_KEY } from 'biang/core';
 import { AppConfig, BiaNavigation, ConfigDisplay } from 'biang/models';
 import { MenuItem } from 'primeng/api';
 import { BehaviorSubject, Subject, debounceTime } from 'rxjs';
 import { STORAGE_THEME_KEY } from './bia-theme.service';
 
-export const BIA_USER_CONFIG = `${BiaEnvironmentService.allEnvironments.companyName}.${BiaEnvironmentService.allEnvironments.appTitle}.bia-user-config`;
+export const BIA_USER_CONFIG = () =>
+  `${BiaAppConstantsService.allEnvironments.companyName}.${BiaAppConstantsService.allEnvironments.appTitle}.bia-user-config`;
 
 export const BIA_LAYOUT_DATA = new InjectionToken<any>('BiaLayoutData');
 
@@ -127,7 +128,7 @@ export class BiaLayoutService {
       const config = this.config();
       this.changeScale(config.scale);
       this.onConfigUpdate();
-      localStorage.setItem(BIA_USER_CONFIG, JSON.stringify(config));
+      localStorage.setItem(BIA_USER_CONFIG(), JSON.stringify(config));
     });
     this.checkSmallScreen();
   }
@@ -271,7 +272,7 @@ export class BiaLayoutService {
     config: Partial<AppConfig>,
     overwriteLocalStorageConfig = false
   ) {
-    const lValue = localStorage.getItem(BIA_USER_CONFIG);
+    const lValue = localStorage.getItem(BIA_USER_CONFIG());
     let valueToUpdate: Partial<AppConfig>;
     if (!overwriteLocalStorageConfig && lValue) {
       valueToUpdate = JSON.parse(lValue);
@@ -436,11 +437,11 @@ export class BiaLayoutService {
   clearSession() {
     const culture = localStorage.getItem(STORAGE_CULTURE_KEY);
     const theme = localStorage.getItem(STORAGE_THEME_KEY);
-    const config = localStorage.getItem(BIA_USER_CONFIG);
+    const config = localStorage.getItem(BIA_USER_CONFIG());
     localStorage.clear();
     if (culture !== null) localStorage.setItem(STORAGE_CULTURE_KEY, culture);
     if (theme !== null) localStorage.setItem(STORAGE_THEME_KEY, theme);
-    if (config !== null) localStorage.setItem(BIA_USER_CONFIG, config);
+    if (config !== null) localStorage.setItem(BIA_USER_CONFIG(), config);
     sessionStorage.clear();
   }
 

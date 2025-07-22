@@ -1,6 +1,6 @@
-import { EntityState, createEntityAdapter } from '@ngrx/entity';
+﻿import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+import { OptionDto } from 'biang/models';
 import { DomainPlaneTypeOptionsActions } from './plane-type-options-actions';
 
 // This adapter will allow is to manipulate planeTypes (mostly CRUD operations)

@@ -15,7 +15,7 @@ import { CoreAppSettingsActions } from '../app-settings/store/app-settings-actio
 import { getAppSettings } from '../app-settings/store/app-settings.state';
 import { NotificationSignalRService } from '../notification/services/notification-signalr.service';
 import { AuthService } from './auth.service';
-import { BiaEnvironmentService } from './bia-environment.service';
+import { BiaAppConstantsService } from './bia-app-constants.service';
 
 // const STORAGE_KEYCLOAK_TOKEN = 'KeyCloak_Token';
 // const STORAGE_KEYCLOAK_REFRESHTOKEN = 'KeyCloak_RefreshToken';
@@ -51,7 +51,7 @@ export class BiaAppInitService implements OnDestroy {
         )
         .subscribe(() => {
           if (
-            BiaEnvironmentService.allEnvironments.enableNotifications === true
+            BiaAppConstantsService.allEnvironments.enableNotifications === true
           ) {
             this.notificationSignalRService.initialize();
           }
@@ -168,7 +168,7 @@ export class BiaAppInitService implements OnDestroy {
   protected catchError(error: any) {
     if (!isDevMode()) {
       window.location.href =
-        BiaEnvironmentService.allEnvironments.urlErrorPage +
+        BiaAppConstantsService.allEnvironments.urlErrorPage +
         '?num=' +
         error.status;
     }
@@ -180,7 +180,7 @@ export class BiaAppInitService implements OnDestroy {
       this.sub.unsubscribe();
     }
 
-    if (BiaEnvironmentService.allEnvironments.enableNotifications === true) {
+    if (BiaAppConstantsService.allEnvironments.enableNotifications === true) {
       this.notificationSignalRService.destroy();
     }
   }

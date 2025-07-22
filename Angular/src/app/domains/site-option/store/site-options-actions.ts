@@ -1,5 +1,5 @@
-import { createAction, props } from '@ngrx/store';
-import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+﻿import { createAction, props } from '@ngrx/store';
+import { OptionDto } from 'biang/models';
 import { storeKey } from '../site-option.contants';
 
 export namespace DomainSiteOptionsActions {

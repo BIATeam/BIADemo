@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { BiaEnvironmentService, BiaTranslationService } from 'biang/core';
+import { BiaAppConstantsService, BiaTranslationService } from 'biang/core';
 import { BiaNavigation } from 'biang/models';
 import { MenuItem } from 'primeng/api';
 import { Subscription } from 'rxjs';
@@ -50,7 +50,7 @@ export class BiaUltimaSidebarComponent implements OnDestroy {
   @ViewChild('menuContainer') menuContainer!: ElementRef;
   navigations: BiaNavigation[];
   navMenuItems: MenuItem[];
-  urlAppIcon = BiaEnvironmentService.allEnvironments.urlAppIcon;
+  urlAppIcon = BiaAppConstantsService.allEnvironments.urlAppIcon;
 
   protected sub = new Subscription();
 

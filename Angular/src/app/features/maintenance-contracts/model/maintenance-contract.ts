@@ -1,13 +1,13 @@
-import { Validators } from '@angular/forms';
+﻿import { Validators } from '@angular/forms';
 import {
+  ArchivableDto,
+  BaseDto,
   BiaFieldConfig,
   BiaFieldsConfig,
+  FixableDto,
+  OptionDto,
   PropType,
-} from 'src/app/shared/bia-shared/model/bia-field-config';
-import { ArchivableDto } from 'src/app/shared/bia-shared/model/dto/archivable-dto';
-import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
-import { FixableDto } from 'src/app/shared/bia-shared/model/dto/fixable-dto';
-import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+} from 'biang/models';
 
 // TODO after creation of CRUD MaintenanceContract : adapt the model
 export interface MaintenanceContract

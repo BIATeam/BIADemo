@@ -1,6 +1,8 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { BiaMessageService, biaSuccessWaitRefreshSignalR } from 'biang/core';
+import { DataResult } from 'biang/models';
 import { of } from 'rxjs';
 import {
   catchError,
@@ -9,9 +11,6 @@ import {
   switchMap,
   withLatestFrom,
 } from 'rxjs/operators';
-import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
-import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
-import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
 import { engineCRUDConfiguration } from '../engine.constants';
 import { Engine } from '../model/engine';

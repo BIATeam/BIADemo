@@ -24,7 +24,7 @@ import {
 } from 'rxjs/operators';
 import { BiaTeamsActions } from '../team/store/teams-actions';
 import { AbstractDas } from './abstract-das.service';
-import { BiaEnvironmentService } from './bia-environment.service';
+import { BiaAppConstantsService } from './bia-app-constants.service';
 import { BiaMessageService } from './bia-message.service';
 import { BiaOnlineOfflineService } from './bia-online-offline.service';
 import { BiaSwUpdateService } from './bia-sw-update.service';
@@ -192,7 +192,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
         tl.teamId = +tl.teamId;
         tl.currentRoleIds = tl.currentRoleIds.map(roleId => +roleId);
       });
-      loginParam.teamsConfig = BiaEnvironmentService.allEnvironments.teams;
+      loginParam.teamsConfig = BiaAppConstantsService.allEnvironments.teams;
       loginParam.lightToken = false;
       loginParam.fineGrainedPermission = true;
       loginParam.additionalInfos = true;
@@ -205,7 +205,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       lightToken: false,
       fineGrainedPermission: true,
       additionalInfos: true,
-      teamsConfig: BiaEnvironmentService.allEnvironments.teams,
+      teamsConfig: BiaAppConstantsService.allEnvironments.teams,
       isFirstLogin: true,
     };
   }
@@ -380,7 +380,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       catchError(err => {
         if (err.status === HttpStatusCode.Unauthorized) {
           window.location.href =
-            BiaEnvironmentService.allEnvironments.urlErrorPage +
+            BiaAppConstantsService.allEnvironments.urlErrorPage +
             '?num=' +
             err.status;
         }
@@ -439,7 +439,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
         sessionStorage.removeItem(STORAGE_RELOADED_KEY);
         const httpCodeUpgradeRequired = 426;
         window.location.href =
-          BiaEnvironmentService.allEnvironments.urlErrorPage +
+          BiaAppConstantsService.allEnvironments.urlErrorPage +
           '?num=' +
           httpCodeUpgradeRequired;
       } else {
@@ -468,7 +468,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   protected checkFrontEndVersion(): Observable<boolean> {
     return this.getFrontEndVersion().pipe(
       map((version: string) => {
-        return version === BiaEnvironmentService.allEnvironments.version;
+        return version === BiaAppConstantsService.allEnvironments.version;
       }),
       catchError(err => {
         if (BiaOnlineOfflineService.isServerAvailable(err) !== true) {

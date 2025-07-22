@@ -1,11 +1,10 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+﻿import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { BiaLayoutService, SpinnerComponent } from 'biang/shared';
 import { Observable, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/services/layout.service';
-import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { AppState } from 'src/app/store/state';
 import { Plane } from '../../model/plane';
 import { PlaneService } from '../../services/plane.service';

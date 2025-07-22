@@ -1,21 +1,19 @@
-import { Validators } from '@angular/forms';
+﻿import { Validators } from '@angular/forms';
 import {
+  BaseDto,
   BiaFieldConfig,
   BiaFieldNumberFormat,
   BiaFieldsConfig,
+  BiaFormLayoutConfig,
+  FixableDto,
   NumberMode,
+  OptionDto,
   PrimeNGFiltering,
   PropType,
-} from 'src/app/shared/bia-shared/model/bia-field-config';
-import { BiaFormLayoutConfig } from 'src/app/shared/bia-shared/model/bia-form-layout-config';
-import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
-import { FixableDto } from 'src/app/shared/bia-shared/model/dto/fixable-dto';
-import {
   TeamDto,
   teamFieldsConfigurationColumns,
-} from 'src/app/shared/bia-shared/model/dto/team-dto';
-import { VersionedDto } from 'src/app/shared/bia-shared/model/dto/versioned-dto';
-import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+  VersionedDto,
+} from 'biang/models';
 
 // TODO after creation of CRUD Team MaintenanceTeam : adapt the model
 export interface MaintenanceTeam

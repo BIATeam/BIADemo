@@ -1,4 +1,4 @@
-import {
+﻿import {
   ErrorHandler,
   LOCALE_ID,
   enableProdMode,
@@ -17,20 +17,21 @@ import {
   TranslateModule,
   TranslateStore,
 } from '@ngx-translate/core';
+import {
+  BiaEnvironmentService,
+  BiaErrorHandler,
+  BiaNgxLoggerServerService,
+  BiaSignalRService,
+  BiaTranslateHttpLoader,
+  getCurrentCulture,
+} from 'biang/core';
+import { ViewsEffects, ViewsStore } from 'biang/shared';
 import { LoggerModule, TOKEN_LOGGER_SERVER_SERVICE } from 'ngx-logger';
 import { AppRoutingModule } from './app/app-routing.module';
 import { AppComponent } from './app/app.component';
 import { buildSpecificModules } from './app/build-specifics/bia-build-specifics';
-import { BiaEnvironmentService } from './app/core/bia-core/services/bia-environment.service';
-import { BiaNgxLoggerServerService } from './app/core/bia-core/services/bia-ngx-logger-server.service';
-import { BiaSignalRService } from './app/core/bia-core/services/bia-signalr.service';
-import { BiaTranslateHttpLoader } from './app/core/bia-core/services/bia-translate-http-loader';
-import { getCurrentCulture } from './app/core/bia-core/services/bia-translation.service';
-import { BiaErrorHandler } from './app/core/bia-core/shared/bia-error-handler';
 import { CoreModule } from './app/core/core.module';
 import { HomeModule } from './app/features/home/home.module';
-import { reducers } from './app/shared/bia-shared/features/view/store/view.state';
-import { ViewsEffects } from './app/shared/bia-shared/features/view/store/views-effects';
 import { appConfig } from './app/shared/theme';
 import { ROOT_REDUCERS, metaReducers } from './app/store/state';
 import { environment } from './environments/environment';
@@ -77,7 +78,7 @@ bootstrapApplication(AppComponent, {
         // or after 30 seconds (whichever comes first).
         registrationStrategy: 'registerWhenStable:30000',
       }),
-      StoreModule.forFeature('views', reducers),
+      StoreModule.forFeature('views', ViewsStore.reducers),
       EffectsModule.forFeature([ViewsEffects])
     ),
     DatePipe,

@@ -1,10 +1,9 @@
-import { Injectable, Injector } from '@angular/core';
+﻿import { Injectable, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { AuthService } from 'biang/core';
+import { CrudItemService, CrudItemSignalRService } from 'biang/shared';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { map, Observable } from 'rxjs';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
-import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
 import { maintenanceContractCRUDConfiguration } from '../maintenance-contract.constants';

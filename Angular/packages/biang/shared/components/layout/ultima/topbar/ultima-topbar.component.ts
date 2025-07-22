@@ -25,7 +25,7 @@ import { Store } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
   AuthService,
-  BiaEnvironmentService,
+  BiaAppConstantsService,
   BiaMessageService,
   BiaTranslationService,
   DomainNotificationsActions,
@@ -88,7 +88,7 @@ export class BiaUltimaTopbarComponent
   navigations: BiaNavigation[];
   fullscreenMode = false;
   isIE = this.platform.TRIDENT;
-  urlAppIcon = BiaEnvironmentService.allEnvironments.urlAppIcon;
+  urlAppIcon = BiaAppConstantsService.allEnvironments.urlAppIcon;
   protected sub = new Subscription();
 
   appIcon$: Observable<string>;
@@ -125,7 +125,7 @@ export class BiaUltimaTopbarComponent
       .getLoginParameters()
       .teamsConfig.filter(t => t.inHeader === true);
 
-    if (BiaEnvironmentService.allEnvironments.enableNotifications === true) {
+    if (BiaAppConstantsService.allEnvironments.enableNotifications === true) {
       this.unreadNotificationCount$ = this.store.select(
         DomainNotificationsStore.getUnreadNotificationCount
       );

@@ -1,9 +1,6 @@
-import { createEntityAdapter, EntityState } from '@ngrx/entity';
+﻿import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import {
-  CrudState,
-  DEFAULT_CRUD_STATE,
-} from 'src/app/shared/bia-shared/model/crud-state';
+import { CrudState, DEFAULT_CRUD_STATE } from 'biang/models';
 import { AircraftMaintenanceCompany } from '../model/aircraft-maintenance-company';
 import { FeatureAircraftMaintenanceCompaniesActions } from './aircraft-maintenance-companies-actions';
 

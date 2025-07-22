@@ -4,7 +4,6 @@ import { Store } from '@ngrx/store';
 import {
   AuthService,
   BiaAppConstantsService,
-  BiaEnvironmentService,
   BiaTranslationService,
   getCurrentCulture,
   NavigationService,
@@ -22,13 +21,13 @@ import { BiaUltimaLayoutComponent } from './ultima/layout/ultima-layout.componen
 export class LayoutComponent implements OnInit {
   isLoadingUserInfo = false;
   menus = new Array<BiaNavigation>();
-  version = BiaEnvironmentService.allEnvironments.version;
-  appTitle = BiaEnvironmentService.allEnvironments.appTitle;
-  companyName = BiaEnvironmentService.allEnvironments.companyName;
-  helpUrl = BiaEnvironmentService.environment.helpUrl;
-  reportUrl = BiaEnvironmentService.environment.reportUrl;
+  version = BiaAppConstantsService.allEnvironments.version;
+  appTitle = BiaAppConstantsService.allEnvironments.appTitle;
+  companyName = BiaAppConstantsService.allEnvironments.companyName;
+  helpUrl = BiaAppConstantsService.environment.helpUrl;
+  reportUrl = BiaAppConstantsService.environment.reportUrl;
   enableNotifications =
-    BiaEnvironmentService.allEnvironments.enableNotifications;
+    BiaAppConstantsService.allEnvironments.enableNotifications;
   login = '';
   username = '';
   lastname?: string;

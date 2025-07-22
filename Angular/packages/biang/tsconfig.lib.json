@@ -6,8 +6,7 @@
     "outDir": "../../out-tsc/lib",
     "declaration": true,
     "declarationMap": true,
-    "inlineSources": true,
-    "types": ["node"]
+    "inlineSources": true
   },
   "angularCompilerOptions": {
     "flatModuleOutFile": "biang.js",

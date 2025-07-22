@@ -1,6 +1,8 @@
-import { BiaNavigation } from 'biang/models';
+import { AllEnvironments, AppEnvironment, BiaNavigation } from 'biang/models';
 
 export class BiaAppConstantsService {
+  public static allEnvironments: AllEnvironments;
+  public static environment: AppEnvironment;
   public static navigation: BiaNavigation[] = [];
   public static supportedTranslations: string[] = [];
   public static defaultPageSize: number = 10;
@@ -8,12 +10,16 @@ export class BiaAppConstantsService {
   public static defaultTranslations: number[] = [];
 
   static init(
+    allEnvironments: AllEnvironments,
+    environment: AppEnvironment,
     navigation: BiaNavigation[],
     supportedTranslations: string[],
     defaultPageSize: number,
     teamTypeRightPrefix: { key: number; value: string }[],
     defaultTranslations: number[]
   ) {
+    BiaAppConstantsService.allEnvironments = allEnvironments;
+    BiaAppConstantsService.environment = environment;
     BiaAppConstantsService.navigation = navigation;
     BiaAppConstantsService.supportedTranslations = supportedTranslations;
     BiaAppConstantsService.defaultPageSize = defaultPageSize;

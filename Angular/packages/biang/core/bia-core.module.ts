@@ -23,7 +23,7 @@ import { biaTokenInterceptor } from './interceptors/token.interceptor';
 // Services
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { BiaNavigation } from 'biang/models';
+import { AllEnvironments, AppEnvironment, BiaNavigation } from 'biang/models';
 import { KeycloakAngularModule } from 'keycloak-angular';
 import { AppSettingsModule } from './app-settings/app-settings.module';
 import { NotificationSignalRService } from './notification/services/notification-signalr.service';
@@ -96,6 +96,8 @@ export class BiaCoreModule {
   }
 
   static forRoot(
+    allEnvironments: AllEnvironments,
+    environment: AppEnvironment,
     navigation: BiaNavigation[],
     supportedLangs: string[],
     defaultPageSize: number,
@@ -103,6 +105,8 @@ export class BiaCoreModule {
     defaultTranslations: number[]
   ): ModuleWithProviders<BiaCoreModule> {
     BiaAppConstantsService.init(
+      allEnvironments,
+      environment,
       navigation,
       supportedLangs,
       defaultPageSize,

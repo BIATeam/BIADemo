@@ -1,6 +1,6 @@
-import { createAction, props } from '@ngrx/store';
+﻿import { createAction, props } from '@ngrx/store';
+import { DataResult } from 'biang/models';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { Site } from '../model/site';
 import { siteCRUDConfiguration } from '../site.constants';
 

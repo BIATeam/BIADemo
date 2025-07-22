@@ -1,7 +1,4 @@
-import {
-  CrudConfig,
-  FormReadOnlyMode,
-} from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
+﻿import { CrudConfig, FormReadOnlyMode } from 'biang/shared';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { Plane, planeFieldsConfiguration } from './model/plane';
 import {

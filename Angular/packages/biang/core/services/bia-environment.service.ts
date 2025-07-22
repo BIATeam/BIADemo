@@ -1,33 +1,21 @@
-import { Inject, Injectable } from '@angular/core';
-import { AllEnvironments, AppEnvironment } from 'biang/models';
+import { Injectable } from '@angular/core';
+import { BiaAppConstantsService } from './bia-app-constants.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BiaEnvironmentService {
   protected static baseUrl: string | null = null;
-  public static environment: AppEnvironment;
-  public static allEnvironments: AllEnvironments;
-
-  constructor(
-    @Inject('environment')
-    environment: AppEnvironment,
-    @Inject('allEnvironments')
-    allEnvironments: AllEnvironments
-  ) {
-    BiaEnvironmentService.environment = environment;
-    BiaEnvironmentService.allEnvironments = allEnvironments;
-  }
 
   public static getBaseUrl(): string {
     if (BiaEnvironmentService.baseUrl === null) {
       if (
-        (BiaEnvironmentService.environment.apiUrlDynamic?.oldValue?.length ??
+        (BiaAppConstantsService.environment.apiUrlDynamic?.oldValue?.length ??
           0) > 0
       ) {
         BiaEnvironmentService.baseUrl = window.location.origin.replace(
-          BiaEnvironmentService.environment.apiUrlDynamic?.oldValue ?? '',
-          BiaEnvironmentService.environment.apiUrlDynamic?.newValue ?? ''
+          BiaAppConstantsService.environment.apiUrlDynamic?.oldValue ?? '',
+          BiaAppConstantsService.environment.apiUrlDynamic?.newValue ?? ''
         );
       }
 
@@ -39,26 +27,26 @@ export class BiaEnvironmentService {
   public static getApiUrl(): string {
     return (
       BiaEnvironmentService.getBaseUrl() +
-      BiaEnvironmentService.environment.apiUrl
+      BiaAppConstantsService.environment.apiUrl
     );
   }
 
   public static getHubUrl(): string {
     return (
       BiaEnvironmentService.getBaseUrl() +
-      BiaEnvironmentService.environment.hubUrl
+      BiaAppConstantsService.environment.hubUrl
     );
   }
 
   public static getServerLoggingUrl(): string {
     return (
       BiaEnvironmentService.getBaseUrl() +
-      BiaEnvironmentService.environment.logging.conf.serverLoggingUrl
+      BiaAppConstantsService.environment.logging.conf.serverLoggingUrl
     );
   }
 
   public static getLoggingConf(): any {
-    const conf: any = { ...BiaEnvironmentService.environment.logging.conf };
+    const conf: any = { ...BiaAppConstantsService.environment.logging.conf };
     conf.serverLoggingUrl =
       BiaEnvironmentService.getBaseUrl() + conf.serverLoggingUrl;
     return conf;

@@ -1,4 +1,4 @@
-import { TeamEnvironment } from './team-environment';
+import { TeamConfigDto } from '../auth-info';
 
 export interface AllEnvironments {
   appTitle: string;
@@ -11,5 +11,5 @@ export interface AllEnvironments {
   urlAppIcon: string;
   urlErrorPage: string;
   version: string;
-  teams: TeamEnvironment[];
+  teams: TeamConfigDto[];
 }

@@ -1,13 +1,14 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+﻿import { Component, HostListener, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { BiaInjectExternalService, BiaMatomoService } from 'biang/core';
+import { IframeMessage } from 'biang/models';
+import {
+  BiaLayoutService,
+  IframeCommunicationService,
+  IframeConfigMessageService,
+} from 'biang/shared';
 import { PrimeNG } from 'primeng/config';
-import { BiaInjectExternalService } from './core/bia-core/services/bia-inject-external.service';
-import { BiaMatomoService } from './core/bia-core/services/matomo/bia-matomo.service';
-import { BiaLayoutService } from './shared/bia-shared/components/layout/services/layout.service';
-import { IframeMessage } from './shared/bia-shared/model/iframe-message';
-import { IframeCommunicationService } from './shared/bia-shared/services/iframe/iframe-communication.service';
-import { IframeConfigMessageService } from './shared/bia-shared/services/iframe/iframe-config-message.service';
 
 @Component({
   selector: 'app-root',

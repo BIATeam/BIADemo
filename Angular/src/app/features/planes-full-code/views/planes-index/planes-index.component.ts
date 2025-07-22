@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+﻿import { AsyncPipe, NgIf } from '@angular/common';
 import {
   Component,
   HostBinding,
@@ -9,25 +9,26 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { AuthService, BiaTranslationService } from 'biang/core';
+import {
+  BiaFieldConfig,
+  BiaFieldsConfig,
+  KeyValuePair,
+  PagingFilterFormatDto,
+  PrimeNGFiltering,
+  PropType,
+} from 'biang/models';
+import {
+  BiaTableComponent,
+  BiaTableControllerComponent,
+  BiaTableHeaderComponent,
+  loadAllView,
+  TableHelperService,
+} from 'biang/shared';
 import { saveAs } from 'file-saver';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable, Subscription } from 'rxjs';
 import { skip } from 'rxjs/operators';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
-import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
-import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
-import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
-import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views-actions';
-import {
-  BiaFieldConfig,
-  BiaFieldsConfig,
-  PrimeNGFiltering,
-  PropType,
-} from 'src/app/shared/bia-shared/model/bia-field-config';
-import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
-import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
-import { TableHelperService } from 'src/app/shared/bia-shared/services/table-helper.service';
 import { DEFAULT_PAGE_SIZE } from 'src/app/shared/constants';
 import { Permission } from 'src/app/shared/permission';
 import { AppState } from 'src/app/store/state';

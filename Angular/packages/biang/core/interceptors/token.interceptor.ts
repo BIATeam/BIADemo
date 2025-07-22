@@ -15,7 +15,7 @@ import { catchError, filter, finalize, switchMap, take } from 'rxjs/operators';
 import { AuthInfo, HttpStatusCodeCustom } from 'biang/models';
 import { AppSettingsService } from '../app-settings/services/app-settings.service';
 import { AuthService } from '../services/auth.service';
-import { BiaEnvironmentService } from '../services/bia-environment.service';
+import { BiaAppConstantsService } from '../services/bia-app-constants.service';
 import { getCurrentCulture } from '../services/bia-translation.service';
 import { RefreshTokenService } from '../services/refresh-token.service';
 
@@ -52,15 +52,15 @@ export class TokenInterceptor implements HttpInterceptor {
     return (
       url
         .toLowerCase()
-        .indexOf(BiaEnvironmentService.allEnvironments.urlAuth.toLowerCase()) >
+        .indexOf(BiaAppConstantsService.allEnvironments.urlAuth.toLowerCase()) >
         -1 ||
       url
         .toLowerCase()
-        .indexOf(BiaEnvironmentService.allEnvironments.urlLog.toLowerCase()) >
+        .indexOf(BiaAppConstantsService.allEnvironments.urlLog.toLowerCase()) >
         -1 ||
       url
         .toLowerCase()
-        .indexOf(BiaEnvironmentService.allEnvironments.urlEnv.toLowerCase()) >
+        .indexOf(BiaAppConstantsService.allEnvironments.urlEnv.toLowerCase()) >
         -1 ||
       url.toLowerCase().indexOf('./assets/') > -1 ||
       (this.appSettingsService.appSettings?.keycloak?.isActive === true &&
