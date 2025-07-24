@@ -1,4 +1,4 @@
-import { TeamTypeId } from 'biang/core';
+import { TeamTypeId } from 'biang/models/enum';
 import { CrudConfig } from 'biang/shared';
 import {
   notificationFieldsConfiguration,

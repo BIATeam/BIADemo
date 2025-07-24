@@ -3,8 +3,8 @@ import {
   BiaFieldConfig,
   BiaFieldsConfig,
   OptionDto,
-  PropType,
 } from 'biang/models';
+import { PropType } from 'biang/models/enum';
 import { FieldValidator } from '../../../validators/field.validator';
 
 // TODO after creation of CRUD Member : adapt the model

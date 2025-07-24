@@ -16,7 +16,7 @@ import {
   QueryList,
   TemplateRef,
 } from '@angular/core';
-import { DtoState } from 'biang/models';
+import { DtoState } from 'biang/models/enum';
 import { PrimeTemplate } from 'primeng/api';
 import { FormatValuePipe } from '../../../pipes/format-value.pipe';
 import { JoinPipe } from '../../../pipes/join.pipe';

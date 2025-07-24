@@ -1,4 +1,5 @@
-import { BaseDto, DtoState } from 'biang/models';
+import { BaseDto } from 'biang/models';
+import { DtoState } from 'biang/models/enum';
 
 export class CrudHelperService {
   public static readonly newIdStartingValue: number = -1;

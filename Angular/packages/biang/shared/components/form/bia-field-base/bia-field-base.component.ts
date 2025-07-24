@@ -1,6 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { BiaTranslationService } from 'biang/core';
-import { BiaFieldConfig, BiaFieldNumberFormat, PropType } from 'biang/models';
+import { BiaFieldConfig, BiaFieldNumberFormat } from 'biang/models';
+import { PropType } from 'biang/models/enum';
 import { Subscription } from 'rxjs';
 import { BiaFieldHelperService } from './bia-field-helper.service';
 

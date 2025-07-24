@@ -15,9 +15,8 @@ import {
   BiaFieldsConfig,
   KeyValuePair,
   PagingFilterFormatDto,
-  PrimeNGFiltering,
-  PropType,
 } from 'biang/models';
+import { PrimeNGFiltering, PropType } from 'biang/models/enum';
 import {
   BiaTableComponent,
   BiaTableControllerComponent,

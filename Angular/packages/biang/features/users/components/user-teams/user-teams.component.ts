@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { AuthService, TeamTypeId } from 'biang/core';
+import { AuthService } from 'biang/core';
 import { LoginParamDto } from 'biang/models';
+import { TeamTypeId } from 'biang/models/enum';
 import { Chip } from 'primeng/chip';
 import { Tooltip } from 'primeng/tooltip';
 import { UserTeam } from '../../model/user-team';

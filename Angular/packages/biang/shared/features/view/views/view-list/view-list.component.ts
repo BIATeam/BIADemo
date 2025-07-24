@@ -13,13 +13,9 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import {
-  AuthService,
-  BiaAppConstantsService,
-  Permission,
-  ViewType,
-} from 'biang/core';
+import { AuthService, BiaAppConstantsService, Permission } from 'biang/core';
 import { BiaTableState, KeyValuePair } from 'biang/models';
+import { ViewType } from 'biang/models/enum';
 import { BiaAppState } from 'biang/store';
 import { FilterMetadata, PrimeTemplate, SelectItemGroup } from 'primeng/api';
 import { FloatLabel } from 'primeng/floatlabel';

@@ -4,10 +4,9 @@ import {
   BiaFieldConfig,
   BiaFieldsConfig,
   OptionDto,
-  PrimeNGFiltering,
-  PropType,
   VersionedDto,
 } from 'biang/models';
+import { PrimeNGFiltering, PropType } from 'biang/models/enum';
 import { PrimeIcons } from 'primeng/api';
 
 // TODO after creation of CRUD Plane : adapt the model

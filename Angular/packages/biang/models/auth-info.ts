@@ -1,4 +1,4 @@
-import { RoleMode } from './role-mode.enum';
+import { RoleMode } from 'biang/models/enum';
 import { Team } from './team';
 
 export class LoginParamDto {

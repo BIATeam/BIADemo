@@ -6,14 +6,12 @@ import {
   BiaFieldsConfig,
   BiaFormLayoutConfig,
   FixableDto,
-  NumberMode,
   OptionDto,
-  PrimeNGFiltering,
-  PropType,
   TeamDto,
   teamFieldsConfigurationColumns,
   VersionedDto,
 } from 'biang/models';
+import { NumberMode, PrimeNGFiltering, PropType } from 'biang/models/enum';
 
 // TODO after creation of CRUD Team MaintenanceTeam : adapt the model
 export interface MaintenanceTeam

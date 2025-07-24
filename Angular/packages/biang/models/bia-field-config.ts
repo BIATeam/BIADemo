@@ -1,36 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { ValidatorFn } from '@angular/forms';
-
-export enum PrimeNGFiltering {
-  StartsWith = 'startsWith',
-  Contains = 'contains',
-  EndsWith = 'endsWith',
-  Equals = 'equals',
-  NotEquals = 'notEquals',
-  In = 'in',
-  Lt = 'lt',
-  Lte = 'lte',
-  Gt = 'gt',
-  Gte = 'gte',
-}
-
-export enum PropType {
-  Date = 'Date',
-  DateTime = 'DateTime',
-  Time = 'Time', // For dateTime field if you just manipulate Time
-  TimeOnly = 'TimeOnly',
-  TimeSecOnly = 'TimeSecOnly',
-  Number = 'Number',
-  Boolean = 'Boolean',
-  String = 'String',
-  OneToMany = 'OneToMany',
-  ManyToMany = 'ManyToMany',
-}
-
-export enum NumberMode {
-  Decimal = 'decimal',
-  Currency = 'currency',
-}
+import { NumberMode, PrimeNGFiltering, PropType } from 'biang/models/enum';
 
 export class BiaFieldNumberFormat {
   autoLocale: string; // property automaticaly set when culture change.

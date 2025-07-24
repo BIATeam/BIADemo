@@ -35,8 +35,8 @@ import {
   BiaFormLayoutConfigItem,
   BiaFormLayoutConfigRow,
   BiaFormLayoutConfigTabGroup,
-  PropType,
 } from 'biang/models';
+import { PropType } from 'biang/models/enum';
 import { PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';

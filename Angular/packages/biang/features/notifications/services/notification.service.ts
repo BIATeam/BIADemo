@@ -1,6 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AuthService, TeamTypeId } from 'biang/core';
+import { AuthService } from 'biang/core';
+import { TeamTypeId } from 'biang/models/enum';
 import { CrudItemService } from 'biang/shared';
 import { BiaAppState } from 'biang/store';
 import { TableLazyLoadEvent } from 'primeng/table';

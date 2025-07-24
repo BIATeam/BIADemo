@@ -4,12 +4,10 @@ import {
   BiaFieldConfig,
   BiaFieldNumberFormat,
   BiaFieldsConfig,
-  NumberMode,
   OptionDto,
-  PrimeNGFiltering,
-  PropType,
   VersionedDto,
 } from 'biang/models';
+import { NumberMode, PrimeNGFiltering, PropType } from 'biang/models/enum';
 
 export interface Engine extends BaseDto, VersionedDto {
   reference: string;

@@ -16,7 +16,8 @@ import {
   BiaTeamsStore,
   BiaTranslationService,
 } from 'biang/core';
-import { AuthInfo, RoleDto, RoleMode, Team, TeamConfigDto } from 'biang/models';
+import { AuthInfo, RoleDto, Team, TeamConfigDto } from 'biang/models';
+import { RoleMode } from 'biang/models/enum';
 import { BiaAppState } from 'biang/store';
 import { MultiSelect } from 'primeng/multiselect';
 import { Select } from 'primeng/select';

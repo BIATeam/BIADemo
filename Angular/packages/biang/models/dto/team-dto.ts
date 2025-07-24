@@ -1,4 +1,5 @@
-import { BiaFieldConfig, PropType } from '../bia-field-config';
+import { PropType } from 'biang/models/enum';
+import { BiaFieldConfig } from '../bia-field-config';
 import { OptionDto } from '../option-dto';
 
 export interface TeamDto {

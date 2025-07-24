@@ -1,5 +1,6 @@
 import { DateFormat } from 'biang/core';
-import { BiaFieldConfig, BiaFieldDateFormat, PropType } from 'biang/models';
+import { BiaFieldConfig, BiaFieldDateFormat } from 'biang/models';
+import { PropType } from 'biang/models/enum';
 
 export class BiaFieldHelperService {
   public static setDateFormat<T>(

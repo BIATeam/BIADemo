@@ -3,8 +3,8 @@ import {
   BiaFieldConfig,
   BiaFieldsConfig,
   OptionDto,
-  PropType,
 } from 'biang/models';
+import { PropType } from 'biang/models/enum';
 
 export interface NotificationListItem extends BaseDto {
   titleTranslated: string;

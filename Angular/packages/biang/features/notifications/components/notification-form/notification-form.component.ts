@@ -17,7 +17,8 @@ import {
 } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { BiaAppConstantsService, BiaOptionService } from 'biang/core';
-import { BaseDto, DtoState, OptionDto } from 'biang/models';
+import { BaseDto, OptionDto } from 'biang/models';
+import { DtoState } from 'biang/models/enum';
 import { DictOptionDto, JsonValidator } from 'biang/shared';
 import { PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';

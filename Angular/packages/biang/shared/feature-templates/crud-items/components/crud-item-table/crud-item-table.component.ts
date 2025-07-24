@@ -17,7 +17,8 @@ import {
 } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService, BiaMessageService, BiaOptionService } from 'biang/core';
-import { BaseDto, DtoState, OptionDto, PropType } from 'biang/models';
+import { BaseDto, OptionDto } from 'biang/models';
+import { DtoState, PropType } from 'biang/models/enum';
 import { PrimeTemplate } from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';

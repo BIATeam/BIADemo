@@ -10,7 +10,6 @@ import { MembersEffects } from './store/members-effects';
 
 @NgModule({
   imports: [
-    // RouterModule.forChild(ROUTES),
     StoreModule.forFeature(
       memberCRUDConfiguration.storeKey,
       FeatureMembersStore.reducers

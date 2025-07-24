@@ -8,7 +8,8 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService, BiaTranslationService, clone } from 'biang/core';
-import { BaseDto, BiaFieldConfig, PropType } from 'biang/models';
+import { BaseDto, BiaFieldConfig } from 'biang/models';
+import { PropType } from 'biang/models/enum';
 import { Subscription, take } from 'rxjs';
 import { BiaFieldHelperService } from '../../../../components/form/bia-field-base/bia-field-helper.service';
 import { BiaFormComponent } from '../../../../components/form/bia-form/bia-form.component';

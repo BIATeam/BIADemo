@@ -5,9 +5,8 @@ import {
   BiaFieldConfig,
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
-  NumberMode,
-  PropType,
 } from 'biang/models';
+import { NumberMode, PropType } from 'biang/models/enum';
 
 @Pipe({ name: 'formatValue' })
 @Injectable({ providedIn: 'root' })

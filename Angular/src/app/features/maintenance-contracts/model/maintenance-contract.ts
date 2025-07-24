@@ -6,8 +6,8 @@ import {
   BiaFieldsConfig,
   FixableDto,
   OptionDto,
-  PropType,
 } from 'biang/models';
+import { PropType } from 'biang/models/enum';
 
 // TODO after creation of CRUD MaintenanceContract : adapt the model
 export interface MaintenanceContract

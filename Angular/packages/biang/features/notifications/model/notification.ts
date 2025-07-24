@@ -1,4 +1,5 @@
-import { BaseDto, DtoState, OptionDto } from 'biang/models';
+import { BaseDto, OptionDto } from 'biang/models';
+import { DtoState } from 'biang/models/enum';
 
 export interface Notification extends BaseDto {
   title: string;

@@ -11,12 +11,10 @@ import {
   BiaFormLayoutConfigGroup,
   BiaFormLayoutConfigRow,
   FixableDto,
-  NumberMode,
   OptionDto,
-  PrimeNGFiltering,
-  PropType,
   VersionedDto,
 } from 'biang/models';
+import { NumberMode, PrimeNGFiltering, PropType } from 'biang/models/enum';
 
 // TODO after creation of CRUD Plane : adapt the model
 export interface Plane extends BaseDto, VersionedDto, FixableDto {

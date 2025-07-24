@@ -32,8 +32,8 @@ import {
   BiaFieldsConfig,
   BiaTableState,
   KeyValuePair,
-  PropType,
 } from 'biang/models';
+import { PropType } from 'biang/models/enum';
 import { PrimeTemplate, SortMeta, TableState } from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
 import {

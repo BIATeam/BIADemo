@@ -10,7 +10,8 @@ import {
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { clone } from 'biang/core';
-import { BiaFieldsConfig, DtoState, KeyValuePair } from 'biang/models';
+import { BiaFieldsConfig, KeyValuePair } from 'biang/models';
+import { DtoState } from 'biang/models/enum';
 import {
   BiaFormComponent,
   BiaTableHeaderComponent,

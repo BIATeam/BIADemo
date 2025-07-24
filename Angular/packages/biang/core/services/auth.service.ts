@@ -7,9 +7,9 @@ import {
   AuthInfo,
   CurrentTeamDto,
   LoginParamDto,
-  RoleMode,
   Token,
 } from 'biang/models';
+import { RoleMode } from 'biang/models/enum';
 import { BiaAppState } from 'biang/store';
 import { jwtDecode } from 'jwt-decode';
 import { BehaviorSubject, NEVER, Observable, Subscription, of } from 'rxjs';

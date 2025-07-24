@@ -8,9 +8,9 @@ import {
   BiaAppConstantsService,
   BiaTeamsStore,
   Permission,
-  ViewType,
 } from 'biang/core';
 import { Team } from 'biang/models';
+import { ViewType } from 'biang/models/enum';
 import { BiaAppState } from 'biang/store';
 import { ConfirmationService, SharedModule } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';

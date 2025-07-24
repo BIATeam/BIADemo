@@ -6,13 +6,8 @@ import {
   DateHelperService,
   isEmpty,
 } from 'biang/core';
-import {
-  BaseDto,
-  BiaFieldConfig,
-  BiaFieldDateFormat,
-  DtoState,
-  PropType,
-} from 'biang/models';
+import { BaseDto, BiaFieldConfig, BiaFieldDateFormat } from 'biang/models';
+import { DtoState, PropType } from 'biang/models/enum';
 import { parse } from 'date-fns';
 import * as Papa from 'papaparse';
 import { combineLatest, from, Observable, of } from 'rxjs';

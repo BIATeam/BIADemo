@@ -3,8 +3,8 @@ import {
   BiaFieldConfig,
   BiaFieldsConfig,
   OptionDto,
-  PropType,
 } from 'biang/models';
+import { PropType } from 'biang/models/enum';
 import { UserTeam } from './user-team';
 
 // TODO after creation of CRUD User : adapt the model

@@ -1,4 +1,4 @@
-import { DtoState } from './dto-state.enum';
+import { DtoState } from 'biang/models/enum';
 import { BaseDto } from './dto/base-dto';
 
 export class OptionDto extends BaseDto {

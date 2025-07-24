@@ -8,11 +8,8 @@ import {
 } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  HttpOptions,
-  HttpRequestItem,
-  HttpStatusCodeCustom,
-} from 'biang/models';
+import { HttpOptions, HttpRequestItem } from 'biang/models';
+import { HttpStatusCodeCustom } from 'biang/models/enum';
 import {
   BehaviorSubject,
   Observable,

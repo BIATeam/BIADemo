@@ -23,9 +23,8 @@ import {
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
   OptionDto,
-  PrimeNGFiltering,
-  PropType,
 } from 'biang/models';
+import { PrimeNGFiltering, PropType } from 'biang/models/enum';
 import {
   FilterMatchMode,
   FilterMetadata,

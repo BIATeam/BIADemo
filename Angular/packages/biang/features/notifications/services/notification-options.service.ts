@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { TeamTypeId } from 'biang/core';
 import {
   DomainLanguageOptionsActions,
   DomainLanguageOptionsStore,
@@ -14,6 +13,7 @@ import {
   DomainUserOptionsStore,
 } from 'biang/domains';
 import { OptionDto } from 'biang/models';
+import { TeamTypeId } from 'biang/models/enum';
 import { CrudItemOptionsService, DictOptionDto } from 'biang/shared';
 import { BiaAppState } from 'biang/store';
 import { combineLatest, Observable } from 'rxjs';

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BaseDto, DtoState } from 'biang/models';
+import { BaseDto } from 'biang/models';
+import { DtoState } from 'biang/models/enum';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { CrudItemOptionsService } from './crud-item-options.service';
