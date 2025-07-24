@@ -16,4 +16,13 @@ export class HomeIndexComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.layoutService.showBreadcrumb();
   }
+  sendTestMessage() {
+    const iframe = document.getElementById(
+      'iframe-widget'
+    ) as HTMLIFrameElement;
+    iframe.contentWindow?.postMessage({
+      type: 'TEST',
+      message: 'This is a test message',
+    });
+  }
 }

@@ -3,4 +3,14 @@
   <h4>
     {{ 'msg.welcome' | translate }}
   </h4>
+
+  <iframe
+    id="iframe-widget"
+    src="http://localhost:4201/widget"
+    width="100%"
+    height="600"
+    style="border: none">
+  </iframe>
+
+  <button (click)="sendTestMessage()">Send Message</button>
 </div>
