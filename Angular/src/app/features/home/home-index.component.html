@@ -5,12 +5,14 @@
   </h4>
 
   <iframe
-    id="iframe-widget"
+    #iframe
     src="http://localhost:4201/widget"
     width="100%"
     height="600"
     style="border: none">
   </iframe>
 
-  <button (click)="sendTestMessage()">Send Message</button>
+  <button [disabled]="!isIframeReady" (click)="sendTestMessage()">
+    Send Message
+  </button>
 </div>
