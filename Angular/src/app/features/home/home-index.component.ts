@@ -20,9 +20,12 @@ export class HomeIndexComponent implements OnInit, OnDestroy {
     const iframe = document.getElementById(
       'iframe-widget'
     ) as HTMLIFrameElement;
-    iframe.contentWindow?.postMessage({
-      type: 'TEST',
-      message: 'This is a test message',
-    });
+    iframe.contentWindow?.postMessage(
+      {
+        type: 'TEST',
+        message: 'This is a test message',
+      },
+      'http://localhost:4201'
+    );
   }
 }
