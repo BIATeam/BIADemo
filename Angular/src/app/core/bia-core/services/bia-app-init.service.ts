@@ -120,7 +120,6 @@ export class BiaAppInitService implements OnDestroy {
             keycloakEvent?.type === KeycloakEventTypeLegacy.OnTokenExpired
           ) {
             if (this.keycloakService.isLoggedIn() !== true) {
-              // Force la connexion immédiatement avec idpHint pour auth automatique
               this.keycloakService.login({
                 redirectUri: window.location.href,
                 idpHint:
