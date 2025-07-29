@@ -13,7 +13,7 @@ namespace BIA.Net.Core.Domain.Notification.Entities
     /// <summary>
     /// The Notification entity.
     /// </summary>
-    public class Notification : BaseEntityVersioned<int>
+    public class BaseNotification : BaseEntityVersioned<int>
     {
         /// <summary>
         /// Gets or sets the title.

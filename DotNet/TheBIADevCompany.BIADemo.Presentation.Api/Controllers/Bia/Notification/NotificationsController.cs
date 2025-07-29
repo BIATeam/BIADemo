@@ -9,17 +9,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Notification
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Application.Notification;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common;
-    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
-    using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Presentation.Api.Controller.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using TheBIADevCompany.BIADemo.Application.Notification;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Notification;
 
     /// <summary>
     /// The API controller used to manage Notifications.

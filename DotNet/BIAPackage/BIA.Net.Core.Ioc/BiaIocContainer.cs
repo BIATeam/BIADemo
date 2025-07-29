@@ -173,7 +173,6 @@ namespace BIA.Net.Core.Ioc
             collection.AddScoped(typeof(ITGenericRepository<,>), typeof(TGenericRepositoryEF<,>));
             collection.AddScoped(typeof(ITGenericArchiveRepository<,>), typeof(TGenericArchiveRepository<,>));
             collection.AddScoped(typeof(ITGenericCleanRepository<,>), typeof(TGenericCleanRepository<,>));
-            collection.AddScoped<INotificationQueryCustomizer, NotificationQueryCustomizer>();
             collection.AddScoped<IViewQueryCustomizer, ViewQueryCustomizer>();
 
             // Infrastructure Data

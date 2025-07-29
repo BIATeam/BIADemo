@@ -1,4 +1,4 @@
-// <copyright file="NotificationAppService.cs" company="BIA">
+// <copyright file="BaseNotificationAppService.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -10,7 +10,6 @@ namespace BIA.Net.Core.Application.Notification
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common;
-    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
@@ -23,9 +22,33 @@ namespace BIA.Net.Core.Application.Notification
     using BIA.Net.Core.Domain.Specification;
 
     /// <summary>
-    /// The application service used to manage views.
+    /// Base Notification App Service.
     /// </summary>
-    public class NotificationAppService : CrudAppServiceListAndItemBase<NotificationDto, NotificationListItemDto, Notification, int, LazyLoadDto, NotificationMapper, NotificationListItemMapper>, INotificationAppService
+    /// <typeparam name="TBaseNotificationDto">The type of the base notification dto.</typeparam>
+    /// <typeparam name="TBaseNotificationListItemDto">The type of the base notification list item dto.</typeparam>
+    /// <typeparam name="TBaseNotification">The type of the base notification.</typeparam>
+    /// <typeparam name="TBaseNotificationMapper">The type of the base notification mapper.</typeparam>
+    /// <typeparam name="TBaseNotificationListItemMapper">The type of the base notification list item mapper.</typeparam>
+    /// <seealso cref="BIA.Net.Core.Application.Services.CrudAppServiceListAndItemBase&lt;TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification, System.Int32, BIA.Net.Core.Domain.Dto.Base.LazyLoadDto, TBaseNotificationMapper, TBaseNotificationListItemMapper&gt;" />
+    public class BaseNotificationAppService<
+        TBaseNotificationDto,
+        TBaseNotificationListItemDto,
+        TBaseNotification,
+        TBaseNotificationMapper,
+        TBaseNotificationListItemMapper> :
+        CrudAppServiceListAndItemBase<
+            TBaseNotificationDto,
+            TBaseNotificationListItemDto,
+            TBaseNotification,
+            int,
+            LazyLoadDto,
+            TBaseNotificationMapper,
+            TBaseNotificationListItemMapper>
+        where TBaseNotificationDto : BaseNotificationDto, new()
+        where TBaseNotificationListItemDto : BaseNotificationListItemDto, new()
+        where TBaseNotification : BaseNotification, new()
+        where TBaseNotificationMapper : BaseNotificationMapper<TBaseNotificationDto, TBaseNotification>
+        where TBaseNotificationListItemMapper : BaseNotificationListItemMapper<TBaseNotificationListItemDto, TBaseNotification>
     {
         /// <summary>
         /// The claims principal.
@@ -38,18 +61,17 @@ namespace BIA.Net.Core.Application.Notification
         private readonly IClientForHubService clientForHubService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NotificationAppService"/> class.
+        /// Initializes a new instance of the <see cref="BaseNotificationAppService{TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification, TBaseNotificationMapper, TBaseNotificationListItemMapper}"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
-        /// <param name="principal">The claims principal.</param>
-        /// <param name="clientForHubService">Client for hub.</param>
-        /// <param name="queryCustomizer">Query customizer to include permission at update.</param>
-        /// <param name="userContext">The user context.</param>
-        public NotificationAppService(
-            ITGenericRepository<Notification, int> repository,
+        /// <param name="principal">The principal.</param>
+        /// <param name="clientForHubService">The client for hub service.</param>
+        /// <param name="queryCustomizer">The query customizer.</param>
+        public BaseNotificationAppService(
+            ITGenericRepository<TBaseNotification, int> repository,
             IPrincipal principal,
             IClientForHubService clientForHubService,
-            INotificationQueryCustomizer queryCustomizer)
+            IBaseNotificationQueryCustomizer<TBaseNotification> queryCustomizer)
             : base(repository)
         {
             this.Repository.QueryCustomizer = queryCustomizer;
@@ -59,7 +81,7 @@ namespace BIA.Net.Core.Application.Notification
 
             this.FiltersContext.Add(
                  AccessMode.Read,
-                 new DirectSpecification<Notification>(n =>
+                 new DirectSpecification<TBaseNotification>(n =>
                     (
                         n.NotifiedUsers.Count == 0
                         &&
@@ -87,7 +109,7 @@ namespace BIA.Net.Core.Application.Notification
         }
 
         /// <inheritdoc/>
-        public async Task SetAsRead(NotificationDto dto)
+        public async Task SetAsRead(TBaseNotificationDto dto)
         {
             var notification = await this.Repository.GetEntityAsync(dto.Id);
 
@@ -100,7 +122,7 @@ namespace BIA.Net.Core.Application.Notification
         }
 
         /// <inheritdoc/>
-        public async Task SetUnread(NotificationDto dto)
+        public async Task SetUnread(TBaseNotificationDto dto)
         {
             var notification = await this.Repository.GetEntityAsync(dto.Id);
 
@@ -113,15 +135,15 @@ namespace BIA.Net.Core.Application.Notification
         }
 
         /// <inheritdoc/>
-        public override async Task<NotificationDto> UpdateAsync(
-            NotificationDto dto,
+        public override async Task<TBaseNotificationDto> UpdateAsync(
+            TBaseNotificationDto dto,
             string accessMode = AccessMode.Update,
             string queryMode = QueryMode.Update,
             string mapperMode = null)
         {
             if (dto != null)
             {
-                NotificationMapper mapper = this.InitMapper<NotificationDto, NotificationMapper>();
+                TBaseNotificationMapper mapper = this.InitMapper<TBaseNotificationDto, TBaseNotificationMapper>();
 
                 var entity = await this.Repository.GetEntityAsync(id: dto.Id, specification: this.GetFilterSpecification(accessMode, this.FiltersContext), includes: mapper.IncludesForUpdate(mapperMode), queryMode: queryMode);
                 if (entity == null)
@@ -151,7 +173,7 @@ namespace BIA.Net.Core.Application.Notification
         }
 
         /// <inheritdoc/>
-        public override async Task<NotificationDto> RemoveAsync(
+        public override async Task<TBaseNotificationDto> RemoveAsync(
             int id,
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,
@@ -165,7 +187,7 @@ namespace BIA.Net.Core.Application.Notification
         }
 
         /// <inheritdoc/>
-        public override async Task<List<NotificationDto>> RemoveAsync(List<int> ids, string accessMode = "Delete", string queryMode = "Delete", string mapperMode = null, bool bypassFixed = false)
+        public override async Task<List<TBaseNotificationDto>> RemoveAsync(List<int> ids, string accessMode = "Delete", string queryMode = "Delete", string mapperMode = null, bool bypassFixed = false)
         {
             var deletedDtos = await base.RemoveAsync(ids, accessMode, queryMode, mapperMode, bypassFixed: bypassFixed);
 
@@ -176,7 +198,7 @@ namespace BIA.Net.Core.Application.Notification
         }
 
         /// <inheritdoc/>
-        public override async Task<NotificationDto> AddAsync(NotificationDto dto, string mapperMode = null)
+        public override async Task<TBaseNotificationDto> AddAsync(TBaseNotificationDto dto, string mapperMode = null)
         {
             var notification = await base.AddAsync(dto, mapperMode);
 
@@ -198,13 +220,13 @@ namespace BIA.Net.Core.Application.Notification
         {
             var results = await this.Repository.GetAllResultAsync(
                 selectResult: x => x.Id,
-                specification: this.FiltersContext[AccessMode.Read] & new DirectSpecification<Notification>(x => !x.Read));
+                specification: this.FiltersContext[AccessMode.Read] & new DirectSpecification<TBaseNotification>(x => !x.Read));
 
             return results.ToList();
         }
 
         /// <inheritdoc/>
-        public async Task<(IEnumerable<NotificationListItemDto> Results, int Total)> GetRangeWithAllAccessAsync(PagingFilterFormatDto pagingFilterFormatDto)
+        public async Task<(IEnumerable<TBaseNotificationListItemDto> Results, int Total)> GetRangeWithAllAccessAsync(PagingFilterFormatDto pagingFilterFormatDto)
         {
             return await this.GetRangeAsync(pagingFilterFormatDto, accessMode: AccessMode.All);
         }

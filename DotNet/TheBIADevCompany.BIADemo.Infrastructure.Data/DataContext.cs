@@ -32,6 +32,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
 #endif
     using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders;
+    using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
 
     /// <summary>
     /// The database context.

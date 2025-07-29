@@ -21,7 +21,7 @@ namespace BIA.Net.Core.Domain.Notification.Entities
         /// <summary>
         /// Gets or sets the notification.
         /// </summary>
-        public virtual Notification Notification { get; set; }
+        public virtual BaseNotification Notification { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the team.

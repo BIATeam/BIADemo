@@ -12,7 +12,7 @@ namespace BIA.Net.Core.Domain.Dto.Notification
     /// <summary>
     /// The DTO used for notifications.
     /// </summary>
-    public class NotificationListItemDto : BaseDto<int>
+    public class BaseNotificationListItemDto : BaseDto<int>
     {
         /// <summary>
         /// Gets or sets the title translated.

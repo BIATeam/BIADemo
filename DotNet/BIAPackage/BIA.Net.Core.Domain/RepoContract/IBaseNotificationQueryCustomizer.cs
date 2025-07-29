@@ -10,7 +10,8 @@ namespace BIA.Net.Core.Domain.RepoContract
     /// <summary>
     /// interface use to customize the request on Member entity.
     /// </summary>
-    public interface INotificationQueryCustomizer : IQueryCustomizer<Notification>
+    public interface IBaseNotificationQueryCustomizer<TBaseNotification> : IQueryCustomizer<TBaseNotification>
+        where TBaseNotification : BaseNotification
     {
     }
 }

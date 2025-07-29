@@ -9,7 +9,6 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     using System.Linq;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Job;
-    using BIA.Net.Core.Application.Notification;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
@@ -24,8 +23,10 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
     using TheBIADevCompany.BIADemo.Application.Fleet;
+    using TheBIADevCompany.BIADemo.Application.Notification;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Notification;
     using static TheBIADevCompany.BIADemo.Crosscutting.Common.Constants;
 
     /// <summary>
