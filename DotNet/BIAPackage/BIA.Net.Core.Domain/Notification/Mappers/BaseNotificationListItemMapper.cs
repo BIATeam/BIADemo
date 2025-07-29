@@ -23,7 +23,7 @@ namespace BIA.Net.Core.Domain.Notification.Mappers
     /// <typeparam name="TBaseNotificationListItemDto">The type of the base notification list item dto.</typeparam>
     /// <typeparam name="TBaseNotification">The type of the base notification.</typeparam>
     /// <seealso cref="BIA.Net.Core.Domain.Mapper.BaseMapper&lt;TBaseNotificationListItemDto, TBaseNotification, int&gt;" />
-    public class BaseNotificationListItemMapper<TBaseNotificationListItemDto, TBaseNotification>(UserContext userContext) : BaseMapper<TBaseNotificationListItemDto, TBaseNotification, int>
+    public abstract class BaseNotificationListItemMapper<TBaseNotificationListItemDto, TBaseNotification>(UserContext userContext) : BaseMapper<TBaseNotificationListItemDto, TBaseNotification, int>
         where TBaseNotificationListItemDto : BaseNotificationListItemDto, new()
         where TBaseNotification : BaseNotification, new()
     {

@@ -12,7 +12,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories.QueryCustomizer
     /// <summary>
     /// Class use to customize the EF request on Member entity.
     /// </summary>
-    public class BaseNotificationQueryCustomizer<TBaseNotification> : TQueryCustomizer<TBaseNotification>
+    public abstract class BaseNotificationQueryCustomizer<TBaseNotification> : TQueryCustomizer<TBaseNotification>
        where TBaseNotification : BaseNotification
     {
         /// <inheritdoc/>

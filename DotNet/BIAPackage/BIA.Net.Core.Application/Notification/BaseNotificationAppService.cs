@@ -30,7 +30,7 @@ namespace BIA.Net.Core.Application.Notification
     /// <typeparam name="TBaseNotificationMapper">The type of the base notification mapper.</typeparam>
     /// <typeparam name="TBaseNotificationListItemMapper">The type of the base notification list item mapper.</typeparam>
     /// <seealso cref="BIA.Net.Core.Application.Services.CrudAppServiceListAndItemBase&lt;TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification, System.Int32, BIA.Net.Core.Domain.Dto.Base.LazyLoadDto, TBaseNotificationMapper, TBaseNotificationListItemMapper&gt;" />
-    public class BaseNotificationAppService<
+    public abstract class BaseNotificationAppService<
         TBaseNotificationDto,
         TBaseNotificationListItemDto,
         TBaseNotification,
