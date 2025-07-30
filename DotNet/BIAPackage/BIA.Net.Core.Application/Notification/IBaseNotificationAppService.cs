@@ -1,4 +1,4 @@
-// <copyright file="INotificationAppService.cs" company="BIA">
+// <copyright file="IBaseNotificationAppService.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -10,26 +10,31 @@ namespace BIA.Net.Core.Application.Notification
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Notification.Entities;
-    using BIA.Net.Core.Domain.Service;
 
     /// <summary>
     /// The interface defining the notification application service.
     /// </summary>
-    public interface INotificationAppService : ICrudAppServiceListAndItemBase<NotificationDto, NotificationListItemDto, Notification, int, LazyLoadDto>
+    /// <typeparam name="TBaseNotificationDto">The type of the notification DTO.</typeparam>
+    /// <typeparam name="TBaseNotificationListItemDto">The type of the notification list item DTO.</typeparam>
+    /// <typeparam name="TBaseNotification">The type of the notification entity.</typeparam>
+    public interface IBaseNotificationAppService<TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification> : ICrudAppServiceListAndItemBase<TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification, int, LazyLoadDto>
+        where TBaseNotificationDto : BaseNotificationDto, new()
+        where TBaseNotificationListItemDto : BaseNotificationListItemDto, new()
+        where TBaseNotification : BaseNotification, new()
     {
         /// <summary>
         /// Set the notification as read.
         /// </summary>
         /// <param name="dto">The notification dto.</param>
         /// <returns>A task.</returns>
-        Task SetAsRead(NotificationDto dto);
+        Task SetAsRead(TBaseNotificationDto dto);
 
         /// <summary>
         /// Set the notification as unread.
         /// </summary>
         /// <param name="dto">The notification dto.</param>
         /// <returns>A task.</returns>
-        Task SetUnread(NotificationDto dto);
+        Task SetUnread(TBaseNotificationDto dto);
 
         /// <summary>
         /// Return the list of unreadIds.
@@ -43,6 +48,6 @@ namespace BIA.Net.Core.Application.Notification
         /// </summary>
         /// <param name="pagingFilterFormatDto">The paging filter.</param>
         /// <returns><see cref="IEnumerable{NotificationListItemDto}"/> results and total as int.</returns>
-        Task<(IEnumerable<NotificationListItemDto> Results, int Total)> GetRangeWithAllAccessAsync(PagingFilterFormatDto pagingFilterFormatDto);
+        Task<(IEnumerable<TBaseNotificationListItemDto> Results, int Total)> GetRangeWithAllAccessAsync(PagingFilterFormatDto pagingFilterFormatDto);
     }
 }

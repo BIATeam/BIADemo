@@ -17,7 +17,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.17")
+                .HasAnnotation("ProductVersion", "8.0.18")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -87,7 +87,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("DistCache");
                 });
 
-            modelBuilder.Entity("BIA.Net.Core.Domain.Notification.Entities.Notification", b =>
+            modelBuilder.Entity("BIA.Net.Core.Domain.Notification.Entities.BaseNotification", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -105,6 +105,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
 
                     b.Property<string>("JData")
                         .HasColumnType("nvarchar(max)");
@@ -131,7 +136,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasIndex("TypeId");
 
-                    b.ToTable("Notifications");
+                    b.ToTable("Notifications", (string)null);
+
+                    b.HasDiscriminator().HasValue("BaseNotification");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("BIA.Net.Core.Domain.Notification.Entities.NotificationTeam", b =>
@@ -1829,6 +1838,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("MaintenanceTeamCountry");
                 });
 
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.Notification", b =>
+                {
+                    b.HasBaseType("BIA.Net.Core.Domain.Notification.Entities.BaseNotification");
+
+                    b.HasDiscriminator().HasValue("Notification");
+                });
+
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.AircraftMaintenanceCompany", b =>
                 {
                     b.HasBaseType("BIA.Net.Core.Domain.User.Entities.BaseEntityTeam");
@@ -1958,7 +1974,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasDiscriminator().HasValue("User");
                 });
 
-            modelBuilder.Entity("BIA.Net.Core.Domain.Notification.Entities.Notification", b =>
+            modelBuilder.Entity("BIA.Net.Core.Domain.Notification.Entities.BaseNotification", b =>
                 {
                     b.HasOne("BIA.Net.Core.Domain.User.Entities.BaseEntityUser", "CreatedBy")
                         .WithMany()
@@ -1977,7 +1993,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("BIA.Net.Core.Domain.Notification.Entities.NotificationTeam", b =>
                 {
-                    b.HasOne("BIA.Net.Core.Domain.Notification.Entities.Notification", "Notification")
+                    b.HasOne("BIA.Net.Core.Domain.Notification.Entities.BaseNotification", "Notification")
                         .WithMany("NotifiedTeams")
                         .HasForeignKey("NotificationId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2015,7 +2031,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("BIA.Net.Core.Domain.Notification.Entities.NotificationUser", b =>
                 {
-                    b.HasOne("BIA.Net.Core.Domain.Notification.Entities.Notification", "Notification")
+                    b.HasOne("BIA.Net.Core.Domain.Notification.Entities.BaseNotification", "Notification")
                         .WithMany("NotifiedUsers")
                         .HasForeignKey("NotificationId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2040,7 +2056,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BIA.Net.Core.Domain.Notification.Entities.Notification", "Notification")
+                    b.HasOne("BIA.Net.Core.Domain.Notification.Entities.BaseNotification", "Notification")
                         .WithMany("NotificationTranslations")
                         .HasForeignKey("NotificationId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2449,7 +2465,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BIA.Net.Core.Domain.Notification.Entities.Notification", b =>
+            modelBuilder.Entity("BIA.Net.Core.Domain.Notification.Entities.BaseNotification", b =>
                 {
                     b.Navigation("NotificationTranslations");
 
