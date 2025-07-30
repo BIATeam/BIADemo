@@ -29,7 +29,6 @@ namespace BIA.Net.Core.Application.Notification
     /// <typeparam name="TBaseNotification">The type of the base notification.</typeparam>
     /// <typeparam name="TBaseNotificationMapper">The type of the base notification mapper.</typeparam>
     /// <typeparam name="TBaseNotificationListItemMapper">The type of the base notification list item mapper.</typeparam>
-    /// <seealso cref="BIA.Net.Core.Application.Services.CrudAppServiceListAndItemBase&lt;TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification, System.Int32, BIA.Net.Core.Domain.Dto.Base.LazyLoadDto, TBaseNotificationMapper, TBaseNotificationListItemMapper&gt;" />
     public abstract class BaseNotificationAppService<
         TBaseNotificationDto,
         TBaseNotificationListItemDto,
@@ -67,7 +66,7 @@ namespace BIA.Net.Core.Application.Notification
         /// <param name="principal">The principal.</param>
         /// <param name="clientForHubService">The client for hub service.</param>
         /// <param name="queryCustomizer">The query customizer.</param>
-        public BaseNotificationAppService(
+        protected BaseNotificationAppService(
             ITGenericRepository<TBaseNotification, int> repository,
             IPrincipal principal,
             IClientForHubService clientForHubService,
@@ -108,7 +107,7 @@ namespace BIA.Net.Core.Application.Notification
                     )));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IBaseNotificationAppService{TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification}.SetAsRead"/>
         public async Task SetAsRead(TBaseNotificationDto dto)
         {
             var notification = await this.Repository.GetEntityAsync(dto.Id);
@@ -121,7 +120,7 @@ namespace BIA.Net.Core.Application.Notification
             _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notification", dto);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IBaseNotificationAppService{TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification}.SetUnread"/>
         public async Task SetUnread(TBaseNotificationDto dto)
         {
             var notification = await this.Repository.GetEntityAsync(dto.Id);
@@ -225,7 +224,7 @@ namespace BIA.Net.Core.Application.Notification
             return results.ToList();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IBaseNotificationAppService{TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification}.GetRangeWithAllAccessAsync"/>
         public async Task<(IEnumerable<TBaseNotificationListItemDto> Results, int Total)> GetRangeWithAllAccessAsync(PagingFilterFormatDto pagingFilterFormatDto)
         {
             return await this.GetRangeAsync(pagingFilterFormatDto, accessMode: AccessMode.All);

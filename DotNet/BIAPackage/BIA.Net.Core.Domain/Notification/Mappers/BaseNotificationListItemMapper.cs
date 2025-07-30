@@ -1,4 +1,4 @@
-// <copyright file="NotificationListItemMapper.cs" company="BIA">
+// <copyright file="BaseNotificationListItemMapper.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 

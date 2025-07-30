@@ -1,4 +1,4 @@
-// <copyright file="NotificationQueryCustomizer.cs" company="BIA">
+// <copyright file="BaseNotificationQueryCustomizer.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -12,6 +12,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories.QueryCustomizer
     /// <summary>
     /// Class use to customize the EF request on Member entity.
     /// </summary>
+    /// <typeparam name="TBaseNotification">The type of the notification entity.</typeparam>
     public abstract class BaseNotificationQueryCustomizer<TBaseNotification> : TQueryCustomizer<TBaseNotification>
        where TBaseNotification : BaseNotification
     {

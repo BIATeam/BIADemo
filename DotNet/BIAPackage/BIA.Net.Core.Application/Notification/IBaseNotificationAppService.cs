@@ -1,4 +1,4 @@
-// <copyright file="INotificationAppService.cs" company="BIA">
+// <copyright file="IBaseNotificationAppService.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -14,6 +14,9 @@ namespace BIA.Net.Core.Application.Notification
     /// <summary>
     /// The interface defining the notification application service.
     /// </summary>
+    /// <typeparam name="TBaseNotificationDto">The type of the notification DTO.</typeparam>
+    /// <typeparam name="TBaseNotificationListItemDto">The type of the notification list item DTO.</typeparam>
+    /// <typeparam name="TBaseNotification">The type of the notification entity.</typeparam>
     public interface IBaseNotificationAppService<TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification> : ICrudAppServiceListAndItemBase<TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification, int, LazyLoadDto>
         where TBaseNotificationDto : BaseNotificationDto, new()
         where TBaseNotificationListItemDto : BaseNotificationListItemDto, new()

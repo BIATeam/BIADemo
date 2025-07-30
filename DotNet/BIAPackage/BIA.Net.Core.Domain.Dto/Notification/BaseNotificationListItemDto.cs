@@ -1,4 +1,4 @@
-// <copyright file="NotificationListItemDto.cs" company="BIA">
+// <copyright file="BaseNotificationListItemDto.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
