@@ -5,6 +5,7 @@
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 {
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Presentation.Api.Controller.User;
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
@@ -12,7 +13,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Models;
 #pragma warning restore BIA001 // Forbidden reference to Domain layer in Presentation layer
-    using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User;
 
     /// <inheritdoc />
     public class UsersController : BaseUsersController<UserDto, User, UserFromDirectoryDto, UserFromDirectory>
