@@ -11,7 +11,7 @@ namespace BIA.Net.Core.Domain.Dto.User
     /// <summary>
     /// UserData Dto.
     /// </summary>
-    public class BaseUserDataDto
+    public abstract class BaseUserDataDto
     {
         /// <summary>
         /// Gets or sets the last name.

@@ -11,7 +11,7 @@ namespace BIA.Net.Core.Domain.User.Models
     /// The class representing a user from AD.
     /// </summary>
     [Serializable]
-    public class BaseUserFromDirectory : IUserFromDirectory
+    public abstract class BaseUserFromDirectory : IUserFromDirectory
     {
         /// <summary>
         /// Gets or sets the security Id.

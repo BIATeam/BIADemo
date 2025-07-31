@@ -12,7 +12,7 @@ namespace BIA.Net.Core.Domain.Dto.User
     /// <summary>
     /// The DTO used for user.
     /// </summary>
-    public class BaseUserDto : BaseDtoVersioned<int>
+    public abstract class BaseUserDto : BaseDtoVersioned<int>
     {
         /// <summary>
         /// Gets or sets the last name.
