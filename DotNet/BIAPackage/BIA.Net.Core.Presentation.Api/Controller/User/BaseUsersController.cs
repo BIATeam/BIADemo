@@ -1,7 +1,7 @@
 ﻿// <copyright file="BaseUsersController.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
-namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
+namespace BIA.Net.Core.Presentation.Api.Controller.User
 {
     using System;
     using System.Collections.Generic;
