@@ -21,6 +21,6 @@ export * from './option-dto';
 export * from './paging-filter-format';
 export * from './prime-locale';
 export * from './role';
-export * from './signalR';
+export * from './target-feature';
 export * from './team';
 export * from './team-advanced-filter-dto';

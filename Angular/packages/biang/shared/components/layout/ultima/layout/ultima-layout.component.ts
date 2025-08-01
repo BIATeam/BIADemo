@@ -25,7 +25,8 @@ import {
   ROUTE_DATA_NO_MARGIN,
   ROUTE_DATA_NO_PADDING,
 } from 'biang/core';
-import { BiaNavigation, EnvironmentType } from 'biang/models';
+import { BiaNavigation } from 'biang/models';
+import { EnvironmentType } from 'biang/models/enum';
 import { BiaAppState } from 'biang/store';
 import { MenuItem } from 'primeng/api';
 import { Breadcrumb } from 'primeng/breadcrumb';

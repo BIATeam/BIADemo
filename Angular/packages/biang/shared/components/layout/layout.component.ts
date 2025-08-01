@@ -8,7 +8,8 @@ import {
   getCurrentCulture,
   NavigationService,
 } from 'biang/core';
-import { AuthInfo, BiaNavigation, EnvironmentType } from 'biang/models';
+import { AuthInfo, BiaNavigation } from 'biang/models';
+import { EnvironmentType } from 'biang/models/enum';
 import { SpinnerComponent } from '../spinner/spinner.component';
 import { BiaLayoutService } from './services/layout.service';
 import { BiaUltimaLayoutComponent } from './ultima/layout/ultima-layout.component';

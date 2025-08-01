@@ -1,4 +1,5 @@
 export * from './dto-state.enum';
+export * from './environment-type.enum';
 export * from './http-status-code-custom.enum';
 export * from './number-mode.enum';
 export * from './primeng-filtering.enum';
