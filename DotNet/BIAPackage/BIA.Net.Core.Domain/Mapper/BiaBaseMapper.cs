@@ -194,7 +194,16 @@ namespace BIA.Net.Core.Domain.Mapper
 
                 var toBase64StringMethod = typeof(Convert).GetMethod(nameof(Convert.ToBase64String), new[] { typeof(byte[]) });
 
-                var rowVersion = Expression.Call(toBase64StringMethod, rowVersionProperty);
+                // Check if rowVersionProperty is null before converting
+                var rowVersionIsNull = Expression.Equal(
+                    rowVersionProperty,
+                    Expression.Constant(null));
+
+                // If rowVersionProperty is null, return null, otherwise call Convert.ToBase64String
+                var rowVersion = Expression.Condition(
+                    rowVersionIsNull,
+                    Expression.Constant(null, typeof(string)),
+                    Expression.Call(toBase64StringMethod, rowVersionProperty));
 
                 var bindRowVersion = Expression.Bind(typeof(TDto).GetProperty(nameof(IDtoVersioned.RowVersion)), rowVersion);
 
@@ -271,7 +280,8 @@ namespace BIA.Net.Core.Domain.Mapper
             dto.Id = entity.Id;
             if (this.isVersionned)
             {
-                (dto as IDtoVersioned).RowVersion = Convert.ToBase64String((entity as IEntityVersioned).RowVersion);
+                var rowVersion = (entity as IEntityVersioned).RowVersion;
+                (dto as IDtoVersioned).RowVersion = rowVersion != null ? Convert.ToBase64String(rowVersion) : null;
             }
         }
 

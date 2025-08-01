@@ -127,13 +127,17 @@ namespace BIA.Net.Core.Application.User
         /// this.FiltersContext.Add(AccessMode.Update,theStandardUpdateSpecification).
         /// </summary>
         /// <typeparam name="TTeam">the team type.</typeparam>
+        /// <typeparam name="TUserDataDto">The type of the user data dto.</typeparam>
         /// <param name="teamTypeId">the team type id.</param>
         /// <param name="principal">the user claims.</param>
-        /// <returns>the Standard Update Specification.</returns>
-        public static Specification<TTeam> UpdateSpecification<TTeam>(TEnumTeamTypeId teamTypeId, IPrincipal principal)
+        /// <returns>
+        /// the Standard Update Specification.
+        /// </returns>
+        public static Specification<TTeam> UpdateSpecification<TTeam, TUserDataDto>(TEnumTeamTypeId teamTypeId, IPrincipal principal)
             where TTeam : class, IEntity<int>, IEntityTeam
+            where TUserDataDto : BaseUserDataDto
         {
-            var userData = (principal as BiaClaimsPrincipal).GetUserData<BaseUserDataDto>();
+            var userData = (principal as BiaClaimsPrincipal).GetUserData<TUserDataDto>();
             var currentTeamId = userData != null ? userData.GetCurrentTeamId(System.Convert.ToInt32(teamTypeId)) : 0;
             return new DirectSpecification<TTeam>(p => p.Id == currentTeamId);
         }
