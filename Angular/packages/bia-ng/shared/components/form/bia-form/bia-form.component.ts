@@ -25,7 +25,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { BiaOptionService } from 'bia-ng/core';
+import { BiaOptionService } from 'packages/bia-ng/core/public-api';
+import { PropType } from 'packages/bia-ng/models/enum/public-api';
 import {
   BaseDto,
   BiaFieldConfig,
@@ -35,8 +36,7 @@ import {
   BiaFormLayoutConfigItem,
   BiaFormLayoutConfigRow,
   BiaFormLayoutConfigTabGroup,
-} from 'bia-ng/models';
-import { PropType } from 'bia-ng/models/enum';
+} from 'packages/bia-ng/models/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';

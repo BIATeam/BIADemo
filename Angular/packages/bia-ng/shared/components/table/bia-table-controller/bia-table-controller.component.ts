@@ -25,8 +25,8 @@ import {
   UntypedFormControl,
 } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { TABLE_FILTER_GLOBAL } from 'bia-ng/core';
-import { BiaTableState, KeyValuePair } from 'bia-ng/models';
+import { TABLE_FILTER_GLOBAL } from 'packages/bia-ng/core/public-api';
+import { BiaTableState, KeyValuePair } from 'packages/bia-ng/models/public-api';
 import { FilterMetadata, PrimeTemplate, SelectItem } from 'primeng/api';
 import { Badge } from 'primeng/badge';
 import { Button } from 'primeng/button';

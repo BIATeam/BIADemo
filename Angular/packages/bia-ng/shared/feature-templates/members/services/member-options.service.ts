@@ -5,9 +5,9 @@ import {
   DomainRoleOptionsStore,
   DomainUserOptionsActions,
   DomainUserOptionsStore,
-} from 'bia-ng/domains';
-import { OptionDto } from 'bia-ng/models';
-import { BiaAppState } from 'bia-ng/store';
+} from 'packages/bia-ng/domains/public-api';
+import { OptionDto } from 'packages/bia-ng/models/public-api';
+import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DictOptionDto } from '../../../components/table/bia-table/dict-option-dto';

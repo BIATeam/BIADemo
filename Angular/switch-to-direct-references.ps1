@@ -50,7 +50,7 @@ function ReplaceInProjectRec {
 }
 
 # Switch imports to bia-ng imports
-ReplaceInProject -Source $SourceFrontEnd -OldRegexp "import\s*{\s*([^}]+)\s*}\s*from\s*['](bia-ng\/[^']+)['];" -NewRegexp 'import { $1 } from ''packages/$2/public-api'';' -Include *.ts
+ReplaceInProject -Source $SourceFrontEnd -OldRegexp "(import\s*{\s*[^}]+\s*}\s*from\s*)['](bia-ng\/[^']+)['];" -NewRegexp '$1''packages/$2/public-api'';' -Include *.ts
 ReplaceInProject -Source $SourceFrontEnd -OldRegexp "((templateUrl:|styleUrls: \[)[\s]*'[\S]*\/)node_modules\/bia-ng\/templates\/([\S]*')" -NewRegexp '$1packages/bia-ng/shared/$3' -Include *.ts
 
 # FRONT END

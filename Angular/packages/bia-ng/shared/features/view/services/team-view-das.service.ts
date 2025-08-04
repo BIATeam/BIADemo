@@ -1,5 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
-import { AbstractDas } from 'bia-ng/core';
+import { AbstractDas } from 'packages/bia-ng/core/public-api';
 import { TeamDefaultView } from '../model/team-default-view';
 import { TeamView } from '../model/team-view';
 

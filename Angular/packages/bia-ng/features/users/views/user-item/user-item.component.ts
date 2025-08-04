@@ -1,7 +1,10 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { CrudItemItemComponent, SpinnerComponent } from 'bia-ng/shared';
+import {
+  CrudItemItemComponent,
+  SpinnerComponent,
+} from 'packages/bia-ng/shared/public-api';
 import { User } from '../../model/user';
 import { UserService } from '../../services/user.service';
 

@@ -1,4 +1,4 @@
-﻿import { CrudConfig } from 'bia-ng/shared';
+import { CrudConfig } from 'packages/bia-ng/shared/public-api';
 import { Airport, airportFieldsConfiguration } from './model/airport';
 
 // TODO after creation of CRUD Airport : adapt the global configuration

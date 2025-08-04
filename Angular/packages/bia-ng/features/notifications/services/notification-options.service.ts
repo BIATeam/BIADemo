@@ -11,11 +11,14 @@ import {
   DomainTeamOptionsStore,
   DomainUserOptionsActions,
   DomainUserOptionsStore,
-} from 'bia-ng/domains';
-import { OptionDto } from 'bia-ng/models';
-import { TeamTypeId } from 'bia-ng/models/enum';
-import { CrudItemOptionsService, DictOptionDto } from 'bia-ng/shared';
-import { BiaAppState } from 'bia-ng/store';
+} from 'packages/bia-ng/domains/public-api';
+import { TeamTypeId } from 'packages/bia-ng/models/enum/public-api';
+import { OptionDto } from 'packages/bia-ng/models/public-api';
+import {
+  CrudItemOptionsService,
+  DictOptionDto,
+} from 'packages/bia-ng/shared/public-api';
+import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 

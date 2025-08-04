@@ -3,15 +3,18 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { Permission, PermissionGuard } from 'bia-ng/core';
+import { Permission, PermissionGuard } from 'packages/bia-ng/core/public-api';
 import {
   LanguageOptionModule,
   NotificationTypeOptionModule,
   RoleOptionModule,
   TeamOptionModule,
   UserOptionModule,
-} from 'bia-ng/domains';
-import { FullPageLayoutComponent, PopupLayoutComponent } from 'bia-ng/shared';
+} from 'packages/bia-ng/domains/public-api';
+import {
+  FullPageLayoutComponent,
+  PopupLayoutComponent,
+} from 'packages/bia-ng/shared/public-api';
 import { FeatureNotificationsStore } from './store/notification.state';
 import { NotificationsEffects } from './store/notifications-effects';
 import { NotificationDetailComponent } from './views/notification-detail/notification-detail.component';

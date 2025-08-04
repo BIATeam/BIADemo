@@ -1,4 +1,4 @@
-﻿import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -6,7 +6,7 @@ import {
   BiaLayoutService,
   CrudItemItemComponent,
   SpinnerComponent,
-} from 'bia-ng/shared';
+} from 'packages/bia-ng/shared/public-api';
 import { first } from 'rxjs/operators';
 import { AppState } from 'src/app/store/state';
 import { MaintenanceContract } from '../../model/maintenance-contract';
@@ -15,9 +15,9 @@ import { MaintenanceContractService } from '../../services/maintenance-contract.
 @Component({
   selector: 'app-maintenance-contracts-item',
   templateUrl:
-    '../../../../../../node_modules/bia-ng/templates/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
+    '../../../../../../packages/bia-ng/shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
   styleUrls: [
-    '../../../../../../node_modules/bia-ng/templates/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
+    '../../../../../../packages/bia-ng/shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
   ],
   imports: [RouterOutlet, NgIf, AsyncPipe, SpinnerComponent],
 })

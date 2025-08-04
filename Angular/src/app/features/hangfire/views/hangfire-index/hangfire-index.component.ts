@@ -1,8 +1,8 @@
-﻿import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { Component, HostBinding } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { BiaTeamsStore } from 'bia-ng/core';
-import { Team } from 'bia-ng/models';
+import { BiaTeamsStore } from 'packages/bia-ng/core/public-api';
+import { Team } from 'packages/bia-ng/models/public-api';
 import { ButtonDirective } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';
 import { Observable } from 'rxjs';

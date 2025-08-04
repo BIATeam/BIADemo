@@ -24,10 +24,10 @@ import {
   ROUTE_DATA_CAN_NAVIGATE,
   ROUTE_DATA_NO_MARGIN,
   ROUTE_DATA_NO_PADDING,
-} from 'bia-ng/core';
-import { BiaNavigation } from 'bia-ng/models';
-import { EnvironmentType } from 'bia-ng/models/enum';
-import { BiaAppState } from 'bia-ng/store';
+} from 'packages/bia-ng/core/public-api';
+import { EnvironmentType } from 'packages/bia-ng/models/enum/public-api';
+import { BiaNavigation } from 'packages/bia-ng/models/public-api';
+import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { MenuItem } from 'primeng/api';
 import { Breadcrumb } from 'primeng/breadcrumb';
 import { filter, map, Observable, Subscription } from 'rxjs';

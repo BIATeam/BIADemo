@@ -8,8 +8,11 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { BiaAppConstantsService, BiaTranslationService } from 'bia-ng/core';
-import { BiaNavigation } from 'bia-ng/models';
+import {
+  BiaAppConstantsService,
+  BiaTranslationService,
+} from 'packages/bia-ng/core/public-api';
+import { BiaNavigation } from 'packages/bia-ng/models/public-api';
 import { MenuItem } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { BiaLayoutService } from '../../services/layout.service';

@@ -7,9 +7,9 @@ import {
   BiaTranslationService,
   getCurrentCulture,
   NavigationService,
-} from 'bia-ng/core';
-import { AuthInfo, BiaNavigation } from 'bia-ng/models';
-import { EnvironmentType } from 'bia-ng/models/enum';
+} from 'packages/bia-ng/core/public-api';
+import { EnvironmentType } from 'packages/bia-ng/models/enum/public-api';
+import { AuthInfo, BiaNavigation } from 'packages/bia-ng/models/public-api';
 import { SpinnerComponent } from '../spinner/spinner.component';
 import { BiaLayoutService } from './services/layout.service';
 import { BiaUltimaLayoutComponent } from './ultima/layout/ultima-layout.component';

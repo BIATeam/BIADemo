@@ -1,12 +1,15 @@
-﻿import { Validators } from '@angular/forms';
+import { Validators } from '@angular/forms';
+import {
+  PrimeNGFiltering,
+  PropType,
+} from 'packages/bia-ng/models/enum/public-api';
 import {
   BaseDto,
   BiaFieldConfig,
   BiaFieldsConfig,
   OptionDto,
   VersionedDto,
-} from 'bia-ng/models';
-import { PrimeNGFiltering, PropType } from 'bia-ng/models/enum';
+} from 'packages/bia-ng/models/public-api';
 import { PrimeIcons } from 'primeng/api';
 
 // TODO after creation of CRUD Plane : adapt the model

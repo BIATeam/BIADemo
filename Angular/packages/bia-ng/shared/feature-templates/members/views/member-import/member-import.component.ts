@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, Injector } from '@angular/core';
-import { Permission } from 'bia-ng/core';
+import { Permission } from 'packages/bia-ng/core/public-api';
 import { BiaFormComponent } from '../../../../components/form/bia-form/bia-form.component';
 import { CrudItemImportFormComponent } from '../../../crud-items/components/crud-item-import-form/crud-item-import-form.component';
 import { CrudItemImportComponent } from '../../../crud-items/views/crud-item-import/crud-item-import.component';

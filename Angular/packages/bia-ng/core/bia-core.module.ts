@@ -23,8 +23,12 @@ import { biaTokenInterceptor } from './interceptors/token.interceptor';
 // Services
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { AllEnvironments, AppEnvironment, BiaNavigation } from 'bia-ng/models';
 import { KeycloakAngularModule } from 'keycloak-angular';
+import {
+  AllEnvironments,
+  AppEnvironment,
+  BiaNavigation,
+} from 'packages/bia-ng/models/public-api';
 import { AppSettingsModule } from './app-settings/app-settings.module';
 import { NotificationSignalRService } from './notification/services/notification-signalr.service';
 import { AuthService } from './services/auth.service';

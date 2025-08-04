@@ -1,12 +1,12 @@
 import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { Injectable, Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { NumberMode, PropType } from 'packages/bia-ng/models/enum/public-api';
 import {
   BiaFieldConfig,
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
-} from 'bia-ng/models';
-import { NumberMode, PropType } from 'bia-ng/models/enum';
+} from 'packages/bia-ng/models/public-api';
 
 @Pipe({ name: 'formatValue' })
 @Injectable({ providedIn: 'root' })

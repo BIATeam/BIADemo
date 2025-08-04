@@ -1,6 +1,6 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { OptionDto } from 'bia-ng/models';
+import { OptionDto } from 'packages/bia-ng/models/public-api';
 import { DomainLanguageOptionsActions } from './language-options-actions';
 
 // This adapter will allow is to manipulate languages (mostly CRUD operations)

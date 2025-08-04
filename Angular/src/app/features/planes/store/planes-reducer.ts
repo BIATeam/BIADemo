@@ -1,6 +1,9 @@
-﻿import { createEntityAdapter, EntityState } from '@ngrx/entity';
+import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { CrudState, DEFAULT_CRUD_STATE } from 'bia-ng/models';
+import {
+  CrudState,
+  DEFAULT_CRUD_STATE,
+} from 'packages/bia-ng/models/public-api';
 import { Plane } from '../model/plane';
 import { FeaturePlanesActions } from './planes-actions';
 

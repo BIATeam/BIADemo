@@ -17,14 +17,17 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { BiaTranslationService } from 'bia-ng/core';
+import { BiaTranslationService } from 'packages/bia-ng/core/public-api';
+import {
+  PrimeNGFiltering,
+  PropType,
+} from 'packages/bia-ng/models/enum/public-api';
 import {
   BiaFieldConfig,
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
   OptionDto,
-} from 'bia-ng/models';
-import { PrimeNGFiltering, PropType } from 'bia-ng/models/enum';
+} from 'packages/bia-ng/models/public-api';
 import {
   FilterMatchMode,
   FilterMetadata,

@@ -1,10 +1,10 @@
+import { PropType } from 'packages/bia-ng/models/enum/public-api';
 import {
   BaseDto,
   BiaFieldConfig,
   BiaFieldsConfig,
   OptionDto,
-} from 'bia-ng/models';
-import { PropType } from 'bia-ng/models/enum';
+} from 'packages/bia-ng/models/public-api';
 
 export interface NotificationListItem extends BaseDto {
   titleTranslated: string;

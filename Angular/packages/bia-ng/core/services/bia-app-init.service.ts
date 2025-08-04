@@ -1,12 +1,12 @@
 import { Injectable, isDevMode, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppSettings, AuthInfo } from 'bia-ng/models';
-import { BiaAppState } from 'bia-ng/store';
 import {
   KeycloakEventLegacy,
   KeycloakEventTypeLegacy,
   KeycloakService,
 } from 'keycloak-angular';
+import { AppSettings, AuthInfo } from 'packages/bia-ng/models/public-api';
+import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { Observable, Subscription, throwError } from 'rxjs';
 import { catchError, filter, first, switchMap } from 'rxjs/operators';
 import { AppSettingsDas } from '../app-settings/services/app-settings-das.service';

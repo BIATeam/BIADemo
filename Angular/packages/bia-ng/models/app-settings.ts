@@ -1,4 +1,4 @@
-import { EnvironmentType } from 'bia-ng/models/enum';
+import { EnvironmentType } from 'packages/bia-ng/models/enum/public-api';
 
 export interface AppSettings {
   keycloak: Keycloak;

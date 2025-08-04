@@ -17,7 +17,7 @@ import {
   PutParam,
   SaveParam,
   UpdateFixedStatusParam,
-} from 'bia-ng/models';
+} from 'packages/bia-ng/models/public-api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { NEVER, Observable, from, of, throwError } from 'rxjs';
 import { catchError, first, map, tap } from 'rxjs/operators';

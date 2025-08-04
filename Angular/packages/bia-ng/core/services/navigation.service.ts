@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AuthInfo, BiaNavigation } from 'bia-ng/models';
+import { AuthInfo, BiaNavigation } from 'packages/bia-ng/models/public-api';
 
 @Injectable({
   providedIn: 'root',

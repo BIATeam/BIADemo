@@ -1,7 +1,10 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
-import { biaSuccessWaitRefreshSignalR, clone } from 'bia-ng/core';
-import { BaseDto } from 'bia-ng/models';
+import {
+  biaSuccessWaitRefreshSignalR,
+  clone,
+} from 'packages/bia-ng/core/public-api';
+import { BaseDto } from 'packages/bia-ng/models/public-api';
 import { filter, first, map, Observable, skip, take } from 'rxjs';
 import { CrudItemFormComponent } from '../../components/crud-item-form/crud-item-form.component';
 import { CrudItemSingleService } from '../../services/crud-item-single.service';

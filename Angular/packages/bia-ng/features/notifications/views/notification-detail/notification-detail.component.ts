@@ -9,13 +9,13 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { AuthService, Permission } from 'bia-ng/core';
-import { AuthInfo } from 'bia-ng/models';
+import { AuthService, Permission } from 'packages/bia-ng/core/public-api';
+import { AuthInfo } from 'packages/bia-ng/models/public-api';
 import {
   NotificationTeamWarningComponent,
   SpinnerComponent,
-} from 'bia-ng/shared';
-import { BiaAppState } from 'bia-ng/store';
+} from 'packages/bia-ng/shared/public-api';
+import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { ButtonDirective } from 'primeng/button';
 import { Observable, Subscription } from 'rxjs';
 import { Notification, NotificationData } from '../../model/notification';

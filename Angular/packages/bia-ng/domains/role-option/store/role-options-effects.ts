@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { BiaMessageService } from 'bia-ng/core';
+import { BiaMessageService } from 'packages/bia-ng/core/public-api';
 import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { RoleOptionDas } from '../services/role-option-das.service';

@@ -17,7 +17,7 @@ import {
   RouterOutlet,
 } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { BiaInjectorService } from 'bia-ng/core';
+import { BiaInjectorService } from 'packages/bia-ng/core/public-api';
 import { BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 

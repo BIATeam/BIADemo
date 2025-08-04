@@ -9,8 +9,8 @@ import {
   ViewChild,
 } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { BiaDialogService } from 'bia-ng/core';
-import { Team } from 'bia-ng/models';
+import { BiaDialogService } from 'packages/bia-ng/core/public-api';
+import { Team } from 'packages/bia-ng/models/public-api';
 import { Confirmation, ConfirmationService, PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';

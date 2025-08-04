@@ -1,8 +1,8 @@
-﻿import { AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { BiaTranslationService } from 'bia-ng/core';
+import { BiaTranslationService } from 'packages/bia-ng/core/public-api';
 import { Subscription } from 'rxjs';
 import { AppState } from 'src/app/store/state';
 import { PlaneFormComponent } from '../../components/plane-form/plane-form.component';

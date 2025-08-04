@@ -6,8 +6,8 @@ import {
   DomainLdapDomainsActions,
   DomainLdapDomainsStore,
   LdapDomain,
-} from 'bia-ng/domains';
-import { BiaAppState } from 'bia-ng/store';
+} from 'packages/bia-ng/domains/public-api';
+import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { SharedModule } from 'primeng/api';
 import { Dialog } from 'primeng/dialog';
 import { Observable } from 'rxjs';

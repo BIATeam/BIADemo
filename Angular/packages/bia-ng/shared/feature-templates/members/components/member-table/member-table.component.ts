@@ -14,7 +14,10 @@ import {
   UntypedFormBuilder,
 } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { AuthService, BiaMessageService } from 'bia-ng/core';
+import {
+  AuthService,
+  BiaMessageService,
+} from 'packages/bia-ng/core/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';

@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { BiaInjectorService } from 'bia-ng/core';
+import { BiaInjectorService } from 'packages/bia-ng/core/public-api';
 import { SharedModule } from 'primeng/api';
 import { Dialog } from 'primeng/dialog';
 

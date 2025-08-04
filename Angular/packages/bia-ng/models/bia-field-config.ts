@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { ValidatorFn } from '@angular/forms';
-import { NumberMode, PrimeNGFiltering, PropType } from 'bia-ng/models/enum';
+import {
+  NumberMode,
+  PrimeNGFiltering,
+  PropType,
+} from 'packages/bia-ng/models/enum/public-api';
 
 export class BiaFieldNumberFormat {
   autoLocale: string; // property automaticaly set when culture change.

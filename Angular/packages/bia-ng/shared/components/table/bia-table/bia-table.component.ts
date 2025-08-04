@@ -26,14 +26,14 @@ import {
   AuthService,
   BiaAppConstantsService,
   TABLE_FILTER_GLOBAL,
-} from 'bia-ng/core';
+} from 'packages/bia-ng/core/public-api';
+import { PropType } from 'packages/bia-ng/models/enum/public-api';
 import {
   BiaFieldConfig,
   BiaFieldsConfig,
   BiaTableState,
   KeyValuePair,
-} from 'bia-ng/models';
-import { PropType } from 'bia-ng/models/enum';
+} from 'packages/bia-ng/models/public-api';
 import { PrimeTemplate, SortMeta, TableState } from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
 import {

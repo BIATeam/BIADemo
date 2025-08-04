@@ -1,10 +1,10 @@
-﻿import {
+import { PropType } from 'packages/bia-ng/models/enum/public-api';
+import {
   BaseDto,
   BiaFieldConfig,
   BiaFieldsConfig,
   VersionedDto,
-} from 'bia-ng/models';
-import { PropType } from 'bia-ng/models/enum';
+} from 'packages/bia-ng/models/public-api';
 
 // TODO after creation of CRUD PlaneType : adapt the model
 export interface PlaneType extends BaseDto, VersionedDto {

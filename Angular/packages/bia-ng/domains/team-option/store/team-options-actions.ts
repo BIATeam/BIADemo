@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { OptionDto } from 'bia-ng/models';
+import { OptionDto } from 'packages/bia-ng/models/public-api';
 import { storeKey } from '../team-option.contants';
 
 export namespace DomainTeamOptionsActions {

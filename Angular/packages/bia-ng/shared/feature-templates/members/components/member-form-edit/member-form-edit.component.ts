@@ -14,8 +14,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { BiaOptionService } from 'bia-ng/core';
-import { OptionDto } from 'bia-ng/models';
+import { BiaOptionService } from 'packages/bia-ng/core/public-api';
+import { OptionDto } from 'packages/bia-ng/models/public-api';
 import { ButtonDirective } from 'primeng/button';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';

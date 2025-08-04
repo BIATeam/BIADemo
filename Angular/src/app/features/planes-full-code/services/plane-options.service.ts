@@ -1,7 +1,7 @@
-﻿import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { OptionDto } from 'bia-ng/models';
-import { DictOptionDto } from 'bia-ng/shared';
+import { OptionDto } from 'packages/bia-ng/models/public-api';
+import { DictOptionDto } from 'packages/bia-ng/shared/public-api';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { getAllAirportOptions } from 'src/app/domains/airport-option/store/airport-option.state';

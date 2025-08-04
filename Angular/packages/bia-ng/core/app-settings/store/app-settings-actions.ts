@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { AppSettings } from 'bia-ng/models';
+import { AppSettings } from 'packages/bia-ng/models/public-api';
 
 export namespace CoreAppSettingsActions {
   export const loadAll = createAction('[BIA Domain AppSettings] Load');

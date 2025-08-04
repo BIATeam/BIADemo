@@ -1,7 +1,7 @@
 import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { AuthService, Permission } from 'bia-ng/core';
+import { AuthService, Permission } from 'packages/bia-ng/core/public-api';
 import {
   BiaTableBehaviorControllerComponent,
   BiaTableComponent,
@@ -9,7 +9,7 @@ import {
   BiaTableHeaderComponent,
   CrudItemService,
   CrudItemsIndexComponent,
-} from 'bia-ng/shared';
+} from 'packages/bia-ng/shared/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { skip } from 'rxjs';
 import { Notification } from '../../model/notification';

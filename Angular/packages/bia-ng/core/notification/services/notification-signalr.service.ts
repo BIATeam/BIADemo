@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { TargetedFeature, Team } from 'bia-ng/models';
-import { BiaAppState } from 'bia-ng/store';
+import { TargetedFeature, Team } from 'packages/bia-ng/models/public-api';
+import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { AuthService } from '../../services/auth.service';
 import { BiaMessageService } from '../../services/bia-message.service';
 import { BiaSignalRService } from '../../services/bia-signalr.service';

@@ -1,4 +1,8 @@
-import { AllEnvironments, AppEnvironment, BiaNavigation } from 'bia-ng/models';
+import {
+  AllEnvironments,
+  AppEnvironment,
+  BiaNavigation,
+} from 'packages/bia-ng/models/public-api';
 
 export class BiaAppConstantsService {
   public static allEnvironments: AllEnvironments;

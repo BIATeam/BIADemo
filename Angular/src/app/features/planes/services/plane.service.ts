@@ -1,7 +1,10 @@
-﻿import { Injectable, Injector } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AuthService } from 'bia-ng/core';
-import { CrudItemService, CrudItemSignalRService } from 'bia-ng/shared';
+import { AuthService } from 'packages/bia-ng/core/public-api';
+import {
+  CrudItemService,
+  CrudItemSignalRService,
+} from 'packages/bia-ng/shared/public-api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { map, Observable } from 'rxjs';
 import { TeamTypeId } from 'src/app/shared/constants';

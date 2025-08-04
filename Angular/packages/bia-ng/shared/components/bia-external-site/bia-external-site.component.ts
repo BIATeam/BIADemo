@@ -10,8 +10,15 @@ import {
 } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService, BiaTranslationService } from 'bia-ng/core';
-import { ExternalSiteConfig, IframeConfig, IframeMessage } from 'bia-ng/models';
+import {
+  AuthService,
+  BiaTranslationService,
+} from 'packages/bia-ng/core/public-api';
+import {
+  ExternalSiteConfig,
+  IframeConfig,
+  IframeMessage,
+} from 'packages/bia-ng/models/public-api';
 import { Subscription, tap } from 'rxjs';
 import { LayoutHelperService } from '../../services/layout-helper.service';
 import { BiaLayoutService } from '../layout/services/layout.service';

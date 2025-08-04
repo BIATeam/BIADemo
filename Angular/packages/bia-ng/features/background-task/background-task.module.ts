@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { Permission, PermissionGuard } from 'bia-ng/core';
+import { Permission, PermissionGuard } from 'packages/bia-ng/core/public-api';
 import { BackgroundTaskAdminComponent } from './views/background-task-admin/background-task-admin.component';
 import { BackgroundTaskReadOnlyComponent } from './views/background-task-read-only/background-task-read-only.component';
 

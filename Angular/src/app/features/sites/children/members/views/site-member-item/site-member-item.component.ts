@@ -1,14 +1,17 @@
-﻿import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, Injector } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { MemberItemComponent, SpinnerComponent } from 'bia-ng/shared';
+import {
+  MemberItemComponent,
+  SpinnerComponent,
+} from 'packages/bia-ng/shared/public-api';
 
 @Component({
   selector: 'app-site-members-item',
   templateUrl:
-    '../../../../../../../../node_modules/bia-ng/templates/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
+    '../../../../../../../../packages/bia-ng/shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
   styleUrls: [
-    '../../../../../../../../node_modules/bia-ng/templates/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
+    '../../../../../../../../packages/bia-ng/shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
   ],
   imports: [RouterOutlet, NgIf, AsyncPipe, SpinnerComponent],
 })

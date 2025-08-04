@@ -1,10 +1,10 @@
-﻿import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, Injector } from '@angular/core';
 import {
   CrudItemReadComponent,
   FormReadOnlyMode,
   SpinnerComponent,
-} from 'bia-ng/shared';
+} from 'packages/bia-ng/shared/public-api';
 import { filter } from 'rxjs';
 import { Permission } from 'src/app/shared/permission';
 import { PlaneFormComponent } from '../../components/plane-form/plane-form.component';

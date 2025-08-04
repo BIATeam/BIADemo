@@ -1,4 +1,4 @@
-﻿import { CrudConfig } from 'bia-ng/shared';
+import { CrudConfig } from 'packages/bia-ng/shared/public-api';
 import { PlaneType, planeTypeFieldsConfiguration } from './model/plane-type';
 
 // TODO after creation of CRUD PlaneType : adapt the global configuration

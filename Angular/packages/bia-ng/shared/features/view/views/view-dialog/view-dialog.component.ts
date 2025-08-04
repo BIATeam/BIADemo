@@ -8,10 +8,10 @@ import {
   BiaAppConstantsService,
   BiaTeamsStore,
   Permission,
-} from 'bia-ng/core';
-import { Team } from 'bia-ng/models';
-import { ViewType } from 'bia-ng/models/enum';
-import { BiaAppState } from 'bia-ng/store';
+} from 'packages/bia-ng/core/public-api';
+import { ViewType } from 'packages/bia-ng/models/enum/public-api';
+import { Team } from 'packages/bia-ng/models/public-api';
+import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { ConfirmationService, SharedModule } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';

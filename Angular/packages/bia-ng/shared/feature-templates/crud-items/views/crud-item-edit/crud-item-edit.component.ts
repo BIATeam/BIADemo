@@ -8,8 +8,11 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { AuthService, biaSuccessWaitRefreshSignalR } from 'bia-ng/core';
-import { AuthInfo, BaseDto } from 'bia-ng/models';
+import {
+  AuthService,
+  biaSuccessWaitRefreshSignalR,
+} from 'packages/bia-ng/core/public-api';
+import { AuthInfo, BaseDto } from 'packages/bia-ng/models/public-api';
 import { Subscription, filter, first, tap } from 'rxjs';
 import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
 import { CrudItemFormComponent } from '../../components/crud-item-form/crud-item-form.component';

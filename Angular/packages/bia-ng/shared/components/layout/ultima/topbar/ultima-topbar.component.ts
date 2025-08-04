@@ -34,9 +34,9 @@ import {
   NotificationData,
   NotificationModule,
   NotificationType,
-} from 'bia-ng/core';
-import { BiaNavigation } from 'bia-ng/models';
-import { BiaAppState } from 'bia-ng/store';
+} from 'packages/bia-ng/core/public-api';
+import { BiaNavigation } from 'packages/bia-ng/models/public-api';
+import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { PrimeTemplate, ToastMessageOptions } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { Ripple } from 'primeng/ripple';

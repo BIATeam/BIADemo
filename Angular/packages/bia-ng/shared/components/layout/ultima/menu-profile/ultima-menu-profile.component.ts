@@ -18,7 +18,7 @@ import {
   BiaEnvironmentService,
   BiaTranslationService,
   Permission,
-} from 'bia-ng/core';
+} from 'packages/bia-ng/core/public-api';
 import { SharedModule } from 'primeng/api';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';

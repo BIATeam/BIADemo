@@ -1,6 +1,9 @@
-﻿import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, Injector } from '@angular/core';
-import { CrudItemEditComponent, SpinnerComponent } from 'bia-ng/shared';
+import {
+  CrudItemEditComponent,
+  SpinnerComponent,
+} from 'packages/bia-ng/shared/public-api';
 import { PlaneTypeFormComponent } from '../../components/plane-type-form/plane-type-form.component';
 import { PlaneType } from '../../model/plane-type';
 import { planeTypeCRUDConfiguration } from '../../plane-type.constants';

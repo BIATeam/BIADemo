@@ -2,16 +2,16 @@ import { HttpStatusCode } from '@angular/common/http';
 import { Injectable, Injector, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
+import { jwtDecode } from 'jwt-decode';
+import { RoleMode } from 'packages/bia-ng/models/enum/public-api';
 import {
   AdditionalInfos,
   AuthInfo,
   CurrentTeamDto,
   LoginParamDto,
   Token,
-} from 'bia-ng/models';
-import { RoleMode } from 'bia-ng/models/enum';
-import { BiaAppState } from 'bia-ng/store';
-import { jwtDecode } from 'jwt-decode';
+} from 'packages/bia-ng/models/public-api';
+import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { BehaviorSubject, NEVER, Observable, Subscription, of } from 'rxjs';
 import {
   catchError,

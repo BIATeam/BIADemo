@@ -1,6 +1,9 @@
-﻿import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { BiaMessageService, biaSuccessWaitRefreshSignalR } from 'bia-ng/core';
+import {
+  BiaMessageService,
+  biaSuccessWaitRefreshSignalR,
+} from 'packages/bia-ng/core/public-api';
 import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { HangfireDas } from '../service/hangfire-das.service';

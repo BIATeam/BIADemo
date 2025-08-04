@@ -1,7 +1,10 @@
-﻿import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { OptionDto } from 'bia-ng/models';
-import { CrudItemOptionsService, DictOptionDto } from 'bia-ng/shared';
+import { OptionDto } from 'packages/bia-ng/models/public-api';
+import {
+  CrudItemOptionsService,
+  DictOptionDto,
+} from 'packages/bia-ng/shared/public-api';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { getAllPartOptions } from 'src/app/domains/part-option/store/part-option.state';

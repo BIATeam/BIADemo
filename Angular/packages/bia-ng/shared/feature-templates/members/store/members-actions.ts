@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { DataResult } from 'bia-ng/models';
+import { DataResult } from 'packages/bia-ng/models/public-api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { memberCRUDConfiguration } from '../member.constants';
 import { Member, Members } from '../model/member';

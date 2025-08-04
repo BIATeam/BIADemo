@@ -1,18 +1,18 @@
-﻿import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import {
   MemberEditComponent,
   MemberFormEditComponent,
   MemberModule,
   SpinnerComponent,
-} from 'bia-ng/shared';
+} from 'packages/bia-ng/shared/public-api';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { AircraftMaintenanceCompanyService } from '../../../../services/aircraft-maintenance-company.service';
 
 @Component({
   selector: 'app-aircraft-maintenance-company-member-edit',
   templateUrl:
-    '../../../../../../../../node_modules/bia-ng/templates/feature-templates/members/views/member-edit/member-edit.component.html',
+    '../../../../../../../../packages/bia-ng/shared/feature-templates/members/views/member-edit/member-edit.component.html',
   imports: [
     MemberModule,
     NgIf,

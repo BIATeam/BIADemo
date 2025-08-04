@@ -1,4 +1,4 @@
-﻿import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import {
   Component,
   HostBinding,
@@ -9,22 +9,28 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { AuthService, BiaTranslationService } from 'bia-ng/core';
+import { saveAs } from 'file-saver';
+import {
+  AuthService,
+  BiaTranslationService,
+} from 'packages/bia-ng/core/public-api';
+import {
+  PrimeNGFiltering,
+  PropType,
+} from 'packages/bia-ng/models/enum/public-api';
 import {
   BiaFieldConfig,
   BiaFieldsConfig,
   KeyValuePair,
   PagingFilterFormatDto,
-} from 'bia-ng/models';
-import { PrimeNGFiltering, PropType } from 'bia-ng/models/enum';
+} from 'packages/bia-ng/models/public-api';
 import {
   BiaTableComponent,
   BiaTableControllerComponent,
   BiaTableHeaderComponent,
   loadAllView,
   TableHelperService,
-} from 'bia-ng/shared';
-import { saveAs } from 'file-saver';
+} from 'packages/bia-ng/shared/public-api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable, Subscription } from 'rxjs';
 import { skip } from 'rxjs/operators';

@@ -1,9 +1,9 @@
-﻿import { NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { PermissionGuard } from 'bia-ng/core';
-import { DynamicLayoutComponent } from 'bia-ng/shared';
+import { PermissionGuard } from 'packages/bia-ng/core/public-api';
+import { DynamicLayoutComponent } from 'packages/bia-ng/shared/public-api';
 import { Permission } from 'src/app/shared/permission';
 import { planeTypeCRUDConfiguration } from './plane-type.constants';
 import { FeaturePlanesTypesStore } from './store/plane-type.state';

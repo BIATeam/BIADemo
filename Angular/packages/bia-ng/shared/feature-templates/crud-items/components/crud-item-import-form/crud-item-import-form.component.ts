@@ -14,14 +14,14 @@ import {
   Validators,
 } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { clone } from 'bia-ng/core';
+import { clone } from 'packages/bia-ng/core/public-api';
+import { PropType } from 'packages/bia-ng/models/enum/public-api';
 import {
   AppSettings,
   BiaFieldConfig,
   BiaFieldsConfig,
   KeyValuePair,
-} from 'bia-ng/models';
-import { PropType } from 'bia-ng/models/enum';
+} from 'packages/bia-ng/models/public-api';
 import {
   Accordion,
   AccordionContent,

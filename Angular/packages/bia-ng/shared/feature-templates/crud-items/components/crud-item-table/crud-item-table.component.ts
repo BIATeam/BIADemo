@@ -16,9 +16,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { AuthService, BiaMessageService, BiaOptionService } from 'bia-ng/core';
-import { BaseDto, OptionDto } from 'bia-ng/models';
-import { DtoState, PropType } from 'bia-ng/models/enum';
+import {
+  AuthService,
+  BiaMessageService,
+  BiaOptionService,
+} from 'packages/bia-ng/core/public-api';
+import { DtoState, PropType } from 'packages/bia-ng/models/enum/public-api';
+import { BaseDto, OptionDto } from 'packages/bia-ng/models/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';

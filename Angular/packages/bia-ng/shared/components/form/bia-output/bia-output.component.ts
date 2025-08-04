@@ -17,7 +17,7 @@ import {
   TemplateRef,
 } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { BiaFieldConfig } from 'bia-ng/models';
+import { BiaFieldConfig } from 'packages/bia-ng/models/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';

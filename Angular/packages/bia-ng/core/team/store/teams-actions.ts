@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Team } from 'bia-ng/models';
+import { Team } from 'packages/bia-ng/models/public-api';
 import { storeKey } from '../team.contants';
 
 export namespace BiaTeamsActions {

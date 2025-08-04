@@ -13,10 +13,14 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { AuthService, BiaAppConstantsService, Permission } from 'bia-ng/core';
-import { BiaTableState, KeyValuePair } from 'bia-ng/models';
-import { ViewType } from 'bia-ng/models/enum';
-import { BiaAppState } from 'bia-ng/store';
+import {
+  AuthService,
+  BiaAppConstantsService,
+  Permission,
+} from 'packages/bia-ng/core/public-api';
+import { ViewType } from 'packages/bia-ng/models/enum/public-api';
+import { BiaTableState, KeyValuePair } from 'packages/bia-ng/models/public-api';
+import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { FilterMetadata, PrimeTemplate, SelectItemGroup } from 'primeng/api';
 import { FloatLabel } from 'primeng/floatlabel';
 import { Select } from 'primeng/select';

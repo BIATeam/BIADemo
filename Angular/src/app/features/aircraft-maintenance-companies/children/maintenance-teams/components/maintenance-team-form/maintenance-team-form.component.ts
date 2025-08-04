@@ -1,13 +1,16 @@
-﻿import { Component } from '@angular/core';
-import { BiaFormComponent, CrudItemFormComponent } from 'bia-ng/shared';
+import { Component } from '@angular/core';
+import {
+  BiaFormComponent,
+  CrudItemFormComponent,
+} from 'packages/bia-ng/shared/public-api';
 import { MaintenanceTeam } from '../../model/maintenance-team';
 
 @Component({
   selector: 'app-maintenance-team-form',
   templateUrl:
-    '../../../../../../../../node_modules/bia-ng/templates/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.html',
+    '../../../../../../../../packages/bia-ng/shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.html',
   styleUrls: [
-    '../../../../../../../../node_modules/bia-ng/templates/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
+    '../../../../../../../../packages/bia-ng/shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
   ],
   imports: [BiaFormComponent],
 })

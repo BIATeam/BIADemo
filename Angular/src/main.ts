@@ -1,4 +1,4 @@
-﻿import {
+import {
   ErrorHandler,
   LOCALE_ID,
   enableProdMode,
@@ -17,6 +17,7 @@ import {
   TranslateModule,
   TranslateStore,
 } from '@ngx-translate/core';
+import { LoggerModule, TOKEN_LOGGER_SERVER_SERVICE } from 'ngx-logger';
 import {
   BiaEnvironmentService,
   BiaErrorHandler,
@@ -24,9 +25,8 @@ import {
   BiaSignalRService,
   BiaTranslateHttpLoader,
   getCurrentCulture,
-} from 'bia-ng/core';
-import { ViewsEffects, ViewsStore } from 'bia-ng/shared';
-import { LoggerModule, TOKEN_LOGGER_SERVER_SERVICE } from 'ngx-logger';
+} from 'packages/bia-ng/core/public-api';
+import { ViewsEffects, ViewsStore } from 'packages/bia-ng/shared/public-api';
 import { AppRoutingModule } from './app/app-routing.module';
 import { AppComponent } from './app/app.component';
 import { buildSpecificModules } from './app/build-specifics/bia-build-specifics';

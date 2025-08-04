@@ -1,4 +1,4 @@
-import { RoleMode } from 'bia-ng/models/enum';
+import { RoleMode } from 'packages/bia-ng/models/enum/public-api';
 import { Team } from './team';
 
 export class LoginParamDto {

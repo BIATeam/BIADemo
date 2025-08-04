@@ -9,8 +9,8 @@ import {
   ViewChild,
 } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { BiaTranslationService } from 'bia-ng/core';
-import { BaseDto } from 'bia-ng/models';
+import { BiaTranslationService } from 'packages/bia-ng/core/public-api';
+import { BaseDto } from 'packages/bia-ng/models/public-api';
 import { Popover } from 'primeng/popover';
 import { Tooltip } from 'primeng/tooltip';
 import { Subscription } from 'rxjs';

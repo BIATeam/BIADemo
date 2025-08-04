@@ -1,5 +1,8 @@
-﻿import { Injectable } from '@angular/core';
-import { CrudItemOptionsService, DictOptionDto } from 'bia-ng/shared';
+import { Injectable } from '@angular/core';
+import {
+  CrudItemOptionsService,
+  DictOptionDto,
+} from 'packages/bia-ng/shared/public-api';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 

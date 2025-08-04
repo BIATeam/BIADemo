@@ -1,7 +1,7 @@
-﻿import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { Component, Injector, ViewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { AuthService } from 'bia-ng/core';
+import { AuthService } from 'packages/bia-ng/core/public-api';
 import {
   BiaTableBehaviorControllerComponent,
   BiaTableComponent,
@@ -9,7 +9,7 @@ import {
   BiaTableHeaderComponent,
   CrudItemService,
   CrudItemsIndexComponent,
-} from 'bia-ng/shared';
+} from 'packages/bia-ng/shared/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { Permission } from 'src/app/shared/permission';
 import { PlaneTypeTableComponent } from '../../components/plane-type-table/plane-type-table.component';

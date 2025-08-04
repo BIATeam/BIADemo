@@ -1,4 +1,4 @@
-﻿import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -8,8 +8,8 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { BiaTranslationService } from 'bia-ng/core';
-import { SpinnerComponent } from 'bia-ng/shared';
+import { BiaTranslationService } from 'packages/bia-ng/core/public-api';
+import { SpinnerComponent } from 'packages/bia-ng/shared/public-api';
 import { Subscription } from 'rxjs';
 import { AppState } from 'src/app/store/state';
 import { PlaneFormComponent } from '../../components/plane-form/plane-form.component';

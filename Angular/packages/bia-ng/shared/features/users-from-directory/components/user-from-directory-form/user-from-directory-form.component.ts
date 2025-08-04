@@ -16,8 +16,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { AppSettingsService } from 'bia-ng/core';
-import { LdapDomain } from 'bia-ng/domains';
+import { AppSettingsService } from 'packages/bia-ng/core/public-api';
+import { LdapDomain } from 'packages/bia-ng/domains/public-api';
 import { AutoComplete } from 'primeng/autocomplete';
 import { ButtonDirective } from 'primeng/button';
 import { FloatLabel } from 'primeng/floatlabel';

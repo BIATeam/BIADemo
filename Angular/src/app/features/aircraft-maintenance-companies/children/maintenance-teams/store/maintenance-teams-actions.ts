@@ -1,5 +1,5 @@
-﻿import { createAction, props } from '@ngrx/store';
-import { DataResult } from 'bia-ng/models';
+import { createAction, props } from '@ngrx/store';
+import { DataResult } from 'packages/bia-ng/models/public-api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { maintenanceTeamCRUDConfiguration } from '../maintenance-team.constants';
 import { MaintenanceTeam } from '../model/maintenance-team';

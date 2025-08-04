@@ -7,7 +7,11 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ValidatorFn } from '@angular/forms';
-import { BaseDto, BiaFieldConfig, BiaFormLayoutConfig } from 'bia-ng/models';
+import {
+  BaseDto,
+  BiaFieldConfig,
+  BiaFormLayoutConfig,
+} from 'packages/bia-ng/models/public-api';
 import { BiaFormComponent } from '../../../../components/form/bia-form/bia-form.component';
 import { LayoutMode } from '../../../../components/layout/dynamic-layout/dynamic-layout.component';
 import { DictOptionDto } from '../../../../components/table/bia-table/dict-option-dto';

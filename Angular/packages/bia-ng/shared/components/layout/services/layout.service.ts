@@ -13,8 +13,15 @@ import {
   effect,
   signal,
 } from '@angular/core';
-import { BiaAppConstantsService, STORAGE_CULTURE_KEY } from 'bia-ng/core';
-import { AppConfig, BiaNavigation, ConfigDisplay } from 'bia-ng/models';
+import {
+  BiaAppConstantsService,
+  STORAGE_CULTURE_KEY,
+} from 'packages/bia-ng/core/public-api';
+import {
+  AppConfig,
+  BiaNavigation,
+  ConfigDisplay,
+} from 'packages/bia-ng/models/public-api';
 import { MenuItem } from 'primeng/api';
 import { BehaviorSubject, Subject, debounceTime } from 'rxjs';
 import { STORAGE_THEME_KEY } from './bia-theme.service';

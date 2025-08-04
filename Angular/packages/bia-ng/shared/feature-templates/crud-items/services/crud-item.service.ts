@@ -1,6 +1,9 @@
 import { Injectable, Injector } from '@angular/core';
-import { AbstractDas, BiaMessageService } from 'bia-ng/core';
-import { BaseDto } from 'bia-ng/models';
+import {
+  AbstractDas,
+  BiaMessageService,
+} from 'packages/bia-ng/core/public-api';
+import { BaseDto } from 'packages/bia-ng/models/public-api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { EMPTY, first, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';

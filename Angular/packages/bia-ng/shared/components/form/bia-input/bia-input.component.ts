@@ -26,7 +26,7 @@ import {
   BiaFieldConfig,
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
-} from 'bia-ng/models';
+} from 'packages/bia-ng/models/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { Checkbox } from 'primeng/checkbox';
 import { DatePicker } from 'primeng/datepicker';

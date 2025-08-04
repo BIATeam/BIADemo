@@ -27,7 +27,7 @@ import {
   BiaFieldConfig,
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
-} from 'bia-ng/models';
+} from 'packages/bia-ng/models/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { AutoFocusModule } from 'primeng/autofocus';
 import { Checkbox } from 'primeng/checkbox';

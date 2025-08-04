@@ -16,10 +16,16 @@ import {
   Validators,
 } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { BiaAppConstantsService, BiaOptionService } from 'bia-ng/core';
-import { BaseDto, OptionDto } from 'bia-ng/models';
-import { DtoState } from 'bia-ng/models/enum';
-import { DictOptionDto, JsonValidator } from 'bia-ng/shared';
+import {
+  BiaAppConstantsService,
+  BiaOptionService,
+} from 'packages/bia-ng/core/public-api';
+import { DtoState } from 'packages/bia-ng/models/enum/public-api';
+import { BaseDto, OptionDto } from 'packages/bia-ng/models/public-api';
+import {
+  DictOptionDto,
+  JsonValidator,
+} from 'packages/bia-ng/shared/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { Checkbox } from 'primeng/checkbox';

@@ -18,7 +18,7 @@ import {
   UntypedFormGroup,
 } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { BiaFormLayoutConfig } from 'bia-ng/models';
+import { BiaFormLayoutConfig } from 'packages/bia-ng/models/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { Badge } from 'primeng/badge';
 import { PanelModule } from 'primeng/panel';

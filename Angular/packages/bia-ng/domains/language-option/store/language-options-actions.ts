@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { OptionDto } from 'bia-ng/models';
+import { OptionDto } from 'packages/bia-ng/models/public-api';
 
 export namespace DomainLanguageOptionsActions {
   export const loadAll = createAction('[Domain Language Options] Load all');

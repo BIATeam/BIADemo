@@ -23,9 +23,12 @@ import {
   DomainUserOptionsActions,
   DomainUserOptionsStore,
   UserOptionModule,
-} from 'bia-ng/domains';
-import { OptionDto, TeamAdvancedFilterDto } from 'bia-ng/models';
-import { BiaAppState } from 'bia-ng/store';
+} from 'packages/bia-ng/domains/public-api';
+import {
+  OptionDto,
+  TeamAdvancedFilterDto,
+} from 'packages/bia-ng/models/public-api';
+import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { ButtonDirective } from 'primeng/button';
 import { FloatLabel } from 'primeng/floatlabel';
 import { Select } from 'primeng/select';

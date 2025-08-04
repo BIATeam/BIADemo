@@ -7,8 +7,12 @@ import {
 } from '@angular/common';
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { AppSettingsService, AuthService, Permission } from 'bia-ng/core';
-import { DomainUserOptionsStore } from 'bia-ng/domains';
+import {
+  AppSettingsService,
+  AuthService,
+  Permission,
+} from 'packages/bia-ng/core/public-api';
+import { DomainUserOptionsStore } from 'packages/bia-ng/domains/public-api';
 import {
   BiaTableBehaviorControllerComponent,
   BiaTableComponent,
@@ -17,7 +21,7 @@ import {
   CrudItemService,
   CrudItemsIndexComponent,
   UserAddFromLdapComponent,
-} from 'bia-ng/shared';
+} from 'packages/bia-ng/shared/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { skip } from 'rxjs/operators';

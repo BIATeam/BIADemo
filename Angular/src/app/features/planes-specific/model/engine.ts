@@ -1,4 +1,9 @@
-﻿import { Validators } from '@angular/forms';
+import { Validators } from '@angular/forms';
+import {
+  NumberMode,
+  PrimeNGFiltering,
+  PropType,
+} from 'packages/bia-ng/models/enum/public-api';
 import {
   BaseDto,
   BiaFieldConfig,
@@ -6,8 +11,7 @@ import {
   BiaFieldsConfig,
   OptionDto,
   VersionedDto,
-} from 'bia-ng/models';
-import { NumberMode, PrimeNGFiltering, PropType } from 'bia-ng/models/enum';
+} from 'packages/bia-ng/models/public-api';
 
 export interface Engine extends BaseDto, VersionedDto {
   reference: string;

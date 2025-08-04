@@ -1,6 +1,9 @@
-﻿import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, Injector } from '@angular/core';
-import { CrudItemEditComponent, SpinnerComponent } from 'bia-ng/shared';
+import {
+  CrudItemEditComponent,
+  SpinnerComponent,
+} from 'packages/bia-ng/shared/public-api';
 import { MaintenanceContractFormComponent } from '../../components/maintenance-contract-form/maintenance-contract-form.component';
 import { maintenanceContractCRUDConfiguration } from '../../maintenance-contract.constants';
 import { MaintenanceContract } from '../../model/maintenance-contract';

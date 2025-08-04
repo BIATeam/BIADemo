@@ -1,8 +1,8 @@
 import { Injectable, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AuthService } from 'bia-ng/core';
-import { BaseDto } from 'bia-ng/models';
-import { BiaAppState } from 'bia-ng/store';
+import { AuthService } from 'packages/bia-ng/core/public-api';
+import { BaseDto } from 'packages/bia-ng/models/public-api';
+import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable } from 'rxjs';
 import { CrudItemSignalRService } from '../../crud-items/services/crud-item-signalr.service';

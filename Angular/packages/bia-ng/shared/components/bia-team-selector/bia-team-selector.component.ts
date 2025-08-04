@@ -15,10 +15,15 @@ import {
   BiaTeamsActions,
   BiaTeamsStore,
   BiaTranslationService,
-} from 'bia-ng/core';
-import { AuthInfo, RoleDto, Team, TeamConfigDto } from 'bia-ng/models';
-import { RoleMode } from 'bia-ng/models/enum';
-import { BiaAppState } from 'bia-ng/store';
+} from 'packages/bia-ng/core/public-api';
+import { RoleMode } from 'packages/bia-ng/models/enum/public-api';
+import {
+  AuthInfo,
+  RoleDto,
+  Team,
+  TeamConfigDto,
+} from 'packages/bia-ng/models/public-api';
+import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { MultiSelect } from 'primeng/multiselect';
 import { Select } from 'primeng/select';
 import { Tooltip } from 'primeng/tooltip';

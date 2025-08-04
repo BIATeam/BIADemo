@@ -1,5 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { AppSettings } from 'bia-ng/models';
+import { AppSettings } from 'packages/bia-ng/models/public-api';
 
 export interface AppSettingsState {
   appSettings: AppSettings | null;

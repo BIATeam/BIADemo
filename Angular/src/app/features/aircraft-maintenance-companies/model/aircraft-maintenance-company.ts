@@ -1,4 +1,4 @@
-﻿import {
+import {
   BaseDto,
   BiaFieldConfig,
   BiaFieldsConfig,
@@ -6,7 +6,7 @@
   TeamDto,
   teamFieldsConfigurationColumns,
   VersionedDto,
-} from 'bia-ng/models';
+} from 'packages/bia-ng/models/public-api';
 
 // TODO after creation of CRUD Team AircraftMaintenanceCompany : adapt the model
 export interface AircraftMaintenanceCompany

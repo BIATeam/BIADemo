@@ -1,17 +1,17 @@
-﻿import { AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import {
   MemberFormNewComponent,
   MemberModule,
   MemberNewComponent,
-} from 'bia-ng/shared';
+} from 'packages/bia-ng/shared/public-api';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { MaintenanceTeamService } from '../../../../services/maintenance-team.service';
 
 @Component({
   selector: 'app-maintenance-team-member-new',
   templateUrl:
-    '../../../../../../../../../../node_modules/bia-ng/templates/feature-templates/members/views/member-new/member-new.component.html',
+    '../../../../../../../../../../packages/bia-ng/shared/feature-templates/members/views/member-new/member-new.component.html',
   imports: [MemberModule, AsyncPipe, MemberFormNewComponent],
 })
 export class MaintenanceTeamMemberNewComponent
