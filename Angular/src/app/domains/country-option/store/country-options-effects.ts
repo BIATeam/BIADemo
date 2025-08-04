@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import {
+  BiaMessageService,
+  BiaOnlineOfflineService,
+} from 'packages/bia-ng/core/public-api';
 import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
-import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
 import { CountryOptionDas } from '../services/country-option-das.service';
 import { DomainCountryOptionsActions } from './country-options-actions';
 /**

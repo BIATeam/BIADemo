@@ -1,11 +1,11 @@
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { Component, HostBinding } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { BiaTeamsStore } from 'packages/bia-ng/core/public-api';
+import { Team } from 'packages/bia-ng/models/public-api';
 import { ButtonDirective } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';
 import { Observable } from 'rxjs';
-import { Team } from 'src/app/domains/bia-domains/team/model/team';
-import { getAllTeams } from 'src/app/domains/bia-domains/team/store/team.state';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
 import { randomReviewPlane } from '../../store/hangfire-actions';
@@ -22,7 +22,7 @@ export class HangfireIndexComponent {
   teamTypeId: typeof TeamTypeId = TeamTypeId;
 
   constructor(private store: Store<AppState>) {
-    this.allTeams$ = this.store.select(getAllTeams);
+    this.allTeams$ = this.store.select(BiaTeamsStore.getAllTeams);
   }
 
   randomReviewPlane(teamId: number) {

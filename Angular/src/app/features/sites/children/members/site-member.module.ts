@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
-import { DynamicLayoutComponent } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
-import { memberCRUDConfiguration } from 'src/app/shared/bia-shared/feature-templates/members/member.constants';
-import { MemberModule } from 'src/app/shared/bia-shared/feature-templates/members/member.module';
-import { MemberImportComponent } from 'src/app/shared/bia-shared/feature-templates/members/views/member-import/member-import.component';
+import { PermissionGuard } from 'packages/bia-ng/core/public-api';
+import {
+  DynamicLayoutComponent,
+  memberCRUDConfiguration,
+  MemberImportComponent,
+  MemberModule,
+} from 'packages/bia-ng/shared/public-api';
 import { Permission } from 'src/app/shared/permission';
 
 import { SiteMemberEditComponent } from './views/site-member-edit/site-member-edit.component';

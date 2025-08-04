@@ -1,8 +1,10 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import {
+  CrudItemEditComponent,
+  SpinnerComponent,
+} from 'packages/bia-ng/shared/public-api';
 import { firstValueFrom } from 'rxjs';
-import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
-import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
 import { airportCRUDConfiguration } from '../../airport.constants';
 import { AirportFormComponent } from '../../components/airport-form/airport-form.component';
 import { Airport } from '../../model/airport';

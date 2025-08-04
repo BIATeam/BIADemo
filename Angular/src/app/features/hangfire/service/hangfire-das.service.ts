@@ -1,5 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
-import { GenericDas } from 'src/app/core/bia-core/services/generic-das.service';
+import { GenericDas } from 'packages/bia-ng/core/public-api';
 
 @Injectable({
   providedIn: 'root',

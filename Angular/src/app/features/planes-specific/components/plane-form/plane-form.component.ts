@@ -9,19 +9,23 @@ import {
 } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { clone } from 'packages/bia-ng/core/public-api';
+import { DtoState } from 'packages/bia-ng/models/enum/public-api';
+import {
+  BiaFieldsConfig,
+  KeyValuePair,
+} from 'packages/bia-ng/models/public-api';
+import {
+  BiaFormComponent,
+  BiaTableHeaderComponent,
+  CrudHelperService,
+  CrudItemFormComponent,
+} from 'packages/bia-ng/shared/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { Checkbox } from 'primeng/checkbox';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
 import { MultiSelect } from 'primeng/multiselect';
-import { BiaFormComponent } from 'src/app/shared/bia-shared/components/form/bia-form/bia-form.component';
-import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
-import { CrudItemFormComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component';
-import { BiaFieldsConfig } from 'src/app/shared/bia-shared/model/bia-field-config';
-import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
-import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
-import { CrudHelperService } from 'src/app/shared/bia-shared/services/crud-helper.service';
-import { clone } from 'src/app/shared/bia-shared/utils';
 import { EngineTableComponent } from '../../children/engines/components/engine-table/engine-table.component';
 import { engineCRUDConfiguration } from '../../children/engines/engine.constants';
 import { Engine } from '../../model/engine';
@@ -31,7 +35,7 @@ import { PlaneSpecific } from '../../model/plane-specific';
   selector: 'app-plane-specific-form',
   templateUrl: 'plane-form.component.html',
   styleUrls: [
-    '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
+    '../../../../../../packages/bia-ng/shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
   ],
   imports: [
     PrimeTemplate,

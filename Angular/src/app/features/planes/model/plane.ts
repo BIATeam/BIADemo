@@ -1,24 +1,24 @@
 import { Validators } from '@angular/forms';
 import {
+  NumberMode,
+  PrimeNGFiltering,
+  PropType,
+} from 'packages/bia-ng/models/enum/public-api';
+import {
+  BaseDto,
   BiaFieldConfig,
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
   BiaFieldsConfig,
-  NumberMode,
-  PrimeNGFiltering,
-  PropType,
-} from 'src/app/shared/bia-shared/model/bia-field-config';
-import {
   BiaFormLayoutConfig,
   BiaFormLayoutConfigColumnSize,
   BiaFormLayoutConfigField,
   BiaFormLayoutConfigGroup,
   BiaFormLayoutConfigRow,
-} from 'src/app/shared/bia-shared/model/bia-form-layout-config';
-import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
-import { FixableDto } from 'src/app/shared/bia-shared/model/dto/fixable-dto';
-import { VersionedDto } from 'src/app/shared/bia-shared/model/dto/versioned-dto';
-import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+  FixableDto,
+  OptionDto,
+  VersionedDto,
+} from 'packages/bia-ng/models/public-api';
 
 // TODO after creation of CRUD Plane : adapt the model
 export interface Plane extends BaseDto, VersionedDto, FixableDto {

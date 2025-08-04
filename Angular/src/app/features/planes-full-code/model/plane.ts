@@ -1,4 +1,4 @@
-import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+import { OptionDto } from 'packages/bia-ng/models/public-api';
 
 export interface Plane {
   id: number;

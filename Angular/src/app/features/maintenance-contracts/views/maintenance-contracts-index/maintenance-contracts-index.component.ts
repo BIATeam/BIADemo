@@ -1,14 +1,16 @@
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { Component, Injector, ViewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { AuthService } from 'packages/bia-ng/core/public-api';
+import {
+  BiaTableBehaviorControllerComponent,
+  BiaTableComponent,
+  BiaTableControllerComponent,
+  BiaTableHeaderComponent,
+  CrudItemService,
+  CrudItemsIndexComponent,
+} from 'packages/bia-ng/shared/public-api';
 import { PrimeTemplate } from 'primeng/api';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { BiaTableBehaviorControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
-import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
-import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
-import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
-import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
-import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
 import { Permission } from 'src/app/shared/permission';
 import { MaintenanceContractTableComponent } from '../../components/maintenance-contract-table/maintenance-contract-table.component';
 import { maintenanceContractCRUDConfiguration } from '../../maintenance-contract.constants';

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
+import { PermissionGuard } from 'packages/bia-ng/core/public-api';
 import { Permission } from 'src/app/shared/permission';
 
 import { HangfireEffects } from './store/hangfire-effects';

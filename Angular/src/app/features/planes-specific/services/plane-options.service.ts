@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { OptionDto } from 'packages/bia-ng/models/public-api';
+import {
+  CrudItemOptionsService,
+  DictOptionDto,
+} from 'packages/bia-ng/shared/public-api';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { getAllAirportOptions } from 'src/app/domains/airport-option/store/airport-option.state';
 import { DomainAirportOptionsActions } from 'src/app/domains/airport-option/store/airport-options-actions';
 import { getAllPlaneTypeOptions } from 'src/app/domains/plane-type-option/store/plane-type-option.state';
 import { DomainPlaneTypeOptionsActions } from 'src/app/domains/plane-type-option/store/plane-type-options-actions';
-import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
-import { CrudItemOptionsService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-options.service';
-import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { AppState } from 'src/app/store/state';
 
 @Injectable({

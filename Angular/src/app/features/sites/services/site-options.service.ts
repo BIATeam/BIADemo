@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CrudItemOptionsService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-options.service';
+import { CrudItemOptionsService } from 'packages/bia-ng/shared/public-api';
 
 @Injectable({
   providedIn: 'root',

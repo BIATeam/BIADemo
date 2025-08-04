@@ -1,17 +1,19 @@
 import { Validators } from '@angular/forms';
 import {
-  BiaFieldConfig,
-  BiaFieldNumberFormat,
-  BiaFieldsConfig,
   NumberMode,
   PrimeNGFiltering,
   PropType,
-} from 'src/app/shared/bia-shared/model/bia-field-config';
-import { BiaFormLayoutConfig } from 'src/app/shared/bia-shared/model/bia-form-layout-config';
-import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
-import { FixableDto } from 'src/app/shared/bia-shared/model/dto/fixable-dto';
-import { VersionedDto } from 'src/app/shared/bia-shared/model/dto/versioned-dto';
-import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+} from 'packages/bia-ng/models/enum/public-api';
+import {
+  BaseDto,
+  BiaFieldConfig,
+  BiaFieldNumberFormat,
+  BiaFieldsConfig,
+  BiaFormLayoutConfig,
+  FixableDto,
+  OptionDto,
+  VersionedDto,
+} from 'packages/bia-ng/models/public-api';
 
 // TODO after creation of CRUD Engine : adapt the model
 export interface Engine extends BaseDto, VersionedDto, FixableDto {

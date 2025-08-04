@@ -3,7 +3,7 @@ import { createReducer, on } from '@ngrx/store';
 import {
   CrudState,
   DEFAULT_CRUD_STATE,
-} from 'src/app/shared/bia-shared/model/crud-state';
+} from 'packages/bia-ng/models/public-api';
 import { MaintenanceTeam } from '../model/maintenance-team';
 import { FeatureMaintenanceTeamsActions } from './maintenance-teams-actions';
 

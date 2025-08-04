@@ -1,13 +1,17 @@
 import { APP_BASE_HREF, NgIf } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
-import { NavigationService } from 'src/app/core/bia-core/services/navigation.service';
-import { LayoutComponent } from '../../bia-shared/components/layout/layout.component';
-import { BiaLayoutService } from '../../bia-shared/components/layout/services/layout.service';
-import { BiaUltimaLayoutComponent } from '../../bia-shared/components/layout/ultima/layout/ultima-layout.component';
-import { SpinnerComponent } from '../../bia-shared/components/spinner/spinner.component';
+import {
+  AuthService,
+  BiaTranslationService,
+  NavigationService,
+} from 'packages/bia-ng/core/public-api';
+import {
+  BiaLayoutService,
+  BiaUltimaLayoutComponent,
+  LayoutComponent,
+  SpinnerComponent,
+} from 'packages/bia-ng/shared/public-api';
 
 @Component({
   selector: 'app-custom-layout',

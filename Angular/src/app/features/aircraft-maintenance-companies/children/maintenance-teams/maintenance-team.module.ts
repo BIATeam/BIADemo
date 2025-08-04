@@ -2,13 +2,13 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
-import { AirportOptionModule } from 'src/app/domains/airport-option/airport-option.module';
-import { CountryOptionModule } from 'src/app/domains/country-option/country-option.module';
+import { PermissionGuard } from 'packages/bia-ng/core/public-api';
 import {
   DynamicLayoutComponent,
   LayoutMode,
-} from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
+} from 'packages/bia-ng/shared/public-api';
+import { AirportOptionModule } from 'src/app/domains/airport-option/airport-option.module';
+import { CountryOptionModule } from 'src/app/domains/country-option/country-option.module';
 import { Permission } from 'src/app/shared/permission';
 import { aircraftMaintenanceCompanyCRUDConfiguration } from '../../aircraft-maintenance-company.constants';
 import { AircraftMaintenanceCompaniesEffects } from '../../store/aircraft-maintenance-companies-effects';

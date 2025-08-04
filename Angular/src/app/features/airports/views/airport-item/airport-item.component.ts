@@ -2,10 +2,12 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
+import {
+  BiaLayoutService,
+  CrudItemItemComponent,
+  SpinnerComponent,
+} from 'packages/bia-ng/shared/public-api';
 import { first } from 'rxjs/operators';
-import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/services/layout.service';
-import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
-import { CrudItemItemComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component';
 import { AppState } from 'src/app/store/state';
 import { Airport } from '../../model/airport';
 import { AirportService } from '../../services/airport.service';
@@ -13,9 +15,9 @@ import { AirportService } from '../../services/airport.service';
 @Component({
   selector: 'app-airports-item',
   templateUrl:
-    '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
+    '../../../../../../packages/bia-ng/shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
   styleUrls: [
-    '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
+    '../../../../../../packages/bia-ng/shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
   ],
   imports: [RouterOutlet, NgIf, AsyncPipe, SpinnerComponent],
 })

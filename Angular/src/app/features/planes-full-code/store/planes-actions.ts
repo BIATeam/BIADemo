@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
+import { DataResult } from 'packages/bia-ng/models/public-api';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { Plane } from '../model/plane';
 import { storeKey } from '../plane.constants';
 

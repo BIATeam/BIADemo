@@ -1,14 +1,12 @@
 import {
+  BaseDto,
   BiaFieldConfig,
   BiaFieldsConfig,
-} from 'src/app/shared/bia-shared/model/bia-field-config';
-import { BiaFormLayoutConfig } from 'src/app/shared/bia-shared/model/bia-form-layout-config';
-import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
-import {
+  BiaFormLayoutConfig,
   TeamDto,
   teamFieldsConfigurationColumns,
-} from 'src/app/shared/bia-shared/model/dto/team-dto';
-import { VersionedDto } from 'src/app/shared/bia-shared/model/dto/versioned-dto';
+  VersionedDto,
+} from 'packages/bia-ng/models/public-api';
 
 // TODO after creation of CRUD Team AircraftMaintenanceCompany : adapt the model
 export interface AircraftMaintenanceCompany

@@ -1,7 +1,7 @@
 import {
   CrudConfig,
   FormReadOnlyMode,
-} from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
+} from 'packages/bia-ng/shared/public-api';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { Plane, planeFieldsConfiguration } from './model/plane';
 import {

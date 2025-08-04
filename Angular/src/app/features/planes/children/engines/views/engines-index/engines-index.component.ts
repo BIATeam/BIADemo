@@ -1,16 +1,18 @@
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { AuthService } from 'packages/bia-ng/core/public-api';
+import {
+  BiaTableBehaviorControllerComponent,
+  BiaTableComponent,
+  BiaTableControllerComponent,
+  BiaTableHeaderComponent,
+  CrudItemService,
+  CrudItemsIndexComponent,
+} from 'packages/bia-ng/shared/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { filter } from 'rxjs';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { BiaTableBehaviorControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
-import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
-import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
-import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
-import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
-import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
 import { Permission } from 'src/app/shared/permission';
 import { EngineTableComponent } from '../../components/engine-table/engine-table.component';
 import { engineCRUDConfiguration } from '../../engine.constants';

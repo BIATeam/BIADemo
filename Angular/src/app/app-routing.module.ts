@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import {
+  LayoutComponent,
+  PageLayoutComponent,
+} from 'packages/bia-ng/shared/public-api';
 import { HOME_ROUTES } from './features/home/home.module';
-import { LayoutComponent } from './shared/bia-shared/components/layout/layout.component';
-import { PageLayoutComponent } from './shared/bia-shared/components/layout/page-layout.component';
 
 const routes: Routes = [
   {

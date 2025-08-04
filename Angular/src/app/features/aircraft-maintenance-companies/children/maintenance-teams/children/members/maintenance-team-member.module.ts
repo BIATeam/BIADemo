@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
-import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
-import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
-import { MemberModule } from 'src/app/shared/bia-shared/feature-templates/members/member.module';
+import { PermissionGuard } from 'packages/bia-ng/core/public-api';
+import {
+  FullPageLayoutComponent,
+  MemberModule,
+  PopupLayoutComponent,
+} from 'packages/bia-ng/shared/public-api';
 import { Permission } from 'src/app/shared/permission';
 
 import { MaintenanceTeamMemberEditComponent } from './views/maintenance-team-member-edit/maintenance-team-member-edit.component';

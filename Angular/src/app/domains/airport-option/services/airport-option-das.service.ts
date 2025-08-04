@@ -1,6 +1,6 @@
 import { Injectable, Injector } from '@angular/core';
-import { AbstractDas } from 'src/app/core/bia-core/services/abstract-das.service';
-import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+import { AbstractDas } from 'packages/bia-ng/core/public-api';
+import { OptionDto } from 'packages/bia-ng/models/public-api';
 
 @Injectable({
   providedIn: 'root',

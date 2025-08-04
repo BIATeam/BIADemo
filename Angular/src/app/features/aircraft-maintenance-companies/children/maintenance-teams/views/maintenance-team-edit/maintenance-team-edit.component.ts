@@ -1,9 +1,11 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
+import {
+  CrudItemEditComponent,
+  FormReadOnlyMode,
+  SpinnerComponent,
+} from 'packages/bia-ng/shared/public-api';
 import { filter } from 'rxjs';
-import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
-import { FormReadOnlyMode } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
-import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
 import { Permission } from 'src/app/shared/permission';
 import { MaintenanceTeamFormComponent } from '../../components/maintenance-team-form/maintenance-team-form.component';
 import { maintenanceTeamCRUDConfiguration } from '../../maintenance-team.constants';
