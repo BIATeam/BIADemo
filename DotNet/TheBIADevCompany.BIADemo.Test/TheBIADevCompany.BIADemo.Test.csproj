@@ -12,8 +12,6 @@
     <DefineConstants>TRACE;$(DefineConstants);BIA_BACK_TO_BACK_AUTH;BIA_FRONT_FEATURE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>
-    </OutputPath>
     <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>TRACE;$(DefineConstants);BIA_BACK_TO_BACK_AUTH;BIA_FRONT_FEATURE</DefineConstants>
@@ -67,7 +65,7 @@
 	  <Compile Remove="**\UserModelBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="BIA.Net.Core.Test" Version="5.0.2" />
+    <PackageReference Include="BIA.Net.Core.Test" Version="5.1.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.*" />
     <PackageReference Include="Moq" Version="4.20.*" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.9.*" />

@@ -166,7 +166,7 @@ namespace BIA.Net.Core.Domain.Mapper
         /// <returns>A string for a time cell.</returns>
         public static string CSVTime(TimeSpan? x)
         {
-            return x?.ToString("HH:mm");
+            return x is null ? string.Empty : $"{x?.Hours}:{x?.Minutes}";
         }
 
         /// <summary>

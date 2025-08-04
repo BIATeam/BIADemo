@@ -1,4 +1,4 @@
-// <copyright file="Notification.cs" company="BIA">
+// <copyright file="BaseNotification.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -13,7 +13,7 @@ namespace BIA.Net.Core.Domain.Notification.Entities
     /// <summary>
     /// The Notification entity.
     /// </summary>
-    public class Notification : BaseEntityVersioned<int>
+    public abstract class BaseNotification : BaseEntityVersioned<int>
     {
         /// <summary>
         /// Gets or sets the title.

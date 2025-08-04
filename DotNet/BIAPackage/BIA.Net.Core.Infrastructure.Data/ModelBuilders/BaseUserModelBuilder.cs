@@ -11,7 +11,7 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
     /// <summary>
     /// Class used to update the model builder for user domain.
     /// </summary>
-    public class BaseUserModelBuilder
+    public abstract class BaseUserModelBuilder
     {
         /// <summary>
         /// Create the user model.

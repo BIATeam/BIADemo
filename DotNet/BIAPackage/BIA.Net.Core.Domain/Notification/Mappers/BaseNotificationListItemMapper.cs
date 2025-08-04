@@ -1,4 +1,4 @@
-// <copyright file="NotificationListItemMapper.cs" company="BIA">
+// <copyright file="BaseNotificationListItemMapper.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -18,20 +18,21 @@ namespace BIA.Net.Core.Domain.Notification.Mappers
     using BIA.Net.Core.Domain.User;
 
     /// <summary>
-    /// The mapper used for user.
+    /// Base Notification List Item Mapper.
     /// </summary>
-    /// <remarks>
-    /// Initializes a new instance of the <see cref="NotificationListItemMapper"/> class.
-    /// </remarks>
-    /// <param name="userContext">the user context.</param>
-    public class NotificationListItemMapper(UserContext userContext) : BaseMapper<NotificationListItemDto, Notification, int>
+    /// <typeparam name="TBaseNotificationListItemDto">The type of the base notification list item dto.</typeparam>
+    /// <typeparam name="TBaseNotification">The type of the base notification.</typeparam>
+    /// <seealso cref="BIA.Net.Core.Domain.Mapper.BaseMapper&lt;TBaseNotificationListItemDto, TBaseNotification, int&gt;" />
+    public abstract class BaseNotificationListItemMapper<TBaseNotificationListItemDto, TBaseNotification>(UserContext userContext) : BaseMapper<TBaseNotificationListItemDto, TBaseNotification, int>
+        where TBaseNotificationListItemDto : BaseNotificationListItemDto, new()
+        where TBaseNotification : BaseNotification, new()
     {
         /// <inheritdoc />
-        public override ExpressionCollection<Notification> ExpressionCollection
+        public override ExpressionCollection<TBaseNotification> ExpressionCollection
         {
             get
             {
-                return new ExpressionCollection<Notification>(base.ExpressionCollection)
+                return new ExpressionCollection<TBaseNotification>(base.ExpressionCollection)
                 {
                     { HeaderName.TitleTranslated, notification => notification.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Title).FirstOrDefault() ?? notification.Title },
                     { HeaderName.DescriptionTranslated, notification => notification.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Description).FirstOrDefault() ?? notification.Description },
@@ -47,13 +48,13 @@ namespace BIA.Net.Core.Domain.Notification.Mappers
         }
 
         /// <inheritdoc />
-        public override ExpressionCollection<Notification> ExpressionCollectionFilterIn
+        public override ExpressionCollection<TBaseNotification> ExpressionCollectionFilterIn
         {
             get
             {
-                return new ExpressionCollection<Notification>(
+                return new ExpressionCollection<TBaseNotification>(
                     base.ExpressionCollectionFilterIn,
-                    new ExpressionCollection<Notification>()
+                    new ExpressionCollection<TBaseNotification>()
                     {
                         { HeaderName.Type, notification => notification.Type.Id },
                         { HeaderName.CreatedBy, notification => notification.CreatedBy.Id },
@@ -68,9 +69,9 @@ namespace BIA.Net.Core.Domain.Notification.Mappers
         private UserContext UserContext { get; set; } = userContext;
 
         /// <inheritdoc />
-        public override Expression<Func<Notification, NotificationListItemDto>> EntityToDto(string mapperMode)
+        public override Expression<Func<TBaseNotification, TBaseNotificationListItemDto>> EntityToDto(string mapperMode)
         {
-            return this.EntityToDto().CombineMapping(entity => new NotificationListItemDto
+            return this.EntityToDto().CombineMapping(entity => new TBaseNotificationListItemDto
             {
                 TitleTranslated = entity.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Title).FirstOrDefault() ?? entity.Title,
                 DescriptionTranslated = entity.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Description).FirstOrDefault() ?? entity.Description,
@@ -108,7 +109,7 @@ namespace BIA.Net.Core.Domain.Notification.Mappers
         }
 
         /// <inheritdoc />
-        public override Dictionary<string, Func<string>> DtoToCellMapping(NotificationListItemDto dto)
+        public override Dictionary<string, Func<string>> DtoToCellMapping(TBaseNotificationListItemDto dto)
         {
             return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
             {

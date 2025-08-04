@@ -20,10 +20,14 @@ namespace BIA.Net.Core.Domain.User
         /// <summary>
         /// Gets the expression used to select user.
         /// </summary>
-        /// <returns>The expression.</returns>
-        public static Expression<Func<TUser, BaseUserDto>> EntityToDto()
+        /// <typeparam name="TBaseUserDto">The type of the base user dto.</typeparam>
+        /// <returns>
+        /// The expression.
+        /// </returns>
+        public static Expression<Func<TUser, TBaseUserDto>> EntityToDto<TBaseUserDto>()
+            where TBaseUserDto : BaseUserDto, new()
         {
-            return user => new BaseUserDto
+            return user => new TBaseUserDto
             {
                 Id = user.Id,
                 FirstName = user.FirstName,

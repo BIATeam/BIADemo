@@ -78,7 +78,7 @@ export class BiaFormComponent<TDto extends { id: number }>
   @Input() fields: BiaFieldConfig<TDto>[];
   @Input() formLayoutConfig?: BiaFormLayoutConfig<TDto>;
   @Input() formValidators?: ValidatorFn[];
-  @Input() formReadOnlyMode: FormReadOnlyMode;
+  @Input() formReadOnlyMode: FormReadOnlyMode = FormReadOnlyMode.off;
   @Input() dictOptionDtos: DictOptionDto[];
   @Input() isAdd?: boolean;
   @Input() isCrudItemOutdated = false;

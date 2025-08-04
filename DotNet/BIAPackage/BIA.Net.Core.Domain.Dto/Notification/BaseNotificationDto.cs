@@ -1,4 +1,4 @@
-// <copyright file="NotificationDto.cs" company="BIA">
+// <copyright file="BaseNotificationDto.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -12,7 +12,7 @@ namespace BIA.Net.Core.Domain.Dto.Notification
     /// <summary>
     /// The DTO used for notifications.
     /// </summary>
-    public class NotificationDto : BaseDto<int>
+    public abstract class BaseNotificationDto : BaseDto<int>
     {
         /// <summary>
         /// Gets or sets the title.
