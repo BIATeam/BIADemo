@@ -51,7 +51,7 @@ function ReplaceInProjectRec {
 
 # Switch imports to bia-ng imports
 ReplaceInProject -Source $SourceFrontEnd -OldRegexp "import\s*{\s*([^}]+)\s*}\s*from\s*[']packages\/(bia-ng\/[^']+)\/public-api['];" -NewRegexp 'import { $1 } from ''$2'';' -Include *.ts
-ReplaceInProject -Source $SourceFrontEnd -OldRegexp "((templateUrl:|styleUrls: \[)[\s]*'[\S]*\/)packages\/bia-ng\/([\S]*')" -NewRegexp '$1node_modules/bia-ng/templates/$3' -Include *.ts
+ReplaceInProject -Source $SourceFrontEnd -OldRegexp "((templateUrl:|styleUrls: \[)[\s]*'[\S]*\/)packages\/bia-ng\/shared\/([\S]*')" -NewRegexp '$1node_modules/bia-ng/templates/$3' -Include *.ts
 
 # FRONT END
 # Set-Location $SourceFrontEnd
