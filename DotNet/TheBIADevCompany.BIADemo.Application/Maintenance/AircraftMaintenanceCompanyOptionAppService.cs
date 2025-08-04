@@ -12,10 +12,10 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
     using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+    using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
     using TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers;
     using TheBIADevCompany.BIADemo.Domain.User;
-    using TheBIADevCompany.BIADemo.Domain.User.Mappers;
 
     /// <summary>
     /// The application service used for aircraftMaintenanceCompany option.
@@ -36,7 +36,7 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
 
             this.FiltersContext.Add(
                 AccessMode.Update,
-                TeamAppService.UpdateSpecification<AircraftMaintenanceCompany>(TeamTypeId.AircraftMaintenanceCompany, principal));
+                TeamAppService.UpdateSpecification<AircraftMaintenanceCompany, UserDataDto>(TeamTypeId.AircraftMaintenanceCompany, principal));
         }
     }
 }

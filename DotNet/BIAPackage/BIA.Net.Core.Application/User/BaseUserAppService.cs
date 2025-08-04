@@ -40,7 +40,7 @@ namespace BIA.Net.Core.Application.User
     /// <typeparam name="TUserMapper">The type of user mapper.</typeparam>
     /// <typeparam name="TUserFromDirectoryDto">The type of user from directory dto.</typeparam>
     /// <typeparam name="TUserFromDirectory">The type of user from directory.</typeparam>
-    public class BaseUserAppService<TUserDto, TUser, TUserMapper, TUserFromDirectoryDto, TUserFromDirectory> : CrudAppServiceBase<TUserDto, TUser, int, PagingFilterFormatDto, TUserMapper>, IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory>
+    public abstract class BaseUserAppService<TUserDto, TUser, TUserMapper, TUserFromDirectoryDto, TUserFromDirectory> : CrudAppServiceBase<TUserDto, TUser, int, PagingFilterFormatDto, TUserMapper>, IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory>
         where TUserDto : BaseUserDto, new()
         where TUser : BaseEntityUser, IEntity<int>, new()
         where TUserMapper : BaseUserMapper<TUserDto, TUser>
@@ -93,7 +93,7 @@ namespace BIA.Net.Core.Application.User
         /// <param name="identityProviderRepository">The identity provider repository.</param>
         /// <param name="userIdentityKeyDomainService">The user Identity Key Domain Service.</param>
         /// <param name="principal">The principal.</param>
-        public BaseUserAppService(
+        protected BaseUserAppService(
             ITGenericRepository<TUser, int> repository,
             IBaseUserSynchronizeDomainService<TUser, TUserFromDirectory> userSynchronizeDomainService,
             IOptions<BiaNetSection> configuration,

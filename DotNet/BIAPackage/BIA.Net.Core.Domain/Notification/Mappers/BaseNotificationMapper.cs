@@ -1,4 +1,4 @@
-// <copyright file="NotificationMapper.cs" company="BIA">
+// <copyright file="BaseNotificationMapper.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -21,20 +21,20 @@ namespace BIA.Net.Core.Domain.Notification.Mappers
     using BIA.Net.Core.Domain.User;
 
     /// <summary>
-    /// The mapper used for user.
+    /// Base Notification Mapper.
     /// </summary>
-    /// <remarks>
-    /// Initializes a new instance of the <see cref="NotificationMapper"/> class.
-    /// </remarks>
-    /// <param name="userContext">the user context.</param>
-    public class NotificationMapper(UserContext userContext) : BaseMapper<NotificationDto, Notification, int>
+    /// <typeparam name="TBaseNotificationDto">The type of the base notification dto.</typeparam>
+    /// <typeparam name="TBaseNotification">The type of the base notification.</typeparam>
+    public abstract class BaseNotificationMapper<TBaseNotificationDto, TBaseNotification>(UserContext userContext) : BiaBaseMapper<TBaseNotificationDto, TBaseNotification, int>
+        where TBaseNotificationDto : BaseNotificationDto, new()
+        where TBaseNotification : BaseNotification, new()
     {
         /// <inheritdoc />
-        public override ExpressionCollection<Notification> ExpressionCollection
+        public override ExpressionCollection<TBaseNotification> ExpressionCollection
         {
             get
             {
-                return new ExpressionCollection<Notification>(base.ExpressionCollection)
+                return new ExpressionCollection<TBaseNotification>(base.ExpressionCollection)
                 {
                     { HeaderName.Title, notification => notification.Title },
                     { HeaderName.Description, notification => notification.Description },
@@ -51,13 +51,13 @@ namespace BIA.Net.Core.Domain.Notification.Mappers
         }
 
         /// <inheritdoc />
-        public override ExpressionCollection<Notification> ExpressionCollectionFilterIn
+        public override ExpressionCollection<TBaseNotification> ExpressionCollectionFilterIn
         {
             get
             {
-                return new ExpressionCollection<Notification>(
+                return new ExpressionCollection<TBaseNotification>(
                     base.ExpressionCollectionFilterIn,
-                    new ExpressionCollection<Notification>()
+                    new ExpressionCollection<TBaseNotification>()
                     {
                         { HeaderName.Type, notification => notification.Type.Id },
                         { HeaderName.CreatedBy, notification => notification.CreatedBy.Id },
@@ -72,7 +72,7 @@ namespace BIA.Net.Core.Domain.Notification.Mappers
         private UserContext UserContext { get; set; } = userContext;
 
         /// <inheritdoc />
-        public override void DtoToEntity(NotificationDto dto, ref Notification entity)
+        public override void DtoToEntity(TBaseNotificationDto dto, ref TBaseNotification entity)
         {
             base.DtoToEntity(dto, ref entity);
 
@@ -190,9 +190,9 @@ namespace BIA.Net.Core.Domain.Notification.Mappers
         }
 
         /// <inheritdoc />
-        public override Expression<Func<Notification, NotificationDto>> EntityToDto(string mapperMode)
+        public override Expression<Func<TBaseNotification, TBaseNotificationDto>> EntityToDto(string mapperMode)
         {
-            return this.EntityToDto().CombineMapping(entity => new NotificationDto
+            return this.EntityToDto().CombineMapping(entity => new TBaseNotificationDto
             {
                 Title = entity.Title,
                 Description = entity.Description,
@@ -252,7 +252,7 @@ namespace BIA.Net.Core.Domain.Notification.Mappers
         }
 
         /// <inheritdoc/>
-        public override Expression<Func<Notification, object>>[] IncludesBeforeDelete()
+        public override Expression<Func<TBaseNotification, object>>[] IncludesBeforeDelete()
         {
             return
             [

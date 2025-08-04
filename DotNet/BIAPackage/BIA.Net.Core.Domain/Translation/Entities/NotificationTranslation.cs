@@ -25,7 +25,7 @@ namespace BIA.Net.Core.Domain.Translation.Entities
         /// <summary>
         ///  Gets or sets the notification type.
         /// </summary>
-        public Notification Notification { get; set; }
+        public BaseNotification Notification { get; set; }
 
         /// <summary>
         /// Gets or sets the notification type id.

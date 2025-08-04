@@ -1,71 +1,61 @@
-// <copyright file="UsersController.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+﻿// <copyright file="BaseUsersController.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
-// #define UseHubForClientInUser
-namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
+namespace BIA.Net.Core.Presentation.Api.Controller.User
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-#if UseHubForClientInUser
-    using BIA.Net.Core.Application.Services;
-#endif
+    using BIA.Net.Core.Application.User;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
+#pragma warning disable BIA001 // Forbidden reference to Domain layer in Presentation layer
+    using BIA.Net.Core.Domain.Entity.Interface;
+    using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.User.Entities;
+#pragma warning restore BIA001 // Forbidden reference to Domain layer in Presentation layer
     using BIA.Net.Core.Presentation.Api.Controller.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
-    using TheBIADevCompany.BIADemo.Application.User;
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
 
     /// <summary>
     /// The API controller used to manage users.
     /// </summary>
-    public partial class UsersController : BiaControllerBase
+    /// <typeparam name="TUserDto">The type of the user dto.</typeparam>
+    /// <typeparam name="TUser">The type of the user.</typeparam>
+    /// <typeparam name="TUserFromDirectoryDto">The type of the user from directory dto.</typeparam>
+    /// <typeparam name="TUserFromDirectory">The type of the user from directory.</typeparam>
+    /// <seealso cref="BIA.Net.Core.Presentation.Api.Controller.Base.BiaControllerBase" />
+    public abstract class BaseUsersController<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory> : BiaControllerBase
+        where TUserDto : BaseUserDto, new()
+        where TUser : BaseEntityUser, IEntity<int>, new()
+        where TUserFromDirectoryDto : BaseUserFromDirectoryDto, new()
+        where TUserFromDirectory : IUserFromDirectory, new()
     {
         /// <summary>
         /// The service user.
         /// </summary>
-        private readonly IUserAppService userService;
-
-#if UseHubForClientInUser
-        private readonly IClientForHubService clientForHubService;
-#endif
+        private readonly IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory> userService;
 
         /// <summary>
         /// The configuration of the BiaNet section.
         /// </summary>
         private readonly BiaNetSection configuration;
 
-#if UseHubForClientInUser
         /// <summary>
-        /// Initializes a new instance of the <see cref="UsersController"/> class.
+        /// Initializes a new instance of the <see cref="BaseUsersController{TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory}"/> class.
         /// </summary>
         /// <param name="userService">The user service.</param>
         /// <param name="configuration">The configuration.</param>
-        /// <param name="clientForHubService">The hub for client.</param>
-        public UsersController(IUserAppService userService, IOptions<BiaNetSection> configuration, IClientForHubService clientForHubService)
-#else
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UsersController"/> class.
-        /// </summary>
-        /// <param name="userService">The user service.</param>
-        /// <param name="configuration">The configuration.</param>
-        public UsersController(IUserAppService userService, IOptions<BiaNetSection> configuration)
-#endif
+        protected BaseUsersController(IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory> userService, IOptions<BiaNetSection> configuration)
         {
-#if UseHubForClientInUser
-            this.clientForHubService = clientForHubService;
-#endif
             this.userService = userService;
             this.configuration = configuration.Value;
         }
@@ -120,7 +110,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
                 return this.BadRequest();
             }
 
-            IEnumerable<UserFromDirectoryDto> results = default;
+            IEnumerable<TUserFromDirectoryDto> results = default;
 
             if (this.configuration?.Authentication?.Keycloak?.IsActive == true)
             {
@@ -179,14 +169,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Authorize(Roles = BiaRights.Users.Add)]
-        public async Task<IActionResult> Add([FromBody] UserDto dto)
+        public async Task<IActionResult> Add([FromBody] TUserDto dto)
         {
             try
             {
                 ResultAddUsersFromDirectoryDto result = await this.userService.AddByIdentityKeyAsync(dto);
-#if UseHubForClientInUser
-                _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");
-#endif
                 if (result.Errors.Any())
                 {
                     return this.StatusCode(StatusCodes.Status422UnprocessableEntity, result.Errors);
@@ -209,12 +196,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status303SeeOther)]
         [Authorize(Roles = BiaRights.Users.Add)]
-        public async Task<IActionResult> Add([FromBody] IEnumerable<UserFromDirectoryDto> users)
+        public async Task<IActionResult> Add([FromBody] IEnumerable<TUserFromDirectoryDto> users)
         {
             ResultAddUsersFromDirectoryDto result = await this.userService.AddFromDirectory(users);
-#if UseHubForClientInUser
-            _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");
-#endif
             if (result.Errors.Any())
             {
                 return this.StatusCode(303, result.Errors);
@@ -236,7 +220,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = BiaRights.Users.UpdateRoles)]
-        public async Task<IActionResult> Update(int id, [FromBody] UserDto dto)
+        public async Task<IActionResult> Update(int id, [FromBody] TUserDto dto)
         {
             if (id == 0 || dto == null || dto.Id != id)
             {
@@ -246,9 +230,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
             try
             {
                 var updatedDto = await this.userService.UpdateAsync(dto, mapperMode: "Roles");
-#if UseHubForClientInUser
-                _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");
-#endif
                 return this.Ok(updatedDto);
             }
             catch (ArgumentNullException)
@@ -264,23 +245,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
                 return this.Conflict();
             }
         }
-
-#pragma warning disable SA1005, S125
-        ///// <summary>
-        ///// Add some users in db.
-        ///// </summary>
-        ///// <param name="users">The list of user.</param>
-        ///// <returns>The result code.</returns>
-        //[HttpPost]
-
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[Authorize(Roles = BiaRights.Users.Add)]
-        //public async Task<IActionResult> AddInDB([FromBody]IEnumerable<UserFromDirectoryDto> users)
-        //{
-        //    await this.userService.AddInDBAsync(users);
-        //    return this.Ok();
-        //}
-#pragma warning restore SA1005, S125
 
         /// <summary>
         /// Remove some users in a group.
@@ -335,9 +299,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
                     sb.Append(error);
                 }
             }
-#if UseHubForClientInUser
-            _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");
-#endif
+
             var errors = sb.ToString();
             if (!string.IsNullOrEmpty(errors))
             {
@@ -359,7 +321,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [Authorize(Roles = BiaRights.Users.Save)]
-        public async Task<IActionResult> Save(IEnumerable<UserDto> dtos)
+        public async Task<IActionResult> Save(IEnumerable<TUserDto> dtos)
         {
             var dtoList = dtos.ToList();
             if (!dtoList.Any())
@@ -370,9 +332,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
             try
             {
                 string errorMessage = await this.userService.SaveAsync(dtoList);
-#if UseHubForClientInUser
-                _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");
-#endif
                 if (!string.IsNullOrEmpty(errorMessage))
                 {
                     return this.StatusCode(StatusCodes.Status422UnprocessableEntity, errorMessage);
@@ -411,9 +370,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
                 await this.userService.SynchronizeWithADAsync(fullSynchro);
             }
 
-#if UseHubForClientInUser
-            _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");
-#endif
             return this.Ok();
         }
 

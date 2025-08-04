@@ -7,7 +7,7 @@ namespace BIA.Net.Core.Domain.Dto.User
     /// <summary>
     /// The DTO used for user coming from AD.
     /// </summary>
-    public class BaseUserFromDirectoryDto
+    public abstract class BaseUserFromDirectoryDto
     {
         /// <summary>
         /// Gets or sets the Display Name.

@@ -32,11 +32,12 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
         /// <param name="modelBuilder">The model builder.</param>
         protected virtual void CreateNotificationModel(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Notification>().HasKey(m => m.Id);
-            modelBuilder.Entity<Notification>().Property(m => m.Title).IsRequired().HasMaxLength(100);
-            modelBuilder.Entity<Notification>().Property(m => m.Description).IsRequired().HasMaxLength(256);
-            modelBuilder.Entity<Notification>().Property(m => m.TypeId).IsRequired();
-            modelBuilder.Entity<Notification>().Property(m => m.CreatedDate).IsRequired();
+            modelBuilder.Entity<BaseNotification>().ToTable("Notifications");
+            modelBuilder.Entity<BaseNotification>().HasKey(m => m.Id);
+            modelBuilder.Entity<BaseNotification>().Property(m => m.Title).IsRequired().HasMaxLength(100);
+            modelBuilder.Entity<BaseNotification>().Property(m => m.Description).IsRequired().HasMaxLength(256);
+            modelBuilder.Entity<BaseNotification>().Property(m => m.TypeId).IsRequired();
+            modelBuilder.Entity<BaseNotification>().Property(m => m.CreatedDate).IsRequired();
         }
 
         /// <summary>

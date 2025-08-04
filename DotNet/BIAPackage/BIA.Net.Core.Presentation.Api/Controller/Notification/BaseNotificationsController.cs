@@ -1,9 +1,8 @@
-// <copyright file="NotificationsController.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+﻿// <copyright file="BaseNotificationsController.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
-// #define UseHubForClientInNotification
 
-namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Notification
+namespace BIA.Net.Core.Presentation.Api.Controller.Notification
 {
     using System;
     using System.Collections.Generic;
@@ -12,10 +11,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Notification
     using BIA.Net.Core.Application.Notification;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common;
-    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
+#pragma warning disable BIA001 // Forbidden reference to Domain layer in Presentation layer
+    using BIA.Net.Core.Domain.Notification.Entities;
+#pragma warning restore BIA001 // Forbidden reference to Domain layer in Presentation layer
     using BIA.Net.Core.Presentation.Api.Controller.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -24,38 +25,27 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Notification
     /// <summary>
     /// The API controller used to manage Notifications.
     /// </summary>
-    public partial class NotificationsController : BiaControllerBase
+    /// <typeparam name="TBaseNotificationDto">The type of the notification DTO.</typeparam>
+    /// <typeparam name="TBaseNotificationListItemDto">The type of the notification list item DTO.</typeparam>
+    /// <typeparam name="TBaseNotification">The type of the notification entity.</typeparam>
+    public abstract class BaseNotificationsController<TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification> : BiaControllerBase
+        where TBaseNotificationDto : BaseNotificationDto, new()
+        where TBaseNotificationListItemDto : BaseNotificationListItemDto, new()
+        where TBaseNotification : BaseNotification, new()
     {
         /// <summary>
         /// The notification application service.
         /// </summary>
-        private readonly INotificationAppService notificationService;
+        private readonly IBaseNotificationAppService<TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification> notificationService;
         private readonly IBiaClaimsPrincipalService biaClaimsPrincipalService;
 
-#if UseHubForClientInNotification
-        private readonly IClientForHubService clientForHubService;
-#endif
-
-#if UseHubForClientInNotification
         /// <summary>
-        /// Initializes a new instance of the <see cref="NotificationsController"/> class.
+        /// Initializes a new instance of the <see cref="BaseNotificationsController{TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification}"/> class.
         /// </summary>
-        /// <param name="notificationService">The notification application service.</param>
-        /// <param name="clientForHubService">The hub for client.</param>
-        /// <param name="biaClaimsPrincipalService">The BIA claims principal service.</param>
-        public NotificationsController(INotificationAppService notificationService, IClientForHubService clientForHubService, IBiaClaimsPrincipalService biaClaimsPrincipalService)
-#else
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NotificationsController"/> class.
-        /// </summary>
-        /// <param name="notificationService">The notification application service.</param>
-        /// <param name="biaClaimsPrincipalService">The BIA claims principal service.</param>
-        public NotificationsController(INotificationAppService notificationService, IBiaClaimsPrincipalService biaClaimsPrincipalService)
-#endif
+        /// <param name="notificationService">The notification service.</param>
+        /// <param name="biaClaimsPrincipalService">The bia claims principal service.</param>
+        protected BaseNotificationsController(IBaseNotificationAppService<TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification> notificationService, IBiaClaimsPrincipalService biaClaimsPrincipalService)
         {
-#if UseHubForClientInNotification
-            this.clientForHubService = clientForHubService;
-#endif
             this.notificationService = notificationService;
             this.biaClaimsPrincipalService = biaClaimsPrincipalService;
         }
@@ -104,7 +94,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Notification
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = BiaRights.Notifications.Create)]
-        public async Task<IActionResult> Add([FromBody] NotificationDto dto)
+        public async Task<IActionResult> Add([FromBody] TBaseNotificationDto dto)
         {
             try
             {
@@ -129,7 +119,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Notification
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = BiaRights.Notifications.Update)]
-        public async Task<IActionResult> Update(int id, [FromBody] NotificationDto dto)
+        public async Task<IActionResult> Update(int id, [FromBody] TBaseNotificationDto dto)
         {
             if (id == 0 || dto == null || dto.Id != id)
             {

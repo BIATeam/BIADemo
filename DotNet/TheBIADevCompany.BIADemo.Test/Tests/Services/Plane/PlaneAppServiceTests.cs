@@ -27,6 +27,11 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
     public class PlaneAppServiceTests : AbstractUnitTest
     {
         /// <summary>
+        /// The current team identifier.
+        /// </summary>
+        private const int CurrentTeamId = 1;
+
+        /// <summary>
         /// The service to test.
         /// </summary>
         private IPlaneAppService service;
@@ -55,7 +60,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
                         new CurrentTeamDto()
                         {
                             TeamTypeId = (int)TeamTypeId.Site,
-                            TeamId = 1,
+                            TeamId = CurrentTeamId,
                         },
                     },
                 });
@@ -106,6 +111,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
                 Msn = msn,
                 SyncFlightDataTime = syncTime,
                 CurrentAirport = airport,
+                SiteId = CurrentTeamId,
             }).Result;
             Assert.IsNotNull(dto);
 

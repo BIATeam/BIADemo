@@ -79,9 +79,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
             BiaIocContainer.ConfigureContainer(collection, configuration, isUnitTest);
 
+            ConfigureInfrastructureDataContainer(collection, configuration, isUnitTest);
             if (!isUnitTest)
             {
-                ConfigureInfrastructureDataContainer(collection, configuration);
                 ConfigureCommonContainer(collection, configuration);
                 collection.Configure<CommonFeatures>(configuration.GetSection("BiaNet:CommonFeatures"));
                 collection.Configure<WorkerFeatures>(configuration.GetSection("BiaNet:WorkerFeatures"));
@@ -145,23 +145,14 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             // Common Layer
         }
 
-        private static void ConfigureInfrastructureDataContainer(IServiceCollection collection, IConfiguration configuration)
+        private static void ConfigureInfrastructureDataContainer(IServiceCollection collection, IConfiguration configuration, bool isUnitTest)
         {
-            string connectionString = configuration.GetDatabaseConnectionString("ProjectDatabase");
-
-            // Infrastructure Data Layer
-            collection.AddDbContext<IQueryableUnitOfWork, DataContext>(options =>
+            if (!isUnitTest)
             {
-                if (connectionString != null)
-                {
-                    options.UseSqlServer(connectionString);
-                }
+                string connectionString = configuration.GetDatabaseConnectionString("ProjectDatabase");
 
-                options.EnableSensitiveDataLogging();
-                options.AddInterceptors(new AuditSaveChangesInterceptor());
-            });
-            collection.AddDbContext<IQueryableUnitOfWorkNoTracking, DataContextNoTracking>(
-                options =>
+                // Infrastructure Data Layer
+                collection.AddDbContext<IQueryableUnitOfWork, DataContext>(options =>
                 {
                     if (connectionString != null)
                     {
@@ -169,8 +160,24 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                     }
 
                     options.EnableSensitiveDataLogging();
-                },
-                contextLifetime: ServiceLifetime.Transient);
+                    options.AddInterceptors(new AuditSaveChangesInterceptor());
+                });
+                collection.AddDbContext<IQueryableUnitOfWorkNoTracking, DataContextNoTracking>(
+                    options =>
+                    {
+                        if (connectionString != null)
+                        {
+                            options.UseSqlServer(connectionString);
+                        }
+
+                        options.EnableSensitiveDataLogging();
+                    },
+                    contextLifetime: ServiceLifetime.Transient);
+
+                collection.AddScoped<DataContextFactory>();
+                collection.AddSingleton<IAuditFeature, AuditFeature>();
+                collection.AddSingleton<BIA.Net.Core.Application.Services.IAuditFeatureService, BIA.Net.Core.Application.Services.AuditFeatureService>();
+            }
 
             // IT'S NOT NECESSARY TO DECLARE QueryCustomizer/Repository (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
             BiaIocContainer.RegisterServicesFromAssembly(
@@ -178,11 +185,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 assemblyName: "TheBIADevCompany.BIADemo.Infrastructure.Data",
                 interfaceAssemblyName: "TheBIADevCompany.BIADemo.Domain",
                 serviceLifetime: ServiceLifetime.Transient);
-
-            collection.AddScoped<DataContextFactory>();
-
-            collection.AddSingleton<IAuditFeature, AuditFeature>();
-            collection.AddSingleton<BIA.Net.Core.Application.Services.IAuditFeatureService, BIA.Net.Core.Application.Services.AuditFeatureService>();
         }
 
 #pragma warning disable S1172 // Unused method parameters should be removed
@@ -195,7 +197,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddHttpClient<IIdentityProviderRepository<UserFromDirectory>, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
             collection.AddTransient<IMailRepository, MailRepository>();
 
-            if (biaNetSection.CommonFeatures.ClientForHub?.IsActive == true)
+            if (biaNetSection.CommonFeatures?.ClientForHub?.IsActive == true)
             {
                 if (isUnitTest || !string.IsNullOrEmpty(biaNetSection.CommonFeatures.ClientForHub.SignalRUrl))
                 {

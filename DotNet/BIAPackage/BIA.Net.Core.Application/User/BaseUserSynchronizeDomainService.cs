@@ -21,7 +21,7 @@ namespace BIA.Net.Core.Application.User
     /// <typeparam name="TUser">The type of user.</typeparam>
     /// <typeparam name="TUserFromDirectoryDto">The type of user from directory dto.</typeparam>
     /// <typeparam name="TUserFromDirectory">The type of user from directory.</typeparam>
-    public class BaseUserSynchronizeDomainService<TUser, TUserFromDirectoryDto, TUserFromDirectory> : IBaseUserSynchronizeDomainService<TUser, TUserFromDirectory>
+    public abstract class BaseUserSynchronizeDomainService<TUser, TUserFromDirectoryDto, TUserFromDirectory> : IBaseUserSynchronizeDomainService<TUser, TUserFromDirectory>
         where TUser : BaseEntityUser, new()
         where TUserFromDirectoryDto : BaseUserFromDirectoryDto, new()
         where TUserFromDirectory : class, IUserFromDirectory, new()
@@ -50,7 +50,7 @@ namespace BIA.Net.Core.Application.User
         /// <param name="adHelper">The AD helper.</param>
         /// <param name="userIdentityKeyDomainService">The user IdentityKey Domain Service.</param>
         /// <param name="identityProviderRepository">The identity provider repository.</param>
-        public BaseUserSynchronizeDomainService(
+        protected BaseUserSynchronizeDomainService(
             ITGenericRepository<TUser, int> repository,
             IUserDirectoryRepository<TUserFromDirectoryDto, TUserFromDirectory> adHelper,
             IUserIdentityKeyDomainService userIdentityKeyDomainService,
