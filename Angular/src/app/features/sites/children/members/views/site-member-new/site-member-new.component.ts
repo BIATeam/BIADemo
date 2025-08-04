@@ -4,14 +4,14 @@ import {
   MemberFormNewComponent,
   MemberModule,
   MemberNewComponent,
-} from 'biang/shared';
+} from 'bia-ng/shared';
 import { SiteService } from 'src/app/features/sites/services/site.service';
 import { TeamTypeId } from 'src/app/shared/constants';
 
 @Component({
   selector: 'app-site-member-new',
   templateUrl:
-    '../../../../../../../../node_modules/biang/templates/feature-templates/members/views/member-new/member-new.component.html',
+    '../../../../../../../../node_modules/bia-ng/templates/feature-templates/members/views/member-new/member-new.component.html',
   imports: [MemberModule, AsyncPipe, MemberFormNewComponent],
 })
 export class SiteMemberNewComponent

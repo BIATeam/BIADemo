@@ -5,13 +5,13 @@ import {
   AuthService,
   BiaTranslationService,
   NavigationService,
-} from 'biang/core';
+} from 'bia-ng/core';
 import {
   BiaLayoutService,
   BiaUltimaLayoutComponent,
   LayoutComponent,
   SpinnerComponent,
-} from 'biang/shared';
+} from 'bia-ng/shared';
 
 @Component({
   selector: 'app-custom-layout',

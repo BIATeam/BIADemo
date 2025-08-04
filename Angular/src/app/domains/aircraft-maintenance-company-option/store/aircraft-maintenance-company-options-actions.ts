@@ -1,5 +1,5 @@
 ﻿import { createAction, props } from '@ngrx/store';
-import { OptionDto } from 'biang/models';
+import { OptionDto } from 'bia-ng/models';
 import { storeKey } from '../aircraft-maintenance-company-option.contants';
 
 export namespace DomainAircraftMaintenanceCompanyOptionsActions {

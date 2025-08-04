@@ -2,8 +2,8 @@
 import { RouterModule, Routes } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { PermissionGuard } from 'biang/core';
-import { DynamicLayoutComponent } from 'biang/shared';
+import { PermissionGuard } from 'bia-ng/core';
+import { DynamicLayoutComponent } from 'bia-ng/shared';
 import { Permission } from 'src/app/shared/permission';
 import { airportCRUDConfiguration } from './airport.constants';
 import { FeatureAirportsStore } from './store/airport.state';

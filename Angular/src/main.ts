@@ -24,8 +24,8 @@ import {
   BiaSignalRService,
   BiaTranslateHttpLoader,
   getCurrentCulture,
-} from 'biang/core';
-import { ViewsEffects, ViewsStore } from 'biang/shared';
+} from 'bia-ng/core';
+import { ViewsEffects, ViewsStore } from 'bia-ng/shared';
 import { LoggerModule, TOKEN_LOGGER_SERVER_SERVICE } from 'ngx-logger';
 import { AppRoutingModule } from './app/app-routing.module';
 import { AppComponent } from './app/app.component';

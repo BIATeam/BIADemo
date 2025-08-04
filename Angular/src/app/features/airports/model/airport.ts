@@ -3,7 +3,7 @@
   BiaFieldConfig,
   BiaFieldsConfig,
   VersionedDto,
-} from 'biang/models';
+} from 'bia-ng/models';
 
 // TODO after creation of CRUD Airport : adapt the model
 export interface Airport extends BaseDto, VersionedDto {

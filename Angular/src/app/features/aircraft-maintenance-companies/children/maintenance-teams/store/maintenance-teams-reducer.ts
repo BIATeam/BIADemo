@@ -1,6 +1,6 @@
 ﻿import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { CrudState, DEFAULT_CRUD_STATE } from 'biang/models';
+import { CrudState, DEFAULT_CRUD_STATE } from 'bia-ng/models';
 import { MaintenanceTeam } from '../model/maintenance-team';
 import { FeatureMaintenanceTeamsActions } from './maintenance-teams-actions';
 

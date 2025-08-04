@@ -1,7 +1,7 @@
 ﻿import { AsyncPipe } from '@angular/common';
 import { Component, Injector } from '@angular/core';
-import { AuthService } from 'biang/core';
-import { CrudItemNewComponent } from 'biang/shared';
+import { AuthService } from 'bia-ng/core';
+import { CrudItemNewComponent } from 'bia-ng/shared';
 import { SiteFormComponent } from '../../components/site-form/site-form.component';
 import { Site } from '../../model/site';
 import { SiteService } from '../../services/site.service';

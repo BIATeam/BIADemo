@@ -1,8 +1,8 @@
 ﻿import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { AuthService } from 'biang/core';
-import { TeamAdvancedFilterDto } from 'biang/models';
+import { AuthService } from 'bia-ng/core';
+import { TeamAdvancedFilterDto } from 'bia-ng/models';
 import {
   BiaButtonGroupComponent,
   BiaButtonGroupItem,
@@ -13,7 +13,7 @@ import {
   CrudItemService,
   CrudItemsIndexComponent,
   TeamAdvancedFilterComponent,
-} from 'biang/shared';
+} from 'bia-ng/shared';
 import { PrimeTemplate } from 'primeng/api';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { Permission } from 'src/app/shared/permission';

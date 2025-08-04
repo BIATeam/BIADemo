@@ -1,11 +1,11 @@
 ﻿import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PermissionGuard } from 'biang/core';
+import { PermissionGuard } from 'bia-ng/core';
 import {
   FullPageLayoutComponent,
   MemberModule,
   PopupLayoutComponent,
-} from 'biang/shared';
+} from 'bia-ng/shared';
 import { Permission } from 'src/app/shared/permission';
 
 import { MaintenanceTeamMemberEditComponent } from './views/maintenance-team-member-edit/maintenance-team-member-edit.component';

@@ -9,15 +9,15 @@ import {
 } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { clone } from 'biang/core';
-import { BiaFieldsConfig, KeyValuePair } from 'biang/models';
-import { DtoState } from 'biang/models/enum';
+import { clone } from 'bia-ng/core';
+import { BiaFieldsConfig, KeyValuePair } from 'bia-ng/models';
+import { DtoState } from 'bia-ng/models/enum';
 import {
   BiaFormComponent,
   BiaTableHeaderComponent,
   CrudHelperService,
   CrudItemFormComponent,
-} from 'biang/shared';
+} from 'bia-ng/shared';
 import { PrimeTemplate } from 'primeng/api';
 import { Checkbox } from 'primeng/checkbox';
 import { FloatLabel } from 'primeng/floatlabel';
@@ -32,7 +32,7 @@ import { PlaneSpecific } from '../../model/plane-specific';
   selector: 'app-plane-specific-form',
   templateUrl: 'plane-form.component.html',
   styleUrls: [
-    '../../../../../../node_modules/biang/templates/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
+    '../../../../../../node_modules/bia-ng/templates/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
   ],
   imports: [
     PrimeTemplate,

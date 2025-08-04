@@ -5,16 +5,16 @@ import {
   CrudItemItemComponent,
   CrudItemService,
   SpinnerComponent,
-} from 'biang/shared';
+} from 'bia-ng/shared';
 import { MaintenanceTeam } from '../../model/maintenance-team';
 import { MaintenanceTeamService } from '../../services/maintenance-team.service';
 
 @Component({
   selector: 'app-maintenance-teams-item',
   templateUrl:
-    '../../../../../../../../node_modules/biang/templates/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
+    '../../../../../../../../node_modules/bia-ng/templates/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
   styleUrls: [
-    '../../../../../../../../node_modules/biang/templates/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
+    '../../../../../../../../node_modules/bia-ng/templates/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
   ],
   imports: [RouterOutlet, NgIf, AsyncPipe, SpinnerComponent],
   providers: [

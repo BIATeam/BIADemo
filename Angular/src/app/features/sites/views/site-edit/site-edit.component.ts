@@ -1,6 +1,6 @@
 ﻿import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, Injector } from '@angular/core';
-import { CrudItemEditComponent, SpinnerComponent } from 'biang/shared';
+import { CrudItemEditComponent, SpinnerComponent } from 'bia-ng/shared';
 import { SiteFormComponent } from '../../components/site-form/site-form.component';
 import { Site } from '../../model/site';
 import { SiteService } from '../../services/site.service';

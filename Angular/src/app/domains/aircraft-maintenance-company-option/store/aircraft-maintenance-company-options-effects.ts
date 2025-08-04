@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { BiaMessageService, BiaOnlineOfflineService } from 'biang/core';
+import { BiaMessageService, BiaOnlineOfflineService } from 'bia-ng/core';
 import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { AircraftMaintenanceCompanyOptionDas } from '../services/aircraft-maintenance-company-option-das.service';

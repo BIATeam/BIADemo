@@ -1,5 +1,5 @@
 ﻿import { createAction, props } from '@ngrx/store';
-import { DataResult } from 'biang/models';
+import { DataResult } from 'bia-ng/models';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { PlaneType } from '../model/plane-type';
 import { planeTypeCRUDConfiguration } from '../plane-type.constants';

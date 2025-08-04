@@ -4,7 +4,7 @@ import {
   CrudItemEditComponent,
   FormReadOnlyMode,
   SpinnerComponent,
-} from 'biang/shared';
+} from 'bia-ng/shared';
 import { filter } from 'rxjs';
 import { EngineFormComponent } from '../../components/engine-form/engine-form.component';
 import { engineCRUDConfiguration } from '../../engine.constants';

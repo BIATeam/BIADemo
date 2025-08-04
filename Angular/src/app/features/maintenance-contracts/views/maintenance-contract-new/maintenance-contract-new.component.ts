@@ -1,6 +1,6 @@
 ﻿import { AsyncPipe } from '@angular/common';
 import { Component, Injector } from '@angular/core';
-import { CrudItemNewComponent } from 'biang/shared';
+import { CrudItemNewComponent } from 'bia-ng/shared';
 import { MaintenanceContractFormComponent } from '../../components/maintenance-contract-form/maintenance-contract-form.component';
 import { maintenanceContractCRUDConfiguration } from '../../maintenance-contract.constants';
 import { MaintenanceContract } from '../../model/maintenance-contract';

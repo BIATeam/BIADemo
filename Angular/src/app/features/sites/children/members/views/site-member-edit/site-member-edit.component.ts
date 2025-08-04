@@ -5,14 +5,14 @@ import {
   MemberFormEditComponent,
   MemberModule,
   SpinnerComponent,
-} from 'biang/shared';
+} from 'bia-ng/shared';
 import { SiteService } from 'src/app/features/sites/services/site.service';
 import { TeamTypeId } from 'src/app/shared/constants';
 
 @Component({
   selector: 'app-site-member-edit',
   templateUrl:
-    '../../../../../../../../node_modules/biang/templates/feature-templates/members/views/member-edit/member-edit.component.html',
+    '../../../../../../../../node_modules/bia-ng/templates/feature-templates/members/views/member-edit/member-edit.component.html',
   imports: [
     MemberModule,
     NgIf,

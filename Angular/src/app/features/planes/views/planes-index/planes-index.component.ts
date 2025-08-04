@@ -1,7 +1,7 @@
 ﻿import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { AuthService } from 'biang/core';
+import { AuthService } from 'bia-ng/core';
 import {
   BiaTableBehaviorControllerComponent,
   BiaTableComponent,
@@ -9,7 +9,7 @@ import {
   BiaTableHeaderComponent,
   CrudItemService,
   CrudItemsIndexComponent,
-} from 'biang/shared';
+} from 'bia-ng/shared';
 import { PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { Permission } from 'src/app/shared/permission';

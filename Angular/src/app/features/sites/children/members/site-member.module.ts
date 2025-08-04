@@ -1,12 +1,12 @@
 ﻿import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PermissionGuard } from 'biang/core';
+import { PermissionGuard } from 'bia-ng/core';
 import {
   DynamicLayoutComponent,
   memberCRUDConfiguration,
   MemberImportComponent,
   MemberModule,
-} from 'biang/shared';
+} from 'bia-ng/shared';
 import { Permission } from 'src/app/shared/permission';
 
 import { SiteMemberEditComponent } from './views/site-member-edit/site-member-edit.component';

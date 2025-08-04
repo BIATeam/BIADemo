@@ -9,21 +9,21 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { AuthService, BiaTranslationService } from 'biang/core';
+import { AuthService, BiaTranslationService } from 'bia-ng/core';
 import {
   BiaFieldConfig,
   BiaFieldsConfig,
   KeyValuePair,
   PagingFilterFormatDto,
-} from 'biang/models';
-import { PrimeNGFiltering, PropType } from 'biang/models/enum';
+} from 'bia-ng/models';
+import { PrimeNGFiltering, PropType } from 'bia-ng/models/enum';
 import {
   BiaTableComponent,
   BiaTableControllerComponent,
   BiaTableHeaderComponent,
   loadAllView,
   TableHelperService,
-} from 'biang/shared';
+} from 'bia-ng/shared';
 import { saveAs } from 'file-saver';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable, Subscription } from 'rxjs';

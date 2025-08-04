@@ -3,8 +3,8 @@
   BiaFieldConfig,
   BiaFieldsConfig,
   VersionedDto,
-} from 'biang/models';
-import { PropType } from 'biang/models/enum';
+} from 'bia-ng/models';
+import { PropType } from 'bia-ng/models/enum';
 
 // TODO after creation of CRUD PlaneType : adapt the model
 export interface PlaneType extends BaseDto, VersionedDto {

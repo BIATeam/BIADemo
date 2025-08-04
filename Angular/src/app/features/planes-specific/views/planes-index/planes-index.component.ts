@@ -8,13 +8,13 @@
 } from '@angular/common';
 import { Component, Injector, ViewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { AuthService, BiaSignalRService } from 'biang/core';
+import { AuthService, BiaSignalRService } from 'bia-ng/core';
 import {
   BiaFieldsConfig,
   DataResult,
   KeyValuePair,
   PagingFilterFormatDto,
-} from 'biang/models';
+} from 'bia-ng/models';
 import {
   BiaTableBehaviorControllerComponent,
   BiaTableComponent,
@@ -23,7 +23,7 @@ import {
   CrudItemService,
   CrudItemsIndexComponent,
   SpinnerComponent,
-} from 'biang/shared';
+} from 'bia-ng/shared';
 import { PrimeTemplate } from 'primeng/api';
 import { TableModule, TableRowExpandEvent } from 'primeng/table';
 import { map, take } from 'rxjs';

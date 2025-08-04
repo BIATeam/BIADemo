@@ -8,8 +8,8 @@ import {
   FixableDto,
   OptionDto,
   VersionedDto,
-} from 'biang/models';
-import { NumberMode, PrimeNGFiltering, PropType } from 'biang/models/enum';
+} from 'bia-ng/models';
+import { NumberMode, PrimeNGFiltering, PropType } from 'bia-ng/models/enum';
 
 // TODO after creation of CRUD Engine : adapt the model
 export interface Engine extends BaseDto, VersionedDto, FixableDto {

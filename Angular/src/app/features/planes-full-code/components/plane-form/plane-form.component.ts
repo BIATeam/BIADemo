@@ -14,8 +14,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { AuthService, BiaOptionService } from 'biang/core';
-import { OptionDto } from 'biang/models';
+import { AuthService, BiaOptionService } from 'bia-ng/core';
+import { OptionDto } from 'bia-ng/models';
 import { ButtonDirective } from 'primeng/button';
 import { Checkbox } from 'primeng/checkbox';
 import { DatePicker } from 'primeng/datepicker';

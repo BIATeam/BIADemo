@@ -3,7 +3,7 @@
   "compilerOptions": {
     "forceConsistentCasingInFileNames": true,
     "paths": {
-      "biang/*": ["./dist/biang/*"]
+      "bia-ng/*": ["./dist/bia-ng/*"]
     },
     "baseUrl": "./",
     "esModuleInterop": true,

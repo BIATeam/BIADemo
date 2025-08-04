@@ -1,5 +1,5 @@
 ﻿import { Injectable, Injector } from '@angular/core';
-import { AbstractDas } from 'biang/core';
+import { AbstractDas } from 'bia-ng/core';
 import { MaintenanceTeam } from '../model/maintenance-team';
 
 @Injectable({

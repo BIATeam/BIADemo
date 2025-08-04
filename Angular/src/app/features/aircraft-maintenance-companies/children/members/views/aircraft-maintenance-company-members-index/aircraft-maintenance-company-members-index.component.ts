@@ -10,7 +10,7 @@ import {
   MemberModule,
   MembersIndexComponent,
   MemberTableComponent,
-} from 'biang/shared';
+} from 'bia-ng/shared';
 import { PrimeTemplate } from 'primeng/api';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { Permission } from 'src/app/shared/permission';
@@ -19,9 +19,9 @@ import { AircraftMaintenanceCompanyService } from '../../../../services/aircraft
 @Component({
   selector: 'app-aircraft-maintenance-company-members-index',
   templateUrl:
-    '../../../../../../../../node_modules/biang/templates/feature-templates/members/views/members-index/members-index.component.html',
+    '../../../../../../../../node_modules/bia-ng/templates/feature-templates/members/views/members-index/members-index.component.html',
   styleUrls: [
-    '../../../../../../../../node_modules/biang/templates/feature-templates/crud-items/views/crud-items-index/crud-items-index.component.scss',
+    '../../../../../../../../node_modules/bia-ng/templates/feature-templates/crud-items/views/crud-items-index/crud-items-index.component.scss',
   ],
   imports: [
     NgClass,

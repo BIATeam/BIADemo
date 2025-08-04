@@ -1,4 +1,4 @@
-﻿import { CrudConfig } from 'biang/shared';
+﻿import { CrudConfig } from 'bia-ng/shared';
 import { Site, siteFieldsConfiguration } from './model/site';
 
 // TODO after creation of CRUD Team Site : adapt the global configuration

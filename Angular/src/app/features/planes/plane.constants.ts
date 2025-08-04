@@ -1,4 +1,4 @@
-﻿import { CrudConfig, FormReadOnlyMode } from 'biang/shared';
+﻿import { CrudConfig, FormReadOnlyMode } from 'bia-ng/shared';
 import { TeamTypeId } from 'src/app/shared/constants';
 import {
   Plane,

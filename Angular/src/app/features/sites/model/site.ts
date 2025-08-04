@@ -4,8 +4,8 @@
   BiaFieldsConfig,
   TeamDto,
   VersionedDto,
-} from 'biang/models';
-import { PropType } from 'biang/models/enum';
+} from 'bia-ng/models';
+import { PropType } from 'bia-ng/models/enum';
 
 // TODO after creation of CRUD Team Site : adapt the model
 export interface Site extends BaseDto, TeamDto, VersionedDto {}

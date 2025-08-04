@@ -1,8 +1,8 @@
 ﻿import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { BiaMessageService, biaSuccessWaitRefreshSignalR } from 'biang/core';
-import { DataResult } from 'biang/models';
+import { BiaMessageService, biaSuccessWaitRefreshSignalR } from 'bia-ng/core';
+import { DataResult } from 'bia-ng/models';
 import { of } from 'rxjs';
 import {
   catchError,

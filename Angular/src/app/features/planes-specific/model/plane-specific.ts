@@ -7,8 +7,8 @@
   BiaFormLayoutConfigRow,
   BiaFormLayoutConfigTab,
   BiaFormLayoutConfigTabGroup,
-} from 'biang/models';
-import { PropType } from 'biang/models/enum';
+} from 'bia-ng/models';
+import { PropType } from 'bia-ng/models/enum';
 import { Engine } from './engine';
 import { Plane, planeFieldsConfiguration } from './plane';
 

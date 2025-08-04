@@ -1,6 +1,6 @@
 ﻿import { createEntityAdapter } from '@ngrx/entity';
 import { createReducer } from '@ngrx/store';
-import { OptionDto } from 'biang/models';
+import { OptionDto } from 'bia-ng/models';
 import { TableLazyLoadEvent } from 'primeng/table';
 
 // This adapter will allow is to manipulate hangfire (mostly CRUD operations)

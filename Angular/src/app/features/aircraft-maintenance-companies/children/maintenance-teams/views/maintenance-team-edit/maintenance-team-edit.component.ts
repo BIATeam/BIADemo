@@ -4,7 +4,7 @@ import {
   CrudItemEditComponent,
   FormReadOnlyMode,
   SpinnerComponent,
-} from 'biang/shared';
+} from 'bia-ng/shared';
 import { filter } from 'rxjs';
 import { Permission } from 'src/app/shared/permission';
 import { MaintenanceTeamFormComponent } from '../../components/maintenance-team-form/maintenance-team-form.component';

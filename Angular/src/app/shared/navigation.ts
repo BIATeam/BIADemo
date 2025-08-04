@@ -1,4 +1,4 @@
-﻿import { BiaNavigation } from 'biang/models';
+﻿import { BiaNavigation } from 'bia-ng/models';
 import { Permission } from './permission';
 
 export const NAVIGATION: BiaNavigation[] = [

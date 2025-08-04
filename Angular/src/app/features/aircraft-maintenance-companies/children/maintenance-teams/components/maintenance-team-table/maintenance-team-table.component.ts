@@ -14,7 +14,7 @@ import {
   UntypedFormBuilder,
 } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { AuthService, BiaMessageService } from 'biang/core';
+import { AuthService, BiaMessageService } from 'bia-ng/core';
 import {
   BiaFrozenColumnDirective,
   BiaTableFilterComponent,
@@ -22,7 +22,7 @@ import {
   BiaTableInputComponent,
   BiaTableOutputComponent,
   CrudItemTableComponent,
-} from 'biang/shared';
+} from 'bia-ng/shared';
 import { PrimeTemplate } from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
@@ -32,9 +32,9 @@ import { MaintenanceTeam } from '../../model/maintenance-team';
 @Component({
   selector: 'app-maintenance-team-table',
   templateUrl:
-    '../../../../../../../../node_modules/biang/templates/table/bia-calc-table/bia-calc-table.component.html',
+    '../../../../../../../../node_modules/bia-ng/templates/table/bia-calc-table/bia-calc-table.component.html',
   styleUrls: [
-    '../../../../../../../../node_modules/biang/templates/table/bia-calc-table/bia-calc-table.component.scss',
+    '../../../../../../../../node_modules/bia-ng/templates/table/bia-calc-table/bia-calc-table.component.scss',
   ],
   imports: [
     FormsModule,

@@ -6,7 +6,7 @@ import {
   BiaLayoutService,
   CrudItemItemComponent,
   SpinnerComponent,
-} from 'biang/shared';
+} from 'bia-ng/shared';
 import { first } from 'rxjs/operators';
 import { AppState } from 'src/app/store/state';
 import { MaintenanceContract } from '../../model/maintenance-contract';
@@ -15,9 +15,9 @@ import { MaintenanceContractService } from '../../services/maintenance-contract.
 @Component({
   selector: 'app-maintenance-contracts-item',
   templateUrl:
-    '../../../../../../node_modules/biang/templates/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
+    '../../../../../../node_modules/bia-ng/templates/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
   styleUrls: [
-    '../../../../../../node_modules/biang/templates/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
+    '../../../../../../node_modules/bia-ng/templates/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
   ],
   imports: [RouterOutlet, NgIf, AsyncPipe, SpinnerComponent],
 })

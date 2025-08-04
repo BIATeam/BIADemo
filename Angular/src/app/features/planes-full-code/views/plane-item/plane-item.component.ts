@@ -2,7 +2,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { BiaLayoutService, SpinnerComponent } from 'biang/shared';
+import { BiaLayoutService, SpinnerComponent } from 'bia-ng/shared';
 import { Observable, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { AppState } from 'src/app/store/state';

@@ -1,13 +1,13 @@
 ﻿import { Component, HostListener, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { BiaInjectExternalService, BiaMatomoService } from 'biang/core';
-import { IframeMessage } from 'biang/models';
+import { BiaInjectExternalService, BiaMatomoService } from 'bia-ng/core';
+import { IframeMessage } from 'bia-ng/models';
 import {
   BiaLayoutService,
   IframeCommunicationService,
   IframeConfigMessageService,
-} from 'biang/shared';
+} from 'bia-ng/shared';
 import { PrimeNG } from 'primeng/config';
 
 @Component({

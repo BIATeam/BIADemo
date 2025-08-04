@@ -1,4 +1,4 @@
-﻿import { OptionDto } from 'biang/models';
+﻿import { OptionDto } from 'bia-ng/models';
 
 export interface Plane {
   id: number;

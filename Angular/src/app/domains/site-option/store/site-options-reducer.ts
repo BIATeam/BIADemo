@@ -1,6 +1,6 @@
 ﻿import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { OptionDto } from 'biang/models';
+import { OptionDto } from 'bia-ng/models';
 import { DomainSiteOptionsActions } from './site-options-actions';
 
 // This adapter will allow is to manipulate sites (mostly CRUD operations)

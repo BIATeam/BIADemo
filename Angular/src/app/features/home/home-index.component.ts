@@ -1,6 +1,6 @@
 ﻿import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { BiaLayoutService } from 'biang/shared';
+import { BiaLayoutService } from 'bia-ng/shared';
 
 @Component({
   selector: 'app-home-index',
