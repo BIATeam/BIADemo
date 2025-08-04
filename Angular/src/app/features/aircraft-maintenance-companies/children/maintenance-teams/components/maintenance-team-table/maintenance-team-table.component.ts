@@ -32,9 +32,9 @@ import { MaintenanceTeam } from '../../model/maintenance-team';
 @Component({
   selector: 'app-maintenance-team-table',
   templateUrl:
-    '../../../../../../../../node_modules/bia-ng/templates/table/bia-calc-table/bia-calc-table.component.html',
+    '../../../../../../../../node_modules/bia-ng/templates/components/table/bia-calc-table/bia-calc-table.component.html',
   styleUrls: [
-    '../../../../../../../../node_modules/bia-ng/templates/table/bia-calc-table/bia-calc-table.component.scss',
+    '../../../../../../../../node_modules/bia-ng/templates/components/table/bia-calc-table/bia-calc-table.component.scss',
   ],
   imports: [
     FormsModule,

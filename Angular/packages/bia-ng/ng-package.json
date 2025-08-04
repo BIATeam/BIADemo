@@ -8,24 +8,14 @@
   "assets": [
     { "input": "scss", "glob": "**/*.scss", "output": "styles" },
     {
-      "input": "shared/components/table",
+      "input": "shared",
       "glob": "**/*.html",
-      "output": "templates/table"
+      "output": "templates"
     },
     {
-      "input": "shared/feature-templates",
-      "glob": "**/*.html",
-      "output": "templates/feature-templates"
-    },
-    {
-      "input": "shared/components/table",
+      "input": "shared",
       "glob": "**/*.scss",
-      "output": "templates/table"
-    },
-    {
-      "input": "shared/feature-templates",
-      "glob": "**/*.scss",
-      "output": "templates/feature-templates"
+      "output": "templates"
     }
   ]
 }
