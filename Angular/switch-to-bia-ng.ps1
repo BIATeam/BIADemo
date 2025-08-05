@@ -95,7 +95,12 @@ if (Test-Path -Path $projectPackageJsonPath -PathType Leaf) {
 
     foreach ($dep in ($dependencies.Keys | Sort-Object)) {
       if (-not $inserted -and "bia-ng" -lt $dep) {
-        $orderedDependencies["bia-ng"] = $frameworkVersion
+        if ($projectPackageJsonContent.name -ne $DemoProjectName) {
+          $orderedDependencies["bia-ng"] = $frameworkVersion
+        }
+        else {
+          $orderedDependencies["bia-ng"] = 'file:./dist/bia-ng'
+        }
         $inserted = $true
       }
       $orderedDependencies[$dep] = $dependencies[$dep]
@@ -103,7 +108,12 @@ if (Test-Path -Path $projectPackageJsonPath -PathType Leaf) {
 
     # If "bia-ng" hasn't been inserted yet, it should be added at the end
     if (-not $inserted) {
-      $orderedDependencies["bia-ng"] = $frameworkVersion
+      if ($projectPackageJsonContent.name -ne $DemoProjectName) {
+        $orderedDependencies["bia-ng"] = $frameworkVersion
+      }
+      else {
+        $orderedDependencies["bia-ng"] = 'file:./dist/bia-ng'
+      }
     }
 
     # Update the dependencies in the package.json content

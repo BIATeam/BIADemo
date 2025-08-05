@@ -149,8 +149,19 @@ Write-Host "Remove comment except BIADemo"
 RemoveCommentExceptBIADemo -Path $newPath -ExcludeDir ('dist', 'node_modules', 'packages', '.angular', $docsFolder, 'scss' )
 
 Write-Host "replace project name"
-ReplaceProjectNameRecurse -oldName $oldName -newName $newName -Path $newPath  -ExcludeDir ('dist', 'node_modules', 'packages', '.angular', 'scss')
-ReplaceProjectNameRecurse -oldName $oldName.ToLower() -newName $newName.ToLower() -Path $newPath  -ExcludeDir ('dist', 'node_modules', 'packages', '.angular', 'scss')
+ReplaceProjectNameRecurse -oldName $oldName -newName $newName -Path $newPath -ExcludeDir ('dist', 'node_modules', 'packages', '.angular', 'scss')
+ReplaceProjectNameRecurse -oldName $oldName.ToLower() -newName $newName.ToLower() -Path $newPath -ExcludeDir ('dist', 'node_modules', 'packages', '.angular', 'scss')
+
+$frameworkVersionFile = Join-Path -Path "$oldPath" -ChildPath "packages\bia-ng\shared\framework-version.ts"
+
+# Extract the version from framework-version.ts
+$frameworkVersionContent = Get-Content -Path $frameworkVersionFile -Raw
+$frameworkVersionMatch = [regex]::Match($frameworkVersionContent, 'FRAMEWORK_VERSION\s*=\s*''([\S]+)''')
+$frameworkVersion = $frameworkVersionMatch.Groups[1].Value
+
+Write-Output "Bia Demo framework version : $frameworkVersion"
+
+ReplaceProjectNameRecurse -oldName 'file:./dist/bia-ng' -newName $frameworkVersion -Path "$newPath\package.json" -ExcludeDir ('dist', 'node_modules', 'packages', '.angular', 'scss')
 
 $a = Get-Content $newPath'\angular.json' -raw | ConvertFrom-Json
 $a.projects.BIATemplate.architect.build.options.serviceWorker = $false
