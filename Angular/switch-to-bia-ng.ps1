@@ -1,4 +1,6 @@
 $SourceFrontEnd = "."
+# keep name separated to avoid replace
+$DemoProjectName = "bia" + "demo"
 
 $ExcludeDir = ('dist', 'node_modules', 'docs', 'scss', '.git', '.vscode', '.angular', '.dart_tool', 'bia-shared', 'bia-features', 'bia-domains', 'bia-core', '.bia')
 
@@ -65,49 +67,83 @@ Write-Output "Bia Demo framework version : $frameworkVersion"
 $projectPackageJsonPath = "package.json"
 
 if (Test-Path -Path $projectPackageJsonPath -PathType Leaf) {
-    # Read the package.json file
-    $packageJsonContent = Get-Content -Path $projectPackageJsonPath -Raw | ConvertFrom-Json
+  # Read the package.json file
+  $projectPackageJsonContent = Get-Content -Path $projectPackageJsonPath -Raw | ConvertFrom-Json
 
-    if ($null -eq $packageJsonContent.dependencies) {
-        $packageJsonContent.dependencies = @{}
+  if ($null -eq $projectPackageJsonContent.dependencies) {
+    $projectPackageJsonContent.dependencies = @{}
+  }
+
+  # Check if the "bia-ng" dependency does not exist
+  if (-not ($projectPackageJsonContent.dependencies.PSObject.Properties | Where-Object { $_.Name -eq "bia-ng" })) {
+    # Initialize dependencies as an ordered dictionary if it is null
+    if ($null -eq $projectPackageJsonContent.dependencies) {
+      $projectPackageJsonContent.dependencies = [ordered]@{}
     }
 
-    # Check if the "bia-ng" dependency does not exist
-    if (-not ($packageJsonContent.dependencies.PSObject.Properties | Where-Object { $_.Name -eq "bia-ng" })) {
-        # Add the "bia-ng" dependency
-        $packageJsonContent.dependencies | Add-Member -NotePropertyName "bia-ng" -NotePropertyValue $frameworkVersion
-
-        # Convert the object back to JSON and write it back to the package.json file
-        $packageJsonContent | ConvertTo-Json -Depth 10 | Set-Content -Path $projectPackageJsonPath
-
-        Write-Output "The 'bia-ng' dependency has been added with version $frameworkVersion in package.json."
-    } else {
-        Write-Output "The 'bia-ng' dependency already exists in package.json."
+    # Convert dependencies to a dictionary for easier manipulation
+    $dependencies = [ordered]@{}
+    $projectPackageJsonContent.dependencies.PSObject.Properties | ForEach-Object {
+      $dependencies[$_.Name] = $_.Value
     }
+
+    # Create a new ordered dictionary to hold the dependencies in alphabetical order
+    $orderedDependencies = [ordered]@{}
+
+    # Find the correct position to insert "bia-ng" in alphabetical order
+    $inserted = $false
+
+    foreach ($dep in ($dependencies.Keys | Sort-Object)) {
+      if (-not $inserted -and "bia-ng" -lt $dep) {
+        $orderedDependencies["bia-ng"] = $frameworkVersion
+        $inserted = $true
+      }
+      $orderedDependencies[$dep] = $dependencies[$dep]
+    }
+
+    # If "bia-ng" hasn't been inserted yet, it should be added at the end
+    if (-not $inserted) {
+      $orderedDependencies["bia-ng"] = $frameworkVersion
+    }
+
+    # Update the dependencies in the package.json content
+    $projectPackageJsonContent.dependencies = $orderedDependencies
+
+    # Convert the object back to JSON and write it back to the package.json file
+    $projectPackageJsonContent | ConvertTo-Json -Depth 10 | Set-Content -Path $projectPackageJsonPath
+
+    Write-Output "The 'bia-ng' dependency has been added with version $frameworkVersion in package.json."
+  }
+  else {
+    Write-Output "The 'bia-ng' dependency already exists in package.json."
+  }
 }
 
 # Define the path to the folder you want to delete
 $folderPath = Join-Path -Path "." -ChildPath "packages\bia-ng"
 
 if (Test-Path -Path $projectPackageJsonPath -PathType Leaf) {
-    # Read the package.json file
-    $projectPackageJsonContent = Get-Content -Path $projectPackageJsonPath -Raw | ConvertFrom-Json
+  # Read the package.json file
+  $projectPackageJsonContent = Get-Content -Path $projectPackageJsonPath -Raw | ConvertFrom-Json
 
-    # Check if the name in package.json is not "BIADemo"
-     if ($projectPackageJsonContent.name -ne "biademo") {
-        # Check if the folder exists
-        if (Test-Path -Path $folderPath) {
-            # Delete the folder and all its contents
-            Remove-Item -Path $folderPath -Recurse -Force
-            Write-Output "The folder $folderPath has been deleted successfully."
-        } else {
-            Write-Output "The folder $folderPath does not exist."
-        }
-    } else {
-        Write-Output "The name in package.json is 'biademo'. No deletion performed."
+  # Check if the name in package.json is not "BIA Demo"
+  if ($projectPackageJsonContent.name -ne $DemoProjectName) {
+    # Check if the folder exists
+    if (Test-Path -Path $folderPath) {
+      # Delete the folder and all its contents
+      Remove-Item -Path $folderPath -Recurse -Force
+      Write-Output "The folder $folderPath has been deleted successfully."
     }
-} else {
-    Write-Output "The package.json file does not exist at $packageJsonPath."
+    else {
+      Write-Output "The folder $folderPath does not exist."
+    }
+  }
+  else {
+    Write-Output "The name in package.json is '$DemoProjectName'. No deletion performed."
+  }
+}
+else {
+  Write-Output "The package.json file does not exist at $packageJsonPath."
 }
 
 # Clean imports
