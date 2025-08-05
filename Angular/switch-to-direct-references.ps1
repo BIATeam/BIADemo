@@ -1,5 +1,8 @@
-$SourceFrontEnd = $Source + "."
-$currentDirectory = Split-Path -Parent $MyInvocation.MyCommand.Path
+$SourceFrontEnd = "."
+$SourceBiaDemo = "."
+
+$sourcePath = Join-Path -Path $SourceBiaDemo -ChildPath "Angular\packages"
+$destinationPath = $SourceFrontEnd
 
 $ExcludeDir = ('dist', 'node_modules', 'docs', 'scss', '.git', '.vscode', '.angular', '.dart_tool', 'bia-shared', 'bia-features', 'bia-domains', 'bia-core', '.bia')
 
@@ -49,17 +52,65 @@ function ReplaceInProjectRec {
   }
 }
 
-# Switch imports to bia-ng imports
-ReplaceInProject -Source $SourceFrontEnd -OldRegexp "(import\s*{\s*[^}]+\s*}\s*from\s*)['](bia-ng\/[^']+)['];" -NewRegexp '$1''packages/$2/public-api'';' -Include *.ts
-ReplaceInProject -Source $SourceFrontEnd -OldRegexp "((templateUrl:|styleUrls: \[)[\s]*'[\S]*\/)node_modules\/bia-ng\/templates\/([\S]*')" -NewRegexp '$1packages/bia-ng/shared/$3' -Include *.ts
+$projectPackageJsonPath = Join-Path -Path $SourceFrontEnd -ChildPath "package.json"
 
-# FRONT END
-# Set-Location $SourceFrontEnd
-npm run clean
+if (Test-Path -Path $projectPackageJsonPath -PathType Leaf) {
+    # Read the package.json file
+    $projectPackageJsonContent = Get-Content -Path $projectPackageJsonPath -Raw | ConvertFrom-Json
 
-# BACK END
-# Set-Location $SourceBackEnd
-# dotnet restore --no-cache
+    # Check if the name in package.json is not "BIADemo"
+    if ($projectPackageJsonContent.name -ne "biademo") {
+        # Check if the source path exists
+        if (Test-Path -Path $sourcePath) {
+            # Path to the framework-version.ts file in the source folder
+            $frameworkVersionFile = Join-Path -Path $sourcePath -ChildPath "bia-ng\shared\framework-version.ts"
+
+            # Check if both files exist
+            if ((Test-Path -Path $frameworkVersionFile -PathType Leaf) -And (Test-Path -Path $projectPackageJsonPath -PathType Leaf)) {
+                # Extract the version from framework-version.ts
+                $frameworkVersionContent = Get-Content -Path $frameworkVersionFile -Raw
+                $frameworkVersionMatch = [regex]::Match($frameworkVersionContent, 'FRAMEWORK_VERSION\s*=\s*''([\S]+)''')
+                $frameworkVersion = $frameworkVersionMatch.Groups[1].Value
+                Write-Output "Bia Demo framework version: $frameworkVersion"
+
+                # Extract the version of "bia-ng" from package.json
+                $biaNgVersion = $projectPackageJsonContent.dependencies."bia-ng"
+                Write-Output "Currently used bia-ng version: $biaNgVersion"
+
+                # Compare the versions
+                if ($frameworkVersion -eq $biaNgVersion) {
+                    # Copy the contents of the source path to the destination path
+                    Copy-Item -Path "$sourcePath\*" -Destination "$destinationPath\packages\bia-ng" -Recurse -Force
+                    Write-Output "Versions match. Copy of local bia-ng completed successfully."
+                } else {
+                    Write-Output "Versions do not match. No copy operation performed."
+                    exit
+                }
+            } else {
+                Write-Output "Required files do not exist."
+                exit
+            }
+        } else {
+            Write-Output "Source path does not exist: $sourcePath"
+            exit
+        }
+    }
+
+    # Switch imports to bia-ng imports
+    ReplaceInProject -Source $SourceFrontEnd -OldRegexp "(import\s*{\s*[^}]+\s*}\s*from\s*)['](bia-ng\/[^']+)['];" -NewRegexp '$1''packages/$2/public-api'';' -Include *.ts
+    ReplaceInProject -Source $SourceFrontEnd -OldRegexp "((templateUrl:|styleUrls: \[)[\s]*'[\S]*\/)node_modules\/bia-ng\/templates\/([\S]*')" -NewRegexp '$1packages/bia-ng/shared/$3' -Include *.ts
+
+    # Remove the "bia-ng" key from package.json
+    if ($projectPackageJsonContent.dependencies.PSObject.Properties.Name -contains "bia-ng") {
+        $projectPackageJsonContent.dependencies.PSObject.Properties.Remove("bia-ng")
+        $projectPackageJsonContent | ConvertTo-Json -Depth 10 | Set-Content -Path $projectPackageJsonPath
+        Write-Output "The 'bia-ng' dependency has been removed from package.json."
+    }
+
+    # Clean imports
+    npm run clean
+}
+
 
 Write-Host "Finish"
 pause
