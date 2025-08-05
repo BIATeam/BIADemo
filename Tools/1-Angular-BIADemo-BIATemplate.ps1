@@ -69,7 +69,7 @@ function RemoveEmptyFolder {
     RemoveEmptyFolder -Path $childDirectory.FullName -Exclude $ExcludeDir
   }
   $currentChildren = Get-ChildItem -Force -LiteralPath $Path
-  $isEmpty = $currentChildren -eq $null
+  $isEmpty = $null -eq $currentChildren
   if ($isEmpty) {
     $fileRel = Resolve-Path -Path "$Path" -Relative
     Write-Verbose "Removing empty folder '${fileRel}'." -Verbose
@@ -78,10 +78,10 @@ function RemoveEmptyFolder {
 }
 
 ###### ###### ###### Start process ###### ###### ######
-RemoveFolderContents -path "$newPath" -Exclude ('dist', 'node_modules', '.angular')
+RemoveFolderContents -path "$newPath" -Exclude ('dist', 'node_modules', 'packages', '.angular')
 
 Write-Host "Copy from $oldPath to $newPath"
-Copy-Item -Path (Get-Item -Path "$oldPath\*" -Exclude ('dist', 'node_modules', '.angular')).FullName -Destination $newPath -Recurse -Force
+Copy-Item -Path (Get-Item -Path "$oldPath\*" -Exclude ('dist', 'node_modules', 'packages', '.angular')).FullName -Destination $newPath -Recurse -Force
 
 Set-Location -Path $newPath
 
@@ -137,20 +137,20 @@ RemoveFolder -path 'src\assets\bia\primeng\bia'
 RemoveFolder -path 'src\assets\bia\primeng\layout\images'
 
 Write-Host "Remove BIA demo only files"
-RemoveBIADemoOnlyFiles -Path $newPath -ExcludeDir ('dist', 'node_modules', '.angular')
+RemoveBIADemoOnlyFiles -Path $newPath -ExcludeDir ('dist', 'node_modules', 'packages', '.angular')
 
 Write-Host "Remove Empty Folder"
-RemoveEmptyFolder "." -Path $newPath -ExcludeDir ('dist', 'node_modules', '.angular', 'PublishProfiles', 'RepoContract')
+RemoveEmptyFolder "." -Path $newPath -ExcludeDir ('dist', 'node_modules', 'packages', '.angular', 'PublishProfiles', 'RepoContract')
 
 Write-Host "Remove code example partial files"
-RemoveCodeExample -Path $newPath -ExcludeDir ('dist', 'node_modules', '.angular', $docsFolder, 'scss' )
+RemoveCodeExample -Path $newPath -ExcludeDir ('dist', 'node_modules', 'packages', '.angular', $docsFolder, 'scss' )
 
 Write-Host "Remove comment except BIADemo"
-RemoveCommentExceptBIADemo -Path $newPath -ExcludeDir ('dist', 'node_modules', '.angular', $docsFolder, 'scss' )
+RemoveCommentExceptBIADemo -Path $newPath -ExcludeDir ('dist', 'node_modules', 'packages', '.angular', $docsFolder, 'scss' )
 
 Write-Host "replace project name"
-ReplaceProjectNameRecurse -oldName $oldName -newName $newName -Path $newPath  -ExcludeDir ('dist', 'node_modules', '.angular', 'scss')
-ReplaceProjectNameRecurse -oldName $oldName.ToLower() -newName $newName.ToLower() -Path $newPath  -ExcludeDir ('dist', 'node_modules', '.angular', 'scss')
+ReplaceProjectNameRecurse -oldName $oldName -newName $newName -Path $newPath  -ExcludeDir ('dist', 'node_modules', 'packages', '.angular', 'scss')
+ReplaceProjectNameRecurse -oldName $oldName.ToLower() -newName $newName.ToLower() -Path $newPath  -ExcludeDir ('dist', 'node_modules', 'packages', '.angular', 'scss')
 
 $a = Get-Content $newPath'\angular.json' -raw | ConvertFrom-Json
 $a.projects.BIATemplate.architect.build.options.serviceWorker = $false
