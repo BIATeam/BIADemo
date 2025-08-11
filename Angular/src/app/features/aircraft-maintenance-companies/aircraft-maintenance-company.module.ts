@@ -44,7 +44,7 @@ export const ROUTES: Routes = [
         path: ':crudItemId',
         data: {
           breadcrumb: '',
-          canNavigate: true,
+          canNavigate: false,
         },
         component: AircraftMaintenanceCompanyItemComponent,
         canActivate: [PermissionGuard],
