@@ -279,7 +279,7 @@ namespace BIA.Net.Core.Domain.Service
                     csvBuilder.AppendLine(CSVString(line));
                 }
 
-                return Encoding.GetEncoding("iso-8859-1").GetBytes(csvBuilder.ToString());
+                return Encoding.GetEncoding("iso-8859-15").GetBytes(csvBuilder.ToString());
             });
         }
 
