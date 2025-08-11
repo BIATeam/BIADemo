@@ -15,9 +15,11 @@ import {
   ElementRef,
   Inject,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Renderer2,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
@@ -76,7 +78,7 @@ import { BiaLayoutService } from '../../services/layout.service';
   ],
 })
 export class BiaUltimaTopbarComponent
-  implements OnInit, OnDestroy, AfterViewInit
+  implements OnInit, OnDestroy, AfterViewInit, OnChanges
 {
   @Input() appTitle: string;
   @Input() version: string;
@@ -120,19 +122,18 @@ export class BiaUltimaTopbarComponent
     protected renderer: Renderer2
   ) {}
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.enableNotifications) {
+      this.loadNotifications();
+    }
+  }
+
   ngOnInit() {
     this.teamTypeSelectors = this.authService
       .getLoginParameters()
       .teamsConfig.filter(t => t.inHeader === true);
 
-    if (BiaAppConstantsService.allEnvironments.enableNotifications === true) {
-      this.unreadNotificationCount$ = this.store.select(
-        DomainNotificationsStore.getUnreadNotificationCount
-      );
-      this.store.dispatch(
-        DomainNotificationsActions.loadUnreadNotificationIds()
-      );
-    }
+    this.loadNotifications();
   }
 
   ngAfterViewInit(): void {
@@ -260,6 +261,17 @@ export class BiaUltimaTopbarComponent
         parentElement,
         clearButton,
         parentElement.firstChild
+      );
+    }
+  }
+
+  protected loadNotifications() {
+    if (this.enableNotifications === true) {
+      this.unreadNotificationCount$ = this.store.select(
+        DomainNotificationsStore.getUnreadNotificationCount
+      );
+      this.store.dispatch(
+        DomainNotificationsActions.loadUnreadNotificationIds()
       );
     }
   }

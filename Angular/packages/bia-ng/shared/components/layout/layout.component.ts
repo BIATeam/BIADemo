@@ -7,6 +7,7 @@ import {
   BiaTranslationService,
   getCurrentCulture,
   NavigationService,
+  Permission,
 } from 'packages/bia-ng/core/public-api';
 import { EnvironmentType } from 'packages/bia-ng/models/enum/public-api';
 import { AuthInfo, BiaNavigation } from 'packages/bia-ng/models/public-api';
@@ -28,7 +29,8 @@ export class LayoutComponent implements OnInit {
   helpUrl = BiaAppConstantsService.environment.helpUrl;
   reportUrl = BiaAppConstantsService.environment.reportUrl;
   enableNotifications =
-    BiaAppConstantsService.allEnvironments.enableNotifications;
+    BiaAppConstantsService.allEnvironments.enableNotifications &&
+    this.authService.hasPermission(Permission.Notification_List_Access);
   login = '';
   username = '';
   lastname?: string;
@@ -80,6 +82,10 @@ export class LayoutComponent implements OnInit {
           this.setLanguage();
           this.setUserName(authInfo);
           this.filterNavByRole(authInfo);
+
+          this.enableNotifications =
+            BiaAppConstantsService.allEnvironments.enableNotifications &&
+            this.authService.hasPermission(Permission.Notification_List_Access);
         }
         this.isLoadingUserInfo = false;
       }
