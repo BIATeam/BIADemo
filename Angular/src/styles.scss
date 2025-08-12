@@ -1,7 +1,7 @@
-@use './scss/bia/bia-typography';
-@use './scss/bia/bia-global-utils';
-@use './scss/bia/bia-variables';
-@use './scss/bia/bia-custom-theme';
+@use '../packages/bia-ng/scss/bia-typography';
+@use '../packages/bia-ng/scss/bia-global-utils';
+@use '../packages/bia-ng/scss/bia-variables';
+@use '../packages/bia-ng/scss/bia-custom-theme';
 @use './scss/app-custom-theme';
 
 html,
