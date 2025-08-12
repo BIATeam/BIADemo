@@ -129,7 +129,10 @@ export class TableHelperService {
     compactMode: boolean,
     showTableController: boolean,
     offset?: string
-  ): string {
+  ): string | undefined {
+    if (window.innerHeight < 600) {
+      return undefined;
+    }
     let height: string = LayoutHelperService.defaultContainerHeight(
       layoutService,
       offset

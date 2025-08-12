@@ -109,7 +109,7 @@ export class BiaTableComponent<TDto extends { id: number }>
   @Input() viewPreference: string;
   @Input() actionColumnLabel = 'bia.actions';
   @Input() showLoadingAfter = 100;
-  @Input() scrollHeightValue = 'calc( 100vh - 460px)';
+  @Input() scrollHeightValue: string | undefined = 'calc( 100vh - 460px)';
   @Input() isScrollable = true;
   @Input() isResizableColumn = false;
   protected _frozeSelectColumn = true;
