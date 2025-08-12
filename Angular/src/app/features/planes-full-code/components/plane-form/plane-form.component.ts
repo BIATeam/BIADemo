@@ -53,6 +53,7 @@ export class PlaneFormComponent implements OnChanges {
   @Output() cancelled = new EventEmitter<void>();
 
   form: UntypedFormGroup;
+  submittingForm = false;
 
   constructor(
     public formBuilder: UntypedFormBuilder,
@@ -91,6 +92,7 @@ export class PlaneFormComponent implements OnChanges {
 
   onSubmit() {
     if (this.form.valid) {
+      this.submittingForm = true;
       const plane: Plane = <Plane>this.form.value;
       plane.id = plane.id > 0 ? plane.id : 0;
       plane.isActive = plane.isActive ? plane.isActive : false;
@@ -104,6 +106,9 @@ export class PlaneFormComponent implements OnChanges {
       plane.siteId = this.authService.getCurrentTeamId(TeamTypeId.Site);
       this.save.emit(plane);
       this.form.reset();
+      setTimeout(() => {
+        this.submittingForm = false;
+      }, 2000);
     }
   }
 }

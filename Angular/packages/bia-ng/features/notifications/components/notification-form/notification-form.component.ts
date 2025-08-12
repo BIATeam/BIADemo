@@ -89,6 +89,7 @@ export class NotificationFormComponent implements OnChanges {
   missingLanguageOptions: OptionDto[];
   public missingTranslation = false;
   protected selectionLanguage = false;
+  submittingForm = false;
 
   constructor(public formBuilder: UntypedFormBuilder) {
     this.initForm();
@@ -269,6 +270,7 @@ export class NotificationFormComponent implements OnChanges {
 
   onSubmit() {
     if (this.form.valid) {
+      this.submittingForm = true;
       const notification: Notification = <Notification>this.form.value;
       notification.id = notification.id > 0 ? notification.id : 0;
       notification.read = notification.read ? notification.read : false;
@@ -294,6 +296,9 @@ export class NotificationFormComponent implements OnChanges {
         );
       this.save.emit(notification);
       this.form.reset();
+      setTimeout(() => {
+        this.submittingForm = false;
+      }, 2000);
     }
   }
 

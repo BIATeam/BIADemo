@@ -39,6 +39,7 @@ export class ViewFormComponent<T extends View> implements OnChanges {
 
   form: UntypedFormGroup;
   isAdd = true;
+  submittingForm = false;
 
   constructor(public formBuilder: UntypedFormBuilder) {
     this.initForm();
@@ -68,12 +69,16 @@ export class ViewFormComponent<T extends View> implements OnChanges {
 
   onSubmit() {
     if (this.form.valid) {
+      this.submittingForm = true;
       const view: T = <T>this.form.value;
       view.id = view.id > 0 ? view.id : 0;
       if (view.id === 0) {
         this.form.reset();
       }
       this.save.emit(view);
+      setTimeout(() => {
+        this.submittingForm = false;
+      }, 2000);
     }
   }
 }

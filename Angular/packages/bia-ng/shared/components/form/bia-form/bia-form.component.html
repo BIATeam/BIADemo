@@ -147,6 +147,7 @@
         icon="pi {{ submitButtonIcon }}"
         label="{{ submitButtonLabel | translate }}"
         type="submit"
+        [loading]="submittingForm"
         [disabled]="isSubmitButtonDisabled"></button>
     </div>
   </div>

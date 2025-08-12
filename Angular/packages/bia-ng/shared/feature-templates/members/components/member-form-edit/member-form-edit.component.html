@@ -44,6 +44,7 @@
       icon="pi pi-check"
       label="{{ 'bia.save' | translate }}"
       type="submit"
+      [loading]="submittingForm"
       [disabled]="!form.valid"></button>
   </div>
 </form>

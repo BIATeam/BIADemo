@@ -27,6 +27,7 @@
         isAdd === true ? ('bia.add' | translate) : ('bia.save' | translate)
       }}"
       type="submit"
+      [loading]="submittingForm"
       [disabled]="!form.valid"></button>
   </div>
 </form>

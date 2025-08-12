@@ -104,6 +104,7 @@ export class BiaFormComponent<TDto extends { id: number }>
   protected sub = new Subscription();
   fieldsWithoutLayoutConfig: BiaFieldConfig<TDto>[] = [];
   isFixed = false;
+  submittingForm = false;
 
   @ViewChildren('refFormField', { read: ElementRef })
   formElements: QueryList<ElementRef>;
@@ -483,8 +484,12 @@ export class BiaFormComponent<TDto extends { id: number }>
     }
 
     if (this.form?.valid) {
+      this.submittingForm = true;
       const element: any = this.getElement();
       this.save.emit(element);
+      setTimeout(() => {
+        this.submittingForm = false;
+      }, 2000);
     }
   }
 

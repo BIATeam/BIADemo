@@ -50,6 +50,7 @@ export class MemberFormEditComponent implements OnChanges {
 
   form: UntypedFormGroup;
   displayUserAddFromDirectoryDialog = false;
+  submittingForm = false;
 
   get userData(): string | null {
     return !this.member || Object.keys(this.member).length === 0
@@ -92,6 +93,7 @@ export class MemberFormEditComponent implements OnChanges {
 
   onSubmit() {
     if (this.form.valid) {
+      this.submittingForm = true;
       const member: Member = <Member>this.form.value;
       member.id = member.id > 0 ? member.id : 0;
       member.roles = BiaOptionService.differential(
@@ -106,6 +108,9 @@ export class MemberFormEditComponent implements OnChanges {
 
       this.save.emit(member);
       this.form.reset();
+      setTimeout(() => {
+        this.submittingForm = false;
+      }, 2000);
     }
   }
 }

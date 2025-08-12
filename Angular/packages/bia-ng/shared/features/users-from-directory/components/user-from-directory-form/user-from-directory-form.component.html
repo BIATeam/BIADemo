@@ -63,6 +63,7 @@
       icon="pi pi-plus"
       label="{{ 'bia.add' | translate }}"
       type="submit"
+      [loading]="submittingForm"
       [disabled]="!form.valid"></button>
   </div>
 </form>

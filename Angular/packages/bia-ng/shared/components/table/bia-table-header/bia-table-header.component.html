@@ -76,19 +76,21 @@
     <button
       type="button"
       pButton
+      biaDebounceClick
       *ngIf="canExportCSV"
       class="p-button-outlined"
       icon="pi pi-download"
       label="CSV"
-      (click)="exportCSV.emit()"></button>
+      (debounceClick)="exportCSV.emit()"></button>
     <button
       type="button"
       pButton
+      biaDebounceClick
       *ngIf="displayImportButton()"
       class="p-button-outlined"
       icon="pi pi-download"
       label="{{ 'bia.export' | translate }}"
-      (click)="fullExportCSV.emit()"></button>
+      (debounceClick)="fullExportCSV.emit()"></button>
     <button
       type="button"
       pButton

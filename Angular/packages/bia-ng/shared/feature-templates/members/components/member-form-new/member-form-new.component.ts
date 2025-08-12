@@ -52,6 +52,7 @@ export class MemberFormNewComponent implements OnChanges {
 
   form: UntypedFormGroup;
   displayUserAddFromDirectoryDialog = false;
+  submittingForm = false;
 
   constructor(
     public formBuilder: UntypedFormBuilder,
@@ -89,6 +90,7 @@ export class MemberFormNewComponent implements OnChanges {
 
   onSubmit() {
     if (this.form.valid) {
+      this.submittingForm = true;
       const members: Members = <Members>this.form.value;
       members.roles = BiaOptionService.differential(
         members.roles,
@@ -98,6 +100,9 @@ export class MemberFormNewComponent implements OnChanges {
 
       this.save.emit(members);
       this.form.reset();
+      setTimeout(() => {
+        this.submittingForm = false;
+      }, 2000);
     }
   }
 }

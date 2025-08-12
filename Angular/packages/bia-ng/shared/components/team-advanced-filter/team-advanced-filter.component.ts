@@ -61,6 +61,7 @@ export class TeamAdvancedFilterComponent implements OnInit, OnChanges {
 
   userOptions$: Observable<OptionDto[]>;
   form: UntypedFormGroup;
+  submittingForm = false;
 
   constructor(
     public formBuilder: UntypedFormBuilder,
@@ -99,11 +100,15 @@ export class TeamAdvancedFilterComponent implements OnInit, OnChanges {
 
   onFilter() {
     if (this.form.valid) {
+      this.submittingForm = true;
       const vm = this.form.value;
       const advancedFilter = <TeamAdvancedFilterDto>{
         userId: vm.userSelected,
       };
       this.filter.emit(advancedFilter);
+      setTimeout(() => {
+        this.submittingForm = false;
+      }, 2000);
     }
   }
 

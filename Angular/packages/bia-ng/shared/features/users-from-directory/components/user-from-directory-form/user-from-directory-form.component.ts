@@ -55,6 +55,7 @@ export class UserFromLdapFormComponent implements OnChanges {
   selectedDomain: string;
   form: UntypedFormGroup;
   useKeycloak = false;
+  submittingForm = false;
 
   constructor(
     public formBuilder: UntypedFormBuilder,
@@ -87,8 +88,12 @@ export class UserFromLdapFormComponent implements OnChanges {
 
   onSubmit() {
     if (this.form.valid) {
+      this.submittingForm = true;
       this.save.emit(this.form.value.selectedUsers);
       this.reset();
+      setTimeout(() => {
+        this.submittingForm = false;
+      }, 2000);
     }
   }
 
