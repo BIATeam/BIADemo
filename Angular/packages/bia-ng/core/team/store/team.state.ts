@@ -4,10 +4,10 @@ import {
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
-import { storeKey } from '../team.contants';
+import { storeKey } from '../team.constants';
 import * as fromTeams from './teams-reducer';
 
-export namespace BiaTeamsStore {
+export namespace CoreTeamsStore {
   export interface TeamsState {
     teams: fromTeams.TeamState;
   }

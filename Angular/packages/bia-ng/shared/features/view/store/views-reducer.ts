@@ -1,13 +1,7 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { View } from '../model/view';
-import {
-  closeViewDialog,
-  loadAllSuccess,
-  loadAllView,
-  openViewDialog,
-  setViewSuccess,
-} from './views-actions';
+import { ViewsActions } from './views-actions';
 
 // This adapter will allow is to manipulate views (mostly CRUD operations)
 export const viewsAdapter = createEntityAdapter<View>({
@@ -42,20 +36,20 @@ export const INIT_VIEW_STATE: ViewState = viewsAdapter.getInitialState({
 
 export const viewReducers = createReducer<ViewState>(
   INIT_VIEW_STATE,
-  on(openViewDialog, (state, { tableStateKey }) => {
+  on(ViewsActions.openViewDialog, (state, { tableStateKey }) => {
     return { ...state, displayViewDialog: tableStateKey };
   }),
-  on(closeViewDialog, state => {
+  on(ViewsActions.closeViewDialog, state => {
     return { ...state, displayViewDialog: '' };
   }),
-  on(setViewSuccess, (state, view) => {
+  on(ViewsActions.setViewSuccess, (state, view) => {
     return { ...state, lastViewChanged: view };
   }),
-  on(loadAllSuccess, (state, { views }) => {
+  on(ViewsActions.loadAllSuccess, (state, { views }) => {
     const newState = viewsAdapter.setAll(views, state);
     return { ...newState, dataLoaded: true };
   }),
-  on(loadAllView, state => {
+  on(ViewsActions.loadAllView, state => {
     return { ...state, loadAllView: false };
   })
 );

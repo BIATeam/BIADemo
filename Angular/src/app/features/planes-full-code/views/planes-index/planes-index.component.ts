@@ -28,8 +28,8 @@ import {
   BiaTableComponent,
   BiaTableControllerComponent,
   BiaTableHeaderComponent,
-  loadAllView,
   TableHelperService,
+  ViewsActions,
 } from 'packages/bia-ng/shared/public-api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable, Subscription } from 'rxjs';
@@ -167,7 +167,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
 
   onDisplay() {
     if (this.useView) {
-      this.store.dispatch(loadAllView());
+      this.store.dispatch(ViewsActions.loadAllView());
     }
 
     if (this.useSignalR) {

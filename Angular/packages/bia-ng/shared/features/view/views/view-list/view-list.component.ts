@@ -30,7 +30,7 @@ import { TableHelperService } from '../../../../services/table-helper.service';
 import { View } from '../../model/view';
 import { QUERY_STRING_VIEW } from '../../model/view.constants';
 import { ViewsStore } from '../../store/view.state';
-import { openViewDialog } from '../../store/views-actions';
+import { ViewsActions } from '../../store/views-actions';
 import { ViewDialogComponent } from '../view-dialog/view-dialog.component';
 
 const currentView = -1;
@@ -489,7 +489,9 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onManageView() {
-    this.store.dispatch(openViewDialog({ tableStateKey: this.tableStateKey }));
+    this.store.dispatch(
+      ViewsActions.openViewDialog({ tableStateKey: this.tableStateKey })
+    );
   }
 
   showEditButton() {

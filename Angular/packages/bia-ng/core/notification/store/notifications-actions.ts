@@ -1,7 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { Notification } from '../model/notification';
 
-export namespace DomainNotificationsActions {
+export namespace CoreNotificationsActions {
   export const loadAll = createAction('[Domain Notifications] Load all');
 
   export const loadAllSuccess = createAction(

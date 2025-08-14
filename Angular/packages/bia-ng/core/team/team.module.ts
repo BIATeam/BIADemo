@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { BiaTeamsStore } from './store/team.state';
+import { CoreTeamsStore } from './store/team.state';
 import { TeamsEffects } from './store/teams-effects';
-import { storeKey } from './team.contants';
+import { storeKey } from './team.constants';
 
 @NgModule({
   imports: [
-    StoreModule.forFeature(storeKey, BiaTeamsStore.reducers),
+    StoreModule.forFeature(storeKey, CoreTeamsStore.reducers),
     EffectsModule.forFeature([TeamsEffects]),
   ],
 })

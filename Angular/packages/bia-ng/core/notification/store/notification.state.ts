@@ -6,7 +6,7 @@ import {
 } from '@ngrx/store';
 import * as fromNotifications from './notifications-reducer';
 
-export namespace DomainNotificationsStore {
+export namespace CoreNotificationsStore {
   export interface NotificationsState {
     notifications: fromNotifications.NotificationState;
   }

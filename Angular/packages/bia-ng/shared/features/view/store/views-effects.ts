@@ -11,21 +11,7 @@ import { View } from '../model/view';
 import { TeamViewDas } from '../services/team-view-das.service';
 import { UserViewDas } from '../services/user-view-das.service';
 import { ViewDas } from '../services/view-das.service';
-import {
-  addTeamView,
-  addUserView,
-  assignViewToTeam,
-  failure,
-  loadAllSuccess,
-  loadAllView,
-  removeTeamView,
-  removeUserView,
-  setDefaultTeamView,
-  setDefaultUserView,
-  setViewSuccess,
-  updateTeamView,
-  updateUserView,
-} from './views-actions';
+import { ViewsActions } from './views-actions';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -36,13 +22,13 @@ import {
 export class ViewsEffects {
   loadAll$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadAllView) /* When action is dispatched */,
+      ofType(ViewsActions.loadAllView) /* When action is dispatched */,
       switchMap(() => {
         return this.viewDas.getAll().pipe(
-          map(views => loadAllSuccess({ views })),
+          map(views => ViewsActions.loadAllSuccess({ views })),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
-            return of(failure({ error: err }));
+            return of(ViewsActions.failure({ error: err }));
           })
         );
       })
@@ -51,17 +37,17 @@ export class ViewsEffects {
 
   deleteUserView$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(removeUserView) /* When action is dispatched */,
+      ofType(ViewsActions.removeUserView) /* When action is dispatched */,
       map(x => x?.id),
       switchMap(id => {
         return this.userViewDas.delete({ id: id }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
-            return loadAllView();
+            return ViewsActions.loadAllView();
           }),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
-            return of(failure({ error: err }));
+            return of(ViewsActions.failure({ error: err }));
           })
         );
       })
@@ -70,16 +56,19 @@ export class ViewsEffects {
 
   addUserView$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(addUserView),
+      ofType(ViewsActions.addUserView),
       switchMap((view: View) =>
         this.userViewDas.post({ item: view }).pipe(
           switchMap(viewAdded => {
             this.biaMessageService.showAddSuccess();
-            return [setViewSuccess(viewAdded), loadAllView()];
+            return [
+              ViewsActions.setViewSuccess(viewAdded),
+              ViewsActions.loadAllView(),
+            ];
           }),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
-            return of(failure({ error: err }));
+            return of(ViewsActions.failure({ error: err }));
           })
         )
       )
@@ -88,16 +77,19 @@ export class ViewsEffects {
 
   updateUserView$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(updateUserView),
+      ofType(ViewsActions.updateUserView),
       switchMap((view: View) =>
         this.userViewDas.put({ item: view, id: view.id }).pipe(
           switchMap(viewUpdated => {
             this.biaMessageService.showUpdateSuccess();
-            return [setViewSuccess(viewUpdated), loadAllView()];
+            return [
+              ViewsActions.setViewSuccess(viewUpdated),
+              ViewsActions.loadAllView(),
+            ];
           }),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
-            return of(failure({ error: err }));
+            return of(ViewsActions.failure({ error: err }));
           })
         )
       )
@@ -106,16 +98,19 @@ export class ViewsEffects {
 
   updateTeamView$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(updateTeamView),
+      ofType(ViewsActions.updateTeamView),
       switchMap((view: TeamView) =>
         this.teamViewDas.put({ item: view, id: view.id }).pipe(
           switchMap(viewUpdated => {
             this.biaMessageService.showUpdateSuccess();
-            return [setViewSuccess(viewUpdated), loadAllView()];
+            return [
+              ViewsActions.setViewSuccess(viewUpdated),
+              ViewsActions.loadAllView(),
+            ];
           }),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
-            return of(failure({ error: err }));
+            return of(ViewsActions.failure({ error: err }));
           })
         )
       )
@@ -124,16 +119,16 @@ export class ViewsEffects {
 
   setDefaultUserView$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(setDefaultUserView),
+      ofType(ViewsActions.setDefaultUserView),
       switchMap((action: DefaultView) => {
         return this.userViewDas.setDefaultView(action).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
-            return loadAllView();
+            return ViewsActions.loadAllView();
           }),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
-            return of(failure({ error: err }));
+            return of(ViewsActions.failure({ error: err }));
           })
         );
       })
@@ -142,17 +137,17 @@ export class ViewsEffects {
 
   deleteTeamView$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(removeTeamView) /* When action is dispatched */,
+      ofType(ViewsActions.removeTeamView) /* When action is dispatched */,
       map(x => x?.id),
       switchMap(id => {
         return this.teamViewDas.delete({ id: id }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
-            return loadAllView();
+            return ViewsActions.loadAllView();
           }),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
-            return of(failure({ error: err }));
+            return of(ViewsActions.failure({ error: err }));
           })
         );
       })
@@ -161,16 +156,19 @@ export class ViewsEffects {
 
   addTeamView$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(addTeamView),
+      ofType(ViewsActions.addTeamView),
       switchMap((view: TeamView) =>
         this.teamViewDas.post({ item: view }).pipe(
           switchMap(viewAdded => {
             this.biaMessageService.showAddSuccess();
-            return [setViewSuccess(viewAdded), loadAllView()];
+            return [
+              ViewsActions.setViewSuccess(viewAdded),
+              ViewsActions.loadAllView(),
+            ];
           }),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
-            return of(failure({ error: err }));
+            return of(ViewsActions.failure({ error: err }));
           })
         )
       )
@@ -179,16 +177,16 @@ export class ViewsEffects {
 
   setDefaultTeamView$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(setDefaultTeamView),
+      ofType(ViewsActions.setDefaultTeamView),
       switchMap((action: TeamDefaultView) => {
         return this.teamViewDas.setDefaultView(action).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
-            return loadAllView();
+            return ViewsActions.loadAllView();
           }),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
-            return of(failure({ error: err }));
+            return of(ViewsActions.failure({ error: err }));
           })
         );
       })
@@ -197,16 +195,16 @@ export class ViewsEffects {
 
   assignViewToTeam$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(assignViewToTeam),
+      ofType(ViewsActions.assignViewToTeam),
       switchMap((action: AssignViewToTeam) => {
         return this.viewDas.assignViewToTeam(action).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
-            return loadAllView();
+            return ViewsActions.loadAllView();
           }),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
-            return of(failure({ error: err }));
+            return of(ViewsActions.failure({ error: err }));
           })
         );
       })

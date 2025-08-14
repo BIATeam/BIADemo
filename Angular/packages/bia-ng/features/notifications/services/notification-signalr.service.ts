@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import {
   AuthService,
   BiaSignalRService,
-  BiaTeamsStore,
+  CoreTeamsStore,
 } from 'packages/bia-ng/core/public-api';
 import { TargetedFeature, Team } from 'packages/bia-ng/models/public-api';
 import { CrudItemSignalRService } from 'packages/bia-ng/shared/public-api';
@@ -50,7 +50,7 @@ export class NotificationsSignalRService extends CrudItemSignalRService<
    * Note: this method has been created so that we have to call one method on this class, otherwise dependency injection is not working.
    */
   initialize() {
-    this.store.select(BiaTeamsStore.getAllTeams).subscribe(teams => {
+    this.store.select(CoreTeamsStore.getAllTeams).subscribe(teams => {
       this.myTeams = teams;
     });
 

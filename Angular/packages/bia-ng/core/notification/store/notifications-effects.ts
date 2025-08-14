@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { BiaMessageService } from '../../services/bia-message.service';
 import { NotificationDas } from '../services/notification-das.service';
-import { DomainNotificationsActions } from './notifications-actions';
+import { CoreNotificationsActions } from './notifications-actions';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -15,15 +15,15 @@ import { DomainNotificationsActions } from './notifications-actions';
 export class NotificationsEffects {
   loadAll$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(DomainNotificationsActions.loadAll),
+      ofType(CoreNotificationsActions.loadAll),
       switchMap(() =>
         this.notificationDas.getList().pipe(
           map(notifications =>
-            DomainNotificationsActions.loadAllSuccess({ notifications })
+            CoreNotificationsActions.loadAllSuccess({ notifications })
           ),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
-            return of(DomainNotificationsActions.failure({ error: err }));
+            return of(CoreNotificationsActions.failure({ error: err }));
           })
         )
       )
@@ -32,16 +32,16 @@ export class NotificationsEffects {
 
   load$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(DomainNotificationsActions.load),
+      ofType(CoreNotificationsActions.load),
       map(x => x?.id),
       switchMap(id =>
         this.notificationDas.get({ id: id }).pipe(
           map(notification =>
-            DomainNotificationsActions.loadSuccess({ notification })
+            CoreNotificationsActions.loadSuccess({ notification })
           ),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
-            return of(DomainNotificationsActions.failure({ error: err }));
+            return of(CoreNotificationsActions.failure({ error: err }));
           })
         )
       )
@@ -50,15 +50,15 @@ export class NotificationsEffects {
 
   loadUnreadNotificationIds$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(DomainNotificationsActions.loadUnreadNotificationIds),
+      ofType(CoreNotificationsActions.loadUnreadNotificationIds),
       switchMap(() =>
         this.notificationDas.getUnreadNotificationIds().pipe(
           map(ids =>
-            DomainNotificationsActions.loadUnreadNotificationIdsSuccess({ ids })
+            CoreNotificationsActions.loadUnreadNotificationIdsSuccess({ ids })
           ),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
-            return of(DomainNotificationsActions.failure({ error: err }));
+            return of(CoreNotificationsActions.failure({ error: err }));
           })
         )
       )
@@ -67,14 +67,14 @@ export class NotificationsEffects {
 
   setAsRead$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(DomainNotificationsActions.setAsRead),
+      ofType(CoreNotificationsActions.setAsRead),
       map(x => x?.id),
       switchMap(id => {
         return this.notificationDas.setAsRead(id).pipe(
-          map(() => DomainNotificationsActions.setAsReadSuccess()),
+          map(() => CoreNotificationsActions.setAsReadSuccess()),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
-            return of(DomainNotificationsActions.failure({ error: err }));
+            return of(CoreNotificationsActions.failure({ error: err }));
           })
         );
       })

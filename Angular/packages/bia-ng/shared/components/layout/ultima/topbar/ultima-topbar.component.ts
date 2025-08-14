@@ -30,8 +30,8 @@ import {
   BiaAppConstantsService,
   BiaMessageService,
   BiaTranslationService,
-  DomainNotificationsActions,
-  DomainNotificationsStore,
+  CoreNotificationsActions,
+  CoreNotificationsStore,
   Notification,
   NotificationData,
   NotificationModule,
@@ -183,7 +183,7 @@ export class BiaUltimaTopbarComponent
 
     if (setRead && message.data?.notification?.id > 0) {
       this.store.dispatch(
-        DomainNotificationsActions.setAsRead({
+        CoreNotificationsActions.setAsRead({
           id: message.data.notification.id,
         })
       );
@@ -268,11 +268,9 @@ export class BiaUltimaTopbarComponent
   protected loadNotifications() {
     if (this.enableNotifications === true) {
       this.unreadNotificationCount$ = this.store.select(
-        DomainNotificationsStore.getUnreadNotificationCount
+        CoreNotificationsStore.getUnreadNotificationCount
       );
-      this.store.dispatch(
-        DomainNotificationsActions.loadUnreadNotificationIds()
-      );
+      this.store.dispatch(CoreNotificationsActions.loadUnreadNotificationIds());
     }
   }
 }

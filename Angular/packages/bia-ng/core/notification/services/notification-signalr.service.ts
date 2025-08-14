@@ -5,9 +5,9 @@ import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { AuthService } from '../../services/auth.service';
 import { BiaMessageService } from '../../services/bia-message.service';
 import { BiaSignalRService } from '../../services/bia-signalr.service';
-import { BiaTeamsStore } from '../../team/store/team.state';
+import { CoreTeamsStore } from '../../team/store/team.state';
 import { Notification } from '../model/notification';
-import { DomainNotificationsActions } from '../store/notifications-actions';
+import { CoreNotificationsActions } from '../store/notifications-actions';
 
 /**
  * Service managing SignalR events for hangfire jobs.
@@ -37,7 +37,7 @@ export class NotificationSignalRService {
    * Note: this method has been created so that we have to call one method on this class, otherwise dependency injection is not working.
    */
   initialize() {
-    this.store.select(BiaTeamsStore.getAllTeams).subscribe(teams => {
+    this.store.select(CoreTeamsStore.getAllTeams).subscribe(teams => {
       this.myTeams = teams;
     });
 
@@ -49,7 +49,7 @@ export class NotificationSignalRService {
       if (this.isInMyDisplay(notification)) {
         this.messageService.showNotification(notification);
         this.store.dispatch(
-          DomainNotificationsActions.addUnreadNotification({
+          CoreNotificationsActions.addUnreadNotification({
             id: notification.id,
           })
         );
@@ -63,7 +63,7 @@ export class NotificationSignalRService {
       );
       const idNum: number = +id;
       this.store.dispatch(
-        DomainNotificationsActions.removeUnreadNotification({ id: idNum })
+        CoreNotificationsActions.removeUnreadNotification({ id: idNum })
       );
     });
 
@@ -75,7 +75,7 @@ export class NotificationSignalRService {
       );
       ids.forEach(idNum =>
         this.store.dispatch(
-          DomainNotificationsActions.removeUnreadNotification({ id: idNum })
+          CoreNotificationsActions.removeUnreadNotification({ id: idNum })
         )
       );
     });

@@ -13,8 +13,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
   AuthService,
   BiaTeamsActions,
-  BiaTeamsStore,
   BiaTranslationService,
+  CoreTeamsStore,
 } from 'packages/bia-ng/core/public-api';
 import { RoleMode } from 'packages/bia-ng/models/enum/public-api';
 import {
@@ -95,7 +95,7 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
             t.roleMode === RoleMode.MultiRoles
         ) !== undefined;
     this.teams$ = this.store.select(
-      BiaTeamsStore.getAllTeamsOfType(this.teamType.teamTypeId)
+      CoreTeamsStore.getAllTeamsOfType(this.teamType.teamTypeId)
     );
     this.sub.add(
       this.biaTranslationService.languageId$.subscribe(languageId => {

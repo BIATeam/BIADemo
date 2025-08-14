@@ -41,7 +41,7 @@ import { BiaTableBehaviorControllerComponent } from '../../../../components/tabl
 import { BiaTableControllerComponent } from '../../../../components/table/bia-table-controller/bia-table-controller.component';
 import { BiaTableHeaderComponent } from '../../../../components/table/bia-table-header/bia-table-header.component';
 import { BiaTableComponent } from '../../../../components/table/bia-table/bia-table.component';
-import { loadAllView } from '../../../../features/view/store/views-actions';
+import { ViewsActions } from '../../../../features/view/store/views-actions';
 import { TableHelperService } from '../../../../services/table-helper.service';
 import { CrudItemTableComponent } from '../../components/crud-item-table/crud-item-table.component';
 import { CrudConfig, FormReadOnlyMode } from '../../model/crud-config';
@@ -230,7 +230,7 @@ export class CrudItemsIndexComponent<
           }
         });
       }
-      this.store.dispatch(loadAllView());
+      this.store.dispatch(ViewsActions.loadAllView());
     }
   }
 

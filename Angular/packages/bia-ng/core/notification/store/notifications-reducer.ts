@@ -1,7 +1,7 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { Notification } from '../model/notification';
-import { DomainNotificationsActions } from './notifications-actions';
+import { CoreNotificationsActions } from './notifications-actions';
 
 // This adapter will allow is to manipulate notifications (mostly CRUD operations)
 export const notificationsAdapter = createEntityAdapter<Notification>({
@@ -37,20 +37,20 @@ export const INIT_NOTIFICATION_STATE: NotificationState =
 
 export const notificationReducers = createReducer<NotificationState>(
   INIT_NOTIFICATION_STATE,
-  on(DomainNotificationsActions.loadAllSuccess, (state, { notifications }) =>
+  on(CoreNotificationsActions.loadAllSuccess, (state, { notifications }) =>
     notificationsAdapter.setAll(notifications, state)
   ),
-  on(DomainNotificationsActions.loadSuccess, (state, { notification }) =>
+  on(CoreNotificationsActions.loadSuccess, (state, { notification }) =>
     notificationsAdapter.upsertOne(notification, state)
   ),
-  on(DomainNotificationsActions.loadUnreadNotificationIds, state => {
+  on(CoreNotificationsActions.loadUnreadNotificationIds, state => {
     return {
       ...state,
       loadingUnreadIds: true,
     };
   }),
   on(
-    DomainNotificationsActions.loadUnreadNotificationIdsSuccess,
+    CoreNotificationsActions.loadUnreadNotificationIdsSuccess,
     (state, { ids }) => {
       return {
         ...state,
@@ -59,7 +59,7 @@ export const notificationReducers = createReducer<NotificationState>(
       };
     }
   ),
-  on(DomainNotificationsActions.removeUnreadNotification, (state, { id }) => {
+  on(CoreNotificationsActions.removeUnreadNotification, (state, { id }) => {
     const index = state.unreadIds.indexOf(id, 0);
     const copyState = {
       ...state,
@@ -71,7 +71,7 @@ export const notificationReducers = createReducer<NotificationState>(
     }
     return copyState;
   }),
-  on(DomainNotificationsActions.addUnreadNotification, (state, { id }) => {
+  on(CoreNotificationsActions.addUnreadNotification, (state, { id }) => {
     const copyState = {
       ...state,
       unreadIds: [...state.unreadIds, id],

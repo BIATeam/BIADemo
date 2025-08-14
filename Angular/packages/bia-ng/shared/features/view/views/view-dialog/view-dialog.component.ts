@@ -6,7 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import {
   AuthService,
   BiaAppConstantsService,
-  BiaTeamsStore,
+  CoreTeamsStore,
   Permission,
 } from 'packages/bia-ng/core/public-api';
 import { ViewType } from 'packages/bia-ng/models/enum/public-api';
@@ -29,19 +29,8 @@ import { DefaultView } from '../../model/default-view';
 import { TeamDefaultView } from '../../model/team-default-view';
 import { TeamView } from '../../model/team-view';
 import { View } from '../../model/view';
+import { ViewsActions } from '../../public-api';
 import { ViewsStore } from '../../store/view.state';
-import {
-  addTeamView,
-  addUserView,
-  assignViewToTeam,
-  closeViewDialog,
-  removeTeamView,
-  removeUserView,
-  setDefaultTeamView,
-  setDefaultUserView,
-  updateTeamView,
-  updateUserView,
-} from '../../store/views-actions';
 
 @Component({
   selector: 'bia-view-dialog',
@@ -163,7 +152,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
       this.useViewTeamWithTypeId === null
         ? -1
         : this.authService.getCurrentTeamId(this.useViewTeamWithTypeId);
-    this.teams$ = this.store.select(BiaTeamsStore.getAllTeams).pipe(
+    this.teams$ = this.store.select(CoreTeamsStore.getAllTeams).pipe(
       map(teams => teams.filter(team => currentTeamId === team.id)),
       tap(teams => {
         if (teams.length === 1) {
@@ -176,7 +165,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
   onClose() {
     this.userViewSelected = <View>{};
     this.teamViewSelected = <TeamView>{};
-    this.store.dispatch(closeViewDialog());
+    this.store.dispatch(ViewsActions.closeViewDialog());
   }
 
   showDialogMaximized(dialog: Dialog) {
@@ -184,17 +173,17 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
   }
 
   onAssignViewToTeam(dto: AssignViewToTeam) {
-    this.store.dispatch(assignViewToTeam(dto));
+    this.store.dispatch(ViewsActions.assignViewToTeam(dto));
   }
 
   onDeleteUserView(viewId: number) {
     this.userViewSelected = <View>{};
-    this.store.dispatch(removeUserView({ id: viewId }));
+    this.store.dispatch(ViewsActions.removeUserView({ id: viewId }));
   }
 
   onDeleteTeamView(viewId: number) {
     this.teamViewSelected = <TeamView>{};
-    this.store.dispatch(removeTeamView({ id: viewId }));
+    this.store.dispatch(ViewsActions.removeTeamView({ id: viewId }));
   }
 
   onSetDefaultUserView(event: {
@@ -207,7 +196,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
         isDefault: event.isDefault,
         tableId: this.tableStateKey,
       };
-      this.store.dispatch(setDefaultUserView(defaultView));
+      this.store.dispatch(ViewsActions.setDefaultUserView(defaultView));
     }
   }
 
@@ -222,7 +211,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
         tableId: this.tableStateKey,
         teamId: this.teamSelected.id,
       };
-      this.store.dispatch(setDefaultTeamView(defaultView));
+      this.store.dispatch(ViewsActions.setDefaultTeamView(defaultView));
     }
   }
 
@@ -233,9 +222,9 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
         view.preference = json;
         view.tableId = this.tableStateKey;
         if (view.id > 0) {
-          this.store.dispatch(updateUserView(view));
+          this.store.dispatch(ViewsActions.updateUserView(view));
         } else {
-          this.store.dispatch(addUserView(view));
+          this.store.dispatch(ViewsActions.addUserView(view));
         }
       }
     }
@@ -249,9 +238,9 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
         view.tableId = this.tableStateKey;
         view.teamId = this.teamSelected.id;
         if (view.id > 0) {
-          this.store.dispatch(updateTeamView(view));
+          this.store.dispatch(ViewsActions.updateTeamView(view));
         } else {
-          this.store.dispatch(addTeamView(view));
+          this.store.dispatch(ViewsActions.addTeamView(view));
         }
       }
     }
