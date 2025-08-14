@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
 import { UserFromLdapFormComponent } from '../../components/user-from-directory-form/user-from-directory-form.component';
 import { UserFilter } from '../../model/user-filter';
 import { UserFromDirectory } from '../../model/user-from-directory';
-import { getAllUsersFromDirectory } from '../../store/user-from-directory.state';
+import { UsersFromDirectoryStore } from '../../store/user-from-directory.state';
 import { FeatureUsersFromDirectoryActions } from '../../store/users-from-directory-actions';
 
 @Component({
@@ -45,7 +45,9 @@ export class UserAddFromLdapComponent implements OnInit {
   constructor(protected store: Store<BiaAppState>) {}
 
   async ngOnInit() {
-    this.usersFromDirectory$ = this.store.select(getAllUsersFromDirectory);
+    this.usersFromDirectory$ = this.store.select(
+      UsersFromDirectoryStore.getAllUsersFromDirectory
+    );
 
     this.ldapDomains$ = this.store.select(
       DomainLdapDomainsStore.getAllLdapDomain
