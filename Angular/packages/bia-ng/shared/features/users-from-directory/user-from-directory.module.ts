@@ -6,12 +6,15 @@ import {
   UserOptionModule,
 } from 'packages/bia-ng/domains/public-api';
 
-import { reducers } from './store/user-from-directory.state';
+import { UsersFromDirectoryStore } from './store/user-from-directory.state';
 import { UsersFromDirectoryEffects } from './store/users-from-directory-effects';
 
 @NgModule({
   imports: [
-    StoreModule.forFeature('users-from-directory', reducers),
+    StoreModule.forFeature(
+      'users-from-directory',
+      UsersFromDirectoryStore.reducers
+    ),
     EffectsModule.forFeature([UsersFromDirectoryEffects]),
     UserOptionModule, // required for synchronization when user added
     LdapDomainModule,
