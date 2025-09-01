@@ -156,7 +156,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 {
                     options.AppVersion = Constants.Application.BackEndVersion;
                     options.StampAppVersion = true;
-                    options.StampCreatedAt = true;
+                    options.StampMigratedAt = true;
                 });
 
                 string connectionString = configuration.GetDatabaseConnectionString("ProjectDatabase");

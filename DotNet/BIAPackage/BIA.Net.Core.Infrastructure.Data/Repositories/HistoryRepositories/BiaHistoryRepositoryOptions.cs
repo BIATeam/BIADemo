@@ -10,6 +10,6 @@
     {
         public string AppVersion { get; set; }
         required public bool StampAppVersion { get; set; }
-        required public bool StampCreatedAt { get; set; }
+        required public bool StampMigratedAt { get; set; }
     }
 }

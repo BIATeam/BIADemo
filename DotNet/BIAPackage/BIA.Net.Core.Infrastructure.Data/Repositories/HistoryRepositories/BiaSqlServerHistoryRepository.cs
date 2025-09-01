@@ -37,7 +37,7 @@
                     CREATE TABLE {table} (
                         {migrationId} nvarchar(150) NOT NULL CONSTRAINT PK_{this.TableName} PRIMARY KEY,
                         {productVersion} nvarchar(32) NOT NULL,
-                        [CreatedAt]  datetime2 NULL,
+                        [MigratedAt]  datetime2 NULL,
                         [AppVersion] nvarchar(64) NULL
                     );
                 END";
@@ -51,31 +51,17 @@
             var migrationId = this.SqlGenerationHelper.DelimitIdentifier(this.MigrationIdColumnName);
             var productVersion = this.SqlGenerationHelper.DelimitIdentifier(this.ProductVersionColumnName);
 
-            var createdAtExpr = this.options.StampCreatedAt ? "sysutcdatetime()" : "NULL";
-            var appVersionExpr = (this.options.StampAppVersion && !string.IsNullOrWhiteSpace(this.options.AppVersion))
+            var migratedAt = this.options.StampMigratedAt ? "sysutcdatetime()" : "NULL";
+            var appVersion = (this.options.StampAppVersion && !string.IsNullOrWhiteSpace(this.options.AppVersion))
                 ? mappingString.GenerateSqlLiteral(this.options.AppVersion!)
                 : "NULL";
 
             return $@"
-                INSERT INTO {table} ({migrationId}, {productVersion}, [CreatedAt], [AppVersion])
+                INSERT INTO {table} ({migrationId}, {productVersion}, [MigratedAt], [AppVersion])
                 VALUES ({mappingString.GenerateSqlLiteral(row.MigrationId)},
                         {mappingString.GenerateSqlLiteral(row.ProductVersion)},
-                        {createdAtExpr},
-                        {appVersionExpr});";
-        }
-
-        /// <inheritdoc/>
-        protected override void ConfigureTable(EntityTypeBuilder<HistoryRow> history)
-        {
-            base.ConfigureTable(history);
-
-            history.Property<DateTime?>("MigratedAt")
-                .HasColumnType("datetime2")
-                .IsRequired(false);
-
-            history.Property<string>("AppVersion")
-                .HasMaxLength(64)
-                .IsRequired(false);
+                        {migratedAt},
+                        {appVersion});";
         }
     }
 }
