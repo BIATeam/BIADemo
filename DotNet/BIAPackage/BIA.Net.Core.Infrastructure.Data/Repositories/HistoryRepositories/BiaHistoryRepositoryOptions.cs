@@ -9,7 +9,7 @@
     public class BiaHistoryRepositoryOptions
     {
         public string AppVersion { get; set; }
-        required public bool StampAppVersion { get; set; }
-        required public bool StampMigratedAt { get; set; }
+        public bool StampAppVersion { get; set; }
+        public bool StampMigratedAt { get; set; }
     }
 }

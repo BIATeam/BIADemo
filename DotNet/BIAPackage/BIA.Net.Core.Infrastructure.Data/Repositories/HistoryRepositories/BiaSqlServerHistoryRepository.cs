@@ -21,7 +21,7 @@
             : base(dependencies)
 #pragma warning restore EF1001 // Internal EF Core API usage.
         {
-            this.options = dependencies.CurrentContext.Context.GetService<IOptions<BiaHistoryRepositoryOptions>>()?.Value ?? throw new Common.Exceptions.BadBiaFrameworkUsageException("BiaHistoryRepositoryOptions not configured");
+            this.options = dependencies.CurrentContext.Context.GetService<IOptions<BiaHistoryRepositoryOptions>>().Value;
         }
 
         /// <inheritdoc/>
@@ -32,15 +32,15 @@
             var productVersion = this.SqlGenerationHelper.DelimitIdentifier(this.ProductVersionColumnName);
 
             return $@"
-                IF OBJECT_ID(N'{table}', N'U') IS NULL
-                BEGIN
-                    CREATE TABLE {table} (
-                        {migrationId} nvarchar(150) NOT NULL CONSTRAINT PK_{this.TableName} PRIMARY KEY,
-                        {productVersion} nvarchar(32) NOT NULL,
-                        [MigratedAt]  datetime2 NULL,
-                        [AppVersion] nvarchar(64) NULL
-                    );
-                END";
+IF OBJECT_ID(N'{table}', N'U') IS NULL
+BEGIN
+    CREATE TABLE {table} (
+        {migrationId} nvarchar(150) NOT NULL CONSTRAINT PK_{this.TableName} PRIMARY KEY,
+        {productVersion} nvarchar(32) NOT NULL,
+        [MigratedAt]  datetime2 NULL,
+        [AppVersion] nvarchar(64) NULL
+    );
+END";
         }
 
         /// <inheritdoc/>
@@ -57,11 +57,11 @@
                 : "NULL";
 
             return $@"
-                INSERT INTO {table} ({migrationId}, {productVersion}, [MigratedAt], [AppVersion])
-                VALUES ({mappingString.GenerateSqlLiteral(row.MigrationId)},
-                        {mappingString.GenerateSqlLiteral(row.ProductVersion)},
-                        {migratedAt},
-                        {appVersion});";
+INSERT INTO {table} ({migrationId}, {productVersion}, [MigratedAt], [AppVersion])
+VALUES ({mappingString.GenerateSqlLiteral(row.MigrationId)},
+        {mappingString.GenerateSqlLiteral(row.ProductVersion)},
+        {migratedAt},
+        {appVersion});";
         }
     }
 }
