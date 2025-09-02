@@ -28,6 +28,11 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories.HistoryRepositories
             : base(dependencies)
 #pragma warning restore EF1001 // Internal EF Core API usage.
         {
+            if (!dependencies.CurrentContext.Context.Database.IsNpgsql())
+            {
+                throw new Common.Exceptions.BadBiaFrameworkUsageException($"Can't use {nameof(BiaNpgsqlHistoryRepository)} with provider {dependencies.CurrentContext.Context.Database.ProviderName}");
+            }
+
             this.options = dependencies.CurrentContext.Context
                 .GetService<IOptions<BiaHistoryRepositoryOptions>>().Value;
         }
