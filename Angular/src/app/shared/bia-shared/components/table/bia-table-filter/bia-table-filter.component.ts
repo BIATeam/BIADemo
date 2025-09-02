@@ -23,6 +23,8 @@ import {
   PrimeTemplate,
   SelectItem,
 } from 'primeng/api';
+import { Checkbox } from 'primeng/checkbox';
+import { DatePicker } from 'primeng/datepicker';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
 import { MultiSelect } from 'primeng/multiselect';
@@ -62,6 +64,8 @@ import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.
     TranslateModule,
     FormatValuePipe,
     FloatLabel,
+    Checkbox,
+    DatePicker,
   ],
 })
 export class BiaTableFilterComponent<CrudItem>
