@@ -11,14 +11,14 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql(@"
-            IF COL_LENGTH(N'__EFMigrationsHistory', N'MigratedAt') IS NULL
-            BEGIN
-                ALTER TABLE [__EFMigrationsHistory] ADD [MigratedAt] datetime2 NULL;
-            END;
-
             IF COL_LENGTH(N'__EFMigrationsHistory', N'AppVersion') IS NULL
             BEGIN
                 ALTER TABLE [__EFMigrationsHistory] ADD [AppVersion] nvarchar(64) NULL;
+            END;
+
+            IF COL_LENGTH(N'__EFMigrationsHistory', N'MigratedAt') IS NULL
+            BEGIN
+                ALTER TABLE [__EFMigrationsHistory] ADD [MigratedAt] datetime2 NULL;
             END;
             ");
         }
