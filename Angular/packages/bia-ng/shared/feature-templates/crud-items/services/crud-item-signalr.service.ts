@@ -16,8 +16,8 @@ import { CrudItemService } from './crud-item.service';
   providedIn: 'root',
 })
 export class CrudItemSignalRService<
-  ListCrudItem extends BaseDto,
-  CrudItem extends BaseDto = ListCrudItem,
+  ListCrudItem extends BaseDto<string | number>,
+  CrudItem extends BaseDto<string | number> = ListCrudItem,
 > {
   protected targetedFeature: TargetedFeature;
 

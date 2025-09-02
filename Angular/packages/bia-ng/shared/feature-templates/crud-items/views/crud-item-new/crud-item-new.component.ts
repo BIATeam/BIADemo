@@ -16,7 +16,7 @@ import { CrudItemComponent } from '../crud-item/crud-item.component';
   styleUrls: ['./crud-item-new.component.scss'],
   imports: [CrudItemFormComponent, AsyncPipe],
 })
-export class CrudItemNewComponent<CrudItem extends BaseDto>
+export class CrudItemNewComponent<CrudItem extends BaseDto<string | number>>
   extends CrudItemComponent<CrudItem>
   implements OnInit, OnDestroy
 {

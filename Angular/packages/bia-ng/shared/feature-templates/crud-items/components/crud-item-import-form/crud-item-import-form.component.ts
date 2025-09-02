@@ -69,7 +69,7 @@ interface FormatExample {
     FloatLabel,
   ],
 })
-export class CrudItemImportFormComponent<TDto extends { id: number }> {
+export class CrudItemImportFormComponent<TDto extends { id: number | string }> {
   @ViewChild('fileUpload') fileUpload: FileUpload | undefined;
 
   fillFormDone = false;

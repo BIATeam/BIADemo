@@ -31,7 +31,9 @@ export interface BiaBehaviorIcon {
   styleUrls: ['./bia-table-behavior-controller.component.scss'],
   imports: [Tooltip, NgIf, Popover, NgFor, TranslateModule],
 })
-export class BiaTableBehaviorControllerComponent<TDto extends BaseDto>
+export class BiaTableBehaviorControllerComponent<
+    TDto extends BaseDto<string | number>,
+  >
   implements OnInit, OnDestroy
 {
   selectedLayout?: BiaBehaviorIcon;

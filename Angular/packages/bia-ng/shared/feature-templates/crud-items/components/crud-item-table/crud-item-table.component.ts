@@ -63,7 +63,7 @@ import { BiaTableOutputComponent } from '../../../../components/table/bia-table-
     BiaFrozenColumnDirective,
   ],
 })
-export class CrudItemTableComponent<CrudItem extends BaseDto>
+export class CrudItemTableComponent<CrudItem extends BaseDto<string | number>>
   extends BiaCalcTableComponent<CrudItem>
   implements OnChanges
 {

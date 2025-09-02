@@ -8,7 +8,9 @@ import { CrudItemOptionsService } from './crud-item-options.service';
 @Injectable({
   providedIn: 'root',
 })
-export abstract class CrudItemSingleService<CrudItem extends BaseDto> {
+export abstract class CrudItemSingleService<
+  CrudItem extends BaseDto<string | number>,
+> {
   constructor(public optionsService: CrudItemOptionsService) {
     setTimeout(() => this.initSub()); // should be done after initialization of the parent constructor
   }

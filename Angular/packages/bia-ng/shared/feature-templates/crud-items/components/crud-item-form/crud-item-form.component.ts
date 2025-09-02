@@ -24,7 +24,7 @@ import { FormReadOnlyMode } from '../../model/crud-config';
   changeDetection: ChangeDetectionStrategy.Default,
   imports: [BiaFormComponent],
 })
-export class CrudItemFormComponent<CrudItem extends BaseDto> {
+export class CrudItemFormComponent<CrudItem extends BaseDto<string | number>> {
   @Input() crudItem?: CrudItem;
   @Input() fields: BiaFieldConfig<CrudItem>[];
   @Input() formLayoutConfig?: BiaFormLayoutConfig<CrudItem>;

@@ -14,8 +14,8 @@ import { CrudItemService } from '../../services/crud-item.service';
   imports: [RouterOutlet, NgIf, SpinnerComponent, AsyncPipe],
 })
 export class CrudItemItemComponent<
-    ListCrudItem extends BaseDto,
-    CrudItem extends BaseDto = ListCrudItem,
+    ListCrudItem extends BaseDto<string | number>,
+    CrudItem extends BaseDto<string | number> = ListCrudItem,
   >
   implements OnInit, OnDestroy
 {

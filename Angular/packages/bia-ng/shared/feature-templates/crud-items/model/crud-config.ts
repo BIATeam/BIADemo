@@ -21,7 +21,7 @@ export interface ShowIconsConfig {
   showResizableColumn: boolean;
 }
 
-export class CrudConfig<TDto extends { id: number }> {
+export class CrudConfig<TDto extends { id: number | string }> {
   featureName: string;
   storeKey: string;
   useCalcMode: boolean;

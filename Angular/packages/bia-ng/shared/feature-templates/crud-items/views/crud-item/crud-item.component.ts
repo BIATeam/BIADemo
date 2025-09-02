@@ -10,7 +10,9 @@ import { LayoutMode } from '../../../../components/layout/dynamic-layout/dynamic
 import { CrudConfig } from '../../model/crud-config';
 import { CrudItemSingleService } from '../../services/crud-item-single.service';
 
-export abstract class CrudItemComponent<CrudItem extends BaseDto> {
+export abstract class CrudItemComponent<
+  CrudItem extends BaseDto<string | number>,
+> {
   protected sub = new Subscription();
   public crudConfiguration: CrudConfig<CrudItem>;
 

@@ -69,7 +69,7 @@ import { DictOptionDto } from '../bia-table/dict-option-dto';
     BiaFrozenColumnDirective,
   ],
 })
-export class BiaCalcTableComponent<TDto extends { id: number }>
+export class BiaCalcTableComponent<TDto extends { id: number | string }>
   extends BiaTableComponent<TDto>
   implements OnInit, AfterContentInit
 {

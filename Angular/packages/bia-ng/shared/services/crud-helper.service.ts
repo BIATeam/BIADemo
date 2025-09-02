@@ -4,7 +4,7 @@ import { BaseDto } from 'packages/bia-ng/models/public-api';
 export class CrudHelperService {
   public static readonly newIdStartingValue: number = -1;
 
-  public static onEmbeddedItemSave<T extends BaseDto>(
+  public static onEmbeddedItemSave<T extends BaseDto<string | number>>(
     embeddedItem: T,
     embeddedItemArray: T[],
     newId: number

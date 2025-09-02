@@ -69,7 +69,7 @@ import { BiaOutputComponent } from '../bia-output/bia-output.component';
     Tooltip,
   ],
 })
-export class BiaFormComponent<TDto extends { id: number }>
+export class BiaFormComponent<TDto extends { id: number | string }>
   implements OnInit, OnDestroy, OnChanges, AfterContentInit
 {
   @Input() element?: TDto;
@@ -499,7 +499,13 @@ export class BiaFormComponent<TDto extends { id: number }>
     }
 
     const element: TDto = this.flattenFormGroup(this.form) as TDto;
-    element.id = element.id > 0 ? element.id : 0;
+    console.error(element.id, typeof element.id === 'number');
+    if (typeof element.id === 'number') {
+      element.id = element.id > 0 ? element.id : 0;
+    }
+    if (typeof element.id === 'string') {
+      element.id = element.id > '' ? element.id : '';
+    }
     for (const col of this.fields) {
       switch (col.type) {
         case PropType.Boolean:

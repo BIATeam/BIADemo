@@ -29,7 +29,9 @@ import { CrudItemService } from '../../services/crud-item.service';
   selector: 'bia-crud-item-import',
   template: '',
 })
-export abstract class CrudItemImportComponent<CrudItem extends BaseDto>
+export abstract class CrudItemImportComponent<
+    CrudItem extends BaseDto<string | number>,
+  >
   implements OnInit, AfterViewInit, OnDestroy
 {
   protected sub = new Subscription();
