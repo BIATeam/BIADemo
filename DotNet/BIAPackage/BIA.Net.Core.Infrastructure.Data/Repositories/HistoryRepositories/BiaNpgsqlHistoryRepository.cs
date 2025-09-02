@@ -4,7 +4,9 @@
 
 namespace BIA.Net.Core.Infrastructure.Data.Repositories.HistoryRepositories
 {
+    using System;
     using Microsoft.EntityFrameworkCore.Infrastructure;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
     using Microsoft.EntityFrameworkCore.Migrations;
     using Microsoft.Extensions.Options;
     using Npgsql.EntityFrameworkCore.PostgreSQL.Migrations.Internal;
@@ -67,6 +69,15 @@ VALUES ({stringMapping.GenerateSqlLiteral(row.MigrationId)},
         {stringMapping.GenerateSqlLiteral(row.ProductVersion)},
         now(),
         {appVersionVal});";
+        }
+
+        /// <inheritdoc/>
+        protected override void ConfigureTable(EntityTypeBuilder<HistoryRow> history)
+        {
+            base.ConfigureTable(history);
+
+            history.Property<string>("AppVersion").HasMaxLength(64);
+            history.Property<DateTime?>("MigratedAt");
         }
     }
 }
