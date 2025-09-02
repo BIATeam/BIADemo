@@ -34,6 +34,8 @@ import {
   PrimeTemplate,
   SelectItem,
 } from 'primeng/api';
+import { Checkbox } from 'primeng/checkbox';
+import { DatePicker } from 'primeng/datepicker';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
 import { MultiSelect } from 'primeng/multiselect';
@@ -42,6 +44,7 @@ import { Subscription } from 'rxjs';
 import { FormatValuePipe } from '../../../pipes/format-value.pipe';
 import { TableHelperService } from '../../../services/table-helper.service';
 import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.component';
+import { BiaFilterMatchMode } from './bia-filter-match-mode';
 
 @Component({
   selector: 'bia-table-filter',
@@ -64,6 +67,8 @@ import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.
     TranslateModule,
     FormatValuePipe,
     FloatLabel,
+    Checkbox,
+    DatePicker,
   ],
 })
 export class BiaTableFilterComponent<CrudItem>
@@ -119,7 +124,9 @@ export class BiaTableFilterComponent<CrudItem>
     ) {
       if (
         (this.table.filters[col.field] as FilterMetadata[]).some(
-          element => !TableHelperService.isEmptyFilter(element)
+          element =>
+            !TableHelperService.isEmptyFilter(element) ||
+            !TableHelperService.isTodayFilter(element)
         )
       ) {
         return this.table.filters[col.field] as FilterMetadata[];
@@ -141,7 +148,10 @@ export class BiaTableFilterComponent<CrudItem>
           col.field
         ] as FilterMetadata;
         if (filter) {
-          return !TableHelperService.isEmptyFilter(filter);
+          return (
+            !TableHelperService.isEmptyFilter(filter) &&
+            !TableHelperService.isTodayFilter(filter)
+          );
         }
       }
     }
@@ -221,6 +231,9 @@ export class BiaTableFilterComponent<CrudItem>
       FilterMatchMode.DATE_IS_NOT,
       FilterMatchMode.DATE_BEFORE,
       FilterMatchMode.DATE_AFTER,
+      BiaFilterMatchMode.TODAY,
+      BiaFilterMatchMode.BEFORE_TODAY,
+      BiaFilterMatchMode.AFTER_TODAY,
     ],
   };
   generateMatchModeOptions(option: string[]) {

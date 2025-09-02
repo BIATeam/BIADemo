@@ -66,13 +66,16 @@ export class TableHelperService {
       }
       if (this.isSimpleFilter(filter)) {
         // simple filter
-        if (this.isEmptyFilter(<FilterMetadata>filter)) {
+        if (
+          this.isEmptyFilter(<FilterMetadata>filter) ||
+          this.isTodayFilter(<FilterMetadata>filter)
+        ) {
           continue;
         }
       } else {
         // array filter
         for (const filter2 of filter as FilterMetadata[]) {
-          if (this.isEmptyFilter(filter2)) {
+          if (this.isEmptyFilter(filter2) || this.isTodayFilter(filter2)) {
             continue;
           }
           return false;
@@ -101,6 +104,17 @@ export class TableHelperService {
       (this.isNullUndefEmptyStr(obj.value) &&
         obj.matchMode !== 'empty' &&
         obj.matchMode !== 'notEmpty')
+    );
+  }
+
+  public static isTodayFilter(obj: FilterMetadata): boolean {
+    return (
+      obj === null ||
+      obj === undefined ||
+      (this.isNullUndefEmptyStr(obj.value) &&
+        obj.matchMode !== 'today' &&
+        obj.matchMode !== 'beforeToday' &&
+        obj.matchMode !== 'afterToday')
     );
   }
 

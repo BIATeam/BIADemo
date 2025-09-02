@@ -107,7 +107,7 @@ namespace BIA.Net.Core.Domain
         private static void AddSpecByValue<TEntity, TKey>(ref Specification<TEntity> specification, ExpressionCollection<TEntity> whereClauses, ref Specification<TEntity> globalFilterSpecification, string key, Dictionary<string, object> value)
             where TEntity : class, IEntity<TKey>, new()
         {
-            if (value["value"] == null && value["matchMode"]?.ToString() != "empty" && value["matchMode"]?.ToString() != "notEmpty")
+            if (value["value"] == null && value["matchMode"]?.ToString() != "empty" && value["matchMode"]?.ToString() != "notEmpty" && value["matchMode"]?.ToString() != "today" && value["matchMode"]?.ToString() != "beforeToday" && value["matchMode"]?.ToString() != "afterToday")
             {
                 return;
             }
@@ -246,6 +246,40 @@ namespace BIA.Net.Core.Domain
                             default:
                                 throw new ArgumentOutOfRangeException(nameof(criteria), criteria, null);
                         }
+                    }
+                    catch (Exception)
+                    {
+                        return new FalseSpecification<TEntity>().SatisfiedBy();
+                    }
+
+                    break;
+
+                case "today":
+                case "beforetoday":
+                case "aftertoday":
+                    try
+                    {
+                        var culture = new CultureInfo("en-US");
+                        DateTime now = DateTime.Now.Date;
+                        DateTime tomorrow = now.AddDays(1);
+
+                        object todayFormatted = TypeDescriptor.GetConverter(expressionBody.Type)
+                            .ConvertFromString(null, culture, now.ToString("o"));
+                        object tomorrowFormatted = TypeDescriptor.GetConverter(expressionBody.Type)
+                            .ConvertFromString(null, culture, tomorrow.ToString("o"));
+
+                        Expression todayExpression = Expression.Constant(todayFormatted, expressionBody.Type);
+                        Expression tomorrowExpression = Expression.Constant(tomorrowFormatted, expressionBody.Type);
+
+                        binaryExpression = criteria.ToLower() switch
+                        {
+                            "today" => Expression.AndAlso(
+                                Expression.GreaterThanOrEqual(expressionBody, todayExpression),
+                                Expression.LessThan(expressionBody, tomorrowExpression)),
+                            "beforetoday" => Expression.LessThan(expressionBody, todayExpression),
+                            "aftertoday" => Expression.GreaterThanOrEqual(expressionBody, tomorrowExpression),
+                            _ => throw new ArgumentOutOfRangeException(nameof(criteria), criteria, null),
+                        };
                     }
                     catch (Exception)
                     {

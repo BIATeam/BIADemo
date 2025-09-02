@@ -289,13 +289,19 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     }
     if (Array.isArray(filterMetadata)) {
       (filterMetadata as FilterMetadata[]).forEach(element => {
-        if (!TableHelperService.isEmptyFilter(element)) {
+        if (
+          !TableHelperService.isEmptyFilter(element) &&
+          !TableHelperService.isTodayFilter(element)
+        ) {
           standardized.push(this.tableHelperService.cleanFilter(element));
         }
       });
     }
 
-    if (!TableHelperService.isEmptyFilter(filterMetadata as FilterMetadata)) {
+    if (
+      !TableHelperService.isEmptyFilter(filterMetadata as FilterMetadata) &&
+      !TableHelperService.isTodayFilter(filterMetadata as FilterMetadata)
+    ) {
       standardized.push(
         this.tableHelperService.cleanFilter(filterMetadata as FilterMetadata)
       );
