@@ -9,52 +9,90 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
     /// <inheritdoc />
     public partial class ExtendMigrationHistoryTable : Migration
     {
-        /// <inheritdoc />
+        private const string HistoryTable = "__EFMigrationsHistory";
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             if (migrationBuilder.IsSqlServer())
             {
-                migrationBuilder.AddColumn<string>(
-                    name: "AppVersion",
-                    table: "__EFMigrationsHistory",
-                    type: "nvarchar(64)",
-                    nullable: true);
+                migrationBuilder.Sql($@"
+IF COL_LENGTH(N'{HistoryTable}', N'AppVersion') IS NULL
+BEGIN
+    ALTER TABLE [{HistoryTable}] ADD [AppVersion] nvarchar(64) NULL;
+END;
 
-                migrationBuilder.AddColumn<DateTime?>(
-                    name: "MigratedAt",
-                    table: "__EFMigrationsHistory",
-                    type: "datetime2",
-                    nullable: true,
-                    defaultValueSql: "sysutcdatetime()");
+IF COL_LENGTH(N'{HistoryTable}', N'MigratedAt') IS NULL
+BEGIN
+    ALTER TABLE [{HistoryTable}] ADD [MigratedAt] datetime2 NULL;
+END;
+
+IF COL_LENGTH(N'{HistoryTable}', N'MigratedAt') IS NOT NULL
+AND NOT EXISTS (
+    SELECT 1
+    FROM sys.default_constraints dc
+    JOIN sys.columns c ON c.object_id = dc.parent_object_id AND c.column_id = dc.parent_column_id
+    WHERE OBJECT_NAME(dc.parent_object_id) = '{HistoryTable}' AND c.name = 'MigratedAt'
+)
+BEGIN
+    ALTER TABLE [{HistoryTable}]
+        ADD CONSTRAINT [DF_{HistoryTable}_MigratedAt] DEFAULT (sysutcdatetime()) FOR [MigratedAt];
+END;
+");
             }
-
-            if (migrationBuilder.IsNpgsql())
+            else if (migrationBuilder.IsNpgsql())
             {
-                migrationBuilder.AddColumn<string>(
-                    name: "AppVersion",
-                    table: "__EFMigrationsHistory",
-                    type: "varchar(64)",
-                    nullable: true);
+                migrationBuilder.Sql($@"
+ALTER TABLE ""{HistoryTable}""
+    ADD COLUMN IF NOT EXISTS ""AppVersion"" character varying(64) NULL;
 
-                migrationBuilder.AddColumn<DateTimeOffset?>(
-                    name: "MigratedAt",
-                    table: "__EFMigrationsHistory",
-                    type: "timestamp with time zone",
-                    nullable: true);
+ALTER TABLE ""{HistoryTable}""
+    ADD COLUMN IF NOT EXISTS ""MigratedAt"" timestamp with time zone NULL;
 
-                migrationBuilder.Sql(@"
-ALTER TABLE public.""__EFMigrationsHistory""
-ALTER COLUMN ""MigratedAt"" SET DEFAULT now();");
+ALTER TABLE ""{HistoryTable}""
+    ALTER COLUMN ""MigratedAt"" SET DEFAULT now();
+");
+            }
+            else
+            {
+                throw new NotSupportedException($"Not supported provider : {migrationBuilder.ActiveProvider}");
             }
         }
 
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            if (migrationBuilder.IsSqlServer() || migrationBuilder.IsNpgsql())
+            if (migrationBuilder.IsSqlServer())
             {
-                migrationBuilder.DropColumn("MigratedAt", "__EFMigrationsHistory");
-                migrationBuilder.DropColumn("AppVersion", "__EFMigrationsHistory");
+                migrationBuilder.Sql($@"
+DECLARE @df sysname;
+SELECT @df = dc.name
+FROM sys.default_constraints dc
+JOIN sys.columns c ON c.object_id = dc.parent_object_id AND c.column_id = dc.parent_column_id
+WHERE OBJECT_NAME(dc.parent_object_id) = '{HistoryTable}' AND c.name = 'MigratedAt';
+IF @df IS NOT NULL
+    EXEC('ALTER TABLE [{HistoryTable}] DROP CONSTRAINT [' + @df + ']');
+
+IF COL_LENGTH(N'{HistoryTable}', N'MigratedAt') IS NOT NULL
+    ALTER TABLE [{HistoryTable}] DROP COLUMN [MigratedAt];
+
+IF COL_LENGTH(N'{HistoryTable}', N'AppVersion') IS NOT NULL
+    ALTER TABLE [{HistoryTable}] DROP COLUMN [AppVersion];
+");
+            }
+            else if (migrationBuilder.IsNpgsql())
+            {
+                migrationBuilder.Sql($@"
+ALTER TABLE ""{HistoryTable}""
+    ALTER COLUMN ""MigratedAt"" DROP DEFAULT;
+
+ALTER TABLE ""{HistoryTable}""
+    DROP COLUMN IF EXISTS ""MigratedAt"";
+
+ALTER TABLE ""{HistoryTable}""
+    DROP COLUMN IF EXISTS ""AppVersion"";");
+            }
+            else
+            {
+                throw new NotSupportedException($"Not supported provider : {migrationBuilder.ActiveProvider}");
             }
         }
     }
