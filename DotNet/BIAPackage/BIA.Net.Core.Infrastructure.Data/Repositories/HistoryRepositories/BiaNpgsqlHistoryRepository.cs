@@ -16,7 +16,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories.HistoryRepositories
     /// History Repository for BIA PostgreSQL.
     /// </summary>
 #pragma warning disable EF1001 // Internal EF Core API usage.
-    public class BiaNpgsqlHistoryRepository : NpgsqlHistoryRepository
+    public sealed class BiaNpgsqlHistoryRepository : NpgsqlHistoryRepository
     {
         private readonly BiaHistoryRepositoryOptions options;
 

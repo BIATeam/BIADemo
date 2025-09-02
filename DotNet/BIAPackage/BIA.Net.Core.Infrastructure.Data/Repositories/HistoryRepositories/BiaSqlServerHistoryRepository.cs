@@ -16,7 +16,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories.HistoryRepositories
     /// History Repository for BIA SQL Server.
     /// </summary>
 #pragma warning disable EF1001 // Internal EF Core API usage.
-    public class BiaSqlServerHistoryRepository : SqlServerHistoryRepository
+    public sealed class BiaSqlServerHistoryRepository : SqlServerHistoryRepository
     {
         private readonly BiaHistoryRepositoryOptions options;
 
