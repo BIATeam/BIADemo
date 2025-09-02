@@ -1,23 +1,27 @@
-﻿namespace BIA.Net.Core.Infrastructure.Data.Repositories.HistoryRepositories
+﻿// <copyright file="BiaSqlServerHistoryRepository.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace BIA.Net.Core.Infrastructure.Data.Repositories.HistoryRepositories
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Infrastructure;
-    using Microsoft.EntityFrameworkCore.Metadata.Builders;
     using Microsoft.EntityFrameworkCore.Migrations;
     using Microsoft.EntityFrameworkCore.SqlServer.Migrations.Internal;
     using Microsoft.Extensions.Options;
 
+    /// <summary>
+    /// History Repository for BIA SQL Server.
+    /// </summary>
+#pragma warning disable EF1001 // Internal EF Core API usage.
     public class BiaSqlServerHistoryRepository : SqlServerHistoryRepository
     {
         private readonly BiaHistoryRepositoryOptions options;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BiaSqlServerHistoryRepository"/> class.
+        /// </summary>
+        /// <param name="dependencies">The dependencies.</param>
         public BiaSqlServerHistoryRepository(HistoryRepositoryDependencies dependencies)
-#pragma warning disable EF1001 // Internal EF Core API usage.
             : base(dependencies)
 #pragma warning restore EF1001 // Internal EF Core API usage.
         {
@@ -51,8 +55,7 @@ END";
             var migrationId = this.SqlGenerationHelper.DelimitIdentifier(this.MigrationIdColumnName);
             var productVersion = this.SqlGenerationHelper.DelimitIdentifier(this.ProductVersionColumnName);
 
-            var migratedAt = this.options.StampMigratedAt ? "sysutcdatetime()" : "NULL";
-            var appVersion = (this.options.StampAppVersion && !string.IsNullOrWhiteSpace(this.options.AppVersion))
+            var appVersion = !string.IsNullOrWhiteSpace(this.options.AppVersion)
                 ? mappingString.GenerateSqlLiteral(this.options.AppVersion!)
                 : "NULL";
 
@@ -60,7 +63,7 @@ END";
 INSERT INTO {table} ({migrationId}, {productVersion}, [MigratedAt], [AppVersion])
 VALUES ({mappingString.GenerateSqlLiteral(row.MigrationId)},
         {mappingString.GenerateSqlLiteral(row.ProductVersion)},
-        {migratedAt},
+        sysutcdatetime(),
         {appVersion});";
         }
     }

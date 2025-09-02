@@ -1,15 +1,17 @@
-﻿namespace BIA.Net.Core.Infrastructure.Data.Repositories.HistoryRepositories
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+﻿// <copyright file="BiaHistoryRepositoryOptions.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
-    public class BiaHistoryRepositoryOptions
+namespace BIA.Net.Core.Infrastructure.Data.Repositories.HistoryRepositories
+{
+    /// <summary>
+    /// History repository options for BIA.
+    /// </summary>
+    public sealed class BiaHistoryRepositoryOptions
     {
+        /// <summary>
+        /// The application version.
+        /// </summary>
         public string AppVersion { get; set; }
-        public bool StampAppVersion { get; set; }
-        public bool StampMigratedAt { get; set; }
     }
 }

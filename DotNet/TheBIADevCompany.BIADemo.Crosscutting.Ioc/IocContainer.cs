@@ -155,8 +155,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 collection.Configure<BiaHistoryRepositoryOptions>(options =>
                 {
                     options.AppVersion = Constants.Application.BackEndVersion;
-                    options.StampAppVersion = true;
-                    options.StampMigratedAt = true;
                 });
 
                 string connectionString = configuration.GetDatabaseConnectionString("ProjectDatabase");
