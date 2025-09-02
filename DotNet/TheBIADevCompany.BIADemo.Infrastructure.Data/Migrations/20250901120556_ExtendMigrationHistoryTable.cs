@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
+using TheBIADevCompany.BIADemo.Crosscutting.Common;
 
 #nullable disable
 
@@ -10,33 +12,50 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql(@"
-            IF COL_LENGTH(N'__EFMigrationsHistory', N'AppVersion') IS NULL
-            BEGIN
-                ALTER TABLE [__EFMigrationsHistory] ADD [AppVersion] nvarchar(64) NULL;
-            END;
+            if (migrationBuilder.IsSqlServer())
+            {
+                migrationBuilder.AddColumn<string>(
+                    name: "AppVersion",
+                    table: "__EFMigrationsHistory",
+                    type: "nvarchar(64)",
+                    nullable: true);
 
-            IF COL_LENGTH(N'__EFMigrationsHistory', N'MigratedAt') IS NULL
-            BEGIN
-                ALTER TABLE [__EFMigrationsHistory] ADD [MigratedAt] datetime2 NULL;
-            END;
-            ");
+                migrationBuilder.AddColumn<DateTime?>(
+                    name: "MigratedAt",
+                    table: "__EFMigrationsHistory",
+                    type: "datetime2",
+                    nullable: true,
+                    defaultValueSql: "sysutcdatetime()");
+            }
+
+            if (migrationBuilder.IsNpgsql())
+            {
+                migrationBuilder.AddColumn<string>(
+                    name: "AppVersion",
+                    table: "__EFMigrationsHistory",
+                    type: "varchar(64)",
+                    nullable: true);
+
+                migrationBuilder.AddColumn<DateTimeOffset?>(
+                    name: "MigratedAt",
+                    table: "__EFMigrationsHistory",
+                    type: "timestamp with time zone",
+                    nullable: true);
+
+                migrationBuilder.Sql(@"
+ALTER TABLE public.""__EFMigrationsHistory""
+ALTER COLUMN ""MigratedAt"" SET DEFAULT now();");
+            }
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql(@"
-            IF COL_LENGTH(N'__EFMigrationsHistory', N'MigratedAt') IS NOT NULL
-            BEGIN
-                ALTER TABLE [__EFMigrationsHistory] DROP COLUMN [MigratedAt];
-            END;
-
-            IF COL_LENGTH(N'__EFMigrationsHistory', N'AppVersion') IS NOT NULL
-            BEGIN
-                ALTER TABLE [__EFMigrationsHistory] DROP COLUMN [AppVersion];
-            END;
-            ");
+            if (migrationBuilder.IsSqlServer() || migrationBuilder.IsNpgsql())
+            {
+                migrationBuilder.DropColumn("MigratedAt", "__EFMigrationsHistory");
+                migrationBuilder.DropColumn("AppVersion", "__EFMigrationsHistory");
+            }
         }
     }
 }

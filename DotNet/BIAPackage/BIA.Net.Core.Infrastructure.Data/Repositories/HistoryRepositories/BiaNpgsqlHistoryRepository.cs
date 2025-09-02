@@ -5,6 +5,7 @@
 namespace BIA.Net.Core.Infrastructure.Data.Repositories.HistoryRepositories
 {
     using System;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Infrastructure;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
     using Microsoft.EntityFrameworkCore.Migrations;
@@ -32,43 +33,24 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories.HistoryRepositories
         }
 
         /// <inheritdoc/>
-        public override string GetCreateIfNotExistsScript()
-        {
-            var table = this.SqlGenerationHelper.DelimitIdentifier(this.TableName, this.TableSchema);
-            var migrationId = this.SqlGenerationHelper.DelimitIdentifier(this.MigrationIdColumnName);
-            var productVersion = this.SqlGenerationHelper.DelimitIdentifier(this.ProductVersionColumnName);
-            var migratedAt = this.SqlGenerationHelper.DelimitIdentifier("MigratedAt");
-            var appVersion = this.SqlGenerationHelper.DelimitIdentifier("AppVersion");
-
-            return $@"
-CREATE TABLE IF NOT EXISTS {table} (
-    {migrationId}    character varying(150) NOT NULL PRIMARY KEY,
-    {productVersion} character varying(32)  NOT NULL,
-    {migratedAt}     timestamp with time zone NULL,
-    {appVersion}     character varying(64)  NULL
-);";
-        }
-
-        /// <inheritdoc/>
         public override string GetInsertScript(HistoryRow row)
         {
-            var stringMapping = this.Dependencies.TypeMappingSource.FindMapping(typeof(string))!;
+            var mappingString = this.Dependencies.TypeMappingSource.FindMapping(typeof(string));
             var table = this.SqlGenerationHelper.DelimitIdentifier(this.TableName, this.TableSchema);
-            var migrationId = this.SqlGenerationHelper.DelimitIdentifier(this.MigrationIdColumnName);
-            var productVersion = this.SqlGenerationHelper.DelimitIdentifier(this.ProductVersionColumnName);
-            var migratedAt = this.SqlGenerationHelper.DelimitIdentifier("MigratedAt");
-            var appVersionCol = this.SqlGenerationHelper.DelimitIdentifier("AppVersion");
-
-            var appVersionVal = !string.IsNullOrWhiteSpace(this.options.AppVersion)
-                ? stringMapping.GenerateSqlLiteral(this.options.AppVersion!)
+            var migrationIdColumn = this.SqlGenerationHelper.DelimitIdentifier(this.MigrationIdColumnName);
+            var migrationId = mappingString.GenerateSqlLiteral(row.MigrationId);
+            var appColumn = this.SqlGenerationHelper.DelimitIdentifier("AppVersion");
+            var appVersion = !string.IsNullOrWhiteSpace(this.options.AppVersion)
+                ? mappingString.GenerateSqlLiteral(this.options.AppVersion)
                 : "NULL";
 
-            return $@"
-INSERT INTO {table} ({migrationId}, {productVersion}, {migratedAt}, {appVersionCol})
-VALUES ({stringMapping.GenerateSqlLiteral(row.MigrationId)},
-        {stringMapping.GenerateSqlLiteral(row.ProductVersion)},
-        now(),
-        {appVersionVal});";
+            var updateScript = $@"
+UPDATE {table}
+SET {appColumn} = {appVersion}
+WHERE {migrationIdColumn} = {migrationId};
+";
+
+            return base.GetInsertScript(row) + updateScript;
         }
 
         /// <inheritdoc/>
@@ -77,7 +59,7 @@ VALUES ({stringMapping.GenerateSqlLiteral(row.MigrationId)},
             base.ConfigureTable(history);
 
             history.Property<string>("AppVersion").HasMaxLength(64);
-            history.Property<DateTime?>("MigratedAt");
+            history.Property<DateTimeOffset?>("MigratedAt").HasDefaultValueSql("now()");
         }
     }
 }
