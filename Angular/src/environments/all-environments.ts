@@ -1,5 +1,3 @@
-import { RoleMode, TeamTypeId } from 'src/app/shared/constants';
-
 export const allEnvironments = {
   appTitle: 'BIADemo',
   companyName: 'TheBIADevCompany',
@@ -14,41 +12,4 @@ export const allEnvironments = {
   // Begin BIADemo
   version: '5.1.0',
   // End BIADemo
-
-  teams: [
-    {
-      teamTypeId: TeamTypeId.Site,
-      roleMode: RoleMode.AllRoles,
-      inHeader: true,
-      label: 'site.headerLabel',
-    },
-    // BIAToolKit - Begin AllEnvironment
-    // Begin BIAToolKit Generation Ignore
-    // BIAToolKit - Begin Partial AllEnvironment AircraftMaintenanceCompany
-    {
-      teamTypeId: TeamTypeId.AircraftMaintenanceCompany,
-      label: 'aircraftMaintenanceCompany.headerLabel',
-      // Begin BIADemo
-      roleMode: RoleMode.MultiRoles,
-      inHeader: true,
-      displayOne: true,
-      // End BIADemo
-    },
-    // BIAToolKit - End Partial AllEnvironment AircraftMaintenanceCompany
-    // BIAToolKit - Begin Partial AllEnvironment MaintenanceTeam
-    {
-      teamTypeId: TeamTypeId.MaintenanceTeam,
-      label: 'maintenanceTeam.headerLabel',
-      // Begin BIADemo
-      roleMode: RoleMode.AllRoles,
-      inHeader: true,
-      displayAlways: true,
-      displayLabel: true,
-      teamSelectionCanBeEmpty: true,
-      // End BIADemo
-    },
-    // BIAToolKit - End Partial AllEnvironment MaintenanceTeam
-    // End BIAToolKit Generation Ignore
-    // BIAToolKit - End AllEnvironment
-  ],
 };
