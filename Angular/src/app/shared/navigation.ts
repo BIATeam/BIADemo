@@ -64,6 +64,12 @@ export const NAVIGATION: BiaNavigation[] = [
     icon: 'pi pi-clipboard',
   },
   {
+    labelKey: 'app.pilots',
+    permissions: [Permission.Pilot_List_Access],
+    path: ['/pilots'],
+    icon: 'pi pi-th-large',
+  },
+  {
     labelKey: 'app.hangfire',
     permissions: [Permission.Hangfire_Access],
     path: ['/hangfire'],

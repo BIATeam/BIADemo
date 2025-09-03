@@ -411,6 +411,51 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Save = "MaintenanceContract_Save";
         }
 
+        // BIAToolKit - Begin Partial Rights Pilot
+
+        /// <summary>
+        /// The pilots rights.
+        /// </summary>
+        public static class Pilots
+        {
+            /// <summary>
+            /// The right to access to the list of pilots.
+            /// </summary>
+            public const string ListAccess = "Pilot_List_Access";
+
+            /// <summary>
+            /// The right to create pilot.
+            /// </summary>
+            public const string Create = "Pilot_Create";
+
+            /// <summary>
+            /// The right to read pilot.
+            /// </summary>
+            public const string Read = "Pilot_Read";
+
+            /// <summary>
+            /// The right to update pilot.
+            /// </summary>
+            public const string Update = "Pilot_Update";
+
+            /// <summary>
+            /// The right to delete pilot.
+            /// </summary>
+            public const string Delete = "Pilot_Delete";
+
+            /// <summary>
+            /// The right to save pilot.
+            /// </summary>
+            public const string Save = "Pilot_Save";
+
+            /// <summary>
+            /// The right to fixe pilot.
+            /// </summary>
+            public const string Fix = "Pilot_Fix";
+        }
+
+        // BIAToolKit - End Partial Rights Pilot
+
         /// <summary>
         /// The Hangfire rights.
         /// </summary>

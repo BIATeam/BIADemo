@@ -499,7 +499,7 @@ export class BiaFormComponent<TDto extends { id: number | string }>
     }
 
     const element: TDto = this.flattenFormGroup(this.form) as TDto;
-    console.error(element.id, typeof element.id === 'number');
+    console.error(element.id, typeof element.id);
     if (typeof element.id === 'number') {
       element.id = element.id > 0 ? element.id : 0;
     }

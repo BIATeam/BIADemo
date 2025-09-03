@@ -126,6 +126,15 @@ const routes: Routes = [
                 m => m.HangfireModule
               ),
           },
+          {
+            path: 'pilots',
+            data: {
+              breadcrumb: 'app.pilots',
+              canNavigate: true,
+            },
+            loadChildren: () =>
+              import('./features/pilots/pilot.module').then(m => m.PilotModule),
+          },
           // End BIADemo
           {
             path: 'sites',

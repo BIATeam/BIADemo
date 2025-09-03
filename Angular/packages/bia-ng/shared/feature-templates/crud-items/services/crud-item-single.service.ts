@@ -118,10 +118,15 @@ export abstract class CrudItemSingleService<
   // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
   updateFixedStatus(id: any, isFixed: boolean): void {}
 
-  protected resetNewItemsIds(dtos: BaseDto[] | undefined): void {
+  protected resetNewItemsIds(
+    dtos: BaseDto<number | string>[] | undefined
+  ): void {
     dtos?.forEach(dto => {
-      if (dto.id < 0) {
+      if (typeof dto.id === 'number' && dto.id < 0) {
         dto.id = 0;
+        dto.dtoState = DtoState.Added;
+      } else if (typeof dto.id === 'string' && dto.id === '') {
+        dto.id = '';
         dto.dtoState = DtoState.Added;
       }
     });

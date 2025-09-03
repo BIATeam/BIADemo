@@ -92,6 +92,15 @@ export enum Permission {
   MaintenanceContract_Read = 'MaintenanceContract_Read',
   MaintenanceContract_Save = 'MaintenanceContract_Save',
   MaintenanceContract_Update = 'MaintenanceContract_Update',
+
+  Pilot_Create = 'Pilot_Create',
+  Pilot_Delete = 'Pilot_Delete',
+  Pilot_List_Access = 'Pilot_List_Access',
+  Pilot_Read = 'Pilot_Read',
+  Pilot_Save = 'Pilot_Save',
+  Pilot_Update = 'Pilot_Update',
+  Pilot_Fix = 'Pilot_Fix',
+
   // End BIADemo
   Roles_List = 'Roles_List',
   Site_Create = 'Site_Create',

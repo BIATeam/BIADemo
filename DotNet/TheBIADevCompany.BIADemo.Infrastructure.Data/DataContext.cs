@@ -171,6 +171,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// </summary>
         public DbSet<UserDefaultTeam> UserDefaultTeams { get; set; }
 
+        /// <summary>
+        /// Gets or sets the Plane DBSet.
+        /// </summary>
+        public DbSet<Pilot> Pilots { get; set; }
+
         // End BIADemo
 #endif
 
@@ -200,6 +205,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
             // Begin BIADemo
             PlaneModelBuilder.CreateModel(modelBuilder);
             AircraftMaintenanceCompanyModelBuilder.CreateModel(modelBuilder);
+            PilotModelBuilder.CreateModel(modelBuilder);
 
             // End BIADemo
 #endif
