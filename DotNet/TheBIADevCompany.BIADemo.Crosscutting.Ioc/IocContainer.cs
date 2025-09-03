@@ -21,16 +21,19 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using BIA.Net.Core.Domain.User.Mappers;
     using BIA.Net.Core.Domain.User.Services;
     using BIA.Net.Core.Infrastructure.Data;
+    using BIA.Net.Core.Infrastructure.Data.Repositories.HistoryRepositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.Ioc;
     using BIA.Net.Core.Presentation.Common.Features.HubForClients;
     using Hangfire;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Migrations;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 #if BIA_FRONT_FEATURE
 #endif
     using TheBIADevCompany.BIADemo.Application.User;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common;
 #if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
 #endif
@@ -149,6 +152,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         {
             if (!isUnitTest)
             {
+                collection.Configure<BiaHistoryRepositoryOptions>(options =>
+                {
+                    options.AppVersion = Constants.Application.BackEndVersion;
+                });
+
                 string connectionString = configuration.GetDatabaseConnectionString("ProjectDatabase");
 
                 // Infrastructure Data Layer
@@ -157,6 +165,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                     if (connectionString != null)
                     {
                         options.UseSqlServer(connectionString);
+                        options.ReplaceService<IHistoryRepository, BiaSqlServerHistoryRepository>();
                     }
 
                     options.EnableSensitiveDataLogging();
@@ -168,6 +177,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                         if (connectionString != null)
                         {
                             options.UseSqlServer(connectionString);
+                            options.ReplaceService<IHistoryRepository, BiaSqlServerHistoryRepository>();
                         }
 
                         options.EnableSensitiveDataLogging();
