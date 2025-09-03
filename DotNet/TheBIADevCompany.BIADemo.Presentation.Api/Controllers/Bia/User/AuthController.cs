@@ -31,12 +31,18 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         private readonly IAuthAppService authService;
 
         /// <summary>
+        /// The team service.
+        /// </summary>
+        private readonly ITeamAppService teamService;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AuthController"/> class.
         /// </summary>
         /// <param name="authService">The authentication service.</param>
-        public AuthController(IAuthAppService authService)
+        public AuthController(IAuthAppService authService, ITeamAppService teamService)
         {
             this.authService = authService;
+            this.teamService = teamService;
         }
 #endif
 
@@ -56,7 +62,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
             // used only by swagger.
             var loginParam = new LoginParamDto
             {
-                TeamsConfig = this.authService.GetTeamsConfig(),
+                TeamsConfig = this.teamService.GetTeamsConfig(),
                 CurrentTeamLogins = null,
                 LightToken = lightToken,
                 FineGrainedPermission = !lightToken,

@@ -4,9 +4,11 @@
 
 namespace TheBIADevCompany.BIADemo.Application.User
 {
+    using System.Collections.Immutable;
     using System.Security.Claims;
     using System.Security.Principal;
     using BIA.Net.Core.Application.User;
+    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
@@ -41,6 +43,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
         public bool IsAuthorizeForTeamType(ClaimsPrincipal principal, TeamTypeId teamTypeId, int teamId, string roleSuffix)
         {
             return this.IsAuthorizeForTeamType(principal, teamTypeId, teamId, roleSuffix, TeamConfig.Config);
+        }
+
+        /// <inheritdoc/>
+        public ImmutableList<TeamConfigDto> GetTeamsConfig()
+        {
+            return this.GetTeamsConfig(TeamConfig.Config);
         }
     }
 }

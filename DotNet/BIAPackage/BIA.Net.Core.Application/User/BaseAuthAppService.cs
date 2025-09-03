@@ -149,26 +149,6 @@ namespace BIA.Net.Core.Application.User
         }
 
         /// <summary>
-        /// Get the <see cref="TeamConfigDto"/> list from <paramref name="teamsConfig"/>.
-        /// </summary>
-        /// <param name="teamsConfig">The list of team config.</param>
-        /// <returns><see cref="ImmutableList{T}"/> of <see cref="TeamConfigDto"/>.</returns>
-        protected virtual ImmutableList<TeamConfigDto> GetTeamsConfig(ImmutableList<BiaTeamConfig<BaseEntityTeam>> teamsConfig)
-        {
-            return teamsConfig.Select(tc => new TeamConfigDto()
-            {
-                TeamTypeId = tc.TeamTypeId,
-                DisplayAlways = tc.DisplayAlways,
-                DisplayLabel = tc.DisplayLabel,
-                DisplayOne = tc.DisplayOne,
-                InHeader = tc.DisplayInHeader,
-                Label = tc.Label,
-                RoleMode = tc.RoleMode,
-                TeamSelectionCanBeEmpty = tc.TeamSelectionCanBeEmpty,
-            }).ToImmutableList();
-        }
-
-        /// <summary>
         /// Checks the user permissions.
         /// </summary>
         /// <param name="userPermissions">The user permissions.</param>

@@ -30,12 +30,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="loginParam">The login parameter.</param>
         /// <returns>AuthInfo.</returns>
         Task<AuthInfoDto<AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam);
-
-        /// <summary>
-        /// Get the list of <see cref="TeamConfigDto"/>.
-        /// </summary>
-        /// <returns><see cref="ImmutableList{T}"/> of <see cref="TeamConfigDto"/>.</returns>
-        ImmutableList<TeamConfigDto> GetTeamsConfig();
 #endif
     }
 }
