@@ -125,9 +125,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// <returns>The teams config.</returns>
         [HttpGet("teamsConfig")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<ImmutableList<TeamConfigDto>> GetTeamsConfig()
         {
             var results = this.teamService.GetTeamsConfig();
