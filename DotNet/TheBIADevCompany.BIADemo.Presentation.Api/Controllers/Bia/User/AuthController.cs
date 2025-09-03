@@ -54,46 +54,47 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         public async Task<IActionResult> Login(bool lightToken = true)
         {
             // used only by swagger.
-            LoginParamDto loginParam = new LoginParamDto
+            var loginParam = new LoginParamDto
             {
-                TeamsConfig = new TeamConfigDto[]
-                {
-                    // this config is required to simulate default site with swagger.
-                    // it should correspond to the Front config (allEnvironments.Teams)
-                    new TeamConfigDto { TeamTypeId = (int)TeamTypeId.Site, RoleMode = RoleMode.AllRoles, InHeader = true },
+                //TeamsConfig = new TeamConfigDto[]
+                //{
+                //    // this config is required to simulate default site with swagger.
+                //    // it should correspond to the Front config (allEnvironments.Teams)
+                //    new TeamConfigDto { TeamTypeId = (int)TeamTypeId.Site, RoleMode = RoleMode.AllRoles, InHeader = true },
 
-                    // BIAToolKit - Begin AuthController
-                    // Begin BIAToolKit Generation Ignore
-                    // BIAToolKit - Begin Partial AuthController AircraftMaintenanceCompany
-                    new TeamConfigDto()
-                    {
-                        TeamTypeId = (int)TeamTypeId.AircraftMaintenanceCompany,
+                //    // BIAToolKit - Begin AuthController
+                //    // Begin BIAToolKit Generation Ignore
+                //    // BIAToolKit - Begin Partial AuthController AircraftMaintenanceCompany
+                //    new TeamConfigDto()
+                //    {
+                //        TeamTypeId = (int)TeamTypeId.AircraftMaintenanceCompany,
 
-                        // Begin BIADemo
-                        RoleMode = RoleMode.MultiRoles,
-                        InHeader = true,
+                //        // Begin BIADemo
+                //        RoleMode = RoleMode.MultiRoles,
+                //        InHeader = true,
 
-                        // End BIADemo
-                    },
+                //        // End BIADemo
+                //    },
 
-                    // BIAToolKit - End Partial AuthController AircraftMaintenanceCompany
-                    // BIAToolKit - Begin Partial AuthController MaintenanceTeam
-                    new TeamConfigDto()
-                    {
-                        TeamTypeId = (int)TeamTypeId.MaintenanceTeam,
+                //    // BIAToolKit - End Partial AuthController AircraftMaintenanceCompany
+                //    // BIAToolKit - Begin Partial AuthController MaintenanceTeam
+                //    new TeamConfigDto()
+                //    {
+                //        TeamTypeId = (int)TeamTypeId.MaintenanceTeam,
 
-                        // Begin BIADemo
-                        RoleMode = RoleMode.AllRoles,
-                        InHeader = false,
-                        TeamSelectionCanBeEmpty = true,
+                //        // Begin BIADemo
+                //        RoleMode = RoleMode.AllRoles,
+                //        InHeader = false,
+                //        TeamSelectionCanBeEmpty = true,
 
-                        // End BIADemo
-                    },
+                //        // End BIADemo
+                //    },
 
-                    // BIAToolKit - End Partial AuthController MaintenanceTeam
-                    // End BIAToolKit Generation Ignore
-                    // BIAToolKit - End AuthController
-                },
+                //    // BIAToolKit - End Partial AuthController MaintenanceTeam
+                //    // End BIAToolKit Generation Ignore
+                //    // BIAToolKit - End AuthController
+                //},
+                TeamsConfig = this.authService.GetTeamsConfig(),
                 CurrentTeamLogins = null,
                 LightToken = lightToken,
                 FineGrainedPermission = !lightToken,

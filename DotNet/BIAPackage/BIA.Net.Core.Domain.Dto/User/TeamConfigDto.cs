@@ -34,5 +34,10 @@ namespace BIA.Net.Core.Domain.Dto.User
         /// Indicates weither the team selection can be empty or not.
         /// </summary>
         public bool TeamSelectionCanBeEmpty { get; set; }
+
+        public bool DisplayOne { get; set; }
+        public bool DisplayAlways { get; set; }
+        public string Label { get; set; }
+        public bool DisplayLabel { get; set; }
     }
 }

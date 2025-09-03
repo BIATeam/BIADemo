@@ -49,6 +49,14 @@ namespace BIA.Net.Core.Common
         /// <summary>
         /// Gets or sets the team selection mode.
         /// </summary>
-        public TeamSelectionMode TeamSelectionMode { get; set; }
+        public TeamSelectionMode TeamAutomaticSelectionMode { get; set; }
+
+        public RoleMode RoleMode { get; set; }
+        public bool TeamSelectionCanBeEmpty { get; set; }
+        public bool DisplayInHeader { get; set; }
+        public bool DisplayOne { get; set; }
+        public bool DisplayAlways { get; set; }
+        public string Label { get; set; }
+        public bool DisplayLabel { get; set; }
     }
 }

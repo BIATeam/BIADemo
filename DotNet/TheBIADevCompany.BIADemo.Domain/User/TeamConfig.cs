@@ -24,6 +24,9 @@ namespace TheBIADevCompany.BIADemo.Domain.User
                 TeamTypeId = (int)TeamTypeId.Site,
                 RightPrefix = "Site",
                 AdminRoleIds = new int[] { (int)RoleId.SiteAdmin },
+                RoleMode = BIA.Net.Core.Common.Enum.RoleMode.AllRoles,
+                DisplayInHeader = true,
+                Label = "site.headerLabel",
             },
 
             // BIAToolKit - Begin TeamConfig
@@ -56,6 +59,14 @@ namespace TheBIADevCompany.BIADemo.Domain.User
                 // BIAToolKit - End Partial TeamConfigAircraftMaintenanceCompanyChildren MaintenanceTeam
                 // BIAToolKit - End TeamConfigAircraftMaintenanceCompanyChildren
                 }.ToImmutable(),
+                Label = "aircraftMaintenanceCompany.headerLabel",
+
+                // Begin BIADemo
+                RoleMode = BIA.Net.Core.Common.Enum.RoleMode.MultiRoles,
+                DisplayInHeader = true,
+                DisplayOne = true,
+
+                // End BIADemo
             },
 
             // BIAToolKit - End Partial TeamConfig AircraftMaintenanceCompany
@@ -81,9 +92,15 @@ namespace TheBIADevCompany.BIADemo.Domain.User
                     },
                 }
                 .ToImmutable(),
+                Label = "maintenanceTeam.headerLabel",
 
                 // Begin BIADemo
-                TeamSelectionMode = BIA.Net.Core.Common.Enum.TeamSelectionMode.None,
+                TeamAutomaticSelectionMode = BIA.Net.Core.Common.Enum.TeamSelectionMode.None,
+                RoleMode = BIA.Net.Core.Common.Enum.RoleMode.AllRoles,
+                DisplayInHeader = true,
+                DisplayAlways = true,
+                DisplayLabel = true,
+                TeamSelectionCanBeEmpty = true,
 
                 // End BIADemo
             },

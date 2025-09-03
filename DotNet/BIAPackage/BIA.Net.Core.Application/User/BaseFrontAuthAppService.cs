@@ -393,7 +393,7 @@ namespace BIA.Net.Core.Application.User
                 {
                     var teamConfig = teamsConfig.Single(tc => tc.TeamTypeId == loginTeamConfigTeamTypeId);
                     var correspondingTeams = allTeams.Where(t => t.TeamTypeId == loginTeamConfigTeamTypeId);
-                    var automaticallySelectedTeam = teamConfig.TeamSelectionMode switch
+                    var automaticallySelectedTeam = teamConfig.TeamAutomaticSelectionMode switch
                     {
                         TeamSelectionMode.None => null,
                         TeamSelectionMode.First => correspondingTeams.FirstOrDefault(),
@@ -436,7 +436,7 @@ namespace BIA.Net.Core.Application.User
                     }
 
                     IEnumerable<RoleDto> roles = await this.RoleAppService.GetMemberRolesAsync(currentTeam.TeamId, userInfoId);
-                    RoleMode roleMode = Array.Find(loginParam.TeamsConfig, r => r.TeamTypeId == currentTeam.TeamTypeId)?.RoleMode ?? RoleMode.AllRoles;
+                    RoleMode roleMode = loginParam.TeamsConfig.Find(r => r.TeamTypeId == currentTeam.TeamTypeId)?.RoleMode ?? RoleMode.AllRoles;
 
                     if (roleMode == RoleMode.AllRoles)
                     {

@@ -66,6 +66,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
             return this.LoginOnTeamsAsync(loginParam, TeamConfig.Config);
         }
 
+        /// <inheritdoc/>
+        public ImmutableList<TeamConfigDto> GetTeamsConfig()
+        {
+            return this.GetTeamsConfig(TeamConfig.Config);
+        }
+
         /// <summary>
         /// Gets the identity key.
         /// </summary>
