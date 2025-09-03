@@ -4,6 +4,7 @@
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
 {
+    using System.Collections.Immutable;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
@@ -126,7 +127,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public IActionResult GetTeamsConfig()
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult<ImmutableList<TeamConfigDto>> GetTeamsConfig()
         {
             var results = this.teamService.GetTeamsConfig();
             return this.Ok(results);
