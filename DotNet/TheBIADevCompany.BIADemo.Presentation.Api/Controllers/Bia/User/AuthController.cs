@@ -117,6 +117,20 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         {
             return this.Ok(Constants.Application.FrontEndVersion);
         }
+
+        /// <summary>
+        /// Get the teams config.
+        /// </summary>
+        /// <returns>The teams config.</returns>
+        [HttpGet("teamsConfig")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public IActionResult GetTeamsConfig()
+        {
+            var results = this.teamService.GetTeamsConfig();
+            return this.Ok(results);
+        }
 #endif
 #if BIA_BACK_TO_BACK_AUTH
 

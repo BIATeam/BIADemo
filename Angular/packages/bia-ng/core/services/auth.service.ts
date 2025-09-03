@@ -9,6 +9,7 @@ import {
   AuthInfo,
   CurrentTeamDto,
   LoginParamDto,
+  TeamConfigDto,
   Token,
 } from 'packages/bia-ng/models/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
@@ -47,6 +48,10 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
         (authInfo: AuthInfo) => authInfo !== null && authInfo !== undefined
       )
     );
+  private readonly teamsConfig$ = new BehaviorSubject<TeamConfigDto[]>([]);
+  private get teamsConfig(): TeamConfigDto[] {
+    return this.teamsConfig$.value;
+  }
 
   constructor(
     injector: Injector,
@@ -100,7 +105,12 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       take(1),
       switchMap((isCorrectVersion: boolean) => {
         if (isCorrectVersion === true) {
-          return this.getAuthInfo();
+          return this.getTeamsConfig().pipe(
+            switchMap((teamsConfig: TeamConfigDto[]) => {
+              this.teamsConfig$.next(teamsConfig);
+              return this.getAuthInfo();
+            })
+          );
         } else {
           this.getLatestVersion();
           return NEVER;
@@ -192,10 +202,6 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
         tl.teamId = +tl.teamId;
         tl.currentRoleIds = tl.currentRoleIds.map(roleId => +roleId);
       });
-      loginParam.teamsConfig = BiaAppConstantsService.allEnvironments.teams;
-      loginParam.lightToken = false;
-      loginParam.fineGrainedPermission = true;
-      loginParam.additionalInfos = true;
       loginParam.isFirstLogin = false;
       return loginParam;
     }
@@ -205,7 +211,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       lightToken: false,
       fineGrainedPermission: true,
       additionalInfos: true,
-      teamsConfig: BiaAppConstantsService.allEnvironments.teams,
+      teamsConfig: this.teamsConfig,
       isFirstLogin: true,
     };
   }
@@ -213,6 +219,19 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   public setLoginParameters(loginParam: LoginParamDto) {
     sessionStorage.setItem(STORAGE_LOGINPARAM_KEY, JSON.stringify(loginParam));
   }
+
+  public getTeamsConfig(): Observable<TeamConfigDto[]> {
+    return this.http.get<TeamConfigDto[]>(`${this.route}teamsConfig`).pipe(
+      map((teamsConfig: TeamConfigDto[]) => {
+        return teamsConfig;
+      }),
+      catchError(() => {
+        const teamsConfig: TeamConfigDto[] = [];
+        return of(teamsConfig);
+      })
+    );
+  }
+
   public getCurrentTeams(teamTypeIds: number[]): CurrentTeamDto[] | undefined {
     const teamsLogin = this.getLoginParameters().currentTeamLogins;
     return teamsLogin.filter(i => teamTypeIds.indexOf(i.teamTypeId) > -1);
