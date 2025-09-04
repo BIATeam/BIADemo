@@ -315,7 +315,7 @@ namespace BIA.Net.Core.Application.User
         /// </summary>
         /// <param name="teamsConfig">The list of team config.</param>
         /// <returns><see cref="ImmutableList{T}"/> of <see cref="TeamConfigDto"/>.</returns>
-        protected virtual ImmutableList<TeamConfigDto> GetTeamsConfig(ImmutableList<BiaTeamConfig<BaseEntityTeam>> teamsConfig)
+        protected ImmutableList<TeamConfigDto> GetTeamsConfig(ImmutableList<BiaTeamConfig<BaseEntityTeam>> teamsConfig)
         {
             return teamsConfig.Select(tc => new TeamConfigDto()
             {
