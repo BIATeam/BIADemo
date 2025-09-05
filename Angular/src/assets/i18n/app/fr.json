@@ -103,6 +103,17 @@
     "currentAirport": "Aéroport actuel",
     "operationAirports": "Aéroports des opérations"
   },
+  "pilot": {
+    "add": "Ajouter pilote",
+    "edit": "Modifier pilote",
+    "flightHours": "Heures de vol",
+    "identificationNumber": "Numéro d'identification",
+    "import": "Importer pilotes",
+    "information": "Informations",
+    "listOf": "Liste des pilotes",
+    "read": "Détails pilote",
+    "site": "Compagnie aérienne"
+  },
   "plane": {
     "add": "Ajouter avion",
     "capacity": "Capacité",

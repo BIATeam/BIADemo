@@ -96,8 +96,8 @@ export class PilotService extends CrudItemService<Pilot> {
     this.store.dispatch(FeaturePilotsActions.clearAll());
   }
   public clearCurrent() {
-    this._currentCrudItem = <Pilot>{};
-    this._currentCrudItemId = 0;
+    this._currentCrudItem = <Pilot>{ id: '' };
+    this._currentCrudItemId = '';
     this.store.dispatch(FeaturePilotsActions.clearCurrent());
   }
   public updateFixedStatus(id: any, isFixed: boolean): void {

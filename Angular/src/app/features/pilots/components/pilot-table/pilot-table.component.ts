@@ -70,4 +70,10 @@ export class PilotTableComponent extends CrudItemTableComponent<Pilot> {
   ) {
     super(formBuilder, authService, biaMessageService, translateService);
   }
+
+  public addFooterEmptyObject() {
+    if (this.canAdd === true) {
+      this.footerRowData = { id: '' };
+    }
+  }
 }

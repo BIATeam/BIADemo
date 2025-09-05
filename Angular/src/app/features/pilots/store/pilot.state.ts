@@ -41,7 +41,7 @@ export namespace FeaturePilotsStore {
 
   export const getCurrentPilot = createSelector(
     getPilotsEntitiesState,
-    state => state.currentItem ?? <Pilot>{}
+    state => state.currentItem ?? <Pilot>{ id: '' }
   );
 
   export const getLastLazyLoadEvent = createSelector(

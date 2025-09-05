@@ -23,4 +23,25 @@ export class CrudHelperService {
     }
     return newId;
   }
+
+  public static typeofId<TDto extends { id: number | string }>(
+    element: TDto
+  ): string {
+    if (element.id !== null && element.id !== undefined) {
+      if (typeof element.id === 'number') {
+        return 'number';
+      } else if (typeof element.id === 'string') {
+        return 'string';
+      }
+    }
+    return 'number';
+  }
+
+  public static initId<TDto extends { id: number | string }>(element: TDto) {
+    if (CrudHelperService.typeofId(element) === 'number') {
+      element.id = element.id && (element.id as number) > 0 ? element.id : 0;
+    } else if (CrudHelperService.typeofId(element) === 'string') {
+      element.id = element.id > '' ? element.id : '';
+    }
+  }
 }

@@ -11,7 +11,6 @@ import {
   CrudItemsIndexComponent,
 } from 'packages/bia-ng/shared/public-api';
 import { PrimeTemplate } from 'primeng/api';
-import { ButtonDirective } from 'primeng/button';
 import { Permission } from 'src/app/shared/permission';
 import { PilotTableComponent } from '../../components/pilot-table/pilot-table.component';
 import { Pilot } from '../../model/pilot';
@@ -27,7 +26,6 @@ import { PilotService } from '../../services/pilot.service';
     NgClass,
     PrimeTemplate,
     NgIf,
-    ButtonDirective,
     PilotTableComponent,
     AsyncPipe,
     TranslateModule,

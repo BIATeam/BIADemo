@@ -23,21 +23,6 @@
       (crudItemFixedChanged)="
         crudItemService.updateFixedStatus($event.crudItemId, $event.fixed)
       ">
-      <!-- Begin BIAToolKit Generation Ignore -->
-      <!-- BIAToolKit - Begin Partial PilotIndexHtml Engine -->
-      <ng-template pTemplate="actionOnSelected">
-        <button
-          *ngIf="canViewEngines"
-          pButton
-          [disabled]="selectedCrudItems.length !== 1"
-          class="p-button-outlined"
-          label="{{ 'pilot.engines' | translate }}"
-          (click)="onViewEngines(selectedCrudItems[0].id)"></button>
-      </ng-template>
-      <!-- BIAToolKit - End Partial PilotIndexHtml Engine -->
-      <!-- End BIAToolKit Generation Ignore -->
-      <!-- BIAToolKit - Begin PilotIndexHtml -->
-      <!-- BIAToolKit - End PilotIndexHtml -->
     </bia-table-header>
     <bia-table-controller
       [ngClass]="{ 'table-controller-hidden': !showTableController }"

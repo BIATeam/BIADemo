@@ -30,7 +30,7 @@ export const pilotReducers = createReducer<State>(
     return stateUpdated;
   }),
   on(FeaturePilotsActions.clearCurrent, state => {
-    return { ...state, currentItem: <Pilot>{} };
+    return { ...state, currentItem: <Pilot>{ id: '' } };
   }),
   on(FeaturePilotsActions.loadAllByPost, state => {
     return { ...state, loadingGetAll: true };

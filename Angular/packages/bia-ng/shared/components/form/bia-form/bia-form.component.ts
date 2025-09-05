@@ -37,6 +37,7 @@ import {
   BiaFormLayoutConfigRow,
   BiaFormLayoutConfigTabGroup,
 } from 'packages/bia-ng/models/public-api';
+import { CrudHelperService } from 'packages/bia-ng/shared/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';
@@ -499,13 +500,8 @@ export class BiaFormComponent<TDto extends { id: number | string }>
     }
 
     const element: TDto = this.flattenFormGroup(this.form) as TDto;
-    console.error(element.id, typeof element.id);
-    if (typeof element.id === 'number') {
-      element.id = element.id > 0 ? element.id : 0;
-    }
-    if (typeof element.id === 'string') {
-      element.id = element.id > '' ? element.id : '';
-    }
+    CrudHelperService.initId<TDto>(element);
+
     for (const col of this.fields) {
       switch (col.type) {
         case PropType.Boolean:

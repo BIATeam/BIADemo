@@ -49,7 +49,7 @@ export abstract class CrudItemSingleService<
   }
 
   protected _currentCrudItem: CrudItem;
-  protected _currentCrudItemId: any;
+  protected _currentCrudItemId: string | number;
 
   public get currentCrudItem() {
     if (this._currentCrudItem?.id === this._currentCrudItemId) {

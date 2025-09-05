@@ -157,7 +157,7 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
   }
 
   public isFooter(element: any) {
-    return element.id === 0;
+    return element.id === 0 || element.id === '';
   }
 
   public onChange() {
@@ -186,9 +186,11 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
       (!rowData ||
         (rowData &&
           ((rowData.id !== 0 &&
+            rowData.id !== '' &&
             this.table?.editingRowKeys[rowData.id] !== true &&
             rowData.isFixed !== true) ||
-            (rowData.id === 0 && this.editFooter !== true))))
+            ((rowData.id === 0 || rowData.id === '') &&
+              this.editFooter !== true))))
     ) {
       if (this.hasChanged === true) {
         if (!rowData) {
@@ -210,7 +212,7 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
   public initRowEdit(rowData: any) {
     if (rowData) {
       this.element = rowData;
-      if (rowData.id === 0) {
+      if (rowData.id === 0 || rowData.id === '') {
         if (this.canAdd === true) {
           this.editFooter = true;
           this.isEditing.emit(true);

@@ -25,7 +25,7 @@ export const pilotFieldsConfiguration: BiaFieldsConfig<Pilot> = {
       }
     ),
     Object.assign(new BiaFieldConfig('flightHours', 'pilot.flightHours'), {
-      type: PropType.String,
+      type: PropType.Number,
     }),
     Object.assign(new BiaFieldConfig('rowVersion', 'pilot.rowVersion'), {
       isVisible: false,
