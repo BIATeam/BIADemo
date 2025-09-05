@@ -7,6 +7,7 @@
     "airports": "Airports",
     "engines": "Engines",
     "hangfire": "Hangfire",
+    "pilots": "Pilots",
     "planes": "Planes",
     "planesFullCode": "Planes (Full code)",
     "planesPageMode": "Planes (Page)",
