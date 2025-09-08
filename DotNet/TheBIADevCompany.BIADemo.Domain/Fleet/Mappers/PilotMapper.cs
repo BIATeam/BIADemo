@@ -48,7 +48,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
                 }
 
                 entity.SiteId = dto.SiteId;
-                entity.Id = Guid.NewGuid();
             }
             else if (entity.SiteId != dto.SiteId && dto.SiteId != 0)
             {
