@@ -145,7 +145,11 @@ export class PilotsEffects {
   save$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeaturePilotsActions.save),
-      map(x => x?.pilots),
+      map(x => {
+        return x.pilots.map((pilot: Pilot) =>
+          pilot.id ? pilot : { ...pilot, id: undefined }
+        );
+      }),
       concatMap(pilots =>
         of(pilots).pipe(
           withLatestFrom(

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DtoState } from 'packages/bia-ng/models/enum/public-api';
 import { BaseDto } from 'packages/bia-ng/models/public-api';
+import { CrudHelperService } from 'packages/bia-ng/shared/public-api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { CrudItemOptionsService } from './crud-item-options.service';
@@ -122,11 +123,17 @@ export abstract class CrudItemSingleService<
     dtos: BaseDto<number | string>[] | undefined
   ): void {
     dtos?.forEach(dto => {
-      if (typeof dto.id === 'number' && dto.id < 0) {
+      if (
+        CrudHelperService.typeofId(dto) === 'number' &&
+        (dto.id as number) < 0
+      ) {
         dto.id = 0;
         dto.dtoState = DtoState.Added;
-      } else if (typeof dto.id === 'string' && dto.id === '') {
-        dto.id = '';
+      } else if (
+        CrudHelperService.typeofId(dto) === 'string' &&
+        (dto.id as string).startsWith(CrudHelperService.uniqueStringIdentifier)
+      ) {
+        dto.id = undefined as unknown as string;
         dto.dtoState = DtoState.Added;
       }
     });
