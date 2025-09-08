@@ -32,19 +32,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         private readonly IAuthAppService authService;
 
         /// <summary>
-        /// The team service.
-        /// </summary>
-        private readonly ITeamAppService teamService;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="AuthController"/> class.
         /// </summary>
         /// <param name="authService">The authentication service.</param>
-        /// <param name="teamService">The team service.</param>
-        public AuthController(IAuthAppService authService, ITeamAppService teamService)
+        public AuthController(IAuthAppService authService)
         {
             this.authService = authService;
-            this.teamService = teamService;
         }
 #endif
 
@@ -117,18 +110,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         public IActionResult GetFrontEndVersion()
         {
             return this.Ok(Constants.Application.FrontEndVersion);
-        }
-
-        /// <summary>
-        /// Get the teams config.
-        /// </summary>
-        /// <returns>The teams config.</returns>
-        [HttpGet("teamsConfig")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<ImmutableList<TeamConfigDto>> GetTeamsConfig()
-        {
-            var results = this.teamService.GetTeamsConfig();
-            return this.Ok(results);
         }
 #endif
 #if BIA_BACK_TO_BACK_AUTH
