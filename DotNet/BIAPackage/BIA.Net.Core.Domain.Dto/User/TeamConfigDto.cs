@@ -4,14 +4,10 @@
 
 namespace BIA.Net.Core.Domain.Dto.User
 {
-    using System;
-    using System.Collections.Generic;
     using BIA.Net.Core.Common.Enum;
-    using BIA.Net.Core.Domain.Dto.Base;
-    using BIA.Net.Core.Domain.Dto.Option;
 
     /// <summary>
-    /// The DTO used for notifications.
+    /// The DTO used for the configuration of the teams in front end.
     /// </summary>
     public class TeamConfigDto
     {
@@ -35,9 +31,24 @@ namespace BIA.Net.Core.Domain.Dto.User
         /// </summary>
         public bool TeamSelectionCanBeEmpty { get; set; }
 
+        /// <summary>
+        /// Gets or sets it the display of the team should be displayed one or not.
+        /// </summary>
         public bool DisplayOne { get; set; }
+
+        /// <summary>
+        /// Gets or sets if the display of the team should be displayed always or not.
+        /// </summary>
         public bool DisplayAlways { get; set; }
+
+        /// <summary>
+        /// Gets or sets the label key of the team.
+        /// </summary>
         public string Label { get; set; }
+
+        /// <summary>
+        /// Gets or sets if the label should be displayed or not.
+        /// </summary>
         public bool DisplayLabel { get; set; }
     }
 }
