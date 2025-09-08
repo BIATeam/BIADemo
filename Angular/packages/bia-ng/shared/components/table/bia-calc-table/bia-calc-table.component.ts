@@ -29,6 +29,7 @@ import {
   AuthService,
   BiaMessageService,
 } from 'packages/bia-ng/core/public-api';
+import { DtoState } from 'packages/bia-ng/models/enum/public-api';
 import { BiaFieldConfig } from 'packages/bia-ng/models/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
@@ -142,7 +143,7 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
 
   public addFooterEmptyObject() {
     if (this.canAdd === true) {
-      this.footerRowData = { id: 0 };
+      this.footerRowData = { id: 0, dtoState: DtoState.Added };
     }
   }
 

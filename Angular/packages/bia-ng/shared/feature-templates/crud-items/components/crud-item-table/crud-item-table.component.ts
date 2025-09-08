@@ -105,6 +105,7 @@ export class CrudItemTableComponent<CrudItem extends BaseDto<string | number>>
   onSubmit() {
     if (this.form.valid) {
       const crudItem: CrudItem = <CrudItem>this.form.value;
+      crudItem.dtoState = this.editFooter ? DtoState.Added : DtoState.Modified;
       crudItem.id = crudItem.id ?? 0;
       for (const col of this.configuration.columns) {
         switch (col.type) {

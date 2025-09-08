@@ -21,6 +21,7 @@ import {
   BiaTranslationService,
   clone,
 } from 'packages/bia-ng/core/public-api';
+import { DtoState } from 'packages/bia-ng/models/enum/public-api';
 import {
   AuthInfo,
   BaseDto,
@@ -30,6 +31,7 @@ import {
   KeyValuePair,
   PagingFilterFormatDto,
 } from 'packages/bia-ng/models/public-api';
+import { CrudHelperService } from 'packages/bia-ng/shared/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { TableLazyLoadEvent } from 'primeng/table';
@@ -405,7 +407,11 @@ export class CrudItemsIndexComponent<
     } else {
       this.crudItemTableComponent.initEditableRow({
         ...clone(this.selectedCrudItems[0]),
-        id: 0,
+        id:
+          CrudHelperService.typeofId(this.selectedCrudItems[0]) === 'number'
+            ? 0
+            : '',
+        dtoState: DtoState.Added,
       });
       this.crudItemTableComponent.hasChanged = true;
     }
@@ -463,9 +469,11 @@ export class CrudItemsIndexComponent<
     }
 
     if (
-      ((typeof crudItem.id === 'number' && crudItem.id > 0) ||
-        (typeof crudItem.id === 'string' && crudItem.id)) &&
-      this.canEdit
+      (crudItem.dtoState && crudItem.dtoState === DtoState.Modified) ||
+      (!crudItem.dtoState &&
+        ((typeof crudItem.id === 'number' && crudItem.id > 0) ||
+          (typeof crudItem.id === 'string' && crudItem.id)) &&
+        this.canEdit)
     ) {
       this.handleCrudOperation(
         crudItem,
@@ -476,9 +484,11 @@ export class CrudItemsIndexComponent<
     }
 
     if (
-      ((typeof crudItem.id === 'number' && crudItem.id === 0) ||
-        (typeof crudItem.id === 'string' && !crudItem.id)) &&
-      this.canAdd
+      (crudItem.dtoState && crudItem.dtoState === DtoState.Added) ||
+      (!crudItem.dtoState &&
+        ((typeof crudItem.id === 'number' && crudItem.id === 0) ||
+          (typeof crudItem.id === 'string' && !crudItem.id)) &&
+        this.canAdd)
     ) {
       this.handleCrudOperation(
         crudItem,
