@@ -18,11 +18,6 @@ namespace BIA.Net.Core.Domain.Dto.User
         public CurrentTeamDto[] CurrentTeamLogins { get; set; }
 
         /// <summary>
-        /// Gets or sets is the teams config.
-        /// </summary>
-        public ImmutableList<TeamConfigDto> TeamsConfig { get; set; }
-
-        /// <summary>
         /// Gets or sets if it required a light token (only permition taged light token).
         /// </summary>
         public bool LightToken { get; set; }

@@ -64,7 +64,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
             // used only by swagger.
             var loginParam = new LoginParamDto
             {
-                TeamsConfig = this.teamService.GetTeamsConfig(),
                 CurrentTeamLogins = null,
                 LightToken = lightToken,
                 FineGrainedPermission = !lightToken,

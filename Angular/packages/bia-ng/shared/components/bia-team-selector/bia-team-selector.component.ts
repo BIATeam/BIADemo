@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
+  AppSettingsService,
   AuthService,
   BiaTeamsActions,
   BiaTranslationService,
@@ -69,31 +70,26 @@ export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
     public biaTranslationService: BiaTranslationService,
     protected authService: AuthService,
     protected store: Store<BiaAppState>,
+    protected appSettingsService: AppSettingsService,
     @Inject(APP_BASE_HREF) public baseHref: string
   ) {}
 
   ngOnInit() {
-    this.canClear = this.authService
-      .getLoginParameters()
-      .teamsConfig.find(
-        t => t.teamTypeId === this.teamType.teamTypeId
-      )?.teamSelectionCanBeEmpty;
+    this.canClear = this.appSettingsService.appSettings.teamsConfig.find(
+      t => t.teamTypeId === this.teamType.teamTypeId
+    )?.teamSelectionCanBeEmpty;
     this.singleRoleMode =
-      this.authService
-        .getLoginParameters()
-        .teamsConfig.find(
-          t =>
-            t.teamTypeId === this.teamType.teamTypeId &&
-            t.roleMode === RoleMode.SingleRole
-        ) !== undefined;
+      this.appSettingsService.appSettings.teamsConfig.find(
+        t =>
+          t.teamTypeId === this.teamType.teamTypeId &&
+          t.roleMode === RoleMode.SingleRole
+      ) !== undefined;
     this.multiRoleMode =
-      this.authService
-        .getLoginParameters()
-        .teamsConfig.find(
-          t =>
-            t.teamTypeId === this.teamType.teamTypeId &&
-            t.roleMode === RoleMode.MultiRoles
-        ) !== undefined;
+      this.appSettingsService.appSettings.teamsConfig.find(
+        t =>
+          t.teamTypeId === this.teamType.teamTypeId &&
+          t.roleMode === RoleMode.MultiRoles
+      ) !== undefined;
     this.teams$ = this.store.select(
       CoreTeamsStore.getAllTeamsOfType(this.teamType.teamTypeId)
     );

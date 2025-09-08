@@ -1,25 +1,12 @@
-import { RoleMode } from 'packages/bia-ng/models/enum/public-api';
 import { Team } from './team';
 
 export class LoginParamDto {
   currentTeamLogins: CurrentTeamDto[];
-  teamsConfig: TeamConfigDto[];
   lightToken: boolean;
   fineGrainedPermission: boolean;
   additionalInfos: boolean;
   isFirstLogin: boolean;
   baseUserIdentity?: string;
-}
-
-export class TeamConfigDto {
-  teamTypeId: number;
-  roleMode: RoleMode;
-  inHeader: boolean;
-  displayOne?: boolean;
-  displayAlways?: boolean;
-  label?: string;
-  displayLabel?: boolean;
-  teamSelectionCanBeEmpty?: boolean;
 }
 
 export interface UserProfile {

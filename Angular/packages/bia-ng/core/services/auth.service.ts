@@ -6,7 +6,6 @@ import { jwtDecode } from 'jwt-decode';
 import { RoleMode } from 'packages/bia-ng/models/enum/public-api';
 import {
   AdditionalInfos,
-  AppSettings,
   AuthInfo,
   CurrentTeamDto,
   LoginParamDto,
@@ -23,7 +22,7 @@ import {
   switchMap,
   take,
 } from 'rxjs/operators';
-import { getAppSettings } from '../app-settings/store/app-settings.state';
+import { AppSettingsService } from '../app-settings/services/app-settings.service';
 import { BiaTeamsActions } from '../team/store/teams-actions';
 import { AbstractDas } from './abstract-das.service';
 import { BiaAppConstantsService } from './bia-app-constants.service';
@@ -49,16 +48,14 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
         (authInfo: AuthInfo) => authInfo !== null && authInfo !== undefined
       )
     );
-  private appSettings$: Observable<AppSettings | null> =
-    this.store.select(getAppSettings);
-  private appSettings: AppSettings | null;
 
   constructor(
     injector: Injector,
     protected biaMessageService: BiaMessageService,
     protected translateService: TranslateService,
     protected store: Store<BiaAppState>,
-    protected biaSwUpdateService: BiaSwUpdateService
+    protected biaSwUpdateService: BiaSwUpdateService,
+    protected appSettingsService: AppSettingsService
   ) {
     super(injector, 'Auth');
     RefreshTokenService.shouldRefreshToken = false;
@@ -105,12 +102,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       take(1),
       switchMap((isCorrectVersion: boolean) => {
         if (isCorrectVersion === true) {
-          return this.appSettings$.pipe(
-            switchMap((appSettings: AppSettings | null) => {
-              this.appSettings = appSettings;
-              return this.getAuthInfo();
-            })
-          );
+          return this.getAuthInfo();
         } else {
           this.getLatestVersion();
           return NEVER;
@@ -211,7 +203,6 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       lightToken: false,
       fineGrainedPermission: true,
       additionalInfos: true,
-      teamsConfig: this.appSettings?.teamsConfig ?? [],
       isFirstLogin: true,
     };
   }
@@ -322,8 +313,9 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     roleIds = roleIds.map(roleId => +roleId);
     const loginParam = this.getLoginParameters();
     const roleMode =
-      loginParam.teamsConfig.find(r => r.teamTypeId === teamTypeId)?.roleMode ||
-      RoleMode.AllRoles;
+      this.appSettingsService.appSettings.teamsConfig.find(
+        r => r.teamTypeId === teamTypeId
+      )?.roleMode || RoleMode.AllRoles;
     if (roleMode !== RoleMode.AllRoles) {
       const teamsLogin = loginParam.currentTeamLogins;
       const team = teamsLogin.find(i => i.teamId === teamId);

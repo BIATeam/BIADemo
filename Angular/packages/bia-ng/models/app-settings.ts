@@ -1,5 +1,7 @@
-import { EnvironmentType } from 'packages/bia-ng/models/enum/public-api';
-import { TeamConfigDto } from './auth-info';
+import {
+  EnvironmentType,
+  RoleMode,
+} from 'packages/bia-ng/models/enum/public-api';
 
 export interface AppSettings {
   keycloak: Keycloak;
@@ -9,6 +11,17 @@ export interface AppSettings {
   profileConfiguration?: ProfileConfiguration;
   iframeConfiguration?: IframeConfiguration;
   teamsConfig: TeamConfigDto[];
+}
+
+export interface TeamConfigDto {
+  teamTypeId: number;
+  roleMode: RoleMode;
+  inHeader: boolean;
+  displayOne?: boolean;
+  displayAlways?: boolean;
+  label?: string;
+  displayLabel?: boolean;
+  teamSelectionCanBeEmpty?: boolean;
 }
 
 export interface Environment {

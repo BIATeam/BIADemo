@@ -39,7 +39,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
                 MonitoringUrl = configuration.Value.ApiFeatures?.DelegateJobToWorker?.MonitoringUrl,
                 ProfileConfiguration = configuration.Value.ProfileConfiguration,
                 IframeConfiguration = configuration.Value.IframeConfiguration,
-                TeamConfigs = teamAppService.GetTeamsConfig(),
+                TeamsConfig = teamAppService.GetTeamsConfig(),
             };
         }
 

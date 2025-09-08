@@ -51,6 +51,6 @@ namespace BIA.Net.Core.Domain.Dto.App
         /// <summary>
         /// Gets or sets the configuration of teams.
         /// </summary>
-        public ImmutableList<TeamConfigDto> TeamConfigs { get; set; }
+        public ImmutableList<TeamConfigDto> TeamsConfig { get; set; }
     }
 }
