@@ -11,6 +11,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
+    using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
 
     /// <summary>
@@ -27,7 +28,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
         /// Initializes a new instance of the <see cref="AppSettingsController"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
-        public AppSettingsController(IOptions<BiaNetSection> configuration)
+        /// <param name="teamAppService">The team app service.</param>
+        public AppSettingsController(IOptions<BiaNetSection> configuration, ITeamAppService teamAppService)
         {
             this.appSettings = new AppSettingsDto
             {
@@ -37,6 +39,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
                 MonitoringUrl = configuration.Value.ApiFeatures?.DelegateJobToWorker?.MonitoringUrl,
                 ProfileConfiguration = configuration.Value.ProfileConfiguration,
                 IframeConfiguration = configuration.Value.IframeConfiguration,
+                TeamConfigs = teamAppService.GetTeamsConfig(),
             };
         }
 

@@ -1,4 +1,5 @@
 import { EnvironmentType } from 'packages/bia-ng/models/enum/public-api';
+import { TeamConfigDto } from './auth-info';
 
 export interface AppSettings {
   keycloak: Keycloak;
@@ -7,6 +8,7 @@ export interface AppSettings {
   monitoringUrl: string;
   profileConfiguration?: ProfileConfiguration;
   iframeConfiguration?: IframeConfiguration;
+  teamsConfig: TeamConfigDto[];
 }
 
 export interface Environment {
