@@ -49,6 +49,41 @@ namespace BIA.Net.Core.Common
         /// <summary>
         /// Gets or sets the team selection mode.
         /// </summary>
-        public TeamSelectionMode TeamSelectionMode { get; set; }
+        public TeamSelectionMode TeamAutomaticSelectionMode { get; set; }
+
+        /// <summary>
+        /// Gets or sets the role mode.
+        /// </summary>
+        public RoleMode RoleMode { get; set; }
+
+        /// <summary>
+        /// Gets or sets if the selection of the team can be empty or not.
+        /// </summary>
+        public bool TeamSelectionCanBeEmpty { get; set; }
+
+        /// <summary>
+        /// Gets or sets if the display of the team should be displayed in header or not.
+        /// </summary>
+        public bool DisplayInHeader { get; set; }
+
+        /// <summary>
+        /// Gets or sets it the display of the team should be displayed one or not.
+        /// </summary>
+        public bool DisplayOne { get; set; }
+
+        /// <summary>
+        /// Gets or sets if the display of the team should be displayed always or not.
+        /// </summary>
+        public bool DisplayAlways { get; set; }
+
+        /// <summary>
+        /// Gets or sets the label key of the team.
+        /// </summary>
+        public string Label { get; set; }
+
+        /// <summary>
+        /// Gets or sets if the label should be displayed or not.
+        /// </summary>
+        public bool DisplayLabel { get; set; }
     }
 }

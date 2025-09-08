@@ -309,5 +309,25 @@ namespace BIA.Net.Core.Application.User
 
             return true;
         }
+
+        /// <summary>
+        /// Get the <see cref="TeamConfigDto"/> list from <paramref name="teamsConfig"/>.
+        /// </summary>
+        /// <param name="teamsConfig">The list of team config.</param>
+        /// <returns><see cref="ImmutableList{T}"/> of <see cref="TeamConfigDto"/>.</returns>
+        protected ImmutableList<TeamConfigDto> GetTeamsConfig(ImmutableList<BiaTeamConfig<BaseEntityTeam>> teamsConfig)
+        {
+            return teamsConfig.Select(tc => new TeamConfigDto()
+            {
+                TeamTypeId = tc.TeamTypeId,
+                DisplayAlways = tc.DisplayAlways,
+                DisplayLabel = tc.DisplayLabel,
+                DisplayOne = tc.DisplayOne,
+                InHeader = tc.DisplayInHeader,
+                Label = tc.Label,
+                RoleMode = tc.RoleMode,
+                TeamSelectionCanBeEmpty = tc.TeamSelectionCanBeEmpty,
+            }).ToImmutableList();
+        }
     }
 }
