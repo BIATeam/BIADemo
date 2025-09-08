@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { DictOptionDto } from '../../../components/table/bia-table/dict-option-dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CrudItemOptionsService {
-  dictOptionDtos$: Observable<DictOptionDto[]>;
+  dictOptionDtos$: Observable<DictOptionDto[]> = of([]);
 
   constructor() {
     // protected store: Store<BiaAppState>,

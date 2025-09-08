@@ -13,7 +13,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
     /// <summary>
     /// The interface defining the application service for plane.
     /// </summary>
-    public interface IPilotAppService : ICrudAppServiceBase<PilotDto, Pilot, string, PagingFilterFormatDto>
+    public interface IPilotAppService : ICrudAppServiceBase<PilotDto, Pilot, Guid, PagingFilterFormatDto>
     {
     }
 }

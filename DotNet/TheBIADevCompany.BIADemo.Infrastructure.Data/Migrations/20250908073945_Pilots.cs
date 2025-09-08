@@ -15,7 +15,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                 name: "Pilots",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWSEQUENTIALID()"),
                     IdentificationNumber = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     FlightHours = table.Column<int>(type: "int", nullable: false),
                     SiteId = table.Column<int>(type: "int", nullable: false),

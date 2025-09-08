@@ -68,9 +68,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.Pilots.Read)]
-        public async Task<IActionResult> Get(string id)
+        public async Task<IActionResult> Get(Guid id)
         {
-            if (id == string.Empty)
+            if (id == Guid.Empty)
             {
                 return this.BadRequest();
             }
@@ -128,9 +128,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.Pilots.Update)]
-        public async Task<IActionResult> Update(string id, [FromBody] PilotDto dto)
+        public async Task<IActionResult> Update(Guid id, [FromBody] PilotDto dto)
         {
-            if (id == string.Empty || dto == null || dto.Id != id)
+            if (id == Guid.Empty || dto == null || dto.Id != id)
             {
                 return this.BadRequest();
             }
@@ -169,9 +169,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.Pilots.Delete)]
-        public async Task<IActionResult> Remove(string id)
+        public async Task<IActionResult> Remove(Guid id)
         {
-            if (id == string.Empty)
+            if (id == Guid.Empty)
             {
                 return this.BadRequest();
             }
@@ -198,7 +198,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.Pilots.Delete)]
-        public async Task<IActionResult> Remove([FromQuery] List<string> ids)
+        public async Task<IActionResult> Remove([FromQuery] List<Guid> ids)
         {
             if (ids?.Any() != true)
             {
@@ -280,7 +280,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.Pilots.Fix)]
-        public virtual async Task<IActionResult> Fix(string id, [FromBody] bool isFixed)
+        public virtual async Task<IActionResult> Fix(Guid id, [FromBody] bool isFixed)
         {
             try
             {

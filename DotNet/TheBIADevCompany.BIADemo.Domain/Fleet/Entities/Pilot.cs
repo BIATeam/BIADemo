@@ -11,7 +11,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
     /// <summary>
     /// The plane entity.
     /// </summary>
-    public class Pilot : BaseEntityVersionedFixableArchivable<string>
+    public class Pilot : BaseEntityVersionedFixableArchivable<Guid>
     {
         /// <summary>
         /// Gets or sets the Manufacturer's Serial Number.

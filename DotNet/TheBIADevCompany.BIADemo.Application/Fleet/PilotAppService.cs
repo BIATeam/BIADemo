@@ -23,7 +23,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
     /// <summary>
     /// The application service used for pilot.
     /// </summary>
-    public class PilotAppService : CrudAppServiceBase<PilotDto, Pilot, string, PagingFilterFormatDto, PilotMapper>, IPilotAppService
+    public class PilotAppService : CrudAppServiceBase<PilotDto, Pilot, Guid, PagingFilterFormatDto, PilotMapper>, IPilotAppService
     {
         /// <summary>
         /// The current AncestorTeamId.
@@ -39,7 +39,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
         /// <param name="engineRepository">The engine app service.</param>
         /// <param name="principal">The claims principal.</param>
         public PilotAppService(
-            ITGenericRepository<Pilot, string> repository,
+            ITGenericRepository<Pilot, Guid> repository,
             IPrincipal principal)
             : base(repository)
         {
@@ -53,7 +53,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
 #pragma warning restore SA1515 // Single-line comment should be preceded by blank line
 
         /// <inheritdoc/>
-        public override async Task<PilotDto> UpdateFixedAsync(string id, bool isFixed)
+        public override async Task<PilotDto> UpdateFixedAsync(Guid id, bool isFixed)
         {
             return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
             {

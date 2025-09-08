@@ -18,7 +18,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
     /// <summary>
     /// The mapper used for Plane.
     /// </summary>
-    public class PilotMapper : BaseMapper<PilotDto, Pilot, string>
+    public class PilotMapper : BaseMapper<PilotDto, Pilot, Guid>
     {
         /// <inheritdoc />
         public override ExpressionCollection<Pilot> ExpressionCollection
@@ -48,7 +48,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
                 }
 
                 entity.SiteId = dto.SiteId;
-                entity.Id = Guid.NewGuid().ToString();
+                entity.Id = Guid.NewGuid();
             }
             else if (entity.SiteId != dto.SiteId && dto.SiteId != 0)
             {

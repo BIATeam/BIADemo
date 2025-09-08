@@ -12,7 +12,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Fleet
     /// The DTO used to represent a plane.
     /// </summary>
     [BiaDtoClass(AncestorTeam = "Site")]
-    public class PilotDto : BaseDtoVersionedFixableArchivable<string>
+    public class PilotDto : BaseDtoVersionedFixableArchivable<Guid>
     {
         /// <summary>
         /// Gets or sets the site id.

@@ -68,7 +68,9 @@ export class PilotsEffects {
   create$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeaturePilotsActions.create),
-      map(x => x?.pilot),
+      map(x => {
+        return { ...x.pilot, id: undefined };
+      }),
       concatMap(pilot =>
         of(pilot).pipe(
           withLatestFrom(
