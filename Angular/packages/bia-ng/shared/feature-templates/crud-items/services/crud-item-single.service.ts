@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DtoState } from 'packages/bia-ng/models/enum/public-api';
 import { BaseDto } from 'packages/bia-ng/models/public-api';
+import { CrudHelperService } from 'packages/bia-ng/shared/public-api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { CrudItemOptionsService } from './crud-item-options.service';
@@ -8,7 +9,9 @@ import { CrudItemOptionsService } from './crud-item-options.service';
 @Injectable({
   providedIn: 'root',
 })
-export abstract class CrudItemSingleService<CrudItem extends BaseDto> {
+export abstract class CrudItemSingleService<
+  CrudItem extends BaseDto<string | number>,
+> {
   constructor(public optionsService: CrudItemOptionsService) {
     setTimeout(() => this.initSub()); // should be done after initialization of the parent constructor
   }
@@ -47,7 +50,7 @@ export abstract class CrudItemSingleService<CrudItem extends BaseDto> {
   }
 
   protected _currentCrudItem: CrudItem;
-  protected _currentCrudItemId: any;
+  protected _currentCrudItemId: string | number;
 
   public get currentCrudItem() {
     if (this._currentCrudItem?.id === this._currentCrudItemId) {
@@ -116,10 +119,21 @@ export abstract class CrudItemSingleService<CrudItem extends BaseDto> {
   // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
   updateFixedStatus(id: any, isFixed: boolean): void {}
 
-  protected resetNewItemsIds(dtos: BaseDto[] | undefined): void {
+  protected resetNewItemsIds(
+    dtos: BaseDto<number | string>[] | undefined
+  ): void {
     dtos?.forEach(dto => {
-      if (dto.id < 0) {
+      if (
+        CrudHelperService.typeofId(dto) === 'number' &&
+        (dto.id as number) < 0
+      ) {
         dto.id = 0;
+        dto.dtoState = DtoState.Added;
+      } else if (
+        CrudHelperService.typeofId(dto) === 'string' &&
+        (dto.id as string).startsWith(CrudHelperService.uniqueStringIdentifier)
+      ) {
+        dto.id = undefined as unknown as string;
         dto.dtoState = DtoState.Added;
       }
     });

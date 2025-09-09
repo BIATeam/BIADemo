@@ -166,7 +166,7 @@
         [alignFrozen]="alignFrozenSelect"
         biaFrozenColumn
         [frozen]="isSelectFrozen">
-        <ng-container *ngIf="rowData.id > 0">
+        <ng-container *ngIf="rowData.id !== 0 && rowData.id !== ''">
           <ng-container
             *ngIf="canSelectMultipleElement === true; else selectSingleElement">
             <p-tableCheckbox [value]="rowData"></p-tableCheckbox>

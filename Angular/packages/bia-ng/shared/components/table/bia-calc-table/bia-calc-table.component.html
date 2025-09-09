@@ -178,7 +178,7 @@
           biaFrozenColumn
           [frozen]="isSelectFrozen">
           <!-- ONLY IF NOT FOOTER -->
-          <ng-container *ngIf="rowData.id !== 0">
+          <ng-container *ngIf="rowData.id !== 0 && rowData.id !== ''">
             <ng-container
               *ngIf="
                 canSelectMultipleElement === true;
@@ -247,7 +247,7 @@
               </ng-template>
               <ng-template #isNotEditable>
                 <!-- ONLY IF NOT FOOTER -->
-                <ng-container *ngIf="rowData?.id !== 0">
+                <ng-container *ngIf="rowData?.id !== 0 && rowData?.id !== ''">
                   <bia-table-output
                     [field]="col"
                     [data]="getCellData(rowData, col)">
@@ -269,7 +269,7 @@
             <!-- OUTPUT -->
             <ng-template pTemplate="output">
               <!-- ONLY IF NOT FOOTER -->
-              <ng-template [ngIf]="rowData?.id !== 0">
+              <ng-template [ngIf]="rowData?.id !== 0 && rowData?.id !== ''">
                 <bia-table-output
                   [field]="col"
                   [data]="getCellData(rowData, col)">

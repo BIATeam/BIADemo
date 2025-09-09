@@ -54,7 +54,7 @@ import { BiaOutputComponent } from '../bia-output/bia-output.component';
     PanelModule,
   ],
 })
-export class BiaFormLayoutComponent<TDto extends { id: number }> {
+export class BiaFormLayoutComponent<TDto extends { id: number | string }> {
   @Input() element?: TDto;
   @Input() formLayoutConfig: BiaFormLayoutConfig<TDto>;
   @Input() dictOptionDtos: DictOptionDto[];

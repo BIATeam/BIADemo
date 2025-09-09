@@ -7,6 +7,7 @@
     "airports": "Aeropuertos",
     "engines": "Motor",
     "hangfire": "Hangfire",
+    "pilots": "Pilotos",
     "planes": "Aviones",
     "planesFullCode": "Aviones (Full code)",
     "planesPageMode": "Aviones (Página)",
@@ -66,6 +67,17 @@
     "installedParts": "Partes instaladas",
     "import": "Importar motors"
   },
+  "flight": {
+    "add": "Añadir vuelo",
+    "arrivalAirport": "Aeropuerto de llegada",
+    "departureAirport": "Aeropuerto de salida",
+    "edit": "Editar vuelo",
+    "id": "Número de vuelo",
+    "import": "Importar vuelos",
+    "listOf": "Lista de vuelos",
+    "read": "Detalles del vuelo",
+    "site": "Compañía aérea"
+  },
   "maintenanceContract": {
     "listOf": "Listado de contratos de mantenimiento",
     "contractNumber": "Número de contrato",
@@ -102,6 +114,17 @@
     "operationCountries": "Países de operaciones",
     "currentAirport": "Aeropuerto actual",
     "operationAirports": "Aeropuertos de operaciones"
+  },
+  "pilot": {
+    "add": "Añadir piloto",
+    "edit": "Editar piloto",
+    "flightHours": "Horas de vuelo",
+    "identificationNumber": "Número de identificación",
+    "import": "Importar pilotos",
+    "information": "Información",
+    "listOf": "Lista de pilotos",
+    "read": "Detalles del piloto",
+    "site": "Compañía aérea"
   },
   "plane": {
     "add": "Añadir avión",

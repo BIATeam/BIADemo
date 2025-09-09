@@ -57,6 +57,30 @@ const routes: Routes = [
               ).then(m => m.MaintenanceTeamModule),
           },
           // BIAToolKit - End Partial Routing MaintenanceTeam
+          // BIAToolKit - Begin Partial Routing Pilot
+          {
+            path: 'pilots',
+            data: {
+              breadcrumb: 'app.pilots',
+              canNavigate: true,
+            },
+            loadChildren: () =>
+              import('./features/pilots/pilot.module').then(m => m.PilotModule),
+          },
+          // BIAToolKit - End Partial Routing Pilot
+          // BIAToolKit - Begin Partial Routing Flight
+          {
+            path: 'flights',
+            data: {
+              breadcrumb: 'app.flights',
+              canNavigate: true,
+            },
+            loadChildren: () =>
+              import('./features/flights/flight.module').then(
+                m => m.FlightModule
+              ),
+          },
+          // BIAToolKit - End Partial Routing Flight
           // End BIAToolKit Generation Ignore
 
           // Begin BIADemo

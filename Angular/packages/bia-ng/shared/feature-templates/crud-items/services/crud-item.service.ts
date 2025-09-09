@@ -15,8 +15,8 @@ import { CrudItemSingleService } from './crud-item-single.service';
   providedIn: 'root',
 })
 export abstract class CrudItemService<
-  ListCrudItem extends BaseDto,
-  CrudItem extends BaseDto = ListCrudItem,
+  ListCrudItem extends BaseDto<string | number>,
+  CrudItem extends BaseDto<string | number> = ListCrudItem,
 > extends CrudItemSingleService<CrudItem> {
   constructor(
     public dasService: AbstractDas<ListCrudItem, CrudItem>,

@@ -13,7 +13,7 @@ import { CrudItemEditComponent } from '../crud-item-edit/crud-item-edit.componen
   styleUrls: ['./crud-item-read.component.scss'],
   imports: [NgIf, CrudItemFormComponent, SpinnerComponent, AsyncPipe],
 })
-export class CrudItemReadComponent<CrudItem extends BaseDto>
+export class CrudItemReadComponent<CrudItem extends BaseDto<string | number>>
   extends CrudItemEditComponent<CrudItem>
   implements OnInit
 {

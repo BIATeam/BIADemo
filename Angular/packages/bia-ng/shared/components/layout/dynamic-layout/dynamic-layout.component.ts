@@ -48,7 +48,7 @@ export enum LayoutMode {
     TranslateModule,
   ],
 })
-export class DynamicLayoutComponent<TDto extends { id: number }>
+export class DynamicLayoutComponent<TDto extends { id: number | string }>
   implements OnInit, AfterViewInit, OnDestroy
 {
   @ViewChild('dynamic', {

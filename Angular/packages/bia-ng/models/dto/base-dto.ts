@@ -1,10 +1,10 @@
 import { DtoState } from 'packages/bia-ng/models/enum/public-api';
 
-export class BaseDto {
-  id: any; // the id could be a number, a string or a GUID
+export class BaseDto<T extends number | string = number> {
+  id: T; // the id could be a number, a string or a GUID
   dtoState: DtoState;
 
-  constructor(id: any, dtoState: DtoState) {
+  constructor(id: T, dtoState: DtoState) {
     this.id = id;
     this.dtoState = dtoState;
   }

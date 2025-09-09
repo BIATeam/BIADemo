@@ -16,7 +16,7 @@ import { CrudItemComponent } from '../crud-item/crud-item.component';
   styleUrls: ['./crud-item-new.component.scss'],
   imports: [CrudItemFormComponent, AsyncPipe],
 })
-export class CrudItemNewComponent<CrudItem extends BaseDto>
+export class CrudItemNewComponent<CrudItem extends BaseDto<string | number>>
   extends CrudItemComponent<CrudItem>
   implements OnInit, OnDestroy
 {
@@ -36,7 +36,11 @@ export class CrudItemNewComponent<CrudItem extends BaseDto>
         take(1),
         map(crudItem => {
           const item = clone(crudItem);
-          item.id = 0;
+          if (typeof item.id === 'number') {
+            item.id = 0;
+          } else if (typeof item.id === 'string') {
+            item.id = '';
+          }
           return item;
         })
       );
