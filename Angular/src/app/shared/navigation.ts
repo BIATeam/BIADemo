@@ -70,6 +70,12 @@ export const NAVIGATION: BiaNavigation[] = [
     icon: 'pi pi-th-large',
   },
   {
+    labelKey: 'app.flights',
+    permissions: [Permission.Flight_List_Access],
+    path: ['/flights'],
+    icon: 'pi pi-th-large',
+  },
+  {
     labelKey: 'app.hangfire',
     permissions: [Permission.Hangfire_Access],
     path: ['/hangfire'],

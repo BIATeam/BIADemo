@@ -454,6 +454,47 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Fix = "Pilot_Fix";
         }
 
+        /// <summary>
+        /// The flight rights.
+        /// </summary>
+        public static class Flights
+        {
+            /// <summary>
+            /// The right to access to the list of flights.
+            /// </summary>
+            public const string ListAccess = "Flight_List_Access";
+
+            /// <summary>
+            /// The right to create flight.
+            /// </summary>
+            public const string Create = "Flight_Create";
+
+            /// <summary>
+            /// The right to read flight.
+            /// </summary>
+            public const string Read = "Flight_Read";
+
+            /// <summary>
+            /// The right to update flight.
+            /// </summary>
+            public const string Update = "Flight_Update";
+
+            /// <summary>
+            /// The right to delete flight.
+            /// </summary>
+            public const string Delete = "Flight_Delete";
+
+            /// <summary>
+            /// The right to save flight.
+            /// </summary>
+            public const string Save = "Flight_Save";
+
+            /// <summary>
+            /// The right to fixe flight.
+            /// </summary>
+            public const string Fix = "Flight_Fix";
+        }
+
         // BIAToolKit - End Partial Rights Pilot
 
         /// <summary>

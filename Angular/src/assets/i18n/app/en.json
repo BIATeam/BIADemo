@@ -67,6 +67,17 @@
     "installedParts": "Installed parts",
     "import": "Import engines"
   },
+  "flight": {
+    "add": "Add flight",
+    "arrivalAirport": "Arrival airport",
+    "departureAirport": "Departure airport",
+    "edit": "Edit flight",
+    "id": "Flight number",
+    "import": "Import flights",
+    "listOf": "List of flights",
+    "read": "Flight details",
+    "site": "Airline company"
+  },
   "maintenanceContract": {
     "listOf": "Liste of maintenance contracts",
     "contractNumber": "Contract number",

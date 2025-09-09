@@ -9,7 +9,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
     using TheBIADevCompany.BIADemo.Domain.Site.Entities;
 
     /// <summary>
-    /// The plane entity.
+    /// The pilot entity.
     /// </summary>
     public class Pilot : BaseEntityVersionedFixableArchivable<Guid>
     {

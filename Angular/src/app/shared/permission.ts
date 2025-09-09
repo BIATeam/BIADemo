@@ -101,6 +101,14 @@ export enum Permission {
   Pilot_Update = 'Pilot_Update',
   Pilot_Fix = 'Pilot_Fix',
 
+  Flight_Create = 'Flight_Create',
+  Flight_Delete = 'Flight_Delete',
+  Flight_List_Access = 'Flight_List_Access',
+  Flight_Read = 'Flight_Read',
+  Flight_Save = 'Flight_Save',
+  Flight_Update = 'Flight_Update',
+  Flight_Fix = 'Flight_Fix',
+
   // End BIADemo
   Roles_List = 'Roles_List',
   Site_Create = 'Site_Create',

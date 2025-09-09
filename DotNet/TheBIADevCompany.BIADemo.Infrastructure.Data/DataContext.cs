@@ -206,6 +206,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
             PlaneModelBuilder.CreateModel(modelBuilder);
             AircraftMaintenanceCompanyModelBuilder.CreateModel(modelBuilder);
             PilotModelBuilder.CreateModel(modelBuilder);
+            FlightModelBuilder.CreateModel(modelBuilder);
 
             // End BIADemo
 #endif

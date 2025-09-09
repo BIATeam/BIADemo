@@ -9,7 +9,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
     /// <summary>
-    /// Class used to update the model builder for plane domain.
+    /// Class used to update the model builder for pilot domain.
     /// </summary>
     public static class PilotModelBuilder
     {

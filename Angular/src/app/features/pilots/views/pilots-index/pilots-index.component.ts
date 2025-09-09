@@ -44,11 +44,6 @@ export class PilotsIndexComponent
   crudItemTableComponent: PilotTableComponent;
 
   // BIAToolKit - Begin PilotIndexTsCanViewChildDeclaration
-  // Begin BIAToolKit Generation Ignore
-  // BIAToolKit - Begin Partial PilotIndexTsCanViewChildDeclaration Engine
-  canViewEngines = false;
-  // BIAToolKit - End Partial PilotIndexTsCanViewChildDeclaration Engine
-  // End BIAToolKit Generation Ignore
   // BIAToolKit - End PilotIndexTsCanViewChildDeclaration
 
   constructor(
@@ -69,26 +64,10 @@ export class PilotsIndexComponent
     this.canSelect = this.canDelete;
     this.canFix = this.authService.hasPermission(Permission.Pilot_Fix);
     // BIAToolKit - Begin PilotIndexTsCanViewChildSet
-    // Begin BIAToolKit Generation Ignore
-    // BIAToolKit - Begin Partial PilotIndexTsCanViewChildSet Engine
-    this.canViewEngines = this.authService.hasPermission(
-      Permission.Engine_List_Access
-    );
-    this.canSelect = this.canSelect || this.canViewEngines;
-    // BIAToolKit - End Partial PilotIndexTsCanViewChildSet Engine
-    // End BIAToolKit Generation Ignore
     // BIAToolKit - End PilotIndexTsCanViewChildSet
   }
+
   // Begin BIAToolKit Generation Ignore
-  // BIAToolKit - Begin Partial PilotIndexTsOnViewChild Engine
-  onViewEngines(crudItemId: any) {
-    if (crudItemId && crudItemId > 0) {
-      this.router.navigate([crudItemId, 'engines'], {
-        relativeTo: this.activatedRoute,
-      });
-    }
-  }
-  // BIAToolKit - End Partial PilotIndexTsOnViewChild Engine
   // End BIAToolKit Generation Ignore
 
   // BIAToolKit - Begin PilotIndexTsOnViewChild

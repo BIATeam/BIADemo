@@ -1,5 +1,5 @@
 // BIADemo only
-// <copyright file="IPilotAppService.cs" company="TheBIADevCompany">
+// <copyright file="IFlightAppService.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -11,9 +11,9 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
     /// <summary>
-    /// The interface defining the application service for pilot.
+    /// The interface defining the application service for flight.
     /// </summary>
-    public interface IPilotAppService : ICrudAppServiceBase<PilotDto, Pilot, Guid, PagingFilterFormatDto>
+    public interface IFlightAppService : ICrudAppServiceBase<FlightDto, Flight, string, PagingFilterFormatDto>
     {
     }
 }

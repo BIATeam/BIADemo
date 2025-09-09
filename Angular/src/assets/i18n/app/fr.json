@@ -6,6 +6,7 @@
     "aircraftMaintenanceCompanies": "Entreprises de maintenance aéronautique",
     "airports": "Aéroports",
     "engines": "Moteurs",
+    "flights": "Vols",
     "hangfire": "Hangfire",
     "pilots": "Pilotes",
     "planes": "Avions",
@@ -66,6 +67,17 @@
     "principalPart": "Pièce principale",
     "installedParts": "Pièces installées",
     "import": "Importer moteurs"
+  },
+  "flight": {
+    "add": "Ajouter vol",
+    "arrivalAirport": "Aéroport d'arrivé",
+    "departureAirport": "Aéroport de départ",
+    "edit": "Modifier vol",
+    "id": "Numéro de vol",
+    "import": "Importer vols",
+    "listOf": "Liste des vols",
+    "read": "Détails vol",
+    "site": "Compagnie aérienne"
   },
   "maintenanceContract": {
     "listOf": "Liste des contrats de maintenance",

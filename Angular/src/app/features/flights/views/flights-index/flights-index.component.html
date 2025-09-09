@@ -1,7 +1,7 @@
 <div>
   <div [ngClass]="{ 'table-compact': crudConfiguration.useCompactMode }">
     <bia-table-header
-      [headerTitle]="'pilot.listOf' | translate"
+      [headerTitle]="'flight.listOf' | translate"
       [canAdd]="canAdd && !crudConfiguration.useCalcMode"
       [canClone]="canAdd && crudConfiguration.isCloneable"
       [canDelete]="canDelete"
@@ -10,8 +10,8 @@
       [canImport]="canSave && crudConfiguration.useImport"
       [canExportCSV]="true"
       (create)="onCreate()"
-      (exportCSV)="onExportCSV('pilot.listOf')"
-      (fullExportCSV)="onExportCSV('pilot.listOf', true)"
+      (exportCSV)="onExportCSV('flight.listOf')"
+      (fullExportCSV)="onExportCSV('flight.listOf', true)"
       (clone)="onClone()"
       (delete)="onDelete()"
       (import)="onImport()"
@@ -25,8 +25,8 @@
       ">
       <!-- Begin BIAToolKit Generation Ignore -->
       <!-- End BIAToolKit Generation Ignore -->
-      <!-- BIAToolKit - Begin PilotIndexHtml -->
-      <!-- BIAToolKit - End PilotIndexHtml -->
+      <!-- BIAToolKit - Begin FlightIndexHtml -->
+      <!-- BIAToolKit - End FlightIndexHtml -->
     </bia-table-header>
     <bia-table-controller
       [ngClass]="{ 'table-controller-hidden': !showTableController }"
@@ -93,7 +93,7 @@
       [isResizableColumn]="crudConfiguration.useResizableColumn"
       [rowHeight]="defaultRowHeight"
       [showFixableState]="crudConfiguration.isFixable"></bia-table>
-    <app-pilot-table
+    <app-flight-table
       *ngIf="crudConfiguration.useCalcMode"
       [elements]="
         crudConfiguration.useVirtualScroll
@@ -128,6 +128,6 @@
       [virtualScroll]="crudConfiguration.useVirtualScroll"
       [isResizableColumn]="crudConfiguration.useResizableColumn"
       [rowHeight]="defaultRowHeight"
-      [showFixableState]="crudConfiguration.isFixable"></app-pilot-table>
+      [showFixableState]="crudConfiguration.isFixable"></app-flight-table>
   </div>
 </div>

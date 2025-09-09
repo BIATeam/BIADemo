@@ -14,9 +14,10 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
     using BIA.Net.Core.Domain.Mapper;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
+    using static TheBIADevCompany.BIADemo.Crosscutting.Common.Rights;
 
     /// <summary>
-    /// The mapper used for Plane.
+    /// The mapper used for Pilot.
     /// </summary>
     public class PilotMapper : BaseMapper<PilotDto, Pilot, Guid>
     {
@@ -27,8 +28,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             {
                 return new ExpressionCollection<Pilot>(base.ExpressionCollection)
                 {
-                    { HeaderName.IdentificationNumber, plane => plane.IdentificationNumber },
-                    { HeaderName.FlightHours, plane => plane.FlightHours },
+                    { HeaderName.IdentificationNumber, pilot => pilot.IdentificationNumber },
+                    { HeaderName.FlightHours, pilot => pilot.FlightHours },
                 };
             }
         }
@@ -82,6 +83,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
         public override void MapEntityKeysInDto(Pilot entity, PilotDto dto)
         {
             base.MapEntityKeysInDto(entity, dto);
+            dto.SiteId = entity.SiteId;
         }
 
         /// <inheritdoc />
