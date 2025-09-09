@@ -59,6 +59,7 @@ export class BiaFormLayoutComponent<TDto extends { id: number }> {
   @Input() formLayoutConfig: BiaFormLayoutConfig<TDto>;
   @Input() dictOptionDtos: DictOptionDto[];
   @Input() readOnly: boolean;
+  @Input() isAdd?: boolean;
   @Input() form: UntypedFormGroup;
   @Input() specificInputTemplate: TemplateRef<any>;
   @Input() specificOutputTemplate: TemplateRef<any>;

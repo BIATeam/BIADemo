@@ -96,6 +96,7 @@
         [dictOptionDtos]="dictOptionDtos"
         [form]="form"
         [readOnly]="readOnly"
+        [isAdd]="isAdd"
         [specificInputTemplate]="specificInputTemplate"
         [specificOutputTemplate]="specificOutputTemplate"></bia-form-layout>
     </ng-container>
@@ -157,7 +158,11 @@
       class="flex flex-row align-items-center">
       <div class="app-field-container">
         <ng-template
-          [ngIf]="field.isEditable === true"
+          [ngIf]="
+            field.isEditable === true ||
+            (field.isOnlyInitializable && isAdd) ||
+            (field.isOnlyUpdatable && !isAdd)
+          "
           [ngIfElse]="isNotEditable">
           <bia-input
             [field]="field"
