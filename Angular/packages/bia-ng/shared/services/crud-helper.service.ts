@@ -50,7 +50,8 @@ export class CrudHelperService {
     if (CrudHelperService.typeofId(element) === 'number') {
       element.id = element.id && (element.id as number) > 0 ? element.id : 0;
     } else if (CrudHelperService.typeofId(element) === 'string') {
-      element.id && (element.id as string) !== '' ? element.id : '';
+      element.id =
+        element.id && (element.id as string) !== '' ? element.id : '';
     }
   }
 }

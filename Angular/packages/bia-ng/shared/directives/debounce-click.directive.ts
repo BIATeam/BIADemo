@@ -3,6 +3,7 @@ import {
   EventEmitter,
   HostListener,
   Input,
+  OnDestroy,
   Output,
 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
@@ -11,7 +12,7 @@ import { debounceTime } from 'rxjs/operators';
 @Directive({
   selector: '[biaDebounceClick]',
 })
-export class DebounceClickDirective {
+export class DebounceClickDirective implements OnDestroy {
   @Input() debounceTime = 1000;
   @Output() debounceClick = new EventEmitter();
 

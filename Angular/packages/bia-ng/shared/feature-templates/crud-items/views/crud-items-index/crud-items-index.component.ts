@@ -31,7 +31,6 @@ import {
   KeyValuePair,
   PagingFilterFormatDto,
 } from 'packages/bia-ng/models/public-api';
-import { CrudHelperService } from 'packages/bia-ng/shared/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { TableLazyLoadEvent } from 'primeng/table';
@@ -44,6 +43,7 @@ import { BiaTableControllerComponent } from '../../../../components/table/bia-ta
 import { BiaTableHeaderComponent } from '../../../../components/table/bia-table-header/bia-table-header.component';
 import { BiaTableComponent } from '../../../../components/table/bia-table/bia-table.component';
 import { ViewsActions } from '../../../../features/view/store/views-actions';
+import { CrudHelperService } from '../../../../services/crud-helper.service';
 import { TableHelperService } from '../../../../services/table-helper.service';
 import { CrudItemTableComponent } from '../../components/crud-item-table/crud-item-table.component';
 import { CrudConfig, FormReadOnlyMode } from '../../model/crud-config';

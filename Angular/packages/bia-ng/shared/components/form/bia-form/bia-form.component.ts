@@ -37,12 +37,12 @@ import {
   BiaFormLayoutConfigRow,
   BiaFormLayoutConfigTabGroup,
 } from 'packages/bia-ng/models/public-api';
-import { CrudHelperService } from 'packages/bia-ng/shared/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';
 import { Subscription } from 'rxjs';
 import { FormReadOnlyMode } from '../../../feature-templates/crud-items/model/crud-config';
+import { CrudHelperService } from '../../../services/crud-helper.service';
 import { LayoutMode } from '../../layout/dynamic-layout/dynamic-layout.component';
 import { DictOptionDto } from '../../table/bia-table/dict-option-dto';
 import { BiaFormLayoutComponent } from '../bia-form-layout/bia-form-layout.component';

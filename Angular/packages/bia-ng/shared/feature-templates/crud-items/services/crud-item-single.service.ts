@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { DtoState } from 'packages/bia-ng/models/enum/public-api';
 import { BaseDto } from 'packages/bia-ng/models/public-api';
-import { CrudHelperService } from 'packages/bia-ng/shared/public-api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { BehaviorSubject, Observable, of } from 'rxjs';
+import { CrudHelperService } from '../../../services/crud-helper.service';
 import { CrudItemOptionsService } from './crud-item-options.service';
 
 @Injectable({
