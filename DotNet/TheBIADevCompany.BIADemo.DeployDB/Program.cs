@@ -91,10 +91,13 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                 {
                     IConfiguration configuration = hostingContext.Configuration;
                     LogManager.Configuration = new NLogLoggingConfiguration(configuration.GetSection("NLog"));
+                    LogManager.GetCurrentClassLogger().Info("Start of DeployDB");
                     LogManager.GetCurrentClassLogger().Info($"{Constants.Application.Environment}: {Environment.GetEnvironmentVariable(Constants.Application.Environment)}");
                 })
                 .UseNLog()
                 .RunConsoleAsync();
+
+            LogManager.GetLogger(typeof(Program).ToString()).Info("End of DeployDB");
         }
     }
 }
