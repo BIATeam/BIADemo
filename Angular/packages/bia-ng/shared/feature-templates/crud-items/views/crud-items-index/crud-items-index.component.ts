@@ -21,6 +21,7 @@ import {
   BiaTranslationService,
   clone,
 } from 'packages/bia-ng/core/public-api';
+import { DtoState } from 'packages/bia-ng/models/enum/public-api';
 import {
   AuthInfo,
   BaseDto,
@@ -42,6 +43,7 @@ import { BiaTableControllerComponent } from '../../../../components/table/bia-ta
 import { BiaTableHeaderComponent } from '../../../../components/table/bia-table-header/bia-table-header.component';
 import { BiaTableComponent } from '../../../../components/table/bia-table/bia-table.component';
 import { ViewsActions } from '../../../../features/view/store/views-actions';
+import { CrudHelperService } from '../../../../services/crud-helper.service';
 import { TableHelperService } from '../../../../services/table-helper.service';
 import { CrudItemTableComponent } from '../../components/crud-item-table/crud-item-table.component';
 import { CrudConfig, FormReadOnlyMode } from '../../model/crud-config';
@@ -65,8 +67,8 @@ import { CrudItemService } from '../../services/crud-item.service';
   ],
 })
 export class CrudItemsIndexComponent<
-    ListCrudItem extends BaseDto,
-    CrudItem extends BaseDto = ListCrudItem,
+    ListCrudItem extends BaseDto<string | number>,
+    CrudItem extends BaseDto<string | number> = ListCrudItem,
   >
   implements OnInit, OnDestroy
 {
@@ -405,7 +407,11 @@ export class CrudItemsIndexComponent<
     } else {
       this.crudItemTableComponent.initEditableRow({
         ...clone(this.selectedCrudItems[0]),
-        id: 0,
+        id:
+          CrudHelperService.typeofId(this.selectedCrudItems[0]) === 'number'
+            ? 0
+            : '',
+        dtoState: DtoState.Added,
       });
       this.crudItemTableComponent.hasChanged = true;
     }
@@ -462,7 +468,13 @@ export class CrudItemsIndexComponent<
       return;
     }
 
-    if (crudItem.id > 0 && this.canEdit) {
+    if (
+      (crudItem.dtoState && crudItem.dtoState === DtoState.Modified) ||
+      (!crudItem.dtoState &&
+        ((typeof crudItem.id === 'number' && crudItem.id > 0) ||
+          (typeof crudItem.id === 'string' && crudItem.id)) &&
+        this.canEdit)
+    ) {
       this.handleCrudOperation(
         crudItem,
         this.crudItemService.updateSuccessActionType,
@@ -471,7 +483,13 @@ export class CrudItemsIndexComponent<
       );
     }
 
-    if (crudItem.id === 0 && this.canAdd) {
+    if (
+      (crudItem.dtoState && crudItem.dtoState === DtoState.Added) ||
+      (!crudItem.dtoState &&
+        ((typeof crudItem.id === 'number' && crudItem.id === 0) ||
+          (typeof crudItem.id === 'string' && !crudItem.id)) &&
+        this.canAdd)
+    ) {
       this.handleCrudOperation(
         crudItem,
         this.crudItemService.createSuccessActionType,

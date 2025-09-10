@@ -22,6 +22,7 @@ import {
   switchMap,
   take,
 } from 'rxjs/operators';
+import { AppSettingsService } from '../app-settings/services/app-settings.service';
 import { BiaTeamsActions } from '../team/store/teams-actions';
 import { AbstractDas } from './abstract-das.service';
 import { BiaAppConstantsService } from './bia-app-constants.service';
@@ -53,7 +54,8 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     protected biaMessageService: BiaMessageService,
     protected translateService: TranslateService,
     protected store: Store<BiaAppState>,
-    protected biaSwUpdateService: BiaSwUpdateService
+    protected biaSwUpdateService: BiaSwUpdateService,
+    protected appSettingsService: AppSettingsService
   ) {
     super(injector, 'Auth');
     RefreshTokenService.shouldRefreshToken = false;
@@ -192,10 +194,6 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
         tl.teamId = +tl.teamId;
         tl.currentRoleIds = tl.currentRoleIds.map(roleId => +roleId);
       });
-      loginParam.teamsConfig = BiaAppConstantsService.allEnvironments.teams;
-      loginParam.lightToken = false;
-      loginParam.fineGrainedPermission = true;
-      loginParam.additionalInfos = true;
       loginParam.isFirstLogin = false;
       return loginParam;
     }
@@ -205,7 +203,6 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       lightToken: false,
       fineGrainedPermission: true,
       additionalInfos: true,
-      teamsConfig: BiaAppConstantsService.allEnvironments.teams,
       isFirstLogin: true,
     };
   }
@@ -213,6 +210,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   public setLoginParameters(loginParam: LoginParamDto) {
     sessionStorage.setItem(STORAGE_LOGINPARAM_KEY, JSON.stringify(loginParam));
   }
+
   public getCurrentTeams(teamTypeIds: number[]): CurrentTeamDto[] | undefined {
     const teamsLogin = this.getLoginParameters().currentTeamLogins;
     return teamsLogin.filter(i => teamTypeIds.indexOf(i.teamTypeId) > -1);
@@ -315,8 +313,9 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     roleIds = roleIds.map(roleId => +roleId);
     const loginParam = this.getLoginParameters();
     const roleMode =
-      loginParam.teamsConfig.find(r => r.teamTypeId === teamTypeId)?.roleMode ||
-      RoleMode.AllRoles;
+      this.appSettingsService.appSettings.teamsConfig.find(
+        r => r.teamTypeId === teamTypeId
+      )?.roleMode || RoleMode.AllRoles;
     if (roleMode !== RoleMode.AllRoles) {
       const teamsLogin = loginParam.currentTeamLogins;
       const team = teamsLogin.find(i => i.teamId === teamId);

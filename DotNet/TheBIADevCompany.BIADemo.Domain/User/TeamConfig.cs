@@ -19,11 +19,14 @@ namespace TheBIADevCompany.BIADemo.Domain.User
         /// </summary>
         public static readonly ImmutableList<BiaTeamConfig<BaseEntityTeam>> Config = new ImmutableListBuilder<BiaTeamConfig<BaseEntityTeam>>()
         {
-            new BiaTeamConfig<BaseEntityTeam>()
+            new ()
             {
                 TeamTypeId = (int)TeamTypeId.Site,
                 RightPrefix = "Site",
-                AdminRoleIds = new int[] { (int)RoleId.SiteAdmin },
+                AdminRoleIds = [(int)RoleId.SiteAdmin],
+                RoleMode = BIA.Net.Core.Common.Enum.RoleMode.AllRoles,
+                DisplayInHeader = true,
+                Label = "site.headerLabel",
             },
 
             // BIAToolKit - Begin TeamConfig
@@ -31,7 +34,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User
 
             // Begin BIAToolKit Generation Ignore
             // BIAToolKit - Begin Partial TeamConfig AircraftMaintenanceCompany
-            new BiaTeamConfig<BaseEntityTeam>()
+            new ()
             {
                 TeamTypeId = (int)TeamTypeId.AircraftMaintenanceCompany,
                 RightPrefix = "AircraftMaintenanceCompany",
@@ -47,7 +50,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User
                 {
                 // BIAToolKit - Begin TeamConfigAircraftMaintenanceCompanyChildren
                 // BIAToolKit - Begin Partial TeamConfigAircraftMaintenanceCompanyChildren MaintenanceTeam
-                    new BiaTeamChildrenConfig<BaseEntityTeam>
+                    new ()
                     {
                         TeamTypeId = (int)TeamTypeId.MaintenanceTeam,
                         GetChilds = team => (team as Maintenance.Entities.AircraftMaintenanceCompany).MaintenanceTeams,
@@ -56,11 +59,19 @@ namespace TheBIADevCompany.BIADemo.Domain.User
                 // BIAToolKit - End Partial TeamConfigAircraftMaintenanceCompanyChildren MaintenanceTeam
                 // BIAToolKit - End TeamConfigAircraftMaintenanceCompanyChildren
                 }.ToImmutable(),
+                Label = "aircraftMaintenanceCompany.headerLabel",
+
+                // Begin BIADemo
+                RoleMode = BIA.Net.Core.Common.Enum.RoleMode.MultiRoles,
+                DisplayInHeader = true,
+                DisplayOne = true,
+
+                // End BIADemo
             },
 
             // BIAToolKit - End Partial TeamConfig AircraftMaintenanceCompany
             // BIAToolKit - Begin Partial TeamConfig MaintenanceTeam
-            new BiaTeamConfig<BaseEntityTeam>()
+            new ()
             {
                 TeamTypeId = (int)TeamTypeId.MaintenanceTeam,
                 RightPrefix = "MaintenanceTeam",
@@ -74,16 +85,22 @@ namespace TheBIADevCompany.BIADemo.Domain.User
                 }.ToImmutable(),
                 Parents = new ImmutableListBuilder<BiaTeamParentConfig<BaseEntityTeam>>
                 {
-                    new BiaTeamParentConfig<BaseEntityTeam>
+                    new ()
                     {
                         TeamTypeId = (int)TeamTypeId.AircraftMaintenanceCompany,
                         GetParent = team => (team as Maintenance.Entities.MaintenanceTeam).AircraftMaintenanceCompany,
                     },
                 }
                 .ToImmutable(),
+                Label = "maintenanceTeam.headerLabel",
 
                 // Begin BIADemo
-                TeamSelectionMode = BIA.Net.Core.Common.Enum.TeamSelectionMode.None,
+                TeamAutomaticSelectionMode = BIA.Net.Core.Common.Enum.TeamSelectionMode.None,
+                RoleMode = BIA.Net.Core.Common.Enum.RoleMode.AllRoles,
+                DisplayInHeader = true,
+                DisplayAlways = true,
+                DisplayLabel = true,
+                TeamSelectionCanBeEmpty = true,
 
                 // End BIADemo
             },

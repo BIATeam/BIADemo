@@ -28,16 +28,16 @@ export interface ImportParam {
   timeFormat: string;
 }
 
-interface TmpImportDataError<T extends BaseDto> {
+interface TmpImportDataError<T extends BaseDto<string | number>> {
   obj: T;
   errors: string[];
 }
 
-export interface ImportDataError extends BaseDto {
+export interface ImportDataError extends BaseDto<string | number> {
   sErrors: string | null;
 }
 
-export interface ImportData<T extends BaseDto> {
+export interface ImportData<T extends BaseDto<string | number>> {
   toDeletes: T[];
   toInserts: T[];
   toUpdates: T[];
@@ -47,7 +47,7 @@ export interface ImportData<T extends BaseDto> {
 @Injectable({
   providedIn: 'root',
 })
-export class CrudItemImportService<T extends BaseDto> {
+export class CrudItemImportService<T extends BaseDto<string | number>> {
   protected form: BiaFormComponent<T>;
   protected importData: ImportData<T>;
   protected tmpImportDataErrors: TmpImportDataError<T>[] = [];

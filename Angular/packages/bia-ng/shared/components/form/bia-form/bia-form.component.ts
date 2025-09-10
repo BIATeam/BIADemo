@@ -42,6 +42,7 @@ import { ButtonDirective } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';
 import { Subscription } from 'rxjs';
 import { FormReadOnlyMode } from '../../../feature-templates/crud-items/model/crud-config';
+import { CrudHelperService } from '../../../services/crud-helper.service';
 import { LayoutMode } from '../../layout/dynamic-layout/dynamic-layout.component';
 import { DictOptionDto } from '../../table/bia-table/dict-option-dto';
 import { BiaFormLayoutComponent } from '../bia-form-layout/bia-form-layout.component';
@@ -69,7 +70,7 @@ import { BiaOutputComponent } from '../bia-output/bia-output.component';
     Tooltip,
   ],
 })
-export class BiaFormComponent<TDto extends { id: number }>
+export class BiaFormComponent<TDto extends { id: number | string }>
   implements OnInit, OnDestroy, OnChanges, AfterContentInit
 {
   @Input() element?: TDto;
@@ -499,7 +500,8 @@ export class BiaFormComponent<TDto extends { id: number }>
     }
 
     const element: TDto = this.flattenFormGroup(this.form) as TDto;
-    element.id = element.id > 0 ? element.id : 0;
+    CrudHelperService.initId<TDto>(element);
+
     for (const col of this.fields) {
       switch (col.type) {
         case PropType.Boolean:

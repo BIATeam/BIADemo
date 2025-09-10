@@ -26,6 +26,7 @@ import { Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
+  AppSettingsService,
   AuthService,
   BiaAppConstantsService,
   BiaMessageService,
@@ -119,7 +120,8 @@ export class BiaUltimaTopbarComponent
     @Inject(DOCUMENT) protected document: Document,
     public el: ElementRef,
     protected readonly biaMessageService: BiaMessageService,
-    protected renderer: Renderer2
+    protected renderer: Renderer2,
+    protected appSettingsService: AppSettingsService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -129,9 +131,10 @@ export class BiaUltimaTopbarComponent
   }
 
   ngOnInit() {
-    this.teamTypeSelectors = this.authService
-      .getLoginParameters()
-      .teamsConfig.filter(t => t.inHeader === true);
+    this.teamTypeSelectors =
+      this.appSettingsService.appSettings.teamsConfig.filter(
+        t => t.inHeader === true
+      );
 
     this.loadNotifications();
   }

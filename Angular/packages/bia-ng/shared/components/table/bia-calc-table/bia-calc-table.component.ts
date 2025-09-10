@@ -29,6 +29,7 @@ import {
   AuthService,
   BiaMessageService,
 } from 'packages/bia-ng/core/public-api';
+import { DtoState } from 'packages/bia-ng/models/enum/public-api';
 import { BiaFieldConfig } from 'packages/bia-ng/models/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
@@ -69,7 +70,7 @@ import { DictOptionDto } from '../bia-table/dict-option-dto';
     BiaFrozenColumnDirective,
   ],
 })
-export class BiaCalcTableComponent<TDto extends { id: number }>
+export class BiaCalcTableComponent<TDto extends { id: number | string }>
   extends BiaTableComponent<TDto>
   implements OnInit, AfterContentInit
 {
@@ -142,7 +143,7 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
 
   public addFooterEmptyObject() {
     if (this.canAdd === true) {
-      this.footerRowData = { id: 0 };
+      this.footerRowData = { id: 0, dtoState: DtoState.Added };
     }
   }
 
@@ -157,7 +158,7 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
   }
 
   public isFooter(element: any) {
-    return element.id === 0;
+    return element.id === 0 || element.id === '';
   }
 
   public onChange() {
@@ -186,9 +187,11 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
       (!rowData ||
         (rowData &&
           ((rowData.id !== 0 &&
+            rowData.id !== '' &&
             this.table?.editingRowKeys[rowData.id] !== true &&
             rowData.isFixed !== true) ||
-            (rowData.id === 0 && this.editFooter !== true))))
+            ((rowData.id === 0 || rowData.id === '') &&
+              this.editFooter !== true))))
     ) {
       if (this.hasChanged === true) {
         if (!rowData) {
@@ -210,7 +213,7 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
   public initRowEdit(rowData: any) {
     if (rowData) {
       this.element = rowData;
-      if (rowData.id === 0) {
+      if (rowData.id === 0 || rowData.id === '') {
         if (this.canAdd === true) {
           this.editFooter = true;
           this.isEditing.emit(true);

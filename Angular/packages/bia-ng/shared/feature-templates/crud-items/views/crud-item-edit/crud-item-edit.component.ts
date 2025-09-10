@@ -26,7 +26,7 @@ import { CrudItemComponent } from '../crud-item/crud-item.component';
   styleUrls: ['./crud-item-edit.component.scss'],
   imports: [NgIf, CrudItemFormComponent, SpinnerComponent, AsyncPipe],
 })
-export class CrudItemEditComponent<CrudItem extends BaseDto>
+export class CrudItemEditComponent<CrudItem extends BaseDto<string | number>>
   extends CrudItemComponent<CrudItem>
   implements OnInit, OnDestroy
 {

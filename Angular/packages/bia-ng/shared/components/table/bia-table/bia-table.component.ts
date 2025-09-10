@@ -86,7 +86,7 @@ const arraysEqual = (a1: any, a2: any) =>
     BiaFrozenColumnDirective,
   ],
 })
-export class BiaTableComponent<TDto extends { id: number }>
+export class BiaTableComponent<TDto extends { id: number | string }>
   implements OnChanges, AfterContentInit, AfterViewInit
 {
   @Input() pageSize: number;

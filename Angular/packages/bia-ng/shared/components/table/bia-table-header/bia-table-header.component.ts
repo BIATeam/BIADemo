@@ -15,12 +15,12 @@ import {
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { BiaDialogService } from 'packages/bia-ng/core/public-api';
-import { DebounceClickDirective } from 'packages/bia-ng/shared/directives/debounce-click.directive';
 import { Confirmation, ConfirmationService, PrimeTemplate } from 'primeng/api';
 import { Button, ButtonDirective } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Divider } from 'primeng/divider';
 import { Tooltip } from 'primeng/tooltip';
+import { DebounceClickDirective } from '../../../directives/debounce-click.directive';
 
 @Component({
   selector: 'bia-table-header',

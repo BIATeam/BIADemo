@@ -1,6 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { AuthService } from 'packages/bia-ng/core/public-api';
+import {
+  AppSettingsService,
+  AuthService,
+} from 'packages/bia-ng/core/public-api';
 import { TeamTypeId } from 'packages/bia-ng/models/enum/public-api';
 import { LoginParamDto } from 'packages/bia-ng/models/public-api';
 import { Chip } from 'primeng/chip';
@@ -19,13 +22,14 @@ export class UserTeamsComponent {
 
   constructor(
     protected translateService: TranslateService,
-    protected authService: AuthService
+    protected authService: AuthService,
+    protected appSettingService: AppSettingsService
   ) {
     this.loginParam = this.authService.getLoginParameters();
   }
 
   public getTeamTypeName(teamTypeId: number): string | undefined {
-    const team = this.loginParam.teamsConfig.find(
+    const team = this.appSettingService.appSettings.teamsConfig.find(
       t => t.teamTypeId === teamTypeId
     );
     if (!team) {

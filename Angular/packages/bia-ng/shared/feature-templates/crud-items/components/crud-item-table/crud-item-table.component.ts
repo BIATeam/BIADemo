@@ -63,7 +63,7 @@ import { BiaTableOutputComponent } from '../../../../components/table/bia-table-
     BiaFrozenColumnDirective,
   ],
 })
-export class CrudItemTableComponent<CrudItem extends BaseDto>
+export class CrudItemTableComponent<CrudItem extends BaseDto<string | number>>
   extends BiaCalcTableComponent<CrudItem>
   implements OnChanges
 {
@@ -105,6 +105,7 @@ export class CrudItemTableComponent<CrudItem extends BaseDto>
   onSubmit() {
     if (this.form.valid) {
       const crudItem: CrudItem = <CrudItem>this.form.value;
+      crudItem.dtoState = this.editFooter ? DtoState.Added : DtoState.Modified;
       crudItem.id = crudItem.id ?? 0;
       for (const col of this.configuration.columns) {
         switch (col.type) {

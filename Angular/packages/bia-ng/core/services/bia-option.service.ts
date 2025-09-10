@@ -9,7 +9,10 @@ export class BiaOptionService {
     return <T>{ ...value };
   }
 
-  public static differential<T extends BaseDto>(newList: T[], oldList: T[]) {
+  public static differential<T extends BaseDto<string | number>>(
+    newList: T[],
+    oldList: T[]
+  ) {
     let differential: T[] = [];
     if (oldList && Array.isArray(oldList)) {
       // Delete items
