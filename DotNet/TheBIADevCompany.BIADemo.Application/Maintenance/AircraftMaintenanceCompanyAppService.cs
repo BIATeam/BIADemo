@@ -20,6 +20,7 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
     using TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers;
+    using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.User;
 
     /// <summary>

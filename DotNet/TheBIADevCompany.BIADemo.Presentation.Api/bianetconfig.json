@@ -295,6 +295,36 @@
         ]
       },
       // BIAToolKit - End Partial Config MaintenanceTeam
+      // BIAToolKit - Begin Partial Config Pilot
+      // Pilot
+      {
+        "Names": [ "Pilot_List_Access", "Pilot_Read" ],
+        "Roles": [ "Admin", "Site_Member" ]
+      },
+      {
+        "Names": [ "Pilot_Update", "Pilot_Save" ],
+        "Roles": [ "Site_Admin" ]
+      },
+      {
+        "Names": [ "Pilot_Create", "Pilot_Delete", "Pilot_Fix" ],
+        "Roles": [ "Site_Admin" ]
+      },
+      // BIAToolKit - End Partial Config Pilot
+      // BIAToolKit - Begin Partial Config Flight
+      // Flight
+      {
+        "Names": [ "Flight_List_Access", "Flight_Read" ],
+        "Roles": [ "Admin", "Site_Member" ]
+      },
+      {
+        "Names": [ "Flight_Update", "Flight_Save" ],
+        "Roles": [ "Site_Admin" ]
+      },
+      {
+        "Names": [ "Flight_Create", "Flight_Delete", "Flight_Fix" ],
+        "Roles": [ "Site_Admin" ]
+      },
+      // BIAToolKit - End Partial Config Flight
       // End BIAToolKit Generation Ignore
 
       // Begin BIADemo
@@ -324,32 +354,6 @@
       },
       {
         "Names": [ "MaintenanceContract_Create", "MaintenanceContract_Delete" ],
-        "Roles": [ "Site_Admin" ]
-      },
-      // Pilot
-      {
-        "Names": [ "Pilot_List_Access", "Pilot_Read" ],
-        "Roles": [ "Admin", "Site_Member" ]
-      },
-      {
-        "Names": [ "Pilot_Update", "Pilot_Save" ],
-        "Roles": [ "Site_Admin" ]
-      },
-      {
-        "Names": [ "Pilot_Create", "Pilot_Delete", "Pilot_Fix" ],
-        "Roles": [ "Site_Admin" ]
-      },
-      // Flight
-      {
-        "Names": [ "Flight_List_Access", "Flight_Read" ],
-        "Roles": [ "Admin", "Site_Member" ]
-      },
-      {
-        "Names": [ "Flight_Update", "Flight_Save" ],
-        "Roles": [ "Site_Admin" ]
-      },
-      {
-        "Names": [ "Flight_Create", "Flight_Delete", "Flight_Fix" ],
         "Roles": [ "Site_Admin" ]
       },
       // Hangfire

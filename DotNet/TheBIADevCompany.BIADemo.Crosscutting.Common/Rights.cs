@@ -261,6 +261,96 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         }
 
         // BIAToolKit - End Partial Rights MaintenanceTeam
+
+        // BIAToolKit - Begin Partial Rights Pilot
+
+        /// <summary>
+        /// The pilots rights.
+        /// </summary>
+        public static class Pilots
+        {
+            /// <summary>
+            /// The right to access to the list of pilots.
+            /// </summary>
+            public const string ListAccess = "Pilot_List_Access";
+
+            /// <summary>
+            /// The right to create pilot.
+            /// </summary>
+            public const string Create = "Pilot_Create";
+
+            /// <summary>
+            /// The right to read pilot.
+            /// </summary>
+            public const string Read = "Pilot_Read";
+
+            /// <summary>
+            /// The right to update pilot.
+            /// </summary>
+            public const string Update = "Pilot_Update";
+
+            /// <summary>
+            /// The right to delete pilot.
+            /// </summary>
+            public const string Delete = "Pilot_Delete";
+
+            /// <summary>
+            /// The right to save pilot.
+            /// </summary>
+            public const string Save = "Pilot_Save";
+
+            /// <summary>
+            /// The right to fixe pilot.
+            /// </summary>
+            public const string Fix = "Pilot_Fix";
+        }
+
+        // BIAToolKit - End Partial Rights Pilot
+
+        // BIAToolKit - Begin Partial Rights Flight
+
+        /// <summary>
+        /// The flights rights.
+        /// </summary>
+        public static class Flights
+        {
+            /// <summary>
+            /// The right to access to the list of flights.
+            /// </summary>
+            public const string ListAccess = "Flight_List_Access";
+
+            /// <summary>
+            /// The right to create flight.
+            /// </summary>
+            public const string Create = "Flight_Create";
+
+            /// <summary>
+            /// The right to read flight.
+            /// </summary>
+            public const string Read = "Flight_Read";
+
+            /// <summary>
+            /// The right to update flight.
+            /// </summary>
+            public const string Update = "Flight_Update";
+
+            /// <summary>
+            /// The right to delete flight.
+            /// </summary>
+            public const string Delete = "Flight_Delete";
+
+            /// <summary>
+            /// The right to save flight.
+            /// </summary>
+            public const string Save = "Flight_Save";
+
+            /// <summary>
+            /// The right to fixe flight.
+            /// </summary>
+            public const string Fix = "Flight_Fix";
+        }
+
+        // BIAToolKit - End Partial Rights Flight
         // End BIAToolKit Generation Ignore
 
         // Begin BIADemo
@@ -410,92 +500,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             public const string Save = "MaintenanceContract_Save";
         }
-
-        // BIAToolKit - Begin Partial Rights Pilot
-
-        /// <summary>
-        /// The pilots rights.
-        /// </summary>
-        public static class Pilots
-        {
-            /// <summary>
-            /// The right to access to the list of pilots.
-            /// </summary>
-            public const string ListAccess = "Pilot_List_Access";
-
-            /// <summary>
-            /// The right to create pilot.
-            /// </summary>
-            public const string Create = "Pilot_Create";
-
-            /// <summary>
-            /// The right to read pilot.
-            /// </summary>
-            public const string Read = "Pilot_Read";
-
-            /// <summary>
-            /// The right to update pilot.
-            /// </summary>
-            public const string Update = "Pilot_Update";
-
-            /// <summary>
-            /// The right to delete pilot.
-            /// </summary>
-            public const string Delete = "Pilot_Delete";
-
-            /// <summary>
-            /// The right to save pilot.
-            /// </summary>
-            public const string Save = "Pilot_Save";
-
-            /// <summary>
-            /// The right to fixe pilot.
-            /// </summary>
-            public const string Fix = "Pilot_Fix";
-        }
-
-        /// <summary>
-        /// The flight rights.
-        /// </summary>
-        public static class Flights
-        {
-            /// <summary>
-            /// The right to access to the list of flights.
-            /// </summary>
-            public const string ListAccess = "Flight_List_Access";
-
-            /// <summary>
-            /// The right to create flight.
-            /// </summary>
-            public const string Create = "Flight_Create";
-
-            /// <summary>
-            /// The right to read flight.
-            /// </summary>
-            public const string Read = "Flight_Read";
-
-            /// <summary>
-            /// The right to update flight.
-            /// </summary>
-            public const string Update = "Flight_Update";
-
-            /// <summary>
-            /// The right to delete flight.
-            /// </summary>
-            public const string Delete = "Flight_Delete";
-
-            /// <summary>
-            /// The right to save flight.
-            /// </summary>
-            public const string Save = "Flight_Save";
-
-            /// <summary>
-            /// The right to fixe flight.
-            /// </summary>
-            public const string Fix = "Flight_Fix";
-        }
-
-        // BIAToolKit - End Partial Rights Pilot
 
         /// <summary>
         /// The Hangfire rights.

@@ -3,6 +3,7 @@ import {
   BaseDto,
   BiaFieldConfig,
   BiaFieldsConfig,
+  BiaFormLayoutConfig,
   FixableDto,
   VersionedDto,
 } from 'packages/bia-ng/models/public-api';
@@ -33,3 +34,7 @@ export const pilotFieldsConfiguration: BiaFieldsConfig<Pilot> = {
     }),
   ],
 };
+
+// TODO after creation of CRUD Pilot : adapt the form layout configuration
+export const pilotFormLayoutConfiguration: BiaFormLayoutConfig<Pilot> =
+  new BiaFormLayoutConfig([]);

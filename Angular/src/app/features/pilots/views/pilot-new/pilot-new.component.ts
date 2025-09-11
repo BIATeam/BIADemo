@@ -5,7 +5,6 @@ import { of } from 'rxjs';
 import { PilotFormComponent } from '../../components/pilot-form/pilot-form.component';
 import { Pilot } from '../../model/pilot';
 import { pilotCRUDConfiguration } from '../../pilot.constants';
-import { PilotOptionsService } from '../../services/pilot-options.service';
 import { PilotService } from '../../services/pilot.service';
 
 @Component({
@@ -19,7 +18,6 @@ export class PilotNewComponent
 {
   constructor(
     protected injector: Injector,
-    protected pilotOptionsService: PilotOptionsService,
     public pilotService: PilotService
   ) {
     super(injector, pilotService);

@@ -19,6 +19,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Mappers;
+    using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
     /// <summary>
     /// The application service used for pilot.
@@ -30,16 +31,21 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
         /// </summary>
         private readonly int currentAncestorTeamId;
 
+        // BIAToolKit - Begin FixedChildrenRepositoryDefinitionPilot
+        // BIAToolKit - End FixedChildrenRepositoryDefinitionPilot
 #pragma warning disable SA1515 // Single-line comment should be preceded by blank line
 #pragma warning disable SA1611 // Element parameters should be documented
         /// <summary>
         /// Initializes a new instance of the <see cref="PilotAppService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
-        /// <param name="engineRepository">The engine app service.</param>
+        // BIAToolKit - Begin FixedChildrenRepositoryConstructorParamPilot
+        // BIAToolKit - End FixedChildrenRepositoryConstructorParamPilot
         /// <param name="principal">The claims principal.</param>
         public PilotAppService(
             ITGenericRepository<Pilot, Guid> repository,
+            // BIAToolKit - Begin FixedChildrenRepositoryInjectionPilot
+            // BIAToolKit - End FixedChildrenRepositoryInjectionPilot
             IPrincipal principal)
             : base(repository)
         {
@@ -48,6 +54,9 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
 
             // For child : set the TeamId of the Ancestor that contain a team Parent
             this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<Pilot>(x => x.SiteId == this.currentAncestorTeamId));
+
+            // BIAToolKit - Begin FixedChildrenRepositorySetPilot
+            // BIAToolKit - End FixedChildrenRepositorySetPilot
         }
 #pragma warning restore SA1611 // Element parameters should be documented
 #pragma warning restore SA1515 // Single-line comment should be preceded by blank line
@@ -61,6 +70,8 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
                 var entity = await this.Repository.GetEntityAsync(id) ?? throw new ElementNotFoundException();
                 this.Repository.UpdateFixedAsync(entity, isFixed);
 
+                // BIAToolKit - Begin UpdateFixedChildrenPilot
+                // BIAToolKit - End UpdateFixedChildrenPilot
                 await this.Repository.UnitOfWork.CommitAsync();
                 return await this.GetAsync(id);
             });
@@ -71,7 +82,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
         {
             if (dto.SiteId != this.currentAncestorTeamId)
             {
-                throw new ForbiddenException("Can only add pilot on current parent Team.");
+                throw new ForbiddenException("Can only add Pilot on current parent Team.");
             }
 
             return await base.AddAsync(dto, mapperMode);

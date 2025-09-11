@@ -42,6 +42,22 @@ export const NAVIGATION: BiaNavigation[] = [
     icon: 'pi pi-th-large',
   },
   // BIAToolKit - End Partial Navigation Plane
+  // BIAToolKit - Begin Partial Navigation Pilot
+  {
+    labelKey: 'app.pilots',
+    permissions: [Permission.Pilot_List_Access],
+    path: ['/pilots'],
+    icon: 'pi pi-th-large',
+  },
+  // BIAToolKit - End Partial Navigation Pilot
+  // BIAToolKit - Begin Partial Navigation Flight
+  {
+    labelKey: 'app.flights',
+    permissions: [Permission.Flight_List_Access],
+    path: ['/flights'],
+    icon: 'pi pi-th-large',
+  },
+  // BIAToolKit - End Partial Navigation Flight
   // End BIAToolKit Generation Ignore
 
   // Begin BIADemo
@@ -62,18 +78,6 @@ export const NAVIGATION: BiaNavigation[] = [
     permissions: [Permission.MaintenanceContract_List_Access],
     path: ['/maintenance-contracts'],
     icon: 'pi pi-clipboard',
-  },
-  {
-    labelKey: 'app.pilots',
-    permissions: [Permission.Pilot_List_Access],
-    path: ['/pilots'],
-    icon: 'pi pi-th-large',
-  },
-  {
-    labelKey: 'app.flights',
-    permissions: [Permission.Flight_List_Access],
-    path: ['/flights'],
-    icon: 'pi pi-th-large',
   },
   {
     labelKey: 'app.hangfire',

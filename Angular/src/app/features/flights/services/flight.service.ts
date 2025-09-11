@@ -62,7 +62,7 @@ export class FlightService extends CrudItemService<Flight> {
   );
 
   public displayItemName$: Observable<string> = this.crudItem$.pipe(
-    map(flight => flight?.id ?? '')
+    map(flight => flight?.id?.toString() ?? '')
   );
 
   public loadingGet$: Observable<boolean> = this.store.select(

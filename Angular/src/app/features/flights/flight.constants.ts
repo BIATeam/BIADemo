@@ -3,13 +3,18 @@ import {
   FormReadOnlyMode,
 } from 'packages/bia-ng/shared/public-api';
 import { TeamTypeId } from 'src/app/shared/constants';
-import { Flight, flightFieldsConfiguration } from './model/flight';
+import {
+  Flight,
+  flightFieldsConfiguration,
+  flightFormLayoutConfiguration,
+} from './model/flight';
 
 // TODO after creation of CRUD Flight : adapt the global configuration
 export const flightCRUDConfiguration: CrudConfig<Flight> = new CrudConfig({
   // IMPORTANT: this key should be unique in all the application.
   featureName: 'flights',
   fieldsConfig: flightFieldsConfiguration,
+  formLayoutConfig: flightFormLayoutConfiguration,
   formEditReadOnlyMode: FormReadOnlyMode.off,
   hasReadView: true,
   isFixable: true,

@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { OptionDto } from 'packages/bia-ng/models/option-dto';
+import { OptionDto } from 'packages/bia-ng/models/public-api';
 import {
   CrudItemOptionsService,
   DictOptionDto,
 } from 'packages/bia-ng/shared/public-api';
-import { combineLatest, map, Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { getAllAirportOptions } from 'src/app/domains/airport-option/store/airport-option.state';
 import { DomainAirportOptionsActions } from 'src/app/domains/airport-option/store/airport-options-actions';
 import { AppState } from 'src/app/store/state';
@@ -18,11 +19,11 @@ export class FlightOptionsService extends CrudItemOptionsService {
 
   constructor(private store: Store<AppState>) {
     super();
+    // TODO after creation of CRUD Flight : get all required option dto use in Table calc and create and edit form
     this.airportOptions$ = this.store.select(getAllAirportOptions);
     let cpt = 0;
     const airport = cpt++;
 
-    // TODO after creation of CRUD Flight : get all required option dto use in Table calc and create and edit form
     this.dictOptionDtos$ = combineLatest([this.airportOptions$]).pipe(
       map(options => {
         return <DictOptionDto[]>[

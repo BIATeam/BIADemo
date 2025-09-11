@@ -2,13 +2,16 @@
 // <copyright file="PilotsController.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
-
+// #define UseHubForClientInPilot
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+#if UseHubForClientInPilot
+    using BIA.Net.Core.Application.Services;
+#endif
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
@@ -23,6 +26,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
     /// <summary>
     /// The API controller used to manage Pilots.
     /// </summary>
+#if !UseHubForClientInPilot
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S1481:Unused local variables should be removed", Justification = "UseHubForClientInPilot not set")]
+#endif
     public class PilotsController : BiaControllerBase
     {
         /// <summary>
@@ -30,13 +36,30 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         /// </summary>
         private readonly IPilotAppService pilotService;
 
+#if UseHubForClientInPilot
+        private readonly IClientForHubService clientForHubService;
+#endif
+
+#if UseHubForClientInPilot
         /// <summary>
         /// Initializes a new instance of the <see cref="PilotsController"/> class.
         /// </summary>
         /// <param name="pilotService">The pilot application service.</param>
+        /// <param name="clientForHubService">The hub for client.</param>
         public PilotsController(
-            IPilotAppService pilotService)
+            IPilotAppService pilotService,
+            IClientForHubService clientForHubService)
+#else
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PilotsController"/> class.
+        /// </summary>
+        /// <param name="pilotService">The pilot application service.</param>
+        public PilotsController(IPilotAppService pilotService)
+#endif
         {
+#if UseHubForClientInPilot
+            this.clientForHubService = clientForHubService;
+#endif
             this.pilotService = pilotService;
         }
 
@@ -102,6 +125,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             try
             {
                 var createdDto = await this.pilotService.AddAsync(dto);
+#if UseHubForClientInPilot
+                await this.clientForHubService.SendTargetedMessage(createdDto.SiteId.ToString(), "pilots", "refresh-pilots");
+#endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
             catch (ArgumentNullException)
@@ -138,6 +164,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             try
             {
                 var updatedDto = await this.pilotService.UpdateAsync(dto);
+#if UseHubForClientInPilot
+                await this.clientForHubService.SendTargetedMessage(updatedDto.SiteId.ToString(), "pilots", "refresh-pilots");
+#endif
                 return this.Ok(updatedDto);
             }
             catch (ArgumentNullException)
@@ -178,7 +207,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
 
             try
             {
-                await this.pilotService.RemoveAsync(id);
+                var deletedDto = await this.pilotService.RemoveAsync(id);
+#if UseHubForClientInPilot
+                await this.clientForHubService.SendTargetedMessage(deletedDto.SiteId.ToString(), "pilots", "refresh-pilots");
+#endif
                 return this.Ok();
             }
             catch (ElementNotFoundException)
@@ -207,7 +239,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
 
             try
             {
-                await this.pilotService.RemoveAsync(ids);
+                var deletedDtos = await this.pilotService.RemoveAsync(ids);
+#if UseHubForClientInPilot
+                deletedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(async parentId =>
+                {
+                    await this.clientForHubService.SendTargetedMessage(parentId.ToString(), "pilots", "refresh-pilots");
+                });
+#endif
                 return this.Ok();
             }
             catch (ElementNotFoundException)
@@ -239,7 +277,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
 
             try
             {
-                await this.pilotService.SaveAsync(dtoList);
+                var savedDtos = await this.pilotService.SaveAsync(dtoList);
+#if UseHubForClientInPilot
+                savedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(async parentId =>
+                {
+                    await this.clientForHubService.SendTargetedMessage(parentId.ToString(), "pilots", "refresh-pilots");
+                });
+#endif
                 return this.Ok();
             }
             catch (ArgumentNullException)
@@ -266,7 +310,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
             byte[] buffer = await this.pilotService.GetCsvAsync(filters);
-            return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"pilots{BiaConstants.Csv.Extension}");
+            return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Pilots{BiaConstants.Csv.Extension}");
         }
 
         /// <summary>

@@ -3,6 +3,7 @@ import {
   BaseDto,
   BiaFieldConfig,
   BiaFieldsConfig,
+  BiaFormLayoutConfig,
   FixableDto,
   OptionDto,
   VersionedDto,
@@ -44,3 +45,7 @@ export const flightFieldsConfiguration: BiaFieldsConfig<Flight> = {
     }),
   ],
 };
+
+// TODO after creation of CRUD Flight : adapt the form layout configuration
+export const flightFormLayoutConfiguration: BiaFormLayoutConfig<Flight> =
+  new BiaFormLayoutConfig([]);
