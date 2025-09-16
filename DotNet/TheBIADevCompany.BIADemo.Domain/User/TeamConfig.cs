@@ -19,7 +19,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User
         /// </summary>
         public static readonly ImmutableList<BiaTeamConfig<BaseEntityTeam>> Config = new ImmutableListBuilder<BiaTeamConfig<BaseEntityTeam>>()
         {
-            new ()
+            new()
             {
                 TeamTypeId = (int)TeamTypeId.Site,
                 RightPrefix = "Site",
@@ -34,7 +34,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User
 
             // Begin BIAToolKit Generation Ignore
             // BIAToolKit - Begin Partial TeamConfig AircraftMaintenanceCompany
-            new ()
+            new()
             {
                 TeamTypeId = (int)TeamTypeId.AircraftMaintenanceCompany,
                 RightPrefix = "AircraftMaintenanceCompany",
@@ -50,7 +50,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User
                 {
                 // BIAToolKit - Begin TeamConfigAircraftMaintenanceCompanyChildren
                 // BIAToolKit - Begin Partial TeamConfigAircraftMaintenanceCompanyChildren MaintenanceTeam
-                    new ()
+                    new()
                     {
                         TeamTypeId = (int)TeamTypeId.MaintenanceTeam,
                         GetChilds = team => (team as Maintenance.Entities.AircraftMaintenanceCompany).MaintenanceTeams,
@@ -71,7 +71,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User
 
             // BIAToolKit - End Partial TeamConfig AircraftMaintenanceCompany
             // BIAToolKit - Begin Partial TeamConfig MaintenanceTeam
-            new ()
+            new()
             {
                 TeamTypeId = (int)TeamTypeId.MaintenanceTeam,
                 RightPrefix = "MaintenanceTeam",
@@ -85,7 +85,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User
                 }.ToImmutable(),
                 Parents = new ImmutableListBuilder<BiaTeamParentConfig<BaseEntityTeam>>
                 {
-                    new ()
+                    new()
                     {
                         TeamTypeId = (int)TeamTypeId.AircraftMaintenanceCompany,
                         GetParent = team => (team as Maintenance.Entities.MaintenanceTeam).AircraftMaintenanceCompany,

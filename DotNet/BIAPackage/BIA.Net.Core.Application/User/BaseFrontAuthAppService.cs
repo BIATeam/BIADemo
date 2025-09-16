@@ -394,7 +394,7 @@ namespace BIA.Net.Core.Application.User
                 {
                     TeamSelectionMode.None => null,
                     TeamSelectionMode.First => correspondingTeams.FirstOrDefault(),
-                    _ => throw new NotImplementedException()
+                    _ => throw new NotImplementedException(),
                 };
                 var defaultTeam = correspondingTeams.FirstOrDefault(x => x.IsDefault) ?? automaticallySelectedTeam;
 

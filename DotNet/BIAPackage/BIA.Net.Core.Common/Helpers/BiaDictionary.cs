@@ -20,7 +20,7 @@ namespace BIA.Net.Core.Common.Helpers
         /// The internal dictionary.
         /// </summary>
         private readonly Dictionary<string, TElem> internalDictionary
-            = new (StringComparer.InvariantCultureIgnoreCase);
+            = new(StringComparer.InvariantCultureIgnoreCase);
 
         /// <summary>
         /// Gets the internal dictionary.
