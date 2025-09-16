@@ -9,17 +9,17 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
     public enum DatabaseHandlerChangeType
     {
         /// <summary>
-        /// Added data
+        /// Added data.
         /// </summary>
         Add,
 
         /// <summary>
-        /// Deleted data
+        /// Deleted data.
         /// </summary>
         Delete,
 
         /// <summary>
-        /// Modified data
+        /// Modified data.
         /// </summary>
         Modify,
     }

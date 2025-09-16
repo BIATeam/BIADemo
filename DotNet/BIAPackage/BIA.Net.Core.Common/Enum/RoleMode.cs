@@ -10,17 +10,17 @@ namespace BIA.Net.Core.Common.Enum
     public enum RoleMode
     {
         /// <summary>
-        ///  All possible roles are selected
+        ///  All possible roles are selected.
         /// </summary>
         AllRoles = 1,
 
         /// <summary>
-        /// Only one role is selectable
+        /// Only one role is selectable.
         /// </summary>
         SingleRole = 2,
 
         /// <summary>
-        /// Multi select Role
+        /// Multi select Role.
         /// </summary>
         MultiRoles = 3,
     }

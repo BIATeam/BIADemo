@@ -11,7 +11,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum.DocumentAnalysis
     public enum DocumentType
     {
         /// <summary>
-        /// PDF
+        /// PDF.
         /// </summary>
         Pdf,
     }
