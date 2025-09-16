@@ -78,7 +78,7 @@ namespace BIA.Net.Core.Presentation.Api.Features.HangfireDashboard
                 var logString = "No log";
                 if (messages != null)
                 {
-                    StringBuilder strBld = new ();
+                    StringBuilder strBld = new();
                     foreach (string message in messages)
                     {
                         string level = "none";

@@ -12,6 +12,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Mappers
     /// <summary>
     /// Notification Mapper.
     /// </summary>
+    /// <param name="userContext">The user context.</param>
     public class NotificationMapper(UserContext userContext) :
         BaseNotificationMapper<NotificationDto, Notification>(userContext)
     {

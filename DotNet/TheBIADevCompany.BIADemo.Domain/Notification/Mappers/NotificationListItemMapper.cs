@@ -12,6 +12,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Mappers
     /// <summary>
     /// Notification List Item Mapper.
     /// </summary>
+    /// <param name="userContext">The user context.</param>
     public class NotificationListItemMapper(UserContext userContext) :
         BaseNotificationListItemMapper<NotificationListItemDto, Notification>(userContext)
     {

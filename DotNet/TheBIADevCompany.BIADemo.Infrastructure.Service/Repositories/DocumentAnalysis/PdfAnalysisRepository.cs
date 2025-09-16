@@ -68,7 +68,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories.DocumentA
                 UglyToad.PdfPig.Content.TextOrientation.Rotate180 => TextOrientation.Rotated180,
                 UglyToad.PdfPig.Content.TextOrientation.Rotate90 => TextOrientation.Rotated90,
                 UglyToad.PdfPig.Content.TextOrientation.Rotate270 => TextOrientation.Rotated270,
-                _ => TextOrientation.Other
+                _ => TextOrientation.Other,
             };
         }
     }

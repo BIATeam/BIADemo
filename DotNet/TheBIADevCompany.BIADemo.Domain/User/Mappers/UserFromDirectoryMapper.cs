@@ -15,6 +15,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
     /// </summary>
     /// <typeparam name="TUserFromDirectoryDto">Type of the user from directory dto.</typeparam>
     /// <typeparam name="TUserFromDirectory">Type of the user from directory.</typeparam>
+    /// <param name="userIdentityKeyDomainService">The user identity key domain service.</param>
     public class UserFromDirectoryMapper(IUserIdentityKeyDomainService userIdentityKeyDomainService) : IUserFromDirectoryMapper<UserFromDirectoryDto, UserFromDirectory>
     {
         private readonly IUserIdentityKeyDomainService userIdentityKeyDomainService = userIdentityKeyDomainService;

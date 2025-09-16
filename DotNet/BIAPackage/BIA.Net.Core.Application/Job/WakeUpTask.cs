@@ -49,7 +49,7 @@ namespace BIA.Net.Core.Application.Job
 
             await Task.WhenAll(wakeUpWebAppTasks);
 
-            StringBuilder bld = new ();
+            StringBuilder bld = new();
 
             foreach (var (isSuccessStatusCode, reasonPhrase) in wakeUpWebAppTasks.Select(t => t.Result))
             {

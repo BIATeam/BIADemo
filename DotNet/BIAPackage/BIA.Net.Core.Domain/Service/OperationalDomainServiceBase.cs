@@ -74,7 +74,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="isReadOnlyMode">Readonly mode to use readOnly context.</param>
         /// <returns>The list of DTO.</returns>
-        protected virtual async Task<(IEnumerable<TOtherDto> results, int total)> GetRangeAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(
+        protected virtual async Task<(IEnumerable<TOtherDto> Results, int Total)> GetRangeAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(
             TOtherFilterDto filters = null,
             TKey id = default,
             Specification<TEntity> specification = null,
@@ -256,7 +256,7 @@ namespace BIA.Net.Core.Domain.Service
                 filters.First = 0;
                 filters.Rows = 0;
 
-                IEnumerable<TOtherDto> results = (await this.GetRangeAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, isReadOnlyMode: isReadOnlyMode)).results;
+                IEnumerable<TOtherDto> results = (await this.GetRangeAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, isReadOnlyMode: isReadOnlyMode)).Results;
 
                 TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
                 List<object[]> records = results.Select(mapper.DtoToRecord(mapperMode, columnHeaderKeys)).ToList();
@@ -919,7 +919,7 @@ namespace BIA.Net.Core.Domain.Service
                 Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseObjectNotFound => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),
                 Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseLoginUser => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),
                 Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseOpen => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),
-                _ => frontUserException
+                _ => frontUserException,
             };
         }
     }

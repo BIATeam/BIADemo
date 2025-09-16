@@ -37,7 +37,7 @@ namespace BIA.Net.Core.Application.Authentication
         {
             this.jwt = jwtOptions.Value;
 
-            SymmetricSecurityKey signingKey = new (Encoding.ASCII.GetBytes(this.jwt.SecretKey));
+            SymmetricSecurityKey signingKey = new(Encoding.ASCII.GetBytes(this.jwt.SecretKey));
             this.SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 
             ThrowIfInvalidOptions(this.jwt);
@@ -173,17 +173,17 @@ namespace BIA.Net.Core.Application.Authentication
             var claims = identity.Claims.ToList();
             claims.AddRange(
             [
-                new (JwtRegisteredClaimNames.Sub, identity.Name),
-                new (JwtRegisteredClaimNames.Jti, await this.jwt.JtiGenerator()),
-                new (JwtRegisteredClaimNames.Iat, ToUnixEpochDate(this.jwt.IssuedAt).ToString(), ClaimValueTypes.Integer64),
+                new(JwtRegisteredClaimNames.Sub, identity.Name),
+                new(JwtRegisteredClaimNames.Jti, await this.jwt.JtiGenerator()),
+                new(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(this.jwt.IssuedAt).ToString(), ClaimValueTypes.Integer64),
             ]);
 
             if (tokenDto != null)
             {
                 claims.AddRange(
                 [
-                    new (ClaimTypes.GivenName, tokenDto.UserData.FirstName),
-                    new (ClaimTypes.Surname, tokenDto.UserData.LastName),
+                    new(ClaimTypes.GivenName, tokenDto.UserData.FirstName),
+                    new(ClaimTypes.Surname, tokenDto.UserData.LastName),
                 ]);
             }
 

@@ -105,7 +105,7 @@ namespace BIA.Net.Core.Ioc
             IEnumerable<Type> classTypes = classAssembly.GetTypes().Where(type => type.IsClass && !type.IsAbstract);
             IEnumerable<Type> interfaceTypes = interfaceAssembly.GetTypes().Where(type => type.IsInterface);
 
-            IEnumerable<(Type classType, Type interfaceType)> mappings = from classType in classTypes
+            IEnumerable<(Type ClassType, Type InterfaceType)> mappings = from classType in classTypes
                                                                          join interfaceType in interfaceTypes
                                                                          on "I" + classType.Name equals interfaceType.Name
                                                                          where (excludedServiceNames == null || !excludedServiceNames.Contains(classType.Name)) &&

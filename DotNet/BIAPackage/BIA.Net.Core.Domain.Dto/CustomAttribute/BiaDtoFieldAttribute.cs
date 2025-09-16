@@ -142,7 +142,7 @@ namespace BIA.Net.Core.Domain.Dto.CustomAttribute
                 float _ => float.MinValue,
                 double _ => double.MinValue,
                 decimal _ => decimal.MinValue,
-                _ => throw new ArgumentException("Invalid numeric type", nameof(value))
+                _ => throw new ArgumentException("Invalid numeric type", nameof(value)),
             };
         }
 
@@ -161,7 +161,7 @@ namespace BIA.Net.Core.Domain.Dto.CustomAttribute
                 float _ => float.MaxValue,
                 double _ => double.MaxValue,
                 decimal _ => decimal.MaxValue,
-                _ => throw new ArgumentException("Invalid numeric type", nameof(value))
+                _ => throw new ArgumentException("Invalid numeric type", nameof(value)),
             };
         }
 

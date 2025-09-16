@@ -69,7 +69,7 @@ namespace BIA.Net.Core.WorkerService.Features
             services.AddTransient<IPrincipal>(
                 provider =>
                 {
-                    var claims = new List<Claim> { new (ClaimTypes.Name, Environment.UserName) };
+                    var claims = new List<Claim> { new(ClaimTypes.Name, Environment.UserName) };
                     var userIdentity = new ClaimsIdentity(claims, "NonEmptyAuthType");
                     return new BiaClaimsPrincipal(new ClaimsPrincipal(userIdentity));
                 });

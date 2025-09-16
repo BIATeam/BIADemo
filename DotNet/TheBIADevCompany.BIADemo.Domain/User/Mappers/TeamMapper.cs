@@ -92,7 +92,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
                 // BIAToolKit - End Partial TeamMapperParentTeamId MaintenanceTeam
                 // End BIAToolKit Generation Ignore
                 // BIAToolKit - End TeamMapperParentTeamId
-                _ => 0
+                _ => 0,
             };
         }
 
@@ -113,7 +113,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
                 // BIAToolKit - End Partial TeamMapperParentTeamTitle MaintenanceTeam
                 // End BIAToolKit Generation Ignore
                 // BIAToolKit - End TeamMapperParentTeamTitle
-                _ => string.Empty
+                _ => string.Empty,
             };
         }
     }

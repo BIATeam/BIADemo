@@ -32,7 +32,5 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Fleet
         /// </summary>
         [BiaDtoField(Required = true, ItemType = "Airport")]
         public OptionDto ArrivalAirport { get; set; }
-
-
     }
 }

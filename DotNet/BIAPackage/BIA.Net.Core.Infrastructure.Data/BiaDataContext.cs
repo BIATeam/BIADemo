@@ -286,7 +286,7 @@ namespace BIA.Net.Core.Infrastructure.Data
                 ValidationException validationEx => this.ManageException(validationEx),
                 DbUpdateException dbUpdateEx => this.ManageException(dbUpdateEx),
                 SqlException sqlEx => this.ManageException(sqlEx),
-                _ => new FrontUserException(exception)
+                _ => new FrontUserException(exception),
             };
         }
 
@@ -338,7 +338,7 @@ namespace BIA.Net.Core.Infrastructure.Data
                 2627 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseUniqueConstraint, sqlException),
                 4060 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseOpen, sqlException),
                 18456 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseLoginUser, sqlException),
-                _ => new FrontUserException(sqlException)
+                _ => new FrontUserException(sqlException),
             };
         }
 

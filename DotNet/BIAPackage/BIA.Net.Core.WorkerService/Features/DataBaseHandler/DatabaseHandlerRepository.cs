@@ -478,7 +478,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             {
                 DbEngineSqlServer => new SqlConnection(this.connectionString),
                 DbEnginePostgreSql => new Npgsql.NpgsqlConnection(this.connectionString),
-                _ => throw new NotSupportedException()
+                _ => throw new NotSupportedException(),
             };
         }
 
@@ -495,7 +495,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             {
                 DbEngineSqlServer => new SqlCommand(command, connection as SqlConnection),
                 DbEnginePostgreSql => new Npgsql.NpgsqlCommand(command, connection as Npgsql.NpgsqlConnection),
-                _ => throw new NotSupportedException()
+                _ => throw new NotSupportedException(),
             };
         }
 

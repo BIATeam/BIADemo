@@ -16,7 +16,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories.DocumentA
     /// </summary>
     public class DocumentAnalysisRepositoryFactory : IDocumentAnalysisRepositoryFactory
     {
-        private readonly List<IDocumentAnalysisRepository> documentAnalysisRepositories = new ();
+        private readonly List<IDocumentAnalysisRepository> documentAnalysisRepositories = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DocumentAnalysisRepositoryFactory"/> class.
