@@ -32,6 +32,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     /// <summary>
     /// Auth App Service.
     /// </summary>
+#pragma warning disable SA1611 // Element parameters should be documented
     public class AuthAppService(
 #if BIA_FRONT_FEATURE
         IBaseUserAppService<UserDto, User, UserFromDirectoryDto, UserFromDirectory> userAppService,
@@ -52,6 +53,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 #else
         : BaseAuthAppService<UserFromDirectoryDto, UserFromDirectory, AdditionalInfoDto, UserDataDto>(jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper), IAuthAppService
 #endif
+#pragma warning restore SA1611 // Element parameters should be documented
     {
 #if BIA_FRONT_FEATURE
         /// <summary>
