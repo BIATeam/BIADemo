@@ -79,20 +79,6 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         }
 
         /// <summary>
-        /// Add a list of item to the current context.
-        /// </summary>
-        /// <param name="items">The items.</param>
-        public void AddRange(IEnumerable<TEntity> items)
-        {
-            if (items == null || !items.Any())
-            {
-                return;
-            }
-
-            this.RetrieveSet().AddRange(items);
-        }
-
-        /// <summary>
         /// Update an item in the current context.
         /// </summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
@@ -121,6 +107,94 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             var set = this.RetrieveSet();
             set.Attach(item);
             set.Remove(item);
+        }
+
+        /// <summary>
+        /// Add a list of item to the current context.
+        /// </summary>
+        /// <param name="items">The items.</param>
+        public void AddRange(IEnumerable<TEntity> items)
+        {
+            if (items?.Any() != true)
+            {
+                return;
+            }
+
+            this.RetrieveSet().AddRange(items);
+        }
+
+        /// <inheritdoc />
+        public void UpdateRange(IEnumerable<TEntity> items)
+        {
+            if (items?.Any() != true)
+            {
+                return;
+            }
+
+            this.RetrieveSet().UpdateRange(items);
+        }
+
+        /// <inheritdoc />
+        public void RemoveRange(IEnumerable<TEntity> items)
+        {
+            if (items?.Any() != true)
+            {
+                return;
+            }
+
+            var set = this.RetrieveSet();
+            set.AttachRange(items);
+            set.RemoveRange(items);
+        }
+
+        /// <inheritdoc />
+        public async Task<int> DeleteByIdsAsync(IEnumerable<TKey> ids, int batchSize = 100)
+        {
+            int deletedCount = 0;
+
+            List<TKey> idList = ids?.ToList();
+
+            if (idList?.Any() != true)
+            {
+                return deletedCount;
+            }
+
+            for (int i = 0; i < idList.Count; i = i + batchSize)
+            {
+                var packages = idList.Skip(i).Take(batchSize).ToList();
+                deletedCount += await this.ExecuteDeleteAsync(x => packages.Contains(x.Id));
+            }
+
+            return deletedCount;
+        }
+
+        /// <inheritdoc />
+        public async Task<int> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> filter)
+        {
+            if (filter == null)
+            {
+                throw new ArgumentNullException(nameof(filter));
+            }
+
+            return await this.RetrieveSet().Where(filter).ExecuteDeleteAsync();
+        }
+
+        /// <inheritdoc />
+        public async Task<int> MassAddAsync(IEnumerable<TEntity> items, int batchSize = 100)
+        {
+            return await this.ExecuteMassOperationAsync(items, batchSize, this.AddRange);
+        }
+
+        /// <inheritdoc />
+        public async Task<int> MassUpdateAsync(IEnumerable<TEntity> items, int batchSize = 100)
+        {
+            return await this.ExecuteMassOperationAsync(items, batchSize, this.UpdateRange);
+        }
+
+        /// <inheritdoc />
+        public async Task<int> MassDeleteAsync(IEnumerable<TEntity> items, int batchSize = 100)
+        {
+            return await this.ExecuteMassOperationAsync(items, batchSize, this.RemoveRange);
         }
 
         /// <summary>
@@ -630,6 +704,34 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             {
                 throw new ArgumentNullException(nameof(expression));
             }
+        }
+
+        /// <summary>
+        /// Executes a mass operation on entities in batches.
+        /// </summary>
+        /// <param name="items">The items to process.</param>
+        /// <param name="batchSize">The number of items to process per batch.</param>
+        /// <param name="operation">The operation to perform on each batch.</param>
+        /// <returns>Number of element affected.</returns>
+        protected virtual async Task<int> ExecuteMassOperationAsync(IEnumerable<TEntity> items, int batchSize, Action<IEnumerable<TEntity>> operation)
+        {
+            int elementAffectedCount = 0;
+            List<TEntity> itemList = items.ToList();
+
+            if (itemList?.Any() != true)
+            {
+                return elementAffectedCount;
+            }
+
+            for (int i = 0; i < itemList.Count; i = i + batchSize)
+            {
+                var packages = itemList.Skip(i).Take(batchSize).ToList();
+                operation(packages);
+                elementAffectedCount += await this.unitOfWork.CommitAsync();
+                this.unitOfWork.Reset();
+            }
+
+            return elementAffectedCount;
         }
     }
 }
