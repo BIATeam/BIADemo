@@ -30,7 +30,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         {
             modelBuilder.Entity<Pilot>()
             .Property(e => e.Id)
-            .HasDefaultValueSql("NEWSEQUENTIALID()");
+            /*.HasDefaultValueSql("NEWSEQUENTIALID()")*/;
             modelBuilder.Entity<Pilot>().Property(p => p.IdentificationNumber).IsRequired().HasMaxLength(64);
         }
     }

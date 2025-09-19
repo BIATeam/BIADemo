@@ -13,6 +13,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
 #endif
     using BIA.Net.Core.Common.Configuration;
     using Hangfire;
+    using Hangfire.PostgreSql;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -55,9 +56,22 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                 {
                     IConfiguration configuration = hostingContext.Configuration;
 
+                    string connectionString = configuration.GetDatabaseConnectionString("ProjectDatabase");
+                    string dbEngine = configuration.GetDBEngine("ProjectDatabase");
+
                     services.AddDbContext<DataContext>(options =>
                     {
-                        options.UseSqlServer(configuration.GetDatabaseConnectionString("ProjectDatabase"));
+                        if (connectionString != null)
+                        {
+                            if (dbEngine?.ToLower().Equals("sqlserver") == true)
+                            {
+                                options.UseSqlServer(connectionString);
+                            }
+                            else if (dbEngine?.ToLower().Equals("postgresql") == true)
+                            {
+                                options.UseNpgsql(connectionString);
+                            }
+                        }
                     });
                     services.AddHostedService<DeployDBService>();
 
@@ -69,7 +83,17 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                     });
                     services.AddHangfire(config =>
                     {
-                        config.UseSqlServerStorage(configuration.GetDatabaseConnectionString("ProjectDatabase"));
+                        if (connectionString != null)
+                        {
+                            if (dbEngine?.ToLower().Equals("sqlserver") == true)
+                            {
+                                config.UseSqlServerStorage(connectionString);
+                            }
+                            else if (dbEngine?.ToLower().Equals("postgresql") == true)
+                            {
+                                config.UsePostgreSqlStorage(options => options.UseNpgsqlConnection(connectionString));
+                            }
+                        }
 
                         // Initialize here the recuring jobs
 #if BIA_FRONT_FEATURE

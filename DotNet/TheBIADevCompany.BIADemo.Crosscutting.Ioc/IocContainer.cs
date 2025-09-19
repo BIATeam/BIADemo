@@ -158,14 +158,23 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 });
 
                 string connectionString = configuration.GetDatabaseConnectionString("ProjectDatabase");
+                string dbEngine = configuration.GetDBEngine("ProjectDatabase");
 
                 // Infrastructure Data Layer
                 collection.AddDbContext<IQueryableUnitOfWork, DataContext>(options =>
                 {
                     if (connectionString != null)
                     {
-                        options.UseSqlServer(connectionString);
-                        options.ReplaceService<IHistoryRepository, BiaSqlServerHistoryRepository>();
+                        if (dbEngine?.ToLower().Equals("sqlserver") == true)
+                        {
+                            options.UseSqlServer(connectionString);
+                            options.ReplaceService<IHistoryRepository, BiaSqlServerHistoryRepository>();
+                        }
+                        else if (dbEngine?.ToLower().Equals("postgresql") == true)
+                        {
+                            options.UseNpgsql(connectionString);
+                            options.ReplaceService<IHistoryRepository, BiaNpgsqlHistoryRepository>();
+                        }
                     }
 
                     options.EnableSensitiveDataLogging();
@@ -176,8 +185,16 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                     {
                         if (connectionString != null)
                         {
-                            options.UseSqlServer(connectionString);
-                            options.ReplaceService<IHistoryRepository, BiaSqlServerHistoryRepository>();
+                            if (dbEngine?.ToLower().Equals("sqlserver") == true)
+                            {
+                                options.UseSqlServer(connectionString);
+                                options.ReplaceService<IHistoryRepository, BiaSqlServerHistoryRepository>();
+                            }
+                            else if (dbEngine?.ToLower().Equals("postgresql") == true)
+                            {
+                                options.UseNpgsql(connectionString);
+                                options.ReplaceService<IHistoryRepository, BiaNpgsqlHistoryRepository>();
+                            }
                         }
 
                         options.EnableSensitiveDataLogging();

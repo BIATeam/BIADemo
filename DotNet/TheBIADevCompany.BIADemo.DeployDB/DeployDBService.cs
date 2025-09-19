@@ -72,6 +72,8 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                         this.logger.LogInformation(message);
                         this.dataContext.Database.SetCommandTimeout(TimeSpan.FromMinutes(timeout));
 
+                        // TODO ??? https://learn.microsoft.com/fr-fr/ef/core/managing-schemas/migrations/providers?tabs=vs
+                        // Comment lui faire prendre la migration Postgre ?
                         this.dataContext.Database.Migrate();
 
                         await this.dataContext.RunScriptsFromAssemblyEmbeddedResourcesFolder(typeof(DataContext).Assembly, "Scripts.PostDeployment");

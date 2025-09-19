@@ -47,7 +47,7 @@ namespace BIA.Net.Core.Presentation.Common.Features
                     {
                         config.ConnectionString = configuration.GetDatabaseConnectionString(commonFeatures.DistributedCache.ConnectionStringName);
                         config.TableName = "DistCache";
-                        config.SchemaName = "dbo";
+                        config.SchemaName = "public";
                     });
                 }
             }
