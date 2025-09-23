@@ -1,7 +1,6 @@
 ﻿// <copyright file="IDbContextDatabase.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
-// </copyright>
 
 namespace BIA.Net.Core.Common
 {

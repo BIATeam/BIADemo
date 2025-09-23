@@ -161,7 +161,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
 
             for (int i = 0; i < idList.Count; i = i + batchSize)
             {
-                var packages = idList.Skip(i).Take(batchSize).ToList();
+                List<TKey> packages = idList.Skip(i).Take(batchSize).ToList();
                 deletedCount += await this.ExecuteDeleteAsync(x => packages.Contains(x.Id));
             }
 

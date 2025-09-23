@@ -5,7 +5,6 @@
         "Key": "ProjectDatabase",
         "Provider": "SQLServer",
         "ConnectionString": "data source=localhost;initial catalog=BIADemo;integrated security=True;MultipleActieResultSets=True;Encrypt=False;App=BIADemo"
-        // "ConnectionString": "Host=localhost;Database=BIADemo;Username=postgres;Password=xxxxxxxxxxxxxxxxxxxxxxx"
       },
       {
         "Key": "ProjectDatabaseReadOnly",
