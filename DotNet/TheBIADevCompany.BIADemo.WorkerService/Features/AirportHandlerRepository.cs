@@ -9,6 +9,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
     using System.Data.Common;
     using System.Diagnostics;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
     using Microsoft.Extensions.Configuration;
@@ -29,8 +30,8 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
         public AirportHandlerRepository(IConfiguration configuration, IServiceProvider serviceProvider)
             : base(
                   serviceProvider,
-                  configuration.GetDatabaseConnectionString("ProjectDatabase"),
-                  configuration.GetDBEngine("ProjectDatabase"),
+                  configuration.GetDatabaseConnectionString(BiaConstants.DatabaseConfiguration.DefaultKey),
+                  configuration.GetDBEngine(BiaConstants.DatabaseConfiguration.DefaultKey),
                   "SELECT Id, Name, City FROM [dbo].[Airports]",
                   "Id",
                   pollingInterval: TimeSpan.FromSeconds(1))

@@ -7,7 +7,9 @@ namespace TheBIADevCompany.BIADemo.DeployDB
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Microsoft.EntityFrameworkCore;
+    using BIA.Net.Core.Common;
+    using BIA.Net.Core.Domain.DistCache.Entities;
+    using BIA.Net.Core.Infrastructure.Data;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
@@ -21,7 +23,8 @@ namespace TheBIADevCompany.BIADemo.DeployDB
         private readonly ILogger logger;
         private readonly IHostApplicationLifetime appLifetime;
         private readonly IConfiguration configuration;
-        private readonly DataContext dataContext;
+        private readonly IQueryableUnitOfWork dataContext;
+        private readonly IDbContextDatabase dbContextDatabase;
         private Exception exception;
 
         /// <summary>
@@ -30,16 +33,19 @@ namespace TheBIADevCompany.BIADemo.DeployDB
         /// <param name="logger">the logger.</param>
         /// <param name="appLifetime">the app life time.</param>
         /// <param name="dataContext">the data context.</param>
+        /// <param name="dbContextDatabase">The database context database.</param>
         /// <param name="configuration">The configuration.</param>
         public DeployDBService(
             ILogger<DeployDBService> logger,
             IHostApplicationLifetime appLifetime,
-            DataContext dataContext,
+            IQueryableUnitOfWork dataContext,
+            IDbContextDatabase dbContextDatabase,
             IConfiguration configuration)
         {
             this.logger = logger;
             this.appLifetime = appLifetime;
             this.dataContext = dataContext;
+            this.dbContextDatabase = dbContextDatabase;
             this.configuration = configuration;
         }
 
@@ -61,7 +67,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                     {
                         this.logger.LogInformation("Start Migration!");
 
-                        string message = $"ConnectionString: {this.dataContext.Database.GetDbConnection().ConnectionString}";
+                        string message = $"ConnectionString: {this.dbContextDatabase.GetDbConnection().ConnectionString}";
                         this.logger.LogInformation(message);
 
                         // Database Migrate CommandTimeout
@@ -70,13 +76,11 @@ namespace TheBIADevCompany.BIADemo.DeployDB
 
                         message = $"{confCommandTimeout}: {timeout} minutes";
                         this.logger.LogInformation(message);
-                        this.dataContext.Database.SetCommandTimeout(TimeSpan.FromMinutes(timeout));
+                        this.dbContextDatabase.SetCommandTimeout(TimeSpan.FromMinutes(timeout));
 
-                        // TODO ??? https://learn.microsoft.com/fr-fr/ef/core/managing-schemas/migrations/providers?tabs=vs
-                        // Comment lui faire prendre la migration Postgre ?
-                        this.dataContext.Database.Migrate();
+                        this.dbContextDatabase.Migrate();
 
-                        await this.dataContext.RunScriptsFromAssemblyEmbeddedResourcesFolder(typeof(DataContext).Assembly, "Scripts.PostDeployment");
+                        await this.dbContextDatabase.RunScriptsFromAssemblyEmbeddedResourcesFolder(typeof(DataContext).Assembly, "Scripts.PostDeployment");
 
                         await this.CleanDistCacheAsync();
                     }
@@ -121,7 +125,8 @@ namespace TheBIADevCompany.BIADemo.DeployDB
         {
             try
             {
-                this.dataContext.DistCache.RemoveRange(this.dataContext.DistCache);
+                var distCache = this.dataContext.RetrieveSet<DistCache>();
+                distCache.RemoveRange(distCache);
                 int nb = await this.dataContext.CommitAsync();
                 var message = $"DistCache cleaned (nb removed: {nb})";
                 this.logger.LogInformation(message);

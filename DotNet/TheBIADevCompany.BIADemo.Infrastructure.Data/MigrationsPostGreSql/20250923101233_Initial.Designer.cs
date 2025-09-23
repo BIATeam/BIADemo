@@ -9,10 +9,10 @@ using TheBIADevCompany.BIADemo.Infrastructure.Data;
 
 #nullable disable
 
-namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGre
+namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
 {
-    [DbContext(typeof(DataContextPostGre))]
-    [Migration("20250919154740_Initial")]
+    [DbContext(typeof(DataContextPostGreSql))]
+    [Migration("20250923101233_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

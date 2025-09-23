@@ -145,5 +145,16 @@ namespace BIA.Net.Core.Common
             /// </summary>
             public const string ServiceApiRW = "ServiceApiRW";
         }
+
+        /// <summary>
+        /// Database Configuration.
+        /// </summary>
+        public static class DatabaseConfiguration
+        {
+            /// <summary>
+            /// The default key.
+            /// </summary>
+            public const string DefaultKey = "ProjectDatabase";
+        }
     }
 }

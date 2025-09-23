@@ -4,7 +4,9 @@
 
 namespace BIA.Net.Core.Common.Configuration
 {
+    using System;
     using System.Linq;
+    using BIA.Net.Core.Common.Enum;
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
@@ -12,6 +14,30 @@ namespace BIA.Net.Core.Common.Configuration
     /// </summary>
     public static class ConfigurationExtensions
     {
+        /// <summary>
+        /// Gets the database engine.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="key">The key.</param>
+        /// <returns>The database engine.</returns>
+        public static DbProvider GetProvider(this IConfiguration configuration, string key)
+        {
+            string provider = configuration.GetDBEngine(key);
+
+            if (string.Equals(provider, DbProvider.SqlServer.ToString(), StringComparison.OrdinalIgnoreCase))
+            {
+                return DbProvider.SqlServer;
+            }
+            else if (string.Equals(provider, DbProvider.PostGreSql.ToString(), StringComparison.OrdinalIgnoreCase))
+            {
+                return DbProvider.PostGreSql;
+            }
+            else
+            {
+                throw new InvalidOperationException($"Unsupported provider: {provider}");
+            }
+        }
+
         /// <summary>
         /// Gets the database engine.
         /// </summary>

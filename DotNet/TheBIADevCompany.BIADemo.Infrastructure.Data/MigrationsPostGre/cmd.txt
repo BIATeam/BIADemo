@@ -1,1 +1,0 @@
-Add-Migration Initial -Context PostGreDataContext -OutputDir MigrationsPostGre

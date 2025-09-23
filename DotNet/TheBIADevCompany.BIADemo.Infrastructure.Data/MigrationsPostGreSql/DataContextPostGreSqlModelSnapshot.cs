@@ -8,10 +8,10 @@ using TheBIADevCompany.BIADemo.Infrastructure.Data;
 
 #nullable disable
 
-namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGre
+namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
 {
-    [DbContext(typeof(DataContextPostGre))]
-    partial class DataContextPostGreModelSnapshot : ModelSnapshot
+    [DbContext(typeof(DataContextPostGreSql))]
+    partial class DataContextPostGreSqlModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
