@@ -10,6 +10,7 @@ namespace BIA.Net.Core.WorkerService.Features
     using System.Security.Principal;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
@@ -98,14 +99,14 @@ namespace BIA.Net.Core.WorkerService.Features
                 });
                 services.AddHangfire((serviceProvider, config) =>
                 {
-                    string dbEngine = configuration.GetDBEngine(workerFeatures.HangfireServer.ConnectionStringName);
-                    if (dbEngine.ToLower().Equals("sqlserver"))
+                    DbProvider provider = configuration.GetProvider(workerFeatures.HangfireServer.ConnectionStringName);
+                    if (provider == DbProvider.SqlServer)
                     {
                         config.UseSimpleAssemblyNameTypeSerializer()
                               .UseRecommendedSerializerSettings()
                               .UseSqlServerStorage(configuration.GetDatabaseConnectionString(workerFeatures.HangfireServer.ConnectionStringName));
                     }
-                    else if (dbEngine.ToLower().Equals("postgresql"))
+                    else if (provider == DbProvider.PostGreSql)
                     {
                         var optionsTime = new PostgreSqlStorageOptions
                         {

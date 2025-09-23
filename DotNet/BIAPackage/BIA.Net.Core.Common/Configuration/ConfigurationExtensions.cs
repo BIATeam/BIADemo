@@ -24,18 +24,12 @@ namespace BIA.Net.Core.Common.Configuration
         {
             string provider = configuration.GetDBEngine(key);
 
-            if (string.Equals(provider, DbProvider.SqlServer.ToString(), StringComparison.OrdinalIgnoreCase))
+            return provider?.Trim() switch
             {
-                return DbProvider.SqlServer;
-            }
-            else if (string.Equals(provider, DbProvider.PostGreSql.ToString(), StringComparison.OrdinalIgnoreCase))
-            {
-                return DbProvider.PostGreSql;
-            }
-            else
-            {
-                throw new InvalidOperationException($"Unsupported provider: {provider}");
-            }
+                string p when p.Equals(nameof(DbProvider.SqlServer), StringComparison.OrdinalIgnoreCase) => DbProvider.SqlServer,
+                string p when p.Equals(nameof(DbProvider.PostGreSql), StringComparison.OrdinalIgnoreCase) => DbProvider.PostGreSql,
+                _ => throw new NotSupportedException($"Unsupported provider: {provider}"),
+            };
         }
 
         /// <summary>

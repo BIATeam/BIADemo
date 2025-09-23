@@ -7,6 +7,7 @@ namespace BIA.Net.Core.Presentation.Common.Features
     using System.Diagnostics.CodeAnalysis;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
+    using BIA.Net.Core.Common.Enum;
     using Community.Microsoft.Extensions.Caching.PostgreSql;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -31,8 +32,8 @@ namespace BIA.Net.Core.Presentation.Common.Features
             // Distributed Cache
             if (commonFeatures?.DistributedCache?.IsActive == true)
             {
-                string dbEngine = configuration.GetDBEngine(commonFeatures.DistributedCache.ConnectionStringName);
-                if (dbEngine.ToLower().Equals("sqlserver"))
+                DbProvider provider = configuration.GetProvider(commonFeatures.DistributedCache.ConnectionStringName);
+                if (provider == DbProvider.SqlServer)
                 {
                     services.AddDistributedSqlServerCache(config =>
                     {
@@ -41,7 +42,7 @@ namespace BIA.Net.Core.Presentation.Common.Features
                         config.SchemaName = "dbo";
                     });
                 }
-                else if (dbEngine.ToLower().Equals("postgresql"))
+                else if (provider == DbProvider.PostGreSql)
                 {
                     services.AddDistributedPostgreSqlCache(config =>
                     {
