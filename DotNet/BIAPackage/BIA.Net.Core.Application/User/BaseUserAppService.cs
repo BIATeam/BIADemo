@@ -364,7 +364,7 @@ namespace BIA.Net.Core.Application.User
             if (userId > 0)
             {
                 TUser entity = await this.Repository.GetEntityAsync(id: userId, queryMode: "NoInclude");
-                entity.LastLoginDate = DateTime.Now;
+                entity.LastLoginDate = DateTime.UtcNow;
                 entity.IsActive = activate;
 
                 // this.Repository.Update(entity)

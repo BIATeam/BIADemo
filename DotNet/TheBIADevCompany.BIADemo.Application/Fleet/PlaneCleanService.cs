@@ -30,7 +30,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
         /// <inheritdoc/>
         protected override Expression<Func<Plane, bool>> CleanRuleFilter()
         {
-            var currentDateTime = DateTime.Now;
+            var currentDateTime = DateTime.UtcNow;
             return x => x.IsArchived && x.ArchivedDate.Value.AddYears(1) < currentDateTime;
         }
     }

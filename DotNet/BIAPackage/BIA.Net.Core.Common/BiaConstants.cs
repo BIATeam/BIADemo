@@ -155,6 +155,11 @@ namespace BIA.Net.Core.Common
             /// The default key.
             /// </summary>
             public const string DefaultKey = "ProjectDatabase";
+
+            /// <summary>
+            /// The default key read only.
+            /// </summary>
+            public const string DefaultKeyReadOnly = "ProjectDatabaseReadOnly";
         }
     }
 }
