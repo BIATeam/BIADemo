@@ -5,6 +5,7 @@
 namespace BIA.Net.Core.Infrastructure.Data
 {
     using System;
+    using System.Linq;
     using BIA.Net.Core.Common;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata;
@@ -32,5 +33,7 @@ namespace BIA.Net.Core.Infrastructure.Data
 
         /// <inheritdoc cref="IModel.FindEntityType(Type)"/>
         IEntityType FindEntityType(Type entityType);
+
+        IQueryable RetrieveSet(Type entityType);
     }
 }

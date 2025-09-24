@@ -6,12 +6,15 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.Immutable;
     using System.Data;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
+    using Audit.EntityFramework;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.Audit;
     using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract;
@@ -37,16 +40,18 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// The service provider.
         /// </summary>
         private readonly IServiceProvider serviceProvider;
+        private readonly IAuditFeature auditFeature;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TGenericRepositoryEF{TEntity, TKey}"/> class.
         /// </summary>
         /// <param name="unitOfWork">The unit Of Work.</param>
         /// <param name="serviceProvider">The service Provider.</param>
-        public TGenericRepositoryEF(IQueryableUnitOfWork unitOfWork, IServiceProvider serviceProvider)
+        public TGenericRepositoryEF(IQueryableUnitOfWork unitOfWork, IServiceProvider serviceProvider, IAuditFeature auditFeature)
         {
             this.unitOfWork = unitOfWork;
             this.serviceProvider = serviceProvider;
+            this.auditFeature = auditFeature;
         }
 
         /// <summary>
@@ -630,6 +635,45 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             {
                 throw new ArgumentNullException(nameof(expression));
             }
+        }
+
+        public async Task<ImmutableList<IAudit>> GetAuditsAsync(TKey id)
+        {
+            var entityId = id.ToString();
+            var entityTable = this.unitOfWork.FindEntityType(typeof(TEntity)).GetTableName();
+
+            var entity = await this.GetEntityAsync(id, isReadOnlyMode: true);
+            var auditedProperties = entity
+                .GetType()
+                .GetProperties()
+                .Where(p => p.GetType().CustomAttributes.Any(a => a.AttributeType == typeof(AuditIncludeAttribute)))
+                .ToList();
+
+            var audits = new List<IAudit>();
+            var entityAuditType = this.auditFeature.AuditTypeMapper(entity.GetType());
+            var entityAuditQuery = this.unitOfWork.RetrieveSet(entityAuditType);
+
+            if (entityAuditType == typeof(AuditLog))
+            {
+                var entityAuditLogQuery = entityAuditQuery
+                     .Cast<AuditLog>()
+                     .Where(x => x.Table == entityTable && x.PrimaryKey.Equals($"{{\"Id\"{entityId}}}"))
+                     .OrderByDescending(x => x.AuditDate);
+
+                audits.AddRange(entityAuditLogQuery);
+            }
+
+            if (entityAuditType == typeof(AuditEntity))
+            {
+                var entityAuditEntityQuery = entityAuditQuery
+                    .Cast<AuditEntity>()
+                    .Where(x => x.EntityId.Equals(entityId))
+                    ;
+
+                audits.AddRange(entityAuditEntityQuery);
+            }
+
+            return [.. audits.OrderByDescending(x => x.AuditDate)];
         }
     }
 }

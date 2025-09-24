@@ -42,7 +42,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         /// <param name="modelBuilder">The model builder.</param>
         protected static void CreateAirportAuditModel(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AirportAudit>().HasKey(p => new { p.AuditId });
+            modelBuilder.Entity<AirportAudit>().HasKey(p => new { p.Id });
             modelBuilder.Entity<AirportAudit>().Property(p => p.Name).IsRequired().HasMaxLength(64);
             modelBuilder.Entity<AirportAudit>().Property(p => p.City).IsRequired().HasMaxLength(64);
         }

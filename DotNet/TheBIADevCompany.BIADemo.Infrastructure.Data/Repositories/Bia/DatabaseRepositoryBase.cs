@@ -6,6 +6,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories.Bia
 {
     using System;
     using BIA.Net.Core.Domain.Entity.Interface;
+    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Data;
     using BIA.Net.Core.Infrastructure.Data.Repositories;
     using Microsoft.EntityFrameworkCore;
@@ -27,9 +28,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories.Bia
         /// </summary>
         /// <param name="dataContextFactory">The data context factory.</param>
         /// <param name="serviceProvider">The service provider.</param>
+        /// <param name="auditFeature">The audit feature.</param>
         /// <param name="databaseConfigurationKey">The database configuration key.</param>
-        protected DatabaseRepositoryBase(DataContextFactory dataContextFactory, IServiceProvider serviceProvider, string databaseConfigurationKey)
-            : base(dataContextFactory.GetQueryableUnitOfWork(databaseConfigurationKey), serviceProvider)
+        protected DatabaseRepositoryBase(DataContextFactory dataContextFactory, IServiceProvider serviceProvider, IAuditFeature auditFeature, string databaseConfigurationKey)
+            : base(dataContextFactory.GetQueryableUnitOfWork(databaseConfigurationKey), serviceProvider, auditFeature)
         {
             this.dataContextFactory = dataContextFactory;
             this.databaseConfigurationKey = databaseConfigurationKey;

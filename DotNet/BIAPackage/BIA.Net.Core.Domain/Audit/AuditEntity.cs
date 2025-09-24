@@ -1,34 +1,13 @@
-// <copyright file="AuditEntity.cs" company="BIA">
-// Copyright (c) BIA. All rights reserved.
-// </copyright>
-
-namespace BIA.Net.Core.Domain.Audit
+﻿namespace BIA.Net.Core.Domain.Audit
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
 
-    /// <summary>
-    /// The user entity.
-    /// </summary>
-    public class AuditEntity : VersionedTable, IAuditEntity
+    public class AuditEntity : BaseAudit, IAuditEntity
     {
-        /// <summary>
-        /// Gets or sets the AuditDate.
-        /// </summary>
-        public DateTime AuditDate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the AuditAction.
-        /// </summary>
-        public string AuditAction { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Audit Changes.
-        /// </summary>
-        public string AuditChanges { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Audit User login.
-        /// </summary>
-        public string AuditUserLogin { get; set; }
+        public string EntityId { get ; set; }
     }
 }

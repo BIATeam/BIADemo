@@ -39,7 +39,7 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
         /// <param name="modelBuilder">The model builder.</param>
         protected virtual void CreateUserAuditModel(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserAudit>().HasKey(u => new { u.AuditId });
+            modelBuilder.Entity<UserAudit>().HasKey(u => new { u.Id });
             modelBuilder.Entity<UserAudit>().Property(u => u.FirstName).IsRequired().HasMaxLength(50);
             modelBuilder.Entity<UserAudit>().Property(u => u.LastName).IsRequired().HasMaxLength(50);
             modelBuilder.Entity<UserAudit>().Property(u => u.Login).IsRequired().HasMaxLength(50);

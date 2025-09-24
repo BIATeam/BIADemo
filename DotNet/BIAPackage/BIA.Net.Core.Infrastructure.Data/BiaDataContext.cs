@@ -12,6 +12,7 @@ namespace BIA.Net.Core.Infrastructure.Data
     using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
+    using Audit.EntityFramework;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
@@ -376,6 +377,11 @@ namespace BIA.Net.Core.Infrastructure.Data
             string pattern = @"column\s'([^']*)'";
             Match match = Regex.Match(sqlExceptionMessage, pattern);
             return match.Success ? match.Groups[1].Value : string.Empty;
+        }
+
+        public IQueryable RetrieveSet(Type entityType)
+        {
+            return this.Set(entityType) as IQueryable;
         }
     }
 }

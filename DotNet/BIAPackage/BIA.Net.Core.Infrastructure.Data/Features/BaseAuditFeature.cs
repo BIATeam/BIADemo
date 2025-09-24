@@ -5,6 +5,7 @@
 namespace BIA.Net.Core.Infrastructure.Data.Features
 {
     using System;
+    using System.Linq;
     using System.Security.Principal;
     using System.Text.Json;
     using System.Threading.Tasks;
@@ -44,27 +45,25 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                 this.UseAuditFeatures(serviceProvider);
 #pragma warning restore S1699 // Constructors should only call non-overridable methods
 #pragma warning restore CA2214 // Do not call overridable methods in constructors
-                Audit.Core.Configuration.AuditDisabled = false;
+                global::Audit.Core.Configuration.AuditDisabled = false;
 
                 // Log some Audit in dedicated table and all other in AuditLog
                 Audit.Core.Configuration.Setup()
                     .UseEntityFramework(_ => _
                         .AuditTypeMapper(type => this.AuditTypeMapper(type))
-                        .AuditEntityAction<IAuditEntity>((evt, entry, auditEntity) =>
+                        .AuditEntityAction<IAudit>((evt, entry, audit) =>
                         {
                             if (evt.Environment.Exception != null)
                             {
                                 return Task.FromResult(false);
                             }
 
-                            if (auditEntity.GetType() == typeof(AuditLog))
+                            return audit switch
                             {
-                                return this.GeneralAudit(evt, entry, (AuditLog)auditEntity);
-                            }
-                            else
-                            {
-                                return this.DedicatedAudit(evt, entry, auditEntity);
-                            }
+                                AuditLog auditLog => this.GeneralAudit(evt, entry, auditLog),
+                                AuditEntity auditEntity => this.DedicatedAudit(evt, entry, auditEntity),
+                                _ => throw new Common.Exceptions.BadBiaFrameworkUsageException($"Unknown audit of type {audit.GetType()}"),
+                            };
                         })
                         .IgnoreMatchedProperties(t => t.Name == "AuditLog")); // do not copy properties for generic audit
             }
@@ -100,7 +99,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>The type of the Audit entity.</returns>
-        protected virtual Type AuditTypeMapper(Type type)
+        public virtual Type AuditTypeMapper(Type type)
         {
             switch (type.Name)
             {
@@ -122,7 +121,6 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
         {
             if (entry.Changes?.Count > 0 || entry.Action != "Update")
             {
-                // auditEntity is of IAudit type
                 auditEntity.Table = entry.Table;
                 auditEntity.PrimaryKey = JsonSerializer.Serialize(entry.PrimaryKey);
                 auditEntity.AuditDate = DateTime.UtcNow;
@@ -156,11 +154,11 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
         /// <param name="entry">The entry.</param>
         /// <param name="auditEntity">The audit entity.</param>
         /// <returns>True if a change is logged in audit table.</returns>
-        protected virtual Task<bool> DedicatedAudit(AuditEvent evt, EventEntry entry, IAuditEntity auditEntity)
+        protected virtual Task<bool> DedicatedAudit(AuditEvent evt, EventEntry entry, AuditEntity auditEntity)
         {
             if (entry.Changes?.Count > 0 || entry.Action != "Update")
             {
-                // auditEntity is of IAudit type
+                auditEntity.EntityId = entry.PrimaryKey.First().Value.ToString();
                 auditEntity.AuditDate = DateTime.UtcNow;
                 auditEntity.AuditUserLogin = evt.Environment.CustomFields["UserLogin"].ToString();
                 auditEntity.AuditAction = entry.Action; // Insert, Update, Delete

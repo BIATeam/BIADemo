@@ -12,18 +12,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
     /// <summary>
     /// The airport entity.
     /// </summary>
-    public class AirportAudit : AuditEntity, IEntity<int>
+    public class AirportAudit : AuditEntity
     {
-        /// <summary>
-        /// Gets or sets the id.
-        /// </summary>
-        public int AuditId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the id.
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Gets or sets the name of the airport.
         /// </summary>

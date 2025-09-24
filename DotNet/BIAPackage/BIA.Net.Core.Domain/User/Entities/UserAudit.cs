@@ -10,18 +10,8 @@ namespace BIA.Net.Core.Domain.User.Entities
     /// <summary>
     /// The user entity.
     /// </summary>
-    public class UserAudit : AuditEntity, IEntity<int>
+    public class UserAudit : AuditEntity
     {
-        /// <summary>
-        /// Gets or sets the id.
-        /// </summary>
-        public int AuditId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the id.
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Gets or sets the first name.
         /// </summary>

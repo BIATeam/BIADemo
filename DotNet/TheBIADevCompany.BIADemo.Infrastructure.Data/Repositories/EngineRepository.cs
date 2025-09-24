@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories
     using System;
     using System.Linq;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Data;
     using BIA.Net.Core.Infrastructure.Data.Repositories;
     using Microsoft.EntityFrameworkCore;
@@ -24,8 +25,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories
         /// </summary>
         /// <param name="unitOfWork">The unit Of Work.</param>
         /// <param name="serviceProvider">The service provider.</param>
-        public EngineRepository(IQueryableUnitOfWork unitOfWork, IServiceProvider serviceProvider)
-            : base(unitOfWork, serviceProvider)
+        /// <param name="auditFeature">The audit feature.</param>
+        public EngineRepository(IQueryableUnitOfWork unitOfWork, IServiceProvider serviceProvider, IAuditFeature auditFeature)
+            : base(unitOfWork, serviceProvider, auditFeature)
         {
         }
 

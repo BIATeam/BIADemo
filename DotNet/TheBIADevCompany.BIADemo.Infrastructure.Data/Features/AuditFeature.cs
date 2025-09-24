@@ -28,7 +28,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>The type of the Audit entity.</returns>
-        protected override Type AuditTypeMapper(Type type)
+        public override Type AuditTypeMapper(Type type)
         {
             switch (type.Name)
             {
