@@ -148,9 +148,14 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         }
 
         /// <inheritdoc />
-        public async Task<int> DeleteByIdsAsync(IEnumerable<TKey> ids, int batchSize = 100)
+        public async Task<int> DeleteByIdsAsync(IEnumerable<TKey> ids, int? batchSize = 100)
         {
             int deletedCount = 0;
+
+            if (batchSize.HasValue && batchSize.Value < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(batchSize));
+            }
 
             List<TKey> idList = ids?.ToList();
 
@@ -159,24 +164,58 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
                 return deletedCount;
             }
 
-            for (int i = 0; i < idList.Count; i = i + batchSize)
+            DbSet<TEntity> dbset = this.RetrieveSet();
+
+            if (batchSize.HasValue)
             {
-                List<TKey> packages = idList.Skip(i).Take(batchSize).ToList();
-                deletedCount += await this.ExecuteDeleteAsync(x => packages.Contains(x.Id));
+                for (int i = 0; i < idList.Count; i = i + batchSize.Value)
+                {
+                    List<TKey> packages = idList.Skip(i).Take(batchSize.Value).ToList();
+                    deletedCount += await dbset.Where(x => packages.Contains(x.Id)).ExecuteDeleteAsync();
+                }
+            }
+            else
+            {
+                deletedCount = await dbset.Where(x => idList.Contains(x.Id)).ExecuteDeleteAsync();
             }
 
             return deletedCount;
         }
 
         /// <inheritdoc />
-        public async Task<int> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> filter)
+        public async Task<int> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> filter, int? batchSize = 100)
         {
+            int deletedCount = 0;
+
+            if (batchSize.HasValue && batchSize.Value < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(batchSize));
+            }
+
             if (filter == null)
             {
                 throw new ArgumentNullException(nameof(filter));
             }
 
-            return await this.RetrieveSet().Where(filter).ExecuteDeleteAsync();
+            IQueryable<TEntity> query = this.RetrieveSet().Where(filter);
+
+            if (batchSize.HasValue)
+            {
+                bool hasMore = true;
+                while (hasMore)
+                {
+                    int deleted = await query.Take(batchSize.Value).ExecuteDeleteAsync();
+                    deletedCount += deleted;
+
+                    hasMore = deleted > 0;
+                }
+            }
+            else
+            {
+                deletedCount = await query.ExecuteDeleteAsync();
+            }
+
+            return deletedCount;
         }
 
         /// <inheritdoc />
@@ -721,6 +760,11 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             if (itemList?.Any() != true)
             {
                 return elementAffectedCount;
+            }
+
+            if (batchSize < 1)
+            {
+               throw new ArgumentOutOfRangeException(nameof(batchSize));
             }
 
             for (int i = 0; i < itemList.Count; i = i + batchSize)

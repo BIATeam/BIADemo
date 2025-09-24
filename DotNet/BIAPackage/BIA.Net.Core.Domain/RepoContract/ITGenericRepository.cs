@@ -191,14 +191,15 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="ids">List of identifiers.</param>
         /// <param name="batchSize">Batch size.</param>
         /// <returns>Number of entities deleted.</returns>
-        Task<int> DeleteByIdsAsync(IEnumerable<TKey> ids, int batchSize = 100);
+        Task<int> DeleteByIdsAsync(IEnumerable<TKey> ids, int? batchSize = 100);
 
         /// <summary>
         /// Execute a delete operation according to a filter.
         /// </summary>
         /// <param name="filter">Filter expression.</param>
+        /// <param name="batchSize">Batch size.</param>
         /// <returns>Number of entities deleted.</returns>
-        Task<int> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> filter);
+        Task<int> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> filter, int? batchSize = 100);
 
         /// <summary>
         /// Massively add entities in batch.
