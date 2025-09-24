@@ -653,7 +653,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             var entityAuditType = this.auditFeature.AuditTypeMapper(entity.GetType());
             var entityAuditQuery = this.unitOfWork.RetrieveSet(entityAuditType);
 
-            if (entityAuditType == typeof(AuditLog))
+            if (entityAuditType.BaseType == typeof(AuditLog))
             {
                 var entityAuditLogQuery = entityAuditQuery
                      .Cast<AuditLog>()
@@ -663,7 +663,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
                 audits.AddRange(entityAuditLogQuery);
             }
 
-            if (entityAuditType == typeof(AuditEntity))
+            if (entityAuditType.BaseType == typeof(AuditEntity))
             {
                 var entityAuditEntityQuery = entityAuditQuery
                     .Cast<AuditEntity>()

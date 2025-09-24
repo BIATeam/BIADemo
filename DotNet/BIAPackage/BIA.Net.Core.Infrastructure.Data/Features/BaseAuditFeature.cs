@@ -158,7 +158,8 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
         {
             if (entry.Changes?.Count > 0 || entry.Action != "Update")
             {
-                auditEntity.EntityId = entry.PrimaryKey.First().Value.ToString();
+                auditEntity.EntityId = auditEntity.Id.ToString();
+                auditEntity.Id = 0;
                 auditEntity.AuditDate = DateTime.UtcNow;
                 auditEntity.AuditUserLogin = evt.Environment.CustomFields["UserLogin"].ToString();
                 auditEntity.AuditAction = entry.Action; // Insert, Update, Delete

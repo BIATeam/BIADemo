@@ -6,9 +6,12 @@ namespace BIA.Net.Core.Application.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
+    using Audit.EntityFramework;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.Audit;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Entity.Interface;
@@ -334,6 +337,11 @@ namespace BIA.Net.Core.Application.Services
                 await this.Repository.UnitOfWork.CommitAsync();
                 return await this.GetAsync(id);
             });
+        }
+
+        public async Task GetHistoric(TKey id)
+        {
+            var audits = await this.Repository.GetAuditsAsync(id);
         }
     }
 }

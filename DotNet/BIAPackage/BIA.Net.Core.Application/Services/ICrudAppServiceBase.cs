@@ -304,5 +304,7 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="isFixed">Fixed status.</param>
         /// <returns>Updated DTO.</returns>
         Task<TDto> UpdateFixedAsync(TKey id, bool isFixed);
+
+        Task GetHistoric(TKey id);
     }
 }

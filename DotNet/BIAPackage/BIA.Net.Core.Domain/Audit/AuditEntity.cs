@@ -8,6 +8,6 @@
 
     public class AuditEntity : BaseAudit, IAuditEntity
     {
-        public string EntityId { get ; set; }
+        public string EntityId { get; set; }
     }
 }
