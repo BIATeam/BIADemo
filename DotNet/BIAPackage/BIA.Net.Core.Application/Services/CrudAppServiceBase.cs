@@ -6,14 +6,17 @@ namespace BIA.Net.Core.Application.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.Immutable;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
     using Audit.EntityFramework;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Audit;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Historic;
     using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.QueryOrder;
@@ -21,6 +24,7 @@ namespace BIA.Net.Core.Application.Services
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// The base class for all CRUD application service.
@@ -339,9 +343,40 @@ namespace BIA.Net.Core.Application.Services
             });
         }
 
-        public async Task GetHistoric(TKey id)
+        public virtual async Task<List<EntityHistoricEntryDto>> GetHistoricAsync(TKey id)
         {
-            var audits = await this.Repository.GetAuditsAsync(id);
+            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
+            {
+                var audits = await this.Repository.GetAuditsAsync(id);
+
+                var historic = new List<EntityHistoricEntryDto>();
+                foreach (var audit in audits)
+                {
+                    var entry = new EntityHistoricEntryDto
+                    {
+                        EntityEntryId = audit.EntityId,
+                        IsLinkedEntityEntry = !string.IsNullOrWhiteSpace(audit.ParentEntityId),
+                        EntryDateTime = audit.AuditDate,
+                        EntryUserLogin = audit.AuditUserLogin,
+                        EntryType = audit.AuditAction switch
+                        {
+                            "Insert" => EntityHistoricEntryType.Insert,
+                            "Update" => EntityHistoricEntryType.Update,
+                            "Delete" => EntityHistoricEntryType.Delete,
+                            _ => throw new BadBiaFrameworkUsageException($"Unknown audit action {audit.AuditAction}"),
+                        },
+                    };
+
+                    if (entry.EntryType == EntityHistoricEntryType.Update)
+                    {
+                        entry.EntityEntryModifications = JsonConvert.DeserializeObject<List<EntityHistoricEntryModification>>(audit.AuditChanges);
+                    }
+
+                    historic.Add(entry);
+                }
+
+                return historic;
+            });
         }
     }
 }

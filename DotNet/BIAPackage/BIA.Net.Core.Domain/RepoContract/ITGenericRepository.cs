@@ -190,6 +190,6 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="isFixed">Fixed status.</param>
         void UpdateFixedAsync(TEntity item, bool isFixed);
 
-        Task<ImmutableList<IAudit>> GetAuditsAsync(TKey id);
+        Task<ImmutableList<AuditEntity>> GetAuditsAsync(TKey id);
     }
 }

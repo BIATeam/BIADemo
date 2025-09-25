@@ -640,9 +640,9 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             }
         }
 
-        public async Task<ImmutableList<IAudit>> GetAuditsAsync(TKey id)
+        public async Task<ImmutableList<AuditEntity>> GetAuditsAsync(TKey id)
         {
-            var audits = new List<IAudit>(this.GetAudits(typeof(TEntity), id.ToString(), nameof(IEntity<TKey>.Id)));
+            var audits = new List<AuditEntity>(this.GetAudits(typeof(TEntity), id.ToString(), nameof(IEntity<TKey>.Id)));
 
             var entityType = this.unitOfWork.FindEntityType(typeof(TEntity));
             foreach (var navigation in entityType.GetNavigations())
@@ -667,7 +667,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             return [.. audits.OrderByDescending(x => x.AuditDate)];
         }
 
-        private IEnumerable<IAudit> GetAudits(Type entityType, string entityIdValue, string entityIdProperty, bool hasParent = false)
+        private IEnumerable<AuditEntity> GetAudits(Type entityType, string entityIdValue, string entityIdProperty, bool hasParent = false)
         {
             if (entityType is null || string.IsNullOrWhiteSpace(entityIdValue) || string.IsNullOrWhiteSpace(entityIdProperty))
             {

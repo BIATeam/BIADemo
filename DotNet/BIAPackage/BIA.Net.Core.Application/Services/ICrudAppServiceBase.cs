@@ -6,10 +6,12 @@ namespace BIA.Net.Core.Application.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.Immutable;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Historic;
     using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
@@ -305,6 +307,6 @@ namespace BIA.Net.Core.Application.Services
         /// <returns>Updated DTO.</returns>
         Task<TDto> UpdateFixedAsync(TKey id, bool isFixed);
 
-        Task GetHistoric(TKey id);
+        Task<List<EntityHistoricEntryDto>> GetHistoricAsync(TKey id);
     }
 }
