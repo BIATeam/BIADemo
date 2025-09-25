@@ -685,7 +685,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             if (hasParent)
             {
                 var parentPropertyIdPattern = $"\"{entityIdProperty}\":\"{entityIdValue}\"";
-                return query.Where(x => x.ParentEntityId != null && x.ParentEntityId.Contains(parentPropertyIdPattern));
+                return query.Where(x => x.AuditAction != "Update" && x.ParentEntityId != null && x.ParentEntityId.Contains(parentPropertyIdPattern));
             }
 
             return query.Where(x => x.EntityId.Equals(entityIdValue));

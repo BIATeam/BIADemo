@@ -30,18 +30,16 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
         /// <returns>The type of the Audit entity.</returns>
         public override Type AuditTypeMapper(Type type)
         {
-            switch (type.Name)
+            return type.Name switch
             {
                 // Begin BIADemo
-                case "Airport":
-                    return typeof(AirportAudit);
-                case "PlaneAirport":
-                    return typeof(PlaneAirportAudit);
+                nameof(Plane) => typeof(PlaneAudit),
+                nameof(Engine) => typeof(EngineAudit),
+                nameof(PlaneAirport) => typeof(PlaneAirportAudit),
 
                 // End BIADemo
-                default:
-                    return base.AuditTypeMapper(type);
-            }
+                _ => base.AuditTypeMapper(type),
+            };
         }
     }
 }

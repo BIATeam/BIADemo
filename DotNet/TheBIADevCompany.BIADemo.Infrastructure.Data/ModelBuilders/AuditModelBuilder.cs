@@ -29,25 +29,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 
             // Add here the project specific audit model creation.
             // Begin BIADemo
-            CreateAirportAuditModel(modelBuilder);
+            modelBuilder.Entity<PlaneAudit>().Property(p => p.EntityId).IsRequired();
+
+            modelBuilder.Entity<EngineAudit>().Property(p => p.EntityId).IsRequired();
+
+            modelBuilder.Entity<PlaneAirportAudit>().Property(p => p.EntityId).IsRequired();
 
             // End BIADemo
         }
-
-        // Begin BIADemo
-
-        /// <summary>
-        /// Create the model for aiports.
-        /// </summary>
-        /// <param name="modelBuilder">The model builder.</param>
-        protected static void CreateAirportAuditModel(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<AirportAudit>().HasKey(p => new { p.Id });
-            modelBuilder.Entity<AirportAudit>().Property(p => p.EntityId).IsRequired();
-            modelBuilder.Entity<AirportAudit>().Property(p => p.Name).IsRequired().HasMaxLength(64);
-            modelBuilder.Entity<AirportAudit>().Property(p => p.City).IsRequired().HasMaxLength(64);
-        }
-
-        // End BIADemo
     }
 }
