@@ -23,6 +23,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using BIA.Net.Core.Domain.Specification;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
@@ -641,57 +642,53 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
 
         public async Task<ImmutableList<IAudit>> GetAuditsAsync(TKey id)
         {
-            var entity = await this.GetEntityAsync(id, isReadOnlyMode: true);
-            var entityAuditedProperties = new List<PropertyInfo>();
-            foreach (var entityProperty in entity.GetType().GetProperties().Where(p => !p.CustomAttributes.Any(a => a.AttributeType == typeof(AuditIgnoreAttribute))))
-            {
-                var entityPropertyType = entityProperty.PropertyType;
-                if (entityPropertyType.GetGenericArguments().Length == 1)
-                {
-                    var nestedType = entityPropertyType.GetGenericArguments()[0];
-                    if (nestedType.CustomAttributes.Any(a => a.AttributeType == typeof(AuditIncludeAttribute)))
-                    {
-                        entityAuditedProperties.Add(entityProperty);
-                    }
-                }
-                else if (entityPropertyType.CustomAttributes.Any(a => a.AttributeType == typeof(AuditIncludeAttribute)))
-                {
-                    entityAuditedProperties.Add(entityProperty);
-                }
-            }
-
+            var entityType = this.unitOfWork.FindEntityType(typeof(TEntity));
             var audits = new List<IAudit>();
-            audits.AddRange(this.GetAudits(typeof(TEntity), id.ToString()));
-            foreach (var property in entityAuditedProperties)
+            audits.AddRange(this.GetAudits(typeof(TEntity), id.ToString(), nameof(IEntity<TKey>.Id)));
+
+            foreach (var navigation in entityType.GetNavigations())
             {
-                var propertyValue = entity.GetType().GetProperty(property.Name).GetValue(entity, null);
+                var navigationEntityType = navigation.TargetEntityType.ClrType;
+                if (!navigationEntityType.CustomAttributes.Any(a => a.AttributeType == typeof(AuditIncludeAttribute)))
+                {
+                    continue;
+                }
+
+                var navigationFK = navigation.ForeignKey.Properties[0]?.Name;
+                audits.AddRange(this.GetAudits(navigationEntityType, id.ToString(), navigationFK));
             }
 
             return [.. audits.OrderByDescending(x => x.AuditDate)];
         }
 
-        private IEnumerable<IAudit> GetAudits(Type entityType, string entityId)
+        private IEnumerable<IAudit> GetAudits(Type entityType, string entityIdValue, string entityIdProperty)
         {
+            if (entityType is null || string.IsNullOrWhiteSpace(entityIdValue) || string.IsNullOrWhiteSpace(entityIdProperty))
+            {
+                return [];
+            }
+
             var entityTable = this.unitOfWork.FindEntityType(entityType).GetTableName();
             var entityAuditType = this.auditFeature.AuditTypeMapper(entityType);
             var entityAuditQuery = this.unitOfWork.RetrieveSet(entityAuditType);
 
-            if (entityType == typeof(AuditLog))
+            if (entityAuditType == typeof(AuditLog))
             {
+                var idPattern = $"\"{entityIdProperty}\":\"{entityIdValue}\"";
+                var idPatternWithoutQuotes = $"\"{entityIdProperty}\":{entityIdValue}";
                 return entityAuditQuery
                      .Cast<AuditLog>()
-                     .Where(x => x.Table == entityTable && x.PrimaryKey.Equals($"{{\"Id\"{entityId}}}"))
-                     .OrderByDescending(x => x.AuditDate);
+                     .Where(x => x.Table == entityTable && (x.PrimaryKey.Contains(idPattern) || x.PrimaryKey.Contains(idPatternWithoutQuotes)));
             }
 
-            if (entityType == typeof(AuditEntity))
+            if (entityAuditType == typeof(AuditEntity))
             {
                 return entityAuditQuery
                     .Cast<AuditEntity>()
-                    .Where(x => x.EntityId.Equals(entityId));
+                    .Where(x => x.EntityId.Equals(entityIdValue));
             }
 
-            return Enumerable.Empty<IAudit>();
+            return [];
         }
     }
 }
