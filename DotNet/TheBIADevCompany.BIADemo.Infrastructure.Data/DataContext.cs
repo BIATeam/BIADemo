@@ -176,6 +176,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// </summary>
         public DbSet<Pilot> Pilots { get; set; }
 
+        public DbSet<PlaneAirportAudit> PlaneAirportAudit { get; set; }
+
         // End BIADemo
 #endif
 

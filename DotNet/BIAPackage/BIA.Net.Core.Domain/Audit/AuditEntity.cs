@@ -9,5 +9,6 @@
     public class AuditEntity : BaseAudit, IAuditEntity
     {
         public string EntityId { get; set; }
+        public string ParentEntityId { get; set; }
     }
 }

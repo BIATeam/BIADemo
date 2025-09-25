@@ -35,6 +35,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
                 // Begin BIADemo
                 case "Airport":
                     return typeof(AirportAudit);
+                case "PlaneAirport":
+                    return typeof(PlaneAirportAudit);
 
                 // End BIADemo
                 default:

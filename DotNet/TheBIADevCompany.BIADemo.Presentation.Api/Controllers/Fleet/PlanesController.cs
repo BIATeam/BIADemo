@@ -101,6 +101,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             try
             {
                 var dto = await this.planeService.GetAsync(id);
+                await this.planeService.GetHistoric(id);
                 return this.Ok(dto);
             }
             catch (ElementNotFoundException)

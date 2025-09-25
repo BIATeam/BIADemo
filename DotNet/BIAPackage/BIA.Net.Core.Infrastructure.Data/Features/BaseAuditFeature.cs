@@ -12,6 +12,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
     using Audit.Core;
     using Audit.EntityFramework;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
+    using BIA.Net.Core.Domain.Attributes;
     using BIA.Net.Core.Domain.Audit;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.RepoContract;
@@ -160,6 +161,14 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
             {
                 auditEntity.EntityId = auditEntity.Id.ToString();
                 auditEntity.Id = 0;
+
+                var auditParentProperties = auditEntity
+                    .GetType()
+                    .GetProperties()
+                    .Where(p => p.CustomAttributes.Any(a => a.AttributeType == typeof(AuditParentIdPropertyAttribute)))
+                    .Select(p => $"\"{p.Name}\":\"{p.GetValue(auditEntity, null)}\"");
+                auditEntity.ParentEntityId = auditParentProperties.Any() ? string.Join(",", auditParentProperties) : null;
+
                 auditEntity.AuditDate = DateTime.UtcNow;
                 auditEntity.AuditUserLogin = evt.Environment.CustomFields["UserLogin"].ToString();
                 auditEntity.AuditAction = entry.Action; // Insert, Update, Delete
