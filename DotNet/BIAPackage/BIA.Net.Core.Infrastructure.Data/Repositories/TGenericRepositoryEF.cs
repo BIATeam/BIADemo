@@ -648,6 +648,11 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
 
             foreach (var navigation in entityType.GetNavigations())
             {
+                if (navigation.PropertyInfo.CustomAttributes.Any(a => a.AttributeType == typeof(AuditIgnoreAttribute)))
+                {
+                    continue;
+                }
+
                 var navigationEntityType = navigation.TargetEntityType.ClrType;
                 if (!navigationEntityType.CustomAttributes.Any(a => a.AttributeType == typeof(AuditIncludeAttribute)))
                 {
