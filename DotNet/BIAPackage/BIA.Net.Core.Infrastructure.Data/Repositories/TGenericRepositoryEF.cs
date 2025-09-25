@@ -668,34 +668,21 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
                 return [];
             }
 
-            var entityTable = this.unitOfWork.FindEntityType(entityType).GetTableName();
             var entityAuditType = this.auditFeature.AuditTypeMapper(entityType);
-            var entityAuditQuery = this.unitOfWork.RetrieveSet(entityAuditType);
-
-            if (!hasParent && entityAuditType == typeof(AuditLog))
+            if (entityAuditType.BaseType != typeof(AuditEntity))
             {
-                var idPattern = $"\"{entityIdProperty}\":\"{entityIdValue}\"";
-                var idPatternWithoutQuotes = $"\"{entityIdProperty}\":{entityIdValue}";
-                return entityAuditQuery
-                     .Cast<AuditLog>()
-                     .Where(x => x.Table == entityTable && (x.PrimaryKey.Contains(idPattern) || x.PrimaryKey.Contains(idPatternWithoutQuotes)));
+                return [];
             }
 
-            if (entityAuditType.BaseType == typeof(AuditEntity))
+            var query = this.unitOfWork.RetrieveSet(entityAuditType).Cast<AuditEntity>();
+
+            if (!hasParent)
             {
-                var query = entityAuditQuery
-                    .Cast<AuditEntity>();
-
-                if (!hasParent)
-                {
-                    return query.Where(x => x.EntityId.Equals(entityIdValue));
-                }
-
-                var parentPropertyIdPattern = $"\"{entityIdProperty}\":\"{entityIdValue}\"";
-                return query.Where(x => x.ParentEntityId != null && x.ParentEntityId.Contains(parentPropertyIdPattern));
+                return query.Where(x => x.EntityId.Equals(entityIdValue));
             }
 
-            return [];
+            var parentPropertyIdPattern = $"\"{entityIdProperty}\":\"{entityIdValue}\"";
+            return query.Where(x => x.ParentEntityId != null && x.ParentEntityId.Contains(parentPropertyIdPattern));
         }
     }
 }
