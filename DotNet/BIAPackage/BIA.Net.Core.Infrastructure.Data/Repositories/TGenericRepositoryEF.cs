@@ -642,10 +642,9 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
 
         public async Task<ImmutableList<IAudit>> GetAuditsAsync(TKey id)
         {
-            var entityType = this.unitOfWork.FindEntityType(typeof(TEntity));
-            var audits = new List<IAudit>();
-            audits.AddRange(this.GetAudits(typeof(TEntity), id.ToString(), nameof(IEntity<TKey>.Id)));
+            var audits = new List<IAudit>(this.GetAudits(typeof(TEntity), id.ToString(), nameof(IEntity<TKey>.Id)));
 
+            var entityType = this.unitOfWork.FindEntityType(typeof(TEntity));
             foreach (var navigation in entityType.GetNavigations())
             {
                 if (navigation.PropertyInfo.CustomAttributes.Any(a => a.AttributeType == typeof(AuditIgnoreAttribute)))
@@ -659,8 +658,10 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
                     continue;
                 }
 
-                var navigationFK = navigation.ForeignKey.Properties[0]?.Name;
-                audits.AddRange(this.GetAudits(navigationEntityType, id.ToString(), navigationFK, true));
+                var navigationPropertyName = navigation.ForeignKey.Properties.FirstOrDefault(p =>
+                    p.GetContainingForeignKeys().Any(fk => fk.PrincipalEntityType.ClrType == entityType.ClrType))?.Name;
+
+                audits.AddRange(this.GetAudits(navigationEntityType, id.ToString(), navigationPropertyName, true));
             }
 
             return [.. audits.OrderByDescending(x => x.AuditDate)];
@@ -679,15 +680,15 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
                 return [];
             }
 
-            var query = this.unitOfWork.RetrieveSet(entityAuditType).Cast<AuditEntity>();
+            var query = this.unitOfWork.RetrieveSet(entityAuditType).Cast<AuditEntity>().AsNoTracking();
 
-            if (!hasParent)
+            if (hasParent)
             {
-                return query.Where(x => x.EntityId.Equals(entityIdValue));
+                var parentPropertyIdPattern = $"\"{entityIdProperty}\":\"{entityIdValue}\"";
+                return query.Where(x => x.ParentEntityId != null && x.ParentEntityId.Contains(parentPropertyIdPattern));
             }
 
-            var parentPropertyIdPattern = $"\"{entityIdProperty}\":\"{entityIdValue}\"";
-            return query.Where(x => x.ParentEntityId != null && x.ParentEntityId.Contains(parentPropertyIdPattern));
+            return query.Where(x => x.EntityId.Equals(entityIdValue));
         }
     }
 }
