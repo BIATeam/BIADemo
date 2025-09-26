@@ -46,23 +46,23 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                 this.UseAuditFeatures(serviceProvider);
 #pragma warning restore S1699 // Constructors should only call non-overridable methods
 #pragma warning restore CA2214 // Do not call overridable methods in constructors
-                global::Audit.Core.Configuration.AuditDisabled = false;
+                Audit.Core.Configuration.AuditDisabled = false;
 
                 // Log some Audit in dedicated table and all other in AuditLog
                 Audit.Core.Configuration.Setup()
                     .UseEntityFramework(_ => _
                         .AuditTypeMapper(type => this.AuditTypeMapper(type))
-                        .AuditEntityAction<IAudit>((evt, entry, audit) =>
+                        .AuditEntityAction<IAudit>(async (evt, entry, audit) =>
                         {
                             if (evt.Environment.Exception != null)
                             {
-                                return Task.FromResult(false);
+                                return false;
                             }
 
                             return audit switch
                             {
-                                AuditLog auditLog => this.GeneralAudit(evt, entry, auditLog),
-                                AuditEntity auditEntity => this.DedicatedAudit(evt, entry, auditEntity),
+                                AuditLog auditLog => await this.GeneralAudit(evt, entry, auditLog),
+                                AuditEntity auditEntity => await this.DedicatedAudit(evt, entry, auditEntity),
                                 _ => throw new Common.Exceptions.BadBiaFrameworkUsageException($"Unknown audit of type {audit.GetType()}"),
                             };
                         })
@@ -155,19 +155,28 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
         /// <param name="entry">The entry.</param>
         /// <param name="auditEntity">The audit entity.</param>
         /// <returns>True if a change is logged in audit table.</returns>
-        protected virtual Task<bool> DedicatedAudit(AuditEvent evt, EventEntry entry, AuditEntity auditEntity)
+        protected virtual async Task<bool> DedicatedAudit(AuditEvent evt, EventEntry entry, AuditEntity auditEntity)
         {
             if (entry.Changes?.Count > 0 || entry.Action != "Update")
             {
                 auditEntity.EntityId = auditEntity.Id.ToString();
                 auditEntity.Id = 0;
 
-                var auditParentProperties = auditEntity
+                var auditLinkedProperties = auditEntity
                     .GetType()
                     .GetProperties()
-                    .Where(p => p.CustomAttributes.Any(a => a.AttributeType == typeof(AuditParentIdPropertyAttribute)))
+                    .Where(p => p.CustomAttributes.Any(a => a.AttributeType == typeof(AuditLinkedPropertyIdentifierAttribute)))
                     .Select(p => $"\"{p.Name}\":\"{p.GetValue(auditEntity, null)}\"");
-                auditEntity.ParentEntityId = auditParentProperties.Any() ? string.Join(",", auditParentProperties) : null;
+                auditEntity.ParentEntityId = auditLinkedProperties.Any() ? string.Join(",", auditLinkedProperties) : null;
+
+                var entityEntry = entry.GetEntry();
+                if (entry.Action == "Insert")
+                {
+                    var loadReferencesTasks = entityEntry.References.Where(n => !n.IsLoaded).Select(n => n.LoadAsync());
+                    await Task.WhenAll(loadReferencesTasks);
+                }
+
+                auditEntity.FillSpecificProperties(entityEntry.Entity);
 
                 auditEntity.AuditDate = DateTime.UtcNow;
                 auditEntity.AuditUserLogin = evt.Environment.CustomFields["UserLogin"].ToString();
@@ -185,11 +194,11 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                         break;
                 }
 
-                return Task.FromResult(true);
+                return true;
             }
             else
             {
-                return Task.FromResult(false);
+                return false;
             }
         }
     }

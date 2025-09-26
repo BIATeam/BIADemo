@@ -1430,6 +1430,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<int>("PlaneId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Reference")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
@@ -1734,6 +1737,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<int>("AirportId")
                         .HasColumnType("int");
 
+                    b.Property<string>("AirportName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("AuditAction")
                         .HasColumnType("nvarchar(max)");
 
@@ -1755,6 +1761,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.Property<int>("PlaneId")
                         .HasColumnType("int");
+
+                    b.Property<string>("PlaneName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()

@@ -7,7 +7,13 @@
     using System.Threading.Tasks;
 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    public class AuditParentIdPropertyAttribute : Attribute
+    public class AuditLinkedPropertyIdentifierAttribute : Attribute
     {
+        public AuditLinkedPropertyIdentifierAttribute(Type linkedEntityType)
+        {
+            LinkedEntityType = linkedEntityType;
+        }
+
+        public Type LinkedEntityType { get; }
     }
 }

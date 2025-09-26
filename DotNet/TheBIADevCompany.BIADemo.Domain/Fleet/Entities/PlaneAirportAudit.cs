@@ -8,11 +8,26 @@
     using BIA.Net.Core.Domain.Attributes;
     using BIA.Net.Core.Domain.Audit;
 
+    [AuditLinkedEntity(linkedEntityType: typeof(Plane), linkedEntityPropertyName: nameof(Plane.ConnectingAirports))]
     public class PlaneAirportAudit : AuditEntity
     {
-        [AuditParentIdProperty]
+        [AuditLinkedPropertyIdentifier(linkedEntityType: typeof(Plane))]
         public int AirportId { get; set; }
-        [AuditParentIdProperty]
+        [AuditLinkedPropertyIdentifier(linkedEntityType: typeof(Plane))]
         public int PlaneId { get; set; }
+        [AuditLinkedPropertyValue(linkedEntityType: typeof(Plane))]
+        public string AirportName { get; set; }
+        public string PlaneName { get; set; }
+
+        public override void FillSpecificProperties<TEntity>(TEntity entity)
+        {
+            if (entity is not PlaneAirport planeAirport)
+            {
+                return;
+            }
+
+            AirportName = planeAirport.Airport.Name;
+            PlaneName = planeAirport.Plane.Msn;
+        }
     }
 }

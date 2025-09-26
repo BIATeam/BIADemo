@@ -10,5 +10,8 @@
     {
         public string EntityId { get; set; }
         public string ParentEntityId { get; set; }
+        public virtual void FillSpecificProperties<TEntity>(TEntity entity)
+        {
+        }
     }
 }

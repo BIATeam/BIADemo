@@ -13,6 +13,7 @@ namespace BIA.Net.Core.Application.Services
     using Audit.EntityFramework;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.Attributes;
     using BIA.Net.Core.Domain.Audit;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
@@ -352,10 +353,14 @@ namespace BIA.Net.Core.Application.Services
                 var historic = new List<EntityHistoricEntryDto>();
                 foreach (var audit in audits)
                 {
+                    var auditLinkedEntityAttribute = audit.GetType().GetCustomAttributes(false).FirstOrDefault(a => a is AuditLinkedEntityAttribute linkedEntityAttribute && linkedEntityAttribute.LinkedEntityType == typeof(TEntity)) as AuditLinkedEntityAttribute;
+                    var auditLinkedEntityPropertyValue = audit.GetType().GetProperties().FirstOrDefault(p => p.GetCustomAttributes(false).Any(a => a is AuditLinkedPropertyValueAttribute linkedPropertyValue && linkedPropertyValue.LinkedEntityType == typeof(TEntity)))?.GetValue(audit, null);
+
                     var entry = new EntityHistoricEntryDto
                     {
-                        EntityEntryId = audit.EntityId,
-                        IsLinkedEntityEntry = !string.IsNullOrWhiteSpace(audit.ParentEntityId),
+                        IsLinkedEntityEntry = auditLinkedEntityAttribute != null,
+                        LinkedEntityEntryValue = auditLinkedEntityPropertyValue?.ToString(),
+                        LinkedEntityPropertyName = auditLinkedEntityAttribute?.LinkedEntityPropertyName,
                         EntryDateTime = audit.AuditDate,
                         EntryUserLogin = audit.AuditUserLogin,
                         EntryType = audit.AuditAction switch

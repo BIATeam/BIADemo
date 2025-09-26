@@ -8,9 +8,14 @@
     using BIA.Net.Core.Domain.Attributes;
     using BIA.Net.Core.Domain.Audit;
 
+
+    [AuditLinkedEntity(typeof(Plane), nameof(Plane.Engines))]
     public class EngineAudit : AuditEntity
     {
-        [AuditParentIdProperty]
+        [AuditLinkedPropertyIdentifier(linkedEntityType: typeof(Plane))]
         public int PlaneId { get; set; }
+
+        [AuditLinkedPropertyValue(linkedEntityType: typeof(Plane))]
+        public string Reference { get; set; }
     }
 }

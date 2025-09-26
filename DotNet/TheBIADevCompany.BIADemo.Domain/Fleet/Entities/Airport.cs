@@ -5,8 +5,8 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
 {
+    using Audit.EntityFramework;
     using BIA.Net.Core.Domain.Entity;
-    using global::Audit.EntityFramework;
 
     /// <summary>
     /// The airport entity.
