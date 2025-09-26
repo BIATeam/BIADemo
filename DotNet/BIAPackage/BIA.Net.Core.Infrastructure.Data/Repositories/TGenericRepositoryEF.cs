@@ -25,6 +25,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata;
     using Microsoft.Extensions.DependencyInjection;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// The class representing a GenericRepository.
@@ -684,8 +685,8 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
 
             if (hasParent)
             {
-                var parentPropertyIdPattern = $"\"{entityIdProperty}\":\"{entityIdValue}\"";
-                return query.Where(x => x.AuditAction != "Update" && x.ParentEntityId != null && x.ParentEntityId.Contains(parentPropertyIdPattern));
+                var linkedEntityData = JsonConvert.SerializeObject(new AuditLinkedEntityData(typeof(TEntity).Name, entityIdProperty, entityIdValue));
+                return query.Where(x => x.AuditAction != "Update" && x.LinkedEntities != null && x.LinkedEntities.Contains(linkedEntityData));
             }
 
             return query.Where(x => x.EntityId.Equals(entityIdValue));

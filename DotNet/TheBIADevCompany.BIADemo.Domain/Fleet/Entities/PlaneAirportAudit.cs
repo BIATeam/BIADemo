@@ -11,7 +11,7 @@
     [AuditLinkedEntity(linkedEntityType: typeof(Plane), linkedEntityPropertyName: nameof(Plane.ConnectingAirports))]
     public class PlaneAirportAudit : AuditEntity
     {
-        [AuditLinkedPropertyIdentifier(linkedEntityType: typeof(Plane))]
+        [AuditLinkedPropertyIdentifier(linkedEntityType: typeof(Airport))]
         public int AirportId { get; set; }
         [AuditLinkedPropertyIdentifier(linkedEntityType: typeof(Plane))]
         public int PlaneId { get; set; }

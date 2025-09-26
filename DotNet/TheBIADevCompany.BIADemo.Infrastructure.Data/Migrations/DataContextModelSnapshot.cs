@@ -1049,13 +1049,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("LinkedEntities")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Login")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("ParentEntityId")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -1424,7 +1424,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ParentEntityId")
+                    b.Property<string>("LinkedEntities")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PlaneId")
@@ -1756,7 +1756,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ParentEntityId")
+                    b.Property<string>("LinkedEntities")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PlaneId")
@@ -1799,7 +1799,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ParentEntityId")
+                    b.Property<string>("LinkedEntities")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("RowVersion")

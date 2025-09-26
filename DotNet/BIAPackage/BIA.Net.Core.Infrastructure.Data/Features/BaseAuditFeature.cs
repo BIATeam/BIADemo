@@ -5,7 +5,9 @@
 namespace BIA.Net.Core.Infrastructure.Data.Features
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using System.Security.Principal;
     using System.Text.Json;
     using System.Threading.Tasks;
@@ -162,12 +164,14 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                 auditEntity.EntityId = auditEntity.Id.ToString();
                 auditEntity.Id = 0;
 
-                var auditLinkedProperties = auditEntity
-                    .GetType()
-                    .GetProperties()
-                    .Where(p => p.CustomAttributes.Any(a => a.AttributeType == typeof(AuditLinkedPropertyIdentifierAttribute)))
-                    .Select(p => $"\"{p.Name}\":\"{p.GetValue(auditEntity, null)}\"");
-                auditEntity.ParentEntityId = auditLinkedProperties.Any() ? string.Join(",", auditLinkedProperties) : null;
+                var auditLinkedEntityData = new List<AuditLinkedEntityData>();
+                foreach (var property in auditEntity.GetType().GetProperties().Where(p => p.CustomAttributes.Any(a => a.AttributeType == typeof(AuditLinkedPropertyIdentifierAttribute))))
+                {
+                    var linkedEntityType = property.GetCustomAttribute<AuditLinkedPropertyIdentifierAttribute>().LinkedEntityType;
+                    auditLinkedEntityData.Add(new AuditLinkedEntityData(linkedEntityType.Name, property.Name, property.GetValue(auditEntity, null).ToString()));
+                }
+
+                auditEntity.LinkedEntities = auditLinkedEntityData.Count != 0 ? JsonSerializer.Serialize(auditLinkedEntityData) : null;
 
                 var entityEntry = entry.GetEntry();
                 if (entry.Action == "Insert")

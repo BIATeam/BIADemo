@@ -9,7 +9,7 @@
     public class AuditEntity : BaseAudit, IAuditEntity
     {
         public string EntityId { get; set; }
-        public string ParentEntityId { get; set; }
+        public string LinkedEntities { get; set; }
         public virtual void FillSpecificProperties<TEntity>(TEntity entity)
         {
         }
