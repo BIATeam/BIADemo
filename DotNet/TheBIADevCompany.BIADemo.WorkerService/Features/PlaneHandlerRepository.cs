@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
     using System.Data.Common;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
@@ -38,11 +39,11 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
         public PlaneHandlerRepository(IConfiguration configuration, IClientForHubService clientForHubService, IServiceProvider serviceProvider)
             : base(
                   serviceProvider,
-                  configuration.GetDatabaseConnectionString("ProjectDatabase"),
-                  configuration.GetDBEngine("ProjectDatabase"),
+                  configuration.GetDatabaseConnectionString(BiaConstants.DatabaseConfiguration.DefaultKey),
+                  configuration.GetDBEngine(BiaConstants.DatabaseConfiguration.DefaultKey),
                   "SELECT Id, SiteId, RowVersion FROM [dbo].[Planes]",
                   "Id",
-                  useSqlDataBroker: configuration.GetSqlDataBroker("ProjectDatabase"))
+                  useSqlDataBroker: configuration.GetSqlDataBroker(BiaConstants.DatabaseConfiguration.DefaultKey))
         {
             this.clientForHubService = clientForHubService;
         }

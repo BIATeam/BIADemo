@@ -29,8 +29,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         private static void CreatePilotModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Pilot>()
-            .Property(e => e.Id)
-            .HasDefaultValueSql("NEWSEQUENTIALID()");
+            .Property(e => e.Id);
             modelBuilder.Entity<Pilot>().Property(p => p.IdentificationNumber).IsRequired().HasMaxLength(64);
         }
     }
