@@ -9,5 +9,6 @@
 
     public class PlaneAudit : AuditEntity
     {
+        public string CurrentAirportName { get; set; }
     }
 }

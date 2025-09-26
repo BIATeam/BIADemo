@@ -12,7 +12,7 @@
     [AuditLinkedEntity(typeof(Plane), nameof(Plane.Engines))]
     public class EngineAudit : AuditEntity
     {
-        [AuditLinkedPropertyIdentifier(linkedEntityType: typeof(Plane))]
+        [AuditLinkedEntityPropertyIdentifier(linkedEntityType: typeof(Plane))]
         public int PlaneId { get; set; }
 
         [AuditLinkedPropertyValue(linkedEntityType: typeof(Plane))]

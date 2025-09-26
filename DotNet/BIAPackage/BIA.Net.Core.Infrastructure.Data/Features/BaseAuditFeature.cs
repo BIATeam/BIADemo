@@ -165,9 +165,9 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                 auditEntity.Id = 0;
 
                 var auditLinkedEntityData = new List<AuditLinkedEntityData>();
-                foreach (var property in auditEntity.GetType().GetProperties().Where(p => p.CustomAttributes.Any(a => a.AttributeType == typeof(AuditLinkedPropertyIdentifierAttribute))))
+                foreach (var property in auditEntity.GetType().GetProperties().Where(p => p.CustomAttributes.Any(a => a.AttributeType == typeof(AuditLinkedEntityPropertyIdentifierAttribute))))
                 {
-                    var linkedEntityType = property.GetCustomAttribute<AuditLinkedPropertyIdentifierAttribute>().LinkedEntityType;
+                    var linkedEntityType = property.GetCustomAttribute<AuditLinkedEntityPropertyIdentifierAttribute>().LinkedEntityType;
                     auditLinkedEntityData.Add(new AuditLinkedEntityData(linkedEntityType.Name, property.Name, property.GetValue(auditEntity, null).ToString()));
                 }
 
@@ -191,8 +191,6 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                         auditEntity.AuditChanges = JsonSerializer.Serialize(entry.Changes);
                         break;
                     case "Insert":
-                        auditEntity.AuditChanges = JsonSerializer.Serialize(entry.ColumnValues);
-                        break;
                     case "Delete":
                         auditEntity.AuditChanges = JsonSerializer.Serialize(entry.ColumnValues);
                         break;
