@@ -10,9 +10,13 @@ namespace TheBIADevCompany.BIADemo.DeployDB
     using BIA.Net.Core.Application.Clean;
 #if BIA_FRONT_FEATURE
     using BIA.Net.Core.Application.Job;
+    using BIA.Net.Core.Common;
 #endif
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Enum;
+    using BIA.Net.Core.Infrastructure.Data;
     using Hangfire;
+    using Hangfire.PostgreSql;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -41,6 +45,8 @@ namespace TheBIADevCompany.BIADemo.DeployDB
         /// <returns>Task.</returns>
         public static async Task Main(string[] args)
         {
+            AppContext.SetSwitch(BiaConstants.AppContextSwitch.Npgsql.EnableLegacyTimestampBehavior, true);
+
             var env = Environment.GetEnvironmentVariable(Constants.Application.Environment);
             await new HostBuilder()
                 .ConfigureAppConfiguration((hostingContext, config) =>
@@ -55,37 +61,77 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                 {
                     IConfiguration configuration = hostingContext.Configuration;
 
-                    services.AddDbContext<DataContext>(options =>
-                    {
-                        options.UseSqlServer(configuration.GetDatabaseConnectionString("ProjectDatabase"));
-                    });
-                    services.AddHostedService<DeployDBService>();
+                    string connectionString = configuration.GetDatabaseConnectionString(BiaConstants.DatabaseConfiguration.DefaultKey);
 
-                    // Comment those lines if you do not use hangfire
-                    services.AddHangfireServer(hfOptions =>
+                    if (!string.IsNullOrWhiteSpace(connectionString))
                     {
-                        hfOptions.ServerName = "DeployHangfireDB";
-                        hfOptions.Queues = new string[] { "Deploy" };
-                    });
-                    services.AddHangfire(config =>
-                    {
-                        config.UseSqlServerStorage(configuration.GetDatabaseConnectionString("ProjectDatabase"));
+                        DbProvider dbEngine = configuration.GetProvider(BiaConstants.DatabaseConfiguration.DefaultKey);
 
-                        // Initialize here the recuring jobs
+                        if (dbEngine == DbProvider.PostGreSql)
+                        {
+                            services.AddDbContext<IDbContextDatabase, DataContextPostGreSql>(options =>
+                            {
+                                options.UseNpgsql(connectionString);
+                            });
+                        }
+                        else
+                        {
+                            services.AddDbContext<IDbContextDatabase, DataContext>(options =>
+                            {
+                                options.UseSqlServer(connectionString);
+                            });
+                        }
+
+                        services.AddDbContext<IQueryableUnitOfWork, DataContext>(options =>
+                        {
+                            if (dbEngine == DbProvider.PostGreSql)
+                            {
+                                options.UseNpgsql(connectionString);
+                            }
+                            else
+                            {
+                                options.UseSqlServer(connectionString);
+                            }
+                        });
+
+                        services.AddHostedService<DeployDBService>();
+
+                        // Comment those lines if you do not use hangfire
+                        services.AddHangfireServer(hfOptions =>
+                        {
+                            hfOptions.ServerName = "DeployHangfireDB";
+                            hfOptions.Queues = new string[] { "Deploy" };
+                        });
+                        services.AddHangfire(config =>
+                        {
+                            if (connectionString != null)
+                            {
+                                if (dbEngine == DbProvider.PostGreSql)
+                                {
+                                    config.UsePostgreSqlStorage(options => options.UseNpgsqlConnection(connectionString));
+                                }
+                                else
+                                {
+                                    config.UseSqlServerStorage(connectionString);
+                                }
+                            }
+
+                            // Initialize here the recuring jobs
 #if BIA_FRONT_FEATURE
-                        string projectName = configuration["Project:Name"];
-                        RecurringJob.AddOrUpdate<WakeUpTask>($"{projectName}.{typeof(WakeUpTask).Name}", t => t.Run(), configuration["Tasks:WakeUp:CRON"]);
-                        RecurringJob.AddOrUpdate<SynchronizeUserTask>($"{projectName}.{typeof(SynchronizeUserTask).Name}", t => t.Run(), configuration["Tasks:SynchronizeUser:CRON"]);
+                            string projectName = configuration["Project:Name"];
+                            RecurringJob.AddOrUpdate<WakeUpTask>($"{projectName}.{typeof(WakeUpTask).Name}", t => t.Run(), configuration["Tasks:WakeUp:CRON"]);
+                            RecurringJob.AddOrUpdate<SynchronizeUserTask>($"{projectName}.{typeof(SynchronizeUserTask).Name}", t => t.Run(), configuration["Tasks:SynchronizeUser:CRON"]);
 
-                        // Begin BIADemo
-                        RecurringJob.AddOrUpdate<WithPermissionTask>($"{projectName}.{typeof(WithPermissionTask).Name}", t => t.Run(), Cron.Never);
-                        RecurringJob.AddOrUpdate<EngineManageTask>($"{projectName}.{typeof(EngineManageTask).Name}", t => t.Run(), Cron.Never);
-                        RecurringJob.AddOrUpdate<ArchiveTask>($"{projectName}.{typeof(ArchiveTask).Name}", t => t.Run(), configuration["Tasks:Archive:CRON"]);
-                        RecurringJob.AddOrUpdate<CleanTask>($"{projectName}.{typeof(CleanTask).Name}", t => t.Run(), configuration["Tasks:Clean:CRON"]);
+                            // Begin BIADemo
+                            RecurringJob.AddOrUpdate<WithPermissionTask>($"{projectName}.{typeof(WithPermissionTask).Name}", t => t.Run(), Cron.Never);
+                            RecurringJob.AddOrUpdate<EngineManageTask>($"{projectName}.{typeof(EngineManageTask).Name}", t => t.Run(), Cron.Never);
+                            RecurringJob.AddOrUpdate<ArchiveTask>($"{projectName}.{typeof(ArchiveTask).Name}", t => t.Run(), configuration["Tasks:Archive:CRON"]);
+                            RecurringJob.AddOrUpdate<CleanTask>($"{projectName}.{typeof(CleanTask).Name}", t => t.Run(), configuration["Tasks:Clean:CRON"]);
 
-                        // End BIADemo
+                            // End BIADemo
 #endif
-                    });
+                        });
+                    }
                 })
                 .ConfigureLogging((hostingContext, logging) =>
                 {

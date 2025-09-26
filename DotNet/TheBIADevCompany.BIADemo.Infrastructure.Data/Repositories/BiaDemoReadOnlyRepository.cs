@@ -6,6 +6,7 @@
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories
 {
     using System;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Domain.Entity.Interface;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
@@ -25,7 +26,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories
         /// <param name="dataContextFactory">The data context factory.</param>
         /// <param name="serviceProvider">The service provider.</param>
         public BiaDemoReadOnlyRepository(DataContextFactory dataContextFactory, IServiceProvider serviceProvider)
-            : base(dataContextFactory, serviceProvider, "ProjectDatabaseReadOnly")
+            : base(dataContextFactory, serviceProvider, BiaConstants.DatabaseConfiguration.DefaultKeyReadOnly)
         {
         }
     }

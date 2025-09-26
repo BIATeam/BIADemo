@@ -5,6 +5,7 @@
 #pragma warning disable SA1200 // Using directives should be placed correctly
 using System;
 using BIA.Net.Core.Application.Authentication;
+using BIA.Net.Core.Common;
 using BIA.Net.Core.Common.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -20,6 +21,8 @@ Logger logger = default;
 // NLog: setup the logger first to catch all errors
 try
 {
+    AppContext.SetSwitch(BiaConstants.AppContextSwitch.Npgsql.EnableLegacyTimestampBehavior, true);
+
     logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
     string environment = GetEnvironment(logger);
 

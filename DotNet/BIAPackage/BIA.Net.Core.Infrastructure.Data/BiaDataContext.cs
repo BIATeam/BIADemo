@@ -7,11 +7,13 @@ namespace BIA.Net.Core.Infrastructure.Data
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Data;
+    using System.Data.Common;
     using System.Linq;
     using System.Reflection;
     using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
@@ -29,7 +31,7 @@ namespace BIA.Net.Core.Infrastructure.Data
     /// <summary>
     /// Bia Data Context.
     /// </summary>
-    public class BiaDataContext : DbContext, IQueryableUnitOfWork
+    public class BiaDataContext : DbContext, IQueryableUnitOfWork, IDbContextDatabase
     {
         /// <summary>
         /// The current logger.
@@ -148,7 +150,7 @@ namespace BIA.Net.Core.Infrastructure.Data
             where TEntity : class
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            if (this.Database.ProviderName.EndsWith(".SqlServer"))
+            if (this.Database.IsSqlServer())
             {
                 await SqlServerBulkHelper.InsertAsync(this, items?.ToList());
             }
@@ -254,6 +256,24 @@ namespace BIA.Net.Core.Infrastructure.Data
                     }
                 }
             }
+        }
+
+        /// <inheritdoc />
+        public void Migrate()
+        {
+            this.Database.Migrate();
+        }
+
+        /// <inheritdoc />
+        public DbConnection GetDbConnection()
+        {
+            return this.Database.GetDbConnection();
+        }
+
+        /// <inheritdoc />
+        public void SetCommandTimeout(TimeSpan timeout)
+        {
+            this.Database.SetCommandTimeout(timeout);
         }
 
         /// <summary>
