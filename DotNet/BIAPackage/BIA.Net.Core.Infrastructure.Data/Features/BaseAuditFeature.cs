@@ -7,34 +7,42 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Reflection;
+    using System.Runtime.CompilerServices;
     using System.Security.Principal;
     using System.Text.Json;
+    using System.Threading;
     using System.Threading.Tasks;
     using Audit.Core;
     using Audit.EntityFramework;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Attributes;
     using BIA.Net.Core.Domain.Audit;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.ChangeTracking;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Options;
+    using static System.Formats.Asn1.AsnWriter;
 
     /// <summary>
     /// The Audit Feature.
     /// </summary>
     public class BaseAuditFeature : IAuditFeature
     {
+        private readonly IServiceProvider serviceProvider;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseAuditFeature" /> class.
         /// </summary>
-        /// <param name="configuration">the application configuration.</param>
         /// <param name="commonFeaturesConfigurationOptions">The common features configuration options.</param>
         /// <param name="serviceProvider">The <see cref="IServiceProvider"/>.</param>
-        public BaseAuditFeature(IConfiguration configuration, IOptions<CommonFeatures> commonFeaturesConfigurationOptions, IServiceProvider serviceProvider)
+        public BaseAuditFeature(IOptions<CommonFeatures> commonFeaturesConfigurationOptions, IServiceProvider serviceProvider)
         {
             Audit.Core.Configuration.AuditDisabled = true;
             AuditConfiguration auditConfiguration = commonFeaturesConfigurationOptions.Value.AuditConfiguration;
@@ -70,6 +78,8 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                         })
                         .IgnoreMatchedProperties(t => t.Name == "AuditLog")); // do not copy properties for generic audit
             }
+
+            this.serviceProvider = serviceProvider;
         }
 
         /// <summary>
@@ -165,7 +175,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                 auditEntity.Id = 0;
 
                 var auditLinkedEntityData = new List<AuditLinkedEntityData>();
-                foreach (var property in auditEntity.GetType().GetProperties().Where(p => p.CustomAttributes.Any(a => a.AttributeType == typeof(AuditLinkedEntityPropertyIdentifierAttribute))))
+                foreach (var property in auditEntity.GetType().GetProperties().Where(p => p.GetCustomAttribute<AuditLinkedEntityPropertyIdentifierAttribute>() != null))
                 {
                     var linkedEntityType = property.GetCustomAttribute<AuditLinkedEntityPropertyIdentifierAttribute>().LinkedEntityType;
                     auditLinkedEntityData.Add(new AuditLinkedEntityData(linkedEntityType.Name, property.Name, property.GetValue(auditEntity, null).ToString()));
@@ -188,7 +198,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                 switch (entry.Action)
                 {
                     case "Update":
-                        auditEntity.AuditChanges = JsonSerializer.Serialize(entry.Changes);
+                        await this.SetUpdateAuditChanges(auditEntity, entityEntry, entry.Changes);
                         break;
                     case "Insert":
                     case "Delete":
@@ -202,6 +212,191 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
             {
                 return false;
             }
+        }
+
+        private async Task SetUpdateAuditChanges(AuditEntity auditEntity, EntityEntry entityEntry, IReadOnlyList<EventEntryChange> changes)
+        {
+            var auditChanges = new List<AuditChange>();
+            var auditLinkedPropertyProperties = auditEntity
+                .GetType()
+                .GetProperties()
+                .Where(p => p.GetCustomAttribute<AuditLinkedEntityPropertyAttribute>() is not null)
+                .ToList();
+
+            foreach (var change in changes)
+            {
+                var auditLinkedPropertyProperty = auditLinkedPropertyProperties
+                    .FirstOrDefault(x => x.GetCustomAttribute<AuditLinkedEntityPropertyAttribute>().LinkedEntityPropertyIdentifier.Equals(change.ColumnName));
+
+                if (auditLinkedPropertyProperty is null)
+                {
+                    auditChanges.Add(new AuditChange(
+                        change.ColumnName,
+                        change.OriginalValue,
+                        change.OriginalValue.ToString(),
+                        change.NewValue,
+                        change.NewValue.ToString()));
+                    continue;
+                }
+
+                var auditLinkedPropertyAttribute = auditLinkedPropertyProperty.GetCustomAttribute<AuditLinkedEntityPropertyAttribute>();
+                var auditLinkedPropertyReference = entityEntry.References.FirstOrDefault(x => x.Metadata.ClrType == auditLinkedPropertyAttribute.LinkedEntityType)
+                    ?? throw new BadBiaFrameworkUsageException($"Unable to find any reference of type {auditLinkedPropertyAttribute.LinkedEntityType} into {entityEntry.Entity.GetType()}");
+
+                if (!auditLinkedPropertyReference.IsLoaded)
+                {
+                    await auditLinkedPropertyReference.LoadAsync();
+                }
+
+                var linkedEntity = auditLinkedPropertyReference.TargetEntry.Entity;
+                var auditLinkedPropertyReferenceDisplayProperty = linkedEntity.GetType().GetProperty(auditLinkedPropertyAttribute.LinkedEntityPropertyDisplay)
+                    ?? throw new BadBiaFrameworkUsageException($"Unable to find property {auditLinkedPropertyAttribute.LinkedEntityPropertyDisplay} into {linkedEntity.GetType()}");
+
+                var newDisplay = auditLinkedPropertyReferenceDisplayProperty.GetValue(linkedEntity, null).ToString();
+                auditEntity.GetType().GetProperty(auditLinkedPropertyProperty.Name).SetValue(auditEntity, newDisplay, null);
+
+                var oldDisplay = await this.RetrieveOldDisplayChange(auditEntity, change.ColumnName)
+                    ?? await this.RetrieveOldDisplayChangeFromPreviousEntity(linkedEntity.GetType(), change.OriginalValue, auditLinkedPropertyAttribute.LinkedEntityPropertyDisplay);
+
+                auditChanges.Add(new AuditChange(
+                    change.ColumnName,
+                    change.OriginalValue,
+                    oldDisplay,
+                    change.NewValue,
+                    newDisplay));
+            }
+
+            auditEntity.AuditChanges = JsonSerializer.Serialize(auditChanges);
+        }
+
+        private async Task<string> RetrieveOldDisplayChangeFromPreviousEntity(Type entityType, object identifierValue, string displayPropertyName)
+        {
+            if (identifierValue == null)
+            {
+                return null;
+            }
+
+            using var scope = this.serviceProvider.CreateScope();
+            var unitOfWork = scope.ServiceProvider.GetRequiredService<IQueryableUnitOfWorkNoTracking>();
+            var entityTypeInfo = unitOfWork.FindEntityType(entityType);
+            var primaryKey = entityTypeInfo.FindPrimaryKey();
+            if (primaryKey.Properties.Count != 1)
+            {
+                throw new BadBiaFrameworkUsageException("Composite PK not supported here.");
+            }
+
+            var identifierProperty = primaryKey.Properties[0];
+            var identifierPropertyName = identifierProperty.Name;
+            var identifierPropertyType = identifierProperty.ClrType;
+
+            var identifierKey = ConvertKey(identifierValue, identifierPropertyType);
+            var entitySet = unitOfWork.RetrieveSet(entityType);
+            var entityExpressionParameter = Expression.Parameter(entityType, "e");
+
+            // EF.Property<PK>(e, identifierPropertyName) == identifierKey
+            var identifierKeyPropertyExpression = Expression.Call(
+                typeof(EF),
+                nameof(EF.Property),
+                [identifierPropertyType],
+                entityExpressionParameter,
+                Expression.Constant(identifierPropertyName));
+
+            var identifierKeyPredicateExpression = Expression.Lambda(
+                Expression.Equal(
+                    identifierKeyPropertyExpression,
+                    Expression.Constant(identifierKey, identifierPropertyType)),
+                entityExpressionParameter);
+
+            var identifierKeyWhereExpression = Expression.Call(
+                typeof(Queryable),
+                nameof(Queryable.Where),
+                [entityType],
+                entitySet.Expression,
+                identifierKeyPredicateExpression);
+
+            // projection EF.Property<object>(e, displayPropertyName)
+            var displayPropertyExpression = Expression.Call(
+                typeof(EF),
+                nameof(EF.Property),
+                [typeof(object)],
+                entityExpressionParameter,
+                Expression.Constant(displayPropertyName));
+
+            var displayPropertySelectorExpression = Expression.Lambda(displayPropertyExpression, entityExpressionParameter);
+
+            var displayPropertySelectExpression = Expression.Call(
+                typeof(Queryable),
+                nameof(Queryable.Select),
+                [entityType, typeof(object)],
+                identifierKeyWhereExpression,
+                displayPropertySelectorExpression);
+
+            // query
+            var query = entitySet.Provider.CreateQuery<object>(displayPropertySelectExpression);
+
+            // FirstOrDefaultAsync
+            var firstOrDefaultAsync = typeof(EntityFrameworkQueryableExtensions)
+                .GetMethods()
+                .First(m => m.Name == nameof(EntityFrameworkQueryableExtensions.FirstOrDefaultAsync))
+                .MakeGenericMethod(typeof(object));
+
+            var task = (Task<object>)firstOrDefaultAsync.Invoke(null, [query, CancellationToken.None])!;
+            var result = await task.ConfigureAwait(false);
+
+            return result?.ToString();
+        }
+
+        private static object ConvertKey(object rawKey, Type targetType)
+        {
+            if (rawKey == null)
+            {
+                return null;
+            }
+
+            var src = rawKey.GetType();
+
+            if (targetType.IsAssignableFrom(src))
+            {
+                return rawKey;
+            }
+
+            if (targetType.IsEnum)
+            {
+                return Enum.Parse(targetType, rawKey.ToString()!);
+            }
+
+            if (targetType == typeof(Guid))
+            {
+                return rawKey is Guid g ? g : Guid.Parse(rawKey.ToString()!);
+            }
+
+            var t = Nullable.GetUnderlyingType(targetType) ?? targetType;
+            return Convert.ChangeType(rawKey, t, System.Globalization.CultureInfo.InvariantCulture);
+        }
+
+        private async Task<string> RetrieveOldDisplayChange(AuditEntity auditEntity, string changePropertyName)
+        {
+            using var scope = this.serviceProvider.CreateScope();
+            var unitOfWork = scope.ServiceProvider.GetRequiredService<IQueryableUnitOfWorkNoTracking>();
+
+            await foreach (var rawAuditChanges in unitOfWork
+                .RetrieveSet(auditEntity.GetType())
+                .Cast<AuditEntity>()
+                .AsNoTracking()
+                .OrderByDescending(x => x.AuditDate)
+                .Where(x => x.EntityId.Equals(auditEntity.EntityId) && x.AuditChanges.Contains(changePropertyName))
+                .Select(x => x.AuditChanges)
+                .AsAsyncEnumerable())
+            {
+                var auditChanges = JsonSerializer.Deserialize<List<AuditChange>>(rawAuditChanges);
+                var previousAuditChange = auditChanges.FirstOrDefault(x => x.ColumnName == changePropertyName);
+                if (previousAuditChange is not null)
+                {
+                    return previousAuditChange.NewDisplay;
+                }
+            }
+
+            return null;
         }
     }
 }

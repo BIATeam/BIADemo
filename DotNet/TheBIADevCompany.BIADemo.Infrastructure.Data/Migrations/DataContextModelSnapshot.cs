@@ -1795,6 +1795,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<string>("AuditUserLogin")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CurrentAirportName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("EntityId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

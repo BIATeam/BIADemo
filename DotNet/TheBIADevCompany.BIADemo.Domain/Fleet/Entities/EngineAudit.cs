@@ -15,7 +15,7 @@
         [AuditLinkedEntityPropertyIdentifier(linkedEntityType: typeof(Plane))]
         public int PlaneId { get; set; }
 
-        [AuditLinkedPropertyValue(linkedEntityType: typeof(Plane))]
+        [AuditLinkedPropertyDisplay(linkedEntityType: typeof(Plane))]
         public string Reference { get; set; }
     }
 }

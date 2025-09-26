@@ -15,7 +15,7 @@
         public int AirportId { get; set; }
         [AuditLinkedEntityPropertyIdentifier(linkedEntityType: typeof(Plane))]
         public int PlaneId { get; set; }
-        [AuditLinkedPropertyValue(linkedEntityType: typeof(Plane))]
+        [AuditLinkedPropertyDisplay(linkedEntityType: typeof(Plane))]
         public string AirportName { get; set; }
         public string PlaneName { get; set; }
 

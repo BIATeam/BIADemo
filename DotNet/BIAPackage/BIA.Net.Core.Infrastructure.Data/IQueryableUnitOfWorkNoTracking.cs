@@ -4,7 +4,10 @@
 
 namespace BIA.Net.Core.Infrastructure.Data
 {
+    using System.Linq;
+    using System;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata;
 
     /// <summary>
     /// The interface base for Data context with no tracking.
@@ -18,5 +21,10 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// <returns>The set of entity.</returns>
         DbSet<TEntity> RetrieveSet<TEntity>()
             where TEntity : class;
+
+        /// <inheritdoc cref="IModel.FindEntityType(Type)"/>
+        IEntityType FindEntityType(Type entityType);
+
+        IQueryable RetrieveSet(Type entityType);
     }
 }

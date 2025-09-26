@@ -11,7 +11,7 @@
     public class EntityHistoricEntryDto
     {
         public bool IsLinkedEntityEntry { get; set; }
-        public string LinkedEntityEntryValue { get; set; }
+        public string LinkedEntityEntryDisplay { get; set; }
         public string LinkedEntityPropertyName { get; set; }
         public List<EntityHistoricEntryModification> EntityEntryModifications { get; set; }
         public EntityHistoricEntryType EntryType { get; set; }

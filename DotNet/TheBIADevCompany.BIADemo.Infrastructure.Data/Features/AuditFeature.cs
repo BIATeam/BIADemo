@@ -18,10 +18,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
     /// <summary>
     /// The Audit Feature.
     /// </summary>
-    /// <param name="configuration">The configuration.</param>
-    /// <param name="commonFeaturesConfigurationOptions">The common featyres configuration options.</param>
+    /// <param name="commonFeaturesConfigurationOptions">The common features configuration options.</param>
     /// <param name="serviceProvider">The service provider.</param>
-    public class AuditFeature(IConfiguration configuration, IOptions<CommonFeatures> commonFeaturesConfigurationOptions, IServiceProvider serviceProvider) : BaseAuditFeature(configuration, commonFeaturesConfigurationOptions, serviceProvider)
+    public class AuditFeature(IOptions<CommonFeatures> commonFeaturesConfigurationOptions, IServiceProvider serviceProvider) : BaseAuditFeature(commonFeaturesConfigurationOptions, serviceProvider)
     {
         /// <summary>
         /// Audits the type mapper.

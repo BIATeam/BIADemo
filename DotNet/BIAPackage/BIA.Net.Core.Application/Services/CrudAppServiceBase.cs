@@ -354,12 +354,12 @@ namespace BIA.Net.Core.Application.Services
                 foreach (var audit in audits)
                 {
                     var auditLinkedEntityAttribute = audit.GetType().GetCustomAttributes(false).FirstOrDefault(a => a is AuditLinkedEntityAttribute linkedEntityAttribute && linkedEntityAttribute.LinkedEntityType == typeof(TEntity)) as AuditLinkedEntityAttribute;
-                    var auditLinkedEntityPropertyValue = audit.GetType().GetProperties().FirstOrDefault(p => p.GetCustomAttributes(false).Any(a => a is AuditLinkedPropertyValueAttribute linkedPropertyValue && linkedPropertyValue.LinkedEntityType == typeof(TEntity)))?.GetValue(audit, null);
+                    var auditLinkedEntityPropertyDisplay = audit.GetType().GetProperties().FirstOrDefault(p => p.GetCustomAttributes(false).Any(a => a is AuditLinkedPropertyDisplayAttribute linkedPropertyDisplay && linkedPropertyDisplay.LinkedEntityType == typeof(TEntity)))?.GetValue(audit, null);
 
                     var entry = new EntityHistoricEntryDto
                     {
                         IsLinkedEntityEntry = auditLinkedEntityAttribute != null,
-                        LinkedEntityEntryValue = auditLinkedEntityPropertyValue?.ToString(),
+                        LinkedEntityEntryDisplay = auditLinkedEntityPropertyDisplay?.ToString(),
                         LinkedEntityPropertyName = auditLinkedEntityAttribute?.LinkedEntityPropertyName,
                         EntryDateTime = audit.AuditDate,
                         EntryUserLogin = audit.AuditUserLogin,
