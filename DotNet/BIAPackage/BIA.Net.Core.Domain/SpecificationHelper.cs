@@ -208,6 +208,12 @@ namespace BIA.Net.Core.Domain
                     {
                         var culture = new CultureInfo("en-US");
                         object valueFormated = TypeDescriptor.GetConverter(expressionBody.Type).ConvertFromString(null, culture, value);
+
+                        if (valueFormated is DateTime dateValue && dateValue.Kind != DateTimeKind.Utc)
+                        {
+                            valueFormated = DateTime.SpecifyKind(dateValue, DateTimeKind.Utc);
+                        }
+
                         switch (criteria.ToLower())
                         {
                             case "gt":
@@ -259,17 +265,11 @@ namespace BIA.Net.Core.Domain
                 case "aftertoday":
                     try
                     {
-                        var culture = new CultureInfo("en-US");
-                        DateTime now = DateTime.Now.Date;
-                        DateTime tomorrow = now.AddDays(1);
+                        DateTime today = DateTime.UtcNow.Date;
+                        DateTime tomorrow = today.AddDays(1);
 
-                        object todayFormatted = TypeDescriptor.GetConverter(expressionBody.Type)
-                            .ConvertFromString(null, culture, now.ToString("o"));
-                        object tomorrowFormatted = TypeDescriptor.GetConverter(expressionBody.Type)
-                            .ConvertFromString(null, culture, tomorrow.ToString("o"));
-
-                        Expression todayExpression = Expression.Constant(todayFormatted, expressionBody.Type);
-                        Expression tomorrowExpression = Expression.Constant(tomorrowFormatted, expressionBody.Type);
+                        Expression todayExpression = Expression.Constant(today, expressionBody.Type);
+                        Expression tomorrowExpression = Expression.Constant(tomorrow, expressionBody.Type);
 
                         binaryExpression = criteria.ToLower() switch
                         {

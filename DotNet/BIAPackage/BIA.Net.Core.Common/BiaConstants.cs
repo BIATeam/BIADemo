@@ -161,5 +161,23 @@ namespace BIA.Net.Core.Common
             /// </summary>
             public const string DefaultKeyReadOnly = "ProjectDatabaseReadOnly";
         }
+
+        /// <summary>
+        /// Constants for database provider specific AppContext switches.
+        /// </summary>
+        public static class AppContextSwitch
+        {
+            /// <summary>
+            /// PostgreSQL switches.
+            /// </summary>
+            public static class Npgsql
+            {
+                /// <summary>
+                /// Enables legacy timestamp behavior in Npgsql to maintain UTC handling compatibility.
+                /// This switch prevents automatic timezone conversion that was introduced in Npgsql 6.0+.
+                /// </summary>
+                public const string EnableLegacyTimestampBehavior = "Npgsql.EnableLegacyTimestampBehavior";
+            }
+        }
     }
 }
