@@ -151,11 +151,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         {
             if (!isUnitTest)
             {
-                collection.Configure<BiaHistoryRepositoryOptions>(options =>
-                {
-                    options.AppVersion = Constants.Application.BackEndVersion;
-                });
-
                 string connectionString = configuration.GetDatabaseConnectionString(BiaConstants.DatabaseConfiguration.DefaultKey);
 
                 if (!string.IsNullOrWhiteSpace(connectionString))
@@ -169,12 +164,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                             if (dbEngine == DbProvider.PostGreSql)
                             {
                                 options.UseNpgsql(connectionString);
-                                options.ReplaceService<IHistoryRepository, BiaNpgsqlHistoryRepository>();
                             }
                             else
                             {
                                 options.UseSqlServer(connectionString);
-                                options.ReplaceService<IHistoryRepository, BiaSqlServerHistoryRepository>();
                             }
 
                             options.EnableSensitiveDataLogging();
@@ -187,12 +180,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                             if (dbEngine == DbProvider.PostGreSql)
                             {
                                 options.UseNpgsql(connectionString);
-                                options.ReplaceService<IHistoryRepository, BiaNpgsqlHistoryRepository>();
                             }
                             else
                             {
                                 options.UseSqlServer(connectionString);
-                                options.ReplaceService<IHistoryRepository, BiaSqlServerHistoryRepository>();
                             }
 
                             options.EnableSensitiveDataLogging();

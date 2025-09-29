@@ -65,7 +65,6 @@
 	  <Compile Remove="**\UserModelBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="BIA.Net.Core.Test" Version="5.1.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.*" />
     <PackageReference Include="Moq" Version="4.20.*" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.9.*" />
@@ -76,5 +75,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Presentation.Api\TheBIADevCompany.BIADemo.Presentation.Api.csproj" />
+    <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Test\BIA.Net.Core.Test.csproj" />
   </ItemGroup>
 </Project>
