@@ -28,5 +28,10 @@ namespace BIA.Net.Core.Common.Configuration
         /// The use of SQL Data broker.
         /// </summary>
         public bool SQLDataBroker { get; set; }
+
+        /// <summary>
+        /// Gets or sets the credential source.
+        /// </summary>
+        public CredentialSource CredentialSource { get; set; }
     }
 }

@@ -6,6 +6,7 @@ namespace BIA.Net.Core.Common.Configuration
 {
     using System;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using BIA.Net.Core.Common.Enum;
     using Microsoft.Extensions.Configuration;
 
@@ -67,7 +68,41 @@ namespace BIA.Net.Core.Common.Configuration
 
             var bianetSection = new BiaNetSection();
             configuration.GetSection("BiaNet").Bind(bianetSection);
-            return bianetSection.DatabaseConfigurations?.FirstOrDefault(x => x.Key == key)?.ConnectionString;
+
+            DatabaseConfiguration databaseConfiguration = bianetSection.DatabaseConfigurations?.FirstOrDefault(x => x.Key == key);
+
+            if (!string.IsNullOrWhiteSpace(databaseConfiguration?.ConnectionString))
+            {
+                string connectionString = databaseConfiguration.ConnectionString;
+
+                if (databaseConfiguration.CredentialSource != null)
+                {
+                    (string Login, string Password) credential = Helpers.CredentialHelper.RetrieveCredentials(databaseConfiguration.CredentialSource);
+
+                    if (!string.IsNullOrWhiteSpace(credential.Login) && !string.IsNullOrWhiteSpace(credential.Password))
+                    {
+                        // Search for login and password placeholders (case insensitive)
+                        var loginPattern = @"\{login\}";
+                        var passwordPattern = @"\{password\}";
+
+                        bool hasLoginPlaceholder = Regex.IsMatch(connectionString, loginPattern, RegexOptions.IgnoreCase);
+                        bool hasPasswordPlaceholder = Regex.IsMatch(connectionString, passwordPattern, RegexOptions.IgnoreCase);
+
+                        if (!hasLoginPlaceholder || !hasPasswordPlaceholder)
+                        {
+                            throw new InvalidOperationException("Connection string is malformed because it is missing the {login} and/or {password} placeholders.");
+                        }
+
+                        // Replace placeholders (case insensitive)
+                        connectionString = Regex.Replace(connectionString, loginPattern, credential.Login, RegexOptions.IgnoreCase);
+                        connectionString = Regex.Replace(connectionString, passwordPattern, credential.Password, RegexOptions.IgnoreCase);
+                    }
+                }
+
+                return connectionString;
+            }
+
+            return null;
         }
 
         /// <summary>
