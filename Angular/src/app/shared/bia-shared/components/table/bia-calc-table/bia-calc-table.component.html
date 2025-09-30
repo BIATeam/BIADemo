@@ -343,6 +343,13 @@
           <i class="pi pi-plus"></i>
         </td>
         <td
+          *ngIf="canExpandRow"
+          [class]="'bia-column-expand'"
+          [style.width]="widthExpand"
+          [alignFrozen]="alignFrozenSelect"
+          biaFrozenColumn
+          [frozen]="isSelectFrozen"></td>
+        <td
           *ngIf="showFixableState"
           [style.width]="widthSelect"
           [alignFrozen]="alignFrozenSelect"
