@@ -42,7 +42,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
                 };
 
                 credentialSource ??= keycloak.Api.TokenConf.CredentialSource;
-                (string Login, string Password) credential = CredentialRepository.RetrieveCredentials(credentialSource);
+                (string Login, string Password) credential = Common.Helpers.CredentialHelper.RetrieveCredentials(credentialSource);
 
                 tokenRequestDto.Username = credential.Login;
                 tokenRequestDto.Password = credential.Password;

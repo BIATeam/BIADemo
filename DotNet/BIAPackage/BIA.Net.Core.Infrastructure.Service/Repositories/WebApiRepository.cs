@@ -14,6 +14,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration.AuthenticationSection;
+    using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
@@ -620,7 +621,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     this.HttpClient.DefaultRequestHeaders.Add(this.AuthenticationConfiguration.ApiKeyName, this.AuthenticationConfiguration.ApiKey);
                     break;
                 case AuthenticationMode.Standard:
-                    var credentials = CredentialRepository.RetrieveCredentials(this.AuthenticationConfiguration.CredentialSource);
+                    var credentials = CredentialHelper.RetrieveCredentials(this.AuthenticationConfiguration.CredentialSource);
                     var byteArray = Encoding.ASCII.GetBytes($"{credentials.Login}:{credentials.Password}");
                     this.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
                     break;
