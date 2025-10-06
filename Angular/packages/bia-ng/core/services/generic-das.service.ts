@@ -6,10 +6,12 @@ import {
   HttpStatusCode,
 } from '@angular/common/http';
 import { Injector } from '@angular/core';
+import { HistoricEntryDto } from 'packages/bia-ng/models/dto/historic-entry-dto';
 import {
   DataResult,
   DeleteParam,
   DeletesParam,
+  GetHistoricParam,
   GetListByPostParam,
   GetListParam,
   GetParam,
@@ -268,6 +270,32 @@ export abstract class GenericDas {
     } else {
       return this.http.put<TOut>(url, param.fixed, param.options);
     }
+  }
+
+  protected getHistoricItem(
+    param: GetHistoricParam
+  ): Observable<HistoricEntryDto[]> {
+    param.endpoint = param.endpoint ?? '';
+    const url = `${this.route}${param.endpoint}${param.id}/historic`;
+
+    let obs$ = this.http.get<HistoricEntryDto[]>(url, param?.options).pipe(
+      map(data => {
+        DateHelperService.fillDate(data);
+        return data;
+      }),
+      catchError(error => {
+        return throwError(() => error);
+      })
+    );
+
+    if (
+      param?.offlineMode === true &&
+      BiaOnlineOfflineService.isModeEnabled === true
+    ) {
+      obs$ = this.getWithCatchErrorOffline(obs$, url);
+    }
+
+    return obs$;
   }
 
   protected setWithCatchErrorOffline(obs$: Observable<any>) {

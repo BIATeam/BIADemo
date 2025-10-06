@@ -29,6 +29,12 @@ export class PlaneEditComponent
   ) {
     super(injector, planeService);
     this.crudConfiguration = planeCRUDConfiguration;
+
+    this.sub.add(
+      this.planeService.crudItemHistoric$.subscribe(historic => {
+        console.warn('Historic', historic);
+      })
+    );
   }
 
   protected setPermissions(): void {

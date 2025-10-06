@@ -55,7 +55,12 @@ export class PlanesEffects {
       map(x => x?.id),
       switchMap(id => {
         return this.planeDas.get({ id: id }).pipe(
-          map(plane => FeaturePlanesActions.loadSuccess({ plane })),
+          map(plane => {
+            this.store.dispatch(
+              FeaturePlanesActions.loadHistoric({ id: plane.id })
+            );
+            return FeaturePlanesActions.loadSuccess({ plane });
+          }),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
             return of(FeaturePlanesActions.failure({ error: err }));
@@ -278,6 +283,24 @@ export class PlanesEffects {
               return of(FeaturePlanesActions.failure({ error: err }));
             })
           );
+      })
+    )
+  );
+
+  loadHistoric$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(FeaturePlanesActions.loadHistoric),
+      map(x => x?.id),
+      switchMap(id => {
+        return this.planeDas.getHistoric({ id: id }).pipe(
+          map(historic => {
+            return FeaturePlanesActions.loadHistoricSuccess({ historic });
+          }),
+          catchError(err => {
+            this.biaMessageService.showErrorHttpResponse(err);
+            return of(FeaturePlanesActions.failure({ error: err }));
+          })
+        );
       })
     )
   );

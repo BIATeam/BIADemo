@@ -101,7 +101,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             try
             {
                 var dto = await this.planeService.GetAsync(id);
-                var historic = await this.planeService.GetHistoricAsync(id);
                 return this.Ok(dto);
             }
             catch (ElementNotFoundException)
@@ -330,6 +329,29 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             try
             {
                 var dto = await this.planeService.UpdateFixedAsync(id, isFixed);
+                return this.Ok(dto);
+            }
+            catch (ElementNotFoundException)
+            {
+                return this.NotFound();
+            }
+        }
+
+        /// <summary>
+        /// Return the historic of an item by its id.
+        /// </summary>
+        /// <param name="id">ID of the item to update.</param>
+        /// <returns>Item's historic.</returns>
+        [HttpGet("{id}/historic")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = Rights.Planes.Read)]
+        public virtual async Task<IActionResult> GetHistoric(int id)
+        {
+            try
+            {
+                var dto = await this.planeService.GetHistoricAsync(id);
                 return this.Ok(dto);
             }
             catch (ElementNotFoundException)
