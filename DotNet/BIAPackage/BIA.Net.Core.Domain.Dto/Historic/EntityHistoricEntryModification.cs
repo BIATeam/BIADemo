@@ -10,7 +10,7 @@
     public class EntityHistoricEntryModification
     {
         public string ColumnName { get; set; }
-        public string OldValue { get; set; }
-        public string NewValue { get; set; }
+        public string OldDisplay { get; set; }
+        public string NewDisplay { get; set; }
     }
 }

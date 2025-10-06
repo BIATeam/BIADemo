@@ -177,7 +177,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                 auditEntity.Id = 0;
 
                 var auditLinkedEntityData = new List<AuditLinkedEntityData>();
-                foreach (var linkedEntityPropertyIdentifier in auditEntity.GetType().GetProperties().Where(p => p.GetCustomAttribute<AuditLinkedEntityPropertyIdentifierAttribute>() != null))
+                foreach (var linkedEntityPropertyIdentifier in auditEntity.GetType().GetProperties().Where(p => p.GetCustomAttribute<AuditLinkedEntityPropertyIdentifierAttribute>() is not null))
                 {
                     var linkedEntityType = linkedEntityPropertyIdentifier.GetCustomAttribute<AuditLinkedEntityPropertyIdentifierAttribute>().LinkedEntityType;
                     auditLinkedEntityData.Add(new AuditLinkedEntityData(linkedEntityType.Name, linkedEntityPropertyIdentifier.Name, linkedEntityPropertyIdentifier.GetValue(auditEntity, null).ToString()));
@@ -206,8 +206,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                         await this.SetUpdateAuditChanges(auditEntity, entityEntry, entry.Changes);
                         break;
                     case "Insert":
-                        await this.SetInsertAuditValues(auditEntity, entityEntry, entry.ColumnValues);
-                        auditEntity.AuditChanges = JsonSerializer.Serialize(entry.ColumnValues);
+                        await this.SetInsertAuditChanges(auditEntity, entityEntry, entry.ColumnValues);
                         break;
                     case "Delete":
                         auditEntity.AuditChanges = JsonSerializer.Serialize(entry.ColumnValues);
@@ -222,8 +221,9 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
             }
         }
 
-        private async Task SetInsertAuditValues(AuditEntity auditEntity, EntityEntry entityEntry, IDictionary<string, object> entryColumnValues)
+        private async Task SetInsertAuditChanges(AuditEntity auditEntity, EntityEntry entityEntry, IDictionary<string, object> entryColumnValues)
         {
+            var auditChanges = new List<AuditChange>();
             var auditLinkedEntityProperties = auditEntity
                 .GetType()
                 .GetProperties()
@@ -237,6 +237,12 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
 
                 if (auditLinkedEntityProperty is null)
                 {
+                    auditChanges.Add(new AuditChange(
+                        columnValue.Key,
+                        null,
+                        null,
+                        columnValue.Value,
+                        columnValue.Value?.ToString()));
                     continue;
                 }
 
@@ -255,7 +261,16 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
 
                 var newDisplay = linkedEntityPropertyDisplayPropertyInfo.GetValue(linkedEntity, null).ToString();
                 auditEntity.GetType().GetProperty(auditLinkedEntityProperty.Name).SetValue(auditEntity, newDisplay, null);
+
+                auditChanges.Add(new AuditChange(
+                    columnValue.Key,
+                    null,
+                    null,
+                    columnValue.Value,
+                    newDisplay));
             }
+
+            auditEntity.AuditChanges = JsonSerializer.Serialize(auditChanges);
         }
 
         private async Task SetUpdateAuditChanges(AuditEntity auditEntity, EntityEntry entityEntry, IReadOnlyList<EventEntryChange> changes)
@@ -277,9 +292,9 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                     auditChanges.Add(new AuditChange(
                         change.ColumnName,
                         change.OriginalValue,
-                        change.OriginalValue.ToString(),
+                        change.OriginalValue?.ToString(),
                         change.NewValue,
-                        change.NewValue.ToString()));
+                        change.NewValue?.ToString()));
                     continue;
                 }
 
@@ -299,7 +314,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                 var newDisplay = linkedEntityPropertyDisplayPropertyInfo.GetValue(linkedEntity, null).ToString();
                 auditEntity.GetType().GetProperty(auditLinkedEntityProperty.Name).SetValue(auditEntity, newDisplay, null);
 
-                var oldDisplay = await this.RetrieveOldDisplayChangeFromPreviousAudits(auditEntity, change.ColumnName)
+                var oldDisplay = await this.RetrieveOldDisplayChangeFromPreviousAudit(auditEntity, change.ColumnName)
                     ?? await this.RetrieveOldDisplayChangeFromPreviousEntity(linkedEntity.GetType(), change.OriginalValue, auditLinkedEntityPropertyAttribute.LinkedEntityPropertyDisplay);
 
                 auditChanges.Add(new AuditChange(
@@ -418,32 +433,50 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
             return Convert.ChangeType(rawKey, t, System.Globalization.CultureInfo.InvariantCulture);
         }
 
-        private async Task<string> RetrieveOldDisplayChangeFromPreviousAudits(AuditEntity auditEntity, string changePropertyName)
+        private async Task<string> RetrieveOldDisplayChangeFromPreviousAudit(AuditEntity auditEntity, string changePropertyName)
         {
             using var scope = this.serviceProvider.CreateScope();
             var unitOfWork = scope.ServiceProvider.GetRequiredService<IQueryableUnitOfWorkNoTracking>();
 
-            await foreach (var rawAuditChanges in unitOfWork
+            var previousAudit = await unitOfWork
                 .RetrieveSet(auditEntity.GetType())
                 .Cast<AuditEntity>()
-                .AsNoTracking()
+                .Where(x => x.EntityId.Equals(auditEntity.EntityId))
                 .OrderByDescending(x => x.AuditDate)
-                .Where(x => x.EntityId.Equals(auditEntity.EntityId) && x.AuditChanges.Contains(changePropertyName))
-                .Select(x => x.AuditChanges)
-                .AsAsyncEnumerable())
+                .Select(x => new { x.AuditAction, x.AuditChanges })
+                .Take(1)
+                .FirstOrDefaultAsync();
+
+            try
+            {
+                var auditChanges = JsonSerializer.Deserialize<List<AuditChange>>(previousAudit.AuditChanges);
+                var previousAuditChange = auditChanges.FirstOrDefault(x => x.ColumnName == changePropertyName);
+                if (previousAuditChange is not null)
+                {
+                    return previousAuditChange.NewDisplay;
+                }
+            }
+            catch (JsonException)
             {
                 try
                 {
-                    var auditChanges = JsonSerializer.Deserialize<List<AuditChange>>(rawAuditChanges);
-                    var previousAuditChange = auditChanges.FirstOrDefault(x => x.ColumnName == changePropertyName);
-                    if (previousAuditChange is not null)
+                    using var doc = JsonDocument.Parse(previousAudit.AuditChanges);
+                    var root = doc.RootElement;
+
+                    if (root.ValueKind == JsonValueKind.Object)
                     {
-                        return previousAuditChange.NewDisplay;
+                        var previousPropertyValue = root.EnumerateObject().Where(x => x.Name.Equals(changePropertyName)).Select(x => x.Value).FirstOrDefault();
+                        return previousPropertyValue.ValueKind switch
+                        {
+                            JsonValueKind.Null => null,
+                            JsonValueKind.String => previousPropertyValue.GetString(),
+                            _ => previousPropertyValue.ToString(),
+                        };
                     }
                 }
-                catch (JsonException)
+                catch (JsonException ex)
                 {
-                    return null;
+                    throw new BadBiaFrameworkUsageException($"Unable to parse previous changes for {auditEntity.GetType()} with ID {auditEntity.Id} : {ex.Message}", ex);
                 }
             }
 
