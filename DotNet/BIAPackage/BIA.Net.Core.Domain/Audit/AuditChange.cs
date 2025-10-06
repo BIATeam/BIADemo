@@ -6,7 +6,12 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    public record class AuditChange(string ColumnName, object OldValue, string OldDisplay, object NewValue, string NewDisplay)
+    public record class AuditChange(
+        string ColumnName,
+        object OriginalValue,
+        string OriginalDisplay,
+        object NewValue,
+        string NewDisplay)
     {
     }
 }

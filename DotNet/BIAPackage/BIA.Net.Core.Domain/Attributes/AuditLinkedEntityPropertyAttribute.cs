@@ -14,12 +14,14 @@
     /// </remarks>
     /// <param name="linkedEntityType">The linked entity type.</param>
     /// <param name="linkedEntityPropertyDisplay">The property name of the display value to use from the linked entity.</param>
-    /// <param name="linkedEntityPropertyIdentifier">The identifier value from the linked entity.</param>
+    /// <param name="entityReferencePropertyIdentifier">The identifier reference value from the audited entity.</param>
+    /// <param name="entityPropertyName">The property name from the audited entity that corresponds to the linked entity property value.</param>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    public class AuditLinkedEntityPropertyAttribute(Type linkedEntityType, string linkedEntityPropertyDisplay, string linkedEntityPropertyIdentifier) : Attribute
+    public class AuditLinkedEntityPropertyAttribute(Type linkedEntityType, string linkedEntityPropertyDisplay, string entityReferencePropertyIdentifier, string entityPropertyName) : Attribute
     {
         public Type LinkedEntityType { get; } = linkedEntityType;
         public string LinkedEntityPropertyDisplay { get; } = linkedEntityPropertyDisplay;
-        public string LinkedEntityPropertyIdentifier { get; } = linkedEntityPropertyIdentifier;
+        public string EntityReferencePropertyIdentifier { get; } = entityReferencePropertyIdentifier;
+        public string EntityPropertyName { get; } = entityPropertyName;
     }
 }

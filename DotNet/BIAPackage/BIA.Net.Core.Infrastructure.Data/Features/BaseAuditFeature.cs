@@ -233,7 +233,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
             foreach (var columnValue in entryColumnValues)
             {
                 var auditLinkedEntityProperty = auditLinkedEntityProperties
-                    .FirstOrDefault(x => x.GetCustomAttribute<AuditLinkedEntityPropertyAttribute>().LinkedEntityPropertyIdentifier.Equals(columnValue.Key));
+                    .FirstOrDefault(x => x.GetCustomAttribute<AuditLinkedEntityPropertyAttribute>().EntityReferencePropertyIdentifier.Equals(columnValue.Key));
 
                 if (auditLinkedEntityProperty is null)
                 {
@@ -285,7 +285,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
             foreach (var change in changes)
             {
                 var auditLinkedEntityProperty = auditLinkedEntityProperties
-                    .FirstOrDefault(x => x.GetCustomAttribute<AuditLinkedEntityPropertyAttribute>().LinkedEntityPropertyIdentifier.Equals(change.ColumnName));
+                    .FirstOrDefault(x => x.GetCustomAttribute<AuditLinkedEntityPropertyAttribute>().EntityReferencePropertyIdentifier.Equals(change.ColumnName));
 
                 if (auditLinkedEntityProperty is null)
                 {
@@ -314,13 +314,13 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                 var newDisplay = linkedEntityPropertyDisplayPropertyInfo.GetValue(linkedEntity, null).ToString();
                 auditEntity.GetType().GetProperty(auditLinkedEntityProperty.Name).SetValue(auditEntity, newDisplay, null);
 
-                var oldDisplay = await this.RetrieveOldDisplayChangeFromPreviousAudit(auditEntity, change.ColumnName)
-                    ?? await this.RetrieveOldDisplayChangeFromPreviousEntity(linkedEntity.GetType(), change.OriginalValue, auditLinkedEntityPropertyAttribute.LinkedEntityPropertyDisplay);
+                var originalDisplay = await this.RetrieveOriginalDisplayChangeFromPreviousAudit(auditEntity, change.ColumnName)
+                    ?? await this.RetrieveOriginalDisplayChangeFromPreviousEntity(linkedEntity.GetType(), change.OriginalValue, auditLinkedEntityPropertyAttribute.LinkedEntityPropertyDisplay);
 
                 auditChanges.Add(new AuditChange(
                     change.ColumnName,
                     change.OriginalValue,
-                    oldDisplay,
+                    originalDisplay,
                     change.NewValue,
                     newDisplay));
             }
@@ -328,7 +328,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
             auditEntity.AuditChanges = JsonSerializer.Serialize(auditChanges);
         }
 
-        private async Task<string> RetrieveOldDisplayChangeFromPreviousEntity(Type entityType, object identifierValue, string displayPropertyName)
+        private async Task<string> RetrieveOriginalDisplayChangeFromPreviousEntity(Type entityType, object identifierValue, string displayPropertyName)
         {
             if (identifierValue == null)
             {
@@ -433,7 +433,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
             return Convert.ChangeType(rawKey, t, System.Globalization.CultureInfo.InvariantCulture);
         }
 
-        private async Task<string> RetrieveOldDisplayChangeFromPreviousAudit(AuditEntity auditEntity, string changePropertyName)
+        private async Task<string> RetrieveOriginalDisplayChangeFromPreviousAudit(AuditEntity auditEntity, string changePropertyName)
         {
             using var scope = this.serviceProvider.CreateScope();
             var unitOfWork = scope.ServiceProvider.GetRequiredService<IQueryableUnitOfWorkNoTracking>();

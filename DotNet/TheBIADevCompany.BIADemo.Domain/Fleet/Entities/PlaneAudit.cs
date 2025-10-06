@@ -10,7 +10,7 @@
 
     public class PlaneAudit : AuditEntity
     {
-        [AuditLinkedEntityProperty(typeof(Airport), nameof(Airport.Name), nameof(Plane.CurrentAirportId))]
+        [AuditLinkedEntityProperty(typeof(Airport), nameof(Airport.Name), nameof(Plane.CurrentAirportId), nameof(Plane.CurrentAirport))]
         public string CurrentAirportName { get; set; }
     }
 }
