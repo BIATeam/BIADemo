@@ -25,6 +25,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
     using BIA.Net.Core.Domain.User.Entities;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.ChangeTracking;
+    using Microsoft.EntityFrameworkCore.Metadata.Internal;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Options;
@@ -188,8 +189,10 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                 if (entry.Action == "Insert")
                 {
                     // Load all unloaded direct references of the entity before filling specific properties
-                    var loadReferencesTasks = entityEntry.References.Where(n => !n.IsLoaded).Select(n => n.LoadAsync());
-                    await Task.WhenAll(loadReferencesTasks);
+                    foreach (var reference in entityEntry.References.Where(r => !r.IsLoaded))
+                    {
+                        await reference.LoadAsync();
+                    }
                 }
 
                 auditEntity.FillSpecificProperties(entityEntry.Entity);
@@ -390,11 +393,18 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                 .Select(x => x.AuditChanges)
                 .AsAsyncEnumerable())
             {
-                var auditChanges = JsonSerializer.Deserialize<List<AuditChange>>(rawAuditChanges);
-                var previousAuditChange = auditChanges.FirstOrDefault(x => x.ColumnName == changePropertyName);
-                if (previousAuditChange is not null)
+                try
                 {
-                    return previousAuditChange.NewDisplay;
+                    var auditChanges = JsonSerializer.Deserialize<List<AuditChange>>(rawAuditChanges);
+                    var previousAuditChange = auditChanges.FirstOrDefault(x => x.ColumnName == changePropertyName);
+                    if (previousAuditChange is not null)
+                    {
+                        return previousAuditChange.NewDisplay;
+                    }
+                }
+                catch (JsonException)
+                {
+                    return null;
                 }
             }
 
