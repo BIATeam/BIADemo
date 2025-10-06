@@ -114,13 +114,11 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
         /// <returns>The type of the Audit entity.</returns>
         public virtual Type AuditTypeMapper(Type type)
         {
-            switch (type.Name)
+            return type.Name switch
             {
-                case "User":
-                    return typeof(UserAudit);
-                default:
-                    return typeof(AuditLog);
-            }
+                "User" => typeof(UserAudit),
+                _ => typeof(AuditLog),
+            };
         }
 
         /// <summary>
@@ -161,7 +159,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
         }
 
         /// <summary>
-        /// Dedicateds the audit.
+        /// Dedicates the audit.
         /// </summary>
         /// <param name="evt">The evt.</param>
         /// <param name="entry">The entry.</param>
@@ -171,14 +169,17 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
         {
             if (entry.Changes?.Count > 0 || entry.Action != "Update")
             {
+                // Retrieve the associated entity's id
                 auditEntity.EntityId = auditEntity.Id.ToString();
+
+                // Reset to zero to avoid entity insertion error
                 auditEntity.Id = 0;
 
                 var auditLinkedEntityData = new List<AuditLinkedEntityData>();
-                foreach (var property in auditEntity.GetType().GetProperties().Where(p => p.GetCustomAttribute<AuditLinkedEntityPropertyIdentifierAttribute>() != null))
+                foreach (var linkedEntityPropertyIdentifier in auditEntity.GetType().GetProperties().Where(p => p.GetCustomAttribute<AuditLinkedEntityPropertyIdentifierAttribute>() != null))
                 {
-                    var linkedEntityType = property.GetCustomAttribute<AuditLinkedEntityPropertyIdentifierAttribute>().LinkedEntityType;
-                    auditLinkedEntityData.Add(new AuditLinkedEntityData(linkedEntityType.Name, property.Name, property.GetValue(auditEntity, null).ToString()));
+                    var linkedEntityType = linkedEntityPropertyIdentifier.GetCustomAttribute<AuditLinkedEntityPropertyIdentifierAttribute>().LinkedEntityType;
+                    auditLinkedEntityData.Add(new AuditLinkedEntityData(linkedEntityType.Name, linkedEntityPropertyIdentifier.Name, linkedEntityPropertyIdentifier.GetValue(auditEntity, null).ToString()));
                 }
 
                 auditEntity.LinkedEntities = auditLinkedEntityData.Count != 0 ? JsonSerializer.Serialize(auditLinkedEntityData) : null;
@@ -186,6 +187,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                 var entityEntry = entry.GetEntry();
                 if (entry.Action == "Insert")
                 {
+                    // Load all unloaded direct references of the entity before filling specific properties
                     var loadReferencesTasks = entityEntry.References.Where(n => !n.IsLoaded).Select(n => n.LoadAsync());
                     await Task.WhenAll(loadReferencesTasks);
                 }
@@ -217,7 +219,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
         private async Task SetUpdateAuditChanges(AuditEntity auditEntity, EntityEntry entityEntry, IReadOnlyList<EventEntryChange> changes)
         {
             var auditChanges = new List<AuditChange>();
-            var auditLinkedPropertyProperties = auditEntity
+            var auditLinkedEntityProperties = auditEntity
                 .GetType()
                 .GetProperties()
                 .Where(p => p.GetCustomAttribute<AuditLinkedEntityPropertyAttribute>() is not null)
@@ -225,10 +227,10 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
 
             foreach (var change in changes)
             {
-                var auditLinkedPropertyProperty = auditLinkedPropertyProperties
+                var auditLinkedEntityProperty = auditLinkedEntityProperties
                     .FirstOrDefault(x => x.GetCustomAttribute<AuditLinkedEntityPropertyAttribute>().LinkedEntityPropertyIdentifier.Equals(change.ColumnName));
 
-                if (auditLinkedPropertyProperty is null)
+                if (auditLinkedEntityProperty is null)
                 {
                     auditChanges.Add(new AuditChange(
                         change.ColumnName,
@@ -239,24 +241,24 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                     continue;
                 }
 
-                var auditLinkedPropertyAttribute = auditLinkedPropertyProperty.GetCustomAttribute<AuditLinkedEntityPropertyAttribute>();
-                var auditLinkedPropertyReference = entityEntry.References.FirstOrDefault(x => x.Metadata.ClrType == auditLinkedPropertyAttribute.LinkedEntityType)
-                    ?? throw new BadBiaFrameworkUsageException($"Unable to find any reference of type {auditLinkedPropertyAttribute.LinkedEntityType} into {entityEntry.Entity.GetType()}");
+                var auditLinkedEntityPropertyAttribute = auditLinkedEntityProperty.GetCustomAttribute<AuditLinkedEntityPropertyAttribute>();
+                var auditLinkedEntityPropertyReference = entityEntry.References.FirstOrDefault(x => x.Metadata.ClrType == auditLinkedEntityPropertyAttribute.LinkedEntityType)
+                    ?? throw new BadBiaFrameworkUsageException($"Unable to find any reference of type {auditLinkedEntityPropertyAttribute.LinkedEntityType} into {entityEntry.Entity.GetType()}");
 
-                if (!auditLinkedPropertyReference.IsLoaded)
+                if (!auditLinkedEntityPropertyReference.IsLoaded)
                 {
-                    await auditLinkedPropertyReference.LoadAsync();
+                    await auditLinkedEntityPropertyReference.LoadAsync();
                 }
 
-                var linkedEntity = auditLinkedPropertyReference.TargetEntry.Entity;
-                var auditLinkedPropertyReferenceDisplayProperty = linkedEntity.GetType().GetProperty(auditLinkedPropertyAttribute.LinkedEntityPropertyDisplay)
-                    ?? throw new BadBiaFrameworkUsageException($"Unable to find property {auditLinkedPropertyAttribute.LinkedEntityPropertyDisplay} into {linkedEntity.GetType()}");
+                var linkedEntity = auditLinkedEntityPropertyReference.TargetEntry.Entity;
+                var linkedEntityPropertyDisplayPropertyInfo = linkedEntity.GetType().GetProperty(auditLinkedEntityPropertyAttribute.LinkedEntityPropertyDisplay)
+                    ?? throw new BadBiaFrameworkUsageException($"Unable to find property {auditLinkedEntityPropertyAttribute.LinkedEntityPropertyDisplay} into {linkedEntity.GetType()}");
 
-                var newDisplay = auditLinkedPropertyReferenceDisplayProperty.GetValue(linkedEntity, null).ToString();
-                auditEntity.GetType().GetProperty(auditLinkedPropertyProperty.Name).SetValue(auditEntity, newDisplay, null);
+                var newDisplay = linkedEntityPropertyDisplayPropertyInfo.GetValue(linkedEntity, null).ToString();
+                auditEntity.GetType().GetProperty(auditLinkedEntityProperty.Name).SetValue(auditEntity, newDisplay, null);
 
-                var oldDisplay = await this.RetrieveOldDisplayChange(auditEntity, change.ColumnName)
-                    ?? await this.RetrieveOldDisplayChangeFromPreviousEntity(linkedEntity.GetType(), change.OriginalValue, auditLinkedPropertyAttribute.LinkedEntityPropertyDisplay);
+                var oldDisplay = await this.RetrieveOldDisplayChangeFromPreviousAudits(auditEntity, change.ColumnName)
+                    ?? await this.RetrieveOldDisplayChangeFromPreviousEntity(linkedEntity.GetType(), change.OriginalValue, auditLinkedEntityPropertyAttribute.LinkedEntityPropertyDisplay);
 
                 auditChanges.Add(new AuditChange(
                     change.ColumnName,
@@ -374,7 +376,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
             return Convert.ChangeType(rawKey, t, System.Globalization.CultureInfo.InvariantCulture);
         }
 
-        private async Task<string> RetrieveOldDisplayChange(AuditEntity auditEntity, string changePropertyName)
+        private async Task<string> RetrieveOldDisplayChangeFromPreviousAudits(AuditEntity auditEntity, string changePropertyName)
         {
             using var scope = this.serviceProvider.CreateScope();
             var unitOfWork = scope.ServiceProvider.GetRequiredService<IQueryableUnitOfWorkNoTracking>();

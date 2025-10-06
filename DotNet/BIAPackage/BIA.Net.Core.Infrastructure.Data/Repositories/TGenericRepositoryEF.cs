@@ -648,13 +648,13 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             var entityType = this.unitOfWork.FindEntityType(typeof(TEntity));
             foreach (var navigation in entityType.GetNavigations())
             {
-                if (navigation.PropertyInfo.CustomAttributes.Any(a => a.AttributeType == typeof(AuditIgnoreAttribute)))
+                if (navigation.PropertyInfo.GetCustomAttributes<AuditIgnoreAttribute>().Any())
                 {
                     continue;
                 }
 
                 var navigationEntityType = navigation.TargetEntityType.ClrType;
-                if (!navigationEntityType.CustomAttributes.Any(a => a.AttributeType == typeof(AuditIncludeAttribute)))
+                if (!navigationEntityType.GetCustomAttributes<AuditIncludeAttribute>().Any())
                 {
                     continue;
                 }

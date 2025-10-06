@@ -9,6 +9,7 @@ namespace BIA.Net.Core.Application.Services
     using System.Collections.Immutable;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Reflection;
     using System.Threading.Tasks;
     using Audit.EntityFramework;
     using BIA.Net.Core.Common.Enum;
@@ -353,13 +354,13 @@ namespace BIA.Net.Core.Application.Services
                 var historic = new List<EntityHistoricEntryDto>();
                 foreach (var audit in audits)
                 {
-                    var auditLinkedEntityAttribute = audit.GetType().GetCustomAttributes(false).FirstOrDefault(a => a is AuditLinkedEntityAttribute linkedEntityAttribute && linkedEntityAttribute.LinkedEntityType == typeof(TEntity)) as AuditLinkedEntityAttribute;
-                    var auditLinkedEntityPropertyDisplay = audit.GetType().GetProperties().FirstOrDefault(p => p.GetCustomAttributes(false).Any(a => a is AuditLinkedPropertyDisplayAttribute linkedPropertyDisplay && linkedPropertyDisplay.LinkedEntityType == typeof(TEntity)))?.GetValue(audit, null);
+                    var auditLinkedEntityAttribute = audit.GetType().GetCustomAttributes<AuditLinkedEntityAttribute>().FirstOrDefault(a => a.LinkedEntityType == typeof(TEntity));
+                    var auditLinkedEntityPropertyDisplayValue = audit.GetType().GetProperties().FirstOrDefault(p => p.GetCustomAttributes<AuditLinkedEntityPropertyDisplayAttribute>().Any(a => a.LinkedEntityType == typeof(TEntity)))?.GetValue(audit, null);
 
                     var entry = new EntityHistoricEntryDto
                     {
-                        IsLinkedEntityEntry = auditLinkedEntityAttribute != null,
-                        LinkedEntityEntryDisplay = auditLinkedEntityPropertyDisplay?.ToString(),
+                        IsLinkedEntity = auditLinkedEntityAttribute != null,
+                        LinkedEntityDisplayValue = auditLinkedEntityPropertyDisplayValue?.ToString(),
                         LinkedEntityPropertyName = auditLinkedEntityAttribute?.LinkedEntityPropertyName,
                         EntryDateTime = audit.AuditDate,
                         EntryUserLogin = audit.AuditUserLogin,
@@ -374,7 +375,7 @@ namespace BIA.Net.Core.Application.Services
 
                     if (entry.EntryType == EntityHistoricEntryType.Update)
                     {
-                        entry.EntityEntryModifications = JsonConvert.DeserializeObject<List<EntityHistoricEntryModification>>(audit.AuditChanges);
+                        entry.Modifications = JsonConvert.DeserializeObject<List<EntityHistoricEntryModification>>(audit.AuditChanges);
                     }
 
                     historic.Add(entry);

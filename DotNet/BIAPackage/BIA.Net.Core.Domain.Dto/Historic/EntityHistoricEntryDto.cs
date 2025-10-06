@@ -10,10 +10,10 @@
 
     public class EntityHistoricEntryDto
     {
-        public bool IsLinkedEntityEntry { get; set; }
-        public string LinkedEntityEntryDisplay { get; set; }
+        public bool IsLinkedEntity { get; set; }
+        public string LinkedEntityDisplayValue { get; set; }
         public string LinkedEntityPropertyName { get; set; }
-        public List<EntityHistoricEntryModification> EntityEntryModifications { get; set; }
+        public List<EntityHistoricEntryModification> Modifications { get; set; }
         public EntityHistoricEntryType EntryType { get; set; }
         public DateTime EntryDateTime { get; set; }
         public string EntryUserLogin { get; set; }

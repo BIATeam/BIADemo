@@ -6,14 +6,16 @@
     using System.Text;
     using System.Threading.Tasks;
 
+    /// <summary>
+    /// Attribute used in an <see cref="Audit.IAuditEntity"/> to identify a property that will be used as the display value of a linked entity.
+    /// </summary>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="AuditLinkedEntityPropertyDisplayAttribute"/> class.
+    /// </remarks>
+    /// <param name="linkedEntityType">The linked entity type.</param>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
-    public class AuditLinkedPropertyDisplayAttribute : Attribute
+    public class AuditLinkedEntityPropertyDisplayAttribute(Type linkedEntityType) : Attribute
     {
-        public AuditLinkedPropertyDisplayAttribute(Type linkedEntityType)
-        {
-            LinkedEntityType = linkedEntityType;
-        }
-
-        public Type LinkedEntityType { get; }
+        public Type LinkedEntityType { get; } = linkedEntityType;
     }
 }
