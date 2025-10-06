@@ -206,6 +206,9 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                         await this.SetUpdateAuditChanges(auditEntity, entityEntry, entry.Changes);
                         break;
                     case "Insert":
+                        await this.SetInsertAuditValues(auditEntity, entityEntry, entry.ColumnValues);
+                        auditEntity.AuditChanges = JsonSerializer.Serialize(entry.ColumnValues);
+                        break;
                     case "Delete":
                         auditEntity.AuditChanges = JsonSerializer.Serialize(entry.ColumnValues);
                         break;
@@ -216,6 +219,42 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
             else
             {
                 return false;
+            }
+        }
+
+        private async Task SetInsertAuditValues(AuditEntity auditEntity, EntityEntry entityEntry, IDictionary<string, object> entryColumnValues)
+        {
+            var auditLinkedEntityProperties = auditEntity
+                .GetType()
+                .GetProperties()
+                .Where(p => p.GetCustomAttribute<AuditLinkedEntityPropertyAttribute>() is not null)
+                .ToList();
+
+            foreach (var columnValue in entryColumnValues)
+            {
+                var auditLinkedEntityProperty = auditLinkedEntityProperties
+                    .FirstOrDefault(x => x.GetCustomAttribute<AuditLinkedEntityPropertyAttribute>().LinkedEntityPropertyIdentifier.Equals(columnValue.Key));
+
+                if (auditLinkedEntityProperty is null)
+                {
+                    continue;
+                }
+
+                var auditLinkedEntityPropertyAttribute = auditLinkedEntityProperty.GetCustomAttribute<AuditLinkedEntityPropertyAttribute>();
+                var auditLinkedEntityPropertyReference = entityEntry.References.FirstOrDefault(x => x.Metadata.ClrType == auditLinkedEntityPropertyAttribute.LinkedEntityType)
+                    ?? throw new BadBiaFrameworkUsageException($"Unable to find any reference of type {auditLinkedEntityPropertyAttribute.LinkedEntityType} into {entityEntry.Entity.GetType()}");
+
+                if (!auditLinkedEntityPropertyReference.IsLoaded)
+                {
+                    await auditLinkedEntityPropertyReference.LoadAsync();
+                }
+
+                var linkedEntity = auditLinkedEntityPropertyReference.TargetEntry.Entity;
+                var linkedEntityPropertyDisplayPropertyInfo = linkedEntity.GetType().GetProperty(auditLinkedEntityPropertyAttribute.LinkedEntityPropertyDisplay)
+                    ?? throw new BadBiaFrameworkUsageException($"Unable to find property {auditLinkedEntityPropertyAttribute.LinkedEntityPropertyDisplay} into {linkedEntity.GetType()}");
+
+                var newDisplay = linkedEntityPropertyDisplayPropertyInfo.GetValue(linkedEntity, null).ToString();
+                auditEntity.GetType().GetProperty(auditLinkedEntityProperty.Name).SetValue(auditEntity, newDisplay, null);
             }
         }
 
