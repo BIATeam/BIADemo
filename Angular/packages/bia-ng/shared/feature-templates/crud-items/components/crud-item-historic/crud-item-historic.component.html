@@ -1,0 +1,10 @@
+<p-timeline [value]="historicEntries">
+  <ng-template #opposite let-entry>
+    <small class="text-surface-500 dark:text-surface-400">{{
+      entry.entryDateTime
+    }}</small>
+  </ng-template>
+  <ng-template #content let-entry>
+    {{ entry.entryType }}
+  </ng-template>
+</p-timeline>
