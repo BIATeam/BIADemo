@@ -281,8 +281,9 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                 .GetProperties()
                 .Where(p => p.GetCustomAttribute<AuditLinkedEntityPropertyAttribute>() is not null)
                 .ToList();
+            var realChanges = changes.Where(c => c.NewValue?.ToString() != c.OriginalValue?.ToString()).ToList();
 
-            foreach (var change in changes)
+            foreach (var change in realChanges)
             {
                 var auditLinkedEntityProperty = auditLinkedEntityProperties
                     .FirstOrDefault(x => x.GetCustomAttribute<AuditLinkedEntityPropertyAttribute>().EntityReferencePropertyIdentifier.Equals(change.ColumnName));
