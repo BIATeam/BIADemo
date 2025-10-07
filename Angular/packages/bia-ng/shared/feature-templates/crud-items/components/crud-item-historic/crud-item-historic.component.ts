@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { BiaFieldConfig } from 'packages/bia-ng/models/bia-field-config';
 import { HistoricEntryDto } from 'packages/bia-ng/models/dto/historic-entry-dto';
 import { HistoricEntryType } from 'packages/bia-ng/models/enum/historic-entry-type.enum';
@@ -16,6 +16,8 @@ import { TimelineModule } from 'primeng/timeline';
 export class CrudItemHistoricComponent<TDto extends { id: number | string }> {
   @Input() historicEntries: HistoricEntryDto[] = [];
   @Input() fields: BiaFieldConfig<TDto>[];
+
+  constructor(protected translateService: TranslateService) {}
 
   getEntryIcon(entry: HistoricEntryDto): string {
     switch (entry.entryType) {
@@ -42,9 +44,11 @@ export class CrudItemHistoricComponent<TDto extends { id: number | string }> {
   getEntryTitle(entry: HistoricEntryDto): string {
     switch (entry.entryType) {
       case HistoricEntryType.Insert:
-        return entry.isLinkedEntity ? `Add link` : 'Creation';
+        return entry.isLinkedEntity
+          ? `Add into ${this.translateService.instant(this.getFullPropertyName(entry.linkedEntityPropertyName!))} : ${entry.linkedEntityDisplayValue}`
+          : 'Creation';
       case HistoricEntryType.Delete:
-        return `Remove link`;
+        return `Remove from ${this.translateService.instant(this.getFullPropertyName(entry.linkedEntityPropertyName!))} : ${entry.linkedEntityDisplayValue}`;
       case HistoricEntryType.Update:
         return 'Modification';
     }

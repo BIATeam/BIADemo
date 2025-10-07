@@ -22,8 +22,8 @@
   <ng-template #content let-entry>
     <span class="historic-entry-title">{{ getEntryTitle(entry) }}</span>
     @if (entry.entryType !== 0 || entry.isLinkedEntity) {
-      <p-card class="m-1">
-        @if (entry.entryType === 1) {
+      @if (entry.entryType === 1) {
+        <p-card class="m-1">
           <ul>
             @for (modification of entry.modifications; track $index) {
               <li class="d-flex flex-row m-1">
@@ -37,23 +37,13 @@
                 }}</span>
                 <i class="pi pi-arrow-right historic-entry-modification"></i>
                 <span class="historic-entry-modification-new">{{
-                  modification.newValue
+                  modification.newValue ?? 'null'
                 }}</span>
               </li>
             }
           </ul>
-        }
-        @if (entry.isLinkedEntity) {
-          <span class="historic-entry-link"
-            ><b
-              >{{
-                getFullPropertyName(entry.linkedEntityPropertyName) | translate
-              }}
-              : </b
-            >{{ entry.linkedEntityDisplayValue }}</span
-          >
-        }
-      </p-card>
+        </p-card>
+      }
     }
   </ng-template>
 </p-timeline>
