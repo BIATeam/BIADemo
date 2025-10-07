@@ -22,7 +22,7 @@ export class CrudItemHistoricComponent<TDto extends { id: number | string }> {
   getEntryIcon(entry: HistoricEntryDto): string {
     switch (entry.entryType) {
       case HistoricEntryType.Insert:
-        return entry.isLinkedEntity ? 'pi-plus' : 'pi-sparkles';
+        return 'pi-sparkles';
       case HistoricEntryType.Delete:
         return 'pi-times';
       case HistoricEntryType.Update:
@@ -33,9 +33,9 @@ export class CrudItemHistoricComponent<TDto extends { id: number | string }> {
   getEntryIconClassSuffix(entry: HistoricEntryDto): string {
     switch (entry.entryType) {
       case HistoricEntryType.Insert:
-        return entry.isLinkedEntity ? 'add-link' : 'creation';
+        return 'add';
       case HistoricEntryType.Delete:
-        return 'delete-link';
+        return 'delete';
       case HistoricEntryType.Update:
         return 'edit';
     }
@@ -44,11 +44,9 @@ export class CrudItemHistoricComponent<TDto extends { id: number | string }> {
   getEntryTitle(entry: HistoricEntryDto): string {
     switch (entry.entryType) {
       case HistoricEntryType.Insert:
-        return entry.isLinkedEntity
-          ? `Add into ${this.translateService.instant(this.getFullPropertyName(entry.linkedEntityPropertyName!))} : ${entry.linkedEntityDisplayValue}`
-          : 'Creation';
+        return 'Creation';
       case HistoricEntryType.Delete:
-        return `Remove from ${this.translateService.instant(this.getFullPropertyName(entry.linkedEntityPropertyName!))} : ${entry.linkedEntityDisplayValue}`;
+        return `Deletion`;
       case HistoricEntryType.Update:
         return 'Modification';
     }

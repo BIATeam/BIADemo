@@ -12,5 +12,6 @@
         public string PropertyName { get; set; }
         public string OldValue { get; set; }
         public string NewValue { get; set; }
+        public bool IsLinkedProperty { get; set; }
     }
 }

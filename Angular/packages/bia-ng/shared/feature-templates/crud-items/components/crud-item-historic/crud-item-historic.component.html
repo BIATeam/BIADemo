@@ -21,29 +21,46 @@
   </ng-template>
   <ng-template #content let-entry>
     <span class="historic-entry-title">{{ getEntryTitle(entry) }}</span>
-    @if (entry.entryType !== 0 || entry.isLinkedEntity) {
-      @if (entry.entryType === 1) {
-        <p-card class="m-1">
-          <ul>
-            @for (modification of entry.modifications; track $index) {
-              <li class="d-flex flex-row m-1">
+    @if (entry.entryType === 1) {
+      <p-card class="m-1">
+        <ul>
+          @for (modification of entry.entryModifications; track $index) {
+            <li>
+              <div class="d-flex flex-row m-1">
                 <span class="historic-entry-modification">
                   <b>{{
                     getFullPropertyName(modification.propertyName) | translate
                   }}</b>
                 </span>
-                <span class="historic-entry-modification-old">{{
-                  modification.oldValue ?? 'null'
-                }}</span>
-                <i class="pi pi-arrow-right historic-entry-modification"></i>
-                <span class="historic-entry-modification-new">{{
-                  modification.newValue ?? 'null'
-                }}</span>
-              </li>
-            }
-          </ul>
-        </p-card>
-      }
+                @if (!modification.isLinkedProperty) {
+                  <span class="historic-entry-modification-old">{{
+                    modification.oldValue ?? 'null'
+                  }}</span>
+                  <i class="pi pi-arrow-right historic-entry-modification"></i>
+                  <span class="historic-entry-modification-new">{{
+                    modification.newValue ?? 'null'
+                  }}</span>
+                } @else {
+                  @if (modification.oldValue) {
+                    <span class="historic-entry-modification-old"
+                      ><i
+                        class="pi pi-trash historic-entry-modification-link-icon"></i
+                      >{{ modification.oldValue ?? 'null' }}</span
+                    >
+                  }
+                  @if (modification.newValue) {
+                    <span class="historic-entry-modification-new">
+                      <i
+                        class="pi pi-plus-circle historic-entry-modification-link-icon"></i
+                      >{{ modification.newValue ?? 'null' }}</span
+                    >
+                  }
+                }
+              </div>
+            </li>
+          }
+        </ul>
+      </p-card>
     }
   </ng-template>
 </p-timeline>

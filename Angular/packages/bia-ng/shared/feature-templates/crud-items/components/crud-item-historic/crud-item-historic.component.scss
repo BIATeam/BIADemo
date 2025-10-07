@@ -7,24 +7,19 @@
   justify-content: center;
   display: flex;
 
-  &-add-link {
+  &-add {
     @extend .historic-entry-icon-container;
-    background-color: var(--p-green-700);
+    background-color: var(--p-green-600);
   }
 
   &-edit {
     @extend .historic-entry-icon-container;
-    background-color: var(--p-cyan-600);
+    background-color: var(--p-primary-300);
   }
 
-  &-delete-link {
+  &-delete {
     @extend .historic-entry-icon-container;
-    background-color: var(--p-red-700);
-  }
-
-  &-creation {
-    @extend .historic-entry-icon-container;
-    background-color: var(--p-green-500);
+    background-color: var(--p-red-600);
   }
 
   i {
@@ -43,13 +38,17 @@
   font-size: 0.9rem;
   &-old {
     @extend .historic-entry-modification;
-    background-color: var(--p-cyan-600);
+    background-color: var(--p-red-400);
     text-decoration: line-through;
   }
 
   &-new {
     @extend .historic-entry-modification;
-    background-color: var(--p-cyan-500);
+    background-color: var(--p-primary-200);
+  }
+
+  &-link-icon {
+    @extend .historic-entry-modification;
   }
 }
 

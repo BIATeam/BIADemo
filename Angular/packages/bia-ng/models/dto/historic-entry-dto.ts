@@ -4,14 +4,12 @@ export interface HistoricEntryDto {
   entryType: HistoricEntryType;
   entryDateTime: Date;
   entryUserLogin: string;
-  modifications: HistoricEntryModification[];
-  isLinkedEntity: boolean;
-  linkedEntityDisplayValue: string | undefined;
-  linkedEntityPropertyName: string | undefined;
+  entryModifications: HistoricEntryModification[];
 }
 
 export interface HistoricEntryModification {
   propertyName: string;
   oldValue: string;
   newValue: string;
+  isLinkedProperty: boolean;
 }
