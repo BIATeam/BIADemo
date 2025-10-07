@@ -26,7 +26,7 @@ import {
 } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { BiaOptionService } from 'packages/bia-ng/core/public-api';
-import { HistoricEntryDto } from 'packages/bia-ng/models/dto/historic-entry-dto';
+import { HistoricalEntryDto } from 'packages/bia-ng/models/dto/historical-entry-dto';
 import { PropType } from 'packages/bia-ng/models/enum/public-api';
 import {
   BaseDto,
@@ -38,7 +38,7 @@ import {
   BiaFormLayoutConfigRow,
   BiaFormLayoutConfigTabGroup,
 } from 'packages/bia-ng/models/public-api';
-import { CrudItemHistoricComponent } from 'packages/bia-ng/shared/feature-templates/crud-items/components/crud-item-historic/crud-item-historic.component';
+import { CrudItemHistoricalComponent } from 'packages/bia-ng/shared/feature-templates/crud-items/components/crud-item-historical/crud-item-historical.component';
 import { PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { TabsModule } from 'primeng/tabs';
@@ -71,7 +71,7 @@ import { BiaOutputComponent } from '../bia-output/bia-output.component';
     TranslateModule,
     BiaFormLayoutComponent,
     Tooltip,
-    CrudItemHistoricComponent,
+    CrudItemHistoricalComponent,
     TabsModule,
   ],
 })
@@ -100,8 +100,8 @@ export class BiaFormComponent<TDto extends { id: number | string }>
   @Output() readOnlyChanged = new EventEmitter<boolean>();
   @Output() fixableStateChanged = new EventEmitter<boolean>();
   @Output() layoutChanged = new EventEmitter<LayoutMode>();
-  @Input() displayHistoric?: boolean;
-  @Input() historicEntries: HistoricEntryDto[] = [];
+  @Input() displayHistorical?: boolean;
+  @Input() historicalEntries: HistoricalEntryDto[] = [];
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   specificInputTemplate: TemplateRef<any>;

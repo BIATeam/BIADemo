@@ -7,7 +7,7 @@
     using System.Threading.Tasks;
     using Newtonsoft.Json;
 
-    public class EntityHistoricEntryModification
+    public class EntityHistoricalEntryModification
     {
         public string PropertyName { get; set; }
         public string OldValue { get; set; }

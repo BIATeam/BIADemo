@@ -57,7 +57,7 @@ export class PlanesEffects {
         return this.planeDas.get({ id: id }).pipe(
           map(plane => {
             this.store.dispatch(
-              FeaturePlanesActions.loadHistoric({ id: plane.id })
+              FeaturePlanesActions.loadHistorical({ id: plane.id })
             );
             return FeaturePlanesActions.loadSuccess({ plane });
           }),
@@ -287,14 +287,14 @@ export class PlanesEffects {
     )
   );
 
-  loadHistoric$ = createEffect(() =>
+  loadHistorical$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(FeaturePlanesActions.loadHistoric),
+      ofType(FeaturePlanesActions.loadHistorical),
       map(x => x?.id),
       switchMap(id => {
-        return this.planeDas.getHistoric({ id: id }).pipe(
-          map(historic => {
-            return FeaturePlanesActions.loadHistoricSuccess({ historic });
+        return this.planeDas.getHistorical({ id: id }).pipe(
+          map(historical => {
+            return FeaturePlanesActions.loadHistoricalSuccess({ historical });
           }),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);

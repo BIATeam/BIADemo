@@ -1,4 +1,4 @@
-.historic-entry-icon-container {
+.historical-entry-icon-container {
   color: var(--primary-color-text);
   width: 1.7rem;
   height: 1.7rem;
@@ -8,17 +8,17 @@
   display: flex;
 
   &-add {
-    @extend .historic-entry-icon-container;
+    @extend .historical-entry-icon-container;
     background-color: var(--p-green-600);
   }
 
   &-edit {
-    @extend .historic-entry-icon-container;
+    @extend .historical-entry-icon-container;
     background-color: var(--p-primary-300);
   }
 
   &-delete {
-    @extend .historic-entry-icon-container;
+    @extend .historical-entry-icon-container;
     background-color: var(--p-red-600);
   }
 
@@ -28,31 +28,31 @@
   }
 }
 
-.historic-entry-link {
+.historical-entry-link {
   font-size: 0.9rem;
 }
 
-.historic-entry-modification {
+.historical-entry-modification {
   margin: 0.1rem;
   padding: 0.2rem;
   font-size: 0.9rem;
   &-old {
-    @extend .historic-entry-modification;
+    @extend .historical-entry-modification;
     background-color: var(--p-red-400);
     text-decoration: line-through;
   }
 
   &-new {
-    @extend .historic-entry-modification;
+    @extend .historical-entry-modification;
     background-color: var(--p-primary-200);
   }
 
   &-link-icon {
-    @extend .historic-entry-modification;
+    @extend .historical-entry-modification;
   }
 }
 
-.historic-entry-title {
+.historical-entry-title {
   font-weight: bold;
   font-size: 0.9rem;
 }

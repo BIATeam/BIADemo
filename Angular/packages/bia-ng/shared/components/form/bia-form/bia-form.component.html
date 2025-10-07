@@ -114,7 +114,7 @@
     </div>
   </ng-template>
 
-  @if (displayHistoric) {
+  @if (displayHistorical) {
     <p-tabs value="0">
       <p-tablist>
         <p-tab value="0">{{ 'bia.details' | translate }}</p-tab>
@@ -125,9 +125,9 @@
           <ng-container *ngTemplateOutlet="formFields"></ng-container>
         </p-tabpanel>
         <p-tabpanel value="1">
-          <bia-crud-item-historic
+          <bia-crud-item-historical
             [fields]="fields"
-            [historicEntries]="historicEntries"></bia-crud-item-historic>
+            [historicalEntries]="historicalEntries"></bia-crud-item-historical>
         </p-tabpanel>
       </p-tabpanels>
     </p-tabs>

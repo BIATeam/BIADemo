@@ -2,52 +2,52 @@ import { DatePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { BiaFieldConfig } from 'packages/bia-ng/models/bia-field-config';
-import { HistoricEntryDto } from 'packages/bia-ng/models/dto/historic-entry-dto';
-import { HistoricEntryType } from 'packages/bia-ng/models/enum/historic-entry-type.enum';
+import { HistoricalEntryDto } from 'packages/bia-ng/models/dto/historical-entry-dto';
+import { HistoricalEntryType } from 'packages/bia-ng/models/enum/historical-entry-type.enum';
 import { CardModule } from 'primeng/card';
 import { TimelineModule } from 'primeng/timeline';
 
 @Component({
-  selector: 'bia-crud-item-historic',
+  selector: 'bia-crud-item-historical',
   imports: [TimelineModule, DatePipe, CardModule, TranslateModule],
-  templateUrl: './crud-item-historic.component.html',
-  styleUrl: './crud-item-historic.component.scss',
+  templateUrl: './crud-item-historical.component.html',
+  styleUrl: './crud-item-historical.component.scss',
 })
-export class CrudItemHistoricComponent<TDto extends { id: number | string }> {
-  @Input() historicEntries: HistoricEntryDto[] = [];
+export class CrudItemHistoricalComponent<TDto extends { id: number | string }> {
+  @Input() historicalEntries: HistoricalEntryDto[] = [];
   @Input() fields: BiaFieldConfig<TDto>[];
 
   constructor(protected translateService: TranslateService) {}
 
-  getEntryIcon(entry: HistoricEntryDto): string {
+  getEntryIcon(entry: HistoricalEntryDto): string {
     switch (entry.entryType) {
-      case HistoricEntryType.Insert:
+      case HistoricalEntryType.Insert:
         return 'pi-sparkles';
-      case HistoricEntryType.Delete:
+      case HistoricalEntryType.Delete:
         return 'pi-times';
-      case HistoricEntryType.Update:
+      case HistoricalEntryType.Update:
         return 'pi-pencil';
     }
   }
 
-  getEntryIconClassSuffix(entry: HistoricEntryDto): string {
+  getEntryIconClassSuffix(entry: HistoricalEntryDto): string {
     switch (entry.entryType) {
-      case HistoricEntryType.Insert:
+      case HistoricalEntryType.Insert:
         return 'add';
-      case HistoricEntryType.Delete:
+      case HistoricalEntryType.Delete:
         return 'delete';
-      case HistoricEntryType.Update:
+      case HistoricalEntryType.Update:
         return 'edit';
     }
   }
 
-  getEntryTitle(entry: HistoricEntryDto): string {
+  getEntryTitle(entry: HistoricalEntryDto): string {
     switch (entry.entryType) {
-      case HistoricEntryType.Insert:
+      case HistoricalEntryType.Insert:
         return 'bia.creation';
-      case HistoricEntryType.Delete:
+      case HistoricalEntryType.Delete:
         return `bia.deletion`;
-      case HistoricEntryType.Update:
+      case HistoricalEntryType.Update:
         return 'bia.modification';
     }
   }

@@ -1,10 +1,10 @@
 import { Injector } from '@angular/core';
-import { HistoricEntryDto } from 'packages/bia-ng/models/dto/historic-entry-dto';
+import { HistoricalEntryDto } from 'packages/bia-ng/models/dto/historical-entry-dto';
 import {
   DataResult,
   DeleteParam,
   DeletesParam,
-  GetHistoricParam,
+  GetHistoricalParam,
   GetListByPostParam,
   GetListParam,
   GetParam,
@@ -66,7 +66,7 @@ export abstract class AbstractDas<
     return this.updateFixedStatusItem<TOut>(param);
   }
 
-  getHistoric(param: GetHistoricParam): Observable<HistoricEntryDto[]> {
-    return this.getHistoricItem(param);
+  getHistorical(param: GetHistoricalParam): Observable<HistoricalEntryDto[]> {
+    return this.getItemHistorical(param);
   }
 }

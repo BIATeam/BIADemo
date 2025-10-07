@@ -6,12 +6,12 @@ import {
   HttpStatusCode,
 } from '@angular/common/http';
 import { Injector } from '@angular/core';
-import { HistoricEntryDto } from 'packages/bia-ng/models/dto/historic-entry-dto';
+import { HistoricalEntryDto } from 'packages/bia-ng/models/dto/historical-entry-dto';
 import {
   DataResult,
   DeleteParam,
   DeletesParam,
-  GetHistoricParam,
+  GetHistoricalParam,
   GetListByPostParam,
   GetListParam,
   GetParam,
@@ -272,13 +272,13 @@ export abstract class GenericDas {
     }
   }
 
-  protected getHistoricItem(
-    param: GetHistoricParam
-  ): Observable<HistoricEntryDto[]> {
+  protected getItemHistorical(
+    param: GetHistoricalParam
+  ): Observable<HistoricalEntryDto[]> {
     param.endpoint = param.endpoint ?? '';
-    const url = `${this.route}${param.endpoint}${param.id}/historic`;
+    const url = `${this.route}${param.endpoint}${param.id}/historical`;
 
-    let obs$ = this.http.get<HistoricEntryDto[]>(url, param?.options).pipe(
+    let obs$ = this.http.get<HistoricalEntryDto[]>(url, param?.options).pipe(
       map(data => {
         DateHelperService.fillDate(data);
         return data;

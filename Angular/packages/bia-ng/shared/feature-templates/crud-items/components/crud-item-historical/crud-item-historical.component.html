@@ -1,4 +1,4 @@
-<p-timeline [value]="historicEntries">
+<p-timeline [value]="historicalEntries">
   <ng-template #opposite let-entry>
     <div class="d-flex flex-column">
       <div>
@@ -13,14 +13,14 @@
   </ng-template>
   <ng-template #marker let-entry>
     <span
-      class="historic-entry-icon-container-{{
+      class="historical-entry-icon-container-{{
         getEntryIconClassSuffix(entry)
       }}">
       <i class="pi {{ getEntryIcon(entry) }}"></i>
     </span>
   </ng-template>
   <ng-template #content let-entry>
-    <span class="historic-entry-title">{{
+    <span class="historical-entry-title">{{
       getEntryTitle(entry) | translate
     }}</span>
     @if (entry.entryType === 1) {
@@ -29,31 +29,32 @@
           @for (modification of entry.entryModifications; track $index) {
             <li>
               <div class="d-flex flex-row m-1">
-                <span class="historic-entry-modification">
+                <span class="historical-entry-modification">
                   <b>{{
                     getFullPropertyName(modification.propertyName) | translate
                   }}</b>
                 </span>
                 @if (!modification.isLinkedProperty) {
-                  <span class="historic-entry-modification-old">{{
+                  <span class="historical-entry-modification-old">{{
                     modification.oldValue ?? 'null'
                   }}</span>
-                  <i class="pi pi-arrow-right historic-entry-modification"></i>
-                  <span class="historic-entry-modification-new">{{
+                  <i
+                    class="pi pi-arrow-right historical-entry-modification"></i>
+                  <span class="historical-entry-modification-new">{{
                     modification.newValue ?? 'null'
                   }}</span>
                 } @else {
                   @if (modification.oldValue) {
-                    <span class="historic-entry-modification-old"
+                    <span class="historical-entry-modification-old"
                       ><i
-                        class="pi pi-trash historic-entry-modification-link-icon"></i
+                        class="pi pi-trash historical-entry-modification-link-icon"></i
                       >{{ modification.oldValue ?? 'null' }}</span
                     >
                   }
                   @if (modification.newValue) {
-                    <span class="historic-entry-modification-new">
+                    <span class="historical-entry-modification-new">
                       <i
-                        class="pi pi-plus-circle historic-entry-modification-link-icon"></i
+                        class="pi pi-plus-circle historical-entry-modification-link-icon"></i
                       >{{ modification.newValue ?? 'null' }}</span
                     >
                   }

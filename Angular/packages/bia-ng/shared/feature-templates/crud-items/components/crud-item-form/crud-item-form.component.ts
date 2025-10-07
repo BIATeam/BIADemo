@@ -7,7 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ValidatorFn } from '@angular/forms';
-import { HistoricEntryDto } from 'packages/bia-ng/models/dto/historic-entry-dto';
+import { HistoricalEntryDto } from 'packages/bia-ng/models/dto/historical-entry-dto';
 import {
   BaseDto,
   BiaFieldConfig,
@@ -40,8 +40,8 @@ export class CrudItemFormComponent<CrudItem extends BaseDto<string | number>> {
   @Input() showSplitButton = false;
   @Input() showPopupButton = false;
   @Input() showFullPageButton = false;
-  @Input() displayHistoric?: boolean;
-  @Input() historicEntries: HistoricEntryDto[] = [];
+  @Input() displayHistorical?: boolean;
+  @Input() historicalEntries: HistoricalEntryDto[] = [];
 
   @Output() save = new EventEmitter<CrudItem>();
   @Output() cancelled = new EventEmitter<void>();

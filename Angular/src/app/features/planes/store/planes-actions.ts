@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { HistoricEntryDto } from 'packages/bia-ng/models/dto/historic-entry-dto';
+import { HistoricalEntryDto } from 'packages/bia-ng/models/dto/historical-entry-dto';
 import { DataResult } from 'packages/bia-ng/models/public-api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { Plane } from '../model/plane';
@@ -69,13 +69,13 @@ export namespace FeaturePlanesActions {
     props<{ id: number; isFixed: boolean }>()
   );
 
-  export const loadHistoric = createAction(
-    '[' + planeCRUDConfiguration.storeKey + '] Load historic',
+  export const loadHistorical = createAction(
+    '[' + planeCRUDConfiguration.storeKey + '] Load historical',
     props<{ id: number }>()
   );
 
-  export const loadHistoricSuccess = createAction(
-    '[' + planeCRUDConfiguration.storeKey + '] Load historic success',
-    props<{ historic: HistoricEntryDto[] }>()
+  export const loadHistoricalSuccess = createAction(
+    '[' + planeCRUDConfiguration.storeKey + '] Load historical success',
+    props<{ historical: HistoricalEntryDto[] }>()
   );
 }

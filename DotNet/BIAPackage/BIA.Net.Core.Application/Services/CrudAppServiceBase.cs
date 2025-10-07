@@ -345,7 +345,7 @@ namespace BIA.Net.Core.Application.Services
             });
         }
 
-        public virtual async Task<List<EntityHistoricEntryDto>> GetHistoricAsync(TKey id)
+        public virtual async Task<List<EntityHistoricalEntryDto>> GetHistoricalAsync(TKey id)
         {
             return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
             {
@@ -374,10 +374,10 @@ namespace BIA.Net.Core.Application.Services
                     return groups;
                 });
 
-                var historic = new List<EntityHistoricEntryDto>();
+                var historical = new List<EntityHistoricalEntryDto>();
                 foreach (var audits in auditsPerSeconds)
                 {
-                    var entry = new EntityHistoricEntryDto
+                    var entry = new EntityHistoricalEntryDto
                     {
                         EntryDateTime = audits[0].AuditDate,
                         EntryUserLogin = audits[0].AuditUserLogin,
@@ -412,7 +412,7 @@ namespace BIA.Net.Core.Application.Services
                                 switch (audit.AuditAction)
                                 {
                                     case "Insert":
-                                        entry.EntryModifications.Add(new EntityHistoricEntryModification
+                                        entry.EntryModifications.Add(new EntityHistoricalEntryModification
                                         {
                                             IsLinkedProperty = true,
                                             PropertyName = linkedEntityPropertyName,
@@ -420,7 +420,7 @@ namespace BIA.Net.Core.Application.Services
                                         });
                                         break;
                                     case "Delete":
-                                        entry.EntryModifications.Add(new EntityHistoricEntryModification
+                                        entry.EntryModifications.Add(new EntityHistoricalEntryModification
                                         {
                                             IsLinkedProperty = true,
                                             PropertyName = linkedEntityPropertyName,
@@ -442,7 +442,7 @@ namespace BIA.Net.Core.Application.Services
                                     var linkedEntityProperty = linkedEntityProperties.FirstOrDefault(x => x.GetCustomAttribute<AuditLinkedEntityPropertyAttribute>().EntityReferencePropertyIdentifier.Equals(change.ColumnName));
                                     if (linkedEntityProperty is null)
                                     {
-                                        entry.EntryModifications.Add(new EntityHistoricEntryModification
+                                        entry.EntryModifications.Add(new EntityHistoricalEntryModification
                                         {
                                             PropertyName = change.ColumnName,
                                             NewValue = change.NewDisplay ?? change.NewValue?.ToString(),
@@ -452,7 +452,7 @@ namespace BIA.Net.Core.Application.Services
                                     }
 
                                     var linkedEntityPropertyAttribute = linkedEntityProperty.GetCustomAttribute<AuditLinkedEntityPropertyAttribute>();
-                                    entry.EntryModifications.Add(new EntityHistoricEntryModification
+                                    entry.EntryModifications.Add(new EntityHistoricalEntryModification
                                     {
                                         PropertyName = linkedEntityPropertyAttribute.EntityPropertyName,
                                         NewValue = change.NewDisplay ?? change.NewValue?.ToString(),
@@ -463,10 +463,10 @@ namespace BIA.Net.Core.Application.Services
                         }
                     }
 
-                    historic.Add(entry);
+                    historical.Add(entry);
                 }
 
-                return historic;
+                return historical;
             });
         }
     }

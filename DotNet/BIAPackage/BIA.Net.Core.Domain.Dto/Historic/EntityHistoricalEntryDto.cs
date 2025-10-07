@@ -8,9 +8,9 @@
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Enum;
 
-    public class EntityHistoricEntryDto
+    public class EntityHistoricalEntryDto
     {
-        public List<EntityHistoricEntryModification> EntryModifications { get; set; } = [];
+        public List<EntityHistoricalEntryModification> EntryModifications { get; set; } = [];
         public EntityHistoricEntryType EntryType { get; set; }
         public DateTime EntryDateTime { get; set; }
         public string EntryUserLogin { get; set; }
