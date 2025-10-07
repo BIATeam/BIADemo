@@ -43,7 +43,7 @@
   font-size: 0.9rem;
   &-old {
     @extend .historic-entry-modification;
-    background-color: var(--p-red-500);
+    background-color: var(--p-cyan-600);
     text-decoration: line-through;
   }
 
