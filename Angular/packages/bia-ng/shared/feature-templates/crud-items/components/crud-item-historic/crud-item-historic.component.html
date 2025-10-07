@@ -28,7 +28,9 @@
             @for (modification of entry.modifications; track $index) {
               <li class="d-flex flex-row m-1">
                 <span class="historic-entry-modification">
-                  <b>{{ modification.propertyName }}</b>
+                  <b>{{
+                    getFullPropertyName(modification.propertyName) | translate
+                  }}</b>
                 </span>
                 <span class="historic-entry-modification-old">{{
                   modification.oldValue ?? 'null'
@@ -43,7 +45,11 @@
         }
         @if (entry.isLinkedEntity) {
           <span class="historic-entry-link"
-            ><b>{{ entry.linkedEntityPropertyName }} : </b
+            ><b
+              >{{
+                getFullPropertyName(entry.linkedEntityPropertyName) | translate
+              }}
+              : </b
             >{{ entry.linkedEntityDisplayValue }}</span
           >
         }
