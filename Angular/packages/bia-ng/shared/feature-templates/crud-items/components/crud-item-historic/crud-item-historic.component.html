@@ -1,8 +1,13 @@
 <p-timeline [value]="historicEntries">
   <ng-template #opposite let-entry>
-    <small class="text-surface-500 dark:text-surface-400">{{
-      entry.entryDateTime
-    }}</small>
+    <div class="d-flex flex-column">
+      <div>
+        <small>{{ entry.entryDateTime | date: 'medium' }}</small>
+      </div>
+      <div>
+        <small>{{ entry.entryUserLogin }}</small>
+      </div>
+    </div>
   </ng-template>
   <ng-template #content let-entry>
     {{ entry.entryType }}
