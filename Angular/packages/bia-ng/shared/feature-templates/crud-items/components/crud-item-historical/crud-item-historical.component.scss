@@ -39,7 +39,6 @@
   &-old {
     @extend .historical-entry-modification;
     background-color: var(--p-red-400);
-    text-decoration: line-through;
   }
 
   &-new {
