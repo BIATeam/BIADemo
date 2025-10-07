@@ -20,7 +20,9 @@
     </span>
   </ng-template>
   <ng-template #content let-entry>
-    <span class="historic-entry-title">{{ getEntryTitle(entry) }}</span>
+    <span class="historic-entry-title">{{
+      getEntryTitle(entry) | translate
+    }}</span>
     @if (entry.entryType === 1) {
       <p-card class="m-1">
         <ul>

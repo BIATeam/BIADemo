@@ -44,11 +44,11 @@ export class CrudItemHistoricComponent<TDto extends { id: number | string }> {
   getEntryTitle(entry: HistoricEntryDto): string {
     switch (entry.entryType) {
       case HistoricEntryType.Insert:
-        return 'Creation';
+        return 'bia.creation';
       case HistoricEntryType.Delete:
-        return `Deletion`;
+        return `bia.deletion`;
       case HistoricEntryType.Update:
-        return 'Modification';
+        return 'bia.modification';
     }
   }
 
