@@ -6,7 +6,7 @@ export interface HistoricEntryDto {
   entryUserLogin: string;
   modifications: HistoricEntryModification[];
   isLinkedEntity: boolean;
-  linkedEntityDisplayName: string | undefined;
+  linkedEntityDisplayValue: string | undefined;
   linkedEntityPropertyName: string | undefined;
 }
 

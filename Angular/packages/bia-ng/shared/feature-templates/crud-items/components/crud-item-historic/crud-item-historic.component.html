@@ -2,14 +2,52 @@
   <ng-template #opposite let-entry>
     <div class="d-flex flex-column">
       <div>
-        <small>{{ entry.entryDateTime | date: 'medium' }}</small>
+        <small
+          ><b>{{ entry.entryDateTime | date: 'medium' }}</b></small
+        >
       </div>
       <div>
         <small>{{ entry.entryUserLogin }}</small>
       </div>
     </div>
   </ng-template>
+  <ng-template #marker let-entry>
+    <span
+      class="historic-entry-icon-container-{{
+        getEntryIconClassSuffix(entry)
+      }}">
+      <i class="pi {{ getEntryIcon(entry) }}"></i>
+    </span>
+  </ng-template>
   <ng-template #content let-entry>
-    {{ entry.entryType }}
+    <span class="historic-entry-title">{{ getEntryTitle(entry) }}</span>
+    @if (entry.entryType !== 0 || entry.isLinkedEntity) {
+      <p-card class="m-1">
+        @if (entry.entryType === 1) {
+          <ul>
+            @for (modification of entry.modifications; track $index) {
+              <li class="d-flex flex-row m-1">
+                <span class="historic-entry-modification">
+                  <b>{{ modification.propertyName }}</b>
+                </span>
+                <span class="historic-entry-modification-old">{{
+                  modification.oldValue ?? 'null'
+                }}</span>
+                <i class="pi pi-arrow-right historic-entry-modification"></i>
+                <span class="historic-entry-modification-new">{{
+                  modification.newValue
+                }}</span>
+              </li>
+            }
+          </ul>
+        }
+        @if (entry.isLinkedEntity) {
+          <span class="historic-entry-link"
+            ><b>{{ entry.linkedEntityPropertyName }} : </b
+            >{{ entry.linkedEntityDisplayValue }}</span
+          >
+        }
+      </p-card>
+    }
   </ng-template>
 </p-timeline>

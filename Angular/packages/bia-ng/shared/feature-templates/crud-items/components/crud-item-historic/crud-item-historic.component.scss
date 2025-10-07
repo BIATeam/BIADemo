@@ -1,0 +1,59 @@
+.historic-entry-icon-container {
+  color: var(--primary-color-text);
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 9999px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+
+  &-add-link {
+    @extend .historic-entry-icon-container;
+    background-color: var(--p-green-700);
+  }
+
+  &-edit {
+    @extend .historic-entry-icon-container;
+    background-color: var(--p-cyan-600);
+  }
+
+  &-delete-link {
+    @extend .historic-entry-icon-container;
+    background-color: var(--p-red-700);
+  }
+
+  &-creation {
+    @extend .historic-entry-icon-container;
+    background-color: var(--p-green-500);
+  }
+
+  i {
+    font-size: 0.9rem;
+    font-weight: bold;
+  }
+}
+
+.historic-entry-link {
+  font-size: 0.9rem;
+}
+
+.historic-entry-modification {
+  margin: 0.1rem;
+  padding: 0.2rem;
+  font-size: 0.9rem;
+  &-old {
+    @extend .historic-entry-modification;
+    background-color: var(--p-red-500);
+    text-decoration: line-through;
+  }
+
+  &-new {
+    @extend .historic-entry-modification;
+    background-color: var(--p-cyan-500);
+  }
+}
+
+.historic-entry-title {
+  font-weight: bold;
+  font-size: 0.9rem;
+}
