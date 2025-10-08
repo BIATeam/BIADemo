@@ -48,6 +48,9 @@
 
   &-link-icon {
     @extend .historical-entry-modification;
+    padding: 0;
+    margin-right: 0.2rem;
+    font-weight: bold;
   }
 }
 
