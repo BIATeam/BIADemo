@@ -12,8 +12,8 @@ using TheBIADevCompany.BIADemo.Infrastructure.Data;
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250926085721_AddAuditFields")]
-    partial class AddAuditFields
+    [Migration("20251008114426_UpdateAuditEntities")]
+    partial class UpdateAuditEntities
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1012,64 +1012,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("BIA.Net.Core.Domain.User.Entities.UserAudit", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AuditAction")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AuditChanges")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("AuditDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("AuditUserLogin")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Domain")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("--");
-
-                    b.Property<string>("EntityId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Login")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("ParentEntityId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UsersAudit");
-                });
-
             modelBuilder.Entity("BIA.Net.Core.Domain.User.Entities.UserDefaultTeam", b =>
                 {
                     b.Property<int>("Id")
@@ -1427,7 +1369,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ParentEntityId")
+                    b.Property<string>("LinkedEntities")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PlaneId")
@@ -1759,7 +1701,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ParentEntityId")
+                    b.Property<string>("LinkedEntities")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PlaneId")
@@ -1798,11 +1740,14 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<string>("AuditUserLogin")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CurrentAirportName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("EntityId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ParentEntityId")
+                    b.Property<string>("LinkedEntities")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("RowVersion")
@@ -2013,6 +1958,64 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasIndex("MaintenanceTeamId");
 
                     b.ToTable("MaintenanceTeamCountry");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.UserAudit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AuditAction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AuditChanges")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AuditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("AuditUserLogin")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Domain")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("--");
+
+                    b.Property<string>("EntityId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("LinkedEntities")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UsersAudit");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.Notification", b =>
