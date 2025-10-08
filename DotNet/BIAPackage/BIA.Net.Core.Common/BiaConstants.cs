@@ -159,7 +159,7 @@ namespace BIA.Net.Core.Common
             /// <summary>
             /// Audit insert action.
             /// </summary>
-            public const string InsertAction = "Action";
+            public const string InsertAction = "Insert";
 
             /// <summary>
             /// Audit delete action.
