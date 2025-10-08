@@ -54,6 +54,14 @@ export class CrudItemHistoricalComponent<TDto extends { id: number | string }> {
   }
 
   getFullPropertyName(propertyName: string) {
+    if (propertyName.toLowerCase() === 'isfixed') {
+      return 'bia.fixed';
+    }
+
+    if (propertyName.toLowerCase() === 'isarchived') {
+      return 'bia.archived';
+    }
+
     const field = this.fields.find(
       f => f.field.toLowerCase() === propertyName.toLowerCase()
     );
