@@ -15,7 +15,7 @@
   [showSplitButton]="showSplitButton"
   [showFullPageButton]="showFullPageButton"
   (layoutChanged)="notifyLayoutChange($event)"
-  [displayHistorical]="true"
+  [displayHistorical]="crudConfiguration.displayHistorical"
   [historicalEntries]="
     (planeService.crudItemHistorical$ | async) ?? []
   "></app-plane-form>
