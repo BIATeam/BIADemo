@@ -9,9 +9,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     // End BIADemo
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// Class used to update the model builder for user domain.
