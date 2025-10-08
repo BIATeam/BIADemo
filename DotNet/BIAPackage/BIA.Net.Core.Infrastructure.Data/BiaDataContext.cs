@@ -215,6 +215,12 @@ namespace BIA.Net.Core.Infrastructure.Data
             return this.Set<TEntity>();
         }
 
+        /// <inheritdoc/>
+        public IQueryable RetrieveSet(Type entityType)
+        {
+            return this.Set(entityType) as IQueryable;
+        }
+
         /// <summary>
         /// Set the item as modified.
         /// </summary>
@@ -377,11 +383,6 @@ namespace BIA.Net.Core.Infrastructure.Data
             string pattern = @"column\s'([^']*)'";
             Match match = Regex.Match(sqlExceptionMessage, pattern);
             return match.Success ? match.Groups[1].Value : string.Empty;
-        }
-
-        public IQueryable RetrieveSet(Type entityType)
-        {
-            return this.Set(entityType) as IQueryable;
         }
     }
 }

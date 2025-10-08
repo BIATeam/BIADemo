@@ -1,20 +1,27 @@
-﻿namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
+﻿// <copyright file="EngineAudit.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
+// </copyright>
+
+namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Attributes;
     using BIA.Net.Core.Domain.Audit;
 
-
+    /// <summary>
+    /// Audit entity for <see cref="Engine"/>.
+    /// </summary>
     [AuditLinkedEntity(typeof(Plane), nameof(Plane.Engines))]
     public class EngineAudit : AuditEntity
     {
+        /// <summary>
+        /// Gets or sets the PlaneId.
+        /// </summary>
         [AuditLinkedEntityPropertyIdentifier(linkedEntityType: typeof(Plane))]
         public int PlaneId { get; set; }
 
+        /// <summary>
+        /// Gets or sets the Reference.
+        /// </summary>
         [AuditLinkedEntityPropertyDisplay(linkedEntityType: typeof(Plane))]
         public string Reference { get; set; }
     }

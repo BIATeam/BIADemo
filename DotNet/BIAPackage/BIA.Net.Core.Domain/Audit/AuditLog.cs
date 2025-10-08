@@ -4,8 +4,6 @@
 
 namespace BIA.Net.Core.Domain.Audit
 {
-    using BIA.Net.Core.Domain.Entity.Interface;
-
     /// <summary>
     /// The audit log entity.
     /// </summary>

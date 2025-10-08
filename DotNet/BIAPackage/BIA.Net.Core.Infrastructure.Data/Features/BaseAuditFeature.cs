@@ -103,7 +103,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                 Audit.Core.Configuration.AddOnSavingAction(scope =>
                 {
                     BiaClaimsPrincipal principal = serviceProvider.GetRequiredService<IPrincipal>() as BiaClaimsPrincipal;
-                    scope.Event.Environment.CustomFields["UserLogin"] = principal.Identity.Name;
+                    scope.Event.Environment.CustomFields[Common.BiaConstants.Audit.UserLoginCustomField] = principal.Identity.Name;
                 });
             }
         }
@@ -123,7 +123,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
         }
 
         /// <summary>
-        /// Generals the audit.
+        /// Save general audit.
         /// </summary>
         /// <param name="evt">The evt.</param>
         /// <param name="entry">The entry.</param>
@@ -131,22 +131,22 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
         /// <returns>True if a change is logged in audit table.</returns>
         protected virtual Task<bool> GeneralAudit(AuditEvent evt, EventEntry entry, AuditLog auditEntity)
         {
-            if (entry.Changes?.Count > 0 || entry.Action != "Update")
+            if (entry.Changes?.Count > 0 || entry.Action != Common.BiaConstants.Audit.UpdateAction)
             {
                 auditEntity.Table = entry.Table;
                 auditEntity.PrimaryKey = JsonSerializer.Serialize(entry.PrimaryKey);
                 auditEntity.AuditDate = DateTime.UtcNow;
-                auditEntity.AuditUserLogin = evt.Environment.CustomFields["UserLogin"].ToString();
-                auditEntity.AuditAction = entry.Action; // Insert, Update, Delete
+                auditEntity.AuditUserLogin = evt.Environment.CustomFields[Common.BiaConstants.Audit.UserLoginCustomField].ToString();
+                auditEntity.AuditAction = entry.Action;
                 switch (entry.Action)
                 {
-                    case "Update":
+                    case Common.BiaConstants.Audit.UpdateAction:
                         auditEntity.AuditChanges = JsonSerializer.Serialize(entry.Changes);
                         break;
-                    case "Insert":
+                    case Common.BiaConstants.Audit.InsertAction:
                         auditEntity.AuditChanges = JsonSerializer.Serialize(entry.ColumnValues);
                         break;
-                    case "Delete":
+                    case Common.BiaConstants.Audit.DeleteAction:
                         auditEntity.AuditChanges = JsonSerializer.Serialize(entry.ColumnValues);
                         break;
                 }
@@ -160,7 +160,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
         }
 
         /// <summary>
-        /// Dedicates the audit.
+        /// Save dedicated audit.
         /// </summary>
         /// <param name="evt">The evt.</param>
         /// <param name="entry">The entry.</param>
@@ -168,14 +168,15 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
         /// <returns>True if a change is logged in audit table.</returns>
         protected virtual async Task<bool> DedicatedAudit(AuditEvent evt, EventEntry entry, AuditEntity auditEntity)
         {
-            if (entry.Changes?.Count > 0 || entry.Action != "Update")
+            if (entry.Changes?.Count > 0 || entry.Action != Common.BiaConstants.Audit.UpdateAction)
             {
-                // Retrieve the associated entity's id
+                // Retrieve the audited entity's id
                 auditEntity.EntityId = auditEntity.Id.ToString();
 
-                // Reset to zero to avoid entity insertion error
+                // Reset to zero the audit ID to avoid insertion error
                 auditEntity.Id = 0;
 
+                // Fill linked entity data from audited entity properties
                 var auditLinkedEntityData = new List<AuditLinkedEntityData>();
                 foreach (var linkedEntityPropertyIdentifier in auditEntity.GetType().GetProperties().Where(p => p.GetCustomAttribute<AuditLinkedEntityPropertyIdentifierAttribute>() is not null))
                 {
@@ -186,7 +187,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                 auditEntity.LinkedEntities = auditLinkedEntityData.Count != 0 ? JsonSerializer.Serialize(auditLinkedEntityData) : null;
 
                 var entityEntry = entry.GetEntry();
-                if (entry.Action == "Insert")
+                if (entry.Action == Common.BiaConstants.Audit.InsertAction)
                 {
                     // Load all unloaded direct references of the entity before filling specific properties
                     foreach (var reference in entityEntry.References.Where(r => !r.IsLoaded))
@@ -195,20 +196,21 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                     }
                 }
 
+                // Fill specific properties based on the audited entity
                 auditEntity.FillSpecificProperties(entityEntry.Entity);
 
                 auditEntity.AuditDate = DateTime.UtcNow;
-                auditEntity.AuditUserLogin = evt.Environment.CustomFields["UserLogin"].ToString();
-                auditEntity.AuditAction = entry.Action; // Insert, Update, Delete
+                auditEntity.AuditUserLogin = evt.Environment.CustomFields[Common.BiaConstants.Audit.UserLoginCustomField].ToString();
+                auditEntity.AuditAction = entry.Action;
                 switch (entry.Action)
                 {
-                    case "Update":
+                    case Common.BiaConstants.Audit.UpdateAction:
                         await this.SetUpdateAuditChanges(auditEntity, entityEntry, entry.Changes);
                         break;
-                    case "Insert":
-                        await this.SetInsertAuditChanges(auditEntity, entityEntry, entry.ColumnValues);
+                    case Common.BiaConstants.Audit.InsertAction:
+                        await SetInsertAuditChanges(auditEntity, entityEntry, entry.ColumnValues);
                         break;
-                    case "Delete":
+                    case Common.BiaConstants.Audit.DeleteAction:
                         auditEntity.AuditChanges = JsonSerializer.Serialize(entry.ColumnValues);
                         break;
                 }
@@ -221,7 +223,15 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
             }
         }
 
-        private async Task SetInsertAuditChanges(AuditEntity auditEntity, EntityEntry entityEntry, IDictionary<string, object> entryColumnValues)
+        /// <summary>
+        /// Set the changes data of an insert audit.
+        /// </summary>
+        /// <param name="auditEntity">Audit entity.</param>
+        /// <param name="entityEntry">Audited entity entry.</param>
+        /// <param name="entryColumnValues">Audited entity column values.</param>
+        /// <returns><see cref="Task"/>.</returns>
+        /// <exception cref="BadBiaFrameworkUsageException">.</exception>
+        private static async Task SetInsertAuditChanges(AuditEntity auditEntity, EntityEntry entityEntry, IDictionary<string, object> entryColumnValues)
         {
             var auditChanges = new List<AuditChange>();
             var auditLinkedEntityProperties = auditEntity
@@ -260,7 +270,6 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                     ?? throw new BadBiaFrameworkUsageException($"Unable to find property {auditLinkedEntityPropertyAttribute.LinkedEntityPropertyDisplay} into {linkedEntity.GetType()}");
 
                 var newDisplay = linkedEntityPropertyDisplayPropertyInfo.GetValue(linkedEntity, null).ToString();
-                auditEntity.GetType().GetProperty(auditLinkedEntityProperty.Name).SetValue(auditEntity, newDisplay, null);
 
                 auditChanges.Add(new AuditChange(
                     columnValue.Key,
@@ -273,6 +282,14 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
             auditEntity.AuditChanges = JsonSerializer.Serialize(auditChanges);
         }
 
+        /// <summary>
+        /// Set the changes data of an update audit.
+        /// </summary>
+        /// <param name="auditEntity">Audit entity.</param>
+        /// <param name="entityEntry">Audited entity entry.</param>
+        /// <param name="changes">Audited entity changes.</param>
+        /// <returns><see cref="Task"/>.</returns>
+        /// <exception cref="BadBiaFrameworkUsageException">.</exception>
         private async Task SetUpdateAuditChanges(AuditEntity auditEntity, EntityEntry entityEntry, IReadOnlyList<EventEntryChange> changes)
         {
             var auditChanges = new List<AuditChange>();
@@ -313,10 +330,9 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                     ?? throw new BadBiaFrameworkUsageException($"Unable to find property {auditLinkedEntityPropertyAttribute.LinkedEntityPropertyDisplay} into {linkedEntity.GetType()}");
 
                 var newDisplay = linkedEntityPropertyDisplayPropertyInfo.GetValue(linkedEntity, null).ToString();
-                auditEntity.GetType().GetProperty(auditLinkedEntityProperty.Name).SetValue(auditEntity, newDisplay, null);
 
                 var originalDisplay = await this.RetrieveOriginalDisplayChangeFromPreviousAudit(auditEntity, change.ColumnName)
-                    ?? await this.RetrieveOriginalDisplayChangeFromPreviousEntity(linkedEntity.GetType(), change.OriginalValue, auditLinkedEntityPropertyAttribute.LinkedEntityPropertyDisplay);
+                    ?? await this.GetEntityDisplayValue(linkedEntity.GetType(), change.OriginalValue, auditLinkedEntityPropertyAttribute.LinkedEntityPropertyDisplay);
 
                 auditChanges.Add(new AuditChange(
                     change.ColumnName,
@@ -329,7 +345,15 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
             auditEntity.AuditChanges = JsonSerializer.Serialize(auditChanges);
         }
 
-        private async Task<string> RetrieveOriginalDisplayChangeFromPreviousEntity(Type entityType, object identifierValue, string displayPropertyName)
+        /// <summary>
+        /// Retrieve the value of the <paramref name="displayPropertyName"/> of an <paramref name="entityType"/> by its <paramref name="identifierValue"/>.
+        /// </summary>
+        /// <param name="entityType">The entity type.</param>
+        /// <param name="identifierValue">The entity identifier value.</param>
+        /// <param name="displayPropertyName">The entity display property name.</param>
+        /// <returns>The display property name value of the entity as <see cref="string"/>.</returns>
+        /// <exception cref="BadBiaFrameworkUsageException">.</exception>
+        private async Task<string> GetEntityDisplayValue(Type entityType, object identifierValue, string displayPropertyName)
         {
             if (identifierValue == null)
             {
@@ -345,45 +369,43 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                 throw new BadBiaFrameworkUsageException("Composite PK not supported here.");
             }
 
+            // Retrieve entity PK identifier property data
             var identifierProperty = primaryKey.Properties[0];
             var identifierPropertyName = identifierProperty.Name;
             var identifierPropertyType = identifierProperty.ClrType;
 
-            var identifierKey = ConvertKey(identifierValue, identifierPropertyType);
-            var entitySet = unitOfWork.RetrieveSet(entityType);
+            // Prepare expression query
+            var entitySetQuery = unitOfWork.RetrieveSet(entityType);
             var entityExpressionParameter = Expression.Parameter(entityType, "e");
 
-            // EF.Property<PK>(e, identifierPropertyName) == identifierKey
+            // Set expression : "WHERE e.identifierProperty = identifierKey"
+            var identifierKey = Common.Helpers.ObjectHelper.ConvertKey(identifierValue, identifierPropertyType);
             var identifierKeyPropertyExpression = Expression.Call(
                 typeof(EF),
                 nameof(EF.Property),
                 [identifierPropertyType],
                 entityExpressionParameter,
                 Expression.Constant(identifierPropertyName));
-
             var identifierKeyPredicateExpression = Expression.Lambda(
                 Expression.Equal(
                     identifierKeyPropertyExpression,
                     Expression.Constant(identifierKey, identifierPropertyType)),
                 entityExpressionParameter);
-
             var identifierKeyWhereExpression = Expression.Call(
                 typeof(Queryable),
                 nameof(Queryable.Where),
                 [entityType],
-                entitySet.Expression,
+                entitySetQuery.Expression,
                 identifierKeyPredicateExpression);
 
-            // projection EF.Property<object>(e, displayPropertyName)
+            // Set expression : "SELECT e.displayPropertyName"
             var displayPropertyExpression = Expression.Call(
                 typeof(EF),
                 nameof(EF.Property),
                 [typeof(object)],
                 entityExpressionParameter,
                 Expression.Constant(displayPropertyName));
-
             var displayPropertySelectorExpression = Expression.Lambda(displayPropertyExpression, entityExpressionParameter);
-
             var displayPropertySelectExpression = Expression.Call(
                 typeof(Queryable),
                 nameof(Queryable.Select),
@@ -391,49 +413,28 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                 identifierKeyWhereExpression,
                 displayPropertySelectorExpression);
 
-            // query
-            var query = entitySet.Provider.CreateQuery<object>(displayPropertySelectExpression);
+            // Create query
+            var query = entitySetQuery.Provider.CreateQuery<object>(displayPropertySelectExpression);
 
-            // FirstOrDefaultAsync
+            // Apply FirstOrDefaultAsync()
             var firstOrDefaultAsync = typeof(EntityFrameworkQueryableExtensions)
                 .GetMethods()
                 .First(m => m.Name == nameof(EntityFrameworkQueryableExtensions.FirstOrDefaultAsync))
                 .MakeGenericMethod(typeof(object));
 
+            // Execute query
             var task = (Task<object>)firstOrDefaultAsync.Invoke(null, [query, CancellationToken.None])!;
             var result = await task.ConfigureAwait(false);
-
             return result?.ToString();
         }
 
-        private static object ConvertKey(object rawKey, Type targetType)
-        {
-            if (rawKey == null)
-            {
-                return null;
-            }
-
-            var src = rawKey.GetType();
-
-            if (targetType.IsAssignableFrom(src))
-            {
-                return rawKey;
-            }
-
-            if (targetType.IsEnum)
-            {
-                return Enum.Parse(targetType, rawKey.ToString()!);
-            }
-
-            if (targetType == typeof(Guid))
-            {
-                return rawKey is Guid g ? g : Guid.Parse(rawKey.ToString()!);
-            }
-
-            var t = Nullable.GetUnderlyingType(targetType) ?? targetType;
-            return Convert.ChangeType(rawKey, t, System.Globalization.CultureInfo.InvariantCulture);
-        }
-
+        /// <summary>
+        /// Retrieve the value of <paramref name="changePropertyName"/> from previous audit based on <paramref name="auditEntity"/>.
+        /// </summary>
+        /// <param name="auditEntity">The audit entity.</param>
+        /// <param name="changePropertyName">The change property name.</param>
+        /// <returns>The previous value of change as <see cref="string"/>.</returns>
+        /// <exception cref="BadBiaFrameworkUsageException">.</exception>
         private async Task<string> RetrieveOriginalDisplayChangeFromPreviousAudit(AuditEntity auditEntity, string changePropertyName)
         {
             using var scope = this.serviceProvider.CreateScope();

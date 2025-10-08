@@ -1,13 +1,13 @@
-﻿namespace BIA.Net.Core.Domain.Attributes
+﻿// <copyright file="AuditLinkedEntityPropertyAttribute.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
+// </copyright>
+
+namespace BIA.Net.Core.Domain.Attributes
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     /// <summary>
-    /// Attribute used in an <see cref="Audit.IAuditEntity"/> to identify a property that will be mapped to a specific property of a linked entity.
+    /// Attribute used in an <see cref="Audit.AuditEntity"/> to identify a property that will be mapped to a specific property of a linked entity.
     /// </summary>
     /// <remarks>
     /// Initializes a new instance of the <see cref="AuditLinkedEntityPropertyAttribute"/> class.
@@ -19,9 +19,24 @@
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class AuditLinkedEntityPropertyAttribute(Type linkedEntityType, string linkedEntityPropertyDisplay, string entityReferencePropertyIdentifier, string entityPropertyName) : Attribute
     {
+        /// <summary>
+        /// The linked entity type.
+        /// </summary>
         public Type LinkedEntityType { get; } = linkedEntityType;
+
+        /// <summary>
+        /// The property name of the display value to use from the linked entity.
+        /// </summary>
         public string LinkedEntityPropertyDisplay { get; } = linkedEntityPropertyDisplay;
+
+        /// <summary>
+        /// The identifier reference value from the audited entity.
+        /// </summary>
         public string EntityReferencePropertyIdentifier { get; } = entityReferencePropertyIdentifier;
+
+        /// <summary>
+        /// The property name from the audited entity that corresponds to the linked entity property value.
+        /// </summary>
         public string EntityPropertyName { get; } = entityPropertyName;
     }
 }

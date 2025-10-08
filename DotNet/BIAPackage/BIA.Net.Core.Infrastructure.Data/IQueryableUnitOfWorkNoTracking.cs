@@ -4,8 +4,8 @@
 
 namespace BIA.Net.Core.Infrastructure.Data
 {
-    using System.Linq;
     using System;
+    using System.Linq;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -22,9 +22,14 @@ namespace BIA.Net.Core.Infrastructure.Data
         DbSet<TEntity> RetrieveSet<TEntity>()
             where TEntity : class;
 
+        /// <summary>
+        /// Get the set of the entity by its <paramref name="entityType"/>.
+        /// </summary>
+        /// <param name="entityType">The entity type.</param>
+        /// <returns>The set of entity as <see cref="IQueryable"/>.</returns>
+        IQueryable RetrieveSet(Type entityType);
+
         /// <inheritdoc cref="IModel.FindEntityType(Type)"/>
         IEntityType FindEntityType(Type entityType);
-
-        IQueryable RetrieveSet(Type entityType);
     }
 }

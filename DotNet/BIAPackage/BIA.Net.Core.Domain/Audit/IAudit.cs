@@ -1,4 +1,4 @@
-// <copyright file="IAuditEntity.cs" company="BIA">
+// <copyright file="IAudit.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 

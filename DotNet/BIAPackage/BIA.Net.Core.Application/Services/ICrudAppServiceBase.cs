@@ -307,6 +307,11 @@ namespace BIA.Net.Core.Application.Services
         /// <returns>Updated DTO.</returns>
         Task<TDto> UpdateFixedAsync(TKey id, bool isFixed);
 
+        /// <summary>
+        /// Get the historical of an item by its <paramref name="id"/>.
+        /// </summary>
+        /// <param name="id">The item ID.</param>
+        /// <returns>Collection of <see cref="EntityHistoricalEntryDto>"/>.</returns>
         Task<List<EntityHistoricalEntryDto>> GetHistoricalAsync(TKey id);
     }
 }

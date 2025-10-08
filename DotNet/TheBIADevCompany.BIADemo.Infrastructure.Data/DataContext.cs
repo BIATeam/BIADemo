@@ -171,8 +171,19 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// </summary>
         public DbSet<Pilot> Pilots { get; set; }
 
+        /// <summary>
+        /// Gets or sets the PlaneAudit.
+        /// </summary>
         public DbSet<PlaneAudit> PlaneAudit { get; set; }
+
+        /// <summary>
+        /// Gets or sets the EngineAudit.
+        /// </summary>
         public DbSet<EngineAudit> EngineAudit { get; set; }
+
+        /// <summary>
+        /// Gets or sets the PlaneAirportAudit.
+        /// </summary>
         public DbSet<PlaneAirportAudit> PlaneAirportAudit { get; set; }
 
         // End BIADemo

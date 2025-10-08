@@ -24,6 +24,13 @@ namespace BIA.Net.Core.Infrastructure.Data
             where TEntity : class;
 
         /// <summary>
+        /// Get the set of the entity by its <paramref name="entityType"/>.
+        /// </summary>
+        /// <param name="entityType">The entity type.</param>
+        /// <returns>The set of entity as <see cref="IQueryable"/>.</returns>
+        IQueryable RetrieveSet(Type entityType);
+
+        /// <summary>
         /// Set the item as modified.
         /// </summary>
         /// <param name="item">The item.</param>
@@ -33,7 +40,5 @@ namespace BIA.Net.Core.Infrastructure.Data
 
         /// <inheritdoc cref="IModel.FindEntityType(Type)"/>
         IEntityType FindEntityType(Type entityType);
-
-        IQueryable RetrieveSet(Type entityType);
     }
 }

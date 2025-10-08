@@ -1,4 +1,4 @@
-// <copyright file="AuditEntity.cs" company="BIA">
+// <copyright file="BaseAudit.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -23,7 +23,7 @@ namespace BIA.Net.Core.Domain.Audit
         public string AuditAction { get; set; }
 
         /// <summary>
-        /// Gets or sets the Audit Changes.
+        /// JSON representation of <see cref="AuditChanges"/> collection.
         /// </summary>
         public string AuditChanges { get; set; }
 

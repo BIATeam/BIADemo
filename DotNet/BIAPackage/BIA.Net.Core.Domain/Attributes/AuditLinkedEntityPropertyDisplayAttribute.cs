@@ -1,13 +1,13 @@
-﻿namespace BIA.Net.Core.Domain.Attributes
+﻿// <copyright file="AuditLinkedEntityPropertyDisplayAttribute.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
+// </copyright>
+
+namespace BIA.Net.Core.Domain.Attributes
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     /// <summary>
-    /// Attribute used in an <see cref="Audit.IAuditEntity"/> to identify a property that will be used as the display value of a linked entity.
+    /// Attribute used in an <see cref="Audit.AuditEntity"/> to identify a property that will be used as the display value of a linked entity.
     /// </summary>
     /// <remarks>
     /// Initializes a new instance of the <see cref="AuditLinkedEntityPropertyDisplayAttribute"/> class.
@@ -16,6 +16,9 @@
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
     public class AuditLinkedEntityPropertyDisplayAttribute(Type linkedEntityType) : Attribute
     {
+        /// <summary>
+        /// The linked entity type.
+        /// </summary>
         public Type LinkedEntityType { get; } = linkedEntityType;
     }
 }

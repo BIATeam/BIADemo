@@ -51,6 +51,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// </summary>
         /// <param name="unitOfWork">The unit Of Work.</param>
         /// <param name="serviceProvider">The service Provider.</param>
+        /// <param name="auditFeature">The audit feature.</param>
         public TGenericRepositoryEF(IQueryableUnitOfWork unitOfWork, IServiceProvider serviceProvider, IAuditFeature auditFeature)
         {
             this.unitOfWork = unitOfWork;
@@ -375,6 +376,34 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             this.SetModified(fixableEntity as TEntity);
         }
 
+        /// <inheritdoc/>
+        public async Task<ImmutableList<AuditEntity>> GetAuditsAsync(TKey id)
+        {
+            var audits = new List<AuditEntity>(await this.GetAudits(typeof(TEntity), id.ToString(), nameof(IEntity<TKey>.Id)));
+
+            var entityType = this.unitOfWork.FindEntityType(typeof(TEntity));
+            foreach (var navigation in entityType.GetNavigations())
+            {
+                if (navigation.PropertyInfo.GetCustomAttributes<AuditIgnoreAttribute>().Any())
+                {
+                    continue;
+                }
+
+                var navigationEntityType = navigation.TargetEntityType.ClrType;
+                if (!navigationEntityType.GetCustomAttributes<AuditIncludeAttribute>().Any())
+                {
+                    continue;
+                }
+
+                var navigationPropertyName = navigation.ForeignKey.Properties.FirstOrDefault(p =>
+                    p.GetContainingForeignKeys().Any(fk => fk.PrincipalEntityType.ClrType == entityType.ClrType))?.Name;
+
+                audits.AddRange(await this.GetAudits(navigationEntityType, id.ToString(), navigationPropertyName, true));
+            }
+
+            return [.. audits.OrderByDescending(x => x.AuditDate)];
+        }
+
         /// <summary>
         /// Retrieve a DBSet.
         /// </summary>
@@ -641,34 +670,15 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             }
         }
 
-        public async Task<ImmutableList<AuditEntity>> GetAuditsAsync(TKey id)
-        {
-            var audits = new List<AuditEntity>(this.GetAudits(typeof(TEntity), id.ToString(), nameof(IEntity<TKey>.Id)));
-
-            var entityType = this.unitOfWork.FindEntityType(typeof(TEntity));
-            foreach (var navigation in entityType.GetNavigations())
-            {
-                if (navigation.PropertyInfo.GetCustomAttributes<AuditIgnoreAttribute>().Any())
-                {
-                    continue;
-                }
-
-                var navigationEntityType = navigation.TargetEntityType.ClrType;
-                if (!navigationEntityType.GetCustomAttributes<AuditIncludeAttribute>().Any())
-                {
-                    continue;
-                }
-
-                var navigationPropertyName = navigation.ForeignKey.Properties.FirstOrDefault(p =>
-                    p.GetContainingForeignKeys().Any(fk => fk.PrincipalEntityType.ClrType == entityType.ClrType))?.Name;
-
-                audits.AddRange(this.GetAudits(navigationEntityType, id.ToString(), navigationPropertyName, true));
-            }
-
-            return [.. audits.OrderByDescending(x => x.AuditDate)];
-        }
-
-        private IEnumerable<AuditEntity> GetAudits(Type entityType, string entityIdValue, string entityIdProperty, bool hasParent = false)
+        /// <summary>
+        /// Retrieve the audit of a specific entity by its type.
+        /// </summary>
+        /// <param name="entityType">The entity type.</param>
+        /// <param name="entityIdValue">The entity id property value.</param>
+        /// <param name="entityIdProperty">The entity id property name.</param>
+        /// <param name="hasParent">Indicates if the entity has parent or not.</param>
+        /// <returns>Collection of <see cref="AuditEntity"/>.</returns>
+        private async Task<List<AuditEntity>> GetAudits(Type entityType, string entityIdValue, string entityIdProperty, bool hasParent = false)
         {
             if (entityType is null || string.IsNullOrWhiteSpace(entityIdValue) || string.IsNullOrWhiteSpace(entityIdProperty))
             {
@@ -686,10 +696,10 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             if (hasParent)
             {
                 var linkedEntityData = JsonConvert.SerializeObject(new AuditLinkedEntityData(typeof(TEntity).Name, entityIdProperty, entityIdValue));
-                return query.Where(x => x.AuditAction != "Update" && x.LinkedEntities != null && x.LinkedEntities.Contains(linkedEntityData));
+                return await query.Where(x => x.AuditAction != BiaConstants.Audit.UpdateAction && x.LinkedEntities != null && x.LinkedEntities.Contains(linkedEntityData)).ToListAsync();
             }
 
-            return query.Where(x => x.EntityId.Equals(entityIdValue));
+            return await query.Where(x => x.EntityId.Equals(entityIdValue)).ToListAsync();
         }
     }
 }

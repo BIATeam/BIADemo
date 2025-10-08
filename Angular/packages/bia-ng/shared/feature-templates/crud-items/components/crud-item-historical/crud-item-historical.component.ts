@@ -16,12 +16,13 @@ import { TimelineModule } from 'primeng/timeline';
 export class CrudItemHistoricalComponent<TDto extends { id: number | string }> {
   @Input() historicalEntries: HistoricalEntryDto[] = [];
   @Input() fields: BiaFieldConfig<TDto>[];
+  historicalEntryType = HistoricalEntryType;
 
   constructor(protected translateService: TranslateService) {}
 
   getEntryIcon(entry: HistoricalEntryDto): string {
     switch (entry.entryType) {
-      case HistoricalEntryType.Insert:
+      case HistoricalEntryType.Create:
         return 'pi-sparkles';
       case HistoricalEntryType.Delete:
         return 'pi-times';
@@ -32,7 +33,7 @@ export class CrudItemHistoricalComponent<TDto extends { id: number | string }> {
 
   getEntryIconClassSuffix(entry: HistoricalEntryDto): string {
     switch (entry.entryType) {
-      case HistoricalEntryType.Insert:
+      case HistoricalEntryType.Create:
         return 'add';
       case HistoricalEntryType.Delete:
         return 'delete';
@@ -43,7 +44,7 @@ export class CrudItemHistoricalComponent<TDto extends { id: number | string }> {
 
   getEntryTitle(entry: HistoricalEntryDto): string {
     switch (entry.entryType) {
-      case HistoricalEntryType.Insert:
+      case HistoricalEntryType.Create:
         return 'bia.creation';
       case HistoricalEntryType.Delete:
         return `bia.deletion`;

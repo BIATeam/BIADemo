@@ -1,18 +1,36 @@
-﻿namespace BIA.Net.Core.Domain.Dto.Historic
+﻿// <copyright file="EntityHistoricalEntryDto.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
+// </copyright>
+
+namespace BIA.Net.Core.Domain.Dto.Historic
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.Immutable;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using BIA.Net.Core.Common.Enum;
 
+    /// <summary>
+    /// Entity historical entry DTO.
+    /// </summary>
     public class EntityHistoricalEntryDto
     {
-        public List<EntityHistoricalEntryModification> EntryModifications { get; set; } = [];
+        /// <summary>
+        /// Gets or sets the EntryModifications.
+        /// </summary>
+        public List<EntityHistoricalEntryModificationDto> EntryModifications { get; set; } = [];
+
+        /// <summary>
+        /// Gets or sets the EntryType.
+        /// </summary>
         public EntityHistoricEntryType EntryType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the EntryDateTime.
+        /// </summary>
         public DateTime EntryDateTime { get; set; }
+
+        /// <summary>
+        /// Gets or sets the EntryUserLogin.
+        /// </summary>
         public string EntryUserLogin { get; set; }
     }
 }

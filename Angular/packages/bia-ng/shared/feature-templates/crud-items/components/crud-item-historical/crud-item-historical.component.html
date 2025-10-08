@@ -23,7 +23,7 @@
     <span class="historical-entry-title">{{
       getEntryTitle(entry) | translate
     }}</span>
-    @if (entry.entryType === 1) {
+    @if (entry.entryType === historicalEntryType.Update) {
       <p-card class="m-1">
         <ul>
           @for (modification of entry.entryModifications; track $index) {

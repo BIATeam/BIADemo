@@ -1,5 +1,5 @@
 export enum HistoricalEntryType {
-  Insert,
+  Create,
   Update,
   Delete,
 }

@@ -145,5 +145,31 @@ namespace BIA.Net.Core.Common
             /// </summary>
             public const string ServiceApiRW = "ServiceApiRW";
         }
+
+        /// <summary>
+        /// Audit.
+        /// </summary>
+        public static class Audit
+        {
+            /// <summary>
+            /// Audit update action.
+            /// </summary>
+            public const string UpdateAction = "Update";
+
+            /// <summary>
+            /// Audit insert action.
+            /// </summary>
+            public const string InsertAction = "Action";
+
+            /// <summary>
+            /// Audit delete action.
+            /// </summary>
+            public const string DeleteAction = "Delete";
+
+            /// <summary>
+            /// Custom field user login.
+            /// </summary>
+            public const string UserLoginCustomField = "UserLogin";
+        }
     }
 }
