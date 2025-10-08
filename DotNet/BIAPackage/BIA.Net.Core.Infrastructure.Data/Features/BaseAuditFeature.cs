@@ -185,14 +185,11 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
 
                 auditEntity.LinkedEntities = auditLinkedEntityData.Count != 0 ? JsonSerializer.Serialize(auditLinkedEntityData) : null;
 
+                // Load all unloaded direct references of the entity before filling specific properties
                 var entityEntry = entry.GetEntry();
-                if (entry.Action == Common.BiaConstants.Audit.InsertAction)
+                foreach (var reference in entityEntry.References.Where(r => !r.IsLoaded))
                 {
-                    // Load all unloaded direct references of the entity before filling specific properties
-                    foreach (var reference in entityEntry.References.Where(r => !r.IsLoaded))
-                    {
-                        await reference.LoadAsync();
-                    }
+                    await reference.LoadAsync();
                 }
 
                 // Fill specific properties based on the audited entity
