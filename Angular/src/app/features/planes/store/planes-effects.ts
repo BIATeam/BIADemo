@@ -56,9 +56,11 @@ export class PlanesEffects {
       switchMap(id => {
         return this.planeDas.get({ id: id }).pipe(
           map(plane => {
-            this.store.dispatch(
-              FeaturePlanesActions.loadHistorical({ id: plane.id })
-            );
+            if (planeCRUDConfiguration.displayHistorical) {
+              this.store.dispatch(
+                FeaturePlanesActions.loadHistorical({ id: plane.id })
+              );
+            }
             return FeaturePlanesActions.loadSuccess({ plane });
           }),
           catchError(err => {
@@ -271,12 +273,10 @@ export class PlanesEffects {
         return this.planeDas
           .updateFixedStatus({ id: x.id, fixed: x.isFixed })
           .pipe(
-            map(plane => {
+            map(_ => {
               this.biaMessageService.showUpdateSuccess();
-              this.store.dispatch(
-                FeaturePlanesActions.loadAllByPost({ event: event })
-              );
-              return FeaturePlanesActions.loadSuccess({ plane });
+              this.store.dispatch(FeaturePlanesActions.load({ id: x.id }));
+              return FeaturePlanesActions.loadAllByPost({ event: event });
             }),
             catchError(err => {
               this.biaMessageService.showErrorHttpResponse(err);

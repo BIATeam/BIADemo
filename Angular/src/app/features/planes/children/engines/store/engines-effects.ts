@@ -266,12 +266,10 @@ export class EnginesEffects {
         return this.engineDas
           .updateFixedStatus({ id: x.id, fixed: x.isFixed })
           .pipe(
-            map(engine => {
+            map(_ => {
               this.biaMessageService.showUpdateSuccess();
-              this.store.dispatch(
-                FeatureEnginesActions.loadAllByPost({ event: event })
-              );
-              return FeatureEnginesActions.loadSuccess({ engine });
+              this.store.dispatch(FeatureEnginesActions.load({ id: x.id }));
+              return FeatureEnginesActions.loadAllByPost({ event: event });
             }),
             catchError(err => {
               this.biaMessageService.showErrorHttpResponse(err);

@@ -231,13 +231,13 @@ export class MaintenanceTeamsEffects {
         return this.maintenanceTeamDas
           .updateFixedStatus({ id: x.id, fixed: x.isFixed })
           .pipe(
-            map(maintenanceTeam => {
+            map(_ => {
               this.biaMessageService.showUpdateSuccess();
               this.store.dispatch(
-                FeatureMaintenanceTeamsActions.loadAllByPost({ event: event })
+                FeatureMaintenanceTeamsActions.load({ id: x.id })
               );
-              return FeatureMaintenanceTeamsActions.loadSuccess({
-                maintenanceTeam,
+              return FeatureMaintenanceTeamsActions.loadAllByPost({
+                event: event,
               });
             }),
             catchError(err => {

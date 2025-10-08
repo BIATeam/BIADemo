@@ -272,12 +272,10 @@ export class PilotsEffects {
         return this.pilotDas
           .updateFixedStatus({ id: x.id, fixed: x.isFixed })
           .pipe(
-            map(pilot => {
+            map(_ => {
               this.biaMessageService.showUpdateSuccess();
-              this.store.dispatch(
-                FeaturePilotsActions.loadAllByPost({ event: event })
-              );
-              return FeaturePilotsActions.loadSuccess({ pilot });
+              this.store.dispatch(FeaturePilotsActions.load({ id: x.id }));
+              return FeaturePilotsActions.loadAllByPost({ event: event });
             }),
             catchError(err => {
               this.biaMessageService.showErrorHttpResponse(err);
