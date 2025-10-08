@@ -377,9 +377,9 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         }
 
         /// <inheritdoc/>
-        public async Task<ImmutableList<AuditEntity>> GetAuditsAsync(TKey id)
+        public async Task<ImmutableList<IAuditEntity>> GetAuditsAsync(TKey id)
         {
-            var audits = new List<AuditEntity>(await this.GetAudits(typeof(TEntity), id.ToString(), nameof(IEntity<TKey>.Id)));
+            var audits = new List<IAuditEntity>(await this.GetAudits(typeof(TEntity), id.ToString(), nameof(IEntity<TKey>.Id)));
 
             var entityType = this.unitOfWork.FindEntityType(typeof(TEntity));
             foreach (var navigation in entityType.GetNavigations())
@@ -677,8 +677,8 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="entityIdValue">The entity id property value.</param>
         /// <param name="entityIdProperty">The entity id property name.</param>
         /// <param name="hasParent">Indicates if the entity has parent or not.</param>
-        /// <returns>Collection of <see cref="AuditEntity"/>.</returns>
-        private async Task<List<AuditEntity>> GetAudits(Type entityType, string entityIdValue, string entityIdProperty, bool hasParent = false)
+        /// <returns>Collection of <see cref="IAuditEntity"/>.</returns>
+        private async Task<List<IAuditEntity>> GetAudits(Type entityType, string entityIdValue, string entityIdProperty, bool hasParent = false)
         {
             if (entityType is null || string.IsNullOrWhiteSpace(entityIdValue) || string.IsNullOrWhiteSpace(entityIdProperty))
             {
@@ -686,12 +686,12 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             }
 
             var entityAuditType = this.auditFeature.AuditTypeMapper(entityType);
-            if (entityAuditType.BaseType != typeof(AuditEntity))
+            if (entityAuditType.GetInterface(typeof(IAuditEntity).Name) is null)
             {
                 return [];
             }
 
-            var query = this.unitOfWork.RetrieveSet(entityAuditType).Cast<AuditEntity>().AsNoTracking();
+            var query = this.unitOfWork.RetrieveSet(entityAuditType).Cast<IAuditEntity>().AsNoTracking();
 
             if (hasParent)
             {

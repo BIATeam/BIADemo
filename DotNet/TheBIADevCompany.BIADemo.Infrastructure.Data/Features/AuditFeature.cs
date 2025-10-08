@@ -12,6 +12,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     // End BIADemo
 
@@ -37,6 +38,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
                 nameof(PlaneAirport) => typeof(PlaneAirportAudit),
 
                 // End BIADemo
+                nameof(User) => typeof(UserAudit),
                 _ => base.AuditTypeMapper(type),
             };
         }

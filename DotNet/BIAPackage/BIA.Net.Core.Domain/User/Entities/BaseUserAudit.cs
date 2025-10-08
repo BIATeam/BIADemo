@@ -1,16 +1,16 @@
-// <copyright file="UserAudit.cs" company="BIA">
+// <copyright file="BaseUserAudit.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Domain.User.Entities
 {
     using BIA.Net.Core.Domain.Audit;
-    using BIA.Net.Core.Domain.Entity.Interface;
 
     /// <summary>
     /// The user entity.
     /// </summary>
-    public class UserAudit : AuditEntity
+    /// <typeparam name="TUser">User audit entity type.</typeparam>
+    public class BaseUserAudit<TUser> : AuditEntity<TUser>
     {
         /// <summary>
         /// Gets or sets the first name.

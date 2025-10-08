@@ -7,7 +7,7 @@ namespace BIA.Net.Core.Domain.Attributes
     using System;
 
     /// <summary>
-    /// Attribute used in an <see cref="Audit.AuditEntity"/> to identify a property that will be mapped to a specific property of a linked entity.
+    /// Attribute used in an <see cref="Audit.IAuditEntity"/> to identify a property that will be mapped to a specific property of a linked entity.
     /// </summary>
     /// <remarks>
     /// Initializes a new instance of the <see cref="AuditLinkedEntityPropertyAttribute"/> class.

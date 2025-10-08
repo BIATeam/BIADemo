@@ -194,7 +194,7 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// Return the audits of an item by its <paramref name="id"/>.
         /// </summary>
         /// <param name="id">The item id.</param>
-        /// <returns>Immutable collection of <see cref="AuditEntity"/>.</returns>
-        Task<ImmutableList<AuditEntity>> GetAuditsAsync(TKey id);
+        /// <returns>Immutable collection of <see cref="IAuditEntity"/>.</returns>
+        Task<ImmutableList<IAuditEntity>> GetAuditsAsync(TKey id);
     }
 }

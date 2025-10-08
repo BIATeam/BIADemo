@@ -11,7 +11,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
     /// Audit entity for <see cref="Engine"/>.
     /// </summary>
     [AuditLinkedEntity(typeof(Plane), nameof(Plane.Engines))]
-    public class EngineAudit : AuditEntity
+    public class EngineAudit : AuditEntity<Engine>
     {
         /// <summary>
         /// Gets or sets the PlaneId.

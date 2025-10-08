@@ -351,7 +351,7 @@ namespace BIA.Net.Core.Application.Services
             return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
             {
                 var allAudits = await this.Repository.GetAuditsAsync(id);
-                var auditsPerSeconds = allAudits.Aggregate(new List<List<AuditEntity>>(), (groups, audit) =>
+                var auditsPerSeconds = allAudits.Aggregate(new List<List<IAuditEntity>>(), (groups, audit) =>
                 {
                     return GroupAuditPerSeconds(groups, audit);
                 });
@@ -386,7 +386,7 @@ namespace BIA.Net.Core.Application.Services
             });
         }
 
-        private static List<List<AuditEntity>> GroupAuditPerSeconds(List<List<AuditEntity>> groups, AuditEntity audit)
+        private static List<List<IAuditEntity>> GroupAuditPerSeconds(List<List<IAuditEntity>> groups, IAuditEntity audit)
         {
             if (groups.Count == 0)
             {
@@ -410,7 +410,7 @@ namespace BIA.Net.Core.Application.Services
             return groups;
         }
 
-        private static void FillHistoricalEntryModifications(EntityHistoricalEntryDto entry, List<AuditEntity> audits)
+        private static void FillHistoricalEntryModifications(EntityHistoricalEntryDto entry, List<IAuditEntity> audits)
         {
             foreach (var audit in audits)
             {
@@ -452,7 +452,7 @@ namespace BIA.Net.Core.Application.Services
             }
         }
 
-        private static void FillHistoricalEntryModificationLinkedEntity(EntityHistoricalEntryDto entry, AuditEntity audit, AuditLinkedEntityAttribute auditLinkedEntityAttribute)
+        private static void FillHistoricalEntryModificationLinkedEntity(EntityHistoricalEntryDto entry, IAuditEntity audit, AuditLinkedEntityAttribute auditLinkedEntityAttribute)
         {
             var auditLinkedEntityPropertyDisplayValue = audit
                                     .GetType()

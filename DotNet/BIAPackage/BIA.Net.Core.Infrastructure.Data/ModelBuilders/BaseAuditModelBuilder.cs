@@ -11,18 +11,8 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
     /// <summary>
     /// Class used to update the model builder for user domain.
     /// </summary>
-    public class BaseAuditModelBuilder
+    public abstract class BaseAuditModelBuilder
     {
-        /// <summary>
-        /// Create the user model.
-        /// </summary>
-        /// <param name="modelBuilder">The model builder.</param>
-        public virtual void CreateModel(ModelBuilder modelBuilder)
-        {
-            this.CreateUserAuditModel(modelBuilder);
-            this.CreateAuditModel(modelBuilder);
-        }
-
         /// <summary>
         /// Create the model for users.
         /// </summary>
@@ -37,14 +27,17 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
         /// Create the model for users.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        protected virtual void CreateUserAuditModel(ModelBuilder modelBuilder)
+        /// <typeparam name="TAuditUser">The audit user entity.</typeparam>
+        /// <typeparam name="TUser">The user entity audited.</typeparam>
+        protected virtual void CreateUserAuditModel<TAuditUser, TUser>(ModelBuilder modelBuilder)
+            where TAuditUser : BaseUserAudit<TUser>
         {
-            modelBuilder.Entity<UserAudit>().HasKey(u => new { u.Id });
-            modelBuilder.Entity<UserAudit>().Property(p => p.EntityId).IsRequired();
-            modelBuilder.Entity<UserAudit>().Property(u => u.FirstName).IsRequired().HasMaxLength(50);
-            modelBuilder.Entity<UserAudit>().Property(u => u.LastName).IsRequired().HasMaxLength(50);
-            modelBuilder.Entity<UserAudit>().Property(u => u.Login).IsRequired().HasMaxLength(50);
-            modelBuilder.Entity<UserAudit>().Property(u => u.Domain).IsRequired().HasDefaultValue("--");
+            modelBuilder.Entity<TAuditUser>().HasKey(u => new { u.Id });
+            modelBuilder.Entity<TAuditUser>().Property(p => p.EntityId).IsRequired();
+            modelBuilder.Entity<TAuditUser>().Property(u => u.FirstName).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<TAuditUser>().Property(u => u.LastName).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<TAuditUser>().Property(u => u.Login).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<TAuditUser>().Property(u => u.Domain).IsRequired().HasDefaultValue("--");
         }
     }
 }

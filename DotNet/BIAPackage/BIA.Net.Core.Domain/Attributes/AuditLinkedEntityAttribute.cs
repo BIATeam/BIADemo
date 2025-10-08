@@ -7,7 +7,7 @@ namespace BIA.Net.Core.Domain.Attributes
     using System;
 
     /// <summary>
-    /// Attribute used to add to an <see cref="Audit.AuditEntity"/> a linked entity.
+    /// Attribute used to add to an <see cref="Audit.IAuditEntity"/> a linked entity.
     /// </summary>
     /// <remarks>
     /// Initializes a new instance of the <see cref="AuditLinkedEntityAttribute"/> class.

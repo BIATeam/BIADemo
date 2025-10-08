@@ -73,7 +73,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                             return audit switch
                             {
                                 AuditLog auditLog => await this.GeneralAudit(evt, entry, auditLog),
-                                AuditEntity auditEntity => await this.DedicatedAudit(evt, entry, auditEntity),
+                                IAuditEntity auditEntity => await this.DedicatedAudit(evt, entry, auditEntity),
                                 _ => throw new Common.Exceptions.BadBiaFrameworkUsageException($"Unknown audit of type {audit.GetType()}"),
                             };
                         })
@@ -117,7 +117,6 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
         {
             return type.Name switch
             {
-                "User" => typeof(UserAudit),
                 _ => typeof(AuditLog),
             };
         }
@@ -166,7 +165,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
         /// <param name="entry">The entry.</param>
         /// <param name="auditEntity">The audit entity.</param>
         /// <returns>True if a change is logged in audit table.</returns>
-        protected virtual async Task<bool> DedicatedAudit(AuditEvent evt, EventEntry entry, AuditEntity auditEntity)
+        protected virtual async Task<bool> DedicatedAudit(AuditEvent evt, EventEntry entry, IAuditEntity auditEntity)
         {
             if (entry.Changes?.Count > 0 || entry.Action != Common.BiaConstants.Audit.UpdateAction)
             {
@@ -231,7 +230,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
         /// <param name="entryColumnValues">Audited entity column values.</param>
         /// <returns><see cref="Task"/>.</returns>
         /// <exception cref="BadBiaFrameworkUsageException">.</exception>
-        private static async Task SetInsertAuditChanges(AuditEntity auditEntity, EntityEntry entityEntry, IDictionary<string, object> entryColumnValues)
+        private static async Task SetInsertAuditChanges(IAuditEntity auditEntity, EntityEntry entityEntry, IDictionary<string, object> entryColumnValues)
         {
             var auditChanges = new List<AuditChange>();
             var auditLinkedEntityProperties = auditEntity
@@ -290,7 +289,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
         /// <param name="changes">Audited entity changes.</param>
         /// <returns><see cref="Task"/>.</returns>
         /// <exception cref="BadBiaFrameworkUsageException">.</exception>
-        private async Task SetUpdateAuditChanges(AuditEntity auditEntity, EntityEntry entityEntry, IReadOnlyList<EventEntryChange> changes)
+        private async Task SetUpdateAuditChanges(IAuditEntity auditEntity, EntityEntry entityEntry, IReadOnlyList<EventEntryChange> changes)
         {
             var auditChanges = new List<AuditChange>();
             var auditLinkedEntityProperties = auditEntity
@@ -435,14 +434,14 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
         /// <param name="changePropertyName">The change property name.</param>
         /// <returns>The previous value of change as <see cref="string"/>.</returns>
         /// <exception cref="BadBiaFrameworkUsageException">.</exception>
-        private async Task<string> RetrieveOriginalDisplayChangeFromPreviousAudit(AuditEntity auditEntity, string changePropertyName)
+        private async Task<string> RetrieveOriginalDisplayChangeFromPreviousAudit(IAuditEntity auditEntity, string changePropertyName)
         {
             using var scope = this.serviceProvider.CreateScope();
             var unitOfWork = scope.ServiceProvider.GetRequiredService<IQueryableUnitOfWorkNoTracking>();
 
             var previousAudit = await unitOfWork
                 .RetrieveSet(auditEntity.GetType())
-                .Cast<AuditEntity>()
+                .Cast<IAuditEntity>()
                 .Where(x => x.EntityId.Equals(auditEntity.EntityId))
                 .OrderByDescending(x => x.AuditDate)
                 .Select(x => new { x.AuditAction, x.AuditChanges })

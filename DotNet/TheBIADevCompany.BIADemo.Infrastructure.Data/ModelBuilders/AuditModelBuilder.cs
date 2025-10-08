@@ -4,12 +4,12 @@
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 {
-    using System.Diagnostics;
     using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
     using Microsoft.EntityFrameworkCore;
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     // End BIADemo
 
@@ -22,17 +22,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         /// Create the user model.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        public override void CreateModel(ModelBuilder modelBuilder)
+        public void CreateModel(ModelBuilder modelBuilder)
         {
-            Debug.Assert(modelBuilder != null, "Line to avoid warning empty method");
-            base.CreateModel(modelBuilder);
+            this.CreateAuditModel(modelBuilder);
+            this.CreateUserAuditModel<UserAudit, User>(modelBuilder);
 
             // Add here the project specific audit model creation.
             // Begin BIADemo
             modelBuilder.Entity<PlaneAudit>().Property(p => p.EntityId).IsRequired();
-
             modelBuilder.Entity<EngineAudit>().Property(p => p.EntityId).IsRequired();
-
             modelBuilder.Entity<PlaneAirportAudit>().Property(p => p.EntityId).IsRequired();
 
             // End BIADemo

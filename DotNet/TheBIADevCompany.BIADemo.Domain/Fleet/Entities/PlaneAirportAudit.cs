@@ -11,7 +11,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
     /// Audit entity for <see cref="PlaneAirport"/>.
     /// </summary>
     [AuditLinkedEntity(linkedEntityType: typeof(Plane), linkedEntityPropertyName: nameof(Plane.ConnectingAirports))]
-    public class PlaneAirportAudit : AuditEntity
+    public class PlaneAirportAudit : AuditEntity<PlaneAirport>
     {
         /// <summary>
         /// Gets or sets the AirportId.
@@ -37,15 +37,10 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
         public string PlaneName { get; set; }
 
         /// <inheritdoc/>
-        public override void FillSpecificProperties<TEntity>(TEntity entity)
+        protected override void FillSpecificProperties(PlaneAirport entity)
         {
-            if (entity is not PlaneAirport planeAirport)
-            {
-                return;
-            }
-
-            this.AirportName = planeAirport.Airport.Name;
-            this.PlaneName = planeAirport.Plane.Msn;
+            this.AirportName = entity.Airport.Name;
+            this.PlaneName = entity.Plane.Msn;
         }
     }
 }
