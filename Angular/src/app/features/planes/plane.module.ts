@@ -15,6 +15,7 @@ import { planeCRUDConfiguration } from './plane.constants';
 import { FeaturePlanesStore } from './store/plane.state';
 import { PlanesEffects } from './store/planes-effects';
 import { PlaneEditComponent } from './views/plane-edit/plane-edit.component';
+import { PlaneHistoricalComponent } from './views/plane-historical/plane-historical.component';
 import { PlaneImportComponent } from './views/plane-import/plane-import.component';
 import { PlaneItemComponent } from './views/plane-item/plane-item.component';
 import { PlaneNewComponent } from './views/plane-new/plane-new.component';
@@ -91,6 +92,23 @@ export const ROUTES: Routes = [
               title: 'plane.edit',
             },
             component: PlaneEditComponent,
+            canActivate: [PermissionGuard],
+          },
+          {
+            path: 'historical',
+            data: {
+              breadcrumb: 'bia.historical',
+              canNavigate: false,
+              layoutMode: LayoutMode.popup,
+              style: {
+                minWidth: '50vw',
+                maxWidth: '50vw',
+                maxHeight: '80vh',
+              },
+              title: 'bia.historical',
+              permission: Permission.Plane_Read,
+            },
+            component: PlaneHistoricalComponent,
             canActivate: [PermissionGuard],
           },
           {
