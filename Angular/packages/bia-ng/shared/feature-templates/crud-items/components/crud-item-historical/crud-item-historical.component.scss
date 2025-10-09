@@ -56,6 +56,11 @@
     background-color: var(--p-primary-200);
   }
 
+  &-arrow-icon {
+    @extend .historical-entry-modification;
+    font-size: 0.8rem;
+  }
+
   &-link-icon {
     @extend .historical-entry-modification;
     padding: 0;
