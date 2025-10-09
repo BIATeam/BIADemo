@@ -15,7 +15,11 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
         /// <summary>
         /// Gets or sets the CurrentAirportName.
         /// </summary>
-        [AuditLinkedEntityProperty(typeof(Airport), nameof(Airport.Name), nameof(Plane.CurrentAirportId), nameof(Plane.CurrentAirport))]
+        [AuditLinkedEntityProperty(
+            linkedEntityType: typeof(Airport),
+            linkedEntityPropertyDisplay: nameof(Airport.Name),
+            entityReferencePropertyIdentifier: nameof(Plane.CurrentAirportId),
+            entityPropertyName: nameof(Plane.CurrentAirport))]
         public string CurrentAirportName { get; set; }
 
         /// <inheritdoc/>

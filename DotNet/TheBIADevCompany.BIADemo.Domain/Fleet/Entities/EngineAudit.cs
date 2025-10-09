@@ -10,7 +10,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
     /// <summary>
     /// Audit entity for <see cref="Engine"/>.
     /// </summary>
-    [AuditLinkedEntity(typeof(Plane), nameof(Plane.Engines))]
+    [AuditLinkedEntity(linkedEntityType: typeof(Plane), linkedEntityPropertyName: nameof(Plane.Engines))]
     public class EngineAudit : AuditEntity<Engine>
     {
         /// <summary>
