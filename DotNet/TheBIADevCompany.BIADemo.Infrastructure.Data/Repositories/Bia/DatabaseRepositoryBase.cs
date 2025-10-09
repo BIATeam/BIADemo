@@ -28,10 +28,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories.Bia
         /// </summary>
         /// <param name="dataContextFactory">The data context factory.</param>
         /// <param name="serviceProvider">The service provider.</param>
-        /// <param name="auditFeature">The audit feature.</param>
         /// <param name="databaseConfigurationKey">The database configuration key.</param>
-        protected DatabaseRepositoryBase(DataContextFactory dataContextFactory, IServiceProvider serviceProvider, IAuditFeature auditFeature, string databaseConfigurationKey)
-            : base(dataContextFactory.GetQueryableUnitOfWork(databaseConfigurationKey), serviceProvider, auditFeature)
+        protected DatabaseRepositoryBase(DataContextFactory dataContextFactory, IServiceProvider serviceProvider, string databaseConfigurationKey)
+            : base(dataContextFactory.GetQueryableUnitOfWork(databaseConfigurationKey), serviceProvider)
         {
             this.dataContextFactory = dataContextFactory;
             this.databaseConfigurationKey = databaseConfigurationKey;

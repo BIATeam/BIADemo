@@ -44,6 +44,10 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// The service provider.
         /// </summary>
         private readonly IServiceProvider serviceProvider;
+
+        /// <summary>
+        /// The audit feature.
+        /// </summary>
         private readonly IAuditFeature auditFeature;
 
         /// <summary>
@@ -51,12 +55,11 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// </summary>
         /// <param name="unitOfWork">The unit Of Work.</param>
         /// <param name="serviceProvider">The service Provider.</param>
-        /// <param name="auditFeature">The audit feature.</param>
-        public TGenericRepositoryEF(IQueryableUnitOfWork unitOfWork, IServiceProvider serviceProvider, IAuditFeature auditFeature)
+        public TGenericRepositoryEF(IQueryableUnitOfWork unitOfWork, IServiceProvider serviceProvider)
         {
             this.unitOfWork = unitOfWork;
             this.serviceProvider = serviceProvider;
-            this.auditFeature = auditFeature;
+            this.auditFeature = serviceProvider.GetRequiredService<IAuditFeature>();
         }
 
         /// <summary>

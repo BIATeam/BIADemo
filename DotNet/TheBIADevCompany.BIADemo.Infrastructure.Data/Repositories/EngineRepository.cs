@@ -25,9 +25,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories
         /// </summary>
         /// <param name="unitOfWork">The unit Of Work.</param>
         /// <param name="serviceProvider">The service provider.</param>
-        /// <param name="auditFeature">The audit feature.</param>
-        public EngineRepository(IQueryableUnitOfWork unitOfWork, IServiceProvider serviceProvider, IAuditFeature auditFeature)
-            : base(unitOfWork, serviceProvider, auditFeature)
+        public EngineRepository(IQueryableUnitOfWork unitOfWork, IServiceProvider serviceProvider)
+            : base(unitOfWork, serviceProvider)
         {
         }
 
