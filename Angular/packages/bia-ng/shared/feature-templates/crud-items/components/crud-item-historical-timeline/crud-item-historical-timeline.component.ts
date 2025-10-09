@@ -8,12 +8,14 @@ import { CardModule } from 'primeng/card';
 import { TimelineModule } from 'primeng/timeline';
 
 @Component({
-  selector: 'bia-crud-item-historical',
+  selector: 'bia-crud-item-historical-timeline',
   imports: [TimelineModule, DatePipe, CardModule, TranslateModule],
-  templateUrl: './crud-item-historical.component.html',
-  styleUrl: './crud-item-historical.component.scss',
+  templateUrl: './crud-item-historical-timeline.component.html',
+  styleUrl: './crud-item-historical-timeline.component.scss',
 })
-export class CrudItemHistoricalComponent<TDto extends { id: number | string }> {
+export class CrudItemHistoricalTimelineComponent<
+  TDto extends { id: number | string },
+> {
   @Input() historicalEntries: HistoricalEntryDto[] = [];
   @Input() fields: BiaFieldConfig<TDto>[];
   historicalEntryType = HistoricalEntryType;
