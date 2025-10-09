@@ -1,3 +1,13 @@
+:host {
+  ::ng-deep .p-timeline-event-opposite {
+    flex: 1 !important;
+    min-width: 12rem;
+  }
+  ::ng-deep .p-timeline-event-content {
+    flex: 1 100% !important;
+  }
+}
+
 .historical-entry-icon-container {
   color: var(--primary-color-text);
   width: 1.7rem;

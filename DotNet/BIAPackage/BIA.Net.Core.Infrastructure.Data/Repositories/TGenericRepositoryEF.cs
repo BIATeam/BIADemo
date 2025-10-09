@@ -676,9 +676,9 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="entityType">The entity type.</param>
         /// <param name="entityIdValue">The entity id property value.</param>
         /// <param name="entityIdProperty">The entity id property name.</param>
-        /// <param name="hasParent">Indicates if the entity has parent or not.</param>
+        /// <param name="isLinkedEntity">Indicates if the entity is a linked entity or not.</param>
         /// <returns>Collection of <see cref="IAuditEntity"/>.</returns>
-        private async Task<List<IAuditEntity>> GetAudits(Type entityType, string entityIdValue, string entityIdProperty, bool hasParent = false)
+        private async Task<List<IAuditEntity>> GetAudits(Type entityType, string entityIdValue, string entityIdProperty, bool isLinkedEntity = false)
         {
             if (entityType is null || string.IsNullOrWhiteSpace(entityIdValue) || string.IsNullOrWhiteSpace(entityIdProperty))
             {
@@ -693,7 +693,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
 
             var query = this.unitOfWork.RetrieveSet(entityAuditType).Cast<IAuditEntity>().AsNoTracking();
 
-            if (hasParent)
+            if (isLinkedEntity)
             {
                 var linkedEntityData = JsonConvert.SerializeObject(new AuditLinkedEntityData(typeof(TEntity).Name, entityIdProperty, entityIdValue));
                 return await query.Where(x => x.AuditAction != BiaConstants.Audit.UpdateAction && x.LinkedEntities != null && x.LinkedEntities.Contains(linkedEntityData)).ToListAsync();
