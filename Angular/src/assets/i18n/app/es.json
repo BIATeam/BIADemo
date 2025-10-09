@@ -9,6 +9,7 @@
     "hangfire": "Hangfire",
     "pilots": "Pilotos",
     "planes": "Aviones",
+    "plane": "Avión",
     "planesFullCode": "Aviones (Full code)",
     "planesPageMode": "Aviones (Página)",
     "planesOfflineMode": "Aviones (Desconectado)",

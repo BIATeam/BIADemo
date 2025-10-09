@@ -60,6 +60,7 @@ export class CrudConfig<TDto extends { id: number | string }> {
   isCloneable: boolean;
   hasReadView: boolean;
   displayHistorical: boolean;
+  featureNameSingular: string;
 
   constructor({
     featureName,
@@ -85,6 +86,7 @@ export class CrudConfig<TDto extends { id: number | string }> {
     isCloneable = false,
     hasReadView = false,
     displayHistorical = false,
+    featureNameSingular = undefined,
   }: {
     featureName: string;
     fieldsConfig: BiaFieldsConfig<TDto>;
@@ -113,6 +115,7 @@ export class CrudConfig<TDto extends { id: number | string }> {
     isCloneable?: boolean;
     hasReadView?: boolean;
     displayHistorical?: boolean;
+    featureNameSingular?: string;
   }) {
     this.featureName = featureName;
     this.fieldsConfig = fieldsConfig;
@@ -143,5 +146,6 @@ export class CrudConfig<TDto extends { id: number | string }> {
     this.isCloneable = isCloneable ?? false;
     this.hasReadView = hasReadView ?? false;
     this.displayHistorical = displayHistorical ?? false;
+    this.featureNameSingular = featureNameSingular ?? '';
   }
 }
