@@ -27,10 +27,11 @@
             ];
             this.AuditPropertyMappers =
             [
-                new AuditPropertyMapper<Plane>
+                new AuditPropertyMapper<Plane, Airport>
                 {
                     ReferenceEntityProperty = plane => plane.CurrentAirport,
                     ReferenceEntityPropertyIdentifier = plane => plane.CurrentAirportId,
+                    LinkedEntityPropertyDisplay = airport => airport.Name,
                 },
             ];
         }

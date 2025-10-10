@@ -9,7 +9,7 @@
     public class AuditMapper<TEntity> : IAuditMapper
     {
         public Type EntityType => typeof(TEntity);
-        public List<ILinkedAuditMapper> LinkedAuditMappers { get; set; }
-        public List<IAuditPropertyMapper> AuditPropertyMappers { get; set; }
+        public List<ILinkedAuditMapper> LinkedAuditMappers { get; set; } = [];
+        public List<IAuditPropertyMapper> AuditPropertyMappers { get; set; } = [];
     }
 }

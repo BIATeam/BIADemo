@@ -4,7 +4,9 @@
 
     public interface IAuditPropertyMapper
     {
+        Type LinkedEntityType { get; }
         string ReferenceEntityPropertyName { get; }
         string ReferenceEntityPropertyIdentifierName { get; }
+        string LinkedEntityPropertyDisplayName { get; }
     }
 }
