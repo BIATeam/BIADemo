@@ -10,22 +10,12 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
     /// <summary>
     /// Audit entity for <see cref="Plane"/>.
     /// </summary>
-    public class PlaneAudit : AuditEntity<Plane>
-    {
-        /// <summary>
-        /// Gets or sets the CurrentAirportName.
-        /// </summary>
-        [AuditLinkedEntityProperty(
+    [AuditLinkedEntityProperty(
             linkedEntityType: typeof(Airport),
             linkedEntityPropertyDisplay: nameof(Airport.Name),
             entityReferencePropertyIdentifier: nameof(Plane.CurrentAirportId),
             entityPropertyName: nameof(Plane.CurrentAirport))]
-        public string CurrentAirportName { get; set; }
-
-        /// <inheritdoc/>
-        protected override void FillSpecificProperties(Plane entity)
-        {
-            this.CurrentAirportName = entity.CurrentAirport?.Name;
-        }
+    public class PlaneAudit : AuditEntity<Plane>
+    {
     }
 }

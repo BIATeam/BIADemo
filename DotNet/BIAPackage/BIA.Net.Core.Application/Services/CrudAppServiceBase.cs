@@ -421,16 +421,15 @@ namespace BIA.Net.Core.Application.Services
                     continue;
                 }
 
-                var linkedEntityProperties = audit
+                var linkedEntityPropertyAttributes = audit
                     .GetType()
-                    .GetProperties()
-                    .Where(p => p.GetCustomAttribute<AuditLinkedEntityPropertyAttribute>() is not null)
+                    .GetCustomAttributes<AuditLinkedEntityPropertyAttribute>()
                     .ToList();
                 var changes = JsonConvert.DeserializeObject<List<AuditChange>>(audit.AuditChanges);
                 foreach (var change in changes)
                 {
-                    var linkedEntityProperty = linkedEntityProperties.FirstOrDefault(x => x.GetCustomAttribute<AuditLinkedEntityPropertyAttribute>().EntityReferencePropertyIdentifier.Equals(change.ColumnName));
-                    if (linkedEntityProperty is null)
+                    var linkedEntityPropertyAttribute = linkedEntityPropertyAttributes.FirstOrDefault(x => x.EntityReferencePropertyIdentifier.Equals(change.ColumnName));
+                    if (linkedEntityPropertyAttribute is null)
                     {
                         entry.EntryModifications.Add(new EntityHistoricalEntryModificationDto
                         {
@@ -441,7 +440,6 @@ namespace BIA.Net.Core.Application.Services
                         continue;
                     }
 
-                    var linkedEntityPropertyAttribute = linkedEntityProperty.GetCustomAttribute<AuditLinkedEntityPropertyAttribute>();
                     entry.EntryModifications.Add(new EntityHistoricalEntryModificationDto
                     {
                         PropertyName = linkedEntityPropertyAttribute.EntityPropertyName,

@@ -230,18 +230,17 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
         private static async Task SetInsertAuditChanges(IAuditEntity auditEntity, EntityEntry entityEntry, IDictionary<string, object> entryColumnValues)
         {
             var auditChanges = new List<AuditChange>();
-            var auditLinkedEntityProperties = auditEntity
+            var auditLinkedEntityPropertyAttributes = auditEntity
                 .GetType()
-                .GetProperties()
-                .Where(p => p.GetCustomAttribute<AuditLinkedEntityPropertyAttribute>() is not null)
+                .GetCustomAttributes<AuditLinkedEntityPropertyAttribute>()
                 .ToList();
 
             foreach (var columnValue in entryColumnValues)
             {
-                var auditLinkedEntityProperty = auditLinkedEntityProperties
-                    .FirstOrDefault(x => x.GetCustomAttribute<AuditLinkedEntityPropertyAttribute>().EntityReferencePropertyIdentifier.Equals(columnValue.Key));
+                var auditLinkedEntityPropertyAttribute = auditLinkedEntityPropertyAttributes
+                    .FirstOrDefault(x => x.EntityReferencePropertyIdentifier.Equals(columnValue.Key));
 
-                if (auditLinkedEntityProperty is null)
+                if (auditLinkedEntityPropertyAttribute is null)
                 {
                     auditChanges.Add(new AuditChange(
                         columnValue.Key,
@@ -252,7 +251,6 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                     continue;
                 }
 
-                var auditLinkedEntityPropertyAttribute = auditLinkedEntityProperty.GetCustomAttribute<AuditLinkedEntityPropertyAttribute>();
                 var auditLinkedEntityPropertyReference = entityEntry.References.FirstOrDefault(x => x.Metadata.ClrType == auditLinkedEntityPropertyAttribute.LinkedEntityType)
                     ?? throw new BadBiaFrameworkUsageException($"Unable to find any reference of type {auditLinkedEntityPropertyAttribute.LinkedEntityType} into {entityEntry.Entity.GetType()}");
 
@@ -289,19 +287,18 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
         private async Task SetUpdateAuditChanges(IAuditEntity auditEntity, EntityEntry entityEntry, IReadOnlyList<EventEntryChange> changes)
         {
             var auditChanges = new List<AuditChange>();
-            var auditLinkedEntityProperties = auditEntity
+            var auditLinkedEntityPropertyAttributes = auditEntity
                 .GetType()
-                .GetProperties()
-                .Where(p => p.GetCustomAttribute<AuditLinkedEntityPropertyAttribute>() is not null)
+                .GetCustomAttributes<AuditLinkedEntityPropertyAttribute>()
                 .ToList();
             var realChanges = changes.Where(c => c.NewValue?.ToString() != c.OriginalValue?.ToString()).ToList();
 
             foreach (var change in realChanges)
             {
-                var auditLinkedEntityProperty = auditLinkedEntityProperties
-                    .FirstOrDefault(x => x.GetCustomAttribute<AuditLinkedEntityPropertyAttribute>().EntityReferencePropertyIdentifier.Equals(change.ColumnName));
+                var auditLinkedEntityPropertyAttribute = auditLinkedEntityPropertyAttributes
+                    .FirstOrDefault(x => x.EntityReferencePropertyIdentifier.Equals(change.ColumnName));
 
-                if (auditLinkedEntityProperty is null)
+                if (auditLinkedEntityPropertyAttribute is null)
                 {
                     auditChanges.Add(new AuditChange(
                         change.ColumnName,
@@ -312,7 +309,6 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                     continue;
                 }
 
-                var auditLinkedEntityPropertyAttribute = auditLinkedEntityProperty.GetCustomAttribute<AuditLinkedEntityPropertyAttribute>();
                 var auditLinkedEntityPropertyReference = entityEntry.References.FirstOrDefault(x => x.Metadata.ClrType == auditLinkedEntityPropertyAttribute.LinkedEntityType)
                     ?? throw new BadBiaFrameworkUsageException($"Unable to find any reference of type {auditLinkedEntityPropertyAttribute.LinkedEntityType} into {entityEntry.Entity.GetType()}");
 

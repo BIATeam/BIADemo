@@ -16,7 +16,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
         /// <summary>
         /// Gets or sets the AirportId.
         /// </summary>
-        [AuditLinkedEntityPropertyIdentifier(linkedEntityType: typeof(Airport))]
         public int AirportId { get; set; }
 
         /// <summary>

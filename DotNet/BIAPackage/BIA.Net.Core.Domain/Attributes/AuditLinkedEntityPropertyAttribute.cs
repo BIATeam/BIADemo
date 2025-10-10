@@ -16,7 +16,7 @@ namespace BIA.Net.Core.Domain.Attributes
     /// <param name="linkedEntityPropertyDisplay">The property name of the display value to use from the linked entity.</param>
     /// <param name="entityReferencePropertyIdentifier">The identifier reference value from the audited entity.</param>
     /// <param name="entityPropertyName">The property name from the audited entity that corresponds to the linked entity property value.</param>
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class AuditLinkedEntityPropertyAttribute(Type linkedEntityType, string linkedEntityPropertyDisplay, string entityReferencePropertyIdentifier, string entityPropertyName) : Attribute
     {
         /// <summary>

@@ -698,6 +698,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
 
             if (isLinkedEntity)
             {
+                //var auditLinkedEntityAttribute = entityAuditType
                 var linkedEntityData = JsonConvert.SerializeObject(new AuditLinkedEntityData(typeof(TEntity).Name, entityIdProperty, entityIdValue));
                 return await query.Where(x => x.AuditAction != BiaConstants.Audit.UpdateAction && x.LinkedEntities != null && x.LinkedEntities.Contains(linkedEntityData)).ToListAsync();
             }
