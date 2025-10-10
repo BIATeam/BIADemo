@@ -33,23 +33,23 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             {
                 LinkedAuditMappers =
                 [
-                   new LinkedAuditMapper<Plane, Airport, PlaneAudit>
-                   {
-                       ReferenceEntityProperty = plane => plane.CurrentAirport,
-                       LinkedAuditEntityDisplayProperty = audit => audit.CurrentAirportName,
-                   },
-                   new LinkedAuditMapper<Plane, Engine, EngineAudit>
+                   new LinkedAuditMapper<Plane, EngineAudit>
                    {
                        ReferenceEntityProperty = plane => plane.Engines,
                        LinkedAuditEntityDisplayProperty = audit => audit.Reference,
-                       LinkedAuditEntityIdentifierProperty = audit => audit.PlaneId,
                    },
-                   new LinkedAuditMapper<Plane, Airport, PlaneAirportAudit>
+                   new LinkedAuditMapper<Plane, PlaneAirportAudit>
                    {
                        ReferenceEntityProperty = plane => plane.ConnectingAirports,
-                       IsJoinLinkedEntity = true,
                        LinkedAuditEntityDisplayProperty = audit => audit.AirportName,
-                       LinkedAuditEntityIdentifierProperty = audit => audit.PlaneId,
+                   },
+                ],
+                AuditPropertyMappers =
+                [
+                   new AuditPropertyMapper<Plane>
+                   {
+                       ReferenceEntityProperty = plane => plane.CurrentAirport,
+                       ReferenceEntityPropertyIdentifier = plane => plane.CurrentAirportId,
                    },
                 ],
             };

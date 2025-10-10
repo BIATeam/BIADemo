@@ -10,5 +10,6 @@
     {
         public Type AuditType => typeof(TAuditEntity);
         public List<ILinkedAuditMapper> LinkedAuditMappers { get; set; }
+        public List<IAuditPropertyMapper> AuditPropertyMappers { get; set; }
     }
 }

@@ -9,10 +9,7 @@
     public interface ILinkedAuditMapper
     {
         Type LinkedAuditEntityType { get; }
-        bool IsJoinLinkedEntity { get; }
-        Type LinkedEntityType { get; }
         string ReferenceEntityPropertyName { get; }
-        string LinkedAuditEntityIdentifierPropertyName { get; }
         string LinkedAuditEntityDisplayPropertyName { get; }
     }
 }

@@ -10,5 +10,6 @@
     {
         Type AuditType { get; }
         List<ILinkedAuditMapper> LinkedAuditMappers { get; }
+        List<IAuditPropertyMapper> AuditPropertyMappers { get; }
     }
 }

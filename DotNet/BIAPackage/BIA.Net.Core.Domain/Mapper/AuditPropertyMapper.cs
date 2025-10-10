@@ -7,13 +7,12 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    public class LinkedAuditMapper<TReferenceEntity, TLinkedAuditEntity> : ILinkedAuditMapper
+    public class AuditPropertyMapper<TReferenceEntity> : IAuditPropertyMapper
     {
-        public Type LinkedAuditEntityType => typeof(TLinkedAuditEntity);
         public string ReferenceEntityPropertyName => Common.Helpers.PropertyMapper.GetPropertyName(this.ReferenceEntityProperty);
-        public string LinkedAuditEntityDisplayPropertyName => Common.Helpers.PropertyMapper.GetPropertyName(this.LinkedAuditEntityDisplayProperty);
+        public string ReferenceEntityPropertyIdentifierName => Common.Helpers.PropertyMapper.GetPropertyName(this.ReferenceEntityPropertyIdentifier);
 
         public required Expression<Func<TReferenceEntity, object>> ReferenceEntityProperty { get; set; }
-        public required Expression<Func<TLinkedAuditEntity, object>> LinkedAuditEntityDisplayProperty { get; set; }
+        public required Expression<Func<TReferenceEntity, object>> ReferenceEntityPropertyIdentifier { get; set; }
     }
 }
