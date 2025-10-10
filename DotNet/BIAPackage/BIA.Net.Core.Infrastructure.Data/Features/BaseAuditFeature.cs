@@ -194,6 +194,8 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                         await this.SetUpdateAuditChanges(auditEntity, entityEntry, entry.Changes);
                         break;
                     case Common.BiaConstants.Audit.InsertAction:
+                        await SetInsertAuditChanges(auditEntity, entityEntry, entry.ColumnValues);
+                        break;
                     case Common.BiaConstants.Audit.DeleteAction:
                         auditEntity.AuditChanges = JsonSerializer.Serialize(entry.ColumnValues);
                         break;

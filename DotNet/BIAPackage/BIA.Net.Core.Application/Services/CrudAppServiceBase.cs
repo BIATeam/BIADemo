@@ -357,6 +357,7 @@ namespace BIA.Net.Core.Application.Services
                     return GroupAuditPerSeconds(groups, audit);
                 });
 
+                var mapper = this.InitMapper<TDto, TMapper>();
                 var historical = new List<EntityHistoricalEntryDto>();
                 foreach (var audits in auditsPerSeconds)
                 {
@@ -366,18 +367,16 @@ namespace BIA.Net.Core.Application.Services
                         EntryUserLogin = audits[0].AuditUserLogin,
                     };
 
-                    if (audits.Any(audit => audit.AuditAction == Core.Common.BiaConstants.Audit.InsertAction && !audit.GetType().GetCustomAttributes<AuditLinkedEntityAttribute>().Any(a => a.LinkedEntityType == typeof(TEntity))))
+                    // Single audit with no Update Action and no Linked Audit
+                    var createOrDeleteAudit = audits.SingleOrDefault(audit => audit.AuditAction != Core.Common.BiaConstants.Audit.UpdateAction && (mapper.AuditMapper is null || (!mapper.AuditMapper.LinkedAuditMappers.Any(mapper => mapper.LinkedAuditEntityType == audit.GetType()))));
+                    if (createOrDeleteAudit is not null)
                     {
-                        entry.EntryType = EntityHistoricEntryType.Create;
-                    }
-                    else if (audits.Any(audit => audit.AuditAction == Core.Common.BiaConstants.Audit.DeleteAction && !audit.GetType().GetCustomAttributes<AuditLinkedEntityAttribute>().Any(a => a.LinkedEntityType == typeof(TEntity))))
-                    {
-                        entry.EntryType = EntityHistoricEntryType.Delete;
+                        entry.EntryType = createOrDeleteAudit.AuditAction == Core.Common.BiaConstants.Audit.InsertAction ? EntityHistoricEntryType.Create : EntityHistoricEntryType.Delete;
                     }
                     else
                     {
                         entry.EntryType = EntityHistoricEntryType.Update;
-                        this.FillHistoricalEntryModifications(entry, audits);
+                        this.FillHistoricalEntryModifications(entry, audits, mapper);
                     }
 
                     historical.Add(entry);
@@ -411,9 +410,8 @@ namespace BIA.Net.Core.Application.Services
             return groups;
         }
 
-        private void FillHistoricalEntryModifications(EntityHistoricalEntryDto entry, List<IAuditEntity> audits)
+        private void FillHistoricalEntryModifications(EntityHistoricalEntryDto entry, List<IAuditEntity> audits, TMapper mapper)
         {
-            var mapper = this.InitMapper<TDto, TMapper>();
             var auditMapper = mapper.AuditMapper
                 ?? throw new BadBiaFrameworkUsageException($"Missing declaration of {nameof(IAuditMapper)} into {typeof(TMapper)}");
 
