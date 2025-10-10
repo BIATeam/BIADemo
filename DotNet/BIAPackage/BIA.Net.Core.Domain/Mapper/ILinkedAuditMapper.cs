@@ -11,5 +11,6 @@
         Type LinkedAuditEntityType { get; }
         string ReferenceEntityPropertyName { get; }
         string LinkedAuditEntityDisplayPropertyName { get; }
+        string LinkedAuditEntityIdentifierPropertyName { get; }
     }
 }

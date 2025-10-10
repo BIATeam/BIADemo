@@ -19,6 +19,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
     using BIA.Net.Core.Domain.Attributes;
     using BIA.Net.Core.Domain.Audit;
     using BIA.Net.Core.Domain.Entity.Interface;
+    using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
@@ -54,6 +55,11 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         private readonly IAuditFeature auditFeature;
 
         /// <summary>
+        /// The audit mapper.
+        /// </summary>
+        private readonly IAuditMapper auditMapper;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TGenericRepositoryEF{TEntity, TKey}"/> class.
         /// </summary>
         /// <param name="unitOfWork">The unit Of Work.</param>
@@ -63,6 +69,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             this.unitOfWork = unitOfWork;
             this.serviceProvider = serviceProvider;
             this.auditFeature = serviceProvider.GetRequiredService<IAuditFeature>();
+            this.auditMapper = serviceProvider.GetServices<IAuditMapper>().FirstOrDefault(mapper => mapper.EntityType == typeof(TEntity));
         }
 
         /// <summary>
@@ -689,18 +696,16 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
 
             var auditSet = this.unitOfWork.RetrieveSet(entityAuditType);
 
-            var auditLinkedEntityAttribute = entityAuditType
-                .GetCustomAttributes<AuditLinkedEntityAttribute>()
-                .FirstOrDefault(a => a.LinkedEntityType == typeof(TEntity));
-            if (auditLinkedEntityAttribute is not null)
+            var linkedAuditMapper = this.auditMapper?.LinkedAuditMappers.FirstOrDefault(x => x.LinkedAuditEntityType == entityAuditType);
+            if (linkedAuditMapper is not null)
             {
-                var auditLinkedEntityPropertyIdentifierProperty = entityAuditType
-                    .GetProperties()
-                    .FirstOrDefault(p => p.GetCustomAttribute<AuditLinkedEntityPropertyIdentifierAttribute>()?.LinkedEntityType == typeof(TEntity))
-                    ?? throw new BadBiaFrameworkUsageException($"Missing {nameof(AuditLinkedEntityPropertyIdentifierAttribute)} property on {entityAuditType.Name}.");
+                if (entityAuditType.GetProperty(linkedAuditMapper.LinkedAuditEntityIdentifierPropertyName) is null)
+                {
+                    throw new BadBiaFrameworkUsageException($"Unable to find {linkedAuditMapper.LinkedAuditEntityIdentifierPropertyName} property on {entityAuditType.Name}.");
+                }
 
                 var expressionParameter = Expression.Parameter(entityAuditType);
-                var expressionProperty = Expression.PropertyOrField(expressionParameter, auditLinkedEntityPropertyIdentifierProperty.Name);
+                var expressionProperty = Expression.PropertyOrField(expressionParameter, linkedAuditMapper.LinkedAuditEntityIdentifierPropertyName);
                 var expression = Expression.Equal(expressionProperty, Expression.Constant(entityIdValue, expressionProperty.Type));
                 var expressionDelegateType = typeof(Func<,>).MakeGenericType(entityAuditType, typeof(bool));
                 var expressionLambda = Expression.Lambda(expressionDelegateType, expression, expressionParameter);

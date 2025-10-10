@@ -12,8 +12,10 @@
         public Type LinkedAuditEntityType => typeof(TLinkedAuditEntity);
         public string ReferenceEntityPropertyName => Common.Helpers.PropertyMapper.GetPropertyName(this.ReferenceEntityProperty);
         public string LinkedAuditEntityDisplayPropertyName => Common.Helpers.PropertyMapper.GetPropertyName(this.LinkedAuditEntityDisplayProperty);
+        public string LinkedAuditEntityIdentifierPropertyName => Common.Helpers.PropertyMapper.GetPropertyName(this.LinkedAuditEntityIdentifierProperty);
 
         public required Expression<Func<TReferenceEntity, object>> ReferenceEntityProperty { get; set; }
         public required Expression<Func<TLinkedAuditEntity, object>> LinkedAuditEntityDisplayProperty { get; set; }
+        public required Expression<Func<TLinkedAuditEntity, object>> LinkedAuditEntityIdentifierProperty { get; set; }
     }
 }

@@ -18,11 +18,13 @@
                 {
                     ReferenceEntityProperty = plane => plane.Engines,
                     LinkedAuditEntityDisplayProperty = audit => audit.Reference,
+                    LinkedAuditEntityIdentifierProperty = audit => audit.PlaneId,
                 },
                 new LinkedAuditMapper<Plane, PlaneAirportAudit>
                 {
                     ReferenceEntityProperty = plane => plane.ConnectingAirports,
                     LinkedAuditEntityDisplayProperty = audit => audit.AirportName,
+                    LinkedAuditEntityIdentifierProperty = audit => audit.PlaneId,
                 },
             ];
             this.AuditPropertyMappers =
