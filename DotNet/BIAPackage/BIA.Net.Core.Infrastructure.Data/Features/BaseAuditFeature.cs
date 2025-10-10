@@ -21,6 +21,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
     using BIA.Net.Core.Domain.Attributes;
     using BIA.Net.Core.Domain.Audit;
     using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;
     using Microsoft.EntityFrameworkCore;
@@ -38,6 +39,8 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
     {
         private readonly IServiceProvider serviceProvider;
 
+        private readonly IReadOnlyCollection<IAuditMapper> auditMappers;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseAuditFeature" /> class.
         /// </summary>
@@ -48,6 +51,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
             Audit.Core.Configuration.AuditDisabled = true;
             AuditConfiguration auditConfiguration = commonFeaturesConfigurationOptions.Value.AuditConfiguration;
             this.IsActive = auditConfiguration?.IsActive == true;
+            this.auditMappers = serviceProvider.GetServices<IAuditMapper>().ToList();
 
             // Audit
             if (this.IsActive)
@@ -188,6 +192,8 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                 auditEntity.AuditDate = DateTime.UtcNow;
                 auditEntity.AuditUserLogin = evt.Environment.CustomFields[Common.BiaConstants.Audit.UserLoginCustomField].ToString();
                 auditEntity.AuditAction = entry.Action;
+
+                var auditMapper = this.auditMappers.FirstOrDefault(mapper => mapper.EntityType == entityEntry.Entity.GetType());
                 switch (entry.Action)
                 {
                     case Common.BiaConstants.Audit.UpdateAction:

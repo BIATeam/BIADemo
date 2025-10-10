@@ -27,32 +27,10 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
         /// <summary>
         /// Initializes a new instance of the <see cref="PlaneMapper"/> class.
         /// </summary>
-        public PlaneMapper()
+        /// <param name="auditMappers">The injected collection of <see cref="IAuditMapper"/>.</param>
+        public PlaneMapper(IEnumerable<IAuditMapper> auditMappers)
         {
-            this.AuditMapper = new AuditMapper<Plane>
-            {
-                LinkedAuditMappers =
-                [
-                   new LinkedAuditMapper<Plane, EngineAudit>
-                   {
-                       ReferenceEntityProperty = plane => plane.Engines,
-                       LinkedAuditEntityDisplayProperty = audit => audit.Reference,
-                   },
-                   new LinkedAuditMapper<Plane, PlaneAirportAudit>
-                   {
-                       ReferenceEntityProperty = plane => plane.ConnectingAirports,
-                       LinkedAuditEntityDisplayProperty = audit => audit.AirportName,
-                   },
-                ],
-                AuditPropertyMappers =
-                [
-                   new AuditPropertyMapper<Plane>
-                   {
-                       ReferenceEntityProperty = plane => plane.CurrentAirport,
-                       ReferenceEntityPropertyIdentifier = plane => plane.CurrentAirportId,
-                   },
-                ],
-            };
+            this.AuditMapper = auditMappers.FirstOrDefault(x => x.EntityType == typeof(Plane));
         }
 
         /// <inheritdoc />
