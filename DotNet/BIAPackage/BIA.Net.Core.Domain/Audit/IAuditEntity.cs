@@ -15,11 +15,6 @@ namespace BIA.Net.Core.Domain.Audit
         string EntityId { get; set; }
 
         /// <summary>
-        /// JSON value of <see cref="AuditLinkedEntityData"/> collection.
-        /// </summary>
-        string LinkedEntities { get; set; }
-
-        /// <summary>
         /// Fill specific properties of the audit based on the current audited <paramref name="entity"/>.
         /// </summary>
         /// <typeparam name="T">Audited entity type.</typeparam>

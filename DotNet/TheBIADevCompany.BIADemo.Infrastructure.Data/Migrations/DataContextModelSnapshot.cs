@@ -1366,9 +1366,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LinkedEntities")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("PlaneId")
                         .HasColumnType("int");
 
@@ -1698,9 +1695,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LinkedEntities")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("PlaneId")
                         .HasColumnType("int");
 
@@ -1737,14 +1731,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<string>("AuditUserLogin")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CurrentAirportName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("EntityId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LinkedEntities")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("RowVersion")
@@ -1996,9 +1984,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("LinkedEntities")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Login")
                         .IsRequired()

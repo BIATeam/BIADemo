@@ -175,16 +175,6 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                 // Reset to zero the audit ID to avoid insertion error
                 auditEntity.Id = 0;
 
-                // Fill linked entity data from audited entity properties
-                var auditLinkedEntityData = new List<AuditLinkedEntityData>();
-                foreach (var linkedEntityPropertyIdentifier in auditEntity.GetType().GetProperties().Where(p => p.GetCustomAttribute<AuditLinkedEntityPropertyIdentifierAttribute>() is not null))
-                {
-                    var linkedEntityType = linkedEntityPropertyIdentifier.GetCustomAttribute<AuditLinkedEntityPropertyIdentifierAttribute>().LinkedEntityType;
-                    auditLinkedEntityData.Add(new AuditLinkedEntityData(linkedEntityType.Name, linkedEntityPropertyIdentifier.Name, linkedEntityPropertyIdentifier.GetValue(auditEntity, null).ToString()));
-                }
-
-                auditEntity.LinkedEntities = auditLinkedEntityData.Count != 0 ? JsonSerializer.Serialize(auditLinkedEntityData) : null;
-
                 // Load all unloaded direct references of the entity before filling specific properties
                 var entityEntry = entry.GetEntry();
                 foreach (var reference in entityEntry.References.Where(r => !r.IsLoaded))

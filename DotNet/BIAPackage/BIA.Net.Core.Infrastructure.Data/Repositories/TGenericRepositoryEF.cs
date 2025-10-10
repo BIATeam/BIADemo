@@ -16,6 +16,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
     using Audit.EntityFramework;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.Attributes;
     using BIA.Net.Core.Domain.Audit;
     using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.QueryOrder;
@@ -24,8 +25,10 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
     using BIA.Net.Core.Domain.Specification;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata;
+    using Microsoft.EntityFrameworkCore.Metadata.Internal;
     using Microsoft.Extensions.DependencyInjection;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// The class representing a GenericRepository.
@@ -382,7 +385,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <inheritdoc/>
         public async Task<ImmutableList<IAuditEntity>> GetAuditsAsync(TKey id)
         {
-            var audits = new List<IAuditEntity>(await this.GetAudits(typeof(TEntity), id.ToString(), nameof(IEntity<TKey>.Id)));
+            var audits = new List<IAuditEntity>(await this.GetAudits(typeof(TEntity), id));
 
             var entityType = this.unitOfWork.FindEntityType(typeof(TEntity));
             foreach (var navigation in entityType.GetNavigations())
@@ -398,10 +401,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
                     continue;
                 }
 
-                var navigationPropertyName = navigation.ForeignKey.Properties.FirstOrDefault(p =>
-                    p.GetContainingForeignKeys().Any(fk => fk.PrincipalEntityType.ClrType == entityType.ClrType))?.Name;
-
-                audits.AddRange(await this.GetAudits(navigationEntityType, id.ToString(), navigationPropertyName, true));
+                audits.AddRange(await this.GetAudits(navigationEntityType, id));
             }
 
             return [.. audits.OrderByDescending(x => x.AuditDate)];
@@ -678,32 +678,52 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// </summary>
         /// <param name="entityType">The entity type.</param>
         /// <param name="entityIdValue">The entity id property value.</param>
-        /// <param name="entityIdProperty">The entity id property name.</param>
-        /// <param name="isLinkedEntity">Indicates if the entity is a linked entity or not.</param>
         /// <returns>Collection of <see cref="IAuditEntity"/>.</returns>
-        private async Task<List<IAuditEntity>> GetAudits(Type entityType, string entityIdValue, string entityIdProperty, bool isLinkedEntity = false)
+        private async Task<List<IAuditEntity>> GetAudits(Type entityType, TKey entityIdValue)
         {
-            if (entityType is null || string.IsNullOrWhiteSpace(entityIdValue) || string.IsNullOrWhiteSpace(entityIdProperty))
-            {
-                return [];
-            }
-
             var entityAuditType = this.auditFeature.AuditTypeMapper(entityType);
-            if (entityAuditType.GetInterface(typeof(IAuditEntity).Name) is null)
+            if (!typeof(IAuditEntity).IsAssignableFrom(entityAuditType))
             {
                 return [];
             }
 
-            var query = this.unitOfWork.RetrieveSet(entityAuditType).Cast<IAuditEntity>().AsNoTracking();
+            var auditSet = this.unitOfWork.RetrieveSet(entityAuditType);
 
-            if (isLinkedEntity)
+            var auditLinkedEntityAttribute = entityAuditType
+                .GetCustomAttributes<AuditLinkedEntityAttribute>()
+                .FirstOrDefault(a => a.LinkedEntityType == typeof(TEntity));
+            if (auditLinkedEntityAttribute is not null)
             {
-                //var auditLinkedEntityAttribute = entityAuditType
-                var linkedEntityData = JsonConvert.SerializeObject(new AuditLinkedEntityData(typeof(TEntity).Name, entityIdProperty, entityIdValue));
-                return await query.Where(x => x.AuditAction != BiaConstants.Audit.UpdateAction && x.LinkedEntities != null && x.LinkedEntities.Contains(linkedEntityData)).ToListAsync();
+                var auditLinkedEntityPropertyIdentifierProperty = entityAuditType
+                    .GetProperties()
+                    .FirstOrDefault(p => p.GetCustomAttribute<AuditLinkedEntityPropertyIdentifierAttribute>()?.LinkedEntityType == typeof(TEntity))
+                    ?? throw new BadBiaFrameworkUsageException($"Missing {nameof(AuditLinkedEntityPropertyIdentifierAttribute)} property on {entityAuditType.Name}.");
+
+                var expressionParameter = Expression.Parameter(entityAuditType);
+                var expressionProperty = Expression.PropertyOrField(expressionParameter, auditLinkedEntityPropertyIdentifierProperty.Name);
+                var expression = Expression.Equal(expressionProperty, Expression.Constant(entityIdValue, expressionProperty.Type));
+                var expressionDelegateType = typeof(Func<,>).MakeGenericType(entityAuditType, typeof(bool));
+                var expressionLambda = Expression.Lambda(expressionDelegateType, expression, expressionParameter);
+                var expressionCall = Expression.Call(
+                    typeof(Queryable),
+                    nameof(Queryable.Where),
+                    [entityAuditType],
+                    auditSet.Expression,
+                    Expression.Quote(expressionLambda));
+
+                return await auditSet.Provider
+                    .CreateQuery(expressionCall)
+                    .Cast<IAuditEntity>()
+                    .AsNoTracking()
+                    .Where(x => x.AuditAction != BiaConstants.Audit.UpdateAction)
+                    .ToListAsync();
             }
 
-            return await query.Where(x => x.EntityId.Equals(entityIdValue)).ToListAsync();
+            return await auditSet
+                .Cast<IAuditEntity>()
+                .AsNoTracking()
+                .Where(x => x.EntityId.Equals(entityIdValue.ToString()))
+                .ToListAsync();
         }
     }
 }

@@ -14,9 +14,6 @@ namespace BIA.Net.Core.Domain.Audit
         public string EntityId { get; set; }
 
         /// <inheritdoc/>
-        public string LinkedEntities { get; set; }
-
-        /// <inheritdoc/>
         public void FillSpecificProperties<T>(T entity)
         {
             if (entity is not TEntity typedEntity)
