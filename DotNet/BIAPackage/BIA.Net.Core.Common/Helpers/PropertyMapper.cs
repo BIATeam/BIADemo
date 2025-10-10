@@ -6,6 +6,7 @@ namespace BIA.Net.Core.Common.Helpers
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Reflection;
 
     /// <summary>
@@ -84,6 +85,30 @@ namespace BIA.Net.Core.Common.Helpers
             }
 
             return list;
+        }
+
+        /// <summary>
+        /// Retrieve the property name from an expression.
+        /// </summary>
+        /// <param name="expression">Expression.</param>
+        /// <returns>Property name of the expression.</returns>
+        public static string GetPropertyName(LambdaExpression expression)
+        {
+            ArgumentNullException.ThrowIfNull(expression);
+
+            Expression body = expression.Body;
+            if (body is UnaryExpression u &&
+                (u.NodeType == ExpressionType.Convert || u.NodeType == ExpressionType.ConvertChecked))
+            {
+                body = u.Operand;
+            }
+
+            if (body is MemberExpression member)
+            {
+                return member.Member.Name;
+            }
+
+            throw new ArgumentException("Not a property expression", nameof(expression));
         }
     }
 }

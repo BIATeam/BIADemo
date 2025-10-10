@@ -1698,9 +1698,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<int>("PlaneId")
                         .HasColumnType("int");
 
-                    b.Property<string>("PlaneName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
@@ -1729,6 +1726,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("AuditUserLogin")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CurrentAirportName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EntityId")

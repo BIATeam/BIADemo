@@ -30,16 +30,10 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
         [AuditLinkedEntityPropertyDisplay(linkedEntityType: typeof(Plane))]
         public string AirportName { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Plane Name.
-        /// </summary>
-        public string PlaneName { get; set; }
-
         /// <inheritdoc/>
         protected override void FillSpecificProperties(PlaneAirport entity)
         {
             this.AirportName = entity.Airport.Name;
-            this.PlaneName = entity.Plane.Msn;
         }
     }
 }

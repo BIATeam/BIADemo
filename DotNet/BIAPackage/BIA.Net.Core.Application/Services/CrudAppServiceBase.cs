@@ -10,6 +10,7 @@ namespace BIA.Net.Core.Application.Services
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
+    using System.Text.Json;
     using System.Threading.Tasks;
     using Audit.EntityFramework;
     using BIA.Net.Core.Common.Enum;
@@ -410,26 +411,19 @@ namespace BIA.Net.Core.Application.Services
             return groups;
         }
 
-        private static void FillHistoricalEntryModifications(EntityHistoricalEntryDto entry, List<IAuditEntity> audits)
+        private void FillHistoricalEntryModifications(EntityHistoricalEntryDto entry, List<IAuditEntity> audits)
         {
+            var mapper = this.InitMapper<TDto, TMapper>();
+            var auditMapper = mapper.AuditMapper
+                ?? throw new BadBiaFrameworkUsageException($"Missing declaration of {nameof(IAuditMapper)} into {typeof(TMapper)}");
+
             foreach (var audit in audits)
             {
-                var auditLinkedEntityAttribute = audit.GetType().GetCustomAttributes<AuditLinkedEntityAttribute>().FirstOrDefault(a => a.LinkedEntityType == typeof(TEntity));
-                if (auditLinkedEntityAttribute != null)
+                var linkedAuditMapper = auditMapper.LinkedAuditMappers.FirstOrDefault(x => x.LinkedAuditEntityType == audit.GetType());
+                if (linkedAuditMapper is null)
                 {
-                    FillHistoricalEntryModificationLinkedEntity(entry, audit, auditLinkedEntityAttribute);
-                    continue;
-                }
-
-                var linkedEntityPropertyAttributes = audit
-                    .GetType()
-                    .GetCustomAttributes<AuditLinkedEntityPropertyAttribute>()
-                    .ToList();
-                var changes = JsonConvert.DeserializeObject<List<AuditChange>>(audit.AuditChanges);
-                foreach (var change in changes)
-                {
-                    var linkedEntityPropertyAttribute = linkedEntityPropertyAttributes.FirstOrDefault(x => x.EntityReferencePropertyIdentifier.Equals(change.ColumnName));
-                    if (linkedEntityPropertyAttribute is null)
+                    var changes = JsonConvert.DeserializeObject<List<AuditChange>>(audit.AuditChanges);
+                    foreach (var change in changes)
                     {
                         entry.EntryModifications.Add(new EntityHistoricalEntryModificationDto
                         {
@@ -437,16 +431,67 @@ namespace BIA.Net.Core.Application.Services
                             NewValue = change.NewDisplay ?? change.NewValue?.ToString(),
                             OldValue = change.OriginalDisplay ?? change.OriginalValue?.ToString(),
                         });
-                        continue;
                     }
 
-                    entry.EntryModifications.Add(new EntityHistoricalEntryModificationDto
-                    {
-                        PropertyName = linkedEntityPropertyAttribute.EntityPropertyName,
-                        NewValue = change.NewDisplay ?? change.NewValue?.ToString(),
-                        OldValue = change.OriginalDisplay ?? change.OriginalValue?.ToString(),
-                    });
+                    continue;
                 }
+
+                var linkedAuditEntityDisplayProperty = audit.GetType().GetProperty(linkedAuditMapper.LinkedAuditEntityDisplayPropertyName) ??
+                    throw new BadBiaFrameworkUsageException($"Unable to find display property {linkedAuditMapper.LinkedAuditEntityDisplayPropertyName} into linked audit entity {linkedAuditMapper.LinkedAuditEntityType.Name}");
+                var linkedAuditEntityDisplayPropertyValue = linkedAuditEntityDisplayProperty.GetValue(audit)?.ToString();
+
+                var entryModification = new EntityHistoricalEntryModificationDto
+                {
+                    IsLinkedProperty = true,
+                    PropertyName = linkedAuditMapper.ReferenceEntityPropertyName,
+                };
+
+                switch (audit.AuditAction)
+                {
+                    case Core.Common.BiaConstants.Audit.InsertAction:
+                        entryModification.NewValue = linkedAuditEntityDisplayPropertyValue;
+                        break;
+                    case Core.Common.BiaConstants.Audit.DeleteAction:
+                        entryModification.OldValue = linkedAuditEntityDisplayPropertyValue;
+                        break;
+                }
+
+                entry.EntryModifications.Add(entryModification);
+
+                // OLD
+                //var auditLinkedEntityAttribute = audit.GetType().GetCustomAttributes<AuditLinkedEntityAttribute>().FirstOrDefault(a => a.LinkedEntityType == typeof(TEntity));
+                //if (auditLinkedEntityAttribute != null)
+                //{
+                //    FillHistoricalEntryModificationLinkedEntity(entry, audit, auditLinkedEntityAttribute);
+                //    continue;
+                //}
+
+                //var linkedEntityPropertyAttributes = audit
+                //    .GetType()
+                //    .GetCustomAttributes<AuditLinkedEntityPropertyAttribute>()
+                //    .ToList();
+                //var changes = JsonConvert.DeserializeObject<List<AuditChange>>(audit.AuditChanges);
+                //foreach (var change in changes)
+                //{
+                //    var linkedEntityPropertyAttribute = linkedEntityPropertyAttributes.FirstOrDefault(x => x.EntityReferencePropertyIdentifier.Equals(change.ColumnName));
+                //    if (linkedEntityPropertyAttribute is null)
+                //    {
+                //        entry.EntryModifications.Add(new EntityHistoricalEntryModificationDto
+                //        {
+                //            PropertyName = change.ColumnName,
+                //            NewValue = change.NewDisplay ?? change.NewValue?.ToString(),
+                //            OldValue = change.OriginalDisplay ?? change.OriginalValue?.ToString(),
+                //        });
+                //        continue;
+                //    }
+
+                //    entry.EntryModifications.Add(new EntityHistoricalEntryModificationDto
+                //    {
+                //        PropertyName = linkedEntityPropertyAttribute.EntityPropertyName,
+                //        NewValue = change.NewDisplay ?? change.NewValue?.ToString(),
+                //        OldValue = change.OriginalDisplay ?? change.OriginalValue?.ToString(),
+                //    });
+                //}
             }
         }
 

@@ -17,5 +17,11 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
             entityPropertyName: nameof(Plane.CurrentAirport))]
     public class PlaneAudit : AuditEntity<Plane>
     {
+        public string CurrentAirportName { get; set; }
+
+        protected override void FillSpecificProperties(Plane entity)
+        {
+            this.CurrentAirportName = entity.CurrentAirport?.Name;
+        }
     }
 }

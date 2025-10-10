@@ -14,6 +14,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.Mapper;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
@@ -23,6 +24,37 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
     /// </summary>
     public class PlaneMapper : BaseMapper<PlaneDto, Plane, int>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlaneMapper"/> class.
+        /// </summary>
+        public PlaneMapper()
+        {
+            this.AuditMapper = new AuditMapper<Plane>
+            {
+                LinkedAuditMappers =
+                [
+                   new LinkedAuditMapper<Plane, Airport, PlaneAudit>
+                   {
+                       ReferenceEntityProperty = plane => plane.CurrentAirport,
+                       LinkedAuditEntityDisplayProperty = audit => audit.CurrentAirportName,
+                   },
+                   new LinkedAuditMapper<Plane, Engine, EngineAudit>
+                   {
+                       ReferenceEntityProperty = plane => plane.Engines,
+                       LinkedAuditEntityDisplayProperty = audit => audit.Reference,
+                       LinkedAuditEntityIdentifierProperty = audit => audit.PlaneId,
+                   },
+                   new LinkedAuditMapper<Plane, Airport, PlaneAirportAudit>
+                   {
+                       ReferenceEntityProperty = plane => plane.ConnectingAirports,
+                       IsJoinLinkedEntity = true,
+                       LinkedAuditEntityDisplayProperty = audit => audit.AirportName,
+                       LinkedAuditEntityIdentifierProperty = audit => audit.PlaneId,
+                   },
+                ],
+            };
+        }
+
         /// <inheritdoc />
         public override ExpressionCollection<Plane> ExpressionCollection
         {
