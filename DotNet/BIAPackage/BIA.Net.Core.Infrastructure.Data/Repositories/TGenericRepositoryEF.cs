@@ -16,7 +16,6 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
     using Audit.EntityFramework;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Domain.Attributes;
     using BIA.Net.Core.Domain.Audit;
     using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.Mapper;

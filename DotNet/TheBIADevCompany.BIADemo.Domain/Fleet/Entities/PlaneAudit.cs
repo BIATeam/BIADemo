@@ -4,17 +4,11 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
 {
-    using BIA.Net.Core.Domain.Attributes;
     using BIA.Net.Core.Domain.Audit;
 
     /// <summary>
     /// Audit entity for <see cref="Plane"/>.
     /// </summary>
-    [AuditLinkedEntityProperty(
-            linkedEntityType: typeof(Airport),
-            linkedEntityPropertyDisplay: nameof(Airport.Name),
-            entityReferencePropertyIdentifier: nameof(Plane.CurrentAirportId),
-            entityPropertyName: nameof(Plane.CurrentAirport))]
     public class PlaneAudit : AuditEntity<Plane>
     {
     }

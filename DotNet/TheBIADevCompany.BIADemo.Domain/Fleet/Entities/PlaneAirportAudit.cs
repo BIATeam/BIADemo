@@ -4,13 +4,11 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
 {
-    using BIA.Net.Core.Domain.Attributes;
     using BIA.Net.Core.Domain.Audit;
 
     /// <summary>
     /// Audit entity for <see cref="PlaneAirport"/>.
     /// </summary>
-    [AuditLinkedEntity(linkedEntityType: typeof(Plane), linkedEntityPropertyName: nameof(Plane.ConnectingAirports))]
     public class PlaneAirportAudit : AuditEntity<PlaneAirport>
     {
         /// <summary>
@@ -21,13 +19,11 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
         /// <summary>
         /// Gets or sets the PlaneId.
         /// </summary>
-        [AuditLinkedEntityPropertyIdentifier(linkedEntityType: typeof(Plane))]
         public int PlaneId { get; set; }
 
         /// <summary>
         /// Gets or sets the AirportName.
         /// </summary>
-        [AuditLinkedEntityPropertyDisplay(linkedEntityType: typeof(Plane))]
         public string AirportName { get; set; }
 
         /// <inheritdoc/>

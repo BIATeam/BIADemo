@@ -15,7 +15,6 @@ namespace BIA.Net.Core.Application.Services
     using Audit.EntityFramework;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Domain.Attributes;
     using BIA.Net.Core.Domain.Audit;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
