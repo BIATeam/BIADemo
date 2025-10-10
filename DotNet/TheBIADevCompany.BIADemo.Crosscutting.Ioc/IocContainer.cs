@@ -145,6 +145,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
             // Inject audit mappers
             collection.AddTransient<IAuditMapper, PlaneAuditMapper>();
+            collection.AddTransient<IAuditMapper, PlaneAirportAuditMapper>();
         }
 
         private static void ConfigureCommonContainer(IServiceCollection collection, IConfiguration configuration)

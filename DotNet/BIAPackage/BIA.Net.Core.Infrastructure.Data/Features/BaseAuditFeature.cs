@@ -202,7 +202,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                         await SetInsertAuditChanges(auditEntity, entityEntry, entry.ColumnValues, auditMapper);
                         break;
                     case Common.BiaConstants.Audit.DeleteAction:
-                        auditEntity.AuditChanges = JsonSerializer.Serialize(entry.ColumnValues);
+                        await SetDeleteAuditChanges(auditEntity, entityEntry, entry.ColumnValues, auditMapper);
                         break;
                 }
 
@@ -260,6 +260,57 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                     null,
                     columnValue.Value,
                     newDisplay));
+            }
+
+            auditEntity.AuditChanges = JsonSerializer.Serialize(auditChanges);
+        }
+
+        /// <summary>
+        /// Set the changes data of a delete audit.
+        /// </summary>
+        /// <param name="auditEntity">Audit entity.</param>
+        /// <param name="entityEntry">Audited entity entry.</param>
+        /// <param name="entryColumnValues">Audited entity column values.</param>
+        /// <param name="auditMapper">The audit mapper.</param>
+        /// <returns><see cref="Task"/>.</returns>
+        /// <exception cref="BadBiaFrameworkUsageException">.</exception>
+        private static async Task SetDeleteAuditChanges(IAuditEntity auditEntity, EntityEntry entityEntry, IDictionary<string, object> entryColumnValues, IAuditMapper auditMapper)
+        {
+            var auditChanges = new List<AuditChange>();
+            foreach (var columnValue in entryColumnValues)
+            {
+                var auditPropertyMapper = auditMapper?.AuditPropertyMappers.FirstOrDefault(x => x.ReferenceEntityPropertyIdentifierName == columnValue.Key);
+                if (auditPropertyMapper is null)
+                {
+                    auditChanges.Add(new AuditChange(
+                        columnValue.Key,
+                        columnValue.Value,
+                        columnValue.Value?.ToString(),
+                        null,
+                        null));
+                    continue;
+                }
+
+                var auditLinkedEntityPropertyReference = entityEntry.References.FirstOrDefault(x => x.Metadata.ClrType == auditPropertyMapper.LinkedEntityType)
+                    ?? throw new BadBiaFrameworkUsageException($"Unable to find any reference of type {auditPropertyMapper.LinkedEntityType} into {entityEntry.Entity.GetType()}");
+
+                if (!auditLinkedEntityPropertyReference.IsLoaded)
+                {
+                    await auditLinkedEntityPropertyReference.LoadAsync();
+                }
+
+                var linkedEntity = auditLinkedEntityPropertyReference.TargetEntry.Entity;
+                var linkedEntityPropertyDisplayPropertyInfo = linkedEntity.GetType().GetProperty(auditPropertyMapper.LinkedEntityPropertyDisplayName)
+                    ?? throw new BadBiaFrameworkUsageException($"Unable to find property {auditPropertyMapper.LinkedEntityPropertyDisplayName} into {linkedEntity.GetType()}");
+
+                var oldDisplay = linkedEntityPropertyDisplayPropertyInfo.GetValue(linkedEntity, null).ToString();
+
+                auditChanges.Add(new AuditChange(
+                    columnValue.Key,
+                    columnValue.Value,
+                    oldDisplay,
+                    null,
+                    null));
             }
 
             auditEntity.AuditChanges = JsonSerializer.Serialize(auditChanges);
