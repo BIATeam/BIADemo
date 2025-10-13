@@ -471,8 +471,8 @@ namespace BIA.Net.Core.Application.Services
                     entry.EntryModifications.Add(new EntityHistoricalEntryModificationDto
                     {
                         PropertyName = change.ColumnName,
-                        NewValue = change.NewDisplay ?? change.NewValue?.ToString(),
-                        OldValue = change.OriginalDisplay ?? change.OriginalValue?.ToString(),
+                        NewValue = change.NewValue?.ToString(),
+                        OldValue = change.OriginalValue?.ToString(),
                     });
                 }
             }
