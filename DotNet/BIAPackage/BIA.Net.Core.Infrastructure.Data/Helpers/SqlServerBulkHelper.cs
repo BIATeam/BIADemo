@@ -25,8 +25,9 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
         /// <typeparam name="T">Type en entity.</typeparam>
         /// <param name="dbContext">The database context.</param>
         /// <param name="datas">The datas.</param>
+        /// <param name="bulkBatchSize">Number of rows in each batch. At the end of each batch, the rows in the batch are sent to the server.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public static async Task InsertAsync<T>(BiaDataContext dbContext, List<T> datas)
+        public static async Task InsertAsync<T>(BiaDataContext dbContext, List<T> datas, int bulkBatchSize = 10_000)
             where T : class
         {
             IEntityType entityType = dbContext.Model.FindEntityType(typeof(T));
@@ -71,6 +72,11 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
                     using (SqlBulkCopy bulkCopy = new SqlBulkCopy(connection))
                     {
                         bulkCopy.DestinationTableName = tableName;
+
+                        if (bulkBatchSize > 0)
+                        {
+                            bulkCopy.BatchSize = bulkBatchSize;
+                        }
 
                         foreach (string sqlName in columnMappings.Select(x => x.SqlName))
                         {
