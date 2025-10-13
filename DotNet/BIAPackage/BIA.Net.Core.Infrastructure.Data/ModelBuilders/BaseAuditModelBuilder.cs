@@ -19,7 +19,6 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
         /// <param name="modelBuilder">The model builder.</param>
         protected virtual void CreateAuditModel(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AuditLog>().HasKey(u => new { u.Id });
             modelBuilder.Entity<AuditLog>().Property(u => u.Table).IsRequired().HasMaxLength(50);
         }
 
@@ -31,9 +30,8 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
         /// <typeparam name="TUser">The user entity audited.</typeparam>
         protected virtual void CreateUserAuditModel<TAuditUser, TUser>(ModelBuilder modelBuilder)
             where TAuditUser : BaseUserAudit<TUser>
+            where TUser : BaseEntityUser
         {
-            modelBuilder.Entity<TAuditUser>().HasKey(u => new { u.Id });
-            modelBuilder.Entity<TAuditUser>().Property(p => p.EntityId).IsRequired();
             modelBuilder.Entity<TAuditUser>().Property(u => u.FirstName).IsRequired().HasMaxLength(50);
             modelBuilder.Entity<TAuditUser>().Property(u => u.LastName).IsRequired().HasMaxLength(50);
             modelBuilder.Entity<TAuditUser>().Property(u => u.Login).IsRequired().HasMaxLength(50);

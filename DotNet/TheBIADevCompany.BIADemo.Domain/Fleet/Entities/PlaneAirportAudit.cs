@@ -9,7 +9,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
     /// <summary>
     /// Audit entity for <see cref="PlaneAirport"/>.
     /// </summary>
-    public class PlaneAirportAudit : AuditEntity<PlaneAirport>
+    public class PlaneAirportAudit : AuditEntity<PlaneAirport, int>
     {
         /// <summary>
         /// Gets or sets the AirportId.

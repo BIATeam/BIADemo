@@ -14,12 +14,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
-    /// Class used to update the model builder for user domain.
+    /// Class used to update the model builder for audits.
     /// </summary>
     public class AuditModelBuilder : BaseAuditModelBuilder
     {
         /// <summary>
-        /// Create the user model.
+        /// Create the audit models.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
         public void CreateModel(ModelBuilder modelBuilder)
@@ -29,9 +29,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 
             // Add here the project specific audit model creation.
             // Begin BIADemo
-            modelBuilder.Entity<PlaneAudit>().Property(p => p.EntityId).IsRequired();
-            modelBuilder.Entity<EngineAudit>().Property(p => p.EntityId).IsRequired();
-            modelBuilder.Entity<PlaneAirportAudit>().Property(p => p.EntityId).IsRequired();
+            modelBuilder.Entity<EngineAudit>().Property(p => p.PlaneId).IsRequired();
+            modelBuilder.Entity<EngineAudit>().Property(p => p.Reference).IsRequired();
+
+            modelBuilder.Entity<PlaneAirportAudit>().Property(p => p.AirportId).IsRequired();
+            modelBuilder.Entity<PlaneAirportAudit>().Property(p => p.PlaneId).IsRequired();
+            modelBuilder.Entity<PlaneAirportAudit>().Property(p => p.AirportName).IsRequired();
 
             // End BIADemo
         }

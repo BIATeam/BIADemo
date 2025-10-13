@@ -5,31 +5,34 @@
 namespace BIA.Net.Core.Domain.Audit
 {
     using System;
-    using BIA.Net.Core.Domain.Entity;
+    using System.ComponentModel.DataAnnotations;
 
     /// <summary>
-    /// The audit entity.
+    /// The audit entity with <typeparamref name="TKey"/> Id type.
     /// </summary>
-    public abstract class BaseAudit : BaseEntityVersioned<int>, IAudit
+    /// <typeparam name="TKey">Audit key type.</typeparam>
+    public abstract class BaseAudit<TKey> : IAudit
     {
         /// <summary>
-        /// Gets or sets the AuditDate.
+        /// The audit id.
         /// </summary>
+        [Key]
+        public TKey AuditId { get; set; }
+
+        /// <inheritdoc/>
+        [Required]
         public DateTime AuditDate { get; set; }
 
-        /// <summary>
-        /// Gets or sets the AuditAction.
-        /// </summary>
+        /// <inheritdoc/>
+        [Required]
         public string AuditAction { get; set; }
 
-        /// <summary>
-        /// JSON representation of <see cref="AuditChanges"/> collection.
-        /// </summary>
+        /// <inheritdoc/>
+        [Required]
         public string AuditChanges { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Audit User login.
-        /// </summary>
+        /// <inheritdoc/>
+        [Required]
         public string AuditUserLogin { get; set; }
     }
 }

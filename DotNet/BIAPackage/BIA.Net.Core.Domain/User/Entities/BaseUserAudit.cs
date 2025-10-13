@@ -10,7 +10,8 @@ namespace BIA.Net.Core.Domain.User.Entities
     /// The user entity.
     /// </summary>
     /// <typeparam name="TUser">User audit entity type.</typeparam>
-    public class BaseUserAudit<TUser> : AuditEntity<TUser>
+    public class BaseUserAudit<TUser> : AuditKeyedEntity<TUser, int, int>
+        where TUser : BaseEntityUser
     {
         /// <summary>
         /// Gets or sets the first name.

@@ -9,7 +9,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
     /// <summary>
     /// Audit entity for <see cref="Plane"/>.
     /// </summary>
-    public class PlaneAudit : AuditEntity<Plane>
+    public class PlaneAudit : AuditKeyedEntity<Plane, int, int>
     {
     }
 }

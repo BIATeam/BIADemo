@@ -5,14 +5,12 @@
 namespace BIA.Net.Core.Domain.Audit
 {
     /// <summary>
-    /// Dedicated audit entity.
+    /// Dedicated audit for <typeparamref name="TEntity"/> with <typeparamref name="TAuditKey"/> audit Id type.
     /// </summary>
     /// <typeparam name="TEntity">Audited entity type.</typeparam>
-    public class AuditEntity<TEntity> : BaseAudit, IAuditEntity
+    /// <typeparam name="TAuditKey">Audit key type.</typeparam>
+    public abstract class AuditEntity<TEntity, TAuditKey> : BaseAudit<TAuditKey>, IAuditEntity
     {
-        /// <inheritdoc/>
-        public string EntityId { get; set; }
-
         /// <inheritdoc/>
         public void FillSpecificProperties<T>(T entity)
         {

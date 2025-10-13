@@ -10,7 +10,7 @@ namespace BIA.Net.Core.Domain.Audit
     /// <summary>
     /// The audit interface.
     /// </summary>
-    public interface IAudit : IEntity<int>
+    public interface IAudit
     {
         /// <summary>
         /// Gets or sets the AuditDate.

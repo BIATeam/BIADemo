@@ -10,11 +10,6 @@ namespace BIA.Net.Core.Domain.Audit
     public interface IAuditEntity : IAudit
     {
         /// <summary>
-        /// The audited entity id.
-        /// </summary>
-        string EntityId { get; set; }
-
-        /// <summary>
         /// Fill specific properties of the audit based on the current audited <paramref name="entity"/>.
         /// </summary>
         /// <typeparam name="T">Audited entity type.</typeparam>

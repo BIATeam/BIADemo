@@ -172,12 +172,6 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
         {
             if (entry.Changes?.Count > 0 || entry.Action != Common.BiaConstants.Audit.UpdateAction)
             {
-                // Retrieve the audited entity's id
-                auditEntity.EntityId = auditEntity.Id.ToString();
-
-                // Reset to zero the audit ID to avoid insertion error
-                auditEntity.Id = 0;
-
                 // Load all unloaded direct references of the entity before filling specific properties
                 var entityEntry = entry.GetEntry();
                 foreach (var reference in entityEntry.References.Where(r => !r.IsLoaded))
@@ -312,8 +306,8 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                     ?? throw new BadBiaFrameworkUsageException($"Unable to find property {auditPropertyMapper.LinkedEntityPropertyDisplayName} into {linkedEntity.GetType()}");
 
                 var newDisplay = linkedEntityPropertyDisplayPropertyInfo.GetValue(linkedEntity, null)?.ToString();
-                var originalDisplay = await this.GetEntityDisplayValue(linkedEntity.GetType(), change.OriginalValue, auditPropertyMapper.LinkedEntityPropertyDisplayName)
-                    ?? await this.RetrieveOriginalDisplayChangeFromPreviousAudit(auditEntity, change.ColumnName);
+                var originalDisplay = await this.GetEntityDisplayValue(linkedEntity.GetType(), change.OriginalValue, auditPropertyMapper.LinkedEntityPropertyDisplayName);
+                    //?? await this.RetrieveOriginalDisplayChangeFromPreviousAudit(auditEntity, change.ColumnName);
 
                 auditChanges.Add(new AuditChange(
                     change.ColumnName,
@@ -413,51 +407,51 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
         /// <exception cref="BadBiaFrameworkUsageException">.</exception>
         private async Task<string> RetrieveOriginalDisplayChangeFromPreviousAudit(IAuditEntity auditEntity, string changePropertyName)
         {
-            using var scope = this.serviceProvider.CreateScope();
-            var unitOfWork = scope.ServiceProvider.GetRequiredService<IQueryableUnitOfWorkNoTracking>();
+            //using var scope = this.serviceProvider.CreateScope();
+            //var unitOfWork = scope.ServiceProvider.GetRequiredService<IQueryableUnitOfWorkNoTracking>();
 
-            var previousAudit = await unitOfWork
-                .RetrieveSet(auditEntity.GetType())
-                .Cast<IAuditEntity>()
-                .Where(x => x.EntityId.Equals(auditEntity.EntityId))
-                .OrderByDescending(x => x.AuditDate)
-                .Select(x => new { x.AuditAction, x.AuditChanges })
-                .Take(1)
-                .FirstOrDefaultAsync();
+            //var previousAudit = await unitOfWork
+            //    .RetrieveSet(auditEntity.GetType())
+            //    .Cast<IAuditEntity>()
+            //    .Where(x => x.Id.Equals(auditEntity.Id))
+            //    .OrderByDescending(x => x.AuditDate)
+            //    .Select(x => new { x.AuditAction, x.AuditChanges })
+            //    .Take(1)
+            //    .FirstOrDefaultAsync();
 
-            if (previousAudit is null)
-            {
-                return null;
-            }
+            //if (previousAudit is null)
+            //{
+            //    return null;
+            //}
 
-            try
-            {
-                var auditChanges = JsonSerializer.Deserialize<List<AuditChange>>(previousAudit.AuditChanges);
-                return auditChanges.FirstOrDefault(x => x.ColumnName == changePropertyName)?.NewDisplay;
-            }
-            catch (JsonException)
-            {
-                try
-                {
-                    using var doc = JsonDocument.Parse(previousAudit.AuditChanges);
-                    var root = doc.RootElement;
+            //try
+            //{
+            //    var auditChanges = JsonSerializer.Deserialize<List<AuditChange>>(previousAudit.AuditChanges);
+            //    return auditChanges.FirstOrDefault(x => x.ColumnName == changePropertyName)?.NewDisplay;
+            //}
+            //catch (JsonException)
+            //{
+            //    try
+            //    {
+            //        using var doc = JsonDocument.Parse(previousAudit.AuditChanges);
+            //        var root = doc.RootElement;
 
-                    if (root.ValueKind == JsonValueKind.Object)
-                    {
-                        var previousPropertyValue = root.EnumerateObject().Where(x => x.Name.Equals(changePropertyName)).Select(x => x.Value).FirstOrDefault();
-                        return previousPropertyValue.ValueKind switch
-                        {
-                            JsonValueKind.Null => null,
-                            JsonValueKind.String => previousPropertyValue.GetString(),
-                            _ => previousPropertyValue.ToString(),
-                        };
-                    }
-                }
-                catch (JsonException ex)
-                {
-                    throw new BadBiaFrameworkUsageException($"Unable to parse previous changes for {auditEntity.GetType()} with ID {auditEntity.Id} : {ex.Message}", ex);
-                }
-            }
+            //        if (root.ValueKind == JsonValueKind.Object)
+            //        {
+            //            var previousPropertyValue = root.EnumerateObject().Where(x => x.Name.Equals(changePropertyName)).Select(x => x.Value).FirstOrDefault();
+            //            return previousPropertyValue.ValueKind switch
+            //            {
+            //                JsonValueKind.Null => null,
+            //                JsonValueKind.String => previousPropertyValue.GetString(),
+            //                _ => previousPropertyValue.ToString(),
+            //            };
+            //        }
+            //    }
+            //    catch (JsonException ex)
+            //    {
+            //        throw new BadBiaFrameworkUsageException($"Unable to parse previous changes for {auditEntity.GetType()} with ID {auditEntity.Id} : {ex.Message}", ex);
+            //    }
+            //}
 
             return null;
         }

@@ -9,7 +9,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
     /// <summary>
     /// Audit entity for <see cref="Engine"/>.
     /// </summary>
-    public class EngineAudit : AuditEntity<Engine>
+    public class EngineAudit : AuditKeyedEntity<Engine, int, int>
     {
         /// <summary>
         /// Gets or sets the PlaneId.
