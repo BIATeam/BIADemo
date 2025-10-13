@@ -1,7 +1,6 @@
 Add-Migration Initial -Context DataContextPostGreSql -OutputDir MigrationsPostGreSql
 
 
-
 CREATE USER "PostGreSQL_U" WITH PASSWORD 'mi\#HLl03gvEqQqz@p';
 GRANT ALL ON DATABASE "BIADemo" TO "PostGreSQL_U";
 GRANT ALL ON SCHEMA public TO "PostGreSQL_U";
