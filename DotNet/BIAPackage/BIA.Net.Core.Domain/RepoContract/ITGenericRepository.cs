@@ -199,7 +199,16 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="filter">Filter expression.</param>
         /// <param name="batchSize">Batch size.</param>
         /// <returns>Number of entities deleted.</returns>
-        Task<int> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> filter, int? batchSize = 100);
+        Task<int> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> filter = default, int? batchSize = 100);
+
+        /// <summary>
+        /// Execute a update operation according to a filter.
+        /// </summary>
+        /// <param name="fieldUpdates">The field updates.</param>
+        /// <param name="filter">Filter expression.</param>
+        /// <param name="batchSize">Batch size.</param>
+        /// <returns>Number of entities updated.</returns>
+        Task<int> ExecuteUpdateAsync(IDictionary<string, object> fieldUpdates, Expression<Func<TEntity, bool>> filter = default, int? batchSize = 100);
 
         /// <summary>
         /// Massively add entities in batch.

@@ -9,6 +9,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
     using System.Data;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Reflection;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
@@ -18,6 +19,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using BIA.Net.Core.Domain.Specification;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Query;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
@@ -183,7 +185,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         }
 
         /// <inheritdoc />
-        public async Task<int> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> filter, int? batchSize = 100)
+        public async Task<int> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> filter = default, int? batchSize = 100)
         {
             int deletedCount = 0;
 
@@ -192,12 +194,12 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
                 throw new ArgumentOutOfRangeException(nameof(batchSize));
             }
 
-            if (filter == null)
-            {
-                throw new ArgumentNullException(nameof(filter));
-            }
+            IQueryable<TEntity> query = this.RetrieveSet();
 
-            IQueryable<TEntity> query = this.RetrieveSet().Where(filter);
+            if (filter != default)
+            {
+                query = query.Where(filter);
+            }
 
             if (batchSize.HasValue)
             {
@@ -216,6 +218,72 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             }
 
             return deletedCount;
+        }
+
+        /// <inheritdoc />
+        public async Task<int> ExecuteUpdateAsync(IDictionary<string, object> fieldUpdates, Expression<Func<TEntity, bool>> filter = default, int? batchSize = 100)
+        {
+            int updatedCount = 0;
+
+            if (fieldUpdates?.Any() != true)
+            {
+                throw new ArgumentNullException(nameof(fieldUpdates));
+            }
+
+            if (batchSize.HasValue && batchSize.Value < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(batchSize));
+            }
+
+            IQueryable<TEntity> query = this.RetrieveSet();
+
+            if (filter != default)
+            {
+                query = query.Where(filter);
+            }
+
+            Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> setPropertyCalls = this.BuildSetPropertyCallsExpression(fieldUpdates);
+
+            if (batchSize.HasValue)
+            {
+                // First check the number of entities to be processed
+                var totalCount = await query.CountAsync();
+
+                // If the number is small, no need for batching
+                if (totalCount <= batchSize.Value)
+                {
+                    updatedCount = await query.ExecuteUpdateAsync(setPropertyCalls);
+                }
+                else
+                {
+                    // For large volumes, process in batches with progressive recovery of IDs
+                    var processedCount = 0;
+                    while (processedCount < totalCount)
+                    {
+                        var batchIds = await query
+                            .Skip(processedCount)
+                            .Take(batchSize.Value)
+                            .Select(x => x.Id)
+                            .ToListAsync();
+
+                        if (!batchIds.Any())
+                        {
+                            break; // No more entities to process
+                        }
+
+                        var batchQuery = this.RetrieveSet().Where(x => batchIds.Contains(x.Id));
+                        var batchUpdated = await batchQuery.ExecuteUpdateAsync(setPropertyCalls);
+                        updatedCount += batchUpdated;
+                        processedCount += batchIds.Count;
+                    }
+                }
+            }
+            else
+            {
+                updatedCount = await query.ExecuteUpdateAsync(setPropertyCalls);
+            }
+
+            return updatedCount;
         }
 
         /// <inheritdoc />
@@ -764,7 +832,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
 
             if (batchSize < 1)
             {
-               throw new ArgumentOutOfRangeException(nameof(batchSize));
+                throw new ArgumentOutOfRangeException(nameof(batchSize));
             }
 
             for (int i = 0; i < itemList.Count; i = i + batchSize)
@@ -776,6 +844,59 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             }
 
             return elementAffectedCount;
+        }
+
+        /// <summary>
+        /// Builds the SetProperty calls expression from the field updates dictionary.
+        /// </summary>
+        /// <param name="fieldUpdates">The field updates dictionary.</param>
+        /// <returns>The SetProperty calls expression.</returns>
+        protected virtual Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> BuildSetPropertyCallsExpression(IDictionary<string, object> fieldUpdates)
+        {
+            Type entityType = typeof(TEntity);
+            Type setPropertyCallsType = typeof(SetPropertyCalls<TEntity>);
+            MethodInfo setPropertyMethod = setPropertyCallsType.GetMethods()
+                .FirstOrDefault(m => m.Name == nameof(SetPropertyCalls<TEntity>.SetProperty) && m.GetParameters().Length == 2);
+
+            if (setPropertyMethod == null)
+            {
+                throw new InvalidOperationException("SetProperty method not found on SetPropertyCalls<TEntity>");
+            }
+
+            // Parameter for the lambda expression
+            ParameterExpression parameter = Expression.Parameter(setPropertyCallsType, "s");
+            Expression body = parameter;
+
+            foreach (KeyValuePair<string, object> fieldUpdate in fieldUpdates)
+            {
+                string propertyName = fieldUpdate.Key;
+                object propertyValue = fieldUpdate.Value;
+
+                // Get the property info
+                PropertyInfo propertyInfo = entityType.GetProperty(propertyName);
+                if (propertyInfo == null)
+                {
+                    throw new ArgumentException($"Property '{propertyName}' not found on entity type '{entityType.Name}'");
+                }
+
+                // Create lambda expression for property access: entity => entity.PropertyName
+                ParameterExpression entityParam = Expression.Parameter(entityType, "entity");
+                MemberExpression propertyAccess = Expression.Property(entityParam, propertyInfo);
+                LambdaExpression propertyLambda = Expression.Lambda(propertyAccess, entityParam);
+
+                // Create lambda expression for the value: entity => value
+                ConstantExpression valueExpression = Expression.Constant(propertyValue, propertyInfo.PropertyType);
+                LambdaExpression valueLambda = Expression.Lambda(valueExpression, entityParam);
+
+                // Create generic SetProperty method
+                MethodInfo genericSetPropertyMethod = setPropertyMethod.MakeGenericMethod(propertyInfo.PropertyType);
+
+                // Create method call: s.SetProperty(entity => entity.PropertyName, entity => value)
+                MethodCallExpression setPropertyCall = Expression.Call(body, genericSetPropertyMethod, propertyLambda, valueLambda);
+                body = setPropertyCall;
+            }
+
+            return Expression.Lambda<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>>(body, parameter);
         }
     }
 }
