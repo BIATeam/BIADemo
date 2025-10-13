@@ -306,8 +306,8 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                     ?? throw new BadBiaFrameworkUsageException($"Unable to find property {auditPropertyMapper.LinkedEntityPropertyDisplayName} into {linkedEntity.GetType()}");
 
                 var newDisplay = linkedEntityPropertyDisplayPropertyInfo.GetValue(linkedEntity, null)?.ToString();
-                var originalDisplay = await this.GetEntityDisplayValue(linkedEntity.GetType(), change.OriginalValue, auditPropertyMapper.LinkedEntityPropertyDisplayName);
-                    //?? await this.RetrieveOriginalDisplayChangeFromPreviousAudit(auditEntity, change.ColumnName);
+                var originalDisplay = await this.RetrieveOriginalDisplayChangeFromPreviousAudit(auditEntity, change.ColumnName)
+                    ?? await this.GetEntityDisplayValue(linkedEntity.GetType(), change.OriginalValue, auditPropertyMapper.LinkedEntityPropertyDisplayName);
 
                 auditChanges.Add(new AuditChange(
                     change.ColumnName,
@@ -407,51 +407,75 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
         /// <exception cref="BadBiaFrameworkUsageException">.</exception>
         private async Task<string> RetrieveOriginalDisplayChangeFromPreviousAudit(IAuditEntity auditEntity, string changePropertyName)
         {
-            //using var scope = this.serviceProvider.CreateScope();
-            //var unitOfWork = scope.ServiceProvider.GetRequiredService<IQueryableUnitOfWorkNoTracking>();
+            var auditEntityType = auditEntity.GetType();
+            if (!auditEntityType.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IAuditKeyedEntity<>)))
+            {
+                throw new BadBiaFrameworkUsageException($"{auditEntityType.Name} must implement {typeof(IAuditKeyedEntity<>)}");
+            }
 
-            //var previousAudit = await unitOfWork
-            //    .RetrieveSet(auditEntity.GetType())
-            //    .Cast<IAuditEntity>()
-            //    .Where(x => x.Id.Equals(auditEntity.Id))
-            //    .OrderByDescending(x => x.AuditDate)
-            //    .Select(x => new { x.AuditAction, x.AuditChanges })
-            //    .Take(1)
-            //    .FirstOrDefaultAsync();
+            var auditEntityIdPropertyInfo = auditEntityType.GetProperty("Id", BindingFlags.Instance | BindingFlags.Public)
+                ?? throw new InvalidOperationException($"Id property not found in {auditEntityType.Name}");
+            var auditEntityIdValue = auditEntityIdPropertyInfo.GetValue(auditEntity);
 
-            //if (previousAudit is null)
-            //{
-            //    return null;
-            //}
+            // Set expression : "WHERE auditEntity.Id = auditEntityIdValue
+            var expressionParameter = Expression.Parameter(auditEntityType);
+            var expressionProperty = Expression.Property(expressionParameter, auditEntityIdPropertyInfo);
+            var expressionPropertyValue = Expression.Constant(auditEntityIdValue, auditEntityIdPropertyInfo.PropertyType);
+            var expressionEqual = Expression.Equal(expressionProperty, expressionPropertyValue);
+            var whereExpression = Expression.Lambda(
+                typeof(Func<,>).MakeGenericType(auditEntityType, typeof(bool)),
+                expressionEqual,
+                expressionParameter);
 
-            //try
-            //{
-            //    var auditChanges = JsonSerializer.Deserialize<List<AuditChange>>(previousAudit.AuditChanges);
-            //    return auditChanges.FirstOrDefault(x => x.ColumnName == changePropertyName)?.NewDisplay;
-            //}
-            //catch (JsonException)
-            //{
-            //    try
-            //    {
-            //        using var doc = JsonDocument.Parse(previousAudit.AuditChanges);
-            //        var root = doc.RootElement;
+            // Create query
+            using var scope = this.serviceProvider.CreateScope();
+            var unitOfWork = scope.ServiceProvider.GetRequiredService<IQueryableUnitOfWorkNoTracking>();
+            var auditEntitySet = unitOfWork.RetrieveSet(auditEntityType);
+            var whereQuery = typeof(Queryable).GetMethods()
+                .First(m => m.Name == nameof(Queryable.Where) && m.GetParameters().Length == 2)
+                .MakeGenericMethod(auditEntityType);
+            var query = (IQueryable)whereQuery.Invoke(null, [auditEntitySet, whereExpression]);
 
-            //        if (root.ValueKind == JsonValueKind.Object)
-            //        {
-            //            var previousPropertyValue = root.EnumerateObject().Where(x => x.Name.Equals(changePropertyName)).Select(x => x.Value).FirstOrDefault();
-            //            return previousPropertyValue.ValueKind switch
-            //            {
-            //                JsonValueKind.Null => null,
-            //                JsonValueKind.String => previousPropertyValue.GetString(),
-            //                _ => previousPropertyValue.ToString(),
-            //            };
-            //        }
-            //    }
-            //    catch (JsonException ex)
-            //    {
-            //        throw new BadBiaFrameworkUsageException($"Unable to parse previous changes for {auditEntity.GetType()} with ID {auditEntity.Id} : {ex.Message}", ex);
-            //    }
-            //}
+            // Execute query
+            var previousAudit = await query
+                .Cast<IAuditEntity>()
+                .OrderByDescending(x => x.AuditDate)
+                .Select(x => new { x.AuditAction, x.AuditChanges })
+                .FirstOrDefaultAsync();
+
+            if (previousAudit is null)
+            {
+                return null;
+            }
+
+            try
+            {
+                var auditChanges = JsonSerializer.Deserialize<List<AuditChange>>(previousAudit.AuditChanges);
+                return auditChanges.FirstOrDefault(x => x.ColumnName == changePropertyName)?.NewDisplay;
+            }
+            catch (JsonException)
+            {
+                try
+                {
+                    using var doc = JsonDocument.Parse(previousAudit.AuditChanges);
+                    var root = doc.RootElement;
+
+                    if (root.ValueKind == JsonValueKind.Object)
+                    {
+                        var previousPropertyValue = root.EnumerateObject().Where(x => x.Name.Equals(changePropertyName)).Select(x => x.Value).FirstOrDefault();
+                        return previousPropertyValue.ValueKind switch
+                        {
+                            JsonValueKind.Null => null,
+                            JsonValueKind.String => previousPropertyValue.GetString(),
+                            _ => previousPropertyValue.ToString(),
+                        };
+                    }
+                }
+                catch (JsonException ex)
+                {
+                    throw new BadBiaFrameworkUsageException($"Unable to parse previous changes for {auditEntity.GetType()} with ID {auditEntityIdValue} : {ex.Message}", ex);
+                }
+            }
 
             return null;
         }
