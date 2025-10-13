@@ -1,21 +1,44 @@
-﻿namespace BIA.Net.Core.Domain.Mapper
+﻿// <copyright file="LinkedAuditMapper.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
+// </copyright>
+
+namespace BIA.Net.Core.Domain.Mapper
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
-    using System.Text;
-    using System.Threading.Tasks;
 
-    public class LinkedAuditMapper<TReferenceEntity, TLinkedAuditEntity> : ILinkedAuditMapper
+    /// <summary>
+    /// Audit mapper for a <typeparamref name="TLinkedAuditEntity"/> to a <typeparamref name="TEntity"/>.
+    /// </summary>
+    /// <typeparam name="TEntity">Type of entity.</typeparam>
+    /// <typeparam name="TLinkedAuditEntity">Type of linked audit entity.</typeparam>
+    public class LinkedAuditMapper<TEntity, TLinkedAuditEntity> : ILinkedAuditMapper
     {
+        /// <inheritdoc/>
         public Type LinkedAuditEntityType => typeof(TLinkedAuditEntity);
-        public string ReferenceEntityPropertyName => Common.Helpers.PropertyMapper.GetPropertyName(this.ReferenceEntityProperty);
+
+        /// <inheritdoc/>
+        public string EntityPropertyName => Common.Helpers.PropertyMapper.GetPropertyName(this.EntityProperty);
+
+        /// <inheritdoc/>
         public string LinkedAuditEntityDisplayPropertyName => Common.Helpers.PropertyMapper.GetPropertyName(this.LinkedAuditEntityDisplayProperty);
+
+        /// <inheritdoc/>
         public string LinkedAuditEntityIdentifierPropertyName => Common.Helpers.PropertyMapper.GetPropertyName(this.LinkedAuditEntityIdentifierProperty);
 
-        public required Expression<Func<TReferenceEntity, object>> ReferenceEntityProperty { get; set; }
-        public required Expression<Func<TLinkedAuditEntity, object>> LinkedAuditEntityDisplayProperty { get; set; }
-        public required Expression<Func<TLinkedAuditEntity, object>> LinkedAuditEntityIdentifierProperty { get; set; }
+        /// <summary>
+        /// Selector of the <typeparamref name="TEntity"/> property that have reference to the audited entity of the <typeparamref name="TLinkedAuditEntity"/>.
+        /// </summary>
+        public required Expression<Func<TEntity, object>> EntityProperty { get; init; }
+
+        /// <summary>
+        /// Selector of the <typeparamref name="TLinkedAuditEntity"/> property used for display.
+        /// </summary>
+        public required Expression<Func<TLinkedAuditEntity, object>> LinkedAuditEntityDisplayProperty { get; init; }
+
+        /// <summary>
+        /// Selector of the <typeparamref name="TLinkedAuditEntity"/> property used as identifier to the <typeparamref name="TEntity"/>.
+        /// </summary>
+        public required Expression<Func<TLinkedAuditEntity, object>> LinkedAuditEntityIdentifierProperty { get; init; }
     }
 }

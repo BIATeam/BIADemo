@@ -1,28 +1,33 @@
-﻿namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
+﻿// <copyright file="PlaneAuditMapper.cs" company="TheBIADevCompany">
+// Copyright (c) TheBIADevCompany. All rights reserved.
+// </copyright>
+
+namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Mapper;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
+    /// <summary>
+    /// Audit mapper for <see cref="Plane"/>.
+    /// </summary>
     public class PlaneAuditMapper : AuditMapper<Plane>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlaneAuditMapper"/> class.
+        /// </summary>
         public PlaneAuditMapper()
         {
             this.LinkedAuditMappers =
             [
                 new LinkedAuditMapper<Plane, EngineAudit>
                 {
-                    ReferenceEntityProperty = plane => plane.Engines,
+                    EntityProperty = plane => plane.Engines,
                     LinkedAuditEntityDisplayProperty = audit => audit.Reference,
                     LinkedAuditEntityIdentifierProperty = audit => audit.PlaneId,
                 },
                 new LinkedAuditMapper<Plane, PlaneAirportAudit>
                 {
-                    ReferenceEntityProperty = plane => plane.ConnectingAirports,
+                    EntityProperty = plane => plane.ConnectingAirports,
                     LinkedAuditEntityDisplayProperty = audit => audit.AirportName,
                     LinkedAuditEntityIdentifierProperty = audit => audit.PlaneId,
                 },
@@ -31,8 +36,8 @@
             [
                 new AuditPropertyMapper<Plane, Airport>
                 {
-                    ReferenceEntityProperty = plane => plane.CurrentAirport,
-                    ReferenceEntityPropertyIdentifier = plane => plane.CurrentAirportId,
+                    EntityProperty = plane => plane.CurrentAirport,
+                    EntityPropertyIdentifier = plane => plane.CurrentAirportId,
                     LinkedEntityPropertyDisplay = airport => airport.Name,
                 },
             ];

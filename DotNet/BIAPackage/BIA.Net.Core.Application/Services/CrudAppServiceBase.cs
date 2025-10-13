@@ -427,7 +427,7 @@ namespace BIA.Net.Core.Application.Services
                     var entryModification = new EntityHistoricalEntryModificationDto
                     {
                         IsLinkedProperty = true,
-                        PropertyName = linkedAuditMapper.ReferenceEntityPropertyName,
+                        PropertyName = linkedAuditMapper.EntityPropertyName,
                     };
 
                     switch (audit.AuditAction)
@@ -449,7 +449,7 @@ namespace BIA.Net.Core.Application.Services
                 // Audit Property Mapper case
                 foreach (var auditPropertyMapper in auditMapper.AuditPropertyMappers)
                 {
-                    var propertyChange = changes.FirstOrDefault(x => x.ColumnName == auditPropertyMapper.ReferenceEntityPropertyIdentifierName);
+                    var propertyChange = changes.FirstOrDefault(x => x.ColumnName == auditPropertyMapper.EntityPropertyIdentifierName);
                     if (propertyChange is null)
                     {
                         continue;
@@ -457,7 +457,7 @@ namespace BIA.Net.Core.Application.Services
 
                     entry.EntryModifications.Add(new EntityHistoricalEntryModificationDto
                     {
-                        PropertyName = auditPropertyMapper.ReferenceEntityPropertyName,
+                        PropertyName = auditPropertyMapper.EntityPropertyName,
                         NewValue = propertyChange.NewDisplay ?? propertyChange.NewValue?.ToString(),
                         OldValue = propertyChange.OriginalDisplay ?? propertyChange.OriginalValue?.ToString(),
                     });

@@ -1,15 +1,25 @@
-﻿namespace BIA.Net.Core.Domain.Mapper
+﻿// <copyright file="AuditMapper.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
+// </copyright>
+
+namespace BIA.Net.Core.Domain.Mapper
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
-    public class AuditMapper<TEntity> : IAuditMapper
+    /// <summary>
+    /// Audit mapper class for a generic <typeparamref name="TEntity"/>.
+    /// </summary>
+    /// <typeparam name="TEntity">Type of the entity to audit.</typeparam>
+    public abstract class AuditMapper<TEntity> : IAuditMapper
     {
+        /// <inheritdoc/>
         public Type EntityType => typeof(TEntity);
-        public List<ILinkedAuditMapper> LinkedAuditMappers { get; set; } = [];
-        public List<IAuditPropertyMapper> AuditPropertyMappers { get; set; } = [];
+
+        /// <inheritdoc/>
+        public IReadOnlyList<ILinkedAuditMapper> LinkedAuditMappers { get; init; } = [];
+
+        /// <inheritdoc/>
+        public IReadOnlyList<IAuditPropertyMapper> AuditPropertyMappers { get; init; } = [];
     }
 }

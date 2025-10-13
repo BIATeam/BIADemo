@@ -235,7 +235,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
             foreach (var auditedEntityProperty in auditedEntityProperties)
             {
                 var auditedEntityPropertyValue = auditedEntityProperty.GetValue(entityEntry.Entity);
-                var auditPropertyMapper = auditMapper?.AuditPropertyMappers.FirstOrDefault(x => x.ReferenceEntityPropertyIdentifierName == auditedEntityProperty.Name);
+                var auditPropertyMapper = auditMapper?.AuditPropertyMappers.FirstOrDefault(x => x.EntityPropertyIdentifierName == auditedEntityProperty.Name);
                 if (auditPropertyMapper is null)
                 {
                     auditChanges.Add(new AuditChange(
@@ -247,20 +247,19 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                     continue;
                 }
 
-                var auditLinkedEntityPropertyReference = entityEntry.References.FirstOrDefault(x => x.Metadata.ClrType == auditPropertyMapper.LinkedEntityType)
+                var linkedEntityPropertyReference = entityEntry.References.FirstOrDefault(x => x.Metadata.ClrType == auditPropertyMapper.LinkedEntityType)
                     ?? throw new BadBiaFrameworkUsageException($"Unable to find any reference of type {auditPropertyMapper.LinkedEntityType} into {entityEntry.Entity.GetType()}");
 
-                if (!auditLinkedEntityPropertyReference.IsLoaded)
+                if (!linkedEntityPropertyReference.IsLoaded)
                 {
-                    await auditLinkedEntityPropertyReference.LoadAsync();
+                    await linkedEntityPropertyReference.LoadAsync();
                 }
 
-                var linkedEntity = auditLinkedEntityPropertyReference.TargetEntry.Entity;
+                var linkedEntity = linkedEntityPropertyReference.TargetEntry.Entity;
                 var linkedEntityPropertyDisplayPropertyInfo = linkedEntity.GetType().GetProperty(auditPropertyMapper.LinkedEntityPropertyDisplayName)
                     ?? throw new BadBiaFrameworkUsageException($"Unable to find property {auditPropertyMapper.LinkedEntityPropertyDisplayName} into {linkedEntity.GetType()}");
 
-                var valueDisplay = linkedEntityPropertyDisplayPropertyInfo.GetValue(linkedEntity, null).ToString();
-
+                var valueDisplay = linkedEntityPropertyDisplayPropertyInfo.GetValue(linkedEntity, null)?.ToString();
                 auditChanges.Add(new AuditChange(
                     auditedEntityProperty.Name,
                     isInsertAudit ? null : auditedEntityPropertyValue,
@@ -288,7 +287,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
 
             foreach (var change in realChanges)
             {
-                var auditPropertyMapper = auditMapper?.AuditPropertyMappers.FirstOrDefault(x => x.ReferenceEntityPropertyIdentifierName == change.ColumnName);
+                var auditPropertyMapper = auditMapper?.AuditPropertyMappers.FirstOrDefault(x => x.EntityPropertyIdentifierName == change.ColumnName);
                 if (auditPropertyMapper is null)
                 {
                     auditChanges.Add(new AuditChange(
@@ -300,21 +299,21 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                     continue;
                 }
 
-                var auditLinkedEntityPropertyReference = entityEntry.References.FirstOrDefault(x => x.Metadata.ClrType == auditPropertyMapper.LinkedEntityType)
+                var linkedEntityPropertyReference = entityEntry.References.FirstOrDefault(x => x.Metadata.ClrType == auditPropertyMapper.LinkedEntityType)
                     ?? throw new BadBiaFrameworkUsageException($"Unable to find any reference of type {auditPropertyMapper.LinkedEntityType} into {entityEntry.Entity.GetType()}");
 
-                if (!auditLinkedEntityPropertyReference.IsLoaded)
+                if (!linkedEntityPropertyReference.IsLoaded)
                 {
-                    await auditLinkedEntityPropertyReference.LoadAsync();
+                    await linkedEntityPropertyReference.LoadAsync();
                 }
 
-                var linkedEntity = auditLinkedEntityPropertyReference.TargetEntry.Entity;
+                var linkedEntity = linkedEntityPropertyReference.TargetEntry.Entity;
                 var linkedEntityPropertyDisplayPropertyInfo = linkedEntity.GetType().GetProperty(auditPropertyMapper.LinkedEntityPropertyDisplayName)
                     ?? throw new BadBiaFrameworkUsageException($"Unable to find property {auditPropertyMapper.LinkedEntityPropertyDisplayName} into {linkedEntity.GetType()}");
 
-                var newDisplay = linkedEntityPropertyDisplayPropertyInfo.GetValue(linkedEntity, null).ToString();
-                var originalDisplay = await this.RetrieveOriginalDisplayChangeFromPreviousAudit(auditEntity, change.ColumnName)
-                    ?? await this.GetEntityDisplayValue(linkedEntity.GetType(), change.OriginalValue, auditPropertyMapper.LinkedEntityPropertyDisplayName);
+                var newDisplay = linkedEntityPropertyDisplayPropertyInfo.GetValue(linkedEntity, null)?.ToString();
+                var originalDisplay = await this.GetEntityDisplayValue(linkedEntity.GetType(), change.OriginalValue, auditPropertyMapper.LinkedEntityPropertyDisplayName)
+                    ?? await this.RetrieveOriginalDisplayChangeFromPreviousAudit(auditEntity, change.ColumnName);
 
                 auditChanges.Add(new AuditChange(
                     change.ColumnName,
@@ -358,9 +357,9 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
 
             // Prepare expression query
             var entitySetQuery = unitOfWork.RetrieveSet(entityType);
-            var entityExpressionParameter = Expression.Parameter(entityType, "e");
+            var entityExpressionParameter = Expression.Parameter(entityType);
 
-            // Set expression : "WHERE e.identifierProperty = identifierKey"
+            // Set expression : "WHERE entity.identifierProperty = identifierKey"
             var identifierKey = Common.Helpers.ObjectHelper.ConvertKey(identifierValue, identifierPropertyType);
             var identifierKeyPropertyExpression = Expression.Call(
                 typeof(EF),
@@ -380,7 +379,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                 entitySetQuery.Expression,
                 identifierKeyPredicateExpression);
 
-            // Set expression : "SELECT e.displayPropertyName"
+            // Set expression : "SELECT entity.displayPropertyName"
             var displayPropertyExpression = Expression.Call(
                 typeof(EF),
                 nameof(EF.Property),
@@ -388,6 +387,8 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                 entityExpressionParameter,
                 Expression.Constant(displayPropertyName));
             var displayPropertySelectorExpression = Expression.Lambda(displayPropertyExpression, entityExpressionParameter);
+
+            // Call expression "SELECT entity.displayPropertyName WHERE entity.identifierProperty = identifierKey"
             var displayPropertySelectExpression = Expression.Call(
                 typeof(Queryable),
                 nameof(Queryable.Select),
@@ -396,17 +397,10 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                 displayPropertySelectorExpression);
 
             // Create query
-            var query = entitySetQuery.Provider.CreateQuery<object>(displayPropertySelectExpression);
+            var result = await entitySetQuery.Provider
+                .CreateQuery<object>(displayPropertySelectExpression)
+                .FirstOrDefaultAsync();
 
-            // Apply FirstOrDefaultAsync()
-            var firstOrDefaultAsync = typeof(EntityFrameworkQueryableExtensions)
-                .GetMethods()
-                .First(m => m.Name == nameof(EntityFrameworkQueryableExtensions.FirstOrDefaultAsync))
-                .MakeGenericMethod(typeof(object));
-
-            // Execute query
-            var task = (Task<object>)firstOrDefaultAsync.Invoke(null, [query, CancellationToken.None])!;
-            var result = await task.ConfigureAwait(false);
             return result?.ToString();
         }
 
@@ -439,11 +433,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
             try
             {
                 var auditChanges = JsonSerializer.Deserialize<List<AuditChange>>(previousAudit.AuditChanges);
-                var previousAuditChange = auditChanges.FirstOrDefault(x => x.ColumnName == changePropertyName);
-                if (previousAuditChange is not null)
-                {
-                    return previousAuditChange.NewDisplay;
-                }
+                return auditChanges.FirstOrDefault(x => x.ColumnName == changePropertyName)?.NewDisplay;
             }
             catch (JsonException)
             {

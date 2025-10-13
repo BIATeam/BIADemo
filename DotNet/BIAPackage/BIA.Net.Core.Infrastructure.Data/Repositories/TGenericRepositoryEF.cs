@@ -694,7 +694,6 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             }
 
             var auditSet = this.unitOfWork.RetrieveSet(entityAuditType);
-
             var linkedAuditMapper = this.auditMapper?.LinkedAuditMappers.FirstOrDefault(x => x.LinkedAuditEntityType == entityAuditType);
             if (linkedAuditMapper is not null)
             {
@@ -703,11 +702,14 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
                     throw new BadBiaFrameworkUsageException($"Unable to find {linkedAuditMapper.LinkedAuditEntityIdentifierPropertyName} property on {entityAuditType.Name}.");
                 }
 
+                // Set expression : "WHERE audit.EntityId = entityIdValue"
                 var expressionParameter = Expression.Parameter(entityAuditType);
                 var expressionProperty = Expression.PropertyOrField(expressionParameter, linkedAuditMapper.LinkedAuditEntityIdentifierPropertyName);
                 var expression = Expression.Equal(expressionProperty, Expression.Constant(entityIdValue, expressionProperty.Type));
                 var expressionDelegateType = typeof(Func<,>).MakeGenericType(entityAuditType, typeof(bool));
                 var expressionLambda = Expression.Lambda(expressionDelegateType, expression, expressionParameter);
+
+                // Call expression : "SELECT FROM audit WHERE audit.EntityId = entityIdValue"
                 var expressionCall = Expression.Call(
                     typeof(Queryable),
                     nameof(Queryable.Where),
