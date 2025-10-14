@@ -32,7 +32,7 @@ namespace BIA.Net.Core.Domain.Mapper
         public required Expression<Func<TEntity, object>> EntityProperty { get; init; }
 
         /// <summary>
-        /// Selector of the <typeparamref name="TLinkedAuditEntity"/> property used for display.
+        /// Selector of the <typeparamref name="TLinkedAuditEntity"/> property used as display of the <see cref="EntityProperty"/>.
         /// </summary>
         public required Expression<Func<TLinkedAuditEntity, object>> LinkedAuditEntityDisplayProperty { get; init; }
 

@@ -14,12 +14,22 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
     public abstract class BaseAuditModelBuilder
     {
         /// <summary>
-        /// Create the model for users.
+        /// Create the audit models.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        protected virtual void CreateAuditModel(ModelBuilder modelBuilder)
+        public virtual void CreateModel(ModelBuilder modelBuilder)
+        {
+            this.CreateAuditLogModel(modelBuilder);
+        }
+
+        /// <summary>
+        /// Create the model for <see cref="AuditLog"/>.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected virtual void CreateAuditLogModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AuditLog>().Property(u => u.Table).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<AuditLog>().Property(u => u.PrimaryKey).IsRequired();
         }
 
         /// <summary>

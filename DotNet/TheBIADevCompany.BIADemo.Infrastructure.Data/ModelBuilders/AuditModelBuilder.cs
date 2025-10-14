@@ -18,25 +18,43 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
     /// </summary>
     public class AuditModelBuilder : BaseAuditModelBuilder
     {
-        /// <summary>
-        /// Create the audit models.
-        /// </summary>
-        /// <param name="modelBuilder">The model builder.</param>
-        public void CreateModel(ModelBuilder modelBuilder)
+        /// <inheritdoc/>
+        public override void CreateModel(ModelBuilder modelBuilder)
         {
-            this.CreateAuditModel(modelBuilder);
+            base.CreateModel(modelBuilder);
             this.CreateUserAuditModel<UserAudit, User>(modelBuilder);
 
             // Add here the project specific audit model creation.
             // Begin BIADemo
-            modelBuilder.Entity<EngineAudit>().Property(p => p.PlaneId).IsRequired();
-            modelBuilder.Entity<EngineAudit>().Property(p => p.Reference).IsRequired();
-
-            modelBuilder.Entity<PlaneAirportAudit>().Property(p => p.AirportId).IsRequired();
-            modelBuilder.Entity<PlaneAirportAudit>().Property(p => p.PlaneId).IsRequired();
-            modelBuilder.Entity<PlaneAirportAudit>().Property(p => p.AirportName).IsRequired();
+            CreateEngineAuditModel(modelBuilder);
+            CreatePlaneAirportAuditModel(modelBuilder);
 
             // End BIADemo
         }
+
+        // Begin BIADemo
+
+        /// <summary>
+        /// Create the model for <see cref="EngineAudit"/>.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        private static void CreateEngineAuditModel(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<EngineAudit>().Property(p => p.PlaneId).IsRequired();
+            modelBuilder.Entity<EngineAudit>().Property(p => p.Reference).IsRequired();
+        }
+
+        /// <summary>
+        /// Create the model for <see cref="PlaneAirportAudit"/>.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        private static void CreatePlaneAirportAuditModel(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PlaneAirportAudit>().Property(p => p.AirportId).IsRequired();
+            modelBuilder.Entity<PlaneAirportAudit>().Property(p => p.PlaneId).IsRequired();
+            modelBuilder.Entity<PlaneAirportAudit>().Property(p => p.AirportName).IsRequired();
+        }
+
+        // End BIADemo
     }
 }

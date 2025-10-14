@@ -27,7 +27,7 @@ namespace BIA.Net.Core.Domain.Mapper
         string EntityPropertyIdentifierName { get; }
 
         /// <summary>
-        /// Property name of the linked entity used for display.
+        /// Property name of the linked entity used as display.
         /// </summary>
         string LinkedEntityPropertyDisplayName { get; }
     }

@@ -125,7 +125,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
         /// <summary>
         /// Gets or sets the list of connecting airports. Direct access.
         /// </summary>
-        [AuditIgnore]
         public ICollection<Airport> ConnectingAirports { get; set; }
 
         /// <summary>
@@ -146,7 +145,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
         /// <summary>
         /// Gets or sets the current airport.
         /// </summary>
-        [AuditIgnore]
         public virtual Airport CurrentAirport { get; set; }
 
         /// <summary>

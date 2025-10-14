@@ -14,13 +14,11 @@ namespace BIA.Net.Core.Domain.Audit
         /// <summary>
         /// Gets or sets the table name.
         /// </summary>
-        [Required]
         public string Table { get; set; }
 
         /// <summary>
         /// Gets or sets the PrimaryKey.
         /// </summary>
-        [Required]
         public string PrimaryKey { get; set; }
     }
 }

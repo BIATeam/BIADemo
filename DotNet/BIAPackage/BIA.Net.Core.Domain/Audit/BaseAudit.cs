@@ -8,7 +8,7 @@ namespace BIA.Net.Core.Domain.Audit
     using System.ComponentModel.DataAnnotations;
 
     /// <summary>
-    /// The audit entity with <typeparamref name="TKey"/> Id type.
+    /// The audit entity with <typeparamref name="TKey"/> key type.
     /// </summary>
     /// <typeparam name="TKey">Audit key type.</typeparam>
     public abstract class BaseAudit<TKey> : IAudit

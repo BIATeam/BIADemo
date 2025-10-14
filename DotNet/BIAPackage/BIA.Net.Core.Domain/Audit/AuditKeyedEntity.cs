@@ -8,16 +8,16 @@ namespace BIA.Net.Core.Domain.Audit
     using BIA.Net.Core.Domain.Entity.Interface;
 
     /// <summary>
-    /// Dedicated audit for <typeparamref name="TEntity"/> (Id type=<typeparamref name="TKey"/>) with <typeparamref name="TAuditKey"/> audit Id type.
+    /// Dedicated audit for <typeparamref name="TEntity"/> of key type <typeparamref name="TEntityKey"/> with <typeparamref name="TAuditKey"/> audit key type.
     /// </summary>
     /// <typeparam name="TEntity">Audited entity type.</typeparam>
-    /// <typeparam name="TKey">Audited entity key type.</typeparam>
+    /// <typeparam name="TEntityKey">Audited entity key type.</typeparam>
     /// <typeparam name="TAuditKey">Audit key type.</typeparam>
-    public abstract class AuditKeyedEntity<TEntity, TKey, TAuditKey> : AuditEntity<TEntity, TAuditKey>, IAuditKeyedEntity<TKey>
-        where TEntity : IEntity<TKey>
+    public abstract class AuditKeyedEntity<TEntity, TEntityKey, TAuditKey> : AuditEntity<TEntity, TAuditKey>, IAuditKeyedEntity<TEntityKey>
+        where TEntity : IEntity<TEntityKey>
     {
         /// <inheritdoc/>
         [Required]
-        public TKey Id { get; set; }
+        public TEntityKey Id { get; set; }
     }
 }

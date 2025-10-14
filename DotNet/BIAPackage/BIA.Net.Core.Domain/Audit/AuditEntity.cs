@@ -5,7 +5,7 @@
 namespace BIA.Net.Core.Domain.Audit
 {
     /// <summary>
-    /// Dedicated audit for <typeparamref name="TEntity"/> with <typeparamref name="TAuditKey"/> audit Id type.
+    /// Dedicated audit for <typeparamref name="TEntity"/> with <typeparamref name="TAuditKey"/> audit key type.
     /// </summary>
     /// <typeparam name="TEntity">Audited entity type.</typeparam>
     /// <typeparam name="TAuditKey">Audit key type.</typeparam>
@@ -23,7 +23,7 @@ namespace BIA.Net.Core.Domain.Audit
         }
 
         /// <summary>
-        /// Fill specific properties of the audit based on the current audited <paramref name="entity"/>.
+        /// Fill specific properties of the audit based on the current audited <typeparamref name="TEntity"/> <paramref name="entity"/>.
         /// </summary>
         /// <param name="entity">Audited entity.</param>
         protected virtual void FillSpecificProperties(TEntity entity)

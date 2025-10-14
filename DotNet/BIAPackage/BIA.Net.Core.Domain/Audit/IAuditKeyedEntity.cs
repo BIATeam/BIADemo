@@ -5,14 +5,14 @@
 namespace BIA.Net.Core.Domain.Audit
 {
     /// <summary>
-    /// Interface for dedicated audit of an entity with <typeparamref name="TKey"/> Id type.
+    /// Interface for dedicated audit of an entity with key type <typeparamref name="TEntityKey"/>.
     /// </summary>
-    /// <typeparam name="TKey">Tha audited entity key type.</typeparam>
-    public interface IAuditKeyedEntity<out TKey> : IAuditEntity
+    /// <typeparam name="TEntityKey">Tha audited entity key type.</typeparam>
+    public interface IAuditKeyedEntity<out TEntityKey> : IAuditEntity
     {
         /// <summary>
-        /// The <typeparamref name="TEntity"/> ID.
+        /// The <typeparamref name="TEntity"/> Id key.
         /// </summary>
-        TKey Id { get; }
+        TEntityKey Id { get; }
     }
 }

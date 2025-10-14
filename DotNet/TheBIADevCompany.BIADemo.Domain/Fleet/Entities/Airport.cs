@@ -22,8 +22,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
         /// <summary>
         /// Gets or sets the City where is the airport.
         /// </summary>
-        [AuditIgnore]
-        [AuditOverride(null)]
         public string City { get; set; }
     }
 }

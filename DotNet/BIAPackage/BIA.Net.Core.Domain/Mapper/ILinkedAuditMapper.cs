@@ -22,12 +22,12 @@ namespace BIA.Net.Core.Domain.Mapper
         string EntityPropertyName { get; }
 
         /// <summary>
-        /// Property name into linked audit entity used for display.
+        /// Property name into linked audit entity used as display.
         /// </summary>
         string LinkedAuditEntityDisplayPropertyName { get; }
 
         /// <summary>
-        /// Property name into linked audit  entity used as identifier to the entity.
+        /// Property name into linked audit entity used as identifier to the entity.
         /// </summary>
         string LinkedAuditEntityIdentifierPropertyName { get; }
     }
