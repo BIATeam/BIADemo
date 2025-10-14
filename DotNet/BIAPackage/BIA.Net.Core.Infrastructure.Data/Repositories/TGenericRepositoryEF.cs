@@ -728,7 +728,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             return await auditSet
                 .Cast<IAuditKeyedEntity<TKey>>()
                 .AsNoTracking()
-                .Where(x => x.Id.Equals(entityIdValue.ToString()))
+                .Where(x => x.Id.Equals(entityIdValue))
                 .Cast<IAuditEntity>()
                 .ToListAsync();
         }

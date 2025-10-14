@@ -223,7 +223,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
             var auditedEntityProperties = entityEntry.Entity
                 .GetType()
                 .GetProperties()
-                .Where(p => !entityEntry.References.Any(r => r.Metadata.Name == p.Name) && p.GetCustomAttribute<AuditIgnoreAttribute>() is null)
+                .Where(p => !entityEntry.Navigations.Any(r => r.Metadata.Name == p.Name) && p.GetCustomAttribute<AuditIgnoreAttribute>() is null)
                 .ToList();
 
             foreach (var auditedEntityProperty in auditedEntityProperties)

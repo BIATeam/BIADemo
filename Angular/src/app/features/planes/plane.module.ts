@@ -102,8 +102,6 @@ export const ROUTES: Routes = [
               layoutMode: LayoutMode.popup,
               style: {
                 minWidth: '50vw',
-                maxWidth: '50vw',
-                maxHeight: '80vh',
               },
               title: 'bia.historical',
               permission: Permission.Plane_Read,
