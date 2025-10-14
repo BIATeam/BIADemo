@@ -1,4 +1,4 @@
-import { DatePipe, NgClass } from '@angular/common';
+import { DatePipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { BiaFieldConfig } from 'packages/bia-ng/models/bia-field-config';
@@ -9,7 +9,14 @@ import { TimelineModule } from 'primeng/timeline';
 
 @Component({
   selector: 'bia-crud-item-historical-timeline',
-  imports: [TimelineModule, DatePipe, CardModule, TranslateModule, NgClass],
+  imports: [
+    TimelineModule,
+    DatePipe,
+    CardModule,
+    TranslateModule,
+    NgClass,
+    NgTemplateOutlet,
+  ],
   templateUrl: './crud-item-historical-timeline.component.html',
   styleUrl: './crud-item-historical-timeline.component.scss',
 })
@@ -87,12 +94,22 @@ export class CrudItemHistoricalTimelineComponent<
       return this.translateService.instant('bia.false');
     }
 
-    return this.isEmptyValue(value)
-      ? this.translateService.instant('primeng.empty')
-      : value;
+    return this.isEmptyValue(value) ? '   ' : value;
   }
 
   isEmptyValue(value: any): boolean {
     return !value || value === '';
+  }
+
+  valueOf(modification: any, kind: 'old' | 'new') {
+    return modification?.[`${kind}Value`];
+  }
+
+  isEmptyByKind(modification: any, kind: 'old' | 'new') {
+    return this.isEmptyValue(this.valueOf(modification, kind));
+  }
+
+  iconOf(kind: 'old' | 'new') {
+    return kind === 'old' ? 'pi pi-trash' : 'pi pi-plus-circle';
   }
 }

@@ -28,57 +28,24 @@
         <ul>
           @for (modification of entry.entryModifications; track $index) {
             <li>
-              <div class="d-flex flex-row m-1">
+              <div class="historical-entry-modification-container my-2">
                 <span class="historical-entry-modification">
                   <b>{{
                     getFullPropertyName(modification.propertyName) | translate
                   }}</b>
                 </span>
                 @if (!modification.isLinkedProperty) {
-                  <span
-                    class="historical-entry-modification-old"
-                    [ngClass]="{
-                      'empty-modification': isEmptyValue(modification.oldValue),
-                    }"
-                    >{{ getDisplayValue(modification.oldValue) }}</span
-                  >
-                  <i
-                    class="pi pi-arrow-right historical-entry-modification-arrow-icon"></i>
-                  <span
-                    class="historical-entry-modification-new"
-                    [ngClass]="{
-                      'empty-modification': isEmptyValue(modification.newValue),
-                    }"
-                    >{{ getDisplayValue(modification.newValue) }}</span
-                  >
+                  <ng-container
+                    *ngTemplateOutlet="
+                      modificationPropertyTemplate;
+                      context: { modification: modification }
+                    "></ng-container>
                 } @else {
-                  @if (modification.oldValue) {
-                    <span
-                      class="historical-entry-modification-old"
-                      [ngClass]="{
-                        'historical-entry-modification-old': true,
-                        'empty-modification': isEmptyValue(
-                          modification.oldValue
-                        ),
-                      }"
-                      ><i
-                        class="pi pi-trash historical-entry-modification-link-icon"></i
-                      >{{ getDisplayValue(modification.oldValue) }}</span
-                    >
-                  }
-                  @if (modification.newValue) {
-                    <span
-                      class="historical-entry-modification-new"
-                      [ngClass]="{
-                        'empty-modification': isEmptyValue(
-                          modification.newValue
-                        ),
-                      }">
-                      <i
-                        class="pi pi-plus-circle historical-entry-modification-link-icon"></i
-                      >{{ getDisplayValue(modification.newValue) }}</span
-                    >
-                  }
+                  <ng-container
+                    *ngTemplateOutlet="
+                      modificationLinkedPropertyTemplate;
+                      context: { modification: modification }
+                    "></ng-container>
                 }
               </div>
             </li>
@@ -88,3 +55,53 @@
     }
   </ng-template>
 </p-timeline>
+
+<ng-template
+  #modificationPropertyValueTemplate
+  let-modification="modification"
+  let-kind="kind"
+  let-displayLinkIcon="displayLinkIcon">
+  <span
+    class="historical-entry-modification-{{ kind }}"
+    [ngClass]="{
+      'historical-entry-modification-old': kind === 'old',
+      'historical-entry-modification-new': kind === 'new',
+      'empty-modification': isEmptyByKind(modification, kind),
+    }">
+    @if (displayLinkIcon) {
+      <i class="{{ iconOf(kind) }} historical-entry-modification-link-icon"></i>
+    }
+    {{ getDisplayValue(valueOf(modification, kind)) }}
+  </span>
+</ng-template>
+
+<ng-template #modificationPropertyTemplate let-modification="modification">
+  <ng-container
+    *ngTemplateOutlet="
+      modificationPropertyValueTemplate;
+      context: { modification: modification, kind: 'old' }
+    ">
+  </ng-container>
+  <i class="pi pi-arrow-right historical-entry-modification-arrow-icon"></i>
+  <ng-container
+    *ngTemplateOutlet="
+      modificationPropertyValueTemplate;
+      context: { modification: modification, kind: 'new' }
+    ">
+  </ng-container>
+</ng-template>
+
+<ng-template
+  #modificationLinkedPropertyTemplate
+  let-modification="modification">
+  <ng-container
+    *ngTemplateOutlet="
+      modificationPropertyValueTemplate;
+      context: {
+        modification: modification,
+        kind: modification.oldValue ? 'old' : 'new',
+        displayLinkIcon: true,
+      }
+    ">
+  </ng-container>
+</ng-template>

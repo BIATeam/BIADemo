@@ -39,7 +39,7 @@
 
   &-unfix {
     @extend .historical-entry-icon-container;
-    background-color: var(--p-yellow-500);
+    background-color: var(--p-green-500);
   }
 
   i {
@@ -48,35 +48,38 @@
   }
 }
 
-.historical-entry-link {
-  font-size: 0.9rem;
-}
+.historical-entry-modification-container {
+  display: flex;
+  gap: 0.1rem;
+  align-items: center;
 
-.historical-entry-modification {
-  margin: 0.1rem;
-  padding: 0.2rem;
-  font-size: 0.9rem;
-  &-old {
-    @extend .historical-entry-modification;
-    background-color: var(--p-red-400);
-  }
+  .historical-entry-modification {
+    padding: 0 0.2rem;
+    font-size: 0.9rem;
 
-  &-new {
-    @extend .historical-entry-modification;
-    background-color: var(--p-primary-200);
-  }
+    &-old {
+      @extend .historical-entry-modification;
+      background-color: var(--p-red-300);
+    }
 
-  &-arrow-icon {
-    @extend .historical-entry-modification;
-    font-size: 0.8rem;
-  }
+    &-new {
+      @extend .historical-entry-modification;
+      background-color: var(--p-primary-100);
+    }
 
-  &-link-icon {
-    @extend .historical-entry-modification;
-    padding: 0;
-    margin-right: 0.2rem;
-    font-weight: bold;
-    font-size: 0.8rem;
+    &-arrow-icon {
+      @extend .historical-entry-modification;
+      font-size: 0.8rem;
+    }
+
+    &-link-icon {
+      @extend .historical-entry-modification;
+      margin-right: 0;
+      padding-right: 0;
+      padding-left: 0.1rem;
+      font-weight: bold;
+      font-size: 0.8rem;
+    }
   }
 }
 
@@ -86,6 +89,5 @@
 }
 
 .empty-modification {
-  font-style: italic;
-  padding-right: 0.3rem;
+  white-space: pre;
 }
