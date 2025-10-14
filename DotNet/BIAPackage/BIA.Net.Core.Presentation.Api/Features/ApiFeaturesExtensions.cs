@@ -10,6 +10,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
     using System.Security.Principal;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
+    using BIA.Net.Core.Common.Enum;
 #pragma warning disable BIA001 // Forbidden reference to Domain layer in Presentation layer
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Service;
@@ -122,13 +123,13 @@ namespace BIA.Net.Core.Presentation.Api.Features
             // Delegate Job Worker
             if (apiFeatures.DelegateJobToWorker?.IsActive == true)
             {
-                string dbEngine = configuration.GetDBEngine(apiFeatures.DelegateJobToWorker.ConnectionStringName);
+                DbProvider provider = configuration.GetProvider(apiFeatures.DelegateJobToWorker.ConnectionStringName);
 
-                if (dbEngine.ToLower().Equals("sqlserver"))
+                if (provider == DbProvider.SqlServer)
                 {
                     JobStorage.Current = new SqlServerStorage(configuration.GetDatabaseConnectionString(apiFeatures.DelegateJobToWorker.ConnectionStringName));
                 }
-                else if (dbEngine.ToLower().Equals("postgresql"))
+                else if (provider == DbProvider.PostGreSql)
                 {
                     var optionsTime = new PostgreSqlStorageOptions
                     {
@@ -143,14 +144,14 @@ namespace BIA.Net.Core.Presentation.Api.Features
             {
                 services.AddHangfire((config) =>
                 {
-                    string dbEngine = configuration.GetDBEngine(apiFeatures.HangfireDashboard.ConnectionStringName);
-                    if (dbEngine.ToLower().Equals("sqlserver"))
+                    DbProvider provider = configuration.GetProvider(apiFeatures.HangfireDashboard.ConnectionStringName);
+                    if (provider == DbProvider.SqlServer)
                     {
                         config.UseSimpleAssemblyNameTypeSerializer()
                               .UseRecommendedSerializerSettings()
                               .UseSqlServerStorage(configuration.GetDatabaseConnectionString(apiFeatures.HangfireDashboard.ConnectionStringName));
                     }
-                    else if (dbEngine.ToLower().Equals("postgresql"))
+                    else if (provider == DbProvider.PostGreSql)
                     {
                         var optionsTime = new PostgreSqlStorageOptions
                         {

@@ -11,11 +11,13 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Audit.EntityFramework;
 #if BIA_FRONT_FEATURE
     using BIA.Net.Core.Application.User;
+    using BIA.Net.Core.Common;
 #endif
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Mappers;
@@ -162,32 +164,49 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                     options.AppVersion = Constants.Application.BackEndVersion;
                 });
 
-                string connectionString = configuration.GetDatabaseConnectionString("ProjectDatabase");
+                string connectionString = configuration.GetDatabaseConnectionString(BiaConstants.DatabaseConfiguration.DefaultKey);
 
-                // Infrastructure Data Layer
-                collection.AddDbContext<IQueryableUnitOfWork, DataContext>(options =>
+                if (!string.IsNullOrWhiteSpace(connectionString))
                 {
-                    if (connectionString != null)
-                    {
-                        options.UseSqlServer(connectionString);
-                        options.ReplaceService<IHistoryRepository, BiaSqlServerHistoryRepository>();
-                    }
+                    DbProvider dbEngine = configuration.GetProvider(BiaConstants.DatabaseConfiguration.DefaultKey);
 
-                    options.EnableSensitiveDataLogging();
-                    options.AddInterceptors(new AuditSaveChangesInterceptor());
-                });
-                collection.AddDbContext<IQueryableUnitOfWorkNoTracking, DataContextNoTracking>(
-                    options =>
-                    {
-                        if (connectionString != null)
+                    // Infrastructure Data Layer
+                    collection.AddDbContext<IQueryableUnitOfWork, DataContext>(
+                        options =>
                         {
-                            options.UseSqlServer(connectionString);
-                            options.ReplaceService<IHistoryRepository, BiaSqlServerHistoryRepository>();
-                        }
+                            if (dbEngine == DbProvider.PostGreSql)
+                            {
+                                options.UseNpgsql(connectionString);
+                                options.ReplaceService<IHistoryRepository, BiaNpgsqlHistoryRepository>();
+                            }
+                            else
+                            {
+                                options.UseSqlServer(connectionString);
+                                options.ReplaceService<IHistoryRepository, BiaSqlServerHistoryRepository>();
+                            }
 
-                        options.EnableSensitiveDataLogging();
-                    },
-                    contextLifetime: ServiceLifetime.Transient);
+                            options.EnableSensitiveDataLogging();
+                            options.AddInterceptors(new AuditSaveChangesInterceptor());
+                        });
+
+                    collection.AddDbContext<IQueryableUnitOfWorkNoTracking, DataContextNoTracking>(
+                        options =>
+                        {
+                            if (dbEngine == DbProvider.PostGreSql)
+                            {
+                                options.UseNpgsql(connectionString);
+                                options.ReplaceService<IHistoryRepository, BiaNpgsqlHistoryRepository>();
+                            }
+                            else
+                            {
+                                options.UseSqlServer(connectionString);
+                                options.ReplaceService<IHistoryRepository, BiaSqlServerHistoryRepository>();
+                            }
+
+                            options.EnableSensitiveDataLogging();
+                        },
+                        contextLifetime: ServiceLifetime.Transient);
+                }
 
                 collection.AddScoped<DataContextFactory>();
                 collection.AddSingleton<IAuditFeature, AuditFeature>();

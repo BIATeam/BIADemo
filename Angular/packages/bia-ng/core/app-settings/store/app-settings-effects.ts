@@ -10,10 +10,6 @@ import { AppSettingsDas } from '../services/app-settings-das.service';
 import { AppSettingsService } from '../services/app-settings.service';
 import { CoreAppSettingsActions } from './app-settings-actions';
 
-const STORAGE_APPSETTINGS_KEY = () => {
-  return `${BiaAppConstantsService.allEnvironments.companyName}.${BiaAppConstantsService.allEnvironments.appTitle}.AppSettings`;
-};
-
 @Injectable()
 export class AppSettingsEffects {
   load$ = createEffect(() =>
@@ -24,7 +20,7 @@ export class AppSettingsEffects {
           map(appSettings => {
             if (BiaOnlineOfflineService.isModeEnabled === true) {
               localStorage.setItem(
-                STORAGE_APPSETTINGS_KEY(),
+                BiaAppConstantsService.STORAGE_APPSETTINGS_KEY(),
                 JSON.stringify(appSettings)
               );
             }
@@ -37,7 +33,7 @@ export class AppSettingsEffects {
               BiaOnlineOfflineService.isServerAvailable(err) !== true
             ) {
               const json: string | null = localStorage.getItem(
-                STORAGE_APPSETTINGS_KEY()
+                BiaAppConstantsService.STORAGE_APPSETTINGS_KEY()
               );
               if (json) {
                 const appSettings = <AppSettings>JSON.parse(json);

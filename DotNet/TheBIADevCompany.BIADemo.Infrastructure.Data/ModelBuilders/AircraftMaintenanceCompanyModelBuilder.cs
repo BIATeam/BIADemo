@@ -93,7 +93,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
                 .HasMany(p => p.Planes)
                 .WithMany()
                 .UsingEntity<MaintenanceContractPlane>();
-            modelBuilder.Entity<MaintenanceContract>().Property(p => p.ContractNumber).IsRequired().HasMaxLength(64).UseCollation("SQL_Latin1_General_CP1_CS_AS");
+            modelBuilder.Entity<MaintenanceContract>().Property(p => p.ContractNumber).IsRequired().HasMaxLength(64)/*.UseCollation("SQL_Latin1_General_CP1_CS_AS")*/;
             modelBuilder.Entity<MaintenanceContract>()
                 .HasOne(x => x.Site)
                 .WithMany(x => x.MaintenanceContracts)

@@ -176,6 +176,58 @@ namespace BIA.Net.Core.Domain.RepoContract
         void Remove(TEntity item);
 
         /// <summary>
+        /// Remove a list of items from the current context.
+        /// </summary>
+        /// <param name="items">The items to remove.</param>
+        void RemoveRange(IEnumerable<TEntity> items);
+
+        /// <summary>
+        /// Update a list of items in the current context.
+        /// </summary>
+        /// <param name="items">The items to update.</param>
+        void UpdateRange(IEnumerable<TEntity> items);
+
+        /// <summary>
+        /// Delete entities by their identifiers in batch.
+        /// </summary>
+        /// <param name="ids">List of identifiers.</param>
+        /// <param name="batchSize">Batch size.</param>
+        /// <returns>Number of entities deleted.</returns>
+        Task<int> DeleteByIdsAsync(IEnumerable<TKey> ids, int? batchSize = 100);
+
+        /// <summary>
+        /// Execute a delete operation according to a filter.
+        /// </summary>
+        /// <param name="filter">Filter expression.</param>
+        /// <param name="batchSize">Batch size.</param>
+        /// <returns>Number of entities deleted.</returns>
+        Task<int> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> filter, int? batchSize = 100);
+
+        /// <summary>
+        /// Massively add entities in batch.
+        /// </summary>
+        /// <param name="items">Entities to add.</param>
+        /// <param name="batchSize">Batch size.</param>
+        /// <returns>Number of element affected.</returns>
+        Task<int> MassAddAsync(IEnumerable<TEntity> items, int batchSize = 100);
+
+        /// <summary>
+        /// Massively update entities in batch.
+        /// </summary>
+        /// <param name="items">Entities to update.</param>
+        /// <param name="batchSize">Batch size.</param>
+        /// <returns>Number of element affected.</returns>
+        Task<int> MassUpdateAsync(IEnumerable<TEntity> items, int batchSize = 100);
+
+        /// <summary>
+        /// Massively delete entities in batch.
+        /// </summary>
+        /// <param name="items">Entities to delete.</param>
+        /// <param name="batchSize">Batch size.</param>
+        /// <returns>Number of element affected.</returns>
+        Task<int> MassDeleteAsync(IEnumerable<TEntity> items, int batchSize = 100);
+
+        /// <summary>
         /// Set an item as modified in the current context to force update of all fields
         /// > it is not recommanded to use it because it do additionnal job in database and Audit will track too much change.
         /// </summary>

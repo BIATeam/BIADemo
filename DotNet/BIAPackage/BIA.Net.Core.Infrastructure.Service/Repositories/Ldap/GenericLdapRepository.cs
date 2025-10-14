@@ -5,16 +5,6 @@
 
 namespace BIA.Net.Core.Infrastructure.Service.Repositories
 {
-    using BIA.Net.Core.Common;
-    using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.Dto.User;
-    using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Domain.User.Services;
-    using BIA.Net.Core.Infrastructure.Service.Repositories.Ldap;
-    using Meziantou.Framework.Win32;
-    using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Options;
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
@@ -29,6 +19,16 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Helpers;
+    using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.User.Services;
+    using BIA.Net.Core.Infrastructure.Service.Repositories.Ldap;
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Options;
 
     /// <summary>
     /// Helper to get information from Ldap.
@@ -320,7 +320,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
             try
             {
-                UserPrincipal userToAdd = ResolveUserPrincipal(user.Domain,user.IdentityKey).Result;
+                UserPrincipal userToAdd = ResolveUserPrincipal(user.Domain, user.IdentityKey).Result;
 
                 if (userToAdd != null)
                 {
@@ -504,8 +504,8 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
                     try
                     {
-                        var cred = CredentialManager.ReadCredential(applicationName: domain.CredentialKeyInWindowsVault);
-                        if (cred != null)
+                        (string UserName, string Password) cred = CredentialHelper.RetrieveCredentialsByVaultKey(domain.CredentialKeyInWindowsVault);
+                        if (!string.IsNullOrWhiteSpace(cred.Password))
                         {
                             domain.LdapServiceAccount = cred.UserName;
                             domain.LdapServicePass = cred.Password;
