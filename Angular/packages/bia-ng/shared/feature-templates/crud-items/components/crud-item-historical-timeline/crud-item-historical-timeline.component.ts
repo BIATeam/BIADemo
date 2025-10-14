@@ -85,7 +85,7 @@ export class CrudItemHistoricalTimelineComponent<
     return field ? field.header : propertyName;
   }
 
-  getDisplayValue(value: any) {
+  getDisplayValueNotEmpty(value: any) {
     if (value === 'True') {
       return this.translateService.instant('bia.true');
     }
@@ -94,22 +94,18 @@ export class CrudItemHistoricalTimelineComponent<
       return this.translateService.instant('bia.false');
     }
 
-    return this.isEmptyValue(value) ? '   ' : value;
+    return value;
   }
 
   isEmptyValue(value: any): boolean {
     return !value || value === '';
   }
 
-  valueOf(modification: any, kind: 'old' | 'new') {
+  modificationValueByKind(modification: any, kind: 'old' | 'new') {
     return modification?.[`${kind}Value`];
   }
 
-  isEmptyByKind(modification: any, kind: 'old' | 'new') {
-    return this.isEmptyValue(this.valueOf(modification, kind));
-  }
-
-  iconOf(kind: 'old' | 'new') {
+  modificationLinkedPropertyIconByKind(kind: 'old' | 'new') {
     return kind === 'old' ? 'pi pi-trash' : 'pi pi-plus-circle';
   }
 }

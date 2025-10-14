@@ -61,17 +61,25 @@
   let-modification="modification"
   let-kind="kind"
   let-displayLinkIcon="displayLinkIcon">
+  @let modificationValue = modificationValueByKind(modification, kind);
   <span
     class="historical-entry-modification-{{ kind }}"
     [ngClass]="{
       'historical-entry-modification-old': kind === 'old',
       'historical-entry-modification-new': kind === 'new',
-      'empty-modification': isEmptyByKind(modification, kind),
+      'empty-modification': isEmptyValue(modificationValue),
     }">
     @if (displayLinkIcon) {
-      <i class="{{ iconOf(kind) }} historical-entry-modification-link-icon"></i>
+      <i
+        class="{{
+          modificationLinkedPropertyIconByKind(kind)
+        }} historical-entry-modification-link-icon"></i>
     }
-    {{ getDisplayValue(valueOf(modification, kind)) }}
+    @if (!isEmptyValue(modificationValue)) {
+      {{ getDisplayValueNotEmpty(modificationValue) }}
+    } @else {
+      <i class="pi pi-ban historical-entry-modification-empty-icon"></i>
+    }
   </span>
 </ng-template>
 

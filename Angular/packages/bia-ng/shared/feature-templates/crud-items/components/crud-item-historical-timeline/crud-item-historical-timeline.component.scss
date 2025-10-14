@@ -34,12 +34,12 @@
 
   &-fix {
     @extend .historical-entry-icon-container;
-    background-color: var(--p-surface-400);
+    background-color: var(--p-orange-500);
   }
 
   &-unfix {
     @extend .historical-entry-icon-container;
-    background-color: var(--p-green-500);
+    background-color: var(--p-orange-300);
   }
 
   i {
@@ -80,6 +80,22 @@
       font-weight: bold;
       font-size: 0.8rem;
     }
+
+    &-empty-icon {
+      @extend .historical-entry-modification;
+      font-weight: bold;
+      font-size: 0.8rem;
+    }
+  }
+}
+
+:host-context(html.dark-theme) {
+  .historical-entry-modification-container .historical-entry-modification-old {
+    background-color: var(--p-red-400);
+  }
+
+  .historical-entry-modification-container .historical-entry-modification-new {
+    background-color: var(--p-primary-300);
   }
 }
 
