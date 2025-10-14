@@ -1,6 +1,7 @@
 import { NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ContentChildren,
@@ -12,8 +13,10 @@ import {
   OnInit,
   Output,
   QueryList,
+  Renderer2,
   SimpleChanges,
   TemplateRef,
+  ViewChild,
   ViewChildren,
 } from '@angular/core';
 import {
@@ -76,7 +79,7 @@ import { BiaOutputComponent } from '../bia-output/bia-output.component';
   ],
 })
 export class BiaFormComponent<TDto extends { id: number | string }>
-  implements OnInit, OnDestroy, OnChanges, AfterContentInit
+  implements OnInit, OnDestroy, OnChanges, AfterContentInit, AfterViewInit
 {
   @Input() element?: TDto;
   @Input() fields: BiaFieldConfig<TDto>[];
@@ -117,7 +120,12 @@ export class BiaFormComponent<TDto extends { id: number | string }>
   @ViewChildren('refFormField', { read: ElementRef })
   formElements: QueryList<ElementRef>;
 
-  constructor(public formBuilder: UntypedFormBuilder) {}
+  @ViewChild('formTablist', { static: false }) formTablist: any;
+
+  constructor(
+    public formBuilder: UntypedFormBuilder,
+    private renderer: Renderer2
+  ) {}
 
   get readOnly(): boolean {
     return this._readOnly;
@@ -150,6 +158,21 @@ export class BiaFormComponent<TDto extends { id: number | string }>
           break;
       }
     });
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      const header = document.getElementById('header');
+      const formTabList = this.formTablist?.el?.nativeElement;
+      if (header && formTabList) {
+        const firstChild = header.firstChild;
+        if (firstChild) {
+          this.renderer.insertBefore(header, formTabList, firstChild);
+        } else {
+          this.renderer.appendChild(header, formTabList);
+        }
+      }
+    }, 100);
   }
 
   ngOnChanges(changes: SimpleChanges) {

@@ -36,7 +36,10 @@
   (submit)="onSubmit()"
   class="flex flex-column bia-form"
   [formGroup]="form">
-  <div class="header-container bia-form-header" *ngIf="showHeaderContainer">
+  <div
+    id="header"
+    class="header-container bia-form-header"
+    *ngIf="showHeaderContainer">
     <div class="fixed-state">
       <button
         *ngIf="isFixableButtonVisible"
@@ -116,11 +119,11 @@
 
   @if (displayHistorical) {
     <p-tabs value="0">
-      <p-tablist>
+      <p-tablist #formTablist>
         <p-tab value="0">{{ 'bia.details' | translate }}</p-tab>
         <p-tab value="1">{{ 'bia.historical' | translate }}</p-tab>
       </p-tablist>
-      <p-tabpanels>
+      <p-tabpanels class="form-tabpanels">
         <p-tabpanel value="0">
           <ng-container *ngTemplateOutlet="formFields"></ng-container>
         </p-tabpanel>
