@@ -38,7 +38,7 @@
     "errorDateFormat": "Invalid date format",
     "errors": "Error(s)",
     "export": "Export",
-    "false": "false",
+    "false": "False",
     "filter": "Filter",
     "filterMember": "Member user",
     "filters": "Filters",
@@ -127,7 +127,7 @@
       "language": "Language",
       "translatedFields": "Translated fields"
     },
-    "true": "true",
+    "true": "True",
     "unfix": "Unfix",
     "unfixed": "Unfixed",
     "useCalcMode": "Edit in table",

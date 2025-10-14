@@ -38,7 +38,7 @@
     "errorDateFormat": "Format de date invalide",
     "errors": "Erreur(s)",
     "export": "Exporter",
-    "false": "faux",
+    "false": "Faux",
     "filter": "Filtrer",
     "filterMember": "Utilisateur membre",
     "filters": "Filtres",
@@ -127,7 +127,7 @@
       "language": "Langage",
       "translatedFields": "Champs traduits"
     },
-    "true": "vrai",
+    "true": "Vrai",
     "unfix": "Défiger",
     "unfixed": "Non figé",
     "useCalcMode": "Édition dans le tableau",

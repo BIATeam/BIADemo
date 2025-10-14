@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { BiaFieldConfig } from 'packages/bia-ng/models/bia-field-config';
@@ -9,7 +9,7 @@ import { TimelineModule } from 'primeng/timeline';
 
 @Component({
   selector: 'bia-crud-item-historical-timeline',
-  imports: [TimelineModule, DatePipe, CardModule, TranslateModule],
+  imports: [TimelineModule, DatePipe, CardModule, TranslateModule, NgClass],
   templateUrl: './crud-item-historical-timeline.component.html',
   styleUrl: './crud-item-historical-timeline.component.scss',
 })
@@ -68,5 +68,23 @@ export class CrudItemHistoricalTimelineComponent<
       f => f.field.toLowerCase() === propertyName.toLowerCase()
     );
     return field ? field.header : propertyName;
+  }
+
+  getDisplayValue(value: any) {
+    if (value === 'True') {
+      return this.translateService.instant('bia.true');
+    }
+
+    if (value === 'False') {
+      return this.translateService.instant('bia.false');
+    }
+
+    return this.isEmptyValue(value)
+      ? this.translateService.instant('primeng.empty')
+      : value;
+  }
+
+  isEmptyValue(value: any): boolean {
+    return !value || value === '';
   }
 }

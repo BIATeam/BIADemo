@@ -35,27 +35,48 @@
                   }}</b>
                 </span>
                 @if (!modification.isLinkedProperty) {
-                  <span class="historical-entry-modification-old">{{
-                    modification.oldValue ?? 'null'
-                  }}</span>
+                  <span
+                    class="historical-entry-modification-old"
+                    [ngClass]="{
+                      'empty-modification': isEmptyValue(modification.oldValue),
+                    }"
+                    >{{ getDisplayValue(modification.oldValue) }}</span
+                  >
                   <i
                     class="pi pi-arrow-right historical-entry-modification-arrow-icon"></i>
-                  <span class="historical-entry-modification-new">{{
-                    modification.newValue ?? 'null'
-                  }}</span>
+                  <span
+                    class="historical-entry-modification-new"
+                    [ngClass]="{
+                      'empty-modification': isEmptyValue(modification.newValue),
+                    }"
+                    >{{ getDisplayValue(modification.newValue) }}</span
+                  >
                 } @else {
                   @if (modification.oldValue) {
-                    <span class="historical-entry-modification-old"
+                    <span
+                      class="historical-entry-modification-old"
+                      [ngClass]="{
+                        'historical-entry-modification-old': true,
+                        'empty-modification': isEmptyValue(
+                          modification.oldValue
+                        ),
+                      }"
                       ><i
                         class="pi pi-trash historical-entry-modification-link-icon"></i
-                      >{{ modification.oldValue ?? 'null' }}</span
+                      >{{ getDisplayValue(modification.oldValue) }}</span
                     >
                   }
                   @if (modification.newValue) {
-                    <span class="historical-entry-modification-new">
+                    <span
+                      class="historical-entry-modification-new"
+                      [ngClass]="{
+                        'empty-modification': isEmptyValue(
+                          modification.newValue
+                        ),
+                      }">
                       <i
                         class="pi pi-plus-circle historical-entry-modification-link-icon"></i
-                      >{{ modification.newValue ?? 'null' }}</span
+                      >{{ getDisplayValue(modification.newValue) }}</span
                     >
                   }
                 }
