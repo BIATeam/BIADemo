@@ -4,7 +4,6 @@
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 {
-    using System.Diagnostics;
     using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
     using Microsoft.EntityFrameworkCore;
 
@@ -12,24 +11,23 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
     // End BIADemo
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
-    /// Class used to update the model builder for user domain.
+    /// Class used to update the model builder for audits.
     /// </summary>
     public class AuditModelBuilder : BaseAuditModelBuilder
     {
-        /// <summary>
-        /// Create the user model.
-        /// </summary>
-        /// <param name="modelBuilder">The model builder.</param>
+        /// <inheritdoc/>
         public override void CreateModel(ModelBuilder modelBuilder)
         {
-            Debug.Assert(modelBuilder != null, "Line to avoid warning empty method");
             base.CreateModel(modelBuilder);
+            this.CreateUserAuditModel<UserAudit, User>(modelBuilder);
 
             // Add here the project specific audit model creation.
             // Begin BIADemo
-            CreateAirportAuditModel(modelBuilder);
+            CreateEngineAuditModel(modelBuilder);
+            CreatePlaneAirportAuditModel(modelBuilder);
 
             // End BIADemo
         }
@@ -37,14 +35,24 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         // Begin BIADemo
 
         /// <summary>
-        /// Create the model for aiports.
+        /// Create the model for <see cref="EngineAudit"/>.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        protected static void CreateAirportAuditModel(ModelBuilder modelBuilder)
+        private static void CreateEngineAuditModel(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AirportAudit>().HasKey(p => new { p.AuditId });
-            modelBuilder.Entity<AirportAudit>().Property(p => p.Name).IsRequired().HasMaxLength(64);
-            modelBuilder.Entity<AirportAudit>().Property(p => p.City).IsRequired().HasMaxLength(64);
+            modelBuilder.Entity<EngineAudit>().Property(p => p.PlaneId).IsRequired();
+            modelBuilder.Entity<EngineAudit>().Property(p => p.Reference).IsRequired();
+        }
+
+        /// <summary>
+        /// Create the model for <see cref="PlaneAirportAudit"/>.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        private static void CreatePlaneAirportAuditModel(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PlaneAirportAudit>().Property(p => p.AirportId).IsRequired();
+            modelBuilder.Entity<PlaneAirportAudit>().Property(p => p.PlaneId).IsRequired();
+            modelBuilder.Entity<PlaneAirportAudit>().Property(p => p.AirportName).IsRequired();
         }
 
         // End BIADemo

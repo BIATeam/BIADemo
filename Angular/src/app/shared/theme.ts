@@ -1658,14 +1658,13 @@ const MyPreset = definePreset(Material, {
     },
     card: {
       root: {
-        background: '{content.background}',
         borderRadius: '{content.border.radius}',
         color: '{content.color}',
         shadow:
           '0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12)',
       },
       body: {
-        padding: '1.5rem',
+        padding: '0',
         gap: '0.75rem',
       },
       caption: {
@@ -1677,6 +1676,14 @@ const MyPreset = definePreset(Material, {
       },
       subtitle: {
         color: '{text.muted.color}',
+      },
+      colorScheme: {
+        light: {
+          background: '{surface.0}',
+        },
+        dark: {
+          background: '{surface.800}',
+        },
       },
     },
     carousel: {

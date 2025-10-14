@@ -1,34 +1,33 @@
-// <copyright file="AuditEntity.cs" company="BIA">
+﻿// <copyright file="AuditEntity.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Domain.Audit
 {
-    using System;
-
     /// <summary>
-    /// The user entity.
+    /// Dedicated audit for <typeparamref name="TEntity"/> with <typeparamref name="TAuditKey"/> audit key type.
     /// </summary>
-    public class AuditEntity : VersionedTable, IAuditEntity
+    /// <typeparam name="TEntity">Audited entity type.</typeparam>
+    /// <typeparam name="TAuditKey">Audit key type.</typeparam>
+    public abstract class AuditEntity<TEntity, TAuditKey> : BaseAudit<TAuditKey>, IAuditEntity
     {
-        /// <summary>
-        /// Gets or sets the AuditDate.
-        /// </summary>
-        public DateTime AuditDate { get; set; }
+        /// <inheritdoc/>
+        public void FillSpecificProperties<T>(T entity)
+        {
+            if (entity is not TEntity typedEntity)
+            {
+                return;
+            }
+
+            this.FillSpecificProperties(typedEntity);
+        }
 
         /// <summary>
-        /// Gets or sets the AuditAction.
+        /// Fill specific properties of the audit based on the current audited <typeparamref name="TEntity"/> <paramref name="entity"/>.
         /// </summary>
-        public string AuditAction { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Audit Changes.
-        /// </summary>
-        public string AuditChanges { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Audit User login.
-        /// </summary>
-        public string AuditUserLogin { get; set; }
+        /// <param name="entity">Audited entity.</param>
+        protected virtual void FillSpecificProperties(TEntity entity)
+        {
+        }
     }
 }

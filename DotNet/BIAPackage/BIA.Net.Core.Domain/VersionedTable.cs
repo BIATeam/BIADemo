@@ -5,6 +5,7 @@ namespace BIA.Net.Core.Domain
 {
     using System.ComponentModel.DataAnnotations;
     using BIA.Net.Core.Domain.Entity.Interface;
+    using global::Audit.EntityFramework;
 
     /// <summary>
     /// The versioned table class used to apply RowVersion on all table.
@@ -15,6 +16,7 @@ namespace BIA.Net.Core.Domain
         /// Gets or sets the row version.
         /// </summary>
         [Timestamp]
+        [AuditIgnore]
         public byte[] RowVersion { get; set; }
     }
 }

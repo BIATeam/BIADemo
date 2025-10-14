@@ -17,6 +17,9 @@
       (import)="onImport()"
       [selectedElements]="selectedCrudItems"
       [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
+      [showHistoricalButton]="
+        crudConfiguration.displayHistorical && crudConfiguration.useCalcMode
+      "
       [tableControllerVisible]="showTableController"
       [showFixedButtons]="crudConfiguration.isFixable"
       (toggleTableControllerVisibility)="toggleTableControllerVisibility()"

@@ -1,5 +1,6 @@
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
+import { HistoricalEntryDto } from 'packages/bia-ng/models/dto/historical-entry-dto';
 import {
   CrudState,
   DEFAULT_CRUD_STATE,
@@ -15,10 +16,12 @@ export const planesAdapter = createEntityAdapter<Plane>({
 
 export interface State extends CrudState<Plane>, EntityState<Plane> {
   // additional props here
+  currentItemHistorical: HistoricalEntryDto[];
 }
 
 export const INIT_STATE: State = planesAdapter.getInitialState({
   ...DEFAULT_CRUD_STATE(),
+  currentItemHistorical: [],
   // additional props default values here
 });
 
@@ -30,7 +33,7 @@ export const planeReducers = createReducer<State>(
     return stateUpdated;
   }),
   on(FeaturePlanesActions.clearCurrent, state => {
-    return { ...state, currentItem: <Plane>{} };
+    return { ...state, currentItem: <Plane>{}, currentItemHistorical: [] };
   }),
   on(FeaturePlanesActions.loadAllByPost, state => {
     return { ...state, loadingGetAll: true };
@@ -50,6 +53,9 @@ export const planeReducers = createReducer<State>(
   }),
   on(FeaturePlanesActions.loadSuccess, (state, { plane }) => {
     return { ...state, currentItem: plane, loadingGet: false };
+  }),
+  on(FeaturePlanesActions.loadHistoricalSuccess, (state, { historical }) => {
+    return { ...state, currentItemHistorical: historical };
   }),
   on(FeaturePlanesActions.failure, state => {
     return { ...state, loadingGetAll: false, loadingGet: false };

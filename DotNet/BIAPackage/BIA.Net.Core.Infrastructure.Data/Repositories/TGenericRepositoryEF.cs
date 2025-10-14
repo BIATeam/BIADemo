@@ -6,19 +6,29 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.Immutable;
     using System.Data;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Reflection;
+    using System.Reflection.Metadata;
     using System.Threading.Tasks;
+    using Audit.EntityFramework;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.Audit;
     using BIA.Net.Core.Domain.Entity.Interface;
+    using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using BIA.Net.Core.Domain.Specification;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata;
+    using Microsoft.EntityFrameworkCore.Metadata.Internal;
     using Microsoft.Extensions.DependencyInjection;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// The class representing a GenericRepository.
@@ -39,6 +49,16 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         private readonly IServiceProvider serviceProvider;
 
         /// <summary>
+        /// The audit feature.
+        /// </summary>
+        private readonly IAuditFeature auditFeature;
+
+        /// <summary>
+        /// The audit mapper.
+        /// </summary>
+        private readonly IAuditMapper auditMapper;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TGenericRepositoryEF{TEntity, TKey}"/> class.
         /// </summary>
         /// <param name="unitOfWork">The unit Of Work.</param>
@@ -47,6 +67,8 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         {
             this.unitOfWork = unitOfWork;
             this.serviceProvider = serviceProvider;
+            this.auditFeature = serviceProvider.GetRequiredService<IAuditFeature>();
+            this.auditMapper = serviceProvider.GetServices<IAuditMapper>().FirstOrDefault(mapper => mapper.EntityType == typeof(TEntity));
         }
 
         /// <summary>
@@ -479,6 +501,31 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             this.SetModified(fixableEntity as TEntity);
         }
 
+        /// <inheritdoc/>
+        public async Task<ImmutableList<IAuditEntity>> GetAuditsAsync(TKey id)
+        {
+            var audits = new List<IAuditEntity>(await this.GetAudits(typeof(TEntity), id));
+
+            var entityType = this.unitOfWork.FindEntityType(typeof(TEntity));
+            foreach (var navigation in entityType.GetNavigations())
+            {
+                if (navigation.PropertyInfo.GetCustomAttributes<AuditIgnoreAttribute>().Any())
+                {
+                    continue;
+                }
+
+                var navigationEntityType = navigation.TargetEntityType.ClrType;
+                if (!navigationEntityType.GetCustomAttributes<AuditIncludeAttribute>().Any())
+                {
+                    continue;
+                }
+
+                audits.AddRange(await this.GetAudits(navigationEntityType, id));
+            }
+
+            return [.. audits.OrderByDescending(x => x.AuditDate)];
+        }
+
         /// <summary>
         /// Retrieve a DBSet.
         /// </summary>
@@ -764,7 +811,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
 
             if (batchSize < 1)
             {
-               throw new ArgumentOutOfRangeException(nameof(batchSize));
+                throw new ArgumentOutOfRangeException(nameof(batchSize));
             }
 
             for (int i = 0; i < itemList.Count; i = i + batchSize)
@@ -776,6 +823,60 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             }
 
             return elementAffectedCount;
+        }
+
+        /// <summary>
+        /// Retrieve the audit of a specific entity by its type.
+        /// </summary>
+        /// <param name="entityType">The entity type.</param>
+        /// <param name="entityIdValue">The entity id property value.</param>
+        /// <returns>Collection of <see cref="IAuditEntity"/>.</returns>
+        private async Task<List<IAuditEntity>> GetAudits(Type entityType, TKey entityIdValue)
+        {
+            var entityAuditType = this.auditFeature.AuditTypeMapper(entityType);
+            if (!typeof(IAuditEntity).IsAssignableFrom(entityAuditType))
+            {
+                return [];
+            }
+
+            var auditSet = this.unitOfWork.RetrieveSet(entityAuditType);
+            var linkedAuditMapper = this.auditMapper?.LinkedAuditMappers.FirstOrDefault(x => x.LinkedAuditEntityType == entityAuditType);
+            if (linkedAuditMapper is not null)
+            {
+                if (entityAuditType.GetProperty(linkedAuditMapper.LinkedAuditEntityIdentifierPropertyName) is null)
+                {
+                    throw new BadBiaFrameworkUsageException($"Unable to find {linkedAuditMapper.LinkedAuditEntityIdentifierPropertyName} property on {entityAuditType.Name}.");
+                }
+
+                // Set expression : "WHERE audit.EntityId = entityIdValue"
+                var expressionParameter = Expression.Parameter(entityAuditType);
+                var expressionProperty = Expression.PropertyOrField(expressionParameter, linkedAuditMapper.LinkedAuditEntityIdentifierPropertyName);
+                var expression = Expression.Equal(expressionProperty, Expression.Constant(entityIdValue, expressionProperty.Type));
+                var expressionDelegateType = typeof(Func<,>).MakeGenericType(entityAuditType, typeof(bool));
+                var expressionLambda = Expression.Lambda(expressionDelegateType, expression, expressionParameter);
+
+                // Call expression : "SELECT FROM audit WHERE audit.EntityId = entityIdValue"
+                var expressionCall = Expression.Call(
+                    typeof(Queryable),
+                    nameof(Queryable.Where),
+                    [entityAuditType],
+                    auditSet.Expression,
+                    Expression.Quote(expressionLambda));
+
+                return await auditSet.Provider
+                    .CreateQuery(expressionCall)
+                    .Cast<IAuditEntity>()
+                    .AsNoTracking()
+                    .Where(x => x.AuditAction != BiaConstants.Audit.UpdateAction)
+                    .ToListAsync();
+            }
+
+            return await auditSet
+                .Cast<IAuditKeyedEntity<TKey>>()
+                .AsNoTracking()
+                .Where(x => x.Id.Equals(entityIdValue))
+                .Cast<IAuditEntity>()
+                .ToListAsync();
         }
     }
 }

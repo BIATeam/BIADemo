@@ -3,6 +3,7 @@ import {
   AbstractDas,
   BiaMessageService,
 } from 'packages/bia-ng/core/public-api';
+import { HistoricalEntryDto } from 'packages/bia-ng/models/dto/historical-entry-dto';
 import { BaseDto } from 'packages/bia-ng/models/public-api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { EMPTY, first, Observable } from 'rxjs';
@@ -33,6 +34,7 @@ export abstract class CrudItemService<
   abstract crudItems$: Observable<ListCrudItem[]>;
   abstract totalCount$: Observable<number>;
   abstract loadingGetAll$: Observable<boolean>;
+  crudItemHistorical$: Observable<HistoricalEntryDto[]>;
 
   abstract loadAllByPost(event: TableLazyLoadEvent): void;
 

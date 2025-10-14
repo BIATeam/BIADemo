@@ -6,9 +6,11 @@ namespace BIA.Net.Core.Domain.RepoContract
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.Immutable;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Domain.Audit;
     using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
@@ -239,5 +241,12 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="item">The entity.</param>
         /// <param name="isFixed">Fixed status.</param>
         void UpdateFixedAsync(TEntity item, bool isFixed);
+
+        /// <summary>
+        /// Return the audits of an item by its <paramref name="id"/>.
+        /// </summary>
+        /// <param name="id">The item id.</param>
+        /// <returns>Immutable collection of <see cref="IAuditEntity"/>.</returns>
+        Task<ImmutableList<IAuditEntity>> GetAuditsAsync(TKey id);
     }
 }

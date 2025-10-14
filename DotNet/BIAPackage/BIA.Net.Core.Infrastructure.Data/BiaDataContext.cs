@@ -13,6 +13,7 @@ namespace BIA.Net.Core.Infrastructure.Data
     using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
+    using Audit.EntityFramework;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Enum;
@@ -214,6 +215,12 @@ namespace BIA.Net.Core.Infrastructure.Data
             where TEntity : class
         {
             return this.Set<TEntity>();
+        }
+
+        /// <inheritdoc/>
+        public IQueryable RetrieveSet(Type entityType)
+        {
+            return this.Set(entityType) as IQueryable;
         }
 
         /// <summary>

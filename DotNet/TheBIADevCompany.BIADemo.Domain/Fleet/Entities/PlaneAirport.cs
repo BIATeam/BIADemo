@@ -5,11 +5,13 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
 {
+    using Audit.EntityFramework;
     using BIA.Net.Core.Domain;
 
     /// <summary>
     /// The entity PlaneAirport repair site.
     /// </summary>
+    [AuditInclude]
     public class PlaneAirport : VersionedTable
     {
         /// <summary>

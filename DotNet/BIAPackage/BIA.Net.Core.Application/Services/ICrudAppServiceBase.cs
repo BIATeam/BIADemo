@@ -6,10 +6,12 @@ namespace BIA.Net.Core.Application.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.Immutable;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Historic;
     using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
@@ -304,5 +306,12 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="isFixed">Fixed status.</param>
         /// <returns>Updated DTO.</returns>
         Task<TDto> UpdateFixedAsync(TKey id, bool isFixed);
+
+        /// <summary>
+        /// Get the historical of an item by its <paramref name="id"/>.
+        /// </summary>
+        /// <param name="id">The item ID.</param>
+        /// <returns>Collection of <see cref="EntityHistoricalEntryDto>"/>.</returns>
+        Task<List<EntityHistoricalEntryDto>> GetHistoricalAsync(TKey id);
     }
 }

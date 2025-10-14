@@ -42,3 +42,7 @@ export interface UpdateFixedStatusParam extends HttpParam {
   id: string | number;
   fixed: boolean;
 }
+
+export interface GetHistoricalParam extends HttpParam {
+  id?: string | number;
+}

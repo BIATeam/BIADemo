@@ -1,6 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AuthService } from 'packages/bia-ng/core/public-api';
+import { HistoricalEntryDto } from 'packages/bia-ng/models/dto/historical-entry-dto';
 import {
   CrudItemService,
   CrudItemSignalRService,
@@ -61,6 +62,9 @@ export class PlaneService extends CrudItemService<Plane> {
     FeaturePlanesStore.getCurrentPlane
   );
 
+  public crudItemHistorical$: Observable<HistoricalEntryDto[]> =
+    this.store.select(FeaturePlanesStore.getCurrentPlaneHistorical);
+
   public displayItemName$: Observable<string> = this.crudItem$.pipe(
     map(plane => plane?.msn?.toString() ?? '')
   );
@@ -104,5 +108,8 @@ export class PlaneService extends CrudItemService<Plane> {
     this.store.dispatch(
       FeaturePlanesActions.updateFixedStatus({ id: id, isFixed: isFixed })
     );
+  }
+  public loadHistoric(id: any): void {
+    this.store.dispatch(FeaturePlanesActions.loadHistorical({ id: id }));
   }
 }

@@ -12,34 +12,35 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     // End BIADemo
 
     /// <summary>
     /// The Audit Feature.
     /// </summary>
-    /// <param name="configuration">The configuration.</param>
-    /// <param name="commonFeaturesConfigurationOptions">The common featyres configuration options.</param>
+    /// <param name="commonFeaturesConfigurationOptions">The common features configuration options.</param>
     /// <param name="serviceProvider">The service provider.</param>
-    public class AuditFeature(IConfiguration configuration, IOptions<CommonFeatures> commonFeaturesConfigurationOptions, IServiceProvider serviceProvider) : BaseAuditFeature(configuration, commonFeaturesConfigurationOptions, serviceProvider)
+    public class AuditFeature(IOptions<CommonFeatures> commonFeaturesConfigurationOptions, IServiceProvider serviceProvider) : BaseAuditFeature(commonFeaturesConfigurationOptions, serviceProvider)
     {
         /// <summary>
         /// Audits the type mapper.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>The type of the Audit entity.</returns>
-        protected override Type AuditTypeMapper(Type type)
+        public override Type AuditTypeMapper(Type type)
         {
-            switch (type.Name)
+            return type.Name switch
             {
                 // Begin BIADemo
-                case "Airport":
-                    return typeof(AirportAudit);
+                nameof(Plane) => typeof(PlaneAudit),
+                nameof(Engine) => typeof(EngineAudit),
+                nameof(PlaneAirport) => typeof(PlaneAirportAudit),
 
                 // End BIADemo
-                default:
-                    return base.AuditTypeMapper(type);
-            }
+                nameof(User) => typeof(UserAudit),
+                _ => base.AuditTypeMapper(type),
+            };
         }
     }
 }

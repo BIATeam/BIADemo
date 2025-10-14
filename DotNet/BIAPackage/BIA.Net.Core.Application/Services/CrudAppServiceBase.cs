@@ -6,11 +6,20 @@ namespace BIA.Net.Core.Application.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.Immutable;
+    using System.Linq;
     using System.Linq.Expressions;
+    using System.Reflection;
+    using System.Text.Json;
     using System.Threading.Tasks;
+    using Audit.EntityFramework;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.Audit;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Historic;
+    using BIA.Net.Core.Domain.Entity;
     using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.QueryOrder;
@@ -18,6 +27,7 @@ namespace BIA.Net.Core.Application.Services
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// The base class for all CRUD application service.
@@ -334,6 +344,150 @@ namespace BIA.Net.Core.Application.Services
                 await this.Repository.UnitOfWork.CommitAsync();
                 return await this.GetAsync(id);
             });
+        }
+
+        /// <inheritdoc/>
+        public virtual async Task<List<EntityHistoricalEntryDto>> GetHistoricalAsync(TKey id)
+        {
+            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
+            {
+                var allAudits = await this.Repository.GetAuditsAsync(id);
+                var auditsPerSeconds = allAudits.Aggregate(new List<List<IAuditEntity>>(), (groups, audit) =>
+                {
+                    return GroupAuditPerSeconds(groups, audit);
+                });
+
+                var mapper = this.InitMapper<TDto, TMapper>();
+                var historical = new List<EntityHistoricalEntryDto>();
+                foreach (var audits in auditsPerSeconds)
+                {
+                    var entry = new EntityHistoricalEntryDto
+                    {
+                        EntryDateTime = audits[0].AuditDate,
+                        EntryUserLogin = audits[0].AuditUserLogin,
+                    };
+
+                    // Single audit with no Update Action and no Linked Audit
+                    var createOrDeleteAudit = audits.SingleOrDefault(audit => audit.AuditAction != Core.Common.BiaConstants.Audit.UpdateAction && (mapper.AuditMapper is null || (!mapper.AuditMapper.LinkedAuditMappers.Any(mapper => mapper.LinkedAuditEntityType == audit.GetType()))));
+                    if (createOrDeleteAudit is not null)
+                    {
+                        entry.EntryType = createOrDeleteAudit.AuditAction == Core.Common.BiaConstants.Audit.InsertAction ? EntityHistoricEntryType.Create : EntityHistoricEntryType.Delete;
+                    }
+                    else
+                    {
+                        entry.EntryType = EntityHistoricEntryType.Update;
+                        this.FillHistoricalEntryModifications(entry, audits, mapper);
+                    }
+
+                    historical.Add(entry);
+                }
+
+                return historical;
+            });
+        }
+
+        private static List<List<IAuditEntity>> GroupAuditPerSeconds(List<List<IAuditEntity>> groups, IAuditEntity audit)
+        {
+            if (groups.Count == 0)
+            {
+                groups.Add([audit]);
+                return groups;
+            }
+
+            var lastGroup = groups[^1];
+            var lastItem = lastGroup[^1];
+
+            var delta = (lastItem.AuditDate - audit.AuditDate).TotalSeconds;
+            if (delta <= 1)
+            {
+                lastGroup.Add(audit);
+            }
+            else
+            {
+                groups.Add([audit]);
+            }
+
+            return groups;
+        }
+
+        private void FillHistoricalEntryModifications(EntityHistoricalEntryDto entry, List<IAuditEntity> audits, TMapper mapper)
+        {
+            var auditMapper = mapper.AuditMapper
+                ?? throw new BadBiaFrameworkUsageException($"Missing declaration of {nameof(IAuditMapper)} into {typeof(TMapper)}");
+
+            foreach (var audit in audits)
+            {
+                // Linked Audit Mapper case
+                var linkedAuditMapper = auditMapper.LinkedAuditMappers.FirstOrDefault(x => x.LinkedAuditEntityType == audit.GetType());
+                if (linkedAuditMapper is not null)
+                {
+                    var linkedAuditEntityDisplayProperty = audit.GetType().GetProperty(linkedAuditMapper.LinkedAuditEntityDisplayPropertyName) ??
+                    throw new BadBiaFrameworkUsageException($"Unable to find display property {linkedAuditMapper.LinkedAuditEntityDisplayPropertyName} into linked audit entity {linkedAuditMapper.LinkedAuditEntityType.Name}");
+                    var linkedAuditEntityDisplayPropertyValue = linkedAuditEntityDisplayProperty.GetValue(audit)?.ToString();
+
+                    var entryModification = new EntityHistoricalEntryModificationDto
+                    {
+                        IsLinkedProperty = true,
+                        PropertyName = linkedAuditMapper.EntityPropertyName,
+                    };
+
+                    switch (audit.AuditAction)
+                    {
+                        case Core.Common.BiaConstants.Audit.InsertAction:
+                            entryModification.NewValue = linkedAuditEntityDisplayPropertyValue;
+                            break;
+                        case Core.Common.BiaConstants.Audit.DeleteAction:
+                            entryModification.OldValue = linkedAuditEntityDisplayPropertyValue;
+                            break;
+                    }
+
+                    entry.EntryModifications.Add(entryModification);
+                    continue;
+                }
+
+                var changes = JsonConvert.DeserializeObject<List<AuditChange>>(audit.AuditChanges);
+
+                // Fixable change case
+                if (typeof(IEntityFixable).IsAssignableFrom(typeof(TEntity)))
+                {
+                    var isFixedChange = changes.FirstOrDefault(c => c.ColumnName == nameof(IEntityFixable.IsFixed));
+                    if (isFixedChange is not null)
+                    {
+                        entry.EntryType = bool.Parse(isFixedChange.NewValue.ToString()) ? EntityHistoricEntryType.Fixed : EntityHistoricEntryType.Unfixed;
+                        return;
+                    }
+                }
+
+                // Audit Property Mapper case
+                foreach (var auditPropertyMapper in auditMapper.AuditPropertyMappers)
+                {
+                    var propertyChange = changes.FirstOrDefault(x => x.ColumnName == auditPropertyMapper.EntityPropertyIdentifierName);
+                    if (propertyChange is null)
+                    {
+                        continue;
+                    }
+
+                    entry.EntryModifications.Add(new EntityHistoricalEntryModificationDto
+                    {
+                        PropertyName = auditPropertyMapper.EntityPropertyName,
+                        NewValue = propertyChange.NewDisplay ?? propertyChange.NewValue?.ToString(),
+                        OldValue = propertyChange.OriginalDisplay ?? propertyChange.OriginalValue?.ToString(),
+                    });
+
+                    changes.Remove(propertyChange);
+                }
+
+                // General case
+                foreach (var change in changes)
+                {
+                    entry.EntryModifications.Add(new EntityHistoricalEntryModificationDto
+                    {
+                        PropertyName = change.ColumnName,
+                        NewValue = change.NewValue?.ToString(),
+                        OldValue = change.OriginalValue?.ToString(),
+                    });
+                }
+            }
         }
     }
 }

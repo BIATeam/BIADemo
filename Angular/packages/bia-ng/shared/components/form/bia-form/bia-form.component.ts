@@ -1,6 +1,7 @@
 import { NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ContentChildren,
@@ -12,8 +13,10 @@ import {
   OnInit,
   Output,
   QueryList,
+  Renderer2,
   SimpleChanges,
   TemplateRef,
+  ViewChild,
   ViewChildren,
 } from '@angular/core';
 import {
@@ -26,6 +29,7 @@ import {
 } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { BiaOptionService } from 'packages/bia-ng/core/public-api';
+import { HistoricalEntryDto } from 'packages/bia-ng/models/dto/historical-entry-dto';
 import { PropType } from 'packages/bia-ng/models/enum/public-api';
 import {
   BaseDto,
@@ -37,8 +41,10 @@ import {
   BiaFormLayoutConfigRow,
   BiaFormLayoutConfigTabGroup,
 } from 'packages/bia-ng/models/public-api';
+import { CrudItemHistoricalTimelineComponent } from 'packages/bia-ng/shared/feature-templates/crud-items/components/crud-item-historical-timeline/crud-item-historical-timeline.component';
 import { PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
+import { TabsModule } from 'primeng/tabs';
 import { Tooltip } from 'primeng/tooltip';
 import { Subscription } from 'rxjs';
 import { FormReadOnlyMode } from '../../../feature-templates/crud-items/model/crud-config';
@@ -68,10 +74,12 @@ import { BiaOutputComponent } from '../bia-output/bia-output.component';
     TranslateModule,
     BiaFormLayoutComponent,
     Tooltip,
+    CrudItemHistoricalTimelineComponent,
+    TabsModule,
   ],
 })
 export class BiaFormComponent<TDto extends { id: number | string }>
-  implements OnInit, OnDestroy, OnChanges, AfterContentInit
+  implements OnInit, OnDestroy, OnChanges, AfterContentInit, AfterViewInit
 {
   @Input() element?: TDto;
   @Input() fields: BiaFieldConfig<TDto>[];
@@ -95,6 +103,8 @@ export class BiaFormComponent<TDto extends { id: number | string }>
   @Output() readOnlyChanged = new EventEmitter<boolean>();
   @Output() fixableStateChanged = new EventEmitter<boolean>();
   @Output() layoutChanged = new EventEmitter<LayoutMode>();
+  @Input() displayHistorical?: boolean;
+  @Input() historicalEntries: HistoricalEntryDto[] = [];
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   specificInputTemplate: TemplateRef<any>;
@@ -110,7 +120,12 @@ export class BiaFormComponent<TDto extends { id: number | string }>
   @ViewChildren('refFormField', { read: ElementRef })
   formElements: QueryList<ElementRef>;
 
-  constructor(public formBuilder: UntypedFormBuilder) {}
+  @ViewChild('formTablist', { static: false }) formTablist: any;
+
+  constructor(
+    public formBuilder: UntypedFormBuilder,
+    private renderer: Renderer2
+  ) {}
 
   get readOnly(): boolean {
     return this._readOnly;
@@ -143,6 +158,21 @@ export class BiaFormComponent<TDto extends { id: number | string }>
           break;
       }
     });
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      const header = document.getElementById('header');
+      const formTabList = this.formTablist?.el?.nativeElement;
+      if (header && formTabList) {
+        const firstChild = header.firstChild;
+        if (firstChild) {
+          this.renderer.insertBefore(header, formTabList, firstChild);
+        } else {
+          this.renderer.appendChild(header, formTabList);
+        }
+      }
+    }, 100);
   }
 
   ngOnChanges(changes: SimpleChanges) {

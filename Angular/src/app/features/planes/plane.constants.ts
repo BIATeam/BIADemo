@@ -20,6 +20,8 @@ export const planeCRUDConfiguration: CrudConfig<Plane> = new CrudConfig({
   isFixable: true,
   // Begin BIAToolKit Generation Ignore
   isCloneable: true,
+  displayHistorical: true,
+  featureNameSingular: 'plane',
   // End BIAToolKit Generation Ignore
   useCalcMode: true,
   useSignalR: false,

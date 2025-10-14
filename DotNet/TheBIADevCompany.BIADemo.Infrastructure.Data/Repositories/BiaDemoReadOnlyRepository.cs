@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories
     using System;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Domain.Entity.Interface;
+    using BIA.Net.Core.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories.Bia;

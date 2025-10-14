@@ -147,11 +147,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         public DbSet<Airport> Airports { get; set; }
 
         /// <summary>
-        /// Gets or sets the Airport Audit DBSet.
-        /// </summary>
-        public DbSet<AirportAudit> AirportsAudit { get; set; }
-
-        /// <summary>
         /// Gets or sets the Plane DBSet.
         /// </summary>
         public DbSet<PlaneType> PlanesTypes { get; set; }
@@ -175,6 +170,21 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// Gets or sets the Plane DBSet.
         /// </summary>
         public DbSet<Pilot> Pilots { get; set; }
+
+        /// <summary>
+        /// Gets or sets the PlaneAudit.
+        /// </summary>
+        public DbSet<PlaneAudit> PlaneAudit { get; set; }
+
+        /// <summary>
+        /// Gets or sets the EngineAudit.
+        /// </summary>
+        public DbSet<EngineAudit> EngineAudit { get; set; }
+
+        /// <summary>
+        /// Gets or sets the PlaneAirportAudit.
+        /// </summary>
+        public DbSet<PlaneAirportAudit> PlaneAirportAudit { get; set; }
 
         // End BIADemo
 #endif

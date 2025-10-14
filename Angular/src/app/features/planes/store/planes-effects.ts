@@ -55,7 +55,14 @@ export class PlanesEffects {
       map(x => x?.id),
       switchMap(id => {
         return this.planeDas.get({ id: id }).pipe(
-          map(plane => FeaturePlanesActions.loadSuccess({ plane })),
+          map(plane => {
+            if (planeCRUDConfiguration.displayHistorical) {
+              this.store.dispatch(
+                FeaturePlanesActions.loadHistorical({ id: plane.id })
+              );
+            }
+            return FeaturePlanesActions.loadSuccess({ plane });
+          }),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
             return of(FeaturePlanesActions.failure({ error: err }));
@@ -266,18 +273,34 @@ export class PlanesEffects {
         return this.planeDas
           .updateFixedStatus({ id: x.id, fixed: x.isFixed })
           .pipe(
-            map(plane => {
+            map(_ => {
               this.biaMessageService.showUpdateSuccess();
-              this.store.dispatch(
-                FeaturePlanesActions.loadAllByPost({ event: event })
-              );
-              return FeaturePlanesActions.loadSuccess({ plane });
+              this.store.dispatch(FeaturePlanesActions.load({ id: x.id }));
+              return FeaturePlanesActions.loadAllByPost({ event: event });
             }),
             catchError(err => {
               this.biaMessageService.showErrorHttpResponse(err);
               return of(FeaturePlanesActions.failure({ error: err }));
             })
           );
+      })
+    )
+  );
+
+  loadHistorical$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(FeaturePlanesActions.loadHistorical),
+      map(x => x?.id),
+      switchMap(id => {
+        return this.planeDas.getHistorical({ id: id }).pipe(
+          map(historical => {
+            return FeaturePlanesActions.loadHistoricalSuccess({ historical });
+          }),
+          catchError(err => {
+            this.biaMessageService.showErrorHttpResponse(err);
+            return of(FeaturePlanesActions.failure({ error: err }));
+          })
+        );
       })
     )
   );

@@ -17,5 +17,7 @@
   (cancelled)="onCancel()"
   (readOnlyChanged)="readOnlyChanged.emit($event)"
   (fixableStateChanged)="onFixableStateChanged($event)"
-  (layoutChanged)="layoutChanged.emit($event)">
+  (layoutChanged)="layoutChanged.emit($event)"
+  [displayHistorical]="displayHistorical"
+  [historicalEntries]="historicalEntries">
 </bia-form>

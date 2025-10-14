@@ -18,6 +18,11 @@ namespace BIA.Net.Core.Domain.Mapper
     public abstract class BaseEntityMapper<TEntity>
     {
         /// <summary>
+        /// The Audit Mapper.
+        /// </summary>
+        public IAuditMapper AuditMapper { get; protected set; }
+
+        /// <summary>
         /// Gets the collection used for expressions to access fields.
         /// </summary>
         public virtual ExpressionCollection<TEntity> ExpressionCollection

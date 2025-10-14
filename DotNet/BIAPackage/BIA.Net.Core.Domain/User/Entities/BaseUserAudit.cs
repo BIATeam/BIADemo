@@ -1,27 +1,18 @@
-// <copyright file="UserAudit.cs" company="BIA">
+// <copyright file="BaseUserAudit.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Domain.User.Entities
 {
     using BIA.Net.Core.Domain.Audit;
-    using BIA.Net.Core.Domain.Entity.Interface;
 
     /// <summary>
     /// The user entity.
     /// </summary>
-    public class UserAudit : AuditEntity, IEntity<int>
+    /// <typeparam name="TUser">User audit entity type.</typeparam>
+    public class BaseUserAudit<TUser> : AuditKeyedEntity<TUser, int, int>
+        where TUser : BaseEntityUser
     {
-        /// <summary>
-        /// Gets or sets the id.
-        /// </summary>
-        public int AuditId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the id.
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Gets or sets the first name.
         /// </summary>

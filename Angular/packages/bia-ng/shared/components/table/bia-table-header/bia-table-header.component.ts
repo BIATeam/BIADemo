@@ -12,7 +12,7 @@ import {
   SimpleChanges,
   TemplateRef,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { BiaDialogService } from 'packages/bia-ng/core/public-api';
 import { Confirmation, ConfirmationService, PrimeTemplate } from 'primeng/api';
@@ -55,6 +55,7 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   @Input() showTableControllerButton = false;
   @Input() tableControllerVisible = false;
   @Input() showFixedButtons = false;
+  @Input() showHistoricalButton = false;
   @Output() create = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
   @Output() clone = new EventEmitter<void>();
@@ -79,7 +80,8 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
     protected location: Location,
     protected router: Router,
     protected confirmationService: ConfirmationService,
-    protected biaDialogService: BiaDialogService
+    protected biaDialogService: BiaDialogService,
+    protected activatedRoute: ActivatedRoute
   ) {}
 
   ngAfterContentInit() {
@@ -137,6 +139,14 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
       },
     };
     this.confirmationService.confirm(confirmation);
+  }
+
+  onShowHistorical() {
+    if (this.selectedElements.length === 1) {
+      this.router.navigate([this.selectedElements[0].id, 'historical'], {
+        relativeTo: this.activatedRoute,
+      });
+    }
   }
 
   displayImportButton(): boolean {

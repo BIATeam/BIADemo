@@ -147,6 +147,32 @@ namespace BIA.Net.Core.Common
         }
 
         /// <summary>
+        /// Audit.
+        /// </summary>
+        public static class Audit
+        {
+            /// <summary>
+            /// Audit update action.
+            /// </summary>
+            public const string UpdateAction = "Update";
+
+            /// <summary>
+            /// Audit insert action.
+            /// </summary>
+            public const string InsertAction = "Insert";
+
+            /// <summary>
+            /// Audit delete action.
+            /// </summary>
+            public const string DeleteAction = "Delete";
+
+            /// <summary>
+            /// Custom field user login.
+            /// </summary>
+            public const string UserLoginCustomField = "UserLogin";
+        }
+
+        /// <summary>
         /// Database Configuration.
         /// </summary>
         public static class DatabaseConfiguration

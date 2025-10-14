@@ -1,0 +1,115 @@
+<p-timeline [value]="historicalEntries">
+  <ng-template #opposite let-entry>
+    <div class="d-flex flex-column">
+      <div>
+        <small
+          ><b>{{ entry.entryDateTime | date: 'medium' }}</b></small
+        >
+      </div>
+      <div>
+        <small>{{ entry.entryUserLogin }}</small>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #marker let-entry>
+    <span
+      class="historical-entry-icon-container-{{
+        getEntryIconClassSuffix(entry)
+      }}">
+      <i class="pi {{ getEntryIcon(entry) }}"></i>
+    </span>
+  </ng-template>
+  <ng-template #content let-entry>
+    <span class="historical-entry-title">{{
+      getEntryTitle(entry) | translate
+    }}</span>
+    @if (entry.entryType === historicalEntryType.Update) {
+      <p-card class="m-1">
+        <ul>
+          @for (modification of entry.entryModifications; track $index) {
+            <li>
+              <div class="historical-entry-modification-container my-2">
+                <span class="historical-entry-modification">
+                  <b>{{
+                    getFullPropertyName(modification.propertyName) | translate
+                  }}</b>
+                </span>
+                @if (!modification.isLinkedProperty) {
+                  <ng-container
+                    *ngTemplateOutlet="
+                      modificationPropertyTemplate;
+                      context: { modification: modification }
+                    "></ng-container>
+                } @else {
+                  <ng-container
+                    *ngTemplateOutlet="
+                      modificationLinkedPropertyTemplate;
+                      context: { modification: modification }
+                    "></ng-container>
+                }
+              </div>
+            </li>
+          }
+        </ul>
+      </p-card>
+    }
+  </ng-template>
+</p-timeline>
+
+<ng-template
+  #modificationPropertyValueTemplate
+  let-modification="modification"
+  let-kind="kind"
+  let-displayLinkIcon="displayLinkIcon">
+  @let modificationValue = modificationValueByKind(modification, kind);
+  <span
+    class="historical-entry-modification-{{ kind }}"
+    [ngClass]="{
+      'historical-entry-modification-old': kind === 'old',
+      'historical-entry-modification-new': kind === 'new',
+      'empty-modification': isEmptyValue(modificationValue),
+    }">
+    @if (displayLinkIcon) {
+      <i
+        class="{{
+          modificationLinkedPropertyIconByKind(kind)
+        }} historical-entry-modification-link-icon"></i>
+    }
+    @if (!isEmptyValue(modificationValue)) {
+      {{ getDisplayValueNotEmpty(modificationValue) }}
+    } @else {
+      <i class="pi pi-ban historical-entry-modification-empty-icon"></i>
+    }
+  </span>
+</ng-template>
+
+<ng-template #modificationPropertyTemplate let-modification="modification">
+  <ng-container
+    *ngTemplateOutlet="
+      modificationPropertyValueTemplate;
+      context: { modification: modification, kind: 'old' }
+    ">
+  </ng-container>
+  <i class="pi pi-arrow-right historical-entry-modification-arrow-icon"></i>
+  <ng-container
+    *ngTemplateOutlet="
+      modificationPropertyValueTemplate;
+      context: { modification: modification, kind: 'new' }
+    ">
+  </ng-container>
+</ng-template>
+
+<ng-template
+  #modificationLinkedPropertyTemplate
+  let-modification="modification">
+  <ng-container
+    *ngTemplateOutlet="
+      modificationPropertyValueTemplate;
+      context: {
+        modification: modification,
+        kind: modification.oldValue ? 'old' : 'new',
+        displayLinkIcon: true,
+      }
+    ">
+  </ng-container>
+</ng-template>

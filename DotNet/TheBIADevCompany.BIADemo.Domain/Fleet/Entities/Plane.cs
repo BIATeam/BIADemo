@@ -8,12 +8,14 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
+    using Audit.EntityFramework;
     using BIA.Net.Core.Domain.Entity;
     using TheBIADevCompany.BIADemo.Domain.Site.Entities;
 
     /// <summary>
     /// The plane entity.
     /// </summary>
+    [AuditInclude]
     public class Plane : BaseEntityVersionedFixableArchivable<int>
     {
         /// <summary>

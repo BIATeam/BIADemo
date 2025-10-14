@@ -13,6 +13,16 @@
       (click)="onDelete()"></button>
     <button
       type="button"
+      pButton
+      [disabled]="nbSelectedElements !== 1"
+      *ngIf="showHistoricalButton"
+      class="p-button-outlined"
+      icon="pi pi-history"
+      pTooltip="{{ 'bia.historical' | translate }}"
+      tooltipPosition="top"
+      (click)="onShowHistorical()"></button>
+    <button
+      type="button"
       *ngIf="canClone"
       pButton
       [disabled]="nbSelectedElements !== 1"

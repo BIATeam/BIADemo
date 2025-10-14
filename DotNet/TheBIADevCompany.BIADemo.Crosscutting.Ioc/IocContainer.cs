@@ -41,6 +41,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 #endif
 #if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.Fleet.Mappers;
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
@@ -143,6 +144,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             {
                 collection.AddScoped(type);
             }
+
+            // Inject audit mappers
+            collection.AddSingleton<IAuditMapper, PlaneAuditMapper>();
+            collection.AddSingleton<IAuditMapper, PlaneAirportAuditMapper>();
         }
 
         private static void ConfigureCommonContainer(IServiceCollection collection, IConfiguration configuration)
