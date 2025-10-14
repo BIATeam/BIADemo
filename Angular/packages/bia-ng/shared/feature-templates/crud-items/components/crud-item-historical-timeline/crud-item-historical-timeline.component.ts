@@ -30,6 +30,10 @@ export class CrudItemHistoricalTimelineComponent<
         return 'pi-times';
       case HistoricalEntryType.Update:
         return 'pi-pencil';
+      case HistoricalEntryType.Fixed:
+        return 'pi-lock';
+      case HistoricalEntryType.Unfixed:
+        return 'pi-lock-open';
     }
   }
 
@@ -41,6 +45,10 @@ export class CrudItemHistoricalTimelineComponent<
         return 'delete';
       case HistoricalEntryType.Update:
         return 'edit';
+      case HistoricalEntryType.Fixed:
+        return 'fix';
+      case HistoricalEntryType.Unfixed:
+        return 'unfix';
     }
   }
 
@@ -52,14 +60,14 @@ export class CrudItemHistoricalTimelineComponent<
         return `bia.deletion`;
       case HistoricalEntryType.Update:
         return 'bia.modification';
+      case HistoricalEntryType.Fixed:
+        return 'bia.fixed';
+      case HistoricalEntryType.Unfixed:
+        return 'bia.unfixed';
     }
   }
 
   getFullPropertyName(propertyName: string) {
-    if (propertyName.toLowerCase() === 'isfixed') {
-      return 'bia.fixed';
-    }
-
     if (propertyName.toLowerCase() === 'isarchived') {
       return 'bia.archived';
     }

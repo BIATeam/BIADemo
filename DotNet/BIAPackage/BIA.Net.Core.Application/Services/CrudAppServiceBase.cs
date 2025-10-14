@@ -19,6 +19,7 @@ namespace BIA.Net.Core.Application.Services
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Historic;
+    using BIA.Net.Core.Domain.Entity;
     using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.QueryOrder;
@@ -445,6 +446,17 @@ namespace BIA.Net.Core.Application.Services
                 }
 
                 var changes = JsonConvert.DeserializeObject<List<AuditChange>>(audit.AuditChanges);
+
+                // Fixable change case
+                if (typeof(IEntityFixable).IsAssignableFrom(typeof(TEntity)))
+                {
+                    var isFixedChange = changes.FirstOrDefault(c => c.ColumnName == nameof(IEntityFixable.IsFixed));
+                    if (isFixedChange is not null)
+                    {
+                        entry.EntryType = bool.Parse(isFixedChange.NewValue.ToString()) ? EntityHistoricEntryType.Fixed : EntityHistoricEntryType.Unfixed;
+                        return;
+                    }
+                }
 
                 // Audit Property Mapper case
                 foreach (var auditPropertyMapper in auditMapper.AuditPropertyMappers)

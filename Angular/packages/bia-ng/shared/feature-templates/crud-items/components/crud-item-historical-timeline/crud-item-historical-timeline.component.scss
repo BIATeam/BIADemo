@@ -32,6 +32,16 @@
     background-color: var(--p-red-600);
   }
 
+  &-fix {
+    @extend .historical-entry-icon-container;
+    background-color: var(--p-surface-400);
+  }
+
+  &-unfix {
+    @extend .historical-entry-icon-container;
+    background-color: var(--p-primary-400);
+  }
+
   i {
     font-size: 0.9rem;
     font-weight: bold;

@@ -23,5 +23,15 @@ namespace BIA.Net.Core.Common.Enum
         /// Delete type.
         /// </summary>
         Delete,
+
+        /// <summary>
+        /// Fixed type.
+        /// </summary>
+        Fixed,
+
+        /// <summary>
+        /// Unfixed type.
+        /// </summary>
+        Unfixed,
     }
 }
