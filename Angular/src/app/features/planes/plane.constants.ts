@@ -18,9 +18,9 @@ export const planeCRUDConfiguration: CrudConfig<Plane> = new CrudConfig({
   formEditReadOnlyMode: FormReadOnlyMode.off,
   hasReadView: true,
   isFixable: true,
+  displayHistorical: true,
   // Begin BIAToolKit Generation Ignore
   isCloneable: true,
-  displayHistorical: true,
   featureNameSingular: 'plane',
   // End BIAToolKit Generation Ignore
   useCalcMode: true,

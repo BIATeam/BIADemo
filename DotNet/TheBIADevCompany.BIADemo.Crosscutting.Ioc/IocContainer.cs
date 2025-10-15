@@ -146,8 +146,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             }
 
             // Inject audit mappers
+            // Begin BIADemo
             collection.AddSingleton<IAuditMapper, PlaneAuditMapper>();
             collection.AddSingleton<IAuditMapper, PlaneAirportAuditMapper>();
+
+            // End BIADemo
         }
 
         private static void ConfigureCommonContainer(IServiceCollection collection, IConfiguration configuration)

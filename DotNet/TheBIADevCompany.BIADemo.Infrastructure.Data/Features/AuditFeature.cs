@@ -7,14 +7,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
     using System;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Infrastructure.Data.Features;
-    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Options;
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     // End BIADemo
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// The Audit Feature.
