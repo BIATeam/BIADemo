@@ -31,45 +31,45 @@ export class CrudItemHistoricalTimelineComponent<
 
   getEntryIcon(entry: HistoricalEntryDto): string {
     switch (entry.entryType) {
-      case HistoricalEntryType.Create:
+      case HistoricalEntryType.create:
         return 'pi-sparkles';
-      case HistoricalEntryType.Delete:
+      case HistoricalEntryType.delete:
         return 'pi-times';
-      case HistoricalEntryType.Update:
+      case HistoricalEntryType.update:
         return 'pi-pencil';
-      case HistoricalEntryType.Fixed:
+      case HistoricalEntryType.fixed:
         return 'pi-lock';
-      case HistoricalEntryType.Unfixed:
+      case HistoricalEntryType.unfixed:
         return 'pi-lock-open';
     }
   }
 
   getEntryIconClassSuffix(entry: HistoricalEntryDto): string {
     switch (entry.entryType) {
-      case HistoricalEntryType.Create:
+      case HistoricalEntryType.create:
         return 'add';
-      case HistoricalEntryType.Delete:
+      case HistoricalEntryType.delete:
         return 'delete';
-      case HistoricalEntryType.Update:
+      case HistoricalEntryType.update:
         return 'edit';
-      case HistoricalEntryType.Fixed:
+      case HistoricalEntryType.fixed:
         return 'fix';
-      case HistoricalEntryType.Unfixed:
+      case HistoricalEntryType.unfixed:
         return 'unfix';
     }
   }
 
   getEntryTitle(entry: HistoricalEntryDto): string {
     switch (entry.entryType) {
-      case HistoricalEntryType.Create:
+      case HistoricalEntryType.create:
         return 'bia.creation';
-      case HistoricalEntryType.Delete:
+      case HistoricalEntryType.delete:
         return `bia.deletion`;
-      case HistoricalEntryType.Update:
+      case HistoricalEntryType.update:
         return 'bia.modification';
-      case HistoricalEntryType.Fixed:
+      case HistoricalEntryType.fixed:
         return 'bia.fixed';
-      case HistoricalEntryType.Unfixed:
+      case HistoricalEntryType.unfixed:
         return 'bia.unfixed';
     }
   }
