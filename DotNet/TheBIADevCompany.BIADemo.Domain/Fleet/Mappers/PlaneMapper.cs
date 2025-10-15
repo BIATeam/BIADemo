@@ -23,8 +23,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
     /// </summary>
     public class PlaneMapper : BaseMapper<PlaneDto, Plane, int>
     {
-        // Begin BIADemo
-
         /// <summary>
         /// Initializes a new instance of the <see cref="PlaneMapper"/> class.
         /// </summary>
@@ -33,9 +31,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
         {
             this.AuditMapper = auditMappers.FirstOrDefault(x => x.EntityType == typeof(Plane));
         }
-
-
-        // End BIADemo
 
         /// <inheritdoc />
         public override ExpressionCollection<Plane> ExpressionCollection
