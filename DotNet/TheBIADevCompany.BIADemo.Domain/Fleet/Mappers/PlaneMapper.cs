@@ -14,7 +14,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
-    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.Mapper;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
@@ -24,6 +23,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
     /// </summary>
     public class PlaneMapper : BaseMapper<PlaneDto, Plane, int>
     {
+        // Begin BIADemo
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PlaneMapper"/> class.
         /// </summary>
@@ -32,6 +33,9 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
         {
             this.AuditMapper = auditMappers.FirstOrDefault(x => x.EntityType == typeof(Plane));
         }
+
+
+        // End BIADemo
 
         /// <inheritdoc />
         public override ExpressionCollection<Plane> ExpressionCollection
