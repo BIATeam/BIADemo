@@ -1,4 +1,5 @@
-﻿// <copyright file="PlaneAirportAuditMapper.cs" company="TheBIADevCompany">
+﻿// BIADemo only
+// <copyright file="PlaneAirportAuditMapper.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 

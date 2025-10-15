@@ -146,8 +146,16 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             }
 
             // Inject audit mappers
-            // Begin BIADemo
+            // BIAToolKit - Begin IocAuditMapper
+            // Begin BIAToolKit Generation Ignore
+            // BIAToolKit - Begin Partial IocAuditMapper Plane
             collection.AddSingleton<IAuditMapper, PlaneAuditMapper>();
+
+            // BIAToolKit - End Partial IocAuditMapper Plane
+            // End BIAToolKit Generation Ignore
+            // BIAToolKit - End IocAuditMapper
+
+            // Begin BIADemo
             collection.AddSingleton<IAuditMapper, PlaneAirportAuditMapper>();
 
             // End BIADemo
