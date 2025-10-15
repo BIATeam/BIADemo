@@ -1,6 +1,6 @@
 ﻿// BIADemo only
-// <copyright file="PlaneAirportAudit.cs" company="BIA">
-// Copyright (c) BIA. All rights reserved.
+// <copyright file="PlaneAirportAudit.cs" company="TheBIADevCompany">
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
