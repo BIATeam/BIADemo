@@ -3,12 +3,10 @@
 // </copyright>
 namespace BIA.Net.Core.Presentation.Common.Features
 {
-    using System;
     using System.Diagnostics.CodeAnalysis;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Common.Enum;
-    using Community.Microsoft.Extensions.Caching.PostgreSql;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -44,12 +42,7 @@ namespace BIA.Net.Core.Presentation.Common.Features
                 }
                 else if (provider == DbProvider.PostGreSql)
                 {
-                    services.AddDistributedPostgreSqlCache(config =>
-                    {
-                        config.ConnectionString = configuration.GetDatabaseConnectionString(commonFeatures.DistributedCache.ConnectionStringName);
-                        config.TableName = "DistCache";
-                        config.SchemaName = "public";
-                    });
+                    services.AddDistributedMemoryCache();
                 }
             }
 
