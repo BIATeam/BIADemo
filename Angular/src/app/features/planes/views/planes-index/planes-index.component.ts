@@ -10,7 +10,7 @@ import {
   CrudItemService,
   CrudItemsIndexComponent,
 } from 'packages/bia-ng/shared/public-api';
-import { PrimeTemplate } from 'primeng/api';
+import { MenuItem, PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { Permission } from 'src/app/shared/permission';
 import { PlaneTableComponent } from '../../components/plane-table/plane-table.component';
@@ -52,6 +52,8 @@ export class PlanesIndexComponent
   // BIAToolKit - End Partial PlaneIndexTsCanViewChildDeclaration Engine
   // End BIAToolKit Generation Ignore
   // BIAToolKit - End PlaneIndexTsCanViewChildDeclaration
+
+  dataActionsMenuItems: MenuItem[];
 
   constructor(
     protected injector: Injector,
@@ -95,4 +97,15 @@ export class PlanesIndexComponent
 
   // BIAToolKit - Begin PlaneIndexTsOnViewChild
   // BIAToolKit - End PlaneIndexTsOnViewChild
+
+  protected initSelectedButtonGroup() {
+    this.dataActionsMenuItems = [
+      {
+        visible: this.canViewEngines,
+        disabled: this.selectedCrudItems.length !== 1,
+        label: this.translateService.instant('plane.engines'),
+        command: () => this.onViewEngines(this.selectedCrudItems[0].id),
+      },
+    ];
+  }
 }

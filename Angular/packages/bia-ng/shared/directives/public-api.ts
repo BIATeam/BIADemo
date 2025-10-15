@@ -1,1 +1,1 @@
-export * from './debounce-click.directive';
+export * from './throttle-click.directive';
