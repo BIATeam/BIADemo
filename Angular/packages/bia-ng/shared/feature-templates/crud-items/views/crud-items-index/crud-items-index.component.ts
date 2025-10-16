@@ -32,7 +32,7 @@ import {
   PagingFilterFormatDto,
 } from 'packages/bia-ng/models/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
-import { PrimeTemplate } from 'primeng/api';
+import { MenuItem, PrimeTemplate } from 'primeng/api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable, Subscription, combineLatest } from 'rxjs';
 import { filter, first, skip, take, tap } from 'rxjs/operators';
@@ -142,9 +142,17 @@ export class CrudItemsIndexComponent<
   protected layoutService: BiaLayoutService;
   protected actions: Actions;
   protected messageService: BiaMessageService;
+  /**
+   * @deprecated Use table header dataActionsMenuItems instead
+   */
   protected selectedButtonGroup: BiaButtonGroupItem[];
+  /**
+   * @deprecated Use table header tableActionsMenuItems instead
+   */
   protected listButtonGroup: BiaButtonGroupItem[];
   protected customButtonGroup: BiaButtonGroupItem[];
+  protected selectionActionsMenuItems: MenuItem[];
+  protected listActionsMenuItems: MenuItem[];
 
   constructor(
     protected injector: Injector,
@@ -741,13 +749,9 @@ export class CrudItemsIndexComponent<
     this.initCustomButtonGroup();
   }
 
-  protected initSelectedButtonGroup() {
-    this.selectedButtonGroup = [];
-  }
+  protected initSelectedButtonGroup() {}
 
-  protected initListButtonGroup() {
-    this.listButtonGroup = [];
-  }
+  protected initListButtonGroup() {}
 
   protected initCustomButtonGroup() {
     this.customButtonGroup = [];

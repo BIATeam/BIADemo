@@ -10,7 +10,7 @@ import {
   CrudItemService,
   CrudItemsIndexComponent,
 } from 'packages/bia-ng/shared/public-api';
-import { PrimeTemplate } from 'primeng/api';
+import { MenuItem, PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { Permission } from 'src/app/shared/permission';
 import { PlaneTableComponent } from '../../components/plane-table/plane-table.component';
@@ -53,6 +53,8 @@ export class PlanesIndexComponent
   // End BIAToolKit Generation Ignore
   // BIAToolKit - End PlaneIndexTsCanViewChildDeclaration
 
+  selectionActionsMenuItems: MenuItem[];
+
   constructor(
     protected injector: Injector,
     public planeService: PlaneService,
@@ -73,9 +75,9 @@ export class PlanesIndexComponent
     // BIAToolKit - Begin PlaneIndexTsCanViewChildSet
     // Begin BIAToolKit Generation Ignore
     // BIAToolKit - Begin Partial PlaneIndexTsCanViewChildSet Engine
-    this.canViewEngines = this.authService.hasPermission(
-      Permission.Engine_List_Access
-    );
+    // this.canViewEngines = this.authService.hasPermission(
+    //   Permission.Engine_List_Access
+    // );
     this.canSelect = this.canSelect || this.canViewEngines;
     // BIAToolKit - End Partial PlaneIndexTsCanViewChildSet Engine
     // End BIAToolKit Generation Ignore
@@ -95,4 +97,18 @@ export class PlanesIndexComponent
 
   // BIAToolKit - Begin PlaneIndexTsOnViewChild
   // BIAToolKit - End PlaneIndexTsOnViewChild
+
+  protected initSelectedButtonGroup() {
+    this.selectionActionsMenuItems = [
+      {
+        separator: true,
+      },
+      {
+        visible: this.canViewEngines,
+        disabled: this.selectedCrudItems.length !== 1,
+        label: this.translateService.instant('plane.engines'),
+        command: () => this.onViewEngines(this.selectedCrudItems[0].id),
+      },
+    ];
+  }
 }

@@ -11,6 +11,9 @@ import { ButtonDirective } from 'primeng/button';
 import { Menubar } from 'primeng/menubar';
 import { Tooltip } from 'primeng/tooltip';
 
+/**
+ * @deprecated Use table header dataActionsMenuItems and/or tableActionsMenuItems instead
+ */
 @Component({
   selector: 'bia-button-group',
   templateUrl: './bia-button-group.component.html',

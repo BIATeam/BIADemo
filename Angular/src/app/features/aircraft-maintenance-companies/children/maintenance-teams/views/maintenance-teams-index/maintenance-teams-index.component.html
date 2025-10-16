@@ -23,11 +23,28 @@
       (toggleTableControllerVisibility)="toggleTableControllerVisibility()"
       (crudItemFixedChanged)="
         crudItemService.updateFixedStatus($event.crudItemId, $event.fixed)
-      ">
+      "
+      [selectionActionsMenuItems]="selectionActionsMenuItems">
       <ng-template pTemplate="actionOnSelected">
-        <bia-button-group
-          [buttons]="selectedButtonGroup"
-          [compact]="false"></bia-button-group>
+        <button
+          pButton
+          [disabled]="selectedCrudItems.length !== 1"
+          *ngIf="canEdit"
+          class="p-button-outlined"
+          label="{{ 'maintenanceTeam.edit' | translate }}"
+          (click)="onEdit(selectedCrudItems[0].id)"
+          pTooltip="{{ 'maintenanceTeam.edit' | translate }}"
+          tooltipPosition="top"></button>
+        <button
+          pButton
+          [disabled]="
+            selectedCrudItems.length !== 1 ||
+            !selectedCrudItems[0].canMemberListAccess
+          "
+          *ngIf="canViewMembers"
+          class="p-button-outlined"
+          label="{{ 'app.members' | translate }}"
+          (click)="onViewMembers(selectedCrudItems[0].id)"></button>
       </ng-template>
     </bia-table-header>
     <bia-table-controller

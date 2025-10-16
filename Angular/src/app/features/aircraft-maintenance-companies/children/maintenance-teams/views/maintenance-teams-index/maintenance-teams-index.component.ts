@@ -4,8 +4,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from 'packages/bia-ng/core/public-api';
 import { TeamAdvancedFilterDto } from 'packages/bia-ng/models/public-api';
 import {
-  BiaButtonGroupComponent,
-  BiaButtonGroupItem,
   BiaTableBehaviorControllerComponent,
   BiaTableComponent,
   BiaTableControllerComponent,
@@ -15,6 +13,8 @@ import {
   TeamAdvancedFilterComponent,
 } from 'packages/bia-ng/shared/public-api';
 import { PrimeTemplate } from 'primeng/api';
+import { ButtonDirective } from 'primeng/button';
+import { Tooltip } from 'primeng/tooltip';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { Permission } from 'src/app/shared/permission';
 import { MaintenanceTeamTableComponent } from '../../components/maintenance-team-table/maintenance-team-table.component';
@@ -31,7 +31,8 @@ import { MaintenanceTeamService } from '../../services/maintenance-team.service'
     NgClass,
     PrimeTemplate,
     NgIf,
-    BiaButtonGroupComponent,
+    ButtonDirective,
+    Tooltip,
     MaintenanceTeamTableComponent,
     AsyncPipe,
     TranslateModule,
@@ -112,24 +113,26 @@ export class MaintenanceTeamsIndexComponent
   }
 
   protected initSelectedButtonGroup() {
-    this.selectedButtonGroup = [
-      new BiaButtonGroupItem(
-        this.translateService.instant('maintenanceTeam.edit'),
-        () => this.onEdit(this.selectedCrudItems[0].id),
-        this.canEdit,
-        this.selectedCrudItems.length !== 1,
-        this.translateService.instant('maintenanceTeam.edit')
-      ),
+    this.selectionActionsMenuItems = [
+      { separator: true },
+      {
+        label: this.translateService.instant('maintenanceTeam.edit'),
+        command: () => this.onEdit(this.selectedCrudItems[0].id),
+        visible: this.canEdit,
+        disabled: this.selectedCrudItems.length !== 1,
+        tooltip: this.translateService.instant('maintenanceTeam.edit'),
+      },
       // BIAToolKit - Begin MaintenanceTeamIndexTsChildTeamButton
       // BIAToolKit - End MaintenanceTeamIndexTsChildTeamButton
-      new BiaButtonGroupItem(
-        this.translateService.instant('app.members'),
-        () => this.onViewMembers(this.selectedCrudItems[0].id),
-        this.canViewMembers,
-        this.selectedCrudItems.length !== 1 ||
+      {
+        label: this.translateService.instant('app.members'),
+        command: () => this.onViewMembers(this.selectedCrudItems[0].id),
+        visible: this.canViewMembers,
+        disabled:
+          this.selectedCrudItems.length !== 1 ||
           !this.selectedCrudItems[0].canMemberListAccess,
-        this.translateService.instant('app.members')
-      ),
+        tooltip: this.translateService.instant('app.members'),
+      },
     ];
   }
 
