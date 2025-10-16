@@ -4,27 +4,12 @@
   <div
     #dataActionsDiv
     class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
-    @if (dataActions.firstVisibleAction && dataActions.showSplitButton) {
-      <p-splitbutton
-        class="small-screen-only"
-        #dataActionSplitButton
-        [label]="dataActions.firstVisibleAction.label"
-        [icon]="dataActions.firstVisibleAction.icon"
-        [buttonDisabled]="dataActions.firstVisibleAction.disabled"
-        [tooltip]="dataActions.firstVisibleAction.tooltip"
-        [tooltipOptions]="{ tooltipPosition: 'top' }"
-        (onClick)="throttleDirective.forwardEvent($event)"
-        biaThrottleEvent
-        #throttleDirective="biaThrottleEvent"
-        (throttledEvent)="
-          dataActions.firstVisibleAction.command
-            ? dataActions.firstVisibleAction.command({
-                originalEvent: $event,
-                item: dataActions.firstVisibleAction,
-              })
-            : null
-        "
-        [model]="dataActions.actionList" />
+    @if (dataActions.hasVisibleAction && dataActions.compact) {
+      <p-menu #menuData [model]="dataActions.actionList" [popup]="true" />
+      <p-button
+        label="{{ 'bia.selectionActions' | translate }}"
+        icon="pi pi-ellipsis-v"
+        (click)="menuData.toggle($event)" />
     } @else {
       <button
         type="button"
@@ -76,7 +61,7 @@
         <p-divider class="fixed-buttons-separator" layout="vertical" />
       </ng-container>
     }
-    @if (!dataActionsMenuItems || !dataActions.showSplitButton) {
+    @if (!dataActionsMenuItems || !dataActions.compact) {
       <ng-container *ngTemplateOutlet="actionOnSelectedTemplate"></ng-container>
     }
   </div>
@@ -102,49 +87,17 @@
   <div
     #tableActionsDiv
     class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
-    @if (!tableActionsMenuItems || !tableActions.showSplitButton) {
+    @if (!tableActionsMenuItems || !tableActions.compact) {
       <ng-container *ngTemplateOutlet="actionOnListTemplate"></ng-container>
     }
-    @if (tableActions.firstVisibleAction && tableActions.showSplitButton) {
-      @if (hasVisibleMenuItems(tableActions)) {
-        <p-splitbutton
-          [label]="tableActions.firstVisibleAction.label"
-          [icon]="tableActions.firstVisibleAction.icon"
-          [tooltip]="tableActions.firstVisibleAction.tooltip"
-          tooltipPosition="top"
-          [buttonDisabled]="tableActions.firstVisibleAction.disabled"
-          (onClick)="throttleDirective.forwardEvent($event)"
-          biaThrottleEvent
-          #throttleDirective="biaThrottleEvent"
-          (throttledEvent)="
-            tableActions.firstVisibleAction.command
-              ? tableActions.firstVisibleAction.command({
-                  originalEvent: $event,
-                  item: tableActions.firstVisibleAction,
-                })
-              : null
-          "
-          [model]="tableActions.actionList" />
-      } @else {
-        <button
-          pButton
-          [label]="tableActions.firstVisibleAction.label ?? ''"
-          [icon]="tableActions.firstVisibleAction.icon ?? ''"
-          [pTooltip]="tableActions.firstVisibleAction.tooltip"
-          [tooltipOptions]="{ tooltipPosition: 'top' }"
-          [disabled]="tableActions.firstVisibleAction.disabled"
-          (onClick)="throttleDirective.forwardEvent($event)"
-          biaThrottleEvent
-          #throttleDirective="biaThrottleEvent"
-          (throttledEvent)="
-            tableActions.firstVisibleAction.command
-              ? tableActions.firstVisibleAction.command({
-                  originalEvent: $event,
-                  item: tableActions.firstVisibleAction,
-                })
-              : null
-          "></button>
-      }
+    @if (tableActions.hasVisibleAction && tableActions.compact) {
+      <p-menu
+        #menuTable
+        [model]="tableActions.actionList"
+        [popup]="true" /><p-button
+        label="{{ 'bia.tableActions' | translate }}"
+        icon="pi pi-ellipsis-v"
+        (click)="menuTable.toggle($event)" />
     } @else {
       <button
         type="button"
@@ -156,21 +109,25 @@
       <button
         type="button"
         pButton
-        biaDebounceClick
+        biaThrottleEvent
         *ngIf="canExportCSV"
         class="p-button-outlined"
         icon="pi pi-download"
         label="CSV"
-        (debounceClick)="exportCSV.emit()"></button>
+        #throttleDirective="biaThrottleEvent"
+        (click)="throttleDirective.forwardEvent($event)"
+        (throttledEvent)="exportCSV.emit()"></button>
       <button
         type="button"
         pButton
-        biaDebounceClick
+        biaThrottleEvent
         *ngIf="displayImportButton()"
         class="p-button-outlined"
         icon="pi pi-download"
         label="{{ 'bia.export' | translate }}"
-        (debounceClick)="fullExportCSV.emit()"></button>
+        #throttleDirective="biaThrottleEvent"
+        (click)="throttleDirective.forwardEvent($event)"
+        (throttledEvent)="fullExportCSV.emit()"></button>
       <button
         type="button"
         pButton

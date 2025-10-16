@@ -26,15 +26,15 @@ import {
 import { Button, ButtonDirective } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Divider } from 'primeng/divider';
-import { SplitButtonModule } from 'primeng/splitbutton';
+import { MenuModule } from 'primeng/menu';
 import { Tooltip } from 'primeng/tooltip';
 import { ThrottleEventDirective } from '../../../directives/throttle-click.directive';
 
 export interface ActionMenuItems {
   containerWidth?: number;
-  showSplitButton: boolean;
+  compact: boolean;
   actionList: MenuItem[];
-  firstVisibleAction?: MenuItem;
+  hasVisibleAction: boolean;
 }
 
 @Component({
@@ -52,7 +52,7 @@ export interface ActionMenuItems {
     NgTemplateOutlet,
     ConfirmDialog,
     TranslateModule,
-    SplitButtonModule,
+    MenuModule,
     ThrottleEventDirective,
   ],
 })
@@ -94,8 +94,16 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   nbSelectedElements = 0;
   headerTitleComplete = '';
 
-  dataActions: ActionMenuItems = { showSplitButton: false, actionList: [] };
-  tableActions: ActionMenuItems = { showSplitButton: false, actionList: [] };
+  dataActions: ActionMenuItems = {
+    compact: false,
+    actionList: [],
+    hasVisibleAction: false,
+  };
+  tableActions: ActionMenuItems = {
+    compact: false,
+    actionList: [],
+    hasVisibleAction: false,
+  };
 
   @ViewChild('dataActionsDiv', { static: false })
   dataActionsDiv: ElementRef<HTMLDivElement>;
@@ -316,15 +324,12 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   }
 
   protected processActions(actionMenuItems: ActionMenuItems) {
-    let foundFirstVisible = false;
-    actionMenuItems.firstVisibleAction = undefined;
+    actionMenuItems.hasVisibleAction = false;
 
     let lastSeparatorIndex = -1;
     actionMenuItems.actionList.forEach((action, index) => {
-      if (!foundFirstVisible && !action.separator && action.visible) {
-        actionMenuItems.firstVisibleAction = action;
-        action.visible = false;
-        foundFirstVisible = true;
+      if (!action.separator && action.visible) {
+        actionMenuItems.hasVisibleAction = true;
       }
 
       if (action.separator) {
@@ -349,8 +354,6 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   }
 
   protected initParentContainerResizeObserver() {
-    // Container -> BiaButtonGroup -> Menubar
-
     const parentContainer = this.headerDiv.nativeElement;
     if (!parentContainer || parentContainer.children.length === 1) {
       return;
@@ -376,13 +379,13 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
     const offset = 20;
     const minWidth = 140;
 
-    if (!actionMenuItems.containerWidth || !actionMenuItems.showSplitButton) {
+    if (!actionMenuItems.containerWidth || !actionMenuItems.compact) {
       actionMenuItems.containerWidth = container.getBoundingClientRect().width;
     }
 
     if (actionMenuItems.containerWidth > minWidth) {
       if (container.nextElementSibling) {
-        actionMenuItems.showSplitButton =
+        actionMenuItems.compact =
           container.getBoundingClientRect().left +
             actionMenuItems.containerWidth +
             offset >=
@@ -391,7 +394,7 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
       }
 
       if (container.previousElementSibling) {
-        actionMenuItems.showSplitButton =
+        actionMenuItems.compact =
           container.previousElementSibling.getBoundingClientRect().right >=
           container.getBoundingClientRect().right -
             actionMenuItems.containerWidth -
