@@ -273,7 +273,7 @@ export class PlanesEffects {
         return this.planeDas
           .updateFixedStatus({ id: x.id, fixed: x.isFixed })
           .pipe(
-            map(_ => {
+            map(() => {
               this.biaMessageService.showUpdateSuccess();
               this.store.dispatch(FeaturePlanesActions.load({ id: x.id }));
               return FeaturePlanesActions.loadAllByPost({ event: event });

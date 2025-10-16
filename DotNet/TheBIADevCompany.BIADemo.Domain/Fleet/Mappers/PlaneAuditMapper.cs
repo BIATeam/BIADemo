@@ -1,4 +1,5 @@
-﻿// <copyright file="PlaneAuditMapper.cs" company="TheBIADevCompany">
+﻿// BIADemo only
+// <copyright file="PlaneAuditMapper.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -17,6 +18,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
         /// </summary>
         public PlaneAuditMapper()
         {
+            // Begin BIADemo
             this.LinkedAuditMappers =
             [
                 new LinkedAuditMapper<Plane, EngineAudit>
@@ -41,6 +43,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
                     LinkedEntityPropertyDisplay = airport => airport.Name,
                 },
             ];
+
+            // End BIADemo
         }
     }
 }
