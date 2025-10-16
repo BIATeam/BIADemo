@@ -11,10 +11,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
 
     // BIAToolKit - Begin AuditTypeMapperUsing
     // Begin BIAToolKit Generation Ignore
-    // BIAToolKit - Begin Partial AuditTypeMapperUsing Plane
+    // BIAToolKit - Begin Partial AuditTypeMapperUsing Fleet
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
-    // BIAToolKit - End Partial AuditTypeMapperUsing Plane
+    // BIAToolKit - End Partial AuditTypeMapperUsing Fleet
     // End BIAToolKit Generation Ignore
     // BIAToolKit - End AuditTypeMapperUsing
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
