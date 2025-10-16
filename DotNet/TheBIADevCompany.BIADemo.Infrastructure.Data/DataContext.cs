@@ -182,6 +182,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         public DbSet<PlaneAirportAudit> PlaneAirportAudit { get; set; }
 
         // End BIADemo
+
         // BIAToolKit - Begin DbSetAudit
         // Begin BIAToolKit Generation Ignore
         // BIAToolKit - Begin Partial DbSetAudit Plane

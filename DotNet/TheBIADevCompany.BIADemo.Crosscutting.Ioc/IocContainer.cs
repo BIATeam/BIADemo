@@ -41,7 +41,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 #endif
 #if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Domain.Fleet.Mappers;
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
@@ -145,20 +144,12 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 collection.AddScoped(type);
             }
 
-            // Inject audit mappers
-            // BIAToolKit - Begin IocAuditMapper
-            // Begin BIAToolKit Generation Ignore
-            // BIAToolKit - Begin Partial IocAuditMapper Plane
-            collection.AddSingleton<IAuditMapper, PlaneAuditMapper>();
-
-            // BIAToolKit - End Partial IocAuditMapper Plane
-            // End BIAToolKit Generation Ignore
-            // BIAToolKit - End IocAuditMapper
-
-            // Begin BIADemo
-            collection.AddSingleton<IAuditMapper, PlaneAirportAuditMapper>();
-
-            // End BIADemo
+            Type auditMapperType = typeof(IAuditMapper);
+            List<Type> auditMapperDerivedTypes = ReflectiveEnumerator.GetDerivedTypes(assembly, auditMapperType);
+            foreach (var auditMapperDerivedType in auditMapperDerivedTypes)
+            {
+                collection.AddSingleton(auditMapperType, auditMapperDerivedType);
+            }
         }
 
         private static void ConfigureCommonContainer(IServiceCollection collection, IConfiguration configuration)

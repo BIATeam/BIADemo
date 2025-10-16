@@ -6,15 +6,17 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
 {
     using System;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
-    using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Infrastructure.Data.Features;
     using Microsoft.Extensions.Options;
 
-    // Begin BIADemo
+    // BIAToolKit - Begin AuditTypeMapperUsing
+    // Begin BIAToolKit Generation Ignore
+    // BIAToolKit - Begin Partial AuditTypeMapperUsing Plane
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Fleet.Mappers;
 
-    // End BIADemo
+    // BIAToolKit - End Partial AuditTypeMapperUsing Plane
+    // End BIAToolKit Generation Ignore
+    // BIAToolKit - End AuditTypeMapperUsing
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
