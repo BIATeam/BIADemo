@@ -31,13 +31,6 @@ import { MenuModule } from 'primeng/menu';
 import { Tooltip } from 'primeng/tooltip';
 import { ThrottleEventDirective } from '../../../directives/throttle-click.directive';
 
-export interface ActionMenuItems {
-  containerWidth?: number;
-  compact: boolean;
-  actionList: MenuItem[];
-  hasVisibleAction: boolean;
-}
-
 @Component({
   selector: 'bia-table-header',
   templateUrl: './bia-table-header.component.html',
@@ -75,8 +68,8 @@ export class BiaTableHeaderComponent
   @Input() tableControllerVisible = false;
   @Input() showFixedButtons = false;
   @Input() showHistoricalButton = false;
-  @Input() dataActionsMenuItems?: MenuItem[];
-  @Input() tableActionsMenuItems?: MenuItem[];
+  @Input() selectionActionsMenuItems?: MenuItem[];
+  @Input() listActionsMenuItems?: MenuItem[];
   @Output() create = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
   @Output() clone = new EventEmitter<void>();
@@ -97,21 +90,21 @@ export class BiaTableHeaderComponent
   nbSelectedElements = 0;
   headerTitleComplete = '';
 
-  dataActions: ActionMenuItems = {
+  selectionActions: ActionMenuItems = {
     compact: false,
     actionList: [],
     hasVisibleAction: false,
   };
-  tableActions: ActionMenuItems = {
+  listActions: ActionMenuItems = {
     compact: false,
     actionList: [],
     hasVisibleAction: false,
   };
 
-  @ViewChild('dataActionsDiv', { static: false })
-  dataActionsDiv: ElementRef<HTMLDivElement>;
-  @ViewChild('tableActionsDiv', { static: false })
-  tableActionsDiv: ElementRef<HTMLDivElement>;
+  @ViewChild('selectionActionsDiv', { static: false })
+  selectionActionsDiv: ElementRef<HTMLDivElement>;
+  @ViewChild('listActionsDiv', { static: false })
+  listActionsDiv: ElementRef<HTMLDivElement>;
   @ViewChild('headerDiv', { static: false })
   headerDiv: ElementRef<HTMLDivElement>;
 
@@ -140,8 +133,8 @@ export class BiaTableHeaderComponent
           break;
       }
     });
-    this.processDataActions();
-    this.processTableActions();
+    this.processSelectionActions();
+    this.processListActions();
     setTimeout(() => {
       this.initParentContainerResizeObserver();
     }, 500);
@@ -154,8 +147,8 @@ export class BiaTableHeaderComponent
       this.updateHeaderTitle();
     }
 
-    this.processDataActions();
-    this.processTableActions();
+    this.processSelectionActions();
+    this.processListActions();
   }
 
   ngOnDestroy(): void {
@@ -236,8 +229,8 @@ export class BiaTableHeaderComponent
     return selectedElements.length === 0;
   }
 
-  protected processDataActions() {
-    this.dataActions.actionList = [
+  protected processSelectionActions() {
+    this.selectionActions.actionList = [
       {
         label: this.transationService.instant('bia.delete'),
         icon: 'pi pi-trash',
@@ -276,13 +269,13 @@ export class BiaTableHeaderComponent
         disabled: this.nbSelectedElements !== 1 || !this.isSelectedElementFixed,
         visible: this.showFixedButtons && this.canFix,
       },
-      ...(this.dataActionsMenuItems ?? []),
+      ...(this.selectionActionsMenuItems ?? []),
     ];
-    this.processActions(this.dataActions);
+    this.processActions(this.selectionActions);
   }
 
-  protected processTableActions() {
-    this.tableActions.actionList = [
+  protected processListActions() {
+    this.listActions.actionList = [
       {
         label: this.transationService.instant('bia.add'),
         icon: 'pi pi-plus',
@@ -321,9 +314,9 @@ export class BiaTableHeaderComponent
         command: () => this.onBack(),
         visible: this.canBack,
       },
-      ...(this.tableActionsMenuItems ?? []),
+      ...(this.listActionsMenuItems ?? []),
     ];
-    this.processActions(this.tableActions);
+    this.processActions(this.listActions);
   }
 
   protected processActions(actionMenuItems: ActionMenuItems) {
@@ -364,12 +357,12 @@ export class BiaTableHeaderComponent
 
     this.parentContainerResizeObserver = new ResizeObserver(() => {
       this.onParentContainerResized(
-        this.dataActionsDiv.nativeElement,
-        this.dataActions
+        this.selectionActionsDiv.nativeElement,
+        this.selectionActions
       );
       this.onParentContainerResized(
-        this.tableActionsDiv.nativeElement,
-        this.tableActions
+        this.listActionsDiv.nativeElement,
+        this.listActions
       );
     });
     this.parentContainerResizeObserver.observe(parentContainer);
@@ -410,4 +403,11 @@ export class BiaTableHeaderComponent
     if (!actions.actionList) return false;
     return actions.actionList.some(item => item.visible !== false);
   }
+}
+
+export interface ActionMenuItems {
+  containerWidth?: number;
+  compact: boolean;
+  actionList: MenuItem[];
+  hasVisibleAction: boolean;
 }

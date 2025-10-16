@@ -82,7 +82,7 @@ export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
   }
 
   protected initSelectedButtonGroup() {
-    this.dataActionsMenuItems = [
+    this.selectionActionsMenuItems = [
       { separator: true },
       {
         label: this.translateService.instant('site.edit'),

@@ -24,7 +24,7 @@
       (crudItemFixedChanged)="
         crudItemService.updateFixedStatus($event.crudItemId, $event.fixed)
       "
-      [dataActionsMenuItems]="dataActionsMenuItems">
+      [selectionActionsMenuItems]="selectionActionsMenuItems">
       <ng-template pTemplate="actionOnSelected">
         <button
           pButton

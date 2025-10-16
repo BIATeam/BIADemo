@@ -114,7 +114,7 @@ export class AircraftMaintenanceCompaniesIndexComponent
   }
 
   protected initSelectedButtonGroup() {
-    this.dataActionsMenuItems = [
+    this.selectionActionsMenuItems = [
       { separator: true },
       {
         label: this.translateService.instant('aircraftMaintenanceCompany.edit'),

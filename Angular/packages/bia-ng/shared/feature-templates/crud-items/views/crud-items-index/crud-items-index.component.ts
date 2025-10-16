@@ -151,8 +151,8 @@ export class CrudItemsIndexComponent<
    */
   protected listButtonGroup: BiaButtonGroupItem[];
   protected customButtonGroup: BiaButtonGroupItem[];
-  protected dataActionsMenuItems: MenuItem[];
-  protected tableActionsMenuItems: MenuItem[];
+  protected selectionActionsMenuItems: MenuItem[];
+  protected listActionsMenuItems: MenuItem[];
 
   constructor(
     protected injector: Injector,

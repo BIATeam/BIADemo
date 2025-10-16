@@ -2,10 +2,10 @@
   #headerDiv
   class="header flex flex-row gap-2 justify-content-between align-content-between">
   <div
-    #dataActionsDiv
+    #selectionActionsDiv
     class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
-    @if (dataActions.hasVisibleAction && dataActions.compact) {
-      <p-menu #menuData [model]="dataActions.actionList" [popup]="true" />
+    @if (selectionActions.hasVisibleAction && selectionActions.compact) {
+      <p-menu #menuData [model]="selectionActions.actionList" [popup]="true" />
       <p-button
         label="{{ 'bia.selectionActions' | translate }}"
         icon="pi pi-angle-down"
@@ -61,7 +61,7 @@
         <p-divider class="fixed-buttons-separator" layout="vertical" />
       </ng-container>
     }
-    @if (!dataActionsMenuItems || !dataActions.compact) {
+    @if (!selectionActionsMenuItems || !selectionActions.compact) {
       <ng-container *ngTemplateOutlet="actionOnSelectedTemplate"></ng-container>
     }
   </div>
@@ -85,17 +85,17 @@
     <ng-container *ngTemplateOutlet="customControlTemplate"></ng-container>
   </div>
   <div
-    #tableActionsDiv
+    #listActionsDiv
     class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
-    @if (!tableActionsMenuItems || !tableActions.compact) {
+    @if (!listActionsMenuItems || !listActions.compact) {
       <ng-container *ngTemplateOutlet="actionOnListTemplate"></ng-container>
     }
-    @if (tableActions.hasVisibleAction && tableActions.compact) {
+    @if (listActions.hasVisibleAction && listActions.compact) {
       <p-menu
         #menuTable
-        [model]="tableActions.actionList"
+        [model]="listActions.actionList"
         [popup]="true" /><p-button
-        label="{{ 'bia.tableActions' | translate }}"
+        label="{{ 'bia.listActions' | translate }}"
         icon="pi pi-angle-down"
         iconPos="right"
         (click)="menuTable.toggle($event)" />

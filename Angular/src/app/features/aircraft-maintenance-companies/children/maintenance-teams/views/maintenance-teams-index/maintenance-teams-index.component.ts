@@ -113,7 +113,7 @@ export class MaintenanceTeamsIndexComponent
   }
 
   protected initSelectedButtonGroup() {
-    this.dataActionsMenuItems = [
+    this.selectionActionsMenuItems = [
       { separator: true },
       {
         label: this.translateService.instant('maintenanceTeam.edit'),

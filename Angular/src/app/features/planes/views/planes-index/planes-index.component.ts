@@ -53,7 +53,7 @@ export class PlanesIndexComponent
   // End BIAToolKit Generation Ignore
   // BIAToolKit - End PlaneIndexTsCanViewChildDeclaration
 
-  dataActionsMenuItems: MenuItem[];
+  selectionActionsMenuItems: MenuItem[];
 
   constructor(
     protected injector: Injector,
@@ -99,7 +99,7 @@ export class PlanesIndexComponent
   // BIAToolKit - End PlaneIndexTsOnViewChild
 
   protected initSelectedButtonGroup() {
-    this.dataActionsMenuItems = [
+    this.selectionActionsMenuItems = [
       {
         separator: true,
       },
