@@ -12,7 +12,7 @@ using TheBIADevCompany.BIADemo.Infrastructure.Data;
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
 {
     [DbContext(typeof(DataContextPostGreSql))]
-    [Migration("20250923101233_Initial")]
+    [Migration("20251016152851_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.20")
+                .HasAnnotation("ProductVersion", "8.0.21")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -40,7 +40,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                         .HasColumnType("text");
 
                     b.Property<DateTime>("AuditDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("AuditUserLogin")
                         .HasColumnType("text");
@@ -102,7 +102,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -787,7 +787,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                         .HasColumnType("boolean");
 
                     b.Property<DateTime?>("LastLoginDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -795,7 +795,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                         .HasColumnType("character varying(50)");
 
                     b.Property<DateTime>("LastSyncDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Login")
                         .IsRequired()
@@ -1027,7 +1027,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                         .HasColumnType("text");
 
                     b.Property<DateTime>("AuditDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("AuditUserLogin")
                         .HasColumnType("text");
@@ -1325,7 +1325,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                         .HasColumnType("text");
 
                     b.Property<DateTime>("AuditDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("AuditUserLogin")
                         .HasColumnType("text");
@@ -1377,7 +1377,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                         .HasColumnType("date");
 
                     b.Property<DateTime?>("FixedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<double>("FlightHours")
                         .HasColumnType("double precision");
@@ -1398,13 +1398,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                         .HasColumnType("boolean");
 
                     b.Property<DateTime?>("LastMaintenanceDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Manufacturer")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("NextMaintenanceDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("NoiseLevel")
                         .HasColumnType("integer");
@@ -1460,48 +1460,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                     b.HasIndex("PartId");
 
                     b.ToTable("EnginePart");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Flight", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("ArchivedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("ArrivalAirportId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("DepartureAirportId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("FixedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsArchived")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsFixed")
-                        .HasColumnType("boolean");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("bytea");
-
-                    b.Property<int>("SiteId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ArrivalAirportId");
-
-                    b.HasIndex("DepartureAirportId");
-
-                    b.HasIndex("SiteId");
-
-                    b.ToTable("Flight");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Part", b =>
@@ -1561,47 +1519,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                         });
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Pilot", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("ArchivedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("FixedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("FlightHours")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("IdentificationNumber")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("character varying(64)");
-
-                    b.Property<bool>("IsArchived")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsFixed")
-                        .HasColumnType("boolean");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("bytea");
-
-                    b.Property<int>("SiteId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SiteId");
-
-                    b.ToTable("Pilots");
-                });
-
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Plane", b =>
                 {
                     b.Property<int>("Id")
@@ -1611,7 +1528,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("ArchivedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("Capacity")
                         .HasColumnType("integer");
@@ -1626,10 +1543,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                         .HasColumnType("Money");
 
                     b.Property<DateTime>("FirstFlightDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("FixedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<float>("FuelCapacity")
                         .HasColumnType("real");
@@ -1650,7 +1567,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                         .HasColumnType("boolean");
 
                     b.Property<DateTime?>("LastFlightDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Manufacturer")
                         .HasMaxLength(64)
@@ -1753,7 +1670,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("CertificationDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -1827,7 +1744,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("ArchivedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("ContractNumber")
                         .IsRequired()
@@ -1838,7 +1755,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("FixedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<bool>("IsArchived")
                         .HasColumnType("boolean");
@@ -1951,10 +1868,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("ApprovedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("ArchivedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<decimal?>("AverageOperationCost")
                         .HasColumnType("Money");
@@ -1976,10 +1893,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("FirstOperation")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("FixedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int?>("IncidentCount")
                         .HasColumnType("integer");
@@ -1997,7 +1914,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                         .HasColumnType("boolean");
 
                     b.Property<DateTime?>("LastOperation")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<TimeSpan>("MaxOperationDuration")
                         .HasColumnType("interval");
@@ -2006,7 +1923,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                         .HasColumnType("interval");
 
                     b.Property<DateTime>("NextOperation")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("OperationCount")
                         .HasColumnType("integer");
@@ -2360,44 +2277,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                     b.Navigation("Engine");
 
                     b.Navigation("Part");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Flight", b =>
-                {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Airport", "ArrivalAirport")
-                        .WithMany()
-                        .HasForeignKey("ArrivalAirportId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Airport", "DepartureAirport")
-                        .WithMany()
-                        .HasForeignKey("DepartureAirportId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Site.Entities.Site", "Site")
-                        .WithMany()
-                        .HasForeignKey("SiteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ArrivalAirport");
-
-                    b.Navigation("DepartureAirport");
-
-                    b.Navigation("Site");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Pilot", b =>
-                {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Site.Entities.Site", "Site")
-                        .WithMany()
-                        .HasForeignKey("SiteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Site");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Plane", b =>

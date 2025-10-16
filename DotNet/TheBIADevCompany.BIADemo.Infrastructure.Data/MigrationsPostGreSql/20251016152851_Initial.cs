@@ -39,7 +39,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                     Name = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     City = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     RowVersion = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: true),
-                    AuditDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    AuditDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     AuditAction = table.Column<string>(type: "text", nullable: true),
                     AuditChanges = table.Column<string>(type: "text", nullable: true),
                     AuditUserLogin = table.Column<string>(type: "text", nullable: true)
@@ -58,7 +58,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                     Table = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     PrimaryKey = table.Column<string>(type: "text", nullable: true),
                     RowVersion = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: true),
-                    AuditDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    AuditDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     AuditAction = table.Column<string>(type: "text", nullable: true),
                     AuditChanges = table.Column<string>(type: "text", nullable: true),
                     AuditUserLogin = table.Column<string>(type: "text", nullable: true)
@@ -150,7 +150,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Title = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
-                    CertificationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CertificationDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     RowVersion = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
@@ -196,9 +196,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                     FirstName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Login = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    LastSyncDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastSyncDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    LastLoginDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    LastLoginDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     Discriminator = table.Column<string>(type: "character varying(21)", maxLength: 21, nullable: false),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     RowVersion = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: true)
@@ -220,7 +220,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                     Login = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Domain = table.Column<string>(type: "text", nullable: false, defaultValue: "--"),
                     RowVersion = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: true),
-                    AuditDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    AuditDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     AuditAction = table.Column<string>(type: "text", nullable: true),
                     AuditChanges = table.Column<string>(type: "text", nullable: true),
                     AuditUserLogin = table.Column<string>(type: "text", nullable: true)
@@ -359,7 +359,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                     Description = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     TypeId = table.Column<int>(type: "integer", nullable: false),
                     Read = table.Column<bool>(type: "boolean", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     CreatedById = table.Column<int>(type: "integer", nullable: true),
                     JData = table.Column<string>(type: "text", nullable: true),
                     Discriminator = table.Column<string>(type: "character varying(21)", maxLength: 21, nullable: false),
@@ -636,10 +636,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                     Code = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
                     IsApproved = table.Column<bool>(type: "boolean", nullable: true),
-                    FirstOperation = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LastOperation = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    ApprovedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    NextOperation = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    FirstOperation = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    LastOperation = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    ApprovedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    NextOperation = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     MaxTravelDuration = table.Column<TimeSpan>(type: "interval", nullable: true),
                     MaxOperationDuration = table.Column<TimeSpan>(type: "interval", nullable: false),
                     OperationCount = table.Column<int>(type: "integer", nullable: false),
@@ -653,9 +653,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                     CurrentAirportId = table.Column<int>(type: "integer", nullable: false),
                     CurrentCountryId = table.Column<int>(type: "integer", nullable: true),
                     IsFixed = table.Column<bool>(type: "boolean", nullable: false),
-                    FixedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    FixedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     IsArchived = table.Column<bool>(type: "boolean", nullable: false),
-                    ArchivedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    ArchivedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -711,43 +711,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                 });
 
             migrationBuilder.CreateTable(
-                name: "Flight",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "text", nullable: false),
-                    DepartureAirportId = table.Column<int>(type: "integer", nullable: false),
-                    ArrivalAirportId = table.Column<int>(type: "integer", nullable: false),
-                    SiteId = table.Column<int>(type: "integer", nullable: false),
-                    RowVersion = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: true),
-                    IsFixed = table.Column<bool>(type: "boolean", nullable: false),
-                    FixedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    IsArchived = table.Column<bool>(type: "boolean", nullable: false),
-                    ArchivedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Flight", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Flight_Airports_ArrivalAirportId",
-                        column: x => x.ArrivalAirportId,
-                        principalTable: "Airports",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Flight_Airports_DepartureAirportId",
-                        column: x => x.DepartureAirportId,
-                        principalTable: "Airports",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Flight_Sites_SiteId",
-                        column: x => x.SiteId,
-                        principalTable: "Sites",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "MaintenanceContract",
                 columns: table => new
                 {
@@ -759,9 +722,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                     AircraftMaintenanceCompanyId = table.Column<int>(type: "integer", nullable: false),
                     RowVersion = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: true),
                     IsFixed = table.Column<bool>(type: "boolean", nullable: false),
-                    FixedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    FixedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     IsArchived = table.Column<bool>(type: "boolean", nullable: false),
-                    ArchivedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    ArchivedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -779,31 +742,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                 });
 
             migrationBuilder.CreateTable(
-                name: "Pilots",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    IdentificationNumber = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
-                    FlightHours = table.Column<int>(type: "integer", nullable: false),
-                    SiteId = table.Column<int>(type: "integer", nullable: false),
-                    RowVersion = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: true),
-                    IsFixed = table.Column<bool>(type: "boolean", nullable: false),
-                    FixedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    IsArchived = table.Column<bool>(type: "boolean", nullable: false),
-                    ArchivedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Pilots", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Pilots_Sites_SiteId",
-                        column: x => x.SiteId,
-                        principalTable: "Sites",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Planes",
                 columns: table => new
                 {
@@ -813,8 +751,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                     Manufacturer = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
                     IsMaintenance = table.Column<bool>(type: "boolean", nullable: true),
-                    FirstFlightDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LastFlightDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    FirstFlightDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    LastFlightDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     DeliveryDate = table.Column<DateTime>(type: "date", nullable: true),
                     NextMaintenanceDate = table.Column<DateTime>(type: "date", nullable: false),
                     SyncTime = table.Column<TimeSpan>(type: "time", nullable: true),
@@ -832,9 +770,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                     CurrentAirportId = table.Column<int>(type: "integer", nullable: false),
                     RowVersion = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: true),
                     IsFixed = table.Column<bool>(type: "boolean", nullable: false),
-                    FixedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    FixedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     IsArchived = table.Column<bool>(type: "boolean", nullable: false),
-                    ArchivedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    ArchivedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -941,8 +879,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Reference = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
                     Manufacturer = table.Column<string>(type: "text", nullable: true),
-                    NextMaintenanceDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LastMaintenanceDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    NextMaintenanceDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    LastMaintenanceDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     DeliveryDate = table.Column<DateTime>(type: "date", nullable: false),
                     ExchangeDate = table.Column<DateTime>(type: "date", nullable: true),
                     SyncTime = table.Column<TimeSpan>(type: "time", nullable: false),
@@ -961,7 +899,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                     PrincipalPartId = table.Column<int>(type: "integer", nullable: true),
                     RowVersion = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: true),
                     IsFixed = table.Column<bool>(type: "boolean", nullable: false),
-                    FixedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    FixedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1254,21 +1192,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                 column: "PrincipalPartId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Flight_ArrivalAirportId",
-                table: "Flight",
-                column: "ArrivalAirportId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Flight_DepartureAirportId",
-                table: "Flight",
-                column: "DepartureAirportId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Flight_SiteId",
-                table: "Flight",
-                column: "SiteId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Languages_Code",
                 table: "Languages",
                 column: "Code",
@@ -1383,11 +1306,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                 column: "NotificationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pilots_SiteId",
-                table: "Pilots",
-                column: "SiteId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_PlaneAirport_PlaneId",
                 table: "PlaneAirport",
                 column: "PlaneId");
@@ -1482,9 +1400,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                 name: "EnginePart");
 
             migrationBuilder.DropTable(
-                name: "Flight");
-
-            migrationBuilder.DropTable(
                 name: "MaintenanceContractPlane");
 
             migrationBuilder.DropTable(
@@ -1507,9 +1422,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
 
             migrationBuilder.DropTable(
                 name: "NotificationUser");
-
-            migrationBuilder.DropTable(
-                name: "Pilots");
 
             migrationBuilder.DropTable(
                 name: "PlaneAirport");
