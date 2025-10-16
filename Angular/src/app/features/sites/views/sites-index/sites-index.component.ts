@@ -4,8 +4,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from 'packages/bia-ng/core/public-api';
 import { TeamAdvancedFilterDto } from 'packages/bia-ng/models/public-api';
 import {
-  BiaButtonGroupComponent,
-  BiaButtonGroupItem,
   BiaTableBehaviorControllerComponent,
   BiaTableComponent,
   BiaTableControllerComponent,
@@ -15,6 +13,7 @@ import {
   TeamAdvancedFilterComponent,
 } from 'packages/bia-ng/shared/public-api';
 import { PrimeTemplate } from 'primeng/api';
+import { ButtonDirective } from 'primeng/button';
 import { Permission } from 'src/app/shared/permission';
 import { SiteTableComponent } from '../../components/site-table/site-table.component';
 import { Site } from '../../model/site';
@@ -30,6 +29,7 @@ import { siteCRUDConfiguration } from '../../site.constants';
     NgClass,
     PrimeTemplate,
     SiteTableComponent,
+    ButtonDirective,
     AsyncPipe,
     TranslateModule,
     TeamAdvancedFilterComponent,
@@ -37,7 +37,6 @@ import { siteCRUDConfiguration } from '../../site.constants';
     BiaTableControllerComponent,
     BiaTableBehaviorControllerComponent,
     BiaTableComponent,
-    BiaButtonGroupComponent,
   ],
   providers: [{ provide: CrudItemService, useExisting: SiteService }],
 })
@@ -83,24 +82,26 @@ export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
   }
 
   protected initSelectedButtonGroup() {
-    this.selectedButtonGroup = [
-      new BiaButtonGroupItem(
-        this.translateService.instant('site.edit'),
-        () => this.onEdit(this.selectedCrudItems[0].id),
-        this.canEdit,
-        this.selectedCrudItems.length !== 1,
-        this.translateService.instant('site.edit')
-      ),
+    this.dataActionsMenuItems = [
+      { separator: true },
+      {
+        label: this.translateService.instant('site.edit'),
+        command: () => this.onEdit(this.selectedCrudItems[0].id),
+        visible: this.canEdit,
+        disabled: this.selectedCrudItems.length !== 1,
+        tooltip: this.translateService.instant('site.edit'),
+      },
       // BIAToolKit - Begin SiteIndexTsChildTeamButton
       // BIAToolKit - End SiteIndexTsChildTeamButton
-      new BiaButtonGroupItem(
-        this.translateService.instant('app.members'),
-        () => this.onViewMembers(this.selectedCrudItems[0].id),
-        this.canViewMembers,
-        this.selectedCrudItems.length !== 1 ||
+      {
+        label: this.translateService.instant('app.members'),
+        command: () => this.onViewMembers(this.selectedCrudItems[0].id),
+        visible: this.canViewMembers,
+        disabled:
+          this.selectedCrudItems.length !== 1 ||
           !this.selectedCrudItems[0].canMemberListAccess,
-        this.translateService.instant('app.members')
-      ),
+        tooltip: this.translateService.instant('app.members'),
+      },
     ];
   }
 

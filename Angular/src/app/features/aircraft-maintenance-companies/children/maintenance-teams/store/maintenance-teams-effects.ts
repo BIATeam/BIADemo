@@ -231,7 +231,7 @@ export class MaintenanceTeamsEffects {
         return this.maintenanceTeamDas
           .updateFixedStatus({ id: x.id, fixed: x.isFixed })
           .pipe(
-            map(_ => {
+            map(() => {
               this.biaMessageService.showUpdateSuccess();
               this.store.dispatch(
                 FeatureMaintenanceTeamsActions.load({ id: x.id })

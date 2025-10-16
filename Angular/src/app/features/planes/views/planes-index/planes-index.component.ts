@@ -75,9 +75,9 @@ export class PlanesIndexComponent
     // BIAToolKit - Begin PlaneIndexTsCanViewChildSet
     // Begin BIAToolKit Generation Ignore
     // BIAToolKit - Begin Partial PlaneIndexTsCanViewChildSet Engine
-    this.canViewEngines = this.authService.hasPermission(
-      Permission.Engine_List_Access
-    );
+    // this.canViewEngines = this.authService.hasPermission(
+    //   Permission.Engine_List_Access
+    // );
     this.canSelect = this.canSelect || this.canViewEngines;
     // BIAToolKit - End Partial PlaneIndexTsCanViewChildSet Engine
     // End BIAToolKit Generation Ignore
@@ -100,6 +100,9 @@ export class PlanesIndexComponent
 
   protected initSelectedButtonGroup() {
     this.dataActionsMenuItems = [
+      {
+        separator: true,
+      },
       {
         visible: this.canViewEngines,
         disabled: this.selectedCrudItems.length !== 1,

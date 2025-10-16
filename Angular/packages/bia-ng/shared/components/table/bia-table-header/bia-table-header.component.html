@@ -8,7 +8,7 @@
       <p-menu #menuData [model]="dataActions.actionList" [popup]="true" />
       <p-button
         label="{{ 'bia.selectionActions' | translate }}"
-        icon="pi pi-ellipsis-v"
+        icon="pi pi-angle-down"
         (click)="menuData.toggle($event)" />
     } @else {
       <button
@@ -96,7 +96,8 @@
         [model]="tableActions.actionList"
         [popup]="true" /><p-button
         label="{{ 'bia.tableActions' | translate }}"
-        icon="pi pi-ellipsis-v"
+        icon="pi pi-angle-down"
+        iconPos="right"
         (click)="menuTable.toggle($event)" />
     } @else {
       <button

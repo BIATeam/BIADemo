@@ -8,6 +8,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   Output,
   QueryList,
   SimpleChanges,
@@ -56,7 +57,9 @@ export interface ActionMenuItems {
     ThrottleEventDirective,
   ],
 })
-export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
+export class BiaTableHeaderComponent
+  implements OnChanges, AfterContentInit, OnDestroy
+{
   @Input() canAdd = true;
   @Input() canClone = false;
   @Input() canDelete = true;
