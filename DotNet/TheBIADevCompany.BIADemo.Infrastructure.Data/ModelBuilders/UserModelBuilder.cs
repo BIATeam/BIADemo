@@ -85,7 +85,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 #pragma warning disable CS0162 // Unreachable code detected
                 // DO NOT CHANGE INDENTATION (For BIATemplate)
                 // End BIADemo
-                modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.SiteAdmin, Code = "Site_Admin", Label = "Site administrator" });
+            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.SiteAdmin, Code = "Site_Admin", Label = "Site administrator" });
 
                 // Begin BIADemo
 #pragma warning restore CS0162 // Unreachable code detected
