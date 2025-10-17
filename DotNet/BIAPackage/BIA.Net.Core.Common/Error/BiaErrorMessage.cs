@@ -44,6 +44,11 @@ namespace BIA.Net.Core.Common.Error
                 }
             }
 
+            // InternalServerError
+            AddTranslation(languageEnglishId, (int)BiaErrorId.InternalServerError, "Internal server error.");
+            AddTranslation(languageFrenchId, (int)BiaErrorId.InternalServerError, "Erreur interne du serveur.");
+            AddTranslation(languageSpanishId, (int)BiaErrorId.InternalServerError, "Error interno del servidor.");
+
             // MemberAlreadyExists
             AddTranslation(languageEnglishId, (int)BiaErrorId.MemberAlreadyExists, "Member already exists.");
             AddTranslation(languageEnglishId, (int)BiaErrorId.MemberAlreadyExists, "Le membre existe déjà.");

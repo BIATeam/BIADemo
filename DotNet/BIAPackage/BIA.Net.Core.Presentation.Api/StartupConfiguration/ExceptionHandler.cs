@@ -38,16 +38,19 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
 
                     if (exception != null)
                     {
+                        var userContext = context.RequestServices.GetRequiredService<UserContext>();
+                        var internalServerErrorMessage = BiaErrorMessage.GetMessage(BiaErrorId.InternalServerError, userContext.LanguageId);
+                        internalServerErrorMessage = string.IsNullOrWhiteSpace(internalServerErrorMessage) ? "Internal server error" : internalServerErrorMessage;
+
                         if (exception is FrontUserException frontUserEx)
                         {
-                            var userContext = context.RequestServices.GetRequiredService<UserContext>();
                             logger.LogWarning(frontUserEx, $"A {nameof(FrontUserException)} has been raised, see details below.");
 
                             context.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
                             var errorMessage = frontUserEx.ErrorId == (int)BiaErrorId.Unknown ? frontUserEx.Message : BiaErrorMessage.GetMessage(frontUserEx.ErrorId, userContext.LanguageId);
                             if (string.IsNullOrEmpty(errorMessage))
                             {
-                                errorMessage = isDevelopment ? exception.GetBaseException().Message : "Internal server error";
+                                errorMessage = isDevelopment ? exception.GetBaseException().Message : internalServerErrorMessage;
                             }
 
                             var formattedErrorMessage = frontUserEx.ErrorMessageParameters.Length > 0 ? string.Format(errorMessage, frontUserEx.ErrorMessageParameters) : errorMessage;
@@ -61,7 +64,7 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
                             // We don't communicate sensitive error information to clients.
                             // Serving errors is a security risk. We just send a simple error message.
                             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                            await context.Response.WriteAsync("Internal server error");
+                            await context.Response.WriteAsync(internalServerErrorMessage);
                         }
                     }
                 });

@@ -14,6 +14,11 @@ namespace BIA.Net.Core.Common.Error
         Unknown = 1000,
 
         /// <summary>
+        /// Error id when internal server error.
+        /// </summary>
+        InternalServerError,
+
+        /// <summary>
         /// Error id when the member already exist and cannot be added.
         /// </summary>
         MemberAlreadyExists,
