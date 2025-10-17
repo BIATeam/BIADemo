@@ -2,25 +2,17 @@
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
+#pragma warning disable BIA001 // Forbidden reference to Domain layer in Presentation layer
 namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
 {
-    using System;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using BIA.Net.Core.Application.Authentication;
-    using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Error;
     using BIA.Net.Core.Common.Exceptions;
-    using Microsoft.AspNetCore.Authentication;
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using BIA.Net.Core.Domain.Service;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Diagnostics;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
-    using Microsoft.IdentityModel.Logging;
-    using Microsoft.IdentityModel.Tokens;
-    using Newtonsoft.Json;
 
     /// <summary>
     /// The class containing configuration for authentication.
@@ -48,17 +40,18 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
                     {
                         if (exception is FrontUserException frontUserEx)
                         {
+                            var userContext = context.RequestServices.GetRequiredService<UserContext>();
                             logger.LogWarning(frontUserEx, $"A {nameof(FrontUserException)} has been raised, see details below.");
 
                             context.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
-                            var errorMessage = frontUserEx.Message;
+                            var errorMessage = frontUserEx.ErrorId == (int)BiaErrorId.Unknown ? frontUserEx.Message : BiaErrorMessage.GetMessage(frontUserEx.ErrorId, userContext.LanguageId);
                             if (string.IsNullOrEmpty(errorMessage))
                             {
                                 errorMessage = isDevelopment ? exception.GetBaseException().Message : "Internal server error";
                             }
 
-                            var formatedErrorMessage = frontUserEx.ErrorMessageParameters.Length > 0 ? string.Format(errorMessage, frontUserEx.ErrorMessageParameters) : errorMessage;
-                            await context.Response.WriteAsJsonAsync(new HttpErrorReport((int)frontUserEx.ErrorMessageKey, formatedErrorMessage));
+                            var formattedErrorMessage = frontUserEx.ErrorMessageParameters.Length > 0 ? string.Format(errorMessage, frontUserEx.ErrorMessageParameters) : errorMessage;
+                            await context.Response.WriteAsJsonAsync(new HttpErrorReport(frontUserEx.ErrorId, formattedErrorMessage));
                             return;
                         }
 
@@ -76,3 +69,4 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
         }
     }
 }
+#pragma warning restore BIA001 // Forbidden reference to Domain layer in Presentation layer

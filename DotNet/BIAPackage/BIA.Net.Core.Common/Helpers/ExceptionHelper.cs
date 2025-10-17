@@ -3,7 +3,7 @@
 // </copyright>
 namespace BIA.Net.Core.Common.Helpers
 {
-    using BIA.Net.Core.Common.Enum;
+    using BIA.Net.Core.Common.Error;
 
     /// <summary>
     /// Helpers for exceptions.
@@ -13,22 +13,22 @@ namespace BIA.Net.Core.Common.Helpers
         /// <summary>
         /// Return the error message associated to the <paramref name="key"/>.
         /// </summary>
-        /// <param name="key">The <see cref="FrontUserExceptionErrorMessageKey"/>.</param>
+        /// <param name="key">The <see cref="BiaErrorId"/>.</param>
         /// <returns>A <see cref="string"/> of the formated error message.</returns>
-        public static string GetErrorMessage(FrontUserExceptionErrorMessageKey key)
+        public static string GetErrorMessage(BiaErrorId key)
         {
             return key switch
             {
-                FrontUserExceptionErrorMessageKey.AddEntity => "Unable to add {0}.",
-                FrontUserExceptionErrorMessageKey.DeleteEntity => "Unable to delete {0}.",
-                FrontUserExceptionErrorMessageKey.ModifyEntity => "Unable to modify {0}.",
-                FrontUserExceptionErrorMessageKey.ValidationEntity => "{0}",
-                FrontUserExceptionErrorMessageKey.DatabaseForeignKeyConstraint => "One or many {0} are linked to dependants entities. Ensure to remove all dependants entities first.",
-                FrontUserExceptionErrorMessageKey.DatabaseUniqueConstraint => "An entity {0} exists already with these values.",
-                FrontUserExceptionErrorMessageKey.DatabaseDuplicateKey => "An entity {0} exists already with these values.",
-                FrontUserExceptionErrorMessageKey.DatabaseNullValueInsert => "Field {0} cannot be null in entity {1}.",
-                FrontUserExceptionErrorMessageKey.DatabaseLoginUser => "Unable to login to the database.",
-                FrontUserExceptionErrorMessageKey.DatabaseOpen => "Unable to open the database.",
+                BiaErrorId.AddEntity => "Unable to add {0}.",
+                BiaErrorId.DeleteEntity => "Unable to delete {0}.",
+                BiaErrorId.ModifyEntity => "Unable to modify {0}.",
+                BiaErrorId.ValidationEntity => "{0}",
+                BiaErrorId.DatabaseForeignKeyConstraint => "One or many {0} are linked to dependants entities. Ensure to remove all dependants entities first.",
+                BiaErrorId.DatabaseUniqueConstraint => "An entity {0} exists already with these values.",
+                BiaErrorId.DatabaseDuplicateKey => "An entity {0} exists already with these values.",
+                BiaErrorId.DatabaseNullValueInsert => "Field {0} cannot be null in entity {1}.",
+                BiaErrorId.DatabaseLoginUser => "Unable to login to the database.",
+                BiaErrorId.DatabaseOpen => "Unable to open the database.",
                 _ => "Internal server error",
             };
         }

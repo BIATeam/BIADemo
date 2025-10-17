@@ -16,7 +16,7 @@ namespace BIA.Net.Core.Infrastructure.Data
     using Audit.EntityFramework;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.Common.Enum;
+    using BIA.Net.Core.Common.Error;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain.DistCache.Entities;
@@ -324,7 +324,7 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// <returns>A <see cref="FrontUserException"/> corresponding to the handled exception.</returns>
         protected virtual FrontUserException ManageException(ValidationException validationException)
         {
-            return new FrontUserException(FrontUserExceptionErrorMessageKey.ValidationEntity, validationException, validationException.ValidationResult.ErrorMessage);
+            return new FrontUserException(BiaErrorId.ValidationEntity, validationException, validationException.ValidationResult.ErrorMessage);
         }
 
         /// <summary>
@@ -340,9 +340,9 @@ namespace BIA.Net.Core.Infrastructure.Data
                 var entityTypeName = entry.Entity.GetType().Name;
                 return entry.State switch
                 {
-                    EntityState.Added => new FrontUserException(FrontUserExceptionErrorMessageKey.AddEntity, dbUpdateException, entityTypeName),
-                    EntityState.Modified => new FrontUserException(FrontUserExceptionErrorMessageKey.ModifyEntity, dbUpdateException, entityTypeName),
-                    EntityState.Deleted => new FrontUserException(FrontUserExceptionErrorMessageKey.DeleteEntity, dbUpdateException, entityTypeName),
+                    EntityState.Added => new FrontUserException(BiaErrorId.AddEntity, dbUpdateException, entityTypeName),
+                    EntityState.Modified => new FrontUserException(BiaErrorId.ModifyEntity, dbUpdateException, entityTypeName),
+                    EntityState.Deleted => new FrontUserException(BiaErrorId.DeleteEntity, dbUpdateException, entityTypeName),
                     _ => new FrontUserException(dbUpdateException),
                 };
             }
@@ -359,12 +359,12 @@ namespace BIA.Net.Core.Infrastructure.Data
         {
             return sqlException.Number switch
             {
-                515 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseNullValueInsert, sqlException, GetColumnNameFromSqlExceptionNullInsert(sqlException.Message)),
-                547 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseForeignKeyConstraint, sqlException),
-                2601 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseDuplicateKey, sqlException),
-                2627 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseUniqueConstraint, sqlException),
-                4060 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseOpen, sqlException),
-                18456 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseLoginUser, sqlException),
+                515 => new FrontUserException(BiaErrorId.DatabaseNullValueInsert, sqlException, GetColumnNameFromSqlExceptionNullInsert(sqlException.Message)),
+                547 => new FrontUserException(BiaErrorId.DatabaseForeignKeyConstraint, sqlException),
+                2601 => new FrontUserException(BiaErrorId.DatabaseDuplicateKey, sqlException),
+                2627 => new FrontUserException(BiaErrorId.DatabaseUniqueConstraint, sqlException),
+                4060 => new FrontUserException(BiaErrorId.DatabaseOpen, sqlException),
+                18456 => new FrontUserException(BiaErrorId.DatabaseLoginUser, sqlException),
                 _ => new FrontUserException(sqlException),
             };
         }

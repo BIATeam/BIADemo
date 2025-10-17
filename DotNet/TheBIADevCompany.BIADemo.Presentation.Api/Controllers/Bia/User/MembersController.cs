@@ -13,6 +13,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Application.User;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Error;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
@@ -197,7 +198,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
             }
             catch (InvalidOperationException)
             {
-                return this.UnprocessableEntity(ErrorMessage.GetMessage(ErrorId.MemberAlreadyExists, this.userContextService.GetLanguageId()));
+                throw FrontUserException.Create(ErrorId.MemberAlreadyExists);
             }
         }
 

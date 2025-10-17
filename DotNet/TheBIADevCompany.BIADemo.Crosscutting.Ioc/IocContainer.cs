@@ -38,6 +38,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
 #if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
 #endif
 #if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
@@ -92,6 +93,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 collection.Configure<WorkerFeatures>(configuration.GetSection("BiaNet:WorkerFeatures"));
                 collection.Configure<ApiFeatures>(configuration.GetSection("BiaNet:ApiFeatures"));
             }
+
+            ErrorMessage.FillErrorTranslations();
         }
 
         private static Exception Exception(string v)

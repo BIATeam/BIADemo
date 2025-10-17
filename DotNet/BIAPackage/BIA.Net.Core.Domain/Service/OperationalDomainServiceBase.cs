@@ -12,6 +12,7 @@ namespace BIA.Net.Core.Domain.Service
     using System.Threading.Tasks;
     using System.Transactions;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Error;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Authentication;
@@ -907,18 +908,18 @@ namespace BIA.Net.Core.Domain.Service
         /// <returns><see cref="Exception"/>.</returns>
         protected virtual Exception HandleFrontUserException(FrontUserException frontUserException)
         {
-            return frontUserException.ErrorMessageKey switch
+            return frontUserException.ErrorId switch
             {
-                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseForeignKeyConstraint => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),
-                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseUniqueConstraint => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),
-                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseDuplicateKey => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),
-                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseNullValueInsert => new FrontUserException(
-                    frontUserException.ErrorMessageKey,
+                (int)BiaErrorId.DatabaseForeignKeyConstraint => new FrontUserException(frontUserException.ErrorId, frontUserException, typeof(TEntity).Name),
+                (int)BiaErrorId.DatabaseUniqueConstraint => new FrontUserException(frontUserException.ErrorId, frontUserException, typeof(TEntity).Name),
+                (int)BiaErrorId.DatabaseDuplicateKey => new FrontUserException(frontUserException.ErrorId, frontUserException, typeof(TEntity).Name),
+                (int)BiaErrorId.DatabaseNullValueInsert => new FrontUserException(
+                    frontUserException.ErrorId,
                     frontUserException,
                     [.. frontUserException.ErrorMessageParameters, typeof(TEntity).Name]),
-                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseObjectNotFound => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),
-                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseLoginUser => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),
-                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseOpen => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),
+                (int)BiaErrorId.DatabaseObjectNotFound => new FrontUserException(frontUserException.ErrorId, frontUserException, typeof(TEntity).Name),
+                (int)BiaErrorId.DatabaseLoginUser => new FrontUserException(frontUserException.ErrorId, frontUserException, typeof(TEntity).Name),
+                (int)BiaErrorId.DatabaseOpen => new FrontUserException(frontUserException.ErrorId, frontUserException, typeof(TEntity).Name),
                 _ => frontUserException,
             };
         }
