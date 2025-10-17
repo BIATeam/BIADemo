@@ -140,7 +140,7 @@
       "problemMatcher": "$msCompile"
     },
     {
-      "label": "Database Add migration",
+      "label": "Database Add migration SqlServer",
       "command": "dotnet",
       "type": "process",
       "args": [
@@ -158,7 +158,27 @@
       "problemMatcher": []
     },
     {
-      "label": "Database Udpate",
+      "label": "Database Add migration PostGreSql",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "ef",
+        "migrations",
+        "add",
+        "${input:migrationName}",
+        "--project",
+        "DotNet\\TheBIADevCompany.BIADemo.Infrastructure.Data",
+        "-s",
+        "DotNet\\TheBIADevCompany.BIADemo.Presentation.Api",
+        "-c",
+        "DataContextPostGreSql",
+        "-o",
+        "MigrationsPostGreSql"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Database Udpate SqlServer",
       "command": "dotnet",
       "type": "process",
       "args": [
@@ -173,7 +193,7 @@
       "problemMatcher": []
     },
     {
-      "label": "Database Rollback",
+      "label": "Database Rollback SqlServer",
       "command": "dotnet",
       "type": "process",
       "args": [
@@ -189,7 +209,7 @@
       "problemMatcher": []
     },
     {
-      "label": "Database Remove last migration",
+      "label": "Database Remove last migration SqlServer",
       "command": "dotnet",
       "type": "process",
       "args": [
@@ -202,6 +222,23 @@
         "DotNet\\TheBIADevCompany.BIADemo.Presentation.Api",
         "-c",
         "DataContext"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Database Remove last migration PostGreSQL",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "ef",
+        "migrations",
+        "remove",
+        "--project",
+        "DotNet\\TheBIADevCompany.BIADemo.Infrastructure.Data",
+        "-s",
+        "DotNet\\TheBIADevCompany.BIADemo.Presentation.Api",
+        "-c",
+        "DataContextPostGreSql"
       ],
       "problemMatcher": []
     }

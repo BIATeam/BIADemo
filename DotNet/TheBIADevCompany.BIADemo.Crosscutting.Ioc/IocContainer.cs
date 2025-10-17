@@ -12,11 +12,13 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 #if BIA_FRONT_FEATURE
     using BIA.Net.Core.Application.User;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common;
 #endif
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.RepoContract;
@@ -205,6 +207,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                                 options.ReplaceService<IHistoryRepository, BiaSqlServerHistoryRepository>();
                             }
 
+                            options.EnableSensitiveDataLogging();
+                        },
+                        contextLifetime: ServiceLifetime.Transient);
+                }
                             options.EnableSensitiveDataLogging();
                         },
                         contextLifetime: ServiceLifetime.Transient);
