@@ -30,6 +30,7 @@ import { Divider } from 'primeng/divider';
 import { MenuModule } from 'primeng/menu';
 import { Tooltip } from 'primeng/tooltip';
 import { ThrottleEventDirective } from '../../../directives/throttle-click.directive';
+import { BiaButtonItem, BiaButtonsComponent } from '../../public-api';
 
 @Component({
   selector: 'bia-table-header',
@@ -42,6 +43,7 @@ import { ThrottleEventDirective } from '../../../directives/throttle-click.direc
     Button,
     Tooltip,
     ButtonDirective,
+    BiaButtonsComponent,
     Divider,
     NgTemplateOutlet,
     ConfirmDialog,
@@ -68,8 +70,8 @@ export class BiaTableHeaderComponent
   @Input() tableControllerVisible = false;
   @Input() showFixedButtons = false;
   @Input() showHistoricalButton = false;
-  @Input() selectionActionsMenuItems?: MenuItem[];
-  @Input() listActionsMenuItems?: MenuItem[];
+  @Input() selectionActionsMenuItems?: BiaButtonItem[];
+  @Input() listActionsMenuItems?: BiaButtonItem[];
   @Output() create = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
   @Output() clone = new EventEmitter<void>();

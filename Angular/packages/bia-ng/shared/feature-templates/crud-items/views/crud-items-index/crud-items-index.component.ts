@@ -31,6 +31,7 @@ import {
   KeyValuePair,
   PagingFilterFormatDto,
 } from 'packages/bia-ng/models/public-api';
+import { BiaButtonItem } from 'packages/bia-ng/shared/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { MenuItem, PrimeTemplate } from 'primeng/api';
 import { TableLazyLoadEvent } from 'primeng/table';
@@ -151,7 +152,7 @@ export class CrudItemsIndexComponent<
    */
   protected listButtonGroup: BiaButtonGroupItem[];
   protected customButtonGroup: BiaButtonGroupItem[];
-  protected selectionActionsMenuItems: MenuItem[];
+  protected selectionActionsMenuItems: BiaButtonItem[];
   protected listActionsMenuItems: MenuItem[];
 
   constructor(

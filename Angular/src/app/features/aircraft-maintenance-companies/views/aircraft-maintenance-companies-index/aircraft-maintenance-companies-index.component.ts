@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from 'packages/bia-ng/core/public-api';
 import { TeamAdvancedFilterDto } from 'packages/bia-ng/models/public-api';
 import {
+  BiaButtonsComponent,
   BiaTableBehaviorControllerComponent,
   BiaTableComponent,
   BiaTableControllerComponent,
@@ -13,8 +14,6 @@ import {
   TeamAdvancedFilterComponent,
 } from 'packages/bia-ng/shared/public-api';
 import { PrimeTemplate } from 'primeng/api';
-import { ButtonDirective } from 'primeng/button';
-import { Tooltip } from 'primeng/tooltip';
 import { Permission } from 'src/app/shared/permission';
 import { aircraftMaintenanceCompanyCRUDConfiguration } from '../../aircraft-maintenance-company.constants';
 import { AircraftMaintenanceCompanyTableComponent } from '../../components/aircraft-maintenance-company-table/aircraft-maintenance-company-table.component';
@@ -31,8 +30,7 @@ import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maint
     NgIf,
     AircraftMaintenanceCompanyTableComponent,
     AsyncPipe,
-    ButtonDirective,
-    Tooltip,
+    BiaButtonsComponent,
     TranslateModule,
     TeamAdvancedFilterComponent,
     BiaTableHeaderComponent,

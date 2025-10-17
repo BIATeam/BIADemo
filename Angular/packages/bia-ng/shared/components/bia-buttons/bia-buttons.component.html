@@ -1,0 +1,12 @@
+@for (item of buttons; track $index) {
+  <button
+    pButton
+    [disabled]="item.disabled"
+    *ngIf="item.visible"
+    [class]="item.buttonClass ?? 'p-button-outlined'"
+    [label]="item.label ?? ''"
+    (click)="item?.command({ originalEvent: $event, item })"
+    [pTooltip]="item.tooltip"
+    [tooltipPosition]="item.tooltipPosition ?? 'top'"
+    [icon]="item.icon ?? ''"></button>
+}

@@ -1,4 +1,5 @@
 export * from './bia-button-group/bia-button-group.component';
+export * from './bia-buttons/bia-buttons.component';
 export * from './bia-external-site/bia-external-site.component';
 export * from './bia-online-offline-icon/bia-online-offline-icon.component';
 export * from './bia-team-selector/bia-team-selector.component';
