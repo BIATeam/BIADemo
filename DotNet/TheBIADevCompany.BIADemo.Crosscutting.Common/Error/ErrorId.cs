@@ -10,9 +10,18 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Error
     public enum ErrorId
     {
         /// <summary>
-        /// The member already exist and connot be added.
+        /// The member already exist and cannot be added.
         /// </summary>
         MemberAlreadyExists,
+
+        // Begin BIADemo
+
+        /// <summary>
+        /// Hangfire handled error generation.
+        /// </summary>
+        HangfireHandledError,
+
+        // End BIADemo
 
         // Begin project error Id
 

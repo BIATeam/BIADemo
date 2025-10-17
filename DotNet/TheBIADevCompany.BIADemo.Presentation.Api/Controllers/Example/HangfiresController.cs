@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
     using System;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common.Enum;
+    using BIA.Net.Core.Common.Error;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Presentation.Api.Controller.Base;
     using Hangfire;
@@ -18,6 +19,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
     using TheBIADevCompany.BIADemo.Application.Job;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
 
     /// <summary>
@@ -116,7 +118,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public IActionResult GenerateHandledError()
         {
-            throw new FrontUserException("Handled error details");
+            throw FrontUserException.Create(ErrorId.HangfireHandledError);
         }
     }
 }

@@ -22,6 +22,13 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Error
             new BiaErrorTranslation() { ErrorId = (int)ErrorId.MemberAlreadyExists, LanguageId = LanguageId.French, Label = "Le membre existe déjà." },
             new BiaErrorTranslation() { ErrorId = (int)ErrorId.MemberAlreadyExists, LanguageId = LanguageId.Spanish, Label = "El miembro ya existe." },
 
+            // Begin BIADemo
+            new BiaErrorTranslation() { ErrorId = (int)ErrorId.HangfireHandledError, LanguageId = LanguageId.English, Label = "Example message of a handled error." },
+            new BiaErrorTranslation() { ErrorId = (int)ErrorId.HangfireHandledError, LanguageId = LanguageId.French, Label = "Message d’exemple d’une erreur gérée." },
+            new BiaErrorTranslation() { ErrorId = (int)ErrorId.HangfireHandledError, LanguageId = LanguageId.Spanish, Label = "Mensaje de ejemplo de un error controlado." },
+
+            // End BIADemo
+
             // Begin project error messages
 
             // End project error messages
