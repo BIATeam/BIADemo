@@ -9,11 +9,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Error
     /// </summary>
     public enum ErrorId
     {
-        /// <summary>
-        /// The member already exist and cannot be added.
-        /// </summary>
-        MemberAlreadyExists,
-
         // Begin BIADemo
 
         /// <summary>

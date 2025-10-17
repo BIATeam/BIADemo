@@ -198,7 +198,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
             }
             catch (InvalidOperationException)
             {
-                throw FrontUserException.Create(ErrorId.MemberAlreadyExists);
+                throw FrontUserException.Create(BiaErrorId.MemberAlreadyExists);
             }
         }
 

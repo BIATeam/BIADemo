@@ -18,10 +18,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Error
         /// </summary>
         private static readonly ImmutableList<BiaErrorTranslation> Translations =
         [
-            new BiaErrorTranslation() { ErrorId = (int)ErrorId.MemberAlreadyExists, LanguageId = LanguageId.English, Label = "Member already exists." },
-            new BiaErrorTranslation() { ErrorId = (int)ErrorId.MemberAlreadyExists, LanguageId = LanguageId.French, Label = "Le membre existe déjà." },
-            new BiaErrorTranslation() { ErrorId = (int)ErrorId.MemberAlreadyExists, LanguageId = LanguageId.Spanish, Label = "El miembro ya existe." },
-
             // Begin BIADemo
             new BiaErrorTranslation() { ErrorId = (int)ErrorId.HangfireHandledError, LanguageId = LanguageId.English, Label = "Example message of a handled error." },
             new BiaErrorTranslation() { ErrorId = (int)ErrorId.HangfireHandledError, LanguageId = LanguageId.French, Label = "Message d’exemple d’une erreur gérée." },

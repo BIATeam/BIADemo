@@ -7,6 +7,9 @@ namespace BIA.Net.Core.Common.Error
     using System;
     using System.Collections.Generic;
     using System.Collections.Immutable;
+    using System.Security.Principal;
+    using static BIA.Net.Core.Common.BiaRights;
+    using static System.Runtime.InteropServices.JavaScript.JSType;
 
     /// <summary>
     /// The class containing all the error message with the translations.
@@ -40,6 +43,11 @@ namespace BIA.Net.Core.Common.Error
                     });
                 }
             }
+
+            // MemberAlreadyExists
+            AddTranslation(languageEnglishId, (int)BiaErrorId.MemberAlreadyExists, "Member already exists.");
+            AddTranslation(languageEnglishId, (int) BiaErrorId.MemberAlreadyExists, "Le membre existe déjà.");
+            AddTranslation(languageEnglishId, (int) BiaErrorId.MemberAlreadyExists, "El miembro ya existe.");
 
             // AddEntity
             AddTranslation(languageEnglishId, (int)BiaErrorId.AddEntity, "Unable to add {0}.");
