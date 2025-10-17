@@ -25,7 +25,6 @@ import { AppSettingsService } from '../app-settings/services/app-settings.servic
 import { AppDB } from '../db';
 import { BiaEnvironmentService } from './bia-environment.service';
 import { BiaMessageService } from './bia-message.service';
-import { RefreshTokenService } from './refresh-token.service';
 
 enum HTTPMethod {
   DELETE = 'DELETE',
@@ -169,7 +168,6 @@ export class BiaOnlineOfflineService implements OnDestroy {
               this.serverAvailableSubject.value === false
             ) {
               this.serverAvailableSubject.next(true);
-              RefreshTokenService.shouldRefreshToken = true;
               this.launchFirstHttpRequestItem();
             }
           });

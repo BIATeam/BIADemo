@@ -43,6 +43,7 @@ export interface Token {
   id: number;
   permissions: string[];
   userData: UserData;
+  expiredAt: number;
 }
 
 export class AuthInfo {
@@ -52,6 +53,7 @@ export class AuthInfo {
     id: 0,
     permissions: [],
     userData: { currentTeams: [] },
+    expiredAt: 0,
   };
   additionalInfos: AdditionalInfos = {
     teams: [],

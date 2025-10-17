@@ -13,7 +13,7 @@ import { Observable, from, throwError } from 'rxjs';
 import { catchError, filter, finalize, switchMap, take } from 'rxjs/operators';
 // import { allEnvironments } from 'src/environments/all-environments';
 import { HttpStatusCodeCustom } from 'packages/bia-ng/models/enum/public-api';
-import { AuthInfo } from 'packages/bia-ng/models/public-api';
+import { AuthInfo, Token } from 'packages/bia-ng/models/public-api';
 import { AppSettingsService } from '../app-settings/services/app-settings.service';
 import { AuthService } from '../services/auth.service';
 import { BiaAppConstantsService } from '../services/bia-app-constants.service';
@@ -88,7 +88,10 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   protected launchRequest(request: HttpRequest<any>, next: HttpHandler) {
-    if (RefreshTokenService.shouldRefreshToken) {
+    if (
+      RefreshTokenService.shouldRefreshToken ||
+      this.isTokenExpired(this.authService.getDecryptedToken())
+    ) {
       return this.handle401Error(request, next);
     }
     const jwtToken = this.authService.getToken();
@@ -189,6 +192,10 @@ export class TokenInterceptor implements HttpInterceptor {
         );
       })
     );
+  }
+
+  protected isTokenExpired(token: Token) {
+    return token.expiredAt < Math.floor(Date.now() / 1000);
   }
 }
 
