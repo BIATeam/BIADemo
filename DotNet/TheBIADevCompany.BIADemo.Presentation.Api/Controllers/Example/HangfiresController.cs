@@ -94,5 +94,29 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
                 return this.NotFound();
             }
         }
+
+        /// <summary>
+        /// Throw unhandled exception.
+        /// </summary>
+        /// <returns><see cref="IActionResult"/>.</returns>
+        /// <exception cref="BadHttpRequestException">Thrown exception.</exception>
+        [HttpGet("[action]")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult GenerateUnhandledError()
+        {
+            throw new BadHttpRequestException("Unhandled error");
+        }
+
+        /// <summary>
+        /// Throw handled exception.
+        /// </summary>
+        /// <returns><see cref="IActionResult"/>.</returns>
+        /// <exception cref="FrontUserException">Thrown exception.</exception>
+        [HttpGet("[action]")]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        public IActionResult GenerateHandledError()
+        {
+            throw new FrontUserException("Handled error details");
+        }
     }
 }

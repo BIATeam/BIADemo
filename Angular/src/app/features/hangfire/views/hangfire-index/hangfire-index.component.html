@@ -69,6 +69,27 @@
       tooltipPosition="top"></button>
   </ng-container>
 </div>
+<BR />
+<div class="flex flex-row flex-wrap"><b>Generate server errors</b></div>
+<div
+  class="flex flex-row flex-wrap justify-content-around align-content-around">
+  <button
+    pButton
+    type="button"
+    label="Unhandled error"
+    pTooltip="Unhandled error"
+    tooltipPosition="top"
+    severity="danger"
+    (click)="onGenerateUnhandledErrorClick()"></button>
+  <button
+    pButton
+    type="button"
+    label="Handled error"
+    pTooltip="Handled error"
+    tooltipPosition="top"
+    severity="danger"
+    (click)="onGenerateHandledErrorClick()"></button>
+</div>
 <div class="header flex flex-row justify-content-between align-content-between">
   <div
     class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch"></div>
