@@ -109,7 +109,7 @@ namespace BIA.Net.Core.Common.Error
         /// Add range of <see cref="BiaErrorTranslation"/> to current error translations.
         /// </summary>
         /// <param name="translations">The translations.</param>
-        public static void AddTranslations(ImmutableList<BiaErrorTranslation> translations)
+        public static void MergeTranslations(ImmutableList<BiaErrorTranslation> translations)
         {
             Translations.AddRange(translations);
         }

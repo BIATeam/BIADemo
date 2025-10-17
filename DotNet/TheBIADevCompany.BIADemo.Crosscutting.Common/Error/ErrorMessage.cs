@@ -36,7 +36,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Error
         public static void FillErrorTranslations()
         {
             BiaErrorMessage.InitBiaErrorTranslations(LanguageId.English, LanguageId.French, LanguageId.Spanish);
-            BiaErrorMessage.AddTranslations(Translations);
+            BiaErrorMessage.MergeTranslations(Translations);
         }
     }
 }
