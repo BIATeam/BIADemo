@@ -20,6 +20,7 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
     using Microsoft.Extensions.Logging;
     using Microsoft.IdentityModel.Logging;
     using Microsoft.IdentityModel.Tokens;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// The class containing configuration for authentication.
@@ -57,7 +58,7 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
                             }
 
                             var formatedErrorMessage = frontUserEx.ErrorMessageParameters.Length > 0 ? string.Format(errorMessage, frontUserEx.ErrorMessageParameters) : errorMessage;
-                            await context.Response.WriteAsync(formatedErrorMessage);
+                            await context.Response.WriteAsJsonAsync(new HttpErrorReport((int)frontUserEx.ErrorMessageKey, formatedErrorMessage));
                             return;
                         }
 
