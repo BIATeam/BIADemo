@@ -62,28 +62,6 @@ namespace BIA.Net.Core.Common.Exceptions
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FrontUserException"/> class.
-        /// </summary>
-        /// <param name="biaErrorId">The error id.</param>
-        /// <param name="innerException">The inner exception if exists.</param>
-        public FrontUserException(BiaErrorId biaErrorId, Exception innerException = null)
-            : this((int)biaErrorId, innerException)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FrontUserException"/> class.
-        /// </summary>
-        /// <param name="biaErrorId">The error id.</param>
-        /// <param name="innerException">The inner exception if exists.</param>
-        /// <param name="messageParameters">The parameters to format into the error message with the function <see cref="GetFormatedErrorMessage"/>.</param>
-        public FrontUserException(BiaErrorId biaErrorId, Exception innerException = null, params string[] messageParameters)
-            : this(biaErrorId, innerException)
-        {
-            this.ErrorMessageParameters = messageParameters;
-        }
-
-        /// <summary>
         /// The error message key.
         /// </summary>
         public int ErrorId { get; } = (int)BiaErrorId.Unknown;

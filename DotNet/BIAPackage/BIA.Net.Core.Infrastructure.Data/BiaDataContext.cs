@@ -324,7 +324,7 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// <returns>A <see cref="FrontUserException"/> corresponding to the handled exception.</returns>
         protected virtual FrontUserException ManageException(ValidationException validationException)
         {
-            return new FrontUserException(BiaErrorId.ValidationEntity, validationException, validationException.ValidationResult.ErrorMessage);
+            return FrontUserException.Create(BiaErrorId.ValidationEntity, validationException, validationException.ValidationResult.ErrorMessage);
         }
 
         /// <summary>
@@ -340,9 +340,9 @@ namespace BIA.Net.Core.Infrastructure.Data
                 var entityTypeName = entry.Entity.GetType().Name;
                 return entry.State switch
                 {
-                    EntityState.Added => new FrontUserException(BiaErrorId.AddEntity, dbUpdateException, entityTypeName),
-                    EntityState.Modified => new FrontUserException(BiaErrorId.ModifyEntity, dbUpdateException, entityTypeName),
-                    EntityState.Deleted => new FrontUserException(BiaErrorId.DeleteEntity, dbUpdateException, entityTypeName),
+                    EntityState.Added => FrontUserException.Create(BiaErrorId.AddEntity, dbUpdateException, entityTypeName),
+                    EntityState.Modified => FrontUserException.Create(BiaErrorId.ModifyEntity, dbUpdateException, entityTypeName),
+                    EntityState.Deleted => FrontUserException.Create(BiaErrorId.DeleteEntity, dbUpdateException, entityTypeName),
                     _ => new FrontUserException(dbUpdateException),
                 };
             }
@@ -359,12 +359,12 @@ namespace BIA.Net.Core.Infrastructure.Data
         {
             return sqlException.Number switch
             {
-                515 => new FrontUserException(BiaErrorId.DatabaseNullValueInsert, sqlException, GetColumnNameFromSqlExceptionNullInsert(sqlException.Message)),
-                547 => new FrontUserException(BiaErrorId.DatabaseForeignKeyConstraint, sqlException),
-                2601 => new FrontUserException(BiaErrorId.DatabaseDuplicateKey, sqlException),
-                2627 => new FrontUserException(BiaErrorId.DatabaseUniqueConstraint, sqlException),
-                4060 => new FrontUserException(BiaErrorId.DatabaseOpen, sqlException),
-                18456 => new FrontUserException(BiaErrorId.DatabaseLoginUser, sqlException),
+                515 => FrontUserException.Create(BiaErrorId.DatabaseNullValueInsert, sqlException, GetColumnNameFromSqlExceptionNullInsert(sqlException.Message)),
+                547 => FrontUserException.Create(BiaErrorId.DatabaseForeignKeyConstraint, sqlException),
+                2601 => FrontUserException.Create(BiaErrorId.DatabaseDuplicateKey, sqlException),
+                2627 => FrontUserException.Create(BiaErrorId.DatabaseUniqueConstraint, sqlException),
+                4060 => FrontUserException.Create(BiaErrorId.DatabaseOpen, sqlException),
+                18456 => FrontUserException.Create(BiaErrorId.DatabaseLoginUser, sqlException),
                 _ => new FrontUserException(sqlException),
             };
         }
