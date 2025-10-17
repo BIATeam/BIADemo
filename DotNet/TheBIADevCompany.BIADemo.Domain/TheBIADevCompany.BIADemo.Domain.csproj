@@ -7,7 +7,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Audit.EntityFramework.Abstractions" Version="30.0.*" />
-    <PackageReference Include="BIA.Net.Core.Domain" Version="5.1.0" />
+    <PackageReference Include="BIA.Net.Core.Domain" Version="5.2.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.*" />
   </ItemGroup>
   <ItemGroup>

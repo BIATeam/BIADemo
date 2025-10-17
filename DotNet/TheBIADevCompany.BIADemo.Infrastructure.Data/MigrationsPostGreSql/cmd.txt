@@ -1,0 +1,25 @@
+Add-Migration Initial -Context DataContextPostGreSql -OutputDir MigrationsPostGreSql
+
+
+CREATE USER "PostGreSQL_U" WITH PASSWORD 'mi\#HLl03gvEqQqz@p';
+GRANT ALL ON DATABASE "BIADemo" TO "PostGreSQL_U";
+GRANT ALL ON SCHEMA public TO "PostGreSQL_U";
+--GRANT ALL ON SCHEMA hangfire TO "PostGreSQL_U";
+-- GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA hangfire TO "PostGreSQL_U";
+-- GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA hangfire TO "PostGreSQL_U";
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO "PostGreSQL_U";
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO "PostGreSQL_U";
+
+DROP OWNED BY "PostGreSQL_U" CASCADE
+DROP USER "PostGreSQL_U";
+
+
+-- In postgreSQL to create the Read Write user
+CREATE USER "PostGreSQL_RW" WITH PASSWORD 'abRep4dDRthvdYWbav';
+GRANT pg_read_all_data TO "PostGreSQL_RW";
+GRANT pg_write_all_data TO "PostGreSQL_RW";
+
+
+-- In postgreSQL to drop the Read Write user
+DROP OWNED BY "PostGreSQL_RW" CASCADE
+DROP USER "PostGreSQL_RW";

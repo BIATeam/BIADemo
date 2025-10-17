@@ -180,9 +180,8 @@
           [inputStyle]="{ width: '100%' }"
           appendTo="body"
           [showClear]="true"
-          [showSeconds]="
-            showSeconds(displayDateFormat.autoFormatDate)
-          "></p-date-picker>
+          [showSeconds]="showSeconds(displayDateFormat.autoFormatDate)"
+          [hideOnDateTimeSelect]="false"></p-date-picker>
         <label
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
           >{{ field.header | translate }}</label

@@ -52,7 +52,58 @@
             [field]="field.field"
             display="menu"
             [hideOnClear]="true"
-            [maxConstraints]="field.maxConstraints">
+            [maxConstraints]="field.maxConstraints"
+            ><ng-template
+              pTemplate="filter"
+              let-filterConstraint="filterConstraint"
+              let-filterTemplate="filterTemplate"
+              let-minFractionDigits="minFractionDigits"
+              let-maxFractionDigits="maxFractionDigits"
+              let-prefix="prefix"
+              let-suffix="suffix"
+              let-locale="locale"
+              let-localeMatcher="localeMatcher"
+              let-currency="currency"
+              let-currencyDisplay="currencyDisplay"
+              let-useGrouping="useGrouping">
+              @if (
+                columnFilterType === 'date' &&
+                filterConstraint?.matchMode !== 'empty' &&
+                filterConstraint?.matchMode !== 'notEmpty'
+              ) {
+                <p-date-picker
+                  [ngModel]="filterConstraint?.value"
+                  (ngModelChange)="
+                    filterConstraint.value = $event
+                  "></p-date-picker>
+              } @else if (columnFilterType === 'boolean') {
+                <p-checkbox
+                  [binary]="true"
+                  [indeterminate]="filterConstraint?.value === null"
+                  [ngModel]="filterConstraint?.value"
+                  (ngModelChange)="
+                    filterConstraint.value = $event
+                  "></p-checkbox>
+              } @else if (
+                filterConstraint?.matchMode !== 'empty' &&
+                filterConstraint?.matchMode !== 'notEmpty'
+              ) {
+                <p-columnFilterFormElement
+                  [type]="columnFilterType"
+                  [field]="field.field"
+                  [filterConstraint]="filterConstraint"
+                  [filterTemplate]="filterTemplate"
+                  [minFractionDigits]="minFractionDigits"
+                  [maxFractionDigits]="maxFractionDigits"
+                  [prefix]="prefix"
+                  [suffix]="suffix"
+                  [locale]="locale"
+                  [localeMatcher]="localeMatcher"
+                  [currency]="currency"
+                  [currencyDisplay]="currencyDisplay"
+                  [useGrouping]="useGrouping"></p-columnFilterFormElement>
+              }
+            </ng-template>
           </p-columnFilter>
         }
       </ng-container>

@@ -129,7 +129,11 @@
     #refFormField>
     <div class="app-field-container">
       <ng-template
-        [ngIf]="formGroup && field.isEditable === true"
+        [ngIf]="
+          (formGroup && field.isEditable === true) ||
+          (field.isOnlyInitializable && isAdd) ||
+          (field.isOnlyUpdatable && !isAdd)
+        "
         [ngIfElse]="isNotEditable">
         <bia-input
           [field]="field"

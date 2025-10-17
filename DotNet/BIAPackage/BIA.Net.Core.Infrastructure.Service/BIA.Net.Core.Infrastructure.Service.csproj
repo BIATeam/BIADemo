@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Copyright>Copyright © BIA 2025</Copyright>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-    <Version>5.1.0</Version>
+    <Version>5.2.0</Version>
     <PackageIcon>LogoBIA.png</PackageIcon>
     <PackageIconUrl />
     <Authors>BIA Team</Authors>
@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <PackageReference Include="MailKit" Version="4.13.*" />
-    <PackageReference Include="Meziantou.Framework.Win32.CredentialManager" Version="1.7.*" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="[8.0.*,9.0.0)" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="[8.0.*,9.0.0)" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.StackExchangeRedis" Version="[8.0.*,9.0.0)" />

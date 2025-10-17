@@ -187,7 +187,8 @@
           showSeconds(
             getDisplayDateFormat(field.displayFormat)?.autoFormatDate ?? ''
           )
-        "></p-date-picker>
+        "
+        [hideOnDateTimeSelect]="false"></p-date-picker>
     </ng-container>
     <ng-container *ngSwitchDefault>
       <input
