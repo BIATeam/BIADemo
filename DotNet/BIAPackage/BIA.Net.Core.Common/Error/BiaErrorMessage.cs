@@ -46,8 +46,8 @@ namespace BIA.Net.Core.Common.Error
 
             // MemberAlreadyExists
             AddTranslation(languageEnglishId, (int)BiaErrorId.MemberAlreadyExists, "Member already exists.");
-            AddTranslation(languageEnglishId, (int) BiaErrorId.MemberAlreadyExists, "Le membre existe déjà.");
-            AddTranslation(languageEnglishId, (int) BiaErrorId.MemberAlreadyExists, "El miembro ya existe.");
+            AddTranslation(languageEnglishId, (int)BiaErrorId.MemberAlreadyExists, "Le membre existe déjà.");
+            AddTranslation(languageEnglishId, (int)BiaErrorId.MemberAlreadyExists, "El miembro ya existe.");
 
             // AddEntity
             AddTranslation(languageEnglishId, (int)BiaErrorId.AddEntity, "Unable to add {0}.");
@@ -101,7 +101,7 @@ namespace BIA.Net.Core.Common.Error
         }
 
         /// <summary>
-        /// Add range of <see cref="BiaErrorTranslation"/> to current BIA core error translations.
+        /// Add range of <see cref="BiaErrorTranslation"/> to current error translations.
         /// </summary>
         /// <param name="translations">The translations.</param>
         public static void AddTranslations(ImmutableList<BiaErrorTranslation> translations)
