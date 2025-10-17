@@ -45,9 +45,9 @@ namespace BIA.Net.Core.Common.Error
             }
 
             // InternalServerError
-            AddTranslation(languageEnglishId, (int)BiaErrorId.InternalServerError, "Internal server error.");
-            AddTranslation(languageFrenchId, (int)BiaErrorId.InternalServerError, "Erreur interne du serveur.");
-            AddTranslation(languageSpanishId, (int)BiaErrorId.InternalServerError, "Error interno del servidor.");
+            AddTranslation(languageEnglishId, (int)BiaErrorId.InternalServerError, "An error occurred while processing your request.");
+            AddTranslation(languageFrenchId, (int)BiaErrorId.InternalServerError, "Une erreur s'est produite lors du traitement de votre demande.");
+            AddTranslation(languageSpanishId, (int)BiaErrorId.InternalServerError, "Se produjo un error al procesar su solicitud.");
 
             // MemberAlreadyExists
             AddTranslation(languageEnglishId, (int)BiaErrorId.MemberAlreadyExists, "Member already exists.");
