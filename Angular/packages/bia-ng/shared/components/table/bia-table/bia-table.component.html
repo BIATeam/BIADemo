@@ -66,6 +66,7 @@
           *ngIf="col?.isSortable === true"
           [pSortableColumn]="col.field"
           pReorderableColumn
+          [pReorderableColumnDisabled]="col.isFrozen"
           pResizableColumn
           [style.min-width]="col.minWidth"
           [alignFrozen]="col.alignFrozen"
@@ -91,6 +92,7 @@
         <th
           *ngIf="col?.isSortable !== true"
           pReorderableColumn
+          [pReorderableColumnDisabled]="col.isFrozen"
           pResizableColumn
           [style.min-width]="col.minWidth"
           [alignFrozen]="col.alignFrozen"
