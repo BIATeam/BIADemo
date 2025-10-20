@@ -7,8 +7,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
 {
     using System;
     using BIA.Net.Core.Application.Services;
-    using BIA.Net.Core.Common.Enum;
-    using BIA.Net.Core.Common.Error;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Presentation.Api.Controller.Base;
     using Hangfire;
