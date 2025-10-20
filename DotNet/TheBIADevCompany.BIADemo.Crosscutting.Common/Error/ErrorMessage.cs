@@ -9,7 +9,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Error
     using static TheBIADevCompany.BIADemo.Crosscutting.Common.Constants;
 
     /// <summary>
-    /// The class containing all constants.
+    /// The class containing the error messages.
     /// </summary>
     public static class ErrorMessage
     {
