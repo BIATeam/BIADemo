@@ -10,7 +10,8 @@
     [useViewTeamWithTypeId]="useViewTeamWithTypeId"
     [displayedColumns]="displayedColumns"
     [columns]="columns"
-    (viewChange)="onViewChange($event)"></bia-view-list>
+    (viewChange)="onViewChange($event)"
+    (viewNameChange)="onViewNameChange($event)"></bia-view-list>
   <div #overflowingContent class="bia-overflow-hidden">
     <div class="bia-overflow-hidden-container">
       <div>

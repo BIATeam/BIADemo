@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, Location, NgClass, NgIf } from '@angular/common';
 import { HttpStatusCode } from '@angular/common/http';
 import {
   Component,
@@ -34,7 +34,7 @@ import {
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { MenuItem, PrimeTemplate } from 'primeng/api';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { Observable, Subscription, combineLatest } from 'rxjs';
+import { combineLatest, Observable, Subscription } from 'rxjs';
 import { filter, first, skip, take, tap } from 'rxjs/operators';
 import { BiaButtonGroupItem } from '../../../../components/bia-button-group/bia-button-group.component';
 import { BiaLayoutService } from '../../../../components/layout/services/layout.service';
@@ -135,6 +135,7 @@ export class CrudItemsIndexComponent<
   protected store: Store<BiaAppState>;
   protected router: Router;
   public activatedRoute: ActivatedRoute;
+  protected location: Location;
   protected translateService: TranslateService;
   protected biaTranslationService: BiaTranslationService;
   protected authService: AuthService;
@@ -173,6 +174,7 @@ export class CrudItemsIndexComponent<
     this.actions = this.injector.get<Actions>(Actions);
     this.messageService =
       this.injector.get<BiaMessageService>(BiaMessageService);
+    this.location = this.injector.get<Location>(Location);
   }
 
   toggleTableControllerVisibility() {
@@ -600,6 +602,10 @@ export class CrudItemsIndexComponent<
     this.updateAdvancedFilterByView(viewPreference);
   }
 
+  onViewNameChange(viewName: string | null) {
+    this.updateViewQueryParam(viewName);
+  }
+
   onStateSave(tableState: string) {
     this.viewPreference = tableState;
     this.tableState = tableState;
@@ -755,5 +761,15 @@ export class CrudItemsIndexComponent<
 
   protected initCustomButtonGroup() {
     this.customButtonGroup = [];
+  }
+
+  updateViewQueryParam(viewName: string | null) {
+    const tree = this.router.createUrlTree([], {
+      relativeTo: this.activatedRoute,
+      queryParams: viewName ? { view: viewName } : { view: null },
+      queryParamsHandling: 'merge',
+    });
+
+    this.location.replaceState(this.router.serializeUrl(tree));
   }
 }
