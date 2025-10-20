@@ -211,10 +211,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                         },
                         contextLifetime: ServiceLifetime.Transient);
                 }
-                            options.EnableSensitiveDataLogging();
-                        },
-                        contextLifetime: ServiceLifetime.Transient);
-                }
 
                 collection.AddScoped<DataContextFactory>();
                 collection.AddSingleton<IAuditFeature, AuditFeature>();
