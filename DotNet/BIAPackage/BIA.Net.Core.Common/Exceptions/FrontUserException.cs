@@ -52,7 +52,7 @@ namespace BIA.Net.Core.Common.Exceptions
         /// <summary>
         /// Initializes a new instance of the <see cref="FrontUserException"/> class.
         /// </summary>
-        /// <param name="errorId">The error id.</param> 
+        /// <param name="errorId">The error id.</param>
         /// <param name="innerException">The inner exception if exists.</param>
         /// <param name="messageParameters">The parameters to format into the error message with the function <see cref="GetFormatedErrorMessage"/>.</param>
         public FrontUserException(int errorId, Exception innerException = null, params string[] messageParameters)

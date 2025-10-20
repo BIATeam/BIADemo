@@ -21,7 +21,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.User;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Base;
 
@@ -40,11 +39,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// </summary>
         private readonly IUserAppService userService;
 
-        /// <summary>
-        /// The user context service for message translation.
-        /// </summary>
-        private readonly IUserContextService userContextService;
-
 #if UseHubForClientInMember || UseHubForClientInUser
         /// <summary>
         /// the client for hub (signalR) service.
@@ -59,13 +53,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// <param name="userService">The user application service.</param>
         /// <param name="memberService">The member application service.</param>
         /// <param name="teamAppService">The team service.</param>
-        /// <param name="userContextService">The user context service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
         public MembersController(
             IUserAppService userService,
             IMemberAppService memberService,
             ITeamAppService teamAppService,
-            IUserContextService userContextService,
             IClientForHubService clientForHubService)
 #else
         /// <summary>
@@ -74,11 +66,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// <param name="userService">The user application service.</param>
         /// <param name="memberService">The member application service.</param>
         /// <param name="teamAppService">The team service.</param>
-        /// <param name="userContextService">The user context service.</param>
         public MembersController(
             IUserAppService userService,
             IMemberAppService memberService,
-            IUserContextService userContextService,
             ITeamAppService teamAppService)
 #endif
             : base(teamAppService)
@@ -88,7 +78,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
 #endif
             this.memberService = memberService;
             this.userService = userService;
-            this.userContextService = userContextService;
         }
 
         /// <summary>

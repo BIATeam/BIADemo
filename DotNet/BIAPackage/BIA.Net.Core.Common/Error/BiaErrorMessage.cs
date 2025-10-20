@@ -7,9 +7,6 @@ namespace BIA.Net.Core.Common.Error
     using System;
     using System.Collections.Generic;
     using System.Collections.Immutable;
-    using System.Security.Principal;
-    using static BIA.Net.Core.Common.BiaRights;
-    using static System.Runtime.InteropServices.JavaScript.JSType;
 
     /// <summary>
     /// The class containing all the error message with the translations.
