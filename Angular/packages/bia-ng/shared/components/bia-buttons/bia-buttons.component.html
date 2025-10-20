@@ -1,27 +1,56 @@
 @for (item of buttons; track $index) {
   @if (item.separator) {
-    @if (!item.menuSeparator && item.visible) {
-      <p-divider class="fixed-buttons-separator" layout="vertical" />
+    @if (!item.menuOnlySeparator && item.visible !== false) {
+      <p-divider class="button-separator" layout="vertical" />
     }
-  } @else if (!item.items && item.visible) {
-    <button
-      pButton
-      [disabled]="item.disabled"
-      [class]="item.buttonClass"
-      [label]="item.labelAsTooltip ? '' : (item.label ?? '')"
-      (click)="item?.command({ originalEvent: $event, item })"
-      [pTooltip]="item.labelAsTooltip ? item.label : item.tooltip"
-      [tooltipPosition]="item.tooltipPosition ?? 'top'"
-      [icon]="item.icon ?? ''"></button>
-  } @else if (item.items && item.visible) {
-    <p-splitbutton
-      [outlined]="item.buttonClass === 'p-button-outlined'"
-      [class]="item.buttonClass"
-      [label]="item.labelAsTooltip ? '' : (item.label ?? '')"
-      (onClick)="item?.command({ originalEvent: $event, item })"
-      [pTooltip]="item.labelAsTooltip ? item.label : item.tooltip"
-      [tooltipPosition]="item.tooltipPosition ?? 'top'"
-      [icon]="item.icon ?? ''"
-      [model]="item.items"></p-splitbutton>
+  } @else if (!item.items && item.visible !== false) {
+    @if (item.withThrottleClick) {
+      <button
+        pButton
+        [disabled]="item.disabled"
+        [class]="
+          item.buttonOutlined
+            ? 'p-button-outlined ' + item.buttonClass
+            : item.buttonClass
+        "
+        [label]="item.labelAsTooltip ? '' : (item.label ?? '')"
+        biaThrottleEvent
+        #throttleDirective="biaThrottleEvent"
+        (click)="throttleDirective.forwardEvent($event)"
+        (throttledEvent)="item?.command({ originalEvent: $event, item })"
+        [pTooltip]="item.labelAsTooltip ? item.label : item.tooltip"
+        [tooltipPosition]="item.tooltipPosition ?? 'top'"
+        [icon]="item.icon ?? ''"></button>
+    } @else {
+      <button
+        pButton
+        [disabled]="item.disabled"
+        [class]="
+          item.buttonOutlined
+            ? 'p-button-outlined ' + item.buttonClass
+            : item.buttonClass
+        "
+        [label]="item.labelAsTooltip ? '' : (item.label ?? '')"
+        (click)="item?.command({ originalEvent: $event, item })"
+        [pTooltip]="item.labelAsTooltip ? item.label : item.tooltip"
+        [tooltipPosition]="item.tooltipPosition ?? 'top'"
+        [icon]="item.icon ?? ''"></button>
+    }
+  } @else if (item.items && item.visible !== false) {
+    <div>
+      <p-tieredmenu #menu [model]="item.items" [popup]="true" />
+      <button
+        pButton
+        [class]="
+          item.buttonOutlined
+            ? 'p-button-outlined ' + item.buttonClass
+            : item.buttonClass
+        "
+        [label]="item.labelAsTooltip ? '' : (item.label ?? '')"
+        (click)="menu.toggle($event)"
+        [pTooltip]="item.labelAsTooltip ? item.label : item.tooltip"
+        [tooltipPosition]="item.tooltipPosition ?? 'top'"
+        [icon]="item.icon ?? 'pi pi-angle-down'"></button>
+    </div>
   }
 }

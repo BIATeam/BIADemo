@@ -12,7 +12,7 @@ import { Menubar } from 'primeng/menubar';
 import { Tooltip } from 'primeng/tooltip';
 
 /**
- * @deprecated Use table header dataActionsMenuItems and/or tableActionsMenuItems instead
+ * @deprecated Use table header listActionsMenuItems and/or selectionActionsMenuItems instead to group your buttons with base table controller actions on small screen.
  */
 @Component({
   selector: 'bia-button-group',

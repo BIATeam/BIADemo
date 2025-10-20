@@ -81,13 +81,13 @@ export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
 
   protected initSelectedButtonGroup() {
     this.selectionActionsMenuItems = [
-      { separator: true },
       {
         label: this.translateService.instant('site.edit'),
         command: () => this.onEdit(this.selectedCrudItems[0].id),
         visible: this.canEdit,
         disabled: this.selectedCrudItems.length !== 1,
         tooltip: this.translateService.instant('site.edit'),
+        buttonOutlined: true,
       },
       // BIAToolKit - Begin SiteIndexTsChildTeamButton
       // BIAToolKit - End SiteIndexTsChildTeamButton
@@ -99,6 +99,7 @@ export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
           this.selectedCrudItems.length !== 1 ||
           !this.selectedCrudItems[0].canMemberListAccess,
         tooltip: this.translateService.instant('app.members'),
+        buttonOutlined: true,
       },
     ];
   }

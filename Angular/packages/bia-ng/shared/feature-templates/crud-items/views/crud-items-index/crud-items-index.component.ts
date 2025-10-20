@@ -31,7 +31,7 @@ import {
   KeyValuePair,
   PagingFilterFormatDto,
 } from 'packages/bia-ng/models/public-api';
-import { BiaButtonItem } from 'packages/bia-ng/shared/public-api';
+import { BiaButtonAndMenuItem } from 'packages/bia-ng/shared/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { MenuItem, PrimeTemplate } from 'primeng/api';
 import { TableLazyLoadEvent } from 'primeng/table';
@@ -144,15 +144,15 @@ export class CrudItemsIndexComponent<
   protected actions: Actions;
   protected messageService: BiaMessageService;
   /**
-   * @deprecated Use table header dataActionsMenuItems instead
+   * @deprecated Use table header selectionActionsMenuItems instead to group your buttons with base table controller actions on small screen.
    */
   protected selectedButtonGroup: BiaButtonGroupItem[];
   /**
-   * @deprecated Use table header tableActionsMenuItems instead
+   * @deprecated Use table header listActionsMenuItems instead to group your buttons with base table controller actions on small screen.
    */
   protected listButtonGroup: BiaButtonGroupItem[];
   protected customButtonGroup: BiaButtonGroupItem[];
-  protected selectionActionsMenuItems: BiaButtonItem[];
+  protected selectionActionsMenuItems: BiaButtonAndMenuItem[];
   protected listActionsMenuItems: MenuItem[];
 
   constructor(

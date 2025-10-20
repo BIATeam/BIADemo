@@ -1,5 +1,6 @@
 export * from './app-settings';
 export * from './auth-info';
+export * from './bia-button-and-menu-item';
 export * from './bia-field-config';
 export * from './bia-form-layout-config';
 export * from './bia-navigation';

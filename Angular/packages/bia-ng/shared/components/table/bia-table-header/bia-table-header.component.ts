@@ -9,6 +9,7 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
   Output,
   QueryList,
   SimpleChanges,
@@ -18,14 +19,15 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { BiaDialogService } from 'packages/bia-ng/core/public-api';
+import { BiaButtonAndMenuItem } from 'packages/bia-ng/models/public-api';
 import { Confirmation, ConfirmationService, PrimeTemplate } from 'primeng/api';
-import { Button, ButtonDirective } from 'primeng/button';
+import { Button } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
-import { Divider } from 'primeng/divider';
 import { MenuModule } from 'primeng/menu';
+import { TieredMenu } from 'primeng/tieredmenu';
 import { Tooltip } from 'primeng/tooltip';
-import { ThrottleEventDirective } from '../../../directives/throttle-click.directive';
-import { BiaButtonItem, BiaButtonsComponent } from '../../public-api';
+import { SortByPropertyPipe } from '../../../pipes/sort-by-property.pipe';
+import { BiaButtonsComponent } from '../../bia-buttons/bia-buttons.component';
 
 @Component({
   selector: 'bia-table-header',
@@ -37,18 +39,17 @@ import { BiaButtonItem, BiaButtonsComponent } from '../../public-api';
     NgIf,
     Button,
     Tooltip,
-    ButtonDirective,
     BiaButtonsComponent,
-    Divider,
     NgTemplateOutlet,
     ConfirmDialog,
     TranslateModule,
     MenuModule,
-    ThrottleEventDirective,
+    TieredMenu,
+    SortByPropertyPipe,
   ],
 })
 export class BiaTableHeaderComponent
-  implements OnChanges, AfterContentInit, OnDestroy
+  implements OnChanges, AfterContentInit, OnDestroy, OnInit
 {
   @Input() canAdd = true;
   @Input() canClone = false;
@@ -65,8 +66,8 @@ export class BiaTableHeaderComponent
   @Input() tableControllerVisible = false;
   @Input() showFixedButtons = false;
   @Input() showHistoricalButton = false;
-  @Input() selectionActionsMenuItems?: BiaButtonItem[];
-  @Input() listActionsMenuItems?: BiaButtonItem[];
+  @Input() selectionActionsMenuItems?: BiaButtonAndMenuItem[];
+  @Input() listActionsMenuItems?: BiaButtonAndMenuItem[];
   @Output() create = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
   @Output() clone = new EventEmitter<void>();
@@ -90,13 +91,11 @@ export class BiaTableHeaderComponent
   selectionActions: ActionMenuItems = {
     compact: false,
     actionList: [],
-    customActionList: [],
     hasVisibleAction: false,
   };
   listActions: ActionMenuItems = {
     compact: false,
     actionList: [],
-    customActionList: [],
     hasVisibleAction: false,
   };
 
@@ -118,6 +117,11 @@ export class BiaTableHeaderComponent
     protected transationService: TranslateService
   ) {}
 
+  ngOnInit(): void {
+    this.processSelectionActions();
+    this.processListActions();
+  }
+
   ngAfterContentInit() {
     this.templates.forEach(item => {
       switch (item.getType()) {
@@ -132,8 +136,6 @@ export class BiaTableHeaderComponent
           break;
       }
     });
-    this.processSelectionActions();
-    this.processListActions();
     setTimeout(() => {
       this.initParentContainerResizeObserver();
     }, 500);
@@ -229,6 +231,9 @@ export class BiaTableHeaderComponent
   }
 
   protected processSelectionActions() {
+    this.selectionActionsMenuItems?.forEach(item => {
+      item.order = item.order ?? 1000;
+    });
     this.selectionActions.actionList = [
       {
         label: this.transationService.instant('bia.delete'),
@@ -237,24 +242,31 @@ export class BiaTableHeaderComponent
         command: () => this.onDelete(),
         disabled: this.isDeleteButtonDisabled,
         visible: this.canDelete,
+        order: 10,
       },
       {
         label: this.transationService.instant('bia.historical'),
         icon: 'pi pi-history',
-        buttonClass: 'p-button-outlined',
         command: () => this.onShowHistorical(),
         disabled: this.nbSelectedElements !== 1,
         visible: this.showHistoricalButton,
+        buttonOutlined: true,
+        order: 20,
       },
       {
         label: this.transationService.instant('bia.clone'),
         icon: 'pi pi-copy',
-        buttonClass: 'p-button-outlined',
         command: () => this.onClone(),
         disabled: this.nbSelectedElements !== 1,
         visible: this.canClone,
+        buttonOutlined: true,
+        order: 30,
       },
-      { separator: true, visible: this.showFixedButtons && this.canFix },
+      {
+        separator: true,
+        visible: this.showFixedButtons && this.canFix,
+        order: 40,
+      },
       {
         label: this.transationService.instant('bia.fix'),
         labelAsTooltip: true,
@@ -262,23 +274,32 @@ export class BiaTableHeaderComponent
         command: () => this.onFixedChanged(true),
         disabled: this.nbSelectedElements !== 1 || this.isSelectedElementFixed,
         visible: this.showFixedButtons && this.canFix,
+        order: 41,
       },
       {
         label: this.transationService.instant('bia.unfix'),
         labelAsTooltip: true,
         icon: 'pi pi-unlock',
-        buttonClass: 'p-button-outlined',
         command: () => this.onFixedChanged(false),
         disabled: this.nbSelectedElements !== 1 || !this.isSelectedElementFixed,
         visible: this.showFixedButtons && this.canFix,
+        buttonOutlined: true,
+        order: 42,
       },
+      {
+        separator: true,
+        visible: this.showFixedButtons && this.canFix,
+        order: 43,
+      },
+      ...(this.selectionActionsMenuItems ?? []),
     ];
-    this.selectionActions.customActionList =
-      this.selectionActionsMenuItems ?? [];
     this.processActions(this.selectionActions);
   }
 
   protected processListActions() {
+    this.listActionsMenuItems?.forEach(item => {
+      item.order = item.order ?? 1000;
+    });
     this.listActions.actionList = [
       {
         label: this.transationService.instant('bia.add'),
@@ -288,44 +309,60 @@ export class BiaTableHeaderComponent
           this.onCreate();
         },
         visible: this.canAdd,
+        order: 10,
       },
-      { separator: true },
       {
-        buttonClass: 'p-button-outlined',
-        icon: 'pi pi-plus',
-        label: this.transationService.instant('bia.import'),
-        command: () => this.import.next(),
+        separator: true,
+        menuOnlySeparator: true,
+        order: 20,
+      },
+      {
+        label: this.transationService.instant('bia.bulkImport'),
         visible: this.displayImportButton(),
+        buttonOutlined: true,
+        order: 21,
         items: [
           {
-            buttonClass: 'p-button-outlined',
+            icon: 'pi pi-plus',
+            label: this.transationService.instant('bia.import'),
+            command: () => this.import.next(),
+            visible: this.displayImportButton(),
+            buttonOutlined: true,
+          },
+          {
             icon: 'pi pi-download',
             label: this.transationService.instant('bia.export'),
             command: () => this.fullExportCSV.emit(),
             visible: this.displayImportButton(),
+            buttonOutlined: true,
           },
         ],
       },
-      { separator: true },
       {
-        buttonClass: 'p-button-outlined',
-        label: this.transationService.instant('bia.back'),
-        command: () => this.onBack(),
-        visible: this.canBack,
+        separator: true,
+        menuOnlySeparator: true,
+        order: 30,
       },
-
-      { separator: true },
       {
-        buttonClass: 'p-button-outlined',
         icon: 'pi pi-download',
         label: 'CSV',
         command: () => this.exportCSV.emit(),
         visible: this.canExportCSV,
+        withThrottleClick: true,
+        buttonOutlined: true,
+        order: 31,
+      },
+      { separator: true, order: 50 },
+      {
+        label: this.transationService.instant('bia.back'),
+        command: () => this.onBack(),
+        visible: this.canBack,
+        buttonOutlined: true,
+        order: 51,
       },
       ...(this.listActionsMenuItems ?? []),
     ];
 
-    this.listActions.customActionList = this.listActionsMenuItems ?? [];
     this.processActions(this.listActions);
   }
 
@@ -333,30 +370,31 @@ export class BiaTableHeaderComponent
     actionMenuItems.hasVisibleAction = false;
 
     let lastSeparatorIndex = -1;
-    let allActions = [
-      ...actionMenuItems.actionList,
-      ...actionMenuItems.customActionList,
-    ];
-    allActions.forEach((action, index) => {
+    actionMenuItems.actionList.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    actionMenuItems.actionList.forEach((action, index) => {
       if (!action.separator && action.visible) {
         actionMenuItems.hasVisibleAction = true;
       }
 
-      if (action.separator) {
-        const hasVisibleBefore = allActions
+      if (action.separator && action.visible !== false) {
+        const hasVisibleBefore = actionMenuItems.actionList
           .slice(lastSeparatorIndex + 1, index)
           .some(a => !a.separator && a.visible);
-        const nextSeparatorIndex = allActions.findIndex(
+        const nextSeparatorIndex = actionMenuItems.actionList.findIndex(
           (a, i) => a.separator && i > index
         );
         const endIndex =
-          nextSeparatorIndex === -1 ? allActions.length : nextSeparatorIndex;
-        const hasVisibleAfter = allActions
+          nextSeparatorIndex === -1
+            ? actionMenuItems.actionList.length
+            : nextSeparatorIndex;
+        const hasVisibleAfter = actionMenuItems.actionList
           .slice(index + 1, endIndex)
           .some(a => !a.separator && a.visible);
         action.visible = hasVisibleBefore && hasVisibleAfter;
 
-        lastSeparatorIndex = index;
+        if (action.visible) {
+          lastSeparatorIndex = index;
+        }
       }
     });
   }
@@ -420,7 +458,6 @@ export class BiaTableHeaderComponent
 export interface ActionMenuItems {
   containerWidth?: number;
   compact: boolean;
-  actionList: BiaButtonItem[];
-  customActionList: BiaButtonItem[];
+  actionList: BiaButtonAndMenuItem[];
   hasVisibleAction: boolean;
 }

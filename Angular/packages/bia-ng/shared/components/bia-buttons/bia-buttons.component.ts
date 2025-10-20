@@ -1,24 +1,23 @@
 import { Component, Input } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { BiaButtonAndMenuItem } from 'packages/bia-ng/models/public-api';
 import { ButtonDirective } from 'primeng/button';
 import { Divider } from 'primeng/divider';
-import { SplitButton } from 'primeng/splitbutton';
+import { TieredMenu } from 'primeng/tieredmenu';
 import { Tooltip } from 'primeng/tooltip';
+import { ThrottleEventDirective } from '../../directives/throttle-click.directive';
 
 @Component({
   selector: 'bia-buttons',
   templateUrl: './bia-buttons.component.html',
   styleUrls: ['./bia-buttons.component.scss'],
-  imports: [ButtonDirective, Tooltip, SplitButton, Divider],
+  imports: [
+    ButtonDirective,
+    Tooltip,
+    Divider,
+    ThrottleEventDirective,
+    TieredMenu,
+  ],
 })
 export class BiaButtonsComponent {
-  @Input() buttons: BiaButtonItem[];
-}
-
-export interface BiaButtonItem extends MenuItem {
-  labelAsTooltip?: boolean;
-  buttonClass?: string;
-  menuSeparator?: boolean;
-  order?: number;
-  withThrottleClick?: boolean;
+  @Input() buttons: BiaButtonAndMenuItem[];
 }

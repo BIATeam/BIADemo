@@ -120,6 +120,7 @@ export class AircraftMaintenanceCompaniesIndexComponent
         tooltip: this.translateService.instant(
           'aircraftMaintenanceCompany.edit'
         ),
+        buttonOutlined: true,
       },
       // BIAToolKit - Begin AircraftMaintenanceCompanyIndexTsChildTeamButton
       // Begin BIAToolKit Generation Ignore
@@ -134,6 +135,7 @@ export class AircraftMaintenanceCompaniesIndexComponent
         tooltip: this.translateService.instant(
           'aircraftMaintenanceCompany.maintenanceTeams'
         ),
+        buttonOutlined: true,
       },
       // BIAToolKit - End Partial AircraftMaintenanceCompanyIndexTsChildTeamButton MaintenanceTeam
       // End BIAToolKit Generation Ignore
@@ -146,6 +148,7 @@ export class AircraftMaintenanceCompaniesIndexComponent
           this.selectedCrudItems.length !== 1 ||
           !this.selectedCrudItems[0].canMemberListAccess,
         tooltip: this.translateService.instant('app.members'),
+        buttonOutlined: true,
       },
     ];
   }

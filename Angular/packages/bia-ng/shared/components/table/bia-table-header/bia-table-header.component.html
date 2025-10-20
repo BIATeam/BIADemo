@@ -5,20 +5,19 @@
     #selectionActionsDiv
     class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
     @if (selectionActions.hasVisibleAction && selectionActions.compact) {
-      <p-menu #menuData [model]="selectionActions.actionList" [popup]="true" />
+      <p-tieredmenu
+        #menuData
+        [model]="selectionActions.actionList | sortByProperty: 'order'"
+        [popup]="true" />
       <p-button
         label="{{ 'bia.selectionActions' | translate }}"
         icon="pi pi-angle-down"
         (click)="menuData.toggle($event)" />
     } @else {
-      <bia-buttons [buttons]="selectionActions.actionList"></bia-buttons>
-    }
-    @if (
-      selectionActionsMenuItems &&
-      selectionActionsMenuItems.length &&
-      !selectionActions.compact
-    ) {
-      <bia-buttons [buttons]="selectionActionsMenuItems"></bia-buttons>
+      <bia-buttons
+        [buttons]="
+          selectionActions.actionList | sortByProperty: 'order'
+        "></bia-buttons>
     }
     <ng-container *ngTemplateOutlet="actionOnSelectedTemplate"></ng-container>
   </div>
@@ -45,15 +44,11 @@
     #listActionsDiv
     class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
     <ng-container *ngTemplateOutlet="actionOnListTemplate"></ng-container>
-    @if (
-      listActionsMenuItems &&
-      listActionsMenuItems.length &&
-      !listActions.compact
-    ) {
-      <bia-buttons [buttons]="listActionsMenuItems"></bia-buttons>
-    }
     @if (listActions.hasVisibleAction && listActions.compact) {
-      <p-menu #menuTable [model]="listActions.actionList" [popup]="true" />
+      <p-tieredmenu
+        #menuTable
+        [model]="listActions.actionList | sortByProperty: 'order'"
+        [popup]="true" />
       <p-button
         label="{{ 'bia.listActions' | translate }}"
         icon="pi pi-angle-down"
@@ -61,7 +56,9 @@
         (click)="menuTable.toggle($event)" />
     } @else {
       <bia-buttons
-        [buttons]="listActions.actionList.slice().reverse()"></bia-buttons>
+        [buttons]="
+          listActions.actionList | sortByProperty: 'order' : false
+        "></bia-buttons>
     }
   </div>
 </div>

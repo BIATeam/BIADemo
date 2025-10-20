@@ -117,6 +117,7 @@ export class MaintenanceTeamsIndexComponent
         visible: this.canEdit,
         disabled: this.selectedCrudItems.length !== 1,
         tooltip: this.translateService.instant('maintenanceTeam.edit'),
+        buttonOutlined: true,
       },
       // BIAToolKit - Begin MaintenanceTeamIndexTsChildTeamButton
       // BIAToolKit - End MaintenanceTeamIndexTsChildTeamButton
@@ -128,6 +129,7 @@ export class MaintenanceTeamsIndexComponent
           this.selectedCrudItems.length !== 1 ||
           !this.selectedCrudItems[0].canMemberListAccess,
         tooltip: this.translateService.instant('app.members'),
+        buttonOutlined: true,
       },
     ];
   }
