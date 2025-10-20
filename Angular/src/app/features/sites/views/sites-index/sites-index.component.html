@@ -17,25 +17,6 @@
       [tableControllerVisible]="showTableController"
       (toggleTableControllerVisibility)="toggleTableControllerVisibility()"
       [selectionActionsMenuItems]="selectionActionsMenuItems">
-      <ng-template pTemplate="actionOnSelected">
-        <button
-          pButton
-          [disabled]="selectedCrudItems.length !== 1"
-          *ngIf="canEdit"
-          class="p-button-outlined"
-          label="{{ 'site.edit' | translate }}"
-          (click)="onEdit(selectedCrudItems[0].id)"></button>
-        <button
-          pButton
-          [disabled]="
-            selectedCrudItems.length !== 1 ||
-            !selectedCrudItems[0].canMemberListAccess
-          "
-          *ngIf="canViewMembers"
-          class="p-button-outlined"
-          label="{{ 'app.members' | translate }}"
-          (click)="onViewMembers(selectedCrudItems[0].id)"></button>
-      </ng-template>
     </bia-table-header>
     <bia-table-controller
       [ngClass]="{ 'table-controller-hidden': !showTableController }"

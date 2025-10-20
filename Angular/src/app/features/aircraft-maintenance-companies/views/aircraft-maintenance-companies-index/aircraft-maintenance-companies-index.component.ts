@@ -13,8 +13,6 @@ import {
   TeamAdvancedFilterComponent,
 } from 'packages/bia-ng/shared/public-api';
 import { PrimeTemplate } from 'primeng/api';
-import { ButtonDirective } from 'primeng/button';
-import { Tooltip } from 'primeng/tooltip';
 import { Permission } from 'src/app/shared/permission';
 import { aircraftMaintenanceCompanyCRUDConfiguration } from '../../aircraft-maintenance-company.constants';
 import { AircraftMaintenanceCompanyTableComponent } from '../../components/aircraft-maintenance-company-table/aircraft-maintenance-company-table.component';
@@ -31,8 +29,6 @@ import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maint
     NgIf,
     AircraftMaintenanceCompanyTableComponent,
     AsyncPipe,
-    ButtonDirective,
-    Tooltip,
     TranslateModule,
     TeamAdvancedFilterComponent,
     BiaTableHeaderComponent,
@@ -124,6 +120,7 @@ export class AircraftMaintenanceCompaniesIndexComponent
         tooltip: this.translateService.instant(
           'aircraftMaintenanceCompany.edit'
         ),
+        buttonOutlined: true,
       },
       // BIAToolKit - Begin AircraftMaintenanceCompanyIndexTsChildTeamButton
       // Begin BIAToolKit Generation Ignore
@@ -138,6 +135,7 @@ export class AircraftMaintenanceCompaniesIndexComponent
         tooltip: this.translateService.instant(
           'aircraftMaintenanceCompany.maintenanceTeams'
         ),
+        buttonOutlined: true,
       },
       // BIAToolKit - End Partial AircraftMaintenanceCompanyIndexTsChildTeamButton MaintenanceTeam
       // End BIAToolKit Generation Ignore
@@ -150,6 +148,7 @@ export class AircraftMaintenanceCompaniesIndexComponent
           this.selectedCrudItems.length !== 1 ||
           !this.selectedCrudItems[0].canMemberListAccess,
         tooltip: this.translateService.instant('app.members'),
+        buttonOutlined: true,
       },
     ];
   }
