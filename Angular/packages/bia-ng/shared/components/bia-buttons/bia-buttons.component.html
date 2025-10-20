@@ -1,12 +1,27 @@
 @for (item of buttons; track $index) {
-  <button
-    pButton
-    [disabled]="item.disabled"
-    *ngIf="item.visible"
-    [class]="item.buttonClass ?? 'p-button-outlined'"
-    [label]="item.label ?? ''"
-    (click)="item?.command({ originalEvent: $event, item })"
-    [pTooltip]="item.tooltip"
-    [tooltipPosition]="item.tooltipPosition ?? 'top'"
-    [icon]="item.icon ?? ''"></button>
+  @if (item.separator) {
+    @if (!item.menuSeparator && item.visible) {
+      <p-divider class="fixed-buttons-separator" layout="vertical" />
+    }
+  } @else if (!item.items && item.visible) {
+    <button
+      pButton
+      [disabled]="item.disabled"
+      [class]="item.buttonClass"
+      [label]="item.labelAsTooltip ? '' : (item.label ?? '')"
+      (click)="item?.command({ originalEvent: $event, item })"
+      [pTooltip]="item.labelAsTooltip ? item.label : item.tooltip"
+      [tooltipPosition]="item.tooltipPosition ?? 'top'"
+      [icon]="item.icon ?? ''"></button>
+  } @else if (item.items && item.visible) {
+    <p-splitbutton
+      [outlined]="item.buttonClass === 'p-button-outlined'"
+      [class]="item.buttonClass"
+      [label]="item.labelAsTooltip ? '' : (item.label ?? '')"
+      (onClick)="item?.command({ originalEvent: $event, item })"
+      [pTooltip]="item.labelAsTooltip ? item.label : item.tooltip"
+      [tooltipPosition]="item.tooltipPosition ?? 'top'"
+      [icon]="item.icon ?? ''"
+      [model]="item.items"></p-splitbutton>
+  }
 }

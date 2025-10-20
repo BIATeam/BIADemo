@@ -29,15 +29,7 @@
       [selectionActionsMenuItems]="selectionActionsMenuItems">
       <!-- Begin BIAToolKit Generation Ignore -->
       <!-- BIAToolKit - Begin Partial PlaneIndexHtml Engine -->
-      <ng-template pTemplate="actionOnSelected">
-        <button
-          *ngIf="canViewEngines"
-          pButton
-          [disabled]="selectedCrudItems.length !== 1"
-          class="p-button-outlined"
-          label="{{ 'plane.engines' | translate }}"
-          (click)="onViewEngines(selectedCrudItems[0].id)"></button>
-      </ng-template>
+      <ng-template pTemplate="actionOnSelected"></ng-template>
       <!-- BIAToolKit - End Partial PlaneIndexHtml Engine -->
       <!-- End BIAToolKit Generation Ignore -->
       <!-- BIAToolKit - Begin PlaneIndexHtml -->

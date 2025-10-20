@@ -13,8 +13,6 @@ import {
   TeamAdvancedFilterComponent,
 } from 'packages/bia-ng/shared/public-api';
 import { PrimeTemplate } from 'primeng/api';
-import { ButtonDirective } from 'primeng/button';
-import { Tooltip } from 'primeng/tooltip';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { Permission } from 'src/app/shared/permission';
 import { MaintenanceTeamTableComponent } from '../../components/maintenance-team-table/maintenance-team-table.component';
@@ -31,8 +29,6 @@ import { MaintenanceTeamService } from '../../services/maintenance-team.service'
     NgClass,
     PrimeTemplate,
     NgIf,
-    ButtonDirective,
-    Tooltip,
     MaintenanceTeamTableComponent,
     AsyncPipe,
     TranslateModule,

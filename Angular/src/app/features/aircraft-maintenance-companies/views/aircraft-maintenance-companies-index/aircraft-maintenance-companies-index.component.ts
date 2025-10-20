@@ -4,7 +4,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from 'packages/bia-ng/core/public-api';
 import { TeamAdvancedFilterDto } from 'packages/bia-ng/models/public-api';
 import {
-  BiaButtonsComponent,
   BiaTableBehaviorControllerComponent,
   BiaTableComponent,
   BiaTableControllerComponent,
@@ -30,7 +29,6 @@ import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maint
     NgIf,
     AircraftMaintenanceCompanyTableComponent,
     AsyncPipe,
-    BiaButtonsComponent,
     TranslateModule,
     TeamAdvancedFilterComponent,
     BiaTableHeaderComponent,

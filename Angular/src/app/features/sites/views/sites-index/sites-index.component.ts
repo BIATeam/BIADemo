@@ -13,7 +13,6 @@ import {
   TeamAdvancedFilterComponent,
 } from 'packages/bia-ng/shared/public-api';
 import { PrimeTemplate } from 'primeng/api';
-import { ButtonDirective } from 'primeng/button';
 import { Permission } from 'src/app/shared/permission';
 import { SiteTableComponent } from '../../components/site-table/site-table.component';
 import { Site } from '../../model/site';
@@ -29,7 +28,6 @@ import { siteCRUDConfiguration } from '../../site.constants';
     NgClass,
     PrimeTemplate,
     SiteTableComponent,
-    ButtonDirective,
     AsyncPipe,
     TranslateModule,
     TeamAdvancedFilterComponent,

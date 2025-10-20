@@ -11,57 +11,13 @@
         icon="pi pi-angle-down"
         (click)="menuData.toggle($event)" />
     } @else {
-      <button
-        type="button"
-        pButton
-        [disabled]="isDeleteButtonDisabled"
-        *ngIf="canDelete"
-        icon="pi pi-trash"
-        pTooltip="{{ 'bia.delete' | translate }}"
-        tooltipPosition="top"
-        (click)="onDelete()"></button>
-      <button
-        type="button"
-        pButton
-        [disabled]="nbSelectedElements !== 1"
-        *ngIf="showHistoricalButton"
-        class="p-button-outlined"
-        icon="pi pi-history"
-        pTooltip="{{ 'bia.historical' | translate }}"
-        tooltipPosition="top"
-        (click)="onShowHistorical()"></button>
-      <button
-        type="button"
-        *ngIf="canClone"
-        pButton
-        [disabled]="nbSelectedElements !== 1"
-        class="p-button-outlined"
-        label="{{ 'bia.clone' | translate }}"
-        icon="pi pi-copy"
-        (click)="onClone()"></button>
-      <ng-container *ngIf="showFixedButtons && canFix">
-        <p-divider class="fixed-buttons-separator" layout="vertical" />
-        <button
-          type="button"
-          pButton
-          [disabled]="nbSelectedElements !== 1 || isSelectedElementFixed"
-          icon="pi pi-lock"
-          pTooltip="{{ 'bia.fix' | translate }}"
-          tooltipPosition="top"
-          (click)="onFixedChanged(true)"></button>
-        <button
-          type="button"
-          pButton
-          [disabled]="nbSelectedElements !== 1 || !isSelectedElementFixed"
-          icon="pi pi-unlock"
-          pTooltip="{{ 'bia.unfix' | translate }}"
-          tooltipPosition="top"
-          class="p-button-outlined"
-          (click)="onFixedChanged(false)"></button>
-        <p-divider class="fixed-buttons-separator" layout="vertical" />
-      </ng-container>
+      <bia-buttons [buttons]="selectionActions.actionList"></bia-buttons>
     }
-    @if (selectionActionsMenuItems?.length && !selectionActions.compact) {
+    @if (
+      selectionActionsMenuItems &&
+      selectionActionsMenuItems.length &&
+      !selectionActions.compact
+    ) {
       <bia-buttons [buttons]="selectionActionsMenuItems"></bia-buttons>
     }
     <ng-container *ngTemplateOutlet="actionOnSelectedTemplate"></ng-container>
@@ -88,64 +44,24 @@
   <div
     #listActionsDiv
     class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
-    @if (!listActionsMenuItems || !listActions.compact) {
-      <ng-container *ngTemplateOutlet="actionOnListTemplate"></ng-container>
+    <ng-container *ngTemplateOutlet="actionOnListTemplate"></ng-container>
+    @if (
+      listActionsMenuItems &&
+      listActionsMenuItems.length &&
+      !listActions.compact
+    ) {
+      <bia-buttons [buttons]="listActionsMenuItems"></bia-buttons>
     }
     @if (listActions.hasVisibleAction && listActions.compact) {
-      <p-menu
-        #menuTable
-        [model]="listActions.actionList"
-        [popup]="true" /><p-button
+      <p-menu #menuTable [model]="listActions.actionList" [popup]="true" />
+      <p-button
         label="{{ 'bia.listActions' | translate }}"
         icon="pi pi-angle-down"
         iconPos="right"
         (click)="menuTable.toggle($event)" />
     } @else {
-      <button
-        type="button"
-        pButton
-        class="p-button-outlined"
-        label="{{ 'bia.back' | translate }}"
-        (click)="onBack()"
-        *ngIf="canBack"></button>
-      <button
-        type="button"
-        pButton
-        biaThrottleEvent
-        *ngIf="canExportCSV"
-        class="p-button-outlined"
-        icon="pi pi-download"
-        label="CSV"
-        #throttleDirective="biaThrottleEvent"
-        (click)="throttleDirective.forwardEvent($event)"
-        (throttledEvent)="exportCSV.emit()"></button>
-      <button
-        type="button"
-        pButton
-        biaThrottleEvent
-        *ngIf="displayImportButton()"
-        class="p-button-outlined"
-        icon="pi pi-download"
-        label="{{ 'bia.export' | translate }}"
-        #throttleDirective="biaThrottleEvent"
-        (click)="throttleDirective.forwardEvent($event)"
-        (throttledEvent)="fullExportCSV.emit()"></button>
-      <button
-        type="button"
-        pButton
-        *ngIf="displayImportButton()"
-        icon="pi pi-plus"
-        class="p-button-outlined"
-        label="{{ 'bia.import' | translate }}"
-        (click)="import.next()"></button>
-      <button
-        type="button"
-        pButton
-        *ngIf="canAdd"
-        icon="pi pi-plus"
-        pTooltip="{{ 'bia.add' | translate }}"
-        tooltipPosition="top"
-        (click)="onCreate()"></button>
+      <bia-buttons
+        [buttons]="listActions.actionList.slice().reverse()"></bia-buttons>
     }
   </div>
 </div>

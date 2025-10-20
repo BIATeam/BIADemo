@@ -11,7 +11,6 @@ import {
   CrudItemsIndexComponent,
 } from 'packages/bia-ng/shared/public-api';
 import { MenuItem, PrimeTemplate } from 'primeng/api';
-import { ButtonDirective } from 'primeng/button';
 import { Permission } from 'src/app/shared/permission';
 import { PlaneTableComponent } from '../../components/plane-table/plane-table.component';
 import { Plane } from '../../model/plane';
@@ -27,7 +26,6 @@ import { PlaneService } from '../../services/plane.service';
     NgClass,
     PrimeTemplate,
     NgIf,
-    ButtonDirective,
     PlaneTableComponent,
     AsyncPipe,
     TranslateModule,
@@ -75,9 +73,9 @@ export class PlanesIndexComponent
     // BIAToolKit - Begin PlaneIndexTsCanViewChildSet
     // Begin BIAToolKit Generation Ignore
     // BIAToolKit - Begin Partial PlaneIndexTsCanViewChildSet Engine
-    // this.canViewEngines = this.authService.hasPermission(
-    //   Permission.Engine_List_Access
-    // );
+    this.canViewEngines = this.authService.hasPermission(
+      Permission.Engine_List_Access
+    );
     this.canSelect = this.canSelect || this.canViewEngines;
     // BIAToolKit - End Partial PlaneIndexTsCanViewChildSet Engine
     // End BIAToolKit Generation Ignore

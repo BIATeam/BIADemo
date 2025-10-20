@@ -24,11 +24,6 @@
         crudItemService.updateFixedStatus($event.crudItemId, $event.fixed)
       "
       [selectionActionsMenuItems]="selectionActionsMenuItems">
-      <ng-template pTemplate="actionOnSelected">
-        @if (selectionActionsMenuItems.length) {
-          <bia-buttons [buttons]="selectionActionsMenuItems"></bia-buttons>
-        }
-      </ng-template>
     </bia-table-header>
     <bia-table-controller
       [ngClass]="{ 'table-controller-hidden': !showTableController }"
