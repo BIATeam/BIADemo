@@ -1,24 +1,18 @@
-﻿// <copyright file="ErrorTranslation.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+﻿// <copyright file="BiaErrorTranslation.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Error
+namespace BIA.Net.Core.Common.Error
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
     /// <summary>
     /// Class that contains the translation for an error on a language.
     /// </summary>
-    public class ErrorTranslation
+    public sealed class BiaErrorTranslation
     {
         /// <summary>
-        /// Gets or sets the role id.
+        /// Gets or sets the error id.
         /// </summary>
-        public ErrorId ErrorId { get; set; }
+        public int ErrorId { get; set; }
 
         /// <summary>
         /// Gets or sets the language id.

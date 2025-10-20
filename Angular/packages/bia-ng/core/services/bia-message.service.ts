@@ -2,6 +2,7 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
+import { isHttpErrorReport } from '../../models/http-error-report';
 import {
   Notification,
   NotificationType,
@@ -57,6 +58,8 @@ export class BiaMessageService {
       let errorMessage: string;
       if (err.error instanceof Blob) {
         errorMessage = await err.error.text();
+      } else if (isHttpErrorReport(err.error)) {
+        errorMessage = err.error.errorMessage;
       } else {
         errorMessage = err.error;
       }
