@@ -61,8 +61,16 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   ];
   translations: any;
   views: View[];
-  selectedView: number = undefinedView;
-  selectedViewName: string | null = null;
+
+  _selectedView: number = undefinedView;
+  set selectedView(value: number) {
+    this._selectedView = value;
+    this.viewNameChange.emit(this.getCurrentViewName());
+  }
+  get selectedView(): number {
+    return this._selectedView;
+  }
+
   defaultView: number;
   urlView: number | null = null;
   protected sub = new Subscription();
@@ -159,8 +167,6 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
 
   protected autoSelectView(tableStateStr: string) {
     this.selectedView = this.getCorrespondingViewId(tableStateStr);
-    this.selectedViewName = this.getCurrentViewName();
-    this.viewNameChange.emit(this.selectedViewName);
   }
 
   public getCurrentViewName(): string | null {
@@ -456,7 +462,6 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
         this.isFirstEmitDone = true;
         setTimeout(() => {
           this.viewChange.emit(preference);
-          this.viewNameChange.emit(this.getCurrentViewName());
         });
       }
     } else {
@@ -470,18 +475,12 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
           this.isFirstEmitDone = true;
           setTimeout(() => {
             this.viewChange.emit(view.preference);
-            this.viewNameChange.emit(this.getCurrentViewName());
-          });
-        } else {
-          setTimeout(() => {
-            this.viewNameChange.emit(this.getCurrentViewName());
           });
         }
       } else {
         this.isFirstEmitDone = true;
         setTimeout(() => {
           this.viewChange.emit(JSON.stringify(this.defaultViewPref));
-          this.viewNameChange.emit(this.getCurrentViewName());
         });
       }
     }
