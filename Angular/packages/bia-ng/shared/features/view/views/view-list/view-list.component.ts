@@ -61,8 +61,16 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   ];
   translations: any;
   views: View[];
-  selectedView: number = undefinedView;
-  selectedViewName: string | null = null;
+
+  _selectedView: number = undefinedView;
+  set selectedView(value: number) {
+    this._selectedView = value;
+    this.viewNameChange.emit(this.getCurrentViewName());
+  }
+  get selectedView(): number {
+    return this._selectedView;
+  }
+
   defaultView: number;
   urlView: number | null = null;
   protected sub = new Subscription();
@@ -73,6 +81,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   @Input() displayedColumns: string[];
   @Input() columns: KeyValuePair[];
   @Output() viewChange = new EventEmitter<string>();
+  @Output() viewNameChange = new EventEmitter<string | null>();
 
   constructor(
     protected store: Store<BiaAppState>,
@@ -158,7 +167,6 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
 
   protected autoSelectView(tableStateStr: string) {
     this.selectedView = this.getCorrespondingViewId(tableStateStr);
-    this.selectedViewName = this.getCurrentViewName();
   }
 
   public getCurrentViewName(): string | null {
