@@ -160,7 +160,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   protected autoSelectView(tableStateStr: string) {
     this.selectedView = this.getCorrespondingViewId(tableStateStr);
     this.selectedViewName = this.getCurrentViewName();
-    this.viewNameChange.emit(this.getCurrentViewName());
+    this.viewNameChange.emit(this.selectedViewName);
   }
 
   public getCurrentViewName(): string | null {
