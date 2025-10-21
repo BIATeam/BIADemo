@@ -12,7 +12,7 @@ import {
   DomainUserOptionsActions,
   DomainUserOptionsStore,
 } from 'packages/bia-ng/domains/public-api';
-import { TeamTypeId } from 'packages/bia-ng/models/enum/public-api';
+import { BiaTeamTypeId } from 'packages/bia-ng/models/enum/public-api';
 import { OptionDto } from 'packages/bia-ng/models/public-api';
 import {
   CrudItemOptionsService,
@@ -75,7 +75,7 @@ export class NotificationOptionsService extends CrudItemOptionsService {
   loadAllOptions() {
     this.store.dispatch(DomainNotificationTypeOptionsActions.loadAll());
     this.store.dispatch(
-      DomainRoleOptionsActions.loadAll({ teamTypeId: TeamTypeId.All })
+      DomainRoleOptionsActions.loadAll({ teamTypeId: BiaTeamTypeId.All })
     );
     this.store.dispatch(DomainUserOptionsActions.loadAll());
     this.store.dispatch(DomainLanguageOptionsActions.loadAll());

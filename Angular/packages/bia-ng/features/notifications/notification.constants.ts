@@ -1,4 +1,4 @@
-import { TeamTypeId } from 'packages/bia-ng/models/enum/public-api';
+import { BiaTeamTypeId } from 'packages/bia-ng/models/enum/public-api';
 import { CrudConfig } from 'packages/bia-ng/shared/public-api';
 import {
   notificationFieldsConfiguration,
@@ -13,7 +13,7 @@ export const notificationCRUDConfiguration: CrudConfig<NotificationListItem> =
     useCalcMode: false,
     useSignalR: true,
     useView: true,
-    useViewTeamWithTypeId: TeamTypeId.Site, // use to filter view by teams => should know the type of team
+    useViewTeamWithTypeId: BiaTeamTypeId.Site, // use to filter view by teams => should know the type of team
     usePopup: true,
     useOfflineMode: false,
     useCompactMode: false,

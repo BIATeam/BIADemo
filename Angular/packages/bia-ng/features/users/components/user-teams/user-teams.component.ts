@@ -4,7 +4,7 @@ import {
   AppSettingsService,
   AuthService,
 } from 'packages/bia-ng/core/public-api';
-import { TeamTypeId } from 'packages/bia-ng/models/enum/public-api';
+import { BiaTeamTypeId } from 'packages/bia-ng/models/enum/public-api';
 import { LoginParamDto } from 'packages/bia-ng/models/public-api';
 import { Chip } from 'primeng/chip';
 import { Tooltip } from 'primeng/tooltip';
@@ -38,6 +38,6 @@ export class UserTeamsComponent {
 
     return team.label
       ? this.translateService.instant(team.label)
-      : TeamTypeId[teamTypeId];
+      : BiaTeamTypeId[teamTypeId];
   }
 }
