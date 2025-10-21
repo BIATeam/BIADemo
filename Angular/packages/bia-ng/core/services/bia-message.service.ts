@@ -1,8 +1,8 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { isHttpErrorReport } from 'packages/bia-ng/models/public-api';
 import { MessageService } from 'primeng/api';
-import { isHttpErrorReport } from '../../models/http-error-report';
 import {
   Notification,
   NotificationType,

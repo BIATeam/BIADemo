@@ -133,7 +133,7 @@ export class BiaLayoutService {
       this.changeScale(config.scale);
       this.onConfigUpdate();
       localStorage.setItem(
-        BiaAppConstantsService.STORAGE_BIA_USER_CONFIG_KEY(),
+        BiaAppConstantsService.storageBiaUserConfigKey(),
         JSON.stringify(config)
       );
     });
@@ -280,7 +280,7 @@ export class BiaLayoutService {
     overwriteLocalStorageConfig = false
   ) {
     const lValue = localStorage.getItem(
-      BiaAppConstantsService.STORAGE_BIA_USER_CONFIG_KEY()
+      BiaAppConstantsService.storageBiaUserConfigKey()
     );
     let valueToUpdate: Partial<AppConfig>;
     if (!overwriteLocalStorageConfig && lValue) {
@@ -447,14 +447,14 @@ export class BiaLayoutService {
     const culture = localStorage.getItem(STORAGE_CULTURE_KEY);
     const theme = localStorage.getItem(STORAGE_THEME_KEY);
     const config = localStorage.getItem(
-      BiaAppConstantsService.STORAGE_BIA_USER_CONFIG_KEY()
+      BiaAppConstantsService.storageBiaUserConfigKey()
     );
     localStorage.clear();
     if (culture !== null) localStorage.setItem(STORAGE_CULTURE_KEY, culture);
     if (theme !== null) localStorage.setItem(STORAGE_THEME_KEY, theme);
     if (config !== null)
       localStorage.setItem(
-        BiaAppConstantsService.STORAGE_BIA_USER_CONFIG_KEY(),
+        BiaAppConstantsService.storageBiaUserConfigKey(),
         config
       );
     sessionStorage.clear();

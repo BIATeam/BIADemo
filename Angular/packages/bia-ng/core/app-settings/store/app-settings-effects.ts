@@ -20,7 +20,7 @@ export class AppSettingsEffects {
           map(appSettings => {
             if (BiaOnlineOfflineService.isModeEnabled === true) {
               localStorage.setItem(
-                BiaAppConstantsService.STORAGE_APPSETTINGS_KEY(),
+                BiaAppConstantsService.storageAppSettingsKey(),
                 JSON.stringify(appSettings)
               );
             }
@@ -33,7 +33,7 @@ export class AppSettingsEffects {
               BiaOnlineOfflineService.isServerAvailable(err) !== true
             ) {
               const json: string | null = localStorage.getItem(
-                BiaAppConstantsService.STORAGE_APPSETTINGS_KEY()
+                BiaAppConstantsService.storageAppSettingsKey()
               );
               if (json) {
                 const appSettings = <AppSettings>JSON.parse(json);

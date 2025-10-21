@@ -459,8 +459,8 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   }
 
   protected refresh() {
-    localStorage.removeItem(BiaAppConstantsService.STORAGE_APPSETTINGS_KEY());
-    localStorage.removeItem(BiaAppConstantsService.STORAGE_APPSETTINGS_KEY());
+    localStorage.removeItem(BiaAppConstantsService.storageAppSettingsKey());
+    localStorage.removeItem(BiaAppConstantsService.storageAppSettingsKey());
     sessionStorage.clear();
     sessionStorage.setItem(STORAGE_RELOADED_KEY, String(true));
     location.reload();

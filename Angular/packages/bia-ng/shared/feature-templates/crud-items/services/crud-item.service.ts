@@ -3,8 +3,7 @@ import {
   AbstractDas,
   BiaMessageService,
 } from 'packages/bia-ng/core/public-api';
-import { HistoricalEntryDto } from 'packages/bia-ng/models/dto/historical-entry-dto';
-import { BaseDto } from 'packages/bia-ng/models/public-api';
+import { BaseDto, HistoricalEntryDto } from 'packages/bia-ng/models/public-api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { EMPTY, first, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';

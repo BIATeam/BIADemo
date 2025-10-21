@@ -12,10 +12,11 @@ export class BiaAppConstantsService {
   public static defaultPageSize: number = 10;
   public static teamTypeRightPrefix: { key: number; value: string }[] = [];
   public static defaultTranslations: number[] = [];
-  public static STORAGE_APPSETTINGS_KEY = () => {
+
+  public static storageAppSettingsKey = () => {
     return `${BiaAppConstantsService.allEnvironments.companyName}.${BiaAppConstantsService.allEnvironments.appTitle}.AppSettings`;
   };
-  public static STORAGE_BIA_USER_CONFIG_KEY = () =>
+  public static storageBiaUserConfigKey = () =>
     `${BiaAppConstantsService.allEnvironments.companyName}.${BiaAppConstantsService.allEnvironments.appTitle}.bia-user-config`;
 
   static init(
