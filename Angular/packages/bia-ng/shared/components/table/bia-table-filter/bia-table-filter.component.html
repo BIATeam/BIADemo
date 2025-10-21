@@ -17,6 +17,7 @@
               let-filterConstraint="filterConstraint"
               let-filter="filterCallback">
               <p-multiSelect
+                #ms
                 [options]="options"
                 optionLabel="display"
                 [optionValue]="field.filterWithDisplay ? 'display' : 'id'"
@@ -25,6 +26,21 @@
                 <ng-template let-option pTemplate="item">
                   <div class="inline-block vertical-align-middle">
                     <span class="ml-1 mt-1">{{ option.display }}</span>
+                  </div>
+                </ng-template>
+                <ng-template #footer>
+                  <div class="p-2 flex justify-content-between gap-5">
+                    <p-button
+                      label="Close"
+                      size="small"
+                      variant="outlined"
+                      (onClick)="ms.hide()">
+                    </p-button>
+                    <p-button
+                      label="Apply"
+                      size="small"
+                      (onClick)="filter(filterConstraint.value); ms.hide()">
+                    </p-button>
                   </div>
                 </ng-template>
               </p-multiSelect>

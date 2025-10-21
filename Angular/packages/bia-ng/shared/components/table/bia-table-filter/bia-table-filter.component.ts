@@ -34,6 +34,7 @@ import {
   PrimeTemplate,
   SelectItem,
 } from 'primeng/api';
+import { Button } from 'primeng/button';
 import { Checkbox } from 'primeng/checkbox';
 import { DatePicker } from 'primeng/datepicker';
 import { FloatLabel } from 'primeng/floatlabel';
@@ -69,6 +70,7 @@ import { BiaFilterMatchMode } from './bia-filter-match-mode';
     FloatLabel,
     Checkbox,
     DatePicker,
+    Button,
   ],
 })
 export class BiaTableFilterComponent<CrudItem>
