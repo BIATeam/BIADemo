@@ -314,7 +314,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     roleIds = roleIds.map(roleId => +roleId);
     const loginParam = this.getLoginParameters();
     const roleMode =
-      this.appSettingsService.appSettings.teamsConfig.find(
+      this.appSettingsService.appSettings?.teamsConfig?.find(
         r => r.teamTypeId === teamTypeId
       )?.roleMode || RoleMode.AllRoles;
     if (roleMode !== RoleMode.AllRoles) {
