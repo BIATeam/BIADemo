@@ -11,6 +11,7 @@ export * from './data-result';
 export * from './dto/public-api';
 export * from './environment/public-api';
 export * from './external-site-config';
+export * from './http-error-report';
 export * from './http-options';
 export * from './http-params';
 export * from './http-request-item';

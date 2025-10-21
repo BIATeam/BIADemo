@@ -25,13 +25,13 @@ import { DtoState } from 'packages/bia-ng/models/enum/public-api';
 import {
   AuthInfo,
   BaseDto,
+  BiaButtonAndMenuItem,
   BiaFieldConfig,
   BiaTableState,
   FixableDto,
   KeyValuePair,
   PagingFilterFormatDto,
 } from 'packages/bia-ng/models/public-api';
-import { BiaButtonAndMenuItem } from 'packages/bia-ng/shared/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { MenuItem, PrimeTemplate } from 'primeng/api';
 import { TableLazyLoadEvent } from 'primeng/table';

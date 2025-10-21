@@ -4,8 +4,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { BaseDto } from 'packages/bia-ng/models/public-api';
 import { Button } from 'primeng/button';
 import { CrudItemHistoricalTimelineComponent } from '../../components/crud-item-historical-timeline/crud-item-historical-timeline.component';
-import { CrudConfig, CrudItemComponent } from '../../public-api';
+import { CrudConfig } from '../../model/crud-config';
 import { CrudItemService } from '../../services/crud-item.service';
+import { CrudItemComponent } from '../crud-item/crud-item.component';
 
 @Component({
   selector: 'bia-crud-item-historical',

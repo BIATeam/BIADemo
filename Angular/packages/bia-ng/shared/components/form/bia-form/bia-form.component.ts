@@ -29,7 +29,6 @@ import {
 } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { BiaOptionService } from 'packages/bia-ng/core/public-api';
-import { HistoricalEntryDto } from 'packages/bia-ng/models/dto/historical-entry-dto';
 import { PropType } from 'packages/bia-ng/models/enum/public-api';
 import {
   BaseDto,
@@ -40,13 +39,14 @@ import {
   BiaFormLayoutConfigItem,
   BiaFormLayoutConfigRow,
   BiaFormLayoutConfigTabGroup,
+  HistoricalEntryDto,
 } from 'packages/bia-ng/models/public-api';
-import { CrudItemHistoricalTimelineComponent } from 'packages/bia-ng/shared/feature-templates/crud-items/components/crud-item-historical-timeline/crud-item-historical-timeline.component';
 import { PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { TabsModule } from 'primeng/tabs';
 import { Tooltip } from 'primeng/tooltip';
 import { Subscription } from 'rxjs';
+import { CrudItemHistoricalTimelineComponent } from '../../../feature-templates/crud-items/components/crud-item-historical-timeline/crud-item-historical-timeline.component';
 import { FormReadOnlyMode } from '../../../feature-templates/crud-items/model/crud-config';
 import { CrudHelperService } from '../../../services/crud-helper.service';
 import { LayoutMode } from '../../layout/dynamic-layout/dynamic-layout.component';

@@ -29,8 +29,8 @@ import { DefaultView } from '../../model/default-view';
 import { TeamDefaultView } from '../../model/team-default-view';
 import { TeamView } from '../../model/team-view';
 import { View } from '../../model/view';
-import { ViewsActions } from '../../public-api';
 import { ViewsStore } from '../../store/view.state';
+import { ViewsActions } from '../../store/views-actions';
 
 @Component({
   selector: 'bia-view-dialog',

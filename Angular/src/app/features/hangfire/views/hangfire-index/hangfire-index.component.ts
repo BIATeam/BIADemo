@@ -3,7 +3,7 @@ import { Component, HostBinding } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CoreTeamsStore } from 'packages/bia-ng/core/public-api';
 import { Team } from 'packages/bia-ng/models/public-api';
-import { LocaleDatePipe } from 'packages/bia-ng/shared/pipes/locale-date.pipe';
+import { LocaleDatePipe } from 'packages/bia-ng/shared/public-api';
 import { ButtonDirective } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';
 import { Observable } from 'rxjs';

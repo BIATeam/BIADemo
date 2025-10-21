@@ -1,4 +1,5 @@
 export * from './crud-item-edit/crud-item-edit.component';
+export * from './crud-item-historical/crud-item-historical.component';
 export * from './crud-item-import/crud-item-import.component';
 export * from './crud-item-item/crud-item-item.component';
 export * from './crud-item-new/crud-item-new.component';

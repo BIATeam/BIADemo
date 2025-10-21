@@ -1,9 +1,11 @@
 import { DatePipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { BiaFieldConfig } from 'packages/bia-ng/models/bia-field-config';
-import { HistoricalEntryDto } from 'packages/bia-ng/models/dto/historical-entry-dto';
-import { HistoricalEntryType } from 'packages/bia-ng/models/enum/historical-entry-type.enum';
+import { HistoricalEntryType } from 'packages/bia-ng/models/enum/public-api';
+import {
+  BiaFieldConfig,
+  HistoricalEntryDto,
+} from 'packages/bia-ng/models/public-api';
 import { CardModule } from 'primeng/card';
 import { TimelineModule } from 'primeng/timeline';
 

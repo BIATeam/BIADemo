@@ -6,7 +6,6 @@ import {
   HttpStatusCode,
 } from '@angular/common/http';
 import { Injector } from '@angular/core';
-import { HistoricalEntryDto } from 'packages/bia-ng/models/dto/historical-entry-dto';
 import {
   DataResult,
   DeleteParam,
@@ -15,6 +14,7 @@ import {
   GetListByPostParam,
   GetListParam,
   GetParam,
+  HistoricalEntryDto,
   PostParam,
   PutParam,
   SaveParam,

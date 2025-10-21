@@ -7,11 +7,11 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ValidatorFn } from '@angular/forms';
-import { HistoricalEntryDto } from 'packages/bia-ng/models/dto/historical-entry-dto';
 import {
   BaseDto,
   BiaFieldConfig,
   BiaFormLayoutConfig,
+  HistoricalEntryDto,
 } from 'packages/bia-ng/models/public-api';
 import { BiaFormComponent } from '../../../../components/form/bia-form/bia-form.component';
 import { LayoutMode } from '../../../../components/layout/dynamic-layout/dynamic-layout.component';
