@@ -31,13 +31,13 @@
                 <ng-template #footer>
                   <div class="p-2 flex justify-content-between gap-5">
                     <p-button
-                      label="Close"
+                      [label]="'bia.close' | translate"
                       size="small"
                       variant="outlined"
                       (onClick)="ms.hide()">
                     </p-button>
                     <p-button
-                      label="Apply"
+                      [label]="'primeng.apply' | translate"
                       size="small"
                       (onClick)="filter(filterConstraint.value); ms.hide()">
                     </p-button>
