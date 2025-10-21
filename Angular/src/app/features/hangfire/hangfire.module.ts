@@ -2,8 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { PermissionGuard } from 'packages/bia-ng/core/public-api';
-import { Permission } from 'src/app/shared/permission';
+import {
+  BiaPermission,
+  PermissionGuard,
+} from 'packages/bia-ng/core/public-api';
 
 import { HangfireEffects } from './store/hangfire-effects';
 import { reducers } from './store/hangfire.state';
@@ -14,7 +16,7 @@ const ROUTES: Routes = [
     path: '',
     data: {
       breadcrumb: null,
-      permission: Permission.Notification_List_Access,
+      permission: BiaPermission.Notification_List_Access,
     },
     component: HangfireIndexComponent,
     canActivate: [PermissionGuard],
