@@ -4,12 +4,11 @@ import { PermissionGuard } from 'packages/bia-ng/core/public-api';
 import {
   DynamicLayoutComponent,
   memberCRUDConfiguration,
-  MemberImportComponent,
   MemberModule,
 } from 'packages/bia-ng/shared/public-api';
 import { Permission } from 'src/app/shared/permission';
-
 import { SiteMemberEditComponent } from './views/site-member-edit/site-member-edit.component';
+import { SiteMemberImportComponent } from './views/site-member-import/site-member-import.component';
 import { SiteMemberItemComponent } from './views/site-member-item/site-member-item.component';
 import { SiteMemberNewComponent } from './views/site-member-new/site-member-new.component';
 import { SiteMembersIndexComponent } from './views/site-members-index/site-members-index.component';
@@ -51,7 +50,7 @@ const ROUTES: Routes = [
           permission: Permission.Site_Member_Save,
           title: 'member.import',
         },
-        component: MemberImportComponent,
+        component: SiteMemberImportComponent,
         canActivate: [PermissionGuard],
       },
       {

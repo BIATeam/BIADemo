@@ -1,7 +1,7 @@
 import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { AuthService, Permission } from 'packages/bia-ng/core/public-api';
+import { AuthService, BiaPermission } from 'packages/bia-ng/core/public-api';
 import {
   BiaTableBehaviorControllerComponent,
   BiaTableComponent,
@@ -76,12 +76,14 @@ export class NotificationsIndexComponent
   }
 
   protected setPermissions() {
-    this.canRead = this.authService.hasPermission(Permission.Notification_Read);
+    this.canRead = this.authService.hasPermission(
+      BiaPermission.Notification_Read
+    );
     this.canDelete = this.authService.hasPermission(
-      Permission.Notification_Delete
+      BiaPermission.Notification_Delete
     );
     this.canAdd = this.authService.hasPermission(
-      Permission.Notification_Create
+      BiaPermission.Notification_Create
     );
   }
 }

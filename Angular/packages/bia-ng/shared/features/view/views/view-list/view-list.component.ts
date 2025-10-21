@@ -16,7 +16,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
   AuthService,
   BiaAppConstantsService,
-  Permission,
+  BiaPermission,
 } from 'packages/bia-ng/core/public-api';
 import { ViewType } from 'packages/bia-ng/models/enum/public-api';
 import { BiaTableState, KeyValuePair } from 'packages/bia-ng/models/public-api';
@@ -517,25 +517,25 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
         )?.value;
       canSetTeamView =
         this.authService.hasPermission(
-          teamTypeRightPrefix + Permission.View_AddTeamViewSuffix
+          teamTypeRightPrefix + BiaPermission.View_AddTeamViewSuffix
         ) ||
         this.authService.hasPermission(
-          teamTypeRightPrefix + Permission.View_UpdateTeamViewSuffix
+          teamTypeRightPrefix + BiaPermission.View_UpdateTeamViewSuffix
         ) ||
         this.authService.hasPermission(
-          teamTypeRightPrefix + Permission.View_SetDefaultTeamViewSuffix
+          teamTypeRightPrefix + BiaPermission.View_SetDefaultTeamViewSuffix
         ) ||
         this.authService.hasPermission(
-          teamTypeRightPrefix + Permission.View_AssignToTeamSuffix
+          teamTypeRightPrefix + BiaPermission.View_AssignToTeamSuffix
         ) ||
-        this.authService.hasPermission(Permission.View_DeleteTeamView);
+        this.authService.hasPermission(BiaPermission.View_DeleteTeamView);
     }
     return (
       canSetTeamView ||
-      this.authService.hasPermission(Permission.View_AddUserView) ||
-      this.authService.hasPermission(Permission.View_UpdateUserView) ||
-      this.authService.hasPermission(Permission.View_DeleteUserView) ||
-      this.authService.hasPermission(Permission.View_SetDefaultUserView)
+      this.authService.hasPermission(BiaPermission.View_AddUserView) ||
+      this.authService.hasPermission(BiaPermission.View_UpdateUserView) ||
+      this.authService.hasPermission(BiaPermission.View_DeleteUserView) ||
+      this.authService.hasPermission(BiaPermission.View_SetDefaultUserView)
     );
   }
 }
