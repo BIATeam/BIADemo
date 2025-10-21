@@ -3,7 +3,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { Permission, PermissionGuard } from 'packages/bia-ng/core/public-api';
+import {
+  BiaPermission,
+  PermissionGuard,
+} from 'packages/bia-ng/core/public-api';
 import {
   LanguageOptionModule,
   NotificationTypeOptionModule,
@@ -28,7 +31,7 @@ const ROUTES: Routes = [
     path: '',
     data: {
       breadcrumb: null,
-      permission: Permission.Notification_List_Access,
+      permission: BiaPermission.Notification_List_Access,
       injectComponent: NotificationsIndexComponent,
     },
     component: FullPageLayoutComponent,
@@ -39,7 +42,7 @@ const ROUTES: Routes = [
         data: {
           breadcrumb: 'bia.add',
           canNavigate: false,
-          permission: Permission.Notification_Create,
+          permission: BiaPermission.Notification_Create,
           title: 'notification.add',
           injectComponent: NotificationNewComponent,
         },
@@ -60,7 +63,7 @@ const ROUTES: Routes = [
             data: {
               breadcrumb: 'bia.edit',
               canNavigate: true,
-              permission: Permission.Notification_Update,
+              permission: BiaPermission.Notification_Update,
               title: 'notification.edit',
               injectComponent: NotificationEditComponent,
             },
@@ -72,7 +75,7 @@ const ROUTES: Routes = [
             data: {
               breadcrumb: 'bia.detail',
               canNavigate: true,
-              permission: Permission.Notification_Read,
+              permission: BiaPermission.Notification_Read,
               title: 'notification.detail',
               injectComponent: NotificationDetailComponent,
             },

@@ -10,7 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import {
   AppSettingsService,
   AuthService,
-  Permission,
+  BiaPermission,
 } from 'packages/bia-ng/core/public-api';
 import { DomainUserOptionsStore } from 'packages/bia-ng/domains/public-api';
 import {
@@ -83,10 +83,12 @@ export class UsersIndexComponent
 
   protected setPermissions() {
     this.canSync = false; // This button is no longer useful with the UserInDB mode;
-    this.canEdit = this.authService.hasPermission(Permission.User_UpdateRoles);
-    this.canDelete = this.authService.hasPermission(Permission.User_Delete);
-    this.canAdd = this.authService.hasPermission(Permission.User_Add);
-    this.canSave = this.authService.hasPermission(Permission.User_Save);
+    this.canEdit = this.authService.hasPermission(
+      BiaPermission.User_UpdateRoles
+    );
+    this.canDelete = this.authService.hasPermission(BiaPermission.User_Delete);
+    this.canAdd = this.authService.hasPermission(BiaPermission.User_Add);
+    this.canSave = this.authService.hasPermission(BiaPermission.User_Save);
   }
   ngOnInit() {
     super.ngOnInit();

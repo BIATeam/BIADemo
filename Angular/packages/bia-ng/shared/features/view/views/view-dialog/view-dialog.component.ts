@@ -6,8 +6,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import {
   AuthService,
   BiaAppConstantsService,
+  BiaPermission,
   CoreTeamsStore,
-  Permission,
 } from 'packages/bia-ng/core/public-api';
 import { ViewType } from 'packages/bia-ng/models/enum/public-api';
 import { Team } from 'packages/bia-ng/models/public-api';
@@ -292,32 +292,32 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
           t => t.key === this.useViewTeamWithTypeId
         )?.value;
       this.canAddTeamView = this.authService.hasPermission(
-        teamTypeRightPrefix + Permission.View_AddTeamViewSuffix
+        teamTypeRightPrefix + BiaPermission.View_AddTeamViewSuffix
       );
       this.canUpdateTeamView = this.authService.hasPermission(
-        teamTypeRightPrefix + Permission.View_UpdateTeamViewSuffix
+        teamTypeRightPrefix + BiaPermission.View_UpdateTeamViewSuffix
       );
       this.canSetDefaultTeamView = this.authService.hasPermission(
-        teamTypeRightPrefix + Permission.View_SetDefaultTeamViewSuffix
+        teamTypeRightPrefix + BiaPermission.View_SetDefaultTeamViewSuffix
       );
       this.canAssignTeamView = this.authService.hasPermission(
-        teamTypeRightPrefix + Permission.View_AssignToTeamSuffix
+        teamTypeRightPrefix + BiaPermission.View_AssignToTeamSuffix
       );
       this.canDeleteTeamView = this.authService.hasPermission(
-        Permission.View_DeleteTeamView
+        BiaPermission.View_DeleteTeamView
       );
     }
     this.canAddUserView = this.authService.hasPermission(
-      Permission.View_AddUserView
+      BiaPermission.View_AddUserView
     );
     this.canUpdateUserView = this.authService.hasPermission(
-      Permission.View_UpdateUserView
+      BiaPermission.View_UpdateUserView
     );
     this.canDeleteUserView = this.authService.hasPermission(
-      Permission.View_DeleteUserView
+      BiaPermission.View_DeleteUserView
     );
     this.canSetDefaultUserView = this.authService.hasPermission(
-      Permission.View_SetDefaultUserView
+      BiaPermission.View_SetDefaultUserView
     );
   }
 }

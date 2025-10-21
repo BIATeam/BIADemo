@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
-import { AuthService, Permission } from 'packages/bia-ng/core/public-api';
+import { AuthService, BiaPermission } from 'packages/bia-ng/core/public-api';
 import { DomainUserOptionsStore } from 'packages/bia-ng/domains/public-api';
 import { skip } from 'rxjs/operators';
 import { CrudItemNewComponent } from '../../../crud-items/views/crud-item-new/crud-item-new.component';
@@ -36,7 +36,7 @@ export class MemberNewComponent
 
   ngOnInit() {
     this.canAddFromDirectory = this.authService.hasPermission(
-      Permission.User_Add
+      BiaPermission.User_Add
     );
     this.crudConfiguration.optionFilter = { teamTypeId: this.teamTypeId };
     this.memberService.teamTypeId = this.teamTypeId;

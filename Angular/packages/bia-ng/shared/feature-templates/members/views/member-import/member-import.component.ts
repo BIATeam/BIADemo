@@ -1,6 +1,5 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, Injector } from '@angular/core';
-import { Permission } from 'packages/bia-ng/core/public-api';
 import { BiaFormComponent } from '../../../../components/form/bia-form/bia-form.component';
 import { CrudItemImportFormComponent } from '../../../crud-items/components/crud-item-import-form/crud-item-import-form.component';
 import { CrudItemImportComponent } from '../../../crud-items/views/crud-item-import/crud-item-import.component';
@@ -14,7 +13,7 @@ import { MemberService } from '../../services/member.service';
     '../../../crud-items/views/crud-item-import/crud-item-import.component.html',
   imports: [BiaFormComponent, CrudItemImportFormComponent, AsyncPipe],
 })
-export class MemberImportComponent extends CrudItemImportComponent<Member> {
+export abstract class MemberImportComponent extends CrudItemImportComponent<Member> {
   constructor(
     protected injector: Injector,
     protected memberService: MemberService
@@ -24,15 +23,7 @@ export class MemberImportComponent extends CrudItemImportComponent<Member> {
     this.setPermissions();
   }
 
-  setPermissions() {
-    this.canEdit = this.authService.hasPermission(
-      Permission.Site_Member_Update
-    );
-    this.canDelete = this.authService.hasPermission(
-      Permission.Site_Member_Delete
-    );
-    this.canAdd = this.authService.hasPermission(Permission.Site_Member_Create);
-  }
+  abstract setPermissions(): void;
 
   save(toSaves: Member[]): void {
     this.memberService.save(toSaves);

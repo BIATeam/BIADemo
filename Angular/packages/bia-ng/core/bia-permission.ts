@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-export enum Permission {
+export enum BiaPermission {
   Background_Task_Admin = 'Background_Task_Admin',
   Background_Task_Read_Only = 'Background_Task_Read_Only',
 
-  Home_Access = 'Home_Access',
   Notification_Create = 'Notification_Create',
   Notification_List_Access = 'Notification_List_Access',
   Notification_Delete = 'Notification_Delete',
@@ -11,17 +10,6 @@ export enum Permission {
   Notification_Update = 'Notification_Update',
 
   Roles_List = 'Roles_List',
-  Site_Create = 'Site_Create',
-  Site_Delete = 'Site_Delete',
-  Site_List_Access = 'Site_List_Access',
-  Site_Read = 'Site_Read',
-  Site_Save = 'Site_Save',
-  Site_Update = 'Site_Update',
-  Site_Member_Create = 'Site_Member_Create',
-  Site_Member_Delete = 'Site_Member_Delete',
-  Site_Member_List_Access = 'Site_Member_List_Access',
-  Site_Member_Update = 'Site_Member_Update',
-  Site_Member_Save = 'Site_Member_Save',
 
   User_Add = 'User_Add',
   User_Delete = 'User_Delete',

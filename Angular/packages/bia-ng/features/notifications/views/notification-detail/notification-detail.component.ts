@@ -9,7 +9,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { AuthService, Permission } from 'packages/bia-ng/core/public-api';
+import { AuthService, BiaPermission } from 'packages/bia-ng/core/public-api';
 import { AuthInfo } from 'packages/bia-ng/models/public-api';
 import {
   NotificationTeamWarningComponent,
@@ -57,7 +57,7 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
       this.authService.authInfo$.subscribe((authInfo: AuthInfo) => {
         if (authInfo && authInfo.token !== '') {
           this.canEdit = this.authService.hasPermission(
-            Permission.Notification_Update
+            BiaPermission.Notification_Update
           );
         }
       })

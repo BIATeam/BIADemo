@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, Injector } from '@angular/core';
-import { Permission } from 'packages/bia-ng/core/public-api';
+import { BiaPermission } from 'packages/bia-ng/core/public-api';
 import {
   BiaFormComponent,
   CrudItemImportComponent,
@@ -27,9 +27,11 @@ export class UserImportComponent extends CrudItemImportComponent<User> {
   }
 
   setPermissions() {
-    this.canEdit = this.authService.hasPermission(Permission.User_UpdateRoles);
-    this.canDelete = this.authService.hasPermission(Permission.User_Delete);
-    this.canAdd = this.authService.hasPermission(Permission.User_Add);
+    this.canEdit = this.authService.hasPermission(
+      BiaPermission.User_UpdateRoles
+    );
+    this.canDelete = this.authService.hasPermission(BiaPermission.User_Delete);
+    this.canAdd = this.authService.hasPermission(BiaPermission.User_Add);
   }
 
   save(toSaves: User[]): void {

@@ -1,10 +1,11 @@
+import { BiaPermission } from 'packages/bia-ng/core/public-api';
 import { BiaNavigation } from 'packages/bia-ng/models/public-api';
 import { Permission } from './permission';
 
 export const NAVIGATION: BiaNavigation[] = [
   {
     labelKey: 'app.users',
-    permissions: [Permission.User_List_Access],
+    permissions: [BiaPermission.User_List_Access],
     path: ['/users'],
     icon: 'pi pi-users',
   },
@@ -90,8 +91,8 @@ export const NAVIGATION: BiaNavigation[] = [
     labelKey: 'bia.administration',
     icon: 'pi pi-wrench',
     permissions: [
-      Permission.Background_Task_Admin,
-      Permission.Background_Task_Read_Only,
+      BiaPermission.Background_Task_Admin,
+      BiaPermission.Background_Task_Read_Only,
       // Begin BIADemo
       Permission.Airport_List_Access,
       Permission.PlaneType_List_Access,
@@ -100,12 +101,12 @@ export const NAVIGATION: BiaNavigation[] = [
     children: [
       {
         labelKey: 'bia.backgroundTaskAdmin',
-        permissions: [Permission.Background_Task_Admin],
+        permissions: [BiaPermission.Background_Task_Admin],
         path: ['/backgroundtask/admin'],
       },
       {
         labelKey: 'bia.backgroundTaskReadOnly',
-        permissions: [Permission.Background_Task_Read_Only],
+        permissions: [BiaPermission.Background_Task_Read_Only],
         path: ['/backgroundtask/readonly'],
       },
       // Begin BIADemo

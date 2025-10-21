@@ -4,7 +4,7 @@ import {
   DomainRoleOptionsActions,
   DomainRoleOptionsStore,
 } from 'packages/bia-ng/domains/public-api';
-import { TeamTypeId } from 'packages/bia-ng/models/enum/public-api';
+import { BiaTeamTypeId } from 'packages/bia-ng/models/enum/public-api';
 import { OptionDto } from 'packages/bia-ng/models/public-api';
 import {
   CrudItemOptionsService,
@@ -34,7 +34,7 @@ export class UserOptionsService extends CrudItemOptionsService {
 
   loadAllOptions() {
     this.store.dispatch(
-      DomainRoleOptionsActions.loadAll({ teamTypeId: TeamTypeId.Root })
+      DomainRoleOptionsActions.loadAll({ teamTypeId: BiaTeamTypeId.Root })
     );
   }
 }

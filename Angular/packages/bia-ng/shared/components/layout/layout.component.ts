@@ -4,10 +4,10 @@ import { Store } from '@ngrx/store';
 import {
   AuthService,
   BiaAppConstantsService,
+  BiaPermission,
   BiaTranslationService,
   getCurrentCulture,
   NavigationService,
-  Permission,
 } from 'packages/bia-ng/core/public-api';
 import { EnvironmentType } from 'packages/bia-ng/models/enum/public-api';
 import { AuthInfo, BiaNavigation } from 'packages/bia-ng/models/public-api';
@@ -30,7 +30,7 @@ export class LayoutComponent implements OnInit {
   reportUrl = BiaAppConstantsService.environment.reportUrl;
   enableNotifications =
     BiaAppConstantsService.allEnvironments.enableNotifications &&
-    this.authService.hasPermission(Permission.Notification_List_Access);
+    this.authService.hasPermission(BiaPermission.Notification_List_Access);
   login = '';
   username = '';
   lastname?: string;
@@ -85,7 +85,9 @@ export class LayoutComponent implements OnInit {
 
           this.enableNotifications =
             BiaAppConstantsService.allEnvironments.enableNotifications &&
-            this.authService.hasPermission(Permission.Notification_List_Access);
+            this.authService.hasPermission(
+              BiaPermission.Notification_List_Access
+            );
         }
         this.isLoadingUserInfo = false;
       }

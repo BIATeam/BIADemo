@@ -2,7 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { Permission, PermissionGuard } from 'packages/bia-ng/core/public-api';
+import {
+  BiaPermission,
+  PermissionGuard,
+} from 'packages/bia-ng/core/public-api';
 import { RoleOptionModule } from 'packages/bia-ng/domains/public-api';
 import {
   DynamicLayoutComponent,
@@ -22,7 +25,7 @@ export const ROUTES: Routes = [
     path: '',
     data: {
       breadcrumb: null,
-      permission: Permission.User_List_Access,
+      permission: BiaPermission.User_List_Access,
       injectComponent: UsersIndexComponent,
       configuration: userCRUDConfiguration,
     },
@@ -40,7 +43,7 @@ export const ROUTES: Routes = [
             maxWidth: '80vw',
             maxHeight: '80vh',
           },
-          permission: Permission.User_Save,
+          permission: BiaPermission.User_Save,
           title: 'user.import',
         },
         component: UserImportComponent,
@@ -51,7 +54,7 @@ export const ROUTES: Routes = [
         data: {
           breadcrumb: 'bia.add',
           canNavigate: false,
-          permission: Permission.User_Add,
+          permission: BiaPermission.User_Add,
           title: 'user.add',
         },
         component: UserNewComponent,
@@ -71,7 +74,7 @@ export const ROUTES: Routes = [
             data: {
               breadcrumb: 'bia.edit',
               canNavigate: true,
-              permission: Permission.User_UpdateRoles,
+              permission: BiaPermission.User_UpdateRoles,
               title: 'user.edit',
             },
             component: UserEditComponent,

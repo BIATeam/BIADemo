@@ -16,8 +16,8 @@ import {
   AppSettingsService,
   AuthService,
   BiaEnvironmentService,
+  BiaPermission,
   BiaTranslationService,
-  Permission,
 } from 'packages/bia-ng/core/public-api';
 import { SharedModule } from 'primeng/api';
 import { AvatarModule } from 'primeng/avatar';
@@ -142,7 +142,7 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
 
   urlEditAvatar: string;
   signInAs: string;
-  permissions = Permission;
+  permissions = BiaPermission;
 
   constructor(
     protected readonly layoutService: BiaLayoutService,
