@@ -102,7 +102,7 @@ export class CrudItemImportService<T extends BaseDto<string | number>> {
       reader.onerror = error => reject(error);
 
       if (file) {
-        reader.readAsText(file, 'ISO-8859-15');
+        reader.readAsText(file, 'windows-1252');
       }
     });
   }

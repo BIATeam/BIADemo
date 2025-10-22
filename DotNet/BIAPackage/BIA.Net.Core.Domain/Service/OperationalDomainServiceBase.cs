@@ -14,6 +14,7 @@ namespace BIA.Net.Core.Domain.Service
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Error;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto;
@@ -280,7 +281,7 @@ namespace BIA.Net.Core.Domain.Service
                     csvBuilder.AppendLine(CSVString(line));
                 }
 
-                return Encoding.GetEncoding("iso-8859-15").GetBytes(csvBuilder.ToString());
+                return CsvHelper.ToBytes(csvBuilder.ToString(), Encoding.GetEncoding(1252), includeBom: false);
             });
         }
 
