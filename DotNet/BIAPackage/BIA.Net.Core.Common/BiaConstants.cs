@@ -28,6 +28,11 @@ namespace BIA.Net.Core.Common
             /// the extension of a csv file.
             /// </summary>
             public const string ContentType = "text/csv";
+
+            /// <summary>
+            /// The charset encoding of a csv file.
+            /// </summary>
+            public const string CharsetEncoding = "windows-1252";
         }
 
         /// <summary>
