@@ -131,7 +131,9 @@
       </ng-container>
     </div>
     <div class="app-field-container flex-1 flex align-items-center">
-      <span *ngIf="isArrayFilter(field); let filterArray" class="displayInline">
+      <span
+        *ngIf="isArrayFilter(field); let filterArray"
+        class="bia-filter-active-vals">
         <ng-container *ngFor="let filter of filterArray; let last = last">
           <ng-container
             *ngIf="

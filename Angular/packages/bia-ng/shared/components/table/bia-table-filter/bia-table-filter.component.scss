@@ -2,11 +2,16 @@
   width: 85%;
 }
 
-.displayInline {
-  vertical-align: text-top;
-  padding-left: 15px;
-}
-
 .p-inputnumber-button-group {
   height: 3em;
+}
+
+.bia-filter-active-vals {
+  vertical-align: text-top;
+  padding-left: 15px;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  contain: inline-size;
 }
