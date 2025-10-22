@@ -346,7 +346,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.Notification
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
             byte[] buffer = await this.notificationService.GetCsvAsync(filters);
-            return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Notifications{BiaConstants.Csv.Extension}");
+            return this.File(buffer, BiaConstants.Csv.ContentType + $";charset={BiaConstants.Csv.CharsetEncoding}", $"Notifications{BiaConstants.Csv.Extension}");
         }
     }
 }

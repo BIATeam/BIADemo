@@ -288,7 +288,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
             byte[] buffer = await this.planeTypeService.GetCsvAsync(filters);
-            return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Planes{BiaConstants.Csv.Extension}");
+            return this.File(buffer, BiaConstants.Csv.ContentType + $";charset={BiaConstants.Csv.CharsetEncoding}", $"Planes{BiaConstants.Csv.Extension}");
         }
     }
 }
