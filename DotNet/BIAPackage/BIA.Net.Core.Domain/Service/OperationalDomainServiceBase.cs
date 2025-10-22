@@ -281,7 +281,7 @@ namespace BIA.Net.Core.Domain.Service
                     csvBuilder.AppendLine(CSVString(line));
                 }
 
-                return CsvHelper.ToBytes(csvBuilder.ToString(), Encoding.GetEncoding(1252), includeBom: false);
+                return Encoding.GetEncoding(12525).GetBytes(csvBuilder.ToString());
             });
         }
 
