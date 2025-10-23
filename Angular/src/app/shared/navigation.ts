@@ -20,7 +20,9 @@ export const NAVIGATION: BiaNavigation[] = [
   // BIAToolKit - Begin Partial NavigationDomain Maintenance
   {
     labelKey: 'app.maintenance',
+    // Begin BIADemo
     icon: 'pi pi-wrench',
+    // End BIADemo
     permissions: [
       // BIAToolKit - Begin NavigationDomainMaintenancePermissions
       // BIAToolKit - Begin Partial NavigationDomainMaintenancePermissions AircraftMaintenanceCompany
@@ -64,7 +66,9 @@ export const NAVIGATION: BiaNavigation[] = [
   // BIAToolKit - Begin Partial NavigationDomain Fleet
   {
     labelKey: 'app.fleet',
+    // Begin BIADemo
     icon: 'pi pi-warehouse',
+    // End BIADemo
     permissions: [
       // BIAToolKit - Begin NavigationDomainFleetPermissions
       // BIAToolKit - Begin Partial NavigationDomainFleetPermissions Plane
