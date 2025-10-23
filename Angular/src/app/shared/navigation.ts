@@ -66,7 +66,7 @@ export const NAVIGATION: BiaNavigation[] = [
     labelKey: 'app.fleet',
     icon: 'pi pi-warehouse',
     permissions: [
-      // BIAToolKit - Begin NavigationDomainMaintenancePermissions
+      // BIAToolKit - Begin NavigationDomainFleetPermissions
       // BIAToolKit - Begin Partial NavigationDomainFleetPermissions Plane
       Permission.Plane_List_Access,
       // BIAToolKit - End Partial NavigationDomainFleetPermissions Plane
