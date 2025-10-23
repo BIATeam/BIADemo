@@ -6,6 +6,7 @@
     "aircraftMaintenanceCompanies": "Empresas de mantenimiento de aeronaves",
     "airports": "Aeropuertos",
     "engines": "Motor",
+    "fleet": "Flota",
     "hangfire": "Hangfire",
     "pilots": "Pilotos",
     "planes": "Aviones",
@@ -20,6 +21,7 @@
     "teams": "Equipos",
     "users": "Usuarios",
     "notifications": "Notificaciones",
+    "maintenance": "Mantenimiento",
     "maintenanceTeams": "Mantenimiento equipos",
     "maintenanceContracts": "Contratos de mantenimiento"
   },

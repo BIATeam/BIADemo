@@ -67,12 +67,7 @@ export class BiaUltimaSidebarComponent implements OnDestroy {
   buildNavigation() {
     const translationKeys = new Array<string>();
     this.navigations.forEach(menu => {
-      if (menu.children) {
-        menu.children.forEach(child => {
-          translationKeys.push(child.labelKey);
-        });
-      }
-      translationKeys.push(menu.labelKey);
+      this.setMenuTranslation(menu, translationKeys);
     });
 
     this.navMenuItems = this.layoutService.mapNavigationToMenuItems(
@@ -92,6 +87,15 @@ export class BiaUltimaSidebarComponent implements OnDestroy {
           })
       );
     }
+  }
+
+  setMenuTranslation(menu: BiaNavigation, translationKeys: string[]) {
+    if (menu.children) {
+      menu.children.forEach(child => {
+        this.setMenuTranslation(child, translationKeys);
+      });
+    }
+    translationKeys.push(menu.labelKey);
   }
 
   resetOverlay() {

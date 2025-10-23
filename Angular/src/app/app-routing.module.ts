@@ -16,129 +16,160 @@ const routes: Routes = [
         path: '',
         component: PageLayoutComponent,
         children: [
-          // BIAToolKit - Begin Routing
-          // BIAToolKit - End Routing
-
+          // BIAToolKit - Begin RoutingDomain
           // Begin BIAToolKit Generation Ignore
-          // BIAToolKit - Begin Partial Routing Plane
+          // BIAToolKit - Begin Partial RoutingDomain Maintenance
           {
-            path: 'planes',
+            path: 'maintenance',
             data: {
-              breadcrumb: 'app.planes',
-              canNavigate: true,
+              canNavigate: false,
             },
-            loadChildren: () =>
-              import('./features/planes/plane.module').then(m => m.PlaneModule),
+            children: [
+              // BIAToolKit - Begin RoutingDomainMaintenanceChildren
+              // BIAToolKit - Begin Partial RoutingDomainMaintenanceChildren AircraftMaintenanceCompany
+              {
+                path: 'aircraft-maintenance-companies',
+                data: {
+                  breadcrumb: 'app.aircraftMaintenanceCompanies',
+                  canNavigate: true,
+                },
+                loadChildren: () =>
+                  import(
+                    './features/aircraft-maintenance-companies/aircraft-maintenance-company.module'
+                  ).then(m => m.AircraftMaintenanceCompanyModule),
+              },
+              // BIAToolKit - End Partial RoutingDomainMaintenanceChildren AircraftMaintenanceCompany
+              // BIAToolKit - Begin Partial RoutingDomainMaintenanceChildren MaintenanceTeam
+              {
+                path: 'maintenance-teams',
+                data: {
+                  breadcrumb: 'app.maintenanceTeams',
+                  canNavigate: true,
+                },
+                loadChildren: () =>
+                  import(
+                    './features/aircraft-maintenance-companies/children/maintenance-teams/maintenance-team.module'
+                  ).then(m => m.MaintenanceTeamModule),
+              },
+              // BIAToolKit - End Partial RoutingDomainMaintenanceChildren MaintenanceTeam
+              // BIAToolKit - End RoutingDomainMaintenanceChildren
+              // Begin BIADemo
+              {
+                path: 'maintenance-contracts',
+                data: {
+                  breadcrumb: 'app.maintenanceContracts',
+                  canNavigate: true,
+                },
+                loadChildren: () =>
+                  import(
+                    './features/maintenance-contracts/maintenance-contract.module'
+                  ).then(m => m.MaintenanceContractModule),
+              },
+              // End BIADemo
+            ],
           },
-          // BIAToolKit - End Partial Routing Plane
-          // BIAToolKit - Begin Partial Routing AircraftMaintenanceCompany
+          // BIAToolKit - End Partial RoutingDomain Maintenance
+          // BIAToolKit - Begin Partial RoutingDomain Fleet
           {
-            path: 'aircraft-maintenance-companies',
+            path: 'fleet',
             data: {
-              breadcrumb: 'app.aircraftMaintenanceCompanies',
-              canNavigate: true,
+              canNavigate: false,
             },
-            loadChildren: () =>
-              import(
-                './features/aircraft-maintenance-companies/aircraft-maintenance-company.module'
-              ).then(m => m.AircraftMaintenanceCompanyModule),
+            children: [
+              // BIAToolKit - Begin RoutingDomainFleetChildren
+              // BIAToolKit - Begin Partial RoutingDomainFleetChildren Plane
+              {
+                path: 'planes',
+                data: {
+                  breadcrumb: 'app.planes',
+                  canNavigate: true,
+                },
+                loadChildren: () =>
+                  import('./features/planes/plane.module').then(
+                    m => m.PlaneModule
+                  ),
+              },
+              // BIAToolKit - End Partial RoutingDomainFleetChildren Plane
+              // BIAToolKit - Begin Partial RoutingDomainFleetChildren Pilot
+              {
+                path: 'pilots',
+                data: {
+                  breadcrumb: 'app.pilots',
+                  canNavigate: true,
+                },
+                loadChildren: () =>
+                  import('./features/pilots/pilot.module').then(
+                    m => m.PilotModule
+                  ),
+              },
+              // BIAToolKit - End Partial RoutingDomainFleetChildren Pilot
+              // BIAToolKit - Begin Partial RoutingDomainFleetChildren Flight
+              {
+                path: 'flights',
+                data: {
+                  breadcrumb: 'app.flights',
+                  canNavigate: true,
+                },
+                loadChildren: () =>
+                  import('./features/flights/flight.module').then(
+                    m => m.FlightModule
+                  ),
+              },
+              // BIAToolKit - End Partial RoutingDomainFleetChildren Flight
+              // BIAToolKit - End RoutingDomainFleetChildren
+              // Begin BIADemo
+              {
+                path: 'planes-full-code',
+                data: {
+                  breadcrumb: 'app.planesFullCode',
+                  canNavigate: true,
+                },
+                loadChildren: () =>
+                  import('./features/planes-full-code/plane.module').then(
+                    m => m.PlaneModule
+                  ),
+              },
+              {
+                path: 'planes-specific',
+                data: {
+                  breadcrumb: 'app.planesSpecific',
+                  canNavigate: true,
+                },
+                loadChildren: () =>
+                  import('./features/planes-specific/plane.module').then(
+                    m => m.PlaneModule
+                  ),
+              },
+              {
+                path: 'airports',
+                data: {
+                  breadcrumb: 'app.airports',
+                  canNavigate: true,
+                },
+                loadChildren: () =>
+                  import('./features/airports/airport.module').then(
+                    m => m.AirportModule
+                  ),
+              },
+              {
+                path: 'planes-types',
+                data: {
+                  breadcrumb: 'app.planesTypes',
+                  canNavigate: true,
+                },
+                loadChildren: () =>
+                  import('./features/planes-types/plane-type.module').then(
+                    m => m.PlaneTypeModule
+                  ),
+              },
+              // End BIADemo
+            ],
           },
-          // BIAToolKit - End Partial Routing AircraftMaintenanceCompany
-          // BIAToolKit - Begin Partial Routing MaintenanceTeam
-          {
-            path: 'maintenance-teams',
-            data: {
-              breadcrumb: 'app.maintenanceTeams',
-              canNavigate: true,
-            },
-            loadChildren: () =>
-              import(
-                './features/aircraft-maintenance-companies/children/maintenance-teams/maintenance-team.module'
-              ).then(m => m.MaintenanceTeamModule),
-          },
-          // BIAToolKit - End Partial Routing MaintenanceTeam
-          // BIAToolKit - Begin Partial Routing Pilot
-          {
-            path: 'pilots',
-            data: {
-              breadcrumb: 'app.pilots',
-              canNavigate: true,
-            },
-            loadChildren: () =>
-              import('./features/pilots/pilot.module').then(m => m.PilotModule),
-          },
-          // BIAToolKit - End Partial Routing Pilot
-          // BIAToolKit - Begin Partial Routing Flight
-          {
-            path: 'flights',
-            data: {
-              breadcrumb: 'app.flights',
-              canNavigate: true,
-            },
-            loadChildren: () =>
-              import('./features/flights/flight.module').then(
-                m => m.FlightModule
-              ),
-          },
-          // BIAToolKit - End Partial Routing Flight
+          // BIAToolKit - End Partial RoutingDomain Fleet
           // End BIAToolKit Generation Ignore
+          // BIAToolKit - End RoutingDomain
 
           // Begin BIADemo
-          {
-            path: 'maintenance-contracts',
-            data: {
-              breadcrumb: 'app.maintenanceContracts',
-              canNavigate: true,
-            },
-            loadChildren: () =>
-              import(
-                './features/maintenance-contracts/maintenance-contract.module'
-              ).then(m => m.MaintenanceContractModule),
-          },
-          {
-            path: 'planes-full-code',
-            data: {
-              breadcrumb: 'app.planesFullCode',
-              canNavigate: true,
-            },
-            loadChildren: () =>
-              import('./features/planes-full-code/plane.module').then(
-                m => m.PlaneModule
-              ),
-          },
-          {
-            path: 'planes-specific',
-            data: {
-              breadcrumb: 'app.planesSpecific',
-              canNavigate: true,
-            },
-            loadChildren: () =>
-              import('./features/planes-specific/plane.module').then(
-                m => m.PlaneModule
-              ),
-          },
-          {
-            path: 'airports',
-            data: {
-              breadcrumb: 'app.airports',
-              canNavigate: true,
-            },
-            loadChildren: () =>
-              import('./features/airports/airport.module').then(
-                m => m.AirportModule
-              ),
-          },
-          {
-            path: 'planes-types',
-            data: {
-              breadcrumb: 'app.planesTypes',
-              canNavigate: true,
-            },
-            loadChildren: () =>
-              import('./features/planes-types/plane-type.module').then(
-                m => m.PlaneTypeModule
-              ),
-          },
           {
             path: 'hangfire',
             data: {
