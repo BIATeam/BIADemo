@@ -81,13 +81,11 @@ export const NAVIGATION: BiaNavigation[] = [
             labelKey: 'app.planesFullCode',
             permissions: [Permission.Plane_List_Access],
             path: ['/planes-full-code'],
-            icon: 'pi pi-th-large',
           },
           {
             labelKey: 'app.planesSpecific',
             permissions: [Permission.Plane_List_Access],
             path: ['/planes-specific'],
-            icon: 'pi pi-th-large',
           },
         ],
       },
@@ -98,24 +96,6 @@ export const NAVIGATION: BiaNavigation[] = [
   // End BIAToolKit Generation Ignore
 
   // Begin BIADemo
-  // {
-  //   labelKey: 'bia.customCode',
-  //   icon: 'pi pi-code',
-  //   children: [
-  //     {
-  //       labelKey: 'app.planesFullCode',
-  //       permissions: [Permission.Plane_List_Access],
-  //       path: ['/planes-full-code'],
-  //       icon: 'pi pi-th-large',
-  //     },
-  //     {
-  //       labelKey: 'app.planesSpecific',
-  //       permissions: [Permission.Plane_List_Access],
-  //       path: ['/planes-specific'],
-  //       icon: 'pi pi-th-large',
-  //     },
-  //   ],
-  // },
   {
     labelKey: 'app.hangfire',
     permissions: [Permission.Hangfire_Access],
