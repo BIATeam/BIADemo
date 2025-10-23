@@ -42,14 +42,14 @@ export const NAVIGATION: BiaNavigation[] = [
       {
         labelKey: 'app.aircraftMaintenanceCompanies',
         permissions: [Permission.AircraftMaintenanceCompany_List_Access],
-        path: ['/aircraft-maintenance-companies'],
+        path: ['/maintenance/aircraft-maintenance-companies'],
       },
       // BIAToolKit - End Partial NavigationDomainMaintenanceChildren AircraftMaintenanceCompany
       // BIAToolKit - Begin Partial NavigationDomainMaintenanceChildren MaintenanceTeam
       {
         labelKey: 'app.maintenanceTeams',
         permissions: [Permission.MaintenanceTeam_List_Access],
-        path: ['/maintenance-teams'],
+        path: ['/maintenance/maintenance-teams'],
       },
       // BIAToolKit - End Partial NavigationDomainMaintenanceChildren MaintenanceTeam
       // BIAToolKit - End NavigationDomainMaintenanceChildren
@@ -57,7 +57,7 @@ export const NAVIGATION: BiaNavigation[] = [
       {
         labelKey: 'app.maintenanceContracts',
         permissions: [Permission.MaintenanceContract_List_Access],
-        path: ['/maintenance-contracts'],
+        path: ['/maintenance/maintenance-contracts'],
       },
       // End BIADemo
     ],
@@ -92,21 +92,21 @@ export const NAVIGATION: BiaNavigation[] = [
       {
         labelKey: 'app.planes',
         permissions: [Permission.Plane_List_Access],
-        path: ['/planes'],
+        path: ['/fleet/planes'],
       },
       // BIAToolKit - End Partial NavigationDomainFleetChildren Plane
       // BIAToolKit - Begin Partial NavigationDomainFleetChildren Pilot
       {
         labelKey: 'app.pilots',
         permissions: [Permission.Pilot_List_Access],
-        path: ['/pilots'],
+        path: ['/fleet/pilots'],
       },
       // BIAToolKit - End Partial NavigationDomainFleetChildren Pilot
       // BIAToolKit - Begin Partial NavigationDomainFleetChildren Flight
       {
         labelKey: 'app.flights',
         permissions: [Permission.Flight_List_Access],
-        path: ['/flights'],
+        path: ['/fleet/flights'],
       },
       // BIAToolKit - End Partial NavigationDomainFleetChildren Flight
       // BIAToolKit - End NavigationDomainFleetChildren
@@ -114,12 +114,12 @@ export const NAVIGATION: BiaNavigation[] = [
       {
         labelKey: 'app.airports',
         permissions: [Permission.Airport_List_Access],
-        path: ['airports'],
+        path: ['/fleet/airports'],
       },
       {
         labelKey: 'app.planesTypes',
         permissions: [Permission.PlaneType_List_Access],
-        path: ['planes-types'],
+        path: ['/fleet/planes-types'],
       },
       {
         labelKey: 'bia.customCode',
@@ -129,12 +129,12 @@ export const NAVIGATION: BiaNavigation[] = [
           {
             labelKey: 'app.planesFullCode',
             permissions: [Permission.Plane_List_Access],
-            path: ['/planes-full-code'],
+            path: ['/fleet/planes-full-code'],
           },
           {
             labelKey: 'app.planesSpecific',
             permissions: [Permission.Plane_List_Access],
-            path: ['/planes-specific'],
+            path: ['/fleet/planes-specific'],
           },
         ],
       },
