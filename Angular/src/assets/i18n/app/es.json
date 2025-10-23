@@ -6,6 +6,7 @@
     "aircraftMaintenanceCompanies": "Empresas de mantenimiento de aeronaves",
     "airports": "Aeropuertos",
     "engines": "Motor",
+    "fleet": "Flota",
     "hangfire": "Hangfire",
     "pilots": "Pilotos",
     "planes": "Aviones",

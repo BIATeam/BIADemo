@@ -6,6 +6,7 @@
     "aircraftMaintenanceCompanies": "Aircraft maintenance companies",
     "airports": "Airports",
     "engines": "Engines",
+    "fleet": "Fleet",
     "hangfire": "Hangfire",
     "pilots": "Pilots",
     "plane": "Plane",

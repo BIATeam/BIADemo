@@ -24,6 +24,7 @@
     "crud": {
       "listOf": "Lista"
     },
+    "customCode": "Código personalizado",
     "dateIso8601": "aaaa-mm-dd",
     "defineDefault": "Establecer por defecto",
     "delete": "Eliminar",
