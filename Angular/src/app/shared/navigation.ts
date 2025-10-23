@@ -19,66 +19,84 @@ export const NAVIGATION: BiaNavigation[] = [
   // BIAToolKit - End Navigation
 
   // Begin BIAToolKit Generation Ignore
-  // BIAToolKit - Begin Partial Navigation AircraftMaintenanceCompany
   {
-    labelKey: 'app.aircraftMaintenanceCompanies',
-    permissions: [Permission.AircraftMaintenanceCompany_List_Access],
-    path: ['/aircraft-maintenance-companies'],
-    icon: 'pi pi-sitemap',
+    // BIAToolKit - Begin Partial NavigationDomain Fleet
+    labelKey: 'bia.fleet',
+    icon: 'pi pi-bars',
+    children: [
+      // BIAToolKit - Begin NavigationChildrenFleet
+      // BIAToolKit - Begin Partial NavigationChildrenFleet AircraftMaintenanceCompany
+      {
+        labelKey: 'app.aircraftMaintenanceCompanies',
+        permissions: [Permission.AircraftMaintenanceCompany_List_Access],
+        path: ['/aircraft-maintenance-companies'],
+        icon: 'pi pi-sitemap',
+      },
+      // BIAToolKit - End Partial NavigationChildrenFleet AircraftMaintenanceCompany
+      // BIAToolKit - Begin Partial NavigationChildrenFleet MaintenanceTeam
+      {
+        labelKey: 'app.maintenanceTeams',
+        permissions: [Permission.MaintenanceTeam_List_Access],
+        path: ['/maintenance-teams'],
+        icon: 'pi pi-sitemap',
+      },
+      // BIAToolKit - End Partial NavigationChildrenFleet MaintenanceTeam
+      // BIAToolKit - Begin Partial NavigationChildrenFleet Plane
+      {
+        labelKey: 'app.planes',
+        permissions: [Permission.Plane_List_Access],
+        path: ['/planes'],
+        icon: 'pi pi-th-large',
+      },
+      // BIAToolKit - End Partial NavigationChildrenFleet Plane
+      // BIAToolKit - Begin Partial NavigationChildrenFleet Pilot
+      {
+        labelKey: 'app.pilots',
+        permissions: [Permission.Pilot_List_Access],
+        path: ['/pilots'],
+        icon: 'pi pi-th-large',
+      },
+      // BIAToolKit - End Partial NavigationChildrenFleet Pilot
+      // BIAToolKit - Begin Partial NavigationChildrenFleet Flight
+      {
+        labelKey: 'app.flights',
+        permissions: [Permission.Flight_List_Access],
+        path: ['/flights'],
+        icon: 'pi pi-th-large',
+      },
+      // BIAToolKit - End Partial NavigationChildrenFleet Flight
+      // BIAToolKit - End NavigationChildrenFleet
+      // Begin BIADemo
+      {
+        labelKey: 'app.maintenanceContracts',
+        permissions: [Permission.MaintenanceContract_List_Access],
+        path: ['/maintenance-contracts'],
+        icon: 'pi pi-clipboard',
+      },
+      // End BIADemo
+    ],
+    // BIAToolKit - End Partial NavigationDomain Fleet
   },
-  // BIAToolKit - End Partial Navigation AircraftMaintenanceCompany
-  // BIAToolKit - Begin Partial Navigation MaintenanceTeam
-  {
-    labelKey: 'app.maintenanceTeams',
-    permissions: [Permission.MaintenanceTeam_List_Access],
-    path: ['/maintenance-teams'],
-    icon: 'pi pi-sitemap',
-  },
-  // BIAToolKit - End Partial Navigation MaintenanceTeam
-  // BIAToolKit - Begin Partial Navigation Plane
-  {
-    labelKey: 'app.planes',
-    permissions: [Permission.Plane_List_Access],
-    path: ['/planes'],
-    icon: 'pi pi-th-large',
-  },
-  // BIAToolKit - End Partial Navigation Plane
-  // BIAToolKit - Begin Partial Navigation Pilot
-  {
-    labelKey: 'app.pilots',
-    permissions: [Permission.Pilot_List_Access],
-    path: ['/pilots'],
-    icon: 'pi pi-th-large',
-  },
-  // BIAToolKit - End Partial Navigation Pilot
-  // BIAToolKit - Begin Partial Navigation Flight
-  {
-    labelKey: 'app.flights',
-    permissions: [Permission.Flight_List_Access],
-    path: ['/flights'],
-    icon: 'pi pi-th-large',
-  },
-  // BIAToolKit - End Partial Navigation Flight
   // End BIAToolKit Generation Ignore
 
   // Begin BIADemo
   {
-    labelKey: 'app.planesFullCode',
-    permissions: [Permission.Plane_List_Access],
-    path: ['/planes-full-code'],
-    icon: 'pi pi-th-large',
-  },
-  {
-    labelKey: 'app.planesSpecific',
-    permissions: [Permission.Plane_List_Access],
-    path: ['/planes-specific'],
-    icon: 'pi pi-th-large',
-  },
-  {
-    labelKey: 'app.maintenanceContracts',
-    permissions: [Permission.MaintenanceContract_List_Access],
-    path: ['/maintenance-contracts'],
-    icon: 'pi pi-clipboard',
+    labelKey: 'bia.custo',
+    icon: 'pi pi-bars',
+    children: [
+      {
+        labelKey: 'app.planesFullCode',
+        permissions: [Permission.Plane_List_Access],
+        path: ['/planes-full-code'],
+        icon: 'pi pi-th-large',
+      },
+      {
+        labelKey: 'app.planesSpecific',
+        permissions: [Permission.Plane_List_Access],
+        path: ['/planes-specific'],
+        icon: 'pi pi-th-large',
+      },
+    ],
   },
   {
     labelKey: 'app.hangfire',
