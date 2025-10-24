@@ -160,4 +160,3 @@ else {
 npm run clean
 
 Write-Host "Finish"
-pause
