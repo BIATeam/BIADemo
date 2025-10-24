@@ -90,32 +90,6 @@ const routes: Routes = [
                   ),
               },
               // BIAToolKit - End Partial RoutingDomainFleetChildren Plane
-              // BIAToolKit - Begin Partial RoutingDomainFleetChildren Pilot
-              {
-                path: 'pilots',
-                data: {
-                  breadcrumb: 'app.pilots',
-                  canNavigate: true,
-                },
-                loadChildren: () =>
-                  import('./features/pilots/pilot.module').then(
-                    m => m.PilotModule
-                  ),
-              },
-              // BIAToolKit - End Partial RoutingDomainFleetChildren Pilot
-              // BIAToolKit - Begin Partial RoutingDomainFleetChildren Flight
-              {
-                path: 'flights',
-                data: {
-                  breadcrumb: 'app.flights',
-                  canNavigate: true,
-                },
-                loadChildren: () =>
-                  import('./features/flights/flight.module').then(
-                    m => m.FlightModule
-                  ),
-              },
-              // BIAToolKit - End Partial RoutingDomainFleetChildren Flight
               // BIAToolKit - End RoutingDomainFleetChildren
               // Begin BIADemo
               {
@@ -168,6 +142,35 @@ const routes: Routes = [
           // BIAToolKit - End Partial RoutingDomain Fleet
           // End BIAToolKit Generation Ignore
           // BIAToolKit - End RoutingDomain
+
+          // BIAToolKit - Begin Routing
+          // Begin BIAToolKit Generation Ignore
+          // BIAToolKit - Begin Partial Routing Pilot
+          {
+            path: 'pilots',
+            data: {
+              breadcrumb: 'app.pilots',
+              canNavigate: true,
+            },
+            loadChildren: () =>
+              import('./features/pilots/pilot.module').then(m => m.PilotModule),
+          },
+          // BIAToolKit - End Partial Routing Pilot
+          // BIAToolKit - Begin Partial Routing Flight
+          {
+            path: 'flights',
+            data: {
+              breadcrumb: 'app.flights',
+              canNavigate: true,
+            },
+            loadChildren: () =>
+              import('./features/flights/flight.module').then(
+                m => m.FlightModule
+              ),
+          },
+          // BIAToolKit - End Partial Routing Flight
+          // End BIAToolKit Generation Ignore
+          // BIAToolKit - End Routing
 
           // Begin BIADemo
           {
