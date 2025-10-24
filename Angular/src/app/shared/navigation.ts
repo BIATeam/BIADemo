@@ -95,20 +95,6 @@ export const NAVIGATION: BiaNavigation[] = [
         path: ['/fleet/planes'],
       },
       // BIAToolKit - End Partial NavigationDomainFleetChildren Plane
-      // BIAToolKit - Begin Partial NavigationDomainFleetChildren Pilot
-      {
-        labelKey: 'app.pilots',
-        permissions: [Permission.Pilot_List_Access],
-        path: ['/fleet/pilots'],
-      },
-      // BIAToolKit - End Partial NavigationDomainFleetChildren Pilot
-      // BIAToolKit - Begin Partial NavigationDomainFleetChildren Flight
-      {
-        labelKey: 'app.flights',
-        permissions: [Permission.Flight_List_Access],
-        path: ['/fleet/flights'],
-      },
-      // BIAToolKit - End Partial NavigationDomainFleetChildren Flight
       // BIAToolKit - End NavigationDomainFleetChildren
       // Begin BIADemo
       {
@@ -144,6 +130,31 @@ export const NAVIGATION: BiaNavigation[] = [
   // BIAToolKit - End Partial NavigationDomain Fleet
   // End BIAToolKit Generation Ignore
   // BIAToolKit - End NavigationDomain
+
+  // BIAToolKit - Begin Navigation
+  // Begin BIAToolKit Generation Ignore
+  // BIAToolKit - Begin Partial Navigation Pilot
+  {
+    labelKey: 'app.pilots',
+    permissions: [Permission.Pilot_List_Access],
+    path: ['/pilots'],
+    // Begin BIADemo
+    icon: 'pi pi-address-book',
+    // End BIADemo
+  },
+  // BIAToolKit - End Partial Navigation Pilot
+  // BIAToolKit - Begin Partial Navigation Flight
+  {
+    labelKey: 'app.flights',
+    permissions: [Permission.Flight_List_Access],
+    path: ['/flights'],
+    // Begin BIADemo
+    icon: 'pi pi-globe',
+    // End BIADemo
+  },
+  // BIAToolKit - End Partial Navigation Flight
+  // End BIAToolKit Generation Ignore
+  // BIAToolKit - End Navigation
 
   // Begin BIADemo
   {
