@@ -11,14 +11,12 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Audit.EntityFramework;
 #if BIA_FRONT_FEATURE
     using BIA.Net.Core.Application.User;
-    using BIA.Net.Core.Common;
-    using BIA.Net.Core.Common;
 #endif
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
-    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.RepoContract;
@@ -34,8 +32,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.EntityFrameworkCore.Migrations;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-#if BIA_FRONT_FEATURE
-#endif
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
 #if BIA_FRONT_FEATURE
@@ -95,8 +91,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 collection.Configure<WorkerFeatures>(configuration.GetSection("BiaNet:WorkerFeatures"));
                 collection.Configure<ApiFeatures>(configuration.GetSection("BiaNet:ApiFeatures"));
             }
-
+#if BIA_FRONT_FEATURE
             ErrorMessage.FillErrorTranslations();
+#endif
         }
 
         private static Exception Exception(string v)
