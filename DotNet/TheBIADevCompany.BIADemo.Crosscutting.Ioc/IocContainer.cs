@@ -221,7 +221,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 collection.AddSingleton<IAuditFeature, AuditFeature>();
                 collection.AddSingleton<BIA.Net.Core.Application.Services.IAuditFeatureService, BIA.Net.Core.Application.Services.AuditFeatureService>();
             }
-#endif
 
             // IT'S NOT NECESSARY TO DECLARE QueryCustomizer/Repository (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
             BiaIocContainer.RegisterServicesFromAssembly(
@@ -230,6 +229,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 interfaceAssemblyName: "TheBIADevCompany.BIADemo.Domain",
                 serviceLifetime: ServiceLifetime.Transient);
         }
+#endif
 
 #pragma warning disable S1172 // Unused method parameters should be removed
         private static void ConfigureInfrastructureServiceContainer(IServiceCollection collection, BiaNetSection biaNetSection, bool isUnitTest = false)
