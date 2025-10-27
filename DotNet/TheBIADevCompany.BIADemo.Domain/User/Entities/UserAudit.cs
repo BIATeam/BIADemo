@@ -1,5 +1,4 @@
-﻿#if BIA_FRONT_FEATURE
-// <copyright file="UserAudit.cs" company="TheBIADevCompany">
+﻿// <copyright file="UserAudit.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -14,4 +13,3 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Entities
     {
     }
 }
-#endif
