@@ -67,5 +67,6 @@
 	  <Compile Remove="**\LdapDomainsController.cs" />
 	  <Compile Remove="**\*ProfileImageController*.cs" />
 	  <Compile Remove="**\UserModelBuilder.cs" />
+	  <Compile Remove="**\UserAudit.cs" />
   </ItemGroup>
 </Project>
