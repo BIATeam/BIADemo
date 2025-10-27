@@ -7,7 +7,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Application\TheBIADevCompany.BIADemo.Application.csproj" />
-    <ProjectReference Include="..\TheBIADevCompany.BIADemo.Infrastructure.Data\TheBIADevCompany.BIADemo.Infrastructure.Data.csproj" />
+    <ProjectReference Include="..\TheBIADevCompany.BIADemo.Infrastructure.Data\TheBIADevCompany.BIADemo.Infrastructure.Data.csproj" Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\BIA_USE_DATABASE\b'))"  />
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Infrastructure.Service\TheBIADevCompany.BIADemo.Infrastructure.Service.csproj" />
     <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Ioc\BIA.Net.Core.Ioc.csproj" />
     <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Presentation.Common\BIA.Net.Core.Presentation.Common.csproj" />
