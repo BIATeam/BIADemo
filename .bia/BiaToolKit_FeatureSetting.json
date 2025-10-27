@@ -27,7 +27,11 @@
     "IsSelected": true,
     "Tags": [
       "BIA_USE_DATABASE"
-    ]
+    ],
+	"FoldersToExcludes": [
+      ".*Infrastructure.Data$"
+    ],
+	"DisabledFeatures": [1,3,0]
   },
   {
     "Id": 3,
