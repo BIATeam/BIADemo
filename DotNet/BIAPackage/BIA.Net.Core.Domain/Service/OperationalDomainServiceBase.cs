@@ -759,16 +759,22 @@ namespace BIA.Net.Core.Domain.Service
         /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
         /// <param name="dtoList">The list of element to update.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-#pragma warning disable S1133 // Deprecated code should be removed
-        [Obsolete(message: "UpdateBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteUpdateAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
-#pragma warning restore S1133 // Deprecated code should be removed
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         protected virtual async Task UpdateBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
             where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
-            throw new NotImplementedException();
+            if (dtoList != null)
+            {
+                List<TEntity> entities = dtoList.AsParallel().Select(item =>
+                {
+                    var converted = default(TEntity);
+                    TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
+                    mapper.DtoToEntity(item, ref converted);
+                    return converted;
+                }).ToList();
+
+                await this.Repository.UnitOfWork.UpdateBulkAsync(entities);
+            }
         }
 
         /// <summary>
@@ -778,16 +784,15 @@ namespace BIA.Net.Core.Domain.Service
         /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
         /// <param name="dtoList">The list of element to remove.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-#pragma warning disable S1133 // Deprecated code should be removed
-        [Obsolete("RemoveBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteDeleteAsync method (See the example with the EngineRepository in BIADemo).")]
-#pragma warning restore S1133 // Deprecated code should be removed
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         protected virtual async Task RemoveBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
             where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
-            throw new NotImplementedException();
+            if (dtoList != null)
+            {
+                List<TEntity> entities = dtoList.AsParallel().Select(item => new TEntity() { Id = item.Id }).ToList();
+                await this.Repository.UnitOfWork.RemoveBulkAsync(entities);
+            }
         }
 
         /// <summary>
