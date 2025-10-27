@@ -50,8 +50,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Domain.User.Mappers;
     using TheBIADevCompany.BIADemo.Domain.User.Models;
 #endif
+#if BIA_USE_DATABASE
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
+#endif
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
 
     /// <summary>
@@ -83,7 +85,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
             BiaIocContainer.ConfigureContainer(collection, configuration, isUnitTest);
 
+#if BIA_USE_DATABASE
             ConfigureInfrastructureDataContainer(collection, configuration, isUnitTest);
+#endif
             if (!isUnitTest)
             {
                 ConfigureCommonContainer(collection, configuration);
@@ -159,6 +163,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             // Common Layer
         }
 
+#if BIA_USE_DATABASE
         private static void ConfigureInfrastructureDataContainer(IServiceCollection collection, IConfiguration configuration, bool isUnitTest)
         {
             if (!isUnitTest)
@@ -216,6 +221,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 collection.AddSingleton<IAuditFeature, AuditFeature>();
                 collection.AddSingleton<BIA.Net.Core.Application.Services.IAuditFeatureService, BIA.Net.Core.Application.Services.AuditFeatureService>();
             }
+#endif
 
             // IT'S NOT NECESSARY TO DECLARE QueryCustomizer/Repository (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
             BiaIocContainer.RegisterServicesFromAssembly(

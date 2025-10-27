@@ -12,8 +12,10 @@ namespace TheBIADevCompany.BIADemo.Test.IoC
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
+#if BIA_USE_DATABASE
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
     using TheBIADevCompany.BIADemo.Test.Data;
+#endif
 
     /// <summary>
     /// Specific IoC container used for unit tests.
@@ -36,9 +38,11 @@ namespace TheBIADevCompany.BIADemo.Test.IoC
             services.AddSingleton(configuration);
 
             IocContainer.ConfigureContainer(services, null, true, true);
-            BIAIocContainerTest.ConfigureContainerTest<DataContext, DataContextNoTracking>(services);
 
+#if BIA_USE_DATABASE
+            BIAIocContainerTest.ConfigureContainerTest<DataContext, DataContextNoTracking>(services);
             services.AddTransient<IMockEntityFramework<DataContext, DataContextNoTracking>, MockEntityFrameworkInMemory>();
+#endif
 
             RegisterControllersFromAssembly(services, "TheBIADevCompany.BIADemo.Presentation.Api");
         }
