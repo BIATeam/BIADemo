@@ -53,10 +53,12 @@
       }
     },
     "Roles": [
+      // if BIA_FRONT_FEATURE || BIA_DATABASE
       {
         "Label": "User",
         "Type": "UserInDB"
       },
+      // endif
       {
         "Label": "Admin",
         "Type": "IdP",
@@ -89,6 +91,7 @@
         //"ApiKeyName" : "X-API-Key",
       }
     },
+    // if BIA_FRONT_FEATURE
     "PermissionsByEnv": [
       {
         "Names": [ "User_ListAD", "User_Add", "User_Delete", "User_Save" ],
@@ -107,5 +110,6 @@
         "Roles": [ "Site_Admin" ]
       }
     ]
+    // endif
   }
 }

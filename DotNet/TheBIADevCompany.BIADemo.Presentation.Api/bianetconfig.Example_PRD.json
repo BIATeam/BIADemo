@@ -1,5 +1,6 @@
 {
   "BiaNet": {
+    // if BIA_FRONT_FEATURE || BIA_DATABASE
     "DatabaseConfigurations": [
       {
         "Key": "ProjectDatabase",
@@ -7,6 +8,7 @@
         "ConnectionString": "data source=the-bia-dev-team-db-prd.the-deploy-domain-name.bia\\SEPDMAPPPRD;initial catalog=BIADemo_PRD;integrated security=True;MultipleActiveResultSets=True;Encrypt=False;App=BIADemo"
       }
     ],
+    // endif
     "Environment": {
       "Type": "PRD",
       // UrlMatomo shoulld now contain the name of the php and js (originaly matomo.js & matomo.php) => rename to bypass ublock
@@ -111,6 +113,7 @@
         //"ApiKeyName" : "X-API-Key",
       }
     },
+    // if BIA_FRONT_FEATURE
     "PermissionsByEnv": [
       {
         "Names": [ "User_ListAD", "User_Add", "User_Delete", "User_Save" ],
@@ -129,5 +132,6 @@
         "Roles": [ "Site_Admin" ]
       }
     ]
+    // endif
   }
 }
