@@ -5,6 +5,7 @@
 namespace BIA.Net.Core.Common.Configuration
 {
     using System.Collections.Generic;
+    using System.Linq;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Common.Configuration.Iframe;
@@ -19,7 +20,7 @@ namespace BIA.Net.Core.Common.Configuration
         /// <summary>
         /// List of database configurations.
         /// </summary>
-        public List<DatabaseConfiguration> DatabaseConfigurations { get; set; }
+        public List<DatabaseConfiguration> DatabaseConfigurations { get; set; } = [];
 
         /// <summary>
         /// Configure the activation of common feature (worker and webApi).
@@ -69,27 +70,27 @@ namespace BIA.Net.Core.Common.Configuration
         /// <summary>
         /// Gets or sets the policies.
         /// </summary>
-        public IEnumerable<Policy> Policies { get; set; }
+        public IEnumerable<Policy> Policies { get; set; } = [];
 
         /// <summary>
         /// Gets or sets the Roles configuration.
         /// </summary>
-        public IEnumerable<Role> Roles { get; set; }
+        public IEnumerable<Role> Roles { get; set; } = [];
 
         /// <summary>
         /// Gets or sets the permissions configuration.
         /// </summary>
-        public IEnumerable<Permission> PermissionsByEnv { get; set; }
+        public IEnumerable<Permission> PermissionsByEnv { get; set; } = [];
 
         /// <summary>
         /// Gets or sets the permissions configuration.
         /// </summary>
-        public IEnumerable<Permission> Permissions { get; set; }
+        public IEnumerable<Permission> Permissions { get; set; } = [];
 
         /// <summary>
         /// Gets or sets the cultures configuration.
         /// </summary>
-        public IEnumerable<Culture> Cultures { get; set; }
+        public IEnumerable<Culture> Cultures { get; set; } = [];
 
         /// <summary>
         /// Gets or sets the CSV additinal infos for generated CSV files.

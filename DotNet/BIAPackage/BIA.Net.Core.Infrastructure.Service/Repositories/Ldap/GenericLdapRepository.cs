@@ -102,10 +102,10 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             this.configuration = configuration.Value;
             this.ldapRepositoryHelper = (LdapRepositoryHelper)ldapRepositoryHelper;
 
-            this.ldapDomains = this.configuration.Authentication.LdapDomains;
+            this.ldapDomains = this.configuration.Authentication?.LdapDomains;
             this.ldapDomainsUsers = this.ldapDomains?.Where(l => l.ContainsUser == true);
-            this.LdapCacheGroupDuration = configuration.Value.Authentication.LdapCacheGroupDuration;
-            this.LdapCacheUserDuration = configuration.Value.Authentication.LdapCacheUserDuration;
+            this.LdapCacheGroupDuration = configuration.Value.Authentication?.LdapCacheGroupDuration ?? 200;
+            this.LdapCacheUserDuration = configuration.Value.Authentication?.LdapCacheUserDuration ?? 1800;
             this.userIdentityKeyDomainService = userIdentityKeyDomainService;
         }
 

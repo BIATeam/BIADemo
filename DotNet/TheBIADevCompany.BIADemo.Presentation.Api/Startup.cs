@@ -130,8 +130,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             app.UseAuthorization();
 
             HangfireDashboardAuthorizations hangfireDashboardAuthorizations = new();
-            hangfireDashboardAuthorizations.Authorization = new[] { new HangfireAuthorizationFilter(false, "Background_Task_Admin", this.biaNetSection.Jwt.SecretKey, jwtFactory) };
-            hangfireDashboardAuthorizations.AuthorizationReadOnly = new[] { new HangfireAuthorizationFilter(true, "Background_Task_Read_Only", this.biaNetSection.Jwt.SecretKey, jwtFactory) };
+            hangfireDashboardAuthorizations.Authorization = new[] { new HangfireAuthorizationFilter(false, "Background_Task_Admin", this.biaNetSection.Jwt?.SecretKey, jwtFactory) };
+            hangfireDashboardAuthorizations.AuthorizationReadOnly = new[] { new HangfireAuthorizationFilter(true, "Background_Task_Read_Only", this.biaNetSection.Jwt?.SecretKey, jwtFactory) };
 #if BIA_USE_DATABASE
             if (this.biaNetSection.CommonFeatures?.AuditConfiguration?.IsActive == true)
             {

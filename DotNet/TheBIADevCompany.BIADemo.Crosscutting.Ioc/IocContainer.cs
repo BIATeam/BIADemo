@@ -39,6 +39,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
 #endif
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
+#if BIA_FRONT_FEATURE
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
@@ -48,6 +49,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Mappers;
 #endif
+    using TheBIADevCompany.BIADemo.Domain.User.Models;
 #if BIA_USE_DATABASE
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
@@ -251,7 +253,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
             if (biaNetSection.CommonFeatures?.ClientForHub?.IsActive == true)
             {
-                if (isUnitTest || !string.IsNullOrEmpty(biaNetSection.CommonFeatures.ClientForHub.SignalRUrl))
+                if (isUnitTest || !string.IsNullOrEmpty(biaNetSection.CommonFeatures?.ClientForHub.SignalRUrl))
                 {
                     collection.AddTransient<IClientForHubRepository, ExternalClientForSignalRRepository>();
                 }

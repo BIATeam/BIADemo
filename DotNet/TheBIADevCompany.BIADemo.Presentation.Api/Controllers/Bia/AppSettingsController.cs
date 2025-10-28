@@ -41,7 +41,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
         {
             this.appSettings = new AppSettingsDto
             {
-                Keycloak = configuration.Value.Authentication.Keycloak,
+                Keycloak = configuration.Value.Authentication?.Keycloak,
                 Environment = configuration.Value.Environment,
                 Cultures = configuration.Value.Cultures,
                 MonitoringUrl = configuration.Value.ApiFeatures?.DelegateJobToWorker?.MonitoringUrl,

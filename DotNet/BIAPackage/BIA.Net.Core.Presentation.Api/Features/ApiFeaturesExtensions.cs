@@ -140,7 +140,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
                 }
             }
 
-            if (apiFeatures.HangfireDashboard.IsActive)
+            if (apiFeatures.HangfireDashboard?.IsActive == true)
             {
                 services.AddHangfire((config) =>
                 {
@@ -208,7 +208,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
             }
 
             // Hangfire Server
-            if (apiFeatures.HangfireDashboard.IsActive)
+            if (apiFeatures?.HangfireDashboard?.IsActive == true)
             {
                 app.UseHangfireDashboard("/hangfireAdmin", new DashboardOptions
                 {
