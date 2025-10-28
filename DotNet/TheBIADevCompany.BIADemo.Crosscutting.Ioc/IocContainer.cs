@@ -158,12 +158,14 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 collection.AddScoped(type);
             }
 
+#if BIA_FRONT_FEATURE || BIA_USE_DATABASE
             Type auditMapperType = typeof(IAuditMapper);
             List<Type> auditMapperDerivedTypes = ReflectiveEnumerator.GetDerivedTypes(assembly, auditMapperType);
             foreach (var auditMapperDerivedType in auditMapperDerivedTypes)
             {
                 collection.AddSingleton(auditMapperType, auditMapperDerivedType);
             }
+#endif
         }
 
         private static void ConfigureCommonContainer(IServiceCollection collection, IConfiguration configuration)
@@ -246,10 +248,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 #if BIA_FRONT_FEATURE || BIA_USE_DATABASE
             collection.AddSingleton<IUserDirectoryRepository<UserFromDirectoryDto, UserFromDirectory>, LdapRepository>();
             collection.AddSingleton<IUserIdentityKeyDomainService, UserIdentityKeyDomainService>();
+            collection.AddTransient<IMailRepository, MailRepository>();
 #endif
 #if BIA_FRONT_FEATURE
             collection.AddHttpClient<IIdentityProviderRepository<UserFromDirectory>, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
-            collection.AddTransient<IMailRepository, MailRepository>();
 
             if (biaNetSection.CommonFeatures?.ClientForHub?.IsActive == true)
             {
