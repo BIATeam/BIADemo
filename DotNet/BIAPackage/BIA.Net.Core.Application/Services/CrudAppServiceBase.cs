@@ -248,6 +248,24 @@ namespace BIA.Net.Core.Application.Services
             await this.RemoveBulkAsync<TDto, TMapper>(dtos);
         }
 
+        /// <inheritdoc />
+        public virtual async Task<int> MassAddAsync(IEnumerable<TDto> dtos, int batchSize = 100, bool useBulk = false)
+        {
+            return await this.MassAddAsync<TDto, TMapper>(dtos, batchSize, useBulk);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<int> MassUpdateAsync(IEnumerable<TDto> dtos, int batchSize = 100, bool useBulk = false)
+        {
+            return await this.MassUpdateAsync<TDto, TMapper>(dtos, batchSize, useBulk);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<int> MassDeleteAsync(IEnumerable<TDto> dtos, int batchSize = 100, bool useBulk = false)
+        {
+            return await this.MassDeleteAsync<TDto, TMapper>(dtos, batchSize, useBulk);
+        }
+
         /// <summary>
         /// Save several entity with its identifier safe asynchronous.
         /// </summary>

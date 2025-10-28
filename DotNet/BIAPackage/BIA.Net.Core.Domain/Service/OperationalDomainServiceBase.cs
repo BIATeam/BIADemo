@@ -15,7 +15,6 @@ namespace BIA.Net.Core.Domain.Service
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Entity.Interface;
@@ -23,7 +22,6 @@ namespace BIA.Net.Core.Domain.Service
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
-    using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
 
     /// <summary>
@@ -740,20 +738,13 @@ namespace BIA.Net.Core.Domain.Service
         {
             if (dtoList != null)
             {
-                List<TEntity> entities = dtoList.AsParallel().Select(item =>
-                    {
-                        var converted = default(TEntity);
-                        TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
-                        mapper.DtoToEntity(item, ref converted);
-                        return converted;
-                    }).ToList();
-
+                List<TEntity> entities = this.ConvertDtosToEntities<TOtherDto, TOtherMapper>(dtoList);
                 await this.Repository.UnitOfWork.AddBulkAsync(entities);
             }
         }
 
         /// <summary>
-        /// Update quickly hudge number of element. Obsolete in V3.9.0.
+        /// Update quickly hudge number of element.
         /// </summary>
         /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
         /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
@@ -765,20 +756,13 @@ namespace BIA.Net.Core.Domain.Service
         {
             if (dtoList != null)
             {
-                List<TEntity> entities = dtoList.AsParallel().Select(item =>
-                {
-                    var converted = default(TEntity);
-                    TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
-                    mapper.DtoToEntity(item, ref converted);
-                    return converted;
-                }).ToList();
-
+                List<TEntity> entities = this.ConvertDtosToEntities<TOtherDto, TOtherMapper>(dtoList);
                 await this.Repository.UnitOfWork.UpdateBulkAsync(entities);
             }
         }
 
         /// <summary>
-        /// Remove quickly hudge number of element. Obsolete in V3.9.0.
+        /// Remove quickly hudge number of element.
         /// </summary>
         /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
         /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
@@ -790,28 +774,110 @@ namespace BIA.Net.Core.Domain.Service
         {
             if (dtoList != null)
             {
+                // For remove operations, we only need the Id, so we create minimal entities
                 List<TEntity> entities = dtoList.AsParallel().Select(item => new TEntity() { Id = item.Id }).ToList();
                 await this.Repository.UnitOfWork.RemoveBulkAsync(entities);
             }
         }
 
         /// <summary>
-        /// Delete quickly hudge number of element by id. Obsolete in V3.9.0.
+        /// Massively add entities in batch.
         /// </summary>
         /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
         /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
-        /// <param name="idList">The list of id of element to delete.</param>
-        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
-        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-#pragma warning disable S1133 // Deprecated code should be removed
-        [Obsolete("RemoveBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteDeleteAsync method (See the example with the EngineRepository in BIADemo).")]
-#pragma warning restore S1133 // Deprecated code should be removed
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        protected virtual async Task RemoveBulkAsync(IEnumerable<TKey> idList, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        /// <param name="dtoList">DTOs to add.</param>
+        /// <param name="batchSize">Batch size.</param>
+        /// <param name="useBulk">if set to <c>true</c> [use bulk].</param>
+        /// <returns>Number of elements affected.</returns>
+        protected virtual async Task<int> MassAddAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList, int batchSize = 100, bool useBulk = false)
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherDto : BaseDto<TKey>, new()
         {
-            throw new NotImplementedException();
+            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
+            {
+                if (dtoList != null)
+                {
+                    List<TEntity> entities = this.ConvertDtosToEntities<TOtherDto, TOtherMapper>(dtoList);
+                    return await this.Repository.MassAddAsync(entities, batchSize, useBulk);
+                }
+
+                return 0;
+            });
+        }
+
+        /// <summary>
+        /// Massively update entities in batch.
+        /// </summary>
+        /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
+        /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
+        /// <param name="dtoList">DTOs to update.</param>
+        /// <param name="batchSize">Batch size.</param>
+        /// <param name="useBulk">if set to <c>true</c> [use bulk].</param>
+        /// <returns>Number of elements affected.</returns>
+        protected virtual async Task<int> MassUpdateAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList, int batchSize = 100, bool useBulk = false)
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherDto : BaseDto<TKey>, new()
+        {
+            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
+            {
+                if (dtoList != null)
+                {
+                    List<TEntity> entities = this.ConvertDtosToEntities<TOtherDto, TOtherMapper>(dtoList);
+                    return await this.Repository.MassUpdateAsync(entities, batchSize, useBulk);
+                }
+
+                return 0;
+            });
+        }
+
+        /// <summary>
+        /// Massively delete entities in batch.
+        /// </summary>
+        /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
+        /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
+        /// <param name="dtoList">DTOs to delete.</param>
+        /// <param name="batchSize">Batch size.</param>
+        /// <param name="useBulk">if set to <c>true</c> [use bulk].</param>
+        /// <returns>Number of elements affected.</returns>
+        protected virtual async Task<int> MassDeleteAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList, int batchSize = 100, bool useBulk = false)
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherDto : BaseDto<TKey>, new()
+        {
+            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
+            {
+                if (dtoList != null)
+                {
+                    List<TEntity> entities = this.ConvertDtosToEntities<TOtherDto, TOtherMapper>(dtoList);
+                    return await this.Repository.MassDeleteAsync(entities, batchSize, useBulk);
+                }
+
+                return 0;
+            });
+        }
+
+        /// <summary>
+        /// Helper method to convert DTOs to entities using mapper.
+        /// </summary>
+        /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
+        /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
+        /// <param name="dtoList">DTOs to convert.</param>
+        /// <returns>List of entities.</returns>
+        protected virtual List<TEntity> ConvertDtosToEntities<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherDto : BaseDto<TKey>, new()
+        {
+            if (dtoList == null)
+            {
+                return new List<TEntity>();
+            }
+
+            return dtoList.AsParallel().Select(item =>
+            {
+                var converted = default(TEntity);
+                TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
+                mapper.DtoToEntity(item, ref converted);
+                return converted;
+            }).ToList();
         }
 
         /// <summary>
