@@ -38,7 +38,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
 #endif
-#if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
 
     // Begin BIADemo
@@ -48,7 +47,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Mappers;
-    using TheBIADevCompany.BIADemo.Domain.User.Models;
 #endif
 #if BIA_USE_DATABASE
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
