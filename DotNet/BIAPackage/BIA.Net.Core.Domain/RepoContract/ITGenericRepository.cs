@@ -217,24 +217,33 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// </summary>
         /// <param name="items">Entities to add.</param>
         /// <param name="batchSize">Batch size.</param>
-        /// <returns>Number of element affected.</returns>
-        Task<int> MassAddAsync(IEnumerable<TEntity> items, int batchSize = 100);
+        /// <param name="useBulk">if set to <c>true</c> [use bulk].</param>
+        /// <returns>
+        /// Number of element affected.
+        /// </returns>
+        Task<int> MassAddAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false);
 
         /// <summary>
         /// Massively update entities in batch.
         /// </summary>
         /// <param name="items">Entities to update.</param>
         /// <param name="batchSize">Batch size.</param>
-        /// <returns>Number of element affected.</returns>
-        Task<int> MassUpdateAsync(IEnumerable<TEntity> items, int batchSize = 100);
+        /// <param name="useBulk">if set to <c>true</c> [use bulk].</param>
+        /// <returns>
+        /// Number of element affected.
+        /// </returns>
+        Task<int> MassUpdateAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false);
 
         /// <summary>
         /// Massively delete entities in batch.
         /// </summary>
         /// <param name="items">Entities to delete.</param>
         /// <param name="batchSize">Batch size.</param>
-        /// <returns>Number of element affected.</returns>
-        Task<int> MassDeleteAsync(IEnumerable<TEntity> items, int batchSize = 100);
+        /// <param name="useBulk">if set to <c>true</c> [use bulk].</param>
+        /// <returns>
+        /// Number of element affected.
+        /// </returns>
+        Task<int> MassDeleteAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false);
 
         /// <summary>
         /// Set an item as modified in the current context to force update of all fields

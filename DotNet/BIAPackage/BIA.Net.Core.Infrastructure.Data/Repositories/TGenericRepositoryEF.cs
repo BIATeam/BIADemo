@@ -91,7 +91,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// Add an item to the current context.
         /// </summary>
         /// <param name="item">The item.</param>
-        public void Add(TEntity item)
+        public virtual void Add(TEntity item)
         {
             if (item == null)
             {
@@ -106,7 +106,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// </summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="item">The item.</param>
-        public void SetModified(TEntity item)
+        public virtual void SetModified(TEntity item)
         {
             if (item == null)
             {
@@ -120,7 +120,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// Remove an item to the current context.
         /// </summary>
         /// <param name="item">The item.</param>
-        public void Remove(TEntity item)
+        public virtual void Remove(TEntity item)
         {
             if (item == null)
             {
@@ -136,7 +136,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// Add a list of item to the current context.
         /// </summary>
         /// <param name="items">The items.</param>
-        public void AddRange(IEnumerable<TEntity> items)
+        public virtual void AddRange(IEnumerable<TEntity> items)
         {
             if (items?.Any() != true)
             {
@@ -147,7 +147,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         }
 
         /// <inheritdoc />
-        public void UpdateRange(IEnumerable<TEntity> items)
+        public virtual void UpdateRange(IEnumerable<TEntity> items)
         {
             if (items?.Any() != true)
             {
@@ -158,7 +158,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         }
 
         /// <inheritdoc />
-        public void RemoveRange(IEnumerable<TEntity> items)
+        public virtual void RemoveRange(IEnumerable<TEntity> items)
         {
             if (items?.Any() != true)
             {
@@ -171,7 +171,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         }
 
         /// <inheritdoc />
-        public async Task<int> DeleteByIdsAsync(IEnumerable<TKey> ids, int? batchSize = 100)
+        public virtual async Task<int> DeleteByIdsAsync(IEnumerable<TKey> ids, int? batchSize = 100)
         {
             int deletedCount = 0;
 
@@ -206,7 +206,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         }
 
         /// <inheritdoc />
-        public async Task<int> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> filter = default, int? batchSize = 100)
+        public virtual async Task<int> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> filter = default, int? batchSize = 100)
         {
             int deletedCount = 0;
 
@@ -242,7 +242,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         }
 
         /// <inheritdoc />
-        public async Task<int> ExecuteUpdateAsync(IDictionary<string, object> fieldUpdates, Expression<Func<TEntity, bool>> filter = default, int? batchSize = 100)
+        public virtual async Task<int> ExecuteUpdateAsync(IDictionary<string, object> fieldUpdates, Expression<Func<TEntity, bool>> filter = default, int? batchSize = 100)
         {
             int updatedCount = 0;
 
@@ -308,20 +308,38 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         }
 
         /// <inheritdoc />
-        public async Task<int> MassAddAsync(IEnumerable<TEntity> items, int batchSize = 100)
+        public virtual async Task<int> MassAddAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false)
         {
+            if (this.ShouldUseBulkOperation(items, useBulk))
+            {
+                await this.unitOfWork.AddBulkAsync(items);
+                return items.Count();
+            }
+
             return await this.ExecuteMassOperationAsync(items, batchSize, this.AddRange);
         }
 
         /// <inheritdoc />
-        public async Task<int> MassUpdateAsync(IEnumerable<TEntity> items, int batchSize = 100)
+        public virtual async Task<int> MassUpdateAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false)
         {
+            if (this.ShouldUseBulkOperation(items, useBulk))
+            {
+                await this.unitOfWork.UpdateBulkAsync(items);
+                return items.Count();
+            }
+
             return await this.ExecuteMassOperationAsync(items, batchSize, this.UpdateRange);
         }
 
         /// <inheritdoc />
-        public async Task<int> MassDeleteAsync(IEnumerable<TEntity> items, int batchSize = 100)
+        public virtual async Task<int> MassDeleteAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false)
         {
+            if (this.ShouldUseBulkOperation(items, useBulk))
+            {
+                await this.unitOfWork.RemoveBulkAsync(items);
+                return items.Count();
+            }
+
             return await this.ExecuteMassOperationAsync(items, batchSize, this.RemoveRange);
         }
 
@@ -330,7 +348,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// </summary>
         /// <param name="specification">The specification.</param>
         /// <returns>A value indicating whether at least one element match with condition.</returns>
-        public async Task<bool> AnyAsync(Specification<TEntity> specification)
+        public virtual async Task<bool> AnyAsync(Specification<TEntity> specification)
         {
             // Create IObjectSet for this particular type and query this
             IQueryable<TEntity> objectSet = this.RetrieveSetNoTracking();
@@ -349,7 +367,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
         /// <returns>The <see cref="TEntity"/>.</returns>
-        public async Task<TEntity> GetEntityAsync(
+        public virtual async Task<TEntity> GetEntityAsync(
             TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
@@ -372,7 +390,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
         /// <returns>All TEntity.</returns>
-        public async Task<TResult> GetResultAsync<TResult>(
+        public virtual async Task<TResult> GetResultAsync<TResult>(
             Expression<Func<TEntity, TResult>> selectResult,
             TKey id = default,
             Specification<TEntity> specification = null,
@@ -397,7 +415,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
         /// <returns>All TEntity.</returns>
-        public async Task<IEnumerable<TEntity>> GetAllEntityAsync(
+        public virtual async Task<IEnumerable<TEntity>> GetAllEntityAsync(
             TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
@@ -427,7 +445,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
         /// <returns>List of Elements.</returns>
-        public async Task<IEnumerable<TEntity>> GetAllEntityAsync<TOrderKey>(
+        public virtual async Task<IEnumerable<TEntity>> GetAllEntityAsync<TOrderKey>(
             Expression<Func<TEntity, TOrderKey>> orderByExpression,
             bool ascending = true,
             TKey id = default,
@@ -462,7 +480,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
         /// <returns>All TEntity.</returns>
-        public async Task<IEnumerable<TResult>> GetAllResultAsync<TResult>(
+        public virtual async Task<IEnumerable<TResult>> GetAllResultAsync<TResult>(
             Expression<Func<TEntity, TResult>> selectResult,
             TKey id = default,
             Specification<TEntity> specification = null,
@@ -499,7 +517,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
         /// <returns>List of Elements with selected Columns of Entity Object.</returns>
-        public async Task<IEnumerable<TResult>> GetAllResultAsync<TOrderKey, TResult>(
+        public virtual async Task<IEnumerable<TResult>> GetAllResultAsync<TOrderKey, TResult>(
             Expression<Func<TEntity, TResult>> selectResult,
             Expression<Func<TEntity, TOrderKey>> orderByExpression,
             bool ascending,
@@ -535,7 +553,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
         /// <returns>List of Elements with selected Columns of Entity Object and count.</returns>
-        public async Task<Tuple<IEnumerable<TResult>, int>> GetRangeResultAsync<TResult>(
+        public virtual async Task<Tuple<IEnumerable<TResult>, int>> GetRangeResultAsync<TResult>(
             Expression<Func<TEntity, TResult>> selectResult,
             TKey id = default,
             Specification<TEntity> specification = null,
@@ -556,7 +574,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         }
 
         /// <inheritdoc/>
-        public void UpdateFixedAsync(TEntity item, bool isFixed)
+        public virtual void UpdateFixedAsync(TEntity item, bool isFixed)
         {
             if (item is not IEntityFixable fixableEntity)
             {
@@ -597,7 +615,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// Retrieve a DBSet.
         /// </summary>
         /// <returns>The DBSet of TEntity.</returns>
-        protected DbSet<TEntity> RetrieveSet()
+        protected virtual DbSet<TEntity> RetrieveSet()
         {
             if (this.unitOfWork == null)
             {
@@ -614,6 +632,18 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         protected virtual DbSet<TEntity> RetrieveSetNoTracking()
         {
             return this.serviceProvider.GetService<IQueryableUnitOfWorkNoTracking>().RetrieveSet<TEntity>();
+        }
+
+        /// <summary>
+        /// Determines whether bulk operations should be used based on the number of items and bulk preference.
+        /// </summary>
+        /// <param name="items">The collection of items to evaluate.</param>
+        /// <param name="useBulk">Flag indicating if bulk operations are preferred.</param>
+        /// <returns>True if bulk operations should be used (when useBulk is true and item count exceeds the threshold of 1000); otherwise, false.</returns>
+        protected virtual bool ShouldUseBulkOperation(IEnumerable<TEntity> items, bool useBulk)
+        {
+            int bulkThreshold = 1000;
+            return useBulk && items is ICollection<TEntity> collection ? collection.Count > bulkThreshold : items?.Count() > bulkThreshold;
         }
 
         /// <summary>
@@ -635,7 +665,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
         /// <returns>List of Selected column of Entity Object, Count of records (0 if not used).</returns>
-        protected async Task<Tuple<IEnumerable<TResult>, int>> GetAllElementsAndCountAsync<TOrderKey, TResult>(Expression<Func<TEntity, TResult>> selectResult, TKey id, Specification<TEntity> specification, Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, TOrderKey>> orderByExpression, bool ascending, int firstElement, int pageCount, QueryOrder<TEntity> queryOrder, Expression<Func<TEntity, object>>[] includes, string queryMode = null, bool isReadOnlyMode = false)
+        protected virtual async Task<Tuple<IEnumerable<TResult>, int>> GetAllElementsAndCountAsync<TOrderKey, TResult>(Expression<Func<TEntity, TResult>> selectResult, TKey id, Specification<TEntity> specification, Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, TOrderKey>> orderByExpression, bool ascending, int firstElement, int pageCount, QueryOrder<TEntity> queryOrder, Expression<Func<TEntity, object>>[] includes, string queryMode = null, bool isReadOnlyMode = false)
         {
             if (isReadOnlyMode)
             {
@@ -689,7 +719,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
         /// <returns>List of Selected column of Entity Object, Count of records (0 if not used).</returns>
-        protected IQueryable<TResult> GetAllElementsAsync<TOrderKey, TResult>(Expression<Func<TEntity, TResult>> selectResult, TKey id, Specification<TEntity> specification, Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, TOrderKey>> orderByExpression, bool ascending, int firstElement, int pageCount, QueryOrder<TEntity> queryOrder, Expression<Func<TEntity, object>>[] includes, string queryMode = null, bool isReadOnlyMode = false)
+        protected virtual IQueryable<TResult> GetAllElementsAsync<TOrderKey, TResult>(Expression<Func<TEntity, TResult>> selectResult, TKey id, Specification<TEntity> specification, Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, TOrderKey>> orderByExpression, bool ascending, int firstElement, int pageCount, QueryOrder<TEntity> queryOrder, Expression<Func<TEntity, object>>[] includes, string queryMode = null, bool isReadOnlyMode = false)
         {
             IQueryable<TEntity> objectSet = this.PrepareFilteredQuery(id, specification, filter, queryMode, isReadOnlyMode);
 
@@ -717,7 +747,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="queryMode">The query mode.</param>
         /// <param name="isNoTrackingMode">if set to <c>true</c> [is no tracking mode].</param>
         /// <returns>A filtered query.</returns>
-        protected IQueryable<TEntity> PrepareFilteredQuery(TKey id, Specification<TEntity> specification, Expression<Func<TEntity, bool>> filter, string queryMode, bool isNoTrackingMode = false)
+        protected virtual IQueryable<TEntity> PrepareFilteredQuery(TKey id, Specification<TEntity> specification, Expression<Func<TEntity, bool>> filter, string queryMode, bool isNoTrackingMode = false)
         {
             // Create IObjectSet for this particular type and query this
             IQueryable<TEntity> objectSet = isNoTrackingMode ? this.RetrieveSetNoTracking() : this.RetrieveSet();
@@ -788,7 +818,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="includes">The includes.</param>
         /// <param name="queryMode">The queryMode.</param>
         /// <returns>List of Selected column of Entity Object, Count of records (0 if not used).</returns>
-        protected IQueryable<TResult> GetElements<TOrderKey, TResult>(IQueryable<TEntity> objectSet, Expression<Func<TEntity, TResult>> selectResult, Expression<Func<TEntity, TOrderKey>> orderByExpression, bool ascending, int firstElement, int pageCount, QueryOrder<TEntity> queryOrder, Expression<Func<TEntity, object>>[] includes, string queryMode)
+        protected virtual IQueryable<TResult> GetElements<TOrderKey, TResult>(IQueryable<TEntity> objectSet, Expression<Func<TEntity, TResult>> selectResult, Expression<Func<TEntity, TOrderKey>> orderByExpression, bool ascending, int firstElement, int pageCount, QueryOrder<TEntity> queryOrder, Expression<Func<TEntity, object>>[] includes, string queryMode)
         {
             objectSet = this.CustomizeQueryAfter(objectSet, includes, queryMode);
 
@@ -827,7 +857,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="includes">The includes.</param>
         /// <param name="queryMode">The query mode.</param>
         /// <returns>The query customized after.</returns>
-        protected IQueryable<TEntity> CustomizeQueryAfter(IQueryable<TEntity> objectSet, Expression<Func<TEntity, object>>[] includes, string queryMode)
+        protected virtual IQueryable<TEntity> CustomizeQueryAfter(IQueryable<TEntity> objectSet, Expression<Func<TEntity, object>>[] includes, string queryMode)
         {
             if (includes != null && includes.Length > 0)
             {
