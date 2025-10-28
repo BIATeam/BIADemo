@@ -281,48 +281,10 @@ namespace BIA.Net.Core.Application.Services
         /// </summary>
         /// <param name="dtos">The DTO for all items.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+#pragma warning disable S1133 // Deprecated code should be removed
+        [Obsolete(message: "AddBulkAsync is deprecated, You can create your own method and call the this.Repository.UnitOfWork.AddBulkAsync method inside it", error: true)]
+#pragma warning restore S1133 // Deprecated code should be removed
         Task AddBulkAsync(IEnumerable<TDto> dtos);
-
-        /// <summary>
-        /// Transform the DTO into the corresponding entities and update these to the DB.
-        /// </summary>
-        /// <param name="dtos">The dtos.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task UpdateBulkAsync(IEnumerable<TDto> dtos);
-
-        /// <summary>
-        /// Transform the DTO into the corresponding entities and delete these to the DB.
-        /// </summary>
-        /// <param name="dtos">The dto list.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task RemoveBulkAsync(IEnumerable<TDto> dtos);
-
-        /// <summary>
-        /// Massively add entities in batch.
-        /// </summary>
-        /// <param name="dtos">DTOs to add.</param>
-        /// <param name="batchSize">Batch size.</param>
-        /// <param name="useBulk">if set to <c>true</c> [use bulk].</param>
-        /// <returns>Number of elements affected.</returns>
-        Task<int> MassAddAsync(IEnumerable<TDto> dtos, int batchSize = 100, bool useBulk = false);
-
-        /// <summary>
-        /// Massively update entities in batch.
-        /// </summary>
-        /// <param name="dtos">DTOs to update.</param>
-        /// <param name="batchSize">Batch size.</param>
-        /// <param name="useBulk">if set to <c>true</c> [use bulk].</param>
-        /// <returns>Number of elements affected.</returns>
-        Task<int> MassUpdateAsync(IEnumerable<TDto> dtos, int batchSize = 100, bool useBulk = false);
-
-        /// <summary>
-        /// Massively delete entities in batch.
-        /// </summary>
-        /// <param name="dtos">DTOs to delete.</param>
-        /// <param name="batchSize">Batch size.</param>
-        /// <param name="useBulk">if set to <c>true</c> [use bulk].</param>
-        /// <returns>Number of elements affected.</returns>
-        Task<int> MassDeleteAsync(IEnumerable<TDto> dtos, int batchSize = 100, bool useBulk = false);
 
         /// <summary>
         /// Update the fixed status of an <see cref="IEntityFixable{TKey}"/>.

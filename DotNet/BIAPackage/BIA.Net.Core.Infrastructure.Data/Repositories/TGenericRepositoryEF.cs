@@ -289,7 +289,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <inheritdoc />
         public virtual async Task<int> MassAddAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false)
         {
-            if (this.ShouldUseBulkOperation(items, useBulk))
+            if (useBulk)
             {
                 await this.unitOfWork.AddBulkAsync(items);
                 return items.Count();
@@ -301,7 +301,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <inheritdoc />
         public virtual async Task<int> MassUpdateAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false)
         {
-            if (this.ShouldUseBulkOperation(items, useBulk))
+            if (useBulk)
             {
                 await this.unitOfWork.UpdateBulkAsync(items);
                 return items.Count();
@@ -313,7 +313,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <inheritdoc />
         public virtual async Task<int> MassDeleteAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false)
         {
-            if (this.ShouldUseBulkOperation(items, useBulk))
+            if (useBulk)
             {
                 await this.unitOfWork.RemoveBulkAsync(items);
                 return items.Count();
@@ -586,18 +586,6 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         protected virtual DbSet<TEntity> RetrieveSetNoTracking()
         {
             return this.serviceProvider.GetService<IQueryableUnitOfWorkNoTracking>().RetrieveSet<TEntity>();
-        }
-
-        /// <summary>
-        /// Determines whether bulk operations should be used based on the number of items and bulk preference.
-        /// </summary>
-        /// <param name="items">The collection of items to evaluate.</param>
-        /// <param name="useBulk">Flag indicating if bulk operations are preferred.</param>
-        /// <returns>True if bulk operations should be used (when useBulk is true and item count exceeds the threshold of 1000); otherwise, false.</returns>
-        protected virtual bool ShouldUseBulkOperation(IEnumerable<TEntity> items, bool useBulk)
-        {
-            int bulkThreshold = 1000;
-            return useBulk && items is ICollection<TEntity> collection ? collection.Count > bulkThreshold : items?.Count() > bulkThreshold;
         }
 
         /// <summary>

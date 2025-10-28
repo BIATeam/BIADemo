@@ -231,39 +231,12 @@ namespace BIA.Net.Core.Application.Services
         }
 
         /// <inheritdoc />
+#pragma warning disable S1133 // Deprecated code should be removed
+        [Obsolete(message: "AddBulkAsync is deprecated, You can create your own method and call the this.Repository.UnitOfWork.AddBulkAsync method inside it", error: true)]
+#pragma warning restore S1133 // Deprecated code should be removed
         public virtual async Task AddBulkAsync(IEnumerable<TDto> dtos)
         {
-            await this.AddBulkAsync<TDto, TMapper>(dtos);
-        }
-
-        /// <inheritdoc />
-        public virtual async Task UpdateBulkAsync(IEnumerable<TDto> dtos)
-        {
-            await this.UpdateBulkAsync<TDto, TMapper>(dtos);
-        }
-
-        /// <inheritdoc />
-        public virtual async Task RemoveBulkAsync(IEnumerable<TDto> dtos)
-        {
-            await this.RemoveBulkAsync<TDto, TMapper>(dtos);
-        }
-
-        /// <inheritdoc />
-        public virtual async Task<int> MassAddAsync(IEnumerable<TDto> dtos, int batchSize = 100, bool useBulk = false)
-        {
-            return await this.MassAddAsync<TDto, TMapper>(dtos, batchSize, useBulk);
-        }
-
-        /// <inheritdoc />
-        public virtual async Task<int> MassUpdateAsync(IEnumerable<TDto> dtos, int batchSize = 100, bool useBulk = false)
-        {
-            return await this.MassUpdateAsync<TDto, TMapper>(dtos, batchSize, useBulk);
-        }
-
-        /// <inheritdoc />
-        public virtual async Task<int> MassDeleteAsync(IEnumerable<TDto> dtos, int batchSize = 100, bool useBulk = false)
-        {
-            return await this.MassDeleteAsync<TDto, TMapper>(dtos, batchSize, useBulk);
+            throw new NotImplementedException();
         }
 
         /// <summary>
