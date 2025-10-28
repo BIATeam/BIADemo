@@ -235,9 +235,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         private static void ConfigureInfrastructureServiceContainer(IServiceCollection collection, BiaNetSection biaNetSection, bool isUnitTest = false)
 #pragma warning restore S1172 // Unused method parameters should be removed
         {
-#if BIA_FRONT_FEATURE
+#if BIA_FRONT_FEATURE || BIA_USE_DATABASE
             collection.AddSingleton<IUserDirectoryRepository<UserFromDirectoryDto, UserFromDirectory>, LdapRepository>();
             collection.AddSingleton<IUserIdentityKeyDomainService, UserIdentityKeyDomainService>();
+#endif
+#if BIA_FRONT_FEATURE
             collection.AddHttpClient<IIdentityProviderRepository<UserFromDirectory>, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
             collection.AddTransient<IMailRepository, MailRepository>();
 
