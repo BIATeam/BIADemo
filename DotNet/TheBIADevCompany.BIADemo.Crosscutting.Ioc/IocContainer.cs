@@ -248,7 +248,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddSingleton<IUserDirectoryRepository<UserFromDirectoryDto, UserFromDirectory>, LdapRepository>();
             collection.AddSingleton<IUserIdentityKeyDomainService, UserIdentityKeyDomainService>();
             collection.AddTransient<IMailRepository, MailRepository>();
-#if BIA_FRONT_FEATURE || BIA_USE_DATABASE
+#if BIA_FRONT_FEATURE
             collection.AddHttpClient<IIdentityProviderRepository<UserFromDirectory>, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
 
             if (biaNetSection.CommonFeatures?.ClientForHub?.IsActive == true)
