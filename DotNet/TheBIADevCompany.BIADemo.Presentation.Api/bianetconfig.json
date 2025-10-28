@@ -125,7 +125,7 @@
         "LanguageId": "2"
       }
     ],
-    // if BIA_FRONT_FEATURE || BIA_USE_DATABASE
+    // if BIA_FRONT_FEATURE
     "Permissions": [
       // BIAToolKit - Begin Config
       // BIAToolKit - End Config

@@ -23,7 +23,7 @@
   {
     "Id": 5,
     "DisplayName": "Database",
-    "Description": "Use Infrastructure.Data layer and usage of services with repositories to use Database",
+    "Description": "Add Infrastructure.Data layer and usage of services with repositories to access database",
     "IsSelected": true,
     "Tags": [
       "BIA_USE_DATABASE"
