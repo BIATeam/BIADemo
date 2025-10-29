@@ -7,6 +7,7 @@ namespace BIA.Net.Core.Application.Services
     using System;
     using System.Collections.Generic;
     using System.Collections.Immutable;
+    using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
@@ -15,6 +16,7 @@ namespace BIA.Net.Core.Application.Services
     using Audit.EntityFramework;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain.Audit;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
@@ -27,6 +29,7 @@ namespace BIA.Net.Core.Application.Services
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
+    using Microsoft.Extensions.DependencyInjection;
     using Newtonsoft.Json;
 
     /// <summary>
@@ -357,6 +360,30 @@ namespace BIA.Net.Core.Application.Services
                     return GroupAuditPerSeconds(groups, audit);
                 });
 
+                static List<List<IAuditEntity>> GroupAuditPerSeconds(List<List<IAuditEntity>> groups, IAuditEntity audit)
+                {
+                    if (groups.Count == 0)
+                    {
+                        groups.Add([audit]);
+                        return groups;
+                    }
+
+                    var lastGroup = groups[^1];
+                    var lastItem = lastGroup[^1];
+
+                    var delta = (lastItem.AuditDate - audit.AuditDate).TotalSeconds;
+                    if (delta <= 1)
+                    {
+                        lastGroup.Add(audit);
+                    }
+                    else
+                    {
+                        groups.Add([audit]);
+                    }
+
+                    return groups;
+                }
+
                 var mapper = this.InitMapper<TDto, TMapper>();
                 var historical = new List<EntityHistoricalEntryDto>();
                 foreach (var audits in auditsPerSeconds)
@@ -386,35 +413,13 @@ namespace BIA.Net.Core.Application.Services
             });
         }
 
-        private static List<List<IAuditEntity>> GroupAuditPerSeconds(List<List<IAuditEntity>> groups, IAuditEntity audit)
-        {
-            if (groups.Count == 0)
-            {
-                groups.Add([audit]);
-                return groups;
-            }
-
-            var lastGroup = groups[^1];
-            var lastItem = lastGroup[^1];
-
-            var delta = (lastItem.AuditDate - audit.AuditDate).TotalSeconds;
-            if (delta <= 1)
-            {
-                lastGroup.Add(audit);
-            }
-            else
-            {
-                groups.Add([audit]);
-            }
-
-            return groups;
-        }
-
         private void FillHistoricalEntryModifications(EntityHistoricalEntryDto entry, List<IAuditEntity> audits, TMapper mapper)
         {
             var auditMapper = mapper.AuditMapper
                 ?? throw new BadBiaFrameworkUsageException($"Missing declaration of {nameof(IAuditMapper)} into {typeof(TMapper)}");
 
+            var userContext = this.Repository.ServiceProvider.GetRequiredService<UserContext>();
+            var userCulture = new CultureInfo(userContext.Culture);
             foreach (var audit in audits)
             {
                 // Linked Audit Mapper case
@@ -422,8 +427,10 @@ namespace BIA.Net.Core.Application.Services
                 if (linkedAuditMapper is not null)
                 {
                     var linkedAuditEntityDisplayProperty = audit.GetType().GetProperty(linkedAuditMapper.LinkedAuditEntityDisplayPropertyName) ??
-                    throw new BadBiaFrameworkUsageException($"Unable to find display property {linkedAuditMapper.LinkedAuditEntityDisplayPropertyName} into linked audit entity {linkedAuditMapper.LinkedAuditEntityType.Name}");
-                    var linkedAuditEntityDisplayPropertyValue = linkedAuditEntityDisplayProperty.GetValue(audit)?.ToString();
+                        throw new BadBiaFrameworkUsageException($"Unable to find display property {linkedAuditMapper.LinkedAuditEntityDisplayPropertyName} into linked audit entity {linkedAuditMapper.LinkedAuditEntityType.Name}");
+                    var linkedAuditEntityDisplayPropertyValue =linkedAuditEntityDisplayProperty.PropertyType.IsDateType() ?
+                        DateHelper.FormatWithCulture(linkedAuditEntityDisplayProperty, linkedAuditEntityDisplayProperty.GetValue(audit), userCulture) :
+                        linkedAuditEntityDisplayProperty.GetValue(audit)?.ToString();
 
                     var entryModification = new EntityHistoricalEntryModificationDto
                     {
@@ -467,11 +474,24 @@ namespace BIA.Net.Core.Application.Services
                         continue;
                     }
 
+                    var changeProperty = typeof(TEntity).GetProperty(auditPropertyMapper.EntityPropertyName);
+                    if (changeProperty is null)
+                    {
+                        continue;
+                    }
+
+                    var newValue = changeProperty.PropertyType.IsDateType() ?
+                        DateHelper.FormatWithCulture(changeProperty, propertyChange.NewValue, userCulture) :
+                        propertyChange.NewDisplay ?? propertyChange.NewValue?.ToString();
+                    var originalValue = DateHelper.IsDateType(changeProperty.PropertyType) ?
+                        DateHelper.FormatWithCulture(changeProperty, propertyChange.OriginalValue, userCulture) :
+                        propertyChange.OriginalDisplay ?? propertyChange.OriginalValue?.ToString();
+
                     entry.EntryModifications.Add(new EntityHistoricalEntryModificationDto
                     {
                         PropertyName = auditPropertyMapper.EntityPropertyName,
-                        NewValue = propertyChange.NewDisplay ?? propertyChange.NewValue?.ToString(),
-                        OldValue = propertyChange.OriginalDisplay ?? propertyChange.OriginalValue?.ToString(),
+                        NewValue = newValue,
+                        OldValue = originalValue,
                     });
 
                     changes.Remove(propertyChange);
@@ -480,11 +500,24 @@ namespace BIA.Net.Core.Application.Services
                 // General case
                 foreach (var change in changes)
                 {
+                    var changeProperty = typeof(TEntity).GetProperty(change.ColumnName);
+                    if (changeProperty is null)
+                    {
+                        continue;
+                    }
+
+                    var newValue = changeProperty.PropertyType.IsDateType() ?
+                        DateHelper.FormatWithCulture(changeProperty, change.NewValue, userCulture) :
+                        change.NewValue?.ToString();
+                    var originalValue = DateHelper.IsDateType(changeProperty.PropertyType) ?
+                        DateHelper.FormatWithCulture(changeProperty, change.OriginalValue, userCulture) :
+                        change.OriginalValue?.ToString();
+
                     entry.EntryModifications.Add(new EntityHistoricalEntryModificationDto
                     {
                         PropertyName = change.ColumnName,
-                        NewValue = change.NewValue?.ToString(),
-                        OldValue = change.OriginalValue?.ToString(),
+                        NewValue = newValue,
+                        OldValue = originalValue,
                     });
                 }
             }
