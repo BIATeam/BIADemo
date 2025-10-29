@@ -34,6 +34,7 @@
 	  <Compile Remove="**\*Document*.cs" />
 	  <Compile Remove="**\*Analysis*.cs" />
 	  <!--BIATEMPLATE-->
+	  <Compile Remove="**\*Mapper*.cs" />
 	  <Compile Remove="**\*Notification*.cs" />
 	  <Compile Remove="**\*Query*.cs" />
 	  <Compile Remove="**\*Site*.cs" />

@@ -68,6 +68,7 @@
 	  <Compile Remove="**\*Notification*.cs" />
 	  <Compile Remove="**\*Site*.cs" />
 	  <Compile Remove="**\*Team*.cs" />
+	  <Compile Remove="**\*View*.cs" />
 	  <Compile Remove="**\RolesController.cs" />
 	  <Compile Remove="**\UsersController.cs" />
 	  <Compile Remove="**\LanguagesController.cs" />

@@ -22,6 +22,7 @@
 	</ItemGroup>
 	<ItemGroup Label="Bia_ItemGroup_BIA_USE_DATABASE" Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bBIA_USE_DATABASE\b'))">
 		<!--BIATEMPLATE-->
+		<Compile Remove="**\*Site*.cs" />
 		<Compile Remove="**\MockEntityFrameworkInMemory.cs" />
 		<Compile Remove="**\AbstractUnitTest.cs" />
 	</ItemGroup>
