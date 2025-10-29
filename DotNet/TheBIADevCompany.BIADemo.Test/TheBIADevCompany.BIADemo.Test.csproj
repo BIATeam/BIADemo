@@ -19,10 +19,11 @@
 	<ItemGroup Label="Bia_ItemGroup_BIA_FRONT_FEATURE" Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bBIA_FRONT_FEATURE\b'))">
 		<!--BIADEMO-->
 		<Compile Remove="**\*Example*.cs" />
+		<!--BIATEMPLATE-->
+		<Compile Remove="**\*Site*.cs" />
 	</ItemGroup>
 	<ItemGroup Label="Bia_ItemGroup_BIA_USE_DATABASE" Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bBIA_USE_DATABASE\b'))">
 		<!--BIATEMPLATE-->
-		<Compile Remove="**\*Site*.cs" />
 		<Compile Remove="**\MockEntityFrameworkInMemory.cs" />
 		<Compile Remove="**\AbstractUnitTest.cs" />
 	</ItemGroup>
