@@ -914,12 +914,21 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
                 throw new ArgumentOutOfRangeException(nameof(batchSize));
             }
 
-            for (int i = 0; i < itemList.Count; i = i + batchSize)
+            if (itemList.Count <= batchSize)
             {
-                var packages = itemList.Skip(i).Take(batchSize).ToList();
-                operation(packages);
+                operation(itemList);
                 elementAffectedCount += await this.unitOfWork.CommitAsync();
                 this.unitOfWork.Reset();
+            }
+            else
+            {
+                for (int i = 0; i < itemList.Count; i = i + batchSize)
+                {
+                    var packages = itemList.Skip(i).Take(batchSize).ToList();
+                    operation(packages);
+                    elementAffectedCount += await this.unitOfWork.CommitAsync();
+                    this.unitOfWork.Reset();
+                }
             }
 
             return elementAffectedCount;
