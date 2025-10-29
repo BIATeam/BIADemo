@@ -17,7 +17,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
     // BIAToolKit - End Partial AuditTypeMapperUsing Fleet
     // End BIAToolKit Generation Ignore
     // BIAToolKit - End AuditTypeMapperUsing
+#if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
+#endif
 
     /// <summary>
     /// The Audit Feature.
@@ -49,7 +51,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
                 nameof(PlaneAirport) => typeof(PlaneAirportAudit),
 
                 // End BIADemo
+#if BIA_FRONT_FEATURE
                 nameof(User) => typeof(UserAudit),
+#endif
                 _ => base.AuditTypeMapper(type),
             };
         }

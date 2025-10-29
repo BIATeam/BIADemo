@@ -31,7 +31,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
 #endif
     using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
+#if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
+#endif
     using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders;
 
     /// <summary>

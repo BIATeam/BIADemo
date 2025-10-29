@@ -10,8 +10,8 @@ namespace TheBIADevCompany.BIADemo.DeployDB
     using BIA.Net.Core.Application.Clean;
 #if BIA_FRONT_FEATURE
     using BIA.Net.Core.Application.Job;
-    using BIA.Net.Core.Common;
 #endif
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Infrastructure.Data;

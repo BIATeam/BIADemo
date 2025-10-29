@@ -71,7 +71,7 @@ namespace BIA.Net.Core.Application.User
             this.UserPermissionDomainService = userPermissionDomainService;
             this.Logger = logger;
             this.UserDirectoryHelper = userDirectoryHelper;
-            this.LdapDomains = biaNetconfiguration.Value.Authentication.LdapDomains;
+            this.LdapDomains = biaNetconfiguration.Value.Authentication?.LdapDomains;
             this.LdapRepositoryHelper = ldapRepositoryHelper;
         }
 

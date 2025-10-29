@@ -181,7 +181,7 @@ namespace BIA.Net.Core.Application.User
         public async Task<List<string>> GetAllLdapUsersDomains()
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            return this.configuration.Authentication.LdapDomains.Where(d => d.ContainsUser).Select(d => d.Name).ToList();
+            return this.configuration.Authentication?.LdapDomains.Where(d => d.ContainsUser).Select(d => d.Name).ToList();
         }
 
         /// <inheritdoc />

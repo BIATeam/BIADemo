@@ -1,5 +1,6 @@
 {
   "BiaNet": {
+    // if BIA_FRONT_FEATURE || BIA_USE_DATABASE
     "CommonFeatures": {
       "DistributedCache": {
         "IsActive": true,
@@ -33,6 +34,7 @@
         "IsActive": true
       }
     },
+    // endif
     "Security": {
       "Audience": "http://localhost/"
     },
@@ -123,6 +125,7 @@
         "LanguageId": "2"
       }
     ],
+    // if BIA_FRONT_FEATURE
     "Permissions": [
       // BIAToolKit - Begin Config
       // BIAToolKit - End Config
@@ -498,5 +501,6 @@
         "Roles": [ "Back_Read_Only" ]
       }
     ]
+    // endif
   }
 }

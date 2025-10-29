@@ -1,5 +1,6 @@
 {
   "BiaNet": {
+    // if BIA_FRONT_FEATURE || BIA_DATABASE
     "DatabaseConfigurations": [
       {
         "Key": "ProjectDatabase",
@@ -12,6 +13,7 @@
         "ConnectionString": "data source=localhost;initial catalog=BIADemoReadOnly;integrated security=True;MultipleActiveResultSets=True;Encrypt=False;App=BIADemo"
       }
     ],
+    // endif
     "Environment": {
       "Type": "DEV",
       // UrlMatomo shoulld now contain the name of the php and js (originaly matomo.js & matomo.php) => rename to bypass ublock
@@ -161,6 +163,7 @@
         //"ApiKeyName" : "X-API-Key",
       }
     },
+    // if BIA_FRONT_FEATURE
     "PermissionsByEnv": [
       {
         "Names": [
@@ -204,6 +207,7 @@
         ]
       }
     ],
+    // endif
     "CsvAdditionalContent": {
       "Headers": [ "CONFIDENTIAL" ],
       "Footers": [

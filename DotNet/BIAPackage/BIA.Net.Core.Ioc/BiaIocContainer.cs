@@ -41,7 +41,6 @@ namespace BIA.Net.Core.Ioc
         {
             ConfigureInfrastructureServiceContainer(collection, configuration);
             ConfigureDomainContainer(collection);
-            ConfigureApplicationContainer(collection);
 
             if (!isUnitTest)
             {
@@ -135,15 +134,6 @@ namespace BIA.Net.Core.Ioc
             }
         }
 
-        private static void ConfigureApplicationContainer(IServiceCollection collection)
-        {
-            // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
-            RegisterServicesFromAssembly(
-                collection: collection,
-                assemblyName: "BIA.Net.Core.Application",
-                serviceLifetime: ServiceLifetime.Transient);
-        }
-
         private static void ConfigureDomainContainer(IServiceCollection collection)
         {
             // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
@@ -208,7 +198,7 @@ namespace BIA.Net.Core.Ioc
 
             collection.AddTransient<IFileRepository, FileRepository>();
             collection.AddHttpClient<IImageUrlRepository, ImageUrlRepository>().ConfigurePrimaryHttpMessageHandler(() =>
-                GetHttpMessagehandler(biaNetSection.ProfileConfiguration.AuthenticationConfiguration, biaNetSection));
+                GetHttpMessagehandler(biaNetSection.ProfileConfiguration?.AuthenticationConfiguration, biaNetSection));
 
             collection.AddHttpClient<IBiaWebApiAuthRepository, BiaWebApiAuthRepository>().ConfigurePrimaryHttpMessageHandler(() =>
             CreateHttpClientHandler(biaNetSection));

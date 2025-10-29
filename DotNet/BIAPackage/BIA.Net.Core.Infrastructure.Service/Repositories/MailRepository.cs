@@ -48,7 +48,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 Subject = subject?.Trim(),
             };
 
-            messageToSend.From.Add(new MailboxAddress(this.configuration.EmailConfiguration.From, this.configuration.EmailConfiguration.From));
+            messageToSend.From.Add(new MailboxAddress(this.configuration.EmailConfiguration?.From, this.configuration.EmailConfiguration?.From));
 
             if (tos?.Any() == true)
             {
@@ -72,7 +72,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
             using (SmtpClient client = new())
             {
-                await client.ConnectAsync(this.configuration.EmailConfiguration.SmtpHost, this.configuration.EmailConfiguration.SmtpPort, false);
+                await client.ConnectAsync(this.configuration.EmailConfiguration?.SmtpHost, this.configuration.EmailConfiguration?.SmtpPort ?? 0, false);
                 await client.SendAsync(messageToSend);
                 await client.DisconnectAsync(true);
             }

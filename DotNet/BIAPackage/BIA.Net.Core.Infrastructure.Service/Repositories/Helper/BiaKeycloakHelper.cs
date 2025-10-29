@@ -34,15 +34,15 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
 
             if (keycloak.IsActive && !string.IsNullOrWhiteSpace(keycloak.BaseUrl))
             {
-                string url = $"{keycloak.BaseUrl}{keycloak.Api.TokenConf.RelativeUrl}";
+                string url = $"{keycloak.BaseUrl}{keycloak.Api?.TokenConf?.RelativeUrl}";
 
                 TokenRequestDto tokenRequestDto = new TokenRequestDto()
                 {
-                    ClientId = keycloak.Api.TokenConf.ClientId,
-                    GrantType = keycloak.Api.TokenConf.GrantType,
+                    ClientId = keycloak.Api?.TokenConf?.ClientId,
+                    GrantType = keycloak.Api?.TokenConf?.GrantType,
                 };
 
-                credentialSource ??= keycloak.Api.TokenConf.CredentialSource;
+                credentialSource ??= keycloak.Api?.TokenConf?.CredentialSource;
                 (string Login, string Password) credential = Common.Helpers.CredentialHelper.RetrieveCredentials(credentialSource);
 
                 tokenRequestDto.Username = credential.Login;

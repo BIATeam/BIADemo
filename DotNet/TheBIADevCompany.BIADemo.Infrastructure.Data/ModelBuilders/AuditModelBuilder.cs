@@ -11,7 +11,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
     // End BIADemo
+#if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
+#endif
 
     /// <summary>
     /// Class used to update the model builder for audits.
@@ -22,7 +24,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         public override void CreateModel(ModelBuilder modelBuilder)
         {
             base.CreateModel(modelBuilder);
+#if BIA_FRONT_FEATURE
             this.CreateUserAuditModel<UserAudit, User>(modelBuilder);
+#endif
 
             // Add here the project specific audit model creation.
             // Begin BIADemo

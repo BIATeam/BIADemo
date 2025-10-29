@@ -62,7 +62,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <inheritdoc />
         protected override async Task<string> GetBearerTokenAsync()
         {
-            string token = await BiaKeycloakHelper.GetBearerTokenAsync(this.configuration.Authentication.Keycloak, this.PostAsync<TokenResponseDto, TokenRequestDto>);
+            string token = await BiaKeycloakHelper.GetBearerTokenAsync(this.configuration.Authentication?.Keycloak, this.PostAsync<TokenResponseDto, TokenRequestDto>);
             return token;
         }
 
@@ -73,12 +73,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <returns>List of <see cref="UserFromDirectory"/>.</returns>
         private async Task<List<UserFromDirectory>> QueryUserAsync(string param)
         {
-            if (string.IsNullOrWhiteSpace(this.configuration.Authentication.Keycloak.BaseUrl) || string.IsNullOrWhiteSpace(param))
+            if (string.IsNullOrWhiteSpace(this.configuration.Authentication?.Keycloak?.BaseUrl) || string.IsNullOrWhiteSpace(param))
             {
                 return null;
             }
 
-            string searchUrl = $"{this.configuration.Authentication.Keycloak.BaseUrl}{this.configuration.Authentication.Keycloak.Api.SearchUserRelativeUrl}?{param}";
+            string searchUrl = $"{this.configuration.Authentication.Keycloak.BaseUrl}{this.configuration.Authentication.Keycloak.Api?.SearchUserRelativeUrl}?{param}";
 
             List<SearchUserResponseDto> searchUserResponseDtos = (await this.GetAsync<List<SearchUserResponseDto>>(url: searchUrl)).Result;
             List<UserFromDirectory> userFromDirectories = this.ConvertToUserDirectories(searchUserResponseDtos);

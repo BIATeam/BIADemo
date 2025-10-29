@@ -24,22 +24,32 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
         /// </summary>
         private readonly AppSettingsDto appSettings;
 
+#if BIA_FRONT_FEATURE
         /// <summary>
         /// Initializes a new instance of the <see cref="AppSettingsController"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="teamAppService">The team app service.</param>
         public AppSettingsController(IOptions<BiaNetSection> configuration, ITeamAppService teamAppService)
+#else
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AppSettingsController"/> class.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
+        public AppSettingsController(IOptions<BiaNetSection> configuration)
+#endif
         {
             this.appSettings = new AppSettingsDto
             {
-                Keycloak = configuration.Value.Authentication.Keycloak,
+                Keycloak = configuration.Value.Authentication?.Keycloak,
                 Environment = configuration.Value.Environment,
                 Cultures = configuration.Value.Cultures,
                 MonitoringUrl = configuration.Value.ApiFeatures?.DelegateJobToWorker?.MonitoringUrl,
                 ProfileConfiguration = configuration.Value.ProfileConfiguration,
                 IframeConfiguration = configuration.Value.IframeConfiguration,
+#if BIA_FRONT_FEATURE
                 TeamsConfig = teamAppService.GetTeamsConfig(),
+#endif
             };
         }
 

@@ -20,7 +20,7 @@ namespace BIA.Net.Core.Common.Configuration.WorkerFeature
         /// <summary>
         /// The <see cref="List{ArchiveEntityConfiguration}"/> of entities archive configurations.
         /// </summary>
-        public List<ArchiveEntityConfiguration> ArchiveEntityConfigurations { get; set; } = new List<ArchiveEntityConfiguration>();
+        public List<ArchiveEntityConfiguration> ArchiveEntityConfigurations { get; set; } = [];
 
         /// <summary>
         /// Configuration for entity archiving.

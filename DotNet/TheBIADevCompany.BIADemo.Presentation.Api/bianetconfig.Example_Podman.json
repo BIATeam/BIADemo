@@ -1,11 +1,13 @@
 {
   "BiaNet": {
+    // if BIA_FRONT_FEATURE || BIA_DATABASE
     "DatabaseConfigurations": [
       {
         "Key": "ProjectDatabase",
         "Provider": "SQLServer"
       }
     ],
+    // endif
     "Environment": {
       "Type": "DEV",
       // UrlMatomo shoulld now contain the name of the php and js (originaly matomo.js & matomo.php) => rename to bypass ublock
@@ -60,10 +62,12 @@
       }
     },
     "Roles": [
+      // if BIA_FRONT_FEATURE || BIA_DATABASE
       {
         "Label": "User",
         "Type": "UserInDB"
       },
+      // endif
       {
         "Label": "Admin",
         "Type": "ClaimsToRole",
@@ -73,6 +77,7 @@
         }
       }
     ],
+    // if BIA_FRONT_FEATURE
     "PermissionsByEnv": [
       {
         "Names": [ "User_ListAD", "User_Add", "User_Delete", "User_Save" ],
@@ -91,6 +96,7 @@
         "Roles": [ "Site_Admin" ]
       }
     ],
+    // endif
     "ProfileConfiguration": {
       // Determine if the client browser get the profile image from the URL or Path (when true) or if the client calls the api to get the image instead (when false)
       "ClientProfileImageGetMode": false,

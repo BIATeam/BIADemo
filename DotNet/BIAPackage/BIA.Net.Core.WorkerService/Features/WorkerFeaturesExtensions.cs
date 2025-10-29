@@ -42,7 +42,7 @@ namespace BIA.Net.Core.WorkerService.Features
             configuration.GetSection("BiaNet").Bind(biaNetSection);
 
             // Hub For Clients
-            if (biaNetSection.CommonFeatures.ClientForHub?.IsActive == true)
+            if (biaNetSection.CommonFeatures?.ClientForHub?.IsActive == true)
             {
                 if (!string.IsNullOrEmpty(biaNetSection.CommonFeatures.ClientForHub.RedisConnectionString))
                 {
@@ -76,54 +76,57 @@ namespace BIA.Net.Core.WorkerService.Features
                 });
             services.AddTransient(provider => new UserContext("en-GB", biaNetSection.Cultures));
 
-            // Database Handler
-            if (workerFeatures.DatabaseHandler.IsActive)
+            if (workerFeatures is not null)
             {
-                services.AddHostedService<DataBaseHandlerService>();
-            }
-
-            // Hangfire Server
-            if (workerFeatures.HangfireServer.IsActive)
-            {
-                // Log in hangfire dashboard
-                if (workerFeatures.HangfireServer.LogsVisibleInDashboard)
+                // Database Handler
+                if (workerFeatures.DatabaseHandler?.IsActive == true)
                 {
-                    services.AddHangfirePerformContextAccessor();
+                    services.AddHostedService<DataBaseHandlerService>();
                 }
 
-                GlobalJobFilters.Filters.Add(new ProlongExpirationTimeAttribute(workerFeatures.HangfireServer.SucceededTasksRetentionDays));
-
-                services.AddHangfireServer(hfOptions =>
+                // Hangfire Server
+                if (workerFeatures.HangfireServer?.IsActive == true)
                 {
-                    hfOptions.ServerName = workerFeatures.HangfireServer.ServerName;
-                });
-                services.AddHangfire((serviceProvider, config) =>
-                {
-                    DbProvider provider = configuration.GetProvider(workerFeatures.HangfireServer.ConnectionStringName);
-                    if (provider == DbProvider.SqlServer)
-                    {
-                        config.UseSimpleAssemblyNameTypeSerializer()
-                              .UseRecommendedSerializerSettings()
-                              .UseSqlServerStorage(configuration.GetDatabaseConnectionString(workerFeatures.HangfireServer.ConnectionStringName));
-                    }
-                    else if (provider == DbProvider.PostGreSql)
-                    {
-                        var optionsTime = new PostgreSqlStorageOptions
-                        {
-                            InvisibilityTimeout = TimeSpan.FromDays(5),
-                        };
-
-                        config.UseSimpleAssemblyNameTypeSerializer()
-                              .UseRecommendedSerializerSettings()
-                              .UsePostgreSqlStorage(options => options.UseNpgsqlConnection(configuration.GetDatabaseConnectionString(workerFeatures.HangfireServer.ConnectionStringName)), optionsTime);
-                    }
-
                     // Log in hangfire dashboard
                     if (workerFeatures.HangfireServer.LogsVisibleInDashboard)
                     {
-                        config.UsePerformContextAccessorFilter(serviceProvider);
+                        services.AddHangfirePerformContextAccessor();
                     }
-                });
+
+                    GlobalJobFilters.Filters.Add(new ProlongExpirationTimeAttribute(workerFeatures.HangfireServer.SucceededTasksRetentionDays));
+
+                    services.AddHangfireServer(hfOptions =>
+                    {
+                        hfOptions.ServerName = workerFeatures.HangfireServer.ServerName;
+                    });
+                    services.AddHangfire((serviceProvider, config) =>
+                    {
+                        DbProvider provider = configuration.GetProvider(workerFeatures.HangfireServer.ConnectionStringName);
+                        if (provider == DbProvider.SqlServer)
+                        {
+                            config.UseSimpleAssemblyNameTypeSerializer()
+                                  .UseRecommendedSerializerSettings()
+                                  .UseSqlServerStorage(configuration.GetDatabaseConnectionString(workerFeatures.HangfireServer.ConnectionStringName));
+                        }
+                        else if (provider == DbProvider.PostGreSql)
+                        {
+                            var optionsTime = new PostgreSqlStorageOptions
+                            {
+                                InvisibilityTimeout = TimeSpan.FromDays(5),
+                            };
+
+                            config.UseSimpleAssemblyNameTypeSerializer()
+                                  .UseRecommendedSerializerSettings()
+                                  .UsePostgreSqlStorage(options => options.UseNpgsqlConnection(configuration.GetDatabaseConnectionString(workerFeatures.HangfireServer.ConnectionStringName)), optionsTime);
+                        }
+
+                        // Log in hangfire dashboard
+                        if (workerFeatures.HangfireServer.LogsVisibleInDashboard)
+                        {
+                            config.UsePerformContextAccessorFilter(serviceProvider);
+                        }
+                    });
+                }
             }
 
             return services;
