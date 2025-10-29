@@ -289,37 +289,52 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <inheritdoc />
         public virtual async Task<int> MassAddAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false)
         {
-            if (useBulk && this.unitOfWork.IsAddBulkSupported())
+            var itemsList = items?.ToList();
+            if (itemsList?.Count == 0)
             {
-                await this.unitOfWork.AddBulkAsync(items);
-                return items.Count();
+                return 0;
             }
 
-            return await this.ExecuteMassOperationAsync(items, batchSize, this.AddRange);
+            if (useBulk && this.unitOfWork.IsAddBulkSupported())
+            {
+                return await this.unitOfWork.AddBulkAsync(itemsList);
+            }
+
+            return await this.ExecuteMassOperationAsync(itemsList, batchSize, this.AddRange);
         }
 
         /// <inheritdoc />
         public virtual async Task<int> MassUpdateAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false)
         {
-            if (useBulk && this.unitOfWork.IsUpdateBulkSupported())
+            var itemsList = items?.ToList();
+            if (itemsList?.Count == 0)
             {
-                await this.unitOfWork.UpdateBulkAsync(items);
-                return items.Count();
+                return 0;
             }
 
-            return await this.ExecuteMassOperationAsync(items, batchSize, this.UpdateRange);
+            if (useBulk && this.unitOfWork.IsUpdateBulkSupported())
+            {
+                return await this.unitOfWork.UpdateBulkAsync(itemsList);
+            }
+
+            return await this.ExecuteMassOperationAsync(itemsList, batchSize, this.UpdateRange);
         }
 
         /// <inheritdoc />
         public virtual async Task<int> MassDeleteAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false)
         {
-            if (useBulk && this.unitOfWork.IsRemoveBulkSupported())
+            var itemsList = items?.ToList();
+            if (itemsList?.Count == 0)
             {
-                await this.unitOfWork.RemoveBulkAsync(items);
-                return items.Count();
+                return 0;
             }
 
-            return await this.ExecuteMassOperationAsync(items, batchSize, this.RemoveRange);
+            if (useBulk && this.unitOfWork.IsRemoveBulkSupported())
+            {
+                return await this.unitOfWork.RemoveBulkAsync(itemsList);
+            }
+
+            return await this.ExecuteMassOperationAsync(itemsList, batchSize, this.RemoveRange);
         }
 
         /// <summary>

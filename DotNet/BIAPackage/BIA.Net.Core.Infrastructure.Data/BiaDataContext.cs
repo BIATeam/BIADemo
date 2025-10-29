@@ -144,17 +144,24 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// </summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="items">List of the items to add.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task AddBulkAsync<TEntity>(IEnumerable<TEntity> items)
+        /// <returns>The number of elements added.</returns>
+        public async Task<int> AddBulkAsync<TEntity>(IEnumerable<TEntity> items)
             where TEntity : class
         {
+            var itemsList = items?.ToList();
+            if (itemsList?.Count == 0)
+            {
+                return 0;
+            }
+
             if (this.IsAddBulkSupported())
             {
-                await SqlServerBulkHelper.InsertAsync(this, items?.ToList());
+                await SqlServerBulkHelper.InsertAsync(this, itemsList);
+                return itemsList.Count;
             }
             else
             {
-                throw new NotImplementedException("this.Database.ProviderName: " + this.Database.ProviderName);
+                throw new NotSupportedException($"Bulk add operations are not supported for provider: {this.Database.ProviderName}");
             }
         }
 
@@ -163,17 +170,24 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// </summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="items">List of the items to update.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task UpdateBulkAsync<TEntity>(IEnumerable<TEntity> items)
+        /// <returns>The number of elements updated.</returns>
+        public async Task<int> UpdateBulkAsync<TEntity>(IEnumerable<TEntity> items)
             where TEntity : class
         {
+            var itemsList = items?.ToList();
+            if (itemsList?.Count == 0)
+            {
+                return 0;
+            }
+
             if (this.IsUpdateBulkSupported())
             {
-                await SqlServerBulkHelper.UpdateAsync(this, items?.ToList());
+                await SqlServerBulkHelper.UpdateAsync(this, itemsList);
+                return itemsList.Count;
             }
             else
             {
-                throw new NotImplementedException("this.Database.ProviderName: " + this.Database.ProviderName);
+                throw new NotSupportedException($"Bulk update operations are not supported for provider: {this.Database.ProviderName}");
             }
         }
 
@@ -182,17 +196,24 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// </summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="items">List of the items to delete.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task RemoveBulkAsync<TEntity>(IEnumerable<TEntity> items)
+        /// <returns>The number of elements deleted.</returns>
+        public async Task<int> RemoveBulkAsync<TEntity>(IEnumerable<TEntity> items)
             where TEntity : class
         {
+            var itemsList = items?.ToList();
+            if (itemsList?.Count == 0)
+            {
+                return 0;
+            }
+
             if (this.IsRemoveBulkSupported())
             {
-                await SqlServerBulkHelper.DeleteAsync(this, items?.ToList());
+                await SqlServerBulkHelper.DeleteAsync(this, itemsList);
+                return itemsList.Count;
             }
             else
             {
-                throw new NotImplementedException("this.Database.ProviderName: " + this.Database.ProviderName);
+                throw new NotSupportedException($"Bulk remove operations are not supported for provider: {this.Database.ProviderName}");
             }
         }
 

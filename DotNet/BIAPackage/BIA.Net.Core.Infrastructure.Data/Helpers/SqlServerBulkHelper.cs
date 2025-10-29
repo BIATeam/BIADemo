@@ -31,6 +31,16 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
         public static async Task InsertAsync<T>(BiaDataContext dbContext, List<T> datas, int bulkBatchSize = 10_000)
             where T : class
         {
+            if (datas?.Count == 0)
+            {
+                return;
+            }
+
+            if (dbContext == null)
+            {
+                throw new ArgumentNullException(nameof(dbContext));
+            }
+
             IEntityType entityType = dbContext.Model.FindEntityType(typeof(T));
             string connectionString = dbContext.Database.GetConnectionString();
             string tableName = entityType.GetTableName();
@@ -106,6 +116,11 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
             if (datas?.Count == 0)
             {
                 return;
+            }
+
+            if (dbContext == null)
+            {
+                throw new ArgumentNullException(nameof(dbContext));
             }
 
             IEntityType entityType = dbContext.Model.FindEntityType(typeof(T));
@@ -240,6 +255,11 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
                 return;
             }
 
+            if (dbContext == null)
+            {
+                throw new ArgumentNullException(nameof(dbContext));
+            }
+
             IEntityType entityType = dbContext.Model.FindEntityType(typeof(T));
             string connectionString = dbContext.Database.GetConnectionString();
             string tableName = entityType.GetTableName();
@@ -326,14 +346,19 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
         /// <returns>The SQL type string.</returns>
         private static string GetSqlType(IProperty property)
         {
-            var storeType = property.GetColumnType();
-            if (!string.IsNullOrWhiteSpace(storeType))
+            var columnType = property.GetColumnType();
+            if (!string.IsNullOrWhiteSpace(columnType))
             {
-                return storeType;
+                return columnType;
             }
 
             var clrType = property.ClrType;
             var underlyingType = Nullable.GetUnderlyingType(clrType) ?? clrType;
+
+            if (clrType == typeof(byte[]))
+            {
+                return "varbinary(max)";
+            }
 
             return underlyingType.Name switch
             {
@@ -342,23 +367,43 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
                 nameof(String) => property.GetMaxLength() is int maxLength and > 0 ? $"nvarchar({maxLength})" : "nvarchar(max)",
                 nameof(DateTime) => "datetime2",
                 nameof(Boolean) => "bit",
-                nameof(Decimal) => "decimal(18,2)",
+                nameof(Decimal) => GetDecimalType(property),
                 nameof(Double) => "float",
                 nameof(Single) => "real",
                 nameof(Guid) => "uniqueidentifier",
                 nameof(Byte) => "tinyint",
                 nameof(Int16) => "smallint",
-                // Types manquants à ajouter :
                 nameof(DateTimeOffset) => "datetimeoffset",
                 nameof(TimeSpan) => "time",
                 nameof(SByte) => "tinyint",
-                nameof(UInt16) => "smallint",
-                nameof(UInt32) => "bigint",
-                nameof(UInt64) => "decimal(20,0)",
+                nameof(UInt16) => "int", // Promotion to prevent data loss
+                nameof(UInt32) => "bigint", // Promotion to prevent data loss
+                nameof(UInt64) => "decimal(20,0)", // Only viable option for very large values
                 nameof(Char) => "nchar(1)",
-                "Byte[]" => "varbinary(max)", // Pour byte[]
-                _ => "nvarchar(max)",
+                _ => "nvarchar(max)", // Secure fallback
             };
+        }
+
+        /// <summary>
+        /// Gets the SQL decimal type with proper precision and scale.
+        /// </summary>
+        /// <param name="property">The entity property.</param>
+        /// <returns>The SQL decimal type string.</returns>
+        private static string GetDecimalType(IProperty property)
+        {
+            var precision = property.GetPrecision();
+            var scale = property.GetScale();
+
+            if (precision.HasValue && scale.HasValue)
+            {
+                return $"decimal({precision},{scale})";
+            }
+            else if (precision.HasValue)
+            {
+                return $"decimal({precision},0)";
+            }
+
+            return "decimal(18,2)"; // EF Core default value
         }
     }
 }
