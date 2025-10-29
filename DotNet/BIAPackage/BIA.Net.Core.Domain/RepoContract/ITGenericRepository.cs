@@ -214,7 +214,7 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// Massively add entities in batch.
         /// </summary>
         /// <param name="items">Entities to add.</param>
-        /// <param name="batchSize">Batch size.</param>
+        /// <param name="batchSize">Batch size (not used in bulk mode).</param>
         /// <param name="useBulk">if set to <c>true</c> [use bulk].</param>
         /// <returns>
         /// Number of element affected.
@@ -225,7 +225,7 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// Massively update entities in batch.
         /// </summary>
         /// <param name="items">Entities to update.</param>
-        /// <param name="batchSize">Batch size.</param>
+        /// <param name="batchSize">Batch size (not used in bulk mode).</param>
         /// <param name="useBulk">if set to <c>true</c> [use bulk].</param>
         /// <returns>
         /// Number of element affected.
@@ -236,7 +236,7 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// Massively delete entities in batch.
         /// </summary>
         /// <param name="items">Entities to delete.</param>
-        /// <param name="batchSize">Batch size.</param>
+        /// <param name="batchSize">Batch size (not used in bulk mode).</param>
         /// <param name="useBulk">if set to <c>true</c> [use bulk].</param>
         /// <returns>
         /// Number of element affected.
