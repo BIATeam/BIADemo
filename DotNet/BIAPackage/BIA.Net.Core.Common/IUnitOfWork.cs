@@ -42,8 +42,8 @@ namespace BIA.Net.Core.Common
         /// </summary>
         /// <param name="items">The items.</param>
         /// <typeparam name="TEntity">The entity type.</typeparam>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task AddBulkAsync<TEntity>(IEnumerable<TEntity> items)
+        /// <returns>The number of elements added.</returns>
+        Task<int> AddBulkAsync<TEntity>(IEnumerable<TEntity> items)
             where TEntity : class;
 
         /// <summary>
@@ -51,8 +51,8 @@ namespace BIA.Net.Core.Common
         /// </summary>
         /// <param name="items">The items.</param>
         /// <typeparam name="TEntity">The entity type.</typeparam>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task UpdateBulkAsync<TEntity>(IEnumerable<TEntity> items)
+        /// <returns>The number of elements updated.</returns>
+        Task<int> UpdateBulkAsync<TEntity>(IEnumerable<TEntity> items)
             where TEntity : class;
 
         /// <summary>
@@ -60,8 +60,8 @@ namespace BIA.Net.Core.Common
         /// </summary>
         /// <param name="items">The items.</param>
         /// <typeparam name="TEntity">The entity type.</typeparam>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task RemoveBulkAsync<TEntity>(IEnumerable<TEntity> items)
+        /// <returns>The number of elements removed.</returns>
+        Task<int> RemoveBulkAsync<TEntity>(IEnumerable<TEntity> items)
             where TEntity : class;
 
         /// <summary>
