@@ -289,7 +289,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <inheritdoc />
         public virtual async Task<int> MassAddAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false)
         {
-            if (useBulk)
+            if (useBulk && this.unitOfWork.IsAddBulkSupported())
             {
                 await this.unitOfWork.AddBulkAsync(items);
                 return items.Count();
@@ -301,7 +301,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <inheritdoc />
         public virtual async Task<int> MassUpdateAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false)
         {
-            if (useBulk)
+            if (useBulk && this.unitOfWork.IsUpdateBulkSupported())
             {
                 await this.unitOfWork.UpdateBulkAsync(items);
                 return items.Count();
@@ -313,7 +313,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <inheritdoc />
         public virtual async Task<int> MassDeleteAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false)
         {
-            if (useBulk)
+            if (useBulk && this.unitOfWork.IsRemoveBulkSupported())
             {
                 await this.unitOfWork.RemoveBulkAsync(items);
                 return items.Count();
