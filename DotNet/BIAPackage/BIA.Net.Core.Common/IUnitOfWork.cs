@@ -63,5 +63,23 @@ namespace BIA.Net.Core.Common
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task RemoveBulkAsync<TEntity>(IEnumerable<TEntity> items)
             where TEntity : class;
+
+        /// <summary>
+        /// Determines whether bulk add operations are supported by the current database provider.
+        /// </summary>
+        /// <returns><c>true</c> if bulk add operations are supported; otherwise, <c>false</c>.</returns>
+        bool IsAddBulkSupported();
+
+        /// <summary>
+        /// Determines whether bulk update operations are supported by the current database provider.
+        /// </summary>
+        /// <returns><c>true</c> if bulk update operations are supported; otherwise, <c>false</c>.</returns>
+        bool IsUpdateBulkSupported();
+
+        /// <summary>
+        /// Determines whether bulk remove operations are supported by the current database provider.
+        /// </summary>
+        /// <returns><c>true</c> if bulk remove operations are supported; otherwise, <c>false</c>.</returns>
+        bool IsRemoveBulkSupported();
     }
 }

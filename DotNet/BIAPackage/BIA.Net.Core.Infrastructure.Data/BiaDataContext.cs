@@ -150,7 +150,7 @@ namespace BIA.Net.Core.Infrastructure.Data
         public async Task AddBulkAsync<TEntity>(IEnumerable<TEntity> items)
             where TEntity : class
         {
-            if (this.Database.IsSqlServer())
+            if (this.IsAddBulkSupported())
             {
                 await SqlServerBulkHelper.InsertAsync(this, items?.ToList());
             }
@@ -169,7 +169,7 @@ namespace BIA.Net.Core.Infrastructure.Data
         public async Task UpdateBulkAsync<TEntity>(IEnumerable<TEntity> items)
             where TEntity : class
         {
-            if (this.Database.IsSqlServer())
+            if (this.IsUpdateBulkSupported())
             {
                 await SqlServerBulkHelper.UpdateAsync(this, items?.ToList());
             }
@@ -188,7 +188,7 @@ namespace BIA.Net.Core.Infrastructure.Data
         public async Task RemoveBulkAsync<TEntity>(IEnumerable<TEntity> items)
             where TEntity : class
         {
-            if (this.Database.IsSqlServer())
+            if (this.IsRemoveBulkSupported())
             {
                 await SqlServerBulkHelper.DeleteAsync(this, items?.ToList());
             }
@@ -196,6 +196,33 @@ namespace BIA.Net.Core.Infrastructure.Data
             {
                 throw new NotImplementedException("this.Database.ProviderName: " + this.Database.ProviderName);
             }
+        }
+
+        /// <summary>
+        /// Determines whether bulk add operations are supported by the current database provider.
+        /// </summary>
+        /// <returns><c>true</c> if bulk add operations are supported; otherwise, <c>false</c>.</returns>
+        public bool IsAddBulkSupported()
+        {
+            return this.Database.IsSqlServer();
+        }
+
+        /// <summary>
+        /// Determines whether bulk update operations are supported by the current database provider.
+        /// </summary>
+        /// <returns><c>true</c> if bulk update operations are supported; otherwise, <c>false</c>.</returns>
+        public bool IsUpdateBulkSupported()
+        {
+            return this.Database.IsSqlServer();
+        }
+
+        /// <summary>
+        /// Determines whether bulk remove operations are supported by the current database provider.
+        /// </summary>
+        /// <returns><c>true</c> if bulk remove operations are supported; otherwise, <c>false</c>.</returns>
+        public bool IsRemoveBulkSupported()
+        {
+            return this.Database.IsSqlServer();
         }
 
         /// <summary>
