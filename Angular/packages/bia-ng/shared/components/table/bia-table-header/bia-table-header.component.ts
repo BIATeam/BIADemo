@@ -1,4 +1,4 @@
-import { Location, NgIf, NgTemplateOutlet } from '@angular/common';
+import { Location, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -36,7 +36,6 @@ import { BiaButtonsComponent } from '../../bia-buttons/bia-buttons.component';
   providers: [ConfirmationService],
   changeDetection: ChangeDetectionStrategy.Default,
   imports: [
-    NgIf,
     Button,
     Tooltip,
     BiaButtonsComponent,
@@ -45,8 +44,8 @@ import { BiaButtonsComponent } from '../../bia-buttons/bia-buttons.component';
     TranslateModule,
     MenuModule,
     TieredMenu,
-    SortByPropertyPipe,
-  ],
+    SortByPropertyPipe
+],
 })
 export class BiaTableHeaderComponent
   implements OnChanges, AfterContentInit, OnDestroy, OnInit

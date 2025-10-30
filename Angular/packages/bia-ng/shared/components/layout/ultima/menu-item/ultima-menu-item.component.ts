@@ -6,7 +6,7 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import {
   AfterViewChecked,
   Component,
@@ -70,15 +70,13 @@ import { BiaUltimaLayoutModule } from '../ultima-layout.module';
     ]),
   ],
   imports: [
-    NgIf,
     RouterLinkActive,
     Ripple,
     NgClass,
     RouterLink,
     Tooltip,
-    NgFor,
-    BiaUltimaLayoutModule,
-  ],
+    BiaUltimaLayoutModule
+],
 })
 export class BiaUltimaMenuItemComponent
   implements OnInit, OnDestroy, AfterViewChecked

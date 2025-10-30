@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import {
   ChangeDetectionStrategy,
   Component,
@@ -35,13 +35,12 @@ import { UserFromDirectory } from '../../model/user-from-directory';
     FormsModule,
     ReactiveFormsModule,
     Fluid,
-    NgIf,
     Select,
     AutoComplete,
     ButtonDirective,
     TranslateModule,
-    FloatLabel,
-  ],
+    FloatLabel
+],
 })
 export class UserFromLdapFormComponent implements OnChanges {
   @Output() searchUsers = new EventEmitter<UserFilter>();

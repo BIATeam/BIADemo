@@ -1,5 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { CommonModule, NgIf, NgTemplateOutlet } from '@angular/common';
+import { CommonModule, NgTemplateOutlet } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import {
   Component,
@@ -61,7 +61,6 @@ import { BiaMenuProfileService } from '../../services/menu-profile.service';
   ],
   imports: [
     Tooltip,
-    NgIf,
     Dialog,
     SharedModule,
     TranslateModule,
@@ -70,8 +69,8 @@ import { BiaMenuProfileService } from '../../services/menu-profile.service';
     InputTextModule,
     FormsModule,
     CommonModule,
-    AvatarModule,
-  ],
+    AvatarModule
+],
 })
 export class BiaUltimaMenuProfileComponent implements OnDestroy {
   @HostBinding('class.layout-menu-profile-no-fill') get noFill() {

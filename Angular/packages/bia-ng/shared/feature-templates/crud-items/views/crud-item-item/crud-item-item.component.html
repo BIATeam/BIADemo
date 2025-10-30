@@ -1,4 +1,5 @@
 <router-outlet></router-outlet>
-<bia-spinner
-  *ngIf="crudItemService.loadingGet$ | async"
+@if (crudItemService.loadingGet$ | async) {
+  <bia-spinner
   [overlay]="true"></bia-spinner>
+}

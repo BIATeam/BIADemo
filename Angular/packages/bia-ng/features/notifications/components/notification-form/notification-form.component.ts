@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+
 import {
   ChangeDetectionStrategy,
   Component,
@@ -59,8 +59,6 @@ import {
     TabList,
     Ripple,
     Tab,
-    NgFor,
-    NgIf,
     TabPanels,
     TabPanel,
     InputText,
@@ -74,8 +72,8 @@ import {
     MultiSelect,
     Textarea,
     TranslateModule,
-    FloatLabel,
-  ],
+    FloatLabel
+],
 })
 export class NotificationFormComponent implements OnChanges {
   @Input() notification: Notification = <Notification>{};

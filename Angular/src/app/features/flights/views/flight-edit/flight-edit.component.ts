@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import {
   CrudItemEditComponent,
@@ -16,7 +16,7 @@ import { FlightService } from '../../services/flight.service';
 @Component({
   selector: 'app-flight-edit',
   templateUrl: './flight-edit.component.html',
-  imports: [NgIf, FlightFormComponent, AsyncPipe, SpinnerComponent],
+  imports: [FlightFormComponent, AsyncPipe, SpinnerComponent],
 })
 export class FlightEditComponent
   extends CrudItemEditComponent<Flight>

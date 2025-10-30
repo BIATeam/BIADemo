@@ -1,12 +1,12 @@
 <ng-container>
-  <div
-    *ngIf="root && item.visible !== false && item.routerLink && !item.items"
-    class="layout-menuitem-root-text layout-menuitem-root-clickable"
-    (click)="itemClick($event)"
-    (mouseenter)="onMouseEnter()"
-    [ngClass]="item.class"
-    [routerLink]="item.routerLink"
-    routerLinkActive="active-route"
+  @if (root && item.visible !== false && item.routerLink && !item.items) {
+    <div
+      class="layout-menuitem-root-text layout-menuitem-root-clickable"
+      (click)="itemClick($event)"
+      (mouseenter)="onMouseEnter()"
+      [ngClass]="item.class"
+      [routerLink]="item.routerLink"
+      routerLinkActive="active-route"
     [routerLinkActiveOptions]="
       item.routerLinkActiveOptions || {
         paths: 'exact',
@@ -30,19 +30,23 @@
     <span>{{ item.label }}</span>
     <i class="layout-menuitem-root-icon pi pi-fw pi-ellipsis-h"></i>
   </div>
+}
+@if (root && item.visible !== false && (!item.routerLink || item.items)) {
   <div
-    *ngIf="root && item.visible !== false && (!item.routerLink || item.items)"
     (click)="itemClick($event)"
     (mouseenter)="onMouseEnter()"
     class="layout-menuitem-root-text layout-menuitem-root-clickable">
     <span>{{ item.label }}</span>
     <i class="layout-menuitem-root-icon pi pi-fw pi-ellipsis-h"></i>
-    <i
-      class="pi pi-fw pi-angle-down layout-submenu-toggler"
-      *ngIf="item.items"></i>
+    @if (item.items) {
+      <i
+        class="pi pi-fw pi-angle-down layout-submenu-toggler"
+      ></i>
+    }
   </div>
+}
+@if ((!item.routerLink || item.items) && item.visible !== false) {
   <a
-    *ngIf="(!item.routerLink || item.items) && item.visible !== false"
     [attr.href]="item.url"
     (click)="itemClick($event)"
     (mouseenter)="onMouseEnter()"
@@ -55,12 +59,15 @@
     {{ item.url }}
     <i [ngClass]="item.icon" class="layout-menuitem-icon"></i>
     <span class="layout-menuitem-text">{{ item.label }}</span>
-    <i
-      class="pi pi-fw pi-angle-down layout-submenu-toggler"
-      *ngIf="item.items"></i>
+    @if (item.items) {
+      <i
+        class="pi pi-fw pi-angle-down layout-submenu-toggler"
+      ></i>
+    }
   </a>
+}
+@if (item.routerLink && !item.items && item.visible !== false) {
   <a
-    *ngIf="item.routerLink && !item.items && item.visible !== false"
     (click)="itemClick($event)"
     (mouseenter)="onMouseEnter()"
     [ngClass]="item.class"
@@ -74,37 +81,41 @@
         fragment: 'ignored',
       }
     "
-    [fragment]="item.fragment"
-    [queryParamsHandling]="item.queryParamsHandling"
-    [preserveFragment]="item.preserveFragment"
-    [skipLocationChange]="item.skipLocationChange"
-    [replaceUrl]="item.replaceUrl"
-    [state]="item.state"
-    [queryParams]="item.queryParams"
-    [attr.target]="item.target"
-    tabindex="0"
-    pRipple
-    [pTooltip]="item.label"
-    [tooltipDisabled]="!(isSlim && root)">
-    <i [ngClass]="item.icon" class="layout-menuitem-icon"></i>
-    <span class="layout-menuitem-text">{{ item.label }}</span>
+  [fragment]="item.fragment"
+  [queryParamsHandling]="item.queryParamsHandling"
+  [preserveFragment]="item.preserveFragment"
+  [skipLocationChange]="item.skipLocationChange"
+  [replaceUrl]="item.replaceUrl"
+  [state]="item.state"
+  [queryParams]="item.queryParams"
+  [attr.target]="item.target"
+  tabindex="0"
+  pRipple
+  [pTooltip]="item.label"
+  [tooltipDisabled]="!(isSlim && root)">
+  <i [ngClass]="item.icon" class="layout-menuitem-icon"></i>
+  <span class="layout-menuitem-text">{{ item.label }}</span>
+  @if (item.items) {
     <i
       class="pi pi-fw pi-angle-down layout-submenu-toggler"
-      *ngIf="item.items"></i>
-  </a>
+    ></i>
+  }
+</a>
+}
 
+@if (item.items && item.visible !== false) {
   <ul
     #submenu
-    *ngIf="item.items && item.visible !== false"
     [@children]="submenuAnimation"
     (@children.done)="onSubmenuAnimated($event)">
-    <ng-template ngFor let-child let-i="index" [ngForOf]="item.items">
+    @for (child of item.items; track child; let i = $index) {
       <li
         bia-ultima-menu-item
         [item]="child"
         [index]="i"
         [parentKey]="key"
-        [class]="child.badgeClass"></li>
-    </ng-template>
+      [class]="child.badgeClass"></li>
+    }
   </ul>
+}
 </ng-container>

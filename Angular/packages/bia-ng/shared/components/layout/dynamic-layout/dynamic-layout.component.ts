@@ -1,4 +1,4 @@
-import { NgClass, NgIf, NgStyle } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 import {
   AfterViewInit,
   Component,
@@ -39,14 +39,13 @@ export enum LayoutMode {
   templateUrl: './dynamic-layout.component.html',
   styleUrls: ['./dynamic-layout.component.scss'],
   imports: [
-    NgIf,
     NgClass,
     NgStyle,
     RouterOutlet,
     Dialog,
     SharedModule,
-    TranslateModule,
-  ],
+    TranslateModule
+],
 })
 export class DynamicLayoutComponent<TDto extends { id: number | string }>
   implements OnInit, AfterViewInit, OnDestroy

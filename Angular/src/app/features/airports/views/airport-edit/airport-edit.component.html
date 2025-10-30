@@ -1,18 +1,20 @@
-<app-airport-form
-  *ngIf="airportService.crudItem$ | async; let crudItem"
-  [crudItem]="crudItem"
-  [fields]="crudConfiguration.fieldsConfig.columns"
-  [formLayoutConfig]="crudConfiguration.formLayoutConfig"
+@if (airportService.crudItem$ | async; as crudItem) {
+  <app-airport-form
+    [crudItem]="crudItem"
+    [fields]="crudConfiguration.fieldsConfig.columns"
+    [formLayoutConfig]="crudConfiguration.formLayoutConfig"
   [dictOptionDtos]="
     (airportService.optionsService.dictOptionDtos$ | async) ?? []
   "
-  [isCrudItemOutdated]="isCrudItemOutdated"
-  (cancelled)="onCancelled()"
-  (save)="onSubmitted($event)"
-  [showPopupButton]="showPopupButton"
-  [showSplitButton]="showSplitButton"
-  [showFullPageButton]="showFullPageButton"
+    [isCrudItemOutdated]="isCrudItemOutdated"
+    (cancelled)="onCancelled()"
+    (save)="onSubmitted($event)"
+    [showPopupButton]="showPopupButton"
+    [showSplitButton]="showSplitButton"
+    [showFullPageButton]="showFullPageButton"
   (layoutChanged)="notifyLayoutChange($event)"></app-airport-form>
-<bia-spinner
-  *ngIf="airportService.loadingGet$ | async"
+}
+@if (airportService.loadingGet$ | async) {
+  <bia-spinner
   [overlay]="true"></bia-spinner>
+}

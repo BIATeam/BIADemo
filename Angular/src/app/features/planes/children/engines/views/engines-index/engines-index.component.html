@@ -25,13 +25,14 @@
         crudItemService.updateFixedStatus($event.crudItemId, $event.fixed)
       ">
       <ng-template pTemplate="customControl">
-        <button
-          *ngIf="isParentFixed"
-          pButton
-          icon="pi pi-lock"
-          label="{{ 'bia.fixed' | translate }}"
-          type="button"
+        @if (isParentFixed) {
+          <button
+            pButton
+            icon="pi pi-lock"
+            label="{{ 'bia.fixed' | translate }}"
+            type="button"
           [disabled]="true"></button>
+        }
       </ng-template>
       <!-- BIAToolKit - Begin EngineIndexHtml -->
       <!-- BIAToolKit - End EngineIndexHtml -->
@@ -67,8 +68,8 @@
           "></bia-table-behavior-controller>
       </ng-template>
     </bia-table-controller>
-    <bia-table
-      *ngIf="!crudConfiguration.useCalcMode"
+    @if (!crudConfiguration.useCalcMode) {
+      <bia-table
       [elements]="
         crudConfiguration.useVirtualScroll
           ? virtualCrudItems
@@ -77,34 +78,35 @@
       [dictOptionDtos]="
         (crudItemService.optionsService.dictOptionDtos$ | async) ?? []
       "
-      [totalRecord]="(totalCount$ | async) ?? 0"
-      [columnToDisplays]="displayedColumns"
-      [reorderableColumns]="reorderableColumns"
-      [pageSize]="pageSize"
-      (pageSizeChange)="onPageSizeChange($event)"
-      [configuration]="crudConfiguration.fieldsConfig"
-      [(showColSearch)]="showColSearch"
-      [globalSearchValue]="globalSearchValue"
-      [canClickRow]="canEdit"
-      [canSelectElement]="canSelect"
-      [canSelectMultipleElement]="canDelete"
-      [loading]="(loading$ | async) ?? false"
-      (clickRowId)="onClickRow($event)"
-      (loadLazy)="onLoadLazy($event)"
-      [viewPreference]="viewPreference"
-      [tableStateKey]="tableStateKey"
-      (selectedElementsChanged)="onSelectedElementsChanged($event)"
-      [sortFieldValue]="sortFieldValue"
-      (stateSave)="onStateSave($event)"
-      [scrollHeightValue]="getFillScrollHeightValue()"
-      [frozeSelectColumn]="true"
-      [virtualScroll]="crudConfiguration.useVirtualScroll"
-      [isResizableColumn]="crudConfiguration.useResizableColumn"
-      [readOnly]="isParentFixed"
-      [rowHeight]="defaultRowHeight"
+        [totalRecord]="(totalCount$ | async) ?? 0"
+        [columnToDisplays]="displayedColumns"
+        [reorderableColumns]="reorderableColumns"
+        [pageSize]="pageSize"
+        (pageSizeChange)="onPageSizeChange($event)"
+        [configuration]="crudConfiguration.fieldsConfig"
+        [(showColSearch)]="showColSearch"
+        [globalSearchValue]="globalSearchValue"
+        [canClickRow]="canEdit"
+        [canSelectElement]="canSelect"
+        [canSelectMultipleElement]="canDelete"
+        [loading]="(loading$ | async) ?? false"
+        (clickRowId)="onClickRow($event)"
+        (loadLazy)="onLoadLazy($event)"
+        [viewPreference]="viewPreference"
+        [tableStateKey]="tableStateKey"
+        (selectedElementsChanged)="onSelectedElementsChanged($event)"
+        [sortFieldValue]="sortFieldValue"
+        (stateSave)="onStateSave($event)"
+        [scrollHeightValue]="getFillScrollHeightValue()"
+        [frozeSelectColumn]="true"
+        [virtualScroll]="crudConfiguration.useVirtualScroll"
+        [isResizableColumn]="crudConfiguration.useResizableColumn"
+        [readOnly]="isParentFixed"
+        [rowHeight]="defaultRowHeight"
       [showFixableState]="crudConfiguration.isFixable"></bia-table>
-    <app-engine-table
-      *ngIf="crudConfiguration.useCalcMode"
+    }
+    @if (crudConfiguration.useCalcMode) {
+      <app-engine-table
       [elements]="
         crudConfiguration.useVirtualScroll
           ? virtualCrudItems
@@ -113,32 +115,33 @@
       [dictOptionDtos]="
         (crudItemService.optionsService.dictOptionDtos$ | async) ?? []
       "
-      [totalRecord]="(totalCount$ | async) ?? 0"
-      [columnToDisplays]="displayedColumns"
-      [reorderableColumns]="reorderableColumns"
-      [pageSize]="pageSize"
-      (pageSizeChange)="onPageSizeChange($event)"
-      [configuration]="crudConfiguration.fieldsConfig"
-      [(showColSearch)]="showColSearch"
-      [globalSearchValue]="globalSearchValue"
-      [canEdit]="canEdit"
-      [canAdd]="canAdd"
-      [canSelectElement]="canSelect"
-      [canSelectMultipleElement]="canDelete"
-      [loading]="(loading$ | async) ?? false"
-      (loadLazy)="onLoadLazy($event)"
-      [viewPreference]="viewPreference"
-      [tableStateKey]="tableStateKey"
-      (selectedElementsChanged)="onSelectedElementsChanged($event)"
-      [sortFieldValue]="sortFieldValue"
-      (stateSave)="onStateSave($event)"
-      (save)="onSave($event)"
-      [frozeSelectColumn]="true"
-      [scrollHeightValue]="getFillScrollHeightValue()"
-      [virtualScroll]="crudConfiguration.useVirtualScroll"
-      [isResizableColumn]="crudConfiguration.useResizableColumn"
-      [readOnly]="isParentFixed"
-      [rowHeight]="defaultRowHeight"
+        [totalRecord]="(totalCount$ | async) ?? 0"
+        [columnToDisplays]="displayedColumns"
+        [reorderableColumns]="reorderableColumns"
+        [pageSize]="pageSize"
+        (pageSizeChange)="onPageSizeChange($event)"
+        [configuration]="crudConfiguration.fieldsConfig"
+        [(showColSearch)]="showColSearch"
+        [globalSearchValue]="globalSearchValue"
+        [canEdit]="canEdit"
+        [canAdd]="canAdd"
+        [canSelectElement]="canSelect"
+        [canSelectMultipleElement]="canDelete"
+        [loading]="(loading$ | async) ?? false"
+        (loadLazy)="onLoadLazy($event)"
+        [viewPreference]="viewPreference"
+        [tableStateKey]="tableStateKey"
+        (selectedElementsChanged)="onSelectedElementsChanged($event)"
+        [sortFieldValue]="sortFieldValue"
+        (stateSave)="onStateSave($event)"
+        (save)="onSave($event)"
+        [frozeSelectColumn]="true"
+        [scrollHeightValue]="getFillScrollHeightValue()"
+        [virtualScroll]="crudConfiguration.useVirtualScroll"
+        [isResizableColumn]="crudConfiguration.useResizableColumn"
+        [readOnly]="isParentFixed"
+        [rowHeight]="defaultRowHeight"
       [showFixableState]="crudConfiguration.isFixable"></app-engine-table>
+    }
   </div>
 </div>

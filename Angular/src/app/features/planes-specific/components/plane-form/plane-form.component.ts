@@ -1,4 +1,4 @@
-import { NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
+
 import {
   Component,
   OnChanges,
@@ -41,18 +41,15 @@ import { PlaneSpecific } from '../../model/plane-specific';
     PrimeTemplate,
     FormsModule,
     ReactiveFormsModule,
-    NgSwitch,
-    NgSwitchCase,
     Checkbox,
     InputText,
-    NgIf,
     EngineTableComponent,
     TranslateModule,
     BiaFormComponent,
     BiaTableHeaderComponent,
     FloatLabel,
-    MultiSelect,
-  ],
+    MultiSelect
+],
 })
 export class PlaneFormComponent
   extends CrudItemFormComponent<PlaneSpecific>

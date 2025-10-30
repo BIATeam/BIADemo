@@ -1,5 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { NgFor, NgIf } from '@angular/common';
+
 import {
   AfterViewInit,
   Component,
@@ -43,7 +43,7 @@ import { BiaUltimaMenuItemComponent } from '../menu-item/ultima-menu-item.compon
       ]),
     ]),
   ],
-  imports: [NgFor, NgIf, BiaUltimaMenuItemComponent, ButtonModule],
+  imports: [BiaUltimaMenuItemComponent, ButtonModule],
 })
 export class BiaUltimaMenuComponent implements AfterViewInit, OnDestroy {
   @HostBinding('class') classes = 'bia-ultima-menu';

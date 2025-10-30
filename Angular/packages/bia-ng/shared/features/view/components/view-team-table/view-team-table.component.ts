@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import {
   Component,
   EventEmitter,
@@ -25,14 +25,13 @@ import { ViewTeam } from '../../model/view-team';
   templateUrl: './view-team-table.component.html',
   styleUrls: ['./view-team-table.component.scss'],
   imports: [
-    NgIf,
     ButtonDirective,
     Tooltip,
     TableModule,
     PrimeTemplate,
     ConfirmDialog,
-    TranslateModule,
-  ],
+    TranslateModule
+],
 })
 export class ViewTeamTableComponent implements OnChanges {
   @Input() views: TeamView[];

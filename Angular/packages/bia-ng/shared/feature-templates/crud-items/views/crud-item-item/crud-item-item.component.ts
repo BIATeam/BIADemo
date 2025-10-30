@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { BaseDto } from 'packages/bia-ng/models/public-api';
@@ -11,7 +11,7 @@ import { CrudItemService } from '../../services/crud-item.service';
   selector: 'bia-cruditem-item',
   templateUrl: './crud-item-item.component.html',
   styleUrls: ['./crud-item-item.component.scss'],
-  imports: [RouterOutlet, NgIf, SpinnerComponent, AsyncPipe],
+  imports: [RouterOutlet, SpinnerComponent, AsyncPipe],
 })
 export class CrudItemItemComponent<
     ListCrudItem extends BaseDto<string | number>,

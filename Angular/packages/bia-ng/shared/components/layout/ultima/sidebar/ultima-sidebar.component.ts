@@ -1,4 +1,4 @@
-import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   Component,
   ElementRef,
@@ -27,9 +27,8 @@ import { BiaUltimaMenuComponent } from '../menu/ultima-menu.component';
     RouterLink,
     BiaUltimaMenuProfileComponent,
     BiaUltimaMenuComponent,
-    NgIf,
-    NgTemplateOutlet,
-  ],
+    NgTemplateOutlet
+],
 })
 export class BiaUltimaSidebarComponent implements OnDestroy {
   timeout: any = null;

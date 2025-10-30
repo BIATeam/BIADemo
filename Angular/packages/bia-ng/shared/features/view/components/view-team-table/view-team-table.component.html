@@ -1,44 +1,50 @@
 <div
   class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
-  <button
-    pButton
-    *ngIf="canDelete === true"
-    [disabled]="!viewSelected"
-    icon="pi pi-trash"
-    pTooltip="{{ 'bia.delete' | translate }}"
-    tooltipPosition="top"
+  @if (canDelete === true) {
+    <button
+      pButton
+      [disabled]="!viewSelected"
+      icon="pi pi-trash"
+      pTooltip="{{ 'bia.delete' | translate }}"
+      tooltipPosition="top"
     (click)="onDeleteView(viewSelected?.id)"></button>
-  <button
-    pButton
-    *ngIf="showLinkWithTeam()"
-    [disabled]="!viewSelected"
-    label="{{ 'bia.views.linkWithTeam' | translate }}"
+  }
+  @if (showLinkWithTeam()) {
+    <button
+      pButton
+      [disabled]="!viewSelected"
+      label="{{ 'bia.views.linkWithTeam' | translate }}"
     (click)="onAssignViewToTeam(viewSelected?.id, true)"></button>
-  <button
-    pButton
-    *ngIf="showUnLinkWithTeamAsDelete()"
-    [disabled]="!viewSelected"
-    icon="pi pi-trash"
-    pTooltip="{{ 'bia.delete' | translate }}"
-    tooltipPosition="top"
+  }
+  @if (showUnLinkWithTeamAsDelete()) {
+    <button
+      pButton
+      [disabled]="!viewSelected"
+      icon="pi pi-trash"
+      pTooltip="{{ 'bia.delete' | translate }}"
+      tooltipPosition="top"
     (click)="onAssignViewToTeamWithDelete(viewSelected?.id, false)"></button>
-  <button
-    pButton
-    *ngIf="showUnlinkWithTeam()"
-    [disabled]="!viewSelected"
-    label="{{ 'bia.views.unlinkWithTeam' | translate }}"
+  }
+  @if (showUnlinkWithTeam()) {
+    <button
+      pButton
+      [disabled]="!viewSelected"
+      label="{{ 'bia.views.unlinkWithTeam' | translate }}"
     (click)="onAssignViewToTeam(viewSelected?.id, false)"></button>
-  <button
-    pButton
-    *ngIf="showDefineDefault()"
-    [disabled]="!viewSelected"
-    label="{{ 'bia.views.defineDefault' | translate }}"
+  }
+  @if (showDefineDefault()) {
+    <button
+      pButton
+      [disabled]="!viewSelected"
+      label="{{ 'bia.views.defineDefault' | translate }}"
     (click)="onSetDefaultView(viewSelected?.id, true)"></button>
-  <button
-    pButton
-    *ngIf="!showDefineDefault()"
-    label="{{ 'bia.views.removeDefault' | translate }}"
+  }
+  @if (!showDefineDefault()) {
+    <button
+      pButton
+      label="{{ 'bia.views.removeDefault' | translate }}"
     (click)="onSetDefaultView(viewSelected?.id, false)"></button>
+  }
 </div>
 <p-table
   #viewTeamTable
@@ -50,9 +56,11 @@
   (selectionChange)="onSelectionChange()">
   <ng-template pTemplate="header">
     <tr>
-      <th *ngIf="canUpdate" class="app-action-col">
-        {{ 'bia.select' | translate }}
-      </th>
+      @if (canUpdate) {
+        <th class="app-action-col">
+          {{ 'bia.select' | translate }}
+        </th>
+      }
       <th>{{ 'bia.views.name' | translate }}</th>
       <th>{{ 'bia.views.description' | translate }}</th>
       <th>{{ 'app.teams' | translate }}</th>
@@ -60,12 +68,16 @@
   </ng-template>
   <ng-template pTemplate="body" let-view>
     <tr [pSelectableRow]="view">
-      <td *ngIf="canUpdate" class="app-action-col">
-        <p-tableRadioButton [value]="view"></p-tableRadioButton>
-      </td>
+      @if (canUpdate) {
+        <td class="app-action-col">
+          <p-tableRadioButton [value]="view"></p-tableRadioButton>
+        </td>
+      }
       <td>
         {{ view.name }}
-        <i *ngIf="isTeamDefault(view) === true" class="pi pi-star"></i>
+        @if (isTeamDefault(view) === true) {
+          <i class="pi pi-star"></i>
+        }
       </td>
       <td>{{ view.description }}</td>
       <td>{{ formatTeams(view.viewTeams) }}</td>

@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from 'packages/bia-ng/core/public-api';
@@ -28,7 +28,6 @@ import { MaintenanceTeamService } from '../../services/maintenance-team.service'
   imports: [
     NgClass,
     PrimeTemplate,
-    NgIf,
     MaintenanceTeamTableComponent,
     AsyncPipe,
     TranslateModule,
@@ -36,8 +35,8 @@ import { MaintenanceTeamService } from '../../services/maintenance-team.service'
     BiaTableHeaderComponent,
     BiaTableControllerComponent,
     BiaTableBehaviorControllerComponent,
-    BiaTableComponent,
-  ],
+    BiaTableComponent
+],
   providers: [
     { provide: CrudItemService, useExisting: MaintenanceTeamService },
   ],

@@ -1,10 +1,4 @@
-import {
-  NgIf,
-  NgSwitch,
-  NgSwitchCase,
-  NgSwitchDefault,
-  NgTemplateOutlet,
-} from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -46,20 +40,16 @@ import { BiaFieldBaseComponent } from '../bia-field-base/bia-field-base.componen
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    NgIf,
     NgTemplateOutlet,
-    NgSwitch,
-    NgSwitchCase,
     Select,
     MultiSelect,
     Checkbox,
     InputNumber,
     DatePicker,
-    NgSwitchDefault,
     InputText,
     TranslateModule,
-    FloatLabel,
-  ],
+    FloatLabel
+],
 })
 export class BiaInputComponent<CrudItem>
   extends BiaFieldBaseComponent<CrudItem>

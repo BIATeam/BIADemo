@@ -1,4 +1,4 @@
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import {
   AfterViewInit,
   Component,
@@ -17,7 +17,7 @@ import { Tooltip } from 'primeng/tooltip';
 @Component({
   selector: 'bia-button-group',
   templateUrl: './bia-button-group.component.html',
-  imports: [Menubar, NgClass, NgIf, ButtonDirective, Tooltip],
+  imports: [Menubar, NgClass, ButtonDirective, Tooltip],
 })
 export class BiaButtonGroupComponent implements AfterViewInit, OnDestroy {
   @ViewChild(Menubar) menubar: Menubar;

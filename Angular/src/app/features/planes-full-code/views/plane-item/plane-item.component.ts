@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -17,7 +17,7 @@ import { getCurrentPlane } from '../../store/plane.state';
   selector: 'app-planes-item',
   templateUrl: './plane-item.component.html',
   styleUrls: ['./plane-item.component.scss'],
-  imports: [RouterOutlet, NgIf, AsyncPipe, SpinnerComponent],
+  imports: [RouterOutlet, AsyncPipe, SpinnerComponent],
 })
 export class PlaneItemComponent implements OnInit, OnDestroy {
   plane$: Observable<Plane>;

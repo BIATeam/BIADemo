@@ -1,10 +1,4 @@
-import {
-  AsyncPipe,
-  NgClass,
-  NgIf,
-  NgSwitch,
-  NgSwitchCase,
-} from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import {
@@ -38,10 +32,7 @@ import { userCRUDConfiguration } from '../../user.constants';
   styleUrls: ['./users-index.component.scss'],
   imports: [
     NgClass,
-    NgSwitch,
-    NgSwitchCase,
     PrimeTemplate,
-    NgIf,
     ButtonDirective,
     UserTableComponent,
     UserAddFromLdapComponent,
@@ -51,8 +42,8 @@ import { userCRUDConfiguration } from '../../user.constants';
     BiaTableControllerComponent,
     BiaTableBehaviorControllerComponent,
     BiaTableComponent,
-    UserTeamsComponent,
-  ],
+    UserTeamsComponent
+],
   providers: [
     {
       provide: CrudItemService,

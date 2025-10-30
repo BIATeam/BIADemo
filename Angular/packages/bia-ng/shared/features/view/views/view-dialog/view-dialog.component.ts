@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf, UpperCasePipe } from '@angular/common';
+import { AsyncPipe, UpperCasePipe } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
@@ -40,7 +40,6 @@ import { ViewsActions } from '../../store/views-actions';
   imports: [
     Dialog,
     SharedModule,
-    NgIf,
     Tabs,
     TabList,
     Ripple,
@@ -56,8 +55,8 @@ import { ViewsActions } from '../../store/views-actions';
     ConfirmDialog,
     AsyncPipe,
     UpperCasePipe,
-    TranslateModule,
-  ],
+    TranslateModule
+],
 })
 export class ViewDialogComponent implements OnInit, OnDestroy {
   display = false;

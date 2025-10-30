@@ -1,10 +1,4 @@
-import {
-  NgIf,
-  NgSwitch,
-  NgSwitchCase,
-  NgSwitchDefault,
-  NgTemplateOutlet,
-} from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -29,15 +23,11 @@ import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.
   styleUrls: ['./bia-table-output.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
   imports: [
-    NgIf,
     NgTemplateOutlet,
-    NgSwitch,
-    NgSwitchCase,
-    NgSwitchDefault,
     PluckPipe,
     JoinPipe,
-    FormatValuePipe,
-  ],
+    FormatValuePipe
+],
 })
 export class BiaTableOutputComponent<CrudItem>
   extends BiaFieldBaseComponent<CrudItem>

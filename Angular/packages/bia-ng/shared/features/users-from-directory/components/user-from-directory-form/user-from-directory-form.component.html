@@ -2,20 +2,22 @@
   <p-fluid class="app-field-container flex flex-column justify-content-start">
     <div class="flex flex-row justify-content-center">
       <div class="app-field-container flex-1" style="max-width: 50%">
-        <p-floatlabel
-          variant="on"
-          *ngIf="useKeycloak !== true && domains.length > 1">
-          <p-select
-            [options]="domains"
-            placeholder="&nbsp;"
-            formControlName="domains"
-            optionLabel="displayName"
-            showClear="true"
-            (onChange)="onDomainChange($event)"
-            [style]="{ width: '100%' }"
+        @if (useKeycloak !== true && domains.length > 1) {
+          <p-floatlabel
+            variant="on"
+            >
+            <p-select
+              [options]="domains"
+              placeholder="&nbsp;"
+              formControlName="domains"
+              optionLabel="displayName"
+              showClear="true"
+              (onChange)="onDomainChange($event)"
+              [style]="{ width: '100%' }"
             appendTo="body"></p-select>
-          <label>LDAP Domain</label>
-        </p-floatlabel>
+            <label>LDAP Domain</label>
+          </p-floatlabel>
+        }
       </div>
       <div class="app-field-container flex-1" style="max-width: 10%"></div>
       <div class="app-field-container flex-1" style="max-width: 30%">
@@ -25,7 +27,7 @@
             placeholder="&nbsp;"
             formControlName="returnSize"
             [style]="{ width: '100%' }"
-            appendTo="body"></p-select>
+          appendTo="body"></p-select>
           <label>{{ 'bia.itemsBySearch' | translate }}</label>
         </p-floatlabel>
       </div>
@@ -44,7 +46,7 @@
             field="displayName"
             [style]="{ width: '100%' }"
             [inputStyle]="{ width: '100%' }"
-            appendTo="body"></p-autoComplete>
+          appendTo="body"></p-autoComplete>
           <label>{{ 'bia.select' | translate }}</label>
         </p-floatlabel>
       </div>
@@ -57,13 +59,13 @@
       label="{{ 'bia.cancel' | translate }}"
       type="button"
       class="p-button-outlined"
-      (click)="onCancel()"></button>
+    (click)="onCancel()"></button>
     <button
       pButton
       icon="pi pi-plus"
       label="{{ 'bia.add' | translate }}"
       type="submit"
       [loading]="submittingForm"
-      [disabled]="!form.valid"></button>
+    [disabled]="!form.valid"></button>
   </div>
 </form>

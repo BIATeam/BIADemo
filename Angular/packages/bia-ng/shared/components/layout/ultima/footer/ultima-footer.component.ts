@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -14,7 +14,7 @@ import { BiaLayoutService } from '../../services/layout.service';
   templateUrl: './ultima-footer.component.html',
   styleUrls: ['./ultima-footer.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
-  imports: [NgIf, NgClass, Ripple, NgFor, AsyncPipe],
+  imports: [NgClass, Ripple, AsyncPipe],
 })
 export class BiaUltimaFooterComponent {
   @Input() companyName: string;

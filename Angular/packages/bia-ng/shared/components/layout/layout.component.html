@@ -1,4 +1,6 @@
-<bia-spinner [overlay]="true" *ngIf="isLoadingUserInfo"></bia-spinner>
+@if (isLoadingUserInfo) {
+  <bia-spinner [overlay]="true"></bia-spinner>
+}
 <bia-ultima-layout
   [menus]="menus"
   [version]="version"

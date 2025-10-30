@@ -1,5 +1,5 @@
-import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable, Renderer2, RendererFactory2 } from '@angular/core';
+
+import { Inject, Injectable, Renderer2, RendererFactory2, DOCUMENT } from '@angular/core';
 import { THEME_DARK, THEME_LIGHT } from 'packages/bia-ng/core/public-api';
 import { ColorScheme } from 'packages/bia-ng/models/public-api';
 import { BehaviorSubject } from 'rxjs';

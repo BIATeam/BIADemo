@@ -1,15 +1,17 @@
-<app-plane-specific-form
-  *ngIf="crudItemService.crudItem$ | async; let crudItem"
-  [crudItem]="crudItem"
-  [fields]="crudConfiguration.fieldsConfig.columns"
-  [formLayoutConfig]="crudConfiguration.formLayoutConfig"
-  [formReadOnlyMode]="formReadOnlyMode"
-  [dictOptionDtos]="(planeService.optionsService.dictOptionDtos$ | async) ?? []"
-  [isCrudItemOutdated]="isCrudItemOutdated"
-  [showSubmitButton]="canEdit"
-  (cancelled)="onCancelled()"
-  (save)="onSubmitted($event)"
+@if (crudItemService.crudItem$ | async; as crudItem) {
+  <app-plane-specific-form
+    [crudItem]="crudItem"
+    [fields]="crudConfiguration.fieldsConfig.columns"
+    [formLayoutConfig]="crudConfiguration.formLayoutConfig"
+    [formReadOnlyMode]="formReadOnlyMode"
+    [dictOptionDtos]="(planeService.optionsService.dictOptionDtos$ | async) ?? []"
+    [isCrudItemOutdated]="isCrudItemOutdated"
+    [showSubmitButton]="canEdit"
+    (cancelled)="onCancelled()"
+    (save)="onSubmitted($event)"
   (readOnlyChanged)="onReadOnlyChanged($event)"></app-plane-specific-form>
-<bia-spinner
-  *ngIf="planeService.loadingGet$ | async"
+}
+@if (planeService.loadingGet$ | async) {
+  <bia-spinner
   [overlay]="true"></bia-spinner>
+}

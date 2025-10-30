@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, Injector, ViewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from 'packages/bia-ng/core/public-api';
@@ -24,15 +24,14 @@ import { AirportService } from '../../services/airport.service';
   imports: [
     NgClass,
     PrimeTemplate,
-    NgIf,
     AirportTableComponent,
     AsyncPipe,
     TranslateModule,
     BiaTableHeaderComponent,
     BiaTableControllerComponent,
     BiaTableBehaviorControllerComponent,
-    BiaTableComponent,
-  ],
+    BiaTableComponent
+],
   providers: [
     {
       provide: CrudItemService,

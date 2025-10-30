@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+
 import {
   Component,
   EventEmitter,
@@ -29,7 +29,7 @@ export interface BiaBehaviorIcon {
   selector: 'bia-table-behavior-controller',
   templateUrl: './bia-table-behavior-controller.component.html',
   styleUrls: ['./bia-table-behavior-controller.component.scss'],
-  imports: [Tooltip, NgIf, Popover, NgFor, TranslateModule],
+  imports: [Tooltip, Popover, TranslateModule],
 })
 export class BiaTableBehaviorControllerComponent<
     TDto extends BaseDto<string | number>,

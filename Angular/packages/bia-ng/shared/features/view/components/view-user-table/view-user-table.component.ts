@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import {
   Component,
   EventEmitter,
@@ -22,14 +22,13 @@ import { View } from '../../model/view';
   templateUrl: './view-user-table.component.html',
   styleUrls: ['./view-user-table.component.scss'],
   imports: [
-    NgIf,
     ButtonDirective,
     Tooltip,
     TableModule,
     PrimeTemplate,
     ConfirmDialog,
-    TranslateModule,
-  ],
+    TranslateModule
+],
 })
 export class ViewUserTableComponent implements OnChanges {
   @Input() views: View[];

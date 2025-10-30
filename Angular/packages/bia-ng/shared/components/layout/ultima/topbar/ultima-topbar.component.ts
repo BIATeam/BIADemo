@@ -1,14 +1,5 @@
 import { Platform } from '@angular/cdk/platform';
-import {
-  AsyncPipe,
-  DOCUMENT,
-  NgClass,
-  NgFor,
-  NgIf,
-  NgSwitch,
-  NgSwitchCase,
-  NgSwitchDefault,
-} from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import {
   AfterViewInit,
   Component,
@@ -21,6 +12,7 @@ import {
   Renderer2,
   SimpleChanges,
   ViewChild,
+  DOCUMENT
 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -59,24 +51,19 @@ import { BiaLayoutService } from '../../services/layout.service';
   imports: [
     RouterLink,
     Ripple,
-    NgIf,
     IeWarningComponent,
-    NgFor,
     BiaTeamSelectorComponent,
     Tooltip,
     BiaOnlineOfflineIconComponent,
     Toast,
     PrimeTemplate,
-    NgSwitch,
-    NgSwitchCase,
-    NgSwitchDefault,
     ButtonDirective,
     NotificationTeamWarningComponent,
     NgClass,
     AsyncPipe,
     TranslateModule,
-    NotificationModule,
-  ],
+    NotificationModule
+],
 })
 export class BiaUltimaTopbarComponent
   implements OnInit, OnDestroy, AfterViewInit, OnChanges

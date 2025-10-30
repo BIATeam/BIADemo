@@ -1,11 +1,13 @@
-<bia-notification-form
-  *ngIf="notificationService.crudItem$ | async; let notification"
-  [notification]="notification"
+@if (notificationService.crudItem$ | async; as notification) {
+  <bia-notification-form
+    [notification]="notification"
   [dictOptionDtos]="
     (crudItemService.optionsService.dictOptionDtos$ | async) ?? []
   "
-  (cancelled)="onCancelled()"
+    (cancelled)="onCancelled()"
   (save)="onSubmitted($event)"></bia-notification-form>
-<bia-spinner
-  *ngIf="notificationService.loadingGet$ | async"
+}
+@if (notificationService.loadingGet$ | async) {
+  <bia-spinner
   [overlay]="true"></bia-spinner>
+}

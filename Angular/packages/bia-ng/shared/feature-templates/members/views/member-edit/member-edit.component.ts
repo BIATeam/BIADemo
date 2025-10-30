@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import { AuthService, BiaPermission } from 'packages/bia-ng/core/public-api';
 import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
@@ -11,7 +11,7 @@ import { MemberService } from '../../services/member.service';
 @Component({
   selector: 'bia-member-edit',
   templateUrl: './member-edit.component.html',
-  imports: [MemberFormEditComponent, NgIf, SpinnerComponent, AsyncPipe],
+  imports: [MemberFormEditComponent, SpinnerComponent, AsyncPipe],
 })
 export class MemberEditComponent
   extends CrudItemEditComponent<Member>

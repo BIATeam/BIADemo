@@ -1,5 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -55,7 +55,6 @@ import { ViewListComponent } from '../../../features/view/views/view-list/view-l
   ],
   imports: [
     NgClass,
-    NgIf,
     ViewListComponent,
     MultiSelect,
     FormsModule,
@@ -66,8 +65,8 @@ import { ViewListComponent } from '../../../features/view/views/view-list/view-l
     Tooltip,
     TranslateModule,
     FloatLabel,
-    Badge,
-  ],
+    Badge
+],
 })
 export class BiaTableControllerComponent
   implements OnChanges, OnInit, OnDestroy, AfterContentInit, AfterViewInit

@@ -1,4 +1,4 @@
-import { APP_BASE_HREF, NgIf } from '@angular/common';
+import { APP_BASE_HREF } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -36,7 +36,7 @@ import { BiaLayoutService } from '../layout/services/layout.service';
   templateUrl: './bia-team-selector.component.html',
   styleUrls: ['./bia-team-selector.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
-  imports: [NgIf, Select, FormsModule, Tooltip, MultiSelect, TranslateModule],
+  imports: [Select, FormsModule, Tooltip, MultiSelect, TranslateModule],
 })
 export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
   @Input() teamType: TeamConfigDto;

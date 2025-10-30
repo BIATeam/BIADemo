@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Injector } from '@angular/core';
 import {
   CrudItemEditComponent,
@@ -12,7 +12,7 @@ import { userCRUDConfiguration } from '../../user.constants';
 @Component({
   selector: 'bia-user-edit',
   templateUrl: './user-edit.component.html',
-  imports: [NgIf, UserFormComponent, AsyncPipe, SpinnerComponent],
+  imports: [UserFormComponent, AsyncPipe, SpinnerComponent],
 })
 export class UserEditComponent extends CrudItemEditComponent<User> {
   constructor(

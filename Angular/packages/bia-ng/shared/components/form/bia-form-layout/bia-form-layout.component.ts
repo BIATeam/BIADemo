@@ -1,10 +1,4 @@
-import {
-  NgFor,
-  NgIf,
-  NgSwitch,
-  NgSwitchCase,
-  NgTemplateOutlet,
-} from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -34,12 +28,8 @@ import { BiaOutputComponent } from '../bia-output/bia-output.component';
   styleUrls: ['./bia-form-layout.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
   imports: [
-    NgIf,
     FormsModule,
     ReactiveFormsModule,
-    NgFor,
-    NgSwitch,
-    NgSwitchCase,
     NgTemplateOutlet,
     BiaInputComponent,
     PrimeTemplate,
@@ -51,8 +41,8 @@ import { BiaOutputComponent } from '../bia-output/bia-output.component';
     Ripple,
     Tab,
     TabPanel,
-    PanelModule,
-  ],
+    PanelModule
+],
 })
 export class BiaFormLayoutComponent<TDto extends { id: number | string }> {
   @Input() element?: TDto;

@@ -1,4 +1,4 @@
-import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -27,14 +27,13 @@ import { FeatureNotificationsActions } from '../../store/notifications-actions';
   templateUrl: './notification-detail.component.html',
   styleUrls: ['./notification-detail.component.scss'],
   imports: [
-    NgIf,
     ButtonDirective,
     NotificationTeamWarningComponent,
     AsyncPipe,
     DatePipe,
     TranslateModule,
-    SpinnerComponent,
-  ],
+    SpinnerComponent
+],
 })
 export class NotificationDetailComponent implements OnInit, OnDestroy {
   @Output() displayChange = new EventEmitter<boolean>();

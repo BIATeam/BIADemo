@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   Component,
   HostBinding,
@@ -60,14 +60,13 @@ import { FeaturePlanesActions } from '../../store/planes-actions';
   templateUrl: './planes-index.component.html',
   styleUrls: ['./planes-index.component.scss'],
   imports: [
-    NgIf,
     PlaneTableComponent,
     AsyncPipe,
     TranslateModule,
     BiaTableHeaderComponent,
     BiaTableControllerComponent,
-    BiaTableComponent,
-  ],
+    BiaTableComponent
+],
 })
 export class PlanesIndexComponent implements OnInit, OnDestroy {
   useCalcMode = useCalcMode;
