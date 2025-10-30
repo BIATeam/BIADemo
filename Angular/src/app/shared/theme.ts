@@ -309,7 +309,6 @@ const MyPreset = definePreset(Material, {
       style: 'solid',
       color: '{primary.color}',
       offset: '2px',
-      shadow: 'none',
     },
     disabledOpacity: '0.5',
     iconSize: '1.1rem',
@@ -349,7 +348,6 @@ const MyPreset = definePreset(Material, {
         shadow: 'none',
       },
       transitionDuration: '{transition.duration}',
-      background: 'transparent',
     },
     list: {
       padding: '0rem',
@@ -1679,10 +1677,14 @@ const MyPreset = definePreset(Material, {
       },
       colorScheme: {
         light: {
-          background: '{surface.0}',
+          root: {
+            background: '{surface.0}',
+          },
         },
         dark: {
-          background: '{surface.800}',
+          root: {
+            background: '{surface.800}',
+          },
         },
       },
     },
@@ -2132,7 +2134,6 @@ const MyPreset = definePreset(Material, {
       dropPoint: {
         color: '{primary.color}',
       },
-      columnResizerWidth: '0.5rem',
       resizeIndicator: {
         width: '1px',
         color: '{primary.color}',
@@ -3247,12 +3248,6 @@ const MyPreset = definePreset(Material, {
       },
       closeIcon: {
         size: '1rem',
-        sm: {
-          fontSize: '0.875rem',
-        },
-        lg: {
-          fontSize: '1.125rem',
-        },
       },
       outlined: {
         root: {
@@ -3850,26 +3845,6 @@ const MyPreset = definePreset(Material, {
         fontWeight: '600',
       },
     },
-    progressspinner: {
-      colorScheme: {
-        light: {
-          root: {
-            'color.1': '{red.500}',
-            'color.2': '{blue.500}',
-            'color.3': '{green.500}',
-            'color.4': '{yellow.500}',
-          },
-        },
-        dark: {
-          root: {
-            'color.1': '{red.400}',
-            'color.2': '{blue.400}',
-            'color.3': '{green.400}',
-            'color.4': '{yellow.400}',
-          },
-        },
-      },
-    },
     radiobutton: {
       root: {
         width: '20px',
@@ -4106,7 +4081,6 @@ const MyPreset = definePreset(Material, {
         hoverBackground: '{primary.color}',
         content: {
           borderRadius: '50%',
-          contentBackground: '{primary.color}',
           hoverBackground: '{primary.color}',
           width: '18px',
           height: '18px',
@@ -4662,12 +4636,6 @@ const MyPreset = definePreset(Material, {
         checkedColor: '{text.muted.color}',
         disabledColor: '{form.field.disabled.color}',
       },
-      content: {
-        left: '0.25rem',
-        top: '0.25rem',
-        checkedBackground: 'transparent',
-        checkedShadow: 'none',
-      },
       colorScheme: {
         light: {
           root: {
@@ -4937,7 +4905,6 @@ const MyPreset = definePreset(Material, {
         borderWidth: '0 0 1px 0',
         padding: '0.75rem 1rem',
       },
-      columnResizerWidth: '0.5rem',
       resizeIndicator: {
         width: '1px',
         color: '{primary.color}',
@@ -5033,7 +5000,9 @@ const MyPreset = definePreset(Material, {
       },
       colorScheme: {
         light: {
-          blur: '10px',
+          root: {
+            blur: '10px',
+          },
           info: {
             background: 'color-mix(in srgb, {blue.50}, transparent 36%)',
             borderColor: 'color-mix(in srgb, {blue.200}, transparent 64%)',
@@ -5126,7 +5095,9 @@ const MyPreset = definePreset(Material, {
           },
         },
         dark: {
-          blur: '10px',
+          root: {
+            blur: '10px',
+          },
           info: {
             background: 'color-mix(in srgb, {blue.800}, transparent 36%)',
             borderColor: 'color-mix(in srgb, {blue.950}, transparent 64%)',
@@ -5236,10 +5207,8 @@ const MyPreset = definePreset(Material, {
         },
         dark: {
           root: {
-            root: {
-              background: '{surface.800}',
-              borderColor: '{surface.800}',
-            },
+            background: '{surface.800}',
+            borderColor: '{surface.800}',
           },
         },
       },
