@@ -50,7 +50,7 @@
     "dexie": "~4.2.1",
     "file-saver": "~2.0.5",
     "jwt-decode": "~4.0.0",
-    "keycloak-angular": "~19.0.2",
+    "keycloak-angular": "~20.0.0",
     "keycloak-js": "~26.2.1",
     "ngx-logger": "~5.0.12",
     "papaparse": "~5.5.3",
