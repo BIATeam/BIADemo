@@ -189,7 +189,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular/build:ng-packagr",
+          "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "project": "packages/bia-ng/ng-package.json"
           },
@@ -204,7 +204,7 @@
           "defaultConfiguration": "production"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "tsConfig": "packages/bia-ng/tsconfig.spec.json",
             "polyfills": ["zone.js", "zone.js/testing"]
