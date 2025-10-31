@@ -1,4 +1,4 @@
-import { APP_BASE_HREF, NgIf } from '@angular/common';
+import { APP_BASE_HREF } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
@@ -16,7 +16,7 @@ import {
 @Component({
   selector: 'app-custom-layout',
   templateUrl: './custom-layout.component.html',
-  imports: [NgIf, SpinnerComponent, BiaUltimaLayoutComponent],
+  imports: [SpinnerComponent, BiaUltimaLayoutComponent],
 })
 export class CustomLayoutComponent extends LayoutComponent {
   constructor(
