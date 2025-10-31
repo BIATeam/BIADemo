@@ -12,11 +12,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import {
-  TranslateLoader,
-  TranslateModule,
-  TranslateStore,
-} from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { LoggerModule, TOKEN_LOGGER_SERVER_SERVICE } from 'ngx-logger';
 import {
   BiaEnvironmentService,
@@ -36,8 +32,8 @@ import { appConfig } from './app/shared/theme';
 import { ROOT_REDUCERS, metaReducers } from './app/store/state';
 import { environment } from './environments/environment';
 
-export function createTranslateLoader(http: HttpClient, store: TranslateStore) {
-  return new BiaTranslateHttpLoader(http, store, './assets/i18n/app/');
+export function createTranslateLoader(http: HttpClient) {
+  return new BiaTranslateHttpLoader(http, './assets/i18n/app/');
 }
 
 if (environment.production) {
@@ -67,7 +63,7 @@ bootstrapApplication(AppComponent, {
         loader: {
           provide: TranslateLoader,
           useFactory: createTranslateLoader,
-          deps: [HttpClient, TranslateStore],
+          deps: [HttpClient],
         },
       }),
       CoreModule,
