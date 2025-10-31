@@ -38,7 +38,8 @@
             "style": "kebab-case"
           }
         ],
-        "eqeqeq": ["error", "always", { "null": "ignore" }]
+        "eqeqeq": ["error", "always", { "null": "ignore" }],
+        "@angular-eslint/prefer-inject": "off"
       }
     },
     {

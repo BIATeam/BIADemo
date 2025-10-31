@@ -1,27 +1,11 @@
 {
+  "root": true,
   "extends": "../../.eslintrc.json",
-  "ignorePatterns": ["!**/*"],
+  "ignorePatterns": ["!**/*", "node_modules"],
   "overrides": [
     {
       "files": ["*.ts"],
-      "parserOptions": {
-        "project": ["tsconfig.json"],
-        "createDefaultProgram": true
-      },
-      "extends": [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:@angular-eslint/recommended",
-        "plugin:@angular-eslint/template/process-inline-templates",
-        "plugin:prettier/recommended"
-      ],
       "rules": {
-        "prettier/prettier": "error",
-        "@typescript-eslint/no-namespace": "off",
-        "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/no-unused-vars": "error",
-        "@typescript-eslint/naming-convention": "error",
-        "@typescript-eslint/no-deprecated": "warn",
         "@angular-eslint/directive-selector": [
           "error",
           {
@@ -37,8 +21,7 @@
             "prefix": "bia",
             "style": "kebab-case"
           }
-        ],
-        "eqeqeq": ["error", "always", { "null": "ignore" }]
+        ]
       }
     }
   ]
