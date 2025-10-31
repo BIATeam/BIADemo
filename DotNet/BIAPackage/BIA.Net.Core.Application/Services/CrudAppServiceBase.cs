@@ -244,31 +244,10 @@ namespace BIA.Net.Core.Application.Services
         }
 
         /// <inheritdoc />
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+#pragma warning disable S1133 // Deprecated code should be removed
+        [Obsolete(message: "AddBulkAsync is deprecated, You can create your own method and call the this.Repository.UnitOfWork.AddBulkAsync method inside it", error: true)]
+#pragma warning restore S1133 // Deprecated code should be removed
         public virtual async Task AddBulkAsync(IEnumerable<TDto> dtos)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
-        {
-            await this.AddBulkAsync<TDto, TMapper>(dtos);
-        }
-
-        /// <inheritdoc />  Obsolete in V3.9.0.
-#pragma warning disable S1133 // Deprecated code should be removed
-        [Obsolete(message: "UpdateBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteUpdateAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
-#pragma warning restore S1133 // Deprecated code should be removed
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public virtual async Task UpdateBulkAsync(IEnumerable<TDto> dtos)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />  Obsolete in V3.9.0.
-#pragma warning disable S1133 // Deprecated code should be removed
-        [Obsolete(message: "RemoveBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteDeleteAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
-#pragma warning restore S1133 // Deprecated code should be removed
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public virtual async Task RemoveBulkAsync(IEnumerable<TDto> dtos)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             throw new NotImplementedException();
         }

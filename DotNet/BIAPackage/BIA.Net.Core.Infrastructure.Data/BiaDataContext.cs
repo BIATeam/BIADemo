@@ -146,54 +146,104 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// </summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="items">List of the items to add.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async Task AddBulkAsync<TEntity>(IEnumerable<TEntity> items)
+        /// <returns>The number of elements added.</returns>
+        public async Task<int> AddBulkAsync<TEntity>(IEnumerable<TEntity> items)
             where TEntity : class
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            if (this.Database.IsSqlServer())
+            var itemsList = items?.ToList();
+            if (itemsList?.Count == 0)
             {
-                await SqlServerBulkHelper.InsertAsync(this, items?.ToList());
+                return 0;
+            }
+
+            if (this.IsAddBulkSupported())
+            {
+                await SqlServerBulkHelper.InsertAsync(this, itemsList);
+                return itemsList.Count;
             }
             else
             {
-                throw new NotImplementedException("this.Database.ProviderName: " + this.Database.ProviderName);
+                throw new NotSupportedException($"Bulk add operations are not supported for provider: {this.Database.ProviderName}");
             }
         }
 
         /// <summary>
-        /// Bulk function to update entities. Obsolete in V3.9.0.
+        /// Bulk function to update entities.
         /// </summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="items">List of the items to update.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-#pragma warning disable S1133 // Deprecated code should be removed
-        [Obsolete(message: "UpdateBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteUpdateAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
-#pragma warning restore S1133 // Deprecated code should be removed
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async Task UpdateBulkAsync<TEntity>(IEnumerable<TEntity> items)
+        /// <returns>The number of elements updated.</returns>
+        public async Task<int> UpdateBulkAsync<TEntity>(IEnumerable<TEntity> items)
             where TEntity : class
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            throw new NotImplementedException();
+            var itemsList = items?.ToList();
+            if (itemsList?.Count == 0)
+            {
+                return 0;
+            }
+
+            if (this.IsUpdateBulkSupported())
+            {
+                await SqlServerBulkHelper.UpdateAsync(this, itemsList);
+                return itemsList.Count;
+            }
+            else
+            {
+                throw new NotSupportedException($"Bulk update operations are not supported for provider: {this.Database.ProviderName}");
+            }
         }
 
         /// <summary>
-        /// Bulk function to delete entities. Obsolete in V3.9.0.
+        /// Bulk function to delete entities.
         /// </summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="items">List of the items to delete.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-#pragma warning disable S1133 // Deprecated code should be removed
-        [Obsolete(message: "RemoveBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteDeleteAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
-#pragma warning restore S1133 // Deprecated code should be removed
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async Task RemoveBulkAsync<TEntity>(IEnumerable<TEntity> items)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        /// <returns>The number of elements deleted.</returns>
+        public async Task<int> RemoveBulkAsync<TEntity>(IEnumerable<TEntity> items)
             where TEntity : class
         {
-            throw new NotImplementedException();
+            var itemsList = items?.ToList();
+            if (itemsList?.Count == 0)
+            {
+                return 0;
+            }
+
+            if (this.IsRemoveBulkSupported())
+            {
+                await SqlServerBulkHelper.DeleteAsync(this, itemsList);
+                return itemsList.Count;
+            }
+            else
+            {
+                throw new NotSupportedException($"Bulk remove operations are not supported for provider: {this.Database.ProviderName}");
+            }
+        }
+
+        /// <summary>
+        /// Determines whether bulk add operations are supported by the current database provider.
+        /// </summary>
+        /// <returns><c>true</c> if bulk add operations are supported; otherwise, <c>false</c>.</returns>
+        public bool IsAddBulkSupported()
+        {
+            return this.Database.IsSqlServer();
+        }
+
+        /// <summary>
+        /// Determines whether bulk update operations are supported by the current database provider.
+        /// </summary>
+        /// <returns><c>true</c> if bulk update operations are supported; otherwise, <c>false</c>.</returns>
+        public bool IsUpdateBulkSupported()
+        {
+            return this.Database.IsSqlServer();
+        }
+
+        /// <summary>
+        /// Determines whether bulk remove operations are supported by the current database provider.
+        /// </summary>
+        /// <returns><c>true</c> if bulk remove operations are supported; otherwise, <c>false</c>.</returns>
+        public bool IsRemoveBulkSupported()
+        {
+            return this.Database.IsSqlServer();
         }
 
         /// <summary>
