@@ -144,7 +144,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
                 return;
             }
 
-            var set = this.RetrieveSet();
+            DbSet<TEntity> set = this.RetrieveSet();
             set.AttachRange(items);
             set.RemoveRange(items);
         }
@@ -247,7 +247,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             if (batchSize.HasValue)
             {
                 // First check the number of entities to be processed
-                var totalCount = await query.CountAsync();
+                int totalCount = await query.CountAsync();
 
                 // If the number is small, no need for batching
                 if (totalCount <= batchSize.Value)
@@ -257,10 +257,10 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
                 else
                 {
                     // For large volumes, process in batches with progressive recovery of IDs
-                    var processedCount = 0;
+                    int processedCount = 0;
                     while (processedCount < totalCount)
                     {
-                        var batchIds = await query
+                        List<TKey> batchIds = await query
                             .Skip(processedCount)
                             .Take(batchSize.Value)
                             .Select(x => x.Id)
@@ -271,8 +271,8 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
                             break; // No more entities to process
                         }
 
-                        var batchQuery = this.RetrieveSet().Where(x => batchIds.Contains(x.Id));
-                        var batchUpdated = await batchQuery.ExecuteUpdateAsync(setPropertyCalls);
+                        IQueryable<TEntity> batchQuery = this.RetrieveSet().Where(x => batchIds.Contains(x.Id));
+                        int batchUpdated = await batchQuery.ExecuteUpdateAsync(setPropertyCalls);
                         updatedCount += batchUpdated;
                         processedCount += batchIds.Count;
                     }
@@ -289,7 +289,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <inheritdoc />
         public virtual async Task<int> MassAddAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false)
         {
-            var itemsList = items?.ToList();
+            List<TEntity> itemsList = items?.ToList();
             if (itemsList?.Count == 0)
             {
                 return 0;
@@ -306,7 +306,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <inheritdoc />
         public virtual async Task<int> MassUpdateAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false)
         {
-            var itemsList = items?.ToList();
+            List<TEntity> itemsList = items?.ToList();
             if (itemsList?.Count == 0)
             {
                 return 0;
@@ -321,9 +321,9 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         }
 
         /// <inheritdoc />
-        public virtual async Task<int> MassDeleteAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false)
+        public virtual async Task<int> MassDeleteAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false, bool useExecuteDelete = true)
         {
-            var itemsList = items?.ToList();
+            List<TEntity> itemsList = items?.ToList();
             if (itemsList?.Count == 0)
             {
                 return 0;
@@ -332,6 +332,12 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             if (useBulk && this.unitOfWork.IsRemoveBulkSupported())
             {
                 return await this.unitOfWork.RemoveBulkAsync(itemsList);
+            }
+
+            if (useExecuteDelete)
+            {
+                IEnumerable<TKey> ids = itemsList.Select(item => item.Id);
+                return await this.DeleteByIdsAsync(ids, batchSize);
             }
 
             return await this.ExecuteMassOperationAsync(itemsList, batchSize, this.RemoveRange);
