@@ -27,8 +27,8 @@ import { MenuService } from '../../services/menu.service';
     ButtonDirective,
     NgClass,
     TranslateModule,
-    DrawerModule
-],
+    DrawerModule,
+  ],
 })
 export class BiaUltimaConfigComponent {
   @Input() minimal = false;

@@ -1,4 +1,3 @@
-
 import {
   Component,
   EventEmitter,
@@ -46,8 +45,8 @@ const undefinedView = -2;
     PrimeTemplate,
     ViewDialogComponent,
     TranslateModule,
-    FloatLabel
-],
+    FloatLabel,
+  ],
 })
 export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   groupedViews: SelectItemGroup[];

@@ -12,11 +12,7 @@ import { MaintenanceContractService } from '../../services/maintenance-contract.
 @Component({
   selector: 'app-maintenance-contract-edit',
   templateUrl: './maintenance-contract-edit.component.html',
-  imports: [
-    MaintenanceContractFormComponent,
-    AsyncPipe,
-    SpinnerComponent
-],
+  imports: [MaintenanceContractFormComponent, AsyncPipe, SpinnerComponent],
 })
 export class MaintenanceContractEditComponent extends CrudItemEditComponent<MaintenanceContract> {
   constructor(

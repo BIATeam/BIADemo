@@ -35,8 +35,8 @@ import { MaintenanceTeamService } from '../../services/maintenance-team.service'
     BiaTableHeaderComponent,
     BiaTableControllerComponent,
     BiaTableBehaviorControllerComponent,
-    BiaTableComponent
-],
+    BiaTableComponent,
+  ],
   providers: [
     { provide: CrudItemService, useExisting: MaintenanceTeamService },
   ],

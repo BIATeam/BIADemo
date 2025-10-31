@@ -7,14 +7,14 @@
       icon="pi pi-trash"
       pTooltip="{{ 'bia.delete' | translate }}"
       tooltipPosition="top"
-    (click)="onDeleteView(viewSelected?.id)"></button>
+      (click)="onDeleteView(viewSelected?.id)"></button>
   }
   @if (showLinkWithTeam()) {
     <button
       pButton
       [disabled]="!viewSelected"
       label="{{ 'bia.views.linkWithTeam' | translate }}"
-    (click)="onAssignViewToTeam(viewSelected?.id, true)"></button>
+      (click)="onAssignViewToTeam(viewSelected?.id, true)"></button>
   }
   @if (showUnLinkWithTeamAsDelete()) {
     <button
@@ -23,27 +23,27 @@
       icon="pi pi-trash"
       pTooltip="{{ 'bia.delete' | translate }}"
       tooltipPosition="top"
-    (click)="onAssignViewToTeamWithDelete(viewSelected?.id, false)"></button>
+      (click)="onAssignViewToTeamWithDelete(viewSelected?.id, false)"></button>
   }
   @if (showUnlinkWithTeam()) {
     <button
       pButton
       [disabled]="!viewSelected"
       label="{{ 'bia.views.unlinkWithTeam' | translate }}"
-    (click)="onAssignViewToTeam(viewSelected?.id, false)"></button>
+      (click)="onAssignViewToTeam(viewSelected?.id, false)"></button>
   }
   @if (showDefineDefault()) {
     <button
       pButton
       [disabled]="!viewSelected"
       label="{{ 'bia.views.defineDefault' | translate }}"
-    (click)="onSetDefaultView(viewSelected?.id, true)"></button>
+      (click)="onSetDefaultView(viewSelected?.id, true)"></button>
   }
   @if (!showDefineDefault()) {
     <button
       pButton
       label="{{ 'bia.views.removeDefault' | translate }}"
-    (click)="onSetDefaultView(viewSelected?.id, false)"></button>
+      (click)="onSetDefaultView(viewSelected?.id, false)"></button>
   }
 </div>
 <p-table

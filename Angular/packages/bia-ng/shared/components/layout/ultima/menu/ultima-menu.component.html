@@ -9,17 +9,13 @@
     (mousedown)="startScrolling($event, 'left')"
     (mouseup)="stopScrolling()"
     (mouseleave)="stopScrolling()"
-  (click)="$event.preventDefault()"></p-button>
+    (click)="$event.preventDefault()"></p-button>
 }
 <ul class="layout-menu" #scrollContent>
   <ng-content select="[menu-top]"></ng-content>
   @for (item of menuItems; track item; let i = $index) {
     @if (!item.separator) {
-      <li
-        bia-ultima-menu-item
-        [item]="item"
-        [index]="i"
-      [root]="true"></li>
+      <li bia-ultima-menu-item [item]="item" [index]="i" [root]="true"></li>
     }
     @if (item.separator) {
       <li class="menu-separator"></li>
@@ -38,5 +34,5 @@
     (mousedown)="startScrolling($event, 'right')"
     (mouseup)="stopScrolling()"
     (mouseleave)="stopScrolling()"
-  (click)="$event.preventDefault()"></p-button>
+    (click)="$event.preventDefault()"></p-button>
 }

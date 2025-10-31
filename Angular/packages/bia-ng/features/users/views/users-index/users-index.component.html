@@ -23,7 +23,7 @@
             pButton
             class="p-button-outlined"
             label="{{ 'bia.synchronize' | translate }}"
-          (click)="onSynchronize()"></button>
+            (click)="onSynchronize()"></button>
         }
       </ng-template>
     </bia-table-header>
@@ -60,9 +60,9 @@
     @if (!crudConfiguration.useCalcMode) {
       <bia-table
         [elements]="(crudItems$ | async) ?? []"
-      [dictOptionDtos]="
-        (userService.optionsService.dictOptionDtos$ | async) ?? []
-      "
+        [dictOptionDtos]="
+          (userService.optionsService.dictOptionDtos$ | async) ?? []
+        "
         [totalRecord]="(totalCount$ | async) ?? 0"
         [columnToDisplays]="displayedColumns"
         [pageSize]="pageSize"
@@ -81,7 +81,10 @@
         [sortFieldValue]="sortFieldValue"
         (stateSave)="onStateSave($event)"
         [scrollHeightValue]="getFillScrollHeightValue()">
-        <ng-template pTemplate="specificOutput" let-field="field" let-data="data">
+        <ng-template
+          pTemplate="specificOutput"
+          let-field="field"
+          let-data="data">
           @switch (field.field) {
             @case ('teams') {
               <bia-user-teams [userTeams]="data"></bia-user-teams>
@@ -93,9 +96,9 @@
     @if (crudConfiguration.useCalcMode) {
       <bia-user-table
         [elements]="(crudItems$ | async) ?? []"
-      [dictOptionDtos]="
-        (userService.optionsService.dictOptionDtos$ | async) ?? []
-      "
+        [dictOptionDtos]="
+          (userService.optionsService.dictOptionDtos$ | async) ?? []
+        "
         [totalRecord]="(totalCount$ | async) ?? 0"
         [columnToDisplays]="displayedColumns"
         [pageSize]="pageSize"
@@ -115,7 +118,10 @@
         (stateSave)="onStateSave($event)"
         (save)="onSave($event)"
         [scrollHeightValue]="getFillScrollHeightValue()">
-        <ng-template pTemplate="specificOutput" let-field="field" let-data="data">
+        <ng-template
+          pTemplate="specificOutput"
+          let-field="field"
+          let-data="data">
           @switch (field.field) {
             @case ('teams') {
               <bia-user-teams [userTeams]="data"></bia-user-teams>

@@ -32,8 +32,8 @@ import { FeatureNotificationsActions } from '../../store/notifications-actions';
     AsyncPipe,
     DatePipe,
     TranslateModule,
-    SpinnerComponent
-],
+    SpinnerComponent,
+  ],
 })
 export class NotificationDetailComponent implements OnInit, OnDestroy {
   @Output() displayChange = new EventEmitter<boolean>();

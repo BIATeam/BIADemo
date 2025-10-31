@@ -4,8 +4,7 @@
   [userOptions]="(memberService.optionsService.userOptions$ | async) ?? []"
   [canAddFromDirectory]="canAddFromDirectory"
   (cancelled)="onCancelled()"
-(save)="onSubmitted($event)"></bia-member-form-edit>
+  (save)="onSubmitted($event)"></bia-member-form-edit>
 @if (memberService.loadingGet$ | async) {
-  <bia-spinner
-  [overlay]="true"></bia-spinner>
+  <bia-spinner [overlay]="true"></bia-spinner>
 }

@@ -75,8 +75,8 @@ import { BiaUltimaLayoutModule } from '../ultima-layout.module';
     NgClass,
     RouterLink,
     Tooltip,
-    BiaUltimaLayoutModule
-],
+    BiaUltimaLayoutModule,
+  ],
 })
 export class BiaUltimaMenuItemComponent
   implements OnInit, OnDestroy, AfterViewChecked

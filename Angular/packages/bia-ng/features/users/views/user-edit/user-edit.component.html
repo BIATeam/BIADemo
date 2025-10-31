@@ -3,16 +3,17 @@
     [crudItem]="crudItem"
     [fields]="crudConfiguration.fieldsConfig.columns"
     [formLayoutConfig]="crudConfiguration.formLayoutConfig"
-    [dictOptionDtos]="(userService.optionsService.dictOptionDtos$ | async) ?? []"
+    [dictOptionDtos]="
+      (userService.optionsService.dictOptionDtos$ | async) ?? []
+    "
     [isCrudItemOutdated]="isCrudItemOutdated"
     (cancelled)="onCancelled()"
     (save)="onSubmitted($event)"
     [showPopupButton]="showPopupButton"
     [showSplitButton]="showSplitButton"
     [showFullPageButton]="showFullPageButton"
-  (layoutChanged)="notifyLayoutChange($event)"></bia-user-form>
+    (layoutChanged)="notifyLayoutChange($event)"></bia-user-form>
 }
 @if (userService.loadingGet$ | async) {
-  <bia-spinner
-  [overlay]="true"></bia-spinner>
+  <bia-spinner [overlay]="true"></bia-spinner>
 }

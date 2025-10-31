@@ -2,17 +2,18 @@
   <app-maintenance-contract-form
     [crudItem]="crudItem"
     [fields]="crudConfiguration.fieldsConfig.columns"
-  [dictOptionDtos]="
-    (maintenanceContractService.optionsService.dictOptionDtos$ | async) ?? []
-  "
+    [dictOptionDtos]="
+      (maintenanceContractService.optionsService.dictOptionDtos$ | async) ?? []
+    "
     (cancelled)="onCancelled()"
     (save)="onSubmitted($event)"
     [showPopupButton]="showPopupButton"
     [showSplitButton]="showSplitButton"
     [showFullPageButton]="showFullPageButton"
-  (layoutChanged)="notifyLayoutChange($event)"></app-maintenance-contract-form>
+    (layoutChanged)="
+      notifyLayoutChange($event)
+    "></app-maintenance-contract-form>
 }
 @if (maintenanceContractService.loadingGet$ | async) {
-  <bia-spinner
-  [overlay]="true"></bia-spinner>
+  <bia-spinner [overlay]="true"></bia-spinner>
 }

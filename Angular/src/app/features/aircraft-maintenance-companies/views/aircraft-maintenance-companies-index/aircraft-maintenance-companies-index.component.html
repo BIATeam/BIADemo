@@ -62,14 +62,14 @@
     </bia-table-controller>
     @if (!crudConfiguration.useCalcMode) {
       <bia-table
-      [elements]="
-        crudConfiguration.useVirtualScroll
-          ? virtualCrudItems
-          : ((crudItems$ | async) ?? [])
-      "
-      [dictOptionDtos]="
-        (crudItemService.optionsService.dictOptionDtos$ | async) ?? []
-      "
+        [elements]="
+          crudConfiguration.useVirtualScroll
+            ? virtualCrudItems
+            : ((crudItems$ | async) ?? [])
+        "
+        [dictOptionDtos]="
+          (crudItemService.optionsService.dictOptionDtos$ | async) ?? []
+        "
         [totalRecord]="(totalCount$ | async) ?? 0"
         [columnToDisplays]="displayedColumns"
         [reorderableColumns]="reorderableColumns"
@@ -94,18 +94,18 @@
         [virtualScroll]="crudConfiguration.useVirtualScroll"
         [isResizableColumn]="crudConfiguration.useResizableColumn"
         [rowHeight]="defaultRowHeight"
-      [showFixableState]="crudConfiguration.isFixable"></bia-table>
+        [showFixableState]="crudConfiguration.isFixable"></bia-table>
     }
     @if (crudConfiguration.useCalcMode) {
       <app-aircraft-maintenance-company-table
-      [elements]="
-        crudConfiguration.useVirtualScroll
-          ? virtualCrudItems
-          : ((crudItems$ | async) ?? [])
-      "
-      [dictOptionDtos]="
-        (crudItemService.optionsService.dictOptionDtos$ | async) ?? []
-      "
+        [elements]="
+          crudConfiguration.useVirtualScroll
+            ? virtualCrudItems
+            : ((crudItems$ | async) ?? [])
+        "
+        [dictOptionDtos]="
+          (crudItemService.optionsService.dictOptionDtos$ | async) ?? []
+        "
         [totalRecord]="(totalCount$ | async) ?? 0"
         [columnToDisplays]="displayedColumns"
         [reorderableColumns]="reorderableColumns"
@@ -131,17 +131,17 @@
         [virtualScroll]="crudConfiguration.useVirtualScroll"
         [isResizableColumn]="crudConfiguration.useResizableColumn"
         [rowHeight]="defaultRowHeight"
-      [showFixableState]="
-        crudConfiguration.isFixable
-      "></app-aircraft-maintenance-company-table>
+        [showFixableState]="
+          crudConfiguration.isFixable
+        "></app-aircraft-maintenance-company-table>
     }
   </div>
   @if (showAdvancedFilter) {
     <bia-team-advanced-filter
       (filter)="onFilter($event)"
       (closeFilter)="onCloseFilter()"
-    [advancedFilter]="
-      crudConfiguration.fieldsConfig.advancedFilter
-    "></bia-team-advanced-filter>
+      [advancedFilter]="
+        crudConfiguration.fieldsConfig.advancedFilter
+      "></bia-team-advanced-filter>
   }
 </div>

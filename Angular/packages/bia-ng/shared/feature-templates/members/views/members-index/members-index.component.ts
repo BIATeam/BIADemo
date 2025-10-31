@@ -26,8 +26,8 @@ import { MemberService } from '../../services/member.service';
     BiaTableComponent,
     MemberTableComponent,
     AsyncPipe,
-    TranslateModule
-],
+    TranslateModule,
+  ],
   providers: [{ provide: CrudItemService, useExisting: MemberService }],
 })
 export class MembersIndexComponent

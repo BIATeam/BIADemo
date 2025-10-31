@@ -22,12 +22,10 @@
   <label>{{ 'bia.views.view' | translate }}</label>
 </p-floatlabel>
 @if (showEditButton() === true) {
-  <i
-    class="pi pi-user-edit bia-pointer"
-  (click)="onManageView()"></i>
+  <i class="pi pi-user-edit bia-pointer" (click)="onManageView()"></i>
 }
 @if (showEditButton() === true) {
   <bia-view-dialog
     [tableStateKey]="tableStateKey"
-  [useViewTeamWithTypeId]="useViewTeamWithTypeId"></bia-view-dialog>
+    [useViewTeamWithTypeId]="useViewTeamWithTypeId"></bia-view-dialog>
 }

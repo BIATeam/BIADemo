@@ -58,8 +58,8 @@ import { BiaFilterMatchMode } from './bia-filter-match-mode';
     FloatLabel,
     Checkbox,
     DatePicker,
-    Button
-],
+    Button,
+  ],
 })
 export class BiaTableFilterComponent<CrudItem>
   extends BiaFieldBaseComponent<CrudItem>

@@ -118,24 +118,24 @@
 
 <ng-template #detailRow let-data="data"
   ><div style="text-wrap: auto" class="m-3">
-  <h3>{{ 'app.engines' | translate }}</h3>
-  @if (data?.id && enginesDic[data.id.toString()]) {
-    <bia-table
-      [elements]="enginesDic[data.id.toString()]"
-      [configuration]="engineConfig"
-      [columnToDisplays]="displayedEngineColumns"
-      [dictOptionDtos]="[]"
-      [totalRecord]="enginesDic[data.id.toString()].length"
-      [paginator]="false"
-      [showColSearch]="false"
-      [canSelectElement]="false"
-      [loading]="false"
-      [readOnly]="true">
-    </bia-table>
-  } @else {
-    <div class="m-6">
-      <bia-spinner [overlay]="false"></bia-spinner>
-    </div>
-  }
-</div>
+    <h3>{{ 'app.engines' | translate }}</h3>
+    @if (data?.id && enginesDic[data.id.toString()]) {
+      <bia-table
+        [elements]="enginesDic[data.id.toString()]"
+        [configuration]="engineConfig"
+        [columnToDisplays]="displayedEngineColumns"
+        [dictOptionDtos]="[]"
+        [totalRecord]="enginesDic[data.id.toString()].length"
+        [paginator]="false"
+        [showColSearch]="false"
+        [canSelectElement]="false"
+        [loading]="false"
+        [readOnly]="true">
+      </bia-table>
+    } @else {
+      <div class="m-6">
+        <bia-spinner [overlay]="false"></bia-spinner>
+      </div>
+    }
+  </div>
 </ng-template>

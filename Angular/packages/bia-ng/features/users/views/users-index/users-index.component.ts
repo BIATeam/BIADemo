@@ -42,8 +42,8 @@ import { userCRUDConfiguration } from '../../user.constants';
     BiaTableControllerComponent,
     BiaTableBehaviorControllerComponent,
     BiaTableComponent,
-    UserTeamsComponent
-],
+    UserTeamsComponent,
+  ],
   providers: [
     {
       provide: CrudItemService,

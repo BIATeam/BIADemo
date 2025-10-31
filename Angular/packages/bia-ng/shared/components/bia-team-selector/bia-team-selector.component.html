@@ -1,12 +1,8 @@
 <div class="controls flex flex-row align-items-center">
   @if (
-    displayTeamList === true &&
-    teamType.label &&
-    teamType.displayLabel === true
-    ) {
-    <label
-      >{{ teamType.label | translate }} :
-    </label>
+    displayTeamList === true && teamType.label && teamType.displayLabel === true
+  ) {
+    <label>{{ teamType.label | translate }} : </label>
   }
   @if (displayTeamList === true) {
     <p-select
@@ -18,7 +14,7 @@
       (onChange)="onTeamChange()"
       scrollHeight="50vh"
       [appendTo]="'body'"
-    [showClear]="canClear"></p-select>
+      [showClear]="canClear"></p-select>
   }
   @if (currentTeam) {
     @if (displayTeamList === true && !currentTeam.isDefault) {
@@ -27,14 +23,14 @@
         (click)="onSetDefaultTeam()"
         pTooltip="{{ 'bia.defineDefault' | translate }}"
         tooltipPosition="bottom"
-      placeholder="Top"></i>
+        placeholder="Top"></i>
     }
     @if (displayTeamList === true && currentTeam.isDefault) {
       <i
         class="pi pi-star-fill app-icon-header bia-pointer"
         (click)="onResetDefaultTeam()"
         pTooltip="{{ 'bia.resetDefault' | translate }}"
-      tooltipPosition="bottom"></i>
+        tooltipPosition="bottom"></i>
     }
   }
   <!-- Role selection -->
@@ -70,21 +66,21 @@
     (displayRoleList === true || displayRoleMultiSelect === true) &&
     currentRoles &&
     currentRoles.length > 0
-    ) {
+  ) {
     @if (!isDefaultRoles()) {
       <i
         class="pi pi-star app-icon-header bia-pointer"
         (click)="onSetDefaultRoles()"
         pTooltip="{{ 'bia.defineDefault' | translate }}"
         tooltipPosition="bottom"
-      placeholder="Top"></i>
+        placeholder="Top"></i>
     }
     @if (isDefaultRoles()) {
       <i
         class="pi pi-star-fill app-icon-header bia-pointer"
         (click)="onResetDefaultRoles()"
         pTooltip="{{ 'bia.resetDefault' | translate }}"
-      tooltipPosition="bottom"></i>
+        tooltipPosition="bottom"></i>
     }
   }
 </div>

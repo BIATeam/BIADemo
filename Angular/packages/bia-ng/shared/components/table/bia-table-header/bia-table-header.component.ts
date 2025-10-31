@@ -44,8 +44,8 @@ import { BiaButtonsComponent } from '../../bia-buttons/bia-buttons.component';
     TranslateModule,
     MenuModule,
     TieredMenu,
-    SortByPropertyPipe
-],
+    SortByPropertyPipe,
+  ],
 })
 export class BiaTableHeaderComponent
   implements OnChanges, AfterContentInit, OnDestroy, OnInit

@@ -30,8 +30,8 @@ import { PilotService } from '../../services/pilot.service';
     BiaTableHeaderComponent,
     BiaTableControllerComponent,
     BiaTableBehaviorControllerComponent,
-    BiaTableComponent
-],
+    BiaTableComponent,
+  ],
   providers: [{ provide: CrudItemService, useExisting: PilotService }],
 })
 export class PilotsIndexComponent

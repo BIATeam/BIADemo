@@ -30,8 +30,8 @@ import { AirportService } from '../../services/airport.service';
     BiaTableHeaderComponent,
     BiaTableControllerComponent,
     BiaTableBehaviorControllerComponent,
-    BiaTableComponent
-],
+    BiaTableComponent,
+  ],
   providers: [
     {
       provide: CrudItemService,

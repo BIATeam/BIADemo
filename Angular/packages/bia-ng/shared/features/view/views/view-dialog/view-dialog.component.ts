@@ -55,8 +55,8 @@ import { ViewsActions } from '../../store/views-actions';
     ConfirmDialog,
     AsyncPipe,
     UpperCasePipe,
-    TranslateModule
-],
+    TranslateModule,
+  ],
 })
 export class ViewDialogComponent implements OnInit, OnDestroy {
   display = false;

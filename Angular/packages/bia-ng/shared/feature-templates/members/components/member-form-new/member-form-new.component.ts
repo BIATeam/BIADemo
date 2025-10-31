@@ -1,4 +1,3 @@
-
 import {
   ChangeDetectionStrategy,
   Component,
@@ -37,8 +36,8 @@ import { Members } from '../../model/member';
     Listbox,
     UserAddFromLdapComponent,
     TranslateModule,
-    FloatLabel
-],
+    FloatLabel,
+  ],
 })
 export class MemberFormNewComponent implements OnChanges {
   @Input() members: Members = <Members>{};

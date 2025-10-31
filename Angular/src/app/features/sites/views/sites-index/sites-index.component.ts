@@ -33,8 +33,8 @@ import { siteCRUDConfiguration } from '../../site.constants';
     BiaTableHeaderComponent,
     BiaTableControllerComponent,
     BiaTableBehaviorControllerComponent,
-    BiaTableComponent
-],
+    BiaTableComponent,
+  ],
   providers: [{ provide: CrudItemService, useExisting: SiteService }],
 })
 export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {

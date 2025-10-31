@@ -1,4 +1,3 @@
-
 import {
   Component,
   OnChanges,
@@ -48,8 +47,8 @@ import { PlaneSpecific } from '../../model/plane-specific';
     BiaFormComponent,
     BiaTableHeaderComponent,
     FloatLabel,
-    MultiSelect
-],
+    MultiSelect,
+  ],
 })
 export class PlaneFormComponent
   extends CrudItemFormComponent<PlaneSpecific>

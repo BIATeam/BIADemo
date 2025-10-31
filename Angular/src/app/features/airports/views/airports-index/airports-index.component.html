@@ -51,9 +51,9 @@
     @if (!crudConfiguration.useCalcMode) {
       <bia-table
         [elements]="(crudItems$ | async) ?? []"
-      [dictOptionDtos]="
-        (airportService.optionsService.dictOptionDtos$ | async) ?? []
-      "
+        [dictOptionDtos]="
+          (airportService.optionsService.dictOptionDtos$ | async) ?? []
+        "
         [totalRecord]="(totalCount$ | async) ?? 0"
         [columnToDisplays]="displayedColumns"
         [pageSize]="pageSize"
@@ -71,14 +71,14 @@
         (selectedElementsChanged)="onSelectedElementsChanged($event)"
         [sortFieldValue]="sortFieldValue"
         (stateSave)="onStateSave($event)"
-      [scrollHeightValue]="getFillScrollHeightValue()"></bia-table>
+        [scrollHeightValue]="getFillScrollHeightValue()"></bia-table>
     }
     @if (crudConfiguration.useCalcMode) {
       <app-airport-table
         [elements]="(crudItems$ | async) ?? []"
-      [dictOptionDtos]="
-        (airportService.optionsService.dictOptionDtos$ | async) ?? []
-      "
+        [dictOptionDtos]="
+          (airportService.optionsService.dictOptionDtos$ | async) ?? []
+        "
         [totalRecord]="(totalCount$ | async) ?? 0"
         [columnToDisplays]="displayedColumns"
         [pageSize]="pageSize"
@@ -97,7 +97,7 @@
         [sortFieldValue]="sortFieldValue"
         (stateSave)="onStateSave($event)"
         (save)="onSave($event)"
-      [scrollHeightValue]="getFillScrollHeightValue()"></app-airport-table>
+        [scrollHeightValue]="getFillScrollHeightValue()"></app-airport-table>
     }
   </div>
 </div>

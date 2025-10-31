@@ -51,20 +51,20 @@
             <p-columnFilter
               [type]="columnFilterType"
               [locale]="getDisplayNumberFormat(field.displayFormat)?.autoLocale"
-            [minFractionDigits]="
-              getDisplayNumberFormat(field.displayFormat)?.minFractionDigits
-            "
-            [maxFractionDigits]="
-              getDisplayNumberFormat(field.displayFormat)?.maxFractionDigits
-            "
-            [currency]="
-              getDisplayNumberFormat(field.displayFormat)?.mode === 'currency'
-                ? getDisplayNumberFormat(field.displayFormat)?.currency
-                : undefined
-            "
-            [currencyDisplay]="
-              getDisplayNumberFormat(field.displayFormat)?.currencyDisplay
-            "
+              [minFractionDigits]="
+                getDisplayNumberFormat(field.displayFormat)?.minFractionDigits
+              "
+              [maxFractionDigits]="
+                getDisplayNumberFormat(field.displayFormat)?.maxFractionDigits
+              "
+              [currency]="
+                getDisplayNumberFormat(field.displayFormat)?.mode === 'currency'
+                  ? getDisplayNumberFormat(field.displayFormat)?.currency
+                  : undefined
+              "
+              [currencyDisplay]="
+                getDisplayNumberFormat(field.displayFormat)?.currencyDisplay
+              "
               [matchModeOptions]="matchModeOptions"
               [field]="field.field"
               display="menu"
@@ -90,27 +90,27 @@
                   filterConstraint?.matchMode !== 'today' &&
                   filterConstraint?.matchMode !== 'beforeToday' &&
                   filterConstraint?.matchMode !== 'afterToday'
-                  ) {
+                ) {
                   <p-date-picker
                     [ngModel]="filterConstraint?.value"
-                  (ngModelChange)="
-                    filterConstraint.value = $event
-                  "></p-date-picker>
+                    (ngModelChange)="
+                      filterConstraint.value = $event
+                    "></p-date-picker>
                 } @else if (columnFilterType === 'boolean') {
                   <p-checkbox
                     [binary]="true"
                     [indeterminate]="filterConstraint?.value === null"
                     [ngModel]="filterConstraint?.value"
-                  (ngModelChange)="
-                    filterConstraint.value = $event
-                  "></p-checkbox>
+                    (ngModelChange)="
+                      filterConstraint.value = $event
+                    "></p-checkbox>
                 } @else if (
                   filterConstraint?.matchMode !== 'empty' &&
                   filterConstraint?.matchMode !== 'notEmpty' &&
                   filterConstraint?.matchMode !== 'today' &&
                   filterConstraint?.matchMode !== 'beforeToday' &&
                   filterConstraint?.matchMode !== 'afterToday'
-                  ) {
+                ) {
                   <p-columnFilterFormElement
                     [type]="columnFilterType"
                     [field]="field.field"
@@ -124,7 +124,7 @@
                     [localeMatcher]="localeMatcher"
                     [currency]="currency"
                     [currencyDisplay]="currencyDisplay"
-                  [useGrouping]="useGrouping"></p-columnFilterFormElement>
+                    [useGrouping]="useGrouping"></p-columnFilterFormElement>
                 }
               </ng-template>
             </p-columnFilter>
@@ -133,8 +133,7 @@
       </div>
       <div class="app-field-container flex-1 flex align-items-center">
         @if (isArrayFilter(field); as filterArray) {
-          <span
-            class="bia-filter-active-vals">
+          <span class="bia-filter-active-vals">
             @for (filter of filterArray; track filter; let last = $last) {
               @if (
                 filter.value !== null ||
@@ -143,7 +142,7 @@
                 filter.matchMode === 'today' ||
                 filter.matchMode === 'afterToday' ||
                 filter.matchMode === 'beforeToday'
-                ) {
+              ) {
                 @switch (filter.matchMode) {
                   @case ('startsWith') {
                     [{{ filter.value }}*]
@@ -206,9 +205,9 @@
                   }
                   @case ('in') {
                     {{
-                    field.filterWithDisplay
-                    ? filter.value
-                    : getOptionsLabels(filter.value)
+                      field.filterWithDisplay
+                        ? filter.value
+                        : getOptionsLabels(filter.value)
                     }}
                   }
                   @case ('today') {
@@ -221,9 +220,7 @@
                     [{{ 'primeng.beforeToday' | translate }}]
                   }
                   @default {
-                    {{
-                    filter.matchMode + ' ' + filter.value
-                    }}
+                    {{ filter.matchMode + ' ' + filter.value }}
                   }
                 }
               }
@@ -244,19 +241,19 @@
               pInputText
               class="input-search"
               type="{{ field.type === propType.Number ? 'number' : 'text' }}"
-          placeholder="{{
-            field.searchPlaceholder !== undefined
-              ? field.searchPlaceholder
-              : field.isDate === true
-                ? ('bia.dateIso8601' | translate)
-                : ''
-          }}"
+              placeholder="{{
+                field.searchPlaceholder !== undefined
+                  ? field.searchPlaceholder
+                  : field.isDate === true
+                    ? ('bia.dateIso8601' | translate)
+                    : ''
+              }}"
               (input)="setSimpleFilter($event.target, field)"
               [value]="isSimpleFilter(table.filters[field.field])?.value ?? ''"
-          [ngClass]="{
-            'p-state-filled':
-              isSimpleFilter(table.filters[field.field])?.value !== '',
-          }" />
+              [ngClass]="{
+                'p-state-filled':
+                  isSimpleFilter(table.filters[field.field])?.value !== '',
+              }" />
           }
         }
       </div>

@@ -37,10 +37,7 @@
     class="flex flex-column bia-form"
     [formGroup]="form">
     @if (showHeaderContainer) {
-      <div
-        id="header"
-        class="header-container bia-form-header"
-        >
+      <div id="header" class="header-container bia-form-header">
         <div class="fixed-state">
           @if (isFixableButtonVisible) {
             <button
@@ -50,7 +47,7 @@
               type="button"
               [disabled]="!canFix"
               [ngClass]="{ 'p-button-outlined': !isFixed }"
-            (click)="onFixableButtonClicked()"></button>
+              (click)="onFixableButtonClicked()"></button>
           }
           @if (showPopupButton) {
             <button
@@ -63,7 +60,7 @@
               [text]="true"
               (click)="switchToPopup()"
               pTooltip="{{ 'bia.usePopup' | translate }}"
-            tooltipPosition="top"></button>
+              tooltipPosition="top"></button>
           }
           @if (showSplitButton) {
             <button
@@ -91,7 +88,7 @@
               [text]="true"
               (click)="switchToFullPage()"
               pTooltip="{{ 'bia.useFullPage' | translate }}"
-            tooltipPosition="top"></button>
+              tooltipPosition="top"></button>
           }
         </div>
       </div>
@@ -107,15 +104,15 @@
             [readOnly]="readOnly"
             [isAdd]="isAdd"
             [specificInputTemplate]="specificInputTemplate"
-          [specificOutputTemplate]="specificOutputTemplate"></bia-form-layout>
+            [specificOutputTemplate]="specificOutputTemplate"></bia-form-layout>
         }
         <ng-container>
           @for (field of fieldsWithoutLayoutConfig; track field) {
             <ng-container
-            *ngTemplateOutlet="
-              fieldTemplate;
-              context: { field: field, form: form }
-            "></ng-container>
+              *ngTemplateOutlet="
+                fieldTemplate;
+                context: { field: field, form: form }
+              "></ng-container>
           }
         </ng-container>
       </div>
@@ -133,9 +130,9 @@
           <p-tabpanel value="1">
             <bia-crud-item-historical-timeline
               [fields]="fields"
-            [historicalEntries]="
-              historicalEntries
-            "></bia-crud-item-historical-timeline>
+              [historicalEntries]="
+                historicalEntries
+              "></bia-crud-item-historical-timeline>
           </p-tabpanel>
         </p-tabpanels>
       </p-tabs>
@@ -149,7 +146,7 @@
           [pTooltip]="tooltipContent"
           tooltipPosition="top"
           tooltipStyleClass="bia-tooltip-large"
-        positionLeft="80"></i>
+          positionLeft="80"></i>
       }
       <div class="flex gap-2 align-items-center info-locked-container">
         @if (isCrudItemOutdated) {
@@ -161,7 +158,7 @@
             [rounded]="true"
             severity="warn"
             [outlined]="true"
-          size="small"></button>
+            size="small"></button>
         }
         @if (isCrudItemOutdated) {
           <span class="info-locked-label">{{
@@ -176,7 +173,7 @@
           label="{{ cancelButtonLabel | translate }}"
           type="button"
           class="p-button-outlined"
-        (click)="onCancel()"></button>
+          (click)="onCancel()"></button>
         @if (isSubmitButtonVisible) {
           <button
             pButton
@@ -184,20 +181,19 @@
             label="{{ submitButtonLabel | translate }}"
             type="submit"
             [loading]="submittingForm"
-          [disabled]="isSubmitButtonDisabled"></button>
+            [disabled]="isSubmitButtonDisabled"></button>
         }
       </div>
     </div>
     <ng-template #fieldTemplate let-field="field" let-form="form">
       @if (field.isVisible === true) {
-        <div
-          class="flex flex-row align-items-center">
+        <div class="flex flex-row align-items-center">
           <div class="app-field-container">
             @if (
               field.isEditable === true ||
               (field.isOnlyInitializable && isAdd) ||
               (field.isOnlyUpdatable && !isAdd)
-              ) {
+            ) {
               <bia-input
                 [field]="field"
                 [form]="form"
@@ -205,20 +201,20 @@
                 [readOnly]="readOnly">
                 <ng-template pTemplate="specificInput">
                   <ng-container
-                *ngTemplateOutlet="
-                  specificInputTemplate;
-                  context: { field: field, form: form }
-                "></ng-container>
+                    *ngTemplateOutlet="
+                      specificInputTemplate;
+                      context: { field: field, form: form }
+                    "></ng-container>
                 </ng-template>
               </bia-input>
             } @else {
               <bia-output [field]="field" [data]="getCellData(field)">
                 <ng-template pTemplate="specificOutput">
                   <ng-container
-                *ngTemplateOutlet="
-                  specificOutputTemplate;
-                  context: { field: field, data: getCellData(field) }
-                "></ng-container>
+                    *ngTemplateOutlet="
+                      specificOutputTemplate;
+                      context: { field: field, data: getCellData(field) }
+                    "></ng-container>
                 </ng-template>
               </bia-output>
             }

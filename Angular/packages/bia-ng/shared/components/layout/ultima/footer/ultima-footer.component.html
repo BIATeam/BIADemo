@@ -20,8 +20,7 @@
     <div class="logos flex justify-content-center">
       @for (logo of logos; track logo; let first = $first) {
         @if (!first) {
-          <span
-          class="flex align-self-center bia-separator"></span>
+          <span class="flex align-self-center bia-separator"></span>
         }
         <img alt="logo" class="flex align-self-center" src="{{ logo }}" />
       }

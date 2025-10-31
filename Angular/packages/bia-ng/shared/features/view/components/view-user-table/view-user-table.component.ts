@@ -1,4 +1,3 @@
-
 import {
   Component,
   EventEmitter,
@@ -27,8 +26,8 @@ import { View } from '../../model/view';
     TableModule,
     PrimeTemplate,
     ConfirmDialog,
-    TranslateModule
-],
+    TranslateModule,
+  ],
 })
 export class ViewUserTableComponent implements OnChanges {
   @Input() views: View[];

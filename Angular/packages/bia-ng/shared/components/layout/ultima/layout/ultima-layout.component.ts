@@ -52,8 +52,8 @@ import { BiaUltimaTopbarComponent } from '../topbar/ultima-topbar.component';
     BiaUltimaFooterComponent,
     AsyncPipe,
     TranslateModule,
-    BiaUltimaConfigComponent
-],
+    BiaUltimaConfigComponent,
+  ],
 })
 export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
   @HostBinding('class.no-margin') noMargin = false;

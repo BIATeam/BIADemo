@@ -1,5 +1,4 @@
 <router-outlet></router-outlet>
 @if (notificationService.loadingGet$ | async) {
-  <bia-spinner
-  [overlay]="true"></bia-spinner>
+  <bia-spinner [overlay]="true"></bia-spinner>
 }

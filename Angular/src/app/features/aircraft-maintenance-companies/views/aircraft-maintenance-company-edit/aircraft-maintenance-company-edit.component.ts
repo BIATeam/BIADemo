@@ -15,8 +15,8 @@ import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maint
   imports: [
     AircraftMaintenanceCompanyFormComponent,
     AsyncPipe,
-    SpinnerComponent
-],
+    SpinnerComponent,
+  ],
 })
 export class AircraftMaintenanceCompanyEditComponent
   extends CrudItemEditComponent<AircraftMaintenanceCompany>

@@ -1,4 +1,3 @@
-
 import { Component } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import {
@@ -19,7 +18,7 @@ import { UserTeamsComponent } from '../user-teams/user-teams.component';
     UserTeamsComponent,
     UserTeamsComponent,
     PrimeTemplate,
-    TranslateModule
-],
+    TranslateModule,
+  ],
 })
 export class UserFormComponent extends CrudItemFormComponent<User> {}

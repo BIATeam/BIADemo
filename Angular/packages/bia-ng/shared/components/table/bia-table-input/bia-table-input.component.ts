@@ -49,8 +49,8 @@ import { DictOptionDto } from '../bia-table/dict-option-dto';
     InputNumber,
     DatePicker,
     InputText,
-    AutoFocusModule
-],
+    AutoFocusModule,
+  ],
 })
 export class BiaTableInputComponent<CrudItem>
   extends BiaFieldBaseComponent<CrudItem>

@@ -4,9 +4,8 @@
     [airportOptions]="(planeOptionsService.airportOptions$ | async) ?? []"
     [planeTypeOptions]="(planeOptionsService.planeTypeOptions$ | async) ?? []"
     (cancelled)="onCancelled()"
-  (save)="onSubmitted($event)"></app-plane-form>
+    (save)="onSubmitted($event)"></app-plane-form>
 }
 @if (planeService.loading$ | async) {
-  <bia-spinner
-  [overlay]="true"></bia-spinner>
+  <bia-spinner [overlay]="true"></bia-spinner>
 }

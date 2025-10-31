@@ -1,4 +1,3 @@
-
 import {
   ChangeDetectionStrategy,
   Component,
@@ -14,7 +13,7 @@ import { TranslateModule } from '@ngx-translate/core';
     @if (showIEWarning) {
       {{ 'biaMsg.ieWarning' | translate }}
     }
-    `,
+  `,
   styles: [
     `
       :host {

@@ -1,8 +1,6 @@
 @if (
-  field !== undefined &&
-  field.specificOutput === true &&
-  !ignoreSpecificOutput
-  ) {
+  field !== undefined && field.specificOutput === true && !ignoreSpecificOutput
+) {
   <ng-container
     *ngTemplateOutlet="
       specificOutputTemplate;
@@ -10,18 +8,17 @@
     "></ng-container>
 }
 @if (
-  field !== undefined &&
-  (field.specificOutput !== true || ignoreSpecificOutput)
-  ) {
+  field !== undefined && (field.specificOutput !== true || ignoreSpecificOutput)
+) {
   @switch (field.type) {
     @case ('OneToMany') {
       {{ data?.display }}
     }
     @case ('ManyToMany') {
       {{
-      data && isArray(data)
-      ? (filterDtoState(data) | pluck: 'display' | join: ', ')
-      : data
+        data && isArray(data)
+          ? (filterDtoState(data) | pluck: 'display' | join: ', ')
+          : data
       }}
     }
     @case ('Boolean') {

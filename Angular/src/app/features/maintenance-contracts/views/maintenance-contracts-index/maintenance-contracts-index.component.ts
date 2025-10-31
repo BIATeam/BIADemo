@@ -30,8 +30,8 @@ import { MaintenanceContractService } from '../../services/maintenance-contract.
     BiaTableHeaderComponent,
     BiaTableControllerComponent,
     BiaTableBehaviorControllerComponent,
-    BiaTableComponent
-],
+    BiaTableComponent,
+  ],
   providers: [
     {
       provide: CrudItemService,

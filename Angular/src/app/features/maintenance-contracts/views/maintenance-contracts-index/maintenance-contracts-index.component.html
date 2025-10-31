@@ -39,14 +39,14 @@
       [hasColumnFilter]="hasColumnFilter">
       <ng-template pTemplate="customControl"
         ><bia-table-behavior-controller
-        [crudConfiguration]="crudConfiguration"
-        (useCalcModeChanged)="useCalcModeChange($event)"
-        (usePopupChanged)="usePopupChange($event)"
-        (useSplitChanged)="useSplitChange($event)"
-        (useSignalRChanged)="useSignalRChange($event)"
-        (useViewChanged)="useViewChange($event)"
-        (useCompactModeChanged)="useCompactModeChange($event)"
-        (useVirtualScrollChanged)="useVirtualScrollChange($event)"
+          [crudConfiguration]="crudConfiguration"
+          (useCalcModeChanged)="useCalcModeChange($event)"
+          (usePopupChanged)="usePopupChange($event)"
+          (useSplitChanged)="useSplitChange($event)"
+          (useSignalRChanged)="useSignalRChange($event)"
+          (useViewChanged)="useViewChange($event)"
+          (useCompactModeChanged)="useCompactModeChange($event)"
+          (useVirtualScrollChanged)="useVirtualScrollChange($event)"
           (useResizableColumnChanged)="
             useResizableColumnChange($event)
           "></bia-table-behavior-controller
@@ -54,15 +54,15 @@
     </bia-table-controller>
     @if (!crudConfiguration.useCalcMode) {
       <bia-table
-      [elements]="
-        crudConfiguration.useVirtualScroll
-          ? virtualCrudItems
-          : ((crudItems$ | async) ?? [])
-      "
-      [dictOptionDtos]="
-        (maintenanceContractService.optionsService.dictOptionDtos$ | async) ??
-        []
-      "
+        [elements]="
+          crudConfiguration.useVirtualScroll
+            ? virtualCrudItems
+            : ((crudItems$ | async) ?? [])
+        "
+        [dictOptionDtos]="
+          (maintenanceContractService.optionsService.dictOptionDtos$ | async) ??
+          []
+        "
         [totalRecord]="(totalCount$ | async) ?? 0"
         [columnToDisplays]="displayedColumns"
         [pageSize]="pageSize"
@@ -85,19 +85,19 @@
         [frozeSelectColumn]="true"
         [virtualScroll]="crudConfiguration.useVirtualScroll"
         [isResizableColumn]="crudConfiguration.useResizableColumn"
-      [rowHeight]="defaultRowHeight"></bia-table>
+        [rowHeight]="defaultRowHeight"></bia-table>
     }
     @if (crudConfiguration.useCalcMode) {
       <app-maintenance-contract-table
-      [elements]="
-        crudConfiguration.useVirtualScroll
-          ? virtualCrudItems
-          : ((crudItems$ | async) ?? [])
-      "
-      [dictOptionDtos]="
-        (maintenanceContractService.optionsService.dictOptionDtos$ | async) ??
-        []
-      "
+        [elements]="
+          crudConfiguration.useVirtualScroll
+            ? virtualCrudItems
+            : ((crudItems$ | async) ?? [])
+        "
+        [dictOptionDtos]="
+          (maintenanceContractService.optionsService.dictOptionDtos$ | async) ??
+          []
+        "
         [totalRecord]="(totalCount$ | async) ?? 0"
         [columnToDisplays]="displayedColumns"
         [pageSize]="pageSize"
@@ -121,7 +121,7 @@
         [scrollHeightValue]="getFillScrollHeightValue()"
         [virtualScroll]="crudConfiguration.useVirtualScroll"
         [isResizableColumn]="crudConfiguration.useResizableColumn"
-      [rowHeight]="defaultRowHeight"></app-maintenance-contract-table>
+        [rowHeight]="defaultRowHeight"></app-maintenance-contract-table>
     }
   </div>
 </div>

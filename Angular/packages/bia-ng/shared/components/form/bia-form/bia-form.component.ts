@@ -73,8 +73,8 @@ import { BiaOutputComponent } from '../bia-output/bia-output.component';
     BiaFormLayoutComponent,
     Tooltip,
     CrudItemHistoricalTimelineComponent,
-    TabsModule
-],
+    TabsModule,
+  ],
 })
 export class BiaFormComponent<TDto extends { id: number | string }>
   implements OnInit, OnDestroy, OnChanges, AfterContentInit, AfterViewInit

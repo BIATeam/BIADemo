@@ -63,8 +63,8 @@ import { CrudItemService } from '../../services/crud-item.service';
     AsyncPipe,
     TranslateModule,
     BiaTableControllerComponent,
-    BiaTableComponent
-],
+    BiaTableComponent,
+  ],
 })
 export class CrudItemsIndexComponent<
     ListCrudItem extends BaseDto<string | number>,

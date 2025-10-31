@@ -65,8 +65,8 @@ import { ViewListComponent } from '../../../features/view/views/view-list/view-l
     Tooltip,
     TranslateModule,
     FloatLabel,
-    Badge
-],
+    Badge,
+  ],
 })
 export class BiaTableControllerComponent
   implements OnChanges, OnInit, OnDestroy, AfterContentInit, AfterViewInit

@@ -22,7 +22,9 @@
       @case ('teams') {
         @if (data?.length > 0) {
           <div>
-            <label class="user-teams-label">{{ field.header | translate }}</label>
+            <label class="user-teams-label">{{
+              field.header | translate
+            }}</label>
             <bia-user-teams [userTeams]="data"></bia-user-teams>
           </div>
         }

@@ -27,8 +27,8 @@ import { BiaUltimaMenuComponent } from '../menu/ultima-menu.component';
     RouterLink,
     BiaUltimaMenuProfileComponent,
     BiaUltimaMenuComponent,
-    NgTemplateOutlet
-],
+    NgTemplateOutlet,
+  ],
 })
 export class BiaUltimaSidebarComponent implements OnDestroy {
   timeout: any = null;

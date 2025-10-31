@@ -7,20 +7,20 @@
       icon="pi pi-trash"
       pTooltip="{{ 'bia.delete' | translate }}"
       tooltipPosition="top"
-    (click)="onDeleteView(viewSelected?.id)"></button>
+      (click)="onDeleteView(viewSelected?.id)"></button>
   }
   @if (showDefineDefault()) {
     <button
       pButton
       [disabled]="viewSelected?.viewType !== 2 && viewSelected?.viewType !== 1"
       label="{{ 'bia.views.defineDefault' | translate }}"
-    (click)="onSetDefaultView(viewSelected?.id, true)"></button>
+      (click)="onSetDefaultView(viewSelected?.id, true)"></button>
   }
   @if (!showDefineDefault()) {
     <button
       pButton
       label="{{ 'bia.views.removeDefault' | translate }}"
-    (click)="onSetDefaultView(viewSelected?.id, false)"></button>
+      (click)="onSetDefaultView(viewSelected?.id, false)"></button>
   }
 </div>
 <p-table
@@ -48,23 +48,21 @@
       @if (canUpdate) {
         <td class="app-action-col">
           @if (view.viewType === 2 || view.viewType === 1) {
-            <p-tableRadioButton
-            [value]="view"></p-tableRadioButton>
+            <p-tableRadioButton [value]="view"></p-tableRadioButton>
           }
         </td>
       }
       <td>
         {{ view.name }}
         @if (view.isUserDefault === true) {
-          <i
-          class="pi pi-star-fill-border"></i>
+          <i class="pi pi-star-fill-border"></i>
         }
       </td>
       <td>{{ view.description }}</td>
       <td>
         {{
-        (view.viewType === 1 ? 'bia.views.typeTeam' : 'bia.views.typeUser')
-        | translate
+          (view.viewType === 1 ? 'bia.views.typeTeam' : 'bia.views.typeUser')
+            | translate
         }}
       </td>
     </tr>

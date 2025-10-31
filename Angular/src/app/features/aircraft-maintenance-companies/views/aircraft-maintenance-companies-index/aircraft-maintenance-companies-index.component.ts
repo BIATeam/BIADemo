@@ -33,8 +33,8 @@ import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maint
     BiaTableHeaderComponent,
     BiaTableControllerComponent,
     BiaTableBehaviorControllerComponent,
-    BiaTableComponent
-],
+    BiaTableComponent,
+  ],
   providers: [
     {
       provide: CrudItemService,

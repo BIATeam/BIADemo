@@ -31,8 +31,8 @@ import { PlaneService } from '../../services/plane.service';
     BiaTableHeaderComponent,
     BiaTableControllerComponent,
     BiaTableBehaviorControllerComponent,
-    BiaTableComponent
-],
+    BiaTableComponent,
+  ],
   providers: [{ provide: CrudItemService, useExisting: PlaneService }],
 })
 export class PlanesIndexComponent

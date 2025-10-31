@@ -55,9 +55,9 @@
     @if (!crudConfiguration.useCalcMode) {
       <bia-table
         [elements]="(crudItems$ | async) ?? []"
-      [dictOptionDtos]="
-        (siteService.optionsService.dictOptionDtos$ | async) ?? []
-      "
+        [dictOptionDtos]="
+          (siteService.optionsService.dictOptionDtos$ | async) ?? []
+        "
         [totalRecord]="(totalCount$ | async) ?? 0"
         [columnToDisplays]="displayedColumns"
         [pageSize]="pageSize"
@@ -76,14 +76,14 @@
         (selectedElementsChanged)="onSelectedElementsChanged($event)"
         [sortFieldValue]="sortFieldValue"
         (stateSave)="onStateSave($event)"
-      [scrollHeightValue]="getFillScrollHeightValue()"></bia-table>
+        [scrollHeightValue]="getFillScrollHeightValue()"></bia-table>
     }
     @if (crudConfiguration.useCalcMode) {
       <app-site-table
         [elements]="(crudItems$ | async) ?? []"
-      [dictOptionDtos]="
-        (siteService.optionsService.dictOptionDtos$ | async) ?? []
-      "
+        [dictOptionDtos]="
+          (siteService.optionsService.dictOptionDtos$ | async) ?? []
+        "
         [totalRecord]="(totalCount$ | async) ?? 0"
         [columnToDisplays]="displayedColumns"
         [pageSize]="pageSize"
@@ -103,15 +103,15 @@
         [sortFieldValue]="sortFieldValue"
         (stateSave)="onStateSave($event)"
         (save)="onSave($event)"
-      [scrollHeightValue]="getFillScrollHeightValue()"></app-site-table>
+        [scrollHeightValue]="getFillScrollHeightValue()"></app-site-table>
     }
   </div>
   @if (showAdvancedFilter) {
     <bia-team-advanced-filter
       (filter)="onFilter($event)"
       (closeFilter)="onCloseFilter()"
-    [advancedFilter]="
-      crudConfiguration.fieldsConfig.advancedFilter
-    "></bia-team-advanced-filter>
+      [advancedFilter]="
+        crudConfiguration.fieldsConfig.advancedFilter
+      "></bia-team-advanced-filter>
   }
 </div>

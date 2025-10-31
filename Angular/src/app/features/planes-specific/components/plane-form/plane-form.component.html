@@ -17,7 +17,7 @@
           <div class="flex items-center">
             <p-checkbox
               binary="true"
-            [formControlName]="field.field"></p-checkbox>
+              [formControlName]="field.field"></p-checkbox>
             <label class="ml-2">{{ field.header | translate }}</label>
           </div>
         }
@@ -34,60 +34,60 @@
                 [showClear]="true"
                 [style]="{ width: '100%' }"
                 scrollHeight="50vh"
-              [maxSelectedLabels]="7"></p-multiSelect>
-              <label
-                >@if (field.isRequired) {
-                <span class="bia-star-mandatory">*</span
-                  >
-                  }{{ field.header | translate }}</label
-                  >
-                </p-floatlabel>
-              </div>
-            }
-            <!-- isActive -->
-            @case ('capacity') {
-              <p-floatlabel variant="on">
-                <input
-                  [formControlName]="field.field"
-                  type="number"
-                  pInputText
-                  style="width: 100%" />
-                  <label
-                    >@if (field.isRequired) {
-                    <span class="bia-star-mandatory">*</span
-                      >
-                    }{{ field.header | translate }}</label
-                    >
-                  </p-floatlabel>
+                [maxSelectedLabels]="7"></p-multiSelect>
+              <label>
+                @if (field.isRequired) {
+                  <span class="bia-star-mandatory">*</span>
                 }
-                <!-- capacity -->
+                {{ field.header | translate }}</label
+              >
+            </p-floatlabel>
+          </div>
+        }
+        <!-- isActive -->
+        @case ('capacity') {
+          <p-floatlabel variant="on">
+            <input
+              [formControlName]="field.field"
+              type="number"
+              pInputText
+              style="width: 100%" />
+            <label>
+              @if (field.isRequired) {
+                <span class="bia-star-mandatory">*</span>
               }
-            </div>
-            @if (field.field === 'engines') {
-              <bia-table-header
-                [headerTitle]="field.header | translate"
-                [canAdd]="false"
-                [canDelete]="true"
-                [canClone]="true"
-                (delete)="onDeleteEngines()"
-                [selectedElements]="selectedEngines"
-              (clone)="onCloneEngines()"></bia-table-header>
-              <app-engine-specific-table
-                [elements]="displayedEngines()"
-                [configuration]="engineCrudConfig"
-                [columnToDisplays]="engineColumnsToDisplay"
-                [dictOptionDtos]="[]"
-                [totalRecord]="crudItem?.engines?.length ?? 0"
-                [paginator]="false"
-                [showColSearch]="false"
-                [canEdit]="true"
-                [canAdd]="true"
-                [canSelectElement]="true"
-                [loading]="false"
-                [readOnly]="isEngineTableReadOnly"
-                (selectedElementsChanged)="onSelectedEnginesChanged($event)"
-                (save)="onEngineSave($event)"
-                (isEditing)="onIsEditingChange($event)" />
-              }
-            </ng-template>
-          </bia-form>
+              {{ field.header | translate }}</label
+            >
+          </p-floatlabel>
+        }
+        <!-- capacity -->
+      }
+    </div>
+    @if (field.field === 'engines') {
+      <bia-table-header
+        [headerTitle]="field.header | translate"
+        [canAdd]="false"
+        [canDelete]="true"
+        [canClone]="true"
+        (delete)="onDeleteEngines()"
+        [selectedElements]="selectedEngines"
+        (clone)="onCloneEngines()"></bia-table-header>
+      <app-engine-specific-table
+        [elements]="displayedEngines()"
+        [configuration]="engineCrudConfig"
+        [columnToDisplays]="engineColumnsToDisplay"
+        [dictOptionDtos]="[]"
+        [totalRecord]="crudItem?.engines?.length ?? 0"
+        [paginator]="false"
+        [showColSearch]="false"
+        [canEdit]="true"
+        [canAdd]="true"
+        [canSelectElement]="true"
+        [loading]="false"
+        [readOnly]="isEngineTableReadOnly"
+        (selectedElementsChanged)="onSelectedEnginesChanged($event)"
+        (save)="onEngineSave($event)"
+        (isEditing)="onIsEditingChange($event)" />
+    }
+  </ng-template>
+</bia-form>

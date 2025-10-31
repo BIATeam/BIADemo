@@ -22,7 +22,7 @@
           appendTo="body"
           [style]="{ width: '100%' }"
           [editable]="field.isEditableChoice"
-        scrollHeight="50vh"></p-select>
+          scrollHeight="50vh"></p-select>
       }
       @case ('ManyToMany') {
         <p-multiSelect
@@ -39,7 +39,7 @@
           (onPanelHide)="onPanelHide(multiselect)"
           appendTo="body"
           [style]="{ width: '100%' }"
-        scrollHeight="50vh"></p-multiSelect>
+          scrollHeight="50vh"></p-multiSelect>
       }
       @case ('Boolean') {
         <div class="flex">
@@ -48,7 +48,7 @@
             [binary]="true"
             [formControlName]="field.field"
             [autofocus]="focusByDefault"
-          (onChange)="onChange()"></p-checkbox>
+            (onChange)="onChange()"></p-checkbox>
           @if (field.isRequired) {
             <span class="bia-star-mandatory">*</span>
           }
@@ -56,8 +56,9 @@
       }
       @case ('Number') {
         @if (
-          getDisplayNumberFormat(field.displayFormat); as displayNumberFormat
-          ) {
+          getDisplayNumberFormat(field.displayFormat);
+          as displayNumberFormat
+        ) {
           <p-inputNumber
             [formControlName]="field.field"
             (onInput)="onChange()"
@@ -85,17 +86,17 @@
           (onInput)="onChange()"
           [style]="{ width: '100%' }"
           [inputStyle]="{ width: '100%' }"
-        [dateFormat]="
-          getDisplayDateFormat(field.displayFormat)?.autoPrimeDateFormat ??
-          'yy-mm-dd'
-        "
-          [autofocus]="focusByDefault"
-        [view]="
-          getDateView(
+          [dateFormat]="
             getDisplayDateFormat(field.displayFormat)?.autoPrimeDateFormat ??
-              'yy-mm-dd'
-          )
-        "></p-date-picker>
+            'yy-mm-dd'
+          "
+          [autofocus]="focusByDefault"
+          [view]="
+            getDateView(
+              getDisplayDateFormat(field.displayFormat)?.autoPrimeDateFormat ??
+                'yy-mm-dd'
+            )
+          "></p-date-picker>
       }
       @case ('Time') {
         <p-date-picker
@@ -112,12 +113,12 @@
           [inputStyle]="{ width: '100%' }"
           [showTime]="true"
           [timeOnly]="true"
-        [dateFormat]="
-          getDisplayDateFormat(field.displayFormat)?.autoPrimeDateFormat ??
-          'yy-mm-dd'
-        "
+          [dateFormat]="
+            getDisplayDateFormat(field.displayFormat)?.autoPrimeDateFormat ??
+            'yy-mm-dd'
+          "
           [hourFormat]="'24'"
-        [autofocus]="focusByDefault"></p-date-picker>
+          [autofocus]="focusByDefault"></p-date-picker>
         <!-- [hourFormat]="field.displayFormat.autoHourFormat?field.displayFormat.autoHourFormat:24" not work for 12 (PrimeNG 13)-->
       }
       @case ('TimeOnly') {
@@ -137,7 +138,7 @@
           dataType="string"
           [timeOnly]="true"
           [hourFormat]="'24'"
-        [autofocus]="focusByDefault"></p-date-picker>
+          [autofocus]="focusByDefault"></p-date-picker>
         <!-- [hourFormat]="field.displayFormat.autoHourFormat?field.displayFormat.autoHourFormat:24" not work for 12 (PrimeNG 13)-->
       }
       @case ('TimeSecOnly') {
@@ -158,7 +159,7 @@
           dataType="string"
           [timeOnly]="true"
           [hourFormat]="'24'"
-        [autofocus]="focusByDefault"></p-date-picker>
+          [autofocus]="focusByDefault"></p-date-picker>
         <!-- [hourFormat]="field.displayFormat.autoHourFormat?field.displayFormat.autoHourFormat:24" not work for 12 (PrimeNG 13)-->
       }
       @case ('DateTime') {
@@ -176,22 +177,22 @@
           [style]="{ width: '100%' }"
           [inputStyle]="{ width: '100%' }"
           [showTime]="true"
-        [dateFormat]="
-          getDisplayDateFormat(field.displayFormat)?.autoPrimeDateFormat ??
-          'yy-mm-dd'
-        "
-        [hourFormat]="
-          getDisplayDateFormat(
-            field.displayFormat
-          )?.autoHourFormat?.toString() ?? '24'
-        "
+          [dateFormat]="
+            getDisplayDateFormat(field.displayFormat)?.autoPrimeDateFormat ??
+            'yy-mm-dd'
+          "
+          [hourFormat]="
+            getDisplayDateFormat(
+              field.displayFormat
+            )?.autoHourFormat?.toString() ?? '24'
+          "
           [autofocus]="focusByDefault"
-        [showSeconds]="
-          showSeconds(
-            getDisplayDateFormat(field.displayFormat)?.autoFormatDate ?? ''
-          )
-        "
-        [hideOnDateTimeSelect]="false"></p-date-picker>
+          [showSeconds]="
+            showSeconds(
+              getDisplayDateFormat(field.displayFormat)?.autoFormatDate ?? ''
+            )
+          "
+          [hideOnDateTimeSelect]="false"></p-date-picker>
       }
       @default {
         <input
@@ -202,13 +203,10 @@
           [formControlName]="field.field.toString()"
           [pAutoFocus]="focusByDefault"
           (change)="onChange()" />
-        }
       }
     }
-    @if (field.isRequired && field.type !== 'Boolean') {
-      <span
-        class="bia-star-mandatory"
-        >*</span
-        >
-    }
-  </div>
+  }
+  @if (field.isRequired && field.type !== 'Boolean') {
+    <span class="bia-star-mandatory">*</span>
+  }
+</div>

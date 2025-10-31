@@ -3,6 +3,7 @@ import { AsyncPipe, NgClass } from '@angular/common';
 import {
   AfterViewInit,
   Component,
+  DOCUMENT,
   ElementRef,
   Inject,
   Input,
@@ -12,7 +13,6 @@ import {
   Renderer2,
   SimpleChanges,
   ViewChild,
-  DOCUMENT
 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -62,8 +62,8 @@ import { BiaLayoutService } from '../../services/layout.service';
     NgClass,
     AsyncPipe,
     TranslateModule,
-    NotificationModule
-],
+    NotificationModule,
+  ],
 })
 export class BiaUltimaTopbarComponent
   implements OnInit, OnDestroy, AfterViewInit, OnChanges

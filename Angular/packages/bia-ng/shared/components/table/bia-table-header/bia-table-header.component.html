@@ -9,58 +9,58 @@
         #menuData
         [model]="selectionActions.actionList | sortByProperty: 'order'"
         [popup]="true" />
-        <p-button
-          label="{{ 'bia.selectionActions' | translate }}"
-          icon="pi pi-angle-down"
-          (click)="menuData.toggle($event)" />
-        } @else {
-          <bia-buttons
+      <p-button
+        label="{{ 'bia.selectionActions' | translate }}"
+        icon="pi pi-angle-down"
+        (click)="menuData.toggle($event)" />
+    } @else {
+      <bia-buttons
         [buttons]="
           selectionActions.actionList | sortByProperty: 'order'
         "></bia-buttons>
-        }
-        <ng-container *ngTemplateOutlet="actionOnSelectedTemplate"></ng-container>
-      </div>
-      <div
-        class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
-        <h1>{{ headerTitleComplete }}</h1>
-        @if (showTableControllerButton) {
-          <p-button
-            styleClass="p-button-outlined"
-      [icon]="
-        'pi' +
-        (tableControllerVisible
-          ? ' pi-angle-double-up'
-          : ' pi-angle-double-down')
-      "
-            (click)="toggleTableControllerVisibility.emit()"
-      pTooltip="{{
-        (tableControllerVisible ? 'bia.hideController' : 'bia.showController')
-          | translate
-      }}"></p-button>
-        }
-        <ng-container *ngTemplateOutlet="customControlTemplate"></ng-container>
-      </div>
-      <div
-        #listActionsDiv
-        class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
-        <ng-container *ngTemplateOutlet="actionOnListTemplate"></ng-container>
-        @if (listActions.hasVisibleAction && listActions.compact) {
-          <p-tieredmenu
-            #menuTable
-            [model]="listActions.actionList | sortByProperty: 'order'"
-            [popup]="true" />
-            <p-button
-              label="{{ 'bia.listActions' | translate }}"
-              icon="pi pi-angle-down"
-              iconPos="right"
-              (click)="menuTable.toggle($event)" />
-            } @else {
-              <bia-buttons
+    }
+    <ng-container *ngTemplateOutlet="actionOnSelectedTemplate"></ng-container>
+  </div>
+  <div
+    class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
+    <h1>{{ headerTitleComplete }}</h1>
+    @if (showTableControllerButton) {
+      <p-button
+        styleClass="p-button-outlined"
+        [icon]="
+          'pi' +
+          (tableControllerVisible
+            ? ' pi-angle-double-up'
+            : ' pi-angle-double-down')
+        "
+        (click)="toggleTableControllerVisibility.emit()"
+        pTooltip="{{
+          (tableControllerVisible ? 'bia.hideController' : 'bia.showController')
+            | translate
+        }}"></p-button>
+    }
+    <ng-container *ngTemplateOutlet="customControlTemplate"></ng-container>
+  </div>
+  <div
+    #listActionsDiv
+    class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
+    <ng-container *ngTemplateOutlet="actionOnListTemplate"></ng-container>
+    @if (listActions.hasVisibleAction && listActions.compact) {
+      <p-tieredmenu
+        #menuTable
+        [model]="listActions.actionList | sortByProperty: 'order'"
+        [popup]="true" />
+      <p-button
+        label="{{ 'bia.listActions' | translate }}"
+        icon="pi pi-angle-down"
+        iconPos="right"
+        (click)="menuTable.toggle($event)" />
+    } @else {
+      <bia-buttons
         [buttons]="
           listActions.actionList | sortByProperty: 'order' : false
         "></bia-buttons>
-            }
-          </div>
-        </div>
-        <p-confirmDialog></p-confirmDialog>
+    }
+  </div>
+</div>
+<p-confirmDialog></p-confirmDialog>

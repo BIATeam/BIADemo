@@ -48,8 +48,8 @@ import { PlaneService } from '../../services/plane.service';
     BiaTableComponent,
     CommonModule,
     TableModule,
-    SpinnerComponent
-],
+    SpinnerComponent,
+  ],
   providers: [{ provide: CrudItemService, useExisting: PlaneService }],
 })
 export class PlanesIndexComponent extends CrudItemsIndexComponent<

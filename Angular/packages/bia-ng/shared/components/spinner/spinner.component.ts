@@ -24,39 +24,39 @@ import { BiaThemeService } from '../layout/services/bia-theme.service';
               <source
                 type="image/webp"
                 srcset="assets/bia/img/spinner_light.webp" />
-                <img src="assets/bia/img/spinner_light.gif" />
-              </picture>
-            }
-            @case (false) {
-              <picture>
-                <source type="image/webp" srcset="assets/bia/img/spinner.webp" />
-                <img src="assets/bia/img/spinner.gif" />
-              </picture>
-            }
+              <img src="assets/bia/img/spinner_light.gif" />
+            </picture>
+          }
+          @case (false) {
+            <picture>
+              <source type="image/webp" srcset="assets/bia/img/spinner.webp" />
+              <img src="assets/bia/img/spinner.gif" />
+            </picture>
           }
         }
       }
-      <ng-template #picture>
-        @if ((showSpinner$ | async) !== null) {
-          @switch (themeService.isCurrentThemeDark$ | async) {
-            @case (true) {
-              <picture>
-                <source
-                  type="image/webp"
-                  srcset="assets/bia/img/spinner_light.webp" />
-                  <img src="assets/bia/img/spinner_light.gif" />
-                </picture>
-              }
-              @case (false) {
-                <picture>
-                  <source type="image/webp" srcset="assets/bia/img/spinner.webp" />
-                  <img src="assets/bia/img/spinner.gif" />
-                </picture>
-              }
-            }
+    }
+    <ng-template #picture>
+      @if ((showSpinner$ | async) !== null) {
+        @switch (themeService.isCurrentThemeDark$ | async) {
+          @case (true) {
+            <picture>
+              <source
+                type="image/webp"
+                srcset="assets/bia/img/spinner_light.webp" />
+              <img src="assets/bia/img/spinner_light.gif" />
+            </picture>
           }
-        </ng-template>
-    `,
+          @case (false) {
+            <picture>
+              <source type="image/webp" srcset="assets/bia/img/spinner.webp" />
+              <img src="assets/bia/img/spinner.gif" />
+            </picture>
+          }
+        }
+      }
+    </ng-template>
+  `,
   styleUrls: ['./spinner.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgTemplateOutlet, AsyncPipe],

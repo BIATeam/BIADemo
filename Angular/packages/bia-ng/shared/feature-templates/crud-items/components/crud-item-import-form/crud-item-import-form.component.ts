@@ -65,8 +65,8 @@ interface FormatExample {
     NgClass,
     SpinnerComponent,
     TranslateModule,
-    FloatLabel
-],
+    FloatLabel,
+  ],
 })
 export class CrudItemImportFormComponent<TDto extends { id: number | string }> {
   @ViewChild('fileUpload') fileUpload: FileUpload | undefined;

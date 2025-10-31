@@ -3,18 +3,17 @@
     [crudItem]="crudItem"
     [fields]="crudConfiguration.fieldsConfig.columns"
     [formLayoutConfig]="crudConfiguration.formLayoutConfig"
-  [dictOptionDtos]="
-    (planeTypeService.optionsService.dictOptionDtos$ | async) ?? []
-  "
+    [dictOptionDtos]="
+      (planeTypeService.optionsService.dictOptionDtos$ | async) ?? []
+    "
     [isCrudItemOutdated]="isCrudItemOutdated"
     (cancelled)="onCancelled()"
     (save)="onSubmitted($event)"
     [showPopupButton]="showPopupButton"
     [showSplitButton]="showSplitButton"
     [showFullPageButton]="showFullPageButton"
-  (layoutChanged)="notifyLayoutChange($event)"></app-plane-type-form>
+    (layoutChanged)="notifyLayoutChange($event)"></app-plane-type-form>
 }
 @if (planeTypeService.loadingGet$ | async) {
-  <bia-spinner
-  [overlay]="true"></bia-spinner>
+  <bia-spinner [overlay]="true"></bia-spinner>
 }

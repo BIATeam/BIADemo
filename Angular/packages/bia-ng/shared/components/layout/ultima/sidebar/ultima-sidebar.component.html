@@ -23,12 +23,12 @@
       <ng-content select="[menu-top]" ngProjectAs="[menu-top]"></ng-content>
       <ng-content
         select="[menu-bottom]"
-      ngProjectAs="[menu-bottom]"></ng-content>
+        ngProjectAs="[menu-bottom]"></ng-content>
     </bia-ultima-menu>
   </div>
   <ng-content
     select="[sidebar-bottom]"
-  ngProjectAs="[sidebar-bottom]"></ng-content>
+    ngProjectAs="[sidebar-bottom]"></ng-content>
   @if (layoutService.config().menuProfilePosition === 'end') {
     <ng-container *ngTemplateOutlet="menuProfile"></ng-container>
   }

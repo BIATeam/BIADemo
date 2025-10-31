@@ -32,13 +32,15 @@
         select="[menu-profile-panel]"
         ngProjectAs="[menu-profile-panel]">
       </ng-content>
-      <ng-content select="[sidebar-top]" ngProjectAs="[sidebar-top]"></ng-content>
+      <ng-content
+        select="[sidebar-top]"
+        ngProjectAs="[sidebar-top]"></ng-content>
       <ng-content select="[menu-top]" ngProjectAs="[menu-top]"></ng-content>
       <ng-content select="[menu-bottom]" ngProjectAs="[menu-bottom]">
       </ng-content>
       <ng-content
         select="[sidebar-bottom]"
-      ngProjectAs="[sidebar-bottom]"></ng-content>
+        ngProjectAs="[sidebar-bottom]"></ng-content>
     </bia-ultima-sidebar>
   }
   <bia-ultima-config [supportedLangs]="supportedLangs">
@@ -50,12 +52,10 @@
 
   <div class="layout-content-wrapper">
     @if (showEnvironmentMessage$ | async) {
-      <div
-        class="layout-environment-warning"
-        >
+      <div class="layout-environment-warning">
         {{
-        'bia.environmentDescription'
-        | translate: { envName: (envName$ | async) }
+          'bia.environmentDescription'
+            | translate: { envName: (envName$ | async) }
         }}
       </div>
     }
@@ -63,9 +63,8 @@
     @if (
       (layoutService.breadcrumbHidden$ | async) === false &&
       !layoutService.state.fullscreen
-      ) {
-      <p-breadcrumb
-      [model]="menuItems"></p-breadcrumb>
+    ) {
+      <p-breadcrumb [model]="menuItems"></p-breadcrumb>
     }
     <ng-content select="[breadcrumb-bottom]"></ng-content>
 
@@ -74,18 +73,15 @@
     </div>
 
     @if ((layoutService.footerHidden$ | async) === false) {
-      <bia-ultima-footer
-        [companyName]="companyName"
-        [logos]="headerLogos">
+      <bia-ultima-footer [companyName]="companyName" [logos]="headerLogos">
         <ng-content
           select="[footer-content]"
-        ngProjectAs="[footer-content]"></ng-content>
+          ngProjectAs="[footer-content]"></ng-content>
       </bia-ultima-footer>
     }
   </div>
 
   @if (layoutService.state.staticMenuMobileActive) {
-    <div
-    class="layout-mask"></div>
+    <div class="layout-mask"></div>
   }
 </div>

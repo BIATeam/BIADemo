@@ -34,8 +34,8 @@ import { EngineService } from '../../services/engine.service';
     BiaTableHeaderComponent,
     BiaTableControllerComponent,
     BiaTableBehaviorControllerComponent,
-    BiaTableComponent
-],
+    BiaTableComponent,
+  ],
   providers: [{ provide: CrudItemService, useExisting: EngineService }],
 })
 export class EnginesIndexComponent

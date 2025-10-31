@@ -4,7 +4,9 @@
     [fields]="crudConfiguration.fieldsConfig.columns"
     [formLayoutConfig]="crudConfiguration.formLayoutConfig"
     [formReadOnlyMode]="formReadOnlyMode"
-    [dictOptionDtos]="(pilotService.optionsService.dictOptionDtos$ | async) ?? []"
+    [dictOptionDtos]="
+      (pilotService.optionsService.dictOptionDtos$ | async) ?? []
+    "
     [isCrudItemOutdated]="isCrudItemOutdated"
     [showSubmitButton]="canEdit"
     [showFixableState]="crudConfiguration.isFixable"
@@ -12,9 +14,8 @@
     (cancelled)="onCancelled()"
     (save)="onSubmitted($event)"
     (fixedChanged)="crudItemService.updateFixedStatus(crudItem.id, $event)"
-  (readOnlyChanged)="onReadOnlyChanged($event)"></app-pilot-form>
+    (readOnlyChanged)="onReadOnlyChanged($event)"></app-pilot-form>
 }
 @if (pilotService.loadingGet$ | async) {
-  <bia-spinner
-  [overlay]="true"></bia-spinner>
+  <bia-spinner [overlay]="true"></bia-spinner>
 }

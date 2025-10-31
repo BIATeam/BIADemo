@@ -2,8 +2,8 @@
   <div class="result">
     <strong>{{
       length
-      | i18nPlural: resultMessageMapping : translateService.currentLang
-      | translate: { length: length | number }
+        | i18nPlural: resultMessageMapping : translateService.currentLang
+        | translate: { length: length | number }
     }}</strong>
   </div>
   @if (canChangePageSize) {
@@ -15,7 +15,7 @@
         [(ngModel)]="pageSize"
         (onChange)="onPageSizeChange()"
         [style]="{ 'min-width': 'initial' }"
-      scrollHeight="50vh"></p-select>
+        scrollHeight="50vh"></p-select>
     </div>
   }
 </div>

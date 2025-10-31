@@ -1,4 +1,3 @@
-
 import {
   Component,
   EventEmitter,
@@ -30,8 +29,8 @@ import { ViewTeam } from '../../model/view-team';
     TableModule,
     PrimeTemplate,
     ConfirmDialog,
-    TranslateModule
-],
+    TranslateModule,
+  ],
 })
 export class ViewTeamTableComponent implements OnChanges {
   @Input() views: TeamView[];

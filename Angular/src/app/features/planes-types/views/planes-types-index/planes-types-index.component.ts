@@ -30,8 +30,8 @@ import { PlaneTypeService } from '../../services/plane-type.service';
     BiaTableHeaderComponent,
     BiaTableControllerComponent,
     BiaTableBehaviorControllerComponent,
-    BiaTableComponent
-],
+    BiaTableComponent,
+  ],
   providers: [{ provide: CrudItemService, useExisting: PlaneTypeService }],
 })
 export class PlanesTypesIndexComponent extends CrudItemsIndexComponent<PlaneType> {

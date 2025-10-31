@@ -4,9 +4,9 @@
     [fields]="crudConfiguration.fieldsConfig.columns"
     [formLayoutConfig]="crudConfiguration.formLayoutConfig"
     [formReadOnlyMode]="formReadOnlyMode"
-  [dictOptionDtos]="
-    (flightService.optionsService.dictOptionDtos$ | async) ?? []
-  "
+    [dictOptionDtos]="
+      (flightService.optionsService.dictOptionDtos$ | async) ?? []
+    "
     [isCrudItemOutdated]="isCrudItemOutdated"
     [showFixableState]="crudConfiguration.isFixable"
     [canFix]="canFix"
@@ -16,9 +16,8 @@
     [showPopupButton]="showPopupButton"
     [showSplitButton]="showSplitButton"
     [showFullPageButton]="showFullPageButton"
-  (layoutChanged)="notifyLayoutChange($event)"></app-flight-form>
+    (layoutChanged)="notifyLayoutChange($event)"></app-flight-form>
 }
 @if (flightService.loadingGet$ | async) {
-  <bia-spinner
-  [overlay]="true"></bia-spinner>
+  <bia-spinner [overlay]="true"></bia-spinner>
 }

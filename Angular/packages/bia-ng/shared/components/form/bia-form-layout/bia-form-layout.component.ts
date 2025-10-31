@@ -41,8 +41,8 @@ import { BiaOutputComponent } from '../bia-output/bia-output.component';
     Ripple,
     Tab,
     TabPanel,
-    PanelModule
-],
+    PanelModule,
+  ],
 })
 export class BiaFormLayoutComponent<TDto extends { id: number | string }> {
   @Input() element?: TDto;

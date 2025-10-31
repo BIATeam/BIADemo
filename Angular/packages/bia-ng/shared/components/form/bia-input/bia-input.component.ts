@@ -48,8 +48,8 @@ import { BiaFieldBaseComponent } from '../bia-field-base/bia-field-base.componen
     DatePicker,
     InputText,
     TranslateModule,
-    FloatLabel
-],
+    FloatLabel,
+  ],
 })
 export class BiaInputComponent<CrudItem>
   extends BiaFieldBaseComponent<CrudItem>

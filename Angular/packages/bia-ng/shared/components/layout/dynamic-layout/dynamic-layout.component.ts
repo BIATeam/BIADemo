@@ -44,8 +44,8 @@ export enum LayoutMode {
     RouterOutlet,
     Dialog,
     SharedModule,
-    TranslateModule
-],
+    TranslateModule,
+  ],
 })
 export class DynamicLayoutComponent<TDto extends { id: number | string }>
   implements OnInit, AfterViewInit, OnDestroy

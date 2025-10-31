@@ -65,8 +65,8 @@ import { FeaturePlanesActions } from '../../store/planes-actions';
     TranslateModule,
     BiaTableHeaderComponent,
     BiaTableControllerComponent,
-    BiaTableComponent
-],
+    BiaTableComponent,
+  ],
 })
 export class PlanesIndexComponent implements OnInit, OnDestroy {
   useCalcMode = useCalcMode;

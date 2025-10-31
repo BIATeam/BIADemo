@@ -42,11 +42,14 @@
         @if (isIE) {
           <bia-ie-warning></bia-ie-warning>
         }
-        @for (teamTypeSelector of teamTypeSelectors; track teamTypeSelector; let last = $last) {
+        @for (
+          teamTypeSelector of teamTypeSelectors;
+          track teamTypeSelector;
+          let last = $last
+        ) {
           <bia-team-selector [teamType]="teamTypeSelector"></bia-team-selector>
           @if (!last) {
-            <span
-            class="flex align-self-center bia-separator"></span>
+            <span class="flex align-self-center bia-separator"></span>
           }
         }
         <ng-content select="[topbar-right]"></ng-content>
@@ -62,11 +65,11 @@
               <a class="notifications">
                 <i class="pi pi-bell bia-pointer"></i>
                 @if (
-                  unreadNotificationCount$ | async; as unreadNotificationCount
-                  ) {
+                  unreadNotificationCount$ | async;
+                  as unreadNotificationCount
+                ) {
                   @if (unreadNotificationCount > 0) {
-                    <div
-                      class="notification-count">
+                    <div class="notification-count">
                       {{ unreadNotificationCount }}
                     </div>
                   }
@@ -83,9 +86,7 @@
             </li>
           }
           @if (helpUrl) {
-            <li
-              pTooltip="{{ 'bia.help' | translate }}"
-              (click)="openHelp()">
+            <li pTooltip="{{ 'bia.help' | translate }}" (click)="openHelp()">
               <a> <i class="pi pi-question-circle bia-pointer"></i></a>
             </li>
           }
@@ -108,25 +109,23 @@
             <a>
               <i
                 class="pi pi-window-maximize app-full-screen app-icon-header bia-pointer"></i
-              ></a>
-            </li>
-          </ul>
-        </div>
+            ></a>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
-  @if (fullscreenMode) {
-    <a class="fullscreen-exit"
-      ><i
+</div>
+@if (fullscreenMode) {
+  <a class="fullscreen-exit"
+    ><i
       class="pi pi-window-minimize bia-pointer"
-    (click)="toggleFullscreenMode()"></i>
+      (click)="toggleFullscreenMode()"></i>
   </a>
 }
 
 @if (fullscreenMode) {
-  <div
-    class="layout-topbar invisible"
-    style="z-index: 1000">
+  <div class="layout-topbar invisible" style="z-index: 1000">
     <div class="layout-topbar-start">
       <a
         #menuButtonFullscreen
@@ -147,22 +146,22 @@
           @case ('success') {
             <span
               class="ng-tns-c191-8 p-toast-message-icon pi pi-check ng-star-inserted [object Object]"
-            ng-reflect-ng-></span>
+              ng-reflect-ng-></span>
           }
           @case ('warn') {
             <span
               class="ng-tns-c191-8 p-toast-message-icon pi pi-exclamation-triangle ng-star-inserted [object Object]"
-            ng-reflect-ng-></span>
+              ng-reflect-ng-></span>
           }
           @case ('error') {
             <span
               class="ng-tns-c191-8 p-toast-message-icon pi pi-times-circle ng-star-inserted [object Object]"
-            ng-reflect-ng-></span>
+              ng-reflect-ng-></span>
           }
           @default {
             <span
               class="ng-tns-c191-8 p-toast-message-icon pi pi-info-circle ng-star-inserted [object Object]"
-            ng-reflect-ng-></span>
+              ng-reflect-ng-></span>
           }
         }
         <div
@@ -182,12 +181,12 @@
             pButton
             [label]="message.data?.notification?.data?.display | translate"
             (click)="onNotificationClick(message)"
-          class="p-button-primary"></button>
+            class="p-button-primary"></button>
           <button
             pButton
             label="{{ 'bia.ignore' | translate }}"
             (click)="onIgnoreClick(message)"
-          class="p-button-outlined"></button>
+            class="p-button-outlined"></button>
         </div>
       }
       <bia-notification-team-warning
@@ -206,4 +205,4 @@
   class="clear-button"
   label="{{ 'bia.clearAll' | translate }}"
   [ngClass]="{ block: toast.messages?.length ?? 0 > 0 }"
-(click)="clearAllMessages()"></button>
+  (click)="clearAllMessages()"></button>

@@ -1,4 +1,3 @@
-
 import { Component, Input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { Notification } from 'packages/bia-ng/core/public-api';
