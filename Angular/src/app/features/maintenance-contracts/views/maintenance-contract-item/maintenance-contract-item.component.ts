@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -19,7 +19,7 @@ import { MaintenanceContractService } from '../../services/maintenance-contract.
   styleUrls: [
     '../../../../../../packages/bia-ng/shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
   ],
-  imports: [RouterOutlet, NgIf, AsyncPipe, SpinnerComponent],
+  imports: [RouterOutlet, AsyncPipe, SpinnerComponent],
 })
 export class MaintenanceContractItemComponent
   extends CrudItemItemComponent<MaintenanceContract>

@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import {
   MemberEditComponent,
@@ -13,13 +13,7 @@ import { AircraftMaintenanceCompanyService } from '../../../../services/aircraft
   selector: 'app-aircraft-maintenance-company-member-edit',
   templateUrl:
     '../../../../../../../../packages/bia-ng/shared/feature-templates/members/views/member-edit/member-edit.component.html',
-  imports: [
-    MemberModule,
-    NgIf,
-    AsyncPipe,
-    SpinnerComponent,
-    MemberFormEditComponent,
-  ],
+  imports: [MemberModule, AsyncPipe, SpinnerComponent, MemberFormEditComponent],
 })
 export class AircraftMaintenanceCompanyMemberEditComponent
   extends MemberEditComponent

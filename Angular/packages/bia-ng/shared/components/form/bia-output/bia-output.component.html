@@ -1,13 +1,11 @@
-<ng-container *ngIf="field !== undefined && field.specificOutput === true">
+@if (field !== undefined && field.specificOutput === true) {
   <ng-container
     *ngTemplateOutlet="
       specificOutputTemplate;
       context: { field: field, data: data }
     "></ng-container>
-</ng-container>
-<ng-container
-  [ngSwitch]="field.type"
-  *ngIf="field !== undefined && field.specificOutput !== true">
+}
+@if (field !== undefined && field.specificOutput !== true) {
   <p-floatlabel variant="on">
     <input
       type="text"
@@ -15,21 +13,27 @@
       style="width: 0px; padding-left: 0px; padding-right: 0px"
       class="read-only p-filled"
       disabled="disabled" />
-    <ng-container *ngSwitchCase="'OneToMany'">
-      {{ data?.display }}
-    </ng-container>
-    <ng-container *ngSwitchCase="'ManyToMany'">
-      {{ data ? (data | pluck: 'display' | join: ', ') : '' }}
-    </ng-container>
-    <ng-container *ngSwitchCase="'Boolean'">
-      <i class="pi pi-check" *ngIf="data === true"></i>
-    </ng-container>
-    <ng-container *ngSwitchDefault>
-      {{ data | formatValue: field }}
-    </ng-container>
-    <label
-      ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
-      >{{ field.header | translate }}</label
+    @switch (field.type) {
+      @case ('OneToMany') {
+        {{ data?.display }}
+      }
+      @case ('ManyToMany') {
+        {{ data ? (data | pluck: 'display' | join: ', ') : '' }}
+      }
+      @case ('Boolean') {
+        @if (data === true) {
+          <i class="pi pi-check"></i>
+        }
+      }
+      @default {
+        {{ data | formatValue: field }}
+      }
+    }
+    <label>
+      @if (field.isRequired) {
+        <span class="bia-star-mandatory">*</span>
+      }
+      {{ field.header | translate }}</label
     >
   </p-floatlabel>
-</ng-container>
+}

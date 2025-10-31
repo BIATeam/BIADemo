@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import {
@@ -26,7 +26,6 @@ import { MaintenanceTeamService } from '../../../../services/maintenance-team.se
   imports: [
     NgClass,
     PrimeTemplate,
-    NgIf,
     MemberModule,
     AsyncPipe,
     TranslateModule,
