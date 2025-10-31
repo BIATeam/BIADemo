@@ -240,10 +240,11 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="items">Entities to delete.</param>
         /// <param name="batchSize">Batch size (not used in bulk mode).</param>
         /// <param name="useBulk">if set to <c>true</c> [use bulk].</param>
+        /// <param name="useExecuteDelete">if set to <c>true</c> [use execute delete].</param>
         /// <returns>
         /// Number of element affected.
         /// </returns>
-        Task<int> MassDeleteAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false);
+        Task<int> MassDeleteAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false, bool useExecuteDelete = true);
 
         /// <summary>
         /// Set an item as modified in the current context to force update of all fields
