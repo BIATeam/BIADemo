@@ -8,7 +8,6 @@ import {
 import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
-import { provideAnimations } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
@@ -83,7 +82,6 @@ bootstrapApplication(AppComponent, {
     { provide: LOCALE_ID, useFactory: getCurrentCulture },
     { provide: ErrorHandler, useClass: BiaErrorHandler },
     BiaSignalRService,
-    provideAnimations(),
     ...appConfig.providers,
   ],
 }).catch(err => console.error(err));

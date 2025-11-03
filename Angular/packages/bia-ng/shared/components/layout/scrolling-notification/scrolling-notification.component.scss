@@ -22,6 +22,27 @@
   font-size: 1.5rem;
   padding: 0.25rem 1rem;
   border-radius: 0.5rem;
-  left: 100%;
   background-color: rgba($color: red, $alpha: 0.5);
+
+  will-change: transform;
+  animation-name: bia-scroll-left;
+  animation-duration: 20s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes bia-scroll-left {
+  from {
+    transform: translateX(100vw);
+  }
+  to {
+    transform: translateX(-24rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrolling-text {
+    animation: none;
+    transform: none;
+  }
 }
