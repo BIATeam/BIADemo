@@ -109,6 +109,10 @@ Write-Host "RemoveFolder src\app\features\hangfire"
 RemoveFolder -path 'src\app\features\hangfire'
 Write-Host "RemoveFolder src\app\features\maintenance-contracts"
 RemoveFolder -path 'src\app\features\maintenance-contracts'
+Write-Host "RemoveFolder src\app\features\pilots"
+RemoveFolder -path 'src\app\features\pilots'
+Write-Host "RemoveFolder src\app\features\flights"
+RemoveFolder -path 'src\app\features\flights'
 
 Write-Host "RemoveFolder src\app\domains\airport-option"
 RemoveFolder -path 'src\app\domains\airport-option'
