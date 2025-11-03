@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { ApplicationConfig } from '@angular/core';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { definePreset } from '@primeng/themes';
 import Material from '@primeng/themes/material';
 import { providePrimeNG } from 'primeng/config';
@@ -5253,6 +5254,7 @@ const MyPreset = definePreset(Material, {
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideAnimationsAsync(),
     providePrimeNG({
       inputStyle: 'outlined',
       theme: {
