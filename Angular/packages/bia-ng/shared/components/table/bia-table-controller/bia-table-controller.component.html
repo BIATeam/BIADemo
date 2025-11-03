@@ -50,7 +50,6 @@
     <div class="bia-overflow-visible">
       <p-button
         #overflowingContentButton
-        [style]="{ overflow: 'visible' }"
         icon="pi pi-ellipsis-v"
         [text]="true"
         (click)="toggleOverflowingContent()"
@@ -65,7 +64,6 @@
       pTooltip="{{ 'bia.deleteFilters' | translate }}"
       tooltipPosition="top" />
     <p-button
-      [style]="{ overflow: 'visible' }"
       icon="pi pi-filter"
       styleClass="p-overlay-badge"
       [text]="true"
@@ -79,7 +77,6 @@
     @if (showBtnFilter) {
       @if (showFilter === false) {
         <p-button
-          [style]="{ overflow: 'visible' }"
           icon="pi pi-filter"
           styleClass="p-overlay-badge"
           [text]="true"
