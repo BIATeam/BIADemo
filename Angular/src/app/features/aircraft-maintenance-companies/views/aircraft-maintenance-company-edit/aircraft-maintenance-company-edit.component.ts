@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import {
   CrudItemEditComponent,
@@ -13,7 +13,6 @@ import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maint
   selector: 'app-aircraft-maintenance-company-edit',
   templateUrl: './aircraft-maintenance-company-edit.component.html',
   imports: [
-    NgIf,
     AircraftMaintenanceCompanyFormComponent,
     AsyncPipe,
     SpinnerComponent,

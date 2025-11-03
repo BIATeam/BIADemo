@@ -1,18 +1,21 @@
-<app-pilot-form
-  *ngIf="crudItemService.crudItem$ | async; let crudItem"
-  [crudItem]="crudItem"
-  [fields]="crudConfiguration.fieldsConfig.columns"
-  [formLayoutConfig]="crudConfiguration.formLayoutConfig"
-  [formReadOnlyMode]="formReadOnlyMode"
-  [dictOptionDtos]="(pilotService.optionsService.dictOptionDtos$ | async) ?? []"
-  [isCrudItemOutdated]="isCrudItemOutdated"
-  [showSubmitButton]="canEdit"
-  [showFixableState]="crudConfiguration.isFixable"
-  [canFix]="canFix"
-  (cancelled)="onCancelled()"
-  (save)="onSubmitted($event)"
-  (fixedChanged)="crudItemService.updateFixedStatus(crudItem.id, $event)"
-  (readOnlyChanged)="onReadOnlyChanged($event)"></app-pilot-form>
-<bia-spinner
-  *ngIf="pilotService.loadingGet$ | async"
-  [overlay]="true"></bia-spinner>
+@if (crudItemService.crudItem$ | async; as crudItem) {
+  <app-pilot-form
+    [crudItem]="crudItem"
+    [fields]="crudConfiguration.fieldsConfig.columns"
+    [formLayoutConfig]="crudConfiguration.formLayoutConfig"
+    [formReadOnlyMode]="formReadOnlyMode"
+    [dictOptionDtos]="
+      (pilotService.optionsService.dictOptionDtos$ | async) ?? []
+    "
+    [isCrudItemOutdated]="isCrudItemOutdated"
+    [showSubmitButton]="canEdit"
+    [showFixableState]="crudConfiguration.isFixable"
+    [canFix]="canFix"
+    (cancelled)="onCancelled()"
+    (save)="onSubmitted($event)"
+    (fixedChanged)="crudItemService.updateFixedStatus(crudItem.id, $event)"
+    (readOnlyChanged)="onReadOnlyChanged($event)"></app-pilot-form>
+}
+@if (pilotService.loadingGet$ | async) {
+  <bia-spinner [overlay]="true"></bia-spinner>
+}

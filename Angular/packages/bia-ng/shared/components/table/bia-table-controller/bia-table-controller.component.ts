@@ -1,5 +1,4 @@
-import { animate, style, transition, trigger } from '@angular/animations';
-import { NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -41,21 +40,8 @@ import { ViewListComponent } from '../../../features/view/views/view-list/view-l
   selector: 'bia-table-controller',
   templateUrl: './bia-table-controller.component.html',
   styleUrls: ['./bia-table-controller.component.scss'],
-  animations: [
-    trigger('options', [
-      transition(':enter', [
-        style({ height: 0 }),
-        animate('200ms ease-out', style({ height: '*' })),
-      ]),
-      transition(':leave', [
-        style({ height: '*' }),
-        animate('200ms ease-out', style({ height: 0 })),
-      ]),
-    ]),
-  ],
   imports: [
     NgClass,
-    NgIf,
     ViewListComponent,
     MultiSelect,
     FormsModule,

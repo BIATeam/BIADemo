@@ -24,20 +24,21 @@
   <div
     class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
     <h1>{{ headerTitleComplete }}</h1>
-    <p-button
-      *ngIf="showTableControllerButton"
-      styleClass="p-button-outlined"
-      [icon]="
-        'pi' +
-        (tableControllerVisible
-          ? ' pi-angle-double-up'
-          : ' pi-angle-double-down')
-      "
-      (click)="toggleTableControllerVisibility.emit()"
-      pTooltip="{{
-        (tableControllerVisible ? 'bia.hideController' : 'bia.showController')
-          | translate
-      }}"></p-button>
+    @if (showTableControllerButton) {
+      <p-button
+        styleClass="p-button-outlined"
+        [icon]="
+          'pi' +
+          (tableControllerVisible
+            ? ' pi-angle-double-up'
+            : ' pi-angle-double-down')
+        "
+        (click)="toggleTableControllerVisibility.emit()"
+        pTooltip="{{
+          (tableControllerVisible ? 'bia.hideController' : 'bia.showController')
+            | translate
+        }}"></p-button>
+    }
     <ng-container *ngTemplateOutlet="customControlTemplate"></ng-container>
   </div>
   <div

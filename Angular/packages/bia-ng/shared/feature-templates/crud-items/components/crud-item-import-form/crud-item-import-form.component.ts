@@ -1,4 +1,4 @@
-import { DatePipe, NgClass, NgIf } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -54,7 +54,6 @@ interface FormatExample {
     ReactiveFormsModule,
     FileUpload,
     ButtonDirective,
-    NgIf,
     Select,
     Checkbox,
     Accordion,

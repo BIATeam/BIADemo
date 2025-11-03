@@ -1,12 +1,4 @@
-import {
-  AsyncPipe,
-  NgClass,
-  NgFor,
-  NgIf,
-  NgStyle,
-  NgSwitch,
-  NgTemplateOutlet,
-} from '@angular/common';
+import { AsyncPipe, NgClass, NgStyle, NgTemplateOutlet } from '@angular/common';
 import { Component } from '@angular/core';
 import {
   FormsModule,
@@ -42,13 +34,9 @@ import { Airport } from '../../model/airport';
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    NgIf,
     TableModule,
     PrimeTemplate,
-    NgFor,
     Tooltip,
-    NgSwitch,
-
     NgClass,
     NgTemplateOutlet,
     Skeleton,

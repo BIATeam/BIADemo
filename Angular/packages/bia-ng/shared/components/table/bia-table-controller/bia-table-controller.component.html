@@ -2,16 +2,17 @@
   #contentContainer
   class="bia-table-controller-container"
   [ngClass]="overflowingClass">
-  <bia-view-list
-    *ngIf="tableStateKey"
-    [tableStateKey]="tableStateKey"
-    [tableState]="tableState"
-    [defaultViewPref]="defaultViewPref"
-    [useViewTeamWithTypeId]="useViewTeamWithTypeId"
-    [displayedColumns]="displayedColumns"
-    [columns]="columns"
-    (viewChange)="onViewChange($event)"
-    (viewNameChange)="onViewNameChange($event)"></bia-view-list>
+  @if (tableStateKey) {
+    <bia-view-list
+      [tableStateKey]="tableStateKey"
+      [tableState]="tableState"
+      [defaultViewPref]="defaultViewPref"
+      [useViewTeamWithTypeId]="useViewTeamWithTypeId"
+      [displayedColumns]="displayedColumns"
+      [columns]="columns"
+      (viewChange)="onViewChange($event)"
+      (viewNameChange)="onViewNameChange($event)"></bia-view-list>
+  }
   <div #overflowingContent class="bia-overflow-hidden">
     <div class="bia-overflow-hidden-container">
       <div>
@@ -75,21 +76,22 @@
         <p-badge severity="warn"></p-badge>
       }
     </p-button>
-    <ng-container *ngIf="showBtnFilter">
-      <p-button
-        *ngIf="showFilter === false"
-        [style]="{ overflow: 'visible' }"
-        icon="pi pi-filter"
-        styleClass="p-overlay-badge"
-        [text]="true"
-        (click)="toggleFilter()"
-        pTooltip="{{ 'bia.showAdvancedFilters' | translate }}"
-        tooltipPosition="top">
-        <div class="cog pi pi-cog"></div>
-        @if (hasFilter) {
-          <p-badge severity="warn"></p-badge>
-        }
-      </p-button>
-    </ng-container>
+    @if (showBtnFilter) {
+      @if (showFilter === false) {
+        <p-button
+          [style]="{ overflow: 'visible' }"
+          icon="pi pi-filter"
+          styleClass="p-overlay-badge"
+          [text]="true"
+          (click)="toggleFilter()"
+          pTooltip="{{ 'bia.showAdvancedFilters' | translate }}"
+          tooltipPosition="top">
+          <div class="cog pi pi-cog"></div>
+          @if (hasFilter) {
+            <p-badge severity="warn"></p-badge>
+          }
+        </p-button>
+      }
+    }
   </div>
 </div>

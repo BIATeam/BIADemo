@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Injector } from '@angular/core';
 import {
   CrudItemEditComponent,
@@ -12,7 +12,7 @@ import { siteCRUDConfiguration } from '../../site.constants';
 @Component({
   selector: 'app-site-edit',
   templateUrl: './site-edit.component.html',
-  imports: [NgIf, SiteFormComponent, AsyncPipe, SpinnerComponent],
+  imports: [SiteFormComponent, AsyncPipe, SpinnerComponent],
 })
 export class SiteEditComponent extends CrudItemEditComponent<Site> {
   constructor(

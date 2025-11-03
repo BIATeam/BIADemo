@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Injector } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {
@@ -13,7 +13,7 @@ import {
   styleUrls: [
     '../../../../../../../../../../packages/bia-ng/shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
   ],
-  imports: [RouterOutlet, NgIf, AsyncPipe, SpinnerComponent],
+  imports: [RouterOutlet, AsyncPipe, SpinnerComponent],
 })
 export class MaintenanceTeamMemberItemComponent extends MemberItemComponent {
   constructor(injector: Injector) {

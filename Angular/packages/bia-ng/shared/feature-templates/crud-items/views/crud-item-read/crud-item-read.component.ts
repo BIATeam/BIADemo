@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import { BaseDto } from 'packages/bia-ng/models/public-api';
 import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
@@ -11,7 +11,7 @@ import { CrudItemEditComponent } from '../crud-item-edit/crud-item-edit.componen
   selector: 'bia-crud-item-read',
   templateUrl: './crud-item-read.component.html',
   styleUrls: ['./crud-item-read.component.scss'],
-  imports: [NgIf, CrudItemFormComponent, SpinnerComponent, AsyncPipe],
+  imports: [CrudItemFormComponent, SpinnerComponent, AsyncPipe],
 })
 export class CrudItemReadComponent<CrudItem extends BaseDto<string | number>>
   extends CrudItemEditComponent<CrudItem>

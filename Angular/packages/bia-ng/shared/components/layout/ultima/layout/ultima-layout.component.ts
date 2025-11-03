@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import {
   Component,
   HostBinding,
@@ -47,7 +47,6 @@ import { BiaUltimaTopbarComponent } from '../topbar/ultima-topbar.component';
     NgClass,
     BiaUltimaTopbarComponent,
     BiaUltimaSidebarComponent,
-    NgIf,
     Breadcrumb,
     RouterOutlet,
     BiaUltimaFooterComponent,

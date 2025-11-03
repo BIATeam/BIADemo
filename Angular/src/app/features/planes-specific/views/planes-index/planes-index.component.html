@@ -82,29 +82,35 @@
       [expandedRowTemplate]="detailRow"
       (rowExpand)="onRowExpand($event)">
       <ng-template pTemplate="specificOutput" let-field="field" let-data="data">
-        <ng-container [ngSwitch]="field.field">
+        @switch (field.field) {
           <!-- isActive -->
-          <ng-container *ngSwitchCase="'isActive'">
+          @case ('isActive') {
             <i
               class="pi pi-circle-fill"
               [ngClass]="{
                 'bia-is-not-active': !data,
                 'bia-is-active': !!data,
               }"></i>
-          </ng-container>
+          }
           <!-- capacity -->
-          <ng-container *ngSwitchCase="'capacity'">
-            <ng-container *ngIf="data < 0"> - Negative - </ng-container>
-            <ng-container *ngIf="data === 0"> 0 Empty 0 </ng-container>
-            <ng-container *ngIf="data > 0 && data < 10">
+          @case ('capacity') {
+            @if (data < 0) {
+              - Negative -
+            }
+            @if (data === 0) {
+              0 Empty 0
+            }
+            @if (data > 0 && data < 10) {
               + Small +
-            </ng-container>
-            <ng-container *ngIf="data >= 10 && data < 100">
+            }
+            @if (data >= 10 && data < 100) {
               ++ Medium ++
-            </ng-container>
-            <ng-container *ngIf="data >= 100"> +++ Large +++ </ng-container>
-          </ng-container>
-        </ng-container>
+            }
+            @if (data >= 100) {
+              +++ Large +++
+            }
+          }
+        }
       </ng-template>
     </bia-table>
   </div>
@@ -113,23 +119,23 @@
 <ng-template #detailRow let-data="data"
   ><div style="text-wrap: auto" class="m-3">
     <h3>{{ 'app.engines' | translate }}</h3>
-    <bia-table
-      *ngIf="data?.id && enginesDic[data.id.toString()]; else loading"
-      [elements]="enginesDic[data.id.toString()]"
-      [configuration]="engineConfig"
-      [columnToDisplays]="displayedEngineColumns"
-      [dictOptionDtos]="[]"
-      [totalRecord]="enginesDic[data.id.toString()].length"
-      [paginator]="false"
-      [showColSearch]="false"
-      [canSelectElement]="false"
-      [loading]="false"
-      [readOnly]="true">
-    </bia-table>
-    <ng-template #loading>
+    @if (data?.id && enginesDic[data.id.toString()]) {
+      <bia-table
+        [elements]="enginesDic[data.id.toString()]"
+        [configuration]="engineConfig"
+        [columnToDisplays]="displayedEngineColumns"
+        [dictOptionDtos]="[]"
+        [totalRecord]="enginesDic[data.id.toString()].length"
+        [paginator]="false"
+        [showColSearch]="false"
+        [canSelectElement]="false"
+        [loading]="false"
+        [readOnly]="true">
+      </bia-table>
+    } @else {
       <div class="m-6">
         <bia-spinner [overlay]="false"></bia-spinner>
       </div>
-    </ng-template>
+    }
   </div>
 </ng-template>

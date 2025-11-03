@@ -1,5 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { CommonModule, NgIf, NgTemplateOutlet } from '@angular/common';
+import { CommonModule, NgTemplateOutlet } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import {
   Component,
@@ -61,7 +61,6 @@ import { BiaMenuProfileService } from '../../services/menu-profile.service';
   ],
   imports: [
     Tooltip,
-    NgIf,
     Dialog,
     SharedModule,
     TranslateModule,

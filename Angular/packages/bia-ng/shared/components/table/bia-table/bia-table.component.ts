@@ -1,12 +1,4 @@
-import {
-  AsyncPipe,
-  NgClass,
-  NgFor,
-  NgIf,
-  NgStyle,
-  NgSwitch,
-  NgTemplateOutlet,
-} from '@angular/common';
+import { AsyncPipe, NgClass, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -68,12 +60,9 @@ const arraysEqual = (a1: any, a2: any) =>
   templateUrl: './bia-table.component.html',
   styleUrls: ['./bia-table.component.scss'],
   imports: [
-    NgIf,
     TableModule,
     PrimeTemplate,
-    NgFor,
     Tooltip,
-    NgSwitch,
     BiaTableFilterComponent,
     NgClass,
     BiaTableOutputComponent,

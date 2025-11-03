@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, Injector, ViewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from 'packages/bia-ng/core/public-api';
@@ -23,9 +23,7 @@ import { PlaneTypeService } from '../../services/plane-type.service';
   styleUrls: ['./planes-types-index.component.scss'],
   imports: [
     NgClass,
-
     PrimeTemplate,
-    NgIf,
     PlaneTypeTableComponent,
     AsyncPipe,
     TranslateModule,

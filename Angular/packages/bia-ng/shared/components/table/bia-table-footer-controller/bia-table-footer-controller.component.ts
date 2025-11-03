@@ -1,4 +1,4 @@
-import { DecimalPipe, I18nPluralPipe, NgIf } from '@angular/common';
+import { DecimalPipe, I18nPluralPipe } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -17,14 +17,7 @@ import { Select } from 'primeng/select';
   selector: 'bia-table-footer-controller',
   templateUrl: './bia-table-footer-controller.component.html',
   styleUrls: ['./bia-table-footer-controller.component.scss'],
-  imports: [
-    NgIf,
-    Select,
-    FormsModule,
-    DecimalPipe,
-    I18nPluralPipe,
-    TranslateModule,
-  ],
+  imports: [Select, FormsModule, DecimalPipe, I18nPluralPipe, TranslateModule],
 })
 export class BiaTableFooterControllerComponent implements OnInit, OnChanges {
   @Input() pageSizeOptions: number[] | undefined = [10, 25, 50, 100];

@@ -1,4 +1,4 @@
-import { AsyncPipe, Location, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, Location, NgClass } from '@angular/common';
 import { HttpStatusCode } from '@angular/common/http';
 import {
   Component,
@@ -59,7 +59,6 @@ import { CrudItemService } from '../../services/crud-item.service';
     BiaTableHeaderComponent,
     PrimeTemplate,
     BiaTableBehaviorControllerComponent,
-    NgIf,
     CrudItemTableComponent,
     AsyncPipe,
     TranslateModule,

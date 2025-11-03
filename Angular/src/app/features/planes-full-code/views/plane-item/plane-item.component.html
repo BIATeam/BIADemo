@@ -1,4 +1,4 @@
 <router-outlet></router-outlet>
-<bia-spinner
-  *ngIf="planeService.loading$ | async"
-  [overlay]="true"></bia-spinner>
+@if (planeService.loading$ | async) {
+  <bia-spinner [overlay]="true"></bia-spinner>
+}

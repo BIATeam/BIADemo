@@ -1,12 +1,4 @@
-import {
-  AsyncPipe,
-  NgClass,
-  NgFor,
-  NgIf,
-  NgStyle,
-  NgSwitch,
-  NgTemplateOutlet,
-} from '@angular/common';
+import { AsyncPipe, NgClass, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   Component,
@@ -51,12 +43,9 @@ import { DictOptionDto } from '../bia-table/dict-option-dto';
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    NgIf,
     TableModule,
     PrimeTemplate,
-    NgFor,
     Tooltip,
-    NgSwitch,
     BiaTableFilterComponent,
     NgClass,
     BiaTableInputComponent,

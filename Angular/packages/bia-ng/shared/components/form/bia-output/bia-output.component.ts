@@ -1,10 +1,4 @@
-import {
-  NgIf,
-  NgSwitch,
-  NgSwitchCase,
-  NgSwitchDefault,
-  NgTemplateOutlet,
-} from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -33,12 +27,8 @@ import { BiaFieldBaseComponent } from '../bia-field-base/bia-field-base.componen
   styleUrls: ['./bia-output.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
   imports: [
-    NgIf,
     NgTemplateOutlet,
-    NgSwitch,
     InputText,
-    NgSwitchCase,
-    NgSwitchDefault,
     TranslateModule,
     PluckPipe,
     JoinPipe,

@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { Notification } from 'packages/bia-ng/core/public-api';
@@ -9,7 +8,7 @@ import { TeamListPipe } from './team-list/team-list.pipe';
   selector: 'bia-notification-team-warning',
   templateUrl: './notification-team-warning.component.html',
   styleUrls: ['./notification-team-warning.component.scss'],
-  imports: [NgIf, TranslateModule, IsNotCurrentTeamPipe, TeamListPipe],
+  imports: [TranslateModule, IsNotCurrentTeamPipe, TeamListPipe],
 })
 export class NotificationTeamWarningComponent {
   @Input() notification: Notification;

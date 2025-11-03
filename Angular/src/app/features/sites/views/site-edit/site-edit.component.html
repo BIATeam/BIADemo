@@ -1,16 +1,19 @@
-<app-site-form
-  *ngIf="crudItemService.crudItem$ | async; let crudItem"
-  [crudItem]="crudItem"
-  [fields]="crudConfiguration.fieldsConfig.columns"
-  [formLayoutConfig]="crudConfiguration.formLayoutConfig"
-  [dictOptionDtos]="(siteService.optionsService.dictOptionDtos$ | async) ?? []"
-  [isCrudItemOutdated]="isCrudItemOutdated"
-  (cancelled)="onCancelled()"
-  (save)="onSubmitted($event)"
-  [showPopupButton]="showPopupButton"
-  [showSplitButton]="showSplitButton"
-  [showFullPageButton]="showFullPageButton"
-  (layoutChanged)="notifyLayoutChange($event)"></app-site-form>
-<bia-spinner
-  *ngIf="siteService.loadingGet$ | async"
-  [overlay]="true"></bia-spinner>
+@if (crudItemService.crudItem$ | async; as crudItem) {
+  <app-site-form
+    [crudItem]="crudItem"
+    [fields]="crudConfiguration.fieldsConfig.columns"
+    [formLayoutConfig]="crudConfiguration.formLayoutConfig"
+    [dictOptionDtos]="
+      (siteService.optionsService.dictOptionDtos$ | async) ?? []
+    "
+    [isCrudItemOutdated]="isCrudItemOutdated"
+    (cancelled)="onCancelled()"
+    (save)="onSubmitted($event)"
+    [showPopupButton]="showPopupButton"
+    [showSplitButton]="showSplitButton"
+    [showFullPageButton]="showFullPageButton"
+    (layoutChanged)="notifyLayoutChange($event)"></app-site-form>
+}
+@if (siteService.loadingGet$ | async) {
+  <bia-spinner [overlay]="true"></bia-spinner>
+}

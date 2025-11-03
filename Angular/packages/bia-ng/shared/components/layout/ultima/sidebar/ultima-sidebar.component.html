@@ -14,9 +14,9 @@
     </div>
     <div class="layout-sidebar-anchor" (click)="anchor()"></div>
   </div>
-  <ng-container *ngIf="layoutService.config().menuProfilePosition === 'start'">
+  @if (layoutService.config().menuProfilePosition === 'start') {
     <ng-container *ngTemplateOutlet="menuProfile"></ng-container>
-  </ng-container>
+  }
   <ng-content select="[sidebar-top]" ngProjectAs="[sidebar-top]"></ng-content>
   <div #menuContainer class="layout-menu-container">
     <bia-ultima-menu [menuItems]="navMenuItems">
@@ -29,9 +29,9 @@
   <ng-content
     select="[sidebar-bottom]"
     ngProjectAs="[sidebar-bottom]"></ng-content>
-  <ng-container *ngIf="layoutService.config().menuProfilePosition === 'end'">
+  @if (layoutService.config().menuProfilePosition === 'end') {
     <ng-container *ngTemplateOutlet="menuProfile"></ng-container>
-  </ng-container>
+  }
 </div>
 
 <ng-template #menuProfile>

@@ -1,4 +1,4 @@
-import { APP_BASE_HREF, NgIf } from '@angular/common';
+import { APP_BASE_HREF } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
@@ -18,7 +18,7 @@ import { BiaUltimaLayoutComponent } from './ultima/layout/ultima-layout.componen
 @Component({
   selector: 'bia-layout',
   templateUrl: './layout.component.html',
-  imports: [NgIf, SpinnerComponent, BiaUltimaLayoutComponent],
+  imports: [SpinnerComponent, BiaUltimaLayoutComponent],
 })
 export class LayoutComponent implements OnInit {
   isLoadingUserInfo = false;

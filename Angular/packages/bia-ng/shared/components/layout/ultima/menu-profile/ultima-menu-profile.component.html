@@ -33,46 +33,49 @@
     <i class="layout-menu-profile-toggler pi pi-fw pi-angle-down"></i>
   </button>
 
-  <div
-    *ngIf="menuProfileActive"
-    class="overflow-y"
-    [@menu]="
-      isHorizontal && !layoutService.state.isSmallScreen ? 'overlay' : 'inline'
-    ">
-    @if (
-      !layoutService.state.isSmallScreen &&
-      (layoutService.isHorizontal() ||
-        layoutService.isSlim() ||
-        layoutService.isSlimPlus() ||
-        layoutService.isDrawer())
-    ) {
-      <p-dialog
-        header="{{ 'bia.settings' | translate }}"
-        [focusOnShow]="false"
-        [(visible)]="menuProfileActive"
-        [modal]="true"
-        [closable]="true"
-        [responsive]="true"
-        [maximizable]="false"
-        [closeOnEscape]="true"
-        [contentStyle]="{ overflow: 'auto' }">
+  @if (menuProfileActive) {
+    <div
+      class="overflow-y"
+      [@menu]="
+        isHorizontal && !layoutService.state.isSmallScreen
+          ? 'overlay'
+          : 'inline'
+      ">
+      @if (
+        !layoutService.state.isSmallScreen &&
+        (layoutService.isHorizontal() ||
+          layoutService.isSlim() ||
+          layoutService.isSlimPlus() ||
+          layoutService.isDrawer())
+      ) {
+        <p-dialog
+          header="{{ 'bia.settings' | translate }}"
+          [focusOnShow]="false"
+          [(visible)]="menuProfileActive"
+          [modal]="true"
+          [closable]="true"
+          [maximizable]="false"
+          [closeOnEscape]="true"
+          [contentStyle]="{ overflow: 'auto' }">
+          <ng-container *ngTemplateOutlet="ultimaConfig"></ng-container>
+        </p-dialog>
+      } @else {
         <ng-container *ngTemplateOutlet="ultimaConfig"></ng-container>
-      </p-dialog>
-    } @else {
-      <ng-container *ngTemplateOutlet="ultimaConfig"></ng-container>
-    }
-  </div>
+      }
+    </div>
+  }
 </div>
 
 <ng-template #ultimaConfig>
   <div class="p-3">
-    <small
-      *ngIf="layoutService.configDisplay().showEditAvatar && urlEditAvatar">
-      <i class="pi pi-pencil"></i
-      ><a class="edit-avatar" [href]="urlEditAvatar" target="_blank">{{
-        'bia.editProfileImage' | translate
-      }}</a>
-    </small>
+    @if (layoutService.configDisplay().showEditAvatar && urlEditAvatar) {
+      <small>
+        <i class="pi pi-pencil"></i
+        ><a class="edit-avatar" [href]="urlEditAvatar" target="_blank">{{
+          'bia.editProfileImage' | translate
+        }}</a>
+      </small>
+    }
     @if (
       authService.hasPermission(permissions.Impersonation_Connection_Rights)
     ) {

@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Injector } from '@angular/core';
 import {
   CrudItemReadComponent,
@@ -15,7 +15,7 @@ import { FlightService } from '../../services/flight.service';
 @Component({
   selector: 'app-flight-read',
   templateUrl: './flight-read.component.html',
-  imports: [NgIf, FlightFormComponent, AsyncPipe, SpinnerComponent],
+  imports: [FlightFormComponent, AsyncPipe, SpinnerComponent],
 })
 export class FlightReadComponent extends CrudItemReadComponent<Flight> {
   constructor(

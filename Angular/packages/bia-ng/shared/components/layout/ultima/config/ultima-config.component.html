@@ -9,24 +9,24 @@
   <div class="p-3">
     <ng-content select="[app-config-top]"></ng-content>
 
-    <ng-container *ngIf="layoutService.configDisplay().showLang">
+    @if (layoutService.configDisplay().showLang) {
       <h3>{{ 'bia.language' | translate }}</h3>
       <div class="flex flex-wrap row-gap-3">
-        <div
-          class="flex align-items-center gap-2 w-6"
-          *ngFor="let lang of getSupportedLangsSorted()">
-          <p-radioButton
-            name="lang"
-            [value]="lang"
-            [(ngModel)]="currentCulture"
-            [inputId]="lang"></p-radioButton>
-          <label [for]="lang">{{
-            getLanguageTranslateKey(lang) | translate
-          }}</label>
-        </div>
+        @for (lang of getSupportedLangsSorted(); track lang) {
+          <div class="flex align-items-center gap-2 w-6">
+            <p-radioButton
+              name="lang"
+              [value]="lang"
+              [(ngModel)]="currentCulture"
+              [inputId]="lang"></p-radioButton>
+            <label [for]="lang">{{
+              getLanguageTranslateKey(lang) | translate
+            }}</label>
+          </div>
+        }
       </div>
-    </ng-container>
-    <ng-container *ngIf="layoutService.configDisplay().showScale">
+    }
+    @if (layoutService.configDisplay().showScale) {
       <h3>{{ 'bia.layoutScale' | translate }}</h3>
       <div class="flex align-items-center">
         <button
@@ -37,11 +37,12 @@
           class="p-button-text p-button-rounded w-2rem h-2rem mr-2"
           [disabled]="scale === scales[0]"></button>
         <div class="flex gap-2 align-items-center">
-          <i
-            class="pi pi-circle-fill scale-icon"
-            style="font-size: 0.9rem"
-            *ngFor="let s of scales"
-            [ngClass]="{ 'selected-scale-icon': s === scale }"></i>
+          @for (s of scales; track s) {
+            <i
+              class="pi pi-circle-fill scale-icon"
+              style="font-size: 0.9rem"
+              [ngClass]="{ 'selected-scale-icon': s === scale }"></i>
+          }
         </div>
         <button
           icon="pi pi-plus"
@@ -49,9 +50,10 @@
           pButton
           (click)="incrementScale()"
           class="p-button-text p-button-rounded w-2rem h-2rem ml-2"
-          [disabled]="scale === scales[scales.length - 1]"></button></div
-    ></ng-container>
-    <ng-container *ngIf="layoutService.configDisplay().showTheme">
+          [disabled]="scale === scales[scales.length - 1]"></button>
+      </div>
+    }
+    @if (layoutService.configDisplay().showTheme) {
       <h3>{{ 'bia.theme' | translate }}</h3>
       <div class="flex gap-4">
         <div class="field-radiobutton flex-1">
@@ -71,8 +73,8 @@
           <label for="dark">{{ 'bia.themeDark' | translate }}</label>
         </div>
       </div>
-    </ng-container>
-    <ng-container *ngIf="layoutService.configDisplay().showMenuStyle">
+    }
+    @if (layoutService.configDisplay().showMenuStyle) {
       <h3>{{ 'bia.menuMode' | translate }}</h3>
       <div class="flex flex-wrap row-gap-3">
         <div class="flex align-items-center gap-2 w-6">
@@ -132,9 +134,9 @@
           <label for="mode5">Horizontal</label>
         </div>
       </div>
-    </ng-container>
+    }
 
-    <ng-container *ngIf="layoutService.configDisplay().showFooterStyle">
+    @if (layoutService.configDisplay().showFooterStyle) {
       <h3>{{ 'bia.footerMode' | translate }}</h3>
       <div class="flex flex-wrap row-gap-3">
         <div class="flex align-items-center gap-2 w-6">
@@ -154,9 +156,9 @@
           <label for="footerMode2">Overlay</label>
         </div>
       </div>
-    </ng-container>
+    }
 
-    <ng-container *ngIf="layoutService.configDisplay().showMenuProfilePosition">
+    @if (layoutService.configDisplay().showMenuProfilePosition) {
       <h3>{{ 'bia.menuProfilePosition' | translate }}</h3>
       <div class="flex flex-wrap row-gap-3">
         <div class="flex align-items-center gap-2 w-6">
@@ -176,7 +178,7 @@
           <label for="menuProfilePosition2">End</label>
         </div>
       </div>
-    </ng-container>
+    }
 
     <ng-content select="[app-config-bottom]"></ng-content>
   </div>

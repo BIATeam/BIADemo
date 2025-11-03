@@ -2,20 +2,20 @@
   <p-fluid class="app-field-container flex flex-column justify-content-start">
     <div class="flex flex-row justify-content-center">
       <div class="app-field-container flex-1" style="max-width: 50%">
-        <p-floatlabel
-          variant="on"
-          *ngIf="useKeycloak !== true && domains.length > 1">
-          <p-select
-            [options]="domains"
-            placeholder="&nbsp;"
-            formControlName="domains"
-            optionLabel="displayName"
-            showClear="true"
-            (onChange)="onDomainChange($event)"
-            [style]="{ width: '100%' }"
-            appendTo="body"></p-select>
-          <label>LDAP Domain</label>
-        </p-floatlabel>
+        @if (useKeycloak !== true && domains.length > 1) {
+          <p-floatlabel variant="on">
+            <p-select
+              [options]="domains"
+              placeholder="&nbsp;"
+              formControlName="domains"
+              optionLabel="displayName"
+              showClear="true"
+              (onChange)="onDomainChange($event)"
+              [style]="{ width: '100%' }"
+              appendTo="body"></p-select>
+            <label>LDAP Domain</label>
+          </p-floatlabel>
+        }
       </div>
       <div class="app-field-container flex-1" style="max-width: 10%"></div>
       <div class="app-field-container flex-1" style="max-width: 30%">

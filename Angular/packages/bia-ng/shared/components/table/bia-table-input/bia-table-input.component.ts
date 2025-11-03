@@ -1,10 +1,4 @@
-import {
-  NgIf,
-  NgSwitch,
-  NgSwitchCase,
-  NgSwitchDefault,
-  NgTemplateOutlet,
-} from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -48,16 +42,12 @@ import { DictOptionDto } from '../bia-table/dict-option-dto';
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    NgIf,
     NgTemplateOutlet,
-    NgSwitch,
-    NgSwitchCase,
     Select,
     MultiSelect,
     Checkbox,
     InputNumber,
     DatePicker,
-    NgSwitchDefault,
     InputText,
     AutoFocusModule,
   ],

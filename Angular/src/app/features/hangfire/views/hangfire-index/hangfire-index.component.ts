@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, HostBinding } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CoreTeamsStore } from 'packages/bia-ng/core/public-api';
@@ -19,7 +19,7 @@ import {
   selector: 'app-hangfire-index',
   templateUrl: './hangfire-index.component.html',
   styleUrls: ['./hangfire-index.component.scss'],
-  imports: [NgFor, NgIf, ButtonDirective, Tooltip, AsyncPipe, LocaleDatePipe],
+  imports: [ButtonDirective, Tooltip, AsyncPipe, LocaleDatePipe],
 })
 export class HangfireIndexComponent {
   @HostBinding('class') classes = 'bia-flex';

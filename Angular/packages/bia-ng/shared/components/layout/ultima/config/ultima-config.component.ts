@@ -1,4 +1,4 @@
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -22,8 +22,6 @@ import { MenuService } from '../../services/menu.service';
   templateUrl: './ultima-config.component.html',
   styleUrls: ['./ultima-config.component.scss'],
   imports: [
-    NgIf,
-    NgFor,
     RadioButton,
     FormsModule,
     ButtonDirective,

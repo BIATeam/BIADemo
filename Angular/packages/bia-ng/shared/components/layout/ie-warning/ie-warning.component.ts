@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -11,9 +10,9 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'bia-ie-warning',
   template: `
-    <ng-container *ngIf="showIEWarning">
+    @if (showIEWarning) {
       {{ 'biaMsg.ieWarning' | translate }}
-    </ng-container>
+    }
   `,
   styles: [
     `
@@ -25,7 +24,7 @@ import { TranslateModule } from '@ngx-translate/core';
       }
     `,
   ],
-  imports: [CommonModule, TranslateModule],
+  imports: [TranslateModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IeWarningComponent implements OnInit {

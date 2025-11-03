@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -44,7 +43,6 @@ const undefinedView = -2;
     Select,
     FormsModule,
     PrimeTemplate,
-    NgIf,
     ViewDialogComponent,
     TranslateModule,
     FloatLabel,

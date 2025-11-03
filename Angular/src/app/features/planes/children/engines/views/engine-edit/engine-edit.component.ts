@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import {
   CrudItemEditComponent,
@@ -15,7 +15,7 @@ import { EngineService } from '../../services/engine.service';
 @Component({
   selector: 'app-engine-edit',
   templateUrl: './engine-edit.component.html',
-  imports: [NgIf, EngineFormComponent, AsyncPipe, SpinnerComponent],
+  imports: [EngineFormComponent, AsyncPipe, SpinnerComponent],
 })
 export class EngineEditComponent
   extends CrudItemEditComponent<Engine>

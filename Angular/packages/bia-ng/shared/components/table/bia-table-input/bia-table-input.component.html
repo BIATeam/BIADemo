@@ -1,209 +1,212 @@
 <div [formGroup]="form">
-  <ng-container *ngIf="field.specificInput === true">
+  @if (field.specificInput === true) {
     <ng-container
       *ngTemplateOutlet="
         specificInputTemplate;
         context: { field: field, form: form }
       "></ng-container>
-  </ng-container>
-  <ng-container [ngSwitch]="field.type" *ngIf="field.specificInput !== true">
-    <ng-container *ngSwitchCase="'OneToMany'">
-      <p-select
-        class="bia-simple-input"
-        placeholder="&nbsp;"
-        [formControlName]="field.field"
-        [options]="getOptionDto(field.field)"
-        optionLabel="display"
-        dataKey="id"
-        showClear="true"
-        [autofocus]="focusByDefault"
-        (onChange)="onChange()"
-        appendTo="body"
-        [style]="{ width: '100%' }"
-        [editable]="field.isEditableChoice"
-        scrollHeight="50vh"></p-select>
-    </ng-container>
-    <ng-container *ngSwitchCase="'ManyToMany'">
-      <p-multiSelect
-        #multiselect
-        class="bia-simple-input"
-        placeholder="&nbsp;"
-        [formControlName]="field.field"
-        [options]="getOptionDto(field.field)"
-        optionLabel="display"
-        datakey="id"
-        [autofocus]="focusByDefault"
-        (onChange)="onChange()"
-        (onPanelShow)="onComplexInput(true)"
-        (onPanelHide)="onPanelHide(multiselect)"
-        appendTo="body"
-        [style]="{ width: '100%' }"
-        scrollHeight="50vh"></p-multiSelect>
-    </ng-container>
-    <ng-container *ngSwitchCase="'Boolean'">
-      <div class="flex">
-        <p-checkbox
+  }
+  @if (field.specificInput !== true) {
+    @switch (field.type) {
+      @case ('OneToMany') {
+        <p-select
           class="bia-simple-input"
-          [binary]="true"
+          placeholder="&nbsp;"
           [formControlName]="field.field"
+          [options]="getOptionDto(field.field)"
+          optionLabel="display"
+          dataKey="id"
+          showClear="true"
           [autofocus]="focusByDefault"
-          (onChange)="onChange()"></p-checkbox>
-        <span *ngIf="field.isRequired" class="bia-star-mandatory">*</span>
-      </div>
-    </ng-container>
-    <ng-container *ngSwitchCase="'Number'">
-      <p-inputNumber
-        *ngIf="
+          (onChange)="onChange()"
+          appendTo="body"
+          [style]="{ width: '100%' }"
+          [editable]="field.isEditableChoice"
+          scrollHeight="50vh"></p-select>
+      }
+      @case ('ManyToMany') {
+        <p-multiSelect
+          #multiselect
+          class="bia-simple-input"
+          placeholder="&nbsp;"
+          [formControlName]="field.field"
+          [options]="getOptionDto(field.field)"
+          optionLabel="display"
+          datakey="id"
+          [autofocus]="focusByDefault"
+          (onChange)="onChange()"
+          (onPanelShow)="onComplexInput(true)"
+          (onPanelHide)="onPanelHide(multiselect)"
+          appendTo="body"
+          [style]="{ width: '100%' }"
+          scrollHeight="50vh"></p-multiSelect>
+      }
+      @case ('Boolean') {
+        <div class="flex">
+          <p-checkbox
+            class="bia-simple-input"
+            [binary]="true"
+            [formControlName]="field.field"
+            [autofocus]="focusByDefault"
+            (onChange)="onChange()"></p-checkbox>
+          @if (field.isRequired) {
+            <span class="bia-star-mandatory">*</span>
+          }
+        </div>
+      }
+      @case ('Number') {
+        @if (
           getDisplayNumberFormat(field.displayFormat);
-          let displayNumberFormat
-        "
-        [formControlName]="field.field"
-        (onInput)="onChange()"
-        [mode]="displayNumberFormat.mode"
-        [currency]="displayNumberFormat.currency"
-        [minFractionDigits]="displayNumberFormat.minFractionDigits"
-        [maxFractionDigits]="displayNumberFormat.maxFractionDigits"
-        [min]="displayNumberFormat.min"
-        [max]="displayNumberFormat.max"
-        [locale]="displayNumberFormat.autoLocale || 'en-US'"
-        [autofocus]="focusByDefault" />
-    </ng-container>
-    <ng-container *ngSwitchCase="'Date'">
-      <p-date-picker
-        biaLocale
-        [formControlName]="field.field"
-        placeholder="&nbsp;"
-        [showButtonBar]="true"
-        (onShow)="onComplexInput(true)"
-        (onSelect)="onChange()"
-        (onClearClick)="onChange()"
-        (onClose)="onComplexInput(false)"
-        appendTo="body"
-        (onInput)="onChange()"
-        [style]="{ width: '100%' }"
-        [inputStyle]="{ width: '100%' }"
-        [dateFormat]="
-          getDisplayDateFormat(field.displayFormat)?.autoPrimeDateFormat ??
-          'yy-mm-dd'
-        "
-        [autofocus]="focusByDefault"
-        [view]="
-          getDateView(
+          as displayNumberFormat
+        ) {
+          <p-inputNumber
+            [formControlName]="field.field"
+            (onInput)="onChange()"
+            [mode]="displayNumberFormat.mode"
+            [currency]="displayNumberFormat.currency"
+            [minFractionDigits]="displayNumberFormat.minFractionDigits"
+            [maxFractionDigits]="displayNumberFormat.maxFractionDigits"
+            [min]="displayNumberFormat.min"
+            [max]="displayNumberFormat.max"
+            [locale]="displayNumberFormat.autoLocale || 'en-US'"
+            [autofocus]="focusByDefault" />
+        }
+      }
+      @case ('Date') {
+        <p-date-picker
+          biaLocale
+          [formControlName]="field.field"
+          placeholder="&nbsp;"
+          [showButtonBar]="true"
+          (onShow)="onComplexInput(true)"
+          (onSelect)="onChange()"
+          (onClearClick)="onChange()"
+          (onClose)="onComplexInput(false)"
+          appendTo="body"
+          (onInput)="onChange()"
+          [style]="{ width: '100%' }"
+          [inputStyle]="{ width: '100%' }"
+          [dateFormat]="
             getDisplayDateFormat(field.displayFormat)?.autoPrimeDateFormat ??
-              'yy-mm-dd'
-          )
-        "></p-date-picker>
-    </ng-container>
-    <ng-container *ngSwitchCase="'Time'">
-      <p-date-picker
-        biaLocale
-        [formControlName]="field.field"
-        placeholder="&nbsp;"
-        (onShow)="onComplexInput(true)"
-        (onSelect)="onChange()"
-        (onClearClick)="onChange()"
-        (onClose)="onComplexInput(false)"
-        appendTo="body"
-        (onInput)="onChange()"
-        [style]="{ width: '100%' }"
-        [inputStyle]="{ width: '100%' }"
-        [showTime]="true"
-        [timeOnly]="true"
-        [dateFormat]="
-          getDisplayDateFormat(field.displayFormat)?.autoPrimeDateFormat ??
-          'yy-mm-dd'
-        "
-        [hourFormat]="'24'"
-        [autofocus]="focusByDefault"></p-date-picker>
-      <!-- [hourFormat]="field.displayFormat.autoHourFormat?field.displayFormat.autoHourFormat:24" not work for 12 (PrimeNG 13)-->
-    </ng-container>
-    <ng-container *ngSwitchCase="'TimeOnly'">
-      <p-date-picker
-        biaLocale
-        [formControlName]="field.field"
-        placeholder="&nbsp;"
-        (onShow)="onComplexInput(true)"
-        (onSelect)="onChange()"
-        (onClearClick)="onChange()"
-        (onClose)="onComplexInput(false)"
-        appendTo="body"
-        (onInput)="onChange()"
-        [style]="{ width: '100%' }"
-        [inputStyle]="{ width: '100%' }"
-        [showTime]="true"
-        dataType="string"
-        [timeOnly]="true"
-        [hourFormat]="'24'"
-        [autofocus]="focusByDefault"></p-date-picker>
-      <!-- [hourFormat]="field.displayFormat.autoHourFormat?field.displayFormat.autoHourFormat:24" not work for 12 (PrimeNG 13)-->
-    </ng-container>
-    <ng-container *ngSwitchCase="'TimeSecOnly'">
-      <p-date-picker
-        biaLocale
-        [formControlName]="field.field"
-        placeholder="&nbsp;"
-        (onShow)="onComplexInput(true)"
-        (onSelect)="onChange()"
-        (onInput)="onChange()"
-        (onClearClick)="onChange()"
-        (onClose)="onComplexInput(false)"
-        appendTo="body"
-        [style]="{ width: '100%' }"
-        [inputStyle]="{ width: '100%' }"
-        [showTime]="true"
-        showSeconds="true"
-        dataType="string"
-        [timeOnly]="true"
-        [hourFormat]="'24'"
-        [autofocus]="focusByDefault"></p-date-picker>
-      <!-- [hourFormat]="field.displayFormat.autoHourFormat?field.displayFormat.autoHourFormat:24" not work for 12 (PrimeNG 13)-->
-    </ng-container>
-    <ng-container *ngSwitchCase="'DateTime'">
-      <p-date-picker
-        biaLocale
-        [formControlName]="field.field.toString()"
-        placeholder="&nbsp;"
-        [showButtonBar]="true"
-        (onShow)="onComplexInput(true)"
-        (onSelect)="onChange()"
-        (onClearClick)="onChange()"
-        (onClose)="onComplexInput(false)"
-        appendTo="body"
-        (onInput)="onChange()"
-        [style]="{ width: '100%' }"
-        [inputStyle]="{ width: '100%' }"
-        [showTime]="true"
-        [dateFormat]="
-          getDisplayDateFormat(field.displayFormat)?.autoPrimeDateFormat ??
-          'yy-mm-dd'
-        "
-        [hourFormat]="
-          getDisplayDateFormat(
-            field.displayFormat
-          )?.autoHourFormat?.toString() ?? '24'
-        "
-        [autofocus]="focusByDefault"
-        [showSeconds]="
-          showSeconds(
-            getDisplayDateFormat(field.displayFormat)?.autoFormatDate ?? ''
-          )
-        "
-        [hideOnDateTimeSelect]="false"></p-date-picker>
-    </ng-container>
-    <ng-container *ngSwitchDefault>
-      <input
-        class="bia-simple-input"
-        pInputText
-        type="text"
-        [maxlength]="field.maxlength"
-        [formControlName]="field.field.toString()"
-        [pAutoFocus]="focusByDefault"
-        (change)="onChange()" />
-    </ng-container>
-  </ng-container>
-  <span
-    *ngIf="field.isRequired && field.type !== 'Boolean'"
-    class="bia-star-mandatory"
-    >*</span
-  >
+            'yy-mm-dd'
+          "
+          [autofocus]="focusByDefault"
+          [view]="
+            getDateView(
+              getDisplayDateFormat(field.displayFormat)?.autoPrimeDateFormat ??
+                'yy-mm-dd'
+            )
+          "></p-date-picker>
+      }
+      @case ('Time') {
+        <p-date-picker
+          biaLocale
+          [formControlName]="field.field"
+          placeholder="&nbsp;"
+          (onShow)="onComplexInput(true)"
+          (onSelect)="onChange()"
+          (onClearClick)="onChange()"
+          (onClose)="onComplexInput(false)"
+          appendTo="body"
+          (onInput)="onChange()"
+          [style]="{ width: '100%' }"
+          [inputStyle]="{ width: '100%' }"
+          [showTime]="true"
+          [timeOnly]="true"
+          [dateFormat]="
+            getDisplayDateFormat(field.displayFormat)?.autoPrimeDateFormat ??
+            'yy-mm-dd'
+          "
+          [hourFormat]="'24'"
+          [autofocus]="focusByDefault"></p-date-picker>
+        <!-- [hourFormat]="field.displayFormat.autoHourFormat?field.displayFormat.autoHourFormat:24" not work for 12 (PrimeNG 13)-->
+      }
+      @case ('TimeOnly') {
+        <p-date-picker
+          biaLocale
+          [formControlName]="field.field"
+          placeholder="&nbsp;"
+          (onShow)="onComplexInput(true)"
+          (onSelect)="onChange()"
+          (onClearClick)="onChange()"
+          (onClose)="onComplexInput(false)"
+          appendTo="body"
+          (onInput)="onChange()"
+          [style]="{ width: '100%' }"
+          [inputStyle]="{ width: '100%' }"
+          [showTime]="true"
+          dataType="string"
+          [timeOnly]="true"
+          [hourFormat]="'24'"
+          [autofocus]="focusByDefault"></p-date-picker>
+        <!-- [hourFormat]="field.displayFormat.autoHourFormat?field.displayFormat.autoHourFormat:24" not work for 12 (PrimeNG 13)-->
+      }
+      @case ('TimeSecOnly') {
+        <p-date-picker
+          biaLocale
+          [formControlName]="field.field"
+          placeholder="&nbsp;"
+          (onShow)="onComplexInput(true)"
+          (onSelect)="onChange()"
+          (onInput)="onChange()"
+          (onClearClick)="onChange()"
+          (onClose)="onComplexInput(false)"
+          appendTo="body"
+          [style]="{ width: '100%' }"
+          [inputStyle]="{ width: '100%' }"
+          [showTime]="true"
+          showSeconds="true"
+          dataType="string"
+          [timeOnly]="true"
+          [hourFormat]="'24'"
+          [autofocus]="focusByDefault"></p-date-picker>
+        <!-- [hourFormat]="field.displayFormat.autoHourFormat?field.displayFormat.autoHourFormat:24" not work for 12 (PrimeNG 13)-->
+      }
+      @case ('DateTime') {
+        <p-date-picker
+          biaLocale
+          [formControlName]="field.field.toString()"
+          placeholder="&nbsp;"
+          [showButtonBar]="true"
+          (onShow)="onComplexInput(true)"
+          (onSelect)="onChange()"
+          (onClearClick)="onChange()"
+          (onClose)="onComplexInput(false)"
+          appendTo="body"
+          (onInput)="onChange()"
+          [style]="{ width: '100%' }"
+          [inputStyle]="{ width: '100%' }"
+          [showTime]="true"
+          [dateFormat]="
+            getDisplayDateFormat(field.displayFormat)?.autoPrimeDateFormat ??
+            'yy-mm-dd'
+          "
+          [hourFormat]="
+            getDisplayDateFormat(
+              field.displayFormat
+            )?.autoHourFormat?.toString() ?? '24'
+          "
+          [autofocus]="focusByDefault"
+          [showSeconds]="
+            showSeconds(
+              getDisplayDateFormat(field.displayFormat)?.autoFormatDate ?? ''
+            )
+          "
+          [hideOnDateTimeSelect]="false"></p-date-picker>
+      }
+      @default {
+        <input
+          class="bia-simple-input"
+          pInputText
+          type="text"
+          [maxlength]="field.maxlength"
+          [formControlName]="field.field.toString()"
+          [pAutoFocus]="focusByDefault"
+          (change)="onChange()" />
+      }
+    }
+  }
+  @if (field.isRequired && field.type !== 'Boolean') {
+    <span class="bia-star-mandatory">*</span>
+  }
 </div>

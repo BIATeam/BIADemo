@@ -9,19 +9,20 @@
             <p-tab value="0">{{
               'translation.defaultLanguage' | translate
             }}</p-tab>
-            <p-tab
-              *ngFor="
-                let item of notificationTranslations['controls'];
-                let i = index
-              "
-              [value]="i + 1"
-              >{{ labelTranslation(item.value.languageId) }}</p-tab
-            >
-            <p-tab
-              *ngIf="hasMissingLanguageOptions"
-              [value]="notificationTranslations['controls'].length + 1"
-              >+</p-tab
-            >
+            @for (
+              item of notificationTranslations['controls'];
+              track item;
+              let i = $index
+            ) {
+              <p-tab [value]="i + 1">{{
+                labelTranslation(item.value.languageId)
+              }}</p-tab>
+            }
+            @if (hasMissingLanguageOptions) {
+              <p-tab [value]="notificationTranslations['controls'].length + 1"
+                >+</p-tab
+              >
+            }
           </p-tablist>
           <p-tabpanels>
             <p-tabpanel value="0">
@@ -67,101 +68,104 @@
                   [disabled]="!missingTranslation"></button>
               </div>
             </p-tabpanel>
-            <ng-container
-              formArrayName="notificationTranslations"
-              *ngFor="
-                let item of notificationTranslations['controls'];
-                let i = index
-              ">
-              <p-tabpanel [value]="i + 1">
-                <div [formGroupName]="i">
-                  <input formControlName="languageId" type="hidden" />
-                  <div class="flex flex-row justify-content-center">
-                    <div
-                      class="app-field-container flex-1"
-                      style="max-width: 90%">
-                      <p-floatlabel variant="on">
-                        <input
-                          formControlName="title"
-                          type="text"
-                          pInputText
-                          maxlength="64"
-                          style="width: 100%"
-                          (change)="changeTranslation(i)" />
-                        <label
-                          ><span class="bia-star-mandatory">*</span
-                          >{{ 'notification.title' | translate }}</label
-                        >
-                      </p-floatlabel>
+            @for (
+              item of notificationTranslations['controls'];
+              track item;
+              let i = $index
+            ) {
+              <ng-container formArrayName="notificationTranslations">
+                <p-tabpanel [value]="i + 1">
+                  <div [formGroupName]="i">
+                    <input formControlName="languageId" type="hidden" />
+                    <div class="flex flex-row justify-content-center">
+                      <div
+                        class="app-field-container flex-1"
+                        style="max-width: 90%">
+                        <p-floatlabel variant="on">
+                          <input
+                            formControlName="title"
+                            type="text"
+                            pInputText
+                            maxlength="64"
+                            style="width: 100%"
+                            (change)="changeTranslation(i)" />
+                          <label
+                            ><span class="bia-star-mandatory">*</span
+                            >{{ 'notification.title' | translate }}</label
+                          >
+                        </p-floatlabel>
+                      </div>
+                    </div>
+                    <div class="flex flex-row justify-content-center">
+                      <div
+                        class="app-field-container flex-1"
+                        style="max-width: 90%">
+                        <p-floatlabel variant="on">
+                          <input
+                            formControlName="description"
+                            type="text"
+                            pInputText
+                            maxlength="256"
+                            style="width: 100%"
+                            (change)="changeTranslation(i)" />
+                          <label
+                            ><span class="bia-star-mandatory">*</span
+                            >{{ 'notification.description' | translate }}</label
+                          >
+                        </p-floatlabel>
+                      </div>
                     </div>
                   </div>
-                  <div class="flex flex-row justify-content-center">
-                    <div
-                      class="app-field-container flex-1"
-                      style="max-width: 90%">
-                      <p-floatlabel variant="on">
-                        <input
-                          formControlName="description"
-                          type="text"
-                          pInputText
-                          maxlength="256"
-                          style="width: 100%"
-                          (change)="changeTranslation(i)" />
-                        <label
-                          ><span class="bia-star-mandatory">*</span
-                          >{{ 'notification.description' | translate }}</label
-                        >
-                      </p-floatlabel>
-                    </div>
+                  <div class="flex flex-row gap-1 justify-content-end">
+                    <button
+                      pButton
+                      type="button"
+                      icon="pi pi-trash"
+                      label="{{ 'bia.translation.delete' | translate }}"
+                      (click)="removeTranslation(i)"></button>
+                  </div>
+                </p-tabpanel>
+              </ng-container>
+            }
+            @if (hasMissingLanguageOptions) {
+              <p-tabpanel
+                [value]="notificationTranslations['controls'].length + 1">
+                <ng-template pTemplate="header">
+                  <i class="pi pi-plus"></i>
+                </ng-template>
+                <div class="flex flex-row justify-content-center">
+                  <div
+                    class="app-field-container flex-1"
+                    style="max-width: 90%">
+                    <p-floatlabel variant="on">
+                      <p-select
+                        [options]="missingLanguageOptions"
+                        placeholder="&nbsp;"
+                        formControlName="languageToAdd"
+                        optionLabel="display"
+                        datakey="id"
+                        [style]="{ width: '100%' }"
+                        (onChange)="onSelectionLanguage()">
+                      </p-select>
+                      <label
+                        ><span class="bia-star-mandatory">*</span
+                        >{{ 'bia.translation.language' | translate }}</label
+                      >
+                    </p-floatlabel>
                   </div>
                 </div>
                 <div class="flex flex-row gap-1 justify-content-end">
                   <button
+                    class="ui-button-secondary"
                     pButton
                     type="button"
-                    icon="pi pi-trash"
-                    label="{{ 'bia.translation.delete' | translate }}"
-                    (click)="removeTranslation(i)"></button>
+                    icon="pi pi-plus"
+                    label="{{ 'bia.translation.add' | translate }}"
+                    (click)="addTranslation()"
+                    [disabled]="!selectionLanguage"></button>
                 </div>
               </p-tabpanel>
-            </ng-container>
-            <p-tabpanel
-              *ngIf="hasMissingLanguageOptions"
-              [value]="notificationTranslations['controls'].length + 1">
-              <ng-template pTemplate="header">
-                <i class="pi pi-plus"></i>
-              </ng-template>
-              <div class="flex flex-row justify-content-center">
-                <div class="app-field-container flex-1" style="max-width: 90%">
-                  <p-floatlabel variant="on">
-                    <p-select
-                      [options]="missingLanguageOptions"
-                      placeholder="&nbsp;"
-                      formControlName="languageToAdd"
-                      optionLabel="display"
-                      datakey="id"
-                      [style]="{ width: '100%' }"
-                      (onChange)="onSelectionLanguage()">
-                    </p-select>
-                    <label
-                      ><span class="bia-star-mandatory">*</span
-                      >{{ 'bia.translation.language' | translate }}</label
-                    >
-                  </p-floatlabel>
-                </div>
-              </div>
-
-              <div class="flex flex-row gap-1 justify-content-end">
-                <button
-                  class="ui-button-secondary"
-                  pButton
-                  type="button"
-                  icon="pi pi-plus"
-                  label="{{ 'bia.translation.add' | translate }}"
-                  (click)="addTranslation()"
-                  [disabled]="!selectionLanguage"></button>
-              </div>
-            </p-tabpanel>
+            }
           </p-tabpanels>
         </p-tabs>
       </p-fieldset>
@@ -217,10 +221,7 @@
       <div class="flex flex-row justify-content-center">
         <div class="flex-1" style="max-width: 100%">
           <p-fieldset legend="{{ 'notification.notifiedTeams' | translate }}">
-            <p-table
-              [value]="notifiedTeams.controls"
-              [responsive]="true"
-              stripedRows>
+            <p-table [value]="notifiedTeams.controls" stripedRows>
               <ng-template pTemplate="header">
                 <tr>
                   <th>Team</th>

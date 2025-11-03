@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {
@@ -16,7 +16,7 @@ import { PilotService } from '../../services/pilot.service';
   styleUrls: [
     '../../../../../../packages/bia-ng/shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
   ],
-  imports: [RouterOutlet, NgIf, AsyncPipe, SpinnerComponent],
+  imports: [RouterOutlet, AsyncPipe, SpinnerComponent],
   providers: [
     {
       provide: CrudItemService,

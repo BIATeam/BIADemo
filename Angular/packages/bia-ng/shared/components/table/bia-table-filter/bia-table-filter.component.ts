@@ -1,11 +1,4 @@
-import {
-  NgClass,
-  NgFor,
-  NgIf,
-  NgSwitch,
-  NgSwitchCase,
-  NgSwitchDefault,
-} from '@angular/common';
+import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -54,15 +47,10 @@ import { BiaFilterMatchMode } from './bia-filter-match-mode';
   changeDetection: ChangeDetectionStrategy.Default,
   encapsulation: ViewEncapsulation.None,
   imports: [
-    NgIf,
     TableModule,
     PrimeTemplate,
     MultiSelect,
     FormsModule,
-    NgFor,
-    NgSwitch,
-    NgSwitchCase,
-    NgSwitchDefault,
     InputText,
     NgClass,
     TranslateModule,

@@ -1,11 +1,4 @@
-import {
-  AsyncPipe,
-  CommonModule,
-  NgClass,
-  NgIf,
-  NgSwitch,
-  NgSwitchCase,
-} from '@angular/common';
+import { AsyncPipe, CommonModule, NgClass } from '@angular/common';
 import { Component, Injector, ViewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import {
@@ -47,9 +40,6 @@ import { PlaneService } from '../../services/plane.service';
   imports: [
     NgClass,
     PrimeTemplate,
-    NgSwitch,
-    NgSwitchCase,
-    NgIf,
     AsyncPipe,
     TranslateModule,
     BiaTableHeaderComponent,

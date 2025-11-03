@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
@@ -23,7 +23,6 @@ import { MemberService } from '../../services/member.service';
     BiaTableControllerComponent,
     PrimeTemplate,
     BiaTableBehaviorControllerComponent,
-    NgIf,
     BiaTableComponent,
     MemberTableComponent,
     AsyncPipe,

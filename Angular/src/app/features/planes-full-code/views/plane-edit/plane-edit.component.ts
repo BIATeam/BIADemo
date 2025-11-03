@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -22,7 +22,7 @@ import { FeaturePlanesActions } from '../../store/planes-actions';
   selector: 'app-plane-edit',
   templateUrl: './plane-edit.component.html',
   styleUrls: ['./plane-edit.component.scss'],
-  imports: [NgIf, PlaneFormComponent, AsyncPipe, SpinnerComponent],
+  imports: [PlaneFormComponent, AsyncPipe, SpinnerComponent],
 })
 export class PlaneEditComponent implements OnInit, OnDestroy {
   @Output() displayChange = new EventEmitter<boolean>();

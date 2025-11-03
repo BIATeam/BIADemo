@@ -18,18 +18,17 @@
             >
           </p-floatlabel>
         </div>
-        <div
-          class="app-field-container flex-1"
-          style="max-width: 10%"
-          *ngIf="canAddFromDirectory">
-          <button
-            pButton
-            pRipple
-            type="button"
-            icon="pi pi-plus"
-            class="p-button-sm p-button-rounded p-button-text align-right"
-            (click)="addUserFromDirectory()"></button>
-        </div>
+        @if (canAddFromDirectory) {
+          <div class="app-field-container flex-1" style="max-width: 10%">
+            <button
+              pButton
+              pRipple
+              type="button"
+              icon="pi pi-plus"
+              class="p-button-sm p-button-rounded p-button-text align-right"
+              (click)="addUserFromDirectory()"></button>
+          </div>
+        }
       </div>
     </div>
   </div>

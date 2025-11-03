@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import {
   CrudItemEditComponent,
@@ -16,7 +16,7 @@ import { MaintenanceTeamService } from '../../services/maintenance-team.service'
 @Component({
   selector: 'app-maintenance-team-edit',
   templateUrl: './maintenance-team-edit.component.html',
-  imports: [NgIf, MaintenanceTeamFormComponent, AsyncPipe, SpinnerComponent],
+  imports: [MaintenanceTeamFormComponent, AsyncPipe, SpinnerComponent],
 })
 export class MaintenanceTeamEditComponent
   extends CrudItemEditComponent<MaintenanceTeam>

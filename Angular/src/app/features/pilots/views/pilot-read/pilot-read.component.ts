@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Injector } from '@angular/core';
 import {
   CrudItemReadComponent,
@@ -15,7 +15,7 @@ import { PilotService } from '../../services/pilot.service';
 @Component({
   selector: 'app-pilot-read',
   templateUrl: './pilot-read.component.html',
-  imports: [NgIf, PilotFormComponent, AsyncPipe, SpinnerComponent],
+  imports: [PilotFormComponent, AsyncPipe, SpinnerComponent],
 })
 export class PilotReadComponent extends CrudItemReadComponent<Pilot> {
   constructor(

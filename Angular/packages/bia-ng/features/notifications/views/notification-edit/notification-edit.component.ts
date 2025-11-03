@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Injector } from '@angular/core';
 import {
   CrudItemEditComponent,
@@ -13,7 +13,7 @@ import { NotificationService } from '../../services/notification.service';
   selector: 'bia-notification-edit',
   templateUrl: './notification-edit.component.html',
   styleUrls: ['./notification-edit.component.scss'],
-  imports: [NgIf, NotificationFormComponent, AsyncPipe, SpinnerComponent],
+  imports: [NotificationFormComponent, AsyncPipe, SpinnerComponent],
 })
 export class NotificationEditComponent extends CrudItemEditComponent<Notification> {
   constructor(

@@ -1,4 +1,4 @@
-import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   Component,
   ElementRef,
@@ -27,7 +27,6 @@ import { BiaUltimaMenuComponent } from '../menu/ultima-menu.component';
     RouterLink,
     BiaUltimaMenuProfileComponent,
     BiaUltimaMenuComponent,
-    NgIf,
     NgTemplateOutlet,
   ],
 })

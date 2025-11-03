@@ -1,5 +1,11 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  computed,
+  Injector,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import {
   biaSuccessWaitRefreshSignalR,
   clone,
@@ -21,6 +27,10 @@ export class CrudItemNewComponent<CrudItem extends BaseDto<string | number>>
   implements OnInit, OnDestroy
 {
   itemTemplate$?: Observable<CrudItem | undefined>;
+  readonly itemTemplateId = computed(() => {
+    const nav = this.router.currentNavigation();
+    return nav?.extras.state?.itemTemplateId as string | undefined;
+  });
 
   constructor(
     protected injector: Injector,
@@ -28,9 +38,7 @@ export class CrudItemNewComponent<CrudItem extends BaseDto<string | number>>
   ) {
     super(injector, crudItemService);
 
-    const itemTemplateId: any | undefined =
-      this.router.getCurrentNavigation()?.extras.state?.itemTemplateId;
-    if (itemTemplateId) {
+    if (this.itemTemplateId()) {
       this.itemTemplate$ = this.crudItemService.crudItem$.pipe(
         skip(1),
         take(1),
@@ -44,7 +52,7 @@ export class CrudItemNewComponent<CrudItem extends BaseDto<string | number>>
           return item;
         })
       );
-      this.crudItemService.load(itemTemplateId);
+      this.crudItemService.load(this.itemTemplateId());
     }
   }
 

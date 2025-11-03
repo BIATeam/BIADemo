@@ -1,4 +1,3 @@
-import { NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
 import { Component } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import {
@@ -15,9 +14,6 @@ import { UserTeamsComponent } from '../user-teams/user-teams.component';
   styleUrls: ['user-form.component.scss'],
   imports: [
     BiaFormComponent,
-    NgSwitch,
-    NgSwitchCase,
-    NgIf,
     TranslateModule,
     UserTeamsComponent,
     UserTeamsComponent,

@@ -1,12 +1,4 @@
-import {
-  AsyncPipe,
-  NgClass,
-  NgFor,
-  NgIf,
-  NgStyle,
-  NgSwitch,
-  NgTemplateOutlet,
-} from '@angular/common';
+import { AsyncPipe, NgClass, NgStyle, NgTemplateOutlet } from '@angular/common';
 import { Component } from '@angular/core';
 import {
   FormsModule,
@@ -40,12 +32,9 @@ import { Member } from '../../model/member';
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    NgIf,
     TableModule,
     PrimeTemplate,
-    NgFor,
     Tooltip,
-    NgSwitch,
     BiaTableFilterComponent,
     NgClass,
     BiaTableInputComponent,

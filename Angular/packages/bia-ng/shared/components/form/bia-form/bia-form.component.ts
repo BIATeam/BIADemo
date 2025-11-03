@@ -1,4 +1,4 @@
-import { NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -61,12 +61,10 @@ import { BiaOutputComponent } from '../bia-output/bia-output.component';
   styleUrls: ['./bia-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
   imports: [
-    NgIf,
     FormsModule,
     ReactiveFormsModule,
     ButtonDirective,
     NgClass,
-    NgFor,
     NgTemplateOutlet,
     BiaInputComponent,
     PrimeTemplate,

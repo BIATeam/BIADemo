@@ -6,14 +6,16 @@
         | translate: { length: length | number }
     }}</strong>
   </div>
-  <div *ngIf="canChangePageSize">
-    <span>{{ 'bia.itemsPerPage' | translate }} : </span>
-    <p-select
-      [class]="'p-variant-filled'"
-      [options]="pageSizes"
-      [(ngModel)]="pageSize"
-      (onChange)="onPageSizeChange()"
-      [style]="{ 'min-width': 'initial' }"
-      scrollHeight="50vh"></p-select>
-  </div>
+  @if (canChangePageSize) {
+    <div>
+      <span>{{ 'bia.itemsPerPage' | translate }} : </span>
+      <p-select
+        [class]="'p-variant-filled'"
+        [options]="pageSizes"
+        [(ngModel)]="pageSize"
+        (onChange)="onPageSizeChange()"
+        [style]="{ 'min-width': 'initial' }"
+        scrollHeight="50vh"></p-select>
+    </div>
+  }
 </div>

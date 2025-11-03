@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { first } from 'rxjs/operators';
@@ -15,7 +15,7 @@ import { MemberService } from '../../services/member.service';
   styleUrls: [
     '../../../crud-items/views/crud-item-item/crud-item-item.component.scss',
   ],
-  imports: [RouterOutlet, NgIf, SpinnerComponent, AsyncPipe],
+  imports: [RouterOutlet, SpinnerComponent, AsyncPipe],
 })
 export class MemberItemComponent
   extends CrudItemItemComponent<Member>

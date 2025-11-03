@@ -12,51 +12,58 @@
   (readOnlyChanged)="onReadOnlyChanged($event)">
   <ng-template pTemplate="specificInput" let-field="field" let-form="form">
     <div [formGroup]="form">
-      <ng-container [ngSwitch]="field.field">
-        <div *ngSwitchCase="'isActive'" class="flex items-center">
-          <p-checkbox
-            binary="true"
-            [formControlName]="field.field"></p-checkbox>
-          <label class="ml-2">{{ field.header | translate }}</label>
-        </div>
-        <div *ngSwitchCase="'connectingAirports'">
-          <p-floatlabel variant="on">
-            <p-multiSelect
-              [formControlName]="field.field"
-              [options]="getOptionDto(field.field)"
-              optionLabel="display"
-              plane
-              datakey="id"
-              appendTo="body"
-              [showClear]="true"
-              [style]="{ width: '100%' }"
-              scrollHeight="50vh"
-              [maxSelectedLabels]="7"></p-multiSelect>
-            <label
-              ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
-              >{{ field.header | translate }}</label
-            >
-          </p-floatlabel>
-        </div>
+      @switch (field.field) {
+        @case ('isActive') {
+          <div class="flex items-center">
+            <p-checkbox
+              binary="true"
+              [formControlName]="field.field"></p-checkbox>
+            <label class="ml-2">{{ field.header | translate }}</label>
+          </div>
+        }
+        @case ('connectingAirports') {
+          <div>
+            <p-floatlabel variant="on">
+              <p-multiSelect
+                [formControlName]="field.field"
+                [options]="getOptionDto(field.field)"
+                optionLabel="display"
+                plane
+                datakey="id"
+                appendTo="body"
+                [showClear]="true"
+                [style]="{ width: '100%' }"
+                scrollHeight="50vh"
+                [maxSelectedLabels]="7"></p-multiSelect>
+              <label>
+                @if (field.isRequired) {
+                  <span class="bia-star-mandatory">*</span>
+                }
+                {{ field.header | translate }}</label
+              >
+            </p-floatlabel>
+          </div>
+        }
         <!-- isActive -->
-        <ng-container *ngSwitchCase="'capacity'">
+        @case ('capacity') {
           <p-floatlabel variant="on">
             <input
               [formControlName]="field.field"
               type="number"
               pInputText
               style="width: 100%" />
-            <label
-              ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
-              >{{ field.header | translate }}</label
+            <label>
+              @if (field.isRequired) {
+                <span class="bia-star-mandatory">*</span>
+              }
+              {{ field.header | translate }}</label
             >
           </p-floatlabel>
-        </ng-container>
-
+        }
         <!-- capacity -->
-      </ng-container>
+      }
     </div>
-    <ng-container *ngIf="field.field === 'engines'">
+    @if (field.field === 'engines') {
       <bia-table-header
         [headerTitle]="field.header | translate"
         [canAdd]="false"
@@ -81,6 +88,6 @@
         (selectedElementsChanged)="onSelectedEnginesChanged($event)"
         (save)="onEngineSave($event)"
         (isEditing)="onIsEditingChange($event)" />
-    </ng-container>
+    }
   </ng-template>
 </bia-form>

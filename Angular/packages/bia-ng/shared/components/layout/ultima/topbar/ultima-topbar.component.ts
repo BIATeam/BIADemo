@@ -1,17 +1,9 @@
 import { Platform } from '@angular/cdk/platform';
-import {
-  AsyncPipe,
-  DOCUMENT,
-  NgClass,
-  NgFor,
-  NgIf,
-  NgSwitch,
-  NgSwitchCase,
-  NgSwitchDefault,
-} from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import {
   AfterViewInit,
   Component,
+  DOCUMENT,
   ElementRef,
   Inject,
   Input,
@@ -59,17 +51,12 @@ import { BiaLayoutService } from '../../services/layout.service';
   imports: [
     RouterLink,
     Ripple,
-    NgIf,
     IeWarningComponent,
-    NgFor,
     BiaTeamSelectorComponent,
     Tooltip,
     BiaOnlineOfflineIconComponent,
     Toast,
     PrimeTemplate,
-    NgSwitch,
-    NgSwitchCase,
-    NgSwitchDefault,
     ButtonDirective,
     NotificationTeamWarningComponent,
     NgClass,

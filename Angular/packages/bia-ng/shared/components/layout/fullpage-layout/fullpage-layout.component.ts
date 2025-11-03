@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import {
   AfterViewInit,
   Component,
@@ -25,7 +24,7 @@ import { filter } from 'rxjs/operators';
   selector: 'bia-full-page-layout',
   templateUrl: './fullpage-layout.component.html',
   styleUrls: ['./fullpage-layout.component.scss'],
-  imports: [NgIf, RouterOutlet, TranslateModule],
+  imports: [RouterOutlet, TranslateModule],
 })
 export class FullPageLayoutComponent
   implements OnInit, OnDestroy, AfterViewInit

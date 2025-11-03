@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -33,7 +32,6 @@ import { Members } from '../../model/member';
     FormsModule,
     ReactiveFormsModule,
     MultiSelect,
-    NgIf,
     ButtonDirective,
     Listbox,
     UserAddFromLdapComponent,

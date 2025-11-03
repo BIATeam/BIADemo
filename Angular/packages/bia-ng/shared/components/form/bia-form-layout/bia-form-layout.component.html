@@ -1,37 +1,37 @@
-<ng-container *ngIf="form"
-  ><ng-container
+@if (form) {
+  <ng-container
     *ngTemplateOutlet="
       itemsTemplate;
       context: { items: formLayoutConfig.items, formGroup: form }
-    "></ng-container
-></ng-container>
+    "></ng-container>
+}
 
 <ng-template #itemsTemplate let-items="items" let-formGroup="formGroup">
-  <ng-container *ngFor="let item of items">
-    <ng-container [ngSwitch]="item.type">
-      <ng-container *ngSwitchCase="'tab'">
+  @for (item of items; track item) {
+    @switch (item.type) {
+      @case ('tab') {
         <ng-container
           *ngTemplateOutlet="
             tabGroupTemplate;
             context: { tabGroup: item, formGroup: formGroup }
           "></ng-container>
-      </ng-container>
-      <ng-container *ngSwitchCase="'group'">
+      }
+      @case ('group') {
         <ng-container
           *ngTemplateOutlet="
             groupTemplate;
             context: { group: item, formGroup: formGroup }
           "></ng-container>
-      </ng-container>
-      <ng-container *ngSwitchCase="'row'">
+      }
+      @case ('row') {
         <ng-container
           *ngTemplateOutlet="
             rowTemplate;
             context: { row: item, formGroup: formGroup }
           "></ng-container>
-      </ng-container>
-    </ng-container>
-  </ng-container>
+      }
+    }
+  }
 </ng-template>
 
 <ng-template
@@ -47,10 +47,9 @@
               <span class="font-bold white-space-nowrap m-0">
                 {{ tab.name | translate }}
               </span>
-              <p-badge
-                *ngIf="!readOnly && !formGroup.controls[tab.id].valid"
-                styleClass="bia-form-badge"
-                severity="danger" />
+              @if (!readOnly && !formGroup.controls[tab.id].valid) {
+                <p-badge styleClass="bia-form-badge" severity="danger" />
+              }
             </div>
           </p-tab>
         }
@@ -81,85 +80,81 @@
 </ng-template>
 
 <ng-template #rowsTemplate let-rows="rows" let-formGroup="formGroup">
-  <ng-container *ngFor="let row of rows">
+  @for (row of rows; track row) {
     <ng-container
       *ngTemplateOutlet="
         rowTemplate;
         context: { row: row, formGroup: formGroup }
       "></ng-container>
-  </ng-container>
+  }
 </ng-template>
 
 <ng-template #rowTemplate let-row="row" let-formGroup="formGroup">
   <div class="grid bia-form-row">
-    <div
-      *ngFor="let column of row.columns"
-      [class]="column.columnClass ?? row.computedColumnClass">
-      <ng-container [ngSwitch]="column.type">
-        <ng-container *ngSwitchCase="'tab'">
-          <ng-container
-            *ngTemplateOutlet="
-              tabGroupTemplate;
-              context: { tabGroup: column, formGroup: formGroup }
-            "></ng-container>
-        </ng-container>
-        <ng-container *ngSwitchCase="'group'">
-          <ng-container
-            *ngTemplateOutlet="
-              groupTemplate;
-              context: { group: column, formGroup: formGroup }
-            "></ng-container>
-        </ng-container>
-        <ng-container *ngSwitchCase="'field'">
-          <ng-container
-            *ngTemplateOutlet="
-              fieldTemplate;
-              context: { field: column.fieldConfig, formGroup: formGroup }
-            "></ng-container>
-        </ng-container>
-      </ng-container>
-    </div>
+    @for (column of row.columns; track column) {
+      <div [class]="column.columnClass ?? row.computedColumnClass">
+        @switch (column.type) {
+          @case ('tab') {
+            <ng-container
+              *ngTemplateOutlet="
+                tabGroupTemplate;
+                context: { tabGroup: column, formGroup: formGroup }
+              "></ng-container>
+          }
+          @case ('group') {
+            <ng-container
+              *ngTemplateOutlet="
+                groupTemplate;
+                context: { group: column, formGroup: formGroup }
+              "></ng-container>
+          }
+          @case ('field') {
+            <ng-container
+              *ngTemplateOutlet="
+                fieldTemplate;
+                context: { field: column.fieldConfig, formGroup: formGroup }
+              "></ng-container>
+          }
+        }
+      </div>
+    }
   </div>
 </ng-template>
 
 <ng-template #fieldTemplate let-field="field" let-formGroup="formGroup">
-  <div
-    *ngIf="field.isVisible === true"
-    class="flex flex-row align-items-center"
-    #refFormField>
-    <div class="app-field-container">
-      <ng-template
-        [ngIf]="
+  @if (field.isVisible === true) {
+    <div class="flex flex-row align-items-center" #refFormField>
+      <div class="app-field-container">
+        @if (
           (formGroup && field.isEditable === true) ||
           (field.isOnlyInitializable && isAdd) ||
           (field.isOnlyUpdatable && !isAdd)
-        "
-        [ngIfElse]="isNotEditable">
-        <bia-input
-          [field]="field"
-          [form]="formGroup"
-          [dictOptionDtos]="dictOptionDtos"
-          [readOnly]="readOnly">
-          <ng-template pTemplate="specificInput">
-            <ng-container
-              *ngTemplateOutlet="
-                specificInputTemplate;
-                context: { field: field, form: formGroup }
-              "></ng-container>
-          </ng-template>
-        </bia-input>
-      </ng-template>
-      <ng-template #isNotEditable>
-        <bia-output [field]="field" [data]="getCellData(field)">
-          <ng-template pTemplate="specificOutput">
-            <ng-container
-              *ngTemplateOutlet="
-                specificOutputTemplate;
-                context: { field: field, data: getCellData(field) }
-              "></ng-container>
-          </ng-template>
-        </bia-output>
-      </ng-template>
+        ) {
+          <bia-input
+            [field]="field"
+            [form]="formGroup"
+            [dictOptionDtos]="dictOptionDtos"
+            [readOnly]="readOnly">
+            <ng-template pTemplate="specificInput">
+              <ng-container
+                *ngTemplateOutlet="
+                  specificInputTemplate;
+                  context: { field: field, form: formGroup }
+                "></ng-container>
+            </ng-template>
+          </bia-input>
+        } @else {
+          <bia-output [field]="field" [data]="getCellData(field)">
+            <ng-template pTemplate="specificOutput">
+              <ng-container
+                *ngTemplateOutlet="
+                  specificOutputTemplate;
+                  context: { field: field, data: getCellData(field) }
+                "></ng-container>
+            </ng-template>
+          </bia-output>
+        }
+      </div>
     </div>
-  </div>
+  }
 </ng-template>
