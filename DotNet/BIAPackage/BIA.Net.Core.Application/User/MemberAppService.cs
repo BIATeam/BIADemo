@@ -100,6 +100,32 @@ namespace BIA.Net.Core.Application.User
         }
 
         /// <inheritdoc />
+        public async Task RemoveRolesAndUserFromTeam(int userId, int teamId, bool removeManualRoles = false)
+        {
+            Member member = await this.Repository.GetEntityAsync(
+                specification: new DirectSpecification<Member>(s => s.TeamId == teamId && s.UserId == userId),
+                includes: [member => member.MemberRoles]);
+
+            if (member != null)
+            {
+                if (!removeManualRoles && member.MemberRoles != null && member.MemberRoles.Any(mr => mr.IsFromRoleApi))
+                {
+                    var memberRoles = member.MemberRoles.Where(mr => mr.IsFromRoleApi);
+                    foreach (var item in memberRoles)
+                    {
+                        member.MemberRoles.Remove(item);
+                    }
+                }
+                else
+                {
+                    this.Repository.Remove(member);
+                }
+
+                await this.Repository.UnitOfWork.CommitAsync();
+            }
+        }
+
+        /// <inheritdoc />
         public async Task SetDefaultRoleAsync(int teamId, List<int> roleIds)
         {
             int userId = this.principal.GetUserId();

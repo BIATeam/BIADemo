@@ -318,9 +318,8 @@ namespace BIA.Net.Core.Application.User
         /// <param name="identityKey">The identity key.</param>
         /// <param name="userInfoFromDB">The user information.</param>
         /// <param name="globalRoles">The global roles.</param>
-        /// <param name="isFromRoleApi">Indicate if user is created because of an external role api.</param>
         /// <returns>A UserInfoDto.</returns>
-        protected virtual async Task<UserInfoFromDBDto> CreateOrUpdateUserInDatabase(string sid, string identityKey, UserInfoFromDBDto userInfoFromDB, List<string> globalRoles, bool isFromRoleApi = false)
+        protected virtual async Task<UserInfoFromDBDto> CreateOrUpdateUserInDatabase(string sid, string identityKey, UserInfoFromDBDto userInfoFromDB, List<string> globalRoles)
         {
             if (globalRoles.Contains(BiaConstants.Role.User))
             {
@@ -342,7 +341,7 @@ namespace BIA.Net.Core.Application.User
 
                         if (userFromDirectory != default(TUserFromDirectory))
                         {
-                            TUser user = await this.UserAppService.AddUserFromUserDirectoryAsync(identityKey, userFromDirectory, isFromRoleApi);
+                            TUser user = await this.UserAppService.AddUserFromUserDirectoryAsync(identityKey, userFromDirectory);
                             userInfoFromDB = this.UserAppService.CreateUserInfo(user);
                         }
                     }

@@ -32,6 +32,15 @@ namespace BIA.Net.Core.Application.User
         Task<IEnumerable<MemberDto>> AddUsers(MembersDto membersDto, bool addFromRoleApi = false);
 
         /// <summary>
+        /// Removes a member and is roles.
+        /// </summary>
+        /// <param name="userId">The id of the user.</param>
+        /// <param name="teamId">The id of the team.</param>
+        /// <param name="removeManualRoles">Indicates whether to remove only automatic roles (flag isFromRoleApi) when false or all roles when true. Default value false.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        Task RemoveRolesAndUserFromTeam(int userId, int teamId, bool removeManualRoles = false);
+
+        /// <summary>
         /// Sets the default role.
         /// </summary>
         /// <param name="teamId">The team identifier.</param>

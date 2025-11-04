@@ -782,9 +782,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsFromRoleApi")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime?>("LastLoginDate")
                         .HasColumnType("datetime2");
 

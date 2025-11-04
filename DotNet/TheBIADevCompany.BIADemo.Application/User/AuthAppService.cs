@@ -25,14 +25,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Application.Site;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+    using TheBIADevCompany.BIADemo.Domain.Api.RolesForApp;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Site;
+    using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.User;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
-    using TheBIADevCompany.BIADemo.Domain.RepoContract;
-    using TheBIADevCompany.BIADemo.Domain.Api.RolesForApp;
-    using static TheBIADevCompany.BIADemo.Crosscutting.Common.Rights;
-    using TheBIADevCompany.BIADemo.Domain.Dto.Site;
-
 #endif
+
     /// <summary>
     /// Auth App Service.
     /// </summary>
@@ -86,7 +85,19 @@ namespace TheBIADevCompany.BIADemo.Application.User
         public async Task<AuthInfoDto<AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam)
         {
             // Begin BIADemo
-            await this.GetUserRolesFromApi(loginParam);
+            RoleApi roleApiSection = this.Configuration.GetSection("RoleApi").Get<RoleApi>();
+
+            if (roleApiSection != null && roleApiSection.GetRolesFromApi)
+            {
+                try
+                {
+                    await this.GetUserRolesFromApi(loginParam);
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.LogError(ex, "Error during roles update : {ExceptionMessage}", ex.Message);
+                }
+            }
 
             // End BIADemo
             return await this.LoginOnTeamsAsync(loginParam, TeamConfig.Config);
@@ -125,14 +136,25 @@ namespace TheBIADevCompany.BIADemo.Application.User
         {
             var allSites = await siteAppService.GetAllAsync(accessMode: AccessMode.All);
 
-            // Call AppRef with the site Id
-            RoleApi roleApiSection = configuration.GetSection("RoleApi").Get<RoleApi>();
-            Project projectSection = configuration.GetSection("Project").Get<Project>();
-
+            RoleApi roleApiSection = this.Configuration.GetSection("RoleApi").Get<RoleApi>();
+            Project projectSection = this.Configuration.GetSection("Project").Get<Project>();
 
             string identityKey = this.GetIdentityKey();
 
+            // Call external api to get all roles for this application
             ApiRolesForApp rolesForApp = await roleApiRepository.GetRolesFromApi(projectSection?.ShortName, identityKey);
+
+            UserInfoFromDBDto userInfoFromDB = await this.GetUserInfoFromDB(loginParam, identityKey);
+
+            if (userInfoFromDB.Id != 0 && !rolesForApp.Sites.Any(site => site.AppRoles.Count > 0 || site.Programs.Any(program => program.AppRoles.Count > 0)))
+            {
+                // Deactivate the user
+                await this.UserAppService.RemoveInGroupAsync(userInfoFromDB.Id);
+            }
+            else if (userInfoFromDB.Id == 0 || !userInfoFromDB.IsActive)
+            {
+                userInfoFromDB = await this.CreateOrUpdateUserInDatabase(this.GetSid(), identityKey, userInfoFromDB, ["User"]);
+            }
 
             foreach (SiteDto site in allSites)
             {
@@ -148,17 +170,10 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     }
                 }
 
-                if (teamRoles.Count != 0)
+                if (teamRoles.Count > 0)
                 {
                     // Get Roles Id from Roles and RolesTeamTypes
                     var allRoles = await this.RoleAppService.GetAllTeamRolesAsync((int)TeamTypeId.Site);
-
-                    // Get UserInfo from database
-                    UserInfoFromDBDto userInfoFromDB = await this.GetUserInfoFromDB(loginParam, identityKey);
-                    if (userInfoFromDB.Id == 0)
-                    {
-                        userInfoFromDB = await this.CreateOrUpdateUserInDatabase(this.GetSid(), identityKey, userInfoFromDB, ["User"], true);
-                    }
 
                     // Check if user is member of the team. Create the link if it doesn't exist.
                     await memberAppService.AddUsers(
@@ -169,6 +184,10 @@ namespace TheBIADevCompany.BIADemo.Application.User
                             TeamId = site.Id,
                         },
                         true);
+                }
+                else
+                {
+                    await memberAppService.RemoveRolesAndUserFromTeam(userInfoFromDB.Id, site.Id);
                 }
             }
         }

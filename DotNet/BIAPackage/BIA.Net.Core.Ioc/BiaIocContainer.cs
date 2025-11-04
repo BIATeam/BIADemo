@@ -181,7 +181,7 @@ namespace BIA.Net.Core.Ioc
             // Infrastructure Service
             collection.AddTransient<ILdapRepositoryHelper, LdapRepositoryHelper>();
             collection.AddTransient<IBiaLocalCache, BiaLocalCache>();
-            
+
             if (biaNetSection?.CommonFeatures?.DistributedCache?.IsActive == true)
             {
                 collection.AddTransient<IBiaDistributedCache, BiaDistributedCache>();

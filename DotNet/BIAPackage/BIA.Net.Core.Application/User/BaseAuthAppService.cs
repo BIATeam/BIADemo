@@ -65,6 +65,7 @@ namespace BIA.Net.Core.Application.User
             this.UserDirectoryHelper = userDirectoryHelper;
             this.LdapDomains = biaNetconfiguration.Value.Authentication?.LdapDomains;
             this.LdapRepositoryHelper = ldapRepositoryHelper;
+            this.Configuration = configuration;
         }
 
         /// <summary>
@@ -101,6 +102,11 @@ namespace BIA.Net.Core.Application.User
         /// The ldap repository service.
         /// </summary>
         protected ILdapRepositoryHelper LdapRepositoryHelper { get; }
+
+        /// <summary>
+        /// The configuration.
+        /// </summary>
+        protected IConfiguration Configuration { get; }
 
         /// <inheritdoc/>
         public async Task<string> LoginAsync()

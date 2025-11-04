@@ -21,12 +21,12 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Services;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Ldap;
-    using Meziantou.Framework.Win32;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;

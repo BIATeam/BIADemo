@@ -18,10 +18,5 @@ namespace BIA.Net.Core.Common.Configuration
         /// Gets or sets the url of the API endpoint to retrieve the roles.
         /// </summary>
         public string EndpointUrl { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name of the second parameter of the API endpoint.
-        /// </summary>
-        public string ContextParameterName { get; set; }
     }
 }

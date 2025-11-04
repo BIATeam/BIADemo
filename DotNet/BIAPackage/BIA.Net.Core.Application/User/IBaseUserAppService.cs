@@ -40,9 +40,8 @@ namespace BIA.Net.Core.Application.User
         /// </summary>
         /// <param name="identityKey">The identity key.</param>
         /// <param name="userFromDirectory">The user from directory.</param>
-        /// <param name="isFromRoleApi">Indicate if user is created because of an external role api.</param>
         /// <returns>The user in DB.</returns>
-        Task<TUser> AddUserFromUserDirectoryAsync(string identityKey, TUserFromDirectory userFromDirectory, bool isFromRoleApi = false);
+        Task<TUser> AddUserFromUserDirectoryAsync(string identityKey, TUserFromDirectory userFromDirectory);
 
         /// <summary>
         /// Creates the user information from user.
