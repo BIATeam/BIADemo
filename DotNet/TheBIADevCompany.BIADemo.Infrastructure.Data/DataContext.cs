@@ -131,6 +131,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// </summary>
         public DbSet<NotificationTypeTranslation> NotificationTypeTranslations { get; set; }
 
+        /// <summary>
+        /// Gets or sets the user team defaults.
+        /// </summary>
+        public DbSet<UserDefaultTeam> UserDefaultTeams { get; set; }
+
         // Begin BIADemo
 
         /// <summary>
@@ -163,10 +168,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// </summary>
         public DbSet<Part> Parts { get; set; }
 
-        /// <summary>
-        /// Gets or sets the user team defaults.
-        /// </summary>
-        public DbSet<UserDefaultTeam> UserDefaultTeams { get; set; }
 
         /// <summary>
         /// Gets or sets the Plane DBSet.
