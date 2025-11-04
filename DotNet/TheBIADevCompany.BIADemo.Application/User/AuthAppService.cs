@@ -47,9 +47,10 @@ namespace TheBIADevCompany.BIADemo.Application.User
         IConfiguration configuration,
         IOptions<BiaNetSection> biaNetconfiguration,
         IUserDirectoryRepository<UserFromDirectoryDto, UserFromDirectory> userDirectoryHelper,
-        ILdapRepositoryHelper ldapRepositoryHelper)
+        ILdapRepositoryHelper ldapRepositoryHelper,
+        IRoleApiRepository roleApiRepository)
 #if BIA_FRONT_FEATURE
-        : BaseFrontAuthAppService<UserDto, User, RoleId, TeamTypeId, UserFromDirectoryDto, UserFromDirectory, AdditionalInfoDto, UserDataDto>(userAppService, teamAppService, roleAppService, identityProviderRepository, jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper), IAuthAppService
+        : BaseFrontAuthAppService<UserDto, User, RoleId, TeamTypeId, UserFromDirectoryDto, UserFromDirectory, AdditionalInfoDto, UserDataDto>(userAppService, teamAppService, roleAppService, identityProviderRepository, jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper, roleApiRepository), IAuthAppService
 #else
         : BaseAuthAppService<UserFromDirectoryDto, UserFromDirectory, AdditionalInfoDto, UserDataDto>(jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper), IAuthAppService
 #endif

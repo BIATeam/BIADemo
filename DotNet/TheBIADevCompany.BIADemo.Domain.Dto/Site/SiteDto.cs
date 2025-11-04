@@ -5,6 +5,7 @@
 namespace TheBIADevCompany.BIADemo.Domain.Dto.Site
 {
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.CustomAttribute;
 
     /// <summary>
     /// The DTO used to manage site.
@@ -13,5 +14,9 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Site
     public class SiteDto : BaseDtoVersionedTeam
 #pragma warning restore S2094 // Classes should not be empty
     {
+        /// <summary>
+        /// Gets or sets the unique identifier.
+        /// </summary>
+        public string UniqueIdentifier { get; set; }
     }
 }

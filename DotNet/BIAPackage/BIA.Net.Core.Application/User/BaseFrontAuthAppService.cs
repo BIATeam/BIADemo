@@ -7,7 +7,6 @@ namespace BIA.Net.Core.Application.User
     using System.Collections.Generic;
     using System.Collections.Immutable;
     using System.Linq;
-    using System.Reflection.Metadata.Ecma335;
     using System.Security.Claims;
     using System.Security.Principal;
     using System.Threading.Tasks;
@@ -15,15 +14,12 @@ namespace BIA.Net.Core.Application.User
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Enum;
-    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Common.Helpers;
-    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;
-    using BIA.Net.Core.Domain.User.Models;
     using BIA.Net.Core.Domain.User.Services;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
@@ -77,7 +73,8 @@ namespace BIA.Net.Core.Application.User
             IConfiguration configuration,
             IOptions<BiaNetSection> biaNetconfiguration,
             IUserDirectoryRepository<TUserFromDirectoryDto, TUserFromDirectory> userDirectoryHelper,
-            ILdapRepositoryHelper ldapRepositoryHelper)
+            ILdapRepositoryHelper ldapRepositoryHelper,
+            IRoleApiRepository roleApiRepository)
             : base(jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper)
         {
             this.UserAppService = userAppService;
@@ -85,12 +82,24 @@ namespace BIA.Net.Core.Application.User
             this.RoleAppService = roleAppService;
             this.IdentityProviderRepository = identityProviderRepository;
             this.RolesConfiguration = biaNetconfiguration.Value.Roles;
+            this.Configuration = configuration;
+            this.RoleApiRepository = roleApiRepository;
         }
 
         /// <summary>
         /// The role section in the BiaNet configuration.
         /// </summary>
         protected IEnumerable<BIA.Net.Core.Common.Configuration.Role> RolesConfiguration { get; }
+
+        /// <summary>
+        /// The configuration.
+        /// </summary>
+        protected IConfiguration Configuration { get; set; }
+
+        /// <summary>
+        /// The rol API repository.
+        /// </summary>
+        protected IRoleApiRepository RoleApiRepository { get; set; }
 
         /// <summary>
         /// The identity provider repository.
@@ -173,8 +182,18 @@ namespace BIA.Net.Core.Application.User
             // Get UserInfo from database
             UserInfoFromDBDto userInfoFromDB = await this.GetUserInfoFromDB(loginParam, identityKey);
 
+            RoleApi roleApiSection = this.Configuration.GetSection("RoleApi").Get<RoleApi>();
+
+            List<string> globalRoles = [];
+
+            // Get list of roles of the user from API if needed
+            if (roleApiSection != null && roleApiSection.GetRolesFromApi)
+            {
+                globalRoles.AddRange(await this.RoleApiRepository.GetRolesFromApi("BIADemo", "BLC", userInfoFromDB.IdentityKey));
+            }
+
             // Get Global Roles
-            List<string> globalRoles = await this.GetGlobalRolesAsync(sid: sid, domain: domain, userInfo: userInfoFromDB, withCredentials);
+            globalRoles.AddRange(await this.GetGlobalRolesAsync(sid: sid, domain: domain, userInfo: userInfoFromDB, withCredentials));
 
             // If the user has the User role
             // Automatic creation from ldap, usefull if user do not need fine Role on team.
@@ -221,7 +240,7 @@ namespace BIA.Net.Core.Application.User
             userPermissions.Sort();
 
             // Create Token Dto
-            TokenDto<TUserDataDto> tokenDto = new()
+            TokenDto<TUserDataDto> tokenDto = new ()
             {
                 IdentityKey = identityKey,
                 Id = (userInfoFromDB?.Id).GetValueOrDefault(),

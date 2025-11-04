@@ -19,6 +19,11 @@ namespace TheBIADevCompany.BIADemo.Domain.Site.Entities
     public class Site : BaseEntityTeam
     {
         /// <summary>
+        /// Get or set the unique identifier (common to all applications) of a site.
+        /// </summary>
+        public string UniqueIdentifier { get; set; }
+
+        /// <summary>
         /// Add row version timestamp in table Site.
         /// </summary>
         [Timestamp]

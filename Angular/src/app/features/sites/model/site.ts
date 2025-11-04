@@ -8,7 +8,9 @@ import {
 } from 'packages/bia-ng/models/public-api';
 
 // TODO after creation of CRUD Team Site : adapt the model
-export interface Site extends BaseDto, TeamDto, VersionedDto {}
+export interface Site extends BaseDto, TeamDto, VersionedDto {
+  uniqueIdentifier: string;
+}
 
 // TODO after creation of CRUD Team Site : adapt the field configuration
 export const siteFieldsConfiguration: BiaFieldsConfig<Site> = {
@@ -16,6 +18,10 @@ export const siteFieldsConfiguration: BiaFieldsConfig<Site> = {
     Object.assign(new BiaFieldConfig<Site>('title', 'site.title'), {
       isRequired: true,
     }),
+    Object.assign(
+      new BiaFieldConfig<Site>('uniqueIdentifier', 'site.uniqueIdentifier'),
+      {}
+    ),
     Object.assign(new BiaFieldConfig<Site>('admins', 'site.admins'), {
       isEditable: false,
       isVisible: false,
