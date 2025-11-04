@@ -118,6 +118,9 @@
     "signInAs": "Iniciar sesión como",
     "success": "Éxito",
     "synchronize": "Sincronizar",
+    "team": {
+      "admins": "Administradores"
+    },
     "theme": "Aspecto",
     "themeDark": "Oscuro",
     "themeLight": "Claro",

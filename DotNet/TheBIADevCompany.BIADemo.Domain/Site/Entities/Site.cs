@@ -28,6 +28,12 @@ namespace TheBIADevCompany.BIADemo.Domain.Site.Entities
         // Begin BIADemo
 
         /// <summary>
+        /// Get or set the unique identifier (common to all applications) of a site.
+        /// </summary>
+        public string UniqueIdentifier { get; set; }
+
+
+        /// <summary>
         /// Gets or sets the Maintenance contracts.
         /// </summary>
         public virtual ICollection<MaintenanceContract> MaintenanceContracts { get; set; }

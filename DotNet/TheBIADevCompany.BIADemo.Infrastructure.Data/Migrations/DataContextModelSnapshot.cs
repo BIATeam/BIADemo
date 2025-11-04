@@ -855,6 +855,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<bool>("IsDefault")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsFromRoleApi")
+                        .HasColumnType("bit");
+
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
@@ -2104,6 +2107,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion")
                         .HasColumnName("RowVersion");
+
+                    b.Property<string>("UniqueIdentifier")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasIndex("UniqueIdentifier")
+                        .IsUnique()
+                        .HasFilter("[UniqueIdentifier] IS NOT NULL");
 
                     b.ToTable("Sites", (string)null);
                 });

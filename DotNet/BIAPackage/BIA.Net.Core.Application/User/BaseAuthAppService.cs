@@ -3,26 +3,18 @@
 // </copyright>
 namespace BIA.Net.Core.Application.User
 {
-    using System;
     using System.Collections.Generic;
-    using System.Collections.Immutable;
     using System.Linq;
     using System.Security.Claims;
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Authentication;
-    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
-    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Domain.User.Entities;
-    using BIA.Net.Core.Domain.User.Models;
     using BIA.Net.Core.Domain.User.Services;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
@@ -73,6 +65,7 @@ namespace BIA.Net.Core.Application.User
             this.UserDirectoryHelper = userDirectoryHelper;
             this.LdapDomains = biaNetconfiguration.Value.Authentication?.LdapDomains;
             this.LdapRepositoryHelper = ldapRepositoryHelper;
+            this.Configuration = configuration;
         }
 
         /// <summary>
@@ -109,6 +102,11 @@ namespace BIA.Net.Core.Application.User
         /// The ldap repository service.
         /// </summary>
         protected ILdapRepositoryHelper LdapRepositoryHelper { get; }
+
+        /// <summary>
+        /// The configuration.
+        /// </summary>
+        protected IConfiguration Configuration { get; }
 
         /// <inheritdoc/>
         public async Task<string> LoginAsync()

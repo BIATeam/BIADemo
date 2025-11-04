@@ -35,5 +35,12 @@ namespace BIA.Net.Core.Application.User
         /// <param name="userId">The user identifier.</param>
         /// <returns>The list of roles for this member.</returns>
         Task<IEnumerable<RoleDto>> GetMemberRolesAsync(int teamId, int userId);
+
+        /// <summary>
+        /// Get all roles for a type of team.
+        /// </summary>
+        /// <param name="teamTypeId">The team type id.</param>
+        /// <returns>The list of roles for a team type.</returns>
+        Task<IEnumerable<RoleDto>> GetAllTeamRolesAsync(int teamTypeId);
     }
 }
