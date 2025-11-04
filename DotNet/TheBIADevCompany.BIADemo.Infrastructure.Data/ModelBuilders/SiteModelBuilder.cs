@@ -20,6 +20,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         public static void CreateSiteModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Site>().ToTable("Sites");
+            modelBuilder.Entity<Site>().HasIndex(u => new { u.UniqueIdentifier }).IsUnique();
         }
     }
 }

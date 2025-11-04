@@ -8,11 +8,12 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     using System.Net.Http;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Service.Repositories.BiaApi;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
+    using TheBIADevCompany.BIADemo.Domain.Api.RolesForApp;
+    using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
     /// <summary>
     /// Poppler Service Remote Repository.
@@ -46,11 +47,11 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         protected RoleApi RoleApi { get; set; }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<string>> GetRolesFromApi(string appName, string context, string userLogin)
+        public async Task<ApiRolesForApp> GetRolesFromApi(string appName, string userLogin)
         {
             string url = this.RoleApi.EndpointUrl;
-            var result = await this.GetAsync<IEnumerable<string>>(
-                $"{this.BiaWebApi.BaseAddress}{url}?appName={appName}&{this.RoleApi.ContextParameterName}={context}&userLogin={userLogin}");
+            var result = await this.GetAsync<ApiRolesForApp>(
+                $"{this.BiaWebApi.BaseAddress}{url}?appName={appName}&userLogin={userLogin}");
             if (result.IsSuccessStatusCode && result.Result != null)
             {
                 return result.Result;
@@ -58,10 +59,9 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             else
             {
                 this.Logger.LogError(
-                    "[RoleApiRepository.GetRolesFromApi] Error getting the roles for the user {UserLogin} for application {AppName} in context {Context}. Error : {ReasonPhrase}",
+                    "[RoleApiRepository.GetRolesFromApi] Error getting the roles for the user {UserLogin} for application {AppName}. Error : {ReasonPhrase}",
                     userLogin,
                     appName,
-                    context,
                     result.ReasonPhrase);
                 return default;
             }

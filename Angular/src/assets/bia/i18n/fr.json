@@ -118,6 +118,9 @@
     "signInAs": "Se connecter en tant que",
     "success": "Succès",
     "synchronize": "Synchroniser",
+    "team": {
+      "admins": "Administrateurs"
+    },
     "theme": "Thème",
     "themeDark": "Foncé",
     "themeLight": "Clair",

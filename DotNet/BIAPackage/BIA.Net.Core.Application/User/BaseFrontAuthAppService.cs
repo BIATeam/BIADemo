@@ -73,8 +73,7 @@ namespace BIA.Net.Core.Application.User
             IConfiguration configuration,
             IOptions<BiaNetSection> biaNetconfiguration,
             IUserDirectoryRepository<TUserFromDirectoryDto, TUserFromDirectory> userDirectoryHelper,
-            ILdapRepositoryHelper ldapRepositoryHelper,
-            IRoleApiRepository roleApiRepository)
+            ILdapRepositoryHelper ldapRepositoryHelper)
             : base(jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper)
         {
             this.UserAppService = userAppService;
@@ -82,24 +81,12 @@ namespace BIA.Net.Core.Application.User
             this.RoleAppService = roleAppService;
             this.IdentityProviderRepository = identityProviderRepository;
             this.RolesConfiguration = biaNetconfiguration.Value.Roles;
-            this.Configuration = configuration;
-            this.RoleApiRepository = roleApiRepository;
         }
 
         /// <summary>
         /// The role section in the BiaNet configuration.
         /// </summary>
         protected IEnumerable<BIA.Net.Core.Common.Configuration.Role> RolesConfiguration { get; }
-
-        /// <summary>
-        /// The configuration.
-        /// </summary>
-        protected IConfiguration Configuration { get; set; }
-
-        /// <summary>
-        /// The rol API repository.
-        /// </summary>
-        protected IRoleApiRepository RoleApiRepository { get; set; }
 
         /// <summary>
         /// The identity provider repository.
@@ -182,18 +169,8 @@ namespace BIA.Net.Core.Application.User
             // Get UserInfo from database
             UserInfoFromDBDto userInfoFromDB = await this.GetUserInfoFromDB(loginParam, identityKey);
 
-            RoleApi roleApiSection = this.Configuration.GetSection("RoleApi").Get<RoleApi>();
-
-            List<string> globalRoles = [];
-
-            // Get list of roles of the user from API if needed
-            if (roleApiSection != null && roleApiSection.GetRolesFromApi)
-            {
-                globalRoles.AddRange(await this.RoleApiRepository.GetRolesFromApi("BIADemo", "BLC", userInfoFromDB.IdentityKey));
-            }
-
             // Get Global Roles
-            globalRoles.AddRange(await this.GetGlobalRolesAsync(sid: sid, domain: domain, userInfo: userInfoFromDB, withCredentials));
+            List<string> globalRoles = await this.GetGlobalRolesAsync(sid: sid, domain: domain, userInfo: userInfoFromDB, withCredentials);
 
             // If the user has the User role
             // Automatic creation from ldap, usefull if user do not need fine Role on team.
@@ -240,7 +217,7 @@ namespace BIA.Net.Core.Application.User
             userPermissions.Sort();
 
             // Create Token Dto
-            TokenDto<TUserDataDto> tokenDto = new ()
+            TokenDto<TUserDataDto> tokenDto = new()
             {
                 IdentityKey = identityKey,
                 Id = (userInfoFromDB?.Id).GetValueOrDefault(),
@@ -341,8 +318,9 @@ namespace BIA.Net.Core.Application.User
         /// <param name="identityKey">The identity key.</param>
         /// <param name="userInfoFromDB">The user information.</param>
         /// <param name="globalRoles">The global roles.</param>
+        /// <param name="isFromRoleApi">Indicate if user is created because of an external role api.</param>
         /// <returns>A UserInfoDto.</returns>
-        protected virtual async Task<UserInfoFromDBDto> CreateOrUpdateUserInDatabase(string sid, string identityKey, UserInfoFromDBDto userInfoFromDB, List<string> globalRoles)
+        protected virtual async Task<UserInfoFromDBDto> CreateOrUpdateUserInDatabase(string sid, string identityKey, UserInfoFromDBDto userInfoFromDB, List<string> globalRoles, bool isFromRoleApi = false)
         {
             if (globalRoles.Contains(BiaConstants.Role.User))
             {
@@ -364,7 +342,7 @@ namespace BIA.Net.Core.Application.User
 
                         if (userFromDirectory != default(TUserFromDirectory))
                         {
-                            TUser user = await this.UserAppService.AddUserFromUserDirectoryAsync(identityKey, userFromDirectory);
+                            TUser user = await this.UserAppService.AddUserFromUserDirectoryAsync(identityKey, userFromDirectory, isFromRoleApi);
                             userInfoFromDB = this.UserAppService.CreateUserInfo(user);
                         }
                     }

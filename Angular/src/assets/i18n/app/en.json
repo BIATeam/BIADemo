@@ -196,7 +196,8 @@
     "Begin BIADemo": "To remove in project from here",
     "End BIADemo": "To remove in project up to here",
     "title": "Title",
-    "headerLabel": "Site"
+    "headerLabel": "Site",
+    "uniqueIdentifier": "Unique identifier"
   },
   "translation": {
     "defaultLanguage": "Default (English)"

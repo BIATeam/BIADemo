@@ -250,6 +250,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IMailRepository, MailRepository>();
 #if BIA_FRONT_FEATURE
             collection.AddHttpClient<IIdentityProviderRepository<UserFromDirectory>, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
+            collection.AddTransient<IMailRepository, MailRepository>();
+            collection.AddHttpClient<IRoleApiRepository, RoleApiRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection));
 
             if (biaNetSection.CommonFeatures?.ClientForHub?.IsActive == true)
             {

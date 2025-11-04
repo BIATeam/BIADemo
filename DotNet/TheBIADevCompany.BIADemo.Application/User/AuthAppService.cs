@@ -4,19 +4,15 @@
 namespace TheBIADevCompany.BIADemo.Application.User
 {
     using System.Collections.Generic;
-    using System.Collections.Immutable;
     using System.Security.Principal;
 #if BIA_FRONT_FEATURE
     using System.Threading.Tasks;
 #endif
     using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Application.User;
-    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Domain.User.Entities;
     using BIA.Net.Core.Domain.User.Services;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
@@ -24,11 +20,19 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User.Models;
 #if BIA_FRONT_FEATURE
+    using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Service;
+    using TheBIADevCompany.BIADemo.Application.Site;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.User;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
-#endif
+    using TheBIADevCompany.BIADemo.Domain.RepoContract;
+    using TheBIADevCompany.BIADemo.Domain.Api.RolesForApp;
+    using static TheBIADevCompany.BIADemo.Crosscutting.Common.Rights;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Site;
 
+#endif
     /// <summary>
     /// Auth App Service.
     /// </summary>
@@ -48,9 +52,24 @@ namespace TheBIADevCompany.BIADemo.Application.User
         IOptions<BiaNetSection> biaNetconfiguration,
         IUserDirectoryRepository<UserFromDirectoryDto, UserFromDirectory> userDirectoryHelper,
         ILdapRepositoryHelper ldapRepositoryHelper,
-        IRoleApiRepository roleApiRepository)
+        IRoleApiRepository roleApiRepository,
+        ISiteAppService siteAppService,
+        IMemberAppService memberAppService)
 #if BIA_FRONT_FEATURE
-        : BaseFrontAuthAppService<UserDto, User, RoleId, TeamTypeId, UserFromDirectoryDto, UserFromDirectory, AdditionalInfoDto, UserDataDto>(userAppService, teamAppService, roleAppService, identityProviderRepository, jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper, roleApiRepository), IAuthAppService
+        : BaseFrontAuthAppService<UserDto, User, RoleId, TeamTypeId, UserFromDirectoryDto, UserFromDirectory, AdditionalInfoDto, UserDataDto>(
+            userAppService,
+            teamAppService,
+            roleAppService,
+            identityProviderRepository,
+            jwtFactory,
+            principal,
+            userPermissionDomainService,
+            logger,
+            configuration,
+            biaNetconfiguration,
+            userDirectoryHelper,
+            ldapRepositoryHelper),
+        IAuthAppService
 #else
         : BaseAuthAppService<UserFromDirectoryDto, UserFromDirectory, AdditionalInfoDto, UserDataDto>(jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper), IAuthAppService
 #endif
@@ -64,9 +83,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <returns>
         /// AuthInfo.
         /// </returns>
-        public Task<AuthInfoDto<AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam)
+        public async Task<AuthInfoDto<AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam)
         {
-            return this.LoginOnTeamsAsync(loginParam, TeamConfig.Config);
+            // Begin BIADemo
+            await this.GetUserRolesFromApi(loginParam);
+
+            // End BIADemo
+            return await this.LoginOnTeamsAsync(loginParam, TeamConfig.Config);
         }
 
         /// <summary>
@@ -96,6 +119,58 @@ namespace TheBIADevCompany.BIADemo.Application.User
             {
                 CustomInfo = $"This is a custom additional info for user {this.GetLogin()}",
             };
+        }
+
+        private async Task GetUserRolesFromApi(LoginParamDto loginParam)
+        {
+            var allSites = await siteAppService.GetAllAsync(accessMode: AccessMode.All);
+
+            // Call AppRef with the site Id
+            RoleApi roleApiSection = configuration.GetSection("RoleApi").Get<RoleApi>();
+            Project projectSection = configuration.GetSection("Project").Get<Project>();
+
+
+            string identityKey = this.GetIdentityKey();
+
+            ApiRolesForApp rolesForApp = await roleApiRepository.GetRolesFromApi(projectSection?.ShortName, identityKey);
+
+            foreach (SiteDto site in allSites)
+            {
+                List<string> teamRoles = [];
+
+                // Get list of roles of the user from API if needed
+                if (!string.IsNullOrWhiteSpace(site.UniqueIdentifier) && roleApiSection != null && roleApiSection.GetRolesFromApi)
+                {
+                    ApiSite apiSite = rolesForApp.Sites.FirstOrDefault(apiSite => apiSite.UniqueIdentifier == site.UniqueIdentifier);
+                    if (apiSite != null && apiSite.AppRoles.Count > 0)
+                    {
+                        teamRoles.AddRange(apiSite.AppRoles);
+                    }
+                }
+
+                if (teamRoles.Count != 0)
+                {
+                    // Get Roles Id from Roles and RolesTeamTypes
+                    var allRoles = await this.RoleAppService.GetAllTeamRolesAsync((int)TeamTypeId.Site);
+
+                    // Get UserInfo from database
+                    UserInfoFromDBDto userInfoFromDB = await this.GetUserInfoFromDB(loginParam, identityKey);
+                    if (userInfoFromDB.Id == 0)
+                    {
+                        userInfoFromDB = await this.CreateOrUpdateUserInDatabase(this.GetSid(), identityKey, userInfoFromDB, ["User"], true);
+                    }
+
+                    // Check if user is member of the team. Create the link if it doesn't exist.
+                    await memberAppService.AddUsers(
+                        new MembersDto()
+                        {
+                            Users = [new OptionDto { Id = userInfoFromDB.Id }],
+                            Roles = allRoles.Where(role => teamRoles.Contains(role.Code)).Select(role => new OptionDto { Id = role.Id, DtoState = DtoState.Added }),
+                            TeamId = site.Id,
+                        },
+                        true);
+                }
+            }
         }
 
         // End BIADemo

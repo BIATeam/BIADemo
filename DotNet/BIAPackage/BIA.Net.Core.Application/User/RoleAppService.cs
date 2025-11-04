@@ -70,5 +70,17 @@ namespace BIA.Net.Core.Application.User
                 },
                 filter: x => x.MemberRoles.Select(mr => mr.Member).Any(m => m.TeamId == teamId && m.UserId == userId));
         }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<RoleDto>> GetAllTeamRolesAsync(int teamTypeId)
+        {
+            return await this.Repository.GetAllResultAsync(
+                entity => new RoleDto
+                {
+                    Id = entity.Id,
+                    Code = entity.Code,
+                },
+                filter: x => x.TeamTypes.Any(tt => tt.Id == teamTypeId));
+        }
     }
 }

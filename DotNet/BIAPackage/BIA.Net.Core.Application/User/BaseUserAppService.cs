@@ -129,7 +129,7 @@ namespace BIA.Net.Core.Application.User
         }
 
         /// <inheritdoc />
-        public async Task<TUser> AddUserFromUserDirectoryAsync(string identityKey, TUserFromDirectory userFromDirectory)
+        public async Task<TUser> AddUserFromUserDirectoryAsync(string identityKey, TUserFromDirectory userFromDirectory, bool isFromRoleApi = false)
         {
             if (userFromDirectory != default(TUserFromDirectory))
             {
@@ -141,6 +141,7 @@ namespace BIA.Net.Core.Application.User
                 {
                     throw new ForbiddenException("The identityKey in ldap do not correspond to identityKey in identity.");
                 }
+                user.IsFromRoleApi = isFromRoleApi;
 
                 this.Repository.Add(user);
                 await this.Repository.UnitOfWork.CommitAsync();

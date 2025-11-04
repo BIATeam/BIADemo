@@ -73,5 +73,10 @@ namespace BIA.Net.Core.Domain.User.Entities
         /// Gets or sets the collection of default teams.
         /// </summary>
         public ICollection<UserDefaultTeam> DefaultTeams { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the user has been created through an external API.
+        /// </summary>
+        public bool IsFromRoleApi { get; set; }
     }
 }

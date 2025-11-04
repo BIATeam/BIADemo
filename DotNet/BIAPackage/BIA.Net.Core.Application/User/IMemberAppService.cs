@@ -27,8 +27,9 @@ namespace BIA.Net.Core.Application.User
         /// Add several members or add only right if user already in list.
         /// </summary>
         /// <param name="membersDto">The members DTO.</param>
+        /// <param name="addFromRoleApi">Indicates if the roles to add to the user comes from an external API.</param>
         /// <returns>The result of the creation.</returns>
-        Task<IEnumerable<MemberDto>> AddUsers(MembersDto membersDto);
+        Task<IEnumerable<MemberDto>> AddUsers(MembersDto membersDto, bool addFromRoleApi = false);
 
         /// <summary>
         /// Sets the default role.

@@ -210,5 +210,16 @@ namespace BIA.Net.Core.Common
             /// </summary>
             public const string UserLoginCustomField = "UserLogin";
         }
+
+        /// <summary>
+        /// RoleApi.
+        /// </summary>
+        public static class RoleApi
+        {
+            /// <summary>
+            /// Role is coming from an external API.
+            /// </summary>
+            public const string IsFromRoleApi = "IsFromRoleApi";
+        }
     }
 }

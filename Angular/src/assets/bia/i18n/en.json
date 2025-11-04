@@ -118,6 +118,9 @@
     "signInAs": "Sign in as",
     "success": "Success",
     "synchronize": "Synchronize",
+    "team": {
+      "admins": "Administrators"
+    },
     "theme": "Theme",
     "themeDark": "Dark",
     "themeLight": "Light",

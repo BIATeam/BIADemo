@@ -11,7 +11,7 @@ namespace BIA.Net.Core.Application.User
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
-    using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
@@ -51,7 +51,7 @@ namespace BIA.Net.Core.Application.User
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<MemberDto>> AddUsers(MembersDto membersDto)
+        public async Task<IEnumerable<MemberDto>> AddUsers(MembersDto membersDto, bool addFromRoleApi = false)
         {
             IEnumerable<MemberDto> dtoActualList = await this.GetAllAsync(specification: new DirectSpecification<Member>(s => s.TeamId == membersDto.TeamId));
 
@@ -62,9 +62,23 @@ namespace BIA.Net.Core.Application.User
                 if (existingMember != null)
                 {
                     IEnumerable<OptionDto> newRoles = membersDto.Roles.Where(r => !existingMember.Roles.Any(re => re.Id == r.Id)).ToList();
-                    if (newRoles.Any())
+                    IEnumerable<OptionDto> missingRoles = existingMember.Roles.Where(r => !membersDto.Roles.Any(re => re.Id == r.Id)).ToList();
+                    if (newRoles.Any() || missingRoles.Any())
                     {
-                        existingMember.Roles = existingMember.Roles.Union(newRoles);
+                        if (newRoles.Any())
+                        {
+                            existingMember.Roles = existingMember.Roles.Union(newRoles);
+                            dtoList.Add(existingMember);
+                        }
+
+                        if (addFromRoleApi)
+                        {
+                            foreach (var item in missingRoles)
+                            {
+                                item.DtoState = DtoState.Deleted;
+                            }
+                        }
+
                         existingMember.DtoState = DtoState.Modified;
                         dtoList.Add(existingMember);
                     }
@@ -82,7 +96,7 @@ namespace BIA.Net.Core.Application.User
                 }
             }
 
-            return await this.SaveAsync(dtoList);
+            return await this.SaveAsync(dtoList, mapperMode: addFromRoleApi ? BiaConstants.RoleApi.IsFromRoleApi : null);
         }
 
         /// <inheritdoc />
