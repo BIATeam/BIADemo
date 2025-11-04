@@ -14,9 +14,13 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Site
     public class SiteDto : BaseDtoVersionedTeam
 #pragma warning restore S2094 // Classes should not be empty
     {
+        // Begin BIADemo
+
         /// <summary>
         /// Gets or sets the unique identifier.
         /// </summary>
         public string UniqueIdentifier { get; set; }
+
+        // End BIADemo
     }
 }

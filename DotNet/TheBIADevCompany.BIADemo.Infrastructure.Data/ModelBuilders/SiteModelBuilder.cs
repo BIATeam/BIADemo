@@ -5,7 +5,6 @@
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 {
     using Microsoft.EntityFrameworkCore;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Site.Entities;
 
     /// <summary>
@@ -20,7 +19,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         public static void CreateSiteModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Site>().ToTable("Sites");
+
+            // Begin BIADemo
             modelBuilder.Entity<Site>().HasIndex(u => new { u.UniqueIdentifier }).IsUnique();
+
+            // End BIADemo
         }
     }
 }

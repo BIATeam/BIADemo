@@ -9,7 +9,9 @@ import {
 
 // TODO after creation of CRUD Team Site : adapt the model
 export interface Site extends BaseDto, TeamDto, VersionedDto {
+  // Begin BIADemo
   uniqueIdentifier: string;
+  // End BIADemo
 }
 
 // TODO after creation of CRUD Team Site : adapt the field configuration
@@ -18,10 +20,12 @@ export const siteFieldsConfiguration: BiaFieldsConfig<Site> = {
     Object.assign(new BiaFieldConfig<Site>('title', 'site.title'), {
       isRequired: true,
     }),
+    // Begin BIADemo
     Object.assign(
       new BiaFieldConfig<Site>('uniqueIdentifier', 'site.uniqueIdentifier'),
       {}
     ),
+    // End BIADemo
     Object.assign(new BiaFieldConfig<Site>('admins', 'site.admins'), {
       isEditable: false,
       isVisible: false,

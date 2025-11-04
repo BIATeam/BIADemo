@@ -19,11 +19,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Site.Entities
     public class Site : BaseEntityTeam
     {
         /// <summary>
-        /// Get or set the unique identifier (common to all applications) of a site.
-        /// </summary>
-        public string UniqueIdentifier { get; set; }
-
-        /// <summary>
         /// Add row version timestamp in table Site.
         /// </summary>
         [Timestamp]
@@ -31,6 +26,12 @@ namespace TheBIADevCompany.BIADemo.Domain.Site.Entities
         public byte[] RowVersionSite { get; set; }
 
         // Begin BIADemo
+
+        /// <summary>
+        /// Get or set the unique identifier (common to all applications) of a site.
+        /// </summary>
+        public string UniqueIdentifier { get; set; }
+
 
         /// <summary>
         /// Gets or sets the Maintenance contracts.
