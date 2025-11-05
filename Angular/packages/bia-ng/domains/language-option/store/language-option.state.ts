@@ -8,7 +8,7 @@ import * as fromLanguageOptions from './language-options-reducer';
 
 export namespace DomainLanguageOptionsStore {
   export interface LanguageOptionsState {
-    languageOptions: fromLanguageOptions.OptionDtoState;
+    languageOptions: fromLanguageOptions.LanguageOptionState;
   }
 
   /** Provide reducers with AoT-compilation compliance */
