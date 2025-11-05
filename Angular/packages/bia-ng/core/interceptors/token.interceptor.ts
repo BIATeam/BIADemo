@@ -195,7 +195,9 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   protected isTokenExpired(token: Token) {
-    return token.expiredAt < Math.floor(Date.now() / 1000);
+    return (
+      token.expiredAt > 0 && token.expiredAt < Math.floor(Date.now() / 1000)
+    );
   }
 }
 
