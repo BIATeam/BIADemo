@@ -122,7 +122,7 @@ export class BiaFormComponent<TDto extends { id: number | string }>
 
   constructor(
     public formBuilder: UntypedFormBuilder,
-    private renderer: Renderer2
+    protected renderer: Renderer2
   ) {}
 
   get readOnly(): boolean {
