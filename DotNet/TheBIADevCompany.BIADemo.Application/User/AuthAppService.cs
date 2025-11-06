@@ -51,7 +51,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
         IOptions<BiaNetSection> biaNetconfiguration,
         IUserDirectoryRepository<UserFromDirectoryDto, UserFromDirectory> userDirectoryHelper,
         ILdapRepositoryHelper ldapRepositoryHelper,
-        IRoleApiRepository roleApiRepository,
+
+        // Begin BIADemo
+        IBiaDemoRoleApiRepository roleApiRepository,
+
+        // End BIADemo
         ISiteAppService siteAppService,
         IMemberAppService memberAppService)
 #if BIA_FRONT_FEATURE

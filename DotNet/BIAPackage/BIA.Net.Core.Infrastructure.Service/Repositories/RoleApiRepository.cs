@@ -4,33 +4,33 @@
 
 namespace BIA.Net.Core.Infrastructure.Service.Repositories
 {
-    using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Service.Repositories.BiaApi;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
-    using TheBIADevCompany.BIADemo.Domain.Api.RolesForApp;
-    using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
     /// <summary>
     /// Poppler Service Remote Repository.
     /// </summary>
-    public class RoleApiRepository : BiaWebApiRepository, IRoleApiRepository
+    /// <typeparam name="T">Type of object returned by the role API.</typeparam>
+    public abstract class RoleApiRepository<T> : BiaWebApiRepository, IRoleApiRepository<T>
+        where T : class
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RoleApiRepository"/> class.
+        /// Initializes a new instance of the <see cref="RoleApiRepository{T}"/> class.
         /// </summary>
         /// <param name="httpClient">The HTTP client.</param>
         /// <param name="configuration">The configuration.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="distributedCache">The distributed cache.</param>
-        public RoleApiRepository(
+        protected RoleApiRepository(
             HttpClient httpClient,
             IConfiguration configuration,
-            ILogger<RoleApiRepository> logger,
+            ILogger<RoleApiRepository<T>> logger,
             IBiaDistributedCache distributedCache)
             : base(
                 httpClient,
@@ -47,10 +47,10 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         protected RoleApi RoleApi { get; set; }
 
         /// <inheritdoc />
-        public async Task<ApiRolesForApp> GetRolesFromApi(string appName, string userLogin)
+        public async Task<T> GetRolesFromApi(string appName, string userLogin)
         {
             string url = this.RoleApi.EndpointUrl;
-            var result = await this.GetAsync<ApiRolesForApp>(
+            var result = await this.GetAsync<T>(
                 $"{this.BiaWebApi.BaseAddress}{url}?appName={appName}&userLogin={userLogin}");
             if (result.IsSuccessStatusCode && result.Result != null)
             {

@@ -37,6 +37,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 #if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
+    using TheBIADevCompany.BIADemo.Domain.Api.RolesForApp;
 #endif
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
 #if BIA_FRONT_FEATURE
@@ -250,7 +251,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IMailRepository, MailRepository>();
 #if BIA_FRONT_FEATURE
             collection.AddHttpClient<IIdentityProviderRepository<UserFromDirectory>, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
-            collection.AddHttpClient<IRoleApiRepository, RoleApiRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection));
 
             if (biaNetSection.CommonFeatures?.ClientForHub?.IsActive == true)
             {
@@ -269,6 +269,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddHttpClient<IRemotePlaneRepository, RemotePlaneRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
             collection.AddSingleton<Infrastructure.Service.Repositories.DocumentAnalysis.PdfAnalysisRepository>();
             collection.AddSingleton<IDocumentAnalysisRepositoryFactory, Infrastructure.Service.Repositories.DocumentAnalysis.DocumentAnalysisRepositoryFactory>();
+            collection.AddHttpClient<IBiaDemoRoleApiRepository, BiaDemoRoleApiRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection));
 
             // End BIADemo
 #endif
