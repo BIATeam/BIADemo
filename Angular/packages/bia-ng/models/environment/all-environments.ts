@@ -4,6 +4,7 @@ export interface AllEnvironments {
   enableNotifications: boolean;
   enableWorkerService: boolean;
   urlAuth: string;
+  urlAppSettings: string;
   urlLog: string;
   urlEnv: string;
   urlAppIcon: string;

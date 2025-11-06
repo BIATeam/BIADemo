@@ -63,6 +63,11 @@ export class TokenInterceptor implements HttpInterceptor {
         .toLowerCase()
         .indexOf(BiaAppConstantsService.allEnvironments.urlEnv.toLowerCase()) >
         -1 ||
+      url
+        .toLowerCase()
+        .indexOf(
+          BiaAppConstantsService.allEnvironments.urlAppSettings.toLowerCase()
+        ) > -1 ||
       url.toLowerCase().indexOf('./assets/') > -1 ||
       (this.appSettingsService.appSettings?.keycloak?.isActive === true &&
         url
@@ -195,9 +200,7 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   protected isTokenExpired(token: Token) {
-    return (
-      token.expiredAt > 0 && token.expiredAt < Math.floor(Date.now() / 1000)
-    );
+    return token.expiredAt < Math.floor(Date.now() / 1000);
   }
 }
 
