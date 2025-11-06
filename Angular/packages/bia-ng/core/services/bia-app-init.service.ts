@@ -24,9 +24,9 @@ import { BiaAppConstantsService } from './bia-app-constants.service';
   providedIn: 'root',
 })
 export class BiaAppInitService implements OnDestroy {
-  private readonly keycloakService = inject(Keycloak);
-  private readonly keycloakEventSignal = inject(KEYCLOAK_EVENT_SIGNAL);
-  private keycloakReady$: BehaviorSubject<boolean> =
+  protected readonly keycloakService = inject(Keycloak);
+  protected readonly keycloakEventSignal = inject(KEYCLOAK_EVENT_SIGNAL);
+  protected readonly keycloakReady$: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
   constructor(
@@ -44,10 +44,12 @@ export class BiaAppInitService implements OnDestroy {
       this.store.dispatch(CoreAppSettingsActions.loadAll());
       this.getObsAppSettings()
         .pipe(
-          switchMap((appSettings: AppSettings | null) => {
+          filter((appSettings: AppSettings | null) => appSettings !== null),
+          switchMap(() => {
             return this.keycloakReady$.pipe(
               filter(x => x === true),
               switchMap(() => {
+                this.loginOnKeycloak();
                 return this.getObsAuthInfo();
               })
             );
@@ -65,27 +67,31 @@ export class BiaAppInitService implements OnDestroy {
     });
   }
 
-  private setupKeycloakEvents(): void {
+  protected setupKeycloakEvents(): void {
     effect(() => {
       const keycloakEvent = this.keycloakEventSignal();
 
+      if (keycloakEvent.type === KeycloakEventType.Ready) {
+        this.keycloakReady$.next(true);
+      }
+
       if (
         keycloakEvent.type === KeycloakEventType.AuthLogout ||
-        keycloakEvent.type === KeycloakEventType.Ready ||
         keycloakEvent.type === KeycloakEventType.TokenExpired
       ) {
-        if (this.keycloakService.authenticated !== true) {
-          this.keycloakService.login({
-            redirectUri: window.location.href,
-            idpHint:
-              this.appSettingsService.appSettings?.keycloak?.configuration
-                ?.idpHint,
-          });
-        } else {
-          this.keycloakReady$.next(true);
-        }
+        this.loginOnKeycloak();
       }
     });
+  }
+
+  protected loginOnKeycloak(): void {
+    if (this.keycloakService.authenticated !== true) {
+      this.keycloakService.login({
+        redirectUri: window.location.href,
+        idpHint:
+          this.appSettingsService.appSettings?.keycloak?.configuration?.idpHint,
+      });
+    }
   }
 
   protected getObsAuthInfo(): Observable<AuthInfo> {
@@ -118,8 +124,6 @@ export class BiaAppInitService implements OnDestroy {
   }
 
   ngOnDestroy() {
-    // Keycloak events using Angular effects are automatically cleaned up
-
     if (BiaAppConstantsService.allEnvironments.enableNotifications === true) {
       this.notificationSignalRService.destroy();
     }
