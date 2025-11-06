@@ -1,17 +1,16 @@
 import { HttpBackend, HttpRequest } from '@angular/common/http';
-import { Injectable, NgZone } from '@angular/core';
-import { KeycloakService } from 'keycloak-angular';
+import { inject, Injectable, NgZone } from '@angular/core';
+import Keycloak from 'keycloak-js';
 import { NGXLoggerServerService } from 'ngx-logger';
-import { Observable, from } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AppSettingsService } from '../app-settings/services/app-settings.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BiaNgxLoggerServerService extends NGXLoggerServerService {
+  private readonly keycloakService = inject(Keycloak);
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    protected keycloakService: KeycloakService,
     protected httpBackend: HttpBackend,
     protected appSettingsService: AppSettingsService,
     protected ngZone: NgZone
@@ -22,12 +21,11 @@ export class BiaNgxLoggerServerService extends NGXLoggerServerService {
   protected override alterHttpRequest(
     httpRequest: HttpRequest<any>
   ): HttpRequest<any> | Observable<HttpRequest<any>> {
-    if (this.appSettingsService.appSettings?.keycloak?.isActive === true) {
-      return from(
-        this.keycloakService
-          .getToken()
-          .then(token => this.addToken(httpRequest, token))
-      );
+    if (
+      this.appSettingsService.appSettings?.keycloak?.isActive === true &&
+      this.keycloakService.token
+    ) {
+      return this.addToken(httpRequest, this.keycloakService.token);
     } else {
       return super.alterHttpRequest(httpRequest);
     }

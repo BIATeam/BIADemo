@@ -9,6 +9,7 @@ import {
   Optional,
   SkipSelf,
   inject,
+  isDevMode,
   provideAppInitializer,
 } from '@angular/core';
 
@@ -23,7 +24,7 @@ import { biaTokenInterceptor } from './interceptors/token.interceptor';
 // Services
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { KeycloakAngularModule } from 'keycloak-angular';
+import { provideKeycloak } from 'keycloak-angular';
 import {
   AllEnvironments,
   AppEnvironment,
@@ -43,13 +44,7 @@ export function initializeApp(appInitService: BiaAppInitService) {
   };
 }
 
-const MODULES = [
-  TeamModule,
-  AppSettingsModule,
-  ServiceWorkerModule,
-  // eslint-disable-next-line @typescript-eslint/no-deprecated
-  KeycloakAngularModule,
-];
+const MODULES = [TeamModule, AppSettingsModule, ServiceWorkerModule];
 
 /* Warning: the order matters */
 const INTERCEPTORS = [
@@ -78,6 +73,18 @@ const BASE_HREF = [
   imports: [...MODULES],
   exports: [...MODULES],
   providers: [
+    provideKeycloak({
+      config: {
+        url: 'https://sep-keycloak-dm.dev.apphub.safran',
+        realm: 'DM-Realm',
+        clientId: 'dmapp',
+      },
+      initOptions: {
+        onLoad: 'check-sso',
+        checkLoginIframe: false,
+        enableLogging: isDevMode(),
+      },
+    }),
     ...INTERCEPTORS,
     ...SERVICES,
     ...BASE_HREF,
