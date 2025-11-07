@@ -1,5 +1,8 @@
+import { isDevMode } from '@angular/core';
+import { provideKeycloak } from 'keycloak-angular';
 import { KeycloakConfig } from 'keycloak-js';
-import { AppSettingsDas, GenericDas } from 'packages/bia-ng/core/public-api';
+import { AppSettingsDas } from '../app-settings/public-api';
+import { GenericDas } from './generic-das.service';
 
 export async function loadKeycloakConfig(): Promise<KeycloakConfig | null> {
   try {
@@ -23,3 +26,14 @@ export async function loadKeycloakConfig(): Promise<KeycloakConfig | null> {
 
   return null;
 }
+
+export const provideKeycloakAngular = (config: KeycloakConfig) => {
+  return provideKeycloak({
+    config: config,
+    initOptions: {
+      onLoad: 'check-sso',
+      checkLoginIframe: false,
+      enableLogging: isDevMode(),
+    },
+  });
+};

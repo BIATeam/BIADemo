@@ -3,7 +3,6 @@ import {
   LOCALE_ID,
   enableProdMode,
   importProvidersFrom,
-  isDevMode,
 } from '@angular/core';
 
 import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
@@ -13,7 +12,6 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { provideKeycloak } from 'keycloak-angular';
 import { LoggerModule, TOKEN_LOGGER_SERVER_SERVICE } from 'ngx-logger';
 import {
   BiaEnvironmentService,
@@ -22,6 +20,8 @@ import {
   BiaSignalRService,
   BiaTranslateHttpLoader,
   getCurrentCulture,
+  loadKeycloakConfig,
+  provideKeycloakAngular,
 } from 'packages/bia-ng/core/public-api';
 import { ViewsEffects, ViewsStore } from 'packages/bia-ng/shared/public-api';
 import { AppRoutingModule } from './app/app-routing.module';
@@ -29,7 +29,6 @@ import { AppComponent } from './app/app.component';
 import { buildSpecificModules } from './app/build-specifics/bia-build-specifics';
 import { CoreModule } from './app/core/core.module';
 import { HomeModule } from './app/features/home/home.module';
-import { loadKeycloakConfig } from './app/keycloak.config';
 import { appConfig } from './app/shared/theme';
 import { ROOT_REDUCERS, metaReducers } from './app/store/state';
 import { environment } from './environments/environment';
@@ -90,18 +89,7 @@ async function bootstrap() {
         { provide: ErrorHandler, useClass: BiaErrorHandler },
         BiaSignalRService,
         // Add Keycloak provider if configuration is available
-        ...(keycloakConfig
-          ? [
-              provideKeycloak({
-                config: keycloakConfig,
-                initOptions: {
-                  onLoad: 'check-sso',
-                  checkLoginIframe: false,
-                  enableLogging: isDevMode(),
-                },
-              }),
-            ]
-          : []),
+        ...(keycloakConfig ? [provideKeycloakAngular(keycloakConfig)] : []),
         ...appConfig.providers,
       ],
     });
