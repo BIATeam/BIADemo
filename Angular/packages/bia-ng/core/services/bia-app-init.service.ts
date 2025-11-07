@@ -24,8 +24,12 @@ import { BiaAppConstantsService } from './bia-app-constants.service';
   providedIn: 'root',
 })
 export class BiaAppInitService implements OnDestroy {
-  protected readonly keycloakService = inject(Keycloak);
-  protected readonly keycloakEventSignal = inject(KEYCLOAK_EVENT_SIGNAL);
+  protected readonly keycloakService: Keycloak | null = inject(Keycloak, {
+    optional: true,
+  });
+  protected readonly keycloakEventSignal: any = inject(KEYCLOAK_EVENT_SIGNAL, {
+    optional: true,
+  });
   protected readonly keycloakReady$: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
@@ -36,7 +40,7 @@ export class BiaAppInitService implements OnDestroy {
     protected notificationSignalRService: NotificationSignalRService,
     protected appSettingsService: AppSettingsService
   ) {
-    this.setupKeycloakEvents();
+    this.initKeycloak();
   }
 
   public initAuth() {
@@ -67,7 +71,19 @@ export class BiaAppInitService implements OnDestroy {
     });
   }
 
+  protected initKeycloak(): void {
+    if (this.keycloakService && this.keycloakEventSignal) {
+      this.setupKeycloakEvents();
+    } else {
+      this.keycloakReady$.next(true);
+    }
+  }
+
   protected setupKeycloakEvents(): void {
+    if (!this.keycloakEventSignal) {
+      return;
+    }
+
     effect(() => {
       const keycloakEvent = this.keycloakEventSignal();
 
@@ -85,12 +101,18 @@ export class BiaAppInitService implements OnDestroy {
   }
 
   protected loginOnKeycloak(): void {
-    if (this.keycloakService.authenticated !== true) {
-      this.keycloakService.login({
-        redirectUri: window.location.href,
-        idpHint:
-          this.appSettingsService.appSettings?.keycloak?.configuration?.idpHint,
-      });
+    if (
+      this.appSettingsService.appSettings?.keycloak?.isActive === true &&
+      this.keycloakService
+    ) {
+      if (this.keycloakService.authenticated !== true) {
+        this.keycloakService.login({
+          redirectUri: window.location.href,
+          idpHint:
+            this.appSettingsService.appSettings?.keycloak?.configuration
+              ?.idpHint,
+        });
+      }
     }
   }
 

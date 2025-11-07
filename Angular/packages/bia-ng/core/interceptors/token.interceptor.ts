@@ -23,7 +23,9 @@ import { RefreshTokenService } from '../services/refresh-token.service';
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
   protected isRefreshing = false;
-  private readonly keycloakService = inject(Keycloak);
+  protected readonly keycloakService: Keycloak | null = inject(Keycloak, {
+    optional: true,
+  });
 
   constructor(
     public authService: AuthService,
@@ -82,7 +84,7 @@ export class TokenInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    return of(this.keycloakService.token || '').pipe(
+    return of(this.keycloakService?.token || '').pipe(
       switchMap(jwtToken => {
         if (jwtToken?.length > 0) {
           request = this.addToken(request, jwtToken);
@@ -175,7 +177,7 @@ export class TokenInterceptor implements HttpInterceptor {
     );
 
     if (this.appSettingsService.appSettings?.keycloak?.isActive === true) {
-      return from([this.keycloakService.authenticated]).pipe(
+      return from([this.keycloakService?.authenticated]).pipe(
         filter(x => x === true),
         switchMap(() => obs$)
       );

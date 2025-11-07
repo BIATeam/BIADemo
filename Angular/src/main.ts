@@ -3,6 +3,7 @@ import {
   LOCALE_ID,
   enableProdMode,
   importProvidersFrom,
+  isDevMode,
 } from '@angular/core';
 
 import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
@@ -12,6 +13,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { provideKeycloak } from 'keycloak-angular';
 import { LoggerModule, TOKEN_LOGGER_SERVER_SERVICE } from 'ngx-logger';
 import {
   BiaEnvironmentService,
@@ -39,49 +41,92 @@ if (environment.production) {
   enableProdMode();
 }
 
-bootstrapApplication(AppComponent, {
-  providers: [
-    importProvidersFrom(
-      LoggerModule.forRoot(BiaEnvironmentService.getLoggingConf(), {
-        serverProvider: {
-          provide: TOKEN_LOGGER_SERVER_SERVICE,
-          useClass: BiaNgxLoggerServerService,
-        },
-      }),
-      BrowserModule,
-      StoreModule.forRoot(ROOT_REDUCERS, {
-        metaReducers,
-        runtimeChecks: {
-          strictActionImmutability: false,
-        },
-      }) /* Initialise the Central Store with Application's main reducer*/,
-      buildSpecificModules,
-      EffectsModule.forRoot([]) /* Start monitoring app's side effects */,
-      AppRoutingModule,
-      TranslateModule.forRoot({
-        loader: {
-          provide: TranslateLoader,
-          useFactory: createTranslateLoader,
-          deps: [HttpClient],
-        },
-      }),
-      CoreModule,
-      HomeModule,
-      ServiceWorkerModule.register('ngsw-worker.js', {
-        enabled: environment.production,
-        // Register the ServiceWorker as soon as the app is stable
-        // or after 30 seconds (whichever comes first).
-        registrationStrategy: 'registerWhenStable:30000',
-      }),
-      StoreModule.forFeature('views', ViewsStore.reducers),
-      EffectsModule.forFeature([ViewsEffects])
-    ),
-    DatePipe,
-    CurrencyPipe,
-    DecimalPipe,
-    { provide: LOCALE_ID, useFactory: getCurrentCulture },
-    { provide: ErrorHandler, useClass: BiaErrorHandler },
-    BiaSignalRService,
-    ...appConfig.providers,
-  ],
-}).catch(err => console.error(err));
+// Load Keycloak configuration and bootstrap the app
+async function bootstrap() {
+  let keycloakConfig = null;
+
+  // Load app settings to get Keycloak configuration
+  const response = await fetch(environment.apiUrl + '/AppSettings');
+
+  if (response.ok) {
+    const appSettings = await response.json();
+    if (
+      appSettings?.keycloak?.isActive &&
+      appSettings?.keycloak?.configuration
+    ) {
+      keycloakConfig = {
+        url: appSettings.keycloak.baseUrl,
+        realm: appSettings.keycloak.configuration.realm,
+        clientId: appSettings.keycloak.api.tokenConf.clientId,
+      };
+      console.info('Keycloak configuration loaded successfully');
+    }
+  }
+
+  try {
+    await bootstrapApplication(AppComponent, {
+      providers: [
+        importProvidersFrom(
+          LoggerModule.forRoot(BiaEnvironmentService.getLoggingConf(), {
+            serverProvider: {
+              provide: TOKEN_LOGGER_SERVER_SERVICE,
+              useClass: BiaNgxLoggerServerService,
+            },
+          }),
+          BrowserModule,
+          StoreModule.forRoot(ROOT_REDUCERS, {
+            metaReducers,
+            runtimeChecks: {
+              strictActionImmutability: false,
+            },
+          }) /* Initialise the Central Store with Application's main reducer*/,
+          buildSpecificModules,
+          EffectsModule.forRoot([]) /* Start monitoring app's side effects */,
+          AppRoutingModule,
+          TranslateModule.forRoot({
+            loader: {
+              provide: TranslateLoader,
+              useFactory: createTranslateLoader,
+              deps: [HttpClient],
+            },
+          }),
+          CoreModule,
+          HomeModule,
+          ServiceWorkerModule.register('ngsw-worker.js', {
+            enabled: environment.production,
+            // Register the ServiceWorker as soon as the app is stable
+            // or after 30 seconds (whichever comes first).
+            registrationStrategy: 'registerWhenStable:30000',
+          }),
+          StoreModule.forFeature('views', ViewsStore.reducers),
+          EffectsModule.forFeature([ViewsEffects])
+        ),
+        DatePipe,
+        CurrencyPipe,
+        DecimalPipe,
+        { provide: LOCALE_ID, useFactory: getCurrentCulture },
+        { provide: ErrorHandler, useClass: BiaErrorHandler },
+        BiaSignalRService,
+        // Add Keycloak provider if configuration is available
+        ...(keycloakConfig
+          ? [
+              provideKeycloak({
+                config: keycloakConfig,
+                initOptions: {
+                  onLoad: 'check-sso',
+                  checkLoginIframe: false,
+                  enableLogging: isDevMode(),
+                },
+              }),
+            ]
+          : []),
+        ...appConfig.providers,
+      ],
+    });
+  } catch (error) {
+    console.error('Failed to bootstrap application:', error);
+  }
+}
+
+// Start the bootstrap process
+bootstrap();
