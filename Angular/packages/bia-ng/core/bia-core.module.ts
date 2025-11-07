@@ -23,7 +23,6 @@ import { biaTokenInterceptor } from './interceptors/token.interceptor';
 // Services
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { KeycloakAngularModule } from 'keycloak-angular';
 import {
   AllEnvironments,
   AppEnvironment,
@@ -43,13 +42,7 @@ export function initializeApp(appInitService: BiaAppInitService) {
   };
 }
 
-const MODULES = [
-  TeamModule,
-  AppSettingsModule,
-  ServiceWorkerModule,
-  // eslint-disable-next-line @typescript-eslint/no-deprecated
-  KeycloakAngularModule,
-];
+const MODULES = [TeamModule, AppSettingsModule, ServiceWorkerModule];
 
 /* Warning: the order matters */
 const INTERCEPTORS = [

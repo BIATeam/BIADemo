@@ -7,11 +7,11 @@ import {
   HttpRequest,
   HttpStatusCode,
 } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { KeycloakService } from 'keycloak-angular';
-import { Observable, from, throwError } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { from, Observable, of, throwError } from 'rxjs';
 import { catchError, filter, finalize, switchMap, take } from 'rxjs/operators';
 // import { allEnvironments } from 'src/environments/all-environments';
+import Keycloak from 'keycloak-js';
 import { HttpStatusCodeCustom } from 'packages/bia-ng/models/enum/public-api';
 import { AuthInfo, Token } from 'packages/bia-ng/models/public-api';
 import { AppSettingsService } from '../app-settings/services/app-settings.service';
@@ -23,11 +23,13 @@ import { RefreshTokenService } from '../services/refresh-token.service';
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
   protected isRefreshing = false;
+  protected readonly keycloakService: Keycloak | null = inject(Keycloak, {
+    optional: true,
+  });
 
   constructor(
     public authService: AuthService,
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    public keycloakService: KeycloakService,
+
     protected appSettingsService: AppSettingsService
   ) {}
 
@@ -82,7 +84,7 @@ export class TokenInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    return from(this.keycloakService.getToken()).pipe(
+    return of(this.keycloakService?.token || '').pipe(
       switchMap(jwtToken => {
         if (jwtToken?.length > 0) {
           request = this.addToken(request, jwtToken);
@@ -175,7 +177,7 @@ export class TokenInterceptor implements HttpInterceptor {
     );
 
     if (this.appSettingsService.appSettings?.keycloak?.isActive === true) {
-      return from([this.keycloakService.isLoggedIn()]).pipe(
+      return from([this.keycloakService?.authenticated]).pipe(
         filter(x => x === true),
         switchMap(() => obs$)
       );

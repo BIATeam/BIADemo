@@ -20,6 +20,8 @@ import {
   BiaSignalRService,
   BiaTranslateHttpLoader,
   getCurrentCulture,
+  loadKeycloakConfig,
+  provideKeycloakAngular,
 } from 'packages/bia-ng/core/public-api';
 import { ViewsEffects, ViewsStore } from 'packages/bia-ng/shared/public-api';
 import { AppRoutingModule } from './app/app-routing.module';
@@ -39,49 +41,62 @@ if (environment.production) {
   enableProdMode();
 }
 
-bootstrapApplication(AppComponent, {
-  providers: [
-    importProvidersFrom(
-      LoggerModule.forRoot(BiaEnvironmentService.getLoggingConf(), {
-        serverProvider: {
-          provide: TOKEN_LOGGER_SERVER_SERVICE,
-          useClass: BiaNgxLoggerServerService,
-        },
-      }),
-      BrowserModule,
-      StoreModule.forRoot(ROOT_REDUCERS, {
-        metaReducers,
-        runtimeChecks: {
-          strictActionImmutability: false,
-        },
-      }) /* Initialise the Central Store with Application's main reducer*/,
-      buildSpecificModules,
-      EffectsModule.forRoot([]) /* Start monitoring app's side effects */,
-      AppRoutingModule,
-      TranslateModule.forRoot({
-        loader: {
-          provide: TranslateLoader,
-          useFactory: createTranslateLoader,
-          deps: [HttpClient],
-        },
-      }),
-      CoreModule,
-      HomeModule,
-      ServiceWorkerModule.register('ngsw-worker.js', {
-        enabled: environment.production,
-        // Register the ServiceWorker as soon as the app is stable
-        // or after 30 seconds (whichever comes first).
-        registrationStrategy: 'registerWhenStable:30000',
-      }),
-      StoreModule.forFeature('views', ViewsStore.reducers),
-      EffectsModule.forFeature([ViewsEffects])
-    ),
-    DatePipe,
-    CurrencyPipe,
-    DecimalPipe,
-    { provide: LOCALE_ID, useFactory: getCurrentCulture },
-    { provide: ErrorHandler, useClass: BiaErrorHandler },
-    BiaSignalRService,
-    ...appConfig.providers,
-  ],
-}).catch(err => console.error(err));
+async function bootstrap() {
+  const keycloakConfig = await loadKeycloakConfig();
+
+  try {
+    await bootstrapApplication(AppComponent, {
+      providers: [
+        importProvidersFrom(
+          LoggerModule.forRoot(BiaEnvironmentService.getLoggingConf(), {
+            serverProvider: {
+              provide: TOKEN_LOGGER_SERVER_SERVICE,
+              useClass: BiaNgxLoggerServerService,
+            },
+          }),
+          BrowserModule,
+          StoreModule.forRoot(ROOT_REDUCERS, {
+            metaReducers,
+            runtimeChecks: {
+              strictActionImmutability: false,
+            },
+          }) /* Initialise the Central Store with Application's main reducer*/,
+          buildSpecificModules,
+          EffectsModule.forRoot([]) /* Start monitoring app's side effects */,
+          AppRoutingModule,
+          TranslateModule.forRoot({
+            loader: {
+              provide: TranslateLoader,
+              useFactory: createTranslateLoader,
+              deps: [HttpClient],
+            },
+          }),
+          CoreModule,
+          HomeModule,
+          ServiceWorkerModule.register('ngsw-worker.js', {
+            enabled: environment.production,
+            // Register the ServiceWorker as soon as the app is stable
+            // or after 30 seconds (whichever comes first).
+            registrationStrategy: 'registerWhenStable:30000',
+          }),
+          StoreModule.forFeature('views', ViewsStore.reducers),
+          EffectsModule.forFeature([ViewsEffects])
+        ),
+        DatePipe,
+        CurrencyPipe,
+        DecimalPipe,
+        { provide: LOCALE_ID, useFactory: getCurrentCulture },
+        { provide: ErrorHandler, useClass: BiaErrorHandler },
+        BiaSignalRService,
+        // Add Keycloak provider if configuration is available
+        ...(keycloakConfig ? [provideKeycloakAngular(keycloakConfig)] : []),
+        ...appConfig.providers,
+      ],
+    });
+  } catch (error) {
+    console.error('Failed to bootstrap application:', error);
+  }
+}
+
+// Start the bootstrap process
+bootstrap();

@@ -1,13 +1,16 @@
-import { Injectable, isDevMode, OnDestroy } from '@angular/core';
-import { Store } from '@ngrx/store';
 import {
-  KeycloakEventLegacy,
-  KeycloakEventTypeLegacy,
-  KeycloakService,
-} from 'keycloak-angular';
+  effect,
+  inject,
+  Injectable,
+  isDevMode,
+  OnDestroy,
+} from '@angular/core';
+import { Store } from '@ngrx/store';
+import { KEYCLOAK_EVENT_SIGNAL, KeycloakEventType } from 'keycloak-angular';
+import Keycloak from 'keycloak-js';
 import { AppSettings, AuthInfo } from 'packages/bia-ng/models/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
-import { Observable, Subscription, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, filter, first, switchMap } from 'rxjs/operators';
 import { AppSettingsDas } from '../app-settings/services/app-settings-das.service';
 import { AppSettingsService } from '../app-settings/services/app-settings.service';
@@ -17,36 +20,43 @@ import { NotificationSignalRService } from '../notification/services/notificatio
 import { AuthService } from './auth.service';
 import { BiaAppConstantsService } from './bia-app-constants.service';
 
-// const STORAGE_KEYCLOAK_TOKEN = 'KeyCloak_Token';
-// const STORAGE_KEYCLOAK_REFRESHTOKEN = 'KeyCloak_RefreshToken';
-// const STORAGE_KEYCLOAK_IDTOKEN = 'KeyCloak_IdToken';
-
 @Injectable({
   providedIn: 'root',
 })
 export class BiaAppInitService implements OnDestroy {
-  protected sub = new Subscription();
+  protected readonly keycloakService: Keycloak | null = inject(Keycloak, {
+    optional: true,
+  });
+  protected readonly keycloakEventSignal: any = inject(KEYCLOAK_EVENT_SIGNAL, {
+    optional: true,
+  });
+  protected readonly keycloakReady$: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+
   constructor(
     protected authService: AuthService,
     protected appSettingsDas: AppSettingsDas,
     protected store: Store<BiaAppState>,
     protected notificationSignalRService: NotificationSignalRService,
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    protected keycloakService: KeycloakService,
     protected appSettingsService: AppSettingsService
-  ) {}
+  ) {
+    this.initKeycloak();
+  }
 
   public initAuth() {
     return new Promise<void>(resolve => {
       this.store.dispatch(CoreAppSettingsActions.loadAll());
       this.getObsAppSettings()
         .pipe(
-          switchMap((appSettings: AppSettings | null) => {
-            if (appSettings?.keycloak?.isActive === true) {
-              return this.initKeycloack(appSettings);
-            } else {
-              return this.getObsAuthInfo();
-            }
+          filter((appSettings: AppSettings | null) => appSettings !== null),
+          switchMap(() => {
+            return this.keycloakReady$.pipe(
+              filter(x => x === true),
+              switchMap(() => {
+                this.loginOnKeycloak();
+                return this.getObsAuthInfo();
+              })
+            );
           })
         )
         .subscribe(() => {
@@ -61,87 +71,49 @@ export class BiaAppInitService implements OnDestroy {
     });
   }
 
-  protected initKeycloack(appSettings: AppSettings): Observable<AuthInfo> {
-    this.initEventKeycloakLogin();
-    const obs$: Observable<AuthInfo> = this.initEventKeycloakSuccess();
+  protected initKeycloak(): void {
+    if (this.keycloakService && this.keycloakEventSignal) {
+      this.setupKeycloakEvents();
+    } else {
+      this.keycloakReady$.next(true);
+    }
+  }
 
-    // const token = localStorage.getItem(STORAGE_KEYCLOAK_TOKEN);
-    // const refreshToken = localStorage.getItem(STORAGE_KEYCLOAK_REFRESHTOKEN);
-    // const idToken = localStorage.getItem(STORAGE_KEYCLOAK_IDTOKEN);
+  protected setupKeycloakEvents(): void {
+    if (!this.keycloakEventSignal) {
+      return;
+    }
 
-    this.keycloakService.init({
-      config: {
-        url: appSettings.keycloak?.baseUrl,
-        realm: appSettings.keycloak?.configuration.realm,
-        clientId: appSettings.keycloak?.api.tokenConf.clientId,
-      },
-      enableBearerInterceptor: false,
-      initOptions: {
-        onLoad: 'check-sso',
-        checkLoginIframe: false,
-        enableLogging: isDevMode(),
-        // token: token ?? undefined,
-        // refreshToken: refreshToken ?? undefined,
-        // idToken: idToken ?? undefined,
-      },
+    effect(() => {
+      const keycloakEvent = this.keycloakEventSignal();
+
+      if (keycloakEvent.type === KeycloakEventType.Ready) {
+        this.keycloakReady$.next(true);
+      }
+
+      if (
+        keycloakEvent.type === KeycloakEventType.AuthLogout ||
+        keycloakEvent.type === KeycloakEventType.TokenExpired
+      ) {
+        this.loginOnKeycloak();
+      }
     });
-
-    return obs$;
   }
 
-  protected initEventKeycloakSuccess(): Observable<AuthInfo> {
-    return this.keycloakService.keycloakEvents$.asObservable().pipe(
-      filter(
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        (keycloakEvent: KeycloakEventLegacy) =>
-          // eslint-disable-next-line @typescript-eslint/no-deprecated
-          keycloakEvent?.type === KeycloakEventTypeLegacy.OnAuthSuccess ||
-          // eslint-disable-next-line @typescript-eslint/no-deprecated
-          keycloakEvent?.type === KeycloakEventTypeLegacy.OnAuthRefreshSuccess
-      ),
-      first(),
-      switchMap(() => {
-        return this.getObsAuthInfo();
-      })
-    );
-  }
-
-  protected initEventKeycloakLogin(): void {
-    this.sub.add(
-      this.keycloakService.keycloakEvents$
-        .asObservable()
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        .subscribe(async (keycloakEvent: KeycloakEventLegacy) => {
-          if (
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
-            keycloakEvent?.type === KeycloakEventTypeLegacy.OnAuthLogout ||
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
-            keycloakEvent?.type === KeycloakEventTypeLegacy.OnReady ||
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
-            keycloakEvent?.type === KeycloakEventTypeLegacy.OnTokenExpired
-          ) {
-            if (this.keycloakService.isLoggedIn() !== true) {
-              this.keycloakService.login({
-                redirectUri: window.location.href,
-                idpHint:
-                  this.appSettingsService.appSettings?.keycloak?.configuration
-                    ?.idpHint,
-                // scope: 'offline_access',
-              });
-            }
-          } /*else if (keycloakEvent?.type == KeycloakEventType.OnAuthSuccess) {
-
-        const token = await this.keycloakService.getToken();
-        localStorage.setItem(STORAGE_KEYCLOAK_TOKEN, token);
-
-        const refreshToken = await this.keycloakService.getKeycloakInstance().refreshToken;
-        localStorage.setItem(STORAGE_KEYCLOAK_REFRESHTOKEN, refreshToken ?? '');
-
-        const idToken = await this.keycloakService.getKeycloakInstance().idToken;
-        localStorage.setItem(STORAGE_KEYCLOAK_IDTOKEN, idToken ?? '');
-      }*/
-        })
-    );
+  protected loginOnKeycloak(): void {
+    if (
+      this.appSettingsService.appSettings?.keycloak?.isActive === true &&
+      this.keycloakService
+    ) {
+      if (this.keycloakService.authenticated !== true) {
+        this.keycloakService.login({
+          redirectUri: window.location.href,
+          idpHint:
+            this.appSettingsService.appSettings?.keycloak?.configuration
+              ?.idpHint,
+        });
+      }
+    }
   }
 
   protected getObsAuthInfo(): Observable<AuthInfo> {
@@ -174,10 +146,6 @@ export class BiaAppInitService implements OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
-
     if (BiaAppConstantsService.allEnvironments.enableNotifications === true) {
       this.notificationSignalRService.destroy();
     }
