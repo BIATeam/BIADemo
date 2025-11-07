@@ -108,50 +108,6 @@ export class AircraftMaintenanceCompaniesIndexComponent
       this.canDelete;
   }
 
-  protected initSelectedButtonGroup() {
-    this.selectionActionsMenuItems = [
-      { separator: true },
-      {
-        label: this.translateService.instant('aircraftMaintenanceCompany.edit'),
-        command: () => this.onEdit(this.selectedCrudItems[0].id),
-        visible: this.canEdit,
-        disabled: this.selectedCrudItems.length !== 1,
-        tooltip: this.translateService.instant(
-          'aircraftMaintenanceCompany.edit'
-        ),
-        buttonOutlined: true,
-      },
-      // BIAToolKit - Begin AircraftMaintenanceCompanyIndexTsChildTeamButton
-      // Begin BIAToolKit Generation Ignore
-      // BIAToolKit - Begin Partial AircraftMaintenanceCompanyIndexTsChildTeamButton MaintenanceTeam
-      {
-        label: this.translateService.instant(
-          'aircraftMaintenanceCompany.maintenanceTeams'
-        ),
-        command: () => this.onViewMaintenanceTeams(),
-        visible: this.canViewMaintenanceTeams,
-        disabled: this.selectedCrudItems.length !== 1,
-        tooltip: this.translateService.instant(
-          'aircraftMaintenanceCompany.maintenanceTeams'
-        ),
-        buttonOutlined: true,
-      },
-      // BIAToolKit - End Partial AircraftMaintenanceCompanyIndexTsChildTeamButton MaintenanceTeam
-      // End BIAToolKit Generation Ignore
-      // BIAToolKit - End AircraftMaintenanceCompanyIndexTsChildTeamButton
-      {
-        label: this.translateService.instant('app.members'),
-        command: () => this.onViewMembers(this.selectedCrudItems[0].id),
-        visible: this.canViewMembers,
-        disabled:
-          this.selectedCrudItems.length !== 1 ||
-          !this.selectedCrudItems[0].canMemberListAccess,
-        tooltip: this.translateService.instant('app.members'),
-        buttonOutlined: true,
-      },
-    ];
-  }
-
   onClickRowData(crudItem: AircraftMaintenanceCompany) {
     if (crudItem.canMemberListAccess) {
       this.onViewMembers(crudItem.id);
@@ -182,15 +138,59 @@ export class AircraftMaintenanceCompaniesIndexComponent
   // BIAToolKit - Begin AircraftMaintenanceCompanyIndexTsOnViewChild
   // Begin BIAToolKit Generation Ignore
   // BIAToolKit - Begin Partial AircraftMaintenanceCompanyIndexTsOnViewChild MaintenanceTeam
-  onViewMaintenanceTeams() {
-    if (this.selectedCrudItems.length === 1) {
-      this.router.navigate(
-        [this.selectedCrudItems[0].id, 'maintenance-teams'],
-        { relativeTo: this.activatedRoute }
-      );
+  onViewMaintenanceTeams(crudItemId: any) {
+    if (crudItemId && crudItemId > 0) {
+      this.router.navigate([crudItemId, 'maintenance-teams'], {
+        relativeTo: this.activatedRoute,
+      });
     }
   }
   // BIAToolKit - End Partial AircraftMaintenanceCompanyIndexTsOnViewChild MaintenanceTeam
   // End BIAToolKit Generation Ignore
   // BIAToolKit - End AircraftMaintenanceCompanyIndexTsOnViewChild
+
+  protected initSelectedButtonGroup() {
+    this.selectionActionsMenuItems = [
+      { separator: true },
+      {
+        label: this.translateService.instant('aircraftMaintenanceCompany.edit'),
+        command: () => this.onEdit(this.selectedCrudItems[0].id),
+        visible: this.canEdit,
+        disabled: this.selectedCrudItems.length !== 1,
+        tooltip: this.translateService.instant(
+          'aircraftMaintenanceCompany.edit'
+        ),
+        buttonOutlined: true,
+      },
+      // BIAToolKit - Begin AircraftMaintenanceCompanyIndexTsSelectedButtonViewChild
+      // Begin BIAToolKit Generation Ignore
+      // BIAToolKit - Begin Partial AircraftMaintenanceCompanyIndexTsSelectedButtonViewChild MaintenanceTeam
+      {
+        visible: this.canViewMaintenanceTeams,
+        disabled: this.selectedCrudItems.length !== 1,
+        label: this.translateService.instant(
+          'aircraftMaintenanceCompany.maintenanceTeams'
+        ),
+        tooltip: this.translateService.instant(
+          'aircraftMaintenanceCompany.maintenanceTeams'
+        ),
+        command: () =>
+          this.onViewMaintenanceTeams(this.selectedCrudItems[0].id),
+        buttonOutlined: true,
+      },
+      // BIAToolKit - End Partial AircraftMaintenanceCompanyIndexTsSelectedButtonViewChild MaintenanceTeam
+      // End BIAToolKit Generation Ignore
+      // BIAToolKit - End AircraftMaintenanceCompanyIndexTsSelectedButtonViewChild
+      {
+        label: this.translateService.instant('app.members'),
+        command: () => this.onViewMembers(this.selectedCrudItems[0].id),
+        visible: this.canViewMembers,
+        disabled:
+          this.selectedCrudItems.length !== 1 ||
+          !this.selectedCrudItems[0].canMemberListAccess,
+        tooltip: this.translateService.instant('app.members'),
+        buttonOutlined: true,
+      },
+    ];
+  }
 }

@@ -17,9 +17,8 @@
       [selectedElements]="selectedCrudItems"
       [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
       [tableControllerVisible]="showTableController"
-      (toggleTableControllerVisibility)="toggleTableControllerVisibility()">
-      <!-- BIAToolKit - Begin MaintenanceContractIndexHtml -->
-      <!-- BIAToolKit - End MaintenanceContractIndexHtml -->
+      (toggleTableControllerVisibility)="toggleTableControllerVisibility()"
+      [selectionActionsMenuItems]="selectionActionsMenuItems">
     </bia-table-header>
     <bia-table-controller
       [ngClass]="{ 'table-controller-hidden': !showTableController }"

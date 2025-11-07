@@ -22,11 +22,8 @@
       (toggleTableControllerVisibility)="toggleTableControllerVisibility()"
       (crudItemFixedChanged)="
         crudItemService.updateFixedStatus($event.crudItemId, $event.fixed)
-      ">
-      <!-- Begin BIAToolKit Generation Ignore -->
-      <!-- End BIAToolKit Generation Ignore -->
-      <!-- BIAToolKit - Begin FlightIndexHtml -->
-      <!-- BIAToolKit - End FlightIndexHtml -->
+      "
+      [selectionActionsMenuItems]="selectionActionsMenuItems">
     </bia-table-header>
     <bia-table-controller
       [ngClass]="{ 'table-controller-hidden': !showTableController }"

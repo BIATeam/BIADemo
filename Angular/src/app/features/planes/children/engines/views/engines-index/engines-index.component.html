@@ -23,7 +23,8 @@
       (toggleTableControllerVisibility)="toggleTableControllerVisibility()"
       (crudItemFixedChanged)="
         crudItemService.updateFixedStatus($event.crudItemId, $event.fixed)
-      ">
+      "
+      [selectionActionsMenuItems]="selectionActionsMenuItems">
       <ng-template pTemplate="customControl">
         @if (isParentFixed) {
           <button
@@ -34,8 +35,6 @@
             [disabled]="true"></button>
         }
       </ng-template>
-      <!-- BIAToolKit - Begin EngineIndexHtml -->
-      <!-- BIAToolKit - End EngineIndexHtml -->
     </bia-table-header>
     <bia-table-controller
       [ngClass]="{ 'table-controller-hidden': !showTableController }"

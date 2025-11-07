@@ -13,7 +13,8 @@
       [selectedElements]="selectedCrudItems"
       [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
       [tableControllerVisible]="showTableController"
-      (toggleTableControllerVisibility)="toggleTableControllerVisibility()">
+      (toggleTableControllerVisibility)="toggleTableControllerVisibility()"
+      [selectionActionsMenuItems]="selectionActionsMenuItems">
       <!-- BIAToolKit - Begin AirportIndexHtml -->
       <!-- BIAToolKit - End AirportIndexHtml -->
     </bia-table-header>

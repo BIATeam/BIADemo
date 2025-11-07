@@ -96,4 +96,11 @@ export class EnginesIndexComponent
 
   // BIAToolKit - Begin EngineIndexTsOnViewChild
   // BIAToolKit - End EngineIndexTsOnViewChild
+
+  protected initSelectedButtonGroup() {
+    this.selectionActionsMenuItems = [
+      // BIAToolKit - Begin EngineIndexTsSelectedButtonViewChild
+      // BIAToolKit - End EngineIndexTsSelectedButtonViewChild
+    ];
+  }
 }
