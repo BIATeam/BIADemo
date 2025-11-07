@@ -95,8 +95,7 @@
         [isResizableColumn]="crudConfiguration.useResizableColumn"
         [rowHeight]="defaultRowHeight"
         [showFixableState]="crudConfiguration.isFixable"></bia-table>
-    }
-    @if (crudConfiguration.useCalcMode) {
+    } @else {
       <app-aircraft-maintenance-company-table
         [elements]="
           crudConfiguration.useVirtualScroll

@@ -64,4 +64,11 @@ export class AirportsIndexComponent extends CrudItemsIndexComponent<Airport> {
 
   // BIAToolKit - Begin MaintenanceContractIndexTsOnViewChild
   // BIAToolKit - End MaintenanceContractIndexTsOnViewChild
+
+  protected initSelectedButtonGroup() {
+    this.selectionActionsMenuItems = [
+      // BIAToolKit - Begin AirportIndexTsSelectedButtonViewChild
+      // BIAToolKit - End AirportIndexTsSelectedButtonViewChild
+    ];
+  }
 }

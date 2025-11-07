@@ -66,9 +66,13 @@ export class FlightsIndexComponent
     // BIAToolKit - End FlightIndexTsCanViewChildSet
   }
 
-  // Begin BIAToolKit Generation Ignore
-  // End BIAToolKit Generation Ignore
-
   // BIAToolKit - Begin FlightIndexTsOnViewChild
   // BIAToolKit - End FlightIndexTsOnViewChild
+
+  protected initSelectedButtonGroup() {
+    this.selectionActionsMenuItems = [
+      // BIAToolKit - Begin FlightIndexTsSelectedButtonViewChild
+      // BIAToolKit - End FlightIndexTsSelectedButtonViewChild
+    ];
+  }
 }

@@ -13,7 +13,8 @@
       [selectedElements]="selectedCrudItems"
       [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
       [tableControllerVisible]="showTableController"
-      (toggleTableControllerVisibility)="toggleTableControllerVisibility()">
+      (toggleTableControllerVisibility)="toggleTableControllerVisibility()"
+      [selectionActionsMenuItems]="selectionActionsMenuItems">
       <!-- BIAToolKit - Begin AirportIndexHtml -->
       <!-- BIAToolKit - End AirportIndexHtml -->
     </bia-table-header>
@@ -72,8 +73,7 @@
         [sortFieldValue]="sortFieldValue"
         (stateSave)="onStateSave($event)"
         [scrollHeightValue]="getFillScrollHeightValue()"></bia-table>
-    }
-    @if (crudConfiguration.useCalcMode) {
+    } @else {
       <app-airport-table
         [elements]="(crudItems$ | async) ?? []"
         [dictOptionDtos]="

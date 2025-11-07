@@ -17,9 +17,8 @@
       [selectedElements]="selectedCrudItems"
       [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
       [tableControllerVisible]="showTableController"
-      (toggleTableControllerVisibility)="toggleTableControllerVisibility()">
-      <!-- BIAToolKit - Begin MaintenanceContractIndexHtml -->
-      <!-- BIAToolKit - End MaintenanceContractIndexHtml -->
+      (toggleTableControllerVisibility)="toggleTableControllerVisibility()"
+      [selectionActionsMenuItems]="selectionActionsMenuItems">
     </bia-table-header>
     <bia-table-controller
       [ngClass]="{ 'table-controller-hidden': !showTableController }"
@@ -86,8 +85,7 @@
         [virtualScroll]="crudConfiguration.useVirtualScroll"
         [isResizableColumn]="crudConfiguration.useResizableColumn"
         [rowHeight]="defaultRowHeight"></bia-table>
-    }
-    @if (crudConfiguration.useCalcMode) {
+    } @else {
       <app-maintenance-contract-table
         [elements]="
           crudConfiguration.useVirtualScroll

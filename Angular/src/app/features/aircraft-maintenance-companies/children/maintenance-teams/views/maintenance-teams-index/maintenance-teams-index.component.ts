@@ -107,32 +107,6 @@ export class MaintenanceTeamsIndexComponent
       this.canViewMembers || this.canDelete;
   }
 
-  protected initSelectedButtonGroup() {
-    this.selectionActionsMenuItems = [
-      { separator: true },
-      {
-        label: this.translateService.instant('maintenanceTeam.edit'),
-        command: () => this.onEdit(this.selectedCrudItems[0].id),
-        visible: this.canEdit,
-        disabled: this.selectedCrudItems.length !== 1,
-        tooltip: this.translateService.instant('maintenanceTeam.edit'),
-        buttonOutlined: true,
-      },
-      // BIAToolKit - Begin MaintenanceTeamIndexTsChildTeamButton
-      // BIAToolKit - End MaintenanceTeamIndexTsChildTeamButton
-      {
-        label: this.translateService.instant('app.members'),
-        command: () => this.onViewMembers(this.selectedCrudItems[0].id),
-        visible: this.canViewMembers,
-        disabled:
-          this.selectedCrudItems.length !== 1 ||
-          !this.selectedCrudItems[0].canMemberListAccess,
-        tooltip: this.translateService.instant('app.members'),
-        buttonOutlined: true,
-      },
-    ];
-  }
-
   onClickRowData(crudItem: MaintenanceTeam) {
     if (crudItem.canMemberListAccess) {
       this.onViewMembers(crudItem.id);
@@ -161,4 +135,30 @@ export class MaintenanceTeamsIndexComponent
 
   // BIAToolKit - Begin MaintenanceTeamIndexTsOnViewChild
   // BIAToolKit - End MaintenanceTeamIndexTsOnViewChild
+
+  protected initSelectedButtonGroup() {
+    this.selectionActionsMenuItems = [
+      { separator: true },
+      {
+        label: this.translateService.instant('maintenanceTeam.edit'),
+        command: () => this.onEdit(this.selectedCrudItems[0].id),
+        visible: this.canEdit,
+        disabled: this.selectedCrudItems.length !== 1,
+        tooltip: this.translateService.instant('maintenanceTeam.edit'),
+        buttonOutlined: true,
+      },
+      // BIAToolKit - Begin MaintenanceTeamIndexTsSelectedButtonViewChild
+      // BIAToolKit - End MaintenanceTeamIndexTsSelectedButtonViewChild
+      {
+        label: this.translateService.instant('app.members'),
+        command: () => this.onViewMembers(this.selectedCrudItems[0].id),
+        visible: this.canViewMembers,
+        disabled:
+          this.selectedCrudItems.length !== 1 ||
+          !this.selectedCrudItems[0].canMemberListAccess,
+        tooltip: this.translateService.instant('app.members'),
+        buttonOutlined: true,
+      },
+    ];
+  }
 }

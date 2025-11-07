@@ -73,4 +73,11 @@ export class MaintenanceContractsIndexComponent extends CrudItemsIndexComponent<
 
   // BIAToolKit - Begin MaintenanceContractIndexTsOnViewChild
   // BIAToolKit - End MaintenanceContractIndexTsOnViewChild
+
+  protected initSelectedButtonGroup() {
+    this.selectionActionsMenuItems = [
+      // BIAToolKit - Begin MaintenanceContractIndexTsSelectedButtonViewChild
+      // BIAToolKit - End MaintenanceContractIndexTsSelectedButtonViewChild
+    ];
+  }
 }

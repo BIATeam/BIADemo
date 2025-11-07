@@ -64,9 +64,13 @@ export class PilotsIndexComponent
     // BIAToolKit - End PilotIndexTsCanViewChildSet
   }
 
-  // Begin BIAToolKit Generation Ignore
-  // End BIAToolKit Generation Ignore
-
   // BIAToolKit - Begin PilotIndexTsOnViewChild
   // BIAToolKit - End PilotIndexTsOnViewChild
+
+  protected initSelectedButtonGroup() {
+    this.selectionActionsMenuItems = [
+      // BIAToolKit - Begin PilotIndexTsSelectedButtonViewChild
+      // BIAToolKit - End PilotIndexTsSelectedButtonViewChild
+    ];
+  }
 }

@@ -92,8 +92,7 @@
           }
         </ng-template>
       </bia-table>
-    }
-    @if (crudConfiguration.useCalcMode) {
+    } @else {
       <bia-user-table
         [elements]="(crudItems$ | async) ?? []"
         [dictOptionDtos]="

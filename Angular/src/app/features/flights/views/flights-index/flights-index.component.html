@@ -22,11 +22,8 @@
       (toggleTableControllerVisibility)="toggleTableControllerVisibility()"
       (crudItemFixedChanged)="
         crudItemService.updateFixedStatus($event.crudItemId, $event.fixed)
-      ">
-      <!-- Begin BIAToolKit Generation Ignore -->
-      <!-- End BIAToolKit Generation Ignore -->
-      <!-- BIAToolKit - Begin FlightIndexHtml -->
-      <!-- BIAToolKit - End FlightIndexHtml -->
+      "
+      [selectionActionsMenuItems]="selectionActionsMenuItems">
     </bia-table-header>
     <bia-table-controller
       [ngClass]="{ 'table-controller-hidden': !showTableController }"
@@ -94,8 +91,7 @@
         [isResizableColumn]="crudConfiguration.useResizableColumn"
         [rowHeight]="defaultRowHeight"
         [showFixableState]="crudConfiguration.isFixable"></bia-table>
-    }
-    @if (crudConfiguration.useCalcMode) {
+    } @else {
       <app-flight-table
         [elements]="
           crudConfiguration.useVirtualScroll

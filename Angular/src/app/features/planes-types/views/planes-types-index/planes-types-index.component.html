@@ -72,8 +72,7 @@
         [sortFieldValue]="sortFieldValue"
         (stateSave)="onStateSave($event)"
         [scrollHeightValue]="getFillScrollHeightValue()"></bia-table>
-    }
-    @if (crudConfiguration.useCalcMode) {
+    } @else {
       <app-plane-type-table
         [elements]="(crudItems$ | async) ?? []"
         [dictOptionDtos]="

@@ -78,31 +78,6 @@ export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
       this.canViewMembers || this.canDelete;
   }
 
-  protected initSelectedButtonGroup() {
-    this.selectionActionsMenuItems = [
-      {
-        label: this.translateService.instant('site.edit'),
-        command: () => this.onEdit(this.selectedCrudItems[0].id),
-        visible: this.canEdit,
-        disabled: this.selectedCrudItems.length !== 1,
-        tooltip: this.translateService.instant('site.edit'),
-        buttonOutlined: true,
-      },
-      // BIAToolKit - Begin SiteIndexTsChildTeamButton
-      // BIAToolKit - End SiteIndexTsChildTeamButton
-      {
-        label: this.translateService.instant('app.members'),
-        command: () => this.onViewMembers(this.selectedCrudItems[0].id),
-        visible: this.canViewMembers,
-        disabled:
-          this.selectedCrudItems.length !== 1 ||
-          !this.selectedCrudItems[0].canMemberListAccess,
-        tooltip: this.translateService.instant('app.members'),
-        buttonOutlined: true,
-      },
-    ];
-  }
-
   // Customization for teams
   onClickRowData(crudItem: Site) {
     if (crudItem.canMemberListAccess) {
@@ -132,4 +107,30 @@ export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
 
   // BIAToolKit - Begin SiteIndexTsOnViewChild
   // BIAToolKit - End SiteIndexTsOnViewChild
+
+  protected initSelectedButtonGroup() {
+    this.selectionActionsMenuItems = [
+      { separator: true },
+      {
+        label: this.translateService.instant('site.edit'),
+        command: () => this.onEdit(this.selectedCrudItems[0].id),
+        visible: this.canEdit,
+        disabled: this.selectedCrudItems.length !== 1,
+        tooltip: this.translateService.instant('site.edit'),
+        buttonOutlined: true,
+      },
+      // BIAToolKit - Begin SiteIndexTsSelectedButtonViewChild
+      // BIAToolKit - End SiteIndexTsSelectedButtonViewChild
+      {
+        label: this.translateService.instant('app.members'),
+        command: () => this.onViewMembers(this.selectedCrudItems[0].id),
+        visible: this.canViewMembers,
+        disabled:
+          this.selectedCrudItems.length !== 1 ||
+          !this.selectedCrudItems[0].canMemberListAccess,
+        tooltip: this.translateService.instant('app.members'),
+        buttonOutlined: true,
+      },
+    ];
+  }
 }

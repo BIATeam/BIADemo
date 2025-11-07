@@ -78,6 +78,8 @@ export class PlanesIndexComponent
     // End BIAToolKit Generation Ignore
     // BIAToolKit - End PlaneIndexTsCanViewChildSet
   }
+
+  // BIAToolKit - Begin PlaneIndexTsOnViewChild
   // Begin BIAToolKit Generation Ignore
   // BIAToolKit - Begin Partial PlaneIndexTsOnViewChild Engine
   onViewEngines(crudItemId: any) {
@@ -89,19 +91,24 @@ export class PlanesIndexComponent
   }
   // BIAToolKit - End Partial PlaneIndexTsOnViewChild Engine
   // End BIAToolKit Generation Ignore
-
-  // BIAToolKit - Begin PlaneIndexTsOnViewChild
   // BIAToolKit - End PlaneIndexTsOnViewChild
 
   protected initSelectedButtonGroup() {
     this.selectionActionsMenuItems = [
+      // BIAToolKit - Begin PlaneIndexTsSelectedButtonViewChild
+      // Begin BIAToolKit Generation Ignore
+      // BIAToolKit - Begin Partial PlaneIndexTsSelectedButtonViewChild Engine
       {
         visible: this.canViewEngines,
         disabled: this.selectedCrudItems.length !== 1,
         label: this.translateService.instant('plane.engines'),
+        tooltip: this.translateService.instant('plane.engines'),
         command: () => this.onViewEngines(this.selectedCrudItems[0].id),
         buttonOutlined: true,
       },
+      // BIAToolKit - End Partial PlaneIndexTsSelectedButtonViewChild Engine
+      // End BIAToolKit Generation Ignore
+      // BIAToolKit - End PlaneIndexTsSelectedButtonViewChild
     ];
   }
 }
