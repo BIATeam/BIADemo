@@ -86,8 +86,7 @@
         [virtualScroll]="crudConfiguration.useVirtualScroll"
         [isResizableColumn]="crudConfiguration.useResizableColumn"
         [rowHeight]="defaultRowHeight"></bia-table>
-    }
-    @if (crudConfiguration.useCalcMode) {
+    } @else {
       <app-maintenance-contract-table
         [elements]="
           crudConfiguration.useVirtualScroll

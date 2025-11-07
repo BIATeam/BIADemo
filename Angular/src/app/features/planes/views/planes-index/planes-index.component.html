@@ -101,8 +101,7 @@
         [isResizableColumn]="crudConfiguration.useResizableColumn"
         [rowHeight]="defaultRowHeight"
         [showFixableState]="crudConfiguration.isFixable"></bia-table>
-    }
-    @if (crudConfiguration.useCalcMode) {
+    } @else {
       <app-plane-table
         [elements]="
           crudConfiguration.useVirtualScroll

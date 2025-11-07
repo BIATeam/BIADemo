@@ -96,8 +96,7 @@
         [isResizableColumn]="crudConfiguration.useResizableColumn"
         [rowHeight]="defaultRowHeight"
         [showFixableState]="crudConfiguration.isFixable"></bia-table>
-    }
-    @if (crudConfiguration.useCalcMode) {
+    } @else {
       <app-maintenance-team-table
         [elements]="
           crudConfiguration.useVirtualScroll

@@ -77,8 +77,7 @@
         [sortFieldValue]="sortFieldValue"
         (stateSave)="onStateSave($event)"
         [scrollHeightValue]="getFillScrollHeightValue()"></bia-table>
-    }
-    @if (crudConfiguration.useCalcMode) {
+    } @else {
       <app-site-table
         [elements]="(crudItems$ | async) ?? []"
         [dictOptionDtos]="

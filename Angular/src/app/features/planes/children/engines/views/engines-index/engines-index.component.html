@@ -104,8 +104,7 @@
         [readOnly]="isParentFixed"
         [rowHeight]="defaultRowHeight"
         [showFixableState]="crudConfiguration.isFixable"></bia-table>
-    }
-    @if (crudConfiguration.useCalcMode) {
+    } @else {
       <app-engine-table
         [elements]="
           crudConfiguration.useVirtualScroll
