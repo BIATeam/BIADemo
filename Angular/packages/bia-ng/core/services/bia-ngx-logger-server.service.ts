@@ -9,7 +9,9 @@ import { AppSettingsService } from '../app-settings/services/app-settings.servic
   providedIn: 'root',
 })
 export class BiaNgxLoggerServerService extends NGXLoggerServerService {
-  private readonly keycloakService = inject(Keycloak);
+  protected keycloakService: Keycloak | null = inject(Keycloak, {
+    optional: true,
+  });
   constructor(
     protected httpBackend: HttpBackend,
     protected appSettingsService: AppSettingsService,
@@ -23,7 +25,7 @@ export class BiaNgxLoggerServerService extends NGXLoggerServerService {
   ): HttpRequest<any> | Observable<HttpRequest<any>> {
     if (
       this.appSettingsService.appSettings?.keycloak?.isActive === true &&
-      this.keycloakService.token
+      this.keycloakService?.token
     ) {
       return this.addToken(httpRequest, this.keycloakService.token);
     } else {

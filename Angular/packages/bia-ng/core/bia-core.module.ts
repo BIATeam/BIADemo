@@ -9,7 +9,6 @@ import {
   Optional,
   SkipSelf,
   inject,
-  isDevMode,
   provideAppInitializer,
 } from '@angular/core';
 
@@ -24,7 +23,6 @@ import { biaTokenInterceptor } from './interceptors/token.interceptor';
 // Services
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { provideKeycloak } from 'keycloak-angular';
 import {
   AllEnvironments,
   AppEnvironment,
@@ -73,18 +71,6 @@ const BASE_HREF = [
   imports: [...MODULES],
   exports: [...MODULES],
   providers: [
-    provideKeycloak({
-      config: {
-        url: 'https://sep-keycloak-dm.dev.apphub.safran',
-        realm: 'DM-Realm',
-        clientId: 'dmapp',
-      },
-      initOptions: {
-        onLoad: 'check-sso',
-        checkLoginIframe: false,
-        enableLogging: isDevMode(),
-      },
-    }),
     ...INTERCEPTORS,
     ...SERVICES,
     ...BASE_HREF,
