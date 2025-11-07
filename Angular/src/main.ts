@@ -29,6 +29,7 @@ import { AppComponent } from './app/app.component';
 import { buildSpecificModules } from './app/build-specifics/bia-build-specifics';
 import { CoreModule } from './app/core/core.module';
 import { HomeModule } from './app/features/home/home.module';
+import { loadKeycloakConfig } from './app/keycloak.config';
 import { appConfig } from './app/shared/theme';
 import { ROOT_REDUCERS, metaReducers } from './app/store/state';
 import { environment } from './environments/environment';
@@ -41,27 +42,8 @@ if (environment.production) {
   enableProdMode();
 }
 
-// Load Keycloak configuration and bootstrap the app
 async function bootstrap() {
-  let keycloakConfig = null;
-
-  // Load app settings to get Keycloak configuration
-  const response = await fetch(environment.apiUrl + '/AppSettings');
-
-  if (response.ok) {
-    const appSettings = await response.json();
-    if (
-      appSettings?.keycloak?.isActive &&
-      appSettings?.keycloak?.configuration
-    ) {
-      keycloakConfig = {
-        url: appSettings.keycloak.baseUrl,
-        realm: appSettings.keycloak.configuration.realm,
-        clientId: appSettings.keycloak.api.tokenConf.clientId,
-      };
-      console.info('Keycloak configuration loaded successfully');
-    }
-  }
+  const keycloakConfig = await loadKeycloakConfig();
 
   try {
     await bootstrapApplication(AppComponent, {

@@ -6,7 +6,8 @@ import { AbstractDas } from '../../services/abstract-das.service';
   providedIn: 'root',
 })
 export class AppSettingsDas extends AbstractDas<AppSettings> {
+  public static endpoint = 'AppSettings';
   constructor(injector: Injector) {
-    super(injector, 'AppSettings');
+    super(injector, AppSettingsDas.endpoint);
   }
 }
