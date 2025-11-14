@@ -194,6 +194,16 @@
     "timeFormat": "Formato Hora",
     "useCurrentView": "Usar la importación masiva con los filtros actuales"
   },
+  "bannerMessage": {
+    "add": "Agregar mensaje de banner",
+    "end": "Fecha de fin de visualización",
+    "start": "Fecha de inicio de visualización",
+    "name": "Nombre",
+    "rawContent": "Contenido bruto",
+    "type": "Tipo",
+    "listOf": "Lista de mensajes de banner",
+    "read": "Detalles del mensaje de banner"
+  },
   "primeng": {
     "accept": "Aceptar",
     "addRule": "Agregar regla",

@@ -194,6 +194,16 @@
     "timeFormat": "Format Heure",
     "useCurrentView": "Baser le traitement de l'import sur le filtre courant"
   },
+  "bannerMessage": {
+    "add": "Ajouter message de bannière",
+    "end": "Date fin d'affichage",
+    "start": "Date début d'affichage",
+    "name": "Nom",
+    "rawContent": "Contenu brut",
+    "type": "Type",
+    "listOf": "Liste des messages de bannière",
+    "read": "Détails message de bannière"
+  },
   "primeng": {
     "accept": "Oui",
     "addRule": "Ajouter une règle",

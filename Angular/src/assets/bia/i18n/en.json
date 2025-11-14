@@ -194,6 +194,16 @@
     "timeFormat": "Time Format",
     "useCurrentView": "Base the import processing on the current filter"
   },
+  "bannerMessage": {
+    "add": "Add banner message",
+    "end": "End display date",
+    "start": "Start display date",
+    "name": "Name",
+    "rawContent": "Raw content",
+    "type": "Type",
+    "listOf": "List of banner messages",
+    "read": "Banner message details"
+  },
   "primeng": {
     "accept": "Yes",
     "addRule": "Add Rule",
