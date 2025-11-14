@@ -202,7 +202,8 @@
     "rawContent": "Contenu brut",
     "type": "Type",
     "listOf": "Liste des messages de bannière",
-    "read": "Détails message de bannière"
+    "read": "Détails message de bannière",
+    "edit": "Modifer message de bannière"
   },
   "primeng": {
     "accept": "Oui",

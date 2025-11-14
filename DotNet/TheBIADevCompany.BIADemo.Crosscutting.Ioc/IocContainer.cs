@@ -18,6 +18,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
     using BIA.Net.Core.Common.Enum;
+    using BIA.Net.Core.Domain.Banner.Mappers;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Mappers;
@@ -160,6 +161,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             }
 
 #if BIA_FRONT_FEATURE || BIA_USE_DATABASE
+            collection.AddSingleton<IAuditMapper, BannerMessageAuditMapper>();
+
             Type auditMapperType = typeof(IAuditMapper);
             List<Type> auditMapperDerivedTypes = ReflectiveEnumerator.GetDerivedTypes(assembly, auditMapperType);
             foreach (var auditMapperDerivedType in auditMapperDerivedTypes)

@@ -202,7 +202,8 @@
     "rawContent": "Contenido bruto",
     "type": "Tipo",
     "listOf": "Lista de mensajes de banner",
-    "read": "Detalles del mensaje de banner"
+    "read": "Detalles del mensaje de banner",
+    "edit": "Editar del mensaje de banner"
   },
   "primeng": {
     "accept": "Aceptar",

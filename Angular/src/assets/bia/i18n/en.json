@@ -202,7 +202,8 @@
     "rawContent": "Raw content",
     "type": "Type",
     "listOf": "List of banner messages",
-    "read": "Banner message details"
+    "read": "Banner message details",
+    "edit": "Edit banner message"
   },
   "primeng": {
     "accept": "Yes",

@@ -8,10 +8,12 @@ namespace BIA.Net.Core.Domain.Banner.Mappers
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Banner.Entities;
     using BIA.Net.Core.Domain.Dto.Banner;
+    using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Mapper;
 
     /// <summary>
@@ -52,7 +54,7 @@ namespace BIA.Net.Core.Domain.Banner.Mappers
             entity.Name = dto.Name;
             entity.RawContent = dto.RawContent;
             entity.Start = dto.Start;
-            entity.Type = dto.Type;
+            entity.Type = dto.Type.Id;
         }
 
         /// <inheritdoc />
@@ -64,7 +66,7 @@ namespace BIA.Net.Core.Domain.Banner.Mappers
                 Name = entity.Name,
                 RawContent = entity.RawContent,
                 Start = entity.Start,
-                Type = entity.Type,
+                Type = new TOptionDto<BiaBannerType> { Id = entity.Type, Display = GetBiaBannerTypeDisplay(entity.Type) },
             });
         }
 
@@ -78,6 +80,16 @@ namespace BIA.Net.Core.Domain.Banner.Mappers
                 { HeaderName.RawContent, () => CSVString(dto.RawContent) },
                 { HeaderName.Start, () => CSVDateTime(dto.Start) },
                 { HeaderName.Type, () => CSVString(dto.Type.ToString()) },
+            };
+        }
+
+        private static string GetBiaBannerTypeDisplay(BiaBannerType type)
+        {
+            return type switch
+            {
+                BiaBannerType.Info => "bia.info",
+                BiaBannerType.Warning => "bia.warning",
+                _ => throw new NotImplementedException(),
             };
         }
 

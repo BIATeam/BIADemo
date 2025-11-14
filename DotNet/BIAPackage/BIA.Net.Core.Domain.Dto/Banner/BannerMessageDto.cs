@@ -8,6 +8,7 @@ namespace BIA.Net.Core.Domain.Dto.Banner
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.CustomAttribute;
+    using BIA.Net.Core.Domain.Dto.Option;
 
     /// <summary>
     /// The DTO used to represent a banner message.
@@ -42,6 +43,6 @@ namespace BIA.Net.Core.Domain.Dto.Banner
         /// Gets or sets the type.
         /// </summary>
         [BiaDtoField(Required = true)]
-        public BiaBannerType Type { get; set; }
+        public TOptionDto<BiaBannerType> Type { get; set; }
     }
 }
