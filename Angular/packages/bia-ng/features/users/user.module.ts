@@ -20,7 +20,7 @@ import { UserItemComponent } from './views/user-item/user-item.component';
 import { UserNewComponent } from './views/user-new/user-new.component';
 import { UsersIndexComponent } from './views/users-index/users-index.component';
 
-export const ROUTES: Routes = [
+const ROUTES: Routes = [
   {
     path: '',
     data: {

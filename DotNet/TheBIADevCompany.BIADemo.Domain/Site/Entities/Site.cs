@@ -32,7 +32,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Site.Entities
         /// </summary>
         public string UniqueIdentifier { get; set; }
 
-
         /// <summary>
         /// Gets or sets the Maintenance contracts.
         /// </summary>

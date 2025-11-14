@@ -50,6 +50,42 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Options = "Site_Options";
         }
 
+        /// <summary>
+        /// The banner messages rights.
+        /// </summary>
+        public static class BannerMessages
+        {
+            /// <summary>
+            /// The right to access to the list of banner messages.
+            /// </summary>
+            public const string ListAccess = "BannerMessage_List_Access";
+
+            /// <summary>
+            /// The right to create banner message.
+            /// </summary>
+            public const string Create = "BannerMessage_Create";
+
+            /// <summary>
+            /// The right to read banner message.
+            /// </summary>
+            public const string Read = "BannerMessage_Read";
+
+            /// <summary>
+            /// The right to update banner message.
+            /// </summary>
+            public const string Update = "BannerMessage_Update";
+
+            /// <summary>
+            /// The right to delete banner message.
+            /// </summary>
+            public const string Delete = "BannerMessage_Delete";
+
+            /// <summary>
+            /// The right to save banner message.
+            /// </summary>
+            public const string Save = "BannerMessage_Save";
+        }
+
         // BIAToolKit - Begin Rights
         // BIAToolKit - End Rights
 

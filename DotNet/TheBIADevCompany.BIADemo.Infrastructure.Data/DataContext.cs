@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using Audit.EntityFramework;
     using BIA.Net.Core.Domain.Audit;
 #if BIA_FRONT_FEATURE
+    using BIA.Net.Core.Domain.Banner.Entities;
     using BIA.Net.Core.Domain.Notification.Entities;
     using BIA.Net.Core.Domain.Translation.Entities;
     using BIA.Net.Core.Domain.User.Entities;
@@ -64,6 +65,16 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// Gets or sets the Plane DBSet.
         /// </summary>
         public DbSet<AuditLog> AuditLogs { get; set; }
+
+        /// <summary>
+        /// Gets or sets the BannerMessages.
+        /// </summary>
+        public DbSet<BannerMessage> BannerMessages { get; set; }
+
+        /// <summary>
+        /// Gets or sets the BannerMessageAudit.
+        /// </summary>
+        public DbSet<BannerMessageAudit> BannerMessageAudit { get; set; }
 
 #if BIA_FRONT_FEATURE
         /// <summary>
@@ -168,7 +179,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// </summary>
         public DbSet<Part> Parts { get; set; }
 
-
         /// <summary>
         /// Gets or sets the Plane DBSet.
         /// </summary>
@@ -222,6 +232,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
             new UserModelBuilder().CreateModel(modelBuilder);
             ViewModelBuilder.CreateModel(modelBuilder);
             new NotificationModelBuilder().CreateModel(modelBuilder);
+            new BannerMessageModelBuilder().CreateModel(modelBuilder);
 
             // Begin BIADemo
             PlaneModelBuilder.CreateModel(modelBuilder);

@@ -20,6 +20,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Audit;
     using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.Banner.Entities;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;
@@ -120,6 +121,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
         {
             return type.Name switch
             {
+                nameof(BannerMessage) => typeof(BannerMessageAudit),
                 _ => typeof(AuditLog),
             };
         }

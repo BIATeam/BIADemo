@@ -1,0 +1,27 @@
+@if (crudItemService.crudItem$ | async; as crudItem) {
+  <app-banner-message-form
+    [crudItem]="crudItem"
+    [fields]="crudConfiguration.fieldsConfig.columns"
+    [formLayoutConfig]="crudConfiguration.formLayoutConfig"
+    [formReadOnlyMode]="formReadOnlyMode"
+    [dictOptionDtos]="
+      (bannerMessageService.optionsService.dictOptionDtos$ | async) ?? []
+    "
+    [isCrudItemOutdated]="isCrudItemOutdated"
+    [showFixableState]="crudConfiguration.isFixable"
+    [canFix]="canFix"
+    (cancelled)="onCancelled()"
+    (save)="onSubmitted($event)"
+    (fixedChanged)="crudItemService.updateFixedStatus(crudItem.id, $event)"
+    [showPopupButton]="showPopupButton"
+    [showSplitButton]="showSplitButton"
+    [showFullPageButton]="showFullPageButton"
+    (layoutChanged)="notifyLayoutChange($event)"
+    [displayHistorical]="crudConfiguration.displayHistorical"
+    [historicalEntries]="
+      (bannerMessageService.crudItemHistorical$ | async) ?? []
+    "></app-banner-message-form>
+}
+@if (bannerMessageService.loadingGet$ | async) {
+  <bia-spinner [overlay]="true"></bia-spinner>
+}

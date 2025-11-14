@@ -229,6 +229,17 @@ const routes: Routes = [
                 './features/bia-features/background-task/background-task.module'
               ).then(m => m.BackgroundTaskModule),
           },
+          {
+            path: 'banner-messages',
+            data: {
+              breadcrumb: 'bia.bannerMessages',
+              canNavigate: true,
+            },
+            loadChildren: () =>
+              import(
+                './features/bia-features/banner-messages/banner-message.module'
+              ).then(m => m.BannerMessageModule),
+          },
         ],
       },
     ],

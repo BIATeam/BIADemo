@@ -499,6 +499,11 @@
         "Name": "Background_Task_Read_Only",
         "LightToken": true,
         "Roles": [ "Back_Read_Only" ]
+      },
+      // BannerMessage
+      {
+        "Names": [ "BannerMessage_List_Access", "BannerMessage_Read", "BannerMessage_Update", "BannerMessage_Create", "BannerMessage_Delete" ],
+        "Roles": [ "Admin", "Site_Member" ]
       }
     ]
     // endif
