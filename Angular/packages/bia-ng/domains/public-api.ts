@@ -1,3 +1,4 @@
+export * from './banner-message-type-option/public-api';
 export * from './language-option/public-api';
 export * from './ldap-domain/public-api';
 export * from './notification-type-option/public-api';

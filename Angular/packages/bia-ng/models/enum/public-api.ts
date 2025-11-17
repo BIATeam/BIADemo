@@ -1,4 +1,4 @@
-export * from './bia-banner-type.enum';
+export * from './bia-banner-message-type.enum';
 export * from './bia-team-type-id.enum';
 export * from './dto-state.enum';
 export * from './environment-type.enum';

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { PermissionGuard } from 'packages/bia-ng/core/public-api';
+import { BannerMessageTypeOptionModule } from 'packages/bia-ng/domains/public-api';
 import {
   DynamicLayoutComponent,
   LayoutMode,
@@ -98,7 +99,7 @@ const ROUTES: Routes = [
       FeatureBannerMessagesStore.reducers
     ),
     EffectsModule.forFeature([BannerMessagesEffects]),
-    // Domain Modules:
+    BannerMessageTypeOptionModule,
   ],
 })
 export class BiaBannerMessageModule {}

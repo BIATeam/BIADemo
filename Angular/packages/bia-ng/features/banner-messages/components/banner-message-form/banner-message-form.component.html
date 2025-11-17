@@ -22,29 +22,6 @@
   <ng-template pTemplate="specificInput" let-field="field" let-form="form">
     <div [formGroup]="form">
       @switch (field.field) {
-        @case ('type') {
-          <div>
-            <p-floatlabel variant="on">
-              <p-select
-                [formControlName]="field.field"
-                [options]="getOptionDto('type')"
-                [style]="{ width: '100%' }"
-                optionLabel="display"
-                datakey="id">
-                <ng-template let-selectedItem #selectedItem>
-                  <span>{{ selectedItem.display | translate }}</span>
-                </ng-template>
-                <ng-template let-item #item>
-                  <span>{{ item.display | translate }}</span>
-                </ng-template>
-              </p-select>
-              <label>
-                <span class="bia-star-mandatory">*</span>
-                {{ field.header | translate }}</label
-              >
-            </p-floatlabel>
-          </div>
-        }
         @case ('rawContent') {
           <div class="d-flex">
             <p-floatlabel>

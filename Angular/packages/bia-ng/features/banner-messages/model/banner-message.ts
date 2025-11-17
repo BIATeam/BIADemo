@@ -29,9 +29,8 @@ export const bannerMessageFieldsConfiguration: BiaFieldsConfig<BannerMessage> =
         isRequired: true,
       }),
       Object.assign(new BiaFieldConfig('type', 'bannerMessage.type'), {
+        type: PropType.OneToMany,
         isRequired: true,
-        specificInput: true,
-        specificOutput: true,
       }),
       Object.assign(new BiaFieldConfig('start', 'bannerMessage.start'), {
         type: PropType.DateTime,
