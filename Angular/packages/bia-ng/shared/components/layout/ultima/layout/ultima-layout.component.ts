@@ -31,7 +31,6 @@ import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { MenuItem } from 'primeng/api';
 import { Breadcrumb } from 'primeng/breadcrumb';
 import { filter, map, Observable, Subscription } from 'rxjs';
-import { BannerMessageLayoutComponent } from '../../banner-message-layout/banner-message-layout.component';
 import { BiaThemeService } from '../../services/bia-theme.service';
 import { BiaLayoutService } from '../../services/layout.service';
 import { MenuService } from '../../services/menu.service';
@@ -54,7 +53,6 @@ import { BiaUltimaTopbarComponent } from '../topbar/ultima-topbar.component';
     AsyncPipe,
     TranslateModule,
     BiaUltimaConfigComponent,
-    BannerMessageLayoutComponent,
   ],
 })
 export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {

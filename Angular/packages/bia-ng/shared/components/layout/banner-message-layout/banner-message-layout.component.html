@@ -1,5 +1,7 @@
 <div class="banner-message-container">
   @if (messages) {
-    <div [innerHTML]="messages[0].rawContent | safeHtml"></div>
+    <div
+      class="banner-message-content"
+      [innerHTML]="formatedMessages | safeHtml"></div>
   }
 </div>

@@ -1,4 +1,21 @@
 .banner-message-container {
   height: 2.5rem;
   max-height: 2.5rem;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.banner-message-content {
+  display: inline-block;
+  animation: scroll-left 20s linear infinite;
+}
+
+@keyframes scroll-left {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
 }
