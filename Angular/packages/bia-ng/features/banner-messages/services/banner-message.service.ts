@@ -107,7 +107,4 @@ export class BannerMessageService extends CrudItemService<BannerMessage> {
       FeatureBannerMessagesActions.loadHistorical({ id: id })
     );
   }
-  public loadActives(): void {
-    this.store.dispatch(FeatureBannerMessagesActions.loadActives());
-  }
 }

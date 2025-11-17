@@ -243,25 +243,6 @@ export class BannerMessagesEffects {
     )
   );
 
-  loadActives$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(FeatureBannerMessagesActions.loadActives),
-      switchMap(() => {
-        return this.bannerMessageDas.getActives().pipe(
-          map(bannerMessages => {
-            return FeatureBannerMessagesActions.loadActivesSuccess({
-              actives: bannerMessages,
-            });
-          }),
-          catchError(err => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(FeatureBannerMessagesActions.failure({ error: err }));
-          })
-        );
-      })
-    )
-  );
-
   constructor(
     private actions$: Actions,
     private bannerMessageDas: BannerMessageDas,

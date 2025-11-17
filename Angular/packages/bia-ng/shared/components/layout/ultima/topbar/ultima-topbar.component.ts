@@ -30,6 +30,7 @@ import {
   NotificationModule,
   NotificationType,
 } from 'packages/bia-ng/core/public-api';
+import { BannerMessage } from 'packages/bia-ng/features/public-api';
 import { BiaNavigation } from 'packages/bia-ng/models/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { PrimeTemplate, ToastMessageOptions } from 'primeng/api';
@@ -41,7 +42,9 @@ import { Observable, Subscription } from 'rxjs';
 import { BiaOnlineOfflineIconComponent } from '../../../bia-online-offline-icon/bia-online-offline-icon.component';
 import { BiaTeamSelectorComponent } from '../../../bia-team-selector/bia-team-selector.component';
 import { NotificationTeamWarningComponent } from '../../../notification-team-warning/notification-team-warning.component';
+import { BannerMessageLayoutComponent } from '../../banner-message-layout/banner-message-layout.component';
 import { IeWarningComponent } from '../../ie-warning/ie-warning.component';
+import { BannerService } from '../../public-api';
 import { BiaLayoutService } from '../../services/layout.service';
 
 @Component({
@@ -63,6 +66,7 @@ import { BiaLayoutService } from '../../services/layout.service';
     AsyncPipe,
     TranslateModule,
     NotificationModule,
+    BannerMessageLayoutComponent,
   ],
 })
 export class BiaUltimaTopbarComponent
@@ -96,6 +100,8 @@ export class BiaUltimaTopbarComponent
   @ViewChild('toast', { static: true }) toast: Toast;
   notificationType = NotificationType;
 
+  activeBannerMessages$: Observable<BannerMessage[]>;
+
   constructor(
     public layoutService: BiaLayoutService,
     public authService: AuthService,
@@ -108,8 +114,11 @@ export class BiaUltimaTopbarComponent
     public el: ElementRef,
     protected readonly biaMessageService: BiaMessageService,
     protected renderer: Renderer2,
-    protected appSettingsService: AppSettingsService
-  ) {}
+    protected appSettingsService: AppSettingsService,
+    protected bannerService: BannerService
+  ) {
+    this.activeBannerMessages$ = this.bannerService.getActives();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.enableNotifications) {

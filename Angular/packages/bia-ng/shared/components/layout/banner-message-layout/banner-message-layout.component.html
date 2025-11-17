@@ -1,1 +1,5 @@
-<p>banner-message-layout works!</p>
+<div class="banner-message-container">
+  @if (messages) {
+    <div [innerHTML]="messages[0].rawContent | safeHtml"></div>
+  }
+</div>

@@ -25,11 +25,6 @@ import {
   ROUTE_DATA_NO_MARGIN,
   ROUTE_DATA_NO_PADDING,
 } from 'packages/bia-ng/core/public-api';
-import {
-  BannerMessage,
-  BannerMessageService,
-  FeatureBannerMessagesStore,
-} from 'packages/bia-ng/features/public-api';
 import { EnvironmentType } from 'packages/bia-ng/models/enum/public-api';
 import { BiaNavigation } from 'packages/bia-ng/models/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
@@ -97,7 +92,6 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
 
   envName$: Observable<string | undefined>;
   showEnvironmentMessage$: Observable<boolean>;
-  activeBannerMessages$: Observable<BannerMessage[]>;
   cssClassEnv: string;
 
   constructor(
@@ -109,8 +103,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
     protected translateService: TranslateService,
     public router: Router,
     protected activatedRoute: ActivatedRoute,
-    protected store: Store<BiaAppState>,
-    protected bannerMessageService: BannerMessageService
+    protected store: Store<BiaAppState>
   ) {
     this.hideMenuProfile();
     this.overlayMenuSubscription();
@@ -142,11 +135,6 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
         }
       })
     );
-
-    this.activeBannerMessages$ = this.store.select(
-      FeatureBannerMessagesStore.getActives
-    );
-    this.bannerMessageService.loadActives();
   }
 
   protected menuProfileSubscription() {

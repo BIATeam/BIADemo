@@ -78,9 +78,4 @@ export namespace FeatureBannerMessagesStore {
       getBannerMessagesEntitiesState,
       fromBannerMessages.getBannerMessageById(id)
     );
-
-  export const getActives = createSelector(
-    getBannerMessagesEntitiesState,
-    state => state.actives
-  );
 }

@@ -14,9 +14,6 @@
       ngProjectAs="[custom-topbar-icons]">
     </ng-content>
   </bia-ultima-topbar>
-  @if (((activeBannerMessages$ | async)?.length ?? 0) > 0) {
-    <bia-banner-message-layout></bia-banner-message-layout>
-  }
   @if (!layoutService.state.isInIframe) {
     <bia-ultima-sidebar
       [version]="version"
