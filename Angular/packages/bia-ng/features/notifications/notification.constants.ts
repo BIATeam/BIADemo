@@ -18,4 +18,5 @@ export const notificationCRUDConfiguration: CrudConfig<NotificationListItem> =
     useOfflineMode: false,
     useCompactMode: false,
     useVirtualScroll: false,
+    useRefreshAtLanguageChange: true,
   });

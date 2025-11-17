@@ -293,6 +293,9 @@ export class CrudItemsIndexComponent<
 
     this.sub.add(
       this.biaTranslationService.currentCulture$.subscribe(() => {
+        if (this.crudConfiguration.useRefreshAtLanguageChange) {
+          this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
+        }
         this.crudItemService.optionsService.loadAllOptions(
           this.crudConfiguration.optionFilter
         );

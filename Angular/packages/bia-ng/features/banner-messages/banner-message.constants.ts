@@ -21,6 +21,7 @@ export const bannerMessageCRUDConfiguration: CrudConfig<BannerMessage> =
     useOfflineMode: false,
     useCompactMode: false,
     useVirtualScroll: false,
+    useRefreshAtLanguageChange: true,
     // IMPORTANT: this key should be unique in all the application.
     // storeKey: 'feature-' + featureName,
     // IMPORTANT: this is the key used for the view management it should be unique in all the application (except if share same views).

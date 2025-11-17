@@ -11,7 +11,6 @@ import {
   CrudItemsIndexComponent,
 } from 'packages/bia-ng/shared/public-api';
 import { PrimeTemplate } from 'primeng/api';
-import { skip } from 'rxjs';
 import { Notification } from '../../model/notification';
 import { NotificationListItem } from '../../model/notification-list-item';
 import { notificationCRUDConfiguration } from '../../notification.constants';
@@ -52,21 +51,6 @@ export class NotificationsIndexComponent
   ) {
     super(injector, notificationService);
     this.crudConfiguration = notificationCRUDConfiguration;
-  }
-
-  ngOnInit(): void {
-    super.ngOnInit();
-
-    if (this.useRefreshAtLanguageChange) {
-      // Reload data if language change.
-      this.sub.add(
-        this.biaTranslationService.currentCulture$
-          .pipe(skip(1))
-          .subscribe(() => {
-            this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
-          })
-      );
-    }
   }
 
   onDetail(notificationId: number) {
