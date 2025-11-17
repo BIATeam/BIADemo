@@ -4,7 +4,11 @@
 
 namespace BIA.Net.Core.Application.Banner
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Security.Principal;
+    using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Domain.Banner.Entities;
     using BIA.Net.Core.Domain.Banner.Mappers;
@@ -27,6 +31,13 @@ namespace BIA.Net.Core.Application.Banner
             IPrincipal principal)
             : base(repository)
         {
+        }
+
+        public async Task<List<BannerMessageDto>> GetActives()
+        {
+            var currentDatetime = DateTime.UtcNow;
+            var actives = await this.GetAllAsync(filter: x => x.End > currentDatetime && x.Start <= currentDatetime);
+            return [.. actives.OrderBy(x => x.Start)];
         }
     }
 }

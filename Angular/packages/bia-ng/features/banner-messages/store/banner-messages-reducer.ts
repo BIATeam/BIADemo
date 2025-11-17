@@ -19,11 +19,13 @@ export interface State
     EntityState<BannerMessage> {
   // additional props here
   currentItemHistorical: HistoricalEntryDto[];
+  actives: BannerMessage[];
 }
 
 export const INIT_STATE: State = bannerMessagesAdapter.getInitialState({
   ...DEFAULT_CRUD_STATE(),
   currentItemHistorical: [],
+  actives: [],
   // additional props default values here
 });
 
@@ -39,6 +41,7 @@ export const bannerMessageReducers = createReducer<State>(
       ...state,
       currentItem: <BannerMessage>{},
       currentItemHistorical: [],
+      actives: [],
     };
   }),
   on(FeatureBannerMessagesActions.loadAllByPost, state => {
@@ -68,6 +71,9 @@ export const bannerMessageReducers = createReducer<State>(
   ),
   on(FeatureBannerMessagesActions.failure, state => {
     return { ...state, loadingGetAll: false, loadingGet: false };
+  }),
+  on(FeatureBannerMessagesActions.loadActivesSuccess, (state, { actives }) => {
+    return { ...state, actives: actives, loadingGet: false };
   })
 );
 

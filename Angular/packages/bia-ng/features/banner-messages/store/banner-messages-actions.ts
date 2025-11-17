@@ -70,4 +70,13 @@ export namespace FeatureBannerMessagesActions {
     '[' + bannerMessageCRUDConfiguration.storeKey + '] Load historical success',
     props<{ historical: HistoricalEntryDto[] }>()
   );
+
+  export const loadActives = createAction(
+    '[' + bannerMessageCRUDConfiguration.storeKey + '] Load actives'
+  );
+
+  export const loadActivesSuccess = createAction(
+    '[' + bannerMessageCRUDConfiguration.storeKey + '] Load actives success',
+    props<{ actives: BannerMessage[] }>()
+  );
 }

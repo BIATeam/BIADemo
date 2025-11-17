@@ -4,6 +4,8 @@
 
 namespace BIA.Net.Core.Application.Banner
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Domain.Banner.Entities;
     using BIA.Net.Core.Domain.Dto.Banner;
@@ -14,5 +16,6 @@ namespace BIA.Net.Core.Application.Banner
     /// </summary>
     public interface IBannerMessageAppService : ICrudAppServiceBase<BannerMessageDto, BannerMessage, int, PagingFilterFormatDto>
     {
+        Task<List<BannerMessageDto>> GetActives();
     }
 }

@@ -223,7 +223,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Banner
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.BannerMessages.Read)]
-        public virtual async Task<IActionResult> GetHistorical(int id)
+        public async Task<IActionResult> GetHistorical(int id)
         {
             try
             {
@@ -234,6 +234,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Banner
             {
                 return this.NotFound();
             }
+        }
+
+        [HttpGet("actives")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetActives()
+        {
+            var actives = await this.bannerMessageService.GetActives();
+            return this.Ok(actives);
         }
     }
 }

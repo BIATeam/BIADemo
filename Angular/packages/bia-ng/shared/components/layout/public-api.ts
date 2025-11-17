@@ -1,4 +1,5 @@
 export * from './api/menuchangeevent';
+export * from './banner-message-layout/banner-message-layout.component';
 export * from './classic-page-layout/classic-page-layout.component';
 export * from './dynamic-layout/dynamic-layout.component';
 export * from './fullpage-layout/fullpage-layout.component';
