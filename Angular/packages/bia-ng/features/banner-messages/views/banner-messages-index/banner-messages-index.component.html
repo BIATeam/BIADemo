@@ -91,6 +91,13 @@
       [isResizableColumn]="crudConfiguration.useResizableColumn"
       [rowHeight]="defaultRowHeight"
       [showFixableState]="crudConfiguration.isFixable">
+      <ng-template pTemplate="specificOutput" let-field="field" let-data="data">
+        @switch (field.field) {
+          @case ('rawContent') {
+            <div class="html-block" [innerHTML]="data | safeHtml"></div>
+          }
+        }
+      </ng-template>
     </bia-table>
   </div>
 </div>

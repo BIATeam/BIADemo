@@ -9,6 +9,7 @@ import {
   BiaTableHeaderComponent,
   CrudItemService,
   CrudItemsIndexComponent,
+  SafeHtmlPipe,
 } from 'packages/bia-ng/shared/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { Permission } from 'src/app/shared/permission';
@@ -29,6 +30,7 @@ import { BannerMessageService } from '../../services/banner-message.service';
     BiaTableControllerComponent,
     BiaTableBehaviorControllerComponent,
     BiaTableComponent,
+    SafeHtmlPipe,
   ],
   providers: [{ provide: CrudItemService, useExisting: BannerMessageService }],
 })
