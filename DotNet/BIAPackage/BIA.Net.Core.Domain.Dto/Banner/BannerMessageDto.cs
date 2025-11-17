@@ -43,6 +43,6 @@ namespace BIA.Net.Core.Domain.Dto.Banner
         /// Gets or sets the type.
         /// </summary>
         [BiaDtoField(Required = true)]
-        public TOptionDto<BiaBannerType> Type { get; set; }
+        public TOptionDto<BiaBannerMessageType> Type { get; set; }
     }
 }

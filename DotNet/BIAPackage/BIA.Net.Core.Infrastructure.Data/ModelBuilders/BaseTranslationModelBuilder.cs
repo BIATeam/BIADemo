@@ -22,6 +22,7 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
             this.CreateRoleTranslationModel(modelBuilder);
             this.CreateNotificationTypeTranslationModel(modelBuilder);
             this.CreateNotificationTranslationModel(modelBuilder);
+            this.CreateBannerMessageTypeTranslationModel(modelBuilder);
         }
 
         /// <summary>
@@ -77,6 +78,20 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
 
             modelBuilder.Entity<NotificationTranslation>().Property(m => m.Title).IsRequired().HasMaxLength(100);
             modelBuilder.Entity<NotificationTranslation>().Property(m => m.Description).IsRequired().HasMaxLength(256);
+        }
+
+        /// <summary>
+        /// Create the model for banner message type translation.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected virtual void CreateBannerMessageTypeTranslationModel(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<BannerMessageTypeTranslation>().HasKey(r => r.Id);
+            modelBuilder.Entity<BannerMessageTypeTranslation>().Property(r => r.BannerMessageTypeId).IsRequired();
+            modelBuilder.Entity<BannerMessageTypeTranslation>().Property(r => r.LanguageId).IsRequired();
+            modelBuilder.Entity<BannerMessageTypeTranslation>().HasIndex(u => new { u.BannerMessageTypeId, u.LanguageId }).IsUnique();
+
+            modelBuilder.Entity<BannerMessageTypeTranslation>().Property(m => m.Label).IsRequired().HasMaxLength(150);
         }
     }
 }

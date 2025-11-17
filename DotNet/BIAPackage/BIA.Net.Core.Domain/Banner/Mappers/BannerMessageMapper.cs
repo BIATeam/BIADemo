@@ -15,19 +15,23 @@ namespace BIA.Net.Core.Domain.Banner.Mappers
     using BIA.Net.Core.Domain.Dto.Banner;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Mapper;
+    using BIA.Net.Core.Domain.Service;
 
     /// <summary>
     /// The mapper used for BannerMessage.
     /// </summary>
     public class BannerMessageMapper : BaseMapper<BannerMessageDto, BannerMessage, int>
     {
+        private readonly UserContext userContext;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BannerMessageMapper"/> class.
         /// </summary>
         /// <param name="auditMappers">The injected collection of <see cref="IAuditMapper"/>.</param>
-        public BannerMessageMapper(IEnumerable<IAuditMapper> auditMappers)
+        public BannerMessageMapper(IEnumerable<IAuditMapper> auditMappers, UserContext userContext)
         {
             this.AuditMapper = auditMappers.FirstOrDefault(x => x.EntityType == typeof(BannerMessage));
+            this.userContext = userContext;
         }
 
         /// <inheritdoc />
@@ -41,7 +45,7 @@ namespace BIA.Net.Core.Domain.Banner.Mappers
                     { HeaderName.Name, bannerMessage => bannerMessage.Name },
                     { HeaderName.RawContent, bannerMessage => bannerMessage.RawContent },
                     { HeaderName.Start, bannerMessage => bannerMessage.Start },
-                    { HeaderName.Type, bannerMessage => bannerMessage.Type },
+                    { HeaderName.Type, bannerMessage => bannerMessage.Type.Id },
                 };
             }
         }
@@ -54,7 +58,7 @@ namespace BIA.Net.Core.Domain.Banner.Mappers
             entity.Name = dto.Name;
             entity.RawContent = dto.RawContent;
             entity.Start = dto.Start;
-            entity.Type = dto.Type.Id;
+            entity.TypeId = dto.Type.Id;
         }
 
         /// <inheritdoc />
@@ -66,31 +70,12 @@ namespace BIA.Net.Core.Domain.Banner.Mappers
                 Name = entity.Name,
                 RawContent = entity.RawContent,
                 Start = entity.Start,
-                Type = new TOptionDto<BiaBannerType> { Id = entity.Type, Display = GetBiaBannerTypeDisplay(entity.Type) },
+                Type = new TOptionDto<BiaBannerMessageType>
+                {
+                    Id = entity.Type.Id,
+                    Display = entity.Type.BannerMessageTypeTranslations.Single(x => x.LanguageId == this.userContext.LanguageId).Label,
+                },
             });
-        }
-
-        /// <inheritdoc />
-        public override Dictionary<string, Func<string>> DtoToCellMapping(BannerMessageDto dto)
-        {
-            return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
-            {
-                { HeaderName.End, () => CSVDateTime(dto.End) },
-                { HeaderName.Name, () => CSVString(dto.Name) },
-                { HeaderName.RawContent, () => CSVString(dto.RawContent) },
-                { HeaderName.Start, () => CSVDateTime(dto.Start) },
-                { HeaderName.Type, () => CSVString(dto.Type.ToString()) },
-            };
-        }
-
-        private static string GetBiaBannerTypeDisplay(BiaBannerType type)
-        {
-            return type switch
-            {
-                BiaBannerType.Info => "bia.info",
-                BiaBannerType.Warning => "bia.warning",
-                _ => throw new NotImplementedException(),
-            };
         }
 
         /// <summary>

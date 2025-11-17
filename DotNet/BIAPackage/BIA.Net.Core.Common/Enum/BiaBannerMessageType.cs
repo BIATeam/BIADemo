@@ -6,7 +6,7 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    public enum BiaBannerType
+    public enum BiaBannerMessageType
     {
         Info,
         Warning

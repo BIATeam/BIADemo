@@ -72,6 +72,16 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         public DbSet<BannerMessage> BannerMessages { get; set; }
 
         /// <summary>
+        /// Gets or sets the BannerMessageTypes.
+        /// </summary>
+        public DbSet<BannerMessageType> BannerMessageTypes { get; set; }
+
+        /// <summary>
+        /// Gets or sets the BannerMessageTypeTranslations.
+        /// </summary>
+        public DbSet<BannerMessageTypeTranslation> BannerMessageTypeTranslations { get; set; }
+
+        /// <summary>
         /// Gets or sets the BannerMessageAudit.
         /// </summary>
         public DbSet<BannerMessageAudit> BannerMessageAudit { get; set; }
@@ -232,7 +242,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
             new UserModelBuilder().CreateModel(modelBuilder);
             ViewModelBuilder.CreateModel(modelBuilder);
             new NotificationModelBuilder().CreateModel(modelBuilder);
-            new BannerMessageModelBuilder().CreateModel(modelBuilder);
 
             // Begin BIADemo
             PlaneModelBuilder.CreateModel(modelBuilder);

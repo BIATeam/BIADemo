@@ -86,10 +86,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<DateTime>("Start")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Type")
+                    b.Property<int>("TypeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TypeId");
 
                     b.ToTable("BannerMessages");
                 });
@@ -123,6 +125,31 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasKey("AuditId");
 
                     b.ToTable("BannerMessageAudit");
+                });
+
+            modelBuilder.Entity("BIA.Net.Core.Domain.Banner.Entities.BannerMessageType", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BannerMessageTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 0
+                        },
+                        new
+                        {
+                            Id = 1
+                        });
                 });
 
             modelBuilder.Entity("BIA.Net.Core.Domain.DistCache.Entities.DistCache", b =>
@@ -334,6 +361,84 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasIndex("NotificationId");
 
                     b.ToTable("NotificationUser");
+                });
+
+            modelBuilder.Entity("BIA.Net.Core.Domain.Translation.Entities.BannerMessageTypeTranslation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BannerMessageTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LanguageId");
+
+                    b.HasIndex("BannerMessageTypeId", "LanguageId")
+                        .IsUnique();
+
+                    b.ToTable("BannerMessageTypeTranslations");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 101,
+                            BannerMessageTypeId = 0,
+                            Label = "Information",
+                            LanguageId = 1
+                        },
+                        new
+                        {
+                            Id = 102,
+                            BannerMessageTypeId = 1,
+                            Label = "Warning",
+                            LanguageId = 1
+                        },
+                        new
+                        {
+                            Id = 103,
+                            BannerMessageTypeId = 0,
+                            Label = "Information",
+                            LanguageId = 2
+                        },
+                        new
+                        {
+                            Id = 104,
+                            BannerMessageTypeId = 1,
+                            Label = "Avertissement",
+                            LanguageId = 2
+                        },
+                        new
+                        {
+                            Id = 105,
+                            BannerMessageTypeId = 0,
+                            Label = "Información",
+                            LanguageId = 3
+                        },
+                        new
+                        {
+                            Id = 106,
+                            BannerMessageTypeId = 1,
+                            Label = "Advertencia",
+                            LanguageId = 3
+                        });
                 });
 
             modelBuilder.Entity("BIA.Net.Core.Domain.Translation.Entities.Language", b =>
@@ -2193,6 +2298,17 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasDiscriminator().HasValue("User");
                 });
 
+            modelBuilder.Entity("BIA.Net.Core.Domain.Banner.Entities.BannerMessage", b =>
+                {
+                    b.HasOne("BIA.Net.Core.Domain.Banner.Entities.BannerMessageType", "Type")
+                        .WithMany()
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.Navigation("Type");
+                });
+
             modelBuilder.Entity("BIA.Net.Core.Domain.Notification.Entities.BaseNotification", b =>
                 {
                     b.HasOne("BIA.Net.Core.Domain.User.Entities.BaseEntityUser", "CreatedBy")
@@ -2265,6 +2381,25 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("Notification");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BIA.Net.Core.Domain.Translation.Entities.BannerMessageTypeTranslation", b =>
+                {
+                    b.HasOne("BIA.Net.Core.Domain.Banner.Entities.BannerMessageType", "BannerMessageType")
+                        .WithMany("BannerMessageTypeTranslations")
+                        .HasForeignKey("BannerMessageTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BIA.Net.Core.Domain.Translation.Entities.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BannerMessageType");
+
+                    b.Navigation("Language");
                 });
 
             modelBuilder.Entity("BIA.Net.Core.Domain.Translation.Entities.NotificationTranslation", b =>
@@ -2720,6 +2855,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .HasForeignKey("TheBIADevCompany.BIADemo.Domain.Site.Entities.Site", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("BIA.Net.Core.Domain.Banner.Entities.BannerMessageType", b =>
+                {
+                    b.Navigation("BannerMessageTypeTranslations");
                 });
 
             modelBuilder.Entity("BIA.Net.Core.Domain.Notification.Entities.BaseNotification", b =>

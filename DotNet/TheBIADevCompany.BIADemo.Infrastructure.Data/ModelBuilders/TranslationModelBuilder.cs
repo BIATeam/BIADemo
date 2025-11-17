@@ -160,5 +160,23 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 
             // End BIADemo
         }
+
+        /// <summary>
+        /// Create the model for banner message type translation.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected override void CreateBannerMessageTypeTranslationModel(ModelBuilder modelBuilder)
+        {
+            base.CreateBannerMessageTypeTranslationModel(modelBuilder);
+
+            modelBuilder.Entity<BannerMessageTypeTranslation>().HasData(new BannerMessageTypeTranslation { BannerMessageTypeId = BiaBannerMessageType.Info, LanguageId = LanguageId.English, Id = 101, Label = "Information" });
+            modelBuilder.Entity<BannerMessageTypeTranslation>().HasData(new BannerMessageTypeTranslation { BannerMessageTypeId = BiaBannerMessageType.Warning, LanguageId = LanguageId.English, Id = 102, Label = "Warning" });
+
+            modelBuilder.Entity<BannerMessageTypeTranslation>().HasData(new BannerMessageTypeTranslation { BannerMessageTypeId = BiaBannerMessageType.Info, LanguageId = LanguageId.French, Id = 103, Label = "Information" });
+            modelBuilder.Entity<BannerMessageTypeTranslation>().HasData(new BannerMessageTypeTranslation { BannerMessageTypeId = BiaBannerMessageType.Warning, LanguageId = LanguageId.French, Id = 104, Label = "Avertissement" });
+
+            modelBuilder.Entity<BannerMessageTypeTranslation>().HasData(new BannerMessageTypeTranslation { BannerMessageTypeId = BiaBannerMessageType.Info, LanguageId = LanguageId.Spanish, Id = 105, Label = "Información" });
+            modelBuilder.Entity<BannerMessageTypeTranslation>().HasData(new BannerMessageTypeTranslation { BannerMessageTypeId = BiaBannerMessageType.Warning, LanguageId = LanguageId.Spanish, Id = 106, Label = "Advertencia" });
+        }
     }
 }

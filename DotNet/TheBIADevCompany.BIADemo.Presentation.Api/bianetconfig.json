@@ -503,7 +503,12 @@
       // BannerMessage
       {
         "Names": [ "BannerMessage_List_Access", "BannerMessage_Read", "BannerMessage_Update", "BannerMessage_Create", "BannerMessage_Delete" ],
-        "Roles": [ "Admin", "Site_Member" ]
+        "Roles": [ "Admin" ]
+      },
+      // BannerMessageType
+      {
+        "Name": "BannerMessageType_Options",
+        "Roles": [ "Admin" ]
       }
     ]
     // endif

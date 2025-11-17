@@ -86,6 +86,17 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Save = "BannerMessage_Save";
         }
 
+        /// <summary>
+        /// The banner message type options rights.
+        /// </summary>
+        public static class BannerMessageTypeOptions
+        {
+            /// <summary>
+            /// The right to access to the list of banner message types (options only).
+            /// </summary>
+            public const string Options = "BannerMessageType_Options";
+        }
+
         // BIAToolKit - Begin Rights
         // BIAToolKit - End Rights
 
