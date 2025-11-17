@@ -1,5 +1,5 @@
 import { AsyncPipe, NgClass } from '@angular/common';
-import { Component, Injector, OnInit, ViewChild } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from 'packages/bia-ng/core/public-api';
 import {
@@ -13,7 +13,6 @@ import {
 import { PrimeTemplate } from 'primeng/api';
 import { Permission } from 'src/app/shared/permission';
 import { bannerMessageCRUDConfiguration } from '../../banner-message.constants';
-import { BannerMessageTableComponent } from '../../components/banner-message-table/banner-message-table.component';
 import { BannerMessage } from '../../model/banner-message';
 import { BannerMessageService } from '../../services/banner-message.service';
 
@@ -24,7 +23,6 @@ import { BannerMessageService } from '../../services/banner-message.service';
   imports: [
     NgClass,
     PrimeTemplate,
-    BannerMessageTableComponent,
     AsyncPipe,
     TranslateModule,
     BiaTableHeaderComponent,
@@ -38,9 +36,6 @@ export class BannerMessagesIndexComponent
   extends CrudItemsIndexComponent<BannerMessage>
   implements OnInit
 {
-  @ViewChild(BannerMessageTableComponent, { static: false })
-  crudItemTableComponent: BannerMessageTableComponent;
-
   // BIAToolKit - Begin BannerMessageIndexTsCanViewChildDeclaration
   // BIAToolKit - End BannerMessageIndexTsCanViewChildDeclaration
 

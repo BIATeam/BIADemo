@@ -57,79 +57,39 @@
           "></bia-table-behavior-controller>
       </ng-template>
     </bia-table-controller>
-    @if (!crudConfiguration.useCalcMode) {
-      <bia-table
-        [elements]="
-          crudConfiguration.useVirtualScroll
-            ? virtualCrudItems
-            : ((crudItems$ | async) ?? [])
-        "
-        [dictOptionDtos]="
-          (crudItemService.optionsService.dictOptionDtos$ | async) ?? []
-        "
-        [totalRecord]="(totalCount$ | async) ?? 0"
-        [columnToDisplays]="displayedColumns"
-        [reorderableColumns]="reorderableColumns"
-        [pageSize]="pageSize"
-        (pageSizeChange)="onPageSizeChange($event)"
-        [configuration]="crudConfiguration.fieldsConfig"
-        [(showColSearch)]="showColSearch"
-        [globalSearchValue]="globalSearchValue"
-        [canClickRow]="canEdit"
-        [canSelectElement]="canSelect"
-        [canSelectMultipleElement]="canDelete"
-        [loading]="(loading$ | async) ?? false"
-        (clickRowId)="onClickRow($event)"
-        (loadLazy)="onLoadLazy($event)"
-        [viewPreference]="viewPreference"
-        [tableStateKey]="tableStateKey"
-        (selectedElementsChanged)="onSelectedElementsChanged($event)"
-        [sortFieldValue]="sortFieldValue"
-        (stateSave)="onStateSave($event)"
-        [scrollHeightValue]="getFillScrollHeightValue()"
-        [frozeSelectColumn]="true"
-        [virtualScroll]="crudConfiguration.useVirtualScroll"
-        [isResizableColumn]="crudConfiguration.useResizableColumn"
-        [rowHeight]="defaultRowHeight"
-        [showFixableState]="crudConfiguration.isFixable"></bia-table>
-    } @else {
-      <app-banner-message-table
-        [elements]="
-          crudConfiguration.useVirtualScroll
-            ? virtualCrudItems
-            : ((crudItems$ | async) ?? [])
-        "
-        [dictOptionDtos]="
-          (crudItemService.optionsService.dictOptionDtos$ | async) ?? []
-        "
-        [totalRecord]="(totalCount$ | async) ?? 0"
-        [columnToDisplays]="displayedColumns"
-        [reorderableColumns]="reorderableColumns"
-        [pageSize]="pageSize"
-        (pageSizeChange)="onPageSizeChange($event)"
-        [configuration]="crudConfiguration.fieldsConfig"
-        [(showColSearch)]="showColSearch"
-        [globalSearchValue]="globalSearchValue"
-        [canEdit]="canEdit"
-        [canAdd]="canAdd"
-        [canSelectElement]="canSelect"
-        [canSelectMultipleElement]="canDelete"
-        [loading]="(loading$ | async) ?? false"
-        (loadLazy)="onLoadLazy($event)"
-        [viewPreference]="viewPreference"
-        [tableStateKey]="tableStateKey"
-        (selectedElementsChanged)="onSelectedElementsChanged($event)"
-        [sortFieldValue]="sortFieldValue"
-        (stateSave)="onStateSave($event)"
-        (save)="onSave($event)"
-        [frozeSelectColumn]="true"
-        [scrollHeightValue]="getFillScrollHeightValue()"
-        [virtualScroll]="crudConfiguration.useVirtualScroll"
-        [isResizableColumn]="crudConfiguration.useResizableColumn"
-        [rowHeight]="defaultRowHeight"
-        [showFixableState]="
-          crudConfiguration.isFixable
-        "></app-banner-message-table>
-    }
+    <bia-table
+      [elements]="
+        crudConfiguration.useVirtualScroll
+          ? virtualCrudItems
+          : ((crudItems$ | async) ?? [])
+      "
+      [dictOptionDtos]="
+        (crudItemService.optionsService.dictOptionDtos$ | async) ?? []
+      "
+      [totalRecord]="(totalCount$ | async) ?? 0"
+      [columnToDisplays]="displayedColumns"
+      [reorderableColumns]="reorderableColumns"
+      [pageSize]="pageSize"
+      (pageSizeChange)="onPageSizeChange($event)"
+      [configuration]="crudConfiguration.fieldsConfig"
+      [(showColSearch)]="showColSearch"
+      [globalSearchValue]="globalSearchValue"
+      [canClickRow]="canEdit"
+      [canSelectElement]="canSelect"
+      [canSelectMultipleElement]="canDelete"
+      [loading]="(loading$ | async) ?? false"
+      (clickRowId)="onClickRow($event)"
+      (loadLazy)="onLoadLazy($event)"
+      [viewPreference]="viewPreference"
+      [tableStateKey]="tableStateKey"
+      (selectedElementsChanged)="onSelectedElementsChanged($event)"
+      [sortFieldValue]="sortFieldValue"
+      (stateSave)="onStateSave($event)"
+      [scrollHeightValue]="getFillScrollHeightValue()"
+      [frozeSelectColumn]="true"
+      [virtualScroll]="crudConfiguration.useVirtualScroll"
+      [isResizableColumn]="crudConfiguration.useResizableColumn"
+      [rowHeight]="defaultRowHeight"
+      [showFixableState]="crudConfiguration.isFixable"></bia-table>
   </div>
 </div>
