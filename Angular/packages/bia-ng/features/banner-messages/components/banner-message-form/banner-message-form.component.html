@@ -17,7 +17,7 @@
   (cancelled)="onCancel()"
   (fixableStateChanged)="onFixableStateChanged($event)"
   (layoutChanged)="layoutChanged.emit($event)"
-  [displayHistorical]="true"
+  [displayHistorical]="historicalEntries.length > 0"
   [historicalEntries]="historicalEntries">
   <ng-template pTemplate="specificInput" let-field="field" let-form="form">
     <div [formGroup]="form">

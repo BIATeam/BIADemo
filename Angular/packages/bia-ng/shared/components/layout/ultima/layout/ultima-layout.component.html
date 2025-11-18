@@ -60,9 +60,9 @@
       </div>
     }
 
-    @if (((activeBannerMessages$ | async)?.length ?? 0) > 0) {
+    @if (activeBannerMessages && activeBannerMessages.length > 0) {
       <bia-banner-message-layout
-        [messages]="activeBannerMessages$ | async"></bia-banner-message-layout>
+        [messages]="activeBannerMessages"></bia-banner-message-layout>
     }
 
     <ng-content select="[breadcrumb-top]"></ng-content>

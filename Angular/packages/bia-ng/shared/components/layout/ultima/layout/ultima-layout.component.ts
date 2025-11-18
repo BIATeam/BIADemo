@@ -95,7 +95,8 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
   envName$: Observable<string | undefined>;
   showEnvironmentMessage$: Observable<boolean>;
   cssClassEnv: string;
-  activeBannerMessages$: Observable<BannerMessage[]>;
+  activeBannerMessages: BannerMessage[];
+  activeBannerMessagesInterval: NodeJS.Timeout | undefined;
 
   constructor(
     protected biaTranslation: BiaTranslationService,
@@ -303,10 +304,28 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.activeBannerMessages$ = this.bannerService.getActives();
+    this.initActiveBannerMessagesPolling();
     this.bannerService.registerSignalRChanges(() => {
-      this.activeBannerMessages$ = this.bannerService.getActives();
+      this.initActiveBannerMessagesPolling();
     });
+  }
+
+  private initActiveBannerMessagesPolling() {
+    if (this.activeBannerMessagesInterval) {
+      clearInterval(this.activeBannerMessagesInterval);
+    }
+    this.refreshActiveBannerMessages();
+    this.activeBannerMessagesInterval = setInterval(() => {
+      this.refreshActiveBannerMessages();
+    }, 60000);
+  }
+
+  private refreshActiveBannerMessages() {
+    this.sub.add(
+      this.bannerService.getActives().subscribe(messages => {
+        this.activeBannerMessages = messages;
+      })
+    );
   }
 
   protected updateMenuItems() {
@@ -497,6 +516,9 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
 
     this.sub.unsubscribe();
     this.bannerService.destroy();
+    if (this.activeBannerMessagesInterval) {
+      clearInterval(this.activeBannerMessagesInterval);
+    }
   }
 
   onLanguageChange(lang: string) {
