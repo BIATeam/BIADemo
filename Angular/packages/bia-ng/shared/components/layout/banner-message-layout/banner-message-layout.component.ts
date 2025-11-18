@@ -1,11 +1,12 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { BannerMessage } from 'packages/bia-ng/features/public-api';
 import { BiaBannerMessageType } from 'packages/bia-ng/models/enum/bia-banner-message-type.enum';
 import { SafeHtmlPipe } from '../../../pipes/safe-html.pipe';
 
 @Component({
   selector: 'bia-banner-message-layout',
-  imports: [SafeHtmlPipe],
+  imports: [SafeHtmlPipe, TranslateModule],
   templateUrl: './banner-message-layout.component.html',
   styleUrl: './banner-message-layout.component.scss',
 })

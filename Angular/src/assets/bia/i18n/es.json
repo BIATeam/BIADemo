@@ -196,6 +196,7 @@
   },
   "bannerMessage": {
     "add": "Agregar mensaje de banner",
+    "announcements": "ANUNCIOS",
     "end": "Fecha de fin de visualización",
     "start": "Fecha de inicio de visualización",
     "name": "Nombre",

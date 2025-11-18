@@ -196,6 +196,7 @@
   },
   "bannerMessage": {
     "add": "Add banner message",
+    "announcements": "ANNOUCEMENTS",
     "end": "End display date",
     "start": "Start display date",
     "name": "Name",

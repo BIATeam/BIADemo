@@ -196,6 +196,7 @@
   },
   "bannerMessage": {
     "add": "Ajouter message de bannière",
+    "announcements": "ANNONCES",
     "end": "Date fin d'affichage",
     "start": "Date début d'affichage",
     "name": "Nom",

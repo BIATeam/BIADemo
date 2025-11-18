@@ -1,25 +1,37 @@
 .banner-message-container {
   height: 2.5rem;
   max-height: 2.5rem;
-  overflow: hidden;
-  white-space: nowrap;
   display: flex;
-  align-items: center;
   background: var(--p-surface-300);
-}
+  white-space: nowrap;
+  font-family: 'oswald-light';
 
-:host-context(html.dark-theme) {
-  .banner-message-container {
-    background: var(--p-surface-400);
+  .banner-message-title {
+    box-shadow: 3px 0 8px rgba(0, 0, 0, 0.15);
+    padding: 0rem 0.8rem;
+    font-weight: bold;
+    align-content: center;
+
+    .icon-title {
+      font-size: 1rem;
+      margin-left: 0.7rem;
+    }
   }
-}
 
-.banner-message-content {
-  width: 100%;
-  display: inline-block;
-  animation: scroll-left linear infinite;
-  animation-duration: 60s;
-  user-select: none;
+  .banner-message-content-container {
+    overflow: hidden;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    .banner-message-content {
+      width: 100%;
+      animation: scroll-left linear infinite;
+      animation-duration: 60s;
+      user-select: none;
+    }
+  }
 }
 
 @keyframes scroll-left {
@@ -31,17 +43,23 @@
   }
 }
 
+:host-context(html.dark-theme) {
+  .banner-message-container {
+    background: var(--p-surface-400);
+  }
+}
+
 :host ::ng-deep {
   .banner-message-separator {
-    margin-left: 0.75rem;
-    margin-right: 0.75rem;
+    margin: 0rem 0.9rem;
     font-size: 1.3rem;
+    color: var(--p-slate-600);
   }
 
   .banner-message-icon {
-    margin-right: 0.25rem;
+    margin-right: 0.5rem;
+    font-size: 1.5rem;
     vertical-align: top;
-    font-size: 1.3rem;
 
     &-info {
       @extend .banner-message-icon;
