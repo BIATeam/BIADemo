@@ -25,12 +25,15 @@ import {
   ROUTE_DATA_NO_MARGIN,
   ROUTE_DATA_NO_PADDING,
 } from 'packages/bia-ng/core/public-api';
+import { BannerMessage } from 'packages/bia-ng/features/public-api';
 import { EnvironmentType } from 'packages/bia-ng/models/enum/public-api';
 import { BiaNavigation } from 'packages/bia-ng/models/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { MenuItem } from 'primeng/api';
 import { Breadcrumb } from 'primeng/breadcrumb';
 import { filter, map, Observable, Subscription } from 'rxjs';
+import { BannerMessageLayoutComponent } from '../../banner-message-layout/banner-message-layout.component';
+import { BannerService } from '../../services/banner.service';
 import { BiaThemeService } from '../../services/bia-theme.service';
 import { BiaLayoutService } from '../../services/layout.service';
 import { MenuService } from '../../services/menu.service';
@@ -53,6 +56,7 @@ import { BiaUltimaTopbarComponent } from '../topbar/ultima-topbar.component';
     AsyncPipe,
     TranslateModule,
     BiaUltimaConfigComponent,
+    BannerMessageLayoutComponent,
   ],
 })
 export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
@@ -91,6 +95,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
   envName$: Observable<string | undefined>;
   showEnvironmentMessage$: Observable<boolean>;
   cssClassEnv: string;
+  activeBannerMessages$: Observable<BannerMessage[]>;
 
   constructor(
     protected biaTranslation: BiaTranslationService,
@@ -101,7 +106,8 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
     protected translateService: TranslateService,
     public router: Router,
     protected activatedRoute: ActivatedRoute,
-    protected store: Store<BiaAppState>
+    protected store: Store<BiaAppState>,
+    protected bannerService: BannerService
   ) {
     this.hideMenuProfile();
     this.overlayMenuSubscription();
@@ -133,6 +139,8 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
         }
       })
     );
+
+    this.activeBannerMessages$ = this.bannerService.getActives();
   }
 
   protected menuProfileSubscription() {

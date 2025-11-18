@@ -4,11 +4,15 @@
   width: 100%;
   overflow: hidden;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
 }
 
 .banner-message-content {
+  width: 100%;
   display: inline-block;
-  animation: scroll-left 20s linear infinite;
+  animation: scroll-left linear infinite;
+  animation-duration: 40s;
 }
 
 @keyframes scroll-left {

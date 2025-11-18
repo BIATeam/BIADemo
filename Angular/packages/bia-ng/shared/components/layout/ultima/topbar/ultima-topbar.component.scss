@@ -50,10 +50,6 @@ bia-notification-team-warning {
   padding-top: 16px;
 }
 
-bia-banner-message-layout {
-  z-index: 1000;
-}
-
 :host ::ng-deep {
   // adjust height in topbar at minimu (35px)
   .p-megamenu-root-list > .p-menuitem > .p-menuitem-content > .p-menuitem-link {

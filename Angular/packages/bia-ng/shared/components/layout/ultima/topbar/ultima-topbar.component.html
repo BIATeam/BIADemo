@@ -138,11 +138,6 @@
   </div>
 }
 
-@if (((activeBannerMessages$ | async)?.length ?? 0) > 0) {
-  <bia-banner-message-layout
-    [messages]="activeBannerMessages$ | async"></bia-banner-message-layout>
-}
-
 <p-toast key="bia" #toast id="toast">
   <ng-template let-message pTemplate="message">
     <div class="flex flex-column flex-1" style="max-width: 100%">
