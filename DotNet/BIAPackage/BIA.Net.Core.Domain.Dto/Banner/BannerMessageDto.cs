@@ -19,7 +19,7 @@ namespace BIA.Net.Core.Domain.Dto.Banner
         /// Gets or sets the end.
         /// </summary>
         [BiaDtoField(Required = true, Type = "datetime")]
-        public DateTime End { get; set; }
+        public DateTimeOffset End { get; set; }
 
         /// <summary>
         /// Gets or sets the name.
@@ -37,7 +37,7 @@ namespace BIA.Net.Core.Domain.Dto.Banner
         /// Gets or sets the start.
         /// </summary>
         [BiaDtoField(Required = true, Type = "datetime")]
-        public DateTime Start { get; set; }
+        public DateTimeOffset Start { get; set; }
 
         /// <summary>
         /// Gets or sets the type.

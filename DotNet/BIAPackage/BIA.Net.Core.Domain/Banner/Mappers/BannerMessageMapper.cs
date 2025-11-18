@@ -54,10 +54,10 @@ namespace BIA.Net.Core.Domain.Banner.Mappers
         public override void DtoToEntity(BannerMessageDto dto, ref BannerMessage entity)
         {
             base.DtoToEntity(dto, ref entity);
-            entity.End = dto.End;
+            entity.End = dto.End.UtcDateTime;
             entity.Name = dto.Name;
             entity.RawContent = dto.RawContent;
-            entity.Start = dto.Start;
+            entity.Start = dto.Start.UtcDateTime;
             entity.TypeId = dto.Type.Id;
         }
 

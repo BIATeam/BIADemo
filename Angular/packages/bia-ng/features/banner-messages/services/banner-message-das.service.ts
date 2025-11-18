@@ -1,5 +1,21 @@
+import { HttpResponse, HttpStatusCode } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
-import { AbstractDas } from 'packages/bia-ng/core/public-api';
+import {
+  AbstractDas,
+  BiaOnlineOfflineService,
+  clone,
+  DateHelperService,
+} from 'packages/bia-ng/core/public-api';
+import {
+  DataResult,
+  GetListByPostParam,
+  GetListParam,
+  GetParam,
+  PostParam,
+  PutParam,
+  SaveParam,
+} from 'packages/bia-ng/models/public-api';
+import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { BannerMessage } from '../model/banner-message';
 
 @Injectable({
@@ -8,5 +24,191 @@ import { BannerMessage } from '../model/banner-message';
 export class BannerMessageDas extends AbstractDas<BannerMessage> {
   constructor(injector: Injector) {
     super(injector, 'BannerMessages');
+  }
+
+  getItem<TOut>(param?: GetParam): Observable<TOut> {
+    const url = `${this.concatRoute(this.route, param?.endpoint)}${
+      param?.id ?? ''
+    }`;
+    //const url = `${this.route}${param?.endpoint ?? ''}${param?.id ?? ''}`;
+
+    let obs$ = this.http.get<TOut>(url, param?.options).pipe(
+      map(data => {
+        this.adjustDatesForUtcDisplay(data);
+        this.translateItem(data);
+        return data;
+      }),
+      catchError(error => {
+        // Example: if I am on an element and I change of Team,
+        // and this Team does not access to this current element,
+        // we return to the root of the site.
+        if (
+          error.status === HttpStatusCode.Unauthorized ||
+          error.status === HttpStatusCode.Forbidden ||
+          error.status === HttpStatusCode.NotFound
+        ) {
+          location.assign(this.baseHref);
+        }
+        return throwError(() => error);
+      })
+    );
+
+    if (
+      param?.offlineMode === true &&
+      BiaOnlineOfflineService.isModeEnabled === true
+    ) {
+      obs$ = this.getWithCatchErrorOffline(obs$, url);
+    }
+
+    return obs$;
+  }
+
+  getListItems<TOut>(param?: GetListParam): Observable<TOut[]> {
+    const url = `${this.route}${param?.endpoint ?? ''}`;
+
+    let obs$ = this.http.get<TOut[]>(url, param?.options).pipe(
+      map(items => {
+        items.forEach(item => {
+          this.adjustDatesForUtcDisplay(item);
+          this.translateItem(item);
+        });
+        return items;
+      })
+    );
+
+    if (
+      param?.offlineMode === true &&
+      BiaOnlineOfflineService.isModeEnabled === true
+    ) {
+      obs$ = this.getWithCatchErrorOffline(obs$, url);
+    }
+
+    return obs$;
+  }
+
+  getListItemsByPost<TOut>(
+    param: GetListByPostParam
+  ): Observable<DataResult<TOut[]>> {
+    if (!param.event) {
+      return of();
+    }
+
+    param.endpoint = param.endpoint ?? 'all';
+
+    return this.http
+      .post<TOut[]>(`${this.route}${param.endpoint}`, param.event, {
+        observe: 'response',
+      })
+      .pipe(
+        map((resp: HttpResponse<TOut[]>) => {
+          const totalCount = Number(resp.headers.get('X-Total-Count'));
+          const datas = resp.body ? resp.body : [];
+          datas.forEach(data => {
+            this.adjustDatesForUtcDisplay(data);
+            this.translateItem(data);
+          });
+
+          const dataResult = {
+            totalCount,
+            data: datas,
+          } as DataResult<TOut[]>;
+          return dataResult;
+        })
+      );
+  }
+
+  saveItem<TIn, TOut>(param: SaveParam<TIn>) {
+    // param might contains ngrx state item which is immutable : clone to allow update
+    param = clone(param);
+    param.endpoint = param.endpoint ?? 'save';
+    if (param.items) {
+      param.items.forEach(item => {
+        this.revertUtcDisplayDatesToIso(item);
+      });
+    }
+
+    const url = `${this.route}${param.endpoint}`;
+    if (param.offlineMode === true) {
+      param.options = BiaOnlineOfflineService.addHttpHeaderRetry(param.options);
+      return this.setWithCatchErrorOffline(
+        this.http.post<TOut>(url, param.items, param.options)
+      );
+    } else {
+      return this.http.post<TOut>(url, param.items, param.options);
+    }
+  }
+
+  putItem<TIn, TOut>(param: PutParam<TIn>) {
+    // param might contains ngrx state item which is immutable : clone to allow update
+    param = clone(param);
+    param.endpoint = param.endpoint ?? '';
+    this.revertUtcDisplayDatesToIso(param.item);
+
+    const url = `${this.route}${param.endpoint}${param.id}`;
+    if (param.offlineMode === true) {
+      param.options = BiaOnlineOfflineService.addHttpHeaderRetry(param.options);
+      return this.setWithCatchErrorOffline(
+        this.http.put<TOut>(url, param.item, param.options)
+      );
+    } else {
+      return this.http.put<TOut>(url, param.item, param.options).pipe(
+        map(data => {
+          this.adjustDatesForUtcDisplay(data);
+          this.translateItem(data);
+          return data;
+        })
+      );
+    }
+  }
+
+  postItem<TIn, TOut>(param: PostParam<TIn>) {
+    // param might contains ngrx state item which is immutable : clone to allow update
+    param = clone(param);
+    param.endpoint = param.endpoint ?? '';
+    this.revertUtcDisplayDatesToIso(param.item);
+
+    const url = `${this.route}${param.endpoint}`;
+    if (param.offlineMode === true) {
+      param.options = BiaOnlineOfflineService.addHttpHeaderRetry(param.options);
+      return this.setWithCatchErrorOffline(
+        this.http.post<TOut>(url, param.item, param.options)
+      );
+    } else {
+      return this.http.post<TOut>(url, param.item, param.options).pipe(
+        map(data => {
+          this.adjustDatesForUtcDisplay(data);
+          this.translateItem(data);
+          return data;
+        })
+      );
+    }
+  }
+
+  private revertUtcDisplayDatesToIso<TOut>(data: TOut): TOut {
+    if (!data) return data;
+
+    Object.keys(data).forEach((key: string) => {
+      const value = (data as any)[key];
+      if (value instanceof Date) {
+        (data as any)[key] = value.toISOString();
+      }
+    });
+
+    return data;
+  }
+
+  private adjustDatesForUtcDisplay<TOut>(data: TOut): TOut {
+    if (!data) {
+      return data;
+    }
+
+    Object.keys(data).forEach((key: string) => {
+      const value = (data as any)[key];
+      if (DateHelperService.isDate(value)) {
+        (data as any)[key] = new Date(value);
+      }
+    });
+
+    return data;
   }
 }
