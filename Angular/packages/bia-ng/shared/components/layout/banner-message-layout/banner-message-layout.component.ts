@@ -29,7 +29,7 @@ export class BannerMessageLayoutComponent implements OnChanges {
         }
         const formatedMessage = message.rawContent.replace(/<\/?p>/g, '');
         return iconElement + formatedMessage;
-      }).join('<span class="banner-message-separator">-</span>');
+      }).join('<span class="banner-message-separator">|</span>');
     }
   }
 }
