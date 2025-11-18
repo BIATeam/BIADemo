@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Banner
     using System.Linq;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Banner;
+    using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Banner;
@@ -28,13 +29,17 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Banner
         /// </summary>
         private readonly IBannerMessageAppService bannerMessageService;
 
+        private readonly IClientForHubService clientForHubService;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BannerMessagesController"/> class.
         /// </summary>
         /// <param name="bannerMessageService">The bannerMessage application service.</param>
-        public BannerMessagesController(IBannerMessageAppService bannerMessageService)
+        /// <param name="clientForHubService">The hub for client.</param>
+        public BannerMessagesController(IBannerMessageAppService bannerMessageService, IClientForHubService clientForHubService)
         {
             this.bannerMessageService = bannerMessageService;
+            this.clientForHubService = clientForHubService;
         }
 
         /// <summary>
@@ -99,6 +104,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Banner
             try
             {
                 var createdDto = await this.bannerMessageService.AddAsync(dto);
+                await this.clientForHubService.SendTargetedMessage(string.Empty, "banner-messages", "change-banner-messages");
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
             catch (ArgumentNullException)
@@ -135,6 +141,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Banner
             try
             {
                 var updatedDto = await this.bannerMessageService.UpdateAsync(dto);
+                await this.clientForHubService.SendTargetedMessage(string.Empty, "banner-messages", "change-banner-messages");
                 return this.Ok(updatedDto);
             }
             catch (ArgumentNullException)
@@ -176,6 +183,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Banner
             try
             {
                 await this.bannerMessageService.RemoveAsync(id);
+                await this.clientForHubService.SendTargetedMessage(string.Empty, "banner-messages", "change-banner-messages");
                 return this.Ok();
             }
             catch (ElementNotFoundException)
@@ -205,6 +213,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Banner
             try
             {
                 await this.bannerMessageService.RemoveAsync(ids);
+                await this.clientForHubService.SendTargetedMessage(string.Empty, "banner-messages", "change-banner-messages");
                 return this.Ok();
             }
             catch (ElementNotFoundException)

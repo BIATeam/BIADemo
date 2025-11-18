@@ -139,8 +139,6 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
         }
       })
     );
-
-    this.activeBannerMessages$ = this.bannerService.getActives();
   }
 
   protected menuProfileSubscription() {
@@ -304,6 +302,11 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
         this.updateMenuItems();
       })
     );
+
+    this.activeBannerMessages$ = this.bannerService.getActives();
+    this.bannerService.registerSignalRChanges(() => {
+      this.activeBannerMessages$ = this.bannerService.getActives();
+    });
   }
 
   protected updateMenuItems() {
@@ -493,6 +496,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
     }
 
     this.sub.unsubscribe();
+    this.bannerService.destroy();
   }
 
   onLanguageChange(lang: string) {
