@@ -34,7 +34,7 @@ export class BannerMessageDas extends AbstractDas<BannerMessage> {
 
     let obs$ = this.http.get<TOut>(url, param?.options).pipe(
       map(data => {
-        this.adjustDatesForUtcDisplay(data);
+        DateHelperService.fillDate(data);
         this.translateItem(data);
         return data;
       }),
@@ -69,7 +69,7 @@ export class BannerMessageDas extends AbstractDas<BannerMessage> {
     let obs$ = this.http.get<TOut[]>(url, param?.options).pipe(
       map(items => {
         items.forEach(item => {
-          this.adjustDatesForUtcDisplay(item);
+          DateHelperService.fillDate(item);
           this.translateItem(item);
         });
         return items;
@@ -104,7 +104,7 @@ export class BannerMessageDas extends AbstractDas<BannerMessage> {
           const totalCount = Number(resp.headers.get('X-Total-Count'));
           const datas = resp.body ? resp.body : [];
           datas.forEach(data => {
-            this.adjustDatesForUtcDisplay(data);
+            DateHelperService.fillDate(data);
             this.translateItem(data);
           });
 
@@ -153,7 +153,7 @@ export class BannerMessageDas extends AbstractDas<BannerMessage> {
     } else {
       return this.http.put<TOut>(url, param.item, param.options).pipe(
         map(data => {
-          this.adjustDatesForUtcDisplay(data);
+          DateHelperService.fillDate(data);
           this.translateItem(data);
           return data;
         })
@@ -176,7 +176,7 @@ export class BannerMessageDas extends AbstractDas<BannerMessage> {
     } else {
       return this.http.post<TOut>(url, param.item, param.options).pipe(
         map(data => {
-          this.adjustDatesForUtcDisplay(data);
+          DateHelperService.fillDate(data);
           this.translateItem(data);
           return data;
         })
@@ -191,21 +191,6 @@ export class BannerMessageDas extends AbstractDas<BannerMessage> {
       const value = (data as any)[key];
       if (value instanceof Date) {
         (data as any)[key] = value.toISOString();
-      }
-    });
-
-    return data;
-  }
-
-  private adjustDatesForUtcDisplay<TOut>(data: TOut): TOut {
-    if (!data) {
-      return data;
-    }
-
-    Object.keys(data).forEach((key: string) => {
-      const value = (data as any)[key];
-      if (DateHelperService.isDate(value)) {
-        (data as any)[key] = new Date(value);
       }
     });
 
