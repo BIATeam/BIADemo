@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { BannerMessage } from 'packages/bia-ng/features/public-api';
+import { BiaBannerMessageType } from 'packages/bia-ng/models/enum/bia-banner-message-type.enum';
 import { SafeHtmlPipe } from '../../../pipes/safe-html.pipe';
 
 @Component({
@@ -14,9 +15,21 @@ export class BannerMessageLayoutComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.messages) {
-      this.formatedMessages = this.messages!.map(message =>
-        message.rawContent.replace(/<\/?p>/g, '')
-      ).join(' - ');
+      this.formatedMessages = this.messages!.map(message => {
+        let iconElement = '';
+        switch (message.type.id) {
+          case BiaBannerMessageType.Info:
+            iconElement =
+              '<i class="pi pi-info-circle banner-message-icon-info"></i>';
+            break;
+          case BiaBannerMessageType.Warning:
+            iconElement =
+              '<i class="pi pi-exclamation-triangle banner-message-icon-warning"></i>';
+            break;
+        }
+        const formatedMessage = message.rawContent.replace(/<\/?p>/g, '');
+        return iconElement + formatedMessage;
+      }).join('<span class="banner-message-separator">-</span>');
     }
   }
 }

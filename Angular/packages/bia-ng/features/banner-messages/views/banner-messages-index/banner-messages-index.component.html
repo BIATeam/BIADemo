@@ -94,7 +94,7 @@
       <ng-template pTemplate="specificOutput" let-field="field" let-data="data">
         @switch (field.field) {
           @case ('rawContent') {
-            <div class="html-block" [innerHTML]="data | safeHtml"></div>
+            <div class="raw-content-block" [innerHTML]="data | safeHtml"></div>
           }
         }
       </ng-template>

@@ -1,18 +1,25 @@
 .banner-message-container {
   height: 2.5rem;
   max-height: 2.5rem;
-  width: 100%;
   overflow: hidden;
   white-space: nowrap;
   display: flex;
   align-items: center;
+  background: var(--p-surface-300);
+}
+
+:host-context(html.dark-theme) {
+  .banner-message-container {
+    background: var(--p-surface-400);
+  }
 }
 
 .banner-message-content {
   width: 100%;
   display: inline-block;
   animation: scroll-left linear infinite;
-  animation-duration: 40s;
+  animation-duration: 60s;
+  user-select: none;
 }
 
 @keyframes scroll-left {
@@ -21,5 +28,28 @@
   }
   to {
     transform: translateX(-100%);
+  }
+}
+
+:host ::ng-deep {
+  .banner-message-separator {
+    margin-left: 0.75rem;
+    margin-right: 0.75rem;
+  }
+
+  .banner-message-icon {
+    margin-right: 0.25rem;
+    vertical-align: top;
+    font-size: 1.3rem;
+
+    &-info {
+      @extend .banner-message-icon;
+      color: var(--p-blue-600);
+    }
+
+    &-warning {
+      @extend .banner-message-icon;
+      color: var(--p-yellow-600);
+    }
   }
 }

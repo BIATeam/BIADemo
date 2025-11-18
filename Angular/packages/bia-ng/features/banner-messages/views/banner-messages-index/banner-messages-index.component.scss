@@ -2,14 +2,21 @@
   flex-direction: column;
 }
 
-.html-block {
+.raw-content-block {
   width: 100%;
-  box-sizing: border-box; // pour que padding + border restent dans les 100%
+  box-sizing: border-box;
   padding: 0rem 0.5rem;
   border-radius: 4px;
-  border: 1px solid #ddd;
-  background: #f7f7f7;
+  border: 1px solid var(--p-surface-300);
+  background: var(--p-surface-300);
 
-  white-space: pre-wrap; // garde les retours à la ligne / espaces, mais permet le wrap
-  word-break: break-word; // évite que de très longues chaînes débordent
+  white-space: pre-wrap;
+  word-break: break-word;
+  user-select: none;
+}
+
+:host-context(html.dark-theme) {
+  .raw-content-block {
+    background: var(--p-surface-400);
+  }
 }
