@@ -28,8 +28,7 @@ export class BannerMessageLayoutComponent implements OnChanges {
               '<i class="pi pi-exclamation-triangle banner-message-icon-warning"></i>';
             break;
         }
-        const formatedMessage = message.rawContent.replace(/<\/?p>/g, '');
-        return iconElement + formatedMessage;
+        return iconElement + message.rawContent;
       }).join('<span class="banner-message-separator">|</span>');
     }
   }

@@ -34,13 +34,8 @@
               class="pt-3"
               [style]="{ height: '4rem' }"
               [formControlName]="field.field"
-              [formats]="[
-                'bold',
-                'italic',
-                'underline',
-                'color',
-                'background',
-              ]">
+              [formats]="['bold', 'italic', 'underline', 'color', 'background']"
+              (onInit)="onEditorInit($event)">
               <ng-template #header>
                 <span class="ql-formats">
                   <button
