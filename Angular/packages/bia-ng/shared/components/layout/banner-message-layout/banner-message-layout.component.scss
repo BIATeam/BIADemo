@@ -29,6 +29,7 @@
     background: var(--p-surface-300);
 
     .banner-message-content {
+      font-size: 15px;
       display: inline-block;
       white-space: nowrap;
       will-change: transform;
@@ -60,12 +61,18 @@
 
     &-info {
       @extend .banner-message-icon;
-      color: var(--p-blue-600);
+      color: var(--p-blue-500);
     }
 
     &-warning {
       @extend .banner-message-icon;
       color: var(--p-yellow-600);
     }
+  }
+}
+
+:host :host-context(html.dark-theme) ::ng-deep {
+  .banner-message-icon-info {
+    color: var(--p-blue-400);
   }
 }

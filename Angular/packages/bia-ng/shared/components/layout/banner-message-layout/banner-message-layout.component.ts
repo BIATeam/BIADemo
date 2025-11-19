@@ -33,7 +33,7 @@ export class BannerMessageLayoutComponent
 
   formatedMessages = '';
 
-  private readonly speedPxPerSec = 50;
+  private readonly speedPxPerSec = 40;
 
   private viewReady = false;
 

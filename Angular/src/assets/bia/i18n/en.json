@@ -200,7 +200,7 @@
     "end": "End display date",
     "start": "Start display date",
     "name": "Name",
-    "rawContent": "Raw content",
+    "rawContent": "Content",
     "type": "Type",
     "listOf": "List of banner messages",
     "read": "Banner message details",

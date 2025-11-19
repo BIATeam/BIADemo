@@ -200,7 +200,7 @@
     "end": "Fecha de fin de visualización",
     "start": "Fecha de inicio de visualización",
     "name": "Nombre",
-    "rawContent": "Contenido bruto",
+    "rawContent": "Contenido",
     "type": "Tipo",
     "listOf": "Lista de mensajes de banner",
     "read": "Detalles del mensaje de banner",

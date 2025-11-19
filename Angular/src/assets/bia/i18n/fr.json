@@ -200,7 +200,7 @@
     "end": "Date fin d'affichage",
     "start": "Date début d'affichage",
     "name": "Nom",
-    "rawContent": "Contenu brut",
+    "rawContent": "Contenu",
     "type": "Type",
     "listOf": "Liste des messages de bannière",
     "read": "Détails message de bannière",
