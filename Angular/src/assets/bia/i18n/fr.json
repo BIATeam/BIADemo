@@ -13,7 +13,7 @@
     "backgroundTaskAdmin": "Administrer les taches",
     "backgroundTaskReadOnly": "Voir les taches",
     "backgroundtasks": "Tâches d'arrière-plan",
-    "bannerMessages": "Messages de bannière",
+    "bannerMessages": "Annonces",
     "browse": "Parcourir",
     "bulkImport": "Import de masse",
     "cancel": "Annuler",
@@ -195,16 +195,16 @@
     "useCurrentView": "Baser le traitement de l'import sur le filtre courant"
   },
   "bannerMessage": {
-    "add": "Ajouter message de bannière",
+    "add": "Ajouter annonce",
     "announcements": "ANNONCES",
     "end": "Date fin d'affichage",
     "start": "Date début d'affichage",
     "name": "Nom",
     "rawContent": "Contenu",
     "type": "Type",
-    "listOf": "Liste des messages de bannière",
-    "read": "Détails message de bannière",
-    "edit": "Modifer message de bannière"
+    "listOf": "Liste des annonces",
+    "read": "Détails annonce",
+    "edit": "Modifer annonce"
   },
   "primeng": {
     "accept": "Oui",

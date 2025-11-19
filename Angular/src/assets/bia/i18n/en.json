@@ -13,7 +13,7 @@
     "backgroundTaskAdmin": "Administer tasks",
     "backgroundTaskReadOnly": "View the tasks",
     "backgroundtasks": "Background Tasks",
-    "bannerMessages": "Banner messages",
+    "bannerMessages": "Annoucements",
     "browse": "Browse",
     "bulkImport": "Bulk import",
     "cancel": "Cancel",
@@ -195,16 +195,16 @@
     "useCurrentView": "Base the import processing on the current filter"
   },
   "bannerMessage": {
-    "add": "Add banner message",
+    "add": "Add annoucement",
     "announcements": "ANNOUCEMENTS",
     "end": "End display date",
     "start": "Start display date",
     "name": "Name",
     "rawContent": "Content",
     "type": "Type",
-    "listOf": "List of banner messages",
-    "read": "Banner message details",
-    "edit": "Edit banner message"
+    "listOf": "List of annoucements",
+    "read": "Annoucement details",
+    "edit": "Edit annoucement"
   },
   "primeng": {
     "accept": "Yes",
