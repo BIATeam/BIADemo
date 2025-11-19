@@ -123,7 +123,7 @@ export class BannerMessageDas extends AbstractDas<BannerMessage> {
     param.endpoint = param.endpoint ?? 'save';
     if (param.items) {
       param.items.forEach(item => {
-        this.revertUtcDisplayDatesToIso(item);
+        DateHelperService.fillDateISO(item);
       });
     }
 
@@ -142,7 +142,7 @@ export class BannerMessageDas extends AbstractDas<BannerMessage> {
     // param might contains ngrx state item which is immutable : clone to allow update
     param = clone(param);
     param.endpoint = param.endpoint ?? '';
-    this.revertUtcDisplayDatesToIso(param.item);
+    DateHelperService.fillDateISO(param.item);
 
     const url = `${this.route}${param.endpoint}${param.id}`;
     if (param.offlineMode === true) {
@@ -165,7 +165,7 @@ export class BannerMessageDas extends AbstractDas<BannerMessage> {
     // param might contains ngrx state item which is immutable : clone to allow update
     param = clone(param);
     param.endpoint = param.endpoint ?? '';
-    this.revertUtcDisplayDatesToIso(param.item);
+    DateHelperService.fillDateISO(param.item);
 
     const url = `${this.route}${param.endpoint}`;
     if (param.offlineMode === true) {
@@ -182,18 +182,5 @@ export class BannerMessageDas extends AbstractDas<BannerMessage> {
         })
       );
     }
-  }
-
-  private revertUtcDisplayDatesToIso<TOut>(data: TOut): TOut {
-    if (!data) return data;
-
-    Object.keys(data).forEach((key: string) => {
-      const value = (data as any)[key];
-      if (value instanceof Date) {
-        (data as any)[key] = value.toISOString();
-      }
-    });
-
-    return data;
   }
 }

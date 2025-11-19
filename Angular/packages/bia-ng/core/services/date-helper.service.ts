@@ -29,6 +29,19 @@ export class DateHelperService {
     }
   }
 
+  public static fillDateISO<TOut>(data: TOut): TOut {
+    if (!data) return data;
+
+    Object.keys(data).forEach((key: string) => {
+      const value = (data as any)[key];
+      if (value instanceof Date) {
+        (data as any)[key] = value.toISOString();
+      }
+    });
+
+    return data;
+  }
+
   public static toUtc(date: Date): Date {
     return new Date(
       Date.UTC(
