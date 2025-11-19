@@ -178,7 +178,6 @@ export class BiaFormComponent<TDto extends { id: number | string }>
       if (this.element && this.form) {
         this.form.reset();
         if (this.element) {
-          console.log('form', this.element);
           //this.form.patchValue({ ...this.element });
           //this.initForm();
           this.updateFormGroup(this.form, this.element);
