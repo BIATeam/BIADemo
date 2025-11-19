@@ -90,7 +90,8 @@
       [virtualScroll]="crudConfiguration.useVirtualScroll"
       [isResizableColumn]="crudConfiguration.useResizableColumn"
       [rowHeight]="defaultRowHeight"
-      [showFixableState]="crudConfiguration.isFixable">
+      [showFixableState]="crudConfiguration.isFixable"
+      [multiSortMeta]="multiSortMeta">
       <ng-template pTemplate="specificOutput" let-field="field" let-data="data">
         @switch (field.field) {
           @case ('rawContent') {

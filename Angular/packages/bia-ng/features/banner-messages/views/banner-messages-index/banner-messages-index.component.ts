@@ -1,5 +1,5 @@
 import { AsyncPipe, NgClass } from '@angular/common';
-import { Component, Injector, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Injector, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from 'packages/bia-ng/core/public-api';
 import {
@@ -36,7 +36,7 @@ import { BannerMessageService } from '../../services/banner-message.service';
 })
 export class BannerMessagesIndexComponent
   extends CrudItemsIndexComponent<BannerMessage>
-  implements OnInit
+  implements OnInit, AfterViewInit
 {
   // BIAToolKit - Begin BannerMessageIndexTsCanViewChildDeclaration
   // BIAToolKit - End BannerMessageIndexTsCanViewChildDeclaration
@@ -48,6 +48,10 @@ export class BannerMessagesIndexComponent
   ) {
     super(injector, bannerMessageService);
     this.crudConfiguration = bannerMessageCRUDConfiguration;
+  }
+
+  ngAfterViewInit(): void {
+    this.multiSortMeta = [{ field: 'start', order: 1 }];
   }
 
   protected setPermissions() {

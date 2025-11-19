@@ -33,7 +33,7 @@ import {
   PagingFilterFormatDto,
 } from 'packages/bia-ng/models/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
-import { MenuItem, PrimeTemplate } from 'primeng/api';
+import { MenuItem, PrimeTemplate, SortMeta } from 'primeng/api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { combineLatest, Observable, Subscription } from 'rxjs';
 import { filter, first, skip, take, tap } from 'rxjs/operators';
@@ -153,6 +153,7 @@ export class CrudItemsIndexComponent<
   protected customButtonGroup: BiaButtonGroupItem[];
   protected selectionActionsMenuItems: BiaButtonAndMenuItem[];
   protected listActionsMenuItems: MenuItem[];
+  protected multiSortMeta?: SortMeta[] | undefined;
 
   constructor(
     protected injector: Injector,
