@@ -73,7 +73,6 @@ export class CrudItemsIndexComponent<
   implements OnInit, OnDestroy
 {
   public crudConfiguration: CrudConfig<ListCrudItem>;
-  useRefreshAtLanguageChange = false;
 
   @HostBinding('class') classes = 'bia-flex';
   @ViewChild(BiaTableComponent, { static: false })
@@ -293,7 +292,10 @@ export class CrudItemsIndexComponent<
 
     this.sub.add(
       this.biaTranslationService.currentCulture$.subscribe(() => {
-        if (this.crudConfiguration.useRefreshAtLanguageChange) {
+        if (
+          this.crudConfiguration.useRefreshAtLanguageChange &&
+          this.crudItemListComponent
+        ) {
           this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
         }
         this.crudItemService.optionsService.loadAllOptions(
@@ -317,17 +319,6 @@ export class CrudItemsIndexComponent<
     this.lastLazyLoadEvent$ = this.crudItemService.lastLazyLoadEvent$;
     this.loading$ = this.crudItemService.loadingGetAll$;
     this.onDisplay();
-
-    if (this.useRefreshAtLanguageChange) {
-      // Reload data if language change.
-      this.sub.add(
-        this.biaTranslationService.currentCulture$
-          .pipe(skip(1))
-          .subscribe(() => {
-            this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
-          })
-      );
-    }
 
     this.initVirtualScroll();
 
