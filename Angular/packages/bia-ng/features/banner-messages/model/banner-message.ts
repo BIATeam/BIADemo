@@ -31,14 +31,17 @@ export const bannerMessageFieldsConfiguration: BiaFieldsConfig<BannerMessage> =
       Object.assign(new BiaFieldConfig('type', 'bannerMessage.type'), {
         type: PropType.OneToMany,
         isRequired: true,
+        isSearchable: false,
       }),
       Object.assign(new BiaFieldConfig('start', 'bannerMessage.start'), {
         type: PropType.DateTime,
         isRequired: true,
+        isSearchable: false,
       }),
       Object.assign(new BiaFieldConfig('end', 'bannerMessage.end'), {
         type: PropType.DateTime,
         isRequired: true,
+        isSearchable: false,
       }),
       Object.assign(
         new BiaFieldConfig('rawContent', 'bannerMessage.rawContent'),
