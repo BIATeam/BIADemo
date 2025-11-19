@@ -4,6 +4,7 @@
 
 namespace BIA.Net.Core.Domain.Banner.Mappers
 {
+    using System.Linq;
     using BIA.Net.Core.Domain.Banner.Entities;
     using BIA.Net.Core.Domain.Mapper;
 
@@ -17,6 +18,15 @@ namespace BIA.Net.Core.Domain.Banner.Mappers
         /// </summary>
         public BannerMessageAuditMapper()
         {
+            this.AuditPropertyMappers =
+                [
+                    new AuditPropertyMapper<BannerMessage, BannerMessageType>()
+                    {
+                        EntityProperty = x => x.Type,
+                        EntityPropertyIdentifier = x => x.TypeId,
+                        LinkedEntityPropertyDisplay = x => x.Id,
+                    }
+                ];
         }
     }
 }
