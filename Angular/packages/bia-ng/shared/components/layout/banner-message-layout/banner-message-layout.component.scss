@@ -2,19 +2,21 @@
   height: 2.5rem;
   max-height: 2.5rem;
   display: flex;
-  background: var(--p-surface-300);
+  background: var(--p-surface-200);
   white-space: nowrap;
   font-family: 'oswald-light';
+  user-select: none;
 
   .banner-message-title {
-    box-shadow: 3px 0 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 5px 0 10px -2px rgba(0, 0, 0, 0.15);
     padding: 0rem 0.8rem;
     font-weight: bold;
     align-content: center;
+    z-index: 1;
 
     .icon-title {
       font-size: 1rem;
-      margin-left: 0.7rem;
+      margin-left: 0.5rem;
     }
   }
 
@@ -24,12 +26,12 @@
     display: flex;
     align-items: center;
     width: 100%;
+    background: var(--p-surface-300);
 
     .banner-message-content {
       width: 100%;
       animation: scroll-left linear infinite;
       animation-duration: 60s;
-      user-select: none;
     }
   }
 }
@@ -45,7 +47,10 @@
 
 :host-context(html.dark-theme) {
   .banner-message-container {
-    background: var(--p-surface-400);
+    background: var(--p-surface-300);
+    .banner-message-content-container {
+      background: var(--p-surface-400);
+    }
   }
 }
 
@@ -57,9 +62,9 @@
   }
 
   .banner-message-icon {
-    margin-right: 0.5rem;
-    font-size: 1.5rem;
-    vertical-align: top;
+    margin-right: 0.4rem;
+    font-size: 1.2rem;
+    vertical-align: baseline;
 
     &-info {
       @extend .banner-message-icon;
