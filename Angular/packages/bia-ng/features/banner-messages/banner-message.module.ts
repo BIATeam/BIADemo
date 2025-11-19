@@ -38,6 +38,10 @@ const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.BannerMessage_Create,
           title: 'bannerMessage.add',
+          style: {
+            minWidth: '60vw',
+            maxWidth: '60vw',
+          },
         },
         component: BannerMessageNewComponent,
         canActivate: [PermissionGuard],
@@ -58,6 +62,10 @@ const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.BannerMessage_Update,
               title: 'bannerMessage.edit',
+              style: {
+                minWidth: '60vw',
+                maxWidth: '60vw',
+              },
             },
             component: BannerMessageEditComponent,
             canActivate: [PermissionGuard],
