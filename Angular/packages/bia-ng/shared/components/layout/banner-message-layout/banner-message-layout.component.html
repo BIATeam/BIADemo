@@ -4,8 +4,10 @@
       <span>{{ 'bannerMessage.announcements' | translate }}</span>
       <i class="pi pi-megaphone icon-title"></i>
     </div>
-    <div class="banner-message-content-container">
+
+    <div class="banner-message-content-container" #contentContainer>
       <div
+        #scrollContent
         class="banner-message-content"
         [innerHTML]="formatedMessages | safeHtml"></div>
     </div>

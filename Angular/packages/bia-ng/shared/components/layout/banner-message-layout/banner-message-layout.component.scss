@@ -9,7 +9,7 @@
 
   .banner-message-title {
     box-shadow: 5px 0 10px -2px rgba(0, 0, 0, 0.15);
-    padding: 0rem 0.8rem;
+    padding: 0 0.8rem;
     font-weight: bold;
     align-content: center;
     z-index: 1;
@@ -29,19 +29,11 @@
     background: var(--p-surface-300);
 
     .banner-message-content {
-      width: 100%;
-      animation: scroll-left linear infinite;
-      animation-duration: 60s;
+      display: inline-block;
+      white-space: nowrap;
+      will-change: transform;
+      transform: translateX(0); // valeur initiale
     }
-  }
-}
-
-@keyframes scroll-left {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(-100%);
   }
 }
 
