@@ -2915,7 +2915,7 @@ body {
   min-height: calc(100vh - 4rem - var(--footer-height));
 }
 
-.layout-content-wrapper bia-banner-message-layout + .layout-content {
+.layout-content-wrapper bia-annoucement-layout + .layout-content {
   padding: 0;
   min-height: calc(100vh - 6.5rem - var(--footer-height));
 }
@@ -2926,7 +2926,7 @@ body {
 }
 
 .layout-content-wrapper
-  bia-banner-message-layout
+  bia-annoucement-layout
   + p-breadcrumb
   + .layout-content {
   padding: 0;
@@ -2941,7 +2941,7 @@ body {
 }
 .layout-container.layout-footer-overlay
   .layout-content-wrapper
-  bia-banner-message-layout
+  bia-annoucement-layout
   + .layout-content {
   padding: 0;
   min-height: calc(100vh - 6.5rem);
@@ -2955,7 +2955,7 @@ body {
 }
 .layout-container.layout-footer-overlay
   .layout-content-wrapper
-  bia-banner-message-layout
+  bia-annoucement-layout
   + p-breadcrumb
   + .layout-content {
   padding: 0;
@@ -2969,7 +2969,7 @@ body {
 }
 .layout-container.layout-footer-overlay.layout-horizontal
   .layout-content-wrapper
-  bia-banner-message-layout
+  bia-annoucement-layout
   + .layout-content {
   padding: 0;
   min-height: calc(100vh - 9.5rem);
@@ -2983,7 +2983,7 @@ body {
 }
 .layout-container.layout-footer-overlay.layout-horizontal
   .layout-content-wrapper
-  bia-banner-message-layout
+  bia-annoucement-layout
   + p-breadcrumb
   + .layout-content {
   padding: 0;
@@ -2996,7 +2996,7 @@ body {
 }
 .layout-container.layout-horizontal
   .layout-content-wrapper
-  bia-banner-message-layout
+  bia-annoucement-layout
   + .layout-content {
   padding: 0;
   min-height: calc(100vh - 9.5rem - var(--footer-height));
@@ -3010,7 +3010,7 @@ body {
 }
 .layout-container.layout-horizontal
   .layout-content-wrapper
-  bia-banner-message-layout
+  bia-annoucement-layout
   + p-breadcrumb
   + .layout-content {
   padding: 0;

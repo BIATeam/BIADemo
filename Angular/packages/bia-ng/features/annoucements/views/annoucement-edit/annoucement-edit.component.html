@@ -1,0 +1,27 @@
+@if (crudItemService.crudItem$ | async; as crudItem) {
+  <app-annoucement-form
+    [crudItem]="crudItem"
+    [fields]="crudConfiguration.fieldsConfig.columns"
+    [formLayoutConfig]="crudConfiguration.formLayoutConfig"
+    [formReadOnlyMode]="formReadOnlyMode"
+    [dictOptionDtos]="
+      (annoucementService.optionsService.dictOptionDtos$ | async) ?? []
+    "
+    [isCrudItemOutdated]="isCrudItemOutdated"
+    [showFixableState]="crudConfiguration.isFixable"
+    [canFix]="canFix"
+    (cancelled)="onCancelled()"
+    (save)="onSubmitted($event)"
+    (fixedChanged)="crudItemService.updateFixedStatus(crudItem.id, $event)"
+    [showPopupButton]="showPopupButton"
+    [showSplitButton]="showSplitButton"
+    [showFullPageButton]="showFullPageButton"
+    (layoutChanged)="notifyLayoutChange($event)"
+    [displayHistorical]="crudConfiguration.displayHistorical"
+    [historicalEntries]="
+      (annoucementService.crudItemHistorical$ | async) ?? []
+    "></app-annoucement-form>
+}
+@if (annoucementService.loadingGet$ | async) {
+  <bia-spinner [overlay]="true"></bia-spinner>
+}

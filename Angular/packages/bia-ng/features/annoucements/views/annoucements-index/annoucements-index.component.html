@@ -1,0 +1,104 @@
+<div>
+  <div [ngClass]="{ 'table-compact': crudConfiguration.useCompactMode }">
+    <bia-table-header
+      [headerTitle]="'annoucement.listOf' | translate"
+      [canAdd]="canAdd && !crudConfiguration.useCalcMode"
+      [canClone]="canAdd && crudConfiguration.isCloneable"
+      [canDelete]="canDelete"
+      [canEdit]="canEdit"
+      [canFix]="canFix"
+      [canExportCSV]="false"
+      (create)="onCreate()"
+      (exportCSV)="onExportCSV('annoucement.listOf')"
+      (fullExportCSV)="onExportCSV('annoucement.listOf', true)"
+      (clone)="onClone()"
+      (delete)="onDelete()"
+      [selectedElements]="selectedCrudItems"
+      [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
+      [showHistoricalButton]="
+        crudConfiguration.displayHistorical && crudConfiguration.useCalcMode
+      "
+      [tableControllerVisible]="showTableController"
+      [showFixedButtons]="crudConfiguration.isFixable"
+      (toggleTableControllerVisibility)="toggleTableControllerVisibility()"
+      (crudItemFixedChanged)="
+        crudItemService.updateFixedStatus($event.crudItemId, $event.fixed)
+      "
+      [selectionActionsMenuItems]="selectionActionsMenuItems">
+    </bia-table-header>
+    <bia-table-controller
+      [ngClass]="{ 'table-controller-hidden': !showTableController }"
+      [defaultPageSize]="defaultPageSize"
+      [columns]="columns"
+      [columnToDisplays]="displayedColumns"
+      (displayedColumnsChange)="displayedColumnsChanged($event)"
+      (filter)="searchGlobalChanged($event)"
+      (clearFilters)="onClearFilters()"
+      (toggleSearch)="onToggleSearch()"
+      (viewChange)="onViewChange($event)"
+      (viewNameChange)="onViewNameChange($event)"
+      [tableStateKey]="tableStateKey"
+      [tableState]="tableState"
+      [defaultViewPref]="defaultViewPref"
+      [useViewTeamWithTypeId]="useViewTeamWithTypeId"
+      [hasColumnFilter]="hasColumnFilter">
+      <ng-template pTemplate="customControl">
+        <bia-table-behavior-controller
+          [crudConfiguration]="crudConfiguration"
+          (useCalcModeChanged)="useCalcModeChange($event)"
+          (usePopupChanged)="usePopupChange($event)"
+          (useSplitChanged)="useSplitChange($event)"
+          (useSignalRChanged)="useSignalRChange($event)"
+          (useViewChanged)="useViewChange($event)"
+          (useCompactModeChanged)="useCompactModeChange($event)"
+          (useVirtualScrollChanged)="useVirtualScrollChange($event)"
+          (useResizableColumnChanged)="
+            useResizableColumnChange($event)
+          "></bia-table-behavior-controller>
+      </ng-template>
+    </bia-table-controller>
+    <bia-table
+      [elements]="
+        crudConfiguration.useVirtualScroll
+          ? virtualCrudItems
+          : ((crudItems$ | async) ?? [])
+      "
+      [dictOptionDtos]="
+        (crudItemService.optionsService.dictOptionDtos$ | async) ?? []
+      "
+      [totalRecord]="(totalCount$ | async) ?? 0"
+      [columnToDisplays]="displayedColumns"
+      [reorderableColumns]="reorderableColumns"
+      [pageSize]="pageSize"
+      (pageSizeChange)="onPageSizeChange($event)"
+      [configuration]="crudConfiguration.fieldsConfig"
+      [(showColSearch)]="showColSearch"
+      [globalSearchValue]="globalSearchValue"
+      [canClickRow]="canEdit"
+      [canSelectElement]="canSelect"
+      [canSelectMultipleElement]="canDelete"
+      [loading]="(loading$ | async) ?? false"
+      (clickRowId)="onClickRow($event)"
+      (loadLazy)="onLoadLazy($event)"
+      [viewPreference]="viewPreference"
+      [tableStateKey]="tableStateKey"
+      (selectedElementsChanged)="onSelectedElementsChanged($event)"
+      [sortFieldValue]="sortFieldValue"
+      (stateSave)="onStateSave($event)"
+      [scrollHeightValue]="getFillScrollHeightValue()"
+      [frozeSelectColumn]="true"
+      [virtualScroll]="crudConfiguration.useVirtualScroll"
+      [isResizableColumn]="crudConfiguration.useResizableColumn"
+      [rowHeight]="defaultRowHeight"
+      [showFixableState]="crudConfiguration.isFixable"
+      [multiSortMeta]="multiSortMeta">
+      <ng-template pTemplate="specificOutput" let-field="field" let-data="data">
+        @switch (field.field) {
+          @case ('rawContent') {
+            <div class="raw-content-block" [innerHTML]="data | safeHtml"></div>
+          }
+        }
+      </ng-template>
+    </bia-table>
+  </div>
+</div>

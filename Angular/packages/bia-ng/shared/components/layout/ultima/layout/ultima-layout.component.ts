@@ -25,15 +25,15 @@ import {
   ROUTE_DATA_NO_MARGIN,
   ROUTE_DATA_NO_PADDING,
 } from 'packages/bia-ng/core/public-api';
-import { BannerMessage } from 'packages/bia-ng/features/public-api';
+import { Annoucement } from 'packages/bia-ng/features/public-api';
 import { EnvironmentType } from 'packages/bia-ng/models/enum/public-api';
 import { BiaNavigation } from 'packages/bia-ng/models/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { MenuItem } from 'primeng/api';
 import { Breadcrumb } from 'primeng/breadcrumb';
 import { filter, map, Observable, Subscription } from 'rxjs';
-import { BannerMessageLayoutComponent } from '../../banner-message-layout/banner-message-layout.component';
-import { BannerService } from '../../services/banner.service';
+import { AnnoucementLayoutComponent } from '../../annoucement-layout/annoucement-layout.component';
+import { AnnoucementService } from '../../services/annoucement.service';
 import { BiaThemeService } from '../../services/bia-theme.service';
 import { BiaLayoutService } from '../../services/layout.service';
 import { MenuService } from '../../services/menu.service';
@@ -56,7 +56,7 @@ import { BiaUltimaTopbarComponent } from '../topbar/ultima-topbar.component';
     AsyncPipe,
     TranslateModule,
     BiaUltimaConfigComponent,
-    BannerMessageLayoutComponent,
+    AnnoucementLayoutComponent,
   ],
 })
 export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
@@ -95,8 +95,8 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
   envName$: Observable<string | undefined>;
   showEnvironmentMessage$: Observable<boolean>;
   cssClassEnv: string;
-  activeBannerMessages: BannerMessage[];
-  activeBannerMessagesInterval: NodeJS.Timeout | undefined;
+  activeAnnoucements: Annoucement[];
+  activeAnnoucementsInterval: NodeJS.Timeout | undefined;
 
   constructor(
     protected biaTranslation: BiaTranslationService,
@@ -108,7 +108,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
     public router: Router,
     protected activatedRoute: ActivatedRoute,
     protected store: Store<BiaAppState>,
-    protected bannerService: BannerService
+    protected annoucementService: AnnoucementService
   ) {
     this.hideMenuProfile();
     this.overlayMenuSubscription();
@@ -304,26 +304,26 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.initActiveBannerMessagesPolling();
-    this.bannerService.registerSignalRChanges(() => {
-      this.initActiveBannerMessagesPolling();
+    this.initActiveAnnoucementsPolling();
+    this.annoucementService.registerSignalRChanges(() => {
+      this.initActiveAnnoucementsPolling();
     });
   }
 
-  private initActiveBannerMessagesPolling() {
-    if (this.activeBannerMessagesInterval) {
-      clearInterval(this.activeBannerMessagesInterval);
+  private initActiveAnnoucementsPolling() {
+    if (this.activeAnnoucementsInterval) {
+      clearInterval(this.activeAnnoucementsInterval);
     }
-    this.refreshActiveBannerMessages();
-    this.activeBannerMessagesInterval = setInterval(() => {
-      this.refreshActiveBannerMessages();
+    this.refreshActiveAnnoucements();
+    this.activeAnnoucementsInterval = setInterval(() => {
+      this.refreshActiveAnnoucements();
     }, 60000);
   }
 
-  private refreshActiveBannerMessages() {
+  private refreshActiveAnnoucements() {
     this.sub.add(
-      this.bannerService.getActives().subscribe(messages => {
-        this.activeBannerMessages = messages;
+      this.annoucementService.getActives().subscribe(messages => {
+        this.activeAnnoucements = messages;
       })
     );
   }
@@ -515,9 +515,9 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
     }
 
     this.sub.unsubscribe();
-    this.bannerService.destroy();
-    if (this.activeBannerMessagesInterval) {
-      clearInterval(this.activeBannerMessagesInterval);
+    this.annoucementService.destroy();
+    if (this.activeAnnoucementsInterval) {
+      clearInterval(this.activeAnnoucementsInterval);
     }
   }
 

@@ -13,7 +13,7 @@
     "backgroundTaskAdmin": "Administer tasks",
     "backgroundTaskReadOnly": "View the tasks",
     "backgroundtasks": "Background Tasks",
-    "bannerMessages": "Annoucements",
+    "annoucements": "Annoucements",
     "browse": "Browse",
     "bulkImport": "Bulk import",
     "cancel": "Cancel",
@@ -194,7 +194,7 @@
     "timeFormat": "Time Format",
     "useCurrentView": "Base the import processing on the current filter"
   },
-  "bannerMessage": {
+  "annoucement": {
     "add": "Add annoucement",
     "announcements": "ANNOUCEMENTS",
     "end": "End display date",

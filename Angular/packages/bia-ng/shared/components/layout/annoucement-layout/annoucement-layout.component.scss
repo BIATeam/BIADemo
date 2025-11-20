@@ -1,0 +1,78 @@
+.annoucement-container {
+  height: 2.5rem;
+  max-height: 2.5rem;
+  display: flex;
+  background: var(--p-surface-200);
+  white-space: nowrap;
+  font-family: 'oswald-light';
+  user-select: none;
+
+  .annoucement-title {
+    box-shadow: 5px 0 10px -2px rgba(0, 0, 0, 0.15);
+    padding: 0 0.8rem;
+    font-weight: bold;
+    align-content: center;
+    z-index: 1;
+
+    .icon-title {
+      font-size: 1rem;
+      margin-left: 0.5rem;
+    }
+  }
+
+  .annoucement-content-container {
+    overflow: hidden;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background: var(--p-surface-300);
+
+    .annoucement-content {
+      font-size: 15px;
+      display: inline-block;
+      white-space: nowrap;
+      will-change: transform;
+      transform: translateX(0); // valeur initiale
+    }
+  }
+}
+
+:host-context(html.dark-theme) {
+  .annoucement-container {
+    background: var(--p-surface-500);
+    .annoucement-content-container {
+      background: var(--p-surface-400);
+    }
+  }
+}
+
+:host ::ng-deep {
+  .annoucement-separator {
+    margin: 0rem 0.9rem;
+    font-size: 1.3rem;
+    color: var(--p-slate-600);
+  }
+
+  .annoucement-icon {
+    margin-right: 0.4rem;
+    font-size: 1.2rem;
+    vertical-align: baseline;
+
+    &-info {
+      @extend .annoucement-icon;
+      color: var(--p-blue-500);
+    }
+
+    &-warning {
+      @extend .annoucement-icon;
+      color: var(--p-yellow-600);
+    }
+  }
+}
+
+:host :host-context(html.dark-theme) ::ng-deep {
+  .annoucement-icon-info {
+    color: var(--p-blue-400);
+  }
+}

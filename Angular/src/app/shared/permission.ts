@@ -6,11 +6,11 @@ export enum Permission {
 
   Home_Access = 'Home_Access',
 
-  BannerMessage_Create = 'BannerMessage_Create',
-  BannerMessage_Delete = 'BannerMessage_Delete',
-  BannerMessage_List_Access = 'BannerMessage_List_Access',
-  BannerMessage_Read = 'BannerMessage_Read',
-  BannerMessage_Update = 'BannerMessage_Update',
+  Annoucement_Create = 'Annoucement_Create',
+  Annoucement_Delete = 'Annoucement_Delete',
+  Annoucement_List_Access = 'Annoucement_List_Access',
+  Annoucement_Read = 'Annoucement_Read',
+  Annoucement_Update = 'Annoucement_Update',
 
   // BIAToolKit - Begin Permission
   // BIAToolKit - End Permission

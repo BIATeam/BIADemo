@@ -230,15 +230,15 @@ const routes: Routes = [
               ).then(m => m.BackgroundTaskModule),
           },
           {
-            path: 'banner-messages',
+            path: 'annoucements',
             data: {
-              breadcrumb: 'bia.bannerMessages',
+              breadcrumb: 'bia.annoucements',
               canNavigate: true,
             },
             loadChildren: () =>
               import(
-                './features/bia-features/banner-messages/banner-message.module'
-              ).then(m => m.BannerMessageModule),
+                './features/bia-features/annoucements/annoucement.module'
+              ).then(m => m.AnnoucementModule),
           },
         ],
       },

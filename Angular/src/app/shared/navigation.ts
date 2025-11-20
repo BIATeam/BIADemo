@@ -187,9 +187,9 @@ export const NAVIGATION: BiaNavigation[] = [
         path: ['/backgroundtask/readonly'],
       },
       {
-        labelKey: 'bia.bannerMessages',
-        permissions: [Permission.BannerMessage_List_Access],
-        path: ['/banner-messages'],
+        labelKey: 'bia.annoucements',
+        permissions: [Permission.Annoucement_List_Access],
+        path: ['/annoucements'],
       },
       // Begin BIADemo
 
