@@ -10,7 +10,7 @@ import { Announcement } from '../../model/announcement';
 import { AnnouncementService } from '../../services/announcement.service';
 
 @Component({
-  selector: 'app-announcement-edit',
+  selector: 'bia-announcement-edit',
   templateUrl: './announcement-edit.component.html',
   imports: [AnnouncementFormComponent, AsyncPipe, SpinnerComponent],
 })

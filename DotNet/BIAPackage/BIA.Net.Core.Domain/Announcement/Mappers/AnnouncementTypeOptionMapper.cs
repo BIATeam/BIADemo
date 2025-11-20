@@ -17,11 +17,15 @@ namespace BIA.Net.Core.Domain.Announcement.Mappers
     /// <summary>
     /// The mapper used for announcement type option.
     /// </summary>
-    public class AnnouncementOptionMapper : BaseMapper<TOptionDto<BiaAnnouncementType>, AnnouncementType, BiaAnnouncementType>
+    public class AnnouncementTypeOptionMapper : BaseMapper<TOptionDto<BiaAnnouncementType>, AnnouncementType, BiaAnnouncementType>
     {
         private readonly UserContext userContext;
 
-        public AnnouncementOptionMapper(UserContext userContext)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AnnouncementTypeOptionMapper"/> class.
+        /// </summary>
+        /// <param name="userContext">The user context.</param>
+        public AnnouncementTypeOptionMapper(UserContext userContext)
         {
             this.userContext = userContext;
         }

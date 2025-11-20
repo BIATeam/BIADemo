@@ -16,6 +16,10 @@ namespace BIA.Net.Core.Application.Announcement
     /// </summary>
     public interface IAnnouncementAppService : ICrudAppServiceBase<AnnouncementDto, Announcement, int, PagingFilterFormatDto>
     {
+        /// <summary>
+        /// Return actives announcements.
+        /// </summary>
+        /// <returns><see cref="List{T}"/> of <see cref="AnnouncementDto"/>.</returns>
         Task<List<AnnouncementDto>> GetActives();
     }
 }

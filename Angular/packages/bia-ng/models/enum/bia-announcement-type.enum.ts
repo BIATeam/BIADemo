@@ -1,4 +1,4 @@
 export enum BiaAnnouncementType {
-  Info,
-  Warning,
+  information,
+  warning,
 }

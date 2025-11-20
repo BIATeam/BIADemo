@@ -52,11 +52,11 @@ export class AnnouncementLayoutComponent
         .map(message => {
           let iconElement = '';
           switch (message.type.id) {
-            case BiaAnnouncementType.Info:
+            case BiaAnnouncementType.information:
               iconElement =
                 '<i class="pi pi-info-circle announcement-icon-info"></i>';
               break;
-            case BiaAnnouncementType.Warning:
+            case BiaAnnouncementType.warning:
               iconElement =
                 '<i class="pi pi-exclamation-triangle announcement-icon-warning"></i>';
               break;

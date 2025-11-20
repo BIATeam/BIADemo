@@ -86,12 +86,12 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
         /// <param name="modelBuilder">The model builder.</param>
         protected virtual void CreateAnnouncementTypeTranslationModel(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AnnouncementTranslation>().HasKey(r => r.Id);
-            modelBuilder.Entity<AnnouncementTranslation>().Property(r => r.AnnouncementTypeId).IsRequired();
-            modelBuilder.Entity<AnnouncementTranslation>().Property(r => r.LanguageId).IsRequired();
-            modelBuilder.Entity<AnnouncementTranslation>().HasIndex(u => new { u.AnnouncementTypeId, u.LanguageId }).IsUnique();
+            modelBuilder.Entity<AnnouncementTypeTranslation>().HasKey(r => r.Id);
+            modelBuilder.Entity<AnnouncementTypeTranslation>().Property(r => r.AnnouncementTypeId).IsRequired();
+            modelBuilder.Entity<AnnouncementTypeTranslation>().Property(r => r.LanguageId).IsRequired();
+            modelBuilder.Entity<AnnouncementTypeTranslation>().HasIndex(u => new { u.AnnouncementTypeId, u.LanguageId }).IsUnique();
 
-            modelBuilder.Entity<AnnouncementTranslation>().Property(m => m.Label).IsRequired().HasMaxLength(150);
+            modelBuilder.Entity<AnnouncementTypeTranslation>().Property(m => m.Label).IsRequired().HasMaxLength(150);
         }
     }
 }

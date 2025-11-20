@@ -1,15 +1,17 @@
-﻿namespace BIA.Net.Core.Domain.Translation.Entities
+﻿// <copyright file="AnnouncementTypeTranslation.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace BIA.Net.Core.Domain.Translation.Entities
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Announcement.Entities;
     using BIA.Net.Core.Domain.Entity;
 
-    public class AnnouncementTranslation : BaseEntityVersioned<int>
+    /// <summary>
+    /// Represents an announcement type translation.
+    /// </summary>
+    public class AnnouncementTypeTranslation : BaseEntityVersioned<int>
     {
         /// <summary>
         /// Gets or sets the language.

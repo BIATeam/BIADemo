@@ -28,9 +28,10 @@ export namespace FeatureAnnouncementsStore {
    * This is used for selecting feature states that are loaded eagerly or lazily.
    */
 
-  export const getAnnouncementsState = createFeatureSelector<AnnouncementsState>(
-    announcementCRUDConfiguration.storeKey
-  );
+  export const getAnnouncementsState =
+    createFeatureSelector<AnnouncementsState>(
+      announcementCRUDConfiguration.storeKey
+    );
 
   export const getAnnouncementsEntitiesState = createSelector(
     getAnnouncementsState,

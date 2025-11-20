@@ -1,14 +1,22 @@
-﻿namespace BIA.Net.Core.Common.Enum
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+﻿// <copyright file="BiaAnnouncementType.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
+namespace BIA.Net.Core.Common.Enum
+{
+    /// <summary>
+    /// The BIA announcement types.
+    /// </summary>
     public enum BiaAnnouncementType
     {
-        Info,
-        Warning
+        /// <summary>
+        /// Information.
+        /// </summary>
+        Information,
+
+        /// <summary>
+        /// Warning.
+        /// </summary>
+        Warning,
     }
 }

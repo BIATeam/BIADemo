@@ -1,5 +1,5 @@
 @if (crudItemService.crudItem$ | async; as crudItem) {
-  <app-announcement-form
+  <bia-announcement-form
     [crudItem]="crudItem"
     [fields]="crudConfiguration.fieldsConfig.columns"
     [formLayoutConfig]="crudConfiguration.formLayoutConfig"
@@ -20,7 +20,7 @@
     [displayHistorical]="crudConfiguration.displayHistorical"
     [historicalEntries]="
       (announcementService.crudItemHistorical$ | async) ?? []
-    "></app-announcement-form>
+    "></bia-announcement-form>
 }
 @if (announcementService.loadingGet$ | async) {
   <bia-spinner [overlay]="true"></bia-spinner>

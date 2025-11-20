@@ -60,7 +60,9 @@ export class AnnouncementService extends CrudItemService<Announcement> {
   );
 
   public crudItemHistorical$: Observable<HistoricalEntryDto[]> =
-    this.store.select(FeatureAnnouncementsStore.getCurrentAnnouncementHistorical);
+    this.store.select(
+      FeatureAnnouncementsStore.getCurrentAnnouncementHistorical
+    );
 
   public displayItemName$: Observable<string> = this.crudItem$.pipe(
     map(() => '')

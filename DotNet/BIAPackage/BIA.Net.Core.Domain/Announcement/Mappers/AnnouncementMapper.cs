@@ -29,6 +29,7 @@ namespace BIA.Net.Core.Domain.Announcement.Mappers
         /// Initializes a new instance of the <see cref="AnnouncementMapper"/> class.
         /// </summary>
         /// <param name="auditMappers">The injected collection of <see cref="IAuditMapper"/>.</param>
+        /// <param name="userContext">The user context.</param>
         public AnnouncementMapper(IEnumerable<IAuditMapper> auditMappers, UserContext userContext)
         {
             this.AuditMapper = auditMappers.FirstOrDefault(x => x.EntityType == typeof(Announcement));

@@ -22,9 +22,9 @@ export const announcementTypeOptionsAdapter = createEntityAdapter<OptionDto>({
 
 export type State = EntityState<OptionDto>;
 
-export const INIT_STATE: State = announcementTypeOptionsAdapter.getInitialState({
-  // additional props default values here
-});
+export const INIT_STATE: State = announcementTypeOptionsAdapter.getInitialState(
+  {}
+);
 
 export const announcementTypeOptionReducers = createReducer<State>(
   INIT_STATE,

@@ -407,7 +407,7 @@ namespace BIA.Net.Core.Application.Services
                 {
                     var linkedAuditEntityDisplayProperty = audit.GetType().GetProperty(linkedAuditMapper.LinkedAuditEntityDisplayPropertyName) ??
                         throw new BadBiaFrameworkUsageException($"Unable to find display property {linkedAuditMapper.LinkedAuditEntityDisplayPropertyName} into linked audit entity {linkedAuditMapper.LinkedAuditEntityType.Name}");
-                    var linkedAuditEntityDisplayPropertyValue =linkedAuditEntityDisplayProperty.PropertyType.IsDateType() ?
+                    var linkedAuditEntityDisplayPropertyValue = linkedAuditEntityDisplayProperty.PropertyType.IsDateType() ?
                         DateHelper.FormatWithCulture(linkedAuditEntityDisplayProperty, linkedAuditEntityDisplayProperty.GetValue(audit), userCulture) :
                         linkedAuditEntityDisplayProperty.GetValue(audit)?.ToString();
 

@@ -18,7 +18,7 @@ import { Announcement } from '../../model/announcement';
 import { AnnouncementService } from '../../services/announcement.service';
 
 @Component({
-  selector: 'app-announcements-index',
+  selector: 'bia-announcements-index',
   templateUrl: './announcements-index.component.html',
   styleUrls: ['./announcements-index.component.scss'],
   imports: [
@@ -61,7 +61,9 @@ export class AnnouncementsIndexComponent
     this.canDelete = this.authService.hasPermission(
       Permission.Announcement_Delete
     );
-    this.canAdd = this.authService.hasPermission(Permission.Announcement_Create);
+    this.canAdd = this.authService.hasPermission(
+      Permission.Announcement_Create
+    );
     this.canSelect = this.canDelete;
     // BIAToolKit - Begin AnnouncementIndexTsCanViewChildSet
     // BIAToolKit - End AnnouncementIndexTsCanViewChildSet

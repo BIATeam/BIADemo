@@ -33,6 +33,7 @@ namespace BIA.Net.Core.Application.Announcement
         {
         }
 
+        /// <inheritdoc/>
         public async Task<List<AnnouncementDto>> GetActives()
         {
             var currentDatetime = DateTime.UtcNow;

@@ -10,7 +10,7 @@ import { Announcement } from '../../model/announcement';
 import { AnnouncementService } from '../../services/announcement.service';
 
 @Component({
-  selector: 'app-announcements-item',
+  selector: 'bia-announcements-item',
   templateUrl:
     '../../../../shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
   styleUrls: [

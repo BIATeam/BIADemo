@@ -1,14 +1,15 @@
-﻿namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
+﻿// <copyright file="AnnouncementModelBuilder.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Announcement.Entities;
-    using BIA.Net.Core.Domain.Translation.Entities;
     using Microsoft.EntityFrameworkCore;
 
+    /// <summary>
+    /// The announcement model builder.
+    /// </summary>
     public static class AnnouncementModelBuilder
     {
         /// <summary>
@@ -27,7 +28,7 @@
                 .OnDelete(DeleteBehavior.ClientCascade)
                 .IsRequired();
 
-            modelBuilder.Entity<AnnouncementType>().HasData(new AnnouncementType { Id = Common.Enum.BiaAnnouncementType.Info });
+            modelBuilder.Entity<AnnouncementType>().HasData(new AnnouncementType { Id = Common.Enum.BiaAnnouncementType.Information });
             modelBuilder.Entity<AnnouncementType>().HasData(new AnnouncementType { Id = Common.Enum.BiaAnnouncementType.Warning });
         }
     }

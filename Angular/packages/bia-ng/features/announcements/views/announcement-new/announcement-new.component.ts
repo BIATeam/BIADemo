@@ -7,7 +7,7 @@ import { Announcement } from '../../model/announcement';
 import { AnnouncementService } from '../../services/announcement.service';
 
 @Component({
-  selector: 'app-announcement-new',
+  selector: 'bia-announcement-new',
   templateUrl: './announcement-new.component.html',
   imports: [AnnouncementFormComponent, AsyncPipe],
 })

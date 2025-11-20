@@ -12,7 +12,7 @@ import Quill from 'quill';
 import { Announcement } from '../../model/announcement';
 
 @Component({
-  selector: 'app-announcement-form',
+  selector: 'bia-announcement-form',
   templateUrl: 'announcement-form.component.html',
   styleUrls: ['announcement-form.component.scss'],
   imports: [

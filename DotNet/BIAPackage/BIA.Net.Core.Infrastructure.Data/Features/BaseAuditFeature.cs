@@ -18,9 +18,9 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
     using Audit.EntityFramework;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.Announcement.Entities;
     using BIA.Net.Core.Domain.Audit;
     using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.Announcement.Entities;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;

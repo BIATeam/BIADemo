@@ -11,7 +11,7 @@ import { Announcement } from '../../model/announcement';
 import { AnnouncementService } from '../../services/announcement.service';
 
 @Component({
-  selector: 'app-announcement-historical',
+  selector: 'bia-announcement-historical',
   imports: [
     CrudItemHistoricalTimelineComponent,
     AsyncPipe,

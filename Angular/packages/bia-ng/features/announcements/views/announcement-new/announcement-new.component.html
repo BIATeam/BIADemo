@@ -1,4 +1,4 @@
-<app-announcement-form
+<bia-announcement-form
   [crudItem]="(itemTemplate$ | async) ?? undefined"
   [isAdd]="true"
   [fields]="crudConfiguration.fieldsConfig.columns"
@@ -11,4 +11,4 @@
   [showPopupButton]="showPopupButton"
   [showSplitButton]="showSplitButton"
   [showFullPageButton]="showFullPageButton"
-  (layoutChanged)="notifyLayoutChange($event)"></app-announcement-form>
+  (layoutChanged)="notifyLayoutChange($event)"></bia-announcement-form>

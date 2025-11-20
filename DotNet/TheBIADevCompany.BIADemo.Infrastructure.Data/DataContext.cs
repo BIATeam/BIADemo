@@ -62,29 +62,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         }
 
         /// <summary>
-        /// Gets or sets the Plane DBSet.
+        /// Gets or sets the Audit logs.
         /// </summary>
         public DbSet<AuditLog> AuditLogs { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Announcements.
-        /// </summary>
-        public DbSet<Announcement> Announcements { get; set; }
-
-        /// <summary>
-        /// Gets or sets the AnnouncementTypes.
-        /// </summary>
-        public DbSet<AnnouncementType> AnnouncementTypes { get; set; }
-
-        /// <summary>
-        /// Gets or sets the AnnouncementTypeTranslations.
-        /// </summary>
-        public DbSet<AnnouncementTranslation> AnnouncementTypeTranslations { get; set; }
-
-        /// <summary>
-        /// Gets or sets the AnnouncementAudit.
-        /// </summary>
-        public DbSet<AnnouncementAudit> AnnouncementAudit { get; set; }
 
 #if BIA_FRONT_FEATURE
         /// <summary>
@@ -156,6 +136,26 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// Gets or sets the user team defaults.
         /// </summary>
         public DbSet<UserDefaultTeam> UserDefaultTeams { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Announcements.
+        /// </summary>
+        public DbSet<Announcement> Announcements { get; set; }
+
+        /// <summary>
+        /// Gets or sets the AnnouncementTypes.
+        /// </summary>
+        public DbSet<AnnouncementType> AnnouncementTypes { get; set; }
+
+        /// <summary>
+        /// Gets or sets the AnnouncementTypeTranslations.
+        /// </summary>
+        public DbSet<AnnouncementTypeTranslation> AnnouncementTypeTranslations { get; set; }
+
+        /// <summary>
+        /// Gets or sets the AnnouncementAudit.
+        /// </summary>
+        public DbSet<AnnouncementAudit> AnnouncementAudit { get; set; }
 
         // Begin BIADemo
 

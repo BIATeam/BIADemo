@@ -245,8 +245,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Announcement
             }
         }
 
+        /// <summary>
+        /// Return the actives announcements.
+        /// </summary>
+        /// <returns>Actives announcements.</returns>
         [HttpGet("actives")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetActives()
         {
             var actives = await this.announcementService.GetActives();
