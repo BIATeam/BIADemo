@@ -32,16 +32,16 @@ export const announcementFieldsConfiguration: BiaFieldsConfig<Announcement> = {
       isRequired: true,
       isSearchable: false,
     }),
+    Object.assign(new BiaFieldConfig('type', 'announcement.type'), {
+      type: PropType.OneToMany,
+      isRequired: true,
+    }),
     Object.assign(new BiaFieldConfig('rawContent', 'announcement.rawContent'), {
       type: PropType.String,
       specificInput: true,
       specificOutput: true,
       isSortable: false,
       validators: [Validators.required, Validators.minLength(1)],
-    }),
-    Object.assign(new BiaFieldConfig('type', 'announcement.type'), {
-      type: PropType.OneToMany,
-      isRequired: true,
     }),
     Object.assign(new BiaFieldConfig('rowVersion', 'announcement.rowVersion'), {
       isVisible: false,
