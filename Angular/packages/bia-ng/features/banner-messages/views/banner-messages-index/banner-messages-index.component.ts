@@ -51,7 +51,7 @@ export class BannerMessagesIndexComponent
   }
 
   ngAfterViewInit(): void {
-    this.multiSortMeta = [{ field: 'start', order: 1 }];
+    this.multiSortMeta = [{ field: 'start', order: -1 }];
   }
 
   protected setPermissions() {
