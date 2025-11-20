@@ -31,19 +31,36 @@
         "cwd": "${workspaceFolder}/Angular"
       },
       "isBackground": true,
-      "problemMatcher": {
-        "owner": "typescript",
-        "pattern": "$tsc",
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": {
-            "regexp": "(.*?)"
-          },
-          "endsPattern": {
-            "regexp": "bundle generation complete"
+      "problemMatcher": [
+        {
+          "pattern": [
+            {
+              "regexp": ".",
+              "file": 1,
+              "location": 2,
+              "message": 3
+            }
+          ],
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": ".",
+            "endsPattern": "."
           }
         }
-      }
+        // {
+        //   "owner": "typescript",
+        //   "pattern": "$tsc",
+        //   "background": {
+        //     "activeOnStart": true,
+        //     "beginsPattern": {
+        //       "regexp": "(.*?)"
+        //     },
+        //     "endsPattern": {
+        //       "regexp": "bundle generation complete"
+        //     }
+        //   }
+        // }
+      ]
     },
     {
       "label": "angular: test",
