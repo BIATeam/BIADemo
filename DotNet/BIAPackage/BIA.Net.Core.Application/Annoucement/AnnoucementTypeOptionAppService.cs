@@ -14,7 +14,7 @@ namespace BIA.Net.Core.Application.Annoucement
     /// <summary>
     /// The application service used for annoucement type option.
     /// </summary>
-    public class AnnoucementTypeOptionAppService : OptionAppServiceBase<TOptionDto<BiaAnnoucementType>, AnnoucementType, BiaAnnoucementType, AnnoucementOptionMapper>, IAnnoucementOptionAppService
+    public class AnnoucementTypeOptionAppService : OptionAppServiceBase<TOptionDto<BiaAnnoucementType>, AnnoucementType, BiaAnnoucementType, AnnoucementOptionMapper>, IAnnoucementTypeOptionAppService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AnnoucementTypeOptionAppService"/> class.

@@ -11,7 +11,7 @@ namespace BIA.Net.Core.Application.Annoucement
     /// <summary>
     /// The interface defining the application service for annoucement type option.
     /// </summary>
-    public interface IAnnoucementOptionAppService : IOptionAppServiceBase<TOptionDto<BiaAnnoucementType>, BiaAnnoucementType>
+    public interface IAnnoucementTypeOptionAppService : IOptionAppServiceBase<TOptionDto<BiaAnnoucementType>, BiaAnnoucementType>
     {
     }
 }

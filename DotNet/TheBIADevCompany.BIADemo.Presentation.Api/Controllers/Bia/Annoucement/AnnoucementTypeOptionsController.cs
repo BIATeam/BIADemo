@@ -15,18 +15,18 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Annoucement
     /// <summary>
     /// The API controller used to manage annoucement type options.
     /// </summary>
-    public class AnnoucementOptionsController : BiaControllerBase
+    public class AnnoucementTypeOptionsController : BiaControllerBase
     {
         /// <summary>
         /// The annoucement type application service.
         /// </summary>
-        private readonly IAnnoucementOptionAppService annoucementTypeOptionService;
+        private readonly IAnnoucementTypeOptionAppService annoucementTypeOptionService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AnnoucementOptionsController"/> class.
+        /// Initializes a new instance of the <see cref="AnnoucementTypeOptionsController"/> class.
         /// </summary>
         /// <param name="annoucementTypeOptionService">The annoucement type application service.</param>
-        public AnnoucementOptionsController(IAnnoucementOptionAppService annoucementTypeOptionService)
+        public AnnoucementTypeOptionsController(IAnnoucementTypeOptionAppService annoucementTypeOptionService)
         {
             this.annoucementTypeOptionService = annoucementTypeOptionService;
         }
