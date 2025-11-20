@@ -238,7 +238,9 @@
               <p-cellEditor>
                 <ng-template pTemplate="input">
                   @if (
-                    col.isEditable === true || col.isOnlyUpdatable === true
+                    col.isEditable === true &&
+                    (col.isOnlyInitializable === false ||
+                      col.isOnlyUpdatable === true)
                   ) {
                     <bia-table-input
                       [field]="col"
@@ -384,7 +386,9 @@
                 <!-- <p-cellEditor> -->
                 @if (editFooter === true) {
                   @if (
-                    col.isEditable === true || col.isOnlyInitializable === true
+                    col.isEditable === true &&
+                    (col.isOnlyUpdatable === false ||
+                      col.isOnlyInitializable === true)
                   ) {
                     <bia-table-input
                       [field]="col"

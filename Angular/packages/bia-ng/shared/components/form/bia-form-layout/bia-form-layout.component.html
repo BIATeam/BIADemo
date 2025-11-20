@@ -125,11 +125,12 @@
   @if (field.isVisible === true) {
     <div class="flex flex-row align-items-center" #refFormField>
       <div class="app-field-container">
-        @if (
-          (formGroup && field.isEditable === true) ||
-          (field.isOnlyInitializable && isAdd) ||
-          (field.isOnlyUpdatable && !isAdd)
-        ) {
+        @let displayInput =
+          field.isEditable &&
+          ((!field.isOnlyInitializable && !field.isOnlyUpdatable) ||
+            (field.isOnlyInitializable && isAdd) ||
+            (field.isOnlyUpdatable && !isAdd));
+        @if (displayInput) {
           <bia-input
             [field]="field"
             [form]="formGroup"

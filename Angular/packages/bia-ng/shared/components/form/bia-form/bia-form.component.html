@@ -183,11 +183,12 @@
       @if (field.isVisible === true) {
         <div class="flex flex-row align-items-center">
           <div class="app-field-container">
-            @if (
-              field.isEditable === true ||
-              (field.isOnlyInitializable && isAdd) ||
-              (field.isOnlyUpdatable && !isAdd)
-            ) {
+            @let displayInput =
+              field.isEditable &&
+              ((!field.isOnlyInitializable && !field.isOnlyUpdatable) ||
+                (field.isOnlyInitializable && isAdd) ||
+                (field.isOnlyUpdatable && !isAdd));
+            @if (displayInput) {
               <bia-input
                 [field]="field"
                 [form]="form"
