@@ -13,14 +13,12 @@ import {
 } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { BiaFormLayoutConfig } from 'packages/bia-ng/models/public-api';
-import { PrimeTemplate } from 'primeng/api';
 import { Badge } from 'primeng/badge';
 import { PanelModule } from 'primeng/panel';
 import { Ripple } from 'primeng/ripple';
 import { Tab, TabList, TabPanel, Tabs } from 'primeng/tabs';
 import { DictOptionDto } from '../../table/bia-table/dict-option-dto';
-import { BiaInputComponent } from '../bia-input/bia-input.component';
-import { BiaOutputComponent } from '../bia-output/bia-output.component';
+import { BiaFormFieldComponent } from '../bia-form-field/bia-form-field.component';
 
 @Component({
   selector: 'bia-form-layout',
@@ -31,9 +29,6 @@ import { BiaOutputComponent } from '../bia-output/bia-output.component';
     FormsModule,
     ReactiveFormsModule,
     NgTemplateOutlet,
-    BiaInputComponent,
-    PrimeTemplate,
-    BiaOutputComponent,
     TranslateModule,
     Badge,
     Tabs,
@@ -42,6 +37,7 @@ import { BiaOutputComponent } from '../bia-output/bia-output.component';
     Tab,
     TabPanel,
     PanelModule,
+    BiaFormFieldComponent,
   ],
 })
 export class BiaFormLayoutComponent<TDto extends { id: number | string }> {

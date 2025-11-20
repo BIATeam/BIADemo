@@ -51,9 +51,8 @@ import { FormReadOnlyMode } from '../../../feature-templates/crud-items/model/cr
 import { CrudHelperService } from '../../../services/crud-helper.service';
 import { LayoutMode } from '../../layout/dynamic-layout/dynamic-layout.component';
 import { DictOptionDto } from '../../table/bia-table/dict-option-dto';
+import { BiaFormFieldComponent } from '../bia-form-field/bia-form-field.component';
 import { BiaFormLayoutComponent } from '../bia-form-layout/bia-form-layout.component';
-import { BiaInputComponent } from '../bia-input/bia-input.component';
-import { BiaOutputComponent } from '../bia-output/bia-output.component';
 
 @Component({
   selector: 'bia-form',
@@ -66,14 +65,12 @@ import { BiaOutputComponent } from '../bia-output/bia-output.component';
     ButtonDirective,
     NgClass,
     NgTemplateOutlet,
-    BiaInputComponent,
-    PrimeTemplate,
-    BiaOutputComponent,
     TranslateModule,
     BiaFormLayoutComponent,
     Tooltip,
     CrudItemHistoricalTimelineComponent,
     TabsModule,
+    BiaFormFieldComponent,
   ],
 })
 export class BiaFormComponent<TDto extends { id: number | string }>

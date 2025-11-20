@@ -1,0 +1,36 @@
+@if (field.isVisible === true) {
+  <div class="flex flex-row align-items-center">
+    <div class="app-field-container">
+      @let displayInput =
+        field.isEditable &&
+        ((!field.isOnlyInitializable && !field.isOnlyUpdatable) ||
+          (field.isOnlyInitializable && isAdd) ||
+          (field.isOnlyUpdatable && !isAdd));
+      @if (displayInput) {
+        <bia-input
+          [field]="field"
+          [form]="form"
+          [dictOptionDtos]="dictOptionDtos"
+          [readOnly]="readOnly">
+          <ng-template pTemplate="specificInput">
+            <ng-container
+              *ngTemplateOutlet="
+                specificInputTemplate;
+                context: { field: field, form: form }
+              "></ng-container>
+          </ng-template>
+        </bia-input>
+      } @else {
+        <bia-output [field]="field" [data]="getCellData(field)">
+          <ng-template pTemplate="specificOutput">
+            <ng-container
+              *ngTemplateOutlet="
+                specificOutputTemplate;
+                context: { field: field, data: getCellData(field) }
+              "></ng-container>
+          </ng-template>
+        </bia-output>
+      }
+    </div>
+  </div>
+}
