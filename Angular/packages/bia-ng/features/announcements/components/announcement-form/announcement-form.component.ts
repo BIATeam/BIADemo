@@ -35,9 +35,13 @@ export class AnnouncementFormComponent
     const rawContentForm = this.biaFormComponent.form?.get('rawContent');
     rawContentForm?.valueChanges.subscribe((val: string) => {
       if (val) {
-        const formatted = rawContentForm.value.replace(/<\/?p>/g, '');
-        rawContentForm.setValue(formatted, { emitEvent: false });
-        this.quillEditor?.setSelection(formatted.length);
+        const newValue = rawContentForm.value.replace(/<\/?p>/g, '');
+        const editorCursorIndex = this.quillEditor?.getSelection()?.index;
+
+        if (editorCursorIndex) {
+          rawContentForm.setValue(newValue, { emitEvent: false });
+          this.quillEditor!.setSelection(editorCursorIndex);
+        }
       }
     });
   }
