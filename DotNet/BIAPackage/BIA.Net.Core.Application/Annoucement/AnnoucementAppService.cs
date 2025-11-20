@@ -1,8 +1,8 @@
-// <copyright file="BannerMessageAppService.cs" company="TheBIADevCompany">
+// <copyright file="AnnoucementAppService.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Application.Banner
+namespace BIA.Net.Core.Application.Annoucement
 {
     using System;
     using System.Collections.Generic;
@@ -10,30 +10,30 @@ namespace BIA.Net.Core.Application.Banner
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
-    using BIA.Net.Core.Domain.Banner.Entities;
-    using BIA.Net.Core.Domain.Banner.Mappers;
-    using BIA.Net.Core.Domain.Dto.Banner;
+    using BIA.Net.Core.Domain.Annoucement.Entities;
+    using BIA.Net.Core.Domain.Annoucement.Mappers;
+    using BIA.Net.Core.Domain.Dto.Annoucement;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.RepoContract;
 
     /// <summary>
-    /// The application service used for bannerMessage.
+    /// The application service used for annoucement.
     /// </summary>
-    public class BannerMessageAppService : CrudAppServiceBase<BannerMessageDto, BannerMessage, int, PagingFilterFormatDto, BannerMessageMapper>, IBannerMessageAppService
+    public class AnnoucementAppService : CrudAppServiceBase<AnnoucementDto, Annoucement, int, PagingFilterFormatDto, AnnoucementMapper>, IAnnoucementAppService
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BannerMessageAppService"/> class.
+        /// Initializes a new instance of the <see cref="AnnoucementAppService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The claims principal.</param>
-        public BannerMessageAppService(
-            ITGenericRepository<BannerMessage, int> repository,
+        public AnnoucementAppService(
+            ITGenericRepository<Annoucement, int> repository,
             IPrincipal principal)
             : base(repository)
         {
         }
 
-        public async Task<List<BannerMessageDto>> GetActives()
+        public async Task<List<AnnoucementDto>> GetActives()
         {
             var currentDatetime = DateTime.UtcNow;
             var actives = await this.GetAllAsync(filter: x => x.End > currentDatetime && x.Start <= currentDatetime);

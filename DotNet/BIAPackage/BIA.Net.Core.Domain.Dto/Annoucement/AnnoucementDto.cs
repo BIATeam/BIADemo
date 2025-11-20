@@ -1,8 +1,8 @@
-// <copyright file="BannerMessageDto.cs" company="TheBIADevCompany">
+// <copyright file="AnnoucementDto.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Domain.Dto.Banner
+namespace BIA.Net.Core.Domain.Dto.Annoucement
 {
     using System;
     using BIA.Net.Core.Common.Enum;
@@ -11,9 +11,9 @@ namespace BIA.Net.Core.Domain.Dto.Banner
     using BIA.Net.Core.Domain.Dto.Option;
 
     /// <summary>
-    /// The DTO used to represent a banner message.
+    /// The DTO used to represent a annoucement.
     /// </summary>
-    public sealed class BannerMessageDto : BaseDtoVersioned<int>
+    public sealed class AnnoucementDto : BaseDtoVersioned<int>
     {
         /// <summary>
         /// Gets or sets the end.
@@ -37,6 +37,6 @@ namespace BIA.Net.Core.Domain.Dto.Banner
         /// Gets or sets the type.
         /// </summary>
         [BiaDtoField(Required = true)]
-        public TOptionDto<BiaBannerMessageType> Type { get; set; }
+        public TOptionDto<BiaAnnoucementType> Type { get; set; }
     }
 }

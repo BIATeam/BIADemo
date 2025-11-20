@@ -6,10 +6,10 @@
     using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Enum;
-    using BIA.Net.Core.Domain.Banner.Entities;
+    using BIA.Net.Core.Domain.Annoucement.Entities;
     using BIA.Net.Core.Domain.Entity;
 
-    public class BannerMessageTypeTranslation : BaseEntityVersioned<int>
+    public class AnnoucementTranslation : BaseEntityVersioned<int>
     {
         /// <summary>
         /// Gets or sets the language.
@@ -22,14 +22,14 @@
         public int LanguageId { get; set; }
 
         /// <summary>
-        ///  Gets or sets the banner message type.
+        ///  Gets or sets the annoucement type.
         /// </summary>
-        public BannerMessageType BannerMessageType { get; set; }
+        public AnnoucementType AnnoucementType { get; set; }
 
         /// <summary>
-        /// Gets or sets the banner message type id.
+        /// Gets or sets the annoucement type id.
         /// </summary>
-        public BiaBannerMessageType BannerMessageTypeId { get; set; }
+        public BiaAnnoucementType AnnoucementTypeId { get; set; }
 
         /// <summary>
         /// Gets or sets the label translated.

@@ -1,4 +1,4 @@
-﻿namespace BIA.Net.Core.Domain.Banner.Entities
+﻿namespace BIA.Net.Core.Domain.Annoucement.Entities
 {
     using System;
     using BIA.Net.Core.Common.Enum;
@@ -6,10 +6,10 @@
     using global::Audit.EntityFramework;
 
     [AuditInclude]
-    public sealed class BannerMessage : BaseEntityVersioned<int>
+    public sealed class Annoucement : BaseEntityVersioned<int>
     {
-        public BannerMessageType Type { get; set; }
-        public BiaBannerMessageType TypeId { get; set; }
+        public AnnoucementType Type { get; set; }
+        public BiaAnnoucementType TypeId { get; set; }
         public string RawContent { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }

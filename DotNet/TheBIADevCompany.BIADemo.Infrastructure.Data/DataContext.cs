@@ -8,7 +8,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using Audit.EntityFramework;
     using BIA.Net.Core.Domain.Audit;
 #if BIA_FRONT_FEATURE
-    using BIA.Net.Core.Domain.Banner.Entities;
+    using BIA.Net.Core.Domain.Annoucement.Entities;
     using BIA.Net.Core.Domain.Notification.Entities;
     using BIA.Net.Core.Domain.Translation.Entities;
     using BIA.Net.Core.Domain.User.Entities;
@@ -67,24 +67,24 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         public DbSet<AuditLog> AuditLogs { get; set; }
 
         /// <summary>
-        /// Gets or sets the BannerMessages.
+        /// Gets or sets the Annoucements.
         /// </summary>
-        public DbSet<BannerMessage> BannerMessages { get; set; }
+        public DbSet<Annoucement> Annoucements { get; set; }
 
         /// <summary>
-        /// Gets or sets the BannerMessageTypes.
+        /// Gets or sets the AnnoucementTypes.
         /// </summary>
-        public DbSet<BannerMessageType> BannerMessageTypes { get; set; }
+        public DbSet<AnnoucementType> AnnoucementTypes { get; set; }
 
         /// <summary>
-        /// Gets or sets the BannerMessageTypeTranslations.
+        /// Gets or sets the AnnoucementTypeTranslations.
         /// </summary>
-        public DbSet<BannerMessageTypeTranslation> BannerMessageTypeTranslations { get; set; }
+        public DbSet<AnnoucementTranslation> AnnoucementTypeTranslations { get; set; }
 
         /// <summary>
-        /// Gets or sets the BannerMessageAudit.
+        /// Gets or sets the AnnoucementAudit.
         /// </summary>
-        public DbSet<BannerMessageAudit> BannerMessageAudit { get; set; }
+        public DbSet<AnnoucementAudit> AnnoucementAudit { get; set; }
 
 #if BIA_FRONT_FEATURE
         /// <summary>

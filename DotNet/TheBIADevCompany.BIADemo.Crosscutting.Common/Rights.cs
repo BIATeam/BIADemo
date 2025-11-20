@@ -51,50 +51,50 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         }
 
         /// <summary>
-        /// The banner messages rights.
+        /// The annoucements rights.
         /// </summary>
-        public static class BannerMessages
+        public static class Annoucements
         {
             /// <summary>
-            /// The right to access to the list of banner messages.
+            /// The right to access to the list of annoucements.
             /// </summary>
-            public const string ListAccess = "BannerMessage_List_Access";
+            public const string ListAccess = "Annoucement_List_Access";
 
             /// <summary>
-            /// The right to create banner message.
+            /// The right to create annoucement.
             /// </summary>
-            public const string Create = "BannerMessage_Create";
+            public const string Create = "Annoucement_Create";
 
             /// <summary>
-            /// The right to read banner message.
+            /// The right to read annoucement.
             /// </summary>
-            public const string Read = "BannerMessage_Read";
+            public const string Read = "Annoucement_Read";
 
             /// <summary>
-            /// The right to update banner message.
+            /// The right to update annoucement.
             /// </summary>
-            public const string Update = "BannerMessage_Update";
+            public const string Update = "Annoucement_Update";
 
             /// <summary>
-            /// The right to delete banner message.
+            /// The right to delete annoucement.
             /// </summary>
-            public const string Delete = "BannerMessage_Delete";
+            public const string Delete = "Annoucement_Delete";
 
             /// <summary>
-            /// The right to save banner message.
+            /// The right to save annoucement.
             /// </summary>
-            public const string Save = "BannerMessage_Save";
+            public const string Save = "Annoucement_Save";
         }
 
         /// <summary>
-        /// The banner message type options rights.
+        /// The annoucement type options rights.
         /// </summary>
-        public static class BannerMessageTypeOptions
+        public static class AnnoucementTypeOptions
         {
             /// <summary>
-            /// The right to access to the list of banner message types (options only).
+            /// The right to access to the list of annoucement types (options only).
             /// </summary>
-            public const string Options = "BannerMessageType_Options";
+            public const string Options = "AnnoucementType_Options";
         }
 
         // BIAToolKit - Begin Rights

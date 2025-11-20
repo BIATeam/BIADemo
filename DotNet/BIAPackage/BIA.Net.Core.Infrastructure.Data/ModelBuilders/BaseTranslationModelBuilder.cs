@@ -22,7 +22,7 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
             this.CreateRoleTranslationModel(modelBuilder);
             this.CreateNotificationTypeTranslationModel(modelBuilder);
             this.CreateNotificationTranslationModel(modelBuilder);
-            this.CreateBannerMessageTypeTranslationModel(modelBuilder);
+            this.CreateAnnoucementTypeTranslationModel(modelBuilder);
         }
 
         /// <summary>
@@ -81,17 +81,17 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
         }
 
         /// <summary>
-        /// Create the model for banner message type translation.
+        /// Create the model for annoucement type translation.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        protected virtual void CreateBannerMessageTypeTranslationModel(ModelBuilder modelBuilder)
+        protected virtual void CreateAnnoucementTypeTranslationModel(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BannerMessageTypeTranslation>().HasKey(r => r.Id);
-            modelBuilder.Entity<BannerMessageTypeTranslation>().Property(r => r.BannerMessageTypeId).IsRequired();
-            modelBuilder.Entity<BannerMessageTypeTranslation>().Property(r => r.LanguageId).IsRequired();
-            modelBuilder.Entity<BannerMessageTypeTranslation>().HasIndex(u => new { u.BannerMessageTypeId, u.LanguageId }).IsUnique();
+            modelBuilder.Entity<AnnoucementTranslation>().HasKey(r => r.Id);
+            modelBuilder.Entity<AnnoucementTranslation>().Property(r => r.AnnoucementTypeId).IsRequired();
+            modelBuilder.Entity<AnnoucementTranslation>().Property(r => r.LanguageId).IsRequired();
+            modelBuilder.Entity<AnnoucementTranslation>().HasIndex(u => new { u.AnnoucementTypeId, u.LanguageId }).IsUnique();
 
-            modelBuilder.Entity<BannerMessageTypeTranslation>().Property(m => m.Label).IsRequired().HasMaxLength(150);
+            modelBuilder.Entity<AnnoucementTranslation>().Property(m => m.Label).IsRequired().HasMaxLength(150);
         }
     }
 }

@@ -12,8 +12,8 @@ using TheBIADevCompany.BIADemo.Infrastructure.Data;
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20251114092612_AddBannerMessageTables")]
-    partial class AddBannerMessageTables
+    [Migration("20251120083005_AddAnnoucementTables")]
+    partial class AddAnnoucementTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,95 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("BIA.Net.Core.Domain.Annoucement.Entities.Annoucement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("End")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RawContent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime>("Start")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TypeId");
+
+                    b.ToTable("Annoucements");
+                });
+
+            modelBuilder.Entity("BIA.Net.Core.Domain.Annoucement.Entities.AnnoucementAudit", b =>
+                {
+                    b.Property<int>("AuditId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditId"));
+
+                    b.Property<string>("AuditAction")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AuditChanges")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AuditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("AuditUserLogin")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("AuditId");
+
+                    b.ToTable("AnnoucementAudit");
+                });
+
+            modelBuilder.Entity("BIA.Net.Core.Domain.Annoucement.Entities.AnnoucementType", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AnnoucementTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 0
+                        },
+                        new
+                        {
+                            Id = 1
+                        });
+                });
 
             modelBuilder.Entity("BIA.Net.Core.Domain.Audit.AuditLog", b =>
                 {
@@ -60,72 +149,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasKey("AuditId");
 
                     b.ToTable("AuditLogs");
-                });
-
-            modelBuilder.Entity("BIA.Net.Core.Domain.Banner.Entities.BannerMessage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("End")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RawContent")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<DateTime>("Start")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BannerMessages");
-                });
-
-            modelBuilder.Entity("BIA.Net.Core.Domain.Banner.Entities.BannerMessageAudit", b =>
-                {
-                    b.Property<int>("AuditId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditId"));
-
-                    b.Property<string>("AuditAction")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AuditChanges")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("AuditDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("AuditUserLogin")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.HasKey("AuditId");
-
-                    b.ToTable("BannerMessageAudit");
                 });
 
             modelBuilder.Entity("BIA.Net.Core.Domain.DistCache.Entities.DistCache", b =>
@@ -337,6 +360,84 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasIndex("NotificationId");
 
                     b.ToTable("NotificationUser");
+                });
+
+            modelBuilder.Entity("BIA.Net.Core.Domain.Translation.Entities.AnnoucementTranslation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AnnoucementTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LanguageId");
+
+                    b.HasIndex("AnnoucementTypeId", "LanguageId")
+                        .IsUnique();
+
+                    b.ToTable("AnnoucementTypeTranslations");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 101,
+                            AnnoucementTypeId = 0,
+                            Label = "Information",
+                            LanguageId = 1
+                        },
+                        new
+                        {
+                            Id = 102,
+                            AnnoucementTypeId = 1,
+                            Label = "Warning",
+                            LanguageId = 1
+                        },
+                        new
+                        {
+                            Id = 103,
+                            AnnoucementTypeId = 0,
+                            Label = "Information",
+                            LanguageId = 2
+                        },
+                        new
+                        {
+                            Id = 104,
+                            AnnoucementTypeId = 1,
+                            Label = "Avertissement",
+                            LanguageId = 2
+                        },
+                        new
+                        {
+                            Id = 105,
+                            AnnoucementTypeId = 0,
+                            Label = "Información",
+                            LanguageId = 3
+                        },
+                        new
+                        {
+                            Id = 106,
+                            AnnoucementTypeId = 1,
+                            Label = "Advertencia",
+                            LanguageId = 3
+                        });
                 });
 
             modelBuilder.Entity("BIA.Net.Core.Domain.Translation.Entities.Language", b =>
@@ -2196,6 +2297,17 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasDiscriminator().HasValue("User");
                 });
 
+            modelBuilder.Entity("BIA.Net.Core.Domain.Annoucement.Entities.Annoucement", b =>
+                {
+                    b.HasOne("BIA.Net.Core.Domain.Annoucement.Entities.AnnoucementType", "Type")
+                        .WithMany()
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.Navigation("Type");
+                });
+
             modelBuilder.Entity("BIA.Net.Core.Domain.Notification.Entities.BaseNotification", b =>
                 {
                     b.HasOne("BIA.Net.Core.Domain.User.Entities.BaseEntityUser", "CreatedBy")
@@ -2268,6 +2380,25 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("Notification");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BIA.Net.Core.Domain.Translation.Entities.AnnoucementTranslation", b =>
+                {
+                    b.HasOne("BIA.Net.Core.Domain.Annoucement.Entities.AnnoucementType", "AnnoucementType")
+                        .WithMany("AnnoucementTypeTranslations")
+                        .HasForeignKey("AnnoucementTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BIA.Net.Core.Domain.Translation.Entities.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AnnoucementType");
+
+                    b.Navigation("Language");
                 });
 
             modelBuilder.Entity("BIA.Net.Core.Domain.Translation.Entities.NotificationTranslation", b =>
@@ -2723,6 +2854,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .HasForeignKey("TheBIADevCompany.BIADemo.Domain.Site.Entities.Site", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("BIA.Net.Core.Domain.Annoucement.Entities.AnnoucementType", b =>
+                {
+                    b.Navigation("AnnoucementTypeTranslations");
                 });
 
             modelBuilder.Entity("BIA.Net.Core.Domain.Notification.Entities.BaseNotification", b =>

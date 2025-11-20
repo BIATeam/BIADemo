@@ -1,8 +1,8 @@
-// <copyright file="BannerMessageMapper.cs" company="TheBIADevCompany">
+// <copyright file="AnnoucementMapper.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Domain.Banner.Mappers
+namespace BIA.Net.Core.Domain.Annoucement.Mappers
 {
     using System;
     using System.Collections.Generic;
@@ -11,47 +11,47 @@ namespace BIA.Net.Core.Domain.Banner.Mappers
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain;
-    using BIA.Net.Core.Domain.Banner.Entities;
-    using BIA.Net.Core.Domain.Dto.Banner;
+    using BIA.Net.Core.Domain.Annoucement.Entities;
+    using BIA.Net.Core.Domain.Dto.Annoucement;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Translation.Entities;
 
     /// <summary>
-    /// The mapper used for BannerMessage.
+    /// The mapper used for Annoucement.
     /// </summary>
-    public class BannerMessageMapper : BaseMapper<BannerMessageDto, BannerMessage, int>
+    public class AnnoucementMapper : BaseMapper<AnnoucementDto, Annoucement, int>
     {
         private readonly UserContext userContext;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BannerMessageMapper"/> class.
+        /// Initializes a new instance of the <see cref="AnnoucementMapper"/> class.
         /// </summary>
         /// <param name="auditMappers">The injected collection of <see cref="IAuditMapper"/>.</param>
-        public BannerMessageMapper(IEnumerable<IAuditMapper> auditMappers, UserContext userContext)
+        public AnnoucementMapper(IEnumerable<IAuditMapper> auditMappers, UserContext userContext)
         {
-            this.AuditMapper = auditMappers.FirstOrDefault(x => x.EntityType == typeof(BannerMessage));
+            this.AuditMapper = auditMappers.FirstOrDefault(x => x.EntityType == typeof(Annoucement));
             this.userContext = userContext;
         }
 
         /// <inheritdoc />
-        public override ExpressionCollection<BannerMessage> ExpressionCollection
+        public override ExpressionCollection<Annoucement> ExpressionCollection
         {
             get
             {
-                return new ExpressionCollection<BannerMessage>(base.ExpressionCollection)
+                return new ExpressionCollection<Annoucement>(base.ExpressionCollection)
                 {
-                    { HeaderName.End, bannerMessage => bannerMessage.End },
-                    { HeaderName.RawContent, bannerMessage => bannerMessage.RawContent },
-                    { HeaderName.Start, bannerMessage => bannerMessage.Start },
-                    { HeaderName.Type, bannerMessage => bannerMessage.Type.BannerMessageTypeTranslations.Single(x => x.LanguageId == this.userContext.LanguageId).Label },
+                    { HeaderName.End, annoucement => annoucement.End },
+                    { HeaderName.RawContent, annoucement => annoucement.RawContent },
+                    { HeaderName.Start, annoucement => annoucement.Start },
+                    { HeaderName.Type, annoucement => annoucement.Type.AnnoucementTypeTranslations.Single(x => x.LanguageId == this.userContext.LanguageId).Label },
                 };
             }
         }
 
         /// <inheritdoc />
-        public override void DtoToEntity(BannerMessageDto dto, ref BannerMessage entity)
+        public override void DtoToEntity(AnnoucementDto dto, ref Annoucement entity)
         {
             base.DtoToEntity(dto, ref entity);
             entity.End = dto.End.UtcDateTime;
@@ -61,17 +61,17 @@ namespace BIA.Net.Core.Domain.Banner.Mappers
         }
 
         /// <inheritdoc />
-        public override Expression<Func<BannerMessage, BannerMessageDto>> EntityToDto()
+        public override Expression<Func<Annoucement, AnnoucementDto>> EntityToDto()
         {
-            return base.EntityToDto().CombineMapping(entity => new BannerMessageDto
+            return base.EntityToDto().CombineMapping(entity => new AnnoucementDto
             {
                 End = entity.End,
                 RawContent = entity.RawContent,
                 Start = entity.Start,
-                Type = new TOptionDto<BiaBannerMessageType>
+                Type = new TOptionDto<BiaAnnoucementType>
                 {
                     Id = entity.Type.Id,
-                    Display = entity.Type.BannerMessageTypeTranslations.Single(x => x.LanguageId == this.userContext.LanguageId).Label,
+                    Display = entity.Type.AnnoucementTypeTranslations.Single(x => x.LanguageId == this.userContext.LanguageId).Label,
                 },
             });
         }

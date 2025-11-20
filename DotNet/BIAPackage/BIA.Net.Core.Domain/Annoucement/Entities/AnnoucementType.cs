@@ -1,4 +1,4 @@
-﻿namespace BIA.Net.Core.Domain.Banner.Entities
+﻿namespace BIA.Net.Core.Domain.Annoucement.Entities
 {
     using System;
     using System.Collections.Generic;
@@ -10,11 +10,11 @@
     using BIA.Net.Core.Domain.Entity;
     using BIA.Net.Core.Domain.Translation.Entities;
 
-    public class BannerMessageType : BaseEntityVersioned<BiaBannerMessageType>
+    public class AnnoucementType : BaseEntityVersioned<BiaAnnoucementType>
     {
         /// <summary>
-        /// Gets or sets the banner message type translations.
+        /// Gets or sets the annoucement type translations.
         /// </summary>
-        public virtual ICollection<BannerMessageTypeTranslation> BannerMessageTypeTranslations { get; set; }
+        public virtual ICollection<AnnoucementTranslation> AnnoucementTypeTranslations { get; set; }
     }
 }

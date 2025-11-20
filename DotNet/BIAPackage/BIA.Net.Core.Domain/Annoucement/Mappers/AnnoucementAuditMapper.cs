@@ -1,26 +1,26 @@
-// <copyright file="BannerMessageAuditMapper.cs" company="TheBIADevCompany">
+// <copyright file="AnnoucementAuditMapper.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Domain.Banner.Mappers
+namespace BIA.Net.Core.Domain.Annoucement.Mappers
 {
     using System.Linq;
-    using BIA.Net.Core.Domain.Banner.Entities;
+    using BIA.Net.Core.Domain.Annoucement.Entities;
     using BIA.Net.Core.Domain.Mapper;
 
     /// <summary>
-    /// Audit mapper for <see cref="BannerMessage"/>.
+    /// Audit mapper for <see cref="Annoucement"/>.
     /// </summary>
-    public class BannerMessageAuditMapper : AuditMapper<BannerMessage>
+    public class AnnoucementAuditMapper : AuditMapper<Annoucement>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BannerMessageAuditMapper"/> class.
+        /// Initializes a new instance of the <see cref="AnnoucementAuditMapper"/> class.
         /// </summary>
-        public BannerMessageAuditMapper()
+        public AnnoucementAuditMapper()
         {
             this.AuditPropertyMappers =
                 [
-                    new AuditPropertyMapper<BannerMessage, BannerMessageType>()
+                    new AuditPropertyMapper<Annoucement, AnnoucementType>()
                     {
                         EntityProperty = x => x.Type,
                         EntityPropertyIdentifier = x => x.TypeId,

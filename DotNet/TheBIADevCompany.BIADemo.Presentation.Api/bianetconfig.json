@@ -500,14 +500,14 @@
         "LightToken": true,
         "Roles": [ "Back_Read_Only" ]
       },
-      // BannerMessage
+      // Annoucement
       {
-        "Names": [ "BannerMessage_List_Access", "BannerMessage_Read", "BannerMessage_Update", "BannerMessage_Create", "BannerMessage_Delete" ],
+        "Names": [ "Annoucement_List_Access", "Annoucement_Read", "Annoucement_Update", "Annoucement_Create", "Annoucement_Delete" ],
         "Roles": [ "Admin" ]
       },
-      // BannerMessageType
+      // AnnoucementType
       {
-        "Name": "BannerMessageType_Options",
+        "Name": "AnnoucementType_Options",
         "Roles": [ "Admin" ]
       }
     ]
