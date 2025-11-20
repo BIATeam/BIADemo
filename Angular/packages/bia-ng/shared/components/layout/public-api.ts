@@ -1,5 +1,5 @@
 export * from './api/menuchangeevent';
-export * from './annoucement-layout/annoucement-layout.component';
+export * from './announcement-layout/announcement-layout.component';
 export * from './classic-page-layout/classic-page-layout.component';
 export * from './dynamic-layout/dynamic-layout.component';
 export * from './fullpage-layout/fullpage-layout.component';

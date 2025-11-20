@@ -25,15 +25,15 @@ import {
   ROUTE_DATA_NO_MARGIN,
   ROUTE_DATA_NO_PADDING,
 } from 'packages/bia-ng/core/public-api';
-import { Annoucement } from 'packages/bia-ng/features/public-api';
+import { Announcement } from 'packages/bia-ng/features/public-api';
 import { EnvironmentType } from 'packages/bia-ng/models/enum/public-api';
 import { BiaNavigation } from 'packages/bia-ng/models/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { MenuItem } from 'primeng/api';
 import { Breadcrumb } from 'primeng/breadcrumb';
 import { filter, map, Observable, Subscription } from 'rxjs';
-import { AnnoucementLayoutComponent } from '../../annoucement-layout/annoucement-layout.component';
-import { AnnoucementService } from '../../services/annoucement.service';
+import { AnnouncementLayoutComponent } from '../../announcement-layout/announcement-layout.component';
+import { AnnouncementService } from '../../services/announcement.service';
 import { BiaThemeService } from '../../services/bia-theme.service';
 import { BiaLayoutService } from '../../services/layout.service';
 import { MenuService } from '../../services/menu.service';
@@ -56,7 +56,7 @@ import { BiaUltimaTopbarComponent } from '../topbar/ultima-topbar.component';
     AsyncPipe,
     TranslateModule,
     BiaUltimaConfigComponent,
-    AnnoucementLayoutComponent,
+    AnnouncementLayoutComponent,
   ],
 })
 export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
@@ -95,8 +95,8 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
   envName$: Observable<string | undefined>;
   showEnvironmentMessage$: Observable<boolean>;
   cssClassEnv: string;
-  activeAnnoucements: Annoucement[];
-  activeAnnoucementsInterval: NodeJS.Timeout | undefined;
+  activeAnnouncements: Announcement[];
+  activeAnnouncementsInterval: NodeJS.Timeout | undefined;
 
   constructor(
     protected biaTranslation: BiaTranslationService,
@@ -108,7 +108,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
     public router: Router,
     protected activatedRoute: ActivatedRoute,
     protected store: Store<BiaAppState>,
-    protected annoucementService: AnnoucementService
+    protected announcementService: AnnouncementService
   ) {
     this.hideMenuProfile();
     this.overlayMenuSubscription();
@@ -304,26 +304,26 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.initActiveAnnoucementsPolling();
-    this.annoucementService.registerSignalRChanges(() => {
-      this.initActiveAnnoucementsPolling();
+    this.initActiveAnnouncementsPolling();
+    this.announcementService.registerSignalRChanges(() => {
+      this.initActiveAnnouncementsPolling();
     });
   }
 
-  private initActiveAnnoucementsPolling() {
-    if (this.activeAnnoucementsInterval) {
-      clearInterval(this.activeAnnoucementsInterval);
+  private initActiveAnnouncementsPolling() {
+    if (this.activeAnnouncementsInterval) {
+      clearInterval(this.activeAnnouncementsInterval);
     }
-    this.refreshActiveAnnoucements();
-    this.activeAnnoucementsInterval = setInterval(() => {
-      this.refreshActiveAnnoucements();
+    this.refreshActiveAnnouncements();
+    this.activeAnnouncementsInterval = setInterval(() => {
+      this.refreshActiveAnnouncements();
     }, 60000);
   }
 
-  private refreshActiveAnnoucements() {
+  private refreshActiveAnnouncements() {
     this.sub.add(
-      this.annoucementService.getActives().subscribe(messages => {
-        this.activeAnnoucements = messages;
+      this.announcementService.getActives().subscribe(messages => {
+        this.activeAnnouncements = messages;
       })
     );
   }
@@ -515,9 +515,9 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
     }
 
     this.sub.unsubscribe();
-    this.annoucementService.destroy();
-    if (this.activeAnnoucementsInterval) {
-      clearInterval(this.activeAnnoucementsInterval);
+    this.announcementService.destroy();
+    if (this.activeAnnouncementsInterval) {
+      clearInterval(this.activeAnnouncementsInterval);
     }
   }
 

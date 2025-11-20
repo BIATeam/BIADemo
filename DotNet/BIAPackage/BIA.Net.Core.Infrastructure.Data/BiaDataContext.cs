@@ -341,7 +341,7 @@ namespace BIA.Net.Core.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             DistCacheModelBuilder.CreateDistCacheModel(modelBuilder);
-            AnnoucementModelBuilder.CreateModel(modelBuilder);
+            AnnouncementModelBuilder.CreateModel(modelBuilder);
         }
 
         /// <summary>

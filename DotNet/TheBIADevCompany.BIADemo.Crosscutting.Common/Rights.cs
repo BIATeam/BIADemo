@@ -51,50 +51,50 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         }
 
         /// <summary>
-        /// The annoucements rights.
+        /// The announcements rights.
         /// </summary>
-        public static class Annoucements
+        public static class Announcements
         {
             /// <summary>
-            /// The right to access to the list of annoucements.
+            /// The right to access to the list of announcements.
             /// </summary>
-            public const string ListAccess = "Annoucement_List_Access";
+            public const string ListAccess = "Announcement_List_Access";
 
             /// <summary>
-            /// The right to create annoucement.
+            /// The right to create announcement.
             /// </summary>
-            public const string Create = "Annoucement_Create";
+            public const string Create = "Announcement_Create";
 
             /// <summary>
-            /// The right to read annoucement.
+            /// The right to read announcement.
             /// </summary>
-            public const string Read = "Annoucement_Read";
+            public const string Read = "Announcement_Read";
 
             /// <summary>
-            /// The right to update annoucement.
+            /// The right to update announcement.
             /// </summary>
-            public const string Update = "Annoucement_Update";
+            public const string Update = "Announcement_Update";
 
             /// <summary>
-            /// The right to delete annoucement.
+            /// The right to delete announcement.
             /// </summary>
-            public const string Delete = "Annoucement_Delete";
+            public const string Delete = "Announcement_Delete";
 
             /// <summary>
-            /// The right to save annoucement.
+            /// The right to save announcement.
             /// </summary>
-            public const string Save = "Annoucement_Save";
+            public const string Save = "Announcement_Save";
         }
 
         /// <summary>
-        /// The annoucement type options rights.
+        /// The announcement type options rights.
         /// </summary>
-        public static class AnnoucementTypeOptions
+        public static class AnnouncementTypeOptions
         {
             /// <summary>
-            /// The right to access to the list of annoucement types (options only).
+            /// The right to access to the list of announcement types (options only).
             /// </summary>
-            public const string Options = "AnnoucementType_Options";
+            public const string Options = "AnnouncementType_Options";
         }
 
         // BIAToolKit - Begin Rights

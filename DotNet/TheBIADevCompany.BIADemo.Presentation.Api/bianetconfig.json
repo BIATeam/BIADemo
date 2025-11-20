@@ -500,14 +500,14 @@
         "LightToken": true,
         "Roles": [ "Back_Read_Only" ]
       },
-      // Annoucement
+      // Announcement
       {
-        "Names": [ "Annoucement_List_Access", "Annoucement_Read", "Annoucement_Update", "Annoucement_Create", "Annoucement_Delete" ],
+        "Names": [ "Announcement_List_Access", "Announcement_Read", "Announcement_Update", "Announcement_Create", "Announcement_Delete" ],
         "Roles": [ "Admin" ]
       },
-      // AnnoucementType
+      // AnnouncementType
       {
-        "Name": "AnnoucementType_Options",
+        "Name": "AnnouncementType_Options",
         "Roles": [ "Admin" ]
       }
     ]

@@ -13,7 +13,7 @@
     "backgroundTaskAdmin": "Administrer les taches",
     "backgroundTaskReadOnly": "Voir les taches",
     "backgroundtasks": "Tâches d'arrière-plan",
-    "annoucements": "Annonces",
+    "announcements": "Annonces",
     "browse": "Parcourir",
     "bulkImport": "Import de masse",
     "cancel": "Annuler",
@@ -194,7 +194,7 @@
     "timeFormat": "Format Heure",
     "useCurrentView": "Baser le traitement de l'import sur le filtre courant"
   },
-  "annoucement": {
+  "announcement": {
     "add": "Ajouter annonce",
     "announcements": "ANNONCES",
     "end": "Date fin d'affichage",

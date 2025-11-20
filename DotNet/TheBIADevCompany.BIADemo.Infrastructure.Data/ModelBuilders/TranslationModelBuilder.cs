@@ -162,21 +162,21 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         }
 
         /// <summary>
-        /// Create the model for annoucement type translation.
+        /// Create the model for announcement type translation.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        protected override void CreateAnnoucementTypeTranslationModel(ModelBuilder modelBuilder)
+        protected override void CreateAnnouncementTypeTranslationModel(ModelBuilder modelBuilder)
         {
-            base.CreateAnnoucementTypeTranslationModel(modelBuilder);
+            base.CreateAnnouncementTypeTranslationModel(modelBuilder);
 
-            modelBuilder.Entity<AnnoucementTranslation>().HasData(new AnnoucementTranslation { AnnoucementTypeId = BiaAnnoucementType.Info, LanguageId = LanguageId.English, Id = 101, Label = "Information" });
-            modelBuilder.Entity<AnnoucementTranslation>().HasData(new AnnoucementTranslation { AnnoucementTypeId = BiaAnnoucementType.Warning, LanguageId = LanguageId.English, Id = 102, Label = "Warning" });
+            modelBuilder.Entity<AnnouncementTranslation>().HasData(new AnnouncementTranslation { AnnouncementTypeId = BiaAnnouncementType.Info, LanguageId = LanguageId.English, Id = 101, Label = "Information" });
+            modelBuilder.Entity<AnnouncementTranslation>().HasData(new AnnouncementTranslation { AnnouncementTypeId = BiaAnnouncementType.Warning, LanguageId = LanguageId.English, Id = 102, Label = "Warning" });
 
-            modelBuilder.Entity<AnnoucementTranslation>().HasData(new AnnoucementTranslation { AnnoucementTypeId = BiaAnnoucementType.Info, LanguageId = LanguageId.French, Id = 103, Label = "Information" });
-            modelBuilder.Entity<AnnoucementTranslation>().HasData(new AnnoucementTranslation { AnnoucementTypeId = BiaAnnoucementType.Warning, LanguageId = LanguageId.French, Id = 104, Label = "Avertissement" });
+            modelBuilder.Entity<AnnouncementTranslation>().HasData(new AnnouncementTranslation { AnnouncementTypeId = BiaAnnouncementType.Info, LanguageId = LanguageId.French, Id = 103, Label = "Information" });
+            modelBuilder.Entity<AnnouncementTranslation>().HasData(new AnnouncementTranslation { AnnouncementTypeId = BiaAnnouncementType.Warning, LanguageId = LanguageId.French, Id = 104, Label = "Avertissement" });
 
-            modelBuilder.Entity<AnnoucementTranslation>().HasData(new AnnoucementTranslation { AnnoucementTypeId = BiaAnnoucementType.Info, LanguageId = LanguageId.Spanish, Id = 105, Label = "Información" });
-            modelBuilder.Entity<AnnoucementTranslation>().HasData(new AnnoucementTranslation { AnnoucementTypeId = BiaAnnoucementType.Warning, LanguageId = LanguageId.Spanish, Id = 106, Label = "Advertencia" });
+            modelBuilder.Entity<AnnouncementTranslation>().HasData(new AnnouncementTranslation { AnnouncementTypeId = BiaAnnouncementType.Info, LanguageId = LanguageId.Spanish, Id = 105, Label = "Información" });
+            modelBuilder.Entity<AnnouncementTranslation>().HasData(new AnnouncementTranslation { AnnouncementTypeId = BiaAnnouncementType.Warning, LanguageId = LanguageId.Spanish, Id = 106, Label = "Advertencia" });
         }
     }
 }

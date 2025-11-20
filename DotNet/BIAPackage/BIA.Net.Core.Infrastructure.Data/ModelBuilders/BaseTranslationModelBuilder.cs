@@ -22,7 +22,7 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
             this.CreateRoleTranslationModel(modelBuilder);
             this.CreateNotificationTypeTranslationModel(modelBuilder);
             this.CreateNotificationTranslationModel(modelBuilder);
-            this.CreateAnnoucementTypeTranslationModel(modelBuilder);
+            this.CreateAnnouncementTypeTranslationModel(modelBuilder);
         }
 
         /// <summary>
@@ -81,17 +81,17 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
         }
 
         /// <summary>
-        /// Create the model for annoucement type translation.
+        /// Create the model for announcement type translation.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        protected virtual void CreateAnnoucementTypeTranslationModel(ModelBuilder modelBuilder)
+        protected virtual void CreateAnnouncementTypeTranslationModel(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AnnoucementTranslation>().HasKey(r => r.Id);
-            modelBuilder.Entity<AnnoucementTranslation>().Property(r => r.AnnoucementTypeId).IsRequired();
-            modelBuilder.Entity<AnnoucementTranslation>().Property(r => r.LanguageId).IsRequired();
-            modelBuilder.Entity<AnnoucementTranslation>().HasIndex(u => new { u.AnnoucementTypeId, u.LanguageId }).IsUnique();
+            modelBuilder.Entity<AnnouncementTranslation>().HasKey(r => r.Id);
+            modelBuilder.Entity<AnnouncementTranslation>().Property(r => r.AnnouncementTypeId).IsRequired();
+            modelBuilder.Entity<AnnouncementTranslation>().Property(r => r.LanguageId).IsRequired();
+            modelBuilder.Entity<AnnouncementTranslation>().HasIndex(u => new { u.AnnouncementTypeId, u.LanguageId }).IsUnique();
 
-            modelBuilder.Entity<AnnoucementTranslation>().Property(m => m.Label).IsRequired().HasMaxLength(150);
+            modelBuilder.Entity<AnnouncementTranslation>().Property(m => m.Label).IsRequired().HasMaxLength(150);
         }
     }
 }
