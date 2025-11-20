@@ -16,6 +16,7 @@ namespace BIA.Net.Core.Domain.Banner.Mappers
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.Service;
+    using BIA.Net.Core.Domain.Translation.Entities;
 
     /// <summary>
     /// The mapper used for BannerMessage.
@@ -42,10 +43,9 @@ namespace BIA.Net.Core.Domain.Banner.Mappers
                 return new ExpressionCollection<BannerMessage>(base.ExpressionCollection)
                 {
                     { HeaderName.End, bannerMessage => bannerMessage.End },
-                    { HeaderName.Name, bannerMessage => bannerMessage.Name },
                     { HeaderName.RawContent, bannerMessage => bannerMessage.RawContent },
                     { HeaderName.Start, bannerMessage => bannerMessage.Start },
-                    { HeaderName.Type, bannerMessage => bannerMessage.Type.Id },
+                    { HeaderName.Type, bannerMessage => bannerMessage.Type.BannerMessageTypeTranslations.Single(x => x.LanguageId == this.userContext.LanguageId).Label },
                 };
             }
         }
@@ -55,7 +55,6 @@ namespace BIA.Net.Core.Domain.Banner.Mappers
         {
             base.DtoToEntity(dto, ref entity);
             entity.End = dto.End.UtcDateTime;
-            entity.Name = dto.Name;
             entity.RawContent = dto.RawContent;
             entity.Start = dto.Start.UtcDateTime;
             entity.TypeId = dto.Type.Id;
@@ -67,7 +66,6 @@ namespace BIA.Net.Core.Domain.Banner.Mappers
             return base.EntityToDto().CombineMapping(entity => new BannerMessageDto
             {
                 End = entity.End,
-                Name = entity.Name,
                 RawContent = entity.RawContent,
                 Start = entity.Start,
                 Type = new TOptionDto<BiaBannerMessageType>
@@ -87,11 +85,6 @@ namespace BIA.Net.Core.Domain.Banner.Mappers
             /// Header name for end.
             /// </summary>
             public const string End = "end";
-
-            /// <summary>
-            /// Header name for name.
-            /// </summary>
-            public const string Name = "name";
 
             /// <summary>
             /// Header name for raw content.

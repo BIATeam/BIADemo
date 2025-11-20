@@ -22,12 +22,6 @@ namespace BIA.Net.Core.Domain.Dto.Banner
         public DateTimeOffset End { get; set; }
 
         /// <summary>
-        /// Gets or sets the name.
-        /// </summary>
-        [BiaDtoField(Required = true)]
-        public string Name { get; set; }
-
-        /// <summary>
         /// Gets or sets the raw content.
         /// </summary>
         [BiaDtoField(Required = true)]

@@ -65,7 +65,7 @@ export class BannerMessageService extends CrudItemService<BannerMessage> {
     );
 
   public displayItemName$: Observable<string> = this.crudItem$.pipe(
-    map(bannerMessage => bannerMessage?.name?.toString() ?? '')
+    map(() => '')
   );
 
   public loadingGet$: Observable<boolean> = this.store.select(

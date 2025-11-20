@@ -8,7 +8,6 @@
     [AuditInclude]
     public sealed class BannerMessage : BaseEntityVersioned<int>
     {
-        public string Name { get; set; }
         public BannerMessageType Type { get; set; }
         public BiaBannerMessageType TypeId { get; set; }
         public string RawContent { get; set; }

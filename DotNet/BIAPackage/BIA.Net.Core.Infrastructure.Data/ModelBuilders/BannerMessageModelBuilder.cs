@@ -17,7 +17,6 @@
         /// <param name="modelBuilder">The model builder.</param>
         public static void CreateModel(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BannerMessage>().Property(x => x.Name).IsRequired();
             modelBuilder.Entity<BannerMessage>().Property(x => x.Start).IsRequired();
             modelBuilder.Entity<BannerMessage>().Property(x => x.End).IsRequired();
             modelBuilder.Entity<BannerMessage>().Property(x => x.RawContent).IsRequired();

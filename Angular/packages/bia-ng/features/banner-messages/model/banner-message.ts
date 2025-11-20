@@ -14,7 +14,6 @@ import {
 // TODO after creation of CRUD BannerMessage : adapt the model
 export interface BannerMessage extends BaseDto, VersionedDto {
   end: Date;
-  name: string;
   rawContent: string;
   start: Date;
   type: OptionDto;
@@ -24,15 +23,6 @@ export interface BannerMessage extends BaseDto, VersionedDto {
 export const bannerMessageFieldsConfiguration: BiaFieldsConfig<BannerMessage> =
   {
     columns: [
-      Object.assign(new BiaFieldConfig('name', 'bannerMessage.name'), {
-        type: PropType.String,
-        isRequired: true,
-      }),
-      Object.assign(new BiaFieldConfig('type', 'bannerMessage.type'), {
-        type: PropType.OneToMany,
-        isRequired: true,
-        isSearchable: false,
-      }),
       Object.assign(new BiaFieldConfig('start', 'bannerMessage.start'), {
         type: PropType.DateTime,
         isRequired: true,
@@ -53,6 +43,10 @@ export const bannerMessageFieldsConfiguration: BiaFieldsConfig<BannerMessage> =
           validators: [Validators.required, Validators.minLength(1)],
         }
       ),
+      Object.assign(new BiaFieldConfig('type', 'bannerMessage.type'), {
+        type: PropType.OneToMany,
+        isRequired: true,
+      }),
       Object.assign(
         new BiaFieldConfig('rowVersion', 'bannerMessage.rowVersion'),
         {
@@ -67,11 +61,8 @@ export const bannerMessageFieldsConfiguration: BiaFieldsConfig<BannerMessage> =
 export const bannerMessageFormLayoutConfiguration: BiaFormLayoutConfig<BannerMessage> =
   new BiaFormLayoutConfig([
     new BiaFormLayoutConfigRow([
-      new BiaFormLayoutConfigField('name'),
-      new BiaFormLayoutConfigField('type'),
-    ]),
-    new BiaFormLayoutConfigRow([
       new BiaFormLayoutConfigField('start'),
       new BiaFormLayoutConfigField('end'),
+      new BiaFormLayoutConfigField('type'),
     ]),
   ]);
