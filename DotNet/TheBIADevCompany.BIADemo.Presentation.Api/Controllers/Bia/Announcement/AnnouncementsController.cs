@@ -60,7 +60,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Announcement
         }
 
         /// <summary>
-        /// Get a announcement by its identifier.
+        /// Get an announcement by its identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>The announcement.</returns>
@@ -89,7 +89,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Announcement
         }
 
         /// <summary>
-        /// Add a announcement.
+        /// Add an announcement.
         /// </summary>
         /// <param name="dto">The announcement DTO.</param>
         /// <returns>The result of the creation.</returns>
@@ -118,7 +118,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Announcement
         }
 
         /// <summary>
-        /// Update a announcement.
+        /// Update an announcement.
         /// </summary>
         /// <param name="id">The announcement identifier.</param>
         /// <param name="dto">The announcement DTO.</param>
@@ -163,7 +163,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Announcement
         }
 
         /// <summary>
-        /// Remove a announcement.
+        /// Remove an announcement.
         /// </summary>
         /// <param name="id">The announcement identifier.</param>
         /// <returns>The result of the remove.</returns>

@@ -11,7 +11,7 @@ namespace BIA.Net.Core.Domain.Dto.Announcement
     using BIA.Net.Core.Domain.Dto.Option;
 
     /// <summary>
-    /// The DTO used to represent a announcement.
+    /// The DTO used to represent an announcement.
     /// </summary>
     public sealed class AnnouncementDto : BaseDtoVersioned<int>
     {
