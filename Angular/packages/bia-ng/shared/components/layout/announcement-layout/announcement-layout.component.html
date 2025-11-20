@@ -1,4 +1,4 @@
-@if (messages) {
+@if (announcements) {
   <div class="announcement-container">
     <div class="announcement-title">
       <span>{{ 'announcement.announcements' | translate }}</span>
@@ -9,7 +9,7 @@
       <div
         #scrollContent
         class="announcement-content"
-        [innerHTML]="formatedMessages | safeHtml"></div>
+        [innerHTML]="formatedAnnouncements | safeHtml"></div>
     </div>
   </div>
 }

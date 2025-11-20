@@ -60,9 +60,11 @@
       </div>
     }
 
-    @if (activeAnnouncements && activeAnnouncements.length > 0) {
+    @if (((activeAnnouncements$ | async)?.length ?? 0) > 0) {
       <bia-announcement-layout
-        [messages]="activeAnnouncements"></bia-announcement-layout>
+        [announcements]="
+          activeAnnouncements$ | async
+        "></bia-announcement-layout>
     }
 
     <ng-content select="[breadcrumb-top]"></ng-content>

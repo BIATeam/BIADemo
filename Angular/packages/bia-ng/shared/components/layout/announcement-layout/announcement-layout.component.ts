@@ -23,7 +23,7 @@ import { SafeHtmlPipe } from '../../../pipes/safe-html.pipe';
 export class AnnouncementLayoutComponent
   implements OnChanges, AfterViewInit, OnDestroy
 {
-  @Input() messages: Announcement[] | null = null;
+  @Input() announcements: Announcement[] | null;
 
   @ViewChild('contentContainer', { static: false })
   contentContainer!: ElementRef<HTMLDivElement>;
@@ -31,7 +31,7 @@ export class AnnouncementLayoutComponent
   @ViewChild('scrollContent', { static: false })
   scrollContent!: ElementRef<HTMLDivElement>;
 
-  formatedMessages = '';
+  formatedAnnouncements = '';
 
   private readonly speedPxPerSec = 40;
 
@@ -47,11 +47,11 @@ export class AnnouncementLayoutComponent
   private pendingResizeAdjust = false;
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.messages) {
-      this.formatedMessages = (this.messages ?? [])
-        .map(message => {
+    if (changes.announcements) {
+      this.formatedAnnouncements = (this.announcements ?? [])
+        .map(announcement => {
           let iconElement = '';
-          switch (message.type.id) {
+          switch (announcement.type.id) {
             case BiaAnnouncementType.information:
               iconElement =
                 '<i class="pi pi-info-circle announcement-icon-info"></i>';
@@ -61,7 +61,7 @@ export class AnnouncementLayoutComponent
                 '<i class="pi pi-exclamation-triangle announcement-icon-warning"></i>';
               break;
           }
-          return iconElement + message.rawContent;
+          return iconElement + announcement.rawContent;
         })
         .join('<span class="announcement-separator">|</span>');
 

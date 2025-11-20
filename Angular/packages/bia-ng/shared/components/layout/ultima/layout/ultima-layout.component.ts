@@ -33,7 +33,7 @@ import { MenuItem } from 'primeng/api';
 import { Breadcrumb } from 'primeng/breadcrumb';
 import { filter, map, Observable, Subscription } from 'rxjs';
 import { AnnouncementLayoutComponent } from '../../announcement-layout/announcement-layout.component';
-import { AnnouncementService } from '../../services/announcement.service';
+import { AnnouncementLayoutService } from '../../services/announcement-layout.service';
 import { BiaThemeService } from '../../services/bia-theme.service';
 import { BiaLayoutService } from '../../services/layout.service';
 import { MenuService } from '../../services/menu.service';
@@ -95,8 +95,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
   envName$: Observable<string | undefined>;
   showEnvironmentMessage$: Observable<boolean>;
   cssClassEnv: string;
-  activeAnnouncements: Announcement[];
-  activeAnnouncementsInterval: NodeJS.Timeout | undefined;
+  activeAnnouncements$: Observable<Announcement[]>;
 
   constructor(
     protected biaTranslation: BiaTranslationService,
@@ -108,7 +107,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
     public router: Router,
     protected activatedRoute: ActivatedRoute,
     protected store: Store<BiaAppState>,
-    protected announcementService: AnnouncementService
+    protected announcementLayoutService: AnnouncementLayoutService
   ) {
     this.hideMenuProfile();
     this.overlayMenuSubscription();
@@ -304,28 +303,9 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.initActiveAnnouncementsPolling();
-    this.announcementService.registerSignalRChanges(() => {
-      this.initActiveAnnouncementsPolling();
-    });
-  }
-
-  private initActiveAnnouncementsPolling() {
-    if (this.activeAnnouncementsInterval) {
-      clearInterval(this.activeAnnouncementsInterval);
-    }
-    this.refreshActiveAnnouncements();
-    this.activeAnnouncementsInterval = setInterval(() => {
-      this.refreshActiveAnnouncements();
-    }, 60000);
-  }
-
-  private refreshActiveAnnouncements() {
-    this.sub.add(
-      this.announcementService.getActives().subscribe(messages => {
-        this.activeAnnouncements = messages;
-      })
-    );
+    this.activeAnnouncements$ =
+      this.announcementLayoutService.activeAnnouncements$.asObservable();
+    this.announcementLayoutService.init();
   }
 
   protected updateMenuItems() {
@@ -515,10 +495,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
     }
 
     this.sub.unsubscribe();
-    this.announcementService.destroy();
-    if (this.activeAnnouncementsInterval) {
-      clearInterval(this.activeAnnouncementsInterval);
-    }
+    this.announcementLayoutService.destroy();
   }
 
   onLanguageChange(lang: string) {
