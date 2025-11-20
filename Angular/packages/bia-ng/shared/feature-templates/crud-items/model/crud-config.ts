@@ -61,6 +61,7 @@ export class CrudConfig<TDto extends { id: number | string }> {
   hasReadView: boolean;
   displayHistorical: boolean;
   featureNameSingular: string;
+  useRefreshAtLanguageChange: boolean;
 
   constructor({
     featureName,
@@ -87,6 +88,7 @@ export class CrudConfig<TDto extends { id: number | string }> {
     hasReadView = false,
     displayHistorical = false,
     featureNameSingular = undefined,
+    useRefreshAtLanguageChange = false,
   }: {
     featureName: string;
     fieldsConfig: BiaFieldsConfig<TDto>;
@@ -116,6 +118,7 @@ export class CrudConfig<TDto extends { id: number | string }> {
     hasReadView?: boolean;
     displayHistorical?: boolean;
     featureNameSingular?: string;
+    useRefreshAtLanguageChange?: boolean;
   }) {
     this.featureName = featureName;
     this.fieldsConfig = fieldsConfig;
@@ -147,5 +150,6 @@ export class CrudConfig<TDto extends { id: number | string }> {
     this.hasReadView = hasReadView ?? false;
     this.displayHistorical = displayHistorical ?? false;
     this.featureNameSingular = featureNameSingular ?? '';
+    this.useRefreshAtLanguageChange = useRefreshAtLanguageChange ?? false;
   }
 }

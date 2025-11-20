@@ -18,9 +18,22 @@ body {
   min-height: calc(100vh - 4rem - var(--footer-height));
 }
 
+.layout-content-wrapper bia-announcement-layout + .layout-content {
+  padding: 0;
+  min-height: calc(100vh - 6.5rem - var(--footer-height));
+}
+
 .layout-content-wrapper p-breadcrumb + .layout-content {
   padding: 0;
   min-height: calc(100vh - 6.5rem - var(--footer-height));
+}
+
+.layout-content-wrapper
+  bia-announcement-layout
+  + p-breadcrumb
+  + .layout-content {
+  padding: 0;
+  min-height: calc(100vh - 9rem - var(--footer-height));
 }
 
 .layout-container.layout-footer-overlay {
@@ -29,9 +42,22 @@ body {
     min-height: calc(100vh - 4rem);
   }
 
+  .layout-content-wrapper bia-announcement-layout + .layout-content {
+    padding: 0;
+    min-height: calc(100vh - 6.5rem);
+  }
+
   .layout-content-wrapper p-breadcrumb + .layout-content {
     padding: 0;
     min-height: calc(100vh - 6.5rem);
+  }
+
+  .layout-content-wrapper
+    bia-announcement-layout
+    + p-breadcrumb
+    + .layout-content {
+    padding: 0;
+    min-height: calc(100vh - 9rem);
   }
 
   &.layout-horizontal {
@@ -40,9 +66,22 @@ body {
       min-height: calc(100vh - 7rem);
     }
 
+    .layout-content-wrapper bia-announcement-layout + .layout-content {
+      padding: 0;
+      min-height: calc(100vh - 9.5rem);
+    }
+
     .layout-content-wrapper p-breadcrumb + .layout-content {
       padding: 0;
       min-height: calc(100vh - 9.5rem);
+    }
+
+    .layout-content-wrapper
+      bia-announcement-layout
+      + p-breadcrumb
+      + .layout-content {
+      padding: 0;
+      min-height: calc(100vh - 12rem);
     }
   }
 }
@@ -53,9 +92,19 @@ body {
     min-height: calc(100vh - 7rem - var(--footer-height));
   }
 
+  bia-announcement-layout + .layout-content {
+    padding: 0;
+    min-height: calc(100vh - 9.5rem - var(--footer-height));
+  }
+
   p-breadcrumb + .layout-content {
     padding: 0;
     min-height: calc(100vh - 9.5rem - var(--footer-height));
+  }
+
+  bia-announcement-layout + p-breadcrumb + .layout-content {
+    padding: 0;
+    min-height: calc(100vh - 12rem - var(--footer-height));
   }
 }
 

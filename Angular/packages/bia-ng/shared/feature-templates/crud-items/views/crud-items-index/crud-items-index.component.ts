@@ -33,7 +33,7 @@ import {
   PagingFilterFormatDto,
 } from 'packages/bia-ng/models/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
-import { MenuItem, PrimeTemplate } from 'primeng/api';
+import { MenuItem, PrimeTemplate, SortMeta } from 'primeng/api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { combineLatest, Observable, Subscription } from 'rxjs';
 import { filter, first, skip, take, tap } from 'rxjs/operators';
@@ -73,7 +73,6 @@ export class CrudItemsIndexComponent<
   implements OnInit, OnDestroy
 {
   public crudConfiguration: CrudConfig<ListCrudItem>;
-  useRefreshAtLanguageChange = false;
 
   @HostBinding('class') classes = 'bia-flex';
   @ViewChild(BiaTableComponent, { static: false })
@@ -154,6 +153,7 @@ export class CrudItemsIndexComponent<
   protected customButtonGroup: BiaButtonGroupItem[];
   protected selectionActionsMenuItems: BiaButtonAndMenuItem[];
   protected listActionsMenuItems: MenuItem[];
+  protected multiSortMeta?: SortMeta[] | undefined;
 
   constructor(
     protected injector: Injector,
@@ -293,6 +293,12 @@ export class CrudItemsIndexComponent<
 
     this.sub.add(
       this.biaTranslationService.currentCulture$.subscribe(() => {
+        if (
+          this.crudConfiguration.useRefreshAtLanguageChange &&
+          this.crudItemListComponent
+        ) {
+          this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
+        }
         this.crudItemService.optionsService.loadAllOptions(
           this.crudConfiguration.optionFilter
         );
@@ -314,17 +320,6 @@ export class CrudItemsIndexComponent<
     this.lastLazyLoadEvent$ = this.crudItemService.lastLazyLoadEvent$;
     this.loading$ = this.crudItemService.loadingGetAll$;
     this.onDisplay();
-
-    if (this.useRefreshAtLanguageChange) {
-      // Reload data if language change.
-      this.sub.add(
-        this.biaTranslationService.currentCulture$
-          .pipe(skip(1))
-          .subscribe(() => {
-            this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
-          })
-      );
-    }
 
     this.initVirtualScroll();
 

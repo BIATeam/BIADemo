@@ -13,6 +13,7 @@
     "backgroundTaskAdmin": "Administrer les taches",
     "backgroundTaskReadOnly": "Voir les taches",
     "backgroundtasks": "Tâches d'arrière-plan",
+    "announcements": "Annonces",
     "browse": "Parcourir",
     "bulkImport": "Import de masse",
     "cancel": "Annuler",
@@ -192,6 +193,17 @@
     "dateFormat": "Format Date",
     "timeFormat": "Format Heure",
     "useCurrentView": "Baser le traitement de l'import sur le filtre courant"
+  },
+  "announcement": {
+    "add": "Ajouter annonce",
+    "announcements": "ANNONCES",
+    "end": "Date fin d'affichage",
+    "start": "Date début d'affichage",
+    "rawContent": "Contenu",
+    "type": "Type",
+    "listOf": "Liste des annonces",
+    "read": "Détails annonce",
+    "edit": "Modifer annonce"
   },
   "primeng": {
     "accept": "Oui",

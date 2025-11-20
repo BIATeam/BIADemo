@@ -499,6 +499,16 @@
         "Name": "Background_Task_Read_Only",
         "LightToken": true,
         "Roles": [ "Back_Read_Only" ]
+      },
+      // Announcement
+      {
+        "Names": [ "Announcement_List_Access", "Announcement_Read", "Announcement_Update", "Announcement_Create", "Announcement_Delete" ],
+        "Roles": [ "Admin" ]
+      },
+      // AnnouncementType
+      {
+        "Name": "AnnouncementType_Options",
+        "Roles": [ "Admin" ]
       }
     ]
     // endif

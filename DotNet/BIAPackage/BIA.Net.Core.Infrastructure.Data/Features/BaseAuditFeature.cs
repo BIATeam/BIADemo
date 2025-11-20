@@ -18,6 +18,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
     using Audit.EntityFramework;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.Announcement.Entities;
     using BIA.Net.Core.Domain.Audit;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Mapper;
@@ -120,6 +121,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
         {
             return type.Name switch
             {
+                nameof(Announcement) => typeof(AnnouncementAudit),
                 _ => typeof(AuditLog),
             };
         }

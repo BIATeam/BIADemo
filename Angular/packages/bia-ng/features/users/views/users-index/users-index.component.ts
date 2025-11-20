@@ -68,7 +68,6 @@ export class UsersIndexComponent
     protected appSettingsService: AppSettingsService
   ) {
     super(injector, userService);
-    this.useRefreshAtLanguageChange = true;
     this.crudConfiguration = userCRUDConfiguration;
   }
 

@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using Audit.EntityFramework;
     using BIA.Net.Core.Domain.Audit;
 #if BIA_FRONT_FEATURE
+    using BIA.Net.Core.Domain.Announcement.Entities;
     using BIA.Net.Core.Domain.Notification.Entities;
     using BIA.Net.Core.Domain.Translation.Entities;
     using BIA.Net.Core.Domain.User.Entities;
@@ -61,7 +62,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         }
 
         /// <summary>
-        /// Gets or sets the Plane DBSet.
+        /// Gets or sets the Audit logs.
         /// </summary>
         public DbSet<AuditLog> AuditLogs { get; set; }
 
@@ -136,6 +137,26 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// </summary>
         public DbSet<UserDefaultTeam> UserDefaultTeams { get; set; }
 
+        /// <summary>
+        /// Gets or sets the Announcements.
+        /// </summary>
+        public DbSet<Announcement> Announcements { get; set; }
+
+        /// <summary>
+        /// Gets or sets the AnnouncementTypes.
+        /// </summary>
+        public DbSet<AnnouncementType> AnnouncementTypes { get; set; }
+
+        /// <summary>
+        /// Gets or sets the AnnouncementTypeTranslations.
+        /// </summary>
+        public DbSet<AnnouncementTypeTranslation> AnnouncementTypeTranslations { get; set; }
+
+        /// <summary>
+        /// Gets or sets the AnnouncementAudit.
+        /// </summary>
+        public DbSet<AnnouncementAudit> AnnouncementAudit { get; set; }
+
         // Begin BIADemo
 
         /// <summary>
@@ -167,7 +188,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// Gets or sets the parts.
         /// </summary>
         public DbSet<Part> Parts { get; set; }
-
 
         /// <summary>
         /// Gets or sets the Plane DBSet.

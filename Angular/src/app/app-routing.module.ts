@@ -229,6 +229,17 @@ const routes: Routes = [
                 './features/bia-features/background-task/background-task.module'
               ).then(m => m.BackgroundTaskModule),
           },
+          {
+            path: 'announcements',
+            data: {
+              breadcrumb: 'bia.announcements',
+              canNavigate: true,
+            },
+            loadChildren: () =>
+              import(
+                './features/bia-features/announcements/announcement.module'
+              ).then(m => m.AnnouncementModule),
+          },
         ],
       },
     ],

@@ -13,6 +13,7 @@
     "backgroundTaskAdmin": "Administrar tareas",
     "backgroundTaskReadOnly": "Ver tareas",
     "backgroundtasks": "Tarea en segundo plano",
+    "announcements": "Anuncios",
     "browse": "Buscar",
     "bulkImport": "Importación masiva",
     "cancel": "Cancelar",
@@ -192,6 +193,17 @@
     "dateFormat": "Formato Fecha",
     "timeFormat": "Formato Hora",
     "useCurrentView": "Usar la importación masiva con los filtros actuales"
+  },
+  "announcement": {
+    "add": "Agregar anuncio",
+    "announcements": "ANUNCIOS",
+    "end": "Fecha de fin de visualización",
+    "start": "Fecha de inicio de visualización",
+    "rawContent": "Contenido",
+    "type": "Tipo",
+    "listOf": "Lista de anuncios",
+    "read": "Detalles del anuncio",
+    "edit": "Editar del anuncio"
   },
   "primeng": {
     "accept": "Aceptar",

@@ -8,7 +8,6 @@ namespace BIA.Net.Core.Infrastructure.Data
     using System.ComponentModel.DataAnnotations;
     using System.Data;
     using System.Data.Common;
-    using System.Data.Common;
     using System.Linq;
     using System.Reflection;
     using System.Text.RegularExpressions;
@@ -341,6 +340,7 @@ namespace BIA.Net.Core.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             DistCacheModelBuilder.CreateDistCacheModel(modelBuilder);
+            AnnouncementModelBuilder.CreateModel(modelBuilder);
         }
 
         /// <summary>

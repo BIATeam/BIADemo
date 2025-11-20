@@ -22,6 +22,7 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
             this.CreateRoleTranslationModel(modelBuilder);
             this.CreateNotificationTypeTranslationModel(modelBuilder);
             this.CreateNotificationTranslationModel(modelBuilder);
+            this.CreateAnnouncementTypeTranslationModel(modelBuilder);
         }
 
         /// <summary>
@@ -77,6 +78,20 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
 
             modelBuilder.Entity<NotificationTranslation>().Property(m => m.Title).IsRequired().HasMaxLength(100);
             modelBuilder.Entity<NotificationTranslation>().Property(m => m.Description).IsRequired().HasMaxLength(256);
+        }
+
+        /// <summary>
+        /// Create the model for announcement type translation.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected virtual void CreateAnnouncementTypeTranslationModel(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<AnnouncementTypeTranslation>().HasKey(r => r.Id);
+            modelBuilder.Entity<AnnouncementTypeTranslation>().Property(r => r.AnnouncementTypeId).IsRequired();
+            modelBuilder.Entity<AnnouncementTypeTranslation>().Property(r => r.LanguageId).IsRequired();
+            modelBuilder.Entity<AnnouncementTypeTranslation>().HasIndex(u => new { u.AnnouncementTypeId, u.LanguageId }).IsUnique();
+
+            modelBuilder.Entity<AnnouncementTypeTranslation>().Property(m => m.Label).IsRequired().HasMaxLength(150);
         }
     }
 }

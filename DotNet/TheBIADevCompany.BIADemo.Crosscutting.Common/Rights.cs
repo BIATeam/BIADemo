@@ -50,6 +50,53 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Options = "Site_Options";
         }
 
+        /// <summary>
+        /// The announcements rights.
+        /// </summary>
+        public static class Announcements
+        {
+            /// <summary>
+            /// The right to access to the list of announcements.
+            /// </summary>
+            public const string ListAccess = "Announcement_List_Access";
+
+            /// <summary>
+            /// The right to create announcement.
+            /// </summary>
+            public const string Create = "Announcement_Create";
+
+            /// <summary>
+            /// The right to read announcement.
+            /// </summary>
+            public const string Read = "Announcement_Read";
+
+            /// <summary>
+            /// The right to update announcement.
+            /// </summary>
+            public const string Update = "Announcement_Update";
+
+            /// <summary>
+            /// The right to delete announcement.
+            /// </summary>
+            public const string Delete = "Announcement_Delete";
+
+            /// <summary>
+            /// The right to save announcement.
+            /// </summary>
+            public const string Save = "Announcement_Save";
+        }
+
+        /// <summary>
+        /// The announcement type options rights.
+        /// </summary>
+        public static class AnnouncementTypeOptions
+        {
+            /// <summary>
+            /// The right to access to the list of announcement types (options only).
+            /// </summary>
+            public const string Options = "AnnouncementType_Options";
+        }
+
         // BIAToolKit - Begin Rights
         // BIAToolKit - End Rights
 

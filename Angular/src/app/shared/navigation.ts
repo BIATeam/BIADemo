@@ -186,6 +186,11 @@ export const NAVIGATION: BiaNavigation[] = [
         permissions: [BiaPermission.Background_Task_Read_Only],
         path: ['/backgroundtask/readonly'],
       },
+      {
+        labelKey: 'bia.announcements',
+        permissions: [Permission.Announcement_List_Access],
+        path: ['/announcements'],
+      },
       // Begin BIADemo
 
       // End BIADemo

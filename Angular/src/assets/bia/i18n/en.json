@@ -13,6 +13,7 @@
     "backgroundTaskAdmin": "Administer tasks",
     "backgroundTaskReadOnly": "View the tasks",
     "backgroundtasks": "Background Tasks",
+    "announcements": "Announcements",
     "browse": "Browse",
     "bulkImport": "Bulk import",
     "cancel": "Cancel",
@@ -192,6 +193,17 @@
     "dateFormat": "Date Format",
     "timeFormat": "Time Format",
     "useCurrentView": "Base the import processing on the current filter"
+  },
+  "announcement": {
+    "add": "Add announcement",
+    "announcements": "ANNOUNCEMENTS",
+    "end": "End display date",
+    "start": "Start display date",
+    "rawContent": "Content",
+    "type": "Type",
+    "listOf": "List of announcements",
+    "read": "Announcement details",
+    "edit": "Edit announcement"
   },
   "primeng": {
     "accept": "Yes",

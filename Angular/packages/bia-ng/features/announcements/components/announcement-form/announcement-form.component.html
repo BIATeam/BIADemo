@@ -1,0 +1,66 @@
+<bia-form
+  [element]="crudItem"
+  [isAdd]="isAdd"
+  [fields]="fields"
+  [formLayoutConfig]="formLayoutConfig"
+  [formValidators]="formValidators"
+  [formReadOnlyMode]="formReadOnlyMode"
+  [dictOptionDtos]="dictOptionDtos"
+  [isCrudItemOutdated]="isCrudItemOutdated"
+  [showSubmitButton]="showSubmitButton"
+  [showFixableState]="showFixableState"
+  [canFix]="canFix"
+  [showPopupButton]="showPopupButton"
+  [showSplitButton]="showSplitButton"
+  [showFullPageButton]="showFullPageButton"
+  (save)="onSave($event)"
+  (cancelled)="onCancel()"
+  (fixableStateChanged)="onFixableStateChanged($event)"
+  (layoutChanged)="layoutChanged.emit($event)"
+  [displayHistorical]="historicalEntries.length > 0"
+  [historicalEntries]="historicalEntries">
+  <ng-template pTemplate="specificInput" let-field="field" let-form="form">
+    <div [formGroup]="form">
+      @switch (field.field) {
+        @case ('rawContent') {
+          <div class="d-flex">
+            <p-floatlabel>
+              <label>
+                <span class="bia-star-mandatory">*</span>
+                {{ field.header | translate }}</label
+              >
+            </p-floatlabel>
+            <p-editor
+              class="pt-3"
+              [style]="{ height: '4rem' }"
+              [formControlName]="field.field"
+              [formats]="['bold', 'italic', 'underline', 'color', 'background']"
+              (onInit)="onEditorInit($event)">
+              <ng-template #header>
+                <span class="ql-formats">
+                  <button
+                    type="button"
+                    class="ql-bold"
+                    aria-label="Bold"></button>
+                  <button
+                    type="button"
+                    class="ql-italic"
+                    aria-label="Italic"></button>
+                  <button
+                    type="button"
+                    class="ql-underline"
+                    aria-label="Underline"></button>
+                </span>
+
+                <span class="ql-formats">
+                  <select class="ql-color"></select>
+                  <select class="ql-background"></select>
+                </span>
+              </ng-template>
+            </p-editor>
+          </div>
+        }
+      }
+    </div>
+  </ng-template>
+</bia-form>
