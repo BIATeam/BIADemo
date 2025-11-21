@@ -95,6 +95,20 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
     return this.hasChanged || this.editFooter;
   }
 
+  canDisplayEditInput(field: BiaFieldConfig<TDto>): boolean {
+    return (
+      field.isEditable === true &&
+      (field.isOnlyInitializable === false || field.isOnlyUpdatable === true)
+    );
+  }
+
+  canDisplayAddInput(field: BiaFieldConfig<TDto>): boolean {
+    return (
+      field.isEditable === true &&
+      (field.isOnlyUpdatable === false || field.isOnlyInitializable === true)
+    );
+  }
+
   ngAfterContentInit() {
     this.templates.forEach(item => {
       switch (item.getType()) {
