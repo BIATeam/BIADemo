@@ -8,7 +8,6 @@ import {
 import {
   FormsModule,
   ReactiveFormsModule,
-  UntypedFormBuilder,
   UntypedFormGroup,
 } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -49,24 +48,4 @@ export class BiaFormLayoutComponent<TDto extends { id: number | string }> {
   @Input() form: UntypedFormGroup;
   @Input() specificInputTemplate: TemplateRef<any>;
   @Input() specificOutputTemplate: TemplateRef<any>;
-
-  constructor(public formBuilder: UntypedFormBuilder) {}
-
-  getCellData(field: any): any {
-    const nestedProperties: string[] = field.field.split('.');
-    let value: any = this.element;
-    for (const prop of nestedProperties) {
-      if (value === undefined) {
-        return null;
-      }
-
-      value = value[prop];
-    }
-
-    return value;
-  }
-
-  getFormGroup(id: string): UntypedFormGroup {
-    return this.form?.controls[id] as UntypedFormGroup;
-  }
 }

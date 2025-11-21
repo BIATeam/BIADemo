@@ -5,8 +5,7 @@
         specificInputTemplate;
         context: { field: field, form: form }
       "></ng-container>
-  }
-  @if (field.specificInput !== true) {
+  } @else {
     @switch (field.type) {
       @case ('OneToMany') {
         <p-floatlabel variant="on">

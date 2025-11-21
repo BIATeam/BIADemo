@@ -135,6 +135,7 @@ export class BiaFormComponent<TDto extends { id: number | string }>
     this.initForm();
     this.applyFormReadOnlyMode();
     this.applyFixedState();
+    this.applyFormDisabledFields();
   }
 
   ngOnDestroy() {
@@ -175,14 +176,13 @@ export class BiaFormComponent<TDto extends { id: number | string }>
       if (this.element && this.form) {
         this.form.reset();
         if (this.element) {
-          //this.form.patchValue({ ...this.element });
-          //this.initForm();
           this.updateFormGroup(this.form, this.element);
         }
       }
 
       this.applyFormReadOnlyMode();
       this.applyFixedState();
+      this.applyFormDisabledFields();
     }
   }
 
@@ -317,6 +317,18 @@ export class BiaFormComponent<TDto extends { id: number | string }>
     if (this.form && this.formValidators) {
       this.form.addValidators(this.formValidators);
     }
+  }
+
+  protected applyFormDisabledFields() {
+    this.fields.forEach(field => {
+      if (
+        !field.isEditable ||
+        (field.isOnlyInitializable && !this.isAdd) ||
+        (field.isOnlyUpdatable && this.isAdd)
+      ) {
+        this.form?.get(field.field)?.disable();
+      }
+    });
   }
 
   protected applyFormReadOnlyMode() {

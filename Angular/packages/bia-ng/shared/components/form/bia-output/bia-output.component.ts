@@ -10,31 +10,20 @@ import {
   QueryList,
   TemplateRef,
 } from '@angular/core';
+import { UntypedFormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { BiaFieldConfig } from 'packages/bia-ng/models/public-api';
 import { PrimeTemplate } from 'primeng/api';
-import { FloatLabel } from 'primeng/floatlabel';
-import { InputText } from 'primeng/inputtext';
-import { Subscription } from 'rxjs';
-import { FormatValuePipe } from '../../../pipes/format-value.pipe';
-import { JoinPipe } from '../../../pipes/join.pipe';
-import { PluckPipe } from '../../../pipes/pluck.pipe';
+import { DictOptionDto } from '../../table/bia-table/dict-option-dto';
 import { BiaFieldBaseComponent } from '../bia-field-base/bia-field-base.component';
+import { BiaInputComponent } from '../public-api';
 
 @Component({
   selector: 'bia-output',
   templateUrl: './bia-output.component.html',
   styleUrls: ['./bia-output.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
-  imports: [
-    NgTemplateOutlet,
-    InputText,
-    TranslateModule,
-    PluckPipe,
-    JoinPipe,
-    FormatValuePipe,
-    FloatLabel,
-  ],
+  imports: [NgTemplateOutlet, TranslateModule, BiaInputComponent],
 })
 export class BiaOutputComponent<CrudItem>
   extends BiaFieldBaseComponent<CrudItem>
@@ -42,10 +31,11 @@ export class BiaOutputComponent<CrudItem>
 {
   @Input() field: BiaFieldConfig<CrudItem>;
   @Input() data: any;
+  @Input() form: UntypedFormGroup;
+  @Input() dictOptionDtos: DictOptionDto[];
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   specificOutputTemplate: TemplateRef<any>;
-  protected sub = new Subscription();
 
   ngAfterContentInit() {
     this.templates.forEach(item => {

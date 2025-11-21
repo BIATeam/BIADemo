@@ -21,7 +21,11 @@
           </ng-template>
         </bia-input>
       } @else {
-        <bia-output [field]="field" [data]="getCellData(field)">
+        <bia-output
+          [field]="field"
+          [form]="form"
+          [dictOptionDtos]="dictOptionDtos"
+          [data]="getCellData(field)">
           <ng-template pTemplate="specificOutput">
             <ng-container
               *ngTemplateOutlet="
