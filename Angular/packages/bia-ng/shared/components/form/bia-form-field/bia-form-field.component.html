@@ -2,7 +2,7 @@
   <div class="flex flex-row align-items-center">
     <div class="app-field-container">
       <div [formGroup]="form">
-        @if (field.specificOutput === true) {
+        @if (!formDisabled && fieldDisabled && field.specificOutput === true) {
           <ng-container
             *ngTemplateOutlet="
               specificOutputTemplate;

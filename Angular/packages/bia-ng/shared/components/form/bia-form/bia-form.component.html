@@ -100,21 +100,17 @@
             [specificInputTemplate]="specificInputTemplate"
             [specificOutputTemplate]="specificOutputTemplate"></bia-form-layout>
         }
-        <ng-container>
-          @for (field of fieldsWithoutLayoutConfig; track field) {
-            <bia-form-field
-              [element]="element"
-              [field]="field"
-              [isAdd]="isAdd"
-              [form]="form"
-              [dictOptionDtos]="dictOptionDtos"
-              [readOnly]="readOnly"
-              [specificInputTemplate]="specificInputTemplate"
-              [specificOutputTemplate]="
-                specificOutputTemplate
-              "></bia-form-field>
-          }
-        </ng-container>
+        @for (field of fieldsWithoutLayoutConfig; track field) {
+          <bia-form-field
+            [element]="element"
+            [field]="field"
+            [isAdd]="isAdd"
+            [form]="form"
+            [dictOptionDtos]="dictOptionDtos"
+            [readOnly]="readOnly"
+            [specificInputTemplate]="specificInputTemplate"
+            [specificOutputTemplate]="specificOutputTemplate"></bia-form-field>
+        }
       </div>
     </ng-template>
     @if (displayHistorical) {

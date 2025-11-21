@@ -52,6 +52,14 @@ export class BiaFormFieldComponent<
   @Input() specificInputTemplate: TemplateRef<any>;
   @Input() specificOutputTemplate: TemplateRef<any>;
 
+  get fieldDisabled(): boolean {
+    return this.form.get(this.field.field)!.disabled;
+  }
+
+  get formDisabled(): boolean {
+    return this.form.disabled;
+  }
+
   getCellData(field: any): any {
     const nestedProperties: string[] = field.field.split('.');
     let value: any = this.element;

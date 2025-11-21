@@ -16,10 +16,7 @@ export class BiaFieldBaseComponent<CrudItem> implements OnInit, OnDestroy {
   @Input() field: BiaFieldConfig<CrudItem>;
   protected sub = new Subscription();
 
-  constructor(
-    public biaTranslationService: BiaTranslationService
-    // protected authService: AuthService
-  ) {}
+  constructor(public biaTranslationService: BiaTranslationService) {}
 
   ngOnInit() {
     this.initFieldConfiguration();

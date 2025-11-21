@@ -143,6 +143,7 @@ export class BiaFormComponent<TDto extends { id: number | string }>
       this.sub.unsubscribe();
     }
   }
+
   ngAfterContentInit() {
     this.templates.forEach(item => {
       switch (item.getType()) {
@@ -153,6 +154,7 @@ export class BiaFormComponent<TDto extends { id: number | string }>
           this.specificOutputTemplate = item.template;
           break;
       }
+      console.log('templates', this.templates);
     });
   }
 
