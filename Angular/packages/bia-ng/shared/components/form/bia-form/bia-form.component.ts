@@ -154,7 +154,6 @@ export class BiaFormComponent<TDto extends { id: number | string }>
           this.specificOutputTemplate = item.template;
           break;
       }
-      console.log('templates', this.templates);
     });
   }
 
