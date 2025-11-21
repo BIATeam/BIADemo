@@ -29,7 +29,6 @@ export const userFieldsConfiguration: BiaFieldsConfig<User> = {
       isEditable: false,
     }),
     Object.assign(new BiaFieldConfig('login', 'user.login'), {
-      isEditable: false,
       isOnlyInitializable: true,
     }),
     Object.assign(new BiaFieldConfig('teams', 'member.teams'), {
