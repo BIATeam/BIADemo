@@ -2,13 +2,19 @@ import { NgTemplateOutlet } from '@angular/common';
 import { Component, Input, TemplateRef } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import { BiaFieldConfig } from 'packages/bia-ng/models/public-api';
+import { PrimeTemplate } from 'primeng/api';
 import { DictOptionDto } from '../../table/bia-table/dict-option-dto';
 import { BiaInputComponent } from '../bia-input/bia-input.component';
 import { BiaOutputComponent } from '../bia-output/bia-output.component';
 
 @Component({
   selector: 'bia-form-field',
-  imports: [BiaInputComponent, BiaOutputComponent, NgTemplateOutlet],
+  imports: [
+    PrimeTemplate,
+    BiaInputComponent,
+    BiaOutputComponent,
+    NgTemplateOutlet,
+  ],
   templateUrl: './bia-form-field.component.html',
   styleUrl: './bia-form-field.component.scss',
 })
