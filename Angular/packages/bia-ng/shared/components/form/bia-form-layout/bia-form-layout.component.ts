@@ -2,10 +2,13 @@ import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  inject,
   Input,
+  OnInit,
   TemplateRef,
 } from '@angular/core';
 import {
+  ControlContainer,
   FormsModule,
   ReactiveFormsModule,
   UntypedFormGroup,
@@ -39,13 +42,19 @@ import { BiaFormFieldComponent } from '../bia-form-field/bia-form-field.componen
     BiaFormFieldComponent,
   ],
 })
-export class BiaFormLayoutComponent<TDto extends { id: number | string }> {
-  @Input() element?: TDto;
-  @Input() formLayoutConfig: BiaFormLayoutConfig<TDto>;
+export class BiaFormLayoutComponent<CrudItem> implements OnInit {
+  @Input() element?: CrudItem;
+  @Input() formLayoutConfig: BiaFormLayoutConfig<CrudItem>;
   @Input() dictOptionDtos: DictOptionDto[];
   @Input() readOnly: boolean;
   @Input() isAdd?: boolean;
-  @Input() form: UntypedFormGroup;
   @Input() specificInputTemplate: TemplateRef<any>;
   @Input() specificOutputTemplate: TemplateRef<any>;
+
+  private controlContainer: ControlContainer = inject(ControlContainer);
+  form?: UntypedFormGroup;
+
+  ngOnInit(): void {
+    this.form = this.controlContainer.control as UntypedFormGroup;
+  }
 }
