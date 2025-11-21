@@ -76,6 +76,7 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       // Begin BIAToolKit Generation Ignore
       isSearchable: true,
       isSortable: false,
+      isEditable: false,
       // End BIAToolKit Generation Ignore
     }),
     Object.assign(

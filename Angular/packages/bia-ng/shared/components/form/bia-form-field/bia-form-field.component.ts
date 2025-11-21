@@ -1,26 +1,50 @@
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, Input, TemplateRef } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
-import { BiaFieldConfig } from 'packages/bia-ng/models/public-api';
-import { PrimeTemplate } from 'primeng/api';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  UntypedFormGroup,
+} from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
+import {
+  BiaFieldConfig,
+  BiaFieldDateFormat,
+  BiaFieldNumberFormat,
+} from 'packages/bia-ng/models/public-api';
+import { Checkbox } from 'primeng/checkbox';
+import { DatePicker } from 'primeng/datepicker';
+import { FloatLabel } from 'primeng/floatlabel';
+import { InputNumber } from 'primeng/inputnumber';
+import { InputText } from 'primeng/inputtext';
+import { MultiSelect } from 'primeng/multiselect';
+import { Select } from 'primeng/select';
 import { DictOptionDto } from '../../table/bia-table/dict-option-dto';
-import { BiaInputComponent } from '../bia-input/bia-input.component';
-import { BiaOutputComponent } from '../bia-output/bia-output.component';
+import { BiaFieldBaseComponent } from '../bia-field-base/bia-field-base.component';
 
 @Component({
   selector: 'bia-form-field',
   imports: [
-    PrimeTemplate,
-    BiaInputComponent,
-    BiaOutputComponent,
     NgTemplateOutlet,
+    FormsModule,
+    ReactiveFormsModule,
+    NgTemplateOutlet,
+    Select,
+    MultiSelect,
+    Checkbox,
+    InputNumber,
+    DatePicker,
+    InputText,
+    TranslateModule,
+    FloatLabel,
   ],
   templateUrl: './bia-form-field.component.html',
   styleUrl: './bia-form-field.component.scss',
 })
-export class BiaFormFieldComponent<TDto extends { id: number | string }> {
-  @Input() element?: TDto;
-  @Input() field: BiaFieldConfig<TDto>;
+export class BiaFormFieldComponent<
+  CrudItem,
+> extends BiaFieldBaseComponent<CrudItem> {
+  @Input() element?: CrudItem;
+  @Input() field: BiaFieldConfig<CrudItem>;
   @Input() isAdd?: boolean;
   @Input() form: UntypedFormGroup;
   @Input() dictOptionDtos: DictOptionDto[];
@@ -40,5 +64,25 @@ export class BiaFormFieldComponent<TDto extends { id: number | string }> {
     }
 
     return value;
+  }
+
+  getDisplayDateFormat(
+    displayFormat: BiaFieldNumberFormat | BiaFieldDateFormat | null
+  ): BiaFieldDateFormat | null {
+    return displayFormat && displayFormat instanceof BiaFieldDateFormat
+      ? displayFormat
+      : null;
+  }
+
+  getDisplayNumberFormat(
+    displayFormat: BiaFieldNumberFormat | BiaFieldDateFormat | null
+  ): BiaFieldNumberFormat | null {
+    return displayFormat && displayFormat instanceof BiaFieldNumberFormat
+      ? displayFormat
+      : null;
+  }
+
+  public getOptionDto(key: string) {
+    return this.dictOptionDtos?.filter(x => x.key === key)[0]?.value;
   }
 }
