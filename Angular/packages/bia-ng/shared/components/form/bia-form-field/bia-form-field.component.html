@@ -29,7 +29,7 @@
                   appendTo="body"
                   scrollHeight="50vh"></p-select>
                 <label>
-                  @if (field.isRequired) {
+                  @if (field.isRequired && !fieldDisabled) {
                     <span class="bia-star-mandatory">*</span>
                   }
                   {{ field.header | translate }}</label
@@ -48,7 +48,7 @@
                   [style]="{ width: '100%' }"
                   scrollHeight="50vh"></p-multiSelect>
                 <label>
-                  @if (field.isRequired) {
+                  @if (field.isRequired && !fieldDisabled) {
                     <span class="bia-star-mandatory">*</span>
                   }
                   {{ field.header | translate }}</label
@@ -61,7 +61,7 @@
                   binary="true"
                   [formControlName]="field.field"></p-checkbox>
                 <label class="ml-2 flex">
-                  @if (field.isRequired) {
+                  @if (field.isRequired && !fieldDisabled) {
                     <span class="bia-star-mandatory">*</span>
                   }
                   {{ field.header | translate }}
@@ -85,7 +85,7 @@
                     [max]="displayNumberFormat.max"
                     [locale]="displayNumberFormat.autoLocale || 'en-US'" />
                   <label>
-                    @if (field.isRequired) {
+                    @if (field.isRequired && !fieldDisabled) {
                       <span class="bia-star-mandatory">*</span>
                     }
                     {{ field.header | translate }}</label
@@ -112,7 +112,7 @@
                       getDateView(displayDateFormat.autoPrimeDateFormat)
                     "></p-date-picker>
                   <label>
-                    @if (field.isRequired) {
+                    @if (field.isRequired && !fieldDisabled) {
                       <span class="bia-star-mandatory">*</span>
                     }
                     {{ field.header | translate }}</label
@@ -139,7 +139,7 @@
                     [showClear]="true"></p-date-picker
                   ><!-- [hourFormat]="field.displayFormat.autoHourFormat" not work for 12 (PrimeNG 13)-->
                   <label>
-                    @if (field.isRequired) {
+                    @if (field.isRequired && !fieldDisabled) {
                       <span class="bia-star-mandatory">*</span>
                     }
                     {{ field.header | translate }}</label
@@ -162,7 +162,7 @@
                   [showClear]="true"></p-date-picker
                 ><!-- [hourFormat]="field.displayFormat.autoHourFormat" not work for 12 (PrimeNG 13)-->
                 <label>
-                  @if (field.isRequired) {
+                  @if (field.isRequired && !fieldDisabled) {
                     <span class="bia-star-mandatory">*</span>
                   }
                   {{ field.header | translate }}</label
@@ -184,7 +184,7 @@
                   [showClear]="true"></p-date-picker
                 ><!-- [hourFormat]="field.displayFormat.autoHourFormat" not work for 12 (PrimeNG 13)-->
                 <label>
-                  @if (field.isRequired) {
+                  @if (field.isRequired && !fieldDisabled) {
                     <span class="bia-star-mandatory">*</span>
                   }
                   {{ field.header | translate }}</label
@@ -212,7 +212,7 @@
                     "
                     [hideOnDateTimeSelect]="false"></p-date-picker>
                   <label>
-                    @if (field.isRequired) {
+                    @if (field.isRequired && !fieldDisabled) {
                       <span class="bia-star-mandatory">*</span>
                     }
                     {{ field.header | translate }}</label
@@ -229,7 +229,7 @@
                   maxlength="field.maxlength"
                   style="width: 100%" />
                 <label>
-                  @if (field.isRequired) {
+                  @if (field.isRequired && !fieldDisabled) {
                     <span class="bia-star-mandatory">*</span>
                   }
                   {{ field.header | translate }}</label
