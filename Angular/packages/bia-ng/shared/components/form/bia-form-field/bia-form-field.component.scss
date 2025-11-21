@@ -4,11 +4,20 @@
 }
 
 :host ::ng-deep {
+  p-date-picker {
+    width: 100%;
+  }
+
   p-date-picker > span.p-date-picker {
     width: 100%;
   }
+
   p-inputnumber,
   .p-inputnumber {
     width: 100%;
+  }
+
+  p-select > span.p-select-label {
+    padding: 0.6082rem var(--p-select-padding-x);
   }
 }
