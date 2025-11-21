@@ -61,7 +61,6 @@ export class BiaInputComponent<CrudItem>
   @Input() dictOptionDtos: DictOptionDto[];
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
-  // specificInputTemplate: TemplateRef<any>;
   specificInputTemplate: TemplateRef<any>;
 
   getDisplayDateFormat(
@@ -83,9 +82,6 @@ export class BiaInputComponent<CrudItem>
   ngAfterContentInit() {
     this.templates.forEach(item => {
       switch (item.getType()) {
-        /*case 'specificInput':
-            this.specificInputTemplate = item.template;
-          break;*/
         case 'specificInput':
           this.specificInputTemplate = item.template;
           break;
