@@ -2,25 +2,25 @@ import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  inject,
   Input,
+  OnInit,
   TemplateRef,
 } from '@angular/core';
 import {
+  ControlContainer,
   FormsModule,
   ReactiveFormsModule,
-  UntypedFormBuilder,
   UntypedFormGroup,
 } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { BiaFormLayoutConfig } from 'packages/bia-ng/models/public-api';
-import { PrimeTemplate } from 'primeng/api';
 import { Badge } from 'primeng/badge';
 import { PanelModule } from 'primeng/panel';
 import { Ripple } from 'primeng/ripple';
 import { Tab, TabList, TabPanel, Tabs } from 'primeng/tabs';
 import { DictOptionDto } from '../../table/bia-table/dict-option-dto';
-import { BiaInputComponent } from '../bia-input/bia-input.component';
-import { BiaOutputComponent } from '../bia-output/bia-output.component';
+import { BiaFormFieldComponent } from '../bia-form-field/bia-form-field.component';
 
 @Component({
   selector: 'bia-form-layout',
@@ -31,9 +31,6 @@ import { BiaOutputComponent } from '../bia-output/bia-output.component';
     FormsModule,
     ReactiveFormsModule,
     NgTemplateOutlet,
-    BiaInputComponent,
-    PrimeTemplate,
-    BiaOutputComponent,
     TranslateModule,
     Badge,
     Tabs,
@@ -42,35 +39,22 @@ import { BiaOutputComponent } from '../bia-output/bia-output.component';
     Tab,
     TabPanel,
     PanelModule,
+    BiaFormFieldComponent,
   ],
 })
-export class BiaFormLayoutComponent<TDto extends { id: number | string }> {
-  @Input() element?: TDto;
-  @Input() formLayoutConfig: BiaFormLayoutConfig<TDto>;
+export class BiaFormLayoutComponent<CrudItem> implements OnInit {
+  @Input() element?: CrudItem;
+  @Input() formLayoutConfig: BiaFormLayoutConfig<CrudItem>;
   @Input() dictOptionDtos: DictOptionDto[];
   @Input() readOnly: boolean;
   @Input() isAdd?: boolean;
-  @Input() form: UntypedFormGroup;
   @Input() specificInputTemplate: TemplateRef<any>;
   @Input() specificOutputTemplate: TemplateRef<any>;
 
-  constructor(public formBuilder: UntypedFormBuilder) {}
+  private controlContainer: ControlContainer = inject(ControlContainer);
+  form?: UntypedFormGroup;
 
-  getCellData(field: any): any {
-    const nestedProperties: string[] = field.field.split('.');
-    let value: any = this.element;
-    for (const prop of nestedProperties) {
-      if (value === undefined) {
-        return null;
-      }
-
-      value = value[prop];
-    }
-
-    return value;
-  }
-
-  getFormGroup(id: string): UntypedFormGroup {
-    return this.form?.controls[id] as UntypedFormGroup;
+  ngOnInit(): void {
+    this.form = this.controlContainer.control as UntypedFormGroup;
   }
 }

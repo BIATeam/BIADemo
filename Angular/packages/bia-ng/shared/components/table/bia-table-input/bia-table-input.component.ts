@@ -87,9 +87,6 @@ export class BiaTableInputComponent<CrudItem>
   ngAfterContentInit() {
     this.templates.forEach(item => {
       switch (item.getType()) {
-        /*case 'specificInput':
-            this.specificInputTemplate = item.template;
-          break;*/
         case 'specificInput':
           this.specificInputTemplate = item.template;
           break;

@@ -51,9 +51,8 @@ import { FormReadOnlyMode } from '../../../feature-templates/crud-items/model/cr
 import { CrudHelperService } from '../../../services/crud-helper.service';
 import { LayoutMode } from '../../layout/dynamic-layout/dynamic-layout.component';
 import { DictOptionDto } from '../../table/bia-table/dict-option-dto';
+import { BiaFormFieldComponent } from '../bia-form-field/bia-form-field.component';
 import { BiaFormLayoutComponent } from '../bia-form-layout/bia-form-layout.component';
-import { BiaInputComponent } from '../bia-input/bia-input.component';
-import { BiaOutputComponent } from '../bia-output/bia-output.component';
 
 @Component({
   selector: 'bia-form',
@@ -66,14 +65,12 @@ import { BiaOutputComponent } from '../bia-output/bia-output.component';
     ButtonDirective,
     NgClass,
     NgTemplateOutlet,
-    BiaInputComponent,
-    PrimeTemplate,
-    BiaOutputComponent,
     TranslateModule,
     BiaFormLayoutComponent,
     Tooltip,
     CrudItemHistoricalTimelineComponent,
     TabsModule,
+    BiaFormFieldComponent,
   ],
 })
 export class BiaFormComponent<TDto extends { id: number | string }>
@@ -138,6 +135,7 @@ export class BiaFormComponent<TDto extends { id: number | string }>
     this.initForm();
     this.applyFormReadOnlyMode();
     this.applyFixedState();
+    this.applyFormDisabledFields();
   }
 
   ngOnDestroy() {
@@ -145,6 +143,7 @@ export class BiaFormComponent<TDto extends { id: number | string }>
       this.sub.unsubscribe();
     }
   }
+
   ngAfterContentInit() {
     this.templates.forEach(item => {
       switch (item.getType()) {
@@ -178,14 +177,13 @@ export class BiaFormComponent<TDto extends { id: number | string }>
       if (this.element && this.form) {
         this.form.reset();
         if (this.element) {
-          //this.form.patchValue({ ...this.element });
-          //this.initForm();
           this.updateFormGroup(this.form, this.element);
         }
       }
 
       this.applyFormReadOnlyMode();
       this.applyFixedState();
+      this.applyFormDisabledFields();
     }
   }
 
@@ -320,6 +318,18 @@ export class BiaFormComponent<TDto extends { id: number | string }>
     if (this.form && this.formValidators) {
       this.form.addValidators(this.formValidators);
     }
+  }
+
+  protected applyFormDisabledFields() {
+    this.fields.forEach(field => {
+      if (
+        !field.isEditable ||
+        (field.isOnlyInitializable && !this.isAdd) ||
+        (field.isOnlyUpdatable && this.isAdd)
+      ) {
+        this.form?.get(field.field)?.disable();
+      }
+    });
   }
 
   protected applyFormReadOnlyMode() {

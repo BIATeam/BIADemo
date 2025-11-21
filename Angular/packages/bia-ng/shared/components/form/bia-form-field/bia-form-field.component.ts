@@ -1,16 +1,7 @@
 import { NgTemplateOutlet } from '@angular/common';
+import { Component, inject, Input, OnInit, TemplateRef } from '@angular/core';
 import {
-  AfterContentInit,
-  ChangeDetectionStrategy,
-  Component,
-  ContentChildren,
-  Input,
-  OnDestroy,
-  OnInit,
-  QueryList,
-  TemplateRef,
-} from '@angular/core';
-import {
+  ControlContainer,
   FormsModule,
   ReactiveFormsModule,
   UntypedFormGroup,
@@ -21,7 +12,6 @@ import {
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
 } from 'packages/bia-ng/models/public-api';
-import { PrimeTemplate } from 'primeng/api';
 import { Checkbox } from 'primeng/checkbox';
 import { DatePicker } from 'primeng/datepicker';
 import { FloatLabel } from 'primeng/floatlabel';
@@ -33,11 +23,9 @@ import { DictOptionDto } from '../../table/bia-table/dict-option-dto';
 import { BiaFieldBaseComponent } from '../bia-field-base/bia-field-base.component';
 
 @Component({
-  selector: 'bia-input',
-  templateUrl: './bia-input.component.html',
-  styleUrls: ['./bia-input.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  selector: 'bia-form-field',
   imports: [
+    NgTemplateOutlet,
     FormsModule,
     ReactiveFormsModule,
     NgTemplateOutlet,
@@ -50,19 +38,50 @@ import { BiaFieldBaseComponent } from '../bia-field-base/bia-field-base.componen
     TranslateModule,
     FloatLabel,
   ],
+  templateUrl: './bia-form-field.component.html',
+  styleUrl: './bia-form-field.component.scss',
 })
-export class BiaInputComponent<CrudItem>
+export class BiaFormFieldComponent<CrudItem>
   extends BiaFieldBaseComponent<CrudItem>
-  implements OnInit, OnDestroy, AfterContentInit
+  implements OnInit
 {
+  @Input() element?: CrudItem;
   @Input() field: BiaFieldConfig<CrudItem>;
-  @Input() readOnly: boolean;
-  @Input() form: UntypedFormGroup;
+  @Input() isAdd?: boolean;
   @Input() dictOptionDtos: DictOptionDto[];
+  @Input() readOnly: boolean;
+  @Input() specificInputTemplate: TemplateRef<any>;
+  @Input() specificOutputTemplate: TemplateRef<any>;
 
-  @ContentChildren(PrimeTemplate) templates: QueryList<any>;
-  // specificInputTemplate: TemplateRef<any>;
-  specificInputTemplate: TemplateRef<any>;
+  private controlContainer: ControlContainer = inject(ControlContainer);
+  form?: UntypedFormGroup;
+
+  get fieldDisabled(): boolean {
+    return this.form?.get(this.field.field)?.disabled === true;
+  }
+
+  get formDisabled(): boolean {
+    return this.form?.disabled === true;
+  }
+
+  ngOnInit(): void {
+    super.ngOnInit();
+    this.form = this.controlContainer.control as UntypedFormGroup;
+  }
+
+  getCellData(field: any): any {
+    const nestedProperties: string[] = field.field.split('.');
+    let value: any = this.element;
+    for (const prop of nestedProperties) {
+      if (value === undefined) {
+        return null;
+      }
+
+      value = value[prop];
+    }
+
+    return value;
+  }
 
   getDisplayDateFormat(
     displayFormat: BiaFieldNumberFormat | BiaFieldDateFormat | null
@@ -78,19 +97,6 @@ export class BiaInputComponent<CrudItem>
     return displayFormat && displayFormat instanceof BiaFieldNumberFormat
       ? displayFormat
       : null;
-  }
-
-  ngAfterContentInit() {
-    this.templates.forEach(item => {
-      switch (item.getType()) {
-        /*case 'specificInput':
-            this.specificInputTemplate = item.template;
-          break;*/
-        case 'specificInput':
-          this.specificInputTemplate = item.template;
-          break;
-      }
-    });
   }
 
   public getOptionDto(key: string) {

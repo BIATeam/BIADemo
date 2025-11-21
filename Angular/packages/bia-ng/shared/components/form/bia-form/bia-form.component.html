@@ -94,21 +94,21 @@
             [element]="element"
             [formLayoutConfig]="formLayoutConfig"
             [dictOptionDtos]="dictOptionDtos"
-            [form]="form"
             [readOnly]="readOnly"
             [isAdd]="isAdd"
             [specificInputTemplate]="specificInputTemplate"
             [specificOutputTemplate]="specificOutputTemplate"></bia-form-layout>
         }
-        <ng-container>
-          @for (field of fieldsWithoutLayoutConfig; track field) {
-            <ng-container
-              *ngTemplateOutlet="
-                fieldTemplate;
-                context: { field: field, form: form }
-              "></ng-container>
-          }
-        </ng-container>
+        @for (field of fieldsWithoutLayoutConfig; track field) {
+          <bia-form-field
+            [element]="element"
+            [field]="field"
+            [isAdd]="isAdd"
+            [dictOptionDtos]="dictOptionDtos"
+            [readOnly]="readOnly"
+            [specificInputTemplate]="specificInputTemplate"
+            [specificOutputTemplate]="specificOutputTemplate"></bia-form-field>
+        }
       </div>
     </ng-template>
     @if (displayHistorical) {
@@ -179,42 +179,5 @@
         }
       </div>
     </div>
-    <ng-template #fieldTemplate let-field="field" let-form="form">
-      @if (field.isVisible === true) {
-        <div class="flex flex-row align-items-center">
-          <div class="app-field-container">
-            @if (
-              field.isEditable === true ||
-              (field.isOnlyInitializable && isAdd) ||
-              (field.isOnlyUpdatable && !isAdd)
-            ) {
-              <bia-input
-                [field]="field"
-                [form]="form"
-                [dictOptionDtos]="dictOptionDtos"
-                [readOnly]="readOnly">
-                <ng-template pTemplate="specificInput">
-                  <ng-container
-                    *ngTemplateOutlet="
-                      specificInputTemplate;
-                      context: { field: field, form: form }
-                    "></ng-container>
-                </ng-template>
-              </bia-input>
-            } @else {
-              <bia-output [field]="field" [data]="getCellData(field)">
-                <ng-template pTemplate="specificOutput">
-                  <ng-container
-                    *ngTemplateOutlet="
-                      specificOutputTemplate;
-                      context: { field: field, data: getCellData(field) }
-                    "></ng-container>
-                </ng-template>
-              </bia-output>
-            }
-          </div>
-        </div>
-      }
-    </ng-template>
   </form>
 }

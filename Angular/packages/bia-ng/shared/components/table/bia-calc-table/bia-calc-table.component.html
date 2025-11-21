@@ -237,9 +237,7 @@
               [frozen]="col.isFrozen">
               <p-cellEditor>
                 <ng-template pTemplate="input">
-                  @if (
-                    col.isEditable === true || col.isOnlyUpdatable === true
-                  ) {
+                  @if (canDisplayEditInput(col)) {
                     <bia-table-input
                       [field]="col"
                       [form]="form"
@@ -383,9 +381,7 @@
                 [frozen]="col.isFrozen">
                 <!-- <p-cellEditor> -->
                 @if (editFooter === true) {
-                  @if (
-                    col.isEditable === true || col.isOnlyInitializable === true
-                  ) {
+                  @if (canDisplayAddInput(col)) {
                     <bia-table-input
                       [field]="col"
                       [form]="form"
@@ -422,7 +418,7 @@
                   }
                 }
                 <!-- OUTPUT -->
-                @if (editFooter !== true && col.isEditable === true) {
+                @if (editFooter !== true && canDisplayAddInput(col)) {
                   <label>-</label>
                 }
                 <!-- </p-cellEditor> -->

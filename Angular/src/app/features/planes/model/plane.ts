@@ -53,9 +53,15 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
     Object.assign(new BiaFieldConfig('msn', 'plane.msn'), {
       type: PropType.String,
       isRequired: true,
+      // Begin BIAToolKit Generation Ignore
+      isOnlyInitializable: true,
+      // End BIAToolKit Generation Ignore
     }),
     Object.assign(new BiaFieldConfig('manufacturer', 'plane.manufacturer'), {
       type: PropType.String,
+      // Begin BIAToolKit Generation Ignore
+      isOnlyUpdatable: true,
+      // End BIAToolKit Generation Ignore
     }),
     Object.assign(new BiaFieldConfig('isActive', 'plane.isActive'), {
       type: PropType.Boolean,

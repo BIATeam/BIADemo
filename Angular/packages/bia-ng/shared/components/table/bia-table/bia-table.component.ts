@@ -148,7 +148,6 @@ export class BiaTableComponent<TDto extends { id: number | string }>
   @ViewChild('dt', { static: false }) table: Table | undefined;
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
-  // specificInputTemplate: TemplateRef<any>;
   specificOutputTemplate: TemplateRef<any>;
 
   protected _selectedElements: TDto[] = [];
@@ -183,9 +182,6 @@ export class BiaTableComponent<TDto extends { id: number | string }>
   ngAfterContentInit() {
     this.templates.forEach(item => {
       switch (item.getType()) {
-        /*case 'specificInput':
-          this.specificInputTemplate = item.template;
-        break;*/
         case 'specificOutput':
           this.specificOutputTemplate = item.template;
           break;
