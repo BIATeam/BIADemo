@@ -418,7 +418,7 @@
                   }
                 }
                 <!-- OUTPUT -->
-                @if (editFooter !== true && col.isEditable === true) {
+                @if (editFooter !== true && canDisplayAddInput(col)) {
                   <label>-</label>
                 }
                 <!-- </p-cellEditor> -->
