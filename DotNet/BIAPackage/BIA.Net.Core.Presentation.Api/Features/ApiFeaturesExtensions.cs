@@ -65,6 +65,8 @@ namespace BIA.Net.Core.Presentation.Api.Features
                 SwaggerControllerOrder<ControllerBase> swaggerControllerOrder = new SwaggerControllerOrder<ControllerBase>(Assembly.GetEntryAssembly());
                 services.AddSwaggerGen(a =>
                 {
+                    // TODO: https://apero-tech.fr/remplacer-swagger-par-openapi-embarque-dans-net-9/
+
                     var apiScheme = new OpenApiSecurityScheme
                     {
                         Name = "Authorization",
