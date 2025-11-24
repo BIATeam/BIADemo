@@ -258,7 +258,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
                 query = query.Where(filter);
             }
 
-            Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> setPropertyCalls = this.BuildSetPropertyCallsExpression(fieldUpdates);
+            Action<UpdateSettersBuilder<TEntity>> setPropertyCalls = this.BuildUpdateSettersBuilderExpression(fieldUpdates);
 
             if (batchSize.HasValue)
             {
@@ -940,16 +940,16 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// </summary>
         /// <param name="fieldUpdates">The field updates dictionary.</param>
         /// <returns>The SetProperty calls expression.</returns>
-        protected virtual Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> BuildSetPropertyCallsExpression(IDictionary<string, object> fieldUpdates)
+        protected virtual Action<UpdateSettersBuilder<TEntity>> BuildUpdateSettersBuilderExpression(IDictionary<string, object> fieldUpdates)
         {
             Type entityType = typeof(TEntity);
-            Type setPropertyCallsType = typeof(SetPropertyCalls<TEntity>);
+            Type setPropertyCallsType = typeof(UpdateSettersBuilder<TEntity>);
             MethodInfo setPropertyMethod = setPropertyCallsType.GetMethods()
-                .FirstOrDefault(m => m.Name == nameof(SetPropertyCalls<TEntity>.SetProperty) && m.GetParameters().Length == 2);
+                .FirstOrDefault(m => m.Name == nameof(UpdateSettersBuilder<TEntity>.SetProperty) && m.GetParameters().Length == 2);
 
             if (setPropertyMethod == null)
             {
-                throw new InvalidOperationException("SetProperty method not found on SetPropertyCalls<TEntity>");
+                throw new InvalidOperationException("SetProperty method not found on UpdateSettersBuilder<TEntity>");
             }
 
             // Parameter for the lambda expression
@@ -985,7 +985,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
                 body = setPropertyCall;
             }
 
-            return Expression.Lambda<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>>(body, parameter);
+            return Expression.Lambda<Action<UpdateSettersBuilder<TEntity>>>(body, parameter).Compile();
         }
 
         /// <summary>

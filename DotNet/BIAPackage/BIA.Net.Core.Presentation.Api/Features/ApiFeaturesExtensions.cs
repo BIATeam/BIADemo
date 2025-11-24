@@ -5,7 +5,6 @@ namespace BIA.Net.Core.Presentation.Api.Features
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using System.IO;
     using System.Reflection;
     using System.Security.Principal;
     using BIA.Net.Core.Common.Configuration;
@@ -29,7 +28,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.OpenApi.Models;
+    using Microsoft.OpenApi;
     using StackExchange.Redis;
 
     /// <summary>
@@ -73,22 +72,26 @@ namespace BIA.Net.Core.Presentation.Api.Features
                         In = ParameterLocation.Header,
                         Type = SecuritySchemeType.Http,
                         Scheme = "bearer",
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer",
-                        },
+                        // TODO
+                        //Reference = new OpenApiReference
+                        //{
+                        //    Type = ReferenceType.SecurityScheme,
+                        //    Id = "Bearer",
+                        //},
                     };
+                    // TODO
                     var securityRequirement = new OpenApiSecurityRequirement
                     {
-                        { apiScheme, new[] { "Bearer" } },
+                        //{ apiScheme, new[] { "Bearer" } },
                     };
 
                     a.SwaggerDoc("BIAApi", new OpenApiInfo { Title = "BIAApi", Version = "v1.0" });
                     a.AddSecurityDefinition(
                         "Bearer",
                         apiScheme);
-                    a.AddSecurityRequirement(securityRequirement);
+
+                    // TODO
+                    //a.AddSecurityRequirement(securityRequirement);
 
                     a.OrderActionsBy((apiDesc) => $"{swaggerControllerOrder.SortKey(apiDesc.ActionDescriptor.RouteValues["controller"])}");
                     a.IncludeXmlComments(Assembly.GetEntryAssembly(), false);

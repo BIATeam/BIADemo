@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<IsPackable>false</IsPackable>
 		<Company>TheBIADevCompany</Company>
 		<Copyright>Copyright © TheBIADevCompany 2025</Copyright>
@@ -28,9 +28,9 @@
 		<Compile Remove="**\AbstractUnitTest.cs" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.*" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.*" />
 		<PackageReference Include="Moq" Version="4.20.*" />
-		<PackageReference Include="MSTest.TestAdapter" Version="3.9.*" />
+		<PackageReference Include="MSTest.TestAdapter" Version="4.0.*" />
 		<PackageReference Include="coverlet.collector" Version="6.0.*">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
