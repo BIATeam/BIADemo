@@ -102,7 +102,7 @@
       #submenu
       [@children]="submenuAnimation"
       (@children.done)="onSubmenuAnimated($event)">
-      @for (child of item.items; track child; let i = $index) {
+      @for (child of item.items; track child.id; let i = $index) {
         <li
           bia-ultima-menu-item
           [item]="child"

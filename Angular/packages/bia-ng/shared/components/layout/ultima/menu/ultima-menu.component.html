@@ -13,7 +13,7 @@
 }
 <ul class="layout-menu" #scrollContent>
   <ng-content select="[menu-top]"></ng-content>
-  @for (item of menuItems; track item; let i = $index) {
+  @for (item of menuItems; track item.id; let i = $index) {
     @if (!item.separator) {
       <li bia-ultima-menu-item [item]="item" [index]="i" [root]="true"></li>
     }

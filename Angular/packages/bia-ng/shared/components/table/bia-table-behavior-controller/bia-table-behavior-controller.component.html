@@ -62,7 +62,7 @@
 </div>
 <p-popover #op styleClass="bia-behavior-icon-overlay">
   <div class="bia-table-controller-container flex flex-column gap-3">
-    @for (item of visibleLayouts; track item) {
+    @for (item of visibleLayouts; track item.name) {
       <div>
         <i
           class="relative pi bia-pointer"
