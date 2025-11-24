@@ -132,12 +132,11 @@ export class BiaTranslationService {
       throw new Error('invalid translation file');
     }
     const lang = data[TRANSLATION_LANG_KEY];
-    const copy = { ...data };
-    delete (copy as any)[TRANSLATION_LANG_KEY];
-    this.biaLocales[lang] = this.biaLocales[lang]
-      ? { ...this.biaLocales[lang], ...copy }
-      : copy;
-    this.translate.setTranslation(lang, copy, true);
+    this.biaLocales[lang] = this.biaLocales[lang] ?? {
+      ...this.biaLocales[lang],
+      ...data,
+    };
+    this.translate.setTranslation(lang, data, true);
   }
 
   // Because we add some translations (registerLocaleData), ngx-translate doesn't modules translations
@@ -161,11 +160,11 @@ export class BiaTranslationService {
         lang$ = this.translate.use(lang);
       }
       lang$.subscribe(() => {
-        this.translate.use(lang);
         const biaLocale = this.biaLocales[lang];
         if (biaLocale) {
           this.translate.setTranslation(lang, biaLocale, true);
         }
+        this.translate.use(lang);
         this.translate
           .get('primeng')
           .subscribe(res => this.primeNgConfig.setTranslation(res));
