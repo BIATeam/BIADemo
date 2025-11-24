@@ -44,7 +44,7 @@
         }
         @for (
           teamTypeSelector of teamTypeSelectors;
-          track teamTypeSelector;
+          track $index;
           let last = $last
         ) {
           <bia-team-selector [teamType]="teamTypeSelector"></bia-team-selector>

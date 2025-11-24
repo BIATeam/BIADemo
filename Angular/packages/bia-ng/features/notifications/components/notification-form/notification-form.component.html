@@ -11,7 +11,7 @@
             }}</p-tab>
             @for (
               item of notificationTranslations['controls'];
-              track item;
+              track item.value.languageId;
               let i = $index
             ) {
               <p-tab [value]="i + 1">{{
@@ -70,7 +70,7 @@
             </p-tabpanel>
             @for (
               item of notificationTranslations['controls'];
-              track item;
+              track item.value.languageId;
               let i = $index
             ) {
               <ng-container formArrayName="notificationTranslations">

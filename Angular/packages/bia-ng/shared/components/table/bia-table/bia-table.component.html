@@ -64,7 +64,7 @@
             {{ 'bia.fixed' | translate }}
           </th>
         }
-        @for (col of columns; track col) {
+        @for (col of columns; track $index) {
           @if (col?.isSortable === true) {
             <th
               [pSortableColumn]="col.field"
@@ -145,7 +145,7 @@
               pResizableColumn
               [frozen]="isSelectFrozen"></th>
           }
-          @for (col of columns; track col) {
+          @for (col of columns; track $index) {
             <th
               pReorderableColumn
               pResizableColumn
@@ -210,7 +210,7 @@
             }
           </td>
         }
-        @for (col of columns; track col) {
+        @for (col of columns; track $index) {
           <td
             [class]="'bia-column-' + col.typeLowerCase"
             (click)="clickElementData(rowData)"
@@ -268,7 +268,7 @@
               }" />
           </td>
         }
-        @for (col of columns; track col; let even = $even) {
+        @for (col of columns; track $index; let even = $even) {
           <td>
             <p-skeleton
               [ngStyle]="{

@@ -7,7 +7,7 @@
 }
 
 <ng-template #itemsTemplate let-items="items" let-formGroup="formGroup">
-  @for (item of items; track item) {
+  @for (item of items; track $index) {
     @switch (item.type) {
       @case ('tab') {
         <ng-container
@@ -80,7 +80,7 @@
 </ng-template>
 
 <ng-template #rowsTemplate let-rows="rows" let-formGroup="formGroup">
-  @for (row of rows; track row) {
+  @for (row of rows; track $index) {
     <ng-container
       *ngTemplateOutlet="
         rowTemplate;
@@ -91,7 +91,7 @@
 
 <ng-template #rowTemplate let-row="row" let-formGroup="formGroup">
   <div class="grid bia-form-row">
-    @for (column of row.columns; track column) {
+    @for (column of row.columns; track $index) {
       <div [class]="column.columnClass ?? row.computedColumnClass">
         @switch (column.type) {
           @case ('tab') {

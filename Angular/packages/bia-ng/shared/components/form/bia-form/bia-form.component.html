@@ -99,7 +99,7 @@
             [specificInputTemplate]="specificInputTemplate"
             [specificOutputTemplate]="specificOutputTemplate"></bia-form-layout>
         }
-        @for (field of fieldsWithoutLayoutConfig; track field) {
+        @for (field of fieldsWithoutLayoutConfig; track $index) {
           <bia-form-field
             [element]="element"
             [field]="field"

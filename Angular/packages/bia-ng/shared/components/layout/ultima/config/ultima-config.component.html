@@ -12,7 +12,7 @@
     @if (layoutService.configDisplay().showLang) {
       <h3>{{ 'bia.language' | translate }}</h3>
       <div class="flex flex-wrap row-gap-3">
-        @for (lang of getSupportedLangsSorted(); track lang) {
+        @for (lang of getSupportedLangsSorted(); track $index) {
           <div class="flex align-items-center gap-2 w-6">
             <p-radioButton
               name="lang"
@@ -37,7 +37,7 @@
           class="p-button-text p-button-rounded w-2rem h-2rem mr-2"
           [disabled]="scale === scales[0]"></button>
         <div class="flex gap-2 align-items-center">
-          @for (s of scales; track s) {
+          @for (s of scales; track $index) {
             <i
               class="pi pi-circle-fill scale-icon"
               style="font-size: 0.9rem"

@@ -16,7 +16,7 @@
 <BR />
 <div
   class="flex flex-row flex-wrap justify-content-around align-content-around">
-  @for (team of allTeams$ | async; track team) {
+  @for (team of allTeams$ | async; track team.id) {
     @if (team.teamTypeId === teamTypeId.Site) {
       <button
         pButton
@@ -38,7 +38,7 @@
 <BR />
 <div
   class="flex flex-row flex-wrap justify-content-around align-content-around">
-  @for (team of allTeams$ | async; track team) {
+  @for (team of allTeams$ | async; track team.id) {
     @if (team.teamTypeId === teamTypeId.AircraftMaintenanceCompany) {
       <button
         pButton
@@ -60,7 +60,7 @@
 <BR />
 <div
   class="flex flex-row flex-wrap justify-content-around align-content-around">
-  @for (team of allTeams$ | async; track team) {
+  @for (team of allTeams$ | async; track team.id) {
     @if (team.teamTypeId === teamTypeId.MaintenanceTeam) {
       <button
         pButton
