@@ -64,8 +64,6 @@ export abstract class GenericDas {
     const url = `${this.concatRoute(this.route, param?.endpoint)}${
       param?.id ?? ''
     }`;
-    //const url = `${this.route}${param?.endpoint ?? ''}${param?.id ?? ''}`;
-
     let obs$ = this.http.get<TOut>(url, param?.options).pipe(
       map(data => {
         DateHelperService.fillDate(data);
@@ -77,9 +75,10 @@ export abstract class GenericDas {
         // and this Team does not access to this current element,
         // we return to the root of the site.
         if (
-          error.status === HttpStatusCode.Unauthorized ||
-          error.status === HttpStatusCode.Forbidden ||
-          error.status === HttpStatusCode.NotFound
+          param?.baseHrefRedirectionOnError !== false &&
+          (error.status === HttpStatusCode.Unauthorized ||
+            error.status === HttpStatusCode.Forbidden ||
+            error.status === HttpStatusCode.NotFound)
         ) {
           location.assign(this.baseHref);
         }

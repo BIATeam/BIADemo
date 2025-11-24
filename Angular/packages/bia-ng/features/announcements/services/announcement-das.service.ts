@@ -30,8 +30,6 @@ export class AnnouncementDas extends AbstractDas<Announcement> {
     const url = `${this.concatRoute(this.route, param?.endpoint)}${
       param?.id ?? ''
     }`;
-    //const url = `${this.route}${param?.endpoint ?? ''}${param?.id ?? ''}`;
-
     let obs$ = this.http.get<TOut>(url, param?.options).pipe(
       map(data => {
         DateHelperService.fillDate(data);
@@ -39,13 +37,11 @@ export class AnnouncementDas extends AbstractDas<Announcement> {
         return data;
       }),
       catchError(error => {
-        // Example: if I am on an element and I change of Team,
-        // and this Team does not access to this current element,
-        // we return to the root of the site.
         if (
-          error.status === HttpStatusCode.Unauthorized ||
-          error.status === HttpStatusCode.Forbidden ||
-          error.status === HttpStatusCode.NotFound
+          param?.baseHrefRedirectionOnError !== false &&
+          (error.status === HttpStatusCode.Unauthorized ||
+            error.status === HttpStatusCode.Forbidden ||
+            error.status === HttpStatusCode.NotFound)
         ) {
           location.assign(this.baseHref);
         }
@@ -118,7 +114,6 @@ export class AnnouncementDas extends AbstractDas<Announcement> {
   }
 
   saveItem<TIn, TOut>(param: SaveParam<TIn>) {
-    // param might contains ngrx state item which is immutable : clone to allow update
     param = clone(param);
     param.endpoint = param.endpoint ?? 'save';
     if (param.items) {
@@ -139,7 +134,6 @@ export class AnnouncementDas extends AbstractDas<Announcement> {
   }
 
   putItem<TIn, TOut>(param: PutParam<TIn>) {
-    // param might contains ngrx state item which is immutable : clone to allow update
     param = clone(param);
     param.endpoint = param.endpoint ?? '';
     DateHelperService.fillDateISO(param.item);
@@ -162,7 +156,6 @@ export class AnnouncementDas extends AbstractDas<Announcement> {
   }
 
   postItem<TIn, TOut>(param: PostParam<TIn>) {
-    // param might contains ngrx state item which is immutable : clone to allow update
     param = clone(param);
     param.endpoint = param.endpoint ?? '';
     DateHelperService.fillDateISO(param.item);

@@ -9,6 +9,7 @@ interface HttpParam {
 
 export interface GetParam extends HttpParam {
   id?: string | number;
+  baseHrefRedirectionOnError?: boolean | undefined;
 }
 
 export type GetListParam = HttpParam;

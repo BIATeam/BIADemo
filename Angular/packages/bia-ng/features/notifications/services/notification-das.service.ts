@@ -11,6 +11,9 @@ export class NotificationDas extends AbstractDas<Notification> {
     super(injector, 'Notifications');
   }
   setUnread(id: number): Observable<Notification> {
-    return this.get({ endpoint: 'setUnread', id: id });
+    return this.get({
+      endpoint: 'setUnread',
+      id: id,
+    });
   }
 }
