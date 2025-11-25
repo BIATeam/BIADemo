@@ -7,45 +7,32 @@ namespace BIA.Net.Core.Domain.Dto.Base
     using System.Collections.Generic;
     using System.Text;
     using System.Text.Json;
+    using BIA.Net.Core.Domain.Dto.Base.Interface;
 
     /// <summary>
     /// The DTO used for lazy loading with filters, sort and paging.
     /// </summary>
-    public class LazyLoadDto
+    public class LazyLoadDto : ILazyLoadDto
     {
-        /// <summary>
-        /// Gets or sets the number of the first element to return.
-        /// </summary>
+        /// <inheritdoc/>
         public int? First { get; set; }
 
-        /// <summary>
-        /// Gets or sets the number or rows to return.
-        /// </summary>
+        /// <inheritdoc/>
         public int? Rows { get; set; }
 
-        /// <summary>
-        /// Gets or sets the sort field.
-        /// </summary>
+        /// <inheritdoc/>
         public string SortField { get; set; }
 
-        /// <summary>
-        /// Gets or sets the sort order to indicate if it's in ascending.
-        /// </summary>
+        /// <inheritdoc/>
         public int? SortOrder { get; set; }
 
-        /// <summary>
-        /// Gets or sets the multi sort metas.
-        /// </summary>
+        /// <inheritdoc/>
         public List<SortMeta> MultiSortMeta { get; set; }
 
-        /// <summary>
-        /// Gets or sets the list of columns filters.
-        /// </summary>
+        /// <inheritdoc/>
         public Dictionary<string, JsonElement> Filters { get; set; }
 
-        /// <summary>
-        /// Gets or sets the global filter.
-        /// </summary>
+        /// <inheritdoc/>
         public object GlobalFilter { get; set; }
 
         /// <summary>

@@ -6,6 +6,7 @@ namespace BIA.Net.Core.Domain.Dto.Base
 {
     using System.Collections.Generic;
     using System.Text;
+    using BIA.Net.Core.Domain.Dto.Base.Interface;
 
     /// <summary>
     /// The DTO used for lazy loading with filters, sort and paging.
@@ -19,22 +20,16 @@ namespace BIA.Net.Core.Domain.Dto.Base
     /// </summary>
     /// <typeparam name="TAdvancedFilter">The type for advanced filter.</typeparam>
 #pragma warning disable SA1402 // File may only contain a single type
-    public class PagingFilterFormatDto<TAdvancedFilter> : LazyLoadDto
+    public class PagingFilterFormatDto<TAdvancedFilter> : LazyLoadDto, IPagingFilterFormatDto<TAdvancedFilter>
 #pragma warning restore SA1402 // File may only contain a single type
     {
-        /// <summary>
-        /// Gets or sets the parent ids.
-        /// </summary>
+        /// <inheritdoc/>
         public string[] ParentIds { get; set; }
 
-        /// <summary>
-        /// Name of the property and her translation for file export.
-        /// </summary>
+        /// <inheritdoc/>
         public Dictionary<string, string> Columns { get; set; }
 
-        /// <summary>
-        /// Name of the property and her translation for file export.
-        /// </summary>
+        /// <inheritdoc/>
         public TAdvancedFilter AdvancedFilter { get; set; }
 
         /// <summary>

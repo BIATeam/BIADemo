@@ -156,7 +156,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
             ISiteAppService service = this.GetService<ISiteAppService>();
             #endregion Setup context
 
-            PagingFilterFormatDto filters = new PagingFilterFormatDto()
+            PagingFilterFormatDto filters = new()
             {
                 Filters = new Dictionary<string, JsonElement>(),
             };

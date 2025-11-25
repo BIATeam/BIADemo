@@ -8,6 +8,7 @@ namespace BIA.Net.Core.Application.Notification
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Notification.Entities;
 

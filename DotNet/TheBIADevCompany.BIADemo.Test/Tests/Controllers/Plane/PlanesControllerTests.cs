@@ -60,7 +60,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Plane
         }
 
         /// <summary>
-        /// Test <see cref="PlanesController.GetAll(BIA.Net.Core.Domain.Dto.Base.LazyLoadDto)"/> method.
+        /// Test <see cref="PlanesController.GetAll(BIA.Net.Core.Domain.Dto.Base.Interface.ILazyLoadDto)"/> method.
         /// </summary>
         [TestMethod("PlanesControllerTests.GetAllTest")]
         public void GetAllTest()

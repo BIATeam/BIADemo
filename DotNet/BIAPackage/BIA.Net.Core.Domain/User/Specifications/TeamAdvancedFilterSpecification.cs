@@ -6,6 +6,7 @@ namespace BIA.Net.Core.Domain.User.Specifications
 {
     using System.Linq;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.Specification;
