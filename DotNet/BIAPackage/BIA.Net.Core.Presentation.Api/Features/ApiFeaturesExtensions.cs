@@ -14,6 +14,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
     using BIA.Net.Core.Domain.Service;
 #pragma warning restore BIA001 // Forbidden reference to Domain layer in Presentation layer
     using BIA.Net.Core.Presentation.Api.Features.HangfireDashboard;
+    using BIA.Net.Core.Presentation.Api.Features.OpenApiDocumentTransformer;
     using BIA.Net.Core.Presentation.Api.StartupConfiguration;
     using BIA.Net.Core.Presentation.Common.Features.HubForClients;
     using Hangfire;
@@ -61,6 +62,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
                 services.AddOpenApi(options =>
                 {
                     options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
+                    options.AddDocumentTransformer<SortTagsDocumentTransformer>();
                 });
             }
 

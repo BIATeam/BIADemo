@@ -2,7 +2,7 @@
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Presentation.Api.Features
+namespace BIA.Net.Core.Presentation.Api.Features.OpenApiDocumentTransformer
 {
     using System.Collections.Generic;
     using System.Threading;
