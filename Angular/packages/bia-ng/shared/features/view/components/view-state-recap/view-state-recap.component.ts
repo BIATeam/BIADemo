@@ -5,10 +5,10 @@ import {
   BiaFieldConfig,
   BiaTableState,
 } from 'packages/bia-ng/models/public-api';
-import { BiaTableFilterRecapComponent } from 'packages/bia-ng/shared/components/table/bia-table-filter-recap/bia-table-filter-recap.component';
-import { DictOptionDto } from 'packages/bia-ng/shared/public-api';
 import { FilterMetadata } from 'primeng/api';
 import { TableModule } from 'primeng/table';
+import { BiaTableFilterRecapComponent } from '../../../../components/table/bia-table-filter-recap/bia-table-filter-recap.component';
+import { DictOptionDto } from '../../../../components/table/bia-table/dict-option-dto';
 
 @Component({
   selector: 'bia-view-state-recap',

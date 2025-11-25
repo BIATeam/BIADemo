@@ -14,6 +14,7 @@
   <bia-view-save-form
     [crudItem]="crudItem"
     [fields]="crudConfiguration.fieldsConfig.columns"
+    [formValidators]="crudConfiguration.fieldsConfig.formValidators"
     [formLayoutConfig]="crudConfiguration.formLayoutConfig"
     [formReadOnlyMode]="formReadOnlyMode"
     [dictOptionDtos]="
@@ -30,9 +31,13 @@
     [showFullPageButton]="false"
     (layoutChanged)="notifyLayoutChange($event)"
     [displayHistorical]="crudConfiguration.displayHistorical"
-    [historicalEntries]="
-      (viewService.crudItemHistorical$ | async) ?? []
-    "></bia-view-save-form>
+    [historicalEntries]="(viewService.crudItemHistorical$ | async) ?? []"
+    [canAddTeamView]="canAddTeamView"
+    [canAddUserView]="canAddUserView"
+    [canUpdateUserView]="canUpdateUserView"
+    [canUpdateTeamView]="canUpdateTeamView"
+    [canAssignTeamView]="canAssignTeamView"
+    [teamList]="(teamList | async) ?? []"></bia-view-save-form>
 }
 @if (viewService.loadingGet$ | async) {
   <bia-spinner [overlay]="true"></bia-spinner>

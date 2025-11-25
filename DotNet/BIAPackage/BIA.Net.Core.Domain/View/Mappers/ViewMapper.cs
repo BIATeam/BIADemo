@@ -40,6 +40,43 @@ namespace BIA.Net.Core.Domain.View.Mappers
         }
 
         /// <summary>
+        /// Mappers the add view.
+        /// </summary>
+        /// <param name="dto">The dto.</param>
+        /// <param name="entity">The entity.</param>
+        /// <param name="userId">The user identifier.</param>
+        public static void MapperAddView(ViewDto dto, View entity, int userId)
+        {
+            if (dto != null)
+            {
+                if (entity == null)
+                {
+                    entity = new View();
+                }
+
+                entity.Id = dto.Id;
+                entity.TableId = dto.TableId;
+                entity.Name = dto.Name;
+                entity.Description = dto.Description;
+                entity.Preference = dto.Preference;
+                entity.ViewType = dto.ViewType == (int)ViewType.Team ? ViewType.Team : ViewType.User;
+                if (entity.ViewType == ViewType.User)
+                {
+                    entity.ViewUsers = [new ViewUser { IsDefault = false, ViewId = entity.Id, UserId = userId }];
+                }
+
+                if (entity.ViewType == ViewType.Team)
+                {
+                    entity.ViewTeams = [];
+                    foreach (var item in dto.ViewTeams)
+                    {
+                        entity.ViewTeams.Add(new ViewTeam { IsDefault = false, ViewId = entity.Id, TeamId = item.TeamId });
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Mappers the add user view.
         /// </summary>
         /// <param name="dto">The dto.</param>

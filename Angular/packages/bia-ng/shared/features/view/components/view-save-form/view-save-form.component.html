@@ -17,24 +17,70 @@
   (cancelled)="onCancel()"
   (readOnlyChanged)="readOnlyChanged.emit($event)"
   (fixableStateChanged)="onFixableStateChanged($event)"
-  (layoutChanged)="layoutChanged.emit($event)"
-  [displayHistorical]="displayHistorical"
-  [historicalEntries]="historicalEntries">
+  (layoutChanged)="layoutChanged.emit($event)">
+  <ng-template pTemplate="specificInput" let-field="field" let-form="form">
+    <div [formGroup]="form">
+      @switch (field.field) {
+        @case ('viewType') {
+          @if (canAddTeamView) {
+            <div class="flex flex-wrap justify-content-around gap-4">
+              <div class="flex items-center gap-2">
+                <p-radiobutton
+                  name="viewType"
+                  [formControlName]="'viewType'"
+                  [value]="viewType.User"
+                  inputId="user" />
+                <label for="user" class="ml-2">{{
+                  'bia.views.personalView' | translate
+                }}</label>
+                <i class="pi pi-user"></i>
+              </div>
+              <div class="flex items-center gap-2">
+                <p-radiobutton
+                  name="viewType"
+                  [formControlName]="'viewType'"
+                  [value]="viewType.Team"
+                  inputId="team" />
+                <label for="team" class="ml-2">{{
+                  'bia.views.teamView' | translate
+                }}</label>
+                <i class="pi pi-users"></i>
+              </div>
+            </div>
+          }
+        }
+        @case ('viewTeams') {
+          @if (form.controls['viewType'].value === viewType.Team) {
+            <p-listbox
+              [formControlName]="'viewTeams'"
+              [options]="viewTeamList"
+              [multiple]="true"
+              [checkbox]="true"
+              [showToggleAll]="false"
+              optionLabel="teamTitle"
+              class="w-full"
+              ><ng-template pTemplate="header">{{
+                'bia.views.teams' | translate
+              }}</ng-template></p-listbox
+            >
+          }
+        }
+      }
+    </div>
+  </ng-template>
 </bia-form>
 <div class="flex justify-content-around">
-  @if (biaForm) {
-    <button
-      pButton
-      label="{{ 'bia.views.save' | translate }}"
-      [loading]="biaForm.submittingForm"
-      [disabled]="isSaveDisabled"
-      (click)="saveView()"></button>
-    <button
-      pButton
-      label="{{ 'bia.views.saveAs' | translate }}"
-      type="submit"
-      [loading]="biaForm.submittingForm"
-      [disabled]="isSaveAsDisabled"
-      (click)="saveView(true)"></button>
-  }
+  <button
+    pButton
+    label="{{ 'bia.views.save' | translate }}"
+    [loading]="biaForm?.submittingForm ?? false"
+    [disabled]="isSaveDisabled"
+    (click)="saveView()"></button>
+  <button
+    pButton
+    label="{{ 'bia.views.saveAs' | translate }}"
+    type="submit"
+    [loading]="biaForm?.submittingForm ?? false"
+    [disabled]="isSaveAsDisabled"
+    (click)="saveView(true)"></button>
 </div>

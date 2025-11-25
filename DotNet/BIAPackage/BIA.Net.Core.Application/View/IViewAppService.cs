@@ -21,18 +21,11 @@ namespace BIA.Net.Core.Application.View
         Task<ViewDto> GetAsync(int id);
 
         /// <summary>
-        /// Adds the team view asynchronous.
-        /// </summary>
-        /// <param name="dto">The dto.</param>
-        /// <returns>TeamViewDto.</returns>
-        Task<ViewDto> AddTeamViewAsync(ViewDto dto);
-
-        /// <summary>
-        /// Adds the user view asynchronous.
+        /// Adds the view asynchronous.
         /// </summary>
         /// <param name="dto">The dto.</param>
         /// <returns>ViewDto.</returns>
-        Task<ViewDto> AddUserViewAsync(ViewDto dto);
+        Task<ViewDto> AddViewAsync(ViewDto dto);
 
         /// <summary>
         /// Gets all asynchronous.

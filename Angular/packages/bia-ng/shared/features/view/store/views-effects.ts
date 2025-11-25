@@ -75,7 +75,7 @@ export class ViewsEffects {
     this.actions$.pipe(
       ofType(ViewsActions.addUserView),
       switchMap((view: View) =>
-        this.userViewDas.post({ item: view }).pipe(
+        this.viewDas.post({ item: view }).pipe(
           switchMap(viewAdded => {
             this.biaMessageService.showAddSuccess();
             return [
@@ -96,7 +96,7 @@ export class ViewsEffects {
     this.actions$.pipe(
       ofType(ViewsActions.updateUserView),
       switchMap((view: View) =>
-        this.userViewDas.put({ item: view, id: view.id }).pipe(
+        this.viewDas.put({ item: view, id: view.id }).pipe(
           switchMap(viewUpdated => {
             this.biaMessageService.showUpdateSuccess();
             return [
@@ -117,7 +117,7 @@ export class ViewsEffects {
     this.actions$.pipe(
       ofType(ViewsActions.updateTeamView),
       switchMap((view: View) =>
-        this.teamViewDas.put({ item: view, id: view.id }).pipe(
+        this.viewDas.put({ item: view, id: view.id }).pipe(
           switchMap(viewUpdated => {
             this.biaMessageService.showUpdateSuccess();
             return [
@@ -175,7 +175,7 @@ export class ViewsEffects {
     this.actions$.pipe(
       ofType(ViewsActions.addTeamView),
       switchMap((view: View) =>
-        this.teamViewDas.post({ item: view }).pipe(
+        this.viewDas.post({ item: view }).pipe(
           switchMap(viewAdded => {
             this.biaMessageService.showAddSuccess();
             return [

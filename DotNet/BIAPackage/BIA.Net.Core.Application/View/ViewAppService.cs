@@ -113,6 +113,57 @@ namespace BIA.Net.Core.Application.View
         }
 
         /// <inheritdoc />
+        public async Task RemoveViewAsync(int id)
+        {
+            View entity = await this.Repository.GetEntityAsync(id: id, queryMode: QueryCustomMode.ModeUpdateViewTeamsAndUsers);
+            if (entity == null)
+            {
+                throw new ElementNotFoundException();
+            }
+
+            if (entity.ViewType != ViewType.Team)
+            {
+                var message = "Trying to delete the wrong view type: " + entity.ViewType;
+                this.logger.LogWarning(message);
+                throw new BusinessException("Wrong view type: " + entity.ViewType);
+            }
+
+            IEnumerable<ViewDto> entities = await this.GetAllAsync();
+            if (entities?.Any(x => x.Id == id) != true)
+            {
+                throw new BusinessException("You don't have access rights.");
+            }
+
+            var currentUserId = this.principal.GetUserId();
+            if (entity.ViewType == ViewType.User && entity.ViewUsers.Count > 1)
+            {
+                if (entity.ViewUsers.All(a => a.UserId != currentUserId))
+                {
+                    var message = $"The user {currentUserId} is trying to delete the view {id} of an other user.";
+                    this.logger.LogWarning(message);
+                    throw new BusinessException("Can't delete the view of other users !");
+                }
+                else
+                {
+                    entity.ViewUsers.Remove(entity.ViewUsers.First(vu => vu.UserId == currentUserId));
+                    await this.Repository.UnitOfWork.CommitAsync();
+                }
+            }
+            else
+            {
+                if (entity.ViewType == ViewType.User && entity.ViewUsers.Count == 1 && entity.ViewUsers.All(a => a.UserId != currentUserId))
+                {
+                    var message = $"The user {currentUserId} is trying to delete the view {id} of an other user.";
+                    this.logger.LogWarning(message);
+                    throw new BusinessException("Can't delete the view of other users !");
+                }
+
+                this.Repository.Remove(entity);
+                await this.Repository.UnitOfWork.CommitAsync();
+            }
+        }
+
+        /// <inheritdoc />
         public async Task RemoveTeamViewAsync(int id)
         {
             View entity = await this.Repository.GetEntityAsync(id: id, queryMode: QueryCustomMode.ModeUpdateViewTeams);
@@ -306,30 +357,14 @@ namespace BIA.Net.Core.Application.View
         }
 
         /// <inheritdoc />
-        public async Task<ViewDto> AddUserViewAsync(ViewDto dto)
+        public async Task<ViewDto> AddViewAsync(ViewDto dto)
         {
             if (dto != null)
             {
                 var currentUserId = this.principal.GetUserId();
 
                 var entity = new View();
-                ViewMapper.MapperAddUserView(dto, entity, currentUserId);
-
-                this.Repository.Add(entity);
-                await this.Repository.UnitOfWork.CommitAsync();
-                dto.Id = entity.Id;
-            }
-
-            return dto;
-        }
-
-        /// <inheritdoc />
-        public async Task<ViewDto> AddTeamViewAsync(ViewDto dto)
-        {
-            if (dto != null)
-            {
-                var entity = new View();
-                ViewMapper.MapperAddTeamView(dto, entity);
+                ViewMapper.MapperAddView(dto, entity, currentUserId);
 
                 this.Repository.Add(entity);
                 await this.Repository.UnitOfWork.CommitAsync();

@@ -163,6 +163,7 @@
         "explanationSaveView": "Créer une nouvelle vue ou modifier une existante en la sélectionnant dans le tableau ci-dessous"
       },
       "name": "Nom",
+      "personalView": "Vue personnelle",
       "removeDefault": "Retirer par défaut",
       "save": "Enregistrer",
       "saveAs": "Enregistrer sous",
@@ -172,6 +173,8 @@
       "summary": "Récapitulatif",
       "system": "Vues système",
       "team": "Vues equipe",
+      "teams": "Équipes",
+      "teamView": "Vue d'équipe",
       "typeTeam": "Vue equipe",
       "typeUser": "Vue utilisateur",
       "unlinkWithTeam": "Supprimer le lien avec l'equipe",

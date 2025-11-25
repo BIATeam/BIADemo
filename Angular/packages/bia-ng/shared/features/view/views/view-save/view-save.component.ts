@@ -3,10 +3,19 @@ import { Component, Inject, Injector } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { BaseDto, BiaTableState } from 'packages/bia-ng/models/public-api';
+import {
+  BiaAppConstantsService,
+  BiaPermission,
+  CoreTeamsStore,
+} from 'packages/bia-ng/core/public-api';
+import {
+  BaseDto,
+  BiaTableState,
+  Team,
+} from 'packages/bia-ng/models/public-api';
 import { CrudConfig, CrudItemService } from 'packages/bia-ng/shared/public-api';
 import { ButtonDirective } from 'primeng/button';
-import { Observable, map } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
 import { CrudItemEditComponent } from '../../../../feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
 import { ViewSaveFormComponent } from '../../components/view-save-form/view-save-form.component';
@@ -53,6 +62,13 @@ export class ViewSaveComponent<
   viewPreference$: Observable<BiaTableState | undefined>;
   title: string;
 
+  canAddTeamView = false;
+  canAddUserView = false;
+  canUpdateUserView = false;
+  canUpdateTeamView = false;
+  canAssignTeamView = false;
+  teamList: Observable<Team[]> = of([]);
+
   constructor(
     protected injector: Injector,
     protected viewService: ViewService,
@@ -70,6 +86,30 @@ export class ViewSaveComponent<
     this.title = this.activatedRoute.snapshot.data['title'];
   }
 
+  protected setPermissions() {
+    if (this.featureConfiguration?.useViewTeamWithTypeId) {
+      const teamTypeRightPrefix =
+        BiaAppConstantsService.teamTypeRightPrefix.find(
+          t => t.key === this.featureConfiguration?.useViewTeamWithTypeId
+        )?.value;
+      this.canAddTeamView = this.authService.hasPermission(
+        teamTypeRightPrefix + BiaPermission.View_AddTeamViewSuffix
+      );
+      this.canUpdateTeamView = this.authService.hasPermission(
+        teamTypeRightPrefix + BiaPermission.View_UpdateTeamViewSuffix
+      );
+      this.canAssignTeamView = this.authService.hasPermission(
+        teamTypeRightPrefix + BiaPermission.View_AssignToTeamSuffix
+      );
+    }
+    this.canAddUserView = this.authService.hasPermission(
+      BiaPermission.View_AddUserView
+    );
+    this.canUpdateUserView = this.authService.hasPermission(
+      BiaPermission.View_UpdateUserView
+    );
+  }
+
   protected setTableStateKey(): void {
     const parent: ActivatedRoute | null | undefined =
       this.activatedRoute.parent?.parent;
@@ -80,6 +120,13 @@ export class ViewSaveComponent<
 
     this.tableStateKey = parent.snapshot.data['featureViews'] + 'Grid';
     this.featureConfiguration = parent.snapshot.data['featureConfiguration'];
+    if (this.featureConfiguration?.useViewTeamWithTypeId) {
+      this.teamList = this.store.select(
+        CoreTeamsStore.getAllTeamsOfType(
+          this.featureConfiguration?.useViewTeamWithTypeId
+        )
+      );
+    }
   }
 
   protected getViewPreference(

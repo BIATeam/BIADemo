@@ -73,8 +73,8 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
         this.tableStateKey + 'View'
       );
       if (currentViewStored) {
-        const view: View = JSON.parse(currentViewStored);
-        this.currentSelectedView = view.id;
+        const view: View | null = JSON.parse(currentViewStored);
+        this.currentSelectedView = view?.id ?? 0;
       }
     }
     this.viewNameChange.emit(this.getCurrentView());
@@ -199,9 +199,9 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
 
   public getCurrentView(): View | null {
     let view: View | null = null;
-    if (this.selectedView > -1 && this.views?.length) {
+    if (this.currentSelectedView > -1 && this.views?.length) {
       this.views.forEach(v => {
-        if (v.id === this.selectedView) {
+        if (v.id === this.currentSelectedView) {
           view = v;
           return;
         }

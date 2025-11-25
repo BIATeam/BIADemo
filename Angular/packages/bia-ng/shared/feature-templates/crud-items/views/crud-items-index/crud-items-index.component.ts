@@ -598,7 +598,7 @@ export class CrudItemsIndexComponent<
 
   onViewNameChange(view: View | null) {
     this.currentView = view;
-    if (this.tableStateKey && this.currentView) {
+    if (this.tableStateKey) {
       sessionStorage.setItem(
         this.tableStateKey + 'View',
         JSON.stringify(this.currentView)
@@ -764,16 +764,17 @@ export class CrudItemsIndexComponent<
   }
 
   updateViewQueryParam(view: View | null) {
-    if (view && this.isViewRouteLoaded()) {
+    if (this.isViewRouteLoaded()) {
       this.changeView(view);
-    }
-    const tree = this.router.createUrlTree([], {
-      relativeTo: this.activatedRoute,
-      queryParams: view?.name ? { view: view.name } : { view: null },
-      queryParamsHandling: 'merge',
-    });
+    } else {
+      const tree = this.router.createUrlTree([], {
+        relativeTo: this.activatedRoute,
+        queryParams: view?.name ? { view: view.name } : { view: null },
+        queryParamsHandling: 'merge',
+      });
 
-    this.location.replaceState(this.router.serializeUrl(tree));
+      this.location.replaceState(this.router.serializeUrl(tree));
+    }
   }
 
   isViewRouteLoaded(): boolean {
@@ -782,17 +783,22 @@ export class CrudItemsIndexComponent<
     return baseUrl.endsWith('/saveView');
   }
 
-  changeView(view: View) {
+  changeView(view: View | null) {
     const currentUrl = this.router.url;
-    const [baseUrl, queryString] = currentUrl.split('?');
+    const [baseUrl] = currentUrl.split('?');
     const segments = baseUrl.split('/').filter(Boolean);
 
     if (segments.length >= 2) {
-      segments[segments.length - 2] = view.id.toString();
+      segments[segments.length - 2] = view?.id.toString() ?? '0';
       const newBaseUrl = segments.join('/');
-      const newUrl = queryString ? `${newBaseUrl}?${queryString}` : newBaseUrl;
 
-      this.router.navigateByUrl(newUrl, {
+      const tree = this.router.createUrlTree([`/${newBaseUrl}`], {
+        relativeTo: this.activatedRoute,
+        queryParams: view?.name ? { view: view.name } : { view: null },
+        queryParamsHandling: 'merge',
+      });
+
+      this.router.navigateByUrl(this.router.serializeUrl(tree), {
         skipLocationChange: false,
         replaceUrl: true,
       });
