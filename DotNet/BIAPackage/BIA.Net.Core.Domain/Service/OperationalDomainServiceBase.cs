@@ -246,10 +246,11 @@ namespace BIA.Net.Core.Domain.Service
             {
                 var columnHeaderKeys = new List<string>();
                 var columnHeaderValues = new List<string>();
-                if (filters is IPagingFilterFormatDto pagingFilter)
+
+                if (filters?.Columns is not null)
                 {
-                    columnHeaderKeys.AddRange(pagingFilter.Columns.Select(x => x.Key));
-                    columnHeaderValues.AddRange(pagingFilter.Columns.Select(x => x.Value));
+                    columnHeaderKeys.AddRange(filters.Columns.Select(x => x.Key));
+                    columnHeaderValues.AddRange(filters.Columns.Select(x => x.Value));
                 }
 
                 // We reset these parameters, used for paging, in order to recover the totality of the data.

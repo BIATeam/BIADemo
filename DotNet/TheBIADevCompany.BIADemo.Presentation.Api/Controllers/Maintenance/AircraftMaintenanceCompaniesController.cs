@@ -308,7 +308,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         /// <returns>a csv file.</returns>
         [HttpPost("csv")]
         [Authorize(Roles = Rights.AircraftMaintenanceCompanies.ListAccess)]
-        public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
+        public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto<TeamAdvancedFilterDto> filters)
         {
             byte[] buffer = await this.aircraftMaintenanceCompanyService.GetCsvAsync(filters);
             return this.File(buffer, BiaConstants.Csv.ContentType + $";charset={BiaConstants.Csv.CharsetEncoding}", $"AircraftMaintenanceCompanies{BiaConstants.Csv.Extension}");
