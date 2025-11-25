@@ -44,6 +44,10 @@ const ROUTES: Routes = [
           canNavigate: false,
           permission: BiaPermission.Notification_Create,
           title: 'notification.add',
+          style: {
+            minWidth: '60vw',
+            maxWidth: '60vw',
+          },
         },
         component: NotificationNewComponent,
         canActivate: [PermissionGuard],
@@ -74,6 +78,10 @@ const ROUTES: Routes = [
               canNavigate: true,
               permission: BiaPermission.Notification_Update,
               title: 'notification.edit',
+              style: {
+                minWidth: '60vw',
+                maxWidth: '60vw',
+              },
             },
             component: NotificationEditComponent,
             canActivate: [PermissionGuard],

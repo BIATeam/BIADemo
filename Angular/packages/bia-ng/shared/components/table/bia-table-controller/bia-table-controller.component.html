@@ -11,7 +11,7 @@
       [displayedColumns]="displayedColumns"
       [columns]="columns"
       (viewChange)="onViewChange($event)"
-      (viewNameChange)="onViewNameChange($event)"></bia-view-list>
+      (selectedViewChanged)="onSelectedViewChanged($event)"></bia-view-list>
   }
   <div #overflowingContent class="bia-overflow-hidden">
     <div class="bia-overflow-hidden-container">

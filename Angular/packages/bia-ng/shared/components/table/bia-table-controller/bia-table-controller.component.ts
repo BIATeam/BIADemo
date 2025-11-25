@@ -78,7 +78,7 @@ export class BiaTableControllerComponent
   @Output() viewChange = new EventEmitter<string>();
   @Output() clearFilters = new EventEmitter<void>();
   @Output() openFilter = new EventEmitter<void>();
-  @Output() viewNameChange = new EventEmitter<View | null>();
+  @Output() selectedViewChanged = new EventEmitter<View | null>();
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   @ViewChild(ViewListComponent, { static: false })
@@ -189,8 +189,8 @@ export class BiaTableControllerComponent
     setTimeout(() => this.viewChange.emit(event));
   }
 
-  onViewNameChange(event: View | null) {
-    setTimeout(() => this.viewNameChange.emit(event));
+  onSelectedViewChanged(event: View | null) {
+    setTimeout(() => this.selectedViewChanged.emit(event));
   }
 
   public getSelectedView(): View | null {

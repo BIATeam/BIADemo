@@ -88,7 +88,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
         }
       }
     }
-    this.viewNameChange.emit(this.getCurrentView());
+    this.selectedViewChanged.emit(this.getCurrentView());
   }
   get selectedView(): number {
     return this._selectedView;
@@ -113,7 +113,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   @Input() displayedColumns: string[];
   @Input() columns: KeyValuePair[];
   @Output() viewChange = new EventEmitter<string>();
-  @Output() viewNameChange = new EventEmitter<View | null>();
+  @Output() selectedViewChanged = new EventEmitter<View | null>();
 
   constructor(
     protected store: Store<BiaAppState>,
@@ -233,8 +233,6 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
       console.log('ViewList component Error: defaultViewPref is not defined');
     }
 
-    // let prefString =  JSON.stringify(pref);
-    // console.log("GetCorrespondingView : " + prefString  )
     if (this.views) {
       const correspondingViews = this.views.filter(v => {
         const viewPref: BiaTableState = JSON.parse(v.preference);

@@ -596,7 +596,7 @@ export class CrudItemsIndexComponent<
     this.updateAdvancedFilterByView(viewPreference);
   }
 
-  onViewNameChange(view: View | null) {
+  onSelectedViewChanged(view: View | null) {
     this.currentView = view;
     if (this.tableStateKey) {
       sessionStorage.setItem(
