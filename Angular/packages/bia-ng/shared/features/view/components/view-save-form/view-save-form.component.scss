@@ -3,5 +3,9 @@
     bia-form .footer-container {
       display: none;
     }
+
+    .view-actions .p-button-label {
+      max-width: unset;
+    }
   }
 }

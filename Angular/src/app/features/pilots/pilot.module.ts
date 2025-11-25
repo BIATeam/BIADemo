@@ -10,6 +10,7 @@ import {
 import { Permission } from 'src/app/shared/permission';
 import { PilotReadComponent } from '../pilots/views/pilot-read/pilot-read.component';
 import { pilotCRUDConfiguration } from './pilot.constants';
+import { PilotService } from './services/pilot.service';
 import { FeaturePilotsStore } from './store/pilot.state';
 import { PilotsEffects } from './store/pilots-effects';
 import { PilotEditComponent } from './views/pilot-edit/pilot-edit.component';
@@ -41,6 +42,17 @@ export const ROUTES: Routes = [
         },
         component: PilotNewComponent,
         canActivate: [PermissionGuard],
+      },
+      {
+        path: 'view',
+        data: {
+          featureViews: pilotCRUDConfiguration.featureName,
+          featureConfiguration: pilotCRUDConfiguration,
+          featureServiceType: PilotService,
+          leftWidth: 60,
+        },
+        loadChildren: () =>
+          import('../../shared/bia-shared/view.module').then(m => m.ViewModule),
       },
       {
         path: 'import',

@@ -106,12 +106,6 @@ export class ViewSaveComponent<
             p.permission ===
             teamTypeRightPrefix + BiaPermission.View_AssignToTeamSuffix
         );
-      console.error(
-        'setPermissions',
-        this.permissionAssignTeams,
-        this.authService.getDecryptedToken().userData,
-        teamTypeRightPrefix + BiaPermission.View_AssignToTeamSuffix
-      );
     }
     this.canAddUserView = this.authService.hasPermission(
       BiaPermission.View_AddUserView

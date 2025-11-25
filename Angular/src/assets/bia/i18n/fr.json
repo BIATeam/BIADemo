@@ -152,6 +152,7 @@
     "views": {
       "alsoAffectedTeams": "Vue également affectée à :",
       "column": "Colonne",
+      "cancelModifications": "Annuler les modifications",
       "current": "Vue courante",
       "default": "Vue par défaut",
       "defineDefault": "Définir par défaut",
@@ -163,11 +164,12 @@
       "msg": {
         "explanationSaveView": "Créer une nouvelle vue ou modifier une existante en la sélectionnant dans le tableau ci-dessous"
       },
+      "myViews": "Mes vues",
       "name": "Nom",
       "personalView": "Vue personnelle",
       "removeDefault": "Retirer par défaut",
-      "save": "Enregistrer",
-      "saveAs": "Enregistrer sous",
+      "save": "Modifier la vue sélectionnée",
+      "saveAs": "Enregistrer en tant que nouvelle vue",
       "saveTitle": "Enregistrer une vue",
       "selectTeam": "Sélectionner une equipe",
       "sort": "Tri",
@@ -176,6 +178,7 @@
       "team": "Vues equipe",
       "teams": "Équipes",
       "teamView": "Vue d'équipe",
+      "teamViews": "Vues d'équipe",
       "typeTeam": "Vue equipe",
       "typeUser": "Vue utilisateur",
       "unlinkWithTeam": "Supprimer le lien avec l'equipe",

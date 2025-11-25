@@ -11,6 +11,7 @@ import {
   DynamicLayoutComponent,
   UserFromDirectoryModule,
 } from 'packages/bia-ng/shared/public-api';
+import { UserService } from './services/user.service';
 import { FeatureUsersStore } from './store/user.state';
 import { UsersEffects } from './store/users-effects';
 import { userCRUDConfiguration } from './user.constants';
@@ -59,6 +60,16 @@ const ROUTES: Routes = [
         },
         component: UserNewComponent,
         canActivate: [PermissionGuard],
+      },
+      {
+        path: 'view',
+        data: {
+          featureViews: userCRUDConfiguration.featureName,
+          featureConfiguration: userCRUDConfiguration,
+          featureServiceType: UserService,
+          leftWidth: 60,
+        },
+        loadChildren: () => import('../view.module').then(m => m.ViewModule),
       },
       {
         path: ':crudItemId',

@@ -1,0 +1,64 @@
+<p-dialog
+  #viewDialog
+  header="{{ 'bia.views.manageViews' | translate }}"
+  [focusOnShow]="false"
+  [(visible)]="display"
+  [modal]="true"
+  [closable]="true"
+  [maximizable]="true"
+  [contentStyle]="{ overflow: 'auto' }"
+  (onHide)="onClose()">
+  @let teams = teams$ | async;
+
+  <p-accordion [value]="['0', '1']" [multiple]="true">
+    @if (canSetUserView) {
+      <p-accordion-panel value="0">
+        <p-accordion-header>{{
+          'bia.views.myViews' | translate
+        }}</p-accordion-header>
+        <p-accordion-content>
+          <bia-view-user-table
+            [views]="(viewUsers$ | async) ?? []"
+            [canDelete]="canDeleteUserView"
+            [canSetDefault]="canSetDefaultUserView"
+            [canUpdate]="canUpdateUserView"
+            (delete)="onDeleteUserView($event)"
+            (setDefault)="onSetDefaultUserView($event)"
+            (viewSelect)="onUserViewSelected($event)"></bia-view-user-table>
+        </p-accordion-content>
+      </p-accordion-panel>
+    }
+    @if (canSetTeamView && (teams ?? []).length > 0) {
+      <p-accordion-panel value="1">
+        <p-accordion-header>{{
+          'bia.views.teamViews' | translate
+        }}</p-accordion-header
+        ><p-accordion-content>
+          @if (teamSelected) {
+            <bia-view-team-table
+              [views]="(viewTeams$ | async) ?? []"
+              [teamSelected]="teamSelected"
+              [canDelete]="canDeleteTeamView"
+              [canSetDefault]="canSetDefaultTeamView"
+              [canUpdate]="canUpdateTeamView"
+              [canAssign]="canAssignTeamView"
+              (assignViewToTeam)="onAssignViewToTeam($event)"
+              (delete)="onDeleteTeamView($event)"
+              (setDefault)="onSetDefaultTeamView($event)"
+              (viewSelect)="onTeamViewSelected($event)"></bia-view-team-table>
+          }</p-accordion-content
+      ></p-accordion-panel>
+    }
+  </p-accordion>
+  <p-footer>
+    <div class="flex flex-row align-content-end justify-content-end gap-3">
+      <button
+        id="btn-close"
+        type="button"
+        pButton
+        (click)="display = false"
+        label="{{ 'bia.close' | translate }}"></button>
+    </div>
+  </p-footer>
+</p-dialog>
+<p-confirmDialog key="view-confirm" [baseZIndex]="10000"></p-confirmDialog>

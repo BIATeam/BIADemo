@@ -35,18 +35,6 @@ export class ViewUserTableComponent implements OnChanges {
   @Input() canSetDefault = false;
   @Input() canUpdate = false;
 
-  get viewSelected(): View | undefined {
-    if (this.table) {
-      return this.table.selection as View;
-    }
-    return undefined;
-  }
-  set viewSelected(value: View | undefined) {
-    if (this.table) {
-      this.table.selection = value;
-    }
-  }
-
   @ViewChild('viewUserTable', { static: false }) table: Table;
 
   @Output() delete = new EventEmitter<number>();
@@ -61,9 +49,7 @@ export class ViewUserTableComponent implements OnChanges {
     protected confirmationService: ConfirmationService
   ) {}
 
-  ngOnChanges(changes: SimpleChanges) {
-    this.onViewsChange(changes);
-  }
+  ngOnChanges(changes: SimpleChanges) {}
 
   onDeleteView(viewId: number | undefined) {
     if (!viewId) {
@@ -82,27 +68,7 @@ export class ViewUserTableComponent implements OnChanges {
     this.setDefault.emit({ viewId, isDefault });
   }
 
-  onSelectionChange() {
-    this.viewSelect.next(this.viewSelected);
-  }
-
-  showDefineDefault() {
-    return !(
-      this.viewSelected &&
-      this.viewSelected.isUserDefault === true &&
-      this.canSetDefault === true
-    );
-  }
-
-  protected onViewsChange(changes: SimpleChanges) {
-    if (changes.views && this.table) {
-      const viewSelected: View | undefined = this.viewSelected;
-      if (viewSelected && viewSelected.id > 0 && this.views) {
-        this.viewSelected = this.views.filter(x => x.id === viewSelected.id)[0];
-      } else {
-        this.viewSelected = {} as View;
-      }
-      this.onSelectionChange();
-    }
+  toggleDefault(view: View) {
+    this.setDefault.emit({ viewId: view.id, isDefault: !view.isUserDefault });
   }
 }

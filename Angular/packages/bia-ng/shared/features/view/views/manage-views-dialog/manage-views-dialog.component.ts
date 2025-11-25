@@ -1,4 +1,4 @@
-import { AsyncPipe, UpperCasePipe } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
@@ -12,16 +12,13 @@ import {
 import { ViewType } from 'packages/bia-ng/models/enum/public-api';
 import { Team } from 'packages/bia-ng/models/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
+import { AccordionModule } from 'primeng/accordion';
 import { ConfirmationService, SharedModule } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Dialog } from 'primeng/dialog';
-import { Ripple } from 'primeng/ripple';
-import { Select } from 'primeng/select';
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 import { Observable, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { ViewFormComponent } from '../../components/view-form/view-form.component';
 import { ViewTeamTableComponent } from '../../components/view-team-table/view-team-table.component';
 import { ViewUserTableComponent } from '../../components/view-user-table/view-user-table.component';
 import { AssignViewToTeam } from '../../model/assign-view-to-team';
@@ -32,32 +29,25 @@ import { ViewsStore } from '../../store/view.state';
 import { ViewsActions } from '../../store/views-actions';
 
 @Component({
-  selector: 'bia-view-list-dialog',
-  templateUrl: './view-list-dialog.component.html',
-  styleUrls: ['./view-list-dialog.component.scss'],
+  selector: 'bia-manage-views-dialog',
+  templateUrl: './manage-views-dialog.component.html',
+  styleUrls: ['./manage-views-dialog.component.scss'],
   providers: [ConfirmationService],
   imports: [
     Dialog,
     SharedModule,
-    Tabs,
-    TabList,
-    Ripple,
-    Tab,
-    TabPanels,
-    TabPanel,
-    ViewFormComponent,
     ViewUserTableComponent,
-    Select,
     FormsModule,
     ViewTeamTableComponent,
     ButtonDirective,
     ConfirmDialog,
     AsyncPipe,
-    UpperCasePipe,
     TranslateModule,
+    CommonModule,
+    AccordionModule,
   ],
 })
-export class ViewDialogComponent implements OnInit, OnDestroy {
+export class ManageViewsDialogComponent implements OnInit, OnDestroy {
   display = false;
   @Input() tableStateKey: string;
   @Input() useViewTeamWithTypeId: number | null;
@@ -163,10 +153,6 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
     this.userViewSelected = <View>{};
     this.teamViewSelected = <View>{};
     this.store.dispatch(ViewsActions.closeViewDialog());
-  }
-
-  showDialogMaximized(dialog: Dialog) {
-    dialog.maximize();
   }
 
   onAssignViewToTeam(dto: AssignViewToTeam) {

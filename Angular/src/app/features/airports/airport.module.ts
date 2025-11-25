@@ -6,6 +6,7 @@ import { PermissionGuard } from 'packages/bia-ng/core/public-api';
 import { DynamicLayoutComponent } from 'packages/bia-ng/shared/public-api';
 import { Permission } from 'src/app/shared/permission';
 import { airportCRUDConfiguration } from './airport.constants';
+import { AirportService } from './services/airport.service';
 import { FeatureAirportsStore } from './store/airport.state';
 import { AirportsEffects } from './store/airports-effects';
 import { AirportEditComponent } from './views/airport-edit/airport-edit.component';
@@ -36,6 +37,17 @@ export const ROUTES: Routes = [
         },
         component: AirportNewComponent,
         canActivate: [PermissionGuard],
+      },
+      {
+        path: 'view',
+        data: {
+          featureViews: airportCRUDConfiguration.featureName,
+          featureConfiguration: airportCRUDConfiguration,
+          featureServiceType: AirportService,
+          leftWidth: 60,
+        },
+        loadChildren: () =>
+          import('../../shared/bia-shared/view.module').then(m => m.ViewModule),
       },
       {
         path: ':crudItemId',

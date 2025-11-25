@@ -14,6 +14,7 @@ import { aircraftMaintenanceCompanyCRUDConfiguration } from '../../aircraft-main
 import { AircraftMaintenanceCompaniesEffects } from '../../store/aircraft-maintenance-companies-effects';
 import { FeatureAircraftMaintenanceCompaniesStore } from '../../store/aircraft-maintenance-company.state';
 import { maintenanceTeamCRUDConfiguration } from './maintenance-team.constants';
+import { MaintenanceTeamService } from './services/maintenance-team.service';
 import { FeatureMaintenanceTeamsStore } from './store/maintenance-team.state';
 import { MaintenanceTeamsEffects } from './store/maintenance-teams-effects';
 import { MaintenanceTeamEditComponent } from './views/maintenance-team-edit/maintenance-team-edit.component';
@@ -44,6 +45,19 @@ export const ROUTES: Routes = [
         },
         component: MaintenanceTeamNewComponent,
         canActivate: [PermissionGuard],
+      },
+      {
+        path: 'view',
+        data: {
+          featureViews: maintenanceTeamCRUDConfiguration.featureName,
+          featureConfiguration: maintenanceTeamCRUDConfiguration,
+          featureServiceType: MaintenanceTeamService,
+          leftWidth: 60,
+        },
+        loadChildren: () =>
+          import('../../../../shared/bia-shared/view.module').then(
+            m => m.ViewModule
+          ),
       },
       {
         path: ':crudItemId',

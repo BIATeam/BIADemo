@@ -25,6 +25,7 @@ import { FilterMetadata, PrimeTemplate, SelectItemGroup } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { FloatLabel } from 'primeng/floatlabel';
 import { Select } from 'primeng/select';
+import { Tooltip } from 'primeng/tooltip';
 import { Subscription, combineLatest } from 'rxjs';
 import { map, skip } from 'rxjs/operators';
 import { TableHelperService } from '../../../../services/table-helper.service';
@@ -33,7 +34,7 @@ import { View } from '../../model/view';
 import { QUERY_STRING_VIEW } from '../../model/view.constants';
 import { ViewsStore } from '../../store/view.state';
 import { ViewsActions } from '../../store/views-actions';
-import { ViewDialogComponent } from '../view-dialog/view-dialog.component';
+import { ManageViewsDialogComponent } from '../manage-views-dialog/manage-views-dialog.component';
 
 @Component({
   selector: 'bia-view-list',
@@ -43,11 +44,12 @@ import { ViewDialogComponent } from '../view-dialog/view-dialog.component';
     Select,
     FormsModule,
     PrimeTemplate,
-    ViewDialogComponent,
     TranslateModule,
     FloatLabel,
     ButtonDirective,
     CommonModule,
+    Tooltip,
+    ManageViewsDialogComponent,
   ],
 })
 export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
@@ -76,7 +78,14 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
       );
       if (currentViewStored) {
         const view: View | null = JSON.parse(currentViewStored);
-        this.currentSelectedView = view?.id ?? 0;
+        if (
+          view?.id &&
+          this.groupedViews.find(gv => gv.items.find(v => v.value === view.id))
+        ) {
+          this.currentSelectedView = view.id;
+        } else {
+          this.currentSelectedView = this.defaultView;
+        }
       }
     }
     this.viewNameChange.emit(this.getCurrentView());

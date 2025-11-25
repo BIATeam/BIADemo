@@ -14,10 +14,9 @@ import {
   TeamOptionModule,
   UserOptionModule,
 } from 'packages/bia-ng/domains/public-api';
-import {
-  FullPageLayoutComponent,
-  PopupLayoutComponent,
-} from 'packages/bia-ng/shared/public-api';
+import { DynamicLayoutComponent } from 'packages/bia-ng/shared/public-api';
+import { notificationCRUDConfiguration } from './notification.constants';
+import { NotificationService } from './services/notification.service';
 import { FeatureNotificationsStore } from './store/notification.state';
 import { NotificationsEffects } from './store/notifications-effects';
 import { NotificationDetailComponent } from './views/notification-detail/notification-detail.component';
@@ -33,8 +32,9 @@ const ROUTES: Routes = [
       breadcrumb: null,
       permission: BiaPermission.Notification_List_Access,
       injectComponent: NotificationsIndexComponent,
+      configuration: notificationCRUDConfiguration,
     },
-    component: FullPageLayoutComponent,
+    component: DynamicLayoutComponent,
     canActivate: [PermissionGuard],
     children: [
       {
@@ -44,10 +44,19 @@ const ROUTES: Routes = [
           canNavigate: false,
           permission: BiaPermission.Notification_Create,
           title: 'notification.add',
-          injectComponent: NotificationNewComponent,
         },
-        component: PopupLayoutComponent,
+        component: NotificationNewComponent,
         canActivate: [PermissionGuard],
+      },
+      {
+        path: 'view',
+        data: {
+          featureViews: notificationCRUDConfiguration.featureName,
+          featureConfiguration: notificationCRUDConfiguration,
+          featureServiceType: NotificationService,
+          leftWidth: 60,
+        },
+        loadChildren: () => import('../view.module').then(m => m.ViewModule),
       },
       {
         path: ':notificationId',
@@ -65,9 +74,8 @@ const ROUTES: Routes = [
               canNavigate: true,
               permission: BiaPermission.Notification_Update,
               title: 'notification.edit',
-              injectComponent: NotificationEditComponent,
             },
-            component: FullPageLayoutComponent,
+            component: NotificationEditComponent,
             canActivate: [PermissionGuard],
           },
           {
@@ -77,9 +85,8 @@ const ROUTES: Routes = [
               canNavigate: true,
               permission: BiaPermission.Notification_Read,
               title: 'notification.detail',
-              injectComponent: NotificationDetailComponent,
             },
-            component: PopupLayoutComponent,
+            component: NotificationDetailComponent,
             canActivate: [PermissionGuard],
           },
           {

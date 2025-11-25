@@ -53,10 +53,13 @@ export class ViewSaveFormComponent
 
   get isSaveDisabled(): boolean {
     return (
+      !this.crudItem?.id ||
+      this.crudItem?.viewType === ViewType.System ||
       !this.biaForm?.form?.valid ||
       (!!this.crudItem?.id &&
         this.crudItem?.viewType !==
-          this.biaForm?.form?.controls['viewType'].value)
+          this.biaForm?.form?.controls['viewType'].value) ||
+      (this.crudItem?.viewType === ViewType.Team && !this.canUpdateTeamView)
     );
   }
   get isSaveAsDisabled(): boolean {
@@ -117,10 +120,15 @@ export class ViewSaveFormComponent
               element.viewTeams = [];
               break;
             case ViewType.Team:
-              element.viewTeams = element.viewTeams.filter(
-                team =>
-                  !this.otherAffectedTeams?.find(oat => oat.id === team.id)
-              );
+              if (this.canAddTeamView) {
+                element.viewTeams = element.viewTeams.filter(
+                  team =>
+                    !this.otherAffectedTeams?.find(oat => oat.id === team.id)
+                );
+              } else {
+                element.viewTeams = [];
+                element.viewType = ViewType.User;
+              }
               break;
           }
         }
@@ -135,11 +143,6 @@ export class ViewSaveFormComponent
   }
 
   selectCurrentTeam() {
-    console.error(
-      'selectCurrentTeam',
-      this.viewTeamList?.length,
-      this.biaForm?.form?.controls['viewTeams'].value
-    );
     if (
       this.viewTeamList?.length === 1 &&
       !this.biaForm?.form?.controls['viewTeams'].value?.find(

@@ -16,6 +16,11 @@
       "input": "shared",
       "glob": "**/*.scss",
       "output": "templates"
+    },
+    {
+      "input": "assets",
+      "glob": "**/*",
+      "output": "assets"
     }
   ]
 }

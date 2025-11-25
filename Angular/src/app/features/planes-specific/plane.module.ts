@@ -8,6 +8,7 @@ import { AirportOptionModule } from 'src/app/domains/airport-option/airport-opti
 import { PlaneTypeOptionModule } from 'src/app/domains/plane-type-option/plane-type-option.module';
 import { Permission } from 'src/app/shared/permission';
 import { planeCRUDConfiguration } from './plane.constants';
+import { PlaneService } from './services/plane.service';
 import { FeaturePlanesStore } from './store/plane.state';
 import { PlanesEffects } from './store/planes-effects';
 import { PlaneEditComponent } from './views/plane-edit/plane-edit.component';
@@ -39,6 +40,17 @@ export const ROUTES: Routes = [
         },
         component: PlaneNewComponent,
         canActivate: [PermissionGuard],
+      },
+      {
+        path: 'view',
+        data: {
+          featureViews: planeCRUDConfiguration.featureName,
+          featureConfiguration: planeCRUDConfiguration,
+          featureServiceType: PlaneService,
+          leftWidth: 60,
+        },
+        loadChildren: () =>
+          import('../../shared/bia-shared/view.module').then(m => m.ViewModule),
       },
       {
         path: ':crudItemId',

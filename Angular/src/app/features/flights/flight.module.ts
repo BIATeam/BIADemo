@@ -11,6 +11,7 @@ import { AirportOptionModule } from 'src/app/domains/airport-option/airport-opti
 import { Permission } from 'src/app/shared/permission';
 import { FlightReadComponent } from '../flights/views/flight-read/flight-read.component';
 import { flightCRUDConfiguration } from './flight.constants';
+import { FlightService } from './services/flight.service';
 import { FeatureFlightsStore } from './store/flight.state';
 import { FlightsEffects } from './store/flights-effects';
 import { FlightEditComponent } from './views/flight-edit/flight-edit.component';
@@ -42,6 +43,17 @@ export const ROUTES: Routes = [
         },
         component: FlightNewComponent,
         canActivate: [PermissionGuard],
+      },
+      {
+        path: 'view',
+        data: {
+          featureViews: flightCRUDConfiguration.featureName,
+          featureConfiguration: flightCRUDConfiguration,
+          featureServiceType: FlightService,
+          leftWidth: 60,
+        },
+        loadChildren: () =>
+          import('../../shared/bia-shared/view.module').then(m => m.ViewModule),
       },
       {
         path: 'import',

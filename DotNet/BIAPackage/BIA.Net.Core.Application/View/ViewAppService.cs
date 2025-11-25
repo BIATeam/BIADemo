@@ -41,10 +41,6 @@ namespace BIA.Net.Core.Application.View
         /// </summary>
         private readonly ILogger<ViewAppService> logger;
 
-        private readonly IUserPermissionDomainService userPermissionDomainService;
-
-        private readonly IRoleAppService roleAppService;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ViewAppService"/> class.
         /// </summary>
@@ -52,14 +48,12 @@ namespace BIA.Net.Core.Application.View
         /// <param name="principal">The principal.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="queryCustomizer">The query customizer.</param>
-        public ViewAppService(ITGenericRepository<View, int> repository, IPrincipal principal, ILogger<ViewAppService> logger, IViewQueryCustomizer queryCustomizer, IUserPermissionDomainService userPermissionDomainService, IRoleAppService roleAppService)
+        public ViewAppService(ITGenericRepository<View, int> repository, IPrincipal principal, ILogger<ViewAppService> logger, IViewQueryCustomizer queryCustomizer)
             : base(repository)
         {
             this.principal = principal as BiaClaimsPrincipal;
             this.logger = logger;
             this.Repository.QueryCustomizer = queryCustomizer;
-            this.userPermissionDomainService = userPermissionDomainService;
-            this.roleAppService = roleAppService;
         }
 
         /// <inheritdoc />

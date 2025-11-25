@@ -5,23 +5,19 @@
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
 {
     using System;
-    using System.DirectoryServices.AccountManagement;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Application.View;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Dto.View;
-    using BIA.Net.Core.Domain.User.Entities;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Base;
-    using static BIA.Net.Core.Common.BiaRights;
 
     /// <summary>
     /// The API controller used to manage views.
@@ -32,16 +28,18 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         /// The service role.
         /// </summary>
         private readonly IViewAppService viewAppService;
+        private readonly IBiaClaimsPrincipalService biaClaimsPrincipalService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ViewsController"/> class.
         /// </summary>
         /// <param name="viewAppService">The view service.</param>
         /// <param name="teamAppService">The team service.</param>
-        public ViewsController(IViewAppService viewAppService, ITeamAppService teamAppService)
+        public ViewsController(IViewAppService viewAppService, ITeamAppService teamAppService, IBiaClaimsPrincipalService biaClaimsPrincipalService)
             : base(teamAppService)
         {
             this.viewAppService = viewAppService;
+            this.biaClaimsPrincipalService = biaClaimsPrincipalService;
         }
 
         /// <summary>
@@ -116,7 +114,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
                     return this.StatusCode(StatusCodes.Status403Forbidden);
                 }
 
-                var userData = new BiaClaimsPrincipal(this.HttpContext.User).GetUserData<BaseUserDataDto>();
+                var userData = this.biaClaimsPrincipalService.GetUserData<BaseUserDataDto>();
                 if (dto.ViewTeams.Any(team => (team.DtoState == BIA.Net.Core.Domain.Dto.Base.DtoState.Added || team.DtoState == BIA.Net.Core.Domain.Dto.Base.DtoState.Deleted) && !userData.CrossTeamPermissions.Any(p => p.Permission == permission && (p.IsGlobal || p.TeamIds.Any(ti => ti == team.Id)))))
                 {
                     throw new BusinessException("Can't update view for these teams.");
@@ -160,7 +158,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
                     return this.StatusCode(StatusCodes.Status403Forbidden);
                 }
 
-                var userData = new BiaClaimsPrincipal(this.HttpContext.User).GetUserData<BaseUserDataDto>();
+                var userData = this.biaClaimsPrincipalService.GetUserData<BaseUserDataDto>();
                 if (dto.ViewTeams.Any(team => !userData.CrossTeamPermissions.Any(p => p.Permission == permission && p.TeamIds.Any(ti => ti == team.Id))))
                 {
                     throw new BusinessException("Can't add view for these teams.");

@@ -9,6 +9,7 @@ import { PlaneOptionModule } from 'src/app/domains/plane-option/plane-option.mod
 import { SiteOptionModule } from 'src/app/domains/site-option/site-option.module';
 import { Permission } from 'src/app/shared/permission';
 import { maintenanceContractCRUDConfiguration } from './maintenance-contract.constants';
+import { MaintenanceContractService } from './services/maintenance-contract.service';
 import { FeatureMaintenanceContractsStore } from './store/maintenance-contract.state';
 import { MaintenanceContractsEffects } from './store/maintenance-contracts-effects';
 import { MaintenanceContractEditComponent } from './views/maintenance-contract-edit/maintenance-contract-edit.component';
@@ -40,6 +41,17 @@ export const ROUTES: Routes = [
         },
         component: MaintenanceContractNewComponent,
         canActivate: [PermissionGuard],
+      },
+      {
+        path: 'view',
+        data: {
+          featureViews: maintenanceContractCRUDConfiguration.featureName,
+          featureConfiguration: maintenanceContractCRUDConfiguration,
+          featureServiceType: MaintenanceContractService,
+          leftWidth: 60,
+        },
+        loadChildren: () =>
+          import('../../shared/bia-shared/view.module').then(m => m.ViewModule),
       },
       {
         path: 'import',
