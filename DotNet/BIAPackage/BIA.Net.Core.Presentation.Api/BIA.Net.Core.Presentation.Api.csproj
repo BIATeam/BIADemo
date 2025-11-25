@@ -1,44 +1,44 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <Copyright>Copyright © BIA 2025</Copyright>
-    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-    <Version>5.2.0</Version>
-    <PackageIcon>LogoBIA.png</PackageIcon>
-    <PackageIconUrl />
-    <Authors>BIA Team</Authors>
-    <Company>BIA</Company>
-    <Description>Presentation api layer classes for BIA.Net Core Framework</Description>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<Copyright>Copyright © BIA 2025</Copyright>
+		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+		<Version>5.2.0</Version>
+		<PackageIcon>LogoBIA.png</PackageIcon>
+		<PackageIconUrl />
+		<Authors>BIA Team</Authors>
+		<Company>BIA</Company>
+		<Description>Presentation api layer classes for BIA.Net Core Framework</Description>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Features\HangfireDashboard\BIAHangireDashboard.css" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="Features\HangfireDashboard\BIAHangireDashboard.css" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="Features\HangfireDashboard\BIAHangireDashboard.css">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Features\HangfireDashboard\BIAHangireDashboard.css">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</EmbeddedResource>
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="[10.0.*,11.0.0)" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="[10.0.*,11.0.0)" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="[10.0.*,11.0.0)" />
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="[10.0.*,11.0.0)" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\BIA.Net.Core.Application\BIA.Net.Core.Application.csproj" />
-    <ProjectReference Include="..\BIA.Net.Core.Common\BIA.Net.Core.Common.csproj" />
-    <ProjectReference Include="..\BIA.Net.Core.Presentation.Common\BIA.Net.Core.Presentation.Common.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\BIA.Net.Core.Application\BIA.Net.Core.Application.csproj" />
+		<ProjectReference Include="..\BIA.Net.Core.Common\BIA.Net.Core.Common.csproj" />
+		<ProjectReference Include="..\BIA.Net.Core.Presentation.Common\BIA.Net.Core.Presentation.Common.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Include="..\Images\LogoBIA.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\Images\LogoBIA.png">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
 
 </Project>

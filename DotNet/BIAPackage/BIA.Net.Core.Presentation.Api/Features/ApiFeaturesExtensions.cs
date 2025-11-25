@@ -5,7 +5,6 @@ namespace BIA.Net.Core.Presentation.Api.Features
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using System.Reflection;
     using System.Security.Principal;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
@@ -13,7 +12,6 @@ namespace BIA.Net.Core.Presentation.Api.Features
 #pragma warning disable BIA001 // Forbidden reference to Domain layer in Presentation layer
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Service;
-    using BIA.Net.Core.Presentation.Api.Controller.Base;
 #pragma warning restore BIA001 // Forbidden reference to Domain layer in Presentation layer
     using BIA.Net.Core.Presentation.Api.Features.HangfireDashboard;
     using BIA.Net.Core.Presentation.Api.StartupConfiguration;
@@ -25,10 +23,8 @@ namespace BIA.Net.Core.Presentation.Api.Features
     using Hangfire.SqlServer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.OpenApi;
     using StackExchange.Redis;
 
     /// <summary>
@@ -62,41 +58,9 @@ namespace BIA.Net.Core.Presentation.Api.Features
             // Swagger
             if (apiFeatures.Swagger?.IsActive == true)
             {
-                SwaggerControllerOrder<ControllerBase> swaggerControllerOrder = new SwaggerControllerOrder<ControllerBase>(Assembly.GetEntryAssembly());
-                services.AddSwaggerGen(a =>
+                services.AddOpenApi(options =>
                 {
-                    // TODO: https://apero-tech.fr/remplacer-swagger-par-openapi-embarque-dans-net-9/
-
-                    var apiScheme = new OpenApiSecurityScheme
-                    {
-                        Name = "Authorization",
-                        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
-                        In = ParameterLocation.Header,
-                        Type = SecuritySchemeType.Http,
-                        Scheme = "bearer",
-                        // TODO
-                        //Reference = new OpenApiReference
-                        //{
-                        //    Type = ReferenceType.SecurityScheme,
-                        //    Id = "Bearer",
-                        //},
-                    };
-                    // TODO
-                    var securityRequirement = new OpenApiSecurityRequirement
-                    {
-                        //{ apiScheme, new[] { "Bearer" } },
-                    };
-
-                    a.SwaggerDoc("BIAApi", new OpenApiInfo { Title = "BIAApi", Version = "v1.0" });
-                    a.AddSecurityDefinition(
-                        "Bearer",
-                        apiScheme);
-
-                    // TODO
-                    //a.AddSecurityRequirement(securityRequirement);
-
-                    a.OrderActionsBy((apiDesc) => $"{swaggerControllerOrder.SortKey(apiDesc.ActionDescriptor.RouteValues["controller"])}");
-                    a.IncludeXmlComments(Assembly.GetEntryAssembly(), false);
+                    options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
                 });
             }
 
@@ -187,9 +151,9 @@ namespace BIA.Net.Core.Presentation.Api.Features
         /// <param name="hangfireServerAuthorizations">authorization for hangfire dashboard.</param>
         /// <returns>the application builder with bia feature.</returns>
         public static IApplicationBuilder UseBiaApiFeatures(
-            [NotNull] this IApplicationBuilder app,
-            ApiFeatures apiFeatures,
-            HangfireDashboardAuthorizations hangfireServerAuthorizations)
+    [NotNull] this IApplicationBuilder app,
+    ApiFeatures apiFeatures,
+    HangfireDashboardAuthorizations hangfireServerAuthorizations)
         {
             app.UseEndpoints(endpoints =>
             {
@@ -203,10 +167,15 @@ namespace BIA.Net.Core.Presentation.Api.Features
             if (apiFeatures?.Swagger?.IsActive == true)
             {
                 app.UseStaticFiles();
-                app.UseSwagger();
+
+                if (app is WebApplication webApp)
+                {
+                    webApp.MapOpenApi();
+                }
+
                 app.UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint("BIAApi/swagger.json", "v1.0");
+                    c.SwaggerEndpoint("../openapi/v1.json", "v1.0");
                     c.InjectJavascript("./AutoLogin.c0c914df432ec8edfa27c6c4d05ce98c.js");
                     c.InjectStylesheet("./AutoLogin.1379b731dd73c3456a0ce0aab0c01a83.css");
                 });
