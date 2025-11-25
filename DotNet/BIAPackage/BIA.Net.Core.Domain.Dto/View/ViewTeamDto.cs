@@ -4,16 +4,13 @@
 
 namespace BIA.Net.Core.Domain.Dto.View
 {
+    using BIA.Net.Core.Domain.Dto.Base;
+
     /// <summary>
     /// ViewTeam Dto.
     /// </summary>
-    public class ViewTeamDto
+    public class ViewTeamDto : BaseDto<int>
     {
-        /// <summary>
-        /// Gets or sets the site identifier.
-        /// </summary>
-        public int TeamId { get; set; }
-
         /// <summary>
         /// Gets or sets the site.
         /// </summary>

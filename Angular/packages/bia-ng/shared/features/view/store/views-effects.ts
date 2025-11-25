@@ -6,7 +6,6 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 import { AssignViewToTeam } from '../model/assign-view-to-team';
 import { DefaultView } from '../model/default-view';
 import { TeamDefaultView } from '../model/team-default-view';
-import { TeamView } from '../model/team-view';
 import { View } from '../model/view';
 import { TeamViewDas } from '../services/team-view-das.service';
 import { UserViewDas } from '../services/user-view-das.service';
@@ -26,6 +25,24 @@ export class ViewsEffects {
       switchMap(() => {
         return this.viewDas.getAll().pipe(
           map(views => ViewsActions.loadAllSuccess({ views })),
+          catchError(err => {
+            this.biaMessageService.showErrorHttpResponse(err);
+            return of(ViewsActions.failure({ error: err }));
+          })
+        );
+      })
+    )
+  );
+
+  load$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ViewsActions.load),
+      map(x => x?.id),
+      switchMap(id => {
+        return this.viewDas.get({ id: id }).pipe(
+          map(view => {
+            return ViewsActions.loadSuccess({ view });
+          }),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
             return of(ViewsActions.failure({ error: err }));
@@ -58,7 +75,7 @@ export class ViewsEffects {
     this.actions$.pipe(
       ofType(ViewsActions.addUserView),
       switchMap((view: View) =>
-        this.userViewDas.post({ item: view }).pipe(
+        this.viewDas.post({ item: view }).pipe(
           switchMap(viewAdded => {
             this.biaMessageService.showAddSuccess();
             return [
@@ -79,7 +96,7 @@ export class ViewsEffects {
     this.actions$.pipe(
       ofType(ViewsActions.updateUserView),
       switchMap((view: View) =>
-        this.userViewDas.put({ item: view, id: view.id }).pipe(
+        this.viewDas.put({ item: view, id: view.id }).pipe(
           switchMap(viewUpdated => {
             this.biaMessageService.showUpdateSuccess();
             return [
@@ -99,8 +116,8 @@ export class ViewsEffects {
   updateTeamView$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ViewsActions.updateTeamView),
-      switchMap((view: TeamView) =>
-        this.teamViewDas.put({ item: view, id: view.id }).pipe(
+      switchMap((view: View) =>
+        this.viewDas.put({ item: view, id: view.id }).pipe(
           switchMap(viewUpdated => {
             this.biaMessageService.showUpdateSuccess();
             return [
@@ -157,8 +174,8 @@ export class ViewsEffects {
   addTeamView$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ViewsActions.addTeamView),
-      switchMap((view: TeamView) =>
-        this.teamViewDas.post({ item: view }).pipe(
+      switchMap((view: View) =>
+        this.viewDas.post({ item: view }).pipe(
           switchMap(viewAdded => {
             this.biaMessageService.showAddSuccess();
             return [

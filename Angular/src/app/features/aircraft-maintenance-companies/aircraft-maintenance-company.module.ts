@@ -9,6 +9,7 @@ import {
 } from 'packages/bia-ng/shared/public-api';
 import { Permission } from 'src/app/shared/permission';
 import { aircraftMaintenanceCompanyCRUDConfiguration } from './aircraft-maintenance-company.constants';
+import { AircraftMaintenanceCompanyService } from './services/aircraft-maintenance-company.service';
 import { AircraftMaintenanceCompaniesEffects } from './store/aircraft-maintenance-companies-effects';
 import { FeatureAircraftMaintenanceCompaniesStore } from './store/aircraft-maintenance-company.state';
 import { AircraftMaintenanceCompaniesIndexComponent } from './views/aircraft-maintenance-companies-index/aircraft-maintenance-companies-index.component';
@@ -39,6 +40,17 @@ export const ROUTES: Routes = [
         },
         component: AircraftMaintenanceCompanyNewComponent,
         canActivate: [PermissionGuard],
+      },
+      {
+        path: 'view',
+        data: {
+          featureViews: aircraftMaintenanceCompanyCRUDConfiguration.featureName,
+          featureConfiguration: aircraftMaintenanceCompanyCRUDConfiguration,
+          featureServiceType: AircraftMaintenanceCompanyService,
+          leftWidth: 60,
+        },
+        loadChildren: () =>
+          import('../../shared/bia-shared/view.module').then(m => m.ViewModule),
       },
       {
         path: ':crudItemId',

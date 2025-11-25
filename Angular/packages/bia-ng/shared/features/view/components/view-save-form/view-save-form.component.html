@@ -1,0 +1,94 @@
+<bia-form
+  [element]="crudItem"
+  [isAdd]="isAdd"
+  [fields]="fields"
+  [formLayoutConfig]="formLayoutConfig"
+  [formValidators]="formValidators"
+  [formReadOnlyMode]="formReadOnlyMode"
+  [dictOptionDtos]="dictOptionDtos"
+  [isCrudItemOutdated]="isCrudItemOutdated"
+  [showSubmitButton]="showSubmitButton"
+  [showFixableState]="showFixableState"
+  [canFix]="canFix"
+  [showPopupButton]="showPopupButton"
+  [showSplitButton]="showSplitButton"
+  [showFullPageButton]="showFullPageButton"
+  (save)="onSave($event)"
+  (cancelled)="onCancel()"
+  (readOnlyChanged)="readOnlyChanged.emit($event)"
+  (fixableStateChanged)="onFixableStateChanged($event)"
+  (layoutChanged)="layoutChanged.emit($event)">
+  <ng-template pTemplate="specificInput" let-field="field" let-form="form">
+    <div [formGroup]="form">
+      @switch (field.field) {
+        @case ('viewType') {
+          @if (canAddTeamView) {
+            <div class="flex flex-wrap justify-content-around gap-4">
+              <div class="flex items-center gap-2">
+                <p-radiobutton
+                  name="viewType"
+                  [formControlName]="'viewType'"
+                  [value]="viewType.User"
+                  inputId="user" />
+                <label for="user" class="ml-2">{{
+                  'bia.views.personalView' | translate
+                }}</label>
+                <i class="pi pi-user"></i>
+              </div>
+              <div class="flex items-center gap-2">
+                <p-radiobutton
+                  name="viewType"
+                  [formControlName]="'viewType'"
+                  [value]="viewType.Team"
+                  inputId="team"
+                  (onClick)="selectCurrentTeam()" />
+                <label for="team" class="ml-2">{{
+                  'bia.views.teamView' | translate
+                }}</label>
+                <i class="pi pi-users"></i>
+              </div>
+            </div>
+          }
+        }
+        @case ('viewTeams') {
+          @if (form.controls['viewType'].value === viewType.Team) {
+            @if (viewTeamList.length > 1) {
+              <p-listbox
+                [formControlName]="'viewTeams'"
+                [options]="viewTeamList"
+                [multiple]="true"
+                [checkbox]="true"
+                [showToggleAll]="false"
+                optionLabel="teamTitle"
+                class="w-full"
+                ><ng-template pTemplate="header">{{
+                  'bia.views.teams' | translate
+                }}</ng-template>
+              </p-listbox>
+            }
+            @if (otherAffectedTeamsLabel) {
+              {{ 'bia.views.alsoAffectedTeams' | translate }}
+              {{ otherAffectedTeamsLabel }}
+            }
+          }
+        }
+      }
+    </div>
+  </ng-template>
+</bia-form>
+<div class="flex justify-content-around view-actions">
+  <button
+    pButton
+    label="{{ 'bia.views.save' | translate }}"
+    [loading]="biaForm?.submittingForm ?? false"
+    [disabled]="isSaveDisabled"
+    (click)="saveView()"></button>
+  <button
+    pButton
+    label="{{ 'bia.views.saveAs' | translate }}"
+    [ngClass]="'p-button-outlined'"
+    type="submit"
+    [loading]="biaForm?.submittingForm ?? false"
+    [disabled]="isSaveAsDisabled"
+    (click)="saveView(true)"></button>
+</div>

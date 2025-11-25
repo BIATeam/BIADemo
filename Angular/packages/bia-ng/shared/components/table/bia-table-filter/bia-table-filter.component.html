@@ -133,107 +133,11 @@
       </div>
       <div class="app-field-container flex-1 flex align-items-center">
         @if (isArrayFilter(field); as filterArray) {
-          <span class="bia-filter-active-vals">
-            @for (filter of filterArray; track $index; let last = $last) {
-              @if (
-                filter.value !== null ||
-                filter.matchMode === 'empty' ||
-                filter.matchMode === 'notEmpty' ||
-                filter.matchMode === 'today' ||
-                filter.matchMode === 'afterToday' ||
-                filter.matchMode === 'beforeToday'
-              ) {
-                @switch (filter.matchMode) {
-                  @case ('startsWith') {
-                    [{{ filter.value }}*]
-                  }
-                  @case ('notStartsWith') {
-                    [!{{ filter.value }}*]
-                  }
-                  @case ('contains') {
-                    @if (columnFilterType === 'boolean') {
-                      [{{ 'bia.' + filter.value | translate }}]
-                    }
-                    @if (columnFilterType !== 'boolean') {
-                      [*{{ filter.value }}*]
-                    }
-                  }
-                  @case ('notContains') {
-                    ![*{{ filter.value }}*]
-                  }
-                  @case ('endsWith') {
-                    [*{{ filter.value }}]
-                  }
-                  @case ('notEndsWith') {
-                    [!*{{ filter.value }}]
-                  }
-                  @case ('dateIs') {
-                    [{{ filter.value | formatValue: field }}]
-                  }
-                  @case ('dateIsNot') {
-                    [!{{ filter.value | formatValue: field }}]
-                  }
-                  @case ('dateBefore') {
-                    [<{{ filter.value | formatValue: field }}]
-                  }
-                  @case ('dateAfter') {
-                    [>{{ filter.value | formatValue: field }}]
-                  }
-                  @case ('equals') {
-                    [={{ filter.value }}]
-                  }
-                  @case ('notEquals') {
-                    [!={{ filter.value }}]
-                  }
-                  @case ('empty') {
-                    [{{ 'primeng.empty' | translate }}]
-                  }
-                  @case ('notEmpty') {
-                    [{{ 'primeng.notEmpty' | translate }}]
-                  }
-                  @case ('lt') {
-                    [<{{ filter.value }}]
-                  }
-                  @case ('lte') {
-                    [<={{ filter.value }}]
-                  }
-                  @case ('gt') {
-                    [>{{ filter.value }}]
-                  }
-                  @case ('gte') {
-                    [>={{ filter.value }}]
-                  }
-                  @case ('in') {
-                    {{
-                      field.filterWithDisplay
-                        ? filter.value
-                        : getOptionsLabels(filter.value)
-                    }}
-                  }
-                  @case ('today') {
-                    [{{ 'primeng.today' | translate }}]
-                  }
-                  @case ('afterToday') {
-                    [{{ 'primeng.afterToday' | translate }}]
-                  }
-                  @case ('beforeToday') {
-                    [{{ 'primeng.beforeToday' | translate }}]
-                  }
-                  @default {
-                    {{ filter.matchMode + ' ' + filter.value }}
-                  }
-                }
-              }
-              @if (!last) {
-                @if (filter.operator === 'and') {
-                  &
-                }
-                @if (filter.operator === 'or') {
-                  |
-                }
-              }
-            }
-          </span>
+          <bia-table-filter-recap
+            [filterArray]="filterArray"
+            [columnFilterType]="columnFilterType"
+            [field]="field"
+            [options]="options"></bia-table-filter-recap>
         }
         @if (!isArrayFilter(field) && columnFilterType !== 'boolean') {
           @if (columnFilterType !== 'boolean') {

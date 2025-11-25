@@ -6,6 +6,7 @@ import { PermissionGuard } from 'packages/bia-ng/core/public-api';
 import { DynamicLayoutComponent } from 'packages/bia-ng/shared/public-api';
 import { Permission } from 'src/app/shared/permission';
 import { planeTypeCRUDConfiguration } from './plane-type.constants';
+import { PlaneTypeService } from './services/plane-type.service';
 import { FeaturePlanesTypesStore } from './store/plane-type.state';
 import { PlanesTypesEffects } from './store/planes-types-effects';
 import { PlaneTypeEditComponent } from './views/plane-type-edit/plane-type-edit.component';
@@ -36,6 +37,17 @@ export const ROUTES: Routes = [
         },
         component: PlaneTypeNewComponent,
         canActivate: [PermissionGuard],
+      },
+      {
+        path: 'view',
+        data: {
+          featureViews: planeTypeCRUDConfiguration.featureName,
+          featureConfiguration: planeTypeCRUDConfiguration,
+          featureServiceType: PlaneTypeService,
+          leftWidth: 60,
+        },
+        loadChildren: () =>
+          import('../../shared/bia-shared/view.module').then(m => m.ViewModule),
       },
       {
         path: ':crudItemId',

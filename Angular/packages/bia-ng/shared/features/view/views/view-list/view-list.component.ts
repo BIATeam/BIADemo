@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -9,7 +10,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
@@ -21,19 +22,19 @@ import { ViewType } from 'packages/bia-ng/models/enum/public-api';
 import { BiaTableState, KeyValuePair } from 'packages/bia-ng/models/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { FilterMetadata, PrimeTemplate, SelectItemGroup } from 'primeng/api';
+import { ButtonDirective } from 'primeng/button';
 import { FloatLabel } from 'primeng/floatlabel';
 import { Select } from 'primeng/select';
+import { Tooltip } from 'primeng/tooltip';
 import { Subscription, combineLatest } from 'rxjs';
 import { map, skip } from 'rxjs/operators';
 import { TableHelperService } from '../../../../services/table-helper.service';
+import { DefaultView } from '../../model/default-view';
 import { View } from '../../model/view';
 import { QUERY_STRING_VIEW } from '../../model/view.constants';
 import { ViewsStore } from '../../store/view.state';
 import { ViewsActions } from '../../store/views-actions';
-import { ViewDialogComponent } from '../view-dialog/view-dialog.component';
-
-const currentView = -1;
-const undefinedView = -2;
+import { ManageViewsDialogComponent } from '../manage-views-dialog/manage-views-dialog.component';
 
 @Component({
   selector: 'bia-view-list',
@@ -43,12 +44,18 @@ const undefinedView = -2;
     Select,
     FormsModule,
     PrimeTemplate,
-    ViewDialogComponent,
     TranslateModule,
     FloatLabel,
+    ButtonDirective,
+    CommonModule,
+    Tooltip,
+    ManageViewsDialogComponent,
   ],
 })
 export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
+  readonly currentView = -10000;
+  readonly undefinedView = -10001;
+
   groupedViews: SelectItemGroup[];
   translateKeys: string[] = [
     'bia.views.current',
@@ -60,13 +67,40 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   translations: any;
   views: View[];
 
-  _selectedView: number = undefinedView;
+  _selectedView: number = this.undefinedView;
   set selectedView(value: number) {
     this._selectedView = value;
-    this.viewNameChange.emit(this.getCurrentViewName());
+    if (this._selectedView !== this.currentView) {
+      this.currentSelectedView = value;
+    } else {
+      const currentViewStored = sessionStorage.getItem(
+        this.tableStateKey + 'View'
+      );
+      if (currentViewStored) {
+        const view: View | null = JSON.parse(currentViewStored);
+        if (
+          view?.id &&
+          this.groupedViews.find(gv => gv.items.find(v => v.value === view.id))
+        ) {
+          this.currentSelectedView = view.id;
+        } else {
+          this.currentSelectedView = this.defaultView;
+        }
+      }
+    }
+    this.selectedViewChanged.emit(this.getCurrentView());
   }
   get selectedView(): number {
     return this._selectedView;
+  }
+
+  _currentSelectedView: number = this.undefinedView;
+  set currentSelectedView(value: number) {
+    this._currentSelectedView = value;
+  }
+
+  get currentSelectedView(): number {
+    return this._currentSelectedView;
   }
 
   defaultView: number;
@@ -79,14 +113,16 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   @Input() displayedColumns: string[];
   @Input() columns: KeyValuePair[];
   @Output() viewChange = new EventEmitter<string>();
-  @Output() viewNameChange = new EventEmitter<string | null>();
+  @Output() selectedViewChanged = new EventEmitter<View | null>();
 
   constructor(
     protected store: Store<BiaAppState>,
     public translateService: TranslateService,
     protected authService: AuthService,
     protected route: ActivatedRoute,
-    protected tableHelperService: TableHelperService
+    protected tableHelperService: TableHelperService,
+    protected router: Router,
+    protected activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -110,7 +146,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
               this.views.length !== views.length
             ) {
               // the list of view change, so we reset the view selection.
-              this.selectedView = undefinedView;
+              this.selectedView = this.undefinedView;
             }
             this.views = views;
             if (view && view.id > 0) {
@@ -160,6 +196,11 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   protected onTableStateChange(changes: SimpleChanges) {
     if (changes.tableState && changes.tableState.isFirstChange() !== true) {
       this.autoSelectView(changes.tableState.currentValue);
+      this.store.dispatch(
+        ViewsActions.updateCurrentPreferences({
+          preferences: changes.tableState.currentValue,
+        })
+      );
     }
   }
 
@@ -167,18 +208,18 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     this.selectedView = this.getCorrespondingViewId(tableStateStr);
   }
 
-  public getCurrentViewName(): string | null {
-    let viewName: string | null = null;
-    if (this.selectedView > -1 && this.views?.length) {
+  public getCurrentView(): View | null {
+    let view: View | null = null;
+    if (this.currentSelectedView > this.currentView && this.views?.length) {
       this.views.forEach(v => {
-        if (v.id === this.selectedView) {
-          viewName = v.name;
+        if (v.id === this.currentSelectedView) {
+          view = v;
           return;
         }
       });
     }
 
-    return viewName;
+    return view;
   }
 
   protected getCorrespondingViewId(preference: string): number {
@@ -192,8 +233,6 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
       console.log('ViewList component Error: defaultViewPref is not defined');
     }
 
-    // let prefString =  JSON.stringify(pref);
-    // console.log("GetCorrespondingView : " + prefString  )
     if (this.views) {
       const correspondingViews = this.views.filter(v => {
         const viewPref: BiaTableState = JSON.parse(v.preference);
@@ -216,7 +255,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
       }
     }
 
-    return currentView;
+    return this.currentView;
   }
 
   protected areViewsEgals(view1: BiaTableState, view2: BiaTableState) {
@@ -359,13 +398,13 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     let defaultView = 0;
     const currentTeamId =
       this.useViewTeamWithTypeId === null
-        ? -1
+        ? this.currentView
         : this.authService.getCurrentTeamId(this.useViewTeamWithTypeId);
     const systemViews = this.views.filter(v => v.viewType === ViewType.System);
     const teamViews = this.views.filter(
       v =>
         v.viewType === ViewType.Team &&
-        v.viewTeams.some(vs => currentTeamId === vs.teamId)
+        v.viewTeams.some(vs => currentTeamId === vs.id)
     );
     const userViews = this.views.filter(v => v.viewType === ViewType.User);
     if (systemViews.length > 0) {
@@ -401,9 +440,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
       });
 
       const teamDefault = teamViews.filter(v =>
-        v.viewTeams.some(
-          y => currentTeamId === y.teamId && y.isDefault === true
-        )
+        v.viewTeams.some(y => currentTeamId === y.id && y.isDefault === true)
       )[0];
       if (teamDefault) {
         defaultView = teamDefault.id;
@@ -425,11 +462,6 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.defaultView = defaultView;
-
-    this.groupedViews[0].items.push({
-      label: this.translations['bia.views.current'],
-      value: currentView,
-    });
   }
   protected initViewByQueryParam(views: View[]) {
     //<a [routerLink]="['/planes-view']" [queryParams]="{ view: 'test2' }">link to plane view</a>
@@ -463,7 +495,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
         });
       }
     } else {
-      if (this.selectedView === undefinedView) {
+      if (this.selectedView === this.undefinedView) {
         this.selectedView = this.defaultView;
       }
       if (this.selectedView !== 0) {
@@ -497,7 +529,9 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     }*/
 
   protected getViewState(): string | null {
-    return sessionStorage.getItem(this.tableStateKey);
+    const preferences = sessionStorage.getItem(this.tableStateKey);
+    this.store.dispatch(ViewsActions.updateCurrentPreferences({ preferences }));
+    return preferences;
   }
 
   onManageView() {
@@ -535,5 +569,26 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
       this.authService.hasPermission(BiaPermission.View_DeleteUserView) ||
       this.authService.hasPermission(BiaPermission.View_SetDefaultUserView)
     );
+  }
+
+  openSave() {
+    this.router.navigate(['view', this.currentSelectedView, 'saveView'], {
+      relativeTo: this.activatedRoute,
+      queryParamsHandling: 'preserve',
+    });
+  }
+
+  toggleDefault() {
+    const defaultView: DefaultView = {
+      id: this.currentSelectedView,
+      isDefault: this.currentSelectedView !== this.defaultView,
+      tableId: this.tableStateKey,
+    };
+    this.store.dispatch(ViewsActions.setDefaultUserView(defaultView));
+  }
+
+  restoreView() {
+    this.selectedView = this.currentSelectedView;
+    this.updateFilterValues(null, true);
   }
 }

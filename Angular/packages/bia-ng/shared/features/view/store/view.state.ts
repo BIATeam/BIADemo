@@ -4,6 +4,7 @@ import {
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
+import { View } from '../model/view';
 import * as fromViews from './views-reducer';
 
 export namespace ViewsStore {
@@ -25,10 +26,46 @@ export namespace ViewsStore {
 
   export const getViewsState = createFeatureSelector<ViewsState>('views');
 
+  export const getCurrentView = createSelector(
+    getViewsState,
+    state => state.views.currentItem ?? <View>{}
+  );
+
   export const getViewsEntitiesState = createSelector(
     getViewsState,
     state => state.views
   );
+
+  export const getViewsTotalCount = createSelector(
+    getViewsEntitiesState,
+    state => state.totalCount
+  );
+
+  export const getLastLazyLoadEvent = createSelector(
+    getViewsEntitiesState,
+    state => state.lastLazyLoadEvent
+  );
+
+  export const getViewLoadingGet = createSelector(
+    getViewsEntitiesState,
+    state => state.loadingGet
+  );
+
+  export const getViewLoadingGetAll = createSelector(
+    getViewsEntitiesState,
+    state => state.loadingGetAll
+  );
+
+  export const getViewCurrentPreferences = createSelector(
+    getViewsEntitiesState,
+    state => state.currentPreferences
+  );
+
+  export const { selectAll: getAllPlanes } =
+    fromViews.viewsAdapter.getSelectors(getViewsEntitiesState);
+
+  export const getPlaneById = (id: number) =>
+    createSelector(getViewsEntitiesState, fromViews.getViewById(id));
 
   export const { selectAll: getAllViews } = fromViews.viewsAdapter.getSelectors(
     getViewsEntitiesState

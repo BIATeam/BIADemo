@@ -1,28 +1,5 @@
 <div
-  class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
-  @if (canDelete === true) {
-    <button
-      pButton
-      [disabled]="viewSelected?.viewType !== 2"
-      icon="pi pi-trash"
-      pTooltip="{{ 'bia.delete' | translate }}"
-      tooltipPosition="top"
-      (click)="onDeleteView(viewSelected?.id)"></button>
-  }
-  @if (showDefineDefault()) {
-    <button
-      pButton
-      [disabled]="viewSelected?.viewType !== 2 && viewSelected?.viewType !== 1"
-      label="{{ 'bia.views.defineDefault' | translate }}"
-      (click)="onSetDefaultView(viewSelected?.id, true)"></button>
-  }
-  @if (!showDefineDefault()) {
-    <button
-      pButton
-      label="{{ 'bia.views.removeDefault' | translate }}"
-      (click)="onSetDefaultView(viewSelected?.id, false)"></button>
-  }
-</div>
+  class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch"></div>
 <p-table
   #viewUserTable
   [value]="views"
@@ -30,40 +7,50 @@
   [scrollable]="true"
   scrollHeight="40vh"
   dataKey="id"
-  (selectionChange)="onSelectionChange()">
+  [scrollHeight]="'100vh'">
   <ng-template pTemplate="header">
     <tr>
-      @if (canUpdate) {
-        <th class="app-action-col">
-          {{ 'bia.select' | translate }}
-        </th>
-      }
-      <th>{{ 'bia.views.name' | translate }}</th>
-      <th>{{ 'bia.views.description' | translate }}</th>
       <th>{{ 'bia.views.viewType' | translate }}</th>
+      <th>{{ 'bia.views.name' | translate }}</th>
+      <th>{{ 'bia.views.default' | translate }}</th>
+      <th>{{ 'bia.delete' | translate }}</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-view>
     <tr [pSelectableRow]="view">
-      @if (canUpdate) {
-        <td class="app-action-col">
-          @if (view.viewType === 2 || view.viewType === 1) {
-            <p-tableRadioButton [value]="view"></p-tableRadioButton>
-          }
-        </td>
-      }
       <td>
-        {{ view.name }}
-        @if (view.isUserDefault === true) {
-          <i class="pi pi-star-fill-border"></i>
+        @if (view.viewType === viewType.User) {
+          <i
+            class="pi pi-user"
+            [pTooltip]="'bia.views.personalView' | translate"></i>
+        } @else {
+          <i
+            class="pi pi-users"
+            [pTooltip]="'bia.views.teamView' | translate"></i>
         }
       </td>
-      <td>{{ view.description }}</td>
       <td>
-        {{
-          (view.viewType === 1 ? 'bia.views.typeTeam' : 'bia.views.typeUser')
-            | translate
-        }}
+        {{ view.name }}
+      </td>
+      <td>
+        <button
+          pButton
+          [icon]="view.isUserDefault ? 'pi pi-star-fill' : 'pi pi-star'"
+          variant="text"
+          severity="secondary"
+          [pTooltip]="'bia.views.defineDefault' | translate"
+          (click)="toggleDefault(view)"
+          class="small-button"></button>
+      </td>
+      <td>
+        @if (canDelete === true && view.viewType === viewType.User) {
+          <button
+            pButton
+            icon="pi pi-trash"
+            pTooltip="{{ 'bia.delete' | translate }}"
+            tooltipPosition="top"
+            (click)="onDeleteView(view?.id)"></button>
+        }
       </td>
     </tr>
   </ng-template>

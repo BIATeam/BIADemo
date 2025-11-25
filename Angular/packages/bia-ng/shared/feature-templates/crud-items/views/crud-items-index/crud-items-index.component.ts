@@ -43,6 +43,7 @@ import { BiaTableBehaviorControllerComponent } from '../../../../components/tabl
 import { BiaTableControllerComponent } from '../../../../components/table/bia-table-controller/bia-table-controller.component';
 import { BiaTableHeaderComponent } from '../../../../components/table/bia-table-header/bia-table-header.component';
 import { BiaTableComponent } from '../../../../components/table/bia-table/bia-table.component';
+import { View } from '../../../../features/view/model/view';
 import { ViewsActions } from '../../../../features/view/store/views-actions';
 import { CrudHelperService } from '../../../../services/crud-helper.service';
 import { TableHelperService } from '../../../../services/table-helper.service';
@@ -84,6 +85,7 @@ export class CrudItemsIndexComponent<
   protected parentDisplayItemName$: Observable<string>;
 
   _showTableController = true;
+  currentView: View | null;
 
   get showTableController(): boolean {
     return this._showTableController;
@@ -283,9 +285,6 @@ export class CrudItemsIndexComponent<
   }
 
   ngOnInit() {
-    /*    this.tableStateKey = this.crudConfiguration.useView ? this.crudConfiguration.tableStateKey : undefined;
-        this.useViewTeamWithTypeId = this.crudConfiguration.useView ? this.crudConfiguration.useViewTeamWithTypeId : null;
-    */
     this.sub = new Subscription();
 
     this.initButtonGroups();
@@ -597,8 +596,15 @@ export class CrudItemsIndexComponent<
     this.updateAdvancedFilterByView(viewPreference);
   }
 
-  onViewNameChange(viewName: string | null) {
-    this.updateViewQueryParam(viewName);
+  onSelectedViewChanged(view: View | null) {
+    this.currentView = view;
+    if (this.tableStateKey) {
+      sessionStorage.setItem(
+        this.tableStateKey + 'View',
+        JSON.stringify(this.currentView)
+      );
+    }
+    this.updateViewQueryParam(view);
   }
 
   onStateSave(tableState: string) {
@@ -609,10 +615,9 @@ export class CrudItemsIndexComponent<
   onExportCSV(fileName = 'bia.crud.listOf', useAllColumn = false) {
     fileName = this.translateService.instant(fileName);
 
-    const selectedViewName =
-      this.biaTableControllerComponent.getSelectedViewName();
-    if (selectedViewName && selectedViewName.length > 0) {
-      fileName = `${fileName}-${selectedViewName}`;
+    const selectedView = this.biaTableControllerComponent.getSelectedView();
+    if (selectedView?.name && selectedView.name.length > 0) {
+      fileName = `${fileName}-${selectedView}`;
     }
 
     const columns: { [key: string]: string } = {};
@@ -758,13 +763,45 @@ export class CrudItemsIndexComponent<
     this.customButtonGroup = [];
   }
 
-  updateViewQueryParam(viewName: string | null) {
-    const tree = this.router.createUrlTree([], {
-      relativeTo: this.activatedRoute,
-      queryParams: viewName ? { view: viewName } : { view: null },
-      queryParamsHandling: 'merge',
-    });
+  updateViewQueryParam(view: View | null) {
+    if (this.isViewRouteLoaded()) {
+      this.changeView(view);
+    } else {
+      const tree = this.router.createUrlTree([], {
+        relativeTo: this.activatedRoute,
+        queryParams: view?.name ? { view: view.name } : { view: null },
+        queryParamsHandling: 'merge',
+      });
 
-    this.location.replaceState(this.router.serializeUrl(tree));
+      this.location.replaceState(this.router.serializeUrl(tree));
+    }
+  }
+
+  isViewRouteLoaded(): boolean {
+    const currentUrl = this.router.url;
+    const baseUrl = currentUrl.split('?')[0];
+    return baseUrl.endsWith('/saveView');
+  }
+
+  changeView(view: View | null) {
+    const currentUrl = this.router.url;
+    const [baseUrl] = currentUrl.split('?');
+    const segments = baseUrl.split('/').filter(Boolean);
+
+    if (segments.length >= 2) {
+      segments[segments.length - 2] = view?.id.toString() ?? '0';
+      const newBaseUrl = segments.join('/');
+
+      const tree = this.router.createUrlTree([`/${newBaseUrl}`], {
+        relativeTo: this.activatedRoute,
+        queryParams: view?.name ? { view: view.name } : { view: null },
+        queryParamsHandling: 'merge',
+      });
+
+      this.router.navigateByUrl(this.router.serializeUrl(tree), {
+        skipLocationChange: false,
+        replaceUrl: true,
+      });
+    }
   }
 }

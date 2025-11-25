@@ -9,6 +9,7 @@ import {
 } from 'packages/bia-ng/shared/public-api';
 import { Permission } from 'src/app/shared/permission';
 
+import { SiteService } from './services/site.service';
 import { siteCRUDConfiguration } from './site.constants';
 import { FeatureSitesStore } from './store/site.state';
 import { SitesEffects } from './store/sites-effects';
@@ -40,6 +41,17 @@ export const ROUTES: Routes = [
         },
         component: SiteNewComponent,
         canActivate: [PermissionGuard],
+      },
+      {
+        path: 'view',
+        data: {
+          featureViews: siteCRUDConfiguration.featureName,
+          featureConfiguration: siteCRUDConfiguration,
+          featureServiceType: SiteService,
+          leftWidth: 60,
+        },
+        loadChildren: () =>
+          import('../../shared/bia-shared/view.module').then(m => m.ViewModule),
       },
       {
         path: ':crudItemId',

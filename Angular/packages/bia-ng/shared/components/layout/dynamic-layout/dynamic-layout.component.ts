@@ -75,7 +75,7 @@ export class DynamicLayoutComponent<TDto extends { id: number | string }>
   style: any;
   maximizable: boolean;
 
-  protected maxScanDepth = 2;
+  protected maxScanDepth = 3;
   protected isResizing = false;
   protected startX: number;
   protected startWidthLeft: number;
@@ -169,6 +169,7 @@ export class DynamicLayoutComponent<TDto extends { id: number | string }>
       this.popupTitle = child.data['title'] ?? this.popupTitle;
       this.style = child.data['style'] ?? this.style;
       this.maximizable = child.data['maximizable'] ?? true;
+      this.leftWidth = child.data['leftWidth'] ?? this.leftWidth;
 
       if (child.data['layoutMode'] !== undefined) {
         this.layoutMode = child.data['layoutMode'];

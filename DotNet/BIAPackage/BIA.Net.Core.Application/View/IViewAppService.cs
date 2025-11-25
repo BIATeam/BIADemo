@@ -14,18 +14,18 @@ namespace BIA.Net.Core.Application.View
     public interface IViewAppService
     {
         /// <summary>
-        /// Adds the team view asynchronous.
+        /// Get the view asynchronous.
         /// </summary>
-        /// <param name="dto">The dto.</param>
-        /// <returns>TeamViewDto.</returns>
-        Task<TeamViewDto> AddTeamViewAsync(TeamViewDto dto);
+        /// <param name="id">The id of the view.</param>
+        /// <returns>ViewDto.</returns>
+        Task<ViewDto> GetAsync(int id);
 
         /// <summary>
-        /// Adds the user view asynchronous.
+        /// Adds the view asynchronous.
         /// </summary>
         /// <param name="dto">The dto.</param>
         /// <returns>ViewDto.</returns>
-        Task<ViewDto> AddUserViewAsync(ViewDto dto);
+        Task<ViewDto> AddViewAsync(ViewDto dto);
 
         /// <summary>
         /// Gets all asynchronous.

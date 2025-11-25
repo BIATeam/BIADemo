@@ -2,4 +2,10 @@
   display: flex;
   align-items: center;
   gap: 0.25rem;
+
+  ::ng-deep {
+    .small-button.p-button-icon-only {
+      width: 1.5rem;
+    }
+  }
 }

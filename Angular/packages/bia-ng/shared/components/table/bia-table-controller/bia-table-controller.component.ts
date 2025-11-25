@@ -34,6 +34,7 @@ import { InputText } from 'primeng/inputtext';
 import { MultiSelect } from 'primeng/multiselect';
 import { Tooltip } from 'primeng/tooltip';
 import { Subscription } from 'rxjs';
+import { View } from '../../../features/view/model/view';
 import { ViewListComponent } from '../../../features/view/views/view-list/view-list.component';
 
 @Component({
@@ -77,7 +78,7 @@ export class BiaTableControllerComponent
   @Output() viewChange = new EventEmitter<string>();
   @Output() clearFilters = new EventEmitter<void>();
   @Output() openFilter = new EventEmitter<void>();
-  @Output() viewNameChange = new EventEmitter<string | null>();
+  @Output() selectedViewChanged = new EventEmitter<View | null>();
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   @ViewChild(ViewListComponent, { static: false })
@@ -188,12 +189,12 @@ export class BiaTableControllerComponent
     setTimeout(() => this.viewChange.emit(event));
   }
 
-  onViewNameChange(event: string | null) {
-    setTimeout(() => this.viewNameChange.emit(event));
+  onSelectedViewChanged(event: View | null) {
+    setTimeout(() => this.selectedViewChanged.emit(event));
   }
 
-  public getSelectedViewName(): string | null {
-    return this.viewListComponent?.getCurrentViewName();
+  public getSelectedView(): View | null {
+    return this.viewListComponent?.getCurrentView();
   }
 
   protected onColumnsChange(changes: SimpleChanges) {

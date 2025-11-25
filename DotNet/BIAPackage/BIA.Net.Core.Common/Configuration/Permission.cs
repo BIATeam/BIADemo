@@ -30,5 +30,10 @@ namespace BIA.Net.Core.Common.Configuration
         /// Gets or sets if the role appear in light token.
         /// </summary>
         public bool LightToken { get; set; }
+
+        /// <summary>
+        /// Indicate if the permissions for all teams independant to current team should be included in token.
+        /// </summary>
+        public bool IsTransversal { get; set; }
     }
 }

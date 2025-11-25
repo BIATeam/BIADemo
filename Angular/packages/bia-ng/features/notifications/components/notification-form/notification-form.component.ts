@@ -37,6 +37,7 @@ import { Ripple } from 'primeng/ripple';
 import { Select } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
+import { Textarea } from 'primeng/textarea';
 import { Tooltip } from 'primeng/tooltip';
 import {
   Notification,
@@ -70,6 +71,7 @@ import {
     MultiSelect,
     TranslateModule,
     FloatLabel,
+    Textarea,
   ],
 })
 export class NotificationFormComponent implements OnChanges {

@@ -19,6 +19,7 @@ import { InputNumber } from 'primeng/inputnumber';
 import { InputText } from 'primeng/inputtext';
 import { MultiSelect } from 'primeng/multiselect';
 import { Select } from 'primeng/select';
+import { TextareaModule } from 'primeng/textarea';
 import { DictOptionDto } from '../../table/bia-table/dict-option-dto';
 import { BiaFieldBaseComponent } from '../bia-field-base/bia-field-base.component';
 
@@ -37,6 +38,7 @@ import { BiaFieldBaseComponent } from '../bia-field-base/bia-field-base.componen
     InputText,
     TranslateModule,
     FloatLabel,
+    TextareaModule,
   ],
   templateUrl: './bia-form-field.component.html',
   styleUrl: './bia-form-field.component.scss',

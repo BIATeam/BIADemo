@@ -35,9 +35,9 @@ import { InputText } from 'primeng/inputtext';
 import { MultiSelect } from 'primeng/multiselect';
 import { Table, TableModule } from 'primeng/table';
 import { Subscription } from 'rxjs';
-import { FormatValuePipe } from '../../../pipes/format-value.pipe';
 import { TableHelperService } from '../../../services/table-helper.service';
 import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.component';
+import { BiaTableFilterRecapComponent } from '../bia-table-filter-recap/bia-table-filter-recap.component';
 import { BiaFilterMatchMode } from './bia-filter-match-mode';
 
 @Component({
@@ -54,11 +54,11 @@ import { BiaFilterMatchMode } from './bia-filter-match-mode';
     InputText,
     NgClass,
     TranslateModule,
-    FormatValuePipe,
     FloatLabel,
     Checkbox,
     DatePicker,
     Button,
+    BiaTableFilterRecapComponent,
   ],
 })
 export class BiaTableFilterComponent<CrudItem>
@@ -88,12 +88,6 @@ export class BiaTableFilterComponent<CrudItem>
     return displayFormat && displayFormat instanceof BiaFieldNumberFormat
       ? displayFormat
       : null;
-  }
-
-  getOptionsLabels(value: number[]): string {
-    return value
-      .map(v => this.options?.find(o => o.id === v)?.display)
-      .join(',');
   }
 
   ngOnInit() {
