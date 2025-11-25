@@ -63,6 +63,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
                 {
                     options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
                     options.AddDocumentTransformer<SortTagsDocumentTransformer>();
+                    options.AddDocumentTransformer<ApiInfoDocumentTransformer>(); // sets Title/Version
                 });
             }
 
@@ -170,14 +171,16 @@ namespace BIA.Net.Core.Presentation.Api.Features
             {
                 app.UseStaticFiles();
 
+                string swaggerEndpoint = "BIAApi/swagger.json";
+
                 if (app is WebApplication webApp)
                 {
-                    webApp.MapOpenApi();
+                    webApp.MapOpenApi(pattern: $"/swagger/{swaggerEndpoint}");
                 }
 
                 app.UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint("../openapi/v1.json", "v1.0");
+                    c.SwaggerEndpoint(swaggerEndpoint, "v1.0");
                     c.InjectJavascript("./AutoLogin.c0c914df432ec8edfa27c6c4d05ce98c.js");
                     c.InjectStylesheet("./AutoLogin.1379b731dd73c3456a0ce0aab0c01a83.css");
                 });
