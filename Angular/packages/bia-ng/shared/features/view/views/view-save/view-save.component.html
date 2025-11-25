@@ -1,4 +1,5 @@
 <bia-view-form
   [view]="(currentView | async) ?? undefined"
   (save)="onSaveUserView($event)"></bia-view-form>
-current view {{ currentView }}
+
+<bia-view-state-recap [tableState]="viewPreference"> </bia-view-state-recap>
