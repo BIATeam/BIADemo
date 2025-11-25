@@ -1,0 +1,4 @@
+<bia-view-form
+  [view]="(currentView | async) ?? undefined"
+  (save)="onSaveUserView($event)"></bia-view-form>
+current view {{ currentView }}

@@ -6,7 +6,14 @@ import { TeamView } from '../model/team-view';
 import { View } from '../model/view';
 
 export namespace ViewsActions {
+  export const load = createAction('[Views] Load', props<{ id: number }>());
+
   export const loadAllView = createAction('[Views] Load all');
+
+  export const loadSuccess = createAction(
+    '[Views] Load success',
+    props<{ view: View }>()
+  );
 
   export const loadAllSuccess = createAction(
     '[Views] Load all success',

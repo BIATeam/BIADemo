@@ -1,5 +1,6 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
+import { CrudState, DEFAULT_CRUD_STATE } from 'bia-ng/models';
 import { View } from '../model/view';
 import { ViewsActions } from './views-actions';
 
@@ -20,7 +21,7 @@ export const viewsAdapter = createEntityAdapter<View>({
 // -> ids arrays allow us to sort data easily
 // -> entities map allows us to access the data quickly without iterating/filtering though an array of objects
 
-export interface ViewState extends EntityState<View> {
+export interface ViewState extends CrudState<View>, EntityState<View> {
   // additional props here
   displayViewDialog: string;
   lastViewChanged: View;
@@ -29,6 +30,7 @@ export interface ViewState extends EntityState<View> {
 
 export const INIT_VIEW_STATE: ViewState = viewsAdapter.getInitialState({
   // additional props default values here
+  ...DEFAULT_CRUD_STATE(),
   displayViewDialog: '',
   lastViewChanged: <View>{},
   dataLoaded: false,

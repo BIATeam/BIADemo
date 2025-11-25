@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { PermissionGuard } from 'packages/bia-ng/core/public-api';
+import { ViewSaveComponent } from 'packages/bia-ng/shared/features/view/views/view-save/view-save.component';
 import {
   DynamicLayoutComponent,
   LayoutMode,
@@ -61,6 +62,37 @@ export const ROUTES: Routes = [
         },
         component: PlaneImportComponent,
         canActivate: [PermissionGuard],
+      },
+      {
+        path: 'view',
+        data: {
+          breadcrumb: 'bia.views.title',
+          canNavigate: false,
+          title: 'bia.view.title',
+        },
+        children: [
+          {
+            path: ':viewId',
+            data: {
+              breadcrumb: '',
+              canNavigate: false,
+            },
+            children: [
+              {
+                path: 'save',
+                data: {
+                  breadcrumb: 'bia.views.save',
+                  canNavigate: true,
+                  permission: Permission.Plane_List_Access,
+                  layoutMode: LayoutMode.splitPage,
+                  title: 'bia.views.save',
+                },
+                component: ViewSaveComponent,
+                canActivate: [PermissionGuard],
+              },
+            ],
+          },
+        ],
       },
       {
         path: ':crudItemId',

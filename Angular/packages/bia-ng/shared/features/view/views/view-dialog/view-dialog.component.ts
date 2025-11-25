@@ -38,6 +38,7 @@ import { ViewsActions } from '../../store/views-actions';
   styleUrls: ['./view-dialog.component.scss'],
   providers: [ConfirmationService],
   imports: [
+    CommonModule,
     Dialog,
     SharedModule,
     Tabs,

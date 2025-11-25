@@ -4,6 +4,7 @@ import {
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
+import { View } from '../model/view';
 import * as fromViews from './views-reducer';
 
 export namespace ViewsStore {
@@ -24,6 +25,11 @@ export namespace ViewsStore {
    */
 
   export const getViewsState = createFeatureSelector<ViewsState>('views');
+
+  export const getCurrentView = createSelector(
+    getViewsState,
+    state => state.views.currentItem ?? <View>{}
+  );
 
   export const getViewsEntitiesState = createSelector(
     getViewsState,

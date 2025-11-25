@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -24,6 +25,7 @@ import { View } from '../../model/view';
   templateUrl: './view-form.component.html',
   styleUrls: ['./view-form.component.scss'],
   imports: [
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     InputText,

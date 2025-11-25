@@ -35,6 +35,24 @@ export class ViewsEffects {
     )
   );
 
+  load$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ViewsActions.load),
+      map(x => x?.id),
+      switchMap(id => {
+        return this.teamViewDas.get({ id: id }).pipe(
+          map(view => {
+            return ViewsActions.loadSuccess({ view });
+          }),
+          catchError(err => {
+            this.biaMessageService.showErrorHttpResponse(err);
+            return of(ViewsActions.failure({ error: err }));
+          })
+        );
+      })
+    )
+  );
+
   deleteUserView$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ViewsActions.removeUserView) /* When action is dispatched */,

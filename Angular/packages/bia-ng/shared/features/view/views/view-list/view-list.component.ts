@@ -9,7 +9,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
@@ -21,11 +21,13 @@ import { ViewType } from 'packages/bia-ng/models/enum/public-api';
 import { BiaTableState, KeyValuePair } from 'packages/bia-ng/models/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { FilterMetadata, PrimeTemplate, SelectItemGroup } from 'primeng/api';
+import { ButtonDirective } from 'primeng/button';
 import { FloatLabel } from 'primeng/floatlabel';
 import { Select } from 'primeng/select';
 import { Subscription, combineLatest } from 'rxjs';
 import { map, skip } from 'rxjs/operators';
 import { TableHelperService } from '../../../../services/table-helper.service';
+import { DefaultView } from '../../model/default-view';
 import { View } from '../../model/view';
 import { QUERY_STRING_VIEW } from '../../model/view.constants';
 import { ViewsStore } from '../../store/view.state';
@@ -46,6 +48,7 @@ const undefinedView = -2;
     ViewDialogComponent,
     TranslateModule,
     FloatLabel,
+    ButtonDirective,
   ],
 })
 export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
@@ -63,10 +66,22 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   _selectedView: number = undefinedView;
   set selectedView(value: number) {
     this._selectedView = value;
+    if (this._selectedView !== currentView) {
+      this.currentSelectedView = value;
+    }
     this.viewNameChange.emit(this.getCurrentViewName());
   }
   get selectedView(): number {
     return this._selectedView;
+  }
+
+  _currentSelectedView: number = undefinedView;
+  set currentSelectedView(value: number) {
+    this._currentSelectedView = value;
+  }
+
+  get currentSelectedView(): number {
+    return this._currentSelectedView;
   }
 
   defaultView: number;
@@ -86,7 +101,9 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     public translateService: TranslateService,
     protected authService: AuthService,
     protected route: ActivatedRoute,
-    protected tableHelperService: TableHelperService
+    protected tableHelperService: TableHelperService,
+    protected router: Router,
+    protected activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -425,11 +442,6 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.defaultView = defaultView;
-
-    this.groupedViews[0].items.push({
-      label: this.translations['bia.views.current'],
-      value: currentView,
-    });
   }
   protected initViewByQueryParam(views: View[]) {
     //<a [routerLink]="['/planes-view']" [queryParams]="{ view: 'test2' }">link to plane view</a>
@@ -535,5 +547,25 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
       this.authService.hasPermission(BiaPermission.View_DeleteUserView) ||
       this.authService.hasPermission(BiaPermission.View_SetDefaultUserView)
     );
+  }
+
+  openSave() {
+    this.router.navigate(['view', this.currentSelectedView, 'save'], {
+      relativeTo: this.activatedRoute,
+    });
+  }
+
+  toggleDefault() {
+    const defaultView: DefaultView = {
+      id: this.currentSelectedView,
+      isDefault: this.currentSelectedView !== this.defaultView,
+      tableId: this.tableStateKey,
+    };
+    this.store.dispatch(ViewsActions.setDefaultUserView(defaultView));
+  }
+
+  restoreView() {
+    this.selectedView = this.currentSelectedView;
+    this.updateFilterValues(null, true);
   }
 }

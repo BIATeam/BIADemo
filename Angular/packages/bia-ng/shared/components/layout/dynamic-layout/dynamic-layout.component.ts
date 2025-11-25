@@ -75,7 +75,7 @@ export class DynamicLayoutComponent<TDto extends { id: number | string }>
   style: any;
   maximizable: boolean;
 
-  protected maxScanDepth = 2;
+  protected maxScanDepth = 3;
   protected isResizing = false;
   protected startX: number;
   protected startWidthLeft: number;
