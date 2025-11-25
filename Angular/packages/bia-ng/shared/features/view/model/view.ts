@@ -1,7 +1,7 @@
+import { BaseDto } from 'bia-ng/models';
 import { ViewTeam } from './view-team';
 
-export interface View {
-  id: number;
+export interface View extends BaseDto {
   tableId: string;
   name: string;
   description: string;

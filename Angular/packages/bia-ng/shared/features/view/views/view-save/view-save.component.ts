@@ -2,8 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { BiaTableState } from 'bia-ng/models';
+import { Observable } from 'rxjs';
 import { planeCRUDConfiguration } from 'src/app/features/planes/plane.constants';
-import { ViewFormComponent } from '../../components/view-form/view-form.component';
+import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
+import { CrudItemEditComponent } from '../../../../feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
+import { ViewSaveFormComponent } from '../../components/view-save-form/view-save-form.component';
 import { ViewStateRecapComponent } from '../../components/view-state-recap/view-state-recap.component';
 import { View } from '../../model/view';
 import { ViewsStore } from '../../store/view.state';
@@ -13,24 +17,30 @@ import { ViewsActions } from '../../store/views-actions';
   selector: 'bia-view-save',
   templateUrl: './view-save.component.html',
   styleUrls: ['./view-save.component.scss'],
-  imports: [CommonModule, ViewFormComponent, ViewStateRecapComponent],
+  imports: [
+    CommonModule,
+    ViewSaveFormComponent,
+    ViewStateRecapComponent,
+    SpinnerComponent,
+  ],
 })
-export class ViewSaveComponent {
+export class ViewSaveComponent extends CrudItemEditComponent<View> {
   tableStateKey: string = planeCRUDConfiguration.tableStateKey;
   viewId: number;
-  currentView = this.store.select(ViewsStore.getCurrentView);
-  viewPreference: any;
+  currentView: Observable<View> = this.store.select(ViewsStore.getCurrentView);
+  viewPreference?: BiaTableState;
 
   constructor(
     protected readonly store: Store,
     protected readonly activatedRoute: ActivatedRoute
   ) {
+    super();
     this.viewId = this.activatedRoute.snapshot.params.viewId;
     this.store.dispatch(ViewsActions.load({ id: this.viewId }));
     this.viewPreference = this.getViewPreference();
   }
 
-  protected getViewPreference(): any | undefined {
+  protected getViewPreference(): BiaTableState | undefined {
     let stateString = sessionStorage.getItem(this.tableStateKey);
     console.error(stateString, this.tableStateKey);
     if (stateString) {
@@ -55,7 +65,7 @@ export class ViewSaveComponent {
 
   onSaveUserView(view: View) {
     if (view) {
-      const json = this.getViewPreference();
+      const json = this.getViewPreferenceAsString();
       if (json) {
         view.preference = json;
         view.tableId = this.tableStateKey;
