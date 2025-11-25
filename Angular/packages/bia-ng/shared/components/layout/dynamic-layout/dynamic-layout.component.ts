@@ -169,6 +169,7 @@ export class DynamicLayoutComponent<TDto extends { id: number | string }>
       this.popupTitle = child.data['title'] ?? this.popupTitle;
       this.style = child.data['style'] ?? this.style;
       this.maximizable = child.data['maximizable'] ?? true;
+      this.leftWidth = child.data['leftWidth'] ?? this.leftWidth;
 
       if (child.data['layoutMode'] !== undefined) {
         this.layoutMode = child.data['layoutMode'];

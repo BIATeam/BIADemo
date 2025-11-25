@@ -226,12 +226,23 @@
             }
             @default {
               <p-floatlabel variant="on">
-                <input
-                  [formControlName]="field.field"
-                  type="text"
-                  pInputText
-                  maxlength="field.maxlength"
-                  style="width: 100%" />
+                @if (field.multiline) {
+                  <textarea
+                    pTextarea
+                    [formControlName]="field.field"
+                    [rows]="field.multiline.rows"
+                    [cols]="field.multiline.cols"
+                    [style]="!field.multiline.resize ? 'resize: none' : ''"
+                    class="h-full"
+                    fluid></textarea>
+                } @else {
+                  <input
+                    [formControlName]="field.field"
+                    type="text"
+                    pInputText
+                    maxlength="field.maxlength"
+                    style="width: 100%" />
+                }
                 <label>
                   @if (field.isRequired && !fieldDisabled) {
                     <span class="bia-star-mandatory">*</span>

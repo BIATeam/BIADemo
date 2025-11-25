@@ -53,6 +53,37 @@ namespace BIA.Net.Core.Application.View
         }
 
         /// <inheritdoc />
+        public async Task<ViewDto> GetAsync(int id)
+        {
+            int currentUserId = this.principal.GetUserId();
+            IEnumerable<string> currentUserPermissions = this.principal.GetUserPermissions();
+
+            if (currentUserPermissions?.Any(x => x == BiaRights.Teams.AccessAll) == true)
+            {
+                return await this.Repository.GetResultAsync(
+                    ViewMapper.EntityToDto(currentUserId),
+                    id: id,
+                    filter: view =>
+                        view.ViewType == ViewType.System ||
+                        view.ViewType == ViewType.Team ||
+                        (view.ViewType == ViewType.User && view.ViewUsers.Any(viewUser => viewUser.UserId == currentUserId)));
+            }
+            else
+            {
+                BaseUserDataDto userData = this.principal.GetUserData<BaseUserDataDto>();
+
+                return await this.Repository.GetResultAsync(
+                    ViewMapper.EntityToDto(currentUserId),
+                    id: id,
+                    filter: view =>
+                        view.ViewType == ViewType.System ||
+                        (view.ViewType == ViewType.Team && view.ViewTeams.Any(viewTeam => userData.CurrentTeams.Select(ct => ct.TeamId).Contains(viewTeam.Team.Id) &&
+                                                                                          viewTeam.Team.Members.Any(member => member.UserId == currentUserId))) ||
+                        (view.ViewType == ViewType.User && view.ViewUsers.Any(viewUser => viewUser.UserId == currentUserId)));
+            }
+        }
+
+        /// <inheritdoc />
         public async Task<IEnumerable<ViewDto>> GetAllAsync()
         {
             int currentUserId = this.principal.GetUserId();
@@ -293,7 +324,7 @@ namespace BIA.Net.Core.Application.View
         }
 
         /// <inheritdoc />
-        public async Task<TeamViewDto> AddTeamViewAsync(TeamViewDto dto)
+        public async Task<ViewDto> AddTeamViewAsync(ViewDto dto)
         {
             if (dto != null)
             {

@@ -68,8 +68,16 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     this._selectedView = value;
     if (this._selectedView !== currentView) {
       this.currentSelectedView = value;
+    } else {
+      const currentViewStored = sessionStorage.getItem(
+        this.tableStateKey + 'View'
+      );
+      if (currentViewStored) {
+        const view: View = JSON.parse(currentViewStored);
+        this.currentSelectedView = view.id;
+      }
     }
-    this.viewNameChange.emit(this.getCurrentViewName());
+    this.viewNameChange.emit(this.getCurrentView());
   }
   get selectedView(): number {
     return this._selectedView;
@@ -94,7 +102,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   @Input() displayedColumns: string[];
   @Input() columns: KeyValuePair[];
   @Output() viewChange = new EventEmitter<string>();
-  @Output() viewNameChange = new EventEmitter<string | null>();
+  @Output() viewNameChange = new EventEmitter<View | null>();
 
   constructor(
     protected store: Store<BiaAppState>,
@@ -177,6 +185,11 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   protected onTableStateChange(changes: SimpleChanges) {
     if (changes.tableState && changes.tableState.isFirstChange() !== true) {
       this.autoSelectView(changes.tableState.currentValue);
+      this.store.dispatch(
+        ViewsActions.updateCurrentPreferences({
+          preferences: changes.tableState.currentValue,
+        })
+      );
     }
   }
 
@@ -184,18 +197,18 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     this.selectedView = this.getCorrespondingViewId(tableStateStr);
   }
 
-  public getCurrentViewName(): string | null {
-    let viewName: string | null = null;
+  public getCurrentView(): View | null {
+    let view: View | null = null;
     if (this.selectedView > -1 && this.views?.length) {
       this.views.forEach(v => {
         if (v.id === this.selectedView) {
-          viewName = v.name;
+          view = v;
           return;
         }
       });
     }
 
-    return viewName;
+    return view;
   }
 
   protected getCorrespondingViewId(preference: string): number {
@@ -509,7 +522,9 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     }*/
 
   protected getViewState(): string | null {
-    return sessionStorage.getItem(this.tableStateKey);
+    const preferences = sessionStorage.getItem(this.tableStateKey);
+    this.store.dispatch(ViewsActions.updateCurrentPreferences({ preferences }));
+    return preferences;
   }
 
   onManageView() {
@@ -550,8 +565,9 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   openSave() {
-    this.router.navigate(['view', this.currentSelectedView, 'save'], {
+    this.router.navigate(['view', this.currentSelectedView, 'saveView'], {
       relativeTo: this.activatedRoute,
+      queryParamsHandling: 'preserve',
     });
   }
 

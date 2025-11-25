@@ -16,7 +16,7 @@ import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Table, TableModule } from 'primeng/table';
 import { Tooltip } from 'primeng/tooltip';
 import { AssignViewToTeam } from '../../model/assign-view-to-team';
-import { TeamView } from '../../model/team-view';
+import { View } from '../../model/view';
 import { ViewTeam } from '../../model/view-team';
 
 @Component({
@@ -33,20 +33,20 @@ import { ViewTeam } from '../../model/view-team';
   ],
 })
 export class ViewTeamTableComponent implements OnChanges {
-  @Input() views: TeamView[];
+  @Input() views: View[];
   @Input() teamSelected: Team;
   @Input() canDelete = false;
   @Input() canSetDefault = false;
   @Input() canUpdate = false;
   @Input() canAssign = false;
 
-  get viewSelected(): TeamView | undefined {
+  get viewSelected(): View | undefined {
     if (this.table && this.table.selection) {
-      return this.table.selection as TeamView;
+      return this.table.selection as View;
     }
     return undefined;
   }
-  set viewSelected(value: TeamView | undefined) {
+  set viewSelected(value: View | undefined) {
     if (this.table) {
       this.table.selection = value;
     }
@@ -60,7 +60,7 @@ export class ViewTeamTableComponent implements OnChanges {
     viewId: number | undefined;
     isDefault: boolean;
   }>();
-  @Output() viewSelect = new EventEmitter<TeamView | undefined>();
+  @Output() viewSelect = new EventEmitter<View | undefined>();
 
   constructor(
     protected biaDialogService: BiaDialogService,
@@ -128,7 +128,7 @@ export class ViewTeamTableComponent implements OnChanges {
     }
   }
 
-  containsCurrentTeam(view: TeamView | undefined) {
+  containsCurrentTeam(view: View | undefined) {
     if (view && view.viewTeams && this.teamSelected) {
       return view.viewTeams.some(
         (x: ViewTeam) => x.teamId === this.teamSelected.id
@@ -137,7 +137,7 @@ export class ViewTeamTableComponent implements OnChanges {
     return false;
   }
 
-  containsOnlyCurrentTeam(view: TeamView | undefined) {
+  containsOnlyCurrentTeam(view: View | undefined) {
     if (view && view.viewTeams?.length > 1) return false;
     if (view && view.viewTeams && this.teamSelected) {
       return view.viewTeams.some(
@@ -146,7 +146,7 @@ export class ViewTeamTableComponent implements OnChanges {
     }
     return false;
   }
-  isTeamDefault(view: TeamView | undefined): boolean {
+  isTeamDefault(view: View | undefined): boolean {
     if (view && view.viewTeams && this.teamSelected) {
       return view.viewTeams.some(
         (x: ViewTeam) =>
@@ -187,7 +187,7 @@ export class ViewTeamTableComponent implements OnChanges {
 
   protected onViewsChange(changes: SimpleChanges) {
     if (changes.views && this.table) {
-      const viewSelected: TeamView | undefined = this.viewSelected;
+      const viewSelected: View | undefined = this.viewSelected;
       if (viewSelected && viewSelected.id > 0 && this.views) {
         this.viewSelected = this.views.filter(x => x.id === viewSelected.id)[0];
       } else {

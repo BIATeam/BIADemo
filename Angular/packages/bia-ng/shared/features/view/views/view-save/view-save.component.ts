@@ -1,17 +1,20 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Inject, Injector } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { BiaTableState } from 'bia-ng/models';
-import { Observable } from 'rxjs';
-import { planeCRUDConfiguration } from 'src/app/features/planes/plane.constants';
+import { TranslateModule } from '@ngx-translate/core';
+import { BaseDto, BiaTableState } from 'packages/bia-ng/models/public-api';
+import { CrudConfig, CrudItemService } from 'packages/bia-ng/shared/public-api';
+import { ButtonDirective } from 'primeng/button';
+import { Observable, map } from 'rxjs';
 import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
 import { CrudItemEditComponent } from '../../../../feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
 import { ViewSaveFormComponent } from '../../components/view-save-form/view-save-form.component';
 import { ViewStateRecapComponent } from '../../components/view-state-recap/view-state-recap.component';
 import { View } from '../../model/view';
+import { viewCRUDConfiguration } from '../../model/view.constants';
+import { ViewService } from '../../services/view.service';
 import { ViewsStore } from '../../store/view.state';
-import { ViewsActions } from '../../store/views-actions';
 
 @Component({
   selector: 'bia-view-save',
@@ -22,27 +25,66 @@ import { ViewsActions } from '../../store/views-actions';
     ViewSaveFormComponent,
     ViewStateRecapComponent,
     SpinnerComponent,
+    TranslateModule,
+    ButtonDirective,
+  ],
+  providers: [
+    {
+      provide: 'FEATURE_SERVICE',
+      useFactory: (injector: Injector, route: ActivatedRoute) => {
+        const serviceType =
+          route.parent?.parent?.snapshot.data['featureServiceType'];
+        if (serviceType) {
+          return injector.get(serviceType);
+        } else {
+          return null;
+        }
+      },
+      deps: [Injector, ActivatedRoute],
+    },
   ],
 })
-export class ViewSaveComponent extends CrudItemEditComponent<View> {
-  tableStateKey: string = planeCRUDConfiguration.tableStateKey;
-  viewId: number;
+export class ViewSaveComponent<
+  TDto extends BaseDto,
+> extends CrudItemEditComponent<View> {
+  tableStateKey: string;
+  featureConfiguration?: CrudConfig<TDto>;
   currentView: Observable<View> = this.store.select(ViewsStore.getCurrentView);
-  viewPreference?: BiaTableState;
+  viewPreference$: Observable<BiaTableState | undefined>;
+  title: string;
 
   constructor(
+    protected injector: Injector,
+    protected viewService: ViewService,
     protected readonly store: Store,
-    protected readonly activatedRoute: ActivatedRoute
+    protected readonly activatedRoute: ActivatedRoute,
+    @Inject('FEATURE_SERVICE')
+    protected readonly featureService: CrudItemService<TDto>
   ) {
-    super();
-    this.viewId = this.activatedRoute.snapshot.params.viewId;
-    this.store.dispatch(ViewsActions.load({ id: this.viewId }));
-    this.viewPreference = this.getViewPreference();
+    super(injector, viewService);
+    this.crudConfiguration = viewCRUDConfiguration;
+    this.setTableStateKey();
+    this.viewPreference$ = this.store
+      .select(ViewsStore.getViewCurrentPreferences)
+      .pipe(map((p: string | null) => this.getViewPreference(p)));
+    this.title = this.activatedRoute.snapshot.data['title'];
   }
 
-  protected getViewPreference(): BiaTableState | undefined {
-    let stateString = sessionStorage.getItem(this.tableStateKey);
-    console.error(stateString, this.tableStateKey);
+  protected setTableStateKey(): void {
+    const parent: ActivatedRoute | null | undefined =
+      this.activatedRoute.parent?.parent;
+
+    if (!parent) {
+      return;
+    }
+
+    this.tableStateKey = parent.snapshot.data['featureViews'] + 'Grid';
+    this.featureConfiguration = parent.snapshot.data['featureConfiguration'];
+  }
+
+  protected getViewPreference(
+    stateString: string | null
+  ): BiaTableState | undefined {
     if (stateString) {
       const state = JSON.parse(stateString);
       return state;
@@ -63,18 +105,21 @@ export class ViewSaveComponent extends CrudItemEditComponent<View> {
     return stateString;
   }
 
-  onSaveUserView(view: View) {
+  onViewSubmitted(view: View) {
     if (view) {
       const json = this.getViewPreferenceAsString();
       if (json) {
         view.preference = json;
         view.tableId = this.tableStateKey;
-        if (view.id > 0) {
-          this.store.dispatch(ViewsActions.updateUserView(view));
-        } else {
-          this.store.dispatch(ViewsActions.addUserView(view));
-        }
+        this.onSubmitted(view);
       }
     }
+  }
+
+  protected navigateBack() {
+    this.router.navigate(['../../../'], {
+      relativeTo: this.activatedRoute,
+      queryParamsHandling: 'preserve',
+    });
   }
 }

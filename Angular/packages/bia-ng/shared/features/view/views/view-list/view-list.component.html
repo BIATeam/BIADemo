@@ -26,7 +26,8 @@
   icon="pi pi-save"
   variant="text"
   severity="secondary"
-  (click)="openSave()"></button>
+  (click)="openSave()"
+  class="small-button"></button>
 <button
   pButton
   [disabled]="currentSelectedView === 0"
@@ -35,23 +36,27 @@
   "
   variant="text"
   severity="secondary"
-  (click)="toggleDefault()"></button>
+  (click)="toggleDefault()"
+  class="small-button"></button>
 <button
   pButton
   [disabled]="selectedView !== -1"
   icon="pi pi-sync"
   variant="text"
   severity="secondary"
-  (click)="restoreView()"></button>
+  (click)="restoreView()"
+  class="small-button"></button>
 @if (showEditButton() === true) {
   <button
     pButton
     icon="pi pi-cog"
     variant="text"
     severity="secondary"
-    (click)="onManageView()"></button>
+    (click)="onManageView()"
+    class="small-button"></button>
 }
-<bia-view-dialog
-  *ngIf="showEditButton() === true"
-  [tableStateKey]="tableStateKey"
-  [useViewTeamWithTypeId]="useViewTeamWithTypeId"></bia-view-dialog>
+@if (showEditButton() === true) {
+  <bia-view-dialog
+    [tableStateKey]="tableStateKey"
+    [useViewTeamWithTypeId]="useViewTeamWithTypeId"></bia-view-dialog>
+}

@@ -47,6 +47,17 @@ export class BiaFieldDateFormat {
   }
 }
 
+export class BiaFieldMultilineString {
+  rows: number;
+  cols: number;
+  resize: boolean;
+  constructor() {
+    this.rows = 5;
+    this.cols = 30;
+    this.resize = false;
+  }
+}
+
 export class BiaFieldConfig<TDto> {
   field: keyof TDto & string;
   header: string;
@@ -76,6 +87,7 @@ export class BiaFieldConfig<TDto> {
   isVisibleInTable: boolean;
   filterWithDisplay: boolean;
   customDisplayFormat: boolean = true;
+  multiline?: BiaFieldMultilineString;
 
   get isDate() {
     return (
@@ -119,6 +131,7 @@ export class BiaFieldConfig<TDto> {
     this.displayFormat = null;
     this.isVisibleInTable = true;
     this.filterWithDisplay = false;
+    this.multiline = undefined;
   }
 
   public clone(): BiaFieldConfig<TDto> {
@@ -149,6 +162,7 @@ export class BiaFieldConfig<TDto> {
         isVisibleInTable: this.isVisibleInTable,
         filterWithDisplay: this.filterWithDisplay,
         customDisplayFormat: this.customDisplayFormat,
+        multiline: this.multiline,
       }
     );
   }

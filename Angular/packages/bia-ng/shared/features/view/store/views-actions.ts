@@ -2,7 +2,6 @@ import { createAction, props } from '@ngrx/store';
 import { AssignViewToTeam } from '../model/assign-view-to-team';
 import { DefaultView } from '../model/default-view';
 import { TeamDefaultView } from '../model/team-default-view';
-import { TeamView } from '../model/team-view';
 import { View } from '../model/view';
 
 export namespace ViewsActions {
@@ -47,7 +46,7 @@ export namespace ViewsActions {
 
   export const updateTeamView = createAction(
     '[Views] Update team view',
-    props<TeamView>()
+    props<View>()
   );
 
   export const addUserViewSuccess = createAction(
@@ -60,6 +59,11 @@ export namespace ViewsActions {
     props<{ id: number }>()
   );
 
+  export const multiRemove = createAction(
+    '[Views] Multi Remove',
+    props<{ ids: number[] }>()
+  );
+
   export const setDefaultTeamView = createAction(
     '[Views] Set default team view',
     props<TeamDefaultView>()
@@ -67,12 +71,12 @@ export namespace ViewsActions {
 
   export const addTeamView = createAction(
     '[Views] Add team view',
-    props<TeamView>()
+    props<View>()
   );
 
   export const addTeamViewSuccess = createAction(
     '[Views] Add team view success',
-    props<TeamView>()
+    props<View>()
   );
 
   export const failure = createAction(
@@ -90,5 +94,14 @@ export namespace ViewsActions {
   export const setViewSuccess = createAction(
     '[Views] set view success',
     props<View>()
+  );
+
+  export const clearAll = createAction('[Views] Clear all in state');
+
+  export const clearCurrent = createAction('[Views] Clear current');
+
+  export const updateCurrentPreferences = createAction(
+    '[Views] Update current preferences',
+    props<{ preferences: string | null }>()
   );
 }

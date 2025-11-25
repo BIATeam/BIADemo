@@ -21,3 +21,20 @@
   [displayHistorical]="displayHistorical"
   [historicalEntries]="historicalEntries">
 </bia-form>
+<div class="flex justify-content-around">
+  @if (biaForm) {
+    <button
+      pButton
+      label="{{ 'bia.views.save' | translate }}"
+      [loading]="biaForm.submittingForm"
+      [disabled]="isSaveDisabled"
+      (click)="saveView()"></button>
+    <button
+      pButton
+      label="{{ 'bia.views.saveAs' | translate }}"
+      type="submit"
+      [loading]="biaForm.submittingForm"
+      [disabled]="isSaveAsDisabled"
+      (click)="saveView(true)"></button>
+  }
+</div>

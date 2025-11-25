@@ -70,9 +70,9 @@ namespace BIA.Net.Core.Domain.View.Mappers
         /// </summary>
         /// <param name="dto">The dto.</param>
         /// <param name="entity">The entity.</param>
-        public static void MapperAddTeamView(TeamViewDto dto, View entity)
+        public static void MapperAddTeamView(ViewDto dto, View entity)
         {
-            if (dto != null && dto.TeamId > 0)
+            if (dto != null && dto.ViewTeams.Count > 0)
             {
                 if (entity == null)
                 {
@@ -86,7 +86,10 @@ namespace BIA.Net.Core.Domain.View.Mappers
                 entity.Preference = dto.Preference;
                 entity.ViewType = ViewType.Team;
                 entity.ViewTeams = new List<ViewTeam>();
-                entity.ViewTeams.Add(new ViewTeam { IsDefault = false, ViewId = entity.Id, TeamId = dto.TeamId });
+                foreach (var item in dto.ViewTeams)
+                {
+                    entity.ViewTeams.Add(new ViewTeam { IsDefault = false, ViewId = entity.Id, TeamId = item.TeamId });
+                }
             }
         }
 

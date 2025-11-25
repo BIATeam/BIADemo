@@ -8,7 +8,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.View;
     using BIA.Net.Core.Common;
-    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.View;
     using Microsoft.AspNetCore.Authorization;
@@ -16,7 +15,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Base;
 
     /// <summary>
@@ -39,6 +37,36 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         {
             this.viewAppService = viewAppService;
         }
+
+        /// <summary>
+        /// Get a view by its identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>The view.</returns>
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = Rights.Planes.Read)]
+        public async Task<IActionResult> Get(int id)
+        {
+            if (id == 0)
+            {
+                return this.BadRequest();
+            }
+
+            try
+            {
+                var dto = await this.viewAppService.GetAsync(id);
+                return this.Ok(dto);
+            }
+            catch (ElementNotFoundException)
+            {
+                return this.NotFound();
+            }
+        }
+
 
         /// <summary>
         /// Gets all views that I can see.
@@ -173,9 +201,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> UpdateTeamView(int id, [FromBody] TeamViewDto dto)
+        public async Task<IActionResult> UpdateTeamView(int id, [FromBody] ViewDto dto)
         {
-            if (!this.IsAuthorizeForTeam(dto.TeamId, BiaRights.Views.UpdateTeamViewSuffix).Result)
+            if (dto.ViewTeams.Count == 0 || !dto.ViewTeams.Any(vt => this.IsAuthorizeForTeam(vt.TeamId, BiaRights.Views.UpdateTeamViewSuffix).Result))
             {
                 return this.StatusCode(StatusCodes.Status403Forbidden);
             }
@@ -193,9 +221,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> AddTeamView([FromBody] TeamViewDto dto)
+        public async Task<IActionResult> AddTeamView([FromBody] ViewDto dto)
         {
-            if (!this.IsAuthorizeForTeam(dto.TeamId, BiaRights.Views.AddTeamViewSuffix).Result)
+            if (dto.ViewTeams.Count == 0 || !dto.ViewTeams.Any(vt => this.IsAuthorizeForTeam(vt.TeamId, BiaRights.Views.UpdateTeamViewSuffix).Result))
             {
                 return this.StatusCode(StatusCodes.Status403Forbidden);
             }

@@ -1,16 +1,43 @@
+<h3>{{ 'bia.views.summary' | translate }}</h3>
+<div>{{ 'bia.itemsPerPage' | translate }} : {{ tableState?.rows }}</div>
+@if (globalFilter) {
+  <div>
+    {{ 'bia.views.globalSearchFilter' | translate }} : {{ globalFilter | json }}
+  </div>
+}
+
 <p-table [value]="recapData" class="p-datatable-sm">
   <ng-template pTemplate="header">
     <tr>
-      <th>Column</th>
-      <th>Filter</th>
-      <th>Sort</th>
+      <th>{{ 'bia.views.column' | translate }}</th>
+      <th>{{ 'bia.views.filter' | translate }}</th>
+      <th>{{ 'bia.views.sort' | translate }}</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-rowData>
-    <tr>
-      <td>{{ rowData.column }}</td>
-      <td>{{ rowData.filter }}</td>
-      <td>{{ rowData.sort }}</td>
-    </tr>
+    @let field = getFieldConfig(rowData.column);
+    @if (field) {
+      <tr>
+        <td>{{ field.header | translate }}</td>
+        <td>
+          @if (rowData.filter) {
+            <bia-table-filter-recap
+              [filterArray]="
+                arrayType.isArray(rowData.filter)
+                  ? rowData.filter
+                  : [rowData.filter]
+              "
+              [columnFilterType]="field.type"
+              [field]="field"
+              [options]="getOptionDto(rowData.column)"></bia-table-filter-recap>
+          }
+        </td>
+        <td>
+          @if (rowData.sort) {
+            <i class="pi" [ngClass]="rowData.sort" style="font-size: 1rem"></i>
+          }
+        </td>
+      </tr>
+    }
   </ng-template>
 </p-table>

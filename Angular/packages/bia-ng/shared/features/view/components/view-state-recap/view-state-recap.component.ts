@@ -1,17 +1,33 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { BiaTableState } from 'bia-ng/models';
+import {
+  BiaFieldConfig,
+  BiaTableState,
+} from 'packages/bia-ng/models/public-api';
+import { BiaTableFilterRecapComponent } from 'packages/bia-ng/shared/components/table/bia-table-filter-recap/bia-table-filter-recap.component';
+import { DictOptionDto } from 'packages/bia-ng/shared/public-api';
+import { FilterMetadata } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'bia-view-state-recap',
   templateUrl: './view-state-recap.component.html',
   styleUrls: ['./view-state-recap.component.scss'],
-  imports: [TranslateModule, TableModule],
+  imports: [
+    TranslateModule,
+    TableModule,
+    CommonModule,
+    BiaTableFilterRecapComponent,
+  ],
 })
-export class ViewStateRecapComponent implements OnChanges {
+export class ViewStateRecapComponent<TDto> implements OnChanges {
   @Input() tableState?: BiaTableState;
+  @Input() fieldsConfig?: BiaFieldConfig<TDto>[];
+  @Input() dictOptionDtos?: DictOptionDto[];
   recapData: { column: string; filter: any; sort: string }[] = [];
+  arrayType: typeof Array = Array;
+  globalFilter?: any;
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['tableState']) {
@@ -29,18 +45,14 @@ export class ViewStateRecapComponent implements OnChanges {
     const filtersArray = Object.entries(filters || {}).flatMap(
       ([field, filter]) => {
         if (!filter) return [];
-        if (Array.isArray(filter)) {
-          return filter.map(f => ({
-            field,
-            value: f.value ? JSON.stringify(f) : '-',
-          }));
-        } else {
-          return [
-            { field, value: filter.value ? JSON.stringify(filter) : '-' },
-          ];
-        }
+        return [{ field, value: filter ? filter : undefined }];
       }
     );
+
+    this.globalFilter = (
+      filtersArray.find(f => f.field.startsWith('global|'))
+        ?.value as FilterMetadata
+    )?.value;
 
     this.recapData =
       columnOrder?.map(col => {
@@ -48,9 +60,17 @@ export class ViewStateRecapComponent implements OnChanges {
         const sort = multiSortMeta?.find(s => s.field === col);
         return {
           column: col,
-          filter: filter ? filter.value : '-',
-          sort: sort ? (sort.order === 1 ? 'Asc' : 'Desc') : '-',
+          filter: filter ? filter.value : '',
+          sort: sort ? (sort.order === 1 ? 'pi-sort-up' : 'pi-sort-down') : '',
         };
       }) || [];
+  }
+
+  public getOptionDto(key: string) {
+    return this.dictOptionDtos?.filter(x => x.key === key)[0]?.value;
+  }
+
+  public getFieldConfig(key: string) {
+    return this.fieldsConfig?.filter(x => x.field === key)[0];
   }
 }

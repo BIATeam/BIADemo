@@ -6,7 +6,6 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 import { AssignViewToTeam } from '../model/assign-view-to-team';
 import { DefaultView } from '../model/default-view';
 import { TeamDefaultView } from '../model/team-default-view';
-import { TeamView } from '../model/team-view';
 import { View } from '../model/view';
 import { TeamViewDas } from '../services/team-view-das.service';
 import { UserViewDas } from '../services/user-view-das.service';
@@ -40,7 +39,7 @@ export class ViewsEffects {
       ofType(ViewsActions.load),
       map(x => x?.id),
       switchMap(id => {
-        return this.teamViewDas.get({ id: id }).pipe(
+        return this.viewDas.get({ id: id }).pipe(
           map(view => {
             return ViewsActions.loadSuccess({ view });
           }),
@@ -117,7 +116,7 @@ export class ViewsEffects {
   updateTeamView$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ViewsActions.updateTeamView),
-      switchMap((view: TeamView) =>
+      switchMap((view: View) =>
         this.teamViewDas.put({ item: view, id: view.id }).pipe(
           switchMap(viewUpdated => {
             this.biaMessageService.showUpdateSuccess();
@@ -175,7 +174,7 @@ export class ViewsEffects {
   addTeamView$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ViewsActions.addTeamView),
-      switchMap((view: TeamView) =>
+      switchMap((view: View) =>
         this.teamViewDas.post({ item: view }).pipe(
           switchMap(viewAdded => {
             this.biaMessageService.showAddSuccess();

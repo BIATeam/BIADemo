@@ -27,7 +27,6 @@ import { ViewUserTableComponent } from '../../components/view-user-table/view-us
 import { AssignViewToTeam } from '../../model/assign-view-to-team';
 import { DefaultView } from '../../model/default-view';
 import { TeamDefaultView } from '../../model/team-default-view';
-import { TeamView } from '../../model/team-view';
 import { View } from '../../model/view';
 import { ViewsStore } from '../../store/view.state';
 import { ViewsActions } from '../../store/views-actions';
@@ -66,10 +65,10 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
 
   teams$: Observable<Team[]>;
   views$: Observable<View[]>;
-  viewTeams$: Observable<TeamView[]>;
+  viewTeams$: Observable<View[]>;
   viewUsers$: Observable<View[]>;
   userViewSelected: View | undefined;
-  teamViewSelected: TeamView | undefined;
+  teamViewSelected: View | undefined;
   teamSelected: Team;
 
   canAddTeamView = false;
@@ -117,8 +116,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
   protected initViewTeams() {
     this.viewTeams$ = this.views$.pipe(
       map(
-        views =>
-          views.filter(view => view.viewType === ViewType.Team) as TeamView[]
+        views => views.filter(view => view.viewType === ViewType.Team) as View[]
       )
     );
   }
@@ -163,7 +161,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
 
   onClose() {
     this.userViewSelected = <View>{};
-    this.teamViewSelected = <TeamView>{};
+    this.teamViewSelected = <View>{};
     this.store.dispatch(ViewsActions.closeViewDialog());
   }
 
@@ -181,7 +179,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
   }
 
   onDeleteTeamView(viewId: number) {
-    this.teamViewSelected = <TeamView>{};
+    this.teamViewSelected = <View>{};
     this.store.dispatch(ViewsActions.removeTeamView({ id: viewId }));
   }
 
@@ -220,6 +218,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
       if (json) {
         view.preference = json;
         view.tableId = this.tableStateKey;
+        console.error('onSaveUserView', view);
         if (view.id > 0) {
           this.store.dispatch(ViewsActions.updateUserView(view));
         } else {
@@ -229,13 +228,13 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSaveTeamView(view: TeamView) {
+  onSaveTeamView(view: View) {
     if (view && this.teamSelected) {
       const json = this.getViewPreference();
       if (json) {
         view.preference = json;
         view.tableId = this.tableStateKey;
-        view.teamId = this.teamSelected.id;
+
         if (view.id > 0) {
           this.store.dispatch(ViewsActions.updateTeamView(view));
         } else {
@@ -249,7 +248,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
     this.userViewSelected = view;
   }
 
-  onTeamViewSelected(view: TeamView | undefined) {
+  onTeamViewSelected(view: View | undefined) {
     this.teamViewSelected = view;
   }
 

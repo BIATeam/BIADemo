@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { PermissionGuard } from 'packages/bia-ng/core/public-api';
-import { ViewSaveComponent } from 'packages/bia-ng/shared/features/view/views/view-save/view-save.component';
 import {
   DynamicLayoutComponent,
   LayoutMode,
@@ -13,6 +12,7 @@ import { PlaneTypeOptionModule } from 'src/app/domains/plane-type-option/plane-t
 import { Permission } from 'src/app/shared/permission';
 import { PlaneReadComponent } from '../planes/views/plane-read/plane-read.component';
 import { planeCRUDConfiguration } from './plane.constants';
+import { PlaneService } from './services/plane.service';
 import { FeaturePlanesStore } from './store/plane.state';
 import { PlanesEffects } from './store/planes-effects';
 import { PlaneEditComponent } from './views/plane-edit/plane-edit.component';
@@ -66,33 +66,13 @@ export const ROUTES: Routes = [
       {
         path: 'view',
         data: {
-          breadcrumb: 'bia.views.title',
-          canNavigate: false,
-          title: 'bia.view.title',
+          featureViews: planeCRUDConfiguration.featureName,
+          featureConfiguration: planeCRUDConfiguration,
+          featureServiceType: PlaneService,
+          leftWidth: 60,
         },
-        children: [
-          {
-            path: ':viewId',
-            data: {
-              breadcrumb: '',
-              canNavigate: false,
-            },
-            children: [
-              {
-                path: 'save',
-                data: {
-                  breadcrumb: 'bia.views.save',
-                  canNavigate: true,
-                  permission: Permission.Plane_List_Access,
-                  layoutMode: LayoutMode.splitPage,
-                  title: 'bia.views.save',
-                },
-                component: ViewSaveComponent,
-                canActivate: [PermissionGuard],
-              },
-            ],
-          },
-        ],
+        loadChildren: () =>
+          import('../../shared/bia-shared/view.module').then(m => m.ViewModule),
       },
       {
         path: ':crudItemId',

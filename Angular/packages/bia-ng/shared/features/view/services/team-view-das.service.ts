@@ -1,12 +1,12 @@
 import { Injectable, Injector } from '@angular/core';
 import { AbstractDas } from 'packages/bia-ng/core/public-api';
 import { TeamDefaultView } from '../model/team-default-view';
-import { TeamView } from '../model/team-view';
+import { View } from '../model/view';
 
 @Injectable({
   providedIn: 'root',
 })
-export class TeamViewDas extends AbstractDas<TeamView> {
+export class TeamViewDas extends AbstractDas<View> {
   constructor(injector: Injector) {
     super(injector, 'Views/TeamViews');
   }
