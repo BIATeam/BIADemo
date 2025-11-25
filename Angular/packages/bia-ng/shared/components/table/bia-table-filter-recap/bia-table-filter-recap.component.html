@@ -1,5 +1,5 @@
 <span class="bia-filter-active-vals">
-  @for (filter of filterArray; track filter; let last = $last) {
+  @for (filter of filterArray; track $index; let last = $last) {
     @if (
       filter.value !== null ||
       filter.matchMode === 'empty' ||
