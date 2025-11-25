@@ -17,15 +17,9 @@
   <ng-template pTemplate="body" let-view>
     <tr [pSelectableRow]="view">
       <td>
-        @if (view.viewType === 2) {
-          <i
-            class="pi pi-user"
-            [pTooltip]="'bia.views.personalView' | translate"></i>
-        } @else {
-          <i
-            class="pi pi-users"
-            [pTooltip]="'bia.views.teamView' | translate"></i>
-        }
+        <i
+          class="pi pi-users"
+          [pTooltip]="'bia.views.teamView' | translate"></i>
       </td>
       <td>
         {{ view.name }}

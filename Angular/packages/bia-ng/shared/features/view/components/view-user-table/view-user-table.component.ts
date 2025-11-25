@@ -2,9 +2,7 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnChanges,
   Output,
-  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
@@ -14,6 +12,7 @@ import { ButtonDirective } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Table, TableModule } from 'primeng/table';
 import { Tooltip } from 'primeng/tooltip';
+import { ViewType } from 'src/app/shared/constants';
 import { View } from '../../model/view';
 
 @Component({
@@ -29,7 +28,7 @@ import { View } from '../../model/view';
     TranslateModule,
   ],
 })
-export class ViewUserTableComponent implements OnChanges {
+export class ViewUserTableComponent {
   @Input() views: View[];
   @Input() canDelete = false;
   @Input() canSetDefault = false;
@@ -44,12 +43,12 @@ export class ViewUserTableComponent implements OnChanges {
   }>();
   @Output() viewSelect = new EventEmitter<View | undefined>();
 
+  viewType: typeof ViewType = ViewType;
+
   constructor(
     protected biaDialogService: BiaDialogService,
     protected confirmationService: ConfirmationService
   ) {}
-
-  ngOnChanges(changes: SimpleChanges) {}
 
   onDeleteView(viewId: number | undefined) {
     if (!viewId) {

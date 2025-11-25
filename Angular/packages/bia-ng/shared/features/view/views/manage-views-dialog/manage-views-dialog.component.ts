@@ -164,11 +164,6 @@ export class ManageViewsDialogComponent implements OnInit, OnDestroy {
     this.store.dispatch(ViewsActions.removeUserView({ id: viewId }));
   }
 
-  onDeleteTeamView(viewId: number) {
-    this.teamViewSelected = <View>{};
-    this.store.dispatch(ViewsActions.removeTeamView({ id: viewId }));
-  }
-
   onSetDefaultUserView(event: {
     viewId: number | undefined;
     isDefault: boolean;

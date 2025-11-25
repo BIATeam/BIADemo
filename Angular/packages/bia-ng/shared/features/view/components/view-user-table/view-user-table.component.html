@@ -19,7 +19,7 @@
   <ng-template pTemplate="body" let-view>
     <tr [pSelectableRow]="view">
       <td>
-        @if (view.viewType === 2) {
+        @if (view.viewType === viewType.User) {
           <i
             class="pi pi-user"
             [pTooltip]="'bia.views.personalView' | translate"></i>
@@ -43,10 +43,9 @@
           class="small-button"></button>
       </td>
       <td>
-        @if (canDelete === true && view.viewType === 2) {
+        @if (canDelete === true && view.viewType === viewType.User) {
           <button
             pButton
-            [disabled]="view?.viewType !== 2"
             icon="pi pi-trash"
             pTooltip="{{ 'bia.delete' | translate }}"
             tooltipPosition="top"

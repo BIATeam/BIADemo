@@ -41,7 +41,6 @@ export class ViewTeamTableComponent {
   @ViewChild('viewTeamTable', { static: false }) table: Table;
 
   @Output() assignViewToTeam = new EventEmitter<AssignViewToTeam>();
-  @Output() delete = new EventEmitter<number>();
   @Output() setDefault = new EventEmitter<{
     viewId: number | undefined;
     isDefault: boolean;
@@ -52,19 +51,6 @@ export class ViewTeamTableComponent {
     protected biaDialogService: BiaDialogService,
     protected confirmationService: ConfirmationService
   ) {}
-
-  onDeleteView(viewId: number | undefined) {
-    if (!viewId) {
-      return;
-    }
-    const confirmation: Confirmation = {
-      ...this.biaDialogService.getDeleteConfirmation(),
-      accept: () => {
-        this.delete.emit(viewId);
-      },
-    };
-    this.confirmationService.confirm(confirmation);
-  }
 
   onAssignViewToTeam(viewId: number | undefined, isAssign: boolean) {
     if (!viewId) {
@@ -127,6 +113,7 @@ export class ViewTeamTableComponent {
     }
     return false;
   }
+
   isTeamDefault(view: View): boolean {
     if (view.viewTeams && this.teamSelected) {
       return view.viewTeams.some(
