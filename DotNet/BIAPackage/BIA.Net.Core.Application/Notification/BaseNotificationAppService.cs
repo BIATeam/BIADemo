@@ -40,7 +40,7 @@ namespace BIA.Net.Core.Application.Notification
             TBaseNotificationListItemDto,
             TBaseNotification,
             int,
-            LazyLoadDto,
+            PagingFilterFormatDto,
             TBaseNotificationMapper,
             TBaseNotificationListItemMapper>
         where TBaseNotificationDto : BaseNotificationDto, new()

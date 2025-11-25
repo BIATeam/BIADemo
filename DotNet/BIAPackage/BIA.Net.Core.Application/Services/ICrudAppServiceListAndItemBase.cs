@@ -9,6 +9,7 @@ namespace BIA.Net.Core.Application.Services
     using System.Linq.Expressions;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
@@ -27,7 +28,7 @@ namespace BIA.Net.Core.Application.Services
         where TDto : BaseDto<TKey>, new()
         where TListItemDto : BaseDto<TKey>, new()
         where TEntity : class, IEntity<TKey>, new()
-        where TFilterDto : LazyLoadDto, new()
+        where TFilterDto : class, IPagingFilterFormatDto, new()
     {
         /// <summary>
         /// Get the DTO list with paging and sorting.
@@ -95,7 +96,7 @@ namespace BIA.Net.Core.Application.Services
             string queryMode = QueryMode.ReadList,
             string mapperMode = null,
             bool isReadOnlyMode = false)
-             where TOtherFilter : LazyLoadDto, new();
+             where TOtherFilter : class, IPagingFilterFormatDto, new();
 
         /// <summary>
         /// Get the DTO list.

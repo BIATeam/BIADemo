@@ -5,6 +5,7 @@
 namespace BIA.Net.Core.Domain.User.Specifications
 {
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Specification;
     using BIA.Net.Core.Domain.User.Entities;
 
@@ -18,7 +19,7 @@ namespace BIA.Net.Core.Domain.User.Specifications
         /// </summary>
         /// <param name="filter">The filter.</param>
         /// <returns>The specification.</returns>
-        public static Specification<Member> SearchGetAll(PagingFilterFormatDto filter)
+        public static Specification<Member> SearchGetAll(IPagingFilterFormatDto filter)
         {
             Specification<Member> specification = new TrueSpecification<Member>();
 

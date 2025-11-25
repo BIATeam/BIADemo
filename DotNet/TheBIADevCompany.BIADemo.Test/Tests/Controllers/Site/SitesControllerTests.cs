@@ -208,10 +208,10 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
             #endregion Setup additional context
 
             // Check GetAll behavior (used when displaying the list of available sites).
-            PagingFilterFormatDto filter = new PagingFilterFormatDto()
+            PagingFilterFormatDto<TeamAdvancedFilterDto> filter = new()
             {
                 Filters = null,
-                AdvancedFilter = JsonConvert.SerializeObject(new TeamAdvancedFilterDto() { UserId = 1 }),
+                AdvancedFilter = new TeamAdvancedFilterDto() { UserId = 1 },
             };
             ObjectResult response = this.controller.GetAll(filter).Result as ObjectResult;
             Assert.IsNotNull(response);

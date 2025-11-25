@@ -20,6 +20,7 @@ namespace BIA.Net.Core.Application.Services
     using BIA.Net.Core.Domain.Audit;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Dto.Historic;
     using BIA.Net.Core.Domain.Entity;
     using BIA.Net.Core.Domain.Entity.Interface;
@@ -43,7 +44,7 @@ namespace BIA.Net.Core.Application.Services
     public abstract class CrudAppServiceBase<TDto, TEntity, TKey, TFilterDto, TMapper> : OperationalDomainServiceBase<TEntity, TKey>, ICrudAppServiceBase<TDto, TEntity, TKey, TFilterDto>
         where TDto : BaseDto<TKey>, new()
         where TEntity : class, IEntity<TKey>, new()
-        where TFilterDto : LazyLoadDto, new()
+        where TFilterDto : class, IPagingFilterFormatDto, new()
         where TMapper : BiaBaseMapper<TDto, TEntity, TKey>
     {
         /// <summary>
@@ -186,7 +187,7 @@ namespace BIA.Net.Core.Application.Services
             string queryMode = QueryMode.ReadList,
             string mapperMode = null,
             bool isReadOnlyMode = false)
-            where TOtherFilter : LazyLoadDto, new()
+            where TOtherFilter : class, IPagingFilterFormatDto, new()
         {
             return await this.GetCsvAsync<TDto, TMapper, TOtherFilter>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, isReadOnlyMode: isReadOnlyMode);
         }

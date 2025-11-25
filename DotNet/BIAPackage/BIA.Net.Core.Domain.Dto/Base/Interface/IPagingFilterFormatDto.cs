@@ -1,18 +1,39 @@
-﻿// <copyright file="LazyLoadDto.cs" company="BIA">
-// Copyright (c) BIA. All rights reserved.
+﻿// <copyright file="IPagingFilterFormatDto.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Domain.Dto.Base
+namespace BIA.Net.Core.Domain.Dto.Base.Interface
 {
     using System.Collections.Generic;
-    using System.Text;
     using System.Text.Json;
 
     /// <summary>
-    /// The DTO used for lazy loading with filters, sort and paging.
+    /// Generic interface for <see cref="IPagingFilterFormatDto"/> implementation.
     /// </summary>
-    public class LazyLoadDto
+    /// <typeparam name="TAdvancedFilter">Generic advanced filter type.</typeparam>
+    public interface IPagingFilterFormatDto<TAdvancedFilter> : IPagingFilterFormatDto
     {
+        /// <summary>
+        /// Name of the property and her translation for file export.
+        /// </summary>
+        public TAdvancedFilter AdvancedFilter { get; set; }
+    }
+
+    /// <summary>
+    /// Interface for <see cref="IPagingFilterFormatDto"/> implementation.
+    /// </summary>
+    public interface IPagingFilterFormatDto
+    {
+        /// <summary>
+        /// Gets or sets the parent ids.
+        /// </summary>
+        public string[] ParentIds { get; set; }
+
+        /// <summary>
+        /// Name of the property and her translation for file export.
+        /// </summary>
+        public Dictionary<string, string> Columns { get; set; }
+
         /// <summary>
         /// Gets or sets the number of the first element to return.
         /// </summary>
@@ -47,20 +68,5 @@ namespace BIA.Net.Core.Domain.Dto.Base
         /// Gets or sets the global filter.
         /// </summary>
         public object GlobalFilter { get; set; }
-
-        /// <summary>
-        /// Returns a string that represents of the current object.
-        /// </summary>
-        /// <returns>A formatted string of the object's values.</returns>
-        public override string ToString()
-        {
-            var trace = new StringBuilder("record:[");
-            trace.AppendFormat("first: {0}, rows: {1}, ", this.First, this.Rows);
-            trace.AppendFormat("MultiSortMeta: {0}, ", this.MultiSortMeta);
-            trace.AppendFormat("sortField: {0}, sortOrder: {1}, ", this.SortField, this.SortOrder);
-            trace.AppendFormat("filters: {0}, ", this.Filters);
-            trace.AppendFormat("globalFilter: {0}]", this.GlobalFilter);
-            return trace.ToString();
-        }
     }
 }

@@ -85,7 +85,7 @@ namespace BIA.Net.Core.Domain.Service
             bool isReadOnlyMode = false)
             where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
-            where TOtherFilterDto : LazyLoadDto, new()
+            where TOtherFilterDto : class, IPagingFilterFormatDto, new()
         {
             return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
             {
@@ -240,16 +240,17 @@ namespace BIA.Net.Core.Domain.Service
             bool isReadOnlyMode = false)
             where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
-            where TOtherFilterDto : LazyLoadDto, new()
+            where TOtherFilterDto : class, IPagingFilterFormatDto, new()
         {
             return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
             {
                 var columnHeaderKeys = new List<string>();
                 var columnHeaderValues = new List<string>();
-                if (filters is PagingFilterFormatDto fileFilters)
+
+                if (filters?.Columns is not null)
                 {
-                    columnHeaderKeys.AddRange(fileFilters.Columns.Select(x => x.Key));
-                    columnHeaderValues.AddRange(fileFilters.Columns.Select(x => x.Value));
+                    columnHeaderKeys.AddRange(filters.Columns.Select(x => x.Key));
+                    columnHeaderValues.AddRange(filters.Columns.Select(x => x.Value));
                 }
 
                 // We reset these parameters, used for paging, in order to recover the totality of the data.

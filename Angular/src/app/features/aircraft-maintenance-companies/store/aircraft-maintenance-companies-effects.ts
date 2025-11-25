@@ -65,9 +65,7 @@ export class AircraftMaintenanceCompaniesEffects {
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
             return of(
-              FeatureAircraftMaintenanceCompaniesActions.failure({
-                error: err,
-              })
+              FeatureAircraftMaintenanceCompaniesActions.failure({ error: err })
             );
           })
         );

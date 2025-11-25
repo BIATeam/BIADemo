@@ -17,7 +17,7 @@ namespace BIA.Net.Core.Application.Notification
     /// <typeparam name="TBaseNotificationDto">The type of the notification DTO.</typeparam>
     /// <typeparam name="TBaseNotificationListItemDto">The type of the notification list item DTO.</typeparam>
     /// <typeparam name="TBaseNotification">The type of the notification entity.</typeparam>
-    public interface IBaseNotificationAppService<TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification> : ICrudAppServiceListAndItemBase<TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification, int, LazyLoadDto>
+    public interface IBaseNotificationAppService<TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification> : ICrudAppServiceListAndItemBase<TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification, int, PagingFilterFormatDto>
         where TBaseNotificationDto : BaseNotificationDto, new()
         where TBaseNotificationListItemDto : BaseNotificationListItemDto, new()
         where TBaseNotification : BaseNotification, new()

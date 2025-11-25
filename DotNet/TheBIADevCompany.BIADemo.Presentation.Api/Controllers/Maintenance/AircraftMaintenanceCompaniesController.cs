@@ -15,6 +15,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Presentation.Api.Controller.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -73,7 +74,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.AircraftMaintenanceCompanies.ListAccess)]
-        public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
+        public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto<TeamAdvancedFilterDto> filters)
         {
             var (results, total) = await this.aircraftMaintenanceCompanyService.GetRangeAsync(filters);
             this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
@@ -307,7 +308,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         /// <returns>a csv file.</returns>
         [HttpPost("csv")]
         [Authorize(Roles = Rights.AircraftMaintenanceCompanies.ListAccess)]
-        public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
+        public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto<TeamAdvancedFilterDto> filters)
         {
             byte[] buffer = await this.aircraftMaintenanceCompanyService.GetCsvAsync(filters);
             return this.File(buffer, BiaConstants.Csv.ContentType + $";charset={BiaConstants.Csv.CharsetEncoding}", $"AircraftMaintenanceCompanies{BiaConstants.Csv.Extension}");
