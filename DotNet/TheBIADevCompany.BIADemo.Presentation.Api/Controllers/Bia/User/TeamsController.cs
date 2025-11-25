@@ -89,22 +89,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         }
 
         /// <summary>
-        /// Gets all option that I can see.
-        /// </summary>
-        /// <returns>The list of production sites.</returns>
-        [HttpGet("allOptionsAssignViewAllowed")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = BiaRights.Teams.Options)]
-        public async Task<IActionResult> GetAllOptionsAssignViewAllowed()
-        {
-            var results = await this.teamService.GetAllOptionsAsync();
-            return this.Ok(results);
-        }
-
-        /// <summary>
         /// Get all teams.
         /// </summary>
         /// <returns>The list of planes.</returns>
