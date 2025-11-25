@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
@@ -26,7 +27,7 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
     /// <summary>
     /// The application service used for aircraftMaintenanceCompany.
     /// </summary>
-    public class AircraftMaintenanceCompanyAppService : CrudAppServiceBase<AircraftMaintenanceCompanyDto, AircraftMaintenanceCompany, int, PagingFilterFormatDto, AircraftMaintenanceCompanyMapper>, IAircraftMaintenanceCompanyAppService
+    public class AircraftMaintenanceCompanyAppService : CrudAppServiceBase<AircraftMaintenanceCompanyDto, AircraftMaintenanceCompany, int, PagingFilterFormatDto<TeamAdvancedFilterDto>, AircraftMaintenanceCompanyMapper>, IAircraftMaintenanceCompanyAppService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AircraftMaintenanceCompanyAppService"/> class.
@@ -49,7 +50,7 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
 
         /// <inheritdoc/>
 #pragma warning disable S1006 // Method overrides should not change parameter defaults
-        public override async Task<(IEnumerable<AircraftMaintenanceCompanyDto> Results, int Total)> GetRangeAsync(PagingFilterFormatDto filters = null, int id = default, Specification<AircraftMaintenanceCompany> specification = null, Expression<Func<AircraftMaintenanceCompany, bool>> filter = null, string accessMode = "Read", string queryMode = "ReadList", string mapperMode = null, bool isReadOnlyMode = false)
+        public override async Task<(IEnumerable<AircraftMaintenanceCompanyDto> Results, int Total)> GetRangeAsync(PagingFilterFormatDto<TeamAdvancedFilterDto> filters = null, int id = default, Specification<AircraftMaintenanceCompany> specification = null, Expression<Func<AircraftMaintenanceCompany, bool>> filter = null, string accessMode = "Read", string queryMode = "ReadList", string mapperMode = null, bool isReadOnlyMode = false)
 #pragma warning restore S1006 // Method overrides should not change parameter defaults
         {
             specification ??= TeamAdvancedFilterSpecification<AircraftMaintenanceCompany>.Filter(filters);

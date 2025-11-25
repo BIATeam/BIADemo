@@ -26,17 +26,13 @@ namespace BIA.Net.Core.Domain.User.Specifications
         /// <returns>
         /// The specification.
         /// </returns>
-        public static Specification<TTeam> Filter(PagingFilterFormatDto filter)
+        public static Specification<TTeam> Filter(IPagingFilterFormatDto<TeamAdvancedFilterDto> filter)
         {
             Specification<TTeam> specification = new TrueSpecification<TTeam>();
-            if (filter.AdvancedFilter != null)
+            if (filter.AdvancedFilter != null && filter.AdvancedFilter.UserId > 0)
             {
-                TeamAdvancedFilterDto advancedFilter = JsonConvert.DeserializeObject<TeamAdvancedFilterDto>(filter.AdvancedFilter.ToString());
-                if (advancedFilter.UserId > 0)
-                {
-                    specification &= new DirectSpecification<TTeam>(s =>
-                        s.Members.Any(a => a.UserId == advancedFilter.UserId));
-                }
+                specification &= new DirectSpecification<TTeam>(s =>
+                    s.Members.Any(a => a.UserId == filter.AdvancedFilter.UserId));
             }
 
             return specification;

@@ -12,6 +12,7 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
@@ -28,7 +29,7 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
     /// <summary>
     /// The application service used for maintenanceTeam.
     /// </summary>
-    public class MaintenanceTeamAppService : CrudAppServiceBase<MaintenanceTeamDto, MaintenanceTeam, int, PagingFilterFormatDto, MaintenanceTeamMapper>, IMaintenanceTeamAppService
+    public class MaintenanceTeamAppService : CrudAppServiceBase<MaintenanceTeamDto, MaintenanceTeam, int, PagingFilterFormatDto<TeamAdvancedFilterDto>, MaintenanceTeamMapper>, IMaintenanceTeamAppService
     {
         /// <summary>
         /// The current AncestorTeamId.
@@ -98,7 +99,7 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
 
         /// <inheritdoc/>
 #pragma warning disable S1006 // Method overrides should not change parameter defaults
-        public override async Task<(IEnumerable<MaintenanceTeamDto> Results, int Total)> GetRangeAsync(PagingFilterFormatDto filters = null, int id = default, Specification<MaintenanceTeam> specification = null, Expression<Func<MaintenanceTeam, bool>> filter = null, string accessMode = "Read", string queryMode = "ReadList", string mapperMode = null, bool isReadOnlyMode = false)
+        public override async Task<(IEnumerable<MaintenanceTeamDto> Results, int Total)> GetRangeAsync(PagingFilterFormatDto<TeamAdvancedFilterDto> filters = null, int id = default, Specification<MaintenanceTeam> specification = null, Expression<Func<MaintenanceTeam, bool>> filter = null, string accessMode = "Read", string queryMode = "ReadList", string mapperMode = null, bool isReadOnlyMode = false)
 #pragma warning restore S1006 // Method overrides should not change parameter defaults
         {
             specification ??= TeamAdvancedFilterSpecification<MaintenanceTeam>.Filter(filters);
