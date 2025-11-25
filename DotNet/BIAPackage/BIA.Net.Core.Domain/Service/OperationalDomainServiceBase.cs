@@ -85,7 +85,7 @@ namespace BIA.Net.Core.Domain.Service
             bool isReadOnlyMode = false)
             where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
-            where TOtherFilterDto : class, ILazyLoadDto, new()
+            where TOtherFilterDto : class, IPagingFilterFormatDto, new()
         {
             return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
             {
@@ -240,7 +240,7 @@ namespace BIA.Net.Core.Domain.Service
             bool isReadOnlyMode = false)
             where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
-            where TOtherFilterDto : class, ILazyLoadDto, new()
+            where TOtherFilterDto : class, IPagingFilterFormatDto, new()
         {
             return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
             {

@@ -28,7 +28,7 @@ namespace BIA.Net.Core.Application.Services
         where TDto : BaseDto<TKey>, new()
         where TListItemDto : BaseDto<TKey>, new()
         where TEntity : class, IEntity<TKey>, new()
-        where TFilterDto : class, ILazyLoadDto, new()
+        where TFilterDto : class, IPagingFilterFormatDto, new()
     {
         /// <summary>
         /// Get the DTO list with paging and sorting.
@@ -96,7 +96,7 @@ namespace BIA.Net.Core.Application.Services
             string queryMode = QueryMode.ReadList,
             string mapperMode = null,
             bool isReadOnlyMode = false)
-             where TOtherFilter : class, ILazyLoadDto, new();
+             where TOtherFilter : class, IPagingFilterFormatDto, new();
 
         /// <summary>
         /// Get the DTO list.

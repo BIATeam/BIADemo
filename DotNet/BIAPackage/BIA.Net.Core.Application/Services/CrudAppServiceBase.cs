@@ -44,7 +44,7 @@ namespace BIA.Net.Core.Application.Services
     public abstract class CrudAppServiceBase<TDto, TEntity, TKey, TFilterDto, TMapper> : OperationalDomainServiceBase<TEntity, TKey>, ICrudAppServiceBase<TDto, TEntity, TKey, TFilterDto>
         where TDto : BaseDto<TKey>, new()
         where TEntity : class, IEntity<TKey>, new()
-        where TFilterDto : class, ILazyLoadDto, new()
+        where TFilterDto : class, IPagingFilterFormatDto, new()
         where TMapper : BiaBaseMapper<TDto, TEntity, TKey>
     {
         /// <summary>
@@ -187,7 +187,7 @@ namespace BIA.Net.Core.Application.Services
             string queryMode = QueryMode.ReadList,
             string mapperMode = null,
             bool isReadOnlyMode = false)
-            where TOtherFilter : class, ILazyLoadDto, new()
+            where TOtherFilter : class, IPagingFilterFormatDto, new()
         {
             return await this.GetCsvAsync<TDto, TMapper, TOtherFilter>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, isReadOnlyMode: isReadOnlyMode);
         }

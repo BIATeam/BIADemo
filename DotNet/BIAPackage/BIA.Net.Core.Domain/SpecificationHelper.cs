@@ -36,7 +36,7 @@ namespace BIA.Net.Core.Domain
         /// <returns>
         /// The specification updated.
         /// </returns>
-        public static Specification<TEntity> GetLazyLoad<TEntity, TKey, TMapper>(Specification<TEntity> specification, TMapper matcher, ILazyLoadDto dto)
+        public static Specification<TEntity> GetLazyLoad<TEntity, TKey, TMapper>(Specification<TEntity> specification, TMapper matcher, IPagingFilterFormatDto dto)
         where TEntity : class, IEntity<TKey>, new()
         where TMapper : BaseEntityMapper<TEntity>
         {

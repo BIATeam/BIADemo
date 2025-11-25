@@ -6,6 +6,7 @@ namespace BIA.Net.Core.Domain.Dto.Base
 {
     using System.Collections.Generic;
     using System.Text;
+    using System.Text.Json;
     using BIA.Net.Core.Domain.Dto.Base.Interface;
 
     /// <summary>
@@ -20,7 +21,7 @@ namespace BIA.Net.Core.Domain.Dto.Base
     /// </summary>
     /// <typeparam name="TAdvancedFilter">The type for advanced filter.</typeparam>
 #pragma warning disable SA1402 // File may only contain a single type
-    public class PagingFilterFormatDto<TAdvancedFilter> : LazyLoadDto, IPagingFilterFormatDto<TAdvancedFilter>
+    public class PagingFilterFormatDto<TAdvancedFilter> : IPagingFilterFormatDto<TAdvancedFilter>
 #pragma warning restore SA1402 // File may only contain a single type
     {
         /// <inheritdoc/>
@@ -32,6 +33,27 @@ namespace BIA.Net.Core.Domain.Dto.Base
         /// <inheritdoc/>
         public TAdvancedFilter AdvancedFilter { get; set; }
 
+        /// <inheritdoc/>
+        public int? First { get; set; }
+
+        /// <inheritdoc/>
+        public int? Rows { get; set; }
+
+        /// <inheritdoc/>
+        public string SortField { get; set; }
+
+        /// <inheritdoc/>
+        public int? SortOrder { get; set; }
+
+        /// <inheritdoc/>
+        public List<SortMeta> MultiSortMeta { get; set; }
+
+        /// <inheritdoc/>
+        public Dictionary<string, JsonElement> Filters { get; set; }
+
+        /// <inheritdoc/>
+        public object GlobalFilter { get; set; }
+
         /// <summary>
         /// Returns a string that represents of the current object.
         /// </summary>
@@ -41,6 +63,7 @@ namespace BIA.Net.Core.Domain.Dto.Base
             var trace = new StringBuilder("record:[");
             trace.AppendFormat("first: {0}, rows: {1}, ", this.First, this.Rows);
             trace.AppendFormat("sortField: {0}, sortOrder: {1}, ", this.SortField, this.SortOrder);
+            trace.AppendFormat("MultiSortMeta: {0}, ", this.MultiSortMeta);
             trace.AppendFormat("filters: {0}, ", this.Filters);
             trace.AppendFormat("globalFilter: {0}]", this.GlobalFilter);
             return trace.ToString();
