@@ -8,8 +8,8 @@ import {
 } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { ViewType } from 'packages/bia-ng/models/enum/public-api';
-import { Team } from 'packages/bia-ng/models/public-api';
+import { DtoState, ViewType } from 'packages/bia-ng/models/enum/public-api';
+import { PermissionTeams, Team } from 'packages/bia-ng/models/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { Listbox } from 'primeng/listbox';
@@ -42,12 +42,14 @@ export class ViewSaveFormComponent
   @ViewChild(BiaFormComponent) biaForm?: BiaFormComponent<View>;
   @Input() canAddTeamView: boolean;
   @Input() canUpdateTeamView: boolean;
-  @Input() canAssignTeamView: boolean;
+  @Input() permissionAssignTeams?: PermissionTeams;
   @Input() canAddUserView: boolean;
   @Input() canUpdateUserView: boolean;
   @Input() teamList: Team[];
 
   viewTeamList: ViewTeam[] = [];
+  otherAffectedTeams: ViewTeam[] | undefined;
+  otherAffectedTeamsLabel: string | undefined;
 
   get isSaveDisabled(): boolean {
     return (
@@ -64,15 +66,34 @@ export class ViewSaveFormComponent
   viewType: typeof ViewType = ViewType;
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['teamList'] || changes['crudItem']) {
-      // Only remap if the input actually changed
-      this.viewTeamList = this.teamList.map(team => ({
-        teamId: team.id,
-        teamTitle: team.title,
-        isDefault:
-          this.crudItem?.viewTeams?.find(v => v.teamId === team.id)
-            ?.isDefault ?? false,
-      }));
+    if (
+      changes['teamList'] ||
+      changes['crudItem'] ||
+      changes['permissionAssignTeams']
+    ) {
+      this.otherAffectedTeams = this.crudItem?.viewTeams?.filter(
+        team =>
+          !this.permissionAssignTeams?.isGlobal &&
+          !this.permissionAssignTeams?.teamIds.find(id => id === team.id)
+      );
+      this.otherAffectedTeamsLabel = this.otherAffectedTeams
+        ?.map(t => t.teamTitle)
+        .join(', ');
+
+      this.viewTeamList = this.teamList
+        .filter(
+          team =>
+            this.permissionAssignTeams?.isGlobal ||
+            this.permissionAssignTeams?.teamIds.find(id => id === team.id)
+        )
+        .map(team => ({
+          id: team.id,
+          teamTitle: team.title,
+          isDefault:
+            this.crudItem?.viewTeams?.find(vt => vt.id === team.id)
+              ?.isDefault ?? false,
+          dtoState: DtoState.Unchanged,
+        }));
     }
   }
 
@@ -91,6 +112,17 @@ export class ViewSaveFormComponent
         const element: View = this.biaForm.getElement();
         if (saveAs) {
           element.id = 0;
+          switch (element.viewType) {
+            case ViewType.User:
+              element.viewTeams = [];
+              break;
+            case ViewType.Team:
+              element.viewTeams = element.viewTeams.filter(
+                team =>
+                  !this.otherAffectedTeams?.find(oat => oat.id === team.id)
+              );
+              break;
+          }
         }
         this.save.emit(element);
         setTimeout(() => {
@@ -99,6 +131,25 @@ export class ViewSaveFormComponent
           }
         }, 2000);
       }
+    }
+  }
+
+  selectCurrentTeam() {
+    console.error(
+      'selectCurrentTeam',
+      this.viewTeamList?.length,
+      this.biaForm?.form?.controls['viewTeams'].value
+    );
+    if (
+      this.viewTeamList?.length === 1 &&
+      !this.biaForm?.form?.controls['viewTeams'].value?.find(
+        (t: ViewTeam) => t.id === this.teamList[0].id
+      )
+    ) {
+      this.biaForm?.form?.controls['viewTeams'].setValue([
+        ...this.biaForm?.form?.controls['viewTeams'].value,
+        this.viewTeamList[0],
+      ]);
     }
   }
 }

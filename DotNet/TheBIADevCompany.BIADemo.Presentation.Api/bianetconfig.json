@@ -437,8 +437,13 @@
         "Roles": [ "Admin", "Site_Admin" ]
       },
       {
-        "Names": [ "Site_View_Add_TeamView", "Site_View_Update_TeamView", "Site_View_Set_Default_TeamView", "Site_View_Assign_To_Team" ],
+        "Names": [ "Site_View_Add_TeamView", "Site_View_Update_TeamView", "Site_View_Set_Default_TeamView", ],
         "Roles": [ "Admin", "Site_Admin" ]
+      },
+      {
+        "Names": [ "Site_View_Assign_To_Team" ],
+        "Roles": [ "Admin", "Site_Admin" ],
+        "IsTransversal": true
       },
       // Team
       {

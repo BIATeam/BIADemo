@@ -40,7 +40,8 @@
                   name="viewType"
                   [formControlName]="'viewType'"
                   [value]="viewType.Team"
-                  inputId="team" />
+                  inputId="team"
+                  (onClick)="selectCurrentTeam()" />
                 <label for="team" class="ml-2">{{
                   'bia.views.teamView' | translate
                 }}</label>
@@ -50,7 +51,10 @@
           }
         }
         @case ('viewTeams') {
-          @if (form.controls['viewType'].value === viewType.Team) {
+          @if (
+            viewTeamList.length > 1 &&
+            form.controls['viewType'].value === viewType.Team
+          ) {
             <p-listbox
               [formControlName]="'viewTeams'"
               [options]="viewTeamList"
@@ -61,8 +65,12 @@
               class="w-full"
               ><ng-template pTemplate="header">{{
                 'bia.views.teams' | translate
-              }}</ng-template></p-listbox
-            >
+              }}</ng-template>
+            </p-listbox>
+          }
+          @if (otherAffectedTeamsLabel) {
+            {{ 'bia.views.alsoAffectedTeams' | translate }}
+            {{ otherAffectedTeamsLabel }}
           }
         }
       }

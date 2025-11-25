@@ -10,6 +10,15 @@ export namespace DomainTeamOptionsActions {
     props<{ teams: OptionDto[] }>()
   );
 
+  export const loadAllAssignViewAllowed = createAction(
+    '[' + storeKey + '] Load all assign view allowed'
+  );
+
+  export const loadAllAssignViewAllowedSuccess = createAction(
+    '[' + storeKey + '] Load all assign view allowed success',
+    props<{ teams: OptionDto[] }>()
+  );
+
   export const failure = createAction(
     '[' + storeKey + '] Failure',
     props<{ error: any }>()

@@ -11,6 +11,7 @@ import {
 import {
   BaseDto,
   BiaTableState,
+  PermissionTeams,
   Team,
 } from 'packages/bia-ng/models/public-api';
 import { CrudConfig, CrudItemService } from 'packages/bia-ng/shared/public-api';
@@ -66,8 +67,8 @@ export class ViewSaveComponent<
   canAddUserView = false;
   canUpdateUserView = false;
   canUpdateTeamView = false;
-  canAssignTeamView = false;
-  teamList: Observable<Team[]> = of([]);
+  teamList$: Observable<Team[]> = of([]);
+  permissionAssignTeams?: PermissionTeams;
 
   constructor(
     protected injector: Injector,
@@ -98,7 +99,17 @@ export class ViewSaveComponent<
       this.canUpdateTeamView = this.authService.hasPermission(
         teamTypeRightPrefix + BiaPermission.View_UpdateTeamViewSuffix
       );
-      this.canAssignTeamView = this.authService.hasPermission(
+      this.permissionAssignTeams = this.authService
+        .getDecryptedToken()
+        .userData.crossTeamPermissions?.find(
+          p =>
+            p.permission ===
+            teamTypeRightPrefix + BiaPermission.View_AssignToTeamSuffix
+        );
+      console.error(
+        'setPermissions',
+        this.permissionAssignTeams,
+        this.authService.getDecryptedToken().userData,
         teamTypeRightPrefix + BiaPermission.View_AssignToTeamSuffix
       );
     }
@@ -121,7 +132,7 @@ export class ViewSaveComponent<
     this.tableStateKey = parent.snapshot.data['featureViews'] + 'Grid';
     this.featureConfiguration = parent.snapshot.data['featureConfiguration'];
     if (this.featureConfiguration?.useViewTeamWithTypeId) {
-      this.teamList = this.store.select(
+      this.teamList$ = this.store.select(
         CoreTeamsStore.getAllTeamsOfType(
           this.featureConfiguration?.useViewTeamWithTypeId
         )

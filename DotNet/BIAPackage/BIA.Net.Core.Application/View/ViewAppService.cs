@@ -9,18 +9,22 @@ namespace BIA.Net.Core.Application.View
     using System.Linq;
     using System.Security.Principal;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.User;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Dto.View;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
+    using BIA.Net.Core.Domain.User.Services;
     using BIA.Net.Core.Domain.View.Entities;
     using BIA.Net.Core.Domain.View.Mappers;
     using BIA.Net.Core.Domain.View.Models;
     using Microsoft.Extensions.Logging;
+    using static BIA.Net.Core.Common.BiaRights;
 
     /// <summary>
     /// The application service used to manage views.
@@ -37,6 +41,10 @@ namespace BIA.Net.Core.Application.View
         /// </summary>
         private readonly ILogger<ViewAppService> logger;
 
+        private readonly IUserPermissionDomainService userPermissionDomainService;
+
+        private readonly IRoleAppService roleAppService;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ViewAppService"/> class.
         /// </summary>
@@ -44,12 +52,14 @@ namespace BIA.Net.Core.Application.View
         /// <param name="principal">The principal.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="queryCustomizer">The query customizer.</param>
-        public ViewAppService(ITGenericRepository<View, int> repository, IPrincipal principal, ILogger<ViewAppService> logger, IViewQueryCustomizer queryCustomizer)
+        public ViewAppService(ITGenericRepository<View, int> repository, IPrincipal principal, ILogger<ViewAppService> logger, IViewQueryCustomizer queryCustomizer, IUserPermissionDomainService userPermissionDomainService, IRoleAppService roleAppService)
             : base(repository)
         {
             this.principal = principal as BiaClaimsPrincipal;
             this.logger = logger;
             this.Repository.QueryCustomizer = queryCustomizer;
+            this.userPermissionDomainService = userPermissionDomainService;
+            this.roleAppService = roleAppService;
         }
 
         /// <inheritdoc />
@@ -364,7 +374,7 @@ namespace BIA.Net.Core.Application.View
                 var currentUserId = this.principal.GetUserId();
 
                 var entity = new View();
-                ViewMapper.MapperAddView(dto, entity, currentUserId);
+                ViewMapper.MapperView(dto, entity, currentUserId);
 
                 this.Repository.Add(entity);
                 await this.Repository.UnitOfWork.CommitAsync();
@@ -386,6 +396,7 @@ namespace BIA.Net.Core.Application.View
                 }
 
                 var currentUserId = this.principal.GetUserId();
+
                 if (entity.ViewType == ViewType.User && entity.ViewUsers.All(a => a.UserId != currentUserId))
                 {
                     var message = $"The user {currentUserId} is trying to update the view {dto.Id} of an other user.";
@@ -393,7 +404,7 @@ namespace BIA.Net.Core.Application.View
                     throw new BusinessException("Can't update the view of other users !");
                 }
 
-                ViewMapper.MapperUpdateView(dto, entity);
+                ViewMapper.MapperView(dto, entity, currentUserId);
 
                 // this.Repository.Update(entity)
                 await this.Repository.UnitOfWork.CommitAsync();

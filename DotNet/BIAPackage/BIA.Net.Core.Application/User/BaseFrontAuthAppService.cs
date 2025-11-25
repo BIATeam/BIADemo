@@ -24,6 +24,7 @@ namespace BIA.Net.Core.Application.User
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
+    using static BIA.Net.Core.Common.BiaRights;
 
     /// <summary>
     /// Auth App Service.
@@ -188,6 +189,8 @@ namespace BIA.Net.Core.Application.User
 
             // Get Permissions
             List<string> userPermissions = this.UserPermissionDomainService.TranslateRolesInPermissions(globalRoles, loginParam.LightToken);
+            List<string> transversalUserPermissions = this.UserPermissionDomainService.TranslateRolesInPermissions(globalRoles, loginParam.LightToken, true);
+            List<PermissionTeamsDto> permissionsTeams = transversalUserPermissions.Select(p => new PermissionTeamsDto { Permission = p, IsGlobal = true, TeamIds = [] }).ToList();
 
             IEnumerable<BaseDtoVersionedTeam> allTeams = [];
             TUserDataDto userData = this.CreateUserData(userInfoFromDB);
@@ -206,6 +209,9 @@ namespace BIA.Net.Core.Application.User
                 // Translate Roles in Permissions
                 List<string> fineGrainedUserPermissions = this.UserPermissionDomainService.TranslateRolesInPermissions(fineGrainedRoles, loginParam.LightToken);
 
+                // Get all transversal permissions
+                userData.CrossTeamPermissions = await this.GetTransversalPermissionsForUserAndTeams(allTeams, userInfoFromDB.Id, teamsConfig, permissionsTeams);
+
                 // Concat global permissions and fine grained permissions
                 userPermissions = userPermissions.Union(fineGrainedUserPermissions).ToList();
             }
@@ -215,6 +221,8 @@ namespace BIA.Net.Core.Application.User
 
             // Sort User Permissions
             userPermissions.Sort();
+
+
 
             // Create Token Dto
             TokenDto<TUserDataDto> tokenDto = new()
@@ -496,6 +504,97 @@ namespace BIA.Net.Core.Application.User
             }
 
             return allRoles;
+        }
+
+        /// <summary>
+        /// Gets the transversal permissions for a list of team and user.
+        /// </summary>
+        /// <param name="teams">The teams to look permissions for.</param>
+        /// <param name="userInfoId">The id of the user.</param>
+        /// <param name="teamsConfig">The teams config.</param
+        /// <param name="globalTransversalPermissions">The list of global transversal permissions.</param>
+        /// <returns>List of transversal permissions.</returns>
+        protected virtual async Task<List<PermissionTeamsDto>> GetTransversalPermissionsForUserAndTeams(IEnumerable<BaseDtoVersionedTeam> teams, int userInfoId, ImmutableList<BiaTeamConfig<BaseEntityTeam>> teamsConfig, List<PermissionTeamsDto> globalTransversalPermissions)
+        {
+            var permissionsTeams = globalTransversalPermissions ?? new List<PermissionTeamsDto>();
+            foreach (BaseDtoVersionedTeam team in teams)
+            {
+                var teamConfig = teamsConfig.Find(tc => tc.TeamTypeId == team.TeamTypeId);
+                var permissions = await this.GetTransversalPermissionsForTeam(team, userInfoId, teamConfig);
+                foreach (string permission in permissions)
+                {
+                    var permissionTeams = permissionsTeams.FirstOrDefault(pt => pt.Permission == permission);
+                    if (permissionTeams != null)
+                    {
+                        permissionTeams.TeamIds.Add(team.Id);
+                    }
+                    else
+                    {
+                        permissionsTeams.Add(new PermissionTeamsDto { Permission = permission, TeamIds = [team.Id], IsGlobal = false });
+                    }
+                }
+            }
+
+            return permissionsTeams;
+        }
+
+        /// <summary>
+        /// Gets the transversal permissions for a team and user.
+        /// </summary>
+        /// <param name="team">The team to look permissions for.</param>
+        /// <param name="userInfoId">The id of the user.</param>
+        /// <param name="teamConfig">The team config.</param>
+        /// <returns>List of transversal permissions.</returns>
+        protected virtual async Task<List<string>> GetTransversalPermissionsForTeam(BaseDtoVersionedTeam team, int userInfoId, BiaTeamConfig<BaseEntityTeam> teamConfig)
+        {
+            // the main roles
+            var allRoles = new List<string>();
+
+            IEnumerable<RoleDto> roles = await this.RoleAppService.GetMemberRolesAsync(team.Id, userInfoId);
+            RoleMode roleMode = teamConfig.RoleMode;
+
+            List<int> currentRoleIds;
+
+            if (roleMode == RoleMode.AllRoles)
+            {
+                currentRoleIds = roles.Select(r => r.Id).ToList();
+            }
+            else if (roleMode == RoleMode.SingleRole)
+            {
+                RoleDto role = roles?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
+                if (role != null)
+                {
+                    currentRoleIds = new List<int> { role.Id };
+                }
+                else
+                {
+                    currentRoleIds = new List<int>();
+                }
+            }
+            else
+            {
+                if (roles.Any())
+                {
+                    currentRoleIds = roles.Where(x => x.IsDefault).Select(r => r.Id).ToList();
+                }
+                else
+                {
+                    currentRoleIds = new List<int>();
+                }
+            }
+
+            // add the sites roles (filter if singleRole mode is used)
+            allRoles.AddRange(roles.Where(r => currentRoleIds.Exists(id => id == r.Id)).Select(r => r.Code).ToList());
+            allRoles.Add(teamConfig.RightPrefix + BiaConstants.Role.TeamMemberSuffix);
+            allRoles.Add(teamConfig.RightPrefix + BiaConstants.Role.TeamMemberOfOneSuffix);
+
+            // add computed roles (can be customized)
+            if (teamConfig.Parents == null)
+            {
+                allRoles.Add(teamConfig.RightPrefix + BiaConstants.Role.TeamMemberOfOneSuffix);
+            }
+
+            return this.UserPermissionDomainService.TranslateRolesInPermissions(allRoles, transversal: true);
         }
     }
 }

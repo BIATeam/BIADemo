@@ -36,8 +36,8 @@
     [canAddUserView]="canAddUserView"
     [canUpdateUserView]="canUpdateUserView"
     [canUpdateTeamView]="canUpdateTeamView"
-    [canAssignTeamView]="canAssignTeamView"
-    [teamList]="(teamList | async) ?? []"></bia-view-save-form>
+    [teamList]="(teamList$ | async) ?? []"
+    [permissionAssignTeams]="permissionAssignTeams"></bia-view-save-form>
 }
 @if (viewService.loadingGet$ | async) {
   <bia-spinner [overlay]="true"></bia-spinner>

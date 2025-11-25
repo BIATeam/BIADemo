@@ -5,17 +5,23 @@
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
 {
     using System;
+    using System.DirectoryServices.AccountManagement;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.View;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Dto.View;
+    using BIA.Net.Core.Domain.User.Entities;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Base;
+    using static BIA.Net.Core.Common.BiaRights;
 
     /// <summary>
     /// The API controller used to manage views.
@@ -97,13 +103,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         [Authorize(Roles = BiaRights.Views.UpdateUserView)]
         public async Task<IActionResult> UpdateView(int id, [FromBody] ViewDto dto)
         {
-            if (dto.ViewType == 1
-                && (dto.ViewTeams.Count == 0
-                    || !dto.ViewTeams.All(vt => this.IsAuthorizeForTeam(vt.TeamId, BiaRights.Views.UpdateTeamViewSuffix).Result)))
-            {
-                return this.StatusCode(StatusCodes.Status403Forbidden);
-            }
-
             if (id == 0 || dto == null || dto.Id != id)
             {
                 return this.BadRequest();
@@ -111,6 +110,18 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
 
             try
             {
+                var (isAuthorized, permission) = await this.ValidateAndGetPermission(dto);
+                if (!isAuthorized)
+                {
+                    return this.StatusCode(StatusCodes.Status403Forbidden);
+                }
+
+                var userData = new BiaClaimsPrincipal(this.HttpContext.User).GetUserData<BaseUserDataDto>();
+                if (dto.ViewTeams.Any(team => (team.DtoState == BIA.Net.Core.Domain.Dto.Base.DtoState.Added || team.DtoState == BIA.Net.Core.Domain.Dto.Base.DtoState.Deleted) && !userData.CrossTeamPermissions.Any(p => p.Permission == permission && (p.IsGlobal || p.TeamIds.Any(ti => ti == team.Id)))))
+                {
+                    throw new BusinessException("Can't update view for these teams.");
+                }
+
                 var updatedDto = await this.viewAppService.UpdateViewAsync(dto);
                 return this.Ok(updatedDto);
             }
@@ -121,6 +132,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
+            }
+            catch (BusinessException be)
+            {
+                throw new FrontUserException(be.Message);
             }
         }
 
@@ -139,11 +154,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         {
             try
             {
-                if (dto.ViewType == 1
-                    && (dto.ViewTeams.Count == 0
-                        || !dto.ViewTeams.All(vt => this.IsAuthorizeForTeam(vt.TeamId, BiaRights.Views.UpdateTeamViewSuffix).Result)))
+                var (isAuthorized, permission) = await this.ValidateAndGetPermission(dto);
+                if (!isAuthorized)
                 {
                     return this.StatusCode(StatusCodes.Status403Forbidden);
+                }
+
+                var userData = new BiaClaimsPrincipal(this.HttpContext.User).GetUserData<BaseUserDataDto>();
+                if (dto.ViewTeams.Any(team => !userData.CrossTeamPermissions.Any(p => p.Permission == permission && p.TeamIds.Any(ti => ti == team.Id))))
+                {
+                    throw new BusinessException("Can't add view for these teams.");
                 }
 
                 var createdDto = await this.viewAppService.AddViewAsync(dto);
@@ -152,6 +172,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
             catch (ArgumentNullException)
             {
                 return this.ValidationProblem();
+            }
+            catch (BusinessException be)
+            {
+                throw new FrontUserException(be.Message);
             }
         }
 
@@ -236,7 +260,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateTeamView(int id, [FromBody] ViewDto dto)
         {
-            if (dto.ViewTeams.Count == 0 || !dto.ViewTeams.Any(vt => this.IsAuthorizeForTeam(vt.TeamId, BiaRights.Views.UpdateTeamViewSuffix).Result))
+            if (dto.ViewTeams.Count == 0 || !dto.ViewTeams.Any(vt => this.IsAuthorizeForTeam(vt.Id, BiaRights.Views.UpdateTeamViewSuffix).Result))
             {
                 return this.StatusCode(StatusCodes.Status403Forbidden);
             }
@@ -350,5 +374,25 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
                 return this.NotFound();
             }
         }
+
+
+        private async Task<(bool IsAuthorized, string Permission)> ValidateAndGetPermission(ViewDto dto)
+        {
+            if (dto.ViewType == 1
+                && (dto.ViewTeams.Count == 0
+                    || !dto.ViewTeams.Any(vt => this.IsAuthorizeForTeam(vt.Id, BiaRights.Views.UpdateTeamViewSuffix).Result)))
+            {
+                return (false, null);
+            }
+
+            string permission = null;
+            if (dto.ViewType == 1 && dto.ViewTeams.Count > 0)
+            {
+                permission = await this.GetPermissionPrefixFromTeamId(dto.ViewTeams[0].Id) + BiaRights.Views.AssignToTeamSuffix;
+            }
+
+            return (true, permission);
+        }
+
     }
 }

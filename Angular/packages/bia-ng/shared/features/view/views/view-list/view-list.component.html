@@ -7,7 +7,9 @@
     (onChange)="onViewChange($event)"
     scrollHeight="50vh">
     <ng-template let-item pTemplate="selectedItem">
-      <span>{{ selectedView === -1 ? '* ' : '' }}{{ item?.label }}</span>
+      <span
+        >{{ selectedView === currentView ? '* ' : '' }}{{ item?.label }}</span
+      >
       @if (defaultView === item?.value) {
         <i class="pi pi-star"></i>
       }
@@ -40,7 +42,7 @@
   class="small-button"></button>
 <button
   pButton
-  [disabled]="selectedView !== -1"
+  [disabled]="selectedView !== currentView"
   icon="pi pi-sync"
   variant="text"
   severity="secondary"

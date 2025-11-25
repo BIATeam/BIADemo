@@ -132,7 +132,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
           view =>
             view.viewType === ViewType.User ||
             (view.viewType === ViewType.Team &&
-              view.viewTeams.some(t => t.teamId === currentTeamId))
+              view.viewTeams.some(t => t.id === currentTeamId))
         )
       )
     );
@@ -218,7 +218,6 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
       if (json) {
         view.preference = json;
         view.tableId = this.tableStateKey;
-        console.error('onSaveUserView', view);
         if (view.id > 0) {
           this.store.dispatch(ViewsActions.updateUserView(view));
         } else {

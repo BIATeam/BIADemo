@@ -150,6 +150,7 @@
     "validate": "Valider",
     "view": "Voir",
     "views": {
+      "alsoAffectedTeams": "Vue également affectée à :",
       "column": "Colonne",
       "current": "Vue courante",
       "default": "Vue par défaut",

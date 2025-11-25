@@ -131,7 +131,7 @@ export class ViewTeamTableComponent implements OnChanges {
   containsCurrentTeam(view: View | undefined) {
     if (view && view.viewTeams && this.teamSelected) {
       return view.viewTeams.some(
-        (x: ViewTeam) => x.teamId === this.teamSelected.id
+        (x: ViewTeam) => x.id === this.teamSelected.id
       );
     }
     return false;
@@ -141,7 +141,7 @@ export class ViewTeamTableComponent implements OnChanges {
     if (view && view.viewTeams?.length > 1) return false;
     if (view && view.viewTeams && this.teamSelected) {
       return view.viewTeams.some(
-        (x: ViewTeam) => x.teamId === this.teamSelected.id
+        (x: ViewTeam) => x.id === this.teamSelected.id
       );
     }
     return false;
@@ -149,8 +149,7 @@ export class ViewTeamTableComponent implements OnChanges {
   isTeamDefault(view: View | undefined): boolean {
     if (view && view.viewTeams && this.teamSelected) {
       return view.viewTeams.some(
-        (x: ViewTeam) =>
-          x.teamId === this.teamSelected.id && x.isDefault === true
+        (x: ViewTeam) => x.id === this.teamSelected.id && x.isDefault === true
       );
     }
     return false;

@@ -16,10 +16,6 @@ export class ViewValidator {
         teamViewWithTeams = false;
       }
 
-      console.error('teamViewWithTeams', teamViewWithTeams);
-      console.error('viewTypeControl', viewTypeControl?.value);
-      console.error('viewTeamsControl', viewTeamsControl?.value);
-
       // Setting each control errors and keeping errors from other validators
       fieldControls.forEach(fieldControl => {
         if (

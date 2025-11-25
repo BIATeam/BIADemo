@@ -17,6 +17,7 @@ export interface UserData {
   lastName?: string;
   firstName?: string;
   currentTeams: CurrentTeamDto[];
+  crossTeamPermissions?: PermissionTeams[];
   // Begin BIADemo
   customData?: string | undefined;
   // End BIADemo
@@ -28,6 +29,12 @@ export class CurrentTeamDto {
   teamTitle: string;
   currentRoleIds: number[];
   useDefaultRoles: boolean;
+}
+
+export class PermissionTeams {
+  permission: string;
+  teamIds: number[];
+  isGlobal: boolean;
 }
 
 export interface AdditionalInfos {

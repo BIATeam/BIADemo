@@ -9,6 +9,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Base
     using BIA.Net.Core.Presentation.Api.Controller.Base;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+    using TheBIADevCompany.BIADemo.Domain.User;
+    using static Org.BouncyCastle.Math.EC.ECCurve;
 
     /// <summary>
     /// The API controller used to manage views.
@@ -44,6 +46,23 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Base
             }
 
             return this.IsAuthorizeForTeamType((TeamTypeId)teamDto.TeamTypeId, teamId, roleSuffix);
+        }
+
+        /// <summary>
+        /// Get permission prefix for a team type.
+        /// </summary>
+        /// <param name="teamId">the teamId used as reference to find the team type.</param>
+        /// <returns>true the permissin prefix as string.</returns>
+        protected async Task<string> GetPermissionPrefixFromTeamId(int teamId)
+        {
+            BaseDtoVersionedTeam teamDto = await this.teamAppService.GetAsync(id: teamId);
+            if (teamDto == null)
+            {
+                return null;
+            }
+
+            var config = TeamConfig.Config.Find(tc => tc.TeamTypeId == teamDto.TeamTypeId);
+            return config.RightPrefix;
         }
 
         /// <summary>

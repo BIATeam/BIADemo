@@ -32,6 +32,12 @@ namespace BIA.Net.Core.Domain.Dto.User
         public ICollection<CurrentTeamDto> CurrentTeams { get; set; } = new List<CurrentTeamDto>();
 
         /// <summary>
+        /// Gets or sets the permissions independant to current teams.
+        /// </summary>
+        [JsonProperty("crossTeamPermissions")]
+        public IEnumerable<PermissionTeamsDto> CrossTeamPermissions { get; set; }
+
+        /// <summary>
         /// Gets the current team identifier.
         /// </summary>
         /// <param name="teamTypeId">The team type identifier.</param>

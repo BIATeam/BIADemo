@@ -67,7 +67,6 @@ export class CrudItemTableComponent<CrudItem extends BaseDto<string | number>>
 
   public initForm() {
     this.form = this.formBuilder.group(this.formFields());
-    console.error(this.configuration.formValidators);
     if (this.configuration.formValidators) {
       this.form.addValidators(this.configuration.formValidators);
     }

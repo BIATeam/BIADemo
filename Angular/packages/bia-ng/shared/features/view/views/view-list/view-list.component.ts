@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -34,9 +35,6 @@ import { ViewsStore } from '../../store/view.state';
 import { ViewsActions } from '../../store/views-actions';
 import { ViewDialogComponent } from '../view-dialog/view-dialog.component';
 
-const currentView = -1;
-const undefinedView = -2;
-
 @Component({
   selector: 'bia-view-list',
   templateUrl: './view-list.component.html',
@@ -49,9 +47,13 @@ const undefinedView = -2;
     TranslateModule,
     FloatLabel,
     ButtonDirective,
+    CommonModule,
   ],
 })
 export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
+  readonly currentView = -10000;
+  readonly undefinedView = -10001;
+
   groupedViews: SelectItemGroup[];
   translateKeys: string[] = [
     'bia.views.current',
@@ -63,10 +65,10 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   translations: any;
   views: View[];
 
-  _selectedView: number = undefinedView;
+  _selectedView: number = this.undefinedView;
   set selectedView(value: number) {
     this._selectedView = value;
-    if (this._selectedView !== currentView) {
+    if (this._selectedView !== this.currentView) {
       this.currentSelectedView = value;
     } else {
       const currentViewStored = sessionStorage.getItem(
@@ -83,7 +85,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     return this._selectedView;
   }
 
-  _currentSelectedView: number = undefinedView;
+  _currentSelectedView: number = this.undefinedView;
   set currentSelectedView(value: number) {
     this._currentSelectedView = value;
   }
@@ -135,7 +137,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
               this.views.length !== views.length
             ) {
               // the list of view change, so we reset the view selection.
-              this.selectedView = undefinedView;
+              this.selectedView = this.undefinedView;
             }
             this.views = views;
             if (view && view.id > 0) {
@@ -199,7 +201,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
 
   public getCurrentView(): View | null {
     let view: View | null = null;
-    if (this.currentSelectedView > -1 && this.views?.length) {
+    if (this.currentSelectedView > this.currentView && this.views?.length) {
       this.views.forEach(v => {
         if (v.id === this.currentSelectedView) {
           view = v;
@@ -246,7 +248,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
       }
     }
 
-    return currentView;
+    return this.currentView;
   }
 
   protected areViewsEgals(view1: BiaTableState, view2: BiaTableState) {
@@ -389,13 +391,13 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     let defaultView = 0;
     const currentTeamId =
       this.useViewTeamWithTypeId === null
-        ? -1
+        ? this.currentView
         : this.authService.getCurrentTeamId(this.useViewTeamWithTypeId);
     const systemViews = this.views.filter(v => v.viewType === ViewType.System);
     const teamViews = this.views.filter(
       v =>
         v.viewType === ViewType.Team &&
-        v.viewTeams.some(vs => currentTeamId === vs.teamId)
+        v.viewTeams.some(vs => currentTeamId === vs.id)
     );
     const userViews = this.views.filter(v => v.viewType === ViewType.User);
     if (systemViews.length > 0) {
@@ -431,9 +433,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
       });
 
       const teamDefault = teamViews.filter(v =>
-        v.viewTeams.some(
-          y => currentTeamId === y.teamId && y.isDefault === true
-        )
+        v.viewTeams.some(y => currentTeamId === y.id && y.isDefault === true)
       )[0];
       if (teamDefault) {
         defaultView = teamDefault.id;
@@ -488,7 +488,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
         });
       }
     } else {
-      if (this.selectedView === undefinedView) {
+      if (this.selectedView === this.undefinedView) {
         this.selectedView = this.defaultView;
       }
       if (this.selectedView !== 0) {
