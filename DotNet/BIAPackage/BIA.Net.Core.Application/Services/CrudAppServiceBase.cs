@@ -6,14 +6,10 @@ namespace BIA.Net.Core.Application.Services
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.Immutable;
     using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
-    using System.Reflection;
-    using System.Text.Json;
     using System.Threading.Tasks;
-    using Audit.EntityFramework;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Common.Helpers;
@@ -22,7 +18,7 @@ namespace BIA.Net.Core.Application.Services
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Dto.Historic;
-    using BIA.Net.Core.Domain.Entity;
+    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.QueryOrder;
@@ -67,6 +63,12 @@ namespace BIA.Net.Core.Application.Services
             string mapperMode = null,
             bool isReadOnlyMode = false)
         {
+            specification ??= this.GetFilterSpecification(filters);
+            if (typeof(IEntityTeam).IsAssignableFrom(typeof(TEntity)) && filters is IPagingFilterFormatDto<TeamAdvancedFilterDto> teamFilter)
+            {
+                specification &= this.GetTeamAdvancedFilterSpecification(teamFilter);
+            }
+
             return await this.GetRangeAsync<TDto, TMapper, TFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, isReadOnlyMode: isReadOnlyMode);
         }
 
@@ -296,6 +298,41 @@ namespace BIA.Net.Core.Application.Services
 
                 return historical;
             });
+        }
+
+        /// <summary>
+        /// Return specification based on the given team advanced <paramref name="filter"/> used in <see cref="GetRangeAsync(TFilterDto, TKey, Specification{TEntity}, Expression{Func{TEntity, bool}}, string, string, string, bool)"/>.
+        /// </summary>
+        /// <param name="filter">The filter.</param>
+        /// <returns>
+        /// The specification.
+        /// </returns>
+        protected virtual Specification<TEntity> GetTeamAdvancedFilterSpecification(IPagingFilterFormatDto<TeamAdvancedFilterDto> filter)
+        {
+            Specification<TEntity> specification = new TrueSpecification<TEntity>();
+            if (!typeof(IEntityTeam).IsAssignableFrom(typeof(TEntity)))
+            {
+                return specification;
+            }
+
+            if (filter.AdvancedFilter is not null && filter.AdvancedFilter.UserId > 0)
+            {
+                specification &= new DirectSpecification<TEntity>(entity => ((IEntityTeam)entity).Members.Any(a => a.UserId == filter.AdvancedFilter.UserId));
+            }
+
+            return specification;
+        }
+
+        /// <summary>
+        /// Return specification based on the given <paramref name="filter"/> used in <see cref="GetRangeAsync(TFilterDto, TKey, Specification{TEntity}, Expression{Func{TEntity, bool}}, string, string, string, bool)"/>.
+        /// </summary>
+        /// <param name="filter">The filter.</param>
+        /// <returns>
+        /// The specification.
+        /// </returns>
+        protected virtual Specification<TEntity> GetFilterSpecification(TFilterDto filter)
+        {
+            return new TrueSpecification<TEntity>();
         }
 
         private void FillHistoricalEntryModifications(EntityHistoricalEntryDto entry, List<IAuditEntity> audits, TMapper mapper)

@@ -45,12 +45,6 @@ namespace BIA.Net.Core.Application.User
         }
 
         /// <inheritdoc />
-        public async Task<(IEnumerable<MemberDto> Members, int Total)> GetRangeByTeamAsync(PagingFilterFormatDto filters)
-        {
-            return await this.GetRangeAsync(filters: filters, specification: MemberSpecification.SearchGetAll(filters));
-        }
-
-        /// <inheritdoc />
         public async Task<IEnumerable<MemberDto>> AddUsers(MembersDto membersDto, bool addFromRoleApi = false)
         {
             IEnumerable<MemberDto> dtoActualList = await this.GetAllAsync(specification: new DirectSpecification<Member>(s => s.TeamId == membersDto.TeamId));
@@ -165,10 +159,12 @@ namespace BIA.Net.Core.Application.User
             }
         }
 
-        /// <inheritdoc />
-        public async Task<byte[]> GetCsvAsync(PagingFilterFormatDto filters)
+        /// <inheritdoc/>
+        protected override Specification<Member> GetFilterSpecification(PagingFilterFormatDto filter)
         {
-            return await this.GetCsvAsync<MemberDto, MemberMapper, PagingFilterFormatDto>(filters: filters, specification: MemberSpecification.SearchGetAll(filters));
+            var specification = base.GetFilterSpecification(filter);
+            specification &= MemberSpecification.SearchGetAll(filter);
+            return specification;
         }
     }
 }

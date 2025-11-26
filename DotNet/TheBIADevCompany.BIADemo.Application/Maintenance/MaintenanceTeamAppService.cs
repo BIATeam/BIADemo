@@ -96,14 +96,5 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
 
             return await base.AddAsync(dto, mapperMode);
         }
-
-        /// <inheritdoc/>
-#pragma warning disable S1006 // Method overrides should not change parameter defaults
-        public override async Task<(IEnumerable<MaintenanceTeamDto> Results, int Total)> GetRangeAsync(PagingFilterFormatDto<TeamAdvancedFilterDto> filters = null, int id = default, Specification<MaintenanceTeam> specification = null, Expression<Func<MaintenanceTeam, bool>> filter = null, string accessMode = "Read", string queryMode = "ReadList", string mapperMode = null, bool isReadOnlyMode = false)
-#pragma warning restore S1006 // Method overrides should not change parameter defaults
-        {
-            specification ??= TeamAdvancedFilterSpecification<MaintenanceTeam>.Filter(filters);
-            return await base.GetRangeAsync(filters, id, specification, filter, accessMode, queryMode, mapperMode, isReadOnlyMode);
-        }
     }
 }

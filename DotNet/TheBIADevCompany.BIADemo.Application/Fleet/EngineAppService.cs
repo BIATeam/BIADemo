@@ -12,6 +12,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
@@ -27,7 +28,6 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Mappers;
-    using TheBIADevCompany.BIADemo.Domain.Fleet.Specifications;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
     /// <summary>
@@ -154,21 +154,11 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
         }
 
         /// <inheritdoc/>
-#pragma warning disable S1006 // Method overrides should not change parameter defaults
-        public override async Task<(IEnumerable<EngineDto> Results, int Total)> GetRangeAsync(PagingFilterFormatDto filters = null, int id = default, Specification<Engine> specification = null, Expression<Func<Engine, bool>> filter = null, string accessMode = "Read", string queryMode = "ReadList", string mapperMode = null, bool isReadOnlyMode = false)
-#pragma warning restore S1006 // Method overrides should not change parameter defaults
+        protected override Specification<Engine> GetFilterSpecification(PagingFilterFormatDto filter)
         {
-            specification ??= EngineSpecification.SearchGetAll(filters);
-            return await base.GetRangeAsync(filters, id, specification, filter, accessMode, queryMode, mapperMode, isReadOnlyMode);
-        }
-
-        /// <inheritdoc/>
-#pragma warning disable S1006 // Method overrides should not change parameter defaults
-        public override async Task<byte[]> GetCsvAsync(PagingFilterFormatDto filters = null, int id = default, Specification<Engine> specification = null, Expression<Func<Engine, bool>> filter = null, string accessMode = "Read", string queryMode = "ReadList", string mapperMode = null, bool isReadOnlyMode = false)
-#pragma warning restore S1006 // Method overrides should not change parameter defaults
-        {
-            specification ??= EngineSpecification.SearchGetAll(filters);
-            return await base.GetCsvAsync(filters, id, specification, filter, accessMode, queryMode, mapperMode, isReadOnlyMode);
+            var specification = base.GetFilterSpecification(filter);
+            specification &= new DirectSpecification<Engine>(engine => engine.PlaneId == int.Parse(filter.ParentIds[0]));
+            return specification;
         }
     }
 }
