@@ -304,7 +304,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         /// <summary>
         /// Generates a csv file according to the filters.
         /// </summary>
-        /// <param name="filters">filters ( <see cref="PagingFilterFormatDto"/>).</param>
+        /// <param name="filters">filters ( <see cref="PagingFilterFormatDto{TAdvancedFilter}"/>).</param>
         /// <returns>a csv file.</returns>
         [HttpPost("csv")]
         [Authorize(Roles = Rights.AircraftMaintenanceCompanies.ListAccess)]

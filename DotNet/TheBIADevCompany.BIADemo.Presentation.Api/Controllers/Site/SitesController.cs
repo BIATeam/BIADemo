@@ -259,10 +259,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
         /// <summary>
         /// Generates a csv file according to the filters.
         /// </summary>
-        /// <param name="filters">filters ( <see cref="PagingFilterFormatDto"/>).</param>
+        /// <param name="filters">filters ( <see cref="PagingFilterFormatDto{TAdvancedFilter}"/>).</param>
         /// <returns>a csv file.</returns>
         [HttpPost("csv")]
-        public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
+        public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto<TeamAdvancedFilterDto> filters)
         {
             byte[] buffer = await this.siteService.GetCsvAsync(filters);
             return this.File(buffer, BiaConstants.Csv.ContentType + $";charset={BiaConstants.Csv.CharsetEncoding}", $"Sites{BiaConstants.Csv.Extension}");

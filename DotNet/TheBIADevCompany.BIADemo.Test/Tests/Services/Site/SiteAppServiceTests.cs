@@ -123,7 +123,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
         }
 
         /// <summary>
-        /// Test <see cref="ISiteAppService.GetAllWithMembersAsync(PagingFilterFormatDto.SiteAdvancedFilterDto)"/> method when user:
+        /// Test <see cref="ISiteAppService.GetAllWithMembersAsync(PagingFilterFormatDto{TAdvancedFilter})"/> method when user:
         /// - has <see cref="Rights.Sites.ListAccess"/> rights
         /// - is member of one site.
         /// </summary>
