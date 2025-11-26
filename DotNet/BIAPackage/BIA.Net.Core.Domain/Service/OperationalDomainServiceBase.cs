@@ -386,35 +386,6 @@ namespace BIA.Net.Core.Domain.Service
         }
 
         /// <summary>
-        /// Remove several entity with its identifier.
-        /// </summary>
-        /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
-        /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
-        /// <param name="ids">List of the identifiers.</param>
-        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
-        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
-        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
-        /// <param name="bypassFixed">Indicates weither the fixed security should be bypassed or not.</param>
-        /// <returns>The deleted DTOs.</returns>
-        protected virtual async Task<List<TOtherDto>> RemoveAsync<TOtherDto, TOtherMapper>(
-            List<TKey> ids,
-            string accessMode = AccessMode.Delete,
-            string queryMode = QueryMode.Delete,
-            string mapperMode = null,
-            bool bypassFixed = false)
-            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
-            where TOtherDto : BaseDto<TKey>, new()
-        {
-            var dtos = new List<TOtherDto>();
-            foreach (TKey id in ids)
-            {
-                dtos.Add(await this.RemoveAsync<TOtherDto, TOtherMapper>(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode));
-            }
-
-            return dtos;
-        }
-
-        /// <summary>
         /// Save several entity with its identifier safe asynchronous.
         /// </summary>
         /// <typeparam name="TOtherDto">The type of the other dto.</typeparam>

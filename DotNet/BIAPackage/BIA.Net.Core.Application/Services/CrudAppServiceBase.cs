@@ -218,7 +218,14 @@ namespace BIA.Net.Core.Application.Services
             string mapperMode = null,
             bool bypassFixed = false)
         {
-            return await this.RemoveAsync<TDto, TMapper>(ids, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, bypassFixed: bypassFixed);
+            var removed = new List<TDto>();
+
+            foreach (var id in ids)
+            {
+                removed.Add(await this.RemoveAsync<TDto, TMapper>(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, bypassFixed: bypassFixed));
+            }
+
+            return removed;
         }
 
         /// <inheritdoc />
