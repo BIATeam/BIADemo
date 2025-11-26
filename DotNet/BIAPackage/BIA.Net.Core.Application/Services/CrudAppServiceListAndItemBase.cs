@@ -67,7 +67,7 @@ namespace BIA.Net.Core.Application.Services
             string mapperMode = null,
             bool isReadOnlyMode = false)
         {
-            this.SetGetRangeSpecifications(ref specification, filters);
+            this.SetGetRangeFilterSpecifications(ref specification, filters);
             return await this.GetRangeAsync<TDtoListItem, TMapperListItem, TFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, isReadOnlyMode: isReadOnlyMode);
         }
 

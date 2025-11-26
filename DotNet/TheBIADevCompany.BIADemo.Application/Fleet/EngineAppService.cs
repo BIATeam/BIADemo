@@ -154,10 +154,10 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
         }
 
         /// <inheritdoc/>
-        protected override Specification<Engine> GetFilterSpecification(PagingFilterFormatDto filter)
+        protected override Specification<Engine> GetFilterSpecification(PagingFilterFormatDto filters)
         {
-            var specification = base.GetFilterSpecification(filter);
-            specification &= new DirectSpecification<Engine>(engine => engine.PlaneId == int.Parse(filter.ParentIds[0]));
+            var specification = base.GetFilterSpecification(filters);
+            specification &= new DirectSpecification<Engine>(engine => engine.PlaneId == int.Parse(filters.ParentIds[0]));
             return specification;
         }
     }

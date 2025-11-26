@@ -65,7 +65,7 @@ namespace BIA.Net.Core.Application.Services
             string mapperMode = null,
             bool isReadOnlyMode = false)
         {
-            this.SetGetRangeSpecifications(ref specification, filters);
+            this.SetGetRangeFilterSpecifications(ref specification, filters);
             return await this.GetRangeAsync<TDto, TMapper, TFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, isReadOnlyMode: isReadOnlyMode);
         }
 
@@ -353,23 +353,23 @@ namespace BIA.Net.Core.Application.Services
         /// </summary>
         /// <param name="specification">The specification.</param>
         /// <param name="filters">The filters.</param>
-        protected virtual void SetGetRangeSpecifications(ref Specification<TEntity> specification, TFilterDto filters)
+        protected virtual void SetGetRangeFilterSpecifications(ref Specification<TEntity> specification, TFilterDto filters)
         {
             specification ??= this.GetFilterSpecification(filters);
-            if (typeof(IEntityTeam).IsAssignableFrom(typeof(TEntity)) && filters is IPagingFilterFormatDto<TeamAdvancedFilterDto> teamFilter)
+            if (typeof(IEntityTeam).IsAssignableFrom(typeof(TEntity)) && filters is IPagingFilterFormatDto<TeamAdvancedFilterDto> teamFilters)
             {
-                specification &= this.GetTeamAdvancedFilterSpecification(teamFilter);
+                specification &= this.GetTeamAdvancedFilterSpecification(teamFilters);
             }
         }
 
         /// <summary>
-        /// Return specification based on the given team advanced <paramref name="filter"/> used in <see cref="GetRangeAsync(TFilterDto, TKey, Specification{TEntity}, Expression{Func{TEntity, bool}}, string, string, string, bool)"/>.
+        /// Return specification based on the given team advanced <paramref name="filters"/> used in <see cref="GetRangeAsync(TFilterDto, TKey, Specification{TEntity}, Expression{Func{TEntity, bool}}, string, string, string, bool)"/>.
         /// </summary>
-        /// <param name="filter">The filter.</param>
+        /// <param name="filters">The filter.</param>
         /// <returns>
         /// The specification.
         /// </returns>
-        protected virtual Specification<TEntity> GetTeamAdvancedFilterSpecification(IPagingFilterFormatDto<TeamAdvancedFilterDto> filter)
+        protected virtual Specification<TEntity> GetTeamAdvancedFilterSpecification(IPagingFilterFormatDto<TeamAdvancedFilterDto> filters)
         {
             Specification<TEntity> specification = new TrueSpecification<TEntity>();
             if (!typeof(IEntityTeam).IsAssignableFrom(typeof(TEntity)))
@@ -377,22 +377,22 @@ namespace BIA.Net.Core.Application.Services
                 return specification;
             }
 
-            if (filter.AdvancedFilter is not null && filter.AdvancedFilter.UserId > 0)
+            if (filters.AdvancedFilter is not null && filters.AdvancedFilter.UserId > 0)
             {
-                specification &= new DirectSpecification<TEntity>(entity => ((IEntityTeam)entity).Members.Any(a => a.UserId == filter.AdvancedFilter.UserId));
+                specification &= new DirectSpecification<TEntity>(entity => ((IEntityTeam)entity).Members.Any(a => a.UserId == filters.AdvancedFilter.UserId));
             }
 
             return specification;
         }
 
         /// <summary>
-        /// Return specification based on the given <paramref name="filter"/> used in <see cref="GetRangeAsync(TFilterDto, TKey, Specification{TEntity}, Expression{Func{TEntity, bool}}, string, string, string, bool)"/>.
+        /// Return specification based on the given <paramref name="filters"/> used in <see cref="GetRangeAsync(TFilterDto, TKey, Specification{TEntity}, Expression{Func{TEntity, bool}}, string, string, string, bool)"/>.
         /// </summary>
-        /// <param name="filter">The filter.</param>
+        /// <param name="filters">The filter.</param>
         /// <returns>
         /// The specification.
         /// </returns>
-        protected virtual Specification<TEntity> GetFilterSpecification(TFilterDto filter)
+        protected virtual Specification<TEntity> GetFilterSpecification(TFilterDto filters)
         {
             return new TrueSpecification<TEntity>();
         }

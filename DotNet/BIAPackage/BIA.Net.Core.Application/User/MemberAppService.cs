@@ -160,10 +160,10 @@ namespace BIA.Net.Core.Application.User
         }
 
         /// <inheritdoc/>
-        protected override Specification<Member> GetFilterSpecification(PagingFilterFormatDto filter)
+        protected override Specification<Member> GetFilterSpecification(PagingFilterFormatDto filters)
         {
-            var specification = base.GetFilterSpecification(filter);
-            specification &= MemberSpecification.SearchGetAll(filter);
+            var specification = base.GetFilterSpecification(filters);
+            specification &= MemberSpecification.SearchGetAll(filters);
             return specification;
         }
     }
