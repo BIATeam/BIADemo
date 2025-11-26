@@ -750,9 +750,21 @@ namespace BIA.Net.Core.Domain.Service
             {
                 var entity = await this.Repository.GetEntityAsync(id) ?? throw new ElementNotFoundException();
                 this.Repository.UpdateFixedAsync(entity, isFixed);
+                await this.ExecuteActionsOnUpdateFixedAsync(id, isFixed);
                 await this.Repository.UnitOfWork.CommitAsync();
                 return await this.GetAsync<TOtherDto, TOtherMapper>(id);
             });
+        }
+
+        /// <summary>
+        /// Execute actions in <see cref="UpdateFixedAsync{TOtherDto, TOtherMapper}(TKey, bool)"/> before commit changes.
+        /// </summary>
+        /// <param name="entityUpdatedId">The updated entity ID.</param>
+        /// <param name="isFixed">Fixed status.</param>
+        /// <returns><see cref="Task"/>.</returns>
+        protected virtual Task ExecuteActionsOnUpdateFixedAsync(TKey entityUpdatedId, bool isFixed)
+        {
+            return Task.CompletedTask;
         }
 
         /// <summary>

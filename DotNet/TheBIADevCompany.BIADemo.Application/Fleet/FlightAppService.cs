@@ -63,19 +63,12 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
 #pragma warning restore SA1515 // Single-line comment should be preceded by blank line
 
         /// <inheritdoc/>
-        protected override async Task<TOtherDto> UpdateFixedAsync<TOtherDto, TOtherMapper>(string id, bool isFixed)
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        protected override async Task ExecuteActionsOnUpdateFixedAsync(string entityUpdatedId, bool isFixed)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
-            {
-                // Update entity fixed status
-                var entity = await this.Repository.GetEntityAsync(id) ?? throw new ElementNotFoundException();
-                this.Repository.UpdateFixedAsync(entity, isFixed);
-
-                // BIAToolKit - Begin UpdateFixedChildrenFlight
-                // BIAToolKit - End UpdateFixedChildrenFlight
-                await this.Repository.UnitOfWork.CommitAsync();
-                return await this.GetAsync(id);
-            }) as TOtherDto;
+            // BIAToolKit - Begin UpdateFixedChildrenFlight
+            // BIAToolKit - End UpdateFixedChildrenFlight
         }
 
         /// <inheritdoc/>
