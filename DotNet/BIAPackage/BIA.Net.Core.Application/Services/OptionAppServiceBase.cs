@@ -34,7 +34,7 @@ namespace BIA.Net.Core.Application.Services
         }
 
         /// <inheritdoc/>
-        public virtual async Task<IEnumerable<TOptionDto>> GetAllOptionsAsync()
+        public async Task<IEnumerable<TOptionDto>> GetAllOptionsAsync()
         {
             return await this.GetAllAsync<TOptionDto, TMapper>();
         }

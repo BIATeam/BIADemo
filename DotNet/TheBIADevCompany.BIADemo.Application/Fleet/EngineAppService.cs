@@ -105,7 +105,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
 #pragma warning restore SA1515 // Single-line comment should be preceded by blank line
 
         /// <inheritdoc/>
-        public override async Task<EngineDto> UpdateFixedAsync(int id, bool isFixed)
+        protected override async Task<TOtherDto> UpdateFixedAsync<TOtherDto, TOtherMapper>(int id, bool isFixed)
         {
             return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
             {
@@ -117,7 +117,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
                 // BIAToolKit - End UpdateFixedChildrenEngine
                 await this.Repository.UnitOfWork.CommitAsync();
                 return await this.GetAsync(id);
-            });
+            }) as TOtherDto;
         }
 
         // Begin BIADemo
@@ -157,7 +157,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
         }
 
         /// <inheritdoc/>
-        protected override Specification<Engine> GetFilterSpecification(PagingFilterFormatDto filters)
+        protected override Specification<Engine> GetFilterSpecification(IPagingFilterFormatDto filters)
         {
             var specification = base.GetFilterSpecification(filters);
             specification &= new DirectSpecification<Engine>(engine => engine.PlaneId == int.Parse(filters.ParentIds[0]));

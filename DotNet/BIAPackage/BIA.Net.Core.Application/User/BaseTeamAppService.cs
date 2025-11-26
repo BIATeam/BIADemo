@@ -31,7 +31,7 @@ namespace BIA.Net.Core.Application.User
     /// </summary>
     /// <typeparam name="TEnumTeamTypeId">The type for enum Team Type Id.</typeparam>
     /// <typeparam name="TTeamMapper">The type of team Mapper.</typeparam>
-    public class BaseTeamAppService<TEnumTeamTypeId, TTeamMapper> : CrudAppServiceBase<BaseDtoVersionedTeam, BaseEntityTeam, int, PagingFilterFormatDto, TTeamMapper>, IBaseTeamAppService<TEnumTeamTypeId>
+    public class BaseTeamAppService<TEnumTeamTypeId, TTeamMapper> : CrudAppServiceBase<BaseDtoVersionedTeam, BaseEntityTeam, int, PagingFilterFormatDto<TeamAdvancedFilterDto>, TTeamMapper>, IBaseTeamAppService<TEnumTeamTypeId>
         where TEnumTeamTypeId : struct, Enum
         where TTeamMapper : BiaBaseMapper<BaseDtoVersionedTeam, BaseEntityTeam, int>, ITeamMapper
     {

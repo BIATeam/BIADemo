@@ -63,7 +63,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
 #pragma warning restore SA1515 // Single-line comment should be preceded by blank line
 
         /// <inheritdoc/>
-        public override async Task<PilotDto> UpdateFixedAsync(Guid id, bool isFixed)
+        protected override async Task<TOtherDto> UpdateFixedAsync<TOtherDto, TOtherMapper>(Guid id, bool isFixed)
         {
             return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
             {
@@ -75,7 +75,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
                 // BIAToolKit - End UpdateFixedChildrenPilot
                 await this.Repository.UnitOfWork.CommitAsync();
                 return await this.GetAsync(id);
-            });
+            }) as TOtherDto;
         }
 
         /// <inheritdoc/>

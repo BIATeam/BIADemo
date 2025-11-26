@@ -55,7 +55,7 @@ namespace BIA.Net.Core.Application.Services
         }
 
         /// <inheritdoc />
-        public virtual async Task<(IEnumerable<TDto> Results, int Total)> GetRangeAsync(
+        public async Task<(IEnumerable<TDto> Results, int Total)> GetRangeAsync(
             TFilterDto filters = null,
             TKey id = default,
             Specification<TEntity> specification = null,
@@ -65,12 +65,11 @@ namespace BIA.Net.Core.Application.Services
             string mapperMode = null,
             bool isReadOnlyMode = false)
         {
-            this.SetGetRangeFilterSpecifications(ref specification, filters);
             return await this.GetRangeAsync<TDto, TMapper, TFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, isReadOnlyMode: isReadOnlyMode);
         }
 
         /// <inheritdoc />
-        public virtual async Task<IEnumerable<TDto>> GetAllAsync(
+        public async Task<IEnumerable<TDto>> GetAllAsync(
             TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
@@ -87,7 +86,7 @@ namespace BIA.Net.Core.Application.Services
         }
 
         /// <inheritdoc />
-        public virtual async Task<IEnumerable<TDto>> GetAllAsync(
+        public async Task<IEnumerable<TDto>> GetAllAsync(
             Expression<Func<TEntity, TKey>> orderByExpression,
             bool ascending,
             TKey id = default,
@@ -105,7 +104,7 @@ namespace BIA.Net.Core.Application.Services
         }
 
         /// <inheritdoc />
-        public virtual async Task<byte[]> GetCsvAsync(
+        public async Task<byte[]> GetCsvAsync(
             TFilterDto filters = null,
             TKey id = default,
             Specification<TEntity> specification = null,
@@ -115,62 +114,11 @@ namespace BIA.Net.Core.Application.Services
             string mapperMode = null,
             bool isReadOnlyMode = false)
         {
-            return await this.GetCsvAsync<TDto, TMapper>(filters, id, specification, filter, accessMode, queryMode, mapperMode, isReadOnlyMode);
+            return await this.GetCsvAsync<TDto, TMapper, TFilterDto>(filters, id, specification, filter, accessMode, queryMode, mapperMode, isReadOnlyMode);
         }
 
         /// <inheritdoc />
-        public virtual async Task<byte[]> GetCsvAsync<TOtherDto, TOtherMapper>(
-            TFilterDto filters = null,
-            TKey id = default,
-            Specification<TEntity> specification = null,
-            Expression<Func<TEntity, bool>> filter = null,
-            string accessMode = AccessMode.Read,
-            string queryMode = QueryMode.ReadList,
-            string mapperMode = null,
-            bool isReadOnlyMode = false)
-            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
-            where TOtherDto : BaseDto<TKey>, new()
-        {
-            IEnumerable<TOtherDto> results = (await this.GetRangeAsync<TOtherDto, TOtherMapper, TFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, isReadOnlyMode: isReadOnlyMode)).Results;
-
-            var columnHeaderKeys = new List<string>();
-            var columnHeaderValues = new List<string>();
-
-            if (filters?.Columns is not null)
-            {
-                columnHeaderKeys.AddRange(filters.Columns.Select(x => x.Key));
-                columnHeaderValues.AddRange(filters.Columns.Select(x => x.Value));
-            }
-
-            filters.First = 0;
-            filters.Rows = 0;
-
-            TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
-            List<object[]> records = results.Select(mapper.DtoToRecord(mapperMode, columnHeaderKeys)).ToList();
-
-            var csvBuilder = new StringBuilder();
-            csvBuilder.AppendLine($"sep={BiaConstants.Csv.Separator}");
-            foreach (string line in this.BiaNetSection.CsvAdditionalContent?.Headers ?? new List<string>())
-            {
-                csvBuilder.AppendLine(CSVString(line));
-            }
-
-            csvBuilder.AppendLine(string.Join(BiaConstants.Csv.Separator, columnHeaderValues));
-            records.ForEach(line =>
-            {
-                csvBuilder.AppendLine(string.Join(BiaConstants.Csv.Separator, line));
-            });
-
-            foreach (string line in this.BiaNetSection.CsvAdditionalContent?.Footers ?? new List<string>())
-            {
-                csvBuilder.AppendLine(CSVString(line));
-            }
-
-            return Encoding.GetEncoding(1252).GetBytes(csvBuilder.ToString());
-        }
-
-        /// <inheritdoc />
-        public virtual async Task<TDto> GetAsync(
+        public async Task<TDto> GetAsync(
             TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
@@ -211,34 +159,27 @@ namespace BIA.Net.Core.Application.Services
         }
 
         /// <inheritdoc />
-        public virtual async Task<List<TDto>> RemoveAsync(
+        public async Task<List<TDto>> RemoveAsync(
             List<TKey> ids,
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,
             string mapperMode = null,
             bool bypassFixed = false)
         {
-            var removed = new List<TDto>();
-
-            foreach (var id in ids)
-            {
-                removed.Add(await this.RemoveAsync<TDto, TMapper>(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, bypassFixed: bypassFixed));
-            }
-
-            return removed;
+            return await this.RemoveAsync<TDto, TMapper>(ids, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, bypassFixed: bypassFixed);
         }
 
         /// <inheritdoc />
 #pragma warning disable S1133 // Deprecated code should be removed
         [Obsolete(message: "AddBulkAsync is deprecated, You can create your own method and call the this.Repository.UnitOfWork.AddBulkAsync method inside it", error: true)]
 #pragma warning restore S1133 // Deprecated code should be removed
-        public virtual async Task AddBulkAsync(IEnumerable<TDto> dtos)
+        public async Task AddBulkAsync(IEnumerable<TDto> dtos)
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public virtual async Task<List<TDto>> SaveSafeAsync(
+        public async Task<List<TDto>> SaveSafeAsync(
             IEnumerable<TDto> dtos,
             BiaClaimsPrincipal principal,
             string rightAdd,
@@ -260,7 +201,7 @@ namespace BIA.Net.Core.Application.Services
         }
 
         /// <inheritdoc />
-        public virtual async Task<TDto> SaveAsync(
+        public async Task<TDto> SaveAsync(
             TDto dto,
             string accessMode = null,
             string queryMode = null,
@@ -270,7 +211,7 @@ namespace BIA.Net.Core.Application.Services
         }
 
         /// <inheritdoc />
-        public virtual async Task<IEnumerable<TDto>> SaveAsync(
+        public async Task<IEnumerable<TDto>> SaveAsync(
             IEnumerable<TDto> dtos,
             string accessMode = null,
             string queryMode = null,
@@ -280,238 +221,15 @@ namespace BIA.Net.Core.Application.Services
         }
 
         /// <inheritdoc/>
-        public virtual async Task<TDto> UpdateFixedAsync(TKey id, bool isFixed)
+        public async Task<TDto> UpdateFixedAsync(TKey id, bool isFixed)
         {
-            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
-            {
-                var entity = await this.Repository.GetEntityAsync(id) ?? throw new ElementNotFoundException();
-                this.Repository.UpdateFixedAsync(entity, isFixed);
-                await this.Repository.UnitOfWork.CommitAsync();
-                return await this.GetAsync(id);
-            });
+            return await this.UpdateFixedAsync<TDto, TMapper>(id, isFixed);
         }
 
         /// <inheritdoc/>
-        public virtual async Task<List<EntityHistoricalEntryDto>> GetHistoricalAsync(TKey id)
+        public async Task<List<EntityHistoricalEntryDto>> GetHistoricalAsync(TKey id)
         {
-            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
-            {
-                var allAudits = await this.Repository.GetAuditsAsync(id);
-                var auditsPerSeconds = allAudits.Aggregate(new List<List<IAuditEntity>>(), (groups, audit) =>
-                {
-                    return GroupAuditPerSeconds(groups, audit);
-                });
-
-                static List<List<IAuditEntity>> GroupAuditPerSeconds(List<List<IAuditEntity>> groups, IAuditEntity audit)
-                {
-                    if (groups.Count == 0)
-                    {
-                        groups.Add([audit]);
-                        return groups;
-                    }
-
-                    var lastGroup = groups[^1];
-                    var lastItem = lastGroup[^1];
-
-                    var delta = (lastItem.AuditDate - audit.AuditDate).TotalSeconds;
-                    if (delta <= 1)
-                    {
-                        lastGroup.Add(audit);
-                    }
-                    else
-                    {
-                        groups.Add([audit]);
-                    }
-
-                    return groups;
-                }
-
-                var mapper = this.InitMapper<TDto, TMapper>();
-                var historical = new List<EntityHistoricalEntryDto>();
-                foreach (var audits in auditsPerSeconds)
-                {
-                    var entry = new EntityHistoricalEntryDto
-                    {
-                        EntryDateTime = audits[0].AuditDate,
-                        EntryUserLogin = audits[0].AuditUserLogin,
-                    };
-
-                    // Single audit with no Update Action and no Linked Audit
-                    var createOrDeleteAudit = audits.SingleOrDefault(audit => audit.AuditAction != Core.Common.BiaConstants.Audit.UpdateAction && (mapper.AuditMapper is null || (!mapper.AuditMapper.LinkedAuditMappers.Any(mapper => mapper.LinkedAuditEntityType == audit.GetType()))));
-                    if (createOrDeleteAudit is not null)
-                    {
-                        entry.EntryType = createOrDeleteAudit.AuditAction == Core.Common.BiaConstants.Audit.InsertAction ? EntityHistoricEntryType.Create : EntityHistoricEntryType.Delete;
-                    }
-                    else
-                    {
-                        entry.EntryType = EntityHistoricEntryType.Update;
-                        this.FillHistoricalEntryModifications(entry, audits, mapper);
-                    }
-
-                    historical.Add(entry);
-                }
-
-                return historical;
-            });
-        }
-
-        /// <summary>
-        /// Set the specification used in <see cref="GetRangeAsync(TFilterDto, TKey, Specification{TEntity}, Expression{Func{TEntity, bool}}, string, string, string, bool)"/>.
-        /// </summary>
-        /// <param name="specification">The specification.</param>
-        /// <param name="filters">The filters.</param>
-        protected virtual void SetGetRangeFilterSpecifications(ref Specification<TEntity> specification, TFilterDto filters)
-        {
-            specification ??= this.GetFilterSpecification(filters);
-            if (typeof(IEntityTeam).IsAssignableFrom(typeof(TEntity)) && filters is IPagingFilterFormatDto<TeamAdvancedFilterDto> teamFilters)
-            {
-                specification &= this.GetTeamAdvancedFilterSpecification(teamFilters);
-            }
-        }
-
-        /// <summary>
-        /// Return specification based on the given team advanced <paramref name="filters"/> used in <see cref="GetRangeAsync(TFilterDto, TKey, Specification{TEntity}, Expression{Func{TEntity, bool}}, string, string, string, bool)"/>.
-        /// </summary>
-        /// <param name="filters">The filter.</param>
-        /// <returns>
-        /// The specification.
-        /// </returns>
-        protected virtual Specification<TEntity> GetTeamAdvancedFilterSpecification(IPagingFilterFormatDto<TeamAdvancedFilterDto> filters)
-        {
-            Specification<TEntity> specification = new TrueSpecification<TEntity>();
-            if (!typeof(IEntityTeam).IsAssignableFrom(typeof(TEntity)))
-            {
-                return specification;
-            }
-
-            if (filters.AdvancedFilter is not null && filters.AdvancedFilter.UserId > 0)
-            {
-                specification &= new DirectSpecification<TEntity>(entity => ((IEntityTeam)entity).Members.Any(a => a.UserId == filters.AdvancedFilter.UserId));
-            }
-
-            return specification;
-        }
-
-        /// <summary>
-        /// Return specification based on the given <paramref name="filters"/> used in <see cref="GetRangeAsync(TFilterDto, TKey, Specification{TEntity}, Expression{Func{TEntity, bool}}, string, string, string, bool)"/>.
-        /// </summary>
-        /// <param name="filters">The filter.</param>
-        /// <returns>
-        /// The specification.
-        /// </returns>
-        protected virtual Specification<TEntity> GetFilterSpecification(TFilterDto filters)
-        {
-            return new TrueSpecification<TEntity>();
-        }
-
-        private void FillHistoricalEntryModifications(EntityHistoricalEntryDto entry, List<IAuditEntity> audits, TMapper mapper)
-        {
-            var auditMapper = mapper.AuditMapper
-                ?? throw new BadBiaFrameworkUsageException($"Missing declaration of {nameof(IAuditMapper)} into {typeof(TMapper)}");
-
-            var userContext = this.Repository.ServiceProvider.GetRequiredService<UserContext>();
-            var userCulture = new CultureInfo(userContext.Culture);
-            foreach (var audit in audits)
-            {
-                // Linked Audit Mapper case
-                var linkedAuditMapper = auditMapper.LinkedAuditMappers.FirstOrDefault(x => x.LinkedAuditEntityType == audit.GetType());
-                if (linkedAuditMapper is not null)
-                {
-                    var linkedAuditEntityDisplayProperty = audit.GetType().GetProperty(linkedAuditMapper.LinkedAuditEntityDisplayPropertyName) ??
-                        throw new BadBiaFrameworkUsageException($"Unable to find display property {linkedAuditMapper.LinkedAuditEntityDisplayPropertyName} into linked audit entity {linkedAuditMapper.LinkedAuditEntityType.Name}");
-                    var linkedAuditEntityDisplayPropertyValue = linkedAuditEntityDisplayProperty.PropertyType.IsDateType() ?
-                        DateHelper.FormatWithCulture(linkedAuditEntityDisplayProperty, linkedAuditEntityDisplayProperty.GetValue(audit), userCulture) :
-                        linkedAuditEntityDisplayProperty.GetValue(audit)?.ToString();
-
-                    var entryModification = new EntityHistoricalEntryModificationDto
-                    {
-                        IsLinkedProperty = true,
-                        PropertyName = linkedAuditMapper.EntityPropertyName,
-                    };
-
-                    switch (audit.AuditAction)
-                    {
-                        case Core.Common.BiaConstants.Audit.InsertAction:
-                            entryModification.NewValue = linkedAuditEntityDisplayPropertyValue;
-                            break;
-                        case Core.Common.BiaConstants.Audit.DeleteAction:
-                            entryModification.OldValue = linkedAuditEntityDisplayPropertyValue;
-                            break;
-                    }
-
-                    entry.EntryModifications.Add(entryModification);
-                    continue;
-                }
-
-                var changes = JsonConvert.DeserializeObject<List<AuditChange>>(audit.AuditChanges);
-
-                // Fixable change case
-                if (typeof(IEntityFixable).IsAssignableFrom(typeof(TEntity)))
-                {
-                    var isFixedChange = changes.FirstOrDefault(c => c.ColumnName == nameof(IEntityFixable.IsFixed));
-                    if (isFixedChange is not null)
-                    {
-                        entry.EntryType = bool.Parse(isFixedChange.NewValue.ToString()) ? EntityHistoricEntryType.Fixed : EntityHistoricEntryType.Unfixed;
-                        return;
-                    }
-                }
-
-                // Audit Property Mapper case
-                foreach (var auditPropertyMapper in auditMapper.AuditPropertyMappers)
-                {
-                    var propertyChange = changes.FirstOrDefault(x => x.ColumnName == auditPropertyMapper.EntityPropertyIdentifierName);
-                    if (propertyChange is null)
-                    {
-                        continue;
-                    }
-
-                    var changeProperty = typeof(TEntity).GetProperty(auditPropertyMapper.EntityPropertyName);
-                    if (changeProperty is null)
-                    {
-                        continue;
-                    }
-
-                    var newValue = changeProperty.PropertyType.IsDateType() ?
-                        DateHelper.FormatWithCulture(changeProperty, propertyChange.NewValue, userCulture) :
-                        propertyChange.NewDisplay ?? propertyChange.NewValue?.ToString();
-                    var originalValue = DateHelper.IsDateType(changeProperty.PropertyType) ?
-                        DateHelper.FormatWithCulture(changeProperty, propertyChange.OriginalValue, userCulture) :
-                        propertyChange.OriginalDisplay ?? propertyChange.OriginalValue?.ToString();
-
-                    entry.EntryModifications.Add(new EntityHistoricalEntryModificationDto
-                    {
-                        PropertyName = auditPropertyMapper.EntityPropertyName,
-                        NewValue = newValue,
-                        OldValue = originalValue,
-                    });
-
-                    changes.Remove(propertyChange);
-                }
-
-                // General case
-                foreach (var change in changes)
-                {
-                    var changeProperty = typeof(TEntity).GetProperty(change.ColumnName);
-                    if (changeProperty is null)
-                    {
-                        continue;
-                    }
-
-                    var newValue = changeProperty.PropertyType.IsDateType() ?
-                        DateHelper.FormatWithCulture(changeProperty, change.NewValue, userCulture) :
-                        change.NewValue?.ToString();
-                    var originalValue = DateHelper.IsDateType(changeProperty.PropertyType) ?
-                        DateHelper.FormatWithCulture(changeProperty, change.OriginalValue, userCulture) :
-                        change.OriginalValue?.ToString();
-
-                    entry.EntryModifications.Add(new EntityHistoricalEntryModificationDto
-                    {
-                        PropertyName = change.ColumnName,
-                        NewValue = newValue,
-                        OldValue = originalValue,
-                    });
-                }
-            }
+            return await this.GetHistoricalAsync<TDto, TMapper>(id);
         }
     }
 }

@@ -134,17 +134,6 @@ namespace BIA.Net.Core.Application.Notification
             _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notification", dto);
         }
 
-        /// <inheritdoc/>
-        public override async Task<List<TBaseNotificationDto>> RemoveAsync(List<int> ids, string accessMode = "Delete", string queryMode = "Delete", string mapperMode = null, bool bypassFixed = false)
-        {
-            var deletedDtos = await base.RemoveAsync(ids, accessMode, queryMode, mapperMode, bypassFixed: bypassFixed);
-
-            _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notification-domain" }, "notification-removeSeveralUnread", deletedDtos.Select(s => s.Id).ToList());
-            _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notifications-several", deletedDtos);
-
-            return deletedDtos;
-        }
-
         /// <summary>
         /// Return the list of unreadIds.
         /// </summary>
@@ -219,6 +208,16 @@ namespace BIA.Net.Core.Application.Notification
             _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notification-domain" }, "notification-removeUnread", notification.Id);
             _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notification", notification);
             return notification;
+        }
+
+        /// <inheritdoc/>
+        protected override async Task<List<TOtherDto>> RemoveAsync<TOtherDto, TOtherMapper>(List<int> ids, string accessMode = "Delete", string queryMode = "Delete", string mapperMode = null, bool bypassFixed = false)
+        {
+            var deletedDtos = await base.RemoveAsync<TOtherDto, TOtherMapper>(ids, accessMode, queryMode, mapperMode, bypassFixed);
+            _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notification-domain" }, "notification-removeSeveralUnread", deletedDtos.Select(s => s.Id).ToList());
+            _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notifications-several", deletedDtos);
+
+            return deletedDtos;
         }
     }
 }

@@ -6,25 +6,32 @@ namespace BIA.Net.Core.Domain.Service
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Text;
     using System.Threading.Tasks;
     using System.Transactions;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Error;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Audit;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Base.Interface;
+    using BIA.Net.Core.Domain.Dto.Historic;
+    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using BIA.Net.Core.Domain.Specification;
+    using Microsoft.Extensions.DependencyInjection;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// Base class for a service that need an implementation of a <see cref="DomainServiceBase{TEntity, TKey}"/> with operations.
@@ -91,6 +98,7 @@ namespace BIA.Net.Core.Domain.Service
             {
                 TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
 
+                this.SetGetRangeFilterSpecifications(ref specification, filters);
                 var spec = SpecificationHelper.GetLazyLoad<TEntity, TKey, TOtherMapper>(
                     this.GetFilterSpecification(accessMode, this.FiltersContext) & specification,
                     mapper,
@@ -130,7 +138,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="isReadOnlyMode">Readonly mode to use readOnly context.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        protected async Task<IEnumerable<TOtherDto>> GetAllAsync<TOtherDto, TOtherMapper>(
+        protected virtual async Task<IEnumerable<TOtherDto>> GetAllAsync<TOtherDto, TOtherMapper>(
             TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
@@ -180,7 +188,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="isReadOnlyMode">Readonly mode to use readOnly context.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        protected async Task<IEnumerable<TOtherDto>> GetAllAsync<TOtherDto, TOtherMapper>(
+        protected virtual async Task<IEnumerable<TOtherDto>> GetAllAsync<TOtherDto, TOtherMapper>(
             Expression<Func<TEntity, TKey>> orderByExpression,
             bool ascending,
             TKey id = default,
@@ -212,6 +220,74 @@ namespace BIA.Net.Core.Domain.Service
                     queryMode: queryMode,
                     isReadOnlyMode: isReadOnlyMode);
             });
+        }
+
+        /// <summary>
+        /// Get the csv with filter for <typeparamref name="TOtherDto"/> and <typeparamref name="TOtherMapper"/>.
+        /// </summary>
+        /// <param name="filters">The filters.</param>
+        /// <param name="id">The id.</param>
+        /// <param name="specification">Specification Used to filter query.</param>
+        /// <param name="filter">Filter Query.</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
+        /// <typeparam name="TOtherDto">Other DTO type.</typeparam>
+        /// <typeparam name="TOtherMapper">Other mapper type.</typeparam>
+        /// <typeparam name="TOtherFilterDto">Other filter DTO type.</typeparam>
+        /// <returns>
+        /// A <see cref="Task" /> representing the asynchronous operation.
+        /// </returns>
+        protected virtual async Task<byte[]> GetCsvAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(
+            TOtherFilterDto filters = null,
+            TKey id = default,
+            Specification<TEntity> specification = null,
+            Expression<Func<TEntity, bool>> filter = null,
+            string accessMode = AccessMode.Read,
+            string queryMode = QueryMode.ReadList,
+            string mapperMode = null,
+            bool isReadOnlyMode = false)
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherDto : BaseDto<TKey>, new()
+            where TOtherFilterDto : class, IPagingFilterFormatDto, new()
+        {
+            IEnumerable<TOtherDto> results = (await this.GetRangeAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, isReadOnlyMode: isReadOnlyMode)).Results;
+
+            var columnHeaderKeys = new List<string>();
+            var columnHeaderValues = new List<string>();
+
+            if (filters?.Columns is not null)
+            {
+                columnHeaderKeys.AddRange(filters.Columns.Select(x => x.Key));
+                columnHeaderValues.AddRange(filters.Columns.Select(x => x.Value));
+            }
+
+            filters.First = 0;
+            filters.Rows = 0;
+
+            TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
+            List<object[]> records = results.Select(mapper.DtoToRecord(mapperMode, columnHeaderKeys)).ToList();
+
+            var csvBuilder = new StringBuilder();
+            csvBuilder.AppendLine($"sep={BiaConstants.Csv.Separator}");
+            foreach (string line in this.BiaNetSection.CsvAdditionalContent?.Headers ?? new List<string>())
+            {
+                csvBuilder.AppendLine(CSVString(line));
+            }
+
+            csvBuilder.AppendLine(string.Join(BiaConstants.Csv.Separator, columnHeaderValues));
+            records.ForEach(line =>
+            {
+                csvBuilder.AppendLine(string.Join(BiaConstants.Csv.Separator, line));
+            });
+
+            foreach (string line in this.BiaNetSection.CsvAdditionalContent?.Footers ?? new List<string>())
+            {
+                csvBuilder.AppendLine(CSVString(line));
+            }
+
+            return Encoding.GetEncoding(1252).GetBytes(csvBuilder.ToString());
         }
 
         /// <summary>
@@ -383,6 +459,35 @@ namespace BIA.Net.Core.Domain.Service
                 await this.Repository.UnitOfWork.CommitAsync();
                 return dto;
             });
+        }
+
+        /// <summary>
+        /// Remove several entity with its identifier.
+        /// </summary>
+        /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
+        /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
+        /// <param name="ids">List of the identifiers.</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="bypassFixed">Indicates weither the fixed security should be bypassed or not.</param>
+        /// <returns>The deleted DTOs.</returns>
+        protected virtual async Task<List<TOtherDto>> RemoveAsync<TOtherDto, TOtherMapper>(
+            List<TKey> ids,
+            string accessMode = AccessMode.Delete,
+            string queryMode = QueryMode.Delete,
+            string mapperMode = null,
+            bool bypassFixed = false)
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherDto : BaseDto<TKey>, new()
+        {
+            var dtos = new List<TOtherDto>();
+            foreach (TKey id in ids)
+            {
+                dtos.Add(await this.RemoveAsync<TOtherDto, TOtherMapper>(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode));
+            }
+
+            return dtos;
         }
 
         /// <summary>
@@ -630,6 +735,99 @@ namespace BIA.Net.Core.Domain.Service
         }
 
         /// <summary>
+        /// Update the fixed status of an <see cref="IEntityFixable{TKey}"/>.
+        /// </summary>
+        /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
+        /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
+        /// <param name="id">ID of the entity.</param>
+        /// <param name="isFixed">Fixed status.</param>
+        /// <returns>Updated DTO.</returns>
+        protected virtual async Task<TOtherDto> UpdateFixedAsync<TOtherDto, TOtherMapper>(TKey id, bool isFixed)
+            where TOtherDto : BaseDto<TKey>, new()
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
+        {
+            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
+            {
+                var entity = await this.Repository.GetEntityAsync(id) ?? throw new ElementNotFoundException();
+                this.Repository.UpdateFixedAsync(entity, isFixed);
+                await this.Repository.UnitOfWork.CommitAsync();
+                return await this.GetAsync<TOtherDto, TOtherMapper>(id);
+            });
+        }
+
+        /// <summary>
+        /// Get the historical of an item by its <paramref name="id"/>.
+        /// </summary>
+        /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
+        /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
+        /// <param name="id">The item ID.</param>
+        /// <returns>Collection of <see cref="EntityHistoricalEntryDto>"/>.</returns>
+        protected virtual async Task<List<EntityHistoricalEntryDto>> GetHistoricalAsync<TOtherDto, TOtherMapper>(TKey id)
+            where TOtherDto : BaseDto<TKey>, new()
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
+        {
+            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
+            {
+                var allAudits = await this.Repository.GetAuditsAsync(id);
+                var auditsPerSeconds = allAudits.Aggregate(new List<List<IAuditEntity>>(), (groups, audit) =>
+                {
+                    return GroupAuditPerSeconds(groups, audit);
+                });
+
+                static List<List<IAuditEntity>> GroupAuditPerSeconds(List<List<IAuditEntity>> groups, IAuditEntity audit)
+                {
+                    if (groups.Count == 0)
+                    {
+                        groups.Add([audit]);
+                        return groups;
+                    }
+
+                    var lastGroup = groups[^1];
+                    var lastItem = lastGroup[^1];
+
+                    var delta = (lastItem.AuditDate - audit.AuditDate).TotalSeconds;
+                    if (delta <= 1)
+                    {
+                        lastGroup.Add(audit);
+                    }
+                    else
+                    {
+                        groups.Add([audit]);
+                    }
+
+                    return groups;
+                }
+
+                var mapper = this.InitMapper<TOtherDto, TOtherMapper>();
+                var historical = new List<EntityHistoricalEntryDto>();
+                foreach (var audits in auditsPerSeconds)
+                {
+                    var entry = new EntityHistoricalEntryDto
+                    {
+                        EntryDateTime = audits[0].AuditDate,
+                        EntryUserLogin = audits[0].AuditUserLogin,
+                    };
+
+                    // Single audit with no Update Action and no Linked Audit
+                    var createOrDeleteAudit = audits.SingleOrDefault(audit => audit.AuditAction != Core.Common.BiaConstants.Audit.UpdateAction && (mapper.AuditMapper is null || (!mapper.AuditMapper.LinkedAuditMappers.Any(mapper => mapper.LinkedAuditEntityType == audit.GetType()))));
+                    if (createOrDeleteAudit is not null)
+                    {
+                        entry.EntryType = createOrDeleteAudit.AuditAction == Core.Common.BiaConstants.Audit.InsertAction ? EntityHistoricEntryType.Create : EntityHistoricEntryType.Delete;
+                    }
+                    else
+                    {
+                        entry.EntryType = EntityHistoricEntryType.Update;
+                        this.FillHistoricalEntryModifications<TOtherDto, TOtherMapper>(entry, audits, mapper);
+                    }
+
+                    historical.Add(entry);
+                }
+
+                return historical;
+            });
+        }
+
+        /// <summary>
         /// Get the paging order.
         /// </summary>
         /// <param name="collection">The expression collection of entity.</param>
@@ -696,6 +894,55 @@ namespace BIA.Net.Core.Domain.Service
         }
 
         /// <summary>
+        /// Return specification based on the given <paramref name="filters"/> used in <see cref="GetRangeAsync(TFilterDto, TKey, Specification{TEntity}, Expression{Func{TEntity, bool}}, string, string, string, bool)"/>.
+        /// </summary>
+        /// <param name="filters">The filter.</param>
+        /// <returns>
+        /// The specification.
+        /// </returns>
+        protected virtual Specification<TEntity> GetFilterSpecification(IPagingFilterFormatDto filters)
+        {
+            return new TrueSpecification<TEntity>();
+        }
+
+        /// <summary>
+        /// Set the specification used in <see cref="GetRangeAsync(TFilterDto, TKey, Specification{TEntity}, Expression{Func{TEntity, bool}}, string, string, string, bool)"/>.
+        /// </summary>
+        /// <param name="specification">The specification.</param>
+        /// <param name="filters">The filters.</param>
+        protected virtual void SetGetRangeFilterSpecifications(ref Specification<TEntity> specification, IPagingFilterFormatDto filters)
+        {
+            specification ??= this.GetFilterSpecification(filters);
+            if (typeof(IEntityTeam).IsAssignableFrom(typeof(TEntity)) && filters is IPagingFilterFormatDto<TeamAdvancedFilterDto> teamFilters)
+            {
+                specification &= this.GetTeamAdvancedFilterSpecification(teamFilters);
+            }
+        }
+
+        /// <summary>
+        /// Return specification based on the given team advanced <paramref name="filters"/> used in <see cref="GetRangeAsync(TFilterDto, TKey, Specification{TEntity}, Expression{Func{TEntity, bool}}, string, string, string, bool)"/>.
+        /// </summary>
+        /// <param name="filters">The filter.</param>
+        /// <returns>
+        /// The specification.
+        /// </returns>
+        protected virtual Specification<TEntity> GetTeamAdvancedFilterSpecification(IPagingFilterFormatDto<TeamAdvancedFilterDto> filters)
+        {
+            Specification<TEntity> specification = new TrueSpecification<TEntity>();
+            if (!typeof(IEntityTeam).IsAssignableFrom(typeof(TEntity)))
+            {
+                return specification;
+            }
+
+            if (filters.AdvancedFilter is not null && filters.AdvancedFilter.UserId > 0)
+            {
+                specification &= new DirectSpecification<TEntity>(entity => ((IEntityTeam)entity).Members.Any(a => a.UserId == filters.AdvancedFilter.UserId));
+            }
+
+            return specification;
+        }
+
+        /// <summary>
         /// Execute the <paramref name="action"/> and handling <see cref="FrontUserException"/>.
         /// </summary>
         /// <typeparam name="T">Generic return <typeparamref name="T"/> type of the executed <paramref name="action"/>.</typeparam>
@@ -741,6 +988,118 @@ namespace BIA.Net.Core.Domain.Service
                 (int)BiaErrorId.DatabaseOpen => new FrontUserException(frontUserException.ErrorId, frontUserException, typeof(TEntity).Name),
                 _ => frontUserException,
             };
+        }
+
+        private void FillHistoricalEntryModifications<TOtherDto, TOtherMapper>(EntityHistoricalEntryDto entry, List<IAuditEntity> audits, TOtherMapper mapper)
+            where TOtherDto : BaseDto<TKey>, new()
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
+        {
+            var auditMapper = mapper.AuditMapper
+                ?? throw new BadBiaFrameworkUsageException($"Missing declaration of {nameof(IAuditMapper)} into {typeof(TOtherMapper)}");
+
+            var userContext = this.Repository.ServiceProvider.GetRequiredService<UserContext>();
+            var userCulture = new CultureInfo(userContext.Culture);
+            foreach (var audit in audits)
+            {
+                // Linked Audit Mapper case
+                var linkedAuditMapper = auditMapper.LinkedAuditMappers.FirstOrDefault(x => x.LinkedAuditEntityType == audit.GetType());
+                if (linkedAuditMapper is not null)
+                {
+                    var linkedAuditEntityDisplayProperty = audit.GetType().GetProperty(linkedAuditMapper.LinkedAuditEntityDisplayPropertyName) ??
+                        throw new BadBiaFrameworkUsageException($"Unable to find display property {linkedAuditMapper.LinkedAuditEntityDisplayPropertyName} into linked audit entity {linkedAuditMapper.LinkedAuditEntityType.Name}");
+                    var linkedAuditEntityDisplayPropertyValue = linkedAuditEntityDisplayProperty.PropertyType.IsDateType() ?
+                        DateHelper.FormatWithCulture(linkedAuditEntityDisplayProperty, linkedAuditEntityDisplayProperty.GetValue(audit), userCulture) :
+                        linkedAuditEntityDisplayProperty.GetValue(audit)?.ToString();
+
+                    var entryModification = new EntityHistoricalEntryModificationDto
+                    {
+                        IsLinkedProperty = true,
+                        PropertyName = linkedAuditMapper.EntityPropertyName,
+                    };
+
+                    switch (audit.AuditAction)
+                    {
+                        case Core.Common.BiaConstants.Audit.InsertAction:
+                            entryModification.NewValue = linkedAuditEntityDisplayPropertyValue;
+                            break;
+                        case Core.Common.BiaConstants.Audit.DeleteAction:
+                            entryModification.OldValue = linkedAuditEntityDisplayPropertyValue;
+                            break;
+                    }
+
+                    entry.EntryModifications.Add(entryModification);
+                    continue;
+                }
+
+                var changes = JsonConvert.DeserializeObject<List<AuditChange>>(audit.AuditChanges);
+
+                // Fixable change case
+                if (typeof(IEntityFixable).IsAssignableFrom(typeof(TEntity)))
+                {
+                    var isFixedChange = changes.FirstOrDefault(c => c.ColumnName == nameof(IEntityFixable.IsFixed));
+                    if (isFixedChange is not null)
+                    {
+                        entry.EntryType = bool.Parse(isFixedChange.NewValue.ToString()) ? EntityHistoricEntryType.Fixed : EntityHistoricEntryType.Unfixed;
+                        return;
+                    }
+                }
+
+                // Audit Property Mapper case
+                foreach (var auditPropertyMapper in auditMapper.AuditPropertyMappers)
+                {
+                    var propertyChange = changes.FirstOrDefault(x => x.ColumnName == auditPropertyMapper.EntityPropertyIdentifierName);
+                    if (propertyChange is null)
+                    {
+                        continue;
+                    }
+
+                    var changeProperty = typeof(TEntity).GetProperty(auditPropertyMapper.EntityPropertyName);
+                    if (changeProperty is null)
+                    {
+                        continue;
+                    }
+
+                    var newValue = changeProperty.PropertyType.IsDateType() ?
+                        DateHelper.FormatWithCulture(changeProperty, propertyChange.NewValue, userCulture) :
+                        propertyChange.NewDisplay ?? propertyChange.NewValue?.ToString();
+                    var originalValue = DateHelper.IsDateType(changeProperty.PropertyType) ?
+                        DateHelper.FormatWithCulture(changeProperty, propertyChange.OriginalValue, userCulture) :
+                        propertyChange.OriginalDisplay ?? propertyChange.OriginalValue?.ToString();
+
+                    entry.EntryModifications.Add(new EntityHistoricalEntryModificationDto
+                    {
+                        PropertyName = auditPropertyMapper.EntityPropertyName,
+                        NewValue = newValue,
+                        OldValue = originalValue,
+                    });
+
+                    changes.Remove(propertyChange);
+                }
+
+                // General case
+                foreach (var change in changes)
+                {
+                    var changeProperty = typeof(TEntity).GetProperty(change.ColumnName);
+                    if (changeProperty is null)
+                    {
+                        continue;
+                    }
+
+                    var newValue = changeProperty.PropertyType.IsDateType() ?
+                        DateHelper.FormatWithCulture(changeProperty, change.NewValue, userCulture) :
+                        change.NewValue?.ToString();
+                    var originalValue = DateHelper.IsDateType(changeProperty.PropertyType) ?
+                        DateHelper.FormatWithCulture(changeProperty, change.OriginalValue, userCulture) :
+                        change.OriginalValue?.ToString();
+
+                    entry.EntryModifications.Add(new EntityHistoricalEntryModificationDto
+                    {
+                        PropertyName = change.ColumnName,
+                        NewValue = newValue,
+                        OldValue = originalValue,
+                    });
+                }
+            }
         }
     }
 }

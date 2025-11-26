@@ -35,9 +35,9 @@ namespace BIA.Net.Core.Application.User
         /// </summary>
         /// <returns>List of OptionDto.</returns>
         /// <param name="teamTypeId">The team type id.</param>
-        public Task<IEnumerable<OptionDto>> GetAllOptionsAsync(int teamTypeId)
+        public async Task<IEnumerable<OptionDto>> GetAllOptionsAsync(int teamTypeId)
         {
-            return this.GetAllAsync<OptionDto, RoleOptionMapper>(filter: teamTypeId == (int)BiaTeamTypeId.All ? null : r => r.TeamTypes.Any(t => t.Id == teamTypeId));
+            return await this.GetAllAsync<OptionDto, RoleOptionMapper>(filter: teamTypeId == (int)BiaTeamTypeId.All ? null : r => r.TeamTypes.Any(t => t.Id == teamTypeId));
         }
 
         /// <summary>

@@ -80,34 +80,6 @@ namespace BIA.Net.Core.Application.Services
             bool isReadOnlyMode = false);
 
         /// <summary>
-        /// Get the csv with filter for <typeparamref name="TOtherDto"/> and <typeparamref name="TOtherMapper"/>.
-        /// </summary>
-        /// <param name="filters">The filters.</param>
-        /// <param name="id">The id.</param>
-        /// <param name="specification">Specification Used to filter query.</param>
-        /// <param name="filter">Filter Query.</param>
-        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
-        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
-        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
-        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
-        /// <typeparam name="TOtherDto">Other DTO type.</typeparam>
-        /// <typeparam name="TOtherMapper">Other mapper type.</typeparam>
-        /// <returns>
-        /// A <see cref="Task" /> representing the asynchronous operation.
-        /// </returns>
-        Task<byte[]> GetCsvAsync<TOtherDto, TOtherMapper>(
-            TFilterDto filters = null,
-            TKey id = default,
-            Specification<TEntity> specification = null,
-            Expression<Func<TEntity, bool>> filter = null,
-            string accessMode = AccessMode.Read,
-            string queryMode = QueryMode.ReadList,
-            string mapperMode = null,
-            bool isReadOnlyMode = false)
-            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
-            where TOtherDto : BaseDto<TKey>, new();
-
-        /// <summary>
         /// Get the DTO list. (with a queryOrder).
         /// </summary>
         /// <param name="id">The id.</param>

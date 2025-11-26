@@ -57,7 +57,7 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="mapperMode">The mapper mode.</param>
         /// <param name="isReadOnlyMode">if set to <c>true</c> [is read only mode].</param>
         /// <returns>All items.</returns>
-        public new virtual async Task<(IEnumerable<TDtoListItem> Results, int Total)> GetRangeAsync(
+        public new async Task<(IEnumerable<TDtoListItem> Results, int Total)> GetRangeAsync(
             TFilterDto filters = null,
             TKey id = default,
             Specification<TEntity> specification = null,
@@ -67,7 +67,6 @@ namespace BIA.Net.Core.Application.Services
             string mapperMode = null,
             bool isReadOnlyMode = false)
         {
-            this.SetGetRangeFilterSpecifications(ref specification, filters);
             return await this.GetRangeAsync<TDtoListItem, TMapperListItem, TFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, isReadOnlyMode: isReadOnlyMode);
         }
 
@@ -86,7 +85,7 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="mapperMode">The mapper mode.</param>
         /// <param name="isReadOnlyMode">if set to <c>true</c> [is read only mode].</param>
         /// <returns>All items.</returns>
-        public new virtual async Task<IEnumerable<TDtoListItem>> GetAllAsync(
+        public new async Task<IEnumerable<TDtoListItem>> GetAllAsync(
             TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
@@ -118,7 +117,7 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="mapperMode">The mapper mode.</param>
         /// <param name="isReadOnlyMode">if set to <c>true</c> [is read only mode].</param>
         /// <returns>All items.</returns>
-        public new virtual async Task<IEnumerable<TDtoListItem>> GetAllAsync(
+        public new async Task<IEnumerable<TDtoListItem>> GetAllAsync(
             Expression<Func<TEntity, TKey>> orderByExpression,
             bool ascending,
             TKey id = default,
@@ -149,7 +148,7 @@ namespace BIA.Net.Core.Application.Services
         /// <returns>
         /// A <see cref="Task" /> representing the asynchronous operation.
         /// </returns>
-        public new virtual async Task<byte[]> GetCsvAsync(
+        public new async Task<byte[]> GetCsvAsync(
             TFilterDto filters = null,
             TKey id = default,
             Specification<TEntity> specification = null,
@@ -159,7 +158,7 @@ namespace BIA.Net.Core.Application.Services
             string mapperMode = null,
             bool isReadOnlyMode = false)
         {
-            return await this.GetCsvAsync<TDtoListItem, TMapperListItem>(filters, id, specification, filter, accessMode, queryMode, mapperMode, isReadOnlyMode);
+            return await this.GetCsvAsync<TDtoListItem, TMapperListItem, TFilterDto>(filters, id, specification, filter, accessMode, queryMode, mapperMode, isReadOnlyMode);
         }
     }
 }

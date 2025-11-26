@@ -7,7 +7,7 @@ namespace BIA.Net.Core.Domain.Translation.Entities
     using BIA.Net.Core.Domain.Entity;
 
     /// <summary>
-    /// The role entity.
+    /// The language entity.
     /// </summary>
     public class Language : BaseEntityVersioned<int>
     {
