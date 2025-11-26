@@ -6,7 +6,6 @@
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Audit.EntityFramework.Abstractions" Version="31.0.*" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="[10.0.*,11.0.0)" />
   </ItemGroup>
   <ItemGroup>
