@@ -232,9 +232,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 }
 
                 collection.AddScoped<DataContextFactory>();
-                collection.AddSingleton<IAuditFeature, AuditFeature>();
                 collection.AddSingleton<BIA.Net.Core.Application.Services.IAuditFeatureService, BIA.Net.Core.Application.Services.AuditFeatureService>();
             }
+
+            collection.AddSingleton<IAuditFeature, AuditFeature>();
 
             // IT'S NOT NECESSARY TO DECLARE QueryCustomizer/Repository (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
             BiaIocContainer.RegisterServicesFromAssembly(
