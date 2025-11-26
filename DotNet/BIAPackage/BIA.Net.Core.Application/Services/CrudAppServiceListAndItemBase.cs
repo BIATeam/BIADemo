@@ -67,6 +67,7 @@ namespace BIA.Net.Core.Application.Services
             string mapperMode = null,
             bool isReadOnlyMode = false)
         {
+            this.SetGetRangeSpecifications(ref specification, filters);
             return await this.GetRangeAsync<TDtoListItem, TMapperListItem, TFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, isReadOnlyMode: isReadOnlyMode);
         }
 
@@ -135,45 +136,20 @@ namespace BIA.Net.Core.Application.Services
         }
 
         /// <summary>
-        /// Gets the CSV asynchronous.
-        /// </summary>
-        /// <typeparam name="TOtherFilter">The type of the other filter.</typeparam>
-        /// <param name="filters">The filters.</param>
-        /// <param name="id">The identifier.</param>
-        /// <param name="specification">The specification.</param>
-        /// <param name="filter">The filter.</param>
-        /// <param name="accessMode">The access mode.</param>
-        /// <param name="queryMode">The query mode.</param>
-        /// <param name="mapperMode">The mapper mode.</param>
-        /// <param name="isReadOnlyMode">if set to <c>true</c> [is read only mode].</param>
-        /// <returns>A cvs.</returns>
-        public new virtual async Task<byte[]> GetCsvAsync<TOtherFilter>(
-            TOtherFilter filters,
-            TKey id = default,
-            Specification<TEntity> specification = null,
-            Expression<Func<TEntity, bool>> filter = null,
-            string accessMode = AccessMode.Read,
-            string queryMode = QueryMode.ReadList,
-            string mapperMode = null,
-            bool isReadOnlyMode = false)
-            where TOtherFilter : class, IPagingFilterFormatDto, new()
-        {
-            return await this.GetCsvAsync<TDtoListItem, TMapperListItem, TOtherFilter>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, isReadOnlyMode: isReadOnlyMode);
-        }
-
-        /// <summary>
-        /// Gets the CSV asynchronous.
+        /// Get the csv with filter.
         /// </summary>
         /// <param name="filters">The filters.</param>
-        /// <param name="id">The identifier.</param>
-        /// <param name="specification">The specification.</param>
-        /// <param name="filter">The filter.</param>
-        /// <param name="accessMode">The access mode.</param>
-        /// <param name="queryMode">The query mode.</param>
-        /// <param name="mapperMode">The mapper mode.</param>
-        /// <param name="isReadOnlyMode">if set to <c>true</c> [is read only mode].</param>
-        /// <returns>A csv.</returns>
-        protected new virtual async Task<byte[]> GetCsvAsync(
+        /// <param name="id">The id.</param>
+        /// <param name="specification">Specification Used to filter query.</param>
+        /// <param name="filter">Filter Query.</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
+        /// <returns>
+        /// A <see cref="Task" /> representing the asynchronous operation.
+        /// </returns>
+        public new virtual async Task<byte[]> GetCsvAsync(
             TFilterDto filters = null,
             TKey id = default,
             Specification<TEntity> specification = null,
@@ -183,7 +159,7 @@ namespace BIA.Net.Core.Application.Services
             string mapperMode = null,
             bool isReadOnlyMode = false)
         {
-            return await this.GetCsvAsync<TDtoListItem, TMapperListItem, TFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, isReadOnlyMode: isReadOnlyMode);
+            return await this.GetCsvAsync<TDtoListItem, TMapperListItem>(filters, id, specification, filter, accessMode, queryMode, mapperMode, isReadOnlyMode);
         }
     }
 }

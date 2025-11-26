@@ -53,52 +53,6 @@ namespace BIA.Net.Core.Application.Services
             bool isReadOnlyMode = false);
 
         /// <summary>
-        /// Get the csv with other filter.
-        /// </summary>
-        /// <param name="filters">The filters.</param>
-        /// <param name="id">The id.</param>
-        /// <param name="specification">Specification Used to filter query.</param>
-        /// <param name="filter">Filter Query.</param>
-        /// <param name="accessMode">Acces mode, filter on right (optionnal).</param>
-        /// <param name="queryMode">Mode of the query (optionnal).</param>
-        /// <param name="mapperMode">Mode of the mapper (optionnal).</param>
-        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<byte[]> GetCsvAsync(
-            TFilterDto filters = null,
-            int id = 0,
-            Specification<TEntity> specification = null,
-            Expression<Func<TEntity, bool>> filter = null,
-            string accessMode = AccessMode.Read,
-            string queryMode = QueryMode.ReadList,
-            string mapperMode = null,
-            bool isReadOnlyMode = false);
-
-        /// <summary>
-        /// Get the csv with other filter.
-        /// </summary>
-        /// <typeparam name="TOtherFilter">The type for filter.</typeparam>
-        /// <param name="filters">The filters.</param>
-        /// <param name="id">The id.</param>
-        /// <param name="specification">Specification Used to filter query.</param>
-        /// <param name="filter">Filter Query.</param>
-        /// <param name="accessMode">Acces mode, filter on right (optionnal).</param>
-        /// <param name="queryMode">Mode of the query (optionnal).</param>
-        /// <param name="mapperMode">Mode of the mapper (optionnal).</param>
-        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<byte[]> GetCsvAsync<TOtherFilter>(
-            TOtherFilter filters,
-            int id = 0,
-            Specification<TEntity> specification = null,
-            Expression<Func<TEntity, bool>> filter = null,
-            string accessMode = AccessMode.Read,
-            string queryMode = QueryMode.ReadList,
-            string mapperMode = null,
-            bool isReadOnlyMode = false)
-             where TOtherFilter : class, IPagingFilterFormatDto, new();
-
-        /// <summary>
         /// Get the DTO list.
         /// </summary>
         /// <param name="id">The id.</param>

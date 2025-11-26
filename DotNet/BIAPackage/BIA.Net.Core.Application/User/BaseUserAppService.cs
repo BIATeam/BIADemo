@@ -454,12 +454,6 @@ namespace BIA.Net.Core.Application.User
         }
 
         /// <inheritdoc />
-        public virtual async Task<byte[]> GetCsvAsync(PagingFilterFormatDto filters)
-        {
-            return await this.GetCsvAsync<TUserDto, TUserMapper, PagingFilterFormatDto>(filters: filters);
-        }
-
-        /// <inheritdoc />
         public async Task SetDefaultTeamAsync(int teamId, int teamTypeId)
         {
             int userId = this.principal.GetUserId();

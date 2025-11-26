@@ -9,7 +9,9 @@ namespace BIA.Net.Core.Application.Services
     using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Text;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Common.Helpers;
@@ -63,17 +65,12 @@ namespace BIA.Net.Core.Application.Services
             string mapperMode = null,
             bool isReadOnlyMode = false)
         {
-            specification ??= this.GetFilterSpecification(filters);
-            if (typeof(IEntityTeam).IsAssignableFrom(typeof(TEntity)) && filters is IPagingFilterFormatDto<TeamAdvancedFilterDto> teamFilter)
-            {
-                specification &= this.GetTeamAdvancedFilterSpecification(teamFilter);
-            }
-
+            this.SetGetRangeSpecifications(ref specification, filters);
             return await this.GetRangeAsync<TDto, TMapper, TFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, isReadOnlyMode: isReadOnlyMode);
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<TDto>> GetAllAsync(
+        public virtual async Task<IEnumerable<TDto>> GetAllAsync(
             TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
@@ -90,7 +87,7 @@ namespace BIA.Net.Core.Application.Services
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<TDto>> GetAllAsync(
+        public virtual async Task<IEnumerable<TDto>> GetAllAsync(
             Expression<Func<TEntity, TKey>> orderByExpression,
             bool ascending,
             TKey id = default,
@@ -118,7 +115,58 @@ namespace BIA.Net.Core.Application.Services
             string mapperMode = null,
             bool isReadOnlyMode = false)
         {
-            return await this.GetCsvAsync<TDto, TMapper, TFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, isReadOnlyMode: isReadOnlyMode);
+            return await this.GetCsvAsync<TDto, TMapper>(filters, id, specification, filter, accessMode, queryMode, mapperMode, isReadOnlyMode);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<byte[]> GetCsvAsync<TOtherDto, TOtherMapper>(
+            TFilterDto filters = null,
+            TKey id = default,
+            Specification<TEntity> specification = null,
+            Expression<Func<TEntity, bool>> filter = null,
+            string accessMode = AccessMode.Read,
+            string queryMode = QueryMode.ReadList,
+            string mapperMode = null,
+            bool isReadOnlyMode = false)
+            where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherDto : BaseDto<TKey>, new()
+        {
+            IEnumerable<TOtherDto> results = (await this.GetRangeAsync<TOtherDto, TOtherMapper, TFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, isReadOnlyMode: isReadOnlyMode)).Results;
+
+            var columnHeaderKeys = new List<string>();
+            var columnHeaderValues = new List<string>();
+
+            if (filters?.Columns is not null)
+            {
+                columnHeaderKeys.AddRange(filters.Columns.Select(x => x.Key));
+                columnHeaderValues.AddRange(filters.Columns.Select(x => x.Value));
+            }
+
+            filters.First = 0;
+            filters.Rows = 0;
+
+            TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
+            List<object[]> records = results.Select(mapper.DtoToRecord(mapperMode, columnHeaderKeys)).ToList();
+
+            var csvBuilder = new StringBuilder();
+            csvBuilder.AppendLine($"sep={BiaConstants.Csv.Separator}");
+            foreach (string line in this.BiaNetSection.CsvAdditionalContent?.Headers ?? new List<string>())
+            {
+                csvBuilder.AppendLine(CSVString(line));
+            }
+
+            csvBuilder.AppendLine(string.Join(BiaConstants.Csv.Separator, columnHeaderValues));
+            records.ForEach(line =>
+            {
+                csvBuilder.AppendLine(string.Join(BiaConstants.Csv.Separator, line));
+            });
+
+            foreach (string line in this.BiaNetSection.CsvAdditionalContent?.Footers ?? new List<string>())
+            {
+                csvBuilder.AppendLine(CSVString(line));
+            }
+
+            return Encoding.GetEncoding(1252).GetBytes(csvBuilder.ToString());
         }
 
         /// <inheritdoc />
@@ -298,6 +346,20 @@ namespace BIA.Net.Core.Application.Services
 
                 return historical;
             });
+        }
+
+        /// <summary>
+        /// Set the specification used in <see cref="GetRangeAsync(TFilterDto, TKey, Specification{TEntity}, Expression{Func{TEntity, bool}}, string, string, string, bool)"/>.
+        /// </summary>
+        /// <param name="specification">The specification.</param>
+        /// <param name="filters">The filters.</param>
+        protected virtual void SetGetRangeSpecifications(ref Specification<TEntity> specification, TFilterDto filters)
+        {
+            specification ??= this.GetFilterSpecification(filters);
+            if (typeof(IEntityTeam).IsAssignableFrom(typeof(TEntity)) && filters is IPagingFilterFormatDto<TeamAdvancedFilterDto> teamFilter)
+            {
+                specification &= this.GetTeamAdvancedFilterSpecification(teamFilter);
+            }
         }
 
         /// <summary>
