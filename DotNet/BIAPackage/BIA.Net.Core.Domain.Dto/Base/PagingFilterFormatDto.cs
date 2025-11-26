@@ -12,26 +12,13 @@ namespace BIA.Net.Core.Domain.Dto.Base
     /// <summary>
     /// The DTO used for lazy loading with filters, sort and paging.
     /// </summary>
-    public class PagingFilterFormatDto : PagingFilterFormatDto<object>
-    {
-    }
-
-    /// <summary>
-    /// The DTO used for lazy loading with filters, sort and paging.
-    /// </summary>
-    /// <typeparam name="TAdvancedFilter">The type for advanced filter.</typeparam>
-#pragma warning disable SA1402 // File may only contain a single type
-    public class PagingFilterFormatDto<TAdvancedFilter> : IPagingFilterFormatDto<TAdvancedFilter>
-#pragma warning restore SA1402 // File may only contain a single type
+    public class PagingFilterFormatDto : IPagingFilterFormatDto
     {
         /// <inheritdoc/>
         public string[] ParentIds { get; set; }
 
         /// <inheritdoc/>
         public Dictionary<string, string> Columns { get; set; }
-
-        /// <inheritdoc/>
-        public TAdvancedFilter AdvancedFilter { get; set; }
 
         /// <inheritdoc/>
         public int? First { get; set; }
@@ -68,5 +55,17 @@ namespace BIA.Net.Core.Domain.Dto.Base
             trace.AppendFormat("globalFilter: {0}]", this.GlobalFilter);
             return trace.ToString();
         }
+    }
+
+    /// <summary>
+    /// The DTO used for lazy loading with filters, sort and paging.
+    /// </summary>
+    /// <typeparam name="TAdvancedFilter">The type for advanced filter.</typeparam>
+#pragma warning disable SA1402 // File may only contain a single type
+    public class PagingFilterFormatDto<TAdvancedFilter> : PagingFilterFormatDto, IPagingFilterFormatDto<TAdvancedFilter>
+#pragma warning restore SA1402 // File may only contain a single type
+    {
+        /// <inheritdoc/>
+        public TAdvancedFilter AdvancedFilter { get; set; }
     }
 }
