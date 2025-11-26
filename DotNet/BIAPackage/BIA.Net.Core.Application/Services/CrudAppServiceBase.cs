@@ -184,13 +184,13 @@ namespace BIA.Net.Core.Application.Services
         }
 
         /// <inheritdoc />
-        public virtual async Task<TDto> AddAsync(TDto dto, string mapperMode = null)
+        public async Task<TDto> AddAsync(TDto dto, string mapperMode = null)
         {
             return await this.AddAsync<TDto, TMapper>(dto, mapperMode: mapperMode);
         }
 
         /// <inheritdoc />
-        public virtual async Task<TDto> UpdateAsync(
+        public async Task<TDto> UpdateAsync(
             TDto dto,
             string accessMode = AccessMode.Update,
             string queryMode = QueryMode.Update,
@@ -200,7 +200,7 @@ namespace BIA.Net.Core.Application.Services
         }
 
         /// <inheritdoc />
-        public virtual async Task<TDto> RemoveAsync(
+        public async Task<TDto> RemoveAsync(
             TKey id,
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,

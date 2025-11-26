@@ -9,6 +9,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.RepoContract;
@@ -78,14 +79,15 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
         }
 
         /// <inheritdoc/>
-        public override async Task<PilotDto> AddAsync(PilotDto dto, string mapperMode = null)
+        protected override async Task<TOtherDto> AddAsync<TOtherDto, TOtherMapper>(TOtherDto dto, string mapperMode = null)
         {
-            if (dto.SiteId != this.currentAncestorTeamId)
+            var pilotDto = ObjectHelper.EnsureType<PilotDto>(dto);
+            if (pilotDto.SiteId != this.currentAncestorTeamId)
             {
                 throw new ForbiddenException("Can only add Pilot on current parent Team.");
             }
 
-            return await base.AddAsync(dto, mapperMode);
+            return await base.AddAsync<TOtherDto, TOtherMapper>(dto, mapperMode);
         }
     }
 }

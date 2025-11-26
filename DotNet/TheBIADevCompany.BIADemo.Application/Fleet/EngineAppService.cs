@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Base.Interface;
@@ -137,9 +138,11 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
         // End BIADemo
 
         /// <inheritdoc/>
-        public override async Task<EngineDto> AddAsync(EngineDto dto, string mapperMode = null)
+        protected override async Task<TOtherDto> AddAsync<TOtherDto, TOtherMapper>(TOtherDto dto, string mapperMode = null)
         {
-            var planeParent = await this.planeRepository.GetEntityAsync(dto.PlaneId, isReadOnlyMode: true);
+            var engineDto = ObjectHelper.EnsureType<EngineDto>(dto);
+
+            var planeParent = await this.planeRepository.GetEntityAsync(engineDto.PlaneId, isReadOnlyMode: true);
             if (planeParent.SiteId != this.currentAncestorTeamId)
             {
                 throw new ForbiddenException("Can only add Engine on current parent Team.");
@@ -150,7 +153,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
                 throw new FrontUserException("Plane parent is fixed");
             }
 
-            return await base.AddAsync(dto, mapperMode);
+            return await base.AddAsync<TOtherDto, TOtherMapper>(dto, mapperMode);
         }
 
         /// <inheritdoc/>

@@ -44,5 +44,22 @@ namespace BIA.Net.Core.Common.Helpers
             var t = Nullable.GetUnderlyingType(targetType) ?? targetType;
             return Convert.ChangeType(rawKey, t, System.Globalization.CultureInfo.InvariantCulture);
         }
+
+        /// <summary>
+        /// Ensure <paramref name="value"/> is of type <typeparamref name="TTarget"/> and return <paramref name="value"/> as <typeparamref name="TTarget"/> if true.
+        /// </summary>
+        /// <typeparam name="TTarget">Target type.</typeparam>
+        /// <param name="value">Object to convert.</param>
+        /// <returns><paramref name="value"/> as <typeparamref name="TTarget"/>.</returns>
+        /// <exception cref="InvalidOperationException"><paramref name="value"/> is not of type <typeparamref name="TTarget"/>.</exception>
+        public static TTarget EnsureType<TTarget>(object value)
+        {
+            if (value is not TTarget typed)
+            {
+                throw new InvalidOperationException($"{value?.GetType()} is not of type {typeof(TTarget)}");
+            }
+
+            return typed;
+        }
     }
 }

@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
     using System.Security.Principal;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.RepoContract;
@@ -53,23 +54,25 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
         }
 
         /// <inheritdoc/>
-        public override async Task<MaintenanceContractDto> AddAsync(MaintenanceContractDto dto, string mapperMode = null)
+        protected override async Task<TOtherDto> AddAsync<TOtherDto, TOtherMapper>(TOtherDto dto, string mapperMode = null)
         {
-            dto.SiteId = this.currentSiteId;
-            dto.AircraftMaintenanceCompanyId = this.currentAircraftMaintenanceCompanyId;
+            var maintenanceContractDto = ObjectHelper.EnsureType<MaintenanceContractDto>(dto);
+            maintenanceContractDto.SiteId = this.currentSiteId;
+            maintenanceContractDto.AircraftMaintenanceCompanyId = this.currentAircraftMaintenanceCompanyId;
 
-            return await base.AddAsync(dto, mapperMode);
+            return await base.AddAsync<TOtherDto, TOtherMapper>(dto, mapperMode);
         }
 
         /// <inheritdoc/>
-        public override async Task<MaintenanceContractDto> UpdateAsync(MaintenanceContractDto dto, string accessMode = AccessMode.Update, string queryMode = QueryMode.Update, string mapperMode = null)
+        protected override async Task<TOtherDto> UpdateAsync<TOtherDto, TOtherMapper>(TOtherDto dto, string accessMode = "Update", string queryMode = "Update", string mapperMode = null)
         {
-            if (dto.AircraftMaintenanceCompanyId != this.currentAircraftMaintenanceCompanyId && dto.SiteId != this.currentSiteId)
+            var maintenanceContractDto = ObjectHelper.EnsureType<MaintenanceContractDto>(dto);
+            if (maintenanceContractDto.AircraftMaintenanceCompanyId != this.currentAircraftMaintenanceCompanyId && maintenanceContractDto.SiteId != this.currentSiteId)
             {
                 throw new ForbiddenException("Can only add MaintenanceContract on current parent Teams.");
             }
 
-            return await base.UpdateAsync(dto, accessMode, queryMode, mapperMode);
+            return await base.UpdateAsync<TOtherDto, TOtherMapper>(dto, accessMode, queryMode, mapperMode);
         }
     }
 }

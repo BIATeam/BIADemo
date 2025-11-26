@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
@@ -87,14 +88,15 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
         }
 
         /// <inheritdoc/>
-        public override async Task<MaintenanceTeamDto> AddAsync(MaintenanceTeamDto dto, string mapperMode = null)
+        protected override async Task<TOtherDto> AddAsync<TOtherDto, TOtherMapper>(TOtherDto dto, string mapperMode = null)
         {
-            if (dto.AircraftMaintenanceCompanyId != this.currentAncestorTeamId)
+            var maintenanceTeamDto = ObjectHelper.EnsureType<MaintenanceTeamDto>(dto);
+            if (maintenanceTeamDto.AircraftMaintenanceCompanyId != this.currentAncestorTeamId)
             {
                 throw new ForbiddenException("Can only add MaintenanceTeam on current parent Team.");
             }
 
-            return await base.AddAsync(dto, mapperMode);
+            return await base.AddAsync<TOtherDto, TOtherMapper>(dto, mapperMode);
         }
     }
 }
