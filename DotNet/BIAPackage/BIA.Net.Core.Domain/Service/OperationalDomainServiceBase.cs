@@ -38,8 +38,13 @@ namespace BIA.Net.Core.Domain.Service
     /// </summary>
     /// <typeparam name="TEntity">The entity type.</typeparam>
     /// <typeparam name="TKey">The primary key of the entity type.</typeparam>
-    public abstract class OperationalDomainServiceBase<TEntity, TKey> : DomainServiceBase<TEntity, TKey>
+    public abstract class OperationalDomainServiceBase<TDto, TDtoListItem, TEntity, TKey, TFilterDto, TMapper, TMapperListItem> : DomainServiceBase<TEntity, TKey>, IOperationalDomainServiceBase<TDto, TDtoListItem, TEntity, TKey, TFilterDto>
+        where TDto : BaseDto<TKey>, new()
+        where TDtoListItem : BaseDto<TKey>, new()
         where TEntity : class, IEntity<TKey>, new()
+        where TFilterDto : class, IPagingFilterFormatDto, new()
+        where TMapper : BiaBaseMapper<TDto, TEntity, TKey>
+        where TMapperListItem : BiaBaseMapper<TDtoListItem, TEntity, TKey>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="OperationalDomainServiceBase{TEntity, TKey}"/> class.
@@ -66,6 +71,19 @@ namespace BIA.Net.Core.Domain.Service
             return "\"" + x?.Replace("\"", "\"\"") + "\"";
         }
 
+        public virtual async Task<(IEnumerable<TDtoListItem> Results, int Total)> GetRangeAsync(
+            TFilterDto filters = null,
+            TKey id = default,
+            Specification<TEntity> specification = null,
+            Expression<Func<TEntity, bool>> filter = null,
+            string accessMode = AccessMode.Read,
+            string queryMode = QueryMode.ReadList,
+            string mapperMode = null,
+            bool isReadOnlyMode = false)
+        {
+            return await this.GetRangeAsync<TDtoListItem, TMapperListItem, TFilterDto>(filters, id, specification, filter, accessMode, queryMode, mapperMode, isReadOnlyMode);
+        }
+
         /// <summary>
         /// Get the DTO list with paging and sorting.
         /// </summary>
@@ -81,7 +99,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="isReadOnlyMode">Readonly mode to use readOnly context.</param>
         /// <returns>The list of DTO.</returns>
-        protected virtual async Task<(IEnumerable<TOtherDto> Results, int Total)> GetRangeAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(
+        protected async Task<(IEnumerable<TOtherDto> Results, int Total)> GetRangeAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(
             TOtherFilterDto filters = null,
             TKey id = default,
             Specification<TEntity> specification = null,
@@ -121,6 +139,22 @@ namespace BIA.Net.Core.Domain.Service
             });
         }
 
+        public virtual async Task<IEnumerable<TDtoListItem>> GetAllAsync(
+            TKey id = default,
+            Specification<TEntity> specification = null,
+            Expression<Func<TEntity, bool>> filter = null,
+            QueryOrder<TEntity> queryOrder = null,
+            int firstElement = 0,
+            int pageCount = 0,
+            Expression<Func<TEntity, object>>[] includes = null,
+            string accessMode = AccessMode.Read,
+            string queryMode = null,
+            string mapperMode = null,
+            bool isReadOnlyMode = false)
+        {
+            return await this.GetAllAsync<TDtoListItem, TMapperListItem>(id, specification, filter, queryOrder, firstElement, pageCount, includes, accessMode, queryMode, mapperMode, isReadOnlyMode);
+        }
+
         /// <summary>
         /// Get the DTO list. (with a queryOrder).
         /// </summary>
@@ -138,7 +172,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="isReadOnlyMode">Readonly mode to use readOnly context.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        protected virtual async Task<IEnumerable<TOtherDto>> GetAllAsync<TOtherDto, TOtherMapper>(
+        protected async Task<IEnumerable<TOtherDto>> GetAllAsync<TOtherDto, TOtherMapper>(
             TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
@@ -170,6 +204,23 @@ namespace BIA.Net.Core.Domain.Service
             });
         }
 
+        public virtual async Task<IEnumerable<TDtoListItem>> GetAllAsync(
+            Expression<Func<TEntity, TKey>> orderByExpression,
+            bool ascending,
+            TKey id = default,
+            Specification<TEntity> specification = null,
+            Expression<Func<TEntity, bool>> filter = null,
+            int firstElement = 0,
+            int pageCount = 0,
+            Expression<Func<TEntity, object>>[] includes = null,
+            string accessMode = AccessMode.Read,
+            string queryMode = null,
+            string mapperMode = null,
+            bool isReadOnlyMode = false)
+        {
+            return await this.GetAllAsync<TDtoListItem, TMapperListItem>(orderByExpression, ascending, id, specification, filter, firstElement, pageCount, includes, accessMode, queryMode, mapperMode, isReadOnlyMode);
+        }
+
         /// <summary>
         /// Get the DTO list. (with an order By Expression and direction).
         /// </summary>
@@ -188,7 +239,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="isReadOnlyMode">Readonly mode to use readOnly context.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        protected virtual async Task<IEnumerable<TOtherDto>> GetAllAsync<TOtherDto, TOtherMapper>(
+        protected async Task<IEnumerable<TOtherDto>> GetAllAsync<TOtherDto, TOtherMapper>(
             Expression<Func<TEntity, TKey>> orderByExpression,
             bool ascending,
             TKey id = default,
@@ -222,6 +273,19 @@ namespace BIA.Net.Core.Domain.Service
             });
         }
 
+        public virtual async Task<byte[]> GetCsvAsync(
+            TFilterDto filters = null,
+            TKey id = default,
+            Specification<TEntity> specification = null,
+            Expression<Func<TEntity, bool>> filter = null,
+            string accessMode = AccessMode.Read,
+            string queryMode = QueryMode.ReadList,
+            string mapperMode = null,
+            bool isReadOnlyMode = false)
+        {
+            return await this.GetCsvAsync<TDtoListItem, TMapperListItem, TFilterDto>(filters, id, specification, filter, accessMode, queryMode, mapperMode, isReadOnlyMode);
+        }
+
         /// <summary>
         /// Get the csv with filter for <typeparamref name="TOtherDto"/> and <typeparamref name="TOtherMapper"/>.
         /// </summary>
@@ -239,7 +303,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <returns>
         /// A <see cref="Task" /> representing the asynchronous operation.
         /// </returns>
-        protected virtual async Task<byte[]> GetCsvAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(
+        protected async Task<byte[]> GetCsvAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(
             TOtherFilterDto filters = null,
             TKey id = default,
             Specification<TEntity> specification = null,
@@ -290,6 +354,19 @@ namespace BIA.Net.Core.Domain.Service
             return Encoding.GetEncoding(1252).GetBytes(csvBuilder.ToString());
         }
 
+        public virtual async Task<TDto> GetAsync(
+            TKey id = default,
+            Specification<TEntity> specification = null,
+            Expression<Func<TEntity, bool>> filter = null,
+            Expression<Func<TEntity, object>>[] includes = null,
+            string accessMode = AccessMode.Read,
+            string queryMode = QueryMode.Read,
+            string mapperMode = MapperMode.Item,
+            bool isReadOnlyMode = false)
+        {
+            return await this.GetAsync<TDto, TMapper>(id, specification, filter, includes, accessMode, queryMode, mapperMode, isReadOnlyMode);
+        }
+
         /// <summary>
         /// Return a DTO for a given identifier.
         /// </summary>
@@ -304,7 +381,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="isReadOnlyMode">Readonly mode to use readOnly context.</param>
         /// <returns>The DTO.</returns>
-        protected virtual async Task<TOtherDto> GetAsync<TOtherDto, TOtherMapper>(
+        protected async Task<TOtherDto> GetAsync<TOtherDto, TOtherMapper>(
             TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
@@ -337,6 +414,13 @@ namespace BIA.Net.Core.Domain.Service
             });
         }
 
+        public virtual async Task<TDto> AddAsync(
+            TDto dto,
+            string mapperMode = null)
+        {
+            return await this.AddAsync<TDto, TMapper>(dto, mapperMode);
+        }
+
         /// <summary>
         /// Transform the DTO into the corresponding entity and add it to the DB.
         /// </summary>
@@ -345,7 +429,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="dto">The DTO.</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The DTO with id updated.</returns>
-        protected virtual async Task<TOtherDto> AddAsync<TOtherDto, TOtherMapper>(
+        protected async Task<TOtherDto> AddAsync<TOtherDto, TOtherMapper>(
             TOtherDto dto,
             string mapperMode = null)
             where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
@@ -367,6 +451,15 @@ namespace BIA.Net.Core.Domain.Service
             });
         }
 
+        public virtual async Task<TDto> UpdateAsync(
+            TDto dto,
+            string accessMode = AccessMode.Update,
+            string queryMode = QueryMode.Update,
+            string mapperMode = null)
+        {
+            return await this.UpdateAsync<TDto, TMapper>(dto, accessMode, queryMode, mapperMode);
+        }
+
         /// <summary>
         /// Update an entity in DB with the DTO values.
         /// </summary>
@@ -377,7 +470,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The DTO updated.</returns>
-        protected virtual async Task<TOtherDto> UpdateAsync<TOtherDto, TOtherMapper>(
+        protected async Task<TOtherDto> UpdateAsync<TOtherDto, TOtherMapper>(
             TOtherDto dto,
             string accessMode = AccessMode.Update,
             string queryMode = QueryMode.Update,
@@ -417,6 +510,16 @@ namespace BIA.Net.Core.Domain.Service
             });
         }
 
+        public virtual async Task<TDto> RemoveAsync(
+            TKey id,
+            string accessMode = AccessMode.Delete,
+            string queryMode = QueryMode.Delete,
+            string mapperMode = null,
+            bool bypassFixed = false)
+        {
+            return await this.RemoveAsync<TDto, TMapper>(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, bypassFixed: bypassFixed);
+        }
+
         /// <summary>
         /// Remove an entity with its identifier.
         /// </summary>
@@ -428,7 +531,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="bypassFixed">Indicates weither the fixed security should be bypassed or not.</param>
         /// <returns>The deleted DTO.</returns>
-        protected virtual async Task<TOtherDto> RemoveAsync<TOtherDto, TOtherMapper>(
+        protected async Task<TOtherDto> RemoveAsync<TOtherDto, TOtherMapper>(
             TKey id,
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,
@@ -461,6 +564,16 @@ namespace BIA.Net.Core.Domain.Service
             });
         }
 
+        public virtual async Task<List<TDto>> RemoveAsync(
+            List<TKey> ids,
+            string accessMode = AccessMode.Delete,
+            string queryMode = QueryMode.Delete,
+            string mapperMode = null,
+            bool bypassFixed = false)
+        {
+            return await this.RemoveAsync<TDto, TMapper>(ids, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, bypassFixed: bypassFixed);
+        }
+
         /// <summary>
         /// Remove several entity with its identifier.
         /// </summary>
@@ -472,7 +585,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="bypassFixed">Indicates weither the fixed security should be bypassed or not.</param>
         /// <returns>The deleted DTOs.</returns>
-        protected virtual async Task<List<TOtherDto>> RemoveAsync<TOtherDto, TOtherMapper>(
+        protected async Task<List<TOtherDto>> RemoveAsync<TOtherDto, TOtherMapper>(
             List<TKey> ids,
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,
@@ -490,6 +603,19 @@ namespace BIA.Net.Core.Domain.Service
             return dtos;
         }
 
+        public virtual async Task<List<TDto>> SaveSafeAsync(
+            IEnumerable<TDto> dtos,
+            BiaClaimsPrincipal principal,
+            string rightAdd,
+            string rightUpdate,
+            string rightDelete,
+            string accessMode = null,
+            string queryMode = null,
+            string mapperMode = null)
+        {
+            return await this.SaveSafeAsync<TDto, TMapper>(dtos, principal, rightAdd, rightUpdate, rightDelete, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
+        }
+
         /// <summary>
         /// Save several entity with its identifier safe asynchronous.
         /// </summary>
@@ -504,7 +630,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="queryMode">The query mode.</param>
         /// <param name="mapperMode">The mapper mode.</param>
         /// <returns>SaveSafeReturn struct.</returns>
-        protected virtual async Task<List<TOtherDto>> SaveSafeAsync<TOtherDto, TOtherMapper>(
+        protected async Task<List<TOtherDto>> SaveSafeAsync<TOtherDto, TOtherMapper>(
             IEnumerable<TOtherDto> dtos,
             BiaClaimsPrincipal principal,
             string rightAdd,
@@ -645,6 +771,15 @@ namespace BIA.Net.Core.Domain.Service
             return savedDtos;
         }
 
+        public virtual async Task<IEnumerable<TDto>> SaveAsync(
+            IEnumerable<TDto> dtos,
+            string accessMode = null,
+            string queryMode = null,
+            string mapperMode = null)
+        {
+            return await this.SaveAsync<TDto, TMapper>(dtos, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
+        }
+
         /// <summary>
         /// Save several entity with its identifier.
         /// </summary>
@@ -657,7 +792,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <returns>
         /// The saved DTOs.
         /// </returns>
-        protected virtual async Task<IEnumerable<TOtherDto>> SaveAsync<TOtherDto, TOtherMapper>(
+        protected async Task<IEnumerable<TOtherDto>> SaveAsync<TOtherDto, TOtherMapper>(
             IEnumerable<TOtherDto> dtos,
             string accessMode = null,
             string queryMode = null,
@@ -683,6 +818,15 @@ namespace BIA.Net.Core.Domain.Service
             return returnDto;
         }
 
+        public virtual async Task<TDto> SaveAsync(
+            TDto dto,
+            string accessMode = null,
+            string queryMode = null,
+            string mapperMode = null)
+        {
+            return await this.SaveAsync<TDto, TMapper>(dto, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
+        }
+
         /// <summary>
         /// Save a DTO in DB regarding to its state.
         /// </summary>
@@ -693,7 +837,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        protected virtual async Task<TOtherDto> SaveAsync<TOtherDto, TOtherMapper>(
+        protected async Task<TOtherDto> SaveAsync<TOtherDto, TOtherMapper>(
             TOtherDto dto,
             string accessMode = null,
             string queryMode = null,
@@ -734,6 +878,11 @@ namespace BIA.Net.Core.Domain.Service
             return returnDto;
         }
 
+        public virtual async Task<TDto> UpdateFixedAsync(TKey id, bool isFixed)
+        {
+            return await this.UpdateFixedAsync<TDto, TMapper>(id, isFixed);
+        }
+
         /// <summary>
         /// Update the fixed status of an <see cref="IEntityFixable{TKey}"/>.
         /// </summary>
@@ -742,7 +891,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="id">ID of the entity.</param>
         /// <param name="isFixed">Fixed status.</param>
         /// <returns>Updated DTO.</returns>
-        protected virtual async Task<TOtherDto> UpdateFixedAsync<TOtherDto, TOtherMapper>(TKey id, bool isFixed)
+        protected async Task<TOtherDto> UpdateFixedAsync<TOtherDto, TOtherMapper>(TKey id, bool isFixed)
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
         {
@@ -765,6 +914,11 @@ namespace BIA.Net.Core.Domain.Service
         protected virtual Task ExecuteActionsOnUpdateFixedAsync(TKey entityUpdatedId, bool isFixed)
         {
             return Task.CompletedTask;
+        }
+
+        public virtual async Task<List<EntityHistoricalEntryDto>> GetHistoricalAsync(TKey id)
+        {
+            return await this.GetHistoricalAsync<TDto, TMapper>(id);
         }
 
         /// <summary>

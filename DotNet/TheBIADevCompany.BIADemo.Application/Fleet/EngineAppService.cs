@@ -122,20 +122,9 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
         // End BIADemo
 
         /// <inheritdoc/>
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        protected override async Task ExecuteActionsOnUpdateFixedAsync(int entityUpdatedId, bool isFixed)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        public override async Task<EngineDto> AddAsync(EngineDto dto, string mapperMode = null)
         {
-            // BIAToolKit - Begin UpdateFixedChildrenEngine
-            // BIAToolKit - End UpdateFixedChildrenEngine
-        }
-
-        /// <inheritdoc/>
-        protected override async Task<TOtherDto> AddAsync<TOtherDto, TOtherMapper>(TOtherDto dto, string mapperMode = null)
-        {
-            var engineDto = ObjectHelper.EnsureType<EngineDto>(dto);
-
-            var planeParent = await this.planeRepository.GetEntityAsync(engineDto.PlaneId, isReadOnlyMode: true);
+            var planeParent = await this.planeRepository.GetEntityAsync(dto.PlaneId, isReadOnlyMode: true);
             if (planeParent.SiteId != this.currentAncestorTeamId)
             {
                 throw new ForbiddenException("Can only add Engine on current parent Team.");
@@ -146,7 +135,16 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
                 throw new FrontUserException("Plane parent is fixed");
             }
 
-            return await base.AddAsync<TOtherDto, TOtherMapper>(dto, mapperMode);
+            return await base.AddAsync(dto, mapperMode);
+        }
+
+        /// <inheritdoc/>
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        protected override async Task ExecuteActionsOnUpdateFixedAsync(int entityUpdatedId, bool isFixed)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        {
+            // BIAToolKit - Begin UpdateFixedChildrenEngine
+            // BIAToolKit - End UpdateFixedChildrenEngine
         }
 
         /// <inheritdoc/>

@@ -15,13 +15,6 @@ namespace BIA.Net.Core.Application.User
     public interface IRoleAppService
     {
         /// <summary>
-        /// Gets all option that I can see.
-        /// </summary>
-        /// <param name="teamTypeId">The team type id.</param>
-        /// <returns>The list of production sites.</returns>
-        Task<IEnumerable<OptionDto>> GetAllOptionsAsync(int teamTypeId);
-
-        /// <summary>
         /// Return the list of role of a user.
         /// </summary>
         /// <param name="userId">The user Id.</param>

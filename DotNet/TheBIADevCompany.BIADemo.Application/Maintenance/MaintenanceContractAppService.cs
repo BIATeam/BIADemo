@@ -54,25 +54,23 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
         }
 
         /// <inheritdoc/>
-        protected override async Task<TOtherDto> AddAsync<TOtherDto, TOtherMapper>(TOtherDto dto, string mapperMode = null)
+        public override async Task<MaintenanceContractDto> AddAsync(MaintenanceContractDto dto, string mapperMode = null)
         {
-            var maintenanceContractDto = ObjectHelper.EnsureType<MaintenanceContractDto>(dto);
-            maintenanceContractDto.SiteId = this.currentSiteId;
-            maintenanceContractDto.AircraftMaintenanceCompanyId = this.currentAircraftMaintenanceCompanyId;
+            dto.SiteId = this.currentSiteId;
+            dto.AircraftMaintenanceCompanyId = this.currentAircraftMaintenanceCompanyId;
 
-            return await base.AddAsync<TOtherDto, TOtherMapper>(dto, mapperMode);
+            return await base.AddAsync(dto, mapperMode);
         }
 
         /// <inheritdoc/>
-        protected override async Task<TOtherDto> UpdateAsync<TOtherDto, TOtherMapper>(TOtherDto dto, string accessMode = "Update", string queryMode = "Update", string mapperMode = null)
+        public override async Task<MaintenanceContractDto> UpdateAsync(MaintenanceContractDto dto, string accessMode = "Update", string queryMode = "Update", string mapperMode = null)
         {
-            var maintenanceContractDto = ObjectHelper.EnsureType<MaintenanceContractDto>(dto);
-            if (maintenanceContractDto.AircraftMaintenanceCompanyId != this.currentAircraftMaintenanceCompanyId && maintenanceContractDto.SiteId != this.currentSiteId)
+            if (dto.AircraftMaintenanceCompanyId != this.currentAircraftMaintenanceCompanyId && dto.SiteId != this.currentSiteId)
             {
                 throw new ForbiddenException("Can only add MaintenanceContract on current parent Teams.");
             }
 
-            return await base.UpdateAsync<TOtherDto, TOtherMapper>(dto, accessMode, queryMode, mapperMode);
+            return await base.UpdateAsync(dto, accessMode, queryMode, mapperMode);
         }
     }
 }

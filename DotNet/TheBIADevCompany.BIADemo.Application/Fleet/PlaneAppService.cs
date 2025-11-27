@@ -88,6 +88,17 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
 #pragma warning restore SA1515 // Single-line comment should be preceded by blank line
 
         /// <inheritdoc/>
+        public override Task<PlaneDto> AddAsync(PlaneDto dto, string mapperMode = null)
+        {
+            if (dto.SiteId != this.currentAncestorTeamId)
+            {
+                throw new ForbiddenException("Can only add Plane on current parent Team.");
+            }
+
+            return base.AddAsync(dto, mapperMode);
+        }
+
+        /// <inheritdoc/>
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         protected override async Task ExecuteActionsOnUpdateFixedAsync(int entityUpdatedId, bool isFixed)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
@@ -104,18 +115,6 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
             // BIAToolKit - End Partial UpdateFixedChildrenPlane Engine
             // End BIAToolKit Generation Ignore
             // BIAToolKit - End UpdateFixedChildrenPlane
-        }
-
-        /// <inheritdoc/>
-        protected override async Task<TOtherDto> AddAsync<TOtherDto, TOtherMapper>(TOtherDto dto, string mapperMode = null)
-        {
-            var planeDto = ObjectHelper.EnsureType<PlaneDto>(dto);
-            if (planeDto.SiteId != this.currentAncestorTeamId)
-            {
-                throw new ForbiddenException("Can only add Plane on current parent Team.");
-            }
-
-            return await base.AddAsync<TOtherDto, TOtherMapper>(dto, mapperMode);
         }
     }
 }

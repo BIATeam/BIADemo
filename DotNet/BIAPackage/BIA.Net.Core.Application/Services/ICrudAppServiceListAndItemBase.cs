@@ -24,7 +24,7 @@ namespace BIA.Net.Core.Application.Services
     /// <typeparam name="TEntity">The entity type.</typeparam>
     /// <typeparam name="TKey">The primary key type.</typeparam>
     /// <typeparam name="TFilterDto">The filter DTO type.</typeparam>
-    public interface ICrudAppServiceListAndItemBase<TDto, TListItemDto, TEntity, TKey, TFilterDto> : ICrudAppServiceBase<TDto, TEntity, TKey, TFilterDto>
+    public interface ICrudAppServiceListAndItemBase<TDto, TListItemDto, TEntity, TKey, TFilterDto> : IOperationalDomainServiceBase<TDto, TListItemDto, TEntity, TKey, TFilterDto>
         where TDto : BaseDto<TKey>, new()
         where TListItemDto : BaseDto<TKey>, new()
         where TEntity : class, IEntity<TKey>, new()

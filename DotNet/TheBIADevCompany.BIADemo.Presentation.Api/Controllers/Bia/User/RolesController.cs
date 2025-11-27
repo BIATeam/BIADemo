@@ -21,18 +21,18 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
     public class RolesController : BiaControllerBase
     {
         /// <summary>
-        /// The service role.
+        /// The service role option.
         /// </summary>
-        private readonly IRoleAppService roleService;
+        private readonly IRoleOptionAppService roleOptionService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RolesController"/> class.
         /// </summary>
-        /// <param name="roleService">The role service.</param>
+        /// <param name="roleOptionService">The role option service.</param>
         /// <param name="principal">The claims principal.</param>
-        public RolesController(IRoleAppService roleService, IPrincipal principal)
+        public RolesController(IRoleOptionAppService roleOptionService, IPrincipal principal)
         {
-            this.roleService = roleService;
+            this.roleOptionService = roleOptionService;
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         [Authorize(Roles = BiaRights.Roles.Options)]
         public async Task<IActionResult> GetAllOptions(int teamTypeId)
         {
-            var results = await this.roleService.GetAllOptionsAsync(teamTypeId);
+            var results = await this.roleOptionService.GetAllOptionsAsync(teamTypeId);
             return this.Ok(results);
         }
     }
