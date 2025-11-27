@@ -42,7 +42,7 @@ namespace BIA.Net.Core.Domain.Service
     /// <typeparam name="TKey">The primary key of the entity type.</typeparam>
     /// <typeparam name="TFilterDto">The filter DTO type used for paging/filtering.</typeparam>
     /// <typeparam name="TMapper">The mapper type from DTO to entity.</typeparam>
-    /// <typeparam name="TMapperListItem">The mapper type from DTO for list item to entity</typeparam>
+    /// <typeparam name="TMapperListItem">The mapper type from DTO for list item to entity.</typeparam>
     public abstract class OperationalDomainServiceBase<TDto, TDtoListItem, TEntity, TKey, TFilterDto, TMapper, TMapperListItem> : DomainServiceBase<TEntity, TKey>, IOperationalDomainServiceBase<TDto, TDtoListItem, TEntity, TKey, TFilterDto>
         where TDto : BaseDto<TKey>, new()
         where TDtoListItem : BaseDto<TKey>, new()
