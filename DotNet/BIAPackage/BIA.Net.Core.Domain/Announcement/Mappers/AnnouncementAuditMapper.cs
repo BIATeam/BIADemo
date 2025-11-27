@@ -25,7 +25,7 @@ namespace BIA.Net.Core.Domain.Announcement.Mappers
                         EntityProperty = x => x.Type,
                         EntityPropertyIdentifier = x => x.TypeId,
                         LinkedEntityPropertyDisplay = x => x.Id,
-                    }
+                    },
                 ];
         }
     }

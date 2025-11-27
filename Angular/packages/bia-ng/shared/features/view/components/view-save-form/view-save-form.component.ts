@@ -150,7 +150,7 @@ export class ViewSaveFormComponent
       )
     ) {
       this.biaForm?.form?.controls['viewTeams'].setValue([
-        ...this.biaForm?.form?.controls['viewTeams'].value,
+        ...(this.biaForm?.form?.controls['viewTeams'].value ?? []),
         this.viewTeamList[0],
       ]);
     }

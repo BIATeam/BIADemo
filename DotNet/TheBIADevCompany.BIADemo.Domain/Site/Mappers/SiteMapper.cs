@@ -101,7 +101,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Site.Mappers
         {
             return
             [
-                x => x.MaintenanceContracts
+                x => x.MaintenanceContracts,
             ];
         }
 

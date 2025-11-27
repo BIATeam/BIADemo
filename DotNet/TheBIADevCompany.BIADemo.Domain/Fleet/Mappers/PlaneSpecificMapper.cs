@@ -196,7 +196,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             return
             [
                 x => x.ConnectingAirports,
-                x => x.Engines
+                x => x.Engines,
             ];
         }
 
