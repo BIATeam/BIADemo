@@ -10,7 +10,6 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Base.Interface;
@@ -29,6 +28,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Mappers;
+    using TheBIADevCompany.BIADemo.Domain.Fleet.Specifications;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
     /// <summary>
@@ -151,7 +151,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
         protected override Specification<Engine> GetFilterSpecification(IPagingFilterFormatDto filters)
         {
             var specification = base.GetFilterSpecification(filters);
-            specification &= new DirectSpecification<Engine>(engine => engine.PlaneId == int.Parse(filters.ParentIds[0]));
+            specification &= EngineSpecification.SearchGetAll(filters);
             return specification;
         }
     }

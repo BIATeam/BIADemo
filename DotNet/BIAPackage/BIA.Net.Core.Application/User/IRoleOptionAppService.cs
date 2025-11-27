@@ -1,4 +1,4 @@
-// <copyright file="IRoleAppService.cs" company="BIA">
+// <copyright file="IRoleOptionAppService.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 

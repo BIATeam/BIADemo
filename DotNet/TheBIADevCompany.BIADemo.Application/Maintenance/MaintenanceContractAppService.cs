@@ -8,11 +8,9 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
     using System.Security.Principal;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;

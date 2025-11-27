@@ -42,7 +42,7 @@ namespace BIA.Net.Core.Domain.Service
     /// <typeparam name="TKey">The primary key of the entity type.</typeparam>
     /// <typeparam name="TFilterDto">The filter DTO type used for paging/filtering.</typeparam>
     /// <typeparam name="TMapper">The mapper type from DTO to entity.</typeparam>
-    /// <typeparam name="TMapperListItem">The mapper type for list item DTOs.</typeparam>
+    /// <typeparam name="TMapperListItem">The mapper type from DTO for list item to entity</typeparam>
     public abstract class OperationalDomainServiceBase<TDto, TDtoListItem, TEntity, TKey, TFilterDto, TMapper, TMapperListItem> : DomainServiceBase<TEntity, TKey>, IOperationalDomainServiceBase<TDto, TDtoListItem, TEntity, TKey, TFilterDto>
         where TDto : BaseDto<TKey>, new()
         where TDtoListItem : BaseDto<TKey>, new()
@@ -947,7 +947,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
         /// <param name="id">The item ID.</param>
         /// <returns>Collection of <see cref="EntityHistoricalEntryDto>"/>.</returns>
-        protected virtual async Task<List<EntityHistoricalEntryDto>> GetHistoricalAsync<TOtherDto, TOtherMapper>(TKey id)
+        protected async Task<List<EntityHistoricalEntryDto>> GetHistoricalAsync<TOtherDto, TOtherMapper>(TKey id)
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
         {
@@ -1013,7 +1013,7 @@ namespace BIA.Net.Core.Domain.Service
         }
 
         /// <summary>
-        /// Get the paging order.
+        /// Get the paging order used in <see cref="GetRangeAsync{TOtherDto, TOtherMapper, TOtherFilterDto}(TOtherFilterDto, TKey, Specification{TEntity}, Expression{Func{TEntity, bool}}, string, string, string, bool)"/>.
         /// </summary>
         /// <param name="collection">The expression collection of entity.</param>
         /// <param name="orderMember">The order member.</param>
