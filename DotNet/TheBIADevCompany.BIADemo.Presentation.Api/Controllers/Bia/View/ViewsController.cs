@@ -31,10 +31,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         private readonly IBiaClaimsPrincipalService biaClaimsPrincipalService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ViewsController"/> class.
+        /// Initializes a new instance of the <see cref="ViewsController" /> class.
         /// </summary>
         /// <param name="viewAppService">The view service.</param>
         /// <param name="teamAppService">The team service.</param>
+        /// <param name="biaClaimsPrincipalService">The bia claims principal service.</param>
         public ViewsController(IViewAppService viewAppService, ITeamAppService teamAppService, IBiaClaimsPrincipalService biaClaimsPrincipalService)
             : base(teamAppService)
         {
@@ -70,7 +71,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
                 return this.NotFound();
             }
         }
-
 
         /// <summary>
         /// Gets all views that I can see.
@@ -373,7 +373,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
             }
         }
 
-
         private async Task<(bool IsAuthorized, string Permission)> ValidateAndGetPermission(ViewDto dto)
         {
             if (dto.ViewType == 1
@@ -391,6 +390,5 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
 
             return (true, permission);
         }
-
     }
 }

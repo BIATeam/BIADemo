@@ -150,7 +150,7 @@ namespace BIA.Net.Core.Domain.User.Mappers
         {
             return
             [
-                x => x.MemberRoles
+                x => x.MemberRoles,
             ];
         }
 

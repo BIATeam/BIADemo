@@ -44,7 +44,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User
                     (int)RoleId.Supervisor,
 
                     // End BIADemo
-                    (int)RoleId.AircraftMaintenanceCompanyAdmin
+                    (int)RoleId.AircraftMaintenanceCompanyAdmin,
                     ],
                 Children = new ImmutableListBuilder<BiaTeamChildrenConfig<BaseEntityTeam>>
                 {
@@ -76,7 +76,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User
                 TeamTypeId = (int)TeamTypeId.MaintenanceTeam,
                 RightPrefix = "MaintenanceTeam",
                 AdminRoleIds = [
-                    (int)RoleId.MaintenanceTeamAdmin
+                    (int)RoleId.MaintenanceTeamAdmin,
                     ],
                 Children = new ImmutableListBuilder<BiaTeamChildrenConfig<BaseEntityTeam>>
                 {

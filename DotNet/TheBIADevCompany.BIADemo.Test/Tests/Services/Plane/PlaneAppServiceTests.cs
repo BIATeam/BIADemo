@@ -71,7 +71,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
         /// <summary>
         /// Test <see cref="IPlaneAppService.GetAllAsync(TFilterDto)"/> method.
         /// </summary>
-        [TestMethod("PlaneAppServiceTests.GetAllAsyncTest")]
+        [TestMethod(DisplayName = "PlaneAppServiceTests.GetAllAsyncTest")]
         public void GetAllAsyncTest()
         {
             (IEnumerable<PlaneDto> results, int total) = this.service.GetRangeAsync(null).Result;
@@ -84,7 +84,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
         /// <summary>
         /// Test <see cref="IPlaneAppService.AddAsync(TDto)"/> method.
         /// </summary>
-        [TestMethod("PlaneAppServiceTests.AddAsyncTest")]
+        [TestMethod(DisplayName = "PlaneAppServiceTests.AddAsyncTest")]
         public void AddAsyncTest()
         {
             // Retrieve the initial number of planes in DB.
@@ -134,7 +134,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
         /// Test parallel requests with readonly context.
         /// </summary>
         /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
-        [TestMethod("PlaneAppServiceTests.GetInParallelAsyncTest")]
+        [TestMethod(DisplayName = "PlaneAppServiceTests.GetInParallelAsyncTest")]
         public async Task GetInParallelAsyncTest()
         {
             int id1 = 1;

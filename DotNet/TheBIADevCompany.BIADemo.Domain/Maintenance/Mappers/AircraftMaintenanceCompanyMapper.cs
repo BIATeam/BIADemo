@@ -41,7 +41,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Mappers
             return
             [
                 x => x.MaintenanceTeams,
-                x => x.MaintenanceContracts
+                x => x.MaintenanceContracts,
             ];
         }
 

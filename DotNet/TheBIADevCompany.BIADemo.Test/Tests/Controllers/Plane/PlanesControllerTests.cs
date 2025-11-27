@@ -62,7 +62,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Plane
         /// <summary>
         /// Test <see cref="PlanesController.GetAll(BIA.Net.Core.Domain.Dto.Base.Interface.IPagingFilterFormatDto)"/> method.
         /// </summary>
-        [TestMethod("PlanesControllerTests.GetAllTest")]
+        [TestMethod(DisplayName = "PlanesControllerTests.GetAllTest")]
         public void GetAllTest()
         {
             ObjectResult result = this.controller.GetAll(null).Result as ObjectResult;

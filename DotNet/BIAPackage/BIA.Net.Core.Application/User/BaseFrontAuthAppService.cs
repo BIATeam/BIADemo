@@ -222,8 +222,6 @@ namespace BIA.Net.Core.Application.User
             // Sort User Permissions
             userPermissions.Sort();
 
-
-
             // Create Token Dto
             TokenDto<TUserDataDto> tokenDto = new()
             {
