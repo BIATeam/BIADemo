@@ -1,11 +1,10 @@
-// BIADemo only
+﻿// BIADemo only
 // <copyright file="EngineSpecification.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Domain.Fleet.Specifications
 {
-    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Specification;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;

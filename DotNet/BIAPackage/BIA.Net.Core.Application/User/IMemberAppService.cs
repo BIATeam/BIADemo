@@ -17,13 +17,6 @@ namespace BIA.Net.Core.Application.User
     public interface IMemberAppService : ICrudAppServiceBase<MemberDto, Member, int, PagingFilterFormatDto>
     {
         /// <summary>
-        /// Get the list of MemberDto with paging and sorting.
-        /// </summary>
-        /// <param name="filters">The filters.</param>
-        /// <returns>The list of MemberDto.</returns>
-        Task<(IEnumerable<MemberDto> Members, int Total)> GetRangeByTeamAsync(PagingFilterFormatDto filters);
-
-        /// <summary>
         /// Add several members or add only right if user already in list.
         /// </summary>
         /// <param name="membersDto">The members DTO.</param>
@@ -54,12 +47,5 @@ namespace BIA.Net.Core.Application.User
         /// <param name="teamId">The team identifier.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task ResetDefaultRoleAsync(int teamId);
-
-        /// <summary>
-        /// Generates CSV content.
-        /// </summary>
-        /// <param name="filters">Represents the columns and their translations.</param>
-        /// <returns>A <see cref="Task"/> holding the buffered data to return in a file.</returns>
-        Task<byte[]> GetCsvAsync(PagingFilterFormatDto filters);
     }
 }

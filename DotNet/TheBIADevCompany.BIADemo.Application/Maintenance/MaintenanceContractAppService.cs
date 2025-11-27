@@ -11,7 +11,6 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
@@ -62,7 +61,7 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
         }
 
         /// <inheritdoc/>
-        public override async Task<MaintenanceContractDto> UpdateAsync(MaintenanceContractDto dto, string accessMode = AccessMode.Update, string queryMode = QueryMode.Update, string mapperMode = null)
+        public override async Task<MaintenanceContractDto> UpdateAsync(MaintenanceContractDto dto, string accessMode = "Update", string queryMode = "Update", string mapperMode = null)
         {
             if (dto.AircraftMaintenanceCompanyId != this.currentAircraftMaintenanceCompanyId && dto.SiteId != this.currentSiteId)
             {

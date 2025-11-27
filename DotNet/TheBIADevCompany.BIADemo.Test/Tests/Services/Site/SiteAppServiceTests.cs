@@ -160,7 +160,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
             {
                 Filters = new Dictionary<string, JsonElement>(),
             };
-            (IEnumerable<SiteDto> sites, int total) = service.GetRangeAsync(filters, specification: TeamAdvancedFilterSpecification<Site>.Filter(filters)).Result;
+            (IEnumerable<SiteDto> sites, int total) = service.GetRangeAsync(filters).Result;
 
             // Only one site is returned (the one the user is a member of).
             Assert.IsNotNull(sites);

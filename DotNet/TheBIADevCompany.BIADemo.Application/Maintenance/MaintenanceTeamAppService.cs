@@ -16,7 +16,6 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
-    using BIA.Net.Core.Domain.User.Specifications;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Maintenance;
@@ -71,22 +70,6 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
 #pragma warning restore SA1515 // Single-line comment should be preceded by blank line
 
         /// <inheritdoc/>
-        public override async Task<MaintenanceTeamDto> UpdateFixedAsync(int id, bool isFixed)
-        {
-            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
-            {
-                // Update entity fixed status
-                var entity = await this.Repository.GetEntityAsync(id) ?? throw new ElementNotFoundException();
-                this.Repository.UpdateFixedAsync(entity, isFixed);
-
-                // BIAToolKit - Begin UpdateFixedChildrenMaintenanceTeam
-                // BIAToolKit - End UpdateFixedChildrenMaintenanceTeam
-                await this.Repository.UnitOfWork.CommitAsync();
-                return await this.GetAsync(id);
-            });
-        }
-
-        /// <inheritdoc/>
         public override async Task<MaintenanceTeamDto> AddAsync(MaintenanceTeamDto dto, string mapperMode = null)
         {
             if (dto.AircraftMaintenanceCompanyId != this.currentAncestorTeamId)
@@ -98,12 +81,12 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
         }
 
         /// <inheritdoc/>
-#pragma warning disable S1006 // Method overrides should not change parameter defaults
-        public override async Task<(IEnumerable<MaintenanceTeamDto> Results, int Total)> GetRangeAsync(PagingFilterFormatDto<TeamAdvancedFilterDto> filters = null, int id = default, Specification<MaintenanceTeam> specification = null, Expression<Func<MaintenanceTeam, bool>> filter = null, string accessMode = "Read", string queryMode = "ReadList", string mapperMode = null, bool isReadOnlyMode = false)
-#pragma warning restore S1006 // Method overrides should not change parameter defaults
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        protected override async Task ExecuteActionsOnUpdateFixedAsync(int entityUpdatedId, bool isFixed)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            specification ??= TeamAdvancedFilterSpecification<MaintenanceTeam>.Filter(filters);
-            return await base.GetRangeAsync(filters, id, specification, filter, accessMode, queryMode, mapperMode, isReadOnlyMode);
+            // BIAToolKit - Begin UpdateFixedChildrenMaintenanceTeam
+            // BIAToolKit - End UpdateFixedChildrenMaintenanceTeam
         }
     }
 }

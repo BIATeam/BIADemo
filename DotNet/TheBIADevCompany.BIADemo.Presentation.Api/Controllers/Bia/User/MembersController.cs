@@ -103,7 +103,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
                 return this.StatusCode(StatusCodes.Status403Forbidden);
             }
 
-            var (results, total) = await this.memberService.GetRangeByTeamAsync(filters);
+            var (results, total) = await this.memberService.GetRangeAsync(filters);
             this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
             return this.Ok(results);
         }

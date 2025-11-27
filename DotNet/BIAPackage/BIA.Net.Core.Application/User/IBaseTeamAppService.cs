@@ -20,7 +20,7 @@ namespace BIA.Net.Core.Application.User
     /// The interface defining the application service for team.
     /// </summary>
     /// <typeparam name="TEnumTeamTypeId">The type of enum for TeamTypeId.</typeparam>
-    public interface IBaseTeamAppService<TEnumTeamTypeId> : ICrudAppServiceBase<BaseDtoVersionedTeam, BaseEntityTeam, int, PagingFilterFormatDto>
+    public interface IBaseTeamAppService<TEnumTeamTypeId> : ICrudAppServiceBase<BaseDtoVersionedTeam, BaseEntityTeam, int, PagingFilterFormatDto<TeamAdvancedFilterDto>>
         where TEnumTeamTypeId : struct, Enum
     {
         /// <summary>

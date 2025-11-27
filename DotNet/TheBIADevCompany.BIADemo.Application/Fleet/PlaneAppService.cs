@@ -87,32 +87,6 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
 #pragma warning restore SA1515 // Single-line comment should be preceded by blank line
 
         /// <inheritdoc/>
-        public override async Task<PlaneDto> UpdateFixedAsync(int id, bool isFixed)
-        {
-            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
-            {
-                // Update entity fixed status
-                var entity = await this.Repository.GetEntityAsync(id) ?? throw new ElementNotFoundException();
-                this.Repository.UpdateFixedAsync(entity, isFixed);
-
-                // BIAToolKit - Begin UpdateFixedChildrenPlane
-                // Begin BIAToolKit Generation Ignore
-                // BIAToolKit - Begin Partial UpdateFixedChildrenPlane Engine
-                var engines = await this.engineRepository.GetAllEntityAsync(filter: x => x.PlaneId == id);
-                foreach (var engine in engines)
-                {
-                    this.engineRepository.UpdateFixedAsync(engine, isFixed);
-                }
-
-                // BIAToolKit - End Partial UpdateFixedChildrenPlane Engine
-                // End BIAToolKit Generation Ignore
-                // BIAToolKit - End UpdateFixedChildrenPlane
-                await this.Repository.UnitOfWork.CommitAsync();
-                return await this.GetAsync(id);
-            });
-        }
-
-        /// <inheritdoc/>
         public override async Task<PlaneDto> AddAsync(PlaneDto dto, string mapperMode = null)
         {
             if (dto.SiteId != this.currentAncestorTeamId)
@@ -121,6 +95,25 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
             }
 
             return await base.AddAsync(dto, mapperMode);
+        }
+
+        /// <inheritdoc/>
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        protected override async Task ExecuteActionsOnUpdateFixedAsync(int entityUpdatedId, bool isFixed)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        {
+            // BIAToolKit - Begin UpdateFixedChildrenPlane
+            // Begin BIAToolKit Generation Ignore
+            // BIAToolKit - Begin Partial UpdateFixedChildrenPlane Engine
+            var engines = await this.engineRepository.GetAllEntityAsync(filter: x => x.PlaneId == entityUpdatedId);
+            foreach (var engine in engines)
+            {
+                this.engineRepository.UpdateFixedAsync(engine, isFixed);
+            }
+
+            // BIAToolKit - End Partial UpdateFixedChildrenPlane Engine
+            // End BIAToolKit Generation Ignore
+            // BIAToolKit - End UpdateFixedChildrenPlane
         }
     }
 }

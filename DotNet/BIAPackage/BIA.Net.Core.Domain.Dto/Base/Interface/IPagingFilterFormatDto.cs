@@ -14,7 +14,7 @@ namespace BIA.Net.Core.Domain.Dto.Base.Interface
     public interface IPagingFilterFormatDto<TAdvancedFilter> : IPagingFilterFormatDto
     {
         /// <summary>
-        /// Name of the property and her translation for file export.
+        /// Gets or sets the advanced filter.
         /// </summary>
         public TAdvancedFilter AdvancedFilter { get; set; }
     }

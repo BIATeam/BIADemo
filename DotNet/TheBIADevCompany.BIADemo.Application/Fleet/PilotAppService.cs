@@ -62,22 +62,6 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
 #pragma warning restore SA1515 // Single-line comment should be preceded by blank line
 
         /// <inheritdoc/>
-        public override async Task<PilotDto> UpdateFixedAsync(Guid id, bool isFixed)
-        {
-            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
-            {
-                // Update entity fixed status
-                var entity = await this.Repository.GetEntityAsync(id) ?? throw new ElementNotFoundException();
-                this.Repository.UpdateFixedAsync(entity, isFixed);
-
-                // BIAToolKit - Begin UpdateFixedChildrenPilot
-                // BIAToolKit - End UpdateFixedChildrenPilot
-                await this.Repository.UnitOfWork.CommitAsync();
-                return await this.GetAsync(id);
-            });
-        }
-
-        /// <inheritdoc/>
         public override async Task<PilotDto> AddAsync(PilotDto dto, string mapperMode = null)
         {
             if (dto.SiteId != this.currentAncestorTeamId)
@@ -86,6 +70,15 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
             }
 
             return await base.AddAsync(dto, mapperMode);
+        }
+
+        /// <inheritdoc/>
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        protected override async Task ExecuteActionsOnUpdateFixedAsync(Guid entityUpdatedId, bool isFixed)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        {
+            // BIAToolKit - Begin UpdateFixedChildrenPilot
+            // BIAToolKit - End UpdateFixedChildrenPilot
         }
     }
 }

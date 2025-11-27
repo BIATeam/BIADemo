@@ -14,6 +14,7 @@ namespace BIA.Net.Core.Application.User
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
@@ -42,12 +43,6 @@ namespace BIA.Net.Core.Application.User
             : base(repository)
         {
             this.principal = principal as BiaClaimsPrincipal;
-        }
-
-        /// <inheritdoc />
-        public async Task<(IEnumerable<MemberDto> Members, int Total)> GetRangeByTeamAsync(PagingFilterFormatDto filters)
-        {
-            return await this.GetRangeAsync(filters: filters, specification: MemberSpecification.SearchGetAll(filters));
         }
 
         /// <inheritdoc />
@@ -165,10 +160,12 @@ namespace BIA.Net.Core.Application.User
             }
         }
 
-        /// <inheritdoc />
-        public async Task<byte[]> GetCsvAsync(PagingFilterFormatDto filters)
+        /// <inheritdoc/>
+        protected override Specification<Member> GetFilterSpecification(IPagingFilterFormatDto filters)
         {
-            return await this.GetCsvAsync<MemberDto, MemberMapper, PagingFilterFormatDto>(filters: filters, specification: MemberSpecification.SearchGetAll(filters));
+            var specification = base.GetFilterSpecification(filters);
+            specification &= MemberSpecification.SearchGetAll(filters);
+            return specification;
         }
     }
 }

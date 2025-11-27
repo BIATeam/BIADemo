@@ -14,7 +14,6 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
-    using BIA.Net.Core.Domain.User.Specifications;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Maintenance;
@@ -46,15 +45,6 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
             this.FiltersContext.Add(
                 AccessMode.Update,
                 TeamAppService.UpdateSpecification<AircraftMaintenanceCompany, UserDataDto>(TeamTypeId.AircraftMaintenanceCompany, principal));
-        }
-
-        /// <inheritdoc/>
-#pragma warning disable S1006 // Method overrides should not change parameter defaults
-        public override async Task<(IEnumerable<AircraftMaintenanceCompanyDto> Results, int Total)> GetRangeAsync(PagingFilterFormatDto<TeamAdvancedFilterDto> filters = null, int id = default, Specification<AircraftMaintenanceCompany> specification = null, Expression<Func<AircraftMaintenanceCompany, bool>> filter = null, string accessMode = "Read", string queryMode = "ReadList", string mapperMode = null, bool isReadOnlyMode = false)
-#pragma warning restore S1006 // Method overrides should not change parameter defaults
-        {
-            specification ??= TeamAdvancedFilterSpecification<AircraftMaintenanceCompany>.Filter(filters);
-            return await base.GetRangeAsync(filters, id, specification, filter, accessMode, queryMode, mapperMode, isReadOnlyMode);
         }
     }
 }
