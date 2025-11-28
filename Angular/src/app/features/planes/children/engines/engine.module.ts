@@ -10,6 +10,7 @@ import {
 import { PartOptionModule } from 'src/app/domains/part-option/part-option.module';
 import { Permission } from 'src/app/shared/permission';
 import { engineCRUDConfiguration } from './engine.constants';
+import { EngineService } from './services/engine.service';
 import { FeatureEnginesStore } from './store/engine.state';
 import { EnginesEffects } from './store/engines-effects';
 import { EngineEditComponent } from './views/engine-edit/engine-edit.component';
@@ -58,6 +59,19 @@ export const ROUTES: Routes = [
         },
         component: EngineImportComponent,
         canActivate: [PermissionGuard],
+      },
+      {
+        path: 'view',
+        data: {
+          featureViews: engineCRUDConfiguration.featureName,
+          featureConfiguration: engineCRUDConfiguration,
+          featureServiceType: EngineService,
+          leftWidth: 60,
+        },
+        loadChildren: () =>
+          import('../../../../shared/bia-shared/view.module').then(
+            m => m.ViewModule
+          ),
       },
       {
         path: ':crudItemId',
