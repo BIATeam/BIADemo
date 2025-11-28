@@ -46,9 +46,19 @@ namespace BIA.Net.Core.WorkerService.Features
             {
                 if (!string.IsNullOrEmpty(biaNetSection.CommonFeatures.ClientForHub.RedisConnectionString))
                 {
+                    var configurationOptions = new ConfigurationOptions
+                    {
+                        EndPoints = { { biaNetSection.CommonFeatures.ClientForHub.RedisConnectionString, 6379 } },
+                        Ssl = true,
+                    };
+                    configurationOptions.CertificateValidation += (sender, cert, chain, errors) => true;
+
                     if (string.IsNullOrEmpty(biaNetSection.CommonFeatures.ClientForHub.RedisChannelPrefix))
                     {
-                        services.AddSignalR().AddStackExchangeRedis(biaNetSection.CommonFeatures.ClientForHub.RedisConnectionString);
+                        services.AddSignalR().AddStackExchangeRedis(biaNetSection.CommonFeatures.ClientForHub.RedisConnectionString, options =>
+                        {
+                            options.Configuration = configurationOptions;
+                        });
                     }
                     else
                     {

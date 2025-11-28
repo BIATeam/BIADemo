@@ -104,9 +104,19 @@ namespace BIA.Net.Core.Presentation.Api.Features
                 }
                 else
                 {
+                    var configurationOptions = new ConfigurationOptions
+                    {
+                        EndPoints = { { apiFeatures.HubForClients.RedisConnectionString, 6379 } },
+                        Ssl = true,
+                    };
+                    configurationOptions.CertificateValidation += (sender, cert, chain, errors) => true;
+
                     if (string.IsNullOrEmpty(apiFeatures.HubForClients.RedisChannelPrefix))
                     {
-                        services.AddSignalR().AddStackExchangeRedis(apiFeatures.HubForClients.RedisConnectionString);
+                        services.AddSignalR().AddStackExchangeRedis(apiFeatures.HubForClients.RedisConnectionString, options =>
+                        {
+                            options.Configuration = configurationOptions;
+                        });
                     }
                     else
                     {
