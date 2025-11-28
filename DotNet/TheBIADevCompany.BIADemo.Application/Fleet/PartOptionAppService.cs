@@ -1,5 +1,5 @@
 // BIADemo only
-// <copyright file="PartAppService.cs" company="TheBIADevCompany">
+// <copyright file="PartOptionAppService.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -18,24 +18,15 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
     /// <summary>
     /// The application service used for plane.
     /// </summary>
-    public class PartAppService : CrudAppServiceBase<PartDto, Part, int, PagingFilterFormatDto, PartMapper>, IPartAppService
+    public class PartOptionAppService : OptionAppServiceBase<OptionDto, Part, int, PartOptionMapper>, IPartOptionAppService
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PartAppService"/> class.
+        /// Initializes a new instance of the <see cref="PartOptionAppService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
-        public PartAppService(ITGenericRepository<Part, int> repository)
+        public PartOptionAppService(ITGenericRepository<Part, int> repository)
             : base(repository)
         {
-        }
-
-        /// <summary>
-        /// Return options.
-        /// </summary>
-        /// <returns>List of OptionDto.</returns>
-        public Task<IEnumerable<OptionDto>> GetAllOptionsAsync()
-        {
-            return this.GetAllAsync<OptionDto, PartOptionMapper>();
         }
     }
 }

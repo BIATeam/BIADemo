@@ -20,23 +20,23 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
     public class PartsController : BiaControllerBase
     {
         /// <summary>
-        /// The plane application service.
+        /// The part option application service.
         /// </summary>
-        private readonly IPartAppService partService;
+        private readonly IPartOptionAppService partOptionService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PartsController"/> class.
         /// </summary>
         /// <param name="partService">The part application service.</param>
-        public PartsController(IPartAppService partService)
+        public PartsController(IPartOptionAppService partService)
         {
-            this.partService = partService;
+            this.partOptionService = partService;
         }
 
         /// <summary>
         /// Gets all option that I can see.
         /// </summary>
-        /// /// <returns>The list of production sites.</returns>
+        /// /// <returns>The list of parts.</returns>
         [HttpGet("allOptions")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -45,7 +45,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [Authorize(Roles = Rights.Parts.Options)]
         public async Task<IActionResult> GetAllOptions()
         {
-            var results = await this.partService.GetAllOptionsAsync();
+            var results = await this.partOptionService.GetAllOptionsAsync();
             return this.Ok(results);
         }
     }

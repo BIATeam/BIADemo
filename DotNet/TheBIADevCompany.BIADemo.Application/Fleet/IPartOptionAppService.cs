@@ -1,5 +1,5 @@
 // BIADemo only
-// <copyright file="IPartAppService.cs" company="TheBIADevCompany">
+// <copyright file="IPartOptionAppService.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -16,12 +16,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
     /// <summary>
     /// The interface defining the application service for plane.
     /// </summary>
-    public interface IPartAppService : ICrudAppServiceBase<PartDto, Part, int, PagingFilterFormatDto>
+    public interface IPartOptionAppService : IOptionAppServiceBase<OptionDto,int>
     {
-        /// <summary>
-        /// Return options.
-        /// </summary>
-        /// <returns>List of OptionDto.</returns>
-        Task<IEnumerable<OptionDto>> GetAllOptionsAsync();
     }
 }
