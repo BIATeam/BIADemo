@@ -6,7 +6,6 @@
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="BIA.Net.Core.Common" Version="5.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.*" />
     <PackageReference Include="System.Security.Principal.Windows" Version="5.0.*" />
   </ItemGroup>
@@ -63,5 +62,8 @@
 	  <Compile Remove="**\LdapDomainsController.cs" />
 	  <Compile Remove="**\*ProfileImageController*.cs" />
 	  <Compile Remove="**\UserModelBuilder.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Common\BIA.Net.Core.Common.csproj" />
   </ItemGroup>
 </Project>
