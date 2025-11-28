@@ -104,19 +104,9 @@ namespace BIA.Net.Core.Presentation.Api.Features
                 }
                 else
                 {
-                    var configurationOptions = new ConfigurationOptions
-                    {
-                        EndPoints = { { apiFeatures.HubForClients.RedisConnectionString, 6379 } },
-                        Ssl = true,
-                    };
-                    configurationOptions.CertificateValidation += (sender, cert, chain, errors) => true;
-
                     if (string.IsNullOrEmpty(apiFeatures.HubForClients.RedisChannelPrefix))
                     {
-                        services.AddSignalR().AddStackExchangeRedis(apiFeatures.HubForClients.RedisConnectionString, options =>
-                        {
-                            options.Configuration = configurationOptions;
-                        });
+                        services.AddSignalR().AddStackExchangeRedis(apiFeatures.HubForClients.RedisConnectionString);
                     }
                     else
                     {
@@ -125,6 +115,8 @@ namespace BIA.Net.Core.Presentation.Api.Features
                             redisOptions =>
                             {
                                 redisOptions.Configuration.ChannelPrefix = RedisChannel.Literal(apiFeatures.HubForClients.RedisChannelPrefix);
+                                redisOptions.Configuration.Ssl = apiFeatures.HubForClients.UseSsl;
+                                redisOptions.Configuration.CertificateValidation += (sender, cert, chain, errors) => true;
                             });
                     }
                 }

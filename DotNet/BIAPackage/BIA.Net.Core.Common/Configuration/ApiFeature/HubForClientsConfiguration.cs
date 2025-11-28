@@ -27,5 +27,10 @@ namespace BIA.Net.Core.Common.Configuration.ApiFeature
         /// Filter redis Chanel.
         /// </summary>
         public string RedisChannelPrefix { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [use SSL].
+        /// </summary>
+        public bool UseSsl { get; set; }
     }
 }
