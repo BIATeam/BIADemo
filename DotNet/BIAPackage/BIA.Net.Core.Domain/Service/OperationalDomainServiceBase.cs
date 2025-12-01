@@ -447,7 +447,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="isReadOnlyMode">Readonly mode to use readOnly context.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        protected async Task<IEnumerable<TOtherDto>> GetAllGenericAsync<TOtherDto, TOtherMapper>(
+        protected virtual async Task<IEnumerable<TOtherDto>> GetAllGenericAsync<TOtherDto, TOtherMapper>(
             TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
@@ -497,7 +497,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="isReadOnlyMode">Readonly mode to use readOnly context.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        protected async Task<IEnumerable<TOtherDto>> GetAllGenericAsync<TOtherDto, TOtherMapper>(
+        protected virtual async Task<IEnumerable<TOtherDto>> GetAllGenericAsync<TOtherDto, TOtherMapper>(
             Expression<Func<TEntity, TKey>> orderByExpression,
             bool ascending,
             TKey id = default,
@@ -534,6 +534,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <summary>
         /// Get the csv with filter for <typeparamref name="TOtherDto"/> and <typeparamref name="TOtherMapper"/>.
         /// </summary>
+        /// <param name="getRangeAsync">Delegate used to get range of dto.</param>
         /// <param name="filters">The filters.</param>
         /// <param name="id">The id.</param>
         /// <param name="specification">Specification Used to filter query.</param>
@@ -614,7 +615,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="isReadOnlyMode">Readonly mode to use readOnly context.</param>
         /// <returns>The DTO.</returns>
-        protected async Task<TOtherDto> GetGenericAsync<TOtherDto, TOtherMapper>(
+        protected virtual async Task<TOtherDto> GetGenericAsync<TOtherDto, TOtherMapper>(
             TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
@@ -655,7 +656,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="dto">The DTO.</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The DTO with id updated.</returns>
-        protected async Task<TOtherDto> AddGenericAsync<TOtherDto, TOtherMapper>(
+        protected virtual async Task<TOtherDto> AddGenericAsync<TOtherDto, TOtherMapper>(
             TOtherDto dto,
             string mapperMode = null)
             where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
@@ -687,7 +688,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The DTO updated.</returns>
-        protected async Task<TOtherDto> UpdateGenericAsync<TOtherDto, TOtherMapper>(
+        protected virtual async Task<TOtherDto> UpdateGenericAsync<TOtherDto, TOtherMapper>(
             TOtherDto dto,
             string accessMode = AccessMode.Update,
             string queryMode = QueryMode.Update,
@@ -738,7 +739,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="bypassFixed">Indicates weither the fixed security should be bypassed or not.</param>
         /// <returns>The deleted DTO.</returns>
-        protected async Task<TOtherDto> RemoveGenericAsync<TOtherDto, TOtherMapper>(
+        protected virtual async Task<TOtherDto> RemoveGenericAsync<TOtherDto, TOtherMapper>(
             TKey id,
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,
@@ -777,12 +778,13 @@ namespace BIA.Net.Core.Domain.Service
         /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
         /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
         /// <param name="ids">List of the identifiers.</param>
+        /// <param name="removeGenericAsync">Delegate used to remove the dto.</param>
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="bypassFixed">Indicates weither the fixed security should be bypassed or not.</param>
         /// <returns>The deleted DTOs.</returns>
-        protected async Task<List<TOtherDto>> RemoveGenericAsync<TOtherDto, TOtherMapper>(
+        protected virtual async Task<List<TOtherDto>> RemoveGenericAsync<TOtherDto, TOtherMapper>(
             List<TKey> ids,
             RemoveGenericAsyncDelegate<TOtherDto, TOtherMapper> removeGenericAsync,
             string accessMode = AccessMode.Delete,
@@ -811,11 +813,14 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="rightAdd">The right add.</param>
         /// <param name="rightUpdate">The right update.</param>
         /// <param name="rightDelete">The right delete.</param>
+        /// <param name="addGenericAsync">Delegate used to add the dto.</param>
+        /// <param name="updateGenericAsync">Delegate used to update the dto.</param>
+        /// <param name="removeGenericAsync">Delegate used to remove the dto.</param>
         /// <param name="accessMode">The access mode.</param>
         /// <param name="queryMode">The query mode.</param>
         /// <param name="mapperMode">The mapper mode.</param>
         /// <returns>SaveSafeReturn struct.</returns>
-        protected async Task<List<TOtherDto>> SaveSafeGenericAsync<TOtherDto, TOtherMapper>(
+        protected virtual async Task<List<TOtherDto>> SaveSafeGenericAsync<TOtherDto, TOtherMapper>(
             IEnumerable<TOtherDto> dtos,
             BiaClaimsPrincipal principal,
             string rightAdd,
@@ -965,13 +970,17 @@ namespace BIA.Net.Core.Domain.Service
         /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
         /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
         /// <param name="dtos">List of the dtos to save.</param>
+        /// <param name="saveGenericAsync">Delegate used to save the dto.</param>
+        /// <param name="addGenericAsync">Delegate used to add the dto.</param>
+        /// <param name="updateGenericAsync">Delegate used to update the dto.</param>
+        /// <param name="removeGenericAsync">Delegate used to remove the dto.</param>
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>
         /// The saved DTOs.
         /// </returns>
-        protected async Task<IEnumerable<TOtherDto>> SaveGenericAsync<TOtherDto, TOtherMapper>(
+        protected virtual async Task<IEnumerable<TOtherDto>> SaveGenericAsync<TOtherDto, TOtherMapper>(
             IEnumerable<TOtherDto> dtos,
             SaveGenericAsyncDelegate<TOtherDto, TOtherMapper> saveGenericAsync,
             AddGenericAsyncDelegate<TOtherDto, TOtherMapper> addGenericAsync,
@@ -1007,11 +1016,14 @@ namespace BIA.Net.Core.Domain.Service
         /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
         /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
         /// <param name="dto">The dto to save.</param>
+        /// <param name="addGenericAsync">Delegate used to add the dto.</param>
+        /// <param name="updateGenericAsync">Delegate used to update the dto.</param>
+        /// <param name="removeGenericAsync">Delegate used to remove the dto.</param>
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        protected async Task<TOtherDto> SaveGenericAsync<TOtherDto, TOtherMapper>(
+        protected virtual async Task<TOtherDto> SaveGenericAsync<TOtherDto, TOtherMapper>(
             TOtherDto dto,
             AddGenericAsyncDelegate<TOtherDto, TOtherMapper> addGenericAsync,
             UpdateGenericAsyncDelegate<TOtherDto, TOtherMapper> updateGenericAsync,
@@ -1062,11 +1074,12 @@ namespace BIA.Net.Core.Domain.Service
         /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
         /// <param name="id">ID of the entity.</param>
         /// <param name="isFixed">Fixed status.</param>
+        /// <param name="getGenericAsync">Delegate used to get the dto.</param>
         /// <returns>Updated DTO.</returns>
-        protected async Task<TOtherDto> UpdateFixedGenericAsync<TOtherDto, TOtherMapper>(
+        protected virtual async Task<TOtherDto> UpdateFixedGenericAsync<TOtherDto, TOtherMapper>(
             TKey id,
             bool isFixed,
-            GetGenericAsyncDelegate<TOtherDto, TOtherMapper> getGeneric)
+            GetGenericAsyncDelegate<TOtherDto, TOtherMapper> getGenericAsync)
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
         {
@@ -1076,7 +1089,7 @@ namespace BIA.Net.Core.Domain.Service
                 this.Repository.UpdateFixedAsync(entity, isFixed);
                 await this.ExecuteActionsOnUpdateFixedAsync(id, isFixed);
                 await this.Repository.UnitOfWork.CommitAsync();
-                return await getGeneric(id);
+                return await getGenericAsync(id);
             });
         }
 
@@ -1098,7 +1111,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
         /// <param name="id">The item ID.</param>
         /// <returns>Collection of <see cref="EntityHistoricalEntryDto>"/>.</returns>
-        protected async Task<List<EntityHistoricalEntryDto>> GetHistoricalGenericAsync<TOtherDto, TOtherMapper>(TKey id)
+        protected virtual async Task<List<EntityHistoricalEntryDto>> GetHistoricalGenericAsync<TOtherDto, TOtherMapper>(TKey id)
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
         {
