@@ -64,18 +64,18 @@ namespace BIA.Net.Core.Domain.Service
         /// <summary>
         /// Delegate for <see cref="GetGenericAsync{TOtherDto, TOtherMapper}(TKey, Specification{TEntity}, Expression{Func{TEntity, bool}}, Expression{Func{TEntity, object}}[], string, string, string, bool)"/>.
         /// </summary>
-        /// <typeparam name="TOtherDto"></typeparam>
-        /// <typeparam name="TOtherMapper"></typeparam>
-        /// <typeparam name="TOtherFilterDto"></typeparam>
-        /// <param name="filters"></param>
-        /// <param name="id"></param>
-        /// <param name="specification"></param>
-        /// <param name="filter"></param>
-        /// <param name="accessMode"></param>
-        /// <param name="queryMode"></param>
-        /// <param name="mapperMode"></param>
-        /// <param name="isReadOnlyMode"></param>
-        /// <returns></returns>
+        /// <typeparam name="TOtherDto">The DTO type for item.</typeparam>
+        /// <typeparam name="TOtherMapper">The mapper type from DTO to entity.</typeparam>
+        /// <typeparam name="TOtherFilterDto">The filter DTO type used for paging/filtering.</typeparam>
+        /// <param name="filters">The filters.</param>
+        /// <param name="id">The id.</param>
+        /// <param name="specification">Specification Used to filter query.</param>
+        /// <param name="filter">Filter Query.</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="isReadOnlyMode">Readonly mode to use readOnly context.</param>
+        /// <returns>A tuple containing the results and the total count.</returns>
         protected delegate Task<(IEnumerable<TOtherDto> Results, int Total)> GetRangeGenericAsyncDelegate<TOtherDto, TOtherMapper, TOtherFilterDto>(
            TOtherFilterDto filters = null,
            TKey id = default,
@@ -90,19 +90,19 @@ namespace BIA.Net.Core.Domain.Service
            where TOtherFilterDto : class, IPagingFilterFormatDto, new();
 
         /// <summary>
-        /// Delegate for <see cref="GetGenericAsync{TOtherDto, TOtherMapper}(TKey, Specification{TEntity}, Expression{Func{TEntity, bool}}, Expression{Func{TEntity, object}}[], string, string, string, bool)"/>."/>
+        /// Delegate for <see cref="GetGenericAsync{TOtherDto, TOtherMapper}(TKey, Specification{TEntity}, Expression{Func{TEntity, bool}}, Expression{Func{TEntity, object}}[], string, string, string, bool)"/>.
         /// </summary>
-        /// <typeparam name="TOtherDto"></typeparam>
-        /// <typeparam name="TOtherMapper"></typeparam>
-        /// <param name="id"></param>
-        /// <param name="specification"></param>
-        /// <param name="filter"></param>
-        /// <param name="includes"></param>
-        /// <param name="accessMode"></param>
-        /// <param name="queryMode"></param>
-        /// <param name="mapperMode"></param>
-        /// <param name="isReadOnlyMode"></param>
-        /// <returns></returns>
+        /// <typeparam name="TOtherDto">The DTO type for item.</typeparam>
+        /// <typeparam name="TOtherMapper">The mapper type from DTO to entity.</typeparam>
+        /// <param name="id">The identifier.</param>
+        /// <param name="specification">Specification Used for Filtering Query.</param>
+        /// <param name="filter">Filter Query.</param>
+        /// <param name="includes">The list of includes.</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="isReadOnlyMode">Readonly mode to use readOnly context.</param>
+        /// <returns>The DTO.</returns>
         protected delegate Task<TOtherDto> GetGenericAsyncDelegate<TOtherDto, TOtherMapper>(
             TKey id = default,
             Specification<TEntity> specification = null,
@@ -115,12 +115,30 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new();
 
+        /// <summary>
+        /// Delegate for <see cref="AddGenericAsync{TOtherDto, TOtherMapper}(TOtherDto, string)"/>.
+        /// </summary>
+        /// <typeparam name="TOtherDto">The DTO type for item.</typeparam>
+        /// <typeparam name="TOtherMapper">The mapper type from DTO to entity.</typeparam>
+        /// <param name="dto">The DTO to add.</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <returns>The DTO with id updated.</returns>
         protected delegate Task<TOtherDto> AddGenericAsyncDelegate<TOtherDto, TOtherMapper>(
             TOtherDto dto,
             string mapperMode = null)
             where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new();
 
+        /// <summary>
+        /// Delegate for <see cref="UpdateGenericAsync{TOtherDto, TOtherMapper}(TOtherDto, string, string, string)"/>.
+        /// </summary>
+        /// <typeparam name="TOtherDto">The DTO type for item.</typeparam>
+        /// <typeparam name="TOtherMapper">The mapper type from DTO to entity.</typeparam>
+        /// <param name="dto">The DTO to update.</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <returns>The DTO updated.</returns>
         protected delegate Task<TOtherDto> UpdateGenericAsyncDelegate<TOtherDto, TOtherMapper>(
             TOtherDto dto,
             string accessMode = AccessMode.Update,
@@ -129,6 +147,17 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new();
 
+        /// <summary>
+        /// Delegate for <see cref="RemoveGenericAsync{TOtherDto, TOtherMapper}(TKey, string, string, string, bool)"/>.
+        /// </summary>
+        /// <typeparam name="TOtherDto">The DTO type for item.</typeparam>
+        /// <typeparam name="TOtherMapper">The mapper type from DTO to entity.</typeparam>
+        /// <param name="id">The identifier.</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="bypassFixed">Indicates whether the fixed security should be bypassed or not.</param>
+        /// <returns>The deleted DTO.</returns>
         protected delegate Task<TOtherDto> RemoveGenericAsyncDelegate<TOtherDto, TOtherMapper>(
             TKey id,
             string accessMode = AccessMode.Delete,
@@ -136,6 +165,19 @@ namespace BIA.Net.Core.Domain.Service
             string mapperMode = null,
             bool bypassFixed = false);
 
+        /// <summary>
+        /// Delegate for <see cref="SaveGenericAsync{TOtherDto, TOtherMapper}(TOtherDto, AddGenericAsyncDelegate{TOtherDto,TOtherMapper}, UpdateGenericAsyncDelegate{TOtherDto,TOtherMapper}, RemoveGenericAsyncDelegate{TOtherDto,TOtherMapper}, string, string, string)"/>.
+        /// </summary>
+        /// <typeparam name="TOtherDto">The DTO type for item.</typeparam>
+        /// <typeparam name="TOtherMapper">The mapper type from DTO to entity.</typeparam>
+        /// <param name="dto">The dto to save.</param>
+        /// <param name="addGenericAsync">Delegate used to add the dto.</param>
+        /// <param name="updateGenericAsync">Delegate used to update the dto.</param>
+        /// <param name="removeGenericAsync">Delegate used to remove the dto.</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <returns>The saved DTO.</returns>
         protected delegate Task<TOtherDto> SaveGenericAsyncDelegate<TOtherDto, TOtherMapper>(
             TOtherDto dto,
             AddGenericAsyncDelegate<TOtherDto, TOtherMapper> addGenericAsync,
