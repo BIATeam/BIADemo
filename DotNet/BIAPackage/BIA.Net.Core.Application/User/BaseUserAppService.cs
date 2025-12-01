@@ -125,7 +125,7 @@ namespace BIA.Net.Core.Application.User
                 specification = UserSpecification<TUser>.Search(filter);
             }
 
-            return await this.GetAllAsync<OptionDto, UserOptionMapper<TUser>>(specification: specification, queryOrder: new QueryOrder<TUser>().OrderBy(o => o.LastName).ThenBy(o => o.FirstName));
+            return await this.GetAllGenericAsync<OptionDto, UserOptionMapper<TUser>>(specification: specification, queryOrder: new QueryOrder<TUser>().OrderBy(o => o.LastName).ThenBy(o => o.FirstName));
         }
 
         /// <inheritdoc />
@@ -215,7 +215,7 @@ namespace BIA.Net.Core.Application.User
                 foreach (var user in result.UsersAddedDtos)
                 {
                     userDto.Id = user.Id;
-                    await this.UpdateAsync<TUserDto, TUserMapper>(userDto, mapperMode: "RolesInit");
+                    await this.UpdateGenericAsync<TUserDto, TUserMapper>(userDto, mapperMode: "RolesInit");
                 }
             }
 
@@ -428,7 +428,7 @@ namespace BIA.Net.Core.Application.User
                         }
                         else if (canUpdate && userDto.DtoState == DtoState.Modified)
                         {
-                            await this.UpdateAsync<TUserDto, TUserMapper>(userDto, mapperMode: "Roles");
+                            await this.UpdateGenericAsync<TUserDto, TUserMapper>(userDto, mapperMode: "Roles");
                             this.Repository.UnitOfWork.Reset();
                             nbUpdated++;
                         }

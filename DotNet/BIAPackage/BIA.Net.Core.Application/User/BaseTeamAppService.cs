@@ -240,7 +240,7 @@ namespace BIA.Net.Core.Application.User
         /// <param name="teamTypeId">The team type id.</param>
         public Task<IEnumerable<OptionDto>> GetAllOptionsAsync()
         {
-            return this.GetAllAsync<OptionDto, TeamOptionMapper>();
+            return this.GetAllGenericAsync<OptionDto, TeamOptionMapper>();
         }
 
         /// <inheritdoc />
