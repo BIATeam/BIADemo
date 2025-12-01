@@ -4,8 +4,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { PermissionGuard } from 'packages/bia-ng/core/public-api';
 import {
-  FullPageLayoutComponent,
-  PopupLayoutComponent,
+  DynamicLayoutComponent,
+  LayoutMode,
 } from 'packages/bia-ng/shared/public-api';
 import { AirportOptionModule } from 'src/app/domains/airport-option/airport-option.module';
 import { PlaneTypeOptionModule } from 'src/app/domains/plane-type-option/plane-type-option.module';
@@ -27,7 +27,7 @@ const ROUTES: Routes = [
       permission: Permission.Plane_List_Access,
       injectComponent: PlanesIndexComponent,
     },
-    component: FullPageLayoutComponent,
+    component: DynamicLayoutComponent,
     canActivate: [PermissionGuard],
     // [Calc] : The children are not used in calc
     children: [
@@ -38,9 +38,9 @@ const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.Plane_Create,
           title: 'plane.add',
-          injectComponent: PlaneNewComponent,
+          layoutMode: usePopup ? LayoutMode.popup : LayoutMode.fullPage,
         },
-        component: usePopup ? PopupLayoutComponent : FullPageLayoutComponent,
+        component: PlaneNewComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -59,11 +59,9 @@ const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.Plane_Update,
               title: 'plane.edit',
-              injectComponent: PlaneEditComponent,
+              layoutMode: usePopup ? LayoutMode.popup : LayoutMode.fullPage,
             },
-            component: usePopup
-              ? PopupLayoutComponent
-              : FullPageLayoutComponent,
+            component: PlaneEditComponent,
             canActivate: [PermissionGuard],
           },
           {

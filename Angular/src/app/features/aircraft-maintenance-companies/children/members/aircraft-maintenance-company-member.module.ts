@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PermissionGuard } from 'packages/bia-ng/core/public-api';
 import {
-  FullPageLayoutComponent,
+  DynamicLayoutComponent,
+  LayoutMode,
   MemberModule,
-  PopupLayoutComponent,
 } from 'packages/bia-ng/shared/public-api';
 import { Permission } from 'src/app/shared/permission';
 
@@ -21,7 +21,7 @@ const ROUTES: Routes = [
       permission: Permission.AircraftMaintenanceCompany_Member_List_Access,
       injectComponent: AircraftMaintenanceCompanyMembersIndexComponent,
     },
-    component: FullPageLayoutComponent,
+    component: DynamicLayoutComponent,
     canActivate: [PermissionGuard],
     // [Calc] : The children are not used in calc
     children: [
@@ -32,9 +32,9 @@ const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.AircraftMaintenanceCompany_Member_Create,
           title: 'member.add',
-          injectComponent: AircraftMaintenanceCompanyMemberNewComponent,
+          layoutMode: LayoutMode.popup,
         },
-        component: PopupLayoutComponent,
+        component: AircraftMaintenanceCompanyMemberNewComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -53,9 +53,9 @@ const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.AircraftMaintenanceCompany_Member_Update,
               title: 'member.manage',
-              injectComponent: AircraftMaintenanceCompanyMemberEditComponent,
+              layoutMode: LayoutMode.popup,
             },
-            component: PopupLayoutComponent,
+            component: AircraftMaintenanceCompanyMemberEditComponent,
             canActivate: [PermissionGuard],
           },
           {

@@ -20,6 +20,9 @@ import { BiaInjectorService } from 'packages/bia-ng/core/public-api';
 import { BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
+/**
+ * @deprecated This class is deprecated. Use DynamicLayoutComponent instead. See documentation in BiaDocs
+ */
 @Component({
   selector: 'bia-full-page-layout',
   templateUrl: './fullpage-layout.component.html',
@@ -65,6 +68,7 @@ export class FullPageLayoutComponent
     child = snapshot.firstChild;
     let hasFullPageChild = false;
     while (child) {
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       if (child.component === FullPageLayoutComponent) {
         hasFullPageChild = true;
         break;
