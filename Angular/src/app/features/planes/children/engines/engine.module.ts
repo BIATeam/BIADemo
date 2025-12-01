@@ -63,7 +63,6 @@ export const ROUTES: Routes = [
       {
         path: 'view',
         data: {
-          featureViews: engineCRUDConfiguration.featureName,
           featureConfiguration: engineCRUDConfiguration,
           featureServiceType: EngineService,
           leftWidth: 60,

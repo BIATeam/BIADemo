@@ -41,7 +41,6 @@ export const ROUTES: Routes = [
       {
         path: 'view',
         data: {
-          featureViews: planeTypeCRUDConfiguration.featureName,
           featureConfiguration: planeTypeCRUDConfiguration,
           featureServiceType: PlaneTypeService,
           leftWidth: 60,

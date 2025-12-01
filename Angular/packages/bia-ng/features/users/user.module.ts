@@ -64,7 +64,6 @@ const ROUTES: Routes = [
       {
         path: 'view',
         data: {
-          featureViews: userCRUDConfiguration.featureName,
           featureConfiguration: userCRUDConfiguration,
           featureServiceType: UserService,
           leftWidth: 60,

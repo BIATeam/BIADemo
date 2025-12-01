@@ -46,7 +46,6 @@ export const ROUTES: Routes = [
       {
         path: 'view',
         data: {
-          featureViews: pilotCRUDConfiguration.featureName,
           featureConfiguration: pilotCRUDConfiguration,
           featureServiceType: PilotService,
           leftWidth: 60,

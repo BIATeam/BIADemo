@@ -44,7 +44,6 @@ export const ROUTES: Routes = [
       {
         path: 'view',
         data: {
-          featureViews: aircraftMaintenanceCompanyCRUDConfiguration.featureName,
           featureConfiguration: aircraftMaintenanceCompanyCRUDConfiguration,
           featureServiceType: AircraftMaintenanceCompanyService,
           leftWidth: 60,

@@ -123,9 +123,9 @@ export class ViewSaveComponent<
       return;
     }
 
-    this.tableStateKey = parent.snapshot.data['featureViews'] + 'Grid';
     this.featureConfiguration = parent.snapshot.data['featureConfiguration'];
     if (this.featureConfiguration?.useViewTeamWithTypeId) {
+      this.tableStateKey = this.featureConfiguration?.tableStateKey;
       this.teamList$ = this.store.select(
         CoreTeamsStore.getAllTeamsOfType(
           this.featureConfiguration?.useViewTeamWithTypeId

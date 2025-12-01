@@ -47,7 +47,6 @@ export const ROUTES: Routes = [
       {
         path: 'view',
         data: {
-          featureViews: flightCRUDConfiguration.featureName,
           featureConfiguration: flightCRUDConfiguration,
           featureServiceType: FlightService,
           leftWidth: 60,

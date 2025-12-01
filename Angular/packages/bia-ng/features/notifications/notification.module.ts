@@ -55,7 +55,6 @@ const ROUTES: Routes = [
       {
         path: 'view',
         data: {
-          featureViews: notificationCRUDConfiguration.featureName,
           featureConfiguration: notificationCRUDConfiguration,
           featureServiceType: NotificationService,
           leftWidth: 60,
