@@ -25,6 +25,7 @@ namespace BIA.Net.Core.Domain.Service
     /// The interface defining the CRUD methods.
     /// </summary>
     /// <typeparam name="TDto">The DTO type.</typeparam>
+    /// <typeparam name="TDtoListItem">The DTO list item type.</typeparam>
     /// <typeparam name="TEntity">The entity type.</typeparam>
     /// <typeparam name="TKey">The primary key type.</typeparam>
     /// <typeparam name="TFilterDto">The filter DTO type.</typeparam>

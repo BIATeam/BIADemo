@@ -16,7 +16,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
     /// <summary>
     /// The interface defining the application service for plane.
     /// </summary>
-    public interface IPartOptionAppService : IOptionAppServiceBase<OptionDto,int>
+    public interface IPartOptionAppService : IOptionAppServiceBase<OptionDto, int>
     {
     }
 }

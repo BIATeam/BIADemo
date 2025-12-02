@@ -95,65 +95,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
         }
 
         /// <inheritdoc />
-        public override Expression<Func<Plane, PlaneSpecificDto>> EntityToDto()
-        {
-            return base.EntityToDto().CombineMapping(entity => new PlaneSpecificDto
-            {
-                Msn = entity.Msn,
-                Manufacturer = entity.Manufacturer,
-                IsActive = entity.IsActive,
-                IsMaintenance = entity.IsMaintenance,
-                FirstFlightDate = entity.FirstFlightDate,
-                LastFlightDate = entity.LastFlightDate,
-                DeliveryDate = entity.DeliveryDate,
-                NextMaintenanceDate = entity.NextMaintenanceDate,
-                SyncTime = entity.SyncTime.Value.ToString(@"hh\:mm\:ss"),
-                SyncFlightDataTime = entity.SyncFlightDataTime.ToString(@"hh\:mm\:ss"),
-                Capacity = entity.Capacity,
-                MotorsCount = entity.MotorsCount,
-                TotalFlightHours = entity.TotalFlightHours,
-                Probability = entity.Probability,
-                FuelCapacity = entity.FuelCapacity,
-                FuelLevel = entity.FuelLevel,
-                OriginalPrice = entity.OriginalPrice,
-                EstimatedPrice = entity.EstimatedPrice,
-
-                // Mapping relationship 1-* : Site
-                SiteId = entity.SiteId,
-
-                // Mapping relationship 0..1-* : PlaneType
-                PlaneType = entity.PlaneType != null ? new OptionDto
-                {
-                    Id = entity.PlaneType.Id,
-                    Display = entity.PlaneType.Title,
-                }
-                : null,
-
-                CurrentAirport = entity.CurrentAirport != null ? new OptionDto
-                {
-                    Id = entity.CurrentAirport.Id,
-                    Display = entity.CurrentAirport.Name,
-                }
-                : null,
-
-                // Mapping relationship *-* : ICollection<Airports>
-                ConnectingAirports = entity.ConnectingAirports.Select(ca => new OptionDto
-                {
-                    Id = ca.Id,
-                    Display = ca.Name,
-                }).OrderBy(x => x.Display).ToList(),
-
-                SimilarTypes = entity.SimilarTypes.Select(ca => new OptionDto
-                {
-                    Id = ca.Id,
-                    Display = ca.Title,
-                }).OrderBy(x => x.Display).ToList(),
-
-                Engines = entity.Engines.AsQueryable().Select(this.engineMapper.EntityToDto()).ToList(),
-            });
-        }
-
-        /// <inheritdoc />
         public override Dictionary<string, Func<string>> DtoToCellMapping(PlaneSpecificDto dto)
         {
             return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))

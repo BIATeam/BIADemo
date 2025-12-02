@@ -143,10 +143,18 @@ namespace BIA.Net.Core.Ioc
                 serviceLifetime: ServiceLifetime.Transient);
 
             // Domain
-            Type templateType = typeof(BiaBaseMapper<,,>);
             Assembly assembly = Assembly.Load("BIA.Net.Core.Domain");
-            List<Type> derivedTypes = ReflectiveEnumerator.GetDerivedTypes(assembly, templateType);
-            foreach (var type in derivedTypes)
+
+            Type biaBaseMapperType = typeof(BiaBaseMapper<,,>);
+            List<Type> derivedBiaBaseMapperTypes = ReflectiveEnumerator.GetDerivedTypes(assembly, biaBaseMapperType);
+            foreach (var type in derivedBiaBaseMapperTypes)
+            {
+                collection.AddScoped(type);
+            }
+
+            Type biaBaseQueryModelMapperType = typeof(BiaBaseQueryModelMapper<,,,,,>);
+            List<Type> derivedBiaBaseQueryModelMapperTypes = ReflectiveEnumerator.GetDerivedTypes(assembly, biaBaseQueryModelMapperType);
+            foreach (var type in derivedBiaBaseQueryModelMapperTypes)
             {
                 collection.AddScoped(type);
             }
