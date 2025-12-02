@@ -1,7 +1,6 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, inject, Input, OnInit, TemplateRef } from '@angular/core';
+import { Component, Input, TemplateRef } from '@angular/core';
 import {
-  ControlContainer,
   FormsModule,
   ReactiveFormsModule,
   UntypedFormGroup,
@@ -43,10 +42,9 @@ import { BiaFieldBaseComponent } from '../bia-field-base/bia-field-base.componen
   templateUrl: './bia-form-field.component.html',
   styleUrl: './bia-form-field.component.scss',
 })
-export class BiaFormFieldComponent<CrudItem>
-  extends BiaFieldBaseComponent<CrudItem>
-  implements OnInit
-{
+export class BiaFormFieldComponent<
+  CrudItem,
+> extends BiaFieldBaseComponent<CrudItem> {
   @Input() element?: CrudItem;
   @Input() field: BiaFieldConfig<CrudItem>;
   @Input() isAdd?: boolean;
@@ -54,9 +52,7 @@ export class BiaFormFieldComponent<CrudItem>
   @Input() readOnly: boolean;
   @Input() specificInputTemplate: TemplateRef<any>;
   @Input() specificOutputTemplate: TemplateRef<any>;
-
-  private controlContainer: ControlContainer = inject(ControlContainer);
-  form?: UntypedFormGroup;
+  @Input() form: UntypedFormGroup;
 
   get fieldDisabled(): boolean {
     return this.form?.get(this.field.field)?.disabled === true;
@@ -64,11 +60,6 @@ export class BiaFormFieldComponent<CrudItem>
 
   get formDisabled(): boolean {
     return this.form?.disabled === true;
-  }
-
-  ngOnInit(): void {
-    super.ngOnInit();
-    this.form = this.controlContainer.control as UntypedFormGroup;
   }
 
   getCellData(field: any): any {

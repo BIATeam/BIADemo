@@ -97,7 +97,8 @@
             [readOnly]="readOnly"
             [isAdd]="isAdd"
             [specificInputTemplate]="specificInputTemplate"
-            [specificOutputTemplate]="specificOutputTemplate"></bia-form-layout>
+            [specificOutputTemplate]="specificOutputTemplate"
+            [form]="form"></bia-form-layout>
         }
         @for (field of fieldsWithoutLayoutConfig; track $index) {
           <bia-form-field
@@ -107,7 +108,8 @@
             [dictOptionDtos]="dictOptionDtos"
             [readOnly]="readOnly"
             [specificInputTemplate]="specificInputTemplate"
-            [specificOutputTemplate]="specificOutputTemplate"></bia-form-field>
+            [specificOutputTemplate]="specificOutputTemplate"
+            [form]="form"></bia-form-field>
         }
       </div>
     </ng-template>
