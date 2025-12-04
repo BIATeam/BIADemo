@@ -70,14 +70,14 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
 #pragma warning restore SA1515 // Single-line comment should be preceded by blank line
 
         /// <inheritdoc/>
-        public override async Task<MaintenanceTeamDto> AddAsync(MaintenanceTeamDto dto, string mapperMode = null)
+        public override async Task<MaintenanceTeamDto> AddAsync(MaintenanceTeamDto dto, string mapperMode = null, bool autoCommit = true)
         {
             if (dto.AircraftMaintenanceCompanyId != this.currentAncestorTeamId)
             {
                 throw new ForbiddenException("Can only add MaintenanceTeam on current parent Team.");
             }
 
-            return await base.AddAsync(dto, mapperMode);
+            return await base.AddAsync(dto, mapperMode, autoCommit: autoCommit);
         }
 
         /// <inheritdoc/>

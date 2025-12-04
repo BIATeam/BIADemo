@@ -166,10 +166,12 @@ namespace BIA.Net.Core.Domain.Service
         /// </summary>
         /// <param name="dto">The DTO.</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="autoCommit">if set to <c>true</c> [automatic commit].</param>
         /// <returns>The DTO with id updated.</returns>
         Task<TDto> AddAsync(
             TDto dto,
-            string mapperMode = null);
+            string mapperMode = null,
+            bool autoCommit = true);
 
         /// <summary>
         /// Update an entity in DB with the DTO values.
@@ -178,8 +180,9 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="autoCommit">if set to <c>true</c> [automatic commit].</param>
         /// <returns>The DTO updated.</returns>
-        Task<TDto> UpdateAsync(TDto dto, string accessMode = AccessMode.Update, string queryMode = QueryMode.Update, string mapperMode = null);
+        Task<TDto> UpdateAsync(TDto dto, string accessMode = AccessMode.Update, string queryMode = QueryMode.Update, string mapperMode = null, bool autoCommit = true);
 
         /// <summary>
         /// Remove an entity with its identifier.
@@ -189,8 +192,9 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="bypassFixed">Indicates weither the fixed security should be bypassed or not.</param>
+        /// <param name="autoCommit">if set to <c>true</c> [automatic commit].</param>
         /// <returns>The deleted DTO.</returns>
-        Task<TDto> RemoveAsync(TKey id, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete, string mapperMode = null, bool bypassFixed = false);
+        Task<TDto> RemoveAsync(TKey id, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete, string mapperMode = null, bool bypassFixed = false, bool autoCommit = true);
 
         /// <summary>
         /// Remove an entity with its identifier.
@@ -200,8 +204,9 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="bypassFixed">Indicates weither the fixed security should be bypassed or not.</param>
+        /// <param name="autoCommit">if set to <c>true</c> [automatic commit].</param>
         /// <returns>The deleted DTO.</returns>
-        Task<List<TDto>> RemoveAsync(List<TKey> ids, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete, string mapperMode = null, bool bypassFixed = false);
+        Task<List<TDto>> RemoveAsync(List<TKey> ids, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete, string mapperMode = null, bool bypassFixed = false, bool autoCommit = true);
 
         /// <summary>
         /// Save several entity with its identifier safe asynchronous.
