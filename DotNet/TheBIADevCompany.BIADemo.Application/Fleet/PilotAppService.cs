@@ -62,14 +62,14 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
 #pragma warning restore SA1515 // Single-line comment should be preceded by blank line
 
         /// <inheritdoc/>
-        public override async Task<PilotDto> AddAsync(PilotDto dto, string mapperMode = null)
+        public override async Task<PilotDto> AddAsync(PilotDto dto, string mapperMode = null, bool autoCommit = true)
         {
             if (dto.SiteId != this.currentAncestorTeamId)
             {
                 throw new ForbiddenException("Can only add Pilot on current parent Team.");
             }
 
-            return await base.AddAsync(dto, mapperMode);
+            return await base.AddAsync(dto, mapperMode, autoCommit: autoCommit);
         }
 
         /// <inheritdoc/>
