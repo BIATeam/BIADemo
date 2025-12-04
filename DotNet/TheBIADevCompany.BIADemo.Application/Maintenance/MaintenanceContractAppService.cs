@@ -52,23 +52,23 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
         }
 
         /// <inheritdoc/>
-        public override async Task<MaintenanceContractDto> AddAsync(MaintenanceContractDto dto, string mapperMode = null)
+        public override async Task<MaintenanceContractDto> AddAsync(MaintenanceContractDto dto, string mapperMode = null, bool autoCommit = true)
         {
             dto.SiteId = this.currentSiteId;
             dto.AircraftMaintenanceCompanyId = this.currentAircraftMaintenanceCompanyId;
 
-            return await base.AddAsync(dto, mapperMode);
+            return await base.AddAsync(dto, mapperMode, autoCommit: autoCommit);
         }
 
         /// <inheritdoc/>
-        public override async Task<MaintenanceContractDto> UpdateAsync(MaintenanceContractDto dto, string accessMode = "Update", string queryMode = "Update", string mapperMode = null)
+        public override async Task<MaintenanceContractDto> UpdateAsync(MaintenanceContractDto dto, string accessMode = "Update", string queryMode = "Update", string mapperMode = null, bool autoCommit = true)
         {
             if (dto.AircraftMaintenanceCompanyId != this.currentAircraftMaintenanceCompanyId && dto.SiteId != this.currentSiteId)
             {
                 throw new ForbiddenException("Can only add MaintenanceContract on current parent Teams.");
             }
 
-            return await base.UpdateAsync(dto, accessMode, queryMode, mapperMode);
+            return await base.UpdateAsync(dto, accessMode, queryMode, mapperMode, autoCommit: autoCommit);
         }
     }
 }

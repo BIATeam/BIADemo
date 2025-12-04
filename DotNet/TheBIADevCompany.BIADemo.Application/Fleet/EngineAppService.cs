@@ -122,7 +122,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
         // End BIADemo
 
         /// <inheritdoc/>
-        public override async Task<EngineDto> AddAsync(EngineDto dto, string mapperMode = null)
+        public override async Task<EngineDto> AddAsync(EngineDto dto, string mapperMode = null, bool autoCommit = true)
         {
             var planeParent = await this.planeRepository.GetEntityAsync(dto.PlaneId, isReadOnlyMode: true);
             if (planeParent.SiteId != this.currentAncestorTeamId)
@@ -135,7 +135,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
                 throw new FrontUserException("Plane parent is fixed");
             }
 
-            return await base.AddAsync(dto, mapperMode);
+            return await base.AddAsync(dto, mapperMode, autoCommit: autoCommit);
         }
 
         /// <inheritdoc/>
