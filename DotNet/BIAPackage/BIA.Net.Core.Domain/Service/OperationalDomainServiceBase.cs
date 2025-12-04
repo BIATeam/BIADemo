@@ -11,6 +11,7 @@ namespace BIA.Net.Core.Domain.Service
     using System.Linq.Expressions;
     using System.Text;
     using System.Threading.Tasks;
+    using System.Transactions;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Error;
@@ -289,7 +290,8 @@ namespace BIA.Net.Core.Domain.Service
         /// <inheritdoc />
         public virtual async Task<TDto> AddAsync(
             TDto dto,
-            string mapperMode = null)
+            string mapperMode = null,
+            bool autoCommit = true)
         {
             return await this.AddGenericAsync<TDto, TMapper>(dto: dto, mapperMode: mapperMode, autoCommit: true);
         }
@@ -299,7 +301,8 @@ namespace BIA.Net.Core.Domain.Service
             TDto dto,
             string accessMode = AccessMode.Update,
             string queryMode = QueryMode.Update,
-            string mapperMode = null)
+            string mapperMode = null,
+            bool autoCommit = true)
         {
             return await this.UpdateGenericAsync<TDto, TMapper>(dto: dto, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, autoCommit: true);
         }
@@ -310,7 +313,8 @@ namespace BIA.Net.Core.Domain.Service
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,
             string mapperMode = null,
-            bool bypassFixed = false)
+            bool bypassFixed = false,
+            bool autoCommit = true)
         {
             return await this.RemoveGenericAsync<TDto, TMapper>(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, bypassFixed: bypassFixed, autoCommit: true);
         }
@@ -323,7 +327,7 @@ namespace BIA.Net.Core.Domain.Service
             string mapperMode = null,
             bool bypassFixed = false)
         {
-            return await this.RemoveGenericAsync<TDto, TMapper>(ids, this.RemoveGenericAsync<TDto, TMapper>, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, bypassFixed: bypassFixed, autoCommit: true);
+            return await this.RemoveGenericAsync<TDto, TMapper>(ids, this.RemoveAsync, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, bypassFixed: bypassFixed, autoCommit: true);
         }
 
         /// <inheritdoc />
@@ -337,7 +341,7 @@ namespace BIA.Net.Core.Domain.Service
             string queryMode = null,
             string mapperMode = null)
         {
-            return await this.SaveSafeGenericAsync<TDto, TMapper>(dtos, principal, rightAdd, rightUpdate, rightDelete, this.AddGenericAsync<TDto, TMapper>, this.UpdateGenericAsync<TDto, TMapper>, this.RemoveGenericAsync<TDto, TMapper>, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
+            return await this.SaveSafeGenericAsync<TDto, TMapper>(dtos, principal, rightAdd, rightUpdate, rightDelete, this.AddAsync, this.UpdateAsync, this.RemoveAsync, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
         }
 
         /// <inheritdoc />
@@ -350,9 +354,9 @@ namespace BIA.Net.Core.Domain.Service
             return await this.SaveGenericAsync<TDto, TMapper>(
                 dtos,
                 (dto, _, _, _, _, _, _) => this.SaveAsync(dto, accessMode, queryMode, mapperMode),
-                this.AddGenericAsync<TDto, TMapper>,
-                this.UpdateGenericAsync<TDto, TMapper>,
-                this.RemoveGenericAsync<TDto, TMapper>,
+                this.AddAsync,
+                this.UpdateAsync,
+                this.RemoveAsync,
                 accessMode: accessMode,
                 queryMode: queryMode,
                 mapperMode: mapperMode);
@@ -365,14 +369,7 @@ namespace BIA.Net.Core.Domain.Service
             string queryMode = null,
             string mapperMode = null)
         {
-            return await this.SaveGenericAsync<TDto, TMapper>(
-                dto,
-                this.AddGenericAsync<TDto, TMapper>,
-                this.UpdateGenericAsync<TDto, TMapper>,
-                this.RemoveGenericAsync<TDto, TMapper>,
-                accessMode: accessMode,
-                queryMode: queryMode,
-                mapperMode: mapperMode);
+            return await this.SaveGenericAsync<TDto, TMapper>(dto, this.AddAsync, this.UpdateAsync, this.RemoveAsync, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
         }
 
         /// <inheritdoc />
@@ -577,6 +574,7 @@ namespace BIA.Net.Core.Domain.Service
         {
             filters.First = 0;
             filters.Rows = 0;
+
             IEnumerable<TOtherDto> results = (await getRangeAsync(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, isReadOnlyMode: isReadOnlyMode)).Results;
 
             var columnHeaderKeys = new List<string>();
