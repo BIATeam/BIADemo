@@ -11,10 +11,10 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
   AuthService,
   BiaMessageService,
-  BiaOptionService,
 } from 'packages/bia-ng/core/public-api';
-import { DtoState, PropType } from 'packages/bia-ng/models/enum/public-api';
-import { BaseDto, OptionDto } from 'packages/bia-ng/models/public-api';
+import { DtoState } from 'packages/bia-ng/models/enum/public-api';
+import { BaseDto } from 'packages/bia-ng/models/public-api';
+import { CrudHelperService } from 'packages/bia-ng/shared/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
@@ -96,52 +96,11 @@ export class CrudItemTableComponent<CrudItem extends BaseDto<string | number>>
       const crudItem: CrudItem = <CrudItem>this.form.value;
       crudItem.dtoState = this.editFooter ? DtoState.Added : DtoState.Modified;
       crudItem.id = crudItem.id ?? 0;
-      for (const col of this.configuration.columns) {
-        switch (col.type) {
-          case PropType.Boolean:
-            Reflect.set(
-              crudItem,
-              col.field,
-              crudItem[col.field] ? crudItem[col.field] : false
-            );
-            break;
-          case PropType.ManyToMany:
-            Reflect.set(
-              crudItem,
-              col.field,
-              BiaOptionService.differential(
-                Reflect.get(crudItem, col.field) as BaseDto[],
-                (this.element
-                  ? (Reflect.get(this.element, col.field) ?? [])
-                  : []) as BaseDto[]
-              )
-            );
-            break;
-          case PropType.OneToMany:
-            if (
-              col.isEditableChoice &&
-              typeof crudItem[col.field as keyof CrudItem] === 'string'
-            ) {
-              Reflect.set(
-                crudItem,
-                col.field,
-                new OptionDto(
-                  0,
-                  crudItem[col.field as keyof CrudItem] as string,
-                  DtoState.AddedNewChoice
-                )
-              );
-            } else {
-              Reflect.set(
-                crudItem,
-                col.field,
-                BiaOptionService.clone(crudItem[col.field as keyof CrudItem])
-              );
-            }
-            break;
-        }
-      }
-
+      CrudHelperService.ApplyDiff(
+        this.element,
+        crudItem,
+        this.configuration.columns
+      );
       this.save.emit(crudItem);
     }
   }

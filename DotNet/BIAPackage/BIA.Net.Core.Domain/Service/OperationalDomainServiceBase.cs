@@ -563,6 +563,9 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherFilterDto : class, IPagingFilterFormatDto, new()
         {
+            filters.First = 0;
+            filters.Rows = 0;
+
             IEnumerable<TOtherDto> results = (await getRangeAsync(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, isReadOnlyMode: isReadOnlyMode)).Results;
 
             var columnHeaderKeys = new List<string>();
@@ -573,9 +576,6 @@ namespace BIA.Net.Core.Domain.Service
                 columnHeaderKeys.AddRange(filters.Columns.Select(x => x.Key));
                 columnHeaderValues.AddRange(filters.Columns.Select(x => x.Value));
             }
-
-            filters.First = 0;
-            filters.Rows = 0;
 
             TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
             List<object[]> records = results.Select(mapper.DtoToRecord(mapperMode, columnHeaderKeys)).ToList();
