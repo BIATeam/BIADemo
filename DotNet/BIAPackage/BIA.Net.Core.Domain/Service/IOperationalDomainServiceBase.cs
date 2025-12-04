@@ -192,6 +192,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="bypassFixed">Indicates weither the fixed security should be bypassed or not.</param>
+        /// <param name="autoCommit">if set to <c>true</c> [automatic commit].</param>
         /// <returns>The deleted DTO.</returns>
         Task<TDto> RemoveAsync(TKey id, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete, string mapperMode = null, bool bypassFixed = false, bool autoCommit = true);
 
@@ -203,8 +204,9 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="bypassFixed">Indicates weither the fixed security should be bypassed or not.</param>
+        /// <param name="autoCommit">if set to <c>true</c> [automatic commit].</param>
         /// <returns>The deleted DTO.</returns>
-        Task<List<TDto>> RemoveAsync(List<TKey> ids, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete, string mapperMode = null, bool bypassFixed = false);
+        Task<List<TDto>> RemoveAsync(List<TKey> ids, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete, string mapperMode = null, bool bypassFixed = false, bool autoCommit = true);
 
         /// <summary>
         /// Save several entity with its identifier safe asynchronous.

@@ -325,7 +325,8 @@ namespace BIA.Net.Core.Domain.Service
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,
             string mapperMode = null,
-            bool bypassFixed = false)
+            bool bypassFixed = false,
+            bool autoCommit = true)
         {
             return await this.RemoveGenericAsync<TDto, TMapper>(ids, this.RemoveAsync, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, bypassFixed: bypassFixed, autoCommit: true);
         }
