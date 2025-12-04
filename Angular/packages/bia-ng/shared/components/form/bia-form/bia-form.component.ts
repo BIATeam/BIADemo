@@ -28,10 +28,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { BiaOptionService } from 'packages/bia-ng/core/public-api';
-import { PropType } from 'packages/bia-ng/models/enum/public-api';
 import {
-  BaseDto,
   BiaFieldConfig,
   BiaFormLayoutConfig,
   BiaFormLayoutConfigField,
@@ -539,37 +536,7 @@ export class BiaFormComponent<TDto extends { id: number | string }>
 
     const element: TDto = this.flattenFormGroup(this.form) as TDto;
     CrudHelperService.initId<TDto>(element);
-
-    for (const col of this.fields) {
-      switch (col.type) {
-        case PropType.Boolean:
-          Reflect.set(
-            element,
-            col.field,
-            element[col.field] ? element[col.field] : false
-          );
-          break;
-        case PropType.ManyToMany:
-          Reflect.set(
-            element,
-            col.field,
-            BiaOptionService.differential(
-              Reflect.get(element, col.field) as BaseDto[],
-              (this.element && this.element.id
-                ? (Reflect.get(this.element, col.field) ?? [])
-                : []) as BaseDto[]
-            )
-          );
-          break;
-        case PropType.OneToMany:
-          Reflect.set(
-            element,
-            col.field,
-            BiaOptionService.clone(element[col.field])
-          );
-          break;
-      }
-    }
+    CrudHelperService.ApplyDiff(this.element, element, this.fields);
     return element;
   }
 

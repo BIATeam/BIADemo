@@ -1,5 +1,10 @@
-import { DtoState } from 'packages/bia-ng/models/enum/public-api';
-import { BaseDto } from 'packages/bia-ng/models/public-api';
+import { BiaOptionService } from 'packages/bia-ng/core/public-api';
+import { DtoState, PropType } from 'packages/bia-ng/models/enum/public-api';
+import {
+  BaseDto,
+  BiaFieldConfig,
+  OptionDto,
+} from 'packages/bia-ng/models/public-api';
 
 export class CrudHelperService {
   public static readonly newIdStartingValue: number = -1;
@@ -52,6 +57,58 @@ export class CrudHelperService {
     } else if (CrudHelperService.typeofId(element) === 'string') {
       element.id =
         element.id && (element.id as string) !== '' ? element.id : '';
+    }
+  }
+
+  public static ApplyDiff<TDto extends { id: number | string }>(
+    oldElement: TDto | undefined,
+    newElement: TDto,
+    fields: BiaFieldConfig<TDto>[]
+  ) {
+    for (const field of fields) {
+      switch (field.type) {
+        case PropType.Boolean:
+          Reflect.set(
+            newElement,
+            field.field,
+            newElement[field.field] ? newElement[field.field] : false
+          );
+          break;
+        case PropType.ManyToMany:
+          Reflect.set(
+            newElement,
+            field.field,
+            BiaOptionService.differential(
+              Reflect.get(newElement, field.field) as BaseDto[],
+              (oldElement && oldElement.id
+                ? (Reflect.get(oldElement, field.field) ?? [])
+                : []) as BaseDto[]
+            )
+          );
+          break;
+        case PropType.OneToMany:
+          if (
+            field.isEditableChoice &&
+            typeof newElement[field.field as keyof TDto] === 'string'
+          ) {
+            Reflect.set(
+              newElement,
+              field.field,
+              new OptionDto(
+                0,
+                newElement[field.field as keyof TDto] as string,
+                DtoState.AddedNewChoice
+              )
+            );
+          } else {
+            Reflect.set(
+              newElement,
+              field.field,
+              BiaOptionService.clone(newElement[field.field as keyof TDto])
+            );
+          }
+          break;
+      }
     }
   }
 }
