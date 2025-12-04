@@ -11,7 +11,6 @@ namespace BIA.Net.Core.Domain.Service
     using System.Linq.Expressions;
     using System.Text;
     using System.Threading.Tasks;
-    using System.Transactions;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Error;
@@ -116,21 +115,23 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherDto : BaseDto<TKey>, new();
 
         /// <summary>
-        /// Delegate for <see cref="AddGenericAsync{TOtherDto, TOtherMapper}(TOtherDto, string)"/>.
+        /// Delegate for <see cref="AddGenericAsync{TOtherDto, TOtherMapper}(TOtherDto, string)" />.
         /// </summary>
         /// <typeparam name="TOtherDto">The DTO type for item.</typeparam>
         /// <typeparam name="TOtherMapper">The mapper type from DTO to entity.</typeparam>
         /// <param name="dto">The DTO to add.</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="autoCommit">if set to <c>true</c> [automatic commit].</param>
         /// <returns>The DTO with id updated.</returns>
         protected delegate Task<TOtherDto> AddGenericAsyncDelegate<TOtherDto, TOtherMapper>(
             TOtherDto dto,
-            string mapperMode = null)
+            string mapperMode = null,
+            bool autoCommit = true)
             where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new();
 
         /// <summary>
-        /// Delegate for <see cref="UpdateGenericAsync{TOtherDto, TOtherMapper}(TOtherDto, string, string, string)"/>.
+        /// Delegate for <see cref="UpdateGenericAsync{TOtherDto, TOtherMapper}(TOtherDto, string, string, string)" />.
         /// </summary>
         /// <typeparam name="TOtherDto">The DTO type for item.</typeparam>
         /// <typeparam name="TOtherMapper">The mapper type from DTO to entity.</typeparam>
@@ -138,17 +139,19 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="autoCommit">if set to <c>true</c> [automatic commit].</param>+
         /// <returns>The DTO updated.</returns>
         protected delegate Task<TOtherDto> UpdateGenericAsyncDelegate<TOtherDto, TOtherMapper>(
             TOtherDto dto,
             string accessMode = AccessMode.Update,
             string queryMode = QueryMode.Update,
-            string mapperMode = null)
+            string mapperMode = null,
+            bool autoCommit = true)
             where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new();
 
         /// <summary>
-        /// Delegate for <see cref="RemoveGenericAsync{TOtherDto, TOtherMapper}(TKey, string, string, string, bool)"/>.
+        /// Delegate for <see cref="RemoveGenericAsync{TOtherDto, TOtherMapper}(TKey, string, string, string, bool)" />.
         /// </summary>
         /// <typeparam name="TOtherDto">The DTO type for item.</typeparam>
         /// <typeparam name="TOtherMapper">The mapper type from DTO to entity.</typeparam>
@@ -157,13 +160,15 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="bypassFixed">Indicates whether the fixed security should be bypassed or not.</param>
+        /// <param name="autoCommit">if set to <c>true</c> [automatic commit].</param>
         /// <returns>The deleted DTO.</returns>
         protected delegate Task<TOtherDto> RemoveGenericAsyncDelegate<TOtherDto, TOtherMapper>(
             TKey id,
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,
             string mapperMode = null,
-            bool bypassFixed = false);
+            bool bypassFixed = false,
+            bool autoCommit = true);
 
         /// <summary>
         /// Delegate for <see cref="SaveGenericAsync{TOtherDto, TOtherMapper}(TOtherDto, AddGenericAsyncDelegate{TOtherDto,TOtherMapper}, UpdateGenericAsyncDelegate{TOtherDto,TOtherMapper}, RemoveGenericAsyncDelegate{TOtherDto,TOtherMapper}, string, string, string)"/>.
@@ -286,7 +291,7 @@ namespace BIA.Net.Core.Domain.Service
             TDto dto,
             string mapperMode = null)
         {
-            return await this.AddGenericAsync<TDto, TMapper>(dto, mapperMode);
+            return await this.AddGenericAsync<TDto, TMapper>(dto: dto, mapperMode: mapperMode, autoCommit: true);
         }
 
         /// <inheritdoc />
@@ -296,7 +301,7 @@ namespace BIA.Net.Core.Domain.Service
             string queryMode = QueryMode.Update,
             string mapperMode = null)
         {
-            return await this.UpdateGenericAsync<TDto, TMapper>(dto, accessMode, queryMode, mapperMode);
+            return await this.UpdateGenericAsync<TDto, TMapper>(dto: dto, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, autoCommit: true);
         }
 
         /// <inheritdoc />
@@ -307,7 +312,7 @@ namespace BIA.Net.Core.Domain.Service
             string mapperMode = null,
             bool bypassFixed = false)
         {
-            return await this.RemoveGenericAsync<TDto, TMapper>(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, bypassFixed: bypassFixed);
+            return await this.RemoveGenericAsync<TDto, TMapper>(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, bypassFixed: bypassFixed, autoCommit: true);
         }
 
         /// <inheritdoc />
@@ -318,7 +323,7 @@ namespace BIA.Net.Core.Domain.Service
             string mapperMode = null,
             bool bypassFixed = false)
         {
-            return await this.RemoveGenericAsync<TDto, TMapper>(ids, this.RemoveAsync, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, bypassFixed: bypassFixed);
+            return await this.RemoveGenericAsync<TDto, TMapper>(ids, this.RemoveGenericAsync<TDto, TMapper>, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, bypassFixed: bypassFixed, autoCommit: true);
         }
 
         /// <inheritdoc />
@@ -332,7 +337,7 @@ namespace BIA.Net.Core.Domain.Service
             string queryMode = null,
             string mapperMode = null)
         {
-            return await this.SaveSafeGenericAsync<TDto, TMapper>(dtos, principal, rightAdd, rightUpdate, rightDelete, this.AddAsync, this.UpdateAsync, this.RemoveAsync, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
+            return await this.SaveSafeGenericAsync<TDto, TMapper>(dtos, principal, rightAdd, rightUpdate, rightDelete, this.AddGenericAsync<TDto, TMapper>, this.UpdateGenericAsync<TDto, TMapper>, this.RemoveGenericAsync<TDto, TMapper>, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
         }
 
         /// <inheritdoc />
@@ -345,9 +350,9 @@ namespace BIA.Net.Core.Domain.Service
             return await this.SaveGenericAsync<TDto, TMapper>(
                 dtos,
                 (dto, _, _, _, _, _, _) => this.SaveAsync(dto, accessMode, queryMode, mapperMode),
-                this.AddAsync,
-                this.UpdateAsync,
-                this.RemoveAsync,
+                this.AddGenericAsync<TDto, TMapper>,
+                this.UpdateGenericAsync<TDto, TMapper>,
+                this.RemoveGenericAsync<TDto, TMapper>,
                 accessMode: accessMode,
                 queryMode: queryMode,
                 mapperMode: mapperMode);
@@ -360,7 +365,14 @@ namespace BIA.Net.Core.Domain.Service
             string queryMode = null,
             string mapperMode = null)
         {
-            return await this.SaveGenericAsync<TDto, TMapper>(dto, this.AddAsync, this.UpdateAsync, this.RemoveAsync, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
+            return await this.SaveGenericAsync<TDto, TMapper>(
+                dto,
+                this.AddGenericAsync<TDto, TMapper>,
+                this.UpdateGenericAsync<TDto, TMapper>,
+                this.RemoveGenericAsync<TDto, TMapper>,
+                accessMode: accessMode,
+                queryMode: queryMode,
+                mapperMode: mapperMode);
         }
 
         /// <inheritdoc />
@@ -565,7 +577,6 @@ namespace BIA.Net.Core.Domain.Service
         {
             filters.First = 0;
             filters.Rows = 0;
-
             IEnumerable<TOtherDto> results = (await getRangeAsync(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, isReadOnlyMode: isReadOnlyMode)).Results;
 
             var columnHeaderKeys = new List<string>();
@@ -655,10 +666,12 @@ namespace BIA.Net.Core.Domain.Service
         /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
         /// <param name="dto">The DTO.</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="autoCommit">if set to <c>true</c> [automatic commit].</param>+
         /// <returns>The DTO with id updated.</returns>
         protected virtual async Task<TOtherDto> AddGenericAsync<TOtherDto, TOtherMapper>(
             TOtherDto dto,
-            string mapperMode = null)
+            string mapperMode = null,
+            bool autoCommit = true)
             where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
@@ -670,7 +683,12 @@ namespace BIA.Net.Core.Domain.Service
                     var entity = default(TEntity);
                     mapper.DtoToEntity(dto, ref entity, mapperMode, this.Repository.UnitOfWork);
                     this.Repository.Add(entity);
-                    await this.Repository.UnitOfWork.CommitAsync();
+
+                    if (autoCommit)
+                    {
+                        await this.Repository.UnitOfWork.CommitAsync();
+                    }
+
                     mapper.MapEntityKeysInDto(entity, dto);
                 }
 
@@ -687,12 +705,14 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="autoCommit">Is auto commit.</param>
         /// <returns>The DTO updated.</returns>
         protected virtual async Task<TOtherDto> UpdateGenericAsync<TOtherDto, TOtherMapper>(
             TOtherDto dto,
             string accessMode = AccessMode.Update,
             string queryMode = QueryMode.Update,
-            string mapperMode = null)
+            string mapperMode = null,
+            bool autoCommit = true)
             where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
@@ -719,7 +739,11 @@ namespace BIA.Net.Core.Domain.Service
 
                     mapper.DtoToEntity(dto, ref entity, mapperMode, this.Repository.UnitOfWork);
 
-                    await this.Repository.UnitOfWork.CommitAsync();
+                    if (autoCommit)
+                    {
+                        await this.Repository.UnitOfWork.CommitAsync();
+                    }
+
                     dto.DtoState = DtoState.Unchanged;
                     mapper.MapEntityKeysInDto(entity, dto);
                 }
@@ -738,13 +762,15 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="bypassFixed">Indicates weither the fixed security should be bypassed or not.</param>
+        /// <param name="autoCommit">if set to <c>true</c> [automatic commit].</param>+
         /// <returns>The deleted DTO.</returns>
         protected virtual async Task<TOtherDto> RemoveGenericAsync<TOtherDto, TOtherMapper>(
             TKey id,
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,
             string mapperMode = null,
-            bool bypassFixed = false)
+            bool bypassFixed = false,
+            bool autoCommit = true)
             where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
@@ -767,7 +793,12 @@ namespace BIA.Net.Core.Domain.Service
                 mapper.MapEntityKeysInDto(entity, dto);
 
                 this.Repository.Remove(entity);
-                await this.Repository.UnitOfWork.CommitAsync();
+
+                if (autoCommit)
+                {
+                    await this.Repository.UnitOfWork.CommitAsync();
+                }
+
                 return dto;
             });
         }
@@ -783,6 +814,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="bypassFixed">Indicates weither the fixed security should be bypassed or not.</param>
+        /// <param name="autoCommit">if set to <c>true</c> [automatic commit].</param>+
         /// <returns>The deleted DTOs.</returns>
         protected virtual async Task<List<TOtherDto>> RemoveGenericAsync<TOtherDto, TOtherMapper>(
             List<TKey> ids,
@@ -790,14 +822,15 @@ namespace BIA.Net.Core.Domain.Service
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,
             string mapperMode = null,
-            bool bypassFixed = false)
+            bool bypassFixed = false,
+            bool autoCommit = true)
             where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             var dtos = new List<TOtherDto>();
             foreach (TKey id in ids)
             {
-                dtos.Add(await removeGenericAsync(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode));
+                dtos.Add(await removeGenericAsync(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, autoCommit: autoCommit));
             }
 
             return dtos;
@@ -996,15 +1029,13 @@ namespace BIA.Net.Core.Domain.Service
             List<TOtherDto> returnDto = new List<TOtherDto>();
             if (dtoList.Any())
             {
-                using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                foreach (var dto in dtoList)
                 {
-                    foreach (var dto in dtoList)
-                    {
-                        returnDto.Add(await saveGenericAsync(dto, addGenericAsync, updateGenericAsync, removeGenericAsync, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode));
-                    }
-
-                    transaction.Complete();
+                    returnDto.Add(await saveGenericAsync(dto, addGenericAsync, updateGenericAsync, removeGenericAsync, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode));
                 }
+
+                await this.Repository.UnitOfWork.CommitAsync();
+                this.Repository.UnitOfWork.Reset();
             }
 
             return returnDto;
@@ -1041,7 +1072,8 @@ namespace BIA.Net.Core.Domain.Service
                 case DtoState.Added:
                     returnDto = await addGenericAsync(
                         dto,
-                        mapperMode: mapperMode);
+                        mapperMode: mapperMode,
+                        autoCommit: false);
                     break;
 
                 case DtoState.Modified:
@@ -1049,7 +1081,8 @@ namespace BIA.Net.Core.Domain.Service
                         dto,
                         accessMode: accessMode ?? AccessMode.Update,
                         queryMode: queryMode ?? QueryMode.Update,
-                        mapperMode: mapperMode);
+                        mapperMode: mapperMode,
+                        autoCommit: false);
                     break;
 
                 case DtoState.Deleted:
@@ -1057,7 +1090,8 @@ namespace BIA.Net.Core.Domain.Service
                         dto.Id,
                         accessMode: accessMode ?? AccessMode.Delete,
                         queryMode: queryMode ?? QueryMode.Delete,
-                        mapperMode: mapperMode);
+                        mapperMode: mapperMode,
+                        autoCommit: false);
                     break;
 
                 default:
