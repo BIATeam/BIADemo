@@ -23,7 +23,6 @@
           appendTo="body"
           [editable]="field.isEditableChoice"
           scrollHeight="50vh"
-          [overlayOptions]="selectOverlayOptions"
           (mousedown)="onMouseDown(select, $event)"></p-select>
       }
       @case ('ManyToMany') {

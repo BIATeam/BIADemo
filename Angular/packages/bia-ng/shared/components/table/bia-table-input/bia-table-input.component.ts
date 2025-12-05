@@ -23,7 +23,7 @@ import {
   BiaFieldNumberFormat,
 } from 'packages/bia-ng/models/public-api';
 import { CrudHelperService } from 'packages/bia-ng/shared/public-api';
-import { OverlayOptions, PrimeTemplate } from 'primeng/api';
+import { PrimeTemplate } from 'primeng/api';
 import { AutoFocusModule } from 'primeng/autofocus';
 import { BaseComponent } from 'primeng/basecomponent';
 import { Checkbox } from 'primeng/checkbox';
@@ -113,22 +113,16 @@ export class BiaTableInputComponent<CrudItem>
     multiselect.el.nativeElement.querySelector('input')?.focus();
   }
 
-  selectOverlayOptions: OverlayOptions = {
-    styleClass: 'bia-table-input-select-overlay',
-  };
-
   onMouseDown(element: any, event: MouseEvent) {
     if (event.button !== 0) {
       return;
     }
 
     if (element instanceof BaseComponent) {
-      console.log('BaseComponent', element);
       CrudHelperService.scrollHorizontalToElementInTable(
         element.el.nativeElement
       );
     } else if (element instanceof HTMLElement) {
-      console.log('HTMLElement', element);
       CrudHelperService.scrollHorizontalToElementInTable(element);
     }
   }
