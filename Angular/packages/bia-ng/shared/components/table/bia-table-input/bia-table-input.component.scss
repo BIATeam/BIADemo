@@ -21,4 +21,28 @@
     @extend .bia-table-input;
     width: auto;
   }
+
+  &-number {
+    @extend .bia-table-input;
+  }
+
+  &-date {
+    @extend .bia-table-input;
+  }
+
+  &-time {
+    @extend .bia-table-input;
+  }
+
+  &-timeonly {
+    @extend .bia-table-input;
+  }
+
+  &-timeseconly {
+    @extend .bia-table-input;
+  }
+
+  &-datetime {
+    @extend .bia-table-input;
+  }
 }

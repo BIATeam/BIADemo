@@ -64,7 +64,7 @@
         ) {
           <p-inputNumber
             #inputnumber
-            class="bia-table-input"
+            class="bia-table-input-number"
             [formControlName]="field.field"
             (onInput)="onChange()"
             [mode]="displayNumberFormat.mode"
@@ -81,7 +81,7 @@
       @case ('Date') {
         <p-date-picker
           #datepicker
-          class="bia-table-input"
+          class="bia-table-input-date"
           biaLocale
           [formControlName]="field.field"
           placeholder="&nbsp;"
@@ -109,7 +109,7 @@
       @case ('Time') {
         <p-date-picker
           #datepicker
-          class="bia-table-input"
+          class="bia-table-input-time"
           biaLocale
           [formControlName]="field.field"
           placeholder="&nbsp;"
@@ -134,7 +134,7 @@
       @case ('TimeOnly') {
         <p-date-picker
           #datepicker
-          class="bia-table-input"
+          class="bia-table-input-timeonly"
           biaLocale
           [formControlName]="field.field"
           placeholder="&nbsp;"
@@ -156,7 +156,7 @@
       @case ('TimeSecOnly') {
         <p-date-picker
           #datepicker
-          class="bia-table-input"
+          class="bia-table-input-timeseconly"
           biaLocale
           [formControlName]="field.field"
           placeholder="&nbsp;"
@@ -179,7 +179,7 @@
       @case ('DateTime') {
         <p-date-picker
           #datepicker
-          class="bia-table-input"
+          class="bia-table-input-datetime"
           biaLocale
           [formControlName]="field.field.toString()"
           placeholder="&nbsp;"
