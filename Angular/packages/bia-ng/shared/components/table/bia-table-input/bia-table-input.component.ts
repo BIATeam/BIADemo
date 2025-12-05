@@ -22,8 +22,10 @@ import {
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
 } from 'packages/bia-ng/models/public-api';
+import { CrudHelperService } from 'packages/bia-ng/shared/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { AutoFocusModule } from 'primeng/autofocus';
+import { BaseComponent } from 'primeng/basecomponent';
 import { Checkbox } from 'primeng/checkbox';
 import { DatePicker } from 'primeng/datepicker';
 import { InputNumber } from 'primeng/inputnumber';
@@ -109,5 +111,19 @@ export class BiaTableInputComponent<CrudItem>
   onPanelHide(multiselect: MultiSelect) {
     this.onComplexInput(false);
     multiselect.el.nativeElement.querySelector('input')?.focus();
+  }
+
+  onMouseDown(element: any, event: MouseEvent) {
+    if (event.button !== 0) {
+      return;
+    }
+
+    if (element instanceof BaseComponent) {
+      CrudHelperService.scrollHorizontalToElementInTable(
+        element.el.nativeElement
+      );
+    } else if (element instanceof HTMLElement) {
+      CrudHelperService.scrollHorizontalToElementInTable(element);
+    }
   }
 }
