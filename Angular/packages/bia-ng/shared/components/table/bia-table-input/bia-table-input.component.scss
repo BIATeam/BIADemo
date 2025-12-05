@@ -3,3 +3,22 @@
     text-align: right;
   }
 }
+
+.bia-table-input {
+  width: 100%;
+
+  &-select {
+    @extend .bia-table-input;
+    max-width: 15rem;
+  }
+
+  &-multiselect {
+    @extend .bia-table-input;
+    max-width: 15rem;
+  }
+
+  &-checkbox {
+    @extend .bia-table-input;
+    width: auto;
+  }
+}

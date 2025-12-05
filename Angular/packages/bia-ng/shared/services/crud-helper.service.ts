@@ -111,4 +111,36 @@ export class CrudHelperService {
       }
     }
   }
+
+  public static scrollHorizontalToElementInTable(
+    element: HTMLElement | undefined
+  ) {
+    if (!element) return;
+
+    const container = element.closest(
+      '.p-datatable-table-container'
+    ) as HTMLElement | null;
+    if (!container) return;
+
+    const elRect = element.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+
+    const isLeftHidden = elRect.left < containerRect.left;
+    const isRightHidden = elRect.right > containerRect.right;
+    if (!isLeftHidden && !isRightHidden) return;
+
+    let newScrollLeft = container.scrollLeft;
+
+    if (isLeftHidden) {
+      newScrollLeft -= containerRect.left - elRect.left;
+    } else if (isRightHidden) {
+      newScrollLeft += elRect.right - containerRect.right;
+    }
+
+    newScrollLeft = Math.max(0, Math.min(newScrollLeft, container.scrollWidth));
+    container.scrollTo({
+      left: newScrollLeft,
+      behavior: 'auto',
+    });
+  }
 }
