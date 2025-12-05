@@ -122,22 +122,61 @@ export class CrudHelperService {
     ) as HTMLElement | null;
     if (!container) return;
 
-    const elRect = element.getBoundingClientRect();
-    const containerRect = container.getBoundingClientRect();
+    const datatable = element.closest('.p-datatable') as HTMLElement | null;
+    if (!datatable) return;
 
-    const isLeftHidden = elRect.left < containerRect.left;
-    const isRightHidden = elRect.right > containerRect.right;
+    const thead = datatable.querySelector(
+      '.p-datatable-thead'
+    ) as HTMLElement | null;
+    if (!thead) return;
+
+    const frozenLeftCols = Array.from(
+      thead.querySelectorAll(
+        'th.p-datatable-frozen-column.p-datatable-frozen-column-left'
+      )
+    ) as HTMLElement[];
+
+    const frozenLeftWidth = frozenLeftCols.reduce(
+      (sum, col) => sum + col.getBoundingClientRect().width,
+      0
+    );
+
+    const frozenRightCols = Array.from(
+      thead.querySelectorAll(
+        'th.p-datatable-frozen-column.p-datatable-frozen-column-right'
+      )
+    ) as HTMLElement[];
+
+    const frozenRightWidth = frozenRightCols.reduce(
+      (sum, col) => sum + col.getBoundingClientRect().width,
+      0
+    );
+
+    const containerRect = container.getBoundingClientRect();
+    const visibleLeft = containerRect.left + frozenLeftWidth;
+    const visibleRight = containerRect.right - frozenRightWidth;
+
+    const elRect = element.getBoundingClientRect();
+    const isLeftHidden = elRect.left < visibleLeft;
+    const isRightHidden = elRect.right > visibleRight;
+
     if (!isLeftHidden && !isRightHidden) return;
 
     let newScrollLeft = container.scrollLeft;
 
     if (isLeftHidden) {
-      newScrollLeft -= containerRect.left - elRect.left;
+      newScrollLeft -= visibleLeft - elRect.left;
     } else if (isRightHidden) {
-      newScrollLeft += elRect.right - containerRect.right;
+      newScrollLeft += elRect.right - visibleRight;
     }
 
-    newScrollLeft = Math.max(0, Math.min(newScrollLeft, container.scrollWidth));
+    const maxScrollLeft = Math.max(
+      0,
+      container.scrollWidth - container.clientWidth
+    );
+
+    newScrollLeft = Math.max(0, Math.min(newScrollLeft, maxScrollLeft));
+
     container.scrollTo({
       left: newScrollLeft,
       behavior: 'auto',
