@@ -251,7 +251,7 @@ export class BiaTableControllerComponent
     }
   }
 
-  @HostListener('window:resize', ['$event'])
+  @HostListener('window:resize')
   onResize() {
     this.checkOverflow();
   }

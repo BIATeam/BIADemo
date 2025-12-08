@@ -65,7 +65,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  @HostListener('window:resize', ['$event'])
+  @HostListener('window:resize')
   checkSmallScreen() {
     this.layoutService.checkSmallScreen();
   }
