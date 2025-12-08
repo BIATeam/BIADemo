@@ -15,7 +15,11 @@ import { DomHandler } from 'primeng/dom';
     // eslint-disable-next-line @typescript-eslint/naming-convention
     '[class.p-datatable-frozen-column]': 'frozen',
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    '[class.p-datatable-frozen-column-left]': 'alignFrozen === "left"',
+    '[class.p-datatable-frozen-column-left]':
+      'frozen && alignFrozen === "left"',
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    '[class.p-datatable-frozen-column-right]':
+      'frozen && alignFrozen === "right"',
   },
 })
 export class BiaFrozenColumnDirective implements AfterViewInit, OnDestroy {
