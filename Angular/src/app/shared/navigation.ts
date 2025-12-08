@@ -188,7 +188,7 @@ export const NAVIGATION: BiaNavigation[] = [
       },
       {
         labelKey: 'bia.announcements',
-        permissions: [Permission.Announcement_List_Access],
+        permissions: [BiaPermission.Announcement_List_Access],
         path: ['/announcements'],
       },
       // Begin BIADemo

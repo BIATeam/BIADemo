@@ -1,7 +1,7 @@
 import { AsyncPipe, NgClass } from '@angular/common';
 import { AfterViewInit, Component, Injector, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { AuthService } from 'packages/bia-ng/core/public-api';
+import { AuthService, BiaPermission } from 'packages/bia-ng/core/public-api';
 import {
   BiaTableBehaviorControllerComponent,
   BiaTableComponent,
@@ -12,7 +12,6 @@ import {
   SafeHtmlPipe,
 } from 'packages/bia-ng/shared/public-api';
 import { PrimeTemplate } from 'primeng/api';
-import { Permission } from 'src/app/shared/permission';
 import { announcementCRUDConfiguration } from '../../announcement.constants';
 import { Announcement } from '../../model/announcement';
 import { AnnouncementService } from '../../services/announcement.service';
@@ -56,13 +55,13 @@ export class AnnouncementsIndexComponent
 
   protected setPermissions() {
     this.canEdit = this.authService.hasPermission(
-      Permission.Announcement_Update
+      BiaPermission.Announcement_Update
     );
     this.canDelete = this.authService.hasPermission(
-      Permission.Announcement_Delete
+      BiaPermission.Announcement_Delete
     );
     this.canAdd = this.authService.hasPermission(
-      Permission.Announcement_Create
+      BiaPermission.Announcement_Create
     );
     this.canSelect = this.canDelete;
     // BIAToolKit - Begin AnnouncementIndexTsCanViewChildSet

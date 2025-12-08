@@ -33,4 +33,20 @@ export enum BiaPermission {
   View_AssignToTeamSuffix = '_View_Assign_To_Team',
 
   Impersonation_Connection_Rights = 'Impersonation_Connection_Rights',
+
+  Announcement_Create = 'Announcement_Create',
+  Announcement_Delete = 'Announcement_Delete',
+  Announcement_List_Access = 'Announcement_List_Access',
+  Announcement_Read = 'Announcement_Read',
+  Announcement_Update = 'Announcement_Update',
+}
+
+export function IsAnnouncementPermission(permission: string): boolean {
+  return (
+    permission === BiaPermission.Announcement_Create ||
+    permission === BiaPermission.Announcement_Delete ||
+    permission === BiaPermission.Announcement_List_Access ||
+    permission === BiaPermission.Announcement_Read ||
+    permission === BiaPermission.Announcement_Update
+  );
 }

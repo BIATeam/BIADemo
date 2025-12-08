@@ -23,6 +23,7 @@ import {
   take,
 } from 'rxjs/operators';
 import { AppSettingsService } from '../app-settings/services/app-settings.service';
+import { IsAnnouncementPermission } from '../bia-permission';
 import { BiaTeamsActions } from '../team/store/teams-actions';
 import { AbstractDas } from './abstract-das.service';
 import { BiaAppConstantsService } from './bia-app-constants.service';
@@ -366,7 +367,15 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       map((authInfo: AuthInfo) => {
         if (authInfo) {
           authInfo.decryptedToken = this.decodeToken(authInfo.token);
+
+          if (!BiaAppConstantsService.allEnvironments.enableAnnouncements) {
+            authInfo.decryptedToken.permissions =
+              authInfo.decryptedToken.permissions.filter(
+                p => IsAnnouncementPermission(p) === false
+              );
+          }
         }
+
         RefreshTokenService.shouldRefreshToken = false;
         this.authInfoSubject.next(authInfo);
 

@@ -3,6 +3,7 @@ export interface AllEnvironments {
   companyName: string;
   enableNotifications: boolean;
   enableWorkerService: boolean;
+  enableAnnouncements: boolean;
   urlAuth: string;
   urlAppSettings: string;
   urlLog: string;

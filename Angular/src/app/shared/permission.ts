@@ -6,12 +6,6 @@ export enum Permission {
 
   Home_Access = 'Home_Access',
 
-  Announcement_Create = 'Announcement_Create',
-  Announcement_Delete = 'Announcement_Delete',
-  Announcement_List_Access = 'Announcement_List_Access',
-  Announcement_Read = 'Announcement_Read',
-  Announcement_Update = 'Announcement_Update',
-
   // BIAToolKit - Begin Permission
   // BIAToolKit - End Permission
 

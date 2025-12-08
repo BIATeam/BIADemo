@@ -2,13 +2,15 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { PermissionGuard } from 'packages/bia-ng/core/public-api';
+import {
+  BiaPermission,
+  PermissionGuard,
+} from 'packages/bia-ng/core/public-api';
 import { AnnouncementTypeOptionModule } from 'packages/bia-ng/domains/public-api';
 import {
   DynamicLayoutComponent,
   LayoutMode,
 } from 'packages/bia-ng/shared/public-api';
-import { Permission } from 'src/app/shared/permission';
 import { announcementCRUDConfiguration } from './announcement.constants';
 import { FeatureAnnouncementsStore } from './store/announcement.state';
 import { AnnouncementsEffects } from './store/announcements-effects';
@@ -23,7 +25,7 @@ const ROUTES: Routes = [
     path: '',
     data: {
       breadcrumb: null,
-      permission: Permission.Announcement_List_Access,
+      permission: BiaPermission.Announcement_List_Access,
       injectComponent: AnnouncementsIndexComponent,
       configuration: announcementCRUDConfiguration,
     },
@@ -36,7 +38,7 @@ const ROUTES: Routes = [
         data: {
           breadcrumb: 'bia.add',
           canNavigate: false,
-          permission: Permission.Announcement_Create,
+          permission: BiaPermission.Announcement_Create,
           title: 'announcement.add',
           style: {
             minWidth: '60vw',
@@ -60,7 +62,7 @@ const ROUTES: Routes = [
             data: {
               breadcrumb: 'bia.edit',
               canNavigate: true,
-              permission: Permission.Announcement_Update,
+              permission: BiaPermission.Announcement_Update,
               title: 'announcement.edit',
               style: {
                 minWidth: '60vw',
@@ -80,7 +82,7 @@ const ROUTES: Routes = [
                 minWidth: '50vw',
               },
               title: 'bia.historical',
-              permission: Permission.Announcement_Read,
+              permission: BiaPermission.Announcement_Read,
             },
             component: AnnouncementHistoricalComponent,
             canActivate: [PermissionGuard],

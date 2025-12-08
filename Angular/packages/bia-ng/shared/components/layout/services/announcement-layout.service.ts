@@ -1,6 +1,7 @@
 import { inject, Injectable, Injector } from '@angular/core';
 import {
   AbstractDas,
+  BiaAppConstantsService,
   BiaOnlineOfflineService,
   BiaSignalRService,
 } from 'packages/bia-ng/core/public-api';
@@ -36,6 +37,10 @@ export class AnnouncementLayoutService extends AbstractDas<Announcement> {
   }
 
   init() {
+    if (!BiaAppConstantsService.allEnvironments.enableAnnouncements) {
+      return;
+    }
+
     // Online/Offline handler
     this.sub.add(
       this.biaOnlineOfflineService.serverAvailable$.subscribe(
