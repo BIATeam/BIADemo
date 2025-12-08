@@ -344,12 +344,6 @@ p-table {
       padding-right: 0.25rem !important;
     }
   }
-  .p-datatable-tbody,
-  .p-datatable-tfoot {
-    td:not(.p-datatable-frozen-column) {
-      position: relative;
-    }
-  }
 
   .p-select-label {
     padding-left: 0.25rem !important;
