@@ -138,7 +138,7 @@
   </div>
 }
 
-<p-toast key="bia" #toast id="toast">
+<p-toast key="bia" #biaToast id="biaToast">
   <ng-template let-message pTemplate="message">
     <div class="flex flex-column flex-1" style="max-width: 100%">
       <div class="flex flex-row">
@@ -204,5 +204,5 @@
   [raised]="true"
   class="clear-button"
   label="{{ 'bia.clearAll' | translate }}"
-  [ngClass]="{ block: toast.messages?.length ?? 0 > 0 }"
+  [ngClass]="{ block: biaToast.messages?.length ?? 0 > 0 }"
   (click)="clearAllMessages()"></button>

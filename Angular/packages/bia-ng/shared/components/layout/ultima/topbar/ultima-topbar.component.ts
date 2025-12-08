@@ -241,9 +241,7 @@ export class BiaUltimaTopbarComponent
   }
 
   positionClearButton() {
-    const parentElement = document
-      .getElementById('toast')
-      ?.querySelector('.p-toast.p-component');
+    const parentElement = document.getElementById('biaToast');
 
     if (parentElement) {
       const clearButton = document.getElementById('clearButton');
