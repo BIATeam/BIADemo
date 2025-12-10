@@ -275,12 +275,14 @@ export class BiaCalcTableComponent<TDto extends { id: number }>
 
   public onComplexInput(isIn: boolean) {
     if (isIn) {
-      this.isInComplexInput = true;
-      this.currentRow = this.getParentComponent(
-        document.activeElement,
-        'bia-selectable-row'
-      ) as HTMLElement;
-      this.currentInput = document.activeElement as HTMLElement;
+      setTimeout(() => {
+        this.isInComplexInput = true;
+        this.currentRow = this.getParentComponent(
+          document.activeElement,
+          'bia-selectable-row'
+        ) as HTMLElement;
+        this.currentInput = document.activeElement as HTMLElement;
+      });
     } else {
       if (
         // If selected element parent is the same as complex input parent, don't change focus. If not, focus complex input
