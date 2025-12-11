@@ -27,7 +27,7 @@ export class CrudHelperService {
     return newId;
   }
 
-  public static ApplyDiff<TDto extends { id: number | string }>(
+  public static applyDiff<TDto extends { id: number | string }>(
     oldElement: TDto | undefined,
     newElement: TDto,
     fields: BiaFieldConfig<TDto>[]

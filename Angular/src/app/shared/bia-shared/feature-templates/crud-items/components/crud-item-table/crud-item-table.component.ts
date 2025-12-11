@@ -103,7 +103,7 @@ export class CrudItemTableComponent<CrudItem extends BaseDto>
     if (this.form.valid) {
       const crudItem: CrudItem = <CrudItem>this.form.value;
       crudItem.id = crudItem.id ?? 0;
-      CrudHelperService.ApplyDiff(
+      CrudHelperService.applyDiff(
         this.element,
         crudItem,
         this.configuration.columns
