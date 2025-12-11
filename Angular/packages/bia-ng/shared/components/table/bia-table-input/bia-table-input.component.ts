@@ -126,4 +126,18 @@ export class BiaTableInputComponent<CrudItem>
       CrudHelperService.scrollHorizontalToElementInTable(element);
     }
   }
+
+  onMouseDown(element: any, event: MouseEvent) {
+    if (event.button !== 0) {
+      return;
+    }
+
+    if (element instanceof BaseComponent) {
+      CrudHelperService.scrollHorizontalToElementInTable(
+        element.el.nativeElement
+      );
+    } else if (element instanceof HTMLElement) {
+      CrudHelperService.scrollHorizontalToElementInTable(element);
+    }
+  }
 }
