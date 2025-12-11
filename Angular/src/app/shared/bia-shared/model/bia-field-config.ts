@@ -95,6 +95,7 @@ export class BiaFieldConfig<TDto> {
   specificOutput: boolean;
   specificInput: boolean;
   minWidth: string;
+  maxWidth: string;
   isFrozen: boolean;
   alignFrozen: string;
   displayFormat: BiaFieldNumberFormat | BiaFieldDateFormat | null;
@@ -140,6 +141,7 @@ export class BiaFieldConfig<TDto> {
     this.specificInput = false;
     this.validators = [];
     this.minWidth = '';
+    this.maxWidth = '';
     this.isFrozen = false;
     this.alignFrozen = 'left';
     this.displayFormat = null;
@@ -169,6 +171,7 @@ export class BiaFieldConfig<TDto> {
         specificInput: this.specificInput,
         validators: this.validators,
         minWidth: this.minWidth,
+        maxWidth: this.maxWidth,
         isFrozen: this.isFrozen,
         alignFrozen: this.alignFrozen,
         displayFormat: this.displayFormat,

@@ -65,6 +65,6 @@
     <Compile Remove="**\UserModelBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="BIA.Net.Core.Application" Version="5.2.0" />
+    <PackageReference Include="BIA.Net.Core.Application" Version="5.2.2" />
   </ItemGroup>
 </Project>

@@ -22,13 +22,10 @@ import { TableModule } from 'primeng/table';
 import { Tooltip } from 'primeng/tooltip';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
-import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { BiaCalcTableComponent } from 'src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component';
 import { BiaFrozenColumnDirective } from 'src/app/shared/bia-shared/components/table/bia-frozen-column/bia-frozen-column.directive';
-import { PropType } from 'src/app/shared/bia-shared/model/bia-field-config';
-import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
-import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+import { CrudHelperService } from 'src/app/shared/bia-shared/services/crud-helper.service';
 import { BiaTableFilterComponent } from '../../../../components/table/bia-table-filter/bia-table-filter.component';
 import { BiaTableFooterControllerComponent } from '../../../../components/table/bia-table-footer-controller/bia-table-footer-controller.component';
 import { BiaTableInputComponent } from '../../../../components/table/bia-table-input/bia-table-input.component';
@@ -106,52 +103,11 @@ export class CrudItemTableComponent<CrudItem extends BaseDto>
     if (this.form.valid) {
       const crudItem: CrudItem = <CrudItem>this.form.value;
       crudItem.id = crudItem.id ?? 0;
-      for (const col of this.configuration.columns) {
-        switch (col.type) {
-          case PropType.Boolean:
-            Reflect.set(
-              crudItem,
-              col.field,
-              crudItem[col.field] ? crudItem[col.field] : false
-            );
-            break;
-          case PropType.ManyToMany:
-            Reflect.set(
-              crudItem,
-              col.field,
-              BiaOptionService.differential(
-                Reflect.get(crudItem, col.field) as BaseDto[],
-                (this.element
-                  ? (Reflect.get(this.element, col.field) ?? [])
-                  : []) as BaseDto[]
-              )
-            );
-            break;
-          case PropType.OneToMany:
-            if (
-              col.isEditableChoice &&
-              typeof crudItem[col.field as keyof CrudItem] === 'string'
-            ) {
-              Reflect.set(
-                crudItem,
-                col.field,
-                new OptionDto(
-                  0,
-                  crudItem[col.field as keyof CrudItem] as string,
-                  DtoState.AddedNewChoice
-                )
-              );
-            } else {
-              Reflect.set(
-                crudItem,
-                col.field,
-                BiaOptionService.clone(crudItem[col.field as keyof CrudItem])
-              );
-            }
-            break;
-        }
-      }
-
+      CrudHelperService.applyDiff(
+        this.element,
+        crudItem,
+        this.configuration.columns
+      );
       this.save.emit(crudItem);
     }
   }

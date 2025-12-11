@@ -16,20 +16,22 @@
     field !== undefined &&
     (field.specificOutput !== true || ignoreSpecificOutput)
   ">
-  <ng-container *ngSwitchCase="'OneToMany'">
-    {{ data?.display }}
-  </ng-container>
-  <ng-container *ngSwitchCase="'ManyToMany'">
-    {{
-      data && isArray(data)
-        ? (filterDtoState(data) | pluck: 'display' | join: ', ')
-        : data
-    }}
-  </ng-container>
-  <ng-container *ngSwitchCase="'Boolean'">
-    <i class="pi pi-check" *ngIf="data === true"></i>
-  </ng-container>
-  <ng-container *ngSwitchDefault>
-    {{ data | formatValue: field }}
-  </ng-container>
+  <div class="bia-table-output">
+    <ng-container *ngSwitchCase="'OneToMany'">
+      {{ data?.display }}
+    </ng-container>
+    <ng-container *ngSwitchCase="'ManyToMany'">
+      {{
+        data && isArray(data)
+          ? (filterDtoState(data) | pluck: 'display' | join: ', ')
+          : data
+      }}
+    </ng-container>
+    <ng-container *ngSwitchCase="'Boolean'">
+      <i class="pi pi-check" *ngIf="data === true"></i>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+      {{ data | formatValue: field }}
+    </ng-container>
+  </div>
 </ng-container>

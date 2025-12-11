@@ -9,7 +9,8 @@
   <ng-container [ngSwitch]="field.type" *ngIf="field.specificInput !== true">
     <ng-container *ngSwitchCase="'OneToMany'">
       <p-select
-        class="bia-simple-input"
+        #select
+        class="bia-table-input-select"
         placeholder="&nbsp;"
         [formControlName]="field.field"
         [options]="getOptionDto(field.field)"
@@ -21,12 +22,13 @@
         appendTo="body"
         [style]="{ width: '100%' }"
         [editable]="field.isEditableChoice"
-        scrollHeight="50vh"></p-select>
+        scrollHeight="50vh"
+        (mousedown)="onMouseDown(select, $event)"></p-select>
     </ng-container>
     <ng-container *ngSwitchCase="'ManyToMany'">
       <p-multiSelect
         #multiselect
-        class="bia-simple-input"
+        class="bia-table-input-multiselect"
         placeholder="&nbsp;"
         [formControlName]="field.field"
         [options]="getOptionDto(field.field)"
@@ -38,21 +40,26 @@
         (onPanelHide)="onPanelHide(multiselect)"
         appendTo="body"
         [style]="{ width: '100%' }"
-        scrollHeight="50vh"></p-multiSelect>
+        scrollHeight="50vh"
+        (mousedown)="onMouseDown(multiselect, $event)"></p-multiSelect>
     </ng-container>
     <ng-container *ngSwitchCase="'Boolean'">
       <div class="flex">
         <p-checkbox
-          class="bia-simple-input"
+          #checkbox
+          class="bia-table-input-checkbox"
           [binary]="true"
           [formControlName]="field.field"
           [autofocus]="focusByDefault"
-          (onChange)="onChange()"></p-checkbox>
+          (onChange)="onChange()"
+          (mousedown)="onMouseDown(checkbox, $event)"></p-checkbox>
         <span *ngIf="field.isRequired" class="bia-star-mandatory">*</span>
       </div>
     </ng-container>
     <ng-container *ngSwitchCase="'Number'">
       <p-inputNumber
+        #inputnumber
+        class="bia-table-input-number"
         *ngIf="
           getDisplayNumberFormat(field.displayFormat);
           let displayNumberFormat
@@ -66,10 +73,13 @@
         [min]="displayNumberFormat.min"
         [max]="displayNumberFormat.max"
         [locale]="displayNumberFormat.autoLocale || 'en-US'"
-        [autofocus]="focusByDefault" />
+        [autofocus]="focusByDefault"
+        (mousedown)="onMouseDown(inputnumber, $event)" />
     </ng-container>
     <ng-container *ngSwitchCase="'Date'">
       <p-date-picker
+        #datepicker
+        class="bia-table-input-date"
         biaLocale
         [formControlName]="field.field"
         placeholder="&nbsp;"
@@ -92,10 +102,13 @@
             getDisplayDateFormat(field.displayFormat)?.autoPrimeDateFormat ??
               'yy-mm-dd'
           )
-        "></p-date-picker>
+        "
+        (mousedown)="onMouseDown(datepicker, $event)"></p-date-picker>
     </ng-container>
     <ng-container *ngSwitchCase="'Time'">
       <p-date-picker
+        #datepicker
+        class="bia-table-input-time"
         biaLocale
         [formControlName]="field.field"
         placeholder="&nbsp;"
@@ -114,11 +127,14 @@
           'yy-mm-dd'
         "
         [hourFormat]="'24'"
-        [autofocus]="focusByDefault"></p-date-picker>
+        [autofocus]="focusByDefault"
+        (mousedown)="onMouseDown(datepicker, $event)"></p-date-picker>
       <!-- [hourFormat]="field.displayFormat.autoHourFormat?field.displayFormat.autoHourFormat:24" not work for 12 (PrimeNG 13)-->
     </ng-container>
     <ng-container *ngSwitchCase="'TimeOnly'">
       <p-date-picker
+        #datepicker
+        class="bia-table-input-timeonly"
         biaLocale
         [formControlName]="field.field"
         placeholder="&nbsp;"
@@ -134,11 +150,14 @@
         dataType="string"
         [timeOnly]="true"
         [hourFormat]="'24'"
-        [autofocus]="focusByDefault"></p-date-picker>
+        [autofocus]="focusByDefault"
+        (mousedown)="onMouseDown(datepicker, $event)"></p-date-picker>
       <!-- [hourFormat]="field.displayFormat.autoHourFormat?field.displayFormat.autoHourFormat:24" not work for 12 (PrimeNG 13)-->
     </ng-container>
     <ng-container *ngSwitchCase="'TimeSecOnly'">
       <p-date-picker
+        #datepicker
+        class="bia-table-input-timeseconly"
         biaLocale
         [formControlName]="field.field"
         placeholder="&nbsp;"
@@ -155,11 +174,14 @@
         dataType="string"
         [timeOnly]="true"
         [hourFormat]="'24'"
-        [autofocus]="focusByDefault"></p-date-picker>
+        [autofocus]="focusByDefault"
+        (mousedown)="onMouseDown(datepicker, $event)"></p-date-picker>
       <!-- [hourFormat]="field.displayFormat.autoHourFormat?field.displayFormat.autoHourFormat:24" not work for 12 (PrimeNG 13)-->
     </ng-container>
     <ng-container *ngSwitchCase="'DateTime'">
       <p-date-picker
+        #datepicker
+        class="bia-table-input-datetime"
         biaLocale
         [formControlName]="field.field.toString()"
         placeholder="&nbsp;"
@@ -188,17 +210,20 @@
             getDisplayDateFormat(field.displayFormat)?.autoFormatDate ?? ''
           )
         "
-        [hideOnDateTimeSelect]="false"></p-date-picker>
+        [hideOnDateTimeSelect]="false"
+        (mousedown)="onMouseDown(datepicker, $event)"></p-date-picker>
     </ng-container>
     <ng-container *ngSwitchDefault>
       <input
-        class="bia-simple-input"
+        #input
+        class="bia-table-input"
         pInputText
         type="text"
         [maxlength]="field.maxlength"
         [formControlName]="field.field.toString()"
         [pAutoFocus]="focusByDefault"
-        (change)="onChange()" />
+        (change)="onChange()"
+        (mousedown)="onMouseDown(input, $event)" />
     </ng-container>
   </ng-container>
   <span

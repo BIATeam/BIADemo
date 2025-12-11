@@ -1,7 +1,7 @@
 $RelativePathToBIAPackage = "..\..\BIADemo\DotNet\BIAPackage"
 $SolutionName = "BIADemo"
 $ProjectPrefix = "TheBIADevCompany." + $SolutionName
-$BiaFrameworkVersion = "5.2.0"
+$BiaFrameworkVersion = "5.2.2"
 
 function AddBIAPackageToSolution {
     param([string]$layerProject, [string]$layerPackage)

@@ -65,7 +65,7 @@
 	  <Compile Remove="**\UserModelBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="BIA.Net.Core.Ioc" Version="5.2.0" />
-    <PackageReference Include="BIA.Net.Core.Presentation.Common" Version="5.2.0" />
+    <PackageReference Include="BIA.Net.Core.Ioc" Version="5.2.2" />
+    <PackageReference Include="BIA.Net.Core.Presentation.Common" Version="5.2.2" />
   </ItemGroup>
 </Project>

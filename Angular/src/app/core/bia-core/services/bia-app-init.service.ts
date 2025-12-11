@@ -64,10 +64,6 @@ export class BiaAppInitService implements OnDestroy {
     this.initEventKeycloakLogin();
     const obs$: Observable<AuthInfo> = this.initEventKeycloakSuccess();
 
-    // const token = localStorage.getItem(STORAGE_KEYCLOAK_TOKEN);
-    // const refreshToken = localStorage.getItem(STORAGE_KEYCLOAK_REFRESHTOKEN);
-    // const idToken = localStorage.getItem(STORAGE_KEYCLOAK_IDTOKEN);
-
     this.keycloakService.init({
       config: {
         url: appSettings.keycloak?.baseUrl,
@@ -77,13 +73,8 @@ export class BiaAppInitService implements OnDestroy {
       enableBearerInterceptor: false,
       initOptions: {
         onLoad: 'check-sso',
-        // checkLoginIframe: false,
+        checkLoginIframe: false,
         enableLogging: isDevMode(),
-        silentCheckSsoRedirectUri:
-          window.location.origin + '/assets/bia/html/silent-check-sso.html',
-        // token: token ?? undefined,
-        // refreshToken: refreshToken ?? undefined,
-        // idToken: idToken ?? undefined,
       },
     });
 
