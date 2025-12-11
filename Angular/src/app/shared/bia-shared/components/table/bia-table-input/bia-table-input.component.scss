@@ -3,3 +3,46 @@
     text-align: right;
   }
 }
+
+.bia-table-input {
+  width: 100%;
+
+  &-select {
+    @extend .bia-table-input;
+    max-width: 15rem;
+  }
+
+  &-multiselect {
+    @extend .bia-table-input;
+    max-width: 15rem;
+  }
+
+  &-checkbox {
+    @extend .bia-table-input;
+    width: auto;
+  }
+
+  &-number {
+    @extend .bia-table-input;
+  }
+
+  &-date {
+    @extend .bia-table-input;
+  }
+
+  &-time {
+    @extend .bia-table-input;
+  }
+
+  &-timeonly {
+    @extend .bia-table-input;
+  }
+
+  &-timeseconly {
+    @extend .bia-table-input;
+  }
+
+  &-datetime {
+    @extend .bia-table-input;
+  }
+}
