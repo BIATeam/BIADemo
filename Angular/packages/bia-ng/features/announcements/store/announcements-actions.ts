@@ -1,9 +1,11 @@
 import { createAction, props } from '@ngrx/store';
-import { HistoricalEntryDto } from 'packages/bia-ng/models/dto/historical-entry-dto';
-import { DataResult } from 'packages/bia-ng/models/public-api';
+import {
+  Announcement,
+  DataResult,
+  HistoricalEntryDto,
+} from 'packages/bia-ng/models/public-api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { announcementCRUDConfiguration } from '../announcement.constants';
-import { Announcement } from '../model/announcement';
 
 export namespace FeatureAnnouncementsActions {
   export const loadAllByPost = createAction(

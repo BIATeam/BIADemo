@@ -1,11 +1,11 @@
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { HistoricalEntryDto } from 'packages/bia-ng/models/dto/historical-entry-dto';
 import {
+  Announcement,
   CrudState,
   DEFAULT_CRUD_STATE,
+  HistoricalEntryDto,
 } from 'packages/bia-ng/models/public-api';
-import { Announcement } from '../model/announcement';
 import { FeatureAnnouncementsActions } from './announcements-actions';
 
 // This adapter will allow is to manipulate announcements (mostly CRUD operations)

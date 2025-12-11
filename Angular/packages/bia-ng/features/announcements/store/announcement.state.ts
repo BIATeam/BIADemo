@@ -4,8 +4,8 @@ import {
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
+import { Announcement } from 'packages/bia-ng/models/public-api';
 import { announcementCRUDConfiguration } from '../announcement.constants';
-import { Announcement } from '../model/announcement';
 import * as fromAnnouncements from './announcements-reducer';
 
 export namespace FeatureAnnouncementsStore {

@@ -1,23 +1,13 @@
 import { Validators } from '@angular/forms';
 import { PropType } from 'packages/bia-ng/models/enum/public-api';
 import {
-  BaseDto,
+  Announcement,
   BiaFieldConfig,
   BiaFieldsConfig,
   BiaFormLayoutConfig,
   BiaFormLayoutConfigField,
   BiaFormLayoutConfigRow,
-  OptionDto,
-  VersionedDto,
 } from 'packages/bia-ng/models/public-api';
-
-// TODO after creation of CRUD Announcement : adapt the model
-export interface Announcement extends BaseDto, VersionedDto {
-  end: Date;
-  rawContent: string;
-  start: Date;
-  type: OptionDto;
-}
 
 // TODO after creation of CRUD Announcement : adapt the field configuration
 export const announcementFieldsConfiguration: BiaFieldsConfig<Announcement> = {

@@ -7,6 +7,7 @@ import {
   DateHelperService,
 } from 'packages/bia-ng/core/public-api';
 import {
+  Announcement,
   DataResult,
   GetListByPostParam,
   GetListParam,
@@ -16,7 +17,6 @@ import {
   SaveParam,
 } from 'packages/bia-ng/models/public-api';
 import { catchError, map, Observable, of, throwError } from 'rxjs';
-import { Announcement } from '../model/announcement';
 
 @Injectable({
   providedIn: 'root',

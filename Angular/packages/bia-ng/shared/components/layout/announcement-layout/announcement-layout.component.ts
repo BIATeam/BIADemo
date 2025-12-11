@@ -10,8 +10,8 @@ import {
   ViewChild,
 } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { Announcement } from 'packages/bia-ng/features/public-api';
-import { BiaAnnouncementType } from 'packages/bia-ng/models/enum/bia-announcement-type.enum';
+import { BiaAnnouncementType } from 'packages/bia-ng/models/enum/public-api';
+import { Announcement } from 'packages/bia-ng/models/public-api';
 import { SafeHtmlPipe } from '../../../pipes/safe-html.pipe';
 
 @Component({

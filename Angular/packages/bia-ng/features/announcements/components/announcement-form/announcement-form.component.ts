@@ -1,6 +1,7 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
+import { Announcement } from 'packages/bia-ng/models/public-api';
 import {
   BiaFormComponent,
   CrudItemFormComponent,
@@ -9,7 +10,6 @@ import { PrimeTemplate } from 'primeng/api';
 import { EditorInitEvent, EditorModule } from 'primeng/editor';
 import { FloatLabel } from 'primeng/floatlabel';
 import Quill from 'quill';
-import { Announcement } from '../../model/announcement';
 
 @Component({
   selector: 'bia-announcement-form',

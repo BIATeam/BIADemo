@@ -2,6 +2,7 @@ import { AsyncPipe, NgClass } from '@angular/common';
 import { AfterViewInit, Component, Injector, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthService, BiaPermission } from 'packages/bia-ng/core/public-api';
+import { Announcement } from 'packages/bia-ng/models/public-api';
 import {
   BiaTableBehaviorControllerComponent,
   BiaTableComponent,
@@ -13,7 +14,6 @@ import {
 } from 'packages/bia-ng/shared/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { announcementCRUDConfiguration } from '../../announcement.constants';
-import { Announcement } from '../../model/announcement';
 import { AnnouncementService } from '../../services/announcement.service';
 
 @Component({

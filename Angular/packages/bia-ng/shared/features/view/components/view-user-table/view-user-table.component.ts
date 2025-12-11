@@ -7,12 +7,12 @@ import {
 } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { BiaDialogService } from 'packages/bia-ng/core/public-api';
+import { ViewType } from 'packages/bia-ng/models/enum/public-api';
 import { Confirmation, ConfirmationService, PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Table, TableModule } from 'primeng/table';
 import { Tooltip } from 'primeng/tooltip';
-import { ViewType } from 'src/app/shared/constants';
 import { View } from '../../model/view';
 
 @Component({

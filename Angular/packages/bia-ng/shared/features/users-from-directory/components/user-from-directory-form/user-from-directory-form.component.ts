@@ -16,7 +16,7 @@ import {
 } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { AppSettingsService } from 'packages/bia-ng/core/public-api';
-import { LdapDomain } from 'packages/bia-ng/models/ldap-domain';
+import { LdapDomain } from 'packages/bia-ng/models/public-api';
 import { AutoComplete } from 'primeng/autocomplete';
 import { ButtonDirective } from 'primeng/button';
 import { FloatLabel } from 'primeng/floatlabel';

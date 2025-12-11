@@ -22,7 +22,6 @@ import {
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
 } from 'packages/bia-ng/models/public-api';
-import { CrudHelperService } from 'packages/bia-ng/shared/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { AutoFocusModule } from 'primeng/autofocus';
 import { BaseComponent } from 'primeng/basecomponent';
@@ -33,6 +32,7 @@ import { InputText } from 'primeng/inputtext';
 import { MultiSelect } from 'primeng/multiselect';
 import { Select } from 'primeng/select';
 import { Subscription } from 'rxjs';
+import { CrudHelperService } from '../../../services/crud-helper.service';
 import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.component';
 import { DictOptionDto } from '../bia-table/dict-option-dto';
 

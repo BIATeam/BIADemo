@@ -14,10 +14,11 @@ import {
   PermissionTeams,
   Team,
 } from 'packages/bia-ng/models/public-api';
-import { CrudConfig, CrudItemService } from 'packages/bia-ng/shared/public-api';
 import { ButtonDirective } from 'primeng/button';
 import { Observable, map, of } from 'rxjs';
 import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
+import { CrudConfig } from '../../../../feature-templates/crud-items/model/crud-config';
+import { CrudItemService } from '../../../../feature-templates/crud-items/services/crud-item.service';
 import { CrudItemEditComponent } from '../../../../feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
 import { ViewSaveFormComponent } from '../../components/view-save-form/view-save-form.component';
 import { ViewStateRecapComponent } from '../../components/view-state-recap/view-state-recap.component';

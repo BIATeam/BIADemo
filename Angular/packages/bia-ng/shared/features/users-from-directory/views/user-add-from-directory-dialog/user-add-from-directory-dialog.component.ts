@@ -6,7 +6,7 @@ import {
   DomainLdapDomainsActions,
   DomainLdapDomainsStore,
 } from 'packages/bia-ng/domains/public-api';
-import { LdapDomain } from 'packages/bia-ng/models/ldap-domain';
+import { LdapDomain } from 'packages/bia-ng/models/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { SharedModule } from 'primeng/api';
 import { Dialog } from 'primeng/dialog';

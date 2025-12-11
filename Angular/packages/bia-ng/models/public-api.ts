@@ -1,3 +1,4 @@
+export * from './announcement';
 export * from './app-settings';
 export * from './auth-info';
 export * from './bia-button-and-menu-item';
@@ -19,6 +20,7 @@ export * from './iframe-config';
 export * from './iframe-message';
 export * from './key-value-pair';
 export * from './layout/public-api';
+export * from './ldap-domain';
 export * from './option-dto';
 export * from './paging-filter-format';
 export * from './prime-locale';

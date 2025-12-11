@@ -1,15 +1,17 @@
 import { Injectable, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { HistoricalEntryDto } from 'packages/bia-ng/models/dto/historical-entry-dto';
+import {
+  Announcement,
+  HistoricalEntryDto,
+} from 'packages/bia-ng/models/public-api';
 import {
   CrudItemService,
   CrudItemSignalRService,
 } from 'packages/bia-ng/shared/public-api';
+import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { map, Observable } from 'rxjs';
-import { AppState } from 'src/app/store/state';
 import { announcementCRUDConfiguration } from '../announcement.constants';
-import { Announcement } from '../model/announcement';
 import { FeatureAnnouncementsStore } from '../store/announcement.state';
 import { FeatureAnnouncementsActions } from '../store/announcements-actions';
 import { AnnouncementDas } from './announcement-das.service';
@@ -24,7 +26,7 @@ export class AnnouncementService extends CrudItemService<Announcement> {
   _updateFailureActionType = FeatureAnnouncementsActions.failure.type;
 
   constructor(
-    private store: Store<AppState>,
+    private store: Store<BiaAppState>,
     public dasService: AnnouncementDas,
     public signalRService: CrudItemSignalRService<Announcement>,
     public optionsService: AnnouncementOptionsService,

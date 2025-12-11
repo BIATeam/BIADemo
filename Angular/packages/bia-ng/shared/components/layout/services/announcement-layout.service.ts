@@ -5,8 +5,10 @@ import {
   BiaOnlineOfflineService,
   BiaSignalRService,
 } from 'packages/bia-ng/core/public-api';
-import { Announcement } from 'packages/bia-ng/features/public-api';
-import { TargetedFeature } from 'packages/bia-ng/models/public-api';
+import {
+  Announcement,
+  TargetedFeature,
+} from 'packages/bia-ng/models/public-api';
 import { BehaviorSubject, Subscription, tap } from 'rxjs';
 
 @Injectable({

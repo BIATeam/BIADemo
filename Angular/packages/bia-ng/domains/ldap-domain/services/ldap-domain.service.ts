@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
+import { LdapDomain } from 'packages/bia-ng/models/public-api';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { LdapDomain } from '../../../models/ldap-domain';
 
 @Injectable({
   providedIn: 'root',

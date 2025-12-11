@@ -14,7 +14,6 @@ import {
 } from 'packages/bia-ng/core/public-api';
 import { DtoState } from 'packages/bia-ng/models/enum/public-api';
 import { BaseDto } from 'packages/bia-ng/models/public-api';
-import { CrudHelperService } from 'packages/bia-ng/shared/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
@@ -25,6 +24,7 @@ import { BiaTableFilterComponent } from '../../../../components/table/bia-table-
 import { BiaTableFooterControllerComponent } from '../../../../components/table/bia-table-footer-controller/bia-table-footer-controller.component';
 import { BiaTableInputComponent } from '../../../../components/table/bia-table-input/bia-table-input.component';
 import { BiaTableOutputComponent } from '../../../../components/table/bia-table-output/bia-table-output.component';
+import { CrudHelperService } from '../../../../services/crud-helper.service';
 
 @Component({
   selector: 'bia-crud-item-table',

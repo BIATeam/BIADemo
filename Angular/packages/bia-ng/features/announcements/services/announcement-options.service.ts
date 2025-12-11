@@ -9,9 +9,9 @@ import {
   CrudItemOptionsService,
   DictOptionDto,
 } from 'packages/bia-ng/shared/public-api';
+import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AppState } from 'src/app/store/state';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +19,7 @@ import { AppState } from 'src/app/store/state';
 export class AnnouncementOptionsService extends CrudItemOptionsService {
   announcementTypeOptions$: Observable<OptionDto[]>;
 
-  constructor(private store: Store<AppState>) {
+  constructor(private store: Store<BiaAppState>) {
     super();
     // TODO after creation of CRUD Announcement : get all required option dto use in Table calc and create and edit form
     this.announcementTypeOptions$ = this.store.select(

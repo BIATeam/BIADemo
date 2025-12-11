@@ -5,7 +5,8 @@ import {
   BiaMessageService,
   biaSuccessWaitRefreshSignalR,
 } from 'packages/bia-ng/core/public-api';
-import { DataResult } from 'packages/bia-ng/models/public-api';
+import { Announcement, DataResult } from 'packages/bia-ng/models/public-api';
+import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { of } from 'rxjs';
 import {
   catchError,
@@ -14,9 +15,7 @@ import {
   switchMap,
   withLatestFrom,
 } from 'rxjs/operators';
-import { AppState } from 'src/app/store/state';
 import { announcementCRUDConfiguration } from '../announcement.constants';
-import { Announcement } from '../model/announcement';
 import { AnnouncementDas } from '../services/announcement-das.service';
 import { FeatureAnnouncementsStore } from './announcement.state';
 import { FeatureAnnouncementsActions } from './announcements-actions';
@@ -247,6 +246,6 @@ export class AnnouncementsEffects {
     private actions$: Actions,
     private announcementDas: AnnouncementDas,
     private biaMessageService: BiaMessageService,
-    private store: Store<AppState>
+    private store: Store<BiaAppState>
   ) {}
 }
