@@ -59,7 +59,7 @@ const DEFAULT_CONFIG_DISPLAY: ConfigDisplay = {
   showLang: true,
   showScale: true,
   showTheme: true,
-  showMenuStyle: false,
+  showMenuStyle: [],
   showFooterStyle: false,
   showMenuProfilePosition: false,
 };

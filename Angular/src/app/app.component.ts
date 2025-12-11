@@ -36,7 +36,15 @@ export class AppComponent implements OnInit {
     this.layoutService.defaultConfigUpdate({});
     this.layoutService.setConfigDisplay({
       // Begin BIADemo
-      showMenuStyle: true,
+      showMenuStyle: [
+        'static',
+        'overlay',
+        'horizontal',
+        'slim',
+        'slim-plus',
+        'reveal',
+        'drawer',
+      ],
       showFooterStyle: true,
       showMenuProfilePosition: true,
       // End BIADemo

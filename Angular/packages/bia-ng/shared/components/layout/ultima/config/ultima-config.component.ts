@@ -38,6 +38,15 @@ export class BiaUltimaConfigComponent {
   componentThemes: any[] = [];
   menuThemes: any[] = [];
   topbarThemes: any[] = [];
+  menuModeLabels: { [key: string]: string } = {
+    static: 'Static',
+    overlay: 'Overlay',
+    slim: 'Slim',
+    'slim-plus': 'Slim +',
+    horizontal: 'Horizontal',
+    reveal: 'Reveal',
+    drawer: 'Drawer',
+  };
 
   protected _currentCulture: string | null;
 
