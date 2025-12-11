@@ -68,6 +68,7 @@
           pReorderableColumn
           pResizableColumn
           [style.min-width]="col.minWidth"
+          [style.max-width]="col.maxWidth"
           [alignFrozen]="col.alignFrozen"
           biaFrozenColumn
           [frozen]="col.isFrozen"
@@ -93,6 +94,7 @@
           pReorderableColumn
           pResizableColumn
           [style.min-width]="col.minWidth"
+          [style.max-width]="col.maxWidth"
           [alignFrozen]="col.alignFrozen"
           biaFrozenColumn
           [frozen]="col.isFrozen"
@@ -142,6 +144,7 @@
         pReorderableColumn
         pResizableColumn
         [style.min-width]="col.minWidth"
+        [style.max-width]="col.maxWidth"
         [alignFrozen]="col.alignFrozen"
         biaFrozenColumn
         [frozen]="col.isFrozen">
@@ -205,6 +208,7 @@
         [class]="'bia-column-' + col.typeLowerCase"
         (click)="clickElementData(rowData)"
         [style.min-width]="col.minWidth"
+        [style.max-width]="col.maxWidth"
         [alignFrozen]="col.alignFrozen"
         biaFrozenColumn
         [frozen]="col.isFrozen">

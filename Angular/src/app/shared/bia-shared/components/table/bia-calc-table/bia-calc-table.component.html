@@ -70,6 +70,7 @@
             pReorderableColumn
             pResizableColumn
             [style.min-width]="col.minWidth"
+            [style.max-width]="col.maxWidth"
             [alignFrozen]="col.alignFrozen"
             biaFrozenColumn
             [frozen]="col.isFrozen"
@@ -95,6 +96,7 @@
             pReorderableColumn
             pResizableColumn
             [style.min-width]="col.minWidth"
+            [style.max-width]="col.maxWidth"
             [alignFrozen]="col.alignFrozen"
             biaFrozenColumn
             [frozen]="col.isFrozen"
@@ -143,6 +145,7 @@
           pReorderableColumn
           pResizableColumn
           [style.min-width]="col.minWidth"
+          [style.max-width]="col.maxWidth"
           [alignFrozen]="col.alignFrozen"
           biaFrozenColumn
           [frozen]="col.isFrozen">
@@ -222,6 +225,7 @@
           [class]="'bia-column-' + col.typeLowerCase"
           (click)="initEditableRowAndFocus(rowData, $event)"
           [style.min-width]="col.minWidth"
+          [style.max-width]="col.maxWidth"
           [alignFrozen]="col.alignFrozen"
           biaFrozenColumn
           [frozen]="col.isFrozen">
@@ -360,6 +364,7 @@
           <td
             (click)="initEditableRow(footerRowData)"
             [style.min-width]="col.minWidth"
+            [style.max-width]="col.maxWidth"
             [alignFrozen]="col.alignFrozen"
             biaFrozenColumn
             [frozen]="col.isFrozen">
