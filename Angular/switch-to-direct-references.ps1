@@ -123,3 +123,5 @@ if (Test-Path -Path $projectPackageJsonPath -PathType Leaf) {
 
 
 Write-Host "Finish"
+
+pause

@@ -42,6 +42,7 @@ export class BiaUltimaConfigComponent {
     static: 'Static',
     overlay: 'Overlay',
     slim: 'Slim',
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     'slim-plus': 'Slim +',
     horizontal: 'Horizontal',
     reveal: 'Reveal',
