@@ -60,7 +60,7 @@ export class CrudHelperService {
     }
   }
 
-  public static ApplyDiff<TDto extends { id: number | string }>(
+  public static applyDiff<TDto extends { id: number | string }>(
     oldElement: TDto | undefined,
     newElement: TDto,
     fields: BiaFieldConfig<TDto>[]

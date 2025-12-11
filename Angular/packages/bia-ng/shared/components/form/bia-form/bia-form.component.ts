@@ -536,7 +536,7 @@ export class BiaFormComponent<TDto extends { id: number | string }>
 
     const element: TDto = this.flattenFormGroup(this.form) as TDto;
     CrudHelperService.initId<TDto>(element);
-    CrudHelperService.ApplyDiff(this.element, element, this.fields);
+    CrudHelperService.applyDiff(this.element, element, this.fields);
     return element;
   }
 

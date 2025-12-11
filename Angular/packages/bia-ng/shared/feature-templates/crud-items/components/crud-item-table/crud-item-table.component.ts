@@ -96,7 +96,7 @@ export class CrudItemTableComponent<CrudItem extends BaseDto<string | number>>
       const crudItem: CrudItem = <CrudItem>this.form.value;
       crudItem.dtoState = this.editFooter ? DtoState.Added : DtoState.Modified;
       crudItem.id = crudItem.id ?? 0;
-      CrudHelperService.ApplyDiff(
+      CrudHelperService.applyDiff(
         this.element,
         crudItem,
         this.configuration.columns
