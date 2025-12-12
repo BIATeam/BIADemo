@@ -18,7 +18,7 @@ import { SafeHtmlPipe } from '../../../pipes/safe-html.pipe';
   selector: 'bia-announcement-layout',
   imports: [SafeHtmlPipe, TranslateModule],
   templateUrl: './announcement-layout.component.html',
-  styleUrl: './announcement-layout.component.scss',
+  styleUrls: ['./announcement-layout.component.scss'],
 })
 export class AnnouncementLayoutComponent
   implements OnChanges, AfterViewInit, OnDestroy

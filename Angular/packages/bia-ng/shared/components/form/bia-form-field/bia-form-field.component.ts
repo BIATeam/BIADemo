@@ -39,7 +39,7 @@ import { BiaFieldBaseComponent } from '../bia-field-base/bia-field-base.componen
     TextareaModule,
   ],
   templateUrl: './bia-form-field.component.html',
-  styleUrl: './bia-form-field.component.scss',
+  styleUrls: ['./bia-form-field.component.scss'],
 })
 export class BiaFormFieldComponent<
   CrudItem,

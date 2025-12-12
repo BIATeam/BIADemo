@@ -20,8 +20,9 @@ import { PlaneService } from '../../services/plane.service';
   ],
   templateUrl:
     '../../../../../../packages/bia-ng/shared/feature-templates/crud-items/views/crud-item-historical/crud-item-historical.component.html',
-  styleUrl:
+  styleUrls: [
     '../../../../../../packages/bia-ng/shared/feature-templates/crud-items/views/crud-item-historical/crud-item-historical.component.scss',
+  ],
 })
 export class PlaneHistoricalComponent extends CrudItemHistoricalComponent<Plane> {
   constructor(

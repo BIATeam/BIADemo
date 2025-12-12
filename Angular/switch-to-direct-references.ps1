@@ -108,7 +108,13 @@ if (Test-Path -Path $projectPackageJsonPath -PathType Leaf) {
 
   # Switch imports to bia-ng imports
   ReplaceInProject -Source $SourceFrontEnd -OldRegexp "(import\s*{\s*[^}]+\s*}\s*from\s*)['](bia-ng\/[^']+)['];" -NewRegexp '$1''packages/$2/public-api'';' -Include *.ts
-  ReplaceInProject -Source $SourceFrontEnd -OldRegexp "((templateUrl:|styleUrls: \[)[\s]*'[\S]*\/)node_modules\/bia-ng\/templates\/([\S]*')" -NewRegexp '$1packages/bia-ng/shared/$3' -Include *.ts
+  
+  if ($projectPackageJsonContent.name -ne $DemoProjectName) {
+    ReplaceInProject -Source $SourceFrontEnd -OldRegexp "((templateUrl:|styleUrls: \[)[\s]*'[\S]*\/)node_modules\/bia-ng\/templates\/([\S]*')" -NewRegexp '$1packages/bia-ng/shared/$3' -Include *.ts
+  }
+  else { 
+    ReplaceInProject -Source $SourceFrontEnd -OldRegexp "((templateUrl:|styleUrls: \[)[\s]*'[\S]*\/)dist\/bia-ng\/templates\/([\S]*')" -NewRegexp '$1packages/bia-ng/shared/$3' -Include *.ts 
+  }
 
   # Remove the "bia-ng" key from package.json
   if ($projectPackageJsonContent.dependencies.PSObject.Properties.Name -contains "bia-ng") {

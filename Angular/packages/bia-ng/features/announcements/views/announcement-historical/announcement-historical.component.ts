@@ -20,8 +20,9 @@ import { AnnouncementService } from '../../services/announcement.service';
   ],
   templateUrl:
     '../../../../shared/feature-templates/crud-items/views/crud-item-historical/crud-item-historical.component.html',
-  styleUrl:
+  styleUrls: [
     '../../../../shared/feature-templates/crud-items/views/crud-item-historical/crud-item-historical.component.scss',
+  ],
 })
 export class AnnouncementHistoricalComponent extends CrudItemHistoricalComponent<Announcement> {
   constructor(

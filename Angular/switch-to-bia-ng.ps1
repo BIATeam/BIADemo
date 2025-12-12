@@ -18,7 +18,7 @@ function ReplaceInProject {
   #Write-Host $NewRegexp;
   #Write-Host $Filter;
   ReplaceInProjectRec -Source $Source -OldRegexp $OldRegexp -NewRegexp $NewRegexp -Include $Include
-}
+} 
 
 function ReplaceInProjectRec {
   param (
@@ -50,25 +50,30 @@ function ReplaceInProjectRec {
   }
 }
 
-# Switch imports to bia-ng imports
-ReplaceInProject -Source $SourceFrontEnd -OldRegexp "(import\s*{\s*[^}]+\s*}\s*from\s*)[']packages\/(bia-ng\/[^']+)\/public-api['];" -NewRegexp '$1''$2'';' -Include *.ts
-ReplaceInProject -Source $SourceFrontEnd -OldRegexp "((templateUrl:|styleUrls: \[)[\s]*'[\S]*\/)packages\/bia-ng\/shared\/([\S]*')" -NewRegexp '$1node_modules/bia-ng/templates/$3' -Include *.ts
-
-
-$frameworkVersionFile = Join-Path -Path $SourceFrontEnd -ChildPath "packages\bia-ng\shared\framework-version.ts"
-
-# Extract the version from framework-version.ts
-$frameworkVersionContent = Get-Content -Path $frameworkVersionFile -Raw
-$frameworkVersionMatch = [regex]::Match($frameworkVersionContent, 'FRAMEWORK_VERSION\s*=\s*''([\S]+)''')
-$frameworkVersion = $frameworkVersionMatch.Groups[1].Value
-
-Write-Output "Bia Demo framework version : $frameworkVersion"
-
 $projectPackageJsonPath = "package.json"
 
 if (Test-Path -Path $projectPackageJsonPath -PathType Leaf) {
   # Read the package.json file
   $projectPackageJsonContent = Get-Content -Path $projectPackageJsonPath -Raw | ConvertFrom-Json
+  
+  # Switch imports to bia-ng imports
+  ReplaceInProject -Source $SourceFrontEnd -OldRegexp "(import\s*{\s*[^}]+\s*}\s*from\s*)[']packages\/(bia-ng\/[^']+)\/public-api['];" -NewRegexp '$1''$2'';' -Include *.ts
+
+  if ($projectPackageJsonContent.name -ne $DemoProjectName) {
+    ReplaceInProject -Source $SourceFrontEnd -OldRegexp "((templateUrl:|styleUrls: \[)[\s]*'[\S]*\/)packages\/bia-ng\/shared\/([\S]*')" -NewRegexp '$1node_modules/bia-ng/templates/$3' -Include *.ts
+  }
+  else { 
+    ReplaceInProject -Source $SourceFrontEnd -OldRegexp "((templateUrl:|styleUrls: \[)[\s]*'[\S]*\/)packages\/bia-ng\/shared\/([\S]*')" -NewRegexp '$1dist/bia-ng/templates/$3' -Include *.ts 
+  }
+
+  $frameworkVersionFile = Join-Path -Path $SourceFrontEnd -ChildPath "packages\bia-ng\shared\framework-version.ts"
+
+  # Extract the version from framework-version.ts
+  $frameworkVersionContent = Get-Content -Path $frameworkVersionFile -Raw
+  $frameworkVersionMatch = [regex]::Match($frameworkVersionContent, 'FRAMEWORK_VERSION\s*=\s*''([\S]+)''')
+  $frameworkVersion = $frameworkVersionMatch.Groups[1].Value
+
+  Write-Output "Bia Demo framework version : $frameworkVersion"
 
   if ($null -eq $projectPackageJsonContent.dependencies) {
     $projectPackageJsonContent.dependencies = @{}

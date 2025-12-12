@@ -20,7 +20,7 @@ import { TimelineModule } from 'primeng/timeline';
     NgTemplateOutlet,
   ],
   templateUrl: './crud-item-historical-timeline.component.html',
-  styleUrl: './crud-item-historical-timeline.component.scss',
+  styleUrls: ['./crud-item-historical-timeline.component.scss'],
 })
 export class CrudItemHistoricalTimelineComponent<
   TDto extends { id: number | string },

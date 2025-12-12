@@ -17,7 +17,7 @@ import { CrudItemComponent } from '../crud-item/crud-item.component';
     Button,
   ],
   templateUrl: './crud-item-historical.component.html',
-  styleUrl: './crud-item-historical.component.scss',
+  styleUrls: ['./crud-item-historical.component.scss'],
 })
 export class CrudItemHistoricalComponent<
   CrudItem extends BaseDto<string | number>,
