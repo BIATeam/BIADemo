@@ -27,5 +27,10 @@ namespace BIA.Net.Core.Common.Configuration.ApiFeature
         /// Filter redis Chanel.
         /// </summary>
         public string RedisChannelPrefix { get; set; }
+
+        /// <summary>
+        /// Enable TLS for Redis/Valkey connection.
+        /// </summary>
+        public bool RedisUseTls { get; set; }
     }
 }

@@ -27,5 +27,10 @@ namespace BIA.Net.Core.Common.Configuration.CommonFeature
         /// Channel prefix of redis messages.
         /// </summary>
         public string RedisChannelPrefix { get; set; }
+
+        /// <summary>
+        /// Enable TLS for Redis/Valkey connection.
+        /// </summary>
+        public bool RedisUseTls { get; set; }
     }
 }

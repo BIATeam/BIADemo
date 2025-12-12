@@ -104,19 +104,24 @@ namespace BIA.Net.Core.Presentation.Api.Features
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(apiFeatures.HubForClients.RedisChannelPrefix))
-                    {
-                        services.AddSignalR().AddStackExchangeRedis(apiFeatures.HubForClients.RedisConnectionString);
-                    }
-                    else
-                    {
-                        services.AddSignalR().AddStackExchangeRedis(
-                            apiFeatures.HubForClients.RedisConnectionString,
-                            redisOptions =>
+                    services.AddSignalR().AddStackExchangeRedis(
+                        apiFeatures.HubForClients.RedisConnectionString,
+                        redisOptions =>
+                        {
+                            // Parse connection string and apply TLS if requested
+                            var config = ConfigurationOptions.Parse(apiFeatures.HubForClients.RedisConnectionString);
+                            if (apiFeatures.HubForClients.RedisUseTls)
+                            {
+                                config.Ssl = true;
+                            }
+
+                            redisOptions.Configuration = config;
+
+                            if (!string.IsNullOrEmpty(apiFeatures.HubForClients.RedisChannelPrefix))
                             {
                                 redisOptions.Configuration.ChannelPrefix = RedisChannel.Literal(apiFeatures.HubForClients.RedisChannelPrefix);
-                            });
-                    }
+                            }
+                        });
                 }
             }
 
