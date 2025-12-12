@@ -5,7 +5,7 @@ import {
   BiaSignalRService,
   CoreTeamsStore,
 } from 'packages/bia-ng/core/public-api';
-import { TargetedFeature, Team } from 'packages/bia-ng/models/public-api';
+import { Team } from 'packages/bia-ng/models/public-api';
 import { CrudItemSignalRService } from 'packages/bia-ng/shared/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { first } from 'rxjs/operators';
@@ -27,7 +27,6 @@ export class NotificationsSignalRService extends CrudItemSignalRService<
   NotificationListItem,
   Notification
 > {
-  protected targetedFeature: TargetedFeature;
   protected myTeams: Team[];
 
   /**

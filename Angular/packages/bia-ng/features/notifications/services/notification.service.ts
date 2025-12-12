@@ -36,6 +36,27 @@ export class NotificationService extends CrudItemService<
     protected authService: AuthService
   ) {
     super(dasService, signalRService, optionsService, injector);
+    this.crudItems$ = this.store.select(
+      FeatureNotificationsStore.getAllNotifications
+    );
+    this.totalCount$ = this.store.select(
+      FeatureNotificationsStore.getNotificationsTotalCount
+    );
+    this.loadingGetAll$ = this.store.select(
+      FeatureNotificationsStore.getNotificationLoadingGetAll
+    );
+    this.lastLazyLoadEvent$ = this.store.select(
+      FeatureNotificationsStore.getLastLazyLoadEvent
+    );
+    this.crudItem$ = this.store.select(
+      FeatureNotificationsStore.getCurrentNotification
+    );
+    this.displayItemName$ = this.crudItem$.pipe(
+      map(notification => notification?.title?.toString() ?? '')
+    );
+    this.loadingGet$ = this.store.select(
+      FeatureNotificationsStore.getNotificationLoadingGet
+    );
   }
 
   public getParentIds(): any[] {
@@ -47,30 +68,12 @@ export class NotificationService extends CrudItemService<
     return notificationCRUDConfiguration.featureName;
   }
 
-  public crudItems$: Observable<NotificationListItem[]> = this.store.select(
-    FeatureNotificationsStore.getAllNotifications
-  );
-  public totalCount$: Observable<number> = this.store.select(
-    FeatureNotificationsStore.getNotificationsTotalCount
-  );
-  public loadingGetAll$: Observable<boolean> = this.store.select(
-    FeatureNotificationsStore.getNotificationLoadingGetAll
-  );
-  public lastLazyLoadEvent$: Observable<TableLazyLoadEvent> = this.store.select(
-    FeatureNotificationsStore.getLastLazyLoadEvent
-  );
-
-  public crudItem$: Observable<Notification> = this.store.select(
-    FeatureNotificationsStore.getCurrentNotification
-  );
-
-  public displayItemName$: Observable<string> = this.crudItem$.pipe(
-    map(notification => notification?.title?.toString() ?? '')
-  );
-
-  public loadingGet$: Observable<boolean> = this.store.select(
-    FeatureNotificationsStore.getNotificationLoadingGet
-  );
+  public crudItems$: Observable<NotificationListItem[]>;
+  public totalCount$: Observable<number>;
+  public loadingGetAll$: Observable<boolean>;
+  public lastLazyLoadEvent$: Observable<TableLazyLoadEvent>;
+  public crudItem$: Observable<Notification>;
+  public loadingGet$: Observable<boolean>;
 
   public load(id: any) {
     this.store.dispatch(FeatureNotificationsActions.load({ id }));

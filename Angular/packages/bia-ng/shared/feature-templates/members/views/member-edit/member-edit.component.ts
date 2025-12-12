@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
-import { AuthService, BiaPermission } from 'packages/bia-ng/core/public-api';
+import { BiaPermission } from 'packages/bia-ng/core/public-api';
 import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
 import { CrudItemEditComponent } from '../../../crud-items/views/crud-item-edit/crud-item-edit.component';
 import { MemberFormEditComponent } from '../../components/member-form-edit/member-form-edit.component';
@@ -21,12 +21,10 @@ export class MemberEditComponent
   canAddFromDirectory = false;
 
   public memberService: MemberService;
-  protected authService: AuthService;
   constructor(protected injector: Injector) {
     super(injector, injector.get<MemberService>(MemberService));
     this.crudConfiguration = memberCRUDConfiguration;
     this.memberService = injector.get<MemberService>(MemberService);
-    this.authService = injector.get<AuthService>(AuthService);
   }
 
   ngOnInit() {

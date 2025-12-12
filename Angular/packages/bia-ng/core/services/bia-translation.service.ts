@@ -75,27 +75,9 @@ export class BiaTranslationService {
     new BehaviorSubject<string | null>(getCurrentCulture());
   public currentCulture$: Observable<string | null> =
     this.cultureSubject.asObservable();
-  public appSettings$: Observable<AppSettings | null> =
-    this.store.select(getAppSettings);
-  public currentCultureDateFormat$: Observable<DateFormat> = combineLatest([
-    this.currentCulture$,
-    this.appSettings$,
-  ]).pipe(
-    map(([currentCulture, appSettings]) =>
-      this.getDateFormatByCulture(currentCulture, appSettings)
-    )
-  );
-  public languageId$: Observable<number> = combineLatest([
-    this.currentCulture$,
-    this.appSettings$,
-  ])
-    .pipe(
-      map(([currentCulture, appSettings]) =>
-        this.getLanguageId(currentCulture, appSettings)
-      )
-    )
-    .pipe(distinctUntilChanged())
-    .pipe(skip(1));
+  public appSettings$: Observable<AppSettings | null>;
+  public currentCultureDateFormat$: Observable<DateFormat>;
+  public languageId$: Observable<number>;
 
   protected currentCulture = 'None';
   protected currentLanguage = 'None';
@@ -114,6 +96,23 @@ export class BiaTranslationService {
     protected primeNgConfig: PrimeNG,
     protected authService: AuthService
   ) {
+    this.appSettings$ = this.store.select(getAppSettings);
+    this.currentCultureDateFormat$ = combineLatest([
+      this.currentCulture$,
+      this.appSettings$,
+    ]).pipe(
+      map(([currentCulture, appSettings]) =>
+        this.getDateFormatByCulture(currentCulture, appSettings)
+      )
+    );
+    this.languageId$ = combineLatest([this.currentCulture$, this.appSettings$])
+      .pipe(
+        map(([currentCulture, appSettings]) =>
+          this.getLanguageId(currentCulture, appSettings)
+        )
+      )
+      .pipe(distinctUntilChanged())
+      .pipe(skip(1));
     // force language initialization to avoid double authentication.
     this.loadAndChangeLanguage(getCurrentCulture(), false);
     this.currentCultureDateFormat$.subscribe(dateFormat => {

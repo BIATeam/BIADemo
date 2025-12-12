@@ -2,7 +2,6 @@ import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { first } from 'rxjs/operators';
-import { BiaLayoutService } from '../../../../components/layout/services/layout.service';
 import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
 import { CrudItemItemComponent } from '../../../crud-items/views/crud-item-item/crud-item-item.component';
 import { Member } from '../../model/member';
@@ -21,12 +20,10 @@ export class MemberItemComponent
   extends CrudItemItemComponent<Member>
   implements OnInit
 {
-  protected layoutService: BiaLayoutService;
   protected memberService: MemberService;
 
   constructor(protected injector: Injector) {
     super(injector, injector.get<MemberService>(MemberService));
-    this.layoutService = injector.get<BiaLayoutService>(BiaLayoutService);
     this.memberService = injector.get<MemberService>(MemberService);
   }
 

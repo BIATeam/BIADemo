@@ -37,7 +37,7 @@ export class MembersIndexComponent
   teamTypeId: number;
   memberService: MemberService;
   @ViewChild(MemberTableComponent, { static: false })
-  crudItemTableComponent: MemberTableComponent;
+  declare crudItemTableComponent: MemberTableComponent;
   constructor(protected injector: Injector) {
     super(injector, injector.get<MemberService>(MemberService));
     this.crudConfiguration = memberCRUDConfiguration;

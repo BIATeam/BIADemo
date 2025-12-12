@@ -6,7 +6,9 @@
     "outDir": "../../out-tsc/lib",
     "declaration": true,
     "declarationMap": true,
-    "inlineSources": true
+    "inlineSources": true,
+    "strictPropertyInitialization": false,
+    "useDefineForClassFields": true
   },
   "angularCompilerOptions": {
     "flatModuleOutFile": "bia-ng.js",

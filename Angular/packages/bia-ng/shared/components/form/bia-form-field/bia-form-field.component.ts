@@ -7,7 +7,6 @@ import {
 } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import {
-  BiaFieldConfig,
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
 } from 'packages/bia-ng/models/public-api';
@@ -46,7 +45,6 @@ export class BiaFormFieldComponent<
   CrudItem,
 > extends BiaFieldBaseComponent<CrudItem> {
   @Input() element?: CrudItem;
-  @Input() field: BiaFieldConfig<CrudItem>;
   @Input() isAdd?: boolean;
   @Input() dictOptionDtos: DictOptionDto[];
   @Input() readOnly: boolean;

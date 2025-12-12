@@ -28,9 +28,7 @@ export class LayoutComponent implements OnInit {
   companyName = BiaAppConstantsService.allEnvironments.companyName;
   helpUrl = BiaAppConstantsService.environment.helpUrl;
   reportUrl = BiaAppConstantsService.environment.reportUrl;
-  enableNotifications =
-    BiaAppConstantsService.allEnvironments.enableNotifications &&
-    this.authService.hasPermission(BiaPermission.Notification_List_Access);
+  enableNotifications: boolean;
   login = '';
   username = '';
   lastname?: string;
@@ -46,7 +44,11 @@ export class LayoutComponent implements OnInit {
     protected readonly store: Store,
     // protected notificationSignalRService: NotificationSignalRService,
     @Inject(APP_BASE_HREF) public baseHref: string
-  ) {}
+  ) {
+    this.enableNotifications =
+      BiaAppConstantsService.allEnvironments.enableNotifications &&
+      this.authService.hasPermission(BiaPermission.Notification_List_Access);
+  }
 
   public showEnvironmentMessage(environmentType: EnvironmentType | undefined) {
     return environmentType !== EnvironmentType.PRD;

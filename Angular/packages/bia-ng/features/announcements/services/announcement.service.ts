@@ -1,9 +1,6 @@
 import { Injectable, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
-import {
-  Announcement,
-  HistoricalEntryDto,
-} from 'packages/bia-ng/models/public-api';
+import { Announcement } from 'packages/bia-ng/models/public-api';
 import {
   CrudItemService,
   CrudItemSignalRService,
@@ -33,6 +30,28 @@ export class AnnouncementService extends CrudItemService<Announcement> {
     protected injector: Injector
   ) {
     super(dasService, signalRService, optionsService, injector);
+    this.crudItems$ = this.store.select(
+      FeatureAnnouncementsStore.getAllAnnouncements
+    );
+    this.totalCount$ = this.store.select(
+      FeatureAnnouncementsStore.getAnnouncementsTotalCount
+    );
+    this.loadingGetAll$ = this.store.select(
+      FeatureAnnouncementsStore.getAnnouncementLoadingGetAll
+    );
+    this.lastLazyLoadEvent$ = this.store.select(
+      FeatureAnnouncementsStore.getLastLazyLoadEvent
+    );
+    this.crudItem$ = this.store.select(
+      FeatureAnnouncementsStore.getCurrentAnnouncement
+    );
+    this.crudItemHistorical$ = this.store.select(
+      FeatureAnnouncementsStore.getCurrentAnnouncementHistorical
+    );
+    this.displayItemName$ = this.crudItem$.pipe(map(() => ''));
+    this.loadingGet$ = this.store.select(
+      FeatureAnnouncementsStore.getAnnouncementLoadingGet
+    );
   }
 
   public getParentIds(): any[] {
@@ -44,35 +63,12 @@ export class AnnouncementService extends CrudItemService<Announcement> {
     return announcementCRUDConfiguration.featureName;
   }
 
-  public crudItems$: Observable<Announcement[]> = this.store.select(
-    FeatureAnnouncementsStore.getAllAnnouncements
-  );
-  public totalCount$: Observable<number> = this.store.select(
-    FeatureAnnouncementsStore.getAnnouncementsTotalCount
-  );
-  public loadingGetAll$: Observable<boolean> = this.store.select(
-    FeatureAnnouncementsStore.getAnnouncementLoadingGetAll
-  );
-  public lastLazyLoadEvent$: Observable<TableLazyLoadEvent> = this.store.select(
-    FeatureAnnouncementsStore.getLastLazyLoadEvent
-  );
-
-  public crudItem$: Observable<Announcement> = this.store.select(
-    FeatureAnnouncementsStore.getCurrentAnnouncement
-  );
-
-  public crudItemHistorical$: Observable<HistoricalEntryDto[]> =
-    this.store.select(
-      FeatureAnnouncementsStore.getCurrentAnnouncementHistorical
-    );
-
-  public displayItemName$: Observable<string> = this.crudItem$.pipe(
-    map(() => '')
-  );
-
-  public loadingGet$: Observable<boolean> = this.store.select(
-    FeatureAnnouncementsStore.getAnnouncementLoadingGet
-  );
+  public crudItems$: Observable<Announcement[]>;
+  public totalCount$: Observable<number>;
+  public loadingGetAll$: Observable<boolean>;
+  public lastLazyLoadEvent$: Observable<TableLazyLoadEvent>;
+  public crudItem$: Observable<Announcement>;
+  public loadingGet$: Observable<boolean>;
 
   public load(id: any) {
     this.store.dispatch(FeatureAnnouncementsActions.load({ id }));

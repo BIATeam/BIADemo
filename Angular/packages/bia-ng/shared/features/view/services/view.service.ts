@@ -31,6 +31,17 @@ export class ViewService extends CrudItemService<View> {
     protected injector: Injector
   ) {
     super(dasService, signalRService, optionsService, injector);
+    this.crudItems$ = this.store.select(ViewsStore.getAllViews);
+    this.totalCount$ = this.store.select(ViewsStore.getViewsTotalCount);
+    this.loadingGetAll$ = this.store.select(ViewsStore.getViewLoadingGetAll);
+    this.lastLazyLoadEvent$ = this.store.select(
+      ViewsStore.getLastLazyLoadEvent
+    );
+    this.crudItem$ = this.store.select(ViewsStore.getCurrentView);
+    this.displayItemName$ = this.crudItem$.pipe(
+      map(view => view?.name?.toString() ?? '')
+    );
+    this.loadingGet$ = this.store.select(ViewsStore.getViewLoadingGet);
   }
 
   public getParentIds(): any[] {
@@ -42,30 +53,12 @@ export class ViewService extends CrudItemService<View> {
     return viewCRUDConfiguration.featureName;
   }
 
-  public crudItems$: Observable<View[]> = this.store.select(
-    ViewsStore.getAllViews
-  );
-  public totalCount$: Observable<number> = this.store.select(
-    ViewsStore.getViewsTotalCount
-  );
-  public loadingGetAll$: Observable<boolean> = this.store.select(
-    ViewsStore.getViewLoadingGetAll
-  );
-  public lastLazyLoadEvent$: Observable<TableLazyLoadEvent> = this.store.select(
-    ViewsStore.getLastLazyLoadEvent
-  );
-
-  public crudItem$: Observable<View> = this.store.select(
-    ViewsStore.getCurrentView
-  );
-
-  public displayItemName$: Observable<string> = this.crudItem$.pipe(
-    map(view => view?.name?.toString() ?? '')
-  );
-
-  public loadingGet$: Observable<boolean> = this.store.select(
-    ViewsStore.getViewLoadingGet
-  );
+  public crudItems$: Observable<View[]>;
+  public totalCount$: Observable<number>;
+  public loadingGetAll$: Observable<boolean>;
+  public lastLazyLoadEvent$: Observable<TableLazyLoadEvent>;
+  public crudItem$: Observable<View>;
+  public loadingGet$: Observable<boolean>;
 
   public load(id: any) {
     if (id === '0' || id === 0) {

@@ -18,7 +18,6 @@ import {
   UntypedFormGroup,
 } from '@angular/forms';
 import {
-  BiaFieldConfig,
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
 } from 'packages/bia-ng/models/public-api';
@@ -58,7 +57,6 @@ export class BiaTableInputComponent<CrudItem>
   extends BiaFieldBaseComponent<CrudItem>
   implements OnInit, OnDestroy, AfterContentInit
 {
-  @Input() field: BiaFieldConfig<CrudItem>;
   @Input() form: UntypedFormGroup;
   @Input() dictOptionDtos: DictOptionDto[];
   @Input() focusByDefault = false;

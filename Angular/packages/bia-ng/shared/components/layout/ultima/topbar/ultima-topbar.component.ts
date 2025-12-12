@@ -77,7 +77,7 @@ export class BiaUltimaTopbarComponent
   usernameParam: { name: string };
   navigations: BiaNavigation[];
   fullscreenMode = false;
-  isIE = this.platform.TRIDENT;
+  isIE: boolean;
   urlAppIcon = BiaAppConstantsService.allEnvironments.urlAppIcon;
   protected sub = new Subscription();
 
@@ -109,7 +109,9 @@ export class BiaUltimaTopbarComponent
     protected readonly biaMessageService: BiaMessageService,
     protected renderer: Renderer2,
     protected appSettingsService: AppSettingsService
-  ) {}
+  ) {
+    this.isIE = this.platform.TRIDENT;
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.enableNotifications) {

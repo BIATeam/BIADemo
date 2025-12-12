@@ -28,6 +28,21 @@ export class MemberService extends CrudItemService<Member> {
     protected authService: AuthService
   ) {
     super(dasService, signalRService, optionsService, injector);
+    this.crudItems$ = this.store.select(FeatureMembersStore.getAllMembers);
+    this.totalCount$ = this.store.select(
+      FeatureMembersStore.getMembersTotalCount
+    );
+    this.loadingGetAll$ = this.store.select(
+      FeatureMembersStore.getMemberLoadingGetAll
+    );
+    this.lastLazyLoadEvent$ = this.store.select(
+      FeatureMembersStore.getLastLazyLoadEvent
+    );
+
+    this.crudItem$ = this.store.select(FeatureMembersStore.getCurrentMember);
+    this.loadingGet$ = this.store.select(
+      FeatureMembersStore.getMemberLoadingGet
+    );
   }
 
   teamTypeId: number;
@@ -43,25 +58,12 @@ export class MemberService extends CrudItemService<Member> {
     return memberCRUDConfiguration.featureName;
   }
 
-  public crudItems$: Observable<Member[]> = this.store.select(
-    FeatureMembersStore.getAllMembers
-  );
-  public totalCount$: Observable<number> = this.store.select(
-    FeatureMembersStore.getMembersTotalCount
-  );
-  public loadingGetAll$: Observable<boolean> = this.store.select(
-    FeatureMembersStore.getMemberLoadingGetAll
-  );
-  public lastLazyLoadEvent$: Observable<TableLazyLoadEvent> = this.store.select(
-    FeatureMembersStore.getLastLazyLoadEvent
-  );
-
-  public crudItem$: Observable<Member> = this.store.select(
-    FeatureMembersStore.getCurrentMember
-  );
-  public loadingGet$: Observable<boolean> = this.store.select(
-    FeatureMembersStore.getMemberLoadingGet
-  );
+  public crudItems$: Observable<Member[]>;
+  public totalCount$: Observable<number>;
+  public loadingGetAll$: Observable<boolean>;
+  public lastLazyLoadEvent$: Observable<TableLazyLoadEvent>;
+  public crudItem$: Observable<Member>;
+  public loadingGet$: Observable<boolean>;
 
   public load(id: any) {
     this.store.dispatch(FeatureMembersActions.load({ id }));

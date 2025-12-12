@@ -60,7 +60,7 @@ export class ViewSaveComponent<
 > extends CrudItemEditComponent<View> {
   tableStateKey: string;
   featureConfiguration?: CrudConfig<TDto>;
-  currentView: Observable<View> = this.store.select(ViewsStore.getCurrentView);
+  currentView$: Observable<View>;
   viewPreference$: Observable<BiaTableState | undefined>;
   title: string;
 
@@ -80,6 +80,7 @@ export class ViewSaveComponent<
     protected readonly featureService: CrudItemService<TDto>
   ) {
     super(injector, viewService);
+    this.currentView$ = this.store.select(ViewsStore.getCurrentView);
     this.crudConfiguration = viewCRUDConfiguration;
     this.setTableStateKey();
     this.viewPreference$ = this.store

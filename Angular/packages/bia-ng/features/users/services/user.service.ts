@@ -33,6 +33,17 @@ export class UserService extends CrudItemService<User> {
     protected authService: AuthService
   ) {
     super(dasService, signalRService, optionsService, injector);
+    this.crudItems$ = this.store.select(FeatureUsersStore.getAllUsers);
+    this.totalCount$ = this.store.select(FeatureUsersStore.getUsersTotalCount);
+    this.loadingGetAll$ = this.store.select(
+      FeatureUsersStore.getUserLoadingGetAll
+    );
+    this.lastLazyLoadEvent$ = this.store.select(
+      FeatureUsersStore.getLastLazyLoadEvent
+    );
+    this.crudItem$ = this.store.select(FeatureUsersStore.getCurrentUser);
+    this.displayItemName$ = this.crudItem$.pipe(map(user => user?.displayName));
+    this.loadingGet$ = this.store.select(FeatureUsersStore.getUserLoadingGet);
   }
 
   public getParentIds(): any[] {
@@ -45,28 +56,12 @@ export class UserService extends CrudItemService<User> {
     return userCRUDConfiguration.featureName;
   }
 
-  public crudItems$: Observable<User[]> = this.store.select(
-    FeatureUsersStore.getAllUsers
-  );
-  public totalCount$: Observable<number> = this.store.select(
-    FeatureUsersStore.getUsersTotalCount
-  );
-  public loadingGetAll$: Observable<boolean> = this.store.select(
-    FeatureUsersStore.getUserLoadingGetAll
-  );
-  public lastLazyLoadEvent$: Observable<TableLazyLoadEvent> = this.store.select(
-    FeatureUsersStore.getLastLazyLoadEvent
-  );
-
-  public crudItem$: Observable<User> = this.store.select(
-    FeatureUsersStore.getCurrentUser
-  );
-  public displayItemName$: Observable<string> = this.crudItem$.pipe(
-    map(user => user?.displayName)
-  );
-  public loadingGet$: Observable<boolean> = this.store.select(
-    FeatureUsersStore.getUserLoadingGet
-  );
+  public crudItems$: Observable<User[]>;
+  public totalCount$: Observable<number>;
+  public loadingGetAll$: Observable<boolean>;
+  public lastLazyLoadEvent$: Observable<TableLazyLoadEvent>;
+  public crudItem$: Observable<User>;
+  public loadingGet$: Observable<boolean>;
 
   public load(id: any) {
     this.store.dispatch(FeatureUsersActions.load({ id }));

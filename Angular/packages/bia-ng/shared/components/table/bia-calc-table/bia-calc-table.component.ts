@@ -34,7 +34,6 @@ import { BiaTableFooterControllerComponent } from '../bia-table-footer-controlle
 import { BiaTableInputComponent } from '../bia-table-input/bia-table-input.component';
 import { BiaTableOutputComponent } from '../bia-table-output/bia-table-output.component';
 import { BiaTableComponent } from '../bia-table/bia-table.component';
-import { DictOptionDto } from '../bia-table/dict-option-dto';
 
 @Component({
   selector: 'bia-calc-table',
@@ -65,7 +64,6 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
 {
   @Input() canAdd = true;
   @Input() canEdit = true;
-  @Input() dictOptionDtos: DictOptionDto[];
   @Output() save = new EventEmitter<any>();
   @Output() isEditing = new EventEmitter<boolean>();
 

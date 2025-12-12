@@ -59,7 +59,7 @@ export class UsersIndexComponent
   displayUserAddFromDirectoryDialog = false;
 
   @ViewChild(UserTableComponent, { static: false })
-  crudItemTableComponent: UserTableComponent;
+  declare crudItemTableComponent: UserTableComponent;
 
   constructor(
     protected injector: Injector,
