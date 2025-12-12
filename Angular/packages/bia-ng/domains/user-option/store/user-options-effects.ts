@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { BiaMessageService } from 'packages/bia-ng/core/public-api';
 import { of } from 'rxjs';
@@ -12,6 +12,10 @@ import { DomainUserOptionsActions } from './user-options-actions';
 
 @Injectable()
 export class UserOptionsEffects {
+  protected actions$: Actions = inject(Actions);
+  protected userDas: UserOptionDas = inject(UserOptionDas);
+  protected biaMessageService: BiaMessageService = inject(BiaMessageService);
+
   loadAll$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DomainUserOptionsActions.loadAll) /* When action is dispatched */,
@@ -60,28 +64,4 @@ export class UserOptionsEffects {
       )
     )
   );
-
-  /*
-  load$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(load),
-      map(x => x?.id),
-      switchMap((id) =>
-        this.userDas.get({ id: id }).pipe(
-          map((user) => loadSuccess({ user })),
-          catchError((err) => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(failure({ error: err }));
-          })
-        )
-      )
-    )
-  );
-  */
-
-  constructor(
-    protected actions$: Actions,
-    protected userDas: UserOptionDas,
-    protected biaMessageService: BiaMessageService
-  ) {}
 }

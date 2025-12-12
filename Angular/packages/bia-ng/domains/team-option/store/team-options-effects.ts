@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   BiaMessageService,
@@ -15,6 +15,10 @@ import { DomainTeamOptionsActions } from './team-options-actions';
 
 @Injectable()
 export class TeamOptionsEffects {
+  protected actions$: Actions = inject(Actions);
+  protected teamDas: TeamOptionDas = inject(TeamOptionDas);
+  protected biaMessageService: BiaMessageService = inject(BiaMessageService);
+
   loadAll$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DomainTeamOptionsActions.loadAll) /* When action is dispatched */,
@@ -49,10 +53,4 @@ export class TeamOptionsEffects {
       )
     )
   );
-
-  constructor(
-    protected actions$: Actions,
-    protected teamDas: TeamOptionDas,
-    protected biaMessageService: BiaMessageService
-  ) {}
 }

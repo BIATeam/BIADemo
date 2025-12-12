@@ -1,5 +1,5 @@
 import { HttpStatusCode } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { TranslateService } from '@ngx-translate/core';
 import { BiaMessageService } from 'packages/bia-ng/core/public-api';
@@ -17,6 +17,12 @@ import { FeatureUsersFromDirectoryActions } from './users-from-directory-actions
 
 @Injectable()
 export class UsersFromDirectoryEffects {
+  protected actions$: Actions = inject(Actions);
+  protected userFromDirectoryDas: UserFromDirectoryDas =
+    inject(UserFromDirectoryDas);
+  protected biaMessageService: BiaMessageService = inject(BiaMessageService);
+  protected translateService: TranslateService = inject(TranslateService);
+
   loadAllByFilter$ = createEffect(() =>
     this.actions$.pipe(
       ofType(
@@ -88,11 +94,4 @@ export class UsersFromDirectoryEffects {
       })
     )
   );
-
-  constructor(
-    protected actions$: Actions,
-    protected userFromDirectoryDas: UserFromDirectoryDas,
-    protected biaMessageService: BiaMessageService,
-    protected translateService: TranslateService
-  ) {}
 }

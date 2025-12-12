@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { AppSettings } from 'packages/bia-ng/models/public-api';
 import { of } from 'rxjs';
@@ -12,6 +12,11 @@ import { CoreAppSettingsActions } from './app-settings-actions';
 
 @Injectable()
 export class AppSettingsEffects {
+  protected actions$: Actions = inject(Actions);
+  protected appSettingsDas: AppSettingsDas = inject(AppSettingsDas);
+  protected biaMessageService: BiaMessageService = inject(BiaMessageService);
+  protected appSettingsService: AppSettingsService = inject(AppSettingsService);
+
   load$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CoreAppSettingsActions.loadAll),
@@ -50,11 +55,4 @@ export class AppSettingsEffects {
       )
     )
   );
-
-  constructor(
-    protected actions$: Actions,
-    protected appSettingsDas: AppSettingsDas,
-    protected biaMessageService: BiaMessageService,
-    protected appSettingsService: AppSettingsService
-  ) {}
 }

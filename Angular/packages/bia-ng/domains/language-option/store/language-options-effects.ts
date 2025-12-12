@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { BiaMessageService } from 'packages/bia-ng/core/public-api';
 import { of } from 'rxjs';
@@ -12,6 +12,10 @@ import { DomainLanguageOptionsActions } from './language-options-actions';
 
 @Injectable()
 export class LanguageOptionsEffects {
+  protected actions$: Actions = inject(Actions);
+  protected languageDas: LanguageOptionDas = inject(LanguageOptionDas);
+  protected biaMessageService: BiaMessageService = inject(BiaMessageService);
+
   loadAll$ = createEffect(() =>
     this.actions$.pipe(
       ofType(
@@ -38,10 +42,4 @@ export class LanguageOptionsEffects {
       )
     )
   );
-
-  constructor(
-    protected actions$: Actions,
-    protected languageDas: LanguageOptionDas,
-    protected biaMessageService: BiaMessageService
-  ) {}
 }

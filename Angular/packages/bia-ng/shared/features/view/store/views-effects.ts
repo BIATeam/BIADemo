@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { BiaMessageService } from 'packages/bia-ng/core/public-api';
 import { of } from 'rxjs';
@@ -19,6 +19,12 @@ import { ViewsActions } from './views-actions';
 
 @Injectable()
 export class ViewsEffects {
+  protected actions$: Actions = inject(Actions);
+  protected viewDas: ViewDas = inject(ViewDas);
+  protected teamViewDas: TeamViewDas = inject(TeamViewDas);
+  protected userViewDas: UserViewDas = inject(UserViewDas);
+  protected biaMessageService: BiaMessageService = inject(BiaMessageService);
+
   loadAll$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ViewsActions.loadAllView) /* When action is dispatched */,
@@ -227,12 +233,4 @@ export class ViewsEffects {
       })
     )
   );
-
-  constructor(
-    protected actions$: Actions,
-    protected viewDas: ViewDas,
-    protected teamViewDas: TeamViewDas,
-    protected userViewDas: UserViewDas,
-    protected biaMessageService: BiaMessageService
-  ) {}
 }

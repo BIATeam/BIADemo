@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import {
@@ -27,6 +27,11 @@ import { FeatureAnnouncementsActions } from './announcements-actions';
 
 @Injectable()
 export class AnnouncementsEffects {
+  protected actions$: Actions = inject(Actions);
+  protected announcementDas: AnnouncementDas = inject(AnnouncementDas);
+  protected biaMessageService: BiaMessageService = inject(BiaMessageService);
+  protected store: Store<BiaAppState> = inject(Store<BiaAppState>);
+
   loadAllByPost$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureAnnouncementsActions.loadAllByPost),
@@ -241,11 +246,4 @@ export class AnnouncementsEffects {
       })
     )
   );
-
-  constructor(
-    private actions$: Actions,
-    private announcementDas: AnnouncementDas,
-    private biaMessageService: BiaMessageService,
-    private store: Store<BiaAppState>
-  ) {}
 }

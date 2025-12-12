@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { BiaMessageService } from 'packages/bia-ng/core/public-api';
 import { of } from 'rxjs';
@@ -13,6 +13,10 @@ import { DomainLdapDomainsActions } from './ldap-domain-actions';
 
 @Injectable()
 export class LdapDomainsEffects {
+  protected actions$: Actions = inject(Actions);
+  protected ldapDomainDas: LdapDomainDas = inject(LdapDomainDas);
+  protected biaMessageService: BiaMessageService = inject(BiaMessageService);
+
   loadAll$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DomainLdapDomainsActions.loadAll) /* When action is dispatched */,
@@ -29,10 +33,4 @@ export class LdapDomainsEffects {
       })
     )
   );
-
-  constructor(
-    protected actions$: Actions,
-    protected ldapDomainDas: LdapDomainDas,
-    protected biaMessageService: BiaMessageService
-  ) {}
 }

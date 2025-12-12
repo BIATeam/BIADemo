@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
@@ -12,6 +12,10 @@ import { BiaTeamsActions } from './teams-actions';
 
 @Injectable()
 export class TeamsEffects {
+  protected actions$: Actions = inject(Actions);
+  protected teamDas: TeamDas = inject(TeamDas);
+  protected biaMessageService: BiaMessageService = inject(BiaMessageService);
+
   setDefaultTeam$ = createEffect(() =>
     this.actions$.pipe(
       ofType(BiaTeamsActions.setDefaultTeam),
@@ -80,10 +84,4 @@ export class TeamsEffects {
       )
     )
   );
-
-  constructor(
-    protected actions$: Actions,
-    protected teamDas: TeamDas,
-    protected biaMessageService: BiaMessageService
-  ) {}
 }

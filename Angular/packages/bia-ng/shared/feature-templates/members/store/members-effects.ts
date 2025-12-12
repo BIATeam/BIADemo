@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import {
@@ -29,6 +29,12 @@ import { FeatureMembersActions } from './members-actions';
 
 @Injectable()
 export class MembersEffects {
+  protected actions$: Actions = inject(Actions);
+  protected memberDas: MemberDas = inject(MemberDas);
+  protected memberService: MemberService = inject(MemberService);
+  protected biaMessageService: BiaMessageService = inject(BiaMessageService);
+  protected store: Store<BiaAppState> = inject(Store<BiaAppState>);
+
   loadAllByPost$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureMembersActions.loadAllByPost),
@@ -293,12 +299,4 @@ export class MembersEffects {
       })
     )
   );
-
-  constructor(
-    protected actions$: Actions,
-    protected memberDas: MemberDas,
-    protected memberService: MemberService,
-    protected biaMessageService: BiaMessageService,
-    protected store: Store<BiaAppState>
-  ) {}
 }

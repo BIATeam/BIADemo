@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   BiaMessageService,
@@ -15,6 +15,12 @@ import { DomainAnnouncementTypeOptionsActions } from './announcement-type-option
 
 @Injectable()
 export class AnnouncementTypeOptionsEffects {
+  protected actions$: Actions = inject(Actions);
+  protected announcementTypeOptionDas: AnnouncementTypeOptionDas = inject(
+    AnnouncementTypeOptionDas
+  );
+  protected biaMessageService: BiaMessageService = inject(BiaMessageService);
+
   loadAll$ = createEffect(() =>
     this.actions$.pipe(
       ofType(
@@ -53,10 +59,4 @@ export class AnnouncementTypeOptionsEffects {
       )
     )
   );
-
-  constructor(
-    private actions$: Actions,
-    private announcementTypeOptionDas: AnnouncementTypeOptionDas,
-    private biaMessageService: BiaMessageService
-  ) {}
 }

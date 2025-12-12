@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { BiaMessageService } from 'packages/bia-ng/core/public-api';
 import { of } from 'rxjs';
@@ -12,6 +12,10 @@ import { DomainRoleOptionsActions } from './role-options-actions';
 
 @Injectable()
 export class RoleOptionsEffects {
+  protected actions$: Actions = inject(Actions);
+  protected roleDas: RoleOptionDas = inject(RoleOptionDas);
+  protected biaMessageService: BiaMessageService = inject(BiaMessageService);
+
   loadAll$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DomainRoleOptionsActions.loadAll) /* When action is dispatched */,
@@ -39,28 +43,4 @@ export class RoleOptionsEffects {
       )
     )
   );
-
-  /*
-  load$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(load),
-      map(x => x?.id),
-      switchMap((id) =>
-        this.roleDas.get({ id: id }).pipe(
-          map((role) => loadSuccess({ role })),
-          catchError((err) => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(failure({ error: err }));
-          })
-        )
-      )
-    )
-  );
-  */
-
-  constructor(
-    protected actions$: Actions,
-    protected roleDas: RoleOptionDas,
-    protected biaMessageService: BiaMessageService
-  ) {}
 }

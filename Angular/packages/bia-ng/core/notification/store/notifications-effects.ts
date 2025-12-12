@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
@@ -13,6 +13,10 @@ import { CoreNotificationsActions } from './notifications-actions';
 
 @Injectable()
 export class NotificationsEffects {
+  protected actions$: Actions = inject(Actions);
+  protected notificationDas: NotificationDas = inject(NotificationDas);
+  protected biaMessageService: BiaMessageService = inject(BiaMessageService);
+
   loadAll$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CoreNotificationsActions.loadAll),
@@ -80,10 +84,4 @@ export class NotificationsEffects {
       })
     )
   );
-
-  constructor(
-    protected actions$: Actions,
-    protected notificationDas: NotificationDas,
-    protected biaMessageService: BiaMessageService
-  ) {}
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { BiaMessageService } from 'packages/bia-ng/core/public-api';
 import { of } from 'rxjs';
@@ -12,6 +12,12 @@ import { DomainNotificationTypeOptionsActions } from './notification-type-option
 
 @Injectable()
 export class NotificationTypeOptionsEffects {
+  protected actions$: Actions = inject(Actions);
+  protected notificationTypeDas: NotificationTypeOptionDas = inject(
+    NotificationTypeOptionDas
+  );
+  protected biaMessageService: BiaMessageService = inject(BiaMessageService);
+
   loadAll$ = createEffect(() =>
     this.actions$.pipe(
       ofType(
@@ -40,28 +46,4 @@ export class NotificationTypeOptionsEffects {
       )
     )
   );
-
-  /*
-  load$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(load),
-      map(x => x?.id),
-      switchMap((id) =>
-        this.notificationTypeDas.get({ id: id }).pipe(
-          map((notificationType) => loadSuccess({ notificationType })),
-          catchError((err) => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(failure({ error: err }));
-          })
-        )
-      )
-    )
-  );
-  */
-
-  constructor(
-    protected actions$: Actions,
-    protected notificationTypeDas: NotificationTypeOptionDas,
-    protected biaMessageService: BiaMessageService
-  ) {}
 }
