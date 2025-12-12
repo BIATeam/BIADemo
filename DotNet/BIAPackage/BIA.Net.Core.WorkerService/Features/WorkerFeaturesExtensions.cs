@@ -54,6 +54,15 @@ namespace BIA.Net.Core.WorkerService.Features
                             if (biaNetSection.CommonFeatures.ClientForHub.RedisUseTls)
                             {
                                 config.Ssl = true;
+                                if (!string.IsNullOrEmpty(biaNetSection.CommonFeatures.ClientForHub.RedisSslHost))
+                                {
+                                    config.SslHost = biaNetSection.CommonFeatures.ClientForHub.RedisSslHost;
+                                }
+
+                                if (biaNetSection.CommonFeatures.ClientForHub.RedisSkipCertificateValidation)
+                                {
+                                    config.CertificateValidation += (sender, cert, chain, sslPolicyErrors) => true;
+                                }
                             }
 
                             redisOptions.Configuration = config;
@@ -74,7 +83,7 @@ namespace BIA.Net.Core.WorkerService.Features
             services.AddTransient<IPrincipal>(
                 provider =>
                 {
-                    var claims = new List<Claim> { new (ClaimTypes.Name, Environment.UserName) };
+                    var claims = new List<Claim> { new(ClaimTypes.Name, Environment.UserName) };
                     var userIdentity = new ClaimsIdentity(claims, "NonEmptyAuthType");
                     return new BiaClaimsPrincipal(new ClaimsPrincipal(userIdentity));
                 });

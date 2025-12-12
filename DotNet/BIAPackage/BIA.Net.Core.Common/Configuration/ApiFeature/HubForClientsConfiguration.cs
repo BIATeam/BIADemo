@@ -32,5 +32,15 @@ namespace BIA.Net.Core.Common.Configuration.ApiFeature
         /// Enable TLS for Redis/Valkey connection.
         /// </summary>
         public bool RedisUseTls { get; set; }
+
+        /// <summary>
+        /// Optional SNI host name to use for TLS (e.g., AWS Valkey serverless endpoint).
+        /// </summary>
+        public string RedisSslHost { get; set; }
+
+        /// <summary>
+        /// If true, skip server certificate validation (not recommended for production).
+        /// </summary>
+        public bool RedisSkipCertificateValidation { get; set; }
     }
 }
