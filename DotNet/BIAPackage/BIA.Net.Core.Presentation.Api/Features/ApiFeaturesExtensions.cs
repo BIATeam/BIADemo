@@ -113,12 +113,12 @@ namespace BIA.Net.Core.Presentation.Api.Features
                             if (apiFeatures.HubForClients.RedisUseTls)
                             {
                                 config.Ssl = true;
-                                if (!string.IsNullOrEmpty(biaNetSection.CommonFeatures.ClientForHub.RedisSslHost))
+                                if (!string.IsNullOrEmpty(apiFeatures.HubForClients.RedisSslHost))
                                 {
-                                    config.SslHost = biaNetSection.CommonFeatures.ClientForHub.RedisSslHost;
+                                    config.SslHost = apiFeatures.HubForClients.RedisSslHost;
                                 }
 
-                                if (biaNetSection.CommonFeatures.ClientForHub.RedisSkipCertificateValidation)
+                                if (apiFeatures.HubForClients.RedisSkipCertificateValidation)
                                 {
                                     config.CertificateValidation += (sender, cert, chain, sslPolicyErrors) => true;
                                 }
