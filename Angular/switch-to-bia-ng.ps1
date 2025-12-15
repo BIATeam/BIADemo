@@ -63,20 +63,20 @@ if (Test-Path -Path $projectPackageJsonPath -PathType Leaf) {
   
   # Switch imports to bia-ng imports
   ReplaceInProject -Source $SourceFrontEnd -OldRegexp "(import\s*{\s*[^}]+\s*}\s*from\s*)[']packages\/(bia-ng\/[^']+)\/public-api['];" -NewRegexp '$1''@bia-team/$2'';' -Include *.ts
-  if ($UseNpmPackage) {
-    ReplaceInProject -Source $SourceFrontEnd -OldRegexp "((templateUrl:|styleUrls: \[)[\s]*'[^\S]*\/)packages\/bia-ng\/shared\/(\S*)'" -NewRegexp '$1node_modules/@bia-team/bia-ng/templates/$3' -Include *.ts
-    # Also update references inside styles (SCSS/CSS) from local package to installed package
-    ReplaceInProject -Source $SourceFrontEnd -OldRegexp "packages\/bia-ng\/scss" -NewRegexp 'node_modules/@bia-team/bia-ng/styles' -Include *.scss
-    ReplaceInProject -Source $SourceFrontEnd -OldRegexp "packages\/bia-ng\/scss" -NewRegexp 'node_modules/@bia-team/bia-ng/styles' -Include *.css
-    ReplaceInProject -Source $SourceFrontEnd -OldRegexp "packages\/bia-ng\/scss" -NewRegexp 'node_modules/@bia-team/bia-ng/styles' -Include *angular.json
-  }
-  else {
-    ReplaceInProject -Source $SourceFrontEnd -OldRegexp "((templateUrl:|styleUrls: \[)[\s]*'[^\S]*\/)packages\/bia-ng\/shared\/(\S*)'" -NewRegexp '$1dist/bia-ng/templates/$3' -Include *.ts 
-    # Also update references inside styles (SCSS/CSS) from local package to installed package
-    ReplaceInProject -Source $SourceFrontEnd -OldRegexp "packages\/bia-ng\/scss" -NewRegexp 'dist/bia-ng/styles' -Include *.scss
-    ReplaceInProject -Source $SourceFrontEnd -OldRegexp "packages\/bia-ng\/scss" -NewRegexp 'dist/bia-ng/styles' -Include *.css
-    ReplaceInProject -Source $SourceFrontEnd -OldRegexp "packages\/bia-ng\/scss" -NewRegexp 'dist/bia-ng/styles' -Include *angular.json
-  }
+  # if ($UseNpmPackage) {
+  ReplaceInProject -Source $SourceFrontEnd -OldRegexp "((templateUrl:|styleUrls:\s*\[|styleUrl:)[\s]*'[\S]*\/)packages\/bia-ng\/shared\/(\S*')" -NewRegexp '$1node_modules/@bia-team/bia-ng/templates/$3' -Include *.ts
+  # Also update references inside styles (SCSS/CSS) from local package to installed package
+  ReplaceInProject -Source $SourceFrontEnd -OldRegexp "packages\/bia-ng\/scss" -NewRegexp 'node_modules/@bia-team/bia-ng/styles' -Include *.scss
+  ReplaceInProject -Source $SourceFrontEnd -OldRegexp "packages\/bia-ng\/scss" -NewRegexp 'node_modules/@bia-team/bia-ng/styles' -Include *.css
+  ReplaceInProject -Source $SourceFrontEnd -OldRegexp "packages\/bia-ng\/scss" -NewRegexp 'node_modules/@bia-team/bia-ng/styles' -Include *angular.json
+  # }
+  # else {
+  #   ReplaceInProject -Source $SourceFrontEnd -OldRegexp "((templateUrl:|styleUrls:\s*\[|styleUrl:)[\s]*'[\S]*\/)packages\/bia-ng\/shared\/(\S*')" -NewRegexp '$1dist/bia-ng/templates/$3' -Include *.ts 
+  #   # Also update references inside styles (SCSS/CSS) from local package to installed package
+  #   ReplaceInProject -Source $SourceFrontEnd -OldRegexp "packages\/bia-ng\/scss" -NewRegexp 'dist/bia-ng/styles' -Include *.scss
+  #   ReplaceInProject -Source $SourceFrontEnd -OldRegexp "packages\/bia-ng\/scss" -NewRegexp 'dist/bia-ng/styles' -Include *.css
+  #   ReplaceInProject -Source $SourceFrontEnd -OldRegexp "packages\/bia-ng\/scss" -NewRegexp 'dist/bia-ng/styles' -Include *angular.json
+  # }
 
   $frameworkVersionFile = Join-Path -Path $SourceFrontEnd -ChildPath "packages\bia-ng\shared\framework-version.ts"
 
