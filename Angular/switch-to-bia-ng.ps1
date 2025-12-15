@@ -147,31 +147,31 @@ if (Test-Path -Path $projectPackageJsonPath -PathType Leaf) {
 }
 
 # Define the path to the folder you want to delete
-$folderPath = Join-Path -Path "." -ChildPath "packages\bia-ng"
+# $folderPath = Join-Path -Path "." -ChildPath "packages\bia-ng"
 
-if (Test-Path -Path $projectPackageJsonPath -PathType Leaf) {
-  # Read the package.json file
-  $projectPackageJsonContent = Get-Content -Path $projectPackageJsonPath -Raw | ConvertFrom-Json
+# if (Test-Path -Path $projectPackageJsonPath -PathType Leaf) {
+#   # Read the package.json file
+#   $projectPackageJsonContent = Get-Content -Path $projectPackageJsonPath -Raw | ConvertFrom-Json
 
-  # Check user's choice: if using npm package, remove local `packages\bia-ng` folder
-  if ($UseNpmPackage) {
-    # Check if the folder exists
-    if (Test-Path -Path $folderPath) {
-      # Delete the folder and all its contents
-      Remove-Item -Path $folderPath -Recurse -Force
-      Write-Output "The folder $folderPath has been deleted successfully."
-    }
-    else {
-      Write-Output "The folder $folderPath does not exist."
-    }
-  }
-  else {
-    Write-Output "Local 'packages\bia-ng' preserved (using local dist package)."
-  }
-}
-else {
-  Write-Output "The package.json file does not exist at $packageJsonPath."
-}
+#   # Check user's choice: if using npm package, remove local `packages\bia-ng` folder
+#   if ($UseNpmPackage) {
+#     # Check if the folder exists
+#     if (Test-Path -Path $folderPath) {
+#       # Delete the folder and all its contents
+#       Remove-Item -Path $folderPath -Recurse -Force
+#       Write-Output "The folder $folderPath has been deleted successfully."
+#     }
+#     else {
+#       Write-Output "The folder $folderPath does not exist."
+#     }
+#   }
+#   else {
+#     Write-Output "Local 'packages\bia-ng' preserved (using local dist package)."
+#   }
+# }
+# else {
+#   Write-Output "The package.json file does not exist at $packageJsonPath."
+# }
 
 # Clean imports
 npm run clean
