@@ -1,8 +1,14 @@
 $SourceFrontEnd = "."
-# keep name separated to avoid replace
-$DemoProjectName = "bia" + "demo"
 
-$ExcludeDir = ('dist', 'node_modules', 'docs', 'scss', '.git', '.vscode', '.angular', '.dart_tool', 'bia-shared', 'bia-features', 'bia-domains', 'bia-core', '.bia')
+# Prompt user whether to use published npm package or local dist package
+$userChoice = Read-Host "Use npm package @bia-team/bia-ng instead of local dist package? (y/N)"
+if ($userChoice -match '^[yY]') {
+  $UseNpmPackage = $true
+}
+else {
+  $UseNpmPackage = $false
+}
+$ExcludeDir = ('dist', 'node_modules', 'docs', 'scss', '.git', '.vscode', '.angular', '.dart_tool', '.bia')
 
 function ReplaceInProject {
   param (
@@ -10,7 +16,6 @@ function ReplaceInProject {
     [string]$OldRegexp,
     [string]$NewRegexp,
     [string]$Include
-
   )
   Write-Host "ReplaceInProject $OldRegexp by $NewRegexp";
   #Write-Host $Source;
@@ -57,14 +62,21 @@ if (Test-Path -Path $projectPackageJsonPath -PathType Leaf) {
   $projectPackageJsonContent = Get-Content -Path $projectPackageJsonPath -Raw | ConvertFrom-Json
   
   # Switch imports to bia-ng imports
-  ReplaceInProject -Source $SourceFrontEnd -OldRegexp "(import\s*{\s*[^}]+\s*}\s*from\s*)[']packages\/(bia-ng\/[^']+)\/public-api['];" -NewRegexp '$1''$2'';' -Include *.ts
-
-  if ($projectPackageJsonContent.name -ne $DemoProjectName) {
-    ReplaceInProject -Source $SourceFrontEnd -OldRegexp "((templateUrl:|styleUrls: \[)[\s]*'[\S]*\/)packages\/bia-ng\/shared\/([\S]*')" -NewRegexp '$1node_modules/bia-ng/templates/$3' -Include *.ts
-  }
-  else { 
-    ReplaceInProject -Source $SourceFrontEnd -OldRegexp "((templateUrl:|styleUrls: \[)[\s]*'[\S]*\/)packages\/bia-ng\/shared\/([\S]*')" -NewRegexp '$1dist/bia-ng/templates/$3' -Include *.ts 
-  }
+  ReplaceInProject -Source $SourceFrontEnd -OldRegexp "(import\s*{\s*[^}]+\s*}\s*from\s*)[']packages\/(bia-ng\/[^']+)\/public-api['];" -NewRegexp '$1''@bia-team/$2'';' -Include *.ts
+  # if ($UseNpmPackage) {
+  ReplaceInProject -Source $SourceFrontEnd -OldRegexp "((templateUrl:|styleUrls:\s*\[|styleUrl:)[\s]*'[\S]*\/)packages\/bia-ng\/shared\/(\S*')" -NewRegexp '$1node_modules/@bia-team/bia-ng/templates/$3' -Include *.ts
+  # Also update references inside styles (SCSS/CSS) from local package to installed package
+  ReplaceInProject -Source $SourceFrontEnd -OldRegexp "packages\/bia-ng\/scss" -NewRegexp 'node_modules/@bia-team/bia-ng/styles' -Include *.scss
+  ReplaceInProject -Source $SourceFrontEnd -OldRegexp "packages\/bia-ng\/scss" -NewRegexp 'node_modules/@bia-team/bia-ng/styles' -Include *.css
+  ReplaceInProject -Source $SourceFrontEnd -OldRegexp "packages\/bia-ng\/scss" -NewRegexp 'node_modules/@bia-team/bia-ng/styles' -Include *angular.json
+  # }
+  # else {
+  #   ReplaceInProject -Source $SourceFrontEnd -OldRegexp "((templateUrl:|styleUrls:\s*\[|styleUrl:)[\s]*'[\S]*\/)packages\/bia-ng\/shared\/(\S*')" -NewRegexp '$1dist/bia-ng/templates/$3' -Include *.ts 
+  #   # Also update references inside styles (SCSS/CSS) from local package to installed package
+  #   ReplaceInProject -Source $SourceFrontEnd -OldRegexp "packages\/bia-ng\/scss" -NewRegexp 'dist/bia-ng/styles' -Include *.scss
+  #   ReplaceInProject -Source $SourceFrontEnd -OldRegexp "packages\/bia-ng\/scss" -NewRegexp 'dist/bia-ng/styles' -Include *.css
+  #   ReplaceInProject -Source $SourceFrontEnd -OldRegexp "packages\/bia-ng\/scss" -NewRegexp 'dist/bia-ng/styles' -Include *angular.json
+  # }
 
   $frameworkVersionFile = Join-Path -Path $SourceFrontEnd -ChildPath "packages\bia-ng\shared\framework-version.ts"
 
@@ -99,12 +111,12 @@ if (Test-Path -Path $projectPackageJsonPath -PathType Leaf) {
     $inserted = $false
 
     foreach ($dep in ($dependencies.Keys | Sort-Object)) {
-      if (-not $inserted -and "bia-ng" -lt $dep) {
-        if ($projectPackageJsonContent.name -ne $DemoProjectName) {
-          $orderedDependencies["bia-ng"] = $frameworkVersion
+      if (-not $inserted -and "@bia-team/bia-ng" -lt $dep) {
+        if ($UseNpmPackage) {
+          $orderedDependencies["@bia-team/bia-ng"] = $frameworkVersion
         }
         else {
-          $orderedDependencies["bia-ng"] = 'file:./dist/bia-ng'
+          $orderedDependencies["@bia-team/bia-ng"] = 'file:./dist/bia-ng'
         }
         $inserted = $true
       }
@@ -113,11 +125,11 @@ if (Test-Path -Path $projectPackageJsonPath -PathType Leaf) {
 
     # If "bia-ng" hasn't been inserted yet, it should be added at the end
     if (-not $inserted) {
-      if ($projectPackageJsonContent.name -ne $DemoProjectName) {
-        $orderedDependencies["bia-ng"] = $frameworkVersion
+      if ($UseNpmPackage) {
+        $orderedDependencies["@bia-team/bia-ng"] = $frameworkVersion
       }
       else {
-        $orderedDependencies["bia-ng"] = 'file:./dist/bia-ng'
+        $orderedDependencies["@bia-team/bia-ng"] = 'file:./dist/bia-ng'
       }
     }
 
@@ -127,39 +139,39 @@ if (Test-Path -Path $projectPackageJsonPath -PathType Leaf) {
     # Convert the object back to JSON and write it back to the package.json file
     $projectPackageJsonContent | ConvertTo-Json -Depth 10 | Set-Content -Path $projectPackageJsonPath
 
-    Write-Output "The 'bia-ng' dependency has been added with version $frameworkVersion in package.json."
+    Write-Output "The '@bia-team/bia-ng' dependency has been added with version $frameworkVersion in package.json."
   }
   else {
-    Write-Output "The 'bia-ng' dependency already exists in package.json."
+    Write-Output "The '@bia-team/bia-ng' dependency already exists in package.json."
   }
 }
 
 # Define the path to the folder you want to delete
-$folderPath = Join-Path -Path "." -ChildPath "packages\bia-ng"
+# $folderPath = Join-Path -Path "." -ChildPath "packages\bia-ng"
 
-if (Test-Path -Path $projectPackageJsonPath -PathType Leaf) {
-  # Read the package.json file
-  $projectPackageJsonContent = Get-Content -Path $projectPackageJsonPath -Raw | ConvertFrom-Json
+# if (Test-Path -Path $projectPackageJsonPath -PathType Leaf) {
+#   # Read the package.json file
+#   $projectPackageJsonContent = Get-Content -Path $projectPackageJsonPath -Raw | ConvertFrom-Json
 
-  # Check if the name in package.json is not "BIA Demo"
-  if ($projectPackageJsonContent.name -ne $DemoProjectName) {
-    # Check if the folder exists
-    if (Test-Path -Path $folderPath) {
-      # Delete the folder and all its contents
-      Remove-Item -Path $folderPath -Recurse -Force
-      Write-Output "The folder $folderPath has been deleted successfully."
-    }
-    else {
-      Write-Output "The folder $folderPath does not exist."
-    }
-  }
-  else {
-    Write-Output "The name in package.json is '$DemoProjectName'. No deletion performed."
-  }
-}
-else {
-  Write-Output "The package.json file does not exist at $packageJsonPath."
-}
+#   # Check user's choice: if using npm package, remove local `packages\bia-ng` folder
+#   if ($UseNpmPackage) {
+#     # Check if the folder exists
+#     if (Test-Path -Path $folderPath) {
+#       # Delete the folder and all its contents
+#       Remove-Item -Path $folderPath -Recurse -Force
+#       Write-Output "The folder $folderPath has been deleted successfully."
+#     }
+#     else {
+#       Write-Output "The folder $folderPath does not exist."
+#     }
+#   }
+#   else {
+#     Write-Output "Local 'packages\bia-ng' preserved (using local dist package)."
+#   }
+# }
+# else {
+#   Write-Output "The package.json file does not exist at $packageJsonPath."
+# }
 
 # Clean imports
 npm run clean

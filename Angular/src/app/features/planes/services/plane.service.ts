@@ -1,7 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AuthService } from 'packages/bia-ng/core/public-api';
-import { HistoricalEntryDto } from 'packages/bia-ng/models/dto/historical-entry-dto';
+import { HistoricalEntryDto } from 'packages/bia-ng/models/public-api';
 import {
   CrudItemService,
   CrudItemSignalRService,

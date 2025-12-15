@@ -3,7 +3,7 @@
   "compilerOptions": {
     "forceConsistentCasingInFileNames": true,
     "paths": {
-      "bia-ng/*": ["./dist/bia-ng/*"]
+      "@bia-team/bia-ng/*": ["./dist/bia-ng/*"]
     },
     "baseUrl": "./",
     "esModuleInterop": true,
