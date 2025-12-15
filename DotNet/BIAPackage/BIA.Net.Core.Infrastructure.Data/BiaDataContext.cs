@@ -155,15 +155,19 @@ namespace BIA.Net.Core.Infrastructure.Data
                 return 0;
             }
 
-            if (this.IsAddBulkSupported())
+            if (this.Database.IsSqlServer())
             {
                 await SqlServerBulkHelper.InsertAsync(this, itemsList);
                 return itemsList.Count;
             }
-            else
+
+            if (this.Database.IsNpgsql())
             {
-                throw new NotSupportedException($"Bulk add operations are not supported for provider: {this.Database.ProviderName}");
+                await PostgreSqlBulkHelper.InsertAsync(this, itemsList);
+                return itemsList.Count;
             }
+
+            throw new NotSupportedException($"Bulk add operations are not supported for provider: {this.Database.ProviderName}");
         }
 
         /// <summary>
@@ -181,15 +185,19 @@ namespace BIA.Net.Core.Infrastructure.Data
                 return 0;
             }
 
-            if (this.IsUpdateBulkSupported())
+            if (this.Database.IsSqlServer())
             {
                 await SqlServerBulkHelper.UpdateAsync(this, itemsList);
                 return itemsList.Count;
             }
-            else
+
+            if (this.Database.IsNpgsql())
             {
-                throw new NotSupportedException($"Bulk update operations are not supported for provider: {this.Database.ProviderName}");
+                await PostgreSqlBulkHelper.UpdateAsync(this, itemsList);
+                return itemsList.Count;
             }
+
+            throw new NotSupportedException($"Bulk update operations are not supported for provider: {this.Database.ProviderName}");
         }
 
         /// <summary>
@@ -207,15 +215,19 @@ namespace BIA.Net.Core.Infrastructure.Data
                 return 0;
             }
 
-            if (this.IsRemoveBulkSupported())
+            if (this.Database.IsSqlServer())
             {
                 await SqlServerBulkHelper.DeleteAsync(this, itemsList);
                 return itemsList.Count;
             }
-            else
+
+            if (this.Database.IsNpgsql())
             {
-                throw new NotSupportedException($"Bulk remove operations are not supported for provider: {this.Database.ProviderName}");
+                await PostgreSqlBulkHelper.DeleteAsync(this, itemsList);
+                return itemsList.Count;
             }
+
+            throw new NotSupportedException($"Bulk remove operations are not supported for provider: {this.Database.ProviderName}");
         }
 
         /// <summary>
@@ -224,7 +236,7 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// <returns><c>true</c> if bulk add operations are supported; otherwise, <c>false</c>.</returns>
         public bool IsAddBulkSupported()
         {
-            return this.Database.IsSqlServer();
+            return this.Database.IsSqlServer() || this.Database.IsNpgsql();
         }
 
         /// <summary>
@@ -233,7 +245,7 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// <returns><c>true</c> if bulk update operations are supported; otherwise, <c>false</c>.</returns>
         public bool IsUpdateBulkSupported()
         {
-            return this.Database.IsSqlServer();
+            return this.Database.IsSqlServer() || this.Database.IsNpgsql();
         }
 
         /// <summary>
@@ -242,7 +254,7 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// <returns><c>true</c> if bulk remove operations are supported; otherwise, <c>false</c>.</returns>
         public bool IsRemoveBulkSupported()
         {
-            return this.Database.IsSqlServer();
+            return this.Database.IsSqlServer() || this.Database.IsNpgsql();
         }
 
         /// <summary>
