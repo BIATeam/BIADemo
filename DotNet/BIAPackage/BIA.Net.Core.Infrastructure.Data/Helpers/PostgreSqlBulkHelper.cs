@@ -22,6 +22,8 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
     /// </summary>
     public static class PostgreSqlBulkHelper
     {
+        private const int MaxParametersPerCommand = 60000;
+
         /// <summary>
         /// Inserts the specified data using PostgreSQL COPY.
         /// </summary>
@@ -80,19 +82,16 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
                                 object value = mapping.PropertyInfo.GetValue(item, null);
                                 if (value == null)
                                 {
-                                    // importer.WriteNull();
                                     await importer.WriteNullAsync().ConfigureAwait(false);
                                 }
                                 else
                                 {
                                     if (mapping.NpgsqlDbType.HasValue)
                                     {
-                                        // importer.Write(value, mapping.NpgsqlDbType.Value);
                                         await importer.WriteAsync(value, mapping.NpgsqlDbType.Value).ConfigureAwait(false);
                                     }
                                     else
                                     {
-                                        // importer.Write(value);
                                         await importer.WriteAsync(value).ConfigureAwait(false);
                                     }
                                 }
@@ -158,11 +157,15 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
                 return;
             }
 
+            int parametersPerRow = columnMappings.Count;
+            int maxRowsPerCommand = Math.Max(1, MaxParametersPerCommand / Math.Max(1, parametersPerRow));
+            int effectiveBatchSize = bulkBatchSize > 0 ? Math.Min(bulkBatchSize, maxRowsPerCommand) : maxRowsPerCommand;
+
             using (var connection = new NpgsqlConnection(connectionString))
             {
                 await connection.OpenAsync().ConfigureAwait(false);
 
-                foreach (List<T> chunk in SplitIntoChunks(datas, bulkBatchSize))
+                foreach (List<T> chunk in SplitIntoChunks(datas, effectiveBatchSize))
                 {
                     using (var command = connection.CreateCommand())
                     {
@@ -195,6 +198,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
                             valuesBuilder.Append(")");
                         }
 
+#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
                         command.CommandText = string.Format(
                             "INSERT INTO {0} ({1}) VALUES {2} ON CONFLICT ({3}) DO UPDATE SET {4}",
                             qualifiedTableName,
@@ -202,6 +206,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
                             valuesBuilder.ToString(),
                             conflictTarget,
                             updateClause);
+#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
 
                         await command.ExecuteNonQueryAsync().ConfigureAwait(false);
                     }
@@ -249,11 +254,15 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
             string qualifiedTableName = BuildQualifiedTableName(schema, tableName);
             string primaryKeyColumn = QuoteIdentifier(primaryKeyMapping.SqlName);
 
+            int parametersPerRow = 1;
+            int maxRowsPerCommand = Math.Max(1, MaxParametersPerCommand / parametersPerRow);
+            int effectiveBatchSize = bulkBatchSize > 0 ? Math.Min(bulkBatchSize, maxRowsPerCommand) : maxRowsPerCommand;
+
             using (var connection = new NpgsqlConnection(connectionString))
             {
                 await connection.OpenAsync().ConfigureAwait(false);
 
-                foreach (List<T> chunk in SplitIntoChunks(datas, bulkBatchSize))
+                foreach (List<T> chunk in SplitIntoChunks(datas, effectiveBatchSize))
                 {
                     using (var command = connection.CreateCommand())
                     {
@@ -274,11 +283,13 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
                             command.Parameters.AddWithValue(parameterName, value);
                         }
 
+#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
                         command.CommandText = string.Format(
                             "DELETE FROM {0} AS target USING (VALUES {1}) AS source({2}) WHERE target.{2} = source.{2}",
                             qualifiedTableName,
                             valuesBuilder.ToString(),
                             primaryKeyColumn);
+#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
 
                         await command.ExecuteNonQueryAsync().ConfigureAwait(false);
                     }
@@ -580,7 +591,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
             }
         }
 
-        private class ColumnMapping
+        private sealed class ColumnMapping
         {
             public string EntityName { get; set; }
 
