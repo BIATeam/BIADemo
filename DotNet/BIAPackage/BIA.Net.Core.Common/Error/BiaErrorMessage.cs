@@ -100,6 +100,11 @@ namespace BIA.Net.Core.Common.Error
             AddTranslation(languageEnglishId, (int)BiaErrorId.DatabaseOpen, "Unable to open the database.");
             AddTranslation(languageFrenchId, (int)BiaErrorId.DatabaseOpen, "Impossible d’ouvrir la base de données.");
             AddTranslation(languageSpanishId, (int)BiaErrorId.DatabaseOpen, "No se puede abrir la base de datos.");
+
+            // Cannot add view for selected teams
+            AddTranslation(languageEnglishId, (int)BiaErrorId.CannotAddViewForSelectedTeams, "Can't add view for these teams.");
+            AddTranslation(languageFrenchId, (int)BiaErrorId.CannotAddViewForSelectedTeams, "Impossible d'ajouter une vue pour ces équipes.");
+            AddTranslation(languageSpanishId, (int)BiaErrorId.CannotAddViewForSelectedTeams, "No se puede agregar vista para estos equipos.");
         }
 
         /// <summary>

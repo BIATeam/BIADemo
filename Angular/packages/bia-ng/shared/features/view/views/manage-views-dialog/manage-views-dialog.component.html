@@ -37,6 +37,7 @@
           @if (teamSelected) {
             <bia-view-team-table
               [views]="(viewTeams$ | async) ?? []"
+              [originTeam]="originTeam"
               [teamSelected]="teamSelected"
               [canDelete]="canDeleteTeamView"
               [canSetDefault]="canSetDefaultTeamView"

@@ -77,5 +77,10 @@ namespace BIA.Net.Core.Common.Error
         /// Error id when errors occurs in database due to opening database failure.
         /// </summary>
         DatabaseOpen,
+
+        /// <summary>
+        /// Error id when a view cannot be added for selected teams.
+        /// </summary>
+        CannotAddViewForSelectedTeams,
     }
 }

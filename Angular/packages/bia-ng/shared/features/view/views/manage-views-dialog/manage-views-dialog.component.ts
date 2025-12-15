@@ -10,7 +10,7 @@ import {
   CoreTeamsStore,
 } from 'packages/bia-ng/core/public-api';
 import { ViewType } from 'packages/bia-ng/models/enum/public-api';
-import { Team } from 'packages/bia-ng/models/public-api';
+import { CurrentTeamDto, Team } from 'packages/bia-ng/models/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { AccordionModule } from 'primeng/accordion';
 import { ConfirmationService, SharedModule } from 'primeng/api';
@@ -60,6 +60,7 @@ export class ManageViewsDialogComponent implements OnInit, OnDestroy {
   userViewSelected: View | undefined;
   teamViewSelected: View | undefined;
   teamSelected: Team;
+  originTeam: CurrentTeamDto | undefined;
 
   canAddTeamView = false;
   canAddUserView = false;
@@ -108,6 +109,13 @@ export class ManageViewsDialogComponent implements OnInit, OnDestroy {
       map(
         views => views.filter(view => view.viewType === ViewType.Team) as View[]
       )
+    );
+
+    this.sub.add(
+      this.authService.authInfo$.subscribe(authInfo => {
+        const currentTeams = authInfo.decryptedToken.userData.currentTeams;
+        this.originTeam = currentTeams.length > 0 ? currentTeams[0] : undefined;
+      })
     );
   }
 

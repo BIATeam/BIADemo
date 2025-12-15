@@ -9,6 +9,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Application.View;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Error;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Dto.View;
@@ -159,9 +160,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
                 }
 
                 var userData = this.biaClaimsPrincipalService.GetUserData<BaseUserDataDto>();
-                if (dto.ViewTeams.Any(team => !userData.CrossTeamPermissions.Any(p => p.Permission == permission && p.TeamIds.Any(ti => ti == team.Id))))
+                if (dto.ViewTeams.Any(team => !userData.CrossTeamPermissions.Any(p => p.IsGlobal || (p.Permission == permission && p.TeamIds.Any(ti => ti == team.Id)))))
                 {
-                    throw new BusinessException("Can't add view for these teams.");
+                    throw FrontUserException.Create(BiaErrorId.CannotAddViewForSelectedTeams);
                 }
 
                 var createdDto = await this.viewAppService.AddViewAsync(dto);

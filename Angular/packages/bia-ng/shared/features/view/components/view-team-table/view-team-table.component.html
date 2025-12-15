@@ -42,7 +42,7 @@
           <button
             pButton
             class="p-button-icon-only"
-            [pTooltip]="'bia.views.linkWithTeam' | translate"
+            [pTooltip]="linkWithTeamTooltipLabel"
             (click)="onAssignViewToTeam(view.id, true)">
             <svg
               width="1.3rem"
@@ -71,7 +71,7 @@
           <button
             pButton
             class="p-button-icon-only"
-            [pTooltip]="'bia.views.unlinkWithTeam' | translate"
+            [pTooltip]="unlinkWithTeamTooltipLabel"
             (click)="onAssignViewToTeam(view.id, false)">
             <svg
               width="1.3rem"

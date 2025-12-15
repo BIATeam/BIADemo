@@ -66,6 +66,10 @@ export class ViewSaveFormComponent
     return !this.biaForm?.form?.valid;
   }
 
+  get viewTypeForm(): ViewType {
+    return this.biaForm?.form?.controls['viewType'].value;
+  }
+
   viewType: typeof ViewType = ViewType;
 
   ngOnChanges(changes: SimpleChanges) {

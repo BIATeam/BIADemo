@@ -44,10 +44,12 @@
 }
 
 @if (featureConfiguration && featureService) {
-  <bia-view-state-recap
-    [tableState]="(viewPreference$ | async) ?? undefined"
-    [fieldsConfig]="featureConfiguration.fieldsConfig.columns"
-    [dictOptionDtos]="
-      (featureService.optionsService.dictOptionDtos$ | async) ?? undefined
-    "></bia-view-state-recap>
+  <div class="mt-6">
+    <bia-view-state-recap
+      [tableState]="(viewPreference$ | async) ?? undefined"
+      [fieldsConfig]="featureConfiguration.fieldsConfig.columns"
+      [dictOptionDtos]="
+        (featureService.optionsService.dictOptionDtos$ | async) ?? undefined
+      "></bia-view-state-recap>
+  </div>
 }

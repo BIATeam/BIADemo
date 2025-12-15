@@ -5,9 +5,9 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { BiaDialogService } from 'packages/bia-ng/core/public-api';
-import { Team } from 'packages/bia-ng/models/public-api';
+import { CurrentTeamDto, Team } from 'packages/bia-ng/models/public-api';
 import { Confirmation, ConfirmationService, PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
@@ -32,6 +32,7 @@ import { ViewTeam } from '../../model/view-team';
 })
 export class ViewTeamTableComponent {
   @Input() views: View[];
+  @Input() originTeam: CurrentTeamDto | undefined;
   @Input() teamSelected: Team;
   @Input() canDelete = false;
   @Input() canSetDefault = false;
@@ -47,9 +48,22 @@ export class ViewTeamTableComponent {
   }>();
   @Output() viewSelect = new EventEmitter<View | undefined>();
 
+  get unlinkWithTeamTooltipLabel(): string {
+    return `${this.translateService.instant(
+      'bia.views.unlinkWithTeam'
+    )} ${this.originTeam?.teamTitle}`;
+  }
+
+   get linkWithTeamTooltipLabel(): string {
+    return `${this.translateService.instant(
+      'bia.views.linkWithTeam'
+    )} ${this.originTeam?.teamTitle}`;
+  }
+
   constructor(
     protected biaDialogService: BiaDialogService,
-    protected confirmationService: ConfirmationService
+    protected confirmationService: ConfirmationService,
+    private translateService: TranslateService
   ) {}
 
   onAssignViewToTeam(viewId: number | undefined, isAssign: boolean) {

@@ -66,29 +66,47 @@
                 }}</ng-template>
               </p-listbox>
             }
-            @if (otherAffectedTeamsLabel) {
-              {{ 'bia.views.alsoAffectedTeams' | translate }}
-              {{ otherAffectedTeamsLabel }}
-            }
           }
         }
       }
     </div>
   </ng-template>
 </bia-form>
-<div class="flex justify-content-around view-actions">
-  <button
-    pButton
-    label="{{ 'bia.views.save' | translate }}"
-    [loading]="biaForm?.submittingForm ?? false"
-    [disabled]="isSaveDisabled"
-    (click)="saveView()"></button>
-  <button
-    pButton
-    label="{{ 'bia.views.saveAs' | translate }}"
-    [ngClass]="'p-button-outlined'"
-    type="submit"
-    [loading]="biaForm?.submittingForm ?? false"
-    [disabled]="isSaveAsDisabled"
-    (click)="saveView(true)"></button>
+<div
+  class="view-actions flex flex-wrap align-items-start justify-content-around gap-4">
+  <div class="flex flex-column align-items-center">
+    <div class="text-center">
+      <button
+        pButton
+        label="{{ 'bia.views.save' | translate }}"
+        [loading]="biaForm?.submittingForm ?? false"
+        [disabled]="isSaveDisabled"
+        (click)="saveView()"></button>
+    </div>
+    @if (viewTypeForm === viewType.Team && otherAffectedTeamsLabel) {
+      <div class="affected-teams-box">
+        <div class="affected-teams-title">
+          <i class="pi pi-exclamation-triangle warning-icon"></i>
+          <span class="font-bold">{{
+            'bia.views.alsoAffectedTeams' | translate
+          }}</span>
+        </div>
+        @for (otherAffectedTeam of otherAffectedTeams; track $index) {
+          <div class="affected-teams-team">
+            {{ otherAffectedTeam.teamTitle }}
+          </div>
+        }
+      </div>
+    }
+  </div>
+  <div class="flex align-items-center">
+    <button
+      pButton
+      label="{{ 'bia.views.saveAs' | translate }}"
+      [ngClass]="'p-button-outlined'"
+      type="submit"
+      [loading]="biaForm?.submittingForm ?? false"
+      [disabled]="isSaveAsDisabled"
+      (click)="saveView(true)"></button>
+  </div>
 </div>
