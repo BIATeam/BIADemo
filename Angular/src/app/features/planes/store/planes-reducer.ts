@@ -1,9 +1,9 @@
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { HistoricalEntryDto } from 'packages/bia-ng/models/dto/historical-entry-dto';
 import {
   CrudState,
   DEFAULT_CRUD_STATE,
+  HistoricalEntryDto,
 } from 'packages/bia-ng/models/public-api';
 import { Plane } from '../model/plane';
 import { FeaturePlanesActions } from './planes-actions';
