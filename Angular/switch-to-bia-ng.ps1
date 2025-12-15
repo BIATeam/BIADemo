@@ -2,7 +2,7 @@ $SourceFrontEnd = "."
 # keep name separated to avoid replace
 $DemoProjectName = "bia" + "demo"
 
-$ExcludeDir = ('dist', 'node_modules', 'docs', 'scss', '.git', '.vscode', '.angular', '.dart_tool', 'bia-shared', 'bia-features', 'bia-domains', 'bia-core', '.bia')
+$ExcludeDir = ('dist', 'node_modules', 'docs', 'scss', '.git', '.vscode', '.angular', '.dart_tool', '.bia')
 
 function ReplaceInProject {
   param (
@@ -57,13 +57,18 @@ if (Test-Path -Path $projectPackageJsonPath -PathType Leaf) {
   $projectPackageJsonContent = Get-Content -Path $projectPackageJsonPath -Raw | ConvertFrom-Json
   
   # Switch imports to bia-ng imports
-  ReplaceInProject -Source $SourceFrontEnd -OldRegexp "(import\s*{\s*[^}]+\s*}\s*from\s*)[']packages\/(bia-ng\/[^']+)\/public-api['];" -NewRegexp '$1''$2'';' -Include *.ts
-
+  ReplaceInProject -Source $SourceFrontEnd -OldRegexp "(import\s*{\s*[^}]+\s*}\s*from\s*)[']packages\/(bia-ng\/[^']+)\/public-api['];" -NewRegexp '$1''@bia-team/$2'';' -Include *.ts
   if ($projectPackageJsonContent.name -ne $DemoProjectName) {
-    ReplaceInProject -Source $SourceFrontEnd -OldRegexp "((templateUrl:|styleUrls: \[)[\s]*'[\S]*\/)packages\/bia-ng\/shared\/([\S]*')" -NewRegexp '$1node_modules/bia-ng/templates/$3' -Include *.ts
+    ReplaceInProject -Source $SourceFrontEnd -OldRegexp "((templateUrl:|styleUrls: \[)[\s]*'[\S]*\/)packages\/bia-ng\/shared\/([\S]*')" -NewRegexp '$1node_modules/@bia-team/bia-ng/templates/$3' -Include *.ts
+    # Also update references inside styles (SCSS/CSS) from local package to installed package
+    ReplaceInProject -Source $SourceFrontEnd -OldRegexp "packages\/bia-ng\/scss" -NewRegexp 'node_modules/@bia-team/bia-ng/styles' -Include *.scss
+    ReplaceInProject -Source $SourceFrontEnd -OldRegexp "packages\/bia-ng\/scss" -NewRegexp 'node_modules/@bia-team/bia-ng/styles' -Include *.css
   }
   else { 
     ReplaceInProject -Source $SourceFrontEnd -OldRegexp "((templateUrl:|styleUrls: \[)[\s]*'[\S]*\/)packages\/bia-ng\/shared\/([\S]*')" -NewRegexp '$1dist/bia-ng/templates/$3' -Include *.ts 
+    # Also update references inside styles (SCSS/CSS) from local package to installed package
+    ReplaceInProject -Source $SourceFrontEnd -OldRegexp "packages\/bia-ng\/scss" -NewRegexp 'dist/bia-ng/styles' -Include *.scss
+    ReplaceInProject -Source $SourceFrontEnd -OldRegexp "packages\/bia-ng\/scss" -NewRegexp 'dist/bia-ng/styles' -Include *.css
   }
 
   $frameworkVersionFile = Join-Path -Path $SourceFrontEnd -ChildPath "packages\bia-ng\shared\framework-version.ts"
@@ -99,12 +104,12 @@ if (Test-Path -Path $projectPackageJsonPath -PathType Leaf) {
     $inserted = $false
 
     foreach ($dep in ($dependencies.Keys | Sort-Object)) {
-      if (-not $inserted -and "bia-ng" -lt $dep) {
+      if (-not $inserted -and "@bia-team/bia-ng" -lt $dep) {
         if ($projectPackageJsonContent.name -ne $DemoProjectName) {
-          $orderedDependencies["bia-ng"] = $frameworkVersion
+          $orderedDependencies["@bia-team/bia-ng"] = $frameworkVersion
         }
         else {
-          $orderedDependencies["bia-ng"] = 'file:./dist/bia-ng'
+          $orderedDependencies["@bia-team/bia-ng"] = 'file:./dist/bia-ng'
         }
         $inserted = $true
       }
@@ -114,10 +119,10 @@ if (Test-Path -Path $projectPackageJsonPath -PathType Leaf) {
     # If "bia-ng" hasn't been inserted yet, it should be added at the end
     if (-not $inserted) {
       if ($projectPackageJsonContent.name -ne $DemoProjectName) {
-        $orderedDependencies["bia-ng"] = $frameworkVersion
+        $orderedDependencies["@bia-team/bia-ng"] = $frameworkVersion
       }
       else {
-        $orderedDependencies["bia-ng"] = 'file:./dist/bia-ng'
+        $orderedDependencies["@bia-team/bia-ng"] = 'file:./dist/bia-ng'
       }
     }
 
@@ -127,10 +132,10 @@ if (Test-Path -Path $projectPackageJsonPath -PathType Leaf) {
     # Convert the object back to JSON and write it back to the package.json file
     $projectPackageJsonContent | ConvertTo-Json -Depth 10 | Set-Content -Path $projectPackageJsonPath
 
-    Write-Output "The 'bia-ng' dependency has been added with version $frameworkVersion in package.json."
+    Write-Output "The '@bia-team/bia-ng' dependency has been added with version $frameworkVersion in package.json."
   }
   else {
-    Write-Output "The 'bia-ng' dependency already exists in package.json."
+    Write-Output "The '@bia-team/bia-ng' dependency already exists in package.json."
   }
 }
 

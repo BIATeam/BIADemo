@@ -6,7 +6,7 @@ $DemoProjectName = "bia" + "demo"
 $sourcePath = Join-Path -Path $SourceBiaDemo -ChildPath "Angular\packages"
 $destinationPath = $SourceFrontEnd
 
-$ExcludeDir = ('dist', 'node_modules', 'docs', 'scss', '.git', '.vscode', '.angular', '.dart_tool', 'bia-shared', 'bia-features', 'bia-domains', 'bia-core', '.bia')
+$ExcludeDir = ('dist', 'node_modules', 'docs', 'scss', '.git', '.vscode', '.angular', '.dart_tool', '.bia')
 
 function ReplaceInProject {
   param (
@@ -75,7 +75,7 @@ if (Test-Path -Path $projectPackageJsonPath -PathType Leaf) {
         Write-Output "Bia Demo framework version: $frameworkVersion"
 
         # Extract the version of "bia-ng" from package.json
-        $biaNgVersion = $projectPackageJsonContent.dependencies."bia-ng"
+        $biaNgVersion = $projectPackageJsonContent.dependencies."@bia-team/bia-ng"
         Write-Output "Currently used bia-ng version: $biaNgVersion"
 
         # Compare the versions
@@ -107,20 +107,25 @@ if (Test-Path -Path $projectPackageJsonPath -PathType Leaf) {
   }
 
   # Switch imports to bia-ng imports
-  ReplaceInProject -Source $SourceFrontEnd -OldRegexp "(import\s*{\s*[^}]+\s*}\s*from\s*)['](bia-ng\/[^']+)['];" -NewRegexp '$1''packages/$2/public-api'';' -Include *.ts
-  
+  ReplaceInProject -Source $SourceFrontEnd -OldRegexp "(import\s*{\s*[^}]+\s*}\s*from\s*)[']@bia-team\/(bia-ng\/[^']+)['];" -NewRegexp '$1''packages/$2/public-api'';' -Include *.ts
   if ($projectPackageJsonContent.name -ne $DemoProjectName) {
-    ReplaceInProject -Source $SourceFrontEnd -OldRegexp "((templateUrl:|styleUrls: \[)[\s]*'[\S]*\/)node_modules\/bia-ng\/templates\/([\S]*')" -NewRegexp '$1packages/bia-ng/shared/$3' -Include *.ts
+    ReplaceInProject -Source $SourceFrontEnd -OldRegexp "((templateUrl:|styleUrls: \[)[\s]*'[\S]*\/)node_modules\/@bia-team\/bia-ng\/templates\/([\S]*')" -NewRegexp '$1packages/bia-ng/shared/$3' -Include *.ts
+    # Also update references inside styles (SCSS/CSS) from installed package back to local package
+    ReplaceInProject -Source $SourceFrontEnd -OldRegexp "node_modules\/@bia-team\/bia-ng\/styles" -NewRegexp 'packages/bia-ng/scss' -Include *.scss
+    ReplaceInProject -Source $SourceFrontEnd -OldRegexp "node_modules\/@bia-team\/bia-ng\/styles" -NewRegexp 'packages/bia-ng/scss' -Include *.css
   }
   else { 
     ReplaceInProject -Source $SourceFrontEnd -OldRegexp "((templateUrl:|styleUrls: \[)[\s]*'[\S]*\/)dist\/bia-ng\/templates\/([\S]*')" -NewRegexp '$1packages/bia-ng/shared/$3' -Include *.ts 
+    # Also update references inside styles (SCSS/CSS) from installed package back to local package
+    ReplaceInProject -Source $SourceFrontEnd -OldRegexp "dist\/bia-ng\/styles" -NewRegexp 'packages/bia-ng/scss' -Include *.scss
+    ReplaceInProject -Source $SourceFrontEnd -OldRegexp "dist\/bia-ng\/styles" -NewRegexp 'packages/bia-ng/scss' -Include *.css
   }
 
   # Remove the "bia-ng" key from package.json
-  if ($projectPackageJsonContent.dependencies.PSObject.Properties.Name -contains "bia-ng") {
-    $projectPackageJsonContent.dependencies.PSObject.Properties.Remove("bia-ng")
+  if ($projectPackageJsonContent.dependencies.PSObject.Properties.Name -contains "@bia-team/bia-ng") {
+    $projectPackageJsonContent.dependencies.PSObject.Properties.Remove("@bia-team/bia-ng")
     $projectPackageJsonContent | ConvertTo-Json -Depth 10 | Set-Content -Path $projectPackageJsonPath
-    Write-Output "The 'bia-ng' dependency has been removed from package.json."
+    Write-Output "The '@bia-team/bia-ng' dependency has been removed from package.json."
   }
 
   # Clean imports
