@@ -71,7 +71,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
                 foreach (List<T> chunk in SplitIntoChunks(datas, bulkBatchSize))
                 {
                     string copyCommand = string.Format("COPY {0} ({1}) FROM STDIN (FORMAT BINARY)", qualifiedTableName, columnList);
-                    // using (var importer = connection.BeginBinaryImport(copyCommand))
+
                     using (var importer = await connection.BeginBinaryImportAsync(copyCommand).ConfigureAwait(false))
                     {
                         foreach (T item in chunk)
