@@ -2534,6 +2534,10 @@ a {
   top: 85px;
 }
 
+img {
+  max-width: none !important;
+}
+
 .layout-content-wrapper {
   padding-top: 4rem;
 }
@@ -2613,6 +2617,7 @@ a {
   height: 2.5rem;
   line-height: 2.5rem;
   text-align: center;
+  cursor: pointer;
 }
 
 .app-config-button i {
@@ -2634,6 +2639,11 @@ a {
 
 .app-config-button::after {
   animation: clippath 10s infinite -5s linear;
+}
+
+.app-config-button:hover {
+  background-color: var(--topbar-item-hover-bg);
+  transition: background-color var(--transition-duration);
 }
 
 @keyframes clippath {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
 import { animate, style, transition, trigger } from '@angular/animations';
 import { CommonModule, NgTemplateOutlet } from '@angular/common';
 import { HttpClient } from '@angular/common/http';

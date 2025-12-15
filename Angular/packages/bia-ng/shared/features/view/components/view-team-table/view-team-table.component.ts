@@ -54,7 +54,7 @@ export class ViewTeamTableComponent {
     )} ${this.originTeam?.teamTitle}`;
   }
 
-   get linkWithTeamTooltipLabel(): string {
+  get linkWithTeamTooltipLabel(): string {
     return `${this.translateService.instant(
       'bia.views.linkWithTeam'
     )} ${this.originTeam?.teamTitle}`;
