@@ -2,9 +2,9 @@
 
 	<PropertyGroup>
 		<TargetFramework>net10.0</TargetFramework>
-		<Copyright>Copyright © BIA 2025</Copyright>
+		<Copyright>Copyright © BIA 2026</Copyright>
 		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-		<Version>5.2.2</Version>
+		<Version>6.0.0</Version>
 		<PackageIcon>LogoBIA.png</PackageIcon>
 		<PackageIconUrl />
 		<Authors>BIA Team</Authors>
@@ -24,8 +24,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="[10.0.*,11.0.0)" />
-		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="[10.0.*,11.0.0)" />
+		<PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" />
 	</ItemGroup>
 
 	<ItemGroup>
