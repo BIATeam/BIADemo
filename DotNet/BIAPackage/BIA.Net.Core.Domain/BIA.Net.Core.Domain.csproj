@@ -2,8 +2,8 @@
 
 	<PropertyGroup>
 		<TargetFramework>net10.0</TargetFramework>
-		<Version>5.2.2</Version>
-		<Copyright>Copyright © BIA 2025</Copyright>
+		<Version>6.0.0</Version>
+		<Copyright>Copyright © BIA 2026</Copyright>
 		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
 		<PackageIcon>LogoBIA.png</PackageIcon>
 		<PackageIconUrl />
