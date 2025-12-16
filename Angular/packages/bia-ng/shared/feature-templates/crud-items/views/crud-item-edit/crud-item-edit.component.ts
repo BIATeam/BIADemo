@@ -11,8 +11,8 @@ import {
 import {
   AuthService,
   biaSuccessWaitRefreshSignalR,
-} from 'packages/bia-ng/core/public-api';
-import { AuthInfo, BaseDto } from 'packages/bia-ng/models/public-api';
+} from '@bia-team/bia-ng/core';
+import { AuthInfo, BaseDto } from '@bia-team/bia-ng/models';
 import { Subscription, filter, first, tap } from 'rxjs';
 import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
 import { CrudItemFormComponent } from '../../components/crud-item-form/crud-item-form.component';

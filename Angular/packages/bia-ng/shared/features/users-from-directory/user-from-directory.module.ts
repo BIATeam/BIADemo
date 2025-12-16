@@ -1,10 +1,7 @@
 import { NgModule } from '@angular/core';
+import { LdapDomainModule, UserOptionModule } from '@bia-team/bia-ng/domains';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import {
-  LdapDomainModule,
-  UserOptionModule,
-} from 'packages/bia-ng/domains/public-api';
 
 import { UsersFromDirectoryStore } from './store/user-from-directory.state';
 import { UsersFromDirectoryEffects } from './store/users-from-directory-effects';

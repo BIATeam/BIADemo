@@ -7,19 +7,16 @@ import {
   WritableSignal,
 } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
-import { clone } from 'packages/bia-ng/core/public-api';
-import { DtoState } from 'packages/bia-ng/models/enum/public-api';
-import {
-  BiaFieldsConfig,
-  KeyValuePair,
-} from 'packages/bia-ng/models/public-api';
+import { clone } from '@bia-team/bia-ng/core';
+import { BiaFieldsConfig, KeyValuePair } from '@bia-team/bia-ng/models';
+import { DtoState } from '@bia-team/bia-ng/models/enum';
 import {
   BiaFormComponent,
   BiaTableHeaderComponent,
   CrudHelperService,
   CrudItemFormComponent,
-} from 'packages/bia-ng/shared/public-api';
+} from '@bia-team/bia-ng/shared';
+import { TranslateModule } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
 import { Checkbox } from 'primeng/checkbox';
 import { FloatLabel } from 'primeng/floatlabel';
@@ -34,7 +31,7 @@ import { PlaneSpecific } from '../../model/plane-specific';
   selector: 'app-plane-specific-form',
   templateUrl: 'plane-form.component.html',
   styleUrls: [
-    '../../../../../../packages/bia-ng/shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
+    '../../../../../../node_modules/@bia-team/bia-ng/templates/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
   ],
   imports: [
     PrimeTemplate,

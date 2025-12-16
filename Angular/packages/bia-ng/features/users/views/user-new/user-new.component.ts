@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, Injector } from '@angular/core';
-import { CrudItemNewComponent } from 'packages/bia-ng/shared/public-api';
+import { CrudItemNewComponent } from '@bia-team/bia-ng/shared';
 import { UserFormComponent } from '../../components/user-form/user-form.component';
 import { User } from '../../model/user';
 import { UserService } from '../../services/user.service';

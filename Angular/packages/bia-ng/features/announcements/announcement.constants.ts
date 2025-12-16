@@ -1,5 +1,5 @@
-import { Announcement } from 'packages/bia-ng/models/public-api';
-import { CrudConfig } from 'packages/bia-ng/shared/public-api';
+import { Announcement } from '@bia-team/bia-ng/models';
+import { CrudConfig } from '@bia-team/bia-ng/shared';
 import {
   announcementFieldsConfiguration,
   announcementFormLayoutConfiguration,
