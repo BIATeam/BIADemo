@@ -240,7 +240,9 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       {
         type: PropType.ManyToMany,
         isRequired: true,
+        // Begin BIAToolKit Generation Ignore
         maxWidth: '15rem',
+        // End BIAToolKit Generation Ignore
       }
     ),
     Object.assign(new BiaFieldConfig('rowVersion', 'plane.rowVersion'), {
