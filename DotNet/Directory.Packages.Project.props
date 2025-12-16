@@ -1,0 +1,6 @@
+<Project>
+	<ItemGroup>
+    <!-- Add the versions of your packages here. -->
+    <!-- <PackageVersion Include="MyPackageNameExample" Version="6.0.4" /> -->
+	</ItemGroup>
+</Project>
