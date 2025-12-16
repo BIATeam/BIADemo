@@ -1,11 +1,11 @@
 import { Injectable, Injector } from '@angular/core';
-import { Announcement } from '@bia-team/bia-ng/models';
+import { Store } from '@ngrx/store';
+import { Announcement } from 'packages/bia-ng/models/public-api';
 import {
   CrudItemService,
   CrudItemSignalRService,
-} from '@bia-team/bia-ng/shared';
-import { BiaAppState } from '@bia-team/bia-ng/store';
-import { Store } from '@ngrx/store';
+} from 'packages/bia-ng/shared/public-api';
+import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { map, Observable } from 'rxjs';
 import { announcementCRUDConfiguration } from '../announcement.constants';

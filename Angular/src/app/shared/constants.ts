@@ -1,4 +1,4 @@
-import { BiaTeamTypeId } from '@bia-team/bia-ng/models/enum';
+import { BiaTeamTypeId } from 'packages/bia-ng/models/enum/public-api';
 
 /* eslint-disable @typescript-eslint/naming-convention */
 export const APP_SUPPORTED_TRANSLATIONS = [

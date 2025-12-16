@@ -1,6 +1,6 @@
 import { Component, HostBinding, OnDestroy, OnInit } from '@angular/core';
-import { BiaTranslationService } from '@bia-team/bia-ng/core';
-import { HangfireContainerComponent } from '@bia-team/bia-ng/shared';
+import { BiaTranslationService } from 'packages/bia-ng/core/public-api';
+import { HangfireContainerComponent } from 'packages/bia-ng/shared/public-api';
 import { Subscription } from 'rxjs';
 
 @Component({

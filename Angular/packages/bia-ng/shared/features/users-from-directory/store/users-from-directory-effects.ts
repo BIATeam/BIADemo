@@ -1,10 +1,10 @@
 import { HttpStatusCode } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { BiaMessageService } from '@bia-team/bia-ng/core';
-import { DomainUserOptionsActions } from '@bia-team/bia-ng/domains';
-import { OptionDto } from '@bia-team/bia-ng/models';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { TranslateService } from '@ngx-translate/core';
+import { BiaMessageService } from 'packages/bia-ng/core/public-api';
+import { DomainUserOptionsActions } from 'packages/bia-ng/domains/public-api';
+import { OptionDto } from 'packages/bia-ng/models/public-api';
 import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { UserFromDirectoryDas } from '../services/user-from-directory-das.service';

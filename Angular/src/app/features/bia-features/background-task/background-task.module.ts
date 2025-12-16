@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BiaBackgroundTaskModule } from '@bia-team/bia-ng/features';
+import { BiaBackgroundTaskModule } from 'packages/bia-ng/features/public-api';
 
 @NgModule({
   imports: [BiaBackgroundTaskModule],

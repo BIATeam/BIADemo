@@ -1,14 +1,14 @@
 import { NgClass } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { BiaTranslationService } from '@bia-team/bia-ng/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { BiaTranslationService } from 'packages/bia-ng/core/public-api';
 import {
   ColorScheme,
   FooterMode,
   MenuMode,
   MenuProfilePosition,
-} from '@bia-team/bia-ng/models';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+} from 'packages/bia-ng/models/public-api';
 import { ButtonDirective } from 'primeng/button';
 import { DrawerModule } from 'primeng/drawer';
 import { RadioButton } from 'primeng/radiobutton';

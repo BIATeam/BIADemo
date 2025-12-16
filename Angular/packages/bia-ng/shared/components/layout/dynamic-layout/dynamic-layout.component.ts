@@ -19,8 +19,8 @@ import {
   Router,
   RouterOutlet,
 } from '@angular/router';
-import { BiaInjectorService } from '@bia-team/bia-ng/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { BiaInjectorService } from 'packages/bia-ng/core/public-api';
 import { SharedModule } from 'primeng/api';
 import { Dialog } from 'primeng/dialog';
 import { BehaviorSubject, filter } from 'rxjs';

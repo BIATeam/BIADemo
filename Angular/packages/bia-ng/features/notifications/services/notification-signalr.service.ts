@@ -1,13 +1,13 @@
 import { Injectable, Injector } from '@angular/core';
+import { Store } from '@ngrx/store';
 import {
   AuthService,
   BiaSignalRService,
   CoreTeamsStore,
-} from '@bia-team/bia-ng/core';
-import { Team } from '@bia-team/bia-ng/models';
-import { CrudItemSignalRService } from '@bia-team/bia-ng/shared';
-import { BiaAppState } from '@bia-team/bia-ng/store';
-import { Store } from '@ngrx/store';
+} from 'packages/bia-ng/core/public-api';
+import { Team } from 'packages/bia-ng/models/public-api';
+import { CrudItemSignalRService } from 'packages/bia-ng/shared/public-api';
+import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { first } from 'rxjs/operators';
 import { Notification } from '../model/notification';
 import { NotificationListItem } from '../model/notification-list-item';

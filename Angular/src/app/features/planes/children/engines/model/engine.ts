@@ -1,5 +1,10 @@
 import { Validators } from '@angular/forms';
 import {
+  NumberMode,
+  PrimeNGFiltering,
+  PropType,
+} from 'packages/bia-ng/models/enum/public-api';
+import {
   BaseDto,
   BiaFieldConfig,
   BiaFieldNumberFormat,
@@ -8,12 +13,7 @@ import {
   FixableDto,
   OptionDto,
   VersionedDto,
-} from '@bia-team/bia-ng/models';
-import {
-  NumberMode,
-  PrimeNGFiltering,
-  PropType,
-} from '@bia-team/bia-ng/models/enum';
+} from 'packages/bia-ng/models/public-api';
 
 // TODO after creation of CRUD Engine : adapt the model
 export interface Engine extends BaseDto, VersionedDto, FixableDto {

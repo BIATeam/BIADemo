@@ -15,6 +15,8 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
   AppSettingsService,
   AuthService,
@@ -27,11 +29,9 @@ import {
   NotificationData,
   NotificationModule,
   NotificationType,
-} from '@bia-team/bia-ng/core';
-import { BiaNavigation } from '@bia-team/bia-ng/models';
-import { BiaAppState } from '@bia-team/bia-ng/store';
-import { Store } from '@ngrx/store';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+} from 'packages/bia-ng/core/public-api';
+import { BiaNavigation } from 'packages/bia-ng/models/public-api';
+import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { PrimeTemplate, ToastMessageOptions } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { Ripple } from 'primeng/ripple';

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 import {
   DomainLanguageOptionsActions,
   DomainLanguageOptionsStore,
@@ -10,12 +11,14 @@ import {
   DomainTeamOptionsStore,
   DomainUserOptionsActions,
   DomainUserOptionsStore,
-} from '@bia-team/bia-ng/domains';
-import { OptionDto } from '@bia-team/bia-ng/models';
-import { BiaTeamTypeId } from '@bia-team/bia-ng/models/enum';
-import { CrudItemOptionsService, DictOptionDto } from '@bia-team/bia-ng/shared';
-import { BiaAppState } from '@bia-team/bia-ng/store';
-import { Store } from '@ngrx/store';
+} from 'packages/bia-ng/domains/public-api';
+import { BiaTeamTypeId } from 'packages/bia-ng/models/enum/public-api';
+import { OptionDto } from 'packages/bia-ng/models/public-api';
+import {
+  CrudItemOptionsService,
+  DictOptionDto,
+} from 'packages/bia-ng/shared/public-api';
+import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 

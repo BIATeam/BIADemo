@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
-import { BiaOnlineOfflineService } from '@bia-team/bia-ng/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { BiaOnlineOfflineService } from 'packages/bia-ng/core/public-api';
 import { Tooltip } from 'primeng/tooltip';
 import { Observable } from 'rxjs';
 

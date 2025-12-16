@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { BiaMessageService } from '@bia-team/bia-ng/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { BiaMessageService } from 'packages/bia-ng/core/public-api';
 import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { AssignViewToTeam } from '../model/assign-view-to-team';

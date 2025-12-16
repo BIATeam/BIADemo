@@ -1,3 +1,4 @@
+import { PropType } from 'packages/bia-ng/models/enum/public-api';
 import {
   BiaFieldConfig,
   BiaFieldsConfig,
@@ -7,8 +8,7 @@ import {
   BiaFormLayoutConfigRow,
   BiaFormLayoutConfigTab,
   BiaFormLayoutConfigTabGroup,
-} from '@bia-team/bia-ng/models';
-import { PropType } from '@bia-team/bia-ng/models/enum';
+} from 'packages/bia-ng/models/public-api';
 import { Engine } from './engine';
 import { Plane, planeFieldsConfiguration } from './plane';
 
