@@ -10,6 +10,11 @@ namespace BIA.Net.Core.Common.Configuration
     public class EmailConfiguration
     {
         /// <summary>
+        /// Define if sending mail is activated.
+        /// </summary>
+        public bool IsActive { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets from.
         /// </summary>
         public string From { get; set; }

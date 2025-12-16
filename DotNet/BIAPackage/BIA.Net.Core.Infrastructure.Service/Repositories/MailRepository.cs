@@ -41,40 +41,43 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="tos">list of destinator.</param>
         /// <param name="ccs">list of copy.</param>
         /// <returns>the async task.</returns>
-        public async Task SendNotificationAsync(string subject, string bodyText, IEnumerable<string> tos, IEnumerable<string> ccs = null)
+        public virtual async Task SendNotificationAsync(string subject, string bodyText, IEnumerable<string> tos, IEnumerable<string> ccs = null)
         {
-            MimeMessage messageToSend = new()
+            if (this.configuration.EmailConfiguration != null && this.configuration.EmailConfiguration.IsActive)
             {
-                Subject = subject?.Trim(),
-            };
-
-            messageToSend.From.Add(new MailboxAddress(this.configuration.EmailConfiguration?.From, this.configuration.EmailConfiguration?.From));
-
-            if (tos?.Any() == true)
-            {
-                foreach (string to in tos)
+                MimeMessage messageToSend = new()
                 {
-                    messageToSend.To.Add(new MailboxAddress(to?.Trim(), to?.Trim()));
-                }
-            }
+                    Subject = subject?.Trim(),
+                };
 
-            if (ccs?.Any() == true)
-            {
-                foreach (string cc in ccs)
+                messageToSend.From.Add(new MailboxAddress(this.configuration.EmailConfiguration?.From, this.configuration.EmailConfiguration?.From));
+
+                if (tos?.Any() == true)
                 {
-                    messageToSend.Cc.Add(new MailboxAddress(cc?.Trim(), cc?.Trim()));
+                    foreach (string to in tos)
+                    {
+                        messageToSend.To.Add(new MailboxAddress(to?.Trim(), to?.Trim()));
+                    }
                 }
-            }
 
-            bodyText = $"<div style='font-family:Calibri'>{bodyText}</div>";
+                if (ccs?.Any() == true)
+                {
+                    foreach (string cc in ccs)
+                    {
+                        messageToSend.Cc.Add(new MailboxAddress(cc?.Trim(), cc?.Trim()));
+                    }
+                }
 
-            messageToSend.Body = new TextPart(TextFormat.Html) { Text = bodyText?.Trim() };
+                bodyText = $"<div style='font-family:Calibri'>{bodyText}</div>";
 
-            using (SmtpClient client = new())
-            {
-                await client.ConnectAsync(this.configuration.EmailConfiguration?.SmtpHost, this.configuration.EmailConfiguration?.SmtpPort ?? 0, false);
-                await client.SendAsync(messageToSend);
-                await client.DisconnectAsync(true);
+                messageToSend.Body = new TextPart(TextFormat.Html) { Text = bodyText?.Trim() };
+
+                using (SmtpClient client = new())
+                {
+                    await client.ConnectAsync(this.configuration.EmailConfiguration?.SmtpHost, this.configuration.EmailConfiguration?.SmtpPort ?? 0, false);
+                    await client.SendAsync(messageToSend);
+                    await client.DisconnectAsync(true);
+                }
             }
         }
     }
