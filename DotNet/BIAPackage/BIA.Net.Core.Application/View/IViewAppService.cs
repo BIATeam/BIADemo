@@ -34,18 +34,11 @@ namespace BIA.Net.Core.Application.View
         Task<IEnumerable<ViewDto>> GetAllAsync();
 
         /// <summary>
-        /// Removes the team view asynchronous.
+        /// Removes the view asynchronous.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task RemoveTeamViewAsync(int id);
-
-        /// <summary>
-        /// Removes the user view asynchronous.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task RemoveUserViewAsync(int id);
+        Task RemoveViewAsync(int id);
 
         /// <summary>
         /// Sets the default team view asynchronous.

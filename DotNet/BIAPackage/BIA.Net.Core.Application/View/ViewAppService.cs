@@ -9,22 +9,18 @@ namespace BIA.Net.Core.Application.View
     using System.Linq;
     using System.Security.Principal;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Application.User;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Dto.View;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
-    using BIA.Net.Core.Domain.User.Services;
     using BIA.Net.Core.Domain.View.Entities;
     using BIA.Net.Core.Domain.View.Mappers;
     using BIA.Net.Core.Domain.View.Models;
     using Microsoft.Extensions.Logging;
-    using static BIA.Net.Core.Common.BiaRights;
 
     /// <summary>
     /// The application service used to manage views.
@@ -125,13 +121,6 @@ namespace BIA.Net.Core.Application.View
                 throw new ElementNotFoundException();
             }
 
-            if (entity.ViewType != ViewType.Team)
-            {
-                var message = "Trying to delete the wrong view type: " + entity.ViewType;
-                this.logger.LogWarning(message);
-                throw new BusinessException("Wrong view type: " + entity.ViewType);
-            }
-
             IEnumerable<ViewDto> entities = await this.GetAllAsync();
             if (entities?.Any(x => x.Id == id) != true)
             {
@@ -165,60 +154,6 @@ namespace BIA.Net.Core.Application.View
                 this.Repository.Remove(entity);
                 await this.Repository.UnitOfWork.CommitAsync();
             }
-        }
-
-        /// <inheritdoc />
-        public async Task RemoveTeamViewAsync(int id)
-        {
-            View entity = await this.Repository.GetEntityAsync(id: id, queryMode: QueryCustomMode.ModeUpdateViewTeams);
-            if (entity == null)
-            {
-                throw new ElementNotFoundException();
-            }
-
-            if (entity.ViewType != ViewType.Team)
-            {
-                var message = "Trying to delete the wrong view type: " + entity.ViewType;
-                this.logger.LogWarning(message);
-                throw new BusinessException("Wrong view type: " + entity.ViewType);
-            }
-
-            IEnumerable<ViewDto> entities = await this.GetAllAsync();
-            if (entities?.Any(x => x.Id == id) != true)
-            {
-                throw new BusinessException("You don't have access rights.");
-            }
-
-            this.Repository.Remove(entity);
-            await this.Repository.UnitOfWork.CommitAsync();
-        }
-
-        /// <inheritdoc />
-        public async Task RemoveUserViewAsync(int id)
-        {
-            var entity = await this.Repository.GetEntityAsync(id: id, queryMode: QueryCustomMode.ModeUpdateViewUsers);
-            if (entity == null)
-            {
-                throw new ElementNotFoundException();
-            }
-
-            if (entity.ViewType != ViewType.User)
-            {
-                var message = "Trying to delete the wrong view type: " + entity.ViewType;
-                this.logger.LogWarning(message);
-                throw new BusinessException("Wrong view type: " + entity.ViewType);
-            }
-
-            var currentUserId = this.principal.GetUserId();
-            if (entity.ViewUsers.All(a => a.UserId != currentUserId))
-            {
-                var message = $"The user {currentUserId} is trying to delete the view {id} of an other user.";
-                this.logger.LogWarning(message);
-                throw new BusinessException("Can't delete the view of other users !");
-            }
-
-            this.Repository.Remove(entity);
-            await this.Repository.UnitOfWork.CommitAsync();
         }
 
         /// <inheritdoc />

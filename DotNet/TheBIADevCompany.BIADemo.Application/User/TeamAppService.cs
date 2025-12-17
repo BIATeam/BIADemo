@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Security.Claims;
     using System.Security.Principal;
     using BIA.Net.Core.Application.User;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;
@@ -49,6 +50,19 @@ namespace TheBIADevCompany.BIADemo.Application.User
         public ImmutableList<TeamConfigDto> GetTeamsConfig()
         {
             return this.GetTeamsConfig(TeamConfig.Config);
+        }
+
+        /// <inheritdoc/>
+        public async Task<string> GetPermissionPrefixFromTeamId(int teamId)
+        {
+            BaseDtoVersionedTeam teamDto = await this.GetAsync(id: teamId);
+            if (teamDto == null)
+            {
+                return null;
+            }
+
+            var config = TeamConfig.Config.Find(tc => tc.TeamTypeId == teamDto.TeamTypeId);
+            return config.RightPrefix;
         }
     }
 }

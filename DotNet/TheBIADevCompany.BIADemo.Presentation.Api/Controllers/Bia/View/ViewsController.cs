@@ -191,24 +191,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         [Authorize(Roles = BiaRights.Views.DeleteUserView)]
         public async Task<IActionResult> RemoveUserView(int id)
         {
-            if (id == 0)
-            {
-                return this.BadRequest();
-            }
-
-            try
-            {
-                await this.viewAppService.RemoveUserViewAsync(id);
-                return this.Ok();
-            }
-            catch (ElementNotFoundException)
-            {
-                return this.NotFound();
-            }
-            catch (BusinessException)
-            {
-                return this.BadRequest();
-            }
+            return await this.RemoveView(id);
         }
 
         /// <summary>
@@ -280,24 +263,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         [Authorize(Roles = BiaRights.Views.DeleteTeamView)]
         public async Task<IActionResult> RemoveTeamView(int id)
         {
-            if (id == 0)
-            {
-                return this.BadRequest();
-            }
-
-            try
-            {
-                await this.viewAppService.RemoveTeamViewAsync(id);
-                return this.Ok();
-            }
-            catch (ElementNotFoundException)
-            {
-                return this.NotFound();
-            }
-            catch (BusinessException)
-            {
-                return this.BadRequest();
-            }
+            return await this.RemoveView(id);
         }
 
         /// <summary>
@@ -391,5 +357,30 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
 
             return (true, permission);
         }
+
+
+
+        private async Task<IActionResult> RemoveView(int id)
+        {
+            if (id == 0)
+            {
+                return this.BadRequest();
+            }
+
+            try
+            {
+                await this.viewAppService.RemoveViewAsync(id);
+                return this.Ok();
+            }
+            catch (ElementNotFoundException)
+            {
+                return this.NotFound();
+            }
+            catch (BusinessException)
+            {
+                return this.BadRequest();
+            }
+        }
+
     }
 }

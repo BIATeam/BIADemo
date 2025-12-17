@@ -31,5 +31,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         /// <returns><see cref="ImmutableList{T}"/> of <see cref="TeamConfigDto"/>.</returns>
         ImmutableList<TeamConfigDto> GetTeamsConfig();
+
+        /// <summary>
+        /// Get permission prefix for a team type.
+        /// </summary>
+        /// <param name="teamId">the teamId used as reference to find the team type.</param>
+        /// <returns>the permission prefix as string.</returns>
+        Task<string> GetPermissionPrefixFromTeamId(int teamId);
     }
 }
