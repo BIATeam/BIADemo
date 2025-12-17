@@ -358,8 +358,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
             return (true, permission);
         }
 
-
-
         private async Task<IActionResult> RemoveView(int id)
         {
             if (id == 0)
@@ -381,6 +379,5 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
                 return this.BadRequest();
             }
         }
-
     }
 }
