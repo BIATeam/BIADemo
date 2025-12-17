@@ -177,7 +177,8 @@ namespace BIA.Net.Core.Application.Notification
             int id,
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,
-            string mapperMode = null, bool bypassFixed = false,
+            string mapperMode = null,
+            bool bypassFixed = false,
             bool autoCommit = true)
         {
             var notification = await base.RemoveAsync(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, bypassFixed: bypassFixed, autoCommit: autoCommit);

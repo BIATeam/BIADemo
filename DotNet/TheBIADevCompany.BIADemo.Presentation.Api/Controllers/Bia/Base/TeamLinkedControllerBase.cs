@@ -10,7 +10,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Base
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.User;
-    using static Org.BouncyCastle.Math.EC.ECCurve;
 
     /// <summary>
     /// The API controller used to manage views.
