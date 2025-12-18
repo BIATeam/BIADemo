@@ -15,3 +15,32 @@
   gap: 20px;
   align-items: center;
 }
+
+.footer-container {
+  padding: 0.75rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .info-locked-container {
+    margin-left: 1rem;
+
+    .info-locked-button {
+      height: 1.5rem;
+      width: 1.5rem;
+    }
+
+    .info-locked-label {
+      color: var(--p-button-outlined-warn-color);
+      font-weight: 500;
+    }
+  }
+}
+
+.help-link {
+  color: inherit;
+}
+
+.help {
+  cursor: pointer;
+}

@@ -1,282 +1,296 @@
-<form class="container" [formGroup]="form">
-  <p-fileUpload
-    #fileUpload
-    mode="basic"
-    [chooseLabel]="'bia.browse' | translate"
-    chooseIcon="pi pi-download"
-    [customUpload]="true"
-    accept="text/csv"
-    (onSelect)="onFileSelected()">
-  </p-fileUpload>
-  <button
-    [disabled]="this.fileUpload?.hasFiles() !== true"
-    pButton
-    label="{{ 'bia.analyze' | translate }}"
-    type="button"
-    (click)="onApply()"></button>
-  @if (hasDate === true) {
-    <p-floatlabel variant="on">
-      <p-select
-        formControlName="dateFormat"
-        [options]="dateFormats"
-        (onChange)="onSubmit()"
-        appendTo="body"
-        optionLabel="example"
-        optionValue="format"
-        placeholder="Select Date Format">
-      </p-select>
-      <label>{{ 'import.dateFormat' | translate }}</label>
-    </p-floatlabel>
-    <p-floatlabel variant="on">
-      <p-select
-        formControlName="timeFormat"
-        [options]="timeFormats"
-        (onChange)="onSubmit()"
-        appendTo="body"
-        optionLabel="example"
-        optionValue="format"
-        placeholder="Select Time Format">
-      </p-select>
-      <label>{{ 'import.timeFormat' | translate }}</label>
-    </p-floatlabel>
-  }
+<div class="bia-form">
+  <form class="container" [formGroup]="form">
+    <p-fileUpload
+      #fileUpload
+      mode="basic"
+      [chooseLabel]="'bia.browse' | translate"
+      chooseIcon="pi pi-download"
+      [customUpload]="true"
+      accept="text/csv"
+      (onSelect)="onFileSelected()">
+    </p-fileUpload>
+    <button
+      [disabled]="this.fileUpload?.hasFiles() !== true"
+      pButton
+      label="{{ 'bia.analyze' | translate }}"
+      type="button"
+      (click)="onApply()"></button>
+    @if (hasDate === true) {
+      <p-floatlabel variant="on">
+        <p-select
+          formControlName="dateFormat"
+          [options]="dateFormats"
+          (onChange)="onSubmit()"
+          appendTo="body"
+          optionLabel="example"
+          optionValue="format"
+          placeholder="Select Date Format">
+        </p-select>
+        <label>{{ 'import.dateFormat' | translate }}</label>
+      </p-floatlabel>
+      <p-floatlabel variant="on">
+        <p-select
+          formControlName="timeFormat"
+          [options]="timeFormats"
+          (onChange)="onSubmit()"
+          appendTo="body"
+          optionLabel="example"
+          optionValue="format"
+          placeholder="Select Time Format">
+        </p-select>
+        <label>{{ 'import.timeFormat' | translate }}</label>
+      </p-floatlabel>
+    }
 
-  @if (crudConfiguration.importMode?.useDelete === true) {
-    <div class="flex items-center">
-      <p-checkbox
-        formControlName="useCurrentView"
-        class="mr-2"
-        (onChange)="onSubmit()"
-        [binary]="true"
-        inputId="chkUseCurrentView"></p-checkbox>
-      <label class="ml-2">{{ 'import.useCurrentView' | translate }}</label>
-    </div>
-  }
-</form>
-<br />
+    @if (crudConfiguration.importMode?.useDelete === true) {
+      <div class="flex items-center">
+        <p-checkbox
+          formControlName="useCurrentView"
+          class="mr-2"
+          (onChange)="onSubmit()"
+          [binary]="true"
+          inputId="chkUseCurrentView"></p-checkbox>
+        <label class="ml-2">{{ 'import.useCurrentView' | translate }}</label>
+      </div>
+    }
+  </form>
+  <br />
 
-@if (importData) {
-  @if (importData.errorToSaves.length > 0) {
+  @if (importData) {
+    @if (importData.errorToSaves.length > 0) {
+      <p-accordion class="w-full bia-import-accordion">
+        <p-accordion-panel class="bia-import-tab-error" [value]="0">
+          <p-accordion-header>
+            <div class="flex align-items-center">
+              <i class="pi pi-exclamation-triangle mr-2"></i>
+              <span class="vertical-align-middle"
+                >{{ 'bia.errors' | translate }}({{
+                  importData.errorToSaves.length
+                }})</span
+              >
+            </div>
+          </p-accordion-header>
+          <p-accordion-content>
+            <p class="m-0">
+              <bia-table
+                [elements]="importDataErrorsToDisplayInTable"
+                [paginator]="true"
+                [pageSizeOptions]="undefined"
+                [totalRecord]="importData.errorToSaves.length"
+                [columnToDisplays]="displayedColumnErrors"
+                [pageSize]="importDataTablesPageSize"
+                [configuration]="crudConfigurationError.fieldsConfig"
+                [showColSearch]="false"
+                [globalSearchValue]="''"
+                [canClickRow]="false"
+                [canSelectElement]="false"
+                [loading]="false"
+                scrollHeightValue="calc( 100vh - 440px)"
+                [ignoreSpecificOutput]="true"
+                (pageChange)="
+                  onTablePageChanges(
+                    $event,
+                    importDataErrorsToDisplayInTable,
+                    importData.errorToSaves
+                  )
+                "></bia-table>
+            </p>
+          </p-accordion-content>
+        </p-accordion-panel>
+      </p-accordion>
+    }
+    <br />
     <p-accordion class="w-full bia-import-accordion">
-      <p-accordion-panel class="bia-import-tab-error" [value]="0">
-        <p-accordion-header>
-          <div class="flex align-items-center">
-            <i class="pi pi-exclamation-triangle mr-2"></i>
-            <span class="vertical-align-middle"
-              >{{ 'bia.errors' | translate }}({{
-                importData.errorToSaves.length
-              }})</span
-            >
-          </div>
-        </p-accordion-header>
-        <p-accordion-content>
-          <p class="m-0">
-            <bia-table
-              [elements]="importDataErrorsToDisplayInTable"
-              [paginator]="true"
-              [pageSizeOptions]="undefined"
-              [totalRecord]="importData.errorToSaves.length"
-              [columnToDisplays]="displayedColumnErrors"
-              [pageSize]="importDataTablesPageSize"
-              [configuration]="crudConfigurationError.fieldsConfig"
-              [showColSearch]="false"
-              [globalSearchValue]="''"
-              [canClickRow]="false"
-              [canSelectElement]="false"
-              [loading]="false"
-              scrollHeightValue="calc( 100vh - 440px)"
-              [ignoreSpecificOutput]="true"
-              (pageChange)="
-                onTablePageChanges(
-                  $event,
-                  importDataErrorsToDisplayInTable,
-                  importData.errorToSaves
-                )
-              "></bia-table>
-          </p>
-        </p-accordion-content>
-      </p-accordion-panel>
+      @if (canUseInsert() === true) {
+        <p-accordion-panel
+          [value]="0"
+          [ngClass]="{ 'bia-import-selected': insertChecked === true }"
+          [disabled]="importData.toInserts.length === 0">
+          <p-accordion-header>
+            <div class="flex align-items-center">
+              <p-checkbox
+                [(ngModel)]="insertChecked"
+                [binary]="true"
+                inputId="chkInsert"
+                [disabled]="importData.toInserts.length === 0"
+                (click)="$event.stopPropagation()"
+                class="mr-2"></p-checkbox>
+              <i class="pi pi-plus mr-2"></i>
+              <span class="vertical-align-middle"
+                >{{ 'bia.toAdd' | translate }}({{
+                  importData.toInserts.length
+                }})</span
+              >
+            </div>
+          </p-accordion-header>
+          <p-accordion-content>
+            <p class="m-0">
+              @if (importData.toInserts.length > 0) {
+                <bia-table
+                  [elements]="importDataToInsertToDisplayInTable"
+                  [paginator]="true"
+                  [pageSizeOptions]="undefined"
+                  [totalRecord]="importData.toInserts.length"
+                  [columnToDisplays]="displayedColumns"
+                  [pageSize]="importDataTablesPageSize"
+                  [configuration]="crudConfiguration.fieldsConfig"
+                  [showColSearch]="false"
+                  [globalSearchValue]="''"
+                  [canClickRow]="false"
+                  [canSelectElement]="false"
+                  [loading]="false"
+                  scrollHeightValue="calc( 100vh - 440px)"
+                  [ignoreSpecificOutput]="true"
+                  (pageChange)="
+                    onTablePageChanges(
+                      $event,
+                      importDataToInsertToDisplayInTable,
+                      importData.toInserts
+                    )
+                  "></bia-table>
+              }
+            </p>
+          </p-accordion-content>
+        </p-accordion-panel>
+      }
+      @if (canUseUpdate() === true) {
+        <p-accordion-panel
+          [value]="1"
+          [ngClass]="{ 'bia-import-selected': updateChecked === true }"
+          [disabled]="importData.toUpdates.length === 0">
+          <p-accordion-header>
+            <div class="flex align-items-center">
+              <p-checkbox
+                [(ngModel)]="updateChecked"
+                [binary]="true"
+                inputId="chkUpdate"
+                [disabled]="importData.toUpdates.length === 0"
+                (click)="$event.stopPropagation()"
+                class="mr-2"></p-checkbox>
+              <i class="pi pi-sync mr-2"></i>
+              <span class="vertical-align-middle"
+                >{{ 'bia.toModify' | translate }}({{
+                  importData.toUpdates.length
+                }})</span
+              >
+            </div>
+          </p-accordion-header>
+          <p-accordion-content>
+            <p class="m-0">
+              @if (importData.toUpdates.length > 0) {
+                <bia-table
+                  [elements]="importDataToUpdateToDisplayInTable"
+                  [paginator]="true"
+                  [pageSizeOptions]="undefined"
+                  [totalRecord]="importData.toUpdates.length"
+                  [columnToDisplays]="displayedColumns"
+                  [pageSize]="importDataTablesPageSize"
+                  [configuration]="crudConfiguration.fieldsConfig"
+                  [showColSearch]="false"
+                  [globalSearchValue]="''"
+                  [canClickRow]="false"
+                  [canSelectElement]="false"
+                  [loading]="false"
+                  scrollHeightValue="calc( 100vh - 440px)"
+                  [ignoreSpecificOutput]="true"
+                  (pageChange)="
+                    onTablePageChanges(
+                      $event,
+                      importDataToUpdateToDisplayInTable,
+                      importData.toUpdates
+                    )
+                  "></bia-table>
+              }
+            </p>
+          </p-accordion-content>
+        </p-accordion-panel>
+      }
+      @if (canUseDelete() === true) {
+        <p-accordion-panel
+          [value]="2"
+          [ngClass]="{ 'bia-import-selected': deleteChecked === true }"
+          [disabled]="importData.toDeletes.length === 0">
+          <p-accordion-header>
+            <div class="flex align-items-center">
+              <p-checkbox
+                [(ngModel)]="deleteChecked"
+                [binary]="true"
+                inputId="chkDelete"
+                [disabled]="importData.toDeletes.length === 0"
+                (click)="$event.stopPropagation()"
+                class="mr-2"></p-checkbox>
+              <i class="pi pi-trash mr-2"></i>
+              <span class="mr-2 vertical-align-middle"
+                >{{ 'bia.toDelete' | translate }}({{
+                  importData.toDeletes.length
+                }})</span
+              >
+            </div>
+          </p-accordion-header>
+          <p-accordion-content>
+            <p class="m-0">
+              @if (importData.toDeletes.length > 0) {
+                <bia-table
+                  [elements]="importDataToDeleteToDisplayInTable"
+                  [paginator]="true"
+                  [pageSizeOptions]="undefined"
+                  [totalRecord]="importData.toDeletes.length"
+                  [columnToDisplays]="displayedColumns"
+                  [pageSize]="importDataTablesPageSize"
+                  [configuration]="crudConfiguration.fieldsConfig"
+                  [showColSearch]="false"
+                  [globalSearchValue]="''"
+                  [canClickRow]="false"
+                  [canSelectElement]="false"
+                  [loading]="false"
+                  scrollHeightValue="calc( 100vh - 440px)"
+                  [ignoreSpecificOutput]="true"
+                  (pageChange)="
+                    onTablePageChanges(
+                      $event,
+                      importDataToDeleteToDisplayInTable,
+                      importData.toDeletes
+                    )
+                  "></bia-table>
+              }
+            </p>
+          </p-accordion-content>
+        </p-accordion-panel>
+      }
     </p-accordion>
   }
   <br />
-  <p-accordion class="w-full bia-import-accordion">
-    @if (canUseInsert() === true) {
-      <p-accordion-panel
-        [value]="0"
-        [ngClass]="{ 'bia-import-selected': insertChecked === true }"
-        [disabled]="importData.toInserts.length === 0">
-        <p-accordion-header>
-          <div class="flex align-items-center">
-            <p-checkbox
-              [(ngModel)]="insertChecked"
-              [binary]="true"
-              inputId="chkInsert"
-              [disabled]="importData.toInserts.length === 0"
-              (click)="$event.stopPropagation()"
-              class="mr-2"></p-checkbox>
-            <i class="pi pi-plus mr-2"></i>
-            <span class="vertical-align-middle"
-              >{{ 'bia.toAdd' | translate }}({{
-                importData.toInserts.length
-              }})</span
-            >
-          </div>
-        </p-accordion-header>
-        <p-accordion-content>
-          <p class="m-0">
-            @if (importData.toInserts.length > 0) {
-              <bia-table
-                [elements]="importDataToInsertToDisplayInTable"
-                [paginator]="true"
-                [pageSizeOptions]="undefined"
-                [totalRecord]="importData.toInserts.length"
-                [columnToDisplays]="displayedColumns"
-                [pageSize]="importDataTablesPageSize"
-                [configuration]="crudConfiguration.fieldsConfig"
-                [showColSearch]="false"
-                [globalSearchValue]="''"
-                [canClickRow]="false"
-                [canSelectElement]="false"
-                [loading]="false"
-                scrollHeightValue="calc( 100vh - 440px)"
-                [ignoreSpecificOutput]="true"
-                (pageChange)="
-                  onTablePageChanges(
-                    $event,
-                    importDataToInsertToDisplayInTable,
-                    importData.toInserts
-                  )
-                "></bia-table>
-            }
-          </p>
-        </p-accordion-content>
-      </p-accordion-panel>
-    }
-    @if (canUseUpdate() === true) {
-      <p-accordion-panel
-        [value]="1"
-        [ngClass]="{ 'bia-import-selected': updateChecked === true }"
-        [disabled]="importData.toUpdates.length === 0">
-        <p-accordion-header>
-          <div class="flex align-items-center">
-            <p-checkbox
-              [(ngModel)]="updateChecked"
-              [binary]="true"
-              inputId="chkUpdate"
-              [disabled]="importData.toUpdates.length === 0"
-              (click)="$event.stopPropagation()"
-              class="mr-2"></p-checkbox>
-            <i class="pi pi-sync mr-2"></i>
-            <span class="vertical-align-middle"
-              >{{ 'bia.toModify' | translate }}({{
-                importData.toUpdates.length
-              }})</span
-            >
-          </div>
-        </p-accordion-header>
-        <p-accordion-content>
-          <p class="m-0">
-            @if (importData.toUpdates.length > 0) {
-              <bia-table
-                [elements]="importDataToUpdateToDisplayInTable"
-                [paginator]="true"
-                [pageSizeOptions]="undefined"
-                [totalRecord]="importData.toUpdates.length"
-                [columnToDisplays]="displayedColumns"
-                [pageSize]="importDataTablesPageSize"
-                [configuration]="crudConfiguration.fieldsConfig"
-                [showColSearch]="false"
-                [globalSearchValue]="''"
-                [canClickRow]="false"
-                [canSelectElement]="false"
-                [loading]="false"
-                scrollHeightValue="calc( 100vh - 440px)"
-                [ignoreSpecificOutput]="true"
-                (pageChange)="
-                  onTablePageChanges(
-                    $event,
-                    importDataToUpdateToDisplayInTable,
-                    importData.toUpdates
-                  )
-                "></bia-table>
-            }
-          </p>
-        </p-accordion-content>
-      </p-accordion-panel>
-    }
-    @if (canUseDelete() === true) {
-      <p-accordion-panel
-        [value]="2"
-        [ngClass]="{ 'bia-import-selected': deleteChecked === true }"
-        [disabled]="importData.toDeletes.length === 0">
-        <p-accordion-header>
-          <div class="flex align-items-center">
-            <p-checkbox
-              [(ngModel)]="deleteChecked"
-              [binary]="true"
-              inputId="chkDelete"
-              [disabled]="importData.toDeletes.length === 0"
-              (click)="$event.stopPropagation()"
-              class="mr-2"></p-checkbox>
-            <i class="pi pi-trash mr-2"></i>
-            <span class="mr-2 vertical-align-middle"
-              >{{ 'bia.toDelete' | translate }}({{
-                importData.toDeletes.length
-              }})</span
-            >
-          </div>
-        </p-accordion-header>
-        <p-accordion-content>
-          <p class="m-0">
-            @if (importData.toDeletes.length > 0) {
-              <bia-table
-                [elements]="importDataToDeleteToDisplayInTable"
-                [paginator]="true"
-                [pageSizeOptions]="undefined"
-                [totalRecord]="importData.toDeletes.length"
-                [columnToDisplays]="displayedColumns"
-                [pageSize]="importDataTablesPageSize"
-                [configuration]="crudConfiguration.fieldsConfig"
-                [showColSearch]="false"
-                [globalSearchValue]="''"
-                [canClickRow]="false"
-                [canSelectElement]="false"
-                [loading]="false"
-                scrollHeightValue="calc( 100vh - 440px)"
-                [ignoreSpecificOutput]="true"
-                (pageChange)="
-                  onTablePageChanges(
-                    $event,
-                    importDataToDeleteToDisplayInTable,
-                    importData.toDeletes
-                  )
-                "></bia-table>
-            }
-          </p>
-        </p-accordion-content>
-      </p-accordion-panel>
-    }
-  </p-accordion>
-}
-<br />
-<div class="flex flex-row gap-1 justify-content-end">
-  <button
-    pButton
-    icon="pi pi-times"
-    label="{{ 'bia.cancel' | translate }}"
-    type="button"
-    class="p-button-outlined"
-    (click)="onCancel()"></button>
-  <button
-    pButton
-    [disabled]="
-      updateChecked !== true && insertChecked !== true && deleteChecked !== true
-    "
-    label="{{ 'primeng.apply' | translate }}"
-    type="button"
-    (click)="onSave()"></button>
+  <div class="footer-container bia-form-fixed-buttons">
+    <a
+      [href]="'bia.importHelpLink' | translate"
+      target="_blank"
+      class="help-link"
+      ><i
+        class="pi pi-question-circle help"
+        [pTooltip]="'bia.importHelpClickForHelp' | translate"
+        tooltipPosition="top"></i
+    ></a>
+    <div class="flex gap-3">
+      <button
+        pButton
+        icon="pi pi-times"
+        label="{{ 'bia.cancel' | translate }}"
+        type="button"
+        class="p-button-outlined"
+        (click)="onCancel()"></button>
+      <button
+        pButton
+        [disabled]="
+          updateChecked !== true &&
+          insertChecked !== true &&
+          deleteChecked !== true
+        "
+        label="{{ 'primeng.apply' | translate }}"
+        type="button"
+        (click)="onSave()"></button>
+    </div>
+  </div>
 </div>
-
 @if (loading) {
   <bia-spinner [overlay]="true"></bia-spinner>
 }
