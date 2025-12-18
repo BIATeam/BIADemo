@@ -5,7 +5,9 @@
 
 namespace TheBIADevCompany.BIADemo.Application.Fleet
 {
+    using System.IO;
     using System.IO.Compression;
+    using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Archive;
     using BIA.Net.Core.Domain.RepoContract;
@@ -46,7 +48,15 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
         protected override async Task AddEntriesToArchiveAsync(Plane item, ZipArchive archive)
         {
             // Fill here the list of additional entries to add to the archive
-            await this.AppendEntriesToArchiveAsync(archive, []);
+            await this.AppendEntriesToArchiveAsync(
+                archive,
+                [
+                    new ArchiveEntry
+                    {
+                        ContentStream = new MemoryStream(Encoding.UTF8.GetBytes("TEST")),
+                        EntryName = "test.txt",
+                    },
+                ]);
         }
     }
 }
