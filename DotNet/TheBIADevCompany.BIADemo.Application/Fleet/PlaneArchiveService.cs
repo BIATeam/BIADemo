@@ -50,13 +50,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
             // Fill here the list of additional entries to add to the archive
             await this.AppendEntriesToArchiveAsync(
                 archive,
-                [
-                    new ArchiveEntry
-                    {
-                        ContentStream = new MemoryStream(Encoding.UTF8.GetBytes("TEST")),
-                        EntryName = "test.txt",
-                    },
-                ]);
+                [new ArchiveEntry { ContentStream = new MemoryStream(Encoding.UTF8.GetBytes("TEST")), EntryName = "test.txt" }]);
         }
     }
 }
