@@ -35,6 +35,7 @@ import { FloatLabel } from 'primeng/floatlabel';
 import { Ripple } from 'primeng/ripple';
 import { Select } from 'primeng/select';
 import { TablePageEvent } from 'primeng/table';
+import { Tooltip } from 'primeng/tooltip';
 import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
 import { BiaTableComponent } from '../../../../components/table/bia-table/bia-table.component';
 import { CrudConfig } from '../../model/crud-config';
@@ -66,6 +67,7 @@ interface FormatExample {
     SpinnerComponent,
     TranslateModule,
     FloatLabel,
+    Tooltip,
   ],
 })
 export class CrudItemImportFormComponent<TDto extends { id: number | string }> {

@@ -616,8 +616,8 @@ export class CrudItemsIndexComponent<
     fileName = this.translateService.instant(fileName);
 
     const selectedView = this.biaTableControllerComponent.getSelectedView();
-    if (selectedView?.name && selectedView.name.length > 0) {
-      fileName = `${fileName}-${selectedView}`;
+    if (!useAllColumn && selectedView?.name && selectedView.name.length > 0) {
+      fileName = `${fileName}-${selectedView.name}`;
     }
 
     const columns: { [key: string]: string } = {};

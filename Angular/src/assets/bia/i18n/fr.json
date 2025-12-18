@@ -72,6 +72,8 @@
     "id": "id",
     "ignore": "Ignorer",
     "import": "Importer",
+    "importHelpLink": "https://biateam.github.io/BIADocs/docs/UserGuide/ImportFeatureFr",
+    "importHelpClickForHelp": "Cliquer pour consulter la page d'aide de la fonctionnalité d'import",
     "info": "Info",
     "itemsBySearch": "Élements par recherche",
     "itemsPerPage": "Élements par page",
