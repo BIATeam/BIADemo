@@ -185,7 +185,7 @@ namespace BIA.Net.Core.Application.Archive
                 {
                     using var archive = new ZipArchive(zipStream, ZipArchiveMode.Create, leaveOpen: false);
                     var jsonEntry = archive.CreateEntry(targetArchiveFileName.Replace(".zip", ".json"));
-                    await using (var entryStream = await jsonEntry.OpenAsync())
+                    await using (var entryStream = jsonEntry.Open())
                     {
                         await using var writer = new StreamWriter(entryStream);
                         await writer.WriteAsync(jsonContent);
