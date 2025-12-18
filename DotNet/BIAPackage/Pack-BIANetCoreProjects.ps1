@@ -1,5 +1,4 @@
-﻿$scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
-$BIAPackagePath = Resolve-Path -Path "$scriptPath\..\DotNet\BIAPackage"
+﻿$BIAPackagePath = split-path -parent $MyInvocation.MyCommand.Definition
 $Configuration = "Release"
 
 # Resolve path
@@ -10,11 +9,11 @@ if (-not $packageFullPath) {
 }
 $packageFullPath = $packageFullPath.Path
 
-Write-Host "Searching for BIA.Net.Core projects in '$packageFullPath'..."
-$projects = Get-ChildItem -Path $packageFullPath -Recurse -Filter "BIA.Net.Core*.csproj" -File -ErrorAction SilentlyContinue
+Write-Host "Searching for BIA.Net projects in '$packageFullPath'..."
+$projects = Get-ChildItem -Path $packageFullPath -Recurse -Filter "BIA.Net.*.csproj" -File -ErrorAction SilentlyContinue
 
 if (-not $projects -or $projects.Count -eq 0) {
-    Write-Warning "No 'BIA.Net.Core*' projects found in $packageFullPath"
+    Write-Warning "No 'BIA.Net.*' projects found in $packageFullPath"
     exit 0
 }
 
