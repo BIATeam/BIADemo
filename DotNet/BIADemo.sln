@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.2.32516.85
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11222.15 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 - Presentation", "01 - Presentation", "{CD137582-30F5-4875-8481-C9017FAC9AE3}"
 EndProject
@@ -35,10 +35,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AdditionalFiles", "Addition
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		BIA.ruleset = BIA.ruleset
-		BIAToolKit.json = BIAToolKit.json
-		CHANGELOG.md = CHANGELOG.md
 		Directory.Build.props = Directory.Build.props
-		README.md = README.md
+		Directory.Packages.Project.props = Directory.Packages.Project.props
+		..\README.md = ..\README.md
 		Switch-To-Nuget.ps1 = Switch-To-Nuget.ps1
 		Switch-To-Project.ps1 = Switch-To-Project.ps1
 	EndProjectSection
