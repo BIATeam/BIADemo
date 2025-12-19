@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Announcement } from 'packages/bia-ng/models/public-api';
@@ -25,26 +25,8 @@ import Quill from 'quill';
     ReactiveFormsModule,
   ],
 })
-export class AnnouncementFormComponent
-  extends CrudItemFormComponent<Announcement>
-  implements AfterViewInit
-{
+export class AnnouncementFormComponent extends CrudItemFormComponent<Announcement> {
   quillEditor: Quill | undefined;
-
-  ngAfterViewInit(): void {
-    const rawContentForm = this.biaFormComponent.form?.get('rawContent');
-    rawContentForm?.valueChanges.subscribe((val: string) => {
-      if (val) {
-        const newValue = rawContentForm.value.replace(/<\/?p>/g, '');
-        const editorCursorIndex = this.quillEditor?.getSelection()?.index;
-
-        if (editorCursorIndex) {
-          rawContentForm.setValue(newValue, { emitEvent: false });
-          this.quillEditor!.setSelection(editorCursorIndex);
-        }
-      }
-    });
-  }
 
   onEditorInit(event: EditorInitEvent) {
     this.quillEditor = event.editor as Quill;
@@ -60,5 +42,12 @@ export class AnnouncementFormComponent
         return false;
       }
     );
+  }
+
+  override onSave(announcement: Announcement) {
+    if (announcement.rawContent) {
+      announcement.rawContent = announcement.rawContent.replace(/<\/?p>/g, '');
+    }
+    super.onSave(announcement);
   }
 }
