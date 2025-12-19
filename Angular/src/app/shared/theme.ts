@@ -446,7 +446,7 @@ const MyPreset = definePreset(Material, {
         },
         formField: {
           background: '{surface.50}',
-          disabledBackground: '{surface.100}',
+          disabledBackground: '{surface.200}',
           filledBackground: '{surface.50}',
           filledHoverBackground: '{surface.50}',
           filledFocusBackground: '{surface.50}',
