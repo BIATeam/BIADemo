@@ -71,6 +71,8 @@ export class DynamicLayoutComponent<TDto extends { id: number | string }>
   dynamicComponent: ComponentRef<any>;
 
   leftWidth = 70;
+  minLeftWidth = '36rem';
+  minRightWidth = '25rem';
   heightOffset = '+ 1.5rem';
   allowSplitScreenResize = true;
 
@@ -145,6 +147,8 @@ export class DynamicLayoutComponent<TDto extends { id: number | string }>
     this.displayPageComponent = true;
     this.configuration = snapshot.data['configuration'];
     this.leftWidth = snapshot.data['leftWidth'] ?? this.leftWidth;
+    this.minLeftWidth = snapshot.data['minLeftWidth'] ?? this.minLeftWidth;
+    this.minRightWidth = snapshot.data['minRightWidth'] ?? this.minRightWidth;
     this.heightOffset = snapshot.data['heightOffset'] ?? this.heightOffset;
     this.previousIsSplit = this.configuration?.useSplit ?? false;
     this.maxScanDepth = snapshot.data['maxScanDepth'] ?? this.maxScanDepth;
@@ -173,6 +177,8 @@ export class DynamicLayoutComponent<TDto extends { id: number | string }>
       this.style = child.data['style'] ?? this.style;
       this.maximizable = child.data['maximizable'] ?? true;
       this.leftWidth = child.data['leftWidth'] ?? this.leftWidth;
+      this.minLeftWidth = snapshot.data['minLeftWidth'] ?? this.minLeftWidth;
+      this.minRightWidth = snapshot.data['minRightWidth'] ?? this.minRightWidth;
 
       if (child.data['layoutMode'] !== undefined) {
         this.layoutMode = child.data['layoutMode'];
