@@ -11,7 +11,7 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="BIA.Net.Core.WorkerService" Version="5.2.2" />
+    <PackageReference Include="BIA.Net.Core.WorkerService" Version="5.2.3" />
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="[8.0.*,9.0.0)" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
     <PackageReference Include="NLog.Extensions.Hosting" Version="6.0.*" />
