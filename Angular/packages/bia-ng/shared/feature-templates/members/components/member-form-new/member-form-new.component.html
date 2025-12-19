@@ -19,13 +19,14 @@
           </p-floatlabel>
         </div>
         @if (canAddFromDirectory) {
-          <div class="app-field-container flex-1" style="max-width: 10%">
+          <div
+            class="app-field-container flex-1 align-right"
+            style="max-width: 10%">
             <button
               pButton
-              pRipple
               type="button"
+              [rounded]="true"
               icon="pi pi-plus"
-              class="p-button-sm p-button-rounded p-button-text align-right"
               (click)="addUserFromDirectory()"></button>
           </div>
         }
