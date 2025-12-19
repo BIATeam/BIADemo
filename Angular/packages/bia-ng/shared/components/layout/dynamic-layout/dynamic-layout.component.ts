@@ -20,7 +20,10 @@ import {
   RouterOutlet,
 } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { BiaInjectorService } from 'packages/bia-ng/core/public-api';
+import {
+  BiaAppConstantsService,
+  BiaInjectorService,
+} from 'packages/bia-ng/core/public-api';
 import { SharedModule } from 'primeng/api';
 import { Dialog } from 'primeng/dialog';
 import { BehaviorSubject, filter } from 'rxjs';
@@ -162,7 +165,7 @@ export class DynamicLayoutComponent<TDto extends { id: number | string }>
     let childScanDepth = 0;
     this.hasChildren = false;
     this.layoutMode = undefined;
-    this.style = { minWidth: '50vw' };
+    this.style = { minWidth: BiaAppConstantsService.defaultPopupMinWidth };
     this.popupTitle = '';
     while (child && childScanDepth < this.maxScanDepth) {
       this.hasChildren = true;

@@ -10,7 +10,10 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { BiaInjectorService } from 'packages/bia-ng/core/public-api';
+import {
+  BiaAppConstantsService,
+  BiaInjectorService,
+} from 'packages/bia-ng/core/public-api';
 import { SharedModule } from 'primeng/api';
 import { Dialog } from 'primeng/dialog';
 
@@ -43,7 +46,7 @@ export class PopupLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     const snapshot = this.activatedRoute.snapshot;
 
     this.popupTitle = snapshot.data['title'];
-    this.style = { minWidth: '50vw' };
+    this.style = { minWidth: BiaAppConstantsService.defaultPopupMinWidth };
     if (snapshot.data['style']) {
       this.style = snapshot.data['style'];
     }

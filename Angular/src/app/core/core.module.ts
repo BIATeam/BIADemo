@@ -16,6 +16,7 @@ import {
   APP_SUPPORTED_TRANSLATIONS,
   APP_TANSLATION_IDS_TO_NOT_ADD_MANUALY,
   DEFAULT_PAGE_SIZE,
+  DEFAULT_POPUP_MINWIDTH,
   TeamTypeRightPrefix,
 } from '../shared/constants';
 import { NAVIGATION } from '../shared/navigation';
@@ -43,7 +44,8 @@ const ONLINEOFFLINE = [
       APP_SUPPORTED_TRANSLATIONS,
       DEFAULT_PAGE_SIZE,
       TeamTypeRightPrefix,
-      APP_TANSLATION_IDS_TO_NOT_ADD_MANUALY
+      APP_TANSLATION_IDS_TO_NOT_ADD_MANUALY,
+      DEFAULT_POPUP_MINWIDTH
     ),
   ],
   // Begin BIADemo

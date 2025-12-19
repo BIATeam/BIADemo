@@ -21,6 +21,7 @@ export const THEME_LIGHT = 'light';
 export const THEME_DARK = 'dark';
 
 export const TABLE_FILTER_GLOBAL = 'global|';
+export const DEFAULT_POPUP_MINWIDTH = '60vw';
 
 export enum ViewType {
   System = 0,
