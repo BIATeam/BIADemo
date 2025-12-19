@@ -42,10 +42,13 @@ export const announcementFieldsConfiguration: BiaFieldsConfig<Announcement> = {
 
 // TODO after creation of CRUD Announcement : adapt the form layout configuration
 export const announcementFormLayoutConfiguration: BiaFormLayoutConfig<Announcement> =
-  new BiaFormLayoutConfig([
-    new BiaFormLayoutConfigRow([
-      new BiaFormLayoutConfigField('start'),
-      new BiaFormLayoutConfigField('end'),
-      new BiaFormLayoutConfigField('type'),
-    ]),
-  ]);
+  new BiaFormLayoutConfig(
+    [
+      new BiaFormLayoutConfigRow([
+        new BiaFormLayoutConfigField('start'),
+        new BiaFormLayoutConfigField('end'),
+        new BiaFormLayoutConfigField('type'),
+      ]),
+    ],
+    false
+  );
