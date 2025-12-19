@@ -1,4 +1,6 @@
-export const allEnvironments = {
+import { AllEnvironments } from 'packages/bia-ng/models/public-api';
+
+export const allEnvironments: AllEnvironments & { [key: string]: any } = {
   appTitle: 'BIADemo',
   companyName: 'TheBIADevCompany',
   enableNotifications: true,
