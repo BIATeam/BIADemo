@@ -253,7 +253,7 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
     this.initEditableRow(null);
   }
 
-  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler() {
+  @HostListener('document:keydown.escape') onKeydownHandler() {
     this.escape();
   }
 
