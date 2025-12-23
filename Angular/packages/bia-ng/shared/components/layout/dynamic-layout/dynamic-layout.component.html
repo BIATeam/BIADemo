@@ -24,13 +24,17 @@
   <div
     #rightContainer
     [hidden]="!hasChildren"
-    class="right-container bia-classic-page-margin"
+    class="bia-right-container"
     [ngStyle]="{
       height: defaultContainerHeight,
       width: 100 - leftWidth + '%',
       'min-width': isSplit ? minRightWidth : '0',
     }">
-    <router-outlet #outlet="outlet"></router-outlet>
+    <div class="bia-right-container-viewport">
+      <div class="bia-right-scrollable-container bia-classic-page-margin">
+        <router-outlet #outlet="outlet"></router-outlet>
+      </div>
+    </div>
   </div>
 } @else if (isPopupWithVisibilityCheck) {
   <p-dialog

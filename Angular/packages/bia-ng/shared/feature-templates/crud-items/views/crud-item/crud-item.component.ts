@@ -59,10 +59,9 @@ export abstract class CrudItemComponent<
 
   get showFullPageButton(): boolean {
     return (
-      ((this.crudConfiguration.showIcons.showPopup ||
+      (this.crudConfiguration.showIcons.showPopup ||
         this.crudConfiguration.showIcons.showSplit) &&
-        this.crudConfiguration.usePopup) ||
-      this.crudConfiguration.useSplit
+      (this.crudConfiguration.usePopup || this.crudConfiguration.useSplit)
     );
   }
 

@@ -209,6 +209,42 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
   font-family: 'oswald-light';
 }
 
+.bia-split-page-layout div.bia-right-container {
+  flex: 0 0 auto;
+  overflow: auto;
+
+  .bia-right-container-viewport {
+    display: flex;
+    transform: scale(1);
+    height: 100%;
+    overflow: auto;
+
+    .bia-right-scrollable-container {
+      width: 100%;
+      overflow: auto;
+
+      .bia-form:not(:has(> .bia-form-header)) {
+        padding-top: 1rem;
+      }
+
+      // forms button always visible
+      .bia-form:has(> .bia-form-fixed-buttons) {
+        padding-bottom: 1.5rem;
+
+        .bia-form-fixed-buttons:has(> div) {
+          background: var(--p-dialog-background);
+          position: fixed;
+          bottom: 0;
+          right: 1rem;
+          left: 0;
+          padding: 0.75rem;
+          z-index: 5;
+        }
+      }
+    }
+  }
+}
+
 .p-dialog {
   max-width: 100%;
 
@@ -216,6 +252,7 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
     // forms button always visible
     .bia-form:has(> .bia-form-fixed-buttons) {
       padding-bottom: 1.5rem;
+
       .bia-form-fixed-buttons:has(> div) {
         background: var(--p-dialog-background);
         position: fixed;
@@ -229,6 +266,7 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
     // forms header always visible
     .bia-form:has(> .bia-form-header) {
       padding-top: 2rem;
+
       .bia-form-header:has(> div) {
         background: var(--p-dialog-background);
         position: fixed;
@@ -250,6 +288,7 @@ body .table-compact p-table .p-datatable .p-datatable-tbody > tr > td,
   div {
     padding: 0rem;
     border: none;
+
     p-menubarsub {
       .p-menubar-root-list {
         width: auto;
