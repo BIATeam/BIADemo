@@ -65,7 +65,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     'bia.views.user',
   ];
   translations: any;
-  views: View[];
+  views?: View[];
 
   _selectedView: number = this.undefinedView;
   set selectedView(value: number) {
@@ -225,32 +225,36 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   protected getCorrespondingViewId(preference: string): number {
     const pref: BiaTableState = JSON.parse(preference);
     pref.columnWidths = undefined;
-    if (this.defaultViewPref !== undefined) {
-      if (this.areViewsEgals(pref, this.defaultViewPref)) {
-        return 0;
-      }
-    } else {
-      console.log('ViewList component Error: defaultViewPref is not defined');
-    }
 
-    if (this.views) {
-      const correspondingViews = this.views.filter(v => {
-        const viewPref: BiaTableState = JSON.parse(v.preference);
-        return this.areViewsEgals(pref, viewPref);
-      });
+    if (this.defaultViewPref !== undefined || this.views) {
+      const correspondingViews = [];
+      if (this.views) {
+        this.views
+          .filter(v => {
+            const viewPref: BiaTableState = JSON.parse(v.preference);
+            return this.areViewsEgals(pref, viewPref);
+          })
+          .map(v => v.id);
+      }
+
+      if (this.defaultViewPref !== undefined) {
+        if (this.areViewsEgals(pref, this.defaultViewPref)) {
+          correspondingViews.push(this.defaultView);
+        }
+      }
 
       if (correspondingViews?.length > 0) {
         // There may be two identical views.
         let correspondingView = correspondingViews.find(
-          v => v.id === this.selectedView
+          id => id === this.currentSelectedView
         );
 
-        if (!correspondingView) {
+        if (correspondingView === undefined) {
           correspondingView = correspondingViews[0];
         }
 
-        if (correspondingView) {
-          return correspondingView.id;
+        if (correspondingView !== undefined) {
+          return correspondingView;
         }
       }
     }
@@ -464,16 +468,13 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     this.defaultView = defaultView;
   }
   protected initViewByQueryParam(views: View[]) {
-    //<a [routerLink]="['/planes-view']" [queryParams]="{ view: 'test2' }">link to plane view</a>
     if (views?.length > 0) {
       const viewName = this.route.snapshot.queryParamMap.get(QUERY_STRING_VIEW);
       if (viewName && viewName.length > 0) {
         const view = views.find(v => v.name === viewName);
         if (view && view.id > 0) {
           this.urlView = view.id;
-          //setTimeout(() => {
           this.selectedView = view.id;
-          //});
         }
       }
     }
@@ -483,8 +484,9 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     preference: string | null,
     manualChange: boolean
   ) {
-    //setTimeout(() => {
-    if (!manualChange) this.initViewByQueryParam(this.views);
+    if (!manualChange && this.views) {
+      this.initViewByQueryParam(this.views);
+    }
     if (preference && !this.urlView) {
       const correspondingViewId = this.getCorrespondingViewId(preference);
       if (!this.isFirstEmitDone || this.selectedView !== correspondingViewId) {
@@ -498,10 +500,9 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
       if (this.selectedView === this.undefinedView) {
         this.selectedView = this.defaultView;
       }
-      if (this.selectedView !== 0) {
+      if (this.selectedView !== 0 && this.views) {
         const view = this.views.find(v => v.id === this.selectedView);
         if (view) {
-          //this.saveViewState(view.preference);
           this.isFirstEmitDone = true;
           setTimeout(() => {
             this.viewChange.emit(view.preference);
@@ -514,19 +515,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
         });
       }
     }
-    //});
   }
-  /*
-    protected saveViewState(stateString: string) {
-      if (stateString) {
-        const state = JSON.parse(stateString);
-        if (state && !state.filters) {
-          state.filters = {};
-        }
-        stateString = JSON.stringify(state);
-        sessionStorage.setItem(this.tableStateKey, stateString);
-      }
-    }*/
 
   protected getViewState(): string | null {
     const preferences = sessionStorage.getItem(this.tableStateKey);
