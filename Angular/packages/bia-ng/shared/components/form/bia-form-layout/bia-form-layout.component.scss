@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 :host > div:last-child {
   margin-bottom: -0.5rem;
 }
@@ -19,7 +21,7 @@
 
 // PrimeFlex column classes (base + responsive) to override inside the split container
 @function pf-col-width($i) {
-  @return percentage($i / 12);
+  @return math.percentage(calc($i / 12));
 }
 
 @mixin pf-apply-col-set($prefix) {
