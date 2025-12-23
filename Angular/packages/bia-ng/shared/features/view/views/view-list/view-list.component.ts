@@ -227,9 +227,9 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     pref.columnWidths = undefined;
 
     if (this.defaultViewPref !== undefined || this.views) {
-      const correspondingViews = [];
+      let correspondingViews: number[] = [];
       if (this.views) {
-        this.views
+        correspondingViews = this.views
           .filter(v => {
             const viewPref: BiaTableState = JSON.parse(v.preference);
             return this.areViewsEgals(pref, viewPref);
