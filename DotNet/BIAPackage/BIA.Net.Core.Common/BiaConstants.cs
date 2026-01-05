@@ -209,6 +209,16 @@ namespace BIA.Net.Core.Common
             /// Custom field user login.
             /// </summary>
             public const string UserLoginCustomField = "UserLogin";
+
+            /// <summary>
+            /// Display login for the user in audit historical.
+            /// </summary>
+            public const string HistoricalUserDisplayLogin = "Login";
+
+            /// <summary>
+            /// Display full name for the user in audit historical.
+            /// </summary>
+            public const string HistoricalUserDisplayFullName = "Fullname";
         }
 
         /// <summary>

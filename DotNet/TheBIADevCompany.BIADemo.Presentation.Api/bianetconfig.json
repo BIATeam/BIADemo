@@ -11,7 +11,7 @@
       },
       "AuditConfiguration": {
         "IsActive": true,
-        "ConnectionStringName": "ProjectDatabase"
+        "HistoricalUserDisplay": "Fullname"
       }
     },
     "ApiFeatures": {

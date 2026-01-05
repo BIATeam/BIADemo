@@ -9,6 +9,7 @@ namespace BIA.Net.Core.Domain.Service
     using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Reflection.Metadata.Ecma335;
     using System.Text;
     using System.Threading.Tasks;
     using System.Transactions;
@@ -30,8 +31,10 @@ namespace BIA.Net.Core.Domain.Service
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using BIA.Net.Core.Domain.Specification;
+    using BIA.Net.Core.Domain.User.Entities;
     using Microsoft.Extensions.DependencyInjection;
     using Newtonsoft.Json;
+    using static BIA.Net.Core.Common.BiaConstants;
 
     /// <summary>
     /// Base class for a service that need an implementation of a <see cref="DomainServiceBase{TEntity, TKey}"/> with operations.
@@ -380,9 +383,10 @@ namespace BIA.Net.Core.Domain.Service
         }
 
         /// <inheritdoc />
-        public virtual async Task<List<EntityHistoricalEntryDto>> GetHistoricalAsync(TKey id)
+        public virtual async Task<List<EntityHistoricalEntryDto>> GetHistoricalAsync<TUserEntity>(TKey id)
+            where TUserEntity : BaseEntityUser
         {
-            return await this.GetHistoricalGenericAsync<TDto, TMapper>(id);
+            return await this.GetHistoricalGenericAsync<TDto, TMapper, TUserEntity>(id);
         }
 
         /// <summary>
@@ -1142,21 +1146,18 @@ namespace BIA.Net.Core.Domain.Service
         /// </summary>
         /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
         /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
+        /// <typeparam name="TUserEntity">The type of User Entity.</typeparam>
         /// <param name="id">The item ID.</param>
         /// <returns>Collection of <see cref="EntityHistoricalEntryDto>"/>.</returns>
-        protected virtual async Task<List<EntityHistoricalEntryDto>> GetHistoricalGenericAsync<TOtherDto, TOtherMapper>(TKey id)
+        protected virtual async Task<List<EntityHistoricalEntryDto>> GetHistoricalGenericAsync<TOtherDto, TOtherMapper, TUserEntity>(TKey id)
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
+            where TUserEntity : BaseEntityUser
         {
             return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
             {
                 var allAudits = await this.Repository.GetAuditsAsync(id);
                 var auditsPerSeconds = allAudits.Aggregate(new List<List<IAuditEntity>>(), (groups, audit) =>
-                {
-                    return GroupAuditPerSeconds(groups, audit);
-                });
-
-                static List<List<IAuditEntity>> GroupAuditPerSeconds(List<List<IAuditEntity>> groups, IAuditEntity audit)
                 {
                     if (groups.Count == 0)
                     {
@@ -1178,7 +1179,11 @@ namespace BIA.Net.Core.Domain.Service
                     }
 
                     return groups;
-                }
+                });
+
+                var auditsLogins = allAudits.Select(audit => audit.AuditUserLogin).Distinct().ToList();
+                var auditsUsers = await this.Repository.ServiceProvider.GetRequiredService<ITGenericRepository<TUserEntity, int>>().GetAllResultAsync(x => new { x.FirstName, x.LastName, x.Login }, filter: user => auditsLogins.Contains(user.Login), isReadOnlyMode: true);
+                var auditsUsersFullNamePerLogin = auditsUsers.ToDictionary(user => user.Login, user => $"{user.LastName} {user.FirstName}");
 
                 var mapper = this.InitMapper<TOtherDto, TOtherMapper>();
                 var historical = new List<EntityHistoricalEntryDto>();
@@ -1187,14 +1192,14 @@ namespace BIA.Net.Core.Domain.Service
                     var entry = new EntityHistoricalEntryDto
                     {
                         EntryDateTime = audits[0].AuditDate,
-                        EntryUserLogin = audits[0].AuditUserLogin,
+                        EntryUser = this.GetHistoricalUserDisplayFromAuditUserLogin(audits[0].AuditUserLogin, auditsUsersFullNamePerLogin),
                     };
 
                     // Single audit with no Update Action and no Linked Audit
-                    var createOrDeleteAudit = audits.SingleOrDefault(audit => audit.AuditAction != Core.Common.BiaConstants.Audit.UpdateAction && (mapper.AuditMapper is null || (!mapper.AuditMapper.LinkedAuditMappers.Any(mapper => mapper.LinkedAuditEntityType == audit.GetType()))));
+                    var createOrDeleteAudit = audits.SingleOrDefault(audit => audit.AuditAction != Audit.UpdateAction && (mapper.AuditMapper is null || (!mapper.AuditMapper.LinkedAuditMappers.Any(mapper => mapper.LinkedAuditEntityType == audit.GetType()))));
                     if (createOrDeleteAudit is not null)
                     {
-                        entry.EntryType = createOrDeleteAudit.AuditAction == Core.Common.BiaConstants.Audit.InsertAction ? EntityHistoricEntryType.Create : EntityHistoricEntryType.Delete;
+                        entry.EntryType = createOrDeleteAudit.AuditAction == Audit.InsertAction ? EntityHistoricEntryType.Create : EntityHistoricEntryType.Delete;
                     }
                     else
                     {
@@ -1207,6 +1212,22 @@ namespace BIA.Net.Core.Domain.Service
 
                 return historical;
             });
+        }
+
+        /// <summary>
+        /// Get the historical user display from audit user login.
+        /// </summary>
+        /// <param name="auditUserLogin">The audit user login.</param>
+        /// <param name="auditUsersFullNamePerLogin">The audits users full name per login.</param>
+        /// <returns><see cref="string"/> of the historical user to display.</returns>
+        protected virtual string GetHistoricalUserDisplayFromAuditUserLogin(string auditUserLogin, Dictionary<string, string> auditUsersFullNamePerLogin)
+        {
+            return this.BiaNetSection?.CommonFeatures?.AuditConfiguration?.HistoricalUserDisplay switch
+            {
+                Audit.HistoricalUserDisplayFullName => auditUsersFullNamePerLogin.TryGetValue(auditUserLogin, out string auditUserFullName) ? auditUserFullName : string.Empty,
+                Audit.HistoricalUserDisplayLogin => auditUserLogin,
+                _ => string.Empty,
+            };
         }
 
         /// <summary>
@@ -1401,10 +1422,10 @@ namespace BIA.Net.Core.Domain.Service
 
                     switch (audit.AuditAction)
                     {
-                        case Core.Common.BiaConstants.Audit.InsertAction:
+                        case Audit.InsertAction:
                             entryModification.NewValue = linkedAuditEntityDisplayPropertyValue;
                             break;
-                        case Core.Common.BiaConstants.Audit.DeleteAction:
+                        case Audit.DeleteAction:
                             entryModification.OldValue = linkedAuditEntityDisplayPropertyValue;
                             break;
                     }

@@ -29,8 +29,8 @@ namespace BIA.Net.Core.Domain.Dto.Historic
         public DateTime EntryDateTime { get; set; }
 
         /// <summary>
-        /// Gets or sets the EntryUserLogin.
+        /// Gets or sets the EntryUser.
         /// </summary>
-        public string EntryUserLogin { get; set; }
+        public string EntryUser { get; set; }
     }
 }
