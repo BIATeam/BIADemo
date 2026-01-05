@@ -1224,7 +1224,7 @@ namespace BIA.Net.Core.Domain.Service
         {
             return this.BiaNetSection?.CommonFeatures?.AuditConfiguration?.HistoricalUserDisplay switch
             {
-                Audit.HistoricalUserDisplayFullName => auditUsersFullNamePerLogin.TryGetValue(auditUserLogin, out string auditUserFullName) ? auditUserFullName : string.Empty,
+                Audit.HistoricalUserDisplayFullName => auditUsersFullNamePerLogin.TryGetValue(auditUserLogin, out string auditUserFullName) ? auditUserFullName : auditUserLogin,
                 Audit.HistoricalUserDisplayLogin => auditUserLogin,
                 _ => string.Empty,
             };
