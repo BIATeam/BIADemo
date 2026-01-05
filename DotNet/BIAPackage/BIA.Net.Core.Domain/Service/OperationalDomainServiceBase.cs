@@ -35,6 +35,7 @@ namespace BIA.Net.Core.Domain.Service
     using Microsoft.Extensions.DependencyInjection;
     using Newtonsoft.Json;
     using static BIA.Net.Core.Common.BiaConstants;
+    using static BIA.Net.Core.Common.BiaRights;
 
     /// <summary>
     /// Base class for a service that need an implementation of a <see cref="DomainServiceBase{TEntity, TKey}"/> with operations.
@@ -1181,10 +1182,6 @@ namespace BIA.Net.Core.Domain.Service
                     return groups;
                 });
 
-                var auditsLogins = allAudits.Select(audit => audit.AuditUserLogin).Distinct().ToList();
-                var auditsUsers = await this.Repository.ServiceProvider.GetRequiredService<ITGenericRepository<TUserEntity, int>>().GetAllResultAsync(x => new { x.FirstName, x.LastName, x.Login }, filter: user => auditsLogins.Contains(user.Login), isReadOnlyMode: true);
-                var auditsUsersFullNamePerLogin = auditsUsers.ToDictionary(user => user.Login, user => $"{user.LastName} {user.FirstName}");
-
                 var mapper = this.InitMapper<TOtherDto, TOtherMapper>();
                 var historical = new List<EntityHistoricalEntryDto>();
                 foreach (var audits in auditsPerSeconds)
@@ -1192,7 +1189,7 @@ namespace BIA.Net.Core.Domain.Service
                     var entry = new EntityHistoricalEntryDto
                     {
                         EntryDateTime = audits[0].AuditDate,
-                        EntryUser = this.GetHistoricalUserDisplayFromAuditUserLogin(audits[0].AuditUserLogin, auditsUsersFullNamePerLogin),
+                        EntryUser = audits[0].AuditUserLogin,
                     };
 
                     // Single audit with no Update Action and no Linked Audit
@@ -1210,8 +1207,37 @@ namespace BIA.Net.Core.Domain.Service
                     historical.Add(entry);
                 }
 
+                await this.SetHistoricalEntriesUserDisplay<TUserEntity>(historical);
+
                 return historical;
             });
+        }
+
+        protected virtual async Task SetHistoricalEntriesUserDisplay<TUserEntity>(List<EntityHistoricalEntryDto> entries)
+            where TUserEntity : BaseEntityUser
+        {
+            var historicalUserDisplay = this.BiaNetSection?.CommonFeatures?.AuditConfiguration?.HistoricalUserDisplay;
+
+            Dictionary<string, string> userFullNamesPerLogin = [];
+            if (historicalUserDisplay == Audit.HistoricalUserDisplayFullName)
+            {
+                var auditLogins = entries.Select(entry => entry.EntryUser).Distinct().ToList();
+                var auditsUsers = await this.Repository.ServiceProvider.GetRequiredService<ITGenericRepository<TUserEntity, int>>().GetAllResultAsync(x => new { x.FirstName, x.LastName, x.Login }, filter: user => auditLogins.Contains(user.Login), isReadOnlyMode: true);
+                userFullNamesPerLogin = auditsUsers.ToDictionary(user => user.Login, user => $"{user.LastName} {user.FirstName}");
+            }
+
+            foreach (var entriesGroup in entries.GroupBy(x => x.EntryUser))
+            {
+                foreach (var entry in entriesGroup)
+                {
+                    entry.EntryUser = historicalUserDisplay switch
+                    {
+                        Audit.HistoricalUserDisplayFullName => userFullNamesPerLogin.TryGetValue(entry.EntryUser, out string auditUserFullName) ? auditUserFullName : entry.EntryUser,
+                        Audit.HistoricalUserDisplayLogin => entry.EntryUser,
+                        _ => string.Empty,
+                    };
+                }
+            }
         }
 
         /// <summary>
