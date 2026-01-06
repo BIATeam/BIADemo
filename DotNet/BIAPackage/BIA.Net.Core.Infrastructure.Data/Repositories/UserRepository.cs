@@ -6,8 +6,10 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
 {
     using System;
     using System.Collections.Generic;
+    using System.Data;
     using System.Linq;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;
     using Microsoft.EntityFrameworkCore;
@@ -20,6 +22,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
     public sealed class UserRepository<TUserEntity> : TGenericRepositoryEF<TUserEntity, int>, IUserRepository<TUserEntity>
         where TUserEntity : BaseEntityUser
     {
+#pragma warning disable CA2100
         private readonly IQueryableUnitOfWork unitOfWork;
 
         /// <summary>
@@ -39,12 +42,249 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <inheritdoc/>
         public async Task<Dictionary<string, string>> GetUserFullNamesPerLogins(IEnumerable<string> logins)
         {
-            var userFullNames = this.unitOfWork.RetrieveSet<TUserEntity>()
-                .AsNoTracking()
-                .Where(x => logins.Contains(x.Login))
-                .Select(x => new { x.FirstName, x.LastName, x.Login });
+            var loginsDistinctList = logins?.Distinct().ToList();
+            if (loginsDistinctList?.Count == 0)
+            {
+                return [];
+            }
 
-            return await userFullNames.ToDictionaryAsync(user => user.Login, user => $"{user.LastName} {user.FirstName}");
+            if (loginsDistinctList.Count < 800)
+            {
+                // For small lists, use standard LINQ query
+                return await this.unitOfWork.RetrieveSet<TUserEntity>()
+                    .Where(u => loginsDistinctList.Contains(u.Login))
+                    .ToDictionaryAsync(
+                        u => u.Login,
+                        u => $"{u.LastName} {u.FirstName}",
+                        StringComparer.OrdinalIgnoreCase);
+            }
+
+            // Cast to DbContext to access Database property
+            if (this.unitOfWork is not DbContext dbContext)
+            {
+                throw new InvalidOperationException("Unit of work must be a DbContext instance");
+            }
+
+            // Determine database provider
+            var dbProvider = GetDatabaseProvider(dbContext);
+
+            // Get entity metadata from EF Core
+            var entityType = this.unitOfWork.FindEntityType(typeof(TUserEntity));
+            var loginProperty = entityType.FindProperty(nameof(BaseEntityUser.Login));
+            var firstNameProperty = entityType.FindProperty(nameof(BaseEntityUser.FirstName));
+            var lastNameProperty = entityType.FindProperty(nameof(BaseEntityUser.LastName));
+
+            if (loginProperty == null || firstNameProperty == null || lastNameProperty == null)
+            {
+                throw new InvalidOperationException($"Required properties ({nameof(BaseEntityUser.Login)}, {nameof(BaseEntityUser.FirstName)}, {nameof(BaseEntityUser.LastName)}) not found on user entity");
+            }
+
+            // Get table and column names from EF Core metadata
+            var tableName = entityType.GetTableName();
+            var loginColumnName = loginProperty.GetColumnName();
+            var firstNameColumnName = firstNameProperty.GetColumnName();
+            var lastNameColumnName = lastNameProperty.GetColumnName();
+            var loginColumnType = loginProperty.GetColumnType();
+
+            var tempTableName = $"TempLogins_{Guid.NewGuid():N}";
+
+            // Use a single connection for all operations to improve performance
+            var connection = dbContext.Database.GetDbConnection();
+            try
+            {
+                if (connection.State != ConnectionState.Open)
+                {
+                    await connection.OpenAsync();
+                }
+
+                await CreateAndPopulateTempTableAsync(tempTableName, loginsDistinctList, loginColumnType, dbProvider, connection);
+                return await GetUserFullNamesFromTempTableAsync(
+                    tempTableName,
+                    tableName,
+                    loginColumnName,
+                    firstNameColumnName,
+                    lastNameColumnName,
+                    dbProvider,
+                    connection);
+            }
+            finally
+            {
+                await DropTempTableAsync(tempTableName, dbProvider, connection);
+                if (connection.State == ConnectionState.Open)
+                {
+                    await connection.CloseAsync();
+                }
+            }
         }
+
+        /// <summary>
+        /// Determines the database provider from the DbContext.
+        /// </summary>
+        /// <param name="dbContext">The database context.</param>
+        /// <returns>The database provider.</returns>
+        /// <exception cref="NotSupportedException">If the database provider is not supported.</exception>
+        private static DbProvider GetDatabaseProvider(DbContext dbContext)
+        {
+            return dbContext.Database switch
+            {
+                var db when db.IsSqlServer() => DbProvider.SqlServer,
+                var db when db.IsNpgsql() => DbProvider.PostGreSql,
+                _ => throw new NotSupportedException($"Database provider {dbContext.Database.ProviderName} is not supported for this operation"),
+            };
+        }
+
+        /// <summary>
+        /// Creates and populates a temporary table with login values.
+        /// Supports SQL Server and PostgreSQL.
+        /// </summary>
+        /// <param name="tempTableName">The name of the temporary table.</param>
+        /// <param name="logins">The list of logins to insert.</param>
+        /// <param name="loginColumnType">The SQL type of the login column.</param>
+        /// <param name="dbProvider">The database provider.</param>
+        /// <param name="connection">The database connection (must be open).</param>
+        /// <returns>A completed task.</returns>
+        private static async Task CreateAndPopulateTempTableAsync(
+            string tempTableName,
+            List<string> logins,
+            string loginColumnType,
+            DbProvider dbProvider,
+            System.Data.Common.DbConnection connection)
+        {
+            var createTableSql = dbProvider switch
+            {
+                DbProvider.SqlServer => $@"CREATE TABLE [#{tempTableName}] (
+    [Login] {loginColumnType} NOT NULL PRIMARY KEY
+);",
+                DbProvider.PostGreSql => $@"CREATE TEMPORARY TABLE ""{tempTableName}"" (
+    ""Login"" {loginColumnType} NOT NULL PRIMARY KEY
+);",
+                _ => throw new NotSupportedException($"Database provider {dbProvider} is not supported"),
+            };
+
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = createTableSql;
+                await command.ExecuteNonQueryAsync();
+            }
+
+            if (logins.Count > 0)
+            {
+                var insertBatches = logins.Select((login, index) => new { login, index })
+                    .GroupBy(x => x.index / 1000)
+                    .ToList();
+
+                foreach (var batch in insertBatches)
+                {
+                    var batchLogins = batch.Select(x => x.login).ToList();
+                    var valuesList = string.Join(",", batchLogins.Select((_, i) => $"(@Login{i})"));
+
+                    var insertSql = dbProvider switch
+                    {
+                        DbProvider.SqlServer => $@"INSERT INTO [#{tempTableName}] ([Login]) VALUES {valuesList}",
+                        DbProvider.PostGreSql => $@"INSERT INTO ""{tempTableName}"" (""Login"") VALUES {valuesList}",
+                        _ => throw new NotSupportedException($"Database provider {dbProvider} is not supported"),
+                    };
+
+                    using var command = connection.CreateCommand();
+                    command.CommandText = insertSql;
+
+                    if (dbProvider == DbProvider.SqlServer)
+                    {
+                        foreach (var (login, i) in batchLogins.Select((l, idx) => (l, idx)))
+                        {
+                            command.Parameters.Add(new Microsoft.Data.SqlClient.SqlParameter($"@Login{i}", login ?? (object)DBNull.Value));
+                        }
+                    }
+                    else if (dbProvider == DbProvider.PostGreSql)
+                    {
+                        foreach (var (login, i) in batchLogins.Select((l, idx) => (l, idx)))
+                        {
+                            command.Parameters.Add(new Npgsql.NpgsqlParameter($"@Login{i}", login ?? (object)DBNull.Value));
+                        }
+                    }
+
+                    await command.ExecuteNonQueryAsync();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Retrieves user full names from the temporary table using raw SQL query.
+        /// Uses INNER JOIN for better performance instead of EXISTS.
+        /// </summary>
+        /// <param name="tempTableName">The name of the temporary table.</param>
+        /// <param name="tableName">The users table name from EF Core metadata.</param>
+        /// <param name="loginColumnName">The login column name from EF Core metadata.</param>
+        /// <param name="firstNameColumnName">The first name column name from EF Core metadata.</param>
+        /// <param name="lastNameColumnName">The last name column name from EF Core metadata.</param>
+        /// <param name="dbProvider">The database provider.</param>
+        /// <param name="connection">The database connection (must be open).</param>
+        /// <returns>A dictionary mapping logins to full names.</returns>
+        private static async Task<Dictionary<string, string>> GetUserFullNamesFromTempTableAsync(
+            string tempTableName,
+            string tableName,
+            string loginColumnName,
+            string firstNameColumnName,
+            string lastNameColumnName,
+            DbProvider dbProvider,
+            System.Data.Common.DbConnection connection)
+        {
+            var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+            using var command = connection.CreateCommand();
+            // Use INNER JOIN instead of EXISTS for better performance with indexes
+            command.CommandText = dbProvider switch
+            {
+                DbProvider.SqlServer => $@"
+SELECT u.[{loginColumnName}], u.[{firstNameColumnName}], u.[{lastNameColumnName}]
+FROM [{tableName}] u
+INNER JOIN [#{tempTableName}] t ON u.[{loginColumnName}] = t.[Login]",
+                DbProvider.PostGreSql => $@"
+SELECT u.""{loginColumnName}"", u.""{firstNameColumnName}"", u.""{lastNameColumnName}""
+FROM ""{tableName}"" u
+INNER JOIN ""{tempTableName}"" t ON u.""{loginColumnName}"" = t.""Login""",
+                _ => throw new NotSupportedException($"Database provider {dbProvider} is not supported"),
+            };
+
+            using var reader = await command.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                var login = reader.GetString(0);
+                var firstName = await reader.IsDBNullAsync(1) ? string.Empty : reader.GetString(1);
+                var lastName = await reader.IsDBNullAsync(2) ? string.Empty : reader.GetString(2);
+                result[login] = $"{lastName} {firstName}";
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Drops the temporary table.
+        /// </summary>
+        /// <param name="tempTableName">The name of the temporary table.</param>
+        /// <param name="dbProvider">The database provider.</param>
+        /// <param name="connection">The database connection (must be open).</param>
+        /// <returns>A completed task.</returns>
+        private static async Task DropTempTableAsync(string tempTableName, DbProvider dbProvider, System.Data.Common.DbConnection connection)
+        {
+            try
+            {
+                var dropTableSql = dbProvider switch
+                {
+                    DbProvider.SqlServer => $"DROP TABLE [#{tempTableName}]",
+                    DbProvider.PostGreSql => $@"DROP TABLE IF EXISTS ""{tempTableName}""",
+                    _ => throw new NotSupportedException($"Database provider {dbProvider} is not supported"),
+                };
+
+                using var command = connection.CreateCommand();
+                command.CommandText = dropTableSql;
+                await command.ExecuteNonQueryAsync();
+            }
+            catch
+            {
+                // Suppress exceptions during cleanup
+            }
+        }
+#pragma warning restore CA2100
     }
 }
