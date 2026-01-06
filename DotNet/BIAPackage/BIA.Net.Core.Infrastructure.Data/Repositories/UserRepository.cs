@@ -12,7 +12,9 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;
+    using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// Provides a repository for managing user entities, supporting operations such as retrieving user information by
@@ -23,7 +25,10 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         where TUserEntity : BaseEntityUser
     {
 #pragma warning disable CA2100
+        private const double CacheDurationInMinutes = 60;
+        private const string CacheKeyPrefix = "UserFullNames_";
         private readonly IQueryableUnitOfWork unitOfWork;
+        private readonly IBiaDistributedCache distributedCache;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserRepository{TUserEntity}"/> class using the specified unit of work and service.
@@ -37,6 +42,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             : base(unitOfWork, serviceProvider)
         {
             this.unitOfWork = unitOfWork;
+            this.distributedCache = serviceProvider.GetRequiredService<IBiaDistributedCache>();
         }
 
         /// <inheritdoc/>
@@ -48,11 +54,77 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
                 return [];
             }
 
-            if (loginsDistinctList.Count < 800)
+            var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            var loginsNotInCache = new List<string>();
+
+            // Check cache for each login
+            if (this.distributedCache != null)
+            {
+                foreach (var login in loginsDistinctList)
+                {
+                    var cacheKey = GetCacheKey(login);
+                    var cachedFullName = await this.distributedCache.Get<string>(cacheKey);
+                    if (cachedFullName != null)
+                    {
+                        result[login] = cachedFullName;
+                    }
+                    else
+                    {
+                        loginsNotInCache.Add(login);
+                    }
+                }
+            }
+            else
+            {
+                loginsNotInCache = loginsDistinctList;
+            }
+
+            // If all logins are in cache, return the result
+            if (loginsNotInCache.Count == 0)
+            {
+                return result;
+            }
+
+            // Fetch missing logins from database
+            var dbResults = await this.GetUserFullNamesFromDatabaseAsync(loginsNotInCache);
+
+            // Add results to cache and merge with existing results
+            foreach (var kvp in dbResults)
+            {
+                result[kvp.Key] = kvp.Value;
+                if (this.distributedCache != null)
+                {
+                    var cacheKey = GetCacheKey(kvp.Key);
+                    await this.distributedCache.Add(cacheKey, kvp.Value, CacheDurationInMinutes);
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the cache key for a login.
+        /// </summary>
+        /// <param name="login">The login.</param>
+        /// <returns>The cache key.</returns>
+        private static string GetCacheKey(string login)
+        {
+            return $"{CacheKeyPrefix}{login}";
+        }
+
+        /// <summary>
+        /// Retrieves user full names from the database for the specified logins.
+        /// Uses small lists for standard LINQ queries and large lists for temporary tables.
+        /// </summary>
+        /// <param name="logins">The logins to retrieve.</param>
+        /// <returns>A dictionary mapping logins to full names.</returns>
+        private async Task<Dictionary<string, string>> GetUserFullNamesFromDatabaseAsync(List<string> logins)
+        {
+            if (logins.Count < 800)
             {
                 // For small lists, use standard LINQ query
                 return await this.unitOfWork.RetrieveSet<TUserEntity>()
-                    .Where(u => loginsDistinctList.Contains(u.Login))
+                    .Where(u => logins.Contains(u.Login))
                     .ToDictionaryAsync(
                         u => u.Login,
                         u => $"{u.LastName} {u.FirstName}",
@@ -97,7 +169,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
                     await connection.OpenAsync();
                 }
 
-                await CreateAndPopulateTempTableAsync(tempTableName, loginsDistinctList, loginColumnType, dbProvider, connection);
+                await CreateAndPopulateTempTableAsync(tempTableName, logins, loginColumnType, dbProvider, connection);
                 return await GetUserFullNamesFromTempTableAsync(
                     tempTableName,
                     tableName,
