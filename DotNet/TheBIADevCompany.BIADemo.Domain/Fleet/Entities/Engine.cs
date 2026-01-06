@@ -50,7 +50,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
         public DateTime? ExchangeDate { get; set; }
 
         /// <summary>
-        /// Gets or sets the daily synchronisation hour.
+        /// Gets or sets the daily synchronization hour.
         /// </summary>
         [Column(TypeName = "time")]
         public TimeSpan SyncTime { get; set; }
