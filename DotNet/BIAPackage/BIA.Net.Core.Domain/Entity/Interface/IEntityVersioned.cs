@@ -4,7 +4,7 @@
 
 namespace BIA.Net.Core.Domain.Entity.Interface
 {
-    using System.ComponentModel.DataAnnotations;
+    using System;
 
     /// <summary>
     /// Inrerface of a fixable entity.
@@ -15,7 +15,33 @@ namespace BIA.Net.Core.Domain.Entity.Interface
         /// <summary>
         /// Gets or sets the row version.
         /// </summary>
-        [Timestamp]
         public byte[] RowVersion { get; set; }
+
+        /// <summary>
+        /// Gets or sets the row version.
+        /// </summary>
+        public uint RowVersionXmin { get; set; }
+
+        /// <summary>
+        /// Gets or sets the row version.
+        /// </summary>
+        public string RowVersionString
+        {
+            get
+            {
+                if (this.RowVersion != default)
+                {
+                    return Convert.ToBase64String(this.RowVersion);
+                }
+                else if (this.RowVersionXmin != default)
+                {
+                    return this.RowVersionXmin.ToString();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
     }
 }
