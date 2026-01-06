@@ -1,4 +1,4 @@
-﻿// <copyright file="BaseUserRepository.cs" company="BIA">
+﻿// <copyright file="UserRepository.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -17,27 +17,27 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
     /// login. Inherits standard data access functionality for entities identified by an integer key.
     /// </summary>
     /// <typeparam name="TUserEntity">The type of user entity managed by the repository. Must inherit from <see cref="BaseEntityUser"/>.</typeparam>
-    public abstract class BaseUserRepository<TUserEntity> : TGenericRepositoryEF<TUserEntity, int>, IUserRepository<TUserEntity>
+    public sealed class UserRepository<TUserEntity> : TGenericRepositoryEF<TUserEntity, int>, IUserRepository<TUserEntity>
         where TUserEntity : BaseEntityUser
     {
         private readonly IQueryableUnitOfWork unitOfWork;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseUserRepository{TUserEntity}"/> class using the specified unit of work and service.
+        /// Initializes a new instance of the <see cref="UserRepository{TUserEntity}"/> class using the specified unit of work and service.
         /// provider.
         /// </summary>
         /// <param name="unitOfWork">The unit of work that manages database transactions and provides access to queryable data sources. Cannot be
         /// null.</param>
         /// <param name="serviceProvider">The service provider used to resolve application services and dependencies required by the repository.
         /// Cannot be null.</param>
-        protected BaseUserRepository(IQueryableUnitOfWork unitOfWork, IServiceProvider serviceProvider)
+        public UserRepository(IQueryableUnitOfWork unitOfWork, IServiceProvider serviceProvider)
             : base(unitOfWork, serviceProvider)
         {
             this.unitOfWork = unitOfWork;
         }
 
         /// <inheritdoc/>
-        public virtual async Task<Dictionary<string, string>> GetUserFullNamesPerLogins(IEnumerable<string> logins)
+        public async Task<Dictionary<string, string>> GetUserFullNamesPerLogins(IEnumerable<string> logins)
         {
             var userFullNames = this.unitOfWork.RetrieveSet<TUserEntity>()
                 .AsNoTracking()

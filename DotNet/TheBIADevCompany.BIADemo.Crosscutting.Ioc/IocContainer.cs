@@ -24,6 +24,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using BIA.Net.Core.Domain.User.Mappers;
     using BIA.Net.Core.Domain.User.Services;
     using BIA.Net.Core.Infrastructure.Data;
+    using BIA.Net.Core.Infrastructure.Data.Repositories;
     using BIA.Net.Core.Infrastructure.Data.Repositories.HistoryRepositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.Ioc;
@@ -171,7 +172,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 collection.AddSingleton(auditMapperType, auditMapperDerivedType);
             }
 
-            collection.AddScoped<IUserRepository<User>, UserRepository>();
+            collection.AddScoped<IUserRepository<User>, UserRepository<User>>();
 #endif
         }
 
