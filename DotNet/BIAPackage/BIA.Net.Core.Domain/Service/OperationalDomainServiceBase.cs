@@ -1213,7 +1213,18 @@ namespace BIA.Net.Core.Domain.Service
             });
         }
 
-        protected virtual async Task SetHistoricalEntriesUserDisplay<TUserEntity>(List<EntityHistoricalEntryDto> entries)
+        /// <summary>
+        /// Updates the user display information for each historical entry in the provided list according to the
+        /// configured audit display mode.
+        /// </summary>
+        /// <remarks>The user display format is determined by the audit configuration. If the display mode
+        /// is set to show full names, the method retrieves user full names and updates the entries accordingly. If the
+        /// display mode is set to show logins, the entries retain their original user login values. For other display
+        /// modes, the user display information is cleared.</remarks>
+        /// <typeparam name="TUserEntity">The type of the user entity, which must inherit from BaseEntityUser.</typeparam>
+        /// <param name="entries">A read-only list of historical entry DTOs whose user display information will be updated.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        protected virtual async Task SetHistoricalEntriesUserDisplay<TUserEntity>(IReadOnlyList<EntityHistoricalEntryDto> entries)
             where TUserEntity : BaseEntityUser
         {
             var historicalUserDisplay = this.BiaNetSection?.CommonFeatures?.AuditConfiguration?.HistoricalUserDisplay;
@@ -1226,17 +1237,14 @@ namespace BIA.Net.Core.Domain.Service
                 userFullNamesPerLogin = auditsUsers.ToDictionary(user => user.Login, user => $"{user.LastName} {user.FirstName}");
             }
 
-            foreach (var entriesGroup in entries.GroupBy(x => x.EntryUser))
+            foreach (var entry in entries)
             {
-                foreach (var entry in entriesGroup)
+                entry.EntryUser = historicalUserDisplay switch
                 {
-                    entry.EntryUser = historicalUserDisplay switch
-                    {
-                        Audit.HistoricalUserDisplayFullName => userFullNamesPerLogin.TryGetValue(entry.EntryUser, out string auditUserFullName) ? auditUserFullName : entry.EntryUser,
-                        Audit.HistoricalUserDisplayLogin => entry.EntryUser,
-                        _ => string.Empty,
-                    };
-                }
+                    Audit.HistoricalUserDisplayFullName => userFullNamesPerLogin.TryGetValue(entry.EntryUser, out string auditUserFullName) ? auditUserFullName : entry.EntryUser,
+                    Audit.HistoricalUserDisplayLogin => entry.EntryUser,
+                    _ => string.Empty,
+                };
             }
         }
 
