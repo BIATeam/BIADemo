@@ -55,6 +55,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 #if BIA_USE_DATABASE
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
+    using TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories;
 #endif
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
 
@@ -169,6 +170,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             {
                 collection.AddSingleton(auditMapperType, auditMapperDerivedType);
             }
+
+            collection.AddScoped<IUserRepository<User>, UserRepository>();
 #endif
         }
 

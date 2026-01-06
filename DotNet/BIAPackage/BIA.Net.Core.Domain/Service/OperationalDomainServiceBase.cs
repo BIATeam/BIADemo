@@ -1217,11 +1217,7 @@ namespace BIA.Net.Core.Domain.Service
         /// Updates the user display information for each historical entry in the provided list according to the
         /// configured audit display mode.
         /// </summary>
-        /// <remarks>The user display format is determined by the audit configuration. If the display mode
-        /// is set to show full names, the method retrieves user full names and updates the entries accordingly. If the
-        /// display mode is set to show logins, the entries retain their original user login values. For other display
-        /// modes, the user display information is cleared.</remarks>
-        /// <typeparam name="TUserEntity">The type of the user entity, which must inherit from BaseEntityUser.</typeparam>
+        /// <typeparam name="TUserEntity">The type of the user entity, which must inherit from <see cref="BaseEntityUser"/>.</typeparam>
         /// <param name="entries">A read-only list of historical entry DTOs whose user display information will be updated.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
         protected virtual async Task SetHistoricalEntriesUserDisplay<TUserEntity>(IReadOnlyList<EntityHistoricalEntryDto> entries)
@@ -1232,9 +1228,8 @@ namespace BIA.Net.Core.Domain.Service
             Dictionary<string, string> userFullNamesPerLogin = [];
             if (historicalUserDisplay == Audit.HistoricalUserDisplayFullName)
             {
-                var auditLogins = entries.Select(entry => entry.EntryUser).Distinct().ToList();
-                var auditsUsers = await this.Repository.ServiceProvider.GetRequiredService<ITGenericRepository<TUserEntity, int>>().GetAllResultAsync(x => new { x.FirstName, x.LastName, x.Login }, filter: user => auditLogins.Contains(user.Login), isReadOnlyMode: true);
-                userFullNamesPerLogin = auditsUsers.ToDictionary(user => user.Login, user => $"{user.LastName} {user.FirstName}");
+                var entriesLogins = entries.Select(e => e.EntryUser).Distinct().ToList();
+                userFullNamesPerLogin = await this.Repository.ServiceProvider.GetRequiredService<IUserRepository<TUserEntity>>().GetUserFullNamesPerLogins(entriesLogins);
             }
 
             foreach (var entry in entries)
