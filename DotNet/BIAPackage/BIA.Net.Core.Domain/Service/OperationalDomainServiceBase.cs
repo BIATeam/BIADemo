@@ -731,7 +731,7 @@ namespace BIA.Net.Core.Domain.Service
 
                     if (entity is IEntityVersioned versionedEntity && dto is IDtoVersioned dtoVersioned
                     && !string.IsNullOrWhiteSpace(dtoVersioned.RowVersion)
-                    && !Convert.ToBase64String(versionedEntity.RowVersion).SequenceEqual(dtoVersioned.RowVersion))
+                    && !versionedEntity.RowVersionString.SequenceEqual(dtoVersioned.RowVersion))
                     {
                         throw new OutdateException();
                     }
