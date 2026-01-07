@@ -16,7 +16,6 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
 
     /// <summary>
     /// Helper class for managing temporary tables in database operations.
-    /// Supports SQL Server and PostgreSQL databases.
     /// </summary>
     public static class TemporaryTableHelper
 #pragma warning disable CA2100
@@ -196,22 +195,19 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
                 using var command = connection.CreateCommand();
                 command.CommandText = insertSql;
 
-                if (dbProvider == DbProvider.SqlServer)
+                for (int index = 0; index < batchValues.Count; index++)
                 {
-                    foreach (var (value, i) in batchValues.Select((v, idx) => (v, idx)))
+                    var value = batchValues[index];
+                    var formattedValue = formatValue?.Invoke(value);
+                    var parameterValue = formattedValue ?? (!Equals(value, default(TValue)) ? value : DBNull.Value);
+
+                    if (dbProvider == DbProvider.SqlServer)
                     {
-                        var formattedValue = formatValue?.Invoke(value);
-                        var parameterValue = formattedValue ?? (!Equals(value, default(TValue)) ? value : DBNull.Value);
-                        command.Parameters.Add(new SqlParameter($"@Value{i}", parameterValue));
+                        command.Parameters.Add(new SqlParameter($"@Value{index}", parameterValue));
                     }
-                }
-                else if (dbProvider == DbProvider.PostGreSql)
-                {
-                    foreach (var (value, i) in batchValues.Select((v, idx) => (v, idx)))
+                    else if (dbProvider == DbProvider.PostGreSql)
                     {
-                        var formattedValue = formatValue?.Invoke(value);
-                        var parameterValue = formattedValue ?? (!Equals(value, default(TValue)) ? value : DBNull.Value);
-                        command.Parameters.Add(new NpgsqlParameter($"@Value{i}", parameterValue));
+                        command.Parameters.Add(new NpgsqlParameter($"@Value{index}", parameterValue));
                     }
                 }
 
