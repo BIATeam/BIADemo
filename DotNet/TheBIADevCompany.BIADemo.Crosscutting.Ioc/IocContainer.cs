@@ -171,8 +171,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             {
                 collection.AddSingleton(auditMapperType, auditMapperDerivedType);
             }
-
-            collection.AddScoped<IUserRepository<User>, UserRepository<User>>();
 #endif
         }
 
@@ -259,6 +257,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 assemblyName: "TheBIADevCompany.BIADemo.Infrastructure.Data",
                 interfaceAssemblyName: "TheBIADevCompany.BIADemo.Domain",
                 serviceLifetime: ServiceLifetime.Transient);
+
+            // Must specify the User type explicitly
+            collection.AddScoped<IUserRepository<User>, UserRepository<User>>();
         }
 #endif
 
