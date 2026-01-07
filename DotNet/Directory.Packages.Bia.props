@@ -1,5 +1,8 @@
 ﻿<!-- !!! DO NOT MODIFY THIS FILE !!! Add the versions of your packages in the Directory.Packages.Project.props file. -->
 <Project>
+	<PropertyGroup>
+		<CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+	</PropertyGroup>
 	<ItemGroup>
 		<PackageVersion Include="Audit.EntityFramework.Abstractions" Version="31.3.3" />
 		<PackageVersion Include="Audit.EntityFramework.Core" Version="31.3.3" />
@@ -33,7 +36,7 @@
 		<PackageVersion Include="Microsoft.Extensions.Hosting.WindowsServices" Version="10.0.1" />
 		<PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.1" />
 		<PackageVersion Include="Microsoft.Extensions.Options" Version="10.0.1" />
-		<PackageVersion Include="Microsoft.Identity.Client" Version="4.79.2" />
+		<PackageVersion Include="Microsoft.Identity.Client" Version="4.80.0" />
 		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
 		<PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
 		<PackageVersion Include="Microsoft.VSSDK.BuildTools" Version="17.14.2120" />

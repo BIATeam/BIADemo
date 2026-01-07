@@ -5,4 +5,4 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 // parallel execution
-[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
+[assembly: Parallelize(Workers = 1, Scope = ExecutionScope.MethodLevel)]
