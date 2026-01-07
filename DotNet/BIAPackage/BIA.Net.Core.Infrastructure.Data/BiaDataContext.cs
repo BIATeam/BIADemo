@@ -353,6 +353,14 @@ namespace BIA.Net.Core.Infrastructure.Data
         {
             DistCacheModelBuilder.CreateDistCacheModel(modelBuilder);
             AnnouncementModelBuilder.CreateModel(modelBuilder);
+        }
+
+        /// <summary>
+        /// OnEndModelCreating.
+        /// </summary>
+        /// <param name="modelBuilder">the model Builder.</param>
+        protected virtual void OnEndModelCreating(ModelBuilder modelBuilder)
+        {
             RowVersionBuilder.CreateRowVersion(modelBuilder, this.Database);
         }
 
