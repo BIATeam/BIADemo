@@ -252,6 +252,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
             // End BIADemo
 #endif
             new AuditModelBuilder().CreateModel(modelBuilder);
+            this.OnEndModelCreating(modelBuilder);
         }
     }
 }
