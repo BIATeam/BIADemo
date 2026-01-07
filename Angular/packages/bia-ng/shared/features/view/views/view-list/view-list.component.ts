@@ -70,8 +70,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   _selectedView: number = this.undefinedView;
   set selectedView(value: number) {
     this._selectedView = value;
-    if (this._selectedView <= this.currentView) {
-    } else {
+    if (this._selectedView > this.currentView) {
       this.currentSelectedView = value;
     }
   }
