@@ -1229,7 +1229,7 @@ namespace BIA.Net.Core.Domain.Service
             if (historicalUserDisplay == Audit.HistoricalUserDisplayFullName)
             {
                 var entriesLogins = entries.Select(e => e.EntryUser).Distinct().ToList();
-                userFullNamesPerLogin = await this.Repository.ServiceProvider.GetRequiredService<IUserRepository<TUserEntity>>().GetUserFullNamesPerLogins(entriesLogins);
+                userFullNamesPerLogin = await this.Repository.ServiceProvider.GetRequiredService<IUserRepository<TUserEntity>>().GetUserFullNamesPerLoginsAsync(entriesLogins);
             }
 
             foreach (var entry in entries)

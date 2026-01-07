@@ -23,6 +23,6 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <returns>A task that represents the asynchronous operation. The task result contains a dictionary where each key is a
         /// login name from the input collection, and each value is the user's full name in the format "LastName
         /// FirstName". If no users are found for the specified logins, the dictionary will be empty.</returns>
-        Task<Dictionary<string, string>> GetUserFullNamesPerLogins(IEnumerable<string> logins);
+        Task<Dictionary<string, string>> GetUserFullNamesPerLoginsAsync(IEnumerable<string> logins);
     }
 }

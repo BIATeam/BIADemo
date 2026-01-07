@@ -7,6 +7,7 @@ namespace BIA.Net.Core.Infrastructure.Data
     using System;
     using System.Linq;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Enum;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -40,5 +41,12 @@ namespace BIA.Net.Core.Infrastructure.Data
 
         /// <inheritdoc cref="IModel.FindEntityType(Type)"/>
         IEntityType FindEntityType(Type entityType);
+
+        /// <summary>
+        /// Gets the database provider enum for the current context.
+        /// </summary>
+        /// <returns>The database provider enum.</returns>
+        /// <exception cref="NotSupportedException">If the database provider is not supported.</exception>
+        DbProvider GetDatabaseProviderEnum();
     }
 }
