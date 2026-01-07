@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.QueryModels
     using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.Mapper;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
@@ -89,7 +90,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.QueryModels
                 Engines = queryModel.Engines.AsQueryable().Select(this.engineMapper.EntityToDto()).ToList(),
 
                 IsFixed = queryModel.IsFixed,
-                RowVersion = queryModel.RowVersion != null ? Convert.ToBase64String(queryModel.RowVersion) : null,
+                RowVersion = (queryModel as IEntityVersioned)?.RowVersionString,
             };
         }
 
@@ -126,7 +127,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.QueryModels
                 }).OrderBy(x => x.Display).ToList(),
 
                 IsFixed = queryModel.IsFixed,
-                RowVersion = queryModel.RowVersion != null ? Convert.ToBase64String(queryModel.RowVersion) : null,
+                RowVersion = (queryModel as IEntityVersioned)?.RowVersionString,
             };
         }
     }

@@ -361,7 +361,7 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// <param name="modelBuilder">the model Builder.</param>
         protected virtual void OnEndModelCreating(ModelBuilder modelBuilder)
         {
-            RowVersionBuilder.CreateRowVersion(modelBuilder);
+            RowVersionBuilder.CreateRowVersion(modelBuilder, this.Database);
         }
 
         /// <summary>
