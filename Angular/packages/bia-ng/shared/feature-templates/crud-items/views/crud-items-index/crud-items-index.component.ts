@@ -598,12 +598,6 @@ export class CrudItemsIndexComponent<
 
   onSelectedViewChanged(view: View | null) {
     this.currentView = view;
-    if (this.tableStateKey) {
-      sessionStorage.setItem(
-        this.tableStateKey + 'View',
-        JSON.stringify(this.currentView)
-      );
-    }
     this.updateViewQueryParam(view);
   }
 
@@ -784,22 +778,15 @@ export class CrudItemsIndexComponent<
   }
 
   changeView(view: View | null) {
-    const currentUrl = this.router.url;
-    const [baseUrl] = currentUrl.split('?');
-    const segments = baseUrl.split('/').filter(Boolean);
+    const segments = this.router.url.split('?')[0].split('/').filter(Boolean);
 
     if (segments.length >= 2) {
       segments[segments.length - 2] = view?.id.toString() ?? '0';
-      const newBaseUrl = segments.join('/');
 
-      const tree = this.router.createUrlTree([`/${newBaseUrl}`], {
+      this.router.navigate(['/', ...segments], {
         relativeTo: this.activatedRoute,
-        queryParams: view?.name ? { view: view.name } : { view: null },
+        queryParams: { view: view?.name ?? null },
         queryParamsHandling: 'merge',
-      });
-
-      this.router.navigateByUrl(this.router.serializeUrl(tree), {
-        skipLocationChange: false,
         replaceUrl: true,
       });
     }
