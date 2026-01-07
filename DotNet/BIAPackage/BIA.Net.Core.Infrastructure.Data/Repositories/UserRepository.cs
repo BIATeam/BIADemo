@@ -116,10 +116,10 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <returns>A dictionary mapping logins to full names.</returns>
         private async Task<Dictionary<string, string>> GetUserFullNamesPerLoginsFromDatabaseAsync(List<string> logins)
         {
-            //if (logins.Count < 100)
-            //{
-            //    return await this.GetUserFullNamesPerLoginsFromDatabaseLinqAsync(logins);
-            //}
+            if (logins.Count < 100)
+            {
+                return await this.GetUserFullNamesPerLoginsFromDatabaseLinqAsync(logins);
+            }
 
             return await this.GetUserFullNamesPerLoginsFromDatabaseTemporaryTableAsync(logins);
         }
