@@ -12,7 +12,7 @@ using TheBIADevCompany.BIADemo.Infrastructure.Data;
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
 {
     [DbContext(typeof(DataContextPostGreSql))]
-    [Migration("20260106163759_Initial")]
+    [Migration("20260107101215_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -1695,11 +1695,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                     b.Property<bool>("IsFixed")
                         .HasColumnType("boolean");
 
-                    b.Property<byte[]>("RowVersion")
-                        .HasColumnType("bytea");
-
-                    b.Property<long>("RowVersionXmin")
-                        .HasColumnType("bigint");
+                    b.Property<uint>("RowVersionXmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.Property<int>("SiteId")
                         .HasColumnType("integer");
