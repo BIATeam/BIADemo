@@ -53,8 +53,8 @@ import { ManageViewsDialogComponent } from '../manage-views-dialog/manage-views-
   ],
 })
 export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
-  readonly currentView = -10000;
-  readonly undefinedView = -10001;
+  readonly currentView = -10000000;
+  readonly undefinedView = -10000001;
 
   groupedViews: SelectItemGroup[];
   translateKeys: string[] = [
@@ -70,7 +70,10 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   _selectedView: number = this.undefinedView;
   set selectedView(value: number) {
     this._selectedView = value;
-    if (this._selectedView > this.currentView) {
+    if (
+      this._selectedView !== this.currentView &&
+      this._selectedView !== this.undefinedView
+    ) {
       this.currentSelectedView = value;
     }
   }
@@ -223,7 +226,11 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
 
   public getCurrentView(): View | null {
     let view: View | null = null;
-    if (this.currentSelectedView > this.currentView && this.views?.length) {
+    if (
+      this.currentSelectedView !== this.currentView &&
+      this.currentSelectedView !== this.undefinedView &&
+      this.views?.length
+    ) {
       this.views.forEach(v => {
         if (v.id === this.currentSelectedView) {
           view = v;
