@@ -25,8 +25,8 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         where TUserEntity : BaseEntityUser
     {
 #pragma warning disable CA2100
-        private const double CacheDurationInMinutes = 60;
-        private const string CacheKeyPrefix = "UserFullNames_";
+        private const double UserFullNameLoginCacheDurationInMinutes = 60;
+        private const string UserFullNameLoginCacheKeyPrefix = "UserFullName_";
         private readonly IQueryableUnitOfWork unitOfWork;
         private readonly IBiaDistributedCache distributedCache;
 
@@ -48,8 +48,8 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <inheritdoc/>
         public async Task<Dictionary<string, string>> GetUserFullNamesPerLogins(IEnumerable<string> logins)
         {
-            var loginsDistinctList = logins?.Distinct().ToList();
-            if (loginsDistinctList?.Count == 0)
+            var distinctLogins = logins?.Distinct().ToList();
+            if (distinctLogins?.Count == 0)
             {
                 return [];
             }
@@ -57,12 +57,11 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             var loginsNotInCache = new List<string>();
 
-            // Check cache for each login
             if (this.distributedCache != null)
             {
-                foreach (var login in loginsDistinctList)
+                foreach (var login in distinctLogins)
                 {
-                    var cacheKey = GetCacheKey(login);
+                    var cacheKey = GetUserFullNameLoginCacheKey(login);
                     var cachedFullName = await this.distributedCache.Get<string>(cacheKey);
                     if (cachedFullName != null)
                     {
@@ -76,26 +75,23 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             }
             else
             {
-                loginsNotInCache = loginsDistinctList;
+                loginsNotInCache = distinctLogins;
             }
 
-            // If all logins are in cache, return the result
             if (loginsNotInCache.Count == 0)
             {
                 return result;
             }
 
-            // Fetch missing logins from database
-            var dbResults = await this.GetUserFullNamesFromDatabaseAsync(loginsNotInCache);
+            var userFullNamesPerLoginsFromDb = await this.GetUserFullNamesFromDatabaseAsync(loginsNotInCache);
 
-            // Add results to cache and merge with existing results
-            foreach (var kvp in dbResults)
+            foreach (var userFullNamePerLogin in userFullNamesPerLoginsFromDb)
             {
-                result[kvp.Key] = kvp.Value;
+                result[userFullNamePerLogin.Key] = userFullNamePerLogin.Value;
                 if (this.distributedCache != null)
                 {
-                    var cacheKey = GetCacheKey(kvp.Key);
-                    await this.distributedCache.Add(cacheKey, kvp.Value, CacheDurationInMinutes);
+                    var cacheKey = GetUserFullNameLoginCacheKey(userFullNamePerLogin.Key);
+                    await this.distributedCache.Add(cacheKey, userFullNamePerLogin.Value, UserFullNameLoginCacheDurationInMinutes);
                 }
             }
 
@@ -107,86 +103,9 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// </summary>
         /// <param name="login">The login.</param>
         /// <returns>The cache key.</returns>
-        private static string GetCacheKey(string login)
+        private static string GetUserFullNameLoginCacheKey(string login)
         {
-            return $"{CacheKeyPrefix}{login}";
-        }
-
-        /// <summary>
-        /// Retrieves user full names from the database for the specified logins.
-        /// Uses small lists for standard LINQ queries and large lists for temporary tables.
-        /// </summary>
-        /// <param name="logins">The logins to retrieve.</param>
-        /// <returns>A dictionary mapping logins to full names.</returns>
-        private async Task<Dictionary<string, string>> GetUserFullNamesFromDatabaseAsync(List<string> logins)
-        {
-            if (logins.Count < 800)
-            {
-                // For small lists, use standard LINQ query
-                return await this.unitOfWork.RetrieveSet<TUserEntity>()
-                    .Where(u => logins.Contains(u.Login))
-                    .ToDictionaryAsync(
-                        u => u.Login,
-                        u => $"{u.LastName} {u.FirstName}",
-                        StringComparer.OrdinalIgnoreCase);
-            }
-
-            // Cast to DbContext to access Database property
-            if (this.unitOfWork is not DbContext dbContext)
-            {
-                throw new InvalidOperationException("Unit of work must be a DbContext instance");
-            }
-
-            // Determine database provider
-            var dbProvider = GetDatabaseProvider(dbContext);
-
-            // Get entity metadata from EF Core
-            var entityType = this.unitOfWork.FindEntityType(typeof(TUserEntity));
-            var loginProperty = entityType.FindProperty(nameof(BaseEntityUser.Login));
-            var firstNameProperty = entityType.FindProperty(nameof(BaseEntityUser.FirstName));
-            var lastNameProperty = entityType.FindProperty(nameof(BaseEntityUser.LastName));
-
-            if (loginProperty == null || firstNameProperty == null || lastNameProperty == null)
-            {
-                throw new InvalidOperationException($"Required properties ({nameof(BaseEntityUser.Login)}, {nameof(BaseEntityUser.FirstName)}, {nameof(BaseEntityUser.LastName)}) not found on user entity");
-            }
-
-            // Get table and column names from EF Core metadata
-            var tableName = entityType.GetTableName();
-            var loginColumnName = loginProperty.GetColumnName();
-            var firstNameColumnName = firstNameProperty.GetColumnName();
-            var lastNameColumnName = lastNameProperty.GetColumnName();
-            var loginColumnType = loginProperty.GetColumnType();
-
-            var tempTableName = $"TempLogins_{Guid.NewGuid():N}";
-
-            // Use a single connection for all operations to improve performance
-            var connection = dbContext.Database.GetDbConnection();
-            try
-            {
-                if (connection.State != ConnectionState.Open)
-                {
-                    await connection.OpenAsync();
-                }
-
-                await CreateAndPopulateTempTableAsync(tempTableName, logins, loginColumnType, dbProvider, connection);
-                return await GetUserFullNamesFromTempTableAsync(
-                    tempTableName,
-                    tableName,
-                    loginColumnName,
-                    firstNameColumnName,
-                    lastNameColumnName,
-                    dbProvider,
-                    connection);
-            }
-            finally
-            {
-                await DropTempTableAsync(tempTableName, dbProvider, connection);
-                if (connection.State == ConnectionState.Open)
-                {
-                    await connection.CloseAsync();
-                }
-            }
+            return $"{UserFullNameLoginCacheKeyPrefix}{login}";
         }
 
         /// <summary>
@@ -215,7 +134,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="dbProvider">The database provider.</param>
         /// <param name="connection">The database connection (must be open).</param>
         /// <returns>A completed task.</returns>
-        private static async Task CreateAndPopulateTempTableAsync(
+        private static async Task CreateAndPopulateLoginTempTableAsync(
             string tempTableName,
             List<string> logins,
             string loginColumnType,
@@ -292,7 +211,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="dbProvider">The database provider.</param>
         /// <param name="connection">The database connection (must be open).</param>
         /// <returns>A dictionary mapping logins to full names.</returns>
-        private static async Task<Dictionary<string, string>> GetUserFullNamesFromTempTableAsync(
+        private static async Task<Dictionary<string, string>> GetUserFullNamesFromLoginTempTableAsync(
             string tempTableName,
             string tableName,
             string loginColumnName,
@@ -304,7 +223,6 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
             using var command = connection.CreateCommand();
-            // Use INNER JOIN instead of EXISTS for better performance with indexes
             command.CommandText = dbProvider switch
             {
                 DbProvider.SqlServer => $@"
@@ -331,13 +249,13 @@ INNER JOIN ""{tempTableName}"" t ON u.""{loginColumnName}"" = t.""Login""",
         }
 
         /// <summary>
-        /// Drops the temporary table.
+        /// Drops the temporary table of logins.
         /// </summary>
         /// <param name="tempTableName">The name of the temporary table.</param>
         /// <param name="dbProvider">The database provider.</param>
         /// <param name="connection">The database connection (must be open).</param>
         /// <returns>A completed task.</returns>
-        private static async Task DropTempTableAsync(string tempTableName, DbProvider dbProvider, System.Data.Common.DbConnection connection)
+        private static async Task DropLoginTempTableAsync(string tempTableName, DbProvider dbProvider, System.Data.Common.DbConnection connection)
         {
             try
             {
@@ -355,6 +273,76 @@ INNER JOIN ""{tempTableName}"" t ON u.""{loginColumnName}"" = t.""Login""",
             catch
             {
                 // Suppress exceptions during cleanup
+            }
+        }
+
+        /// <summary>
+        /// Retrieves user full names from the database for the specified logins.
+        /// Uses small lists for standard LINQ queries and large lists for temporary tables.
+        /// </summary>
+        /// <param name="logins">The logins to retrieve.</param>
+        /// <returns>A dictionary mapping logins to full names.</returns>
+        private async Task<Dictionary<string, string>> GetUserFullNamesFromDatabaseAsync(List<string> logins)
+        {
+            if (logins.Count < 100)
+            {
+                return await this.unitOfWork.RetrieveSet<TUserEntity>()
+                    .Where(u => logins.Contains(u.Login))
+                    .ToDictionaryAsync(
+                        u => u.Login,
+                        u => $"{u.LastName} {u.FirstName}",
+                        StringComparer.OrdinalIgnoreCase);
+            }
+
+            if (this.unitOfWork is not DbContext dbContext)
+            {
+                throw new InvalidOperationException($"Unit of work must be a {nameof(DbContext)} instance");
+            }
+
+            var dbProvider = GetDatabaseProvider(dbContext);
+            var entityType = this.unitOfWork.FindEntityType(typeof(TUserEntity));
+            var loginProperty = entityType.FindProperty(nameof(BaseEntityUser.Login));
+            var firstNameProperty = entityType.FindProperty(nameof(BaseEntityUser.FirstName));
+            var lastNameProperty = entityType.FindProperty(nameof(BaseEntityUser.LastName));
+
+            if (loginProperty == null || firstNameProperty == null || lastNameProperty == null)
+            {
+                throw new InvalidOperationException($"Required properties ({nameof(BaseEntityUser.Login)}, {nameof(BaseEntityUser.FirstName)}, {nameof(BaseEntityUser.LastName)}) not found on user entity");
+            }
+
+            var tableName = entityType.GetTableName();
+            var loginColumnName = loginProperty.GetColumnName();
+            var firstNameColumnName = firstNameProperty.GetColumnName();
+            var lastNameColumnName = lastNameProperty.GetColumnName();
+            var loginColumnType = loginProperty.GetColumnType();
+
+            var tempTableName = $"TempLogins_{Guid.NewGuid():N}";
+
+            var connection = dbContext.Database.GetDbConnection();
+            try
+            {
+                if (connection.State != ConnectionState.Open)
+                {
+                    await connection.OpenAsync();
+                }
+
+                await CreateAndPopulateLoginTempTableAsync(tempTableName, logins, loginColumnType, dbProvider, connection);
+                return await GetUserFullNamesFromLoginTempTableAsync(
+                    tempTableName,
+                    tableName,
+                    loginColumnName,
+                    firstNameColumnName,
+                    lastNameColumnName,
+                    dbProvider,
+                    connection);
+            }
+            finally
+            {
+                await DropLoginTempTableAsync(tempTableName, dbProvider, connection);
+                if (connection.State == ConnectionState.Open)
+                {
+                    await connection.CloseAsync();
+                }
             }
         }
 #pragma warning restore CA2100
