@@ -29,6 +29,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         private const string UserFullNameLoginCacheKeyPrefix = "UserFullName_";
         private readonly IQueryableUnitOfWork unitOfWork;
         private readonly IBiaDistributedCache distributedCache;
+        private readonly TemporaryTableProvider temporaryTableProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserRepository{TUserEntity}"/> class using the specified unit of work and service.
@@ -43,6 +44,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         {
             this.unitOfWork = unitOfWork;
             this.distributedCache = serviceProvider.GetRequiredService<IBiaDistributedCache>();
+            this.temporaryTableProvider = TemporaryTableProviderFactory.Get(unitOfWork.GetDatabaseProviderEnum());
         }
 
         /// <inheritdoc/>
@@ -116,10 +118,10 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <returns>A dictionary mapping logins to full names.</returns>
         private async Task<Dictionary<string, string>> GetUserFullNamesPerLoginsFromDatabaseAsync(List<string> logins)
         {
-            if (logins.Count < 100)
-            {
-                return await this.GetUserFullNamesPerLoginsFromDatabaseLinqAsync(logins);
-            }
+            //if (logins.Count < 100)
+            //{
+            //    return await this.GetUserFullNamesPerLoginsFromDatabaseLinqAsync(logins);
+            //}
 
             return await this.GetUserFullNamesPerLoginsFromDatabaseTemporaryTableAsync(logins);
         }
@@ -156,7 +158,6 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
                 throw new InvalidOperationException($"Unit of work must be a {nameof(DbContext)} instance");
             }
 
-            var dbProvider = this.unitOfWork.GetDatabaseProviderEnum();
             var entityType = this.unitOfWork.FindEntityType(typeof(TUserEntity));
             var loginProperty = entityType.FindProperty(nameof(BaseEntityUser.Login));
             var firstNameProperty = entityType.FindProperty(nameof(BaseEntityUser.FirstName));
@@ -176,37 +177,37 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             var tempTableName = $"TempLogins_{Guid.NewGuid():N}";
 
             var connection = dbContext.Database.GetDbConnection();
+            if (connection.State != ConnectionState.Open)
+            {
+                await connection.OpenAsync();
+            }
+
             try
             {
-                if (connection.State != ConnectionState.Open)
-                {
-                    await connection.OpenAsync();
-                }
-
                 const string temporaryTableColumnName = "Login";
-                await TemporaryTableHelper.CreateAndPopulateTemporaryTableAsync(
+                await this.temporaryTableProvider.CreateTemporaryTableSingleColumnAsync(
+                    tempTableName,
+                    temporaryTableColumnName,
+                    loginColumnType,
+                    connection);
+
+                await this.temporaryTableProvider.InsertValuesInTemporaryTableSingleColumnAsync(
                     tempTableName,
                     logins,
                     temporaryTableColumnName,
-                    loginColumnType,
-                    dbProvider,
                     connection);
 
-                var selectQuery = dbProvider switch
-                {
-                    DbProvider.SqlServer => $@"
-SELECT u.[{loginColumnName}], u.[{firstNameColumnName}], u.[{lastNameColumnName}]
-FROM [{tableName}] u
-INNER JOIN [#{tempTableName}] t ON u.[{loginColumnName}] = t.[{temporaryTableColumnName}]",
-                    DbProvider.PostGreSql => $@"
-SELECT u.""{loginColumnName}"", u.""{firstNameColumnName}"", u.""{lastNameColumnName}""
-FROM ""{tableName}"" u
-INNER JOIN ""{tempTableName}"" t ON u.""{loginColumnName}"" = t.""{temporaryTableColumnName}""",
-                    _ => throw new NotSupportedException($"Database provider {dbProvider} is not supported"),
-                };
+                var selectQuery = this.temporaryTableProvider.BuildSelectFromTemporaryTableSingleColumn(
+                    tableName,
+                    loginColumnName,
+                    tempTableName,
+                    temporaryTableColumnName,
+                    loginColumnName,
+                    firstNameColumnName,
+                    lastNameColumnName);
 
                 var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-                var resultList = await TemporaryTableHelper.GetDataFromTemporaryTableAsync(
+                var resultList = await TemporaryTableProvider.GetDataFromTemporaryTableAsync(
                     selectQuery,
                     async reader =>
                     {
@@ -226,7 +227,7 @@ INNER JOIN ""{tempTableName}"" t ON u.""{loginColumnName}"" = t.""{temporaryTabl
             }
             finally
             {
-                await TemporaryTableHelper.DropTemporaryTableAsync(tempTableName, dbProvider, connection);
+                await this.temporaryTableProvider.DropTemporaryTableAsync(tempTableName, connection);
                 if (connection.State == ConnectionState.Open)
                 {
                     await connection.CloseAsync();
