@@ -58,18 +58,17 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
         }
 
         /// <summary>
-        /// Creates a temporary table with the specified single column schema.
+        /// Creates a temporary table with the specified column schema.
         /// </summary>
         /// <param name="tempTableName">The name of the temporary table.</param>
-        /// <param name="columnName">The column name to create in the temporary table.</param>
-        /// <param name="columnType">The SQL type of the column.</param>
+        /// <param name="columns">The column definitions.</param>
         /// <param name="connection">The database connection.</param>
         /// <returns>A completed task.</returns>
         /// <exception cref="ArgumentNullException">If any required parameter is null.</exception>
-        public async Task CreateTemporaryTableSingleColumnAsync(
+        /// <exception cref="ArgumentException">If columns list is empty.</exception>
+        public async Task CreateTemporaryTableAsync(
             string tempTableName,
-            string columnName,
-            string columnType,
+            IReadOnlyList<TemporaryTableColumnDefinition> columns,
             DbConnection connection)
         {
             if (string.IsNullOrWhiteSpace(tempTableName))
@@ -77,21 +76,18 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
                 throw new ArgumentNullException(nameof(tempTableName));
             }
 
-            if (string.IsNullOrWhiteSpace(columnName))
-            {
-                throw new ArgumentNullException(nameof(columnName));
-            }
+            ArgumentNullException.ThrowIfNull(columns);
 
-            if (string.IsNullOrWhiteSpace(columnType))
+            if (columns.Count == 0)
             {
-                throw new ArgumentNullException(nameof(columnType));
+                throw new ArgumentException("At least one column must be specified.", nameof(columns));
             }
 
             ArgumentNullException.ThrowIfNull(connection);
 
             await EnsureConnectionOpenedAsync(connection);
 
-            var createTableSql = this.GetCreateTableSql(tempTableName, columnName, columnType);
+            var createTableSql = this.GetCreateTableSql(tempTableName, columns);
 
             using var command = connection.CreateCommand();
             command.CommandText = createTableSql;
@@ -99,23 +95,22 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
         }
 
         /// <summary>
-        /// Inserts values into a temporary table's single column in batches.
+        /// Inserts values into multiple columns of a temporary table in batches.
         /// </summary>
         /// <typeparam name="TValue">The type of values to insert.</typeparam>
         /// <param name="tempTableName">The name of the temporary table.</param>
         /// <param name="values">The list of values to insert.</param>
-        /// <param name="columnName">The column name to insert values into.</param>
+        /// <param name="insertColumns">The column definitions specifying which columns to insert and how to extract/format values.</param>
         /// <param name="connection">The database connection.</param>
-        /// <param name="formatValue">Optional function to format the value for SQL. If null, the value is used as-is.</param>
         /// <param name="insertBatchSize">The number of values to insert per batch. Default value is 100.</param>
         /// <returns>A completed task.</returns>
         /// <exception cref="ArgumentNullException">If any required parameter is null.</exception>
-        public async Task InsertValuesInTemporaryTableSingleColumnAsync<TValue>(
+        /// <exception cref="ArgumentException">If insertColumns is empty.</exception>
+        public async Task InsertValuesInTemporaryTableAsync<TValue>(
             string tempTableName,
             IReadOnlyList<TValue> values,
-            string columnName,
+            IReadOnlyList<TemporaryTableInsertColumn<TValue>> insertColumns,
             DbConnection connection,
-            Func<TValue, object> formatValue = null,
             int insertBatchSize = 100)
         {
             if (string.IsNullOrWhiteSpace(tempTableName))
@@ -125,15 +120,18 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
 
             ArgumentNullException.ThrowIfNull(values);
 
-            if (string.IsNullOrWhiteSpace(columnName))
+            ArgumentNullException.ThrowIfNull(insertColumns);
+
+            if (insertColumns.Count == 0)
             {
-                throw new ArgumentNullException(nameof(columnName));
+                throw new ArgumentException("At least one insert column must be specified.", nameof(insertColumns));
             }
 
             ArgumentNullException.ThrowIfNull(connection);
 
             await EnsureConnectionOpenedAsync(connection);
 
+            var columnNames = insertColumns.Select(col => col.ColumnName).ToList();
             var insertBatches = values.Select((value, index) => new { value, index })
                 .GroupBy(x => x.index / insertBatchSize)
                 .ToList();
@@ -141,18 +139,25 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
             foreach (var batch in insertBatches)
             {
                 var batchValues = batch.Select(x => x.value).ToList();
-                var insertSql = this.GetInsertSql(tempTableName, columnName, batchValues.Count);
+                var insertSql = this.GetInsertSql(tempTableName, columnNames, batchValues.Count);
 
                 using var command = connection.CreateCommand();
                 command.CommandText = insertSql;
 
-                for (int index = 0; index < batchValues.Count; index++)
+                for (int rowIndex = 0; rowIndex < batchValues.Count; rowIndex++)
                 {
-                    var value = batchValues[index];
-                    var formattedValue = formatValue?.Invoke(value);
-                    var parameterValue = formattedValue ?? (!Equals(value, default(TValue)) ? value : DBNull.Value);
+                    var rowValue = batchValues[rowIndex];
 
-                    command.Parameters.Add(this.CreateParameter($"@Value{index}", parameterValue));
+                    for (int colIndex = 0; colIndex < insertColumns.Count; colIndex++)
+                    {
+                        var insertColumn = insertColumns[colIndex];
+                        var extractedValue = insertColumn.ValueSelector(rowValue);
+                        var formattedValue = insertColumn.FormatValue?.Invoke(extractedValue);
+                        var parameterValue = formattedValue ?? (!Equals(extractedValue, default) ? extractedValue : DBNull.Value);
+
+                        var parameterName = $"@Value{(rowIndex * insertColumns.Count) + colIndex}";
+                        command.Parameters.Add(this.CreateParameter(parameterName, parameterValue));
+                    }
                 }
 
                 await command.ExecuteNonQueryAsync();
@@ -160,41 +165,56 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
         }
 
         /// <summary>
-        /// Builds a SELECT query that joins a main table with a temporary table containing a single column.
+        /// Creates a temporary table and inserts values based on the temporary table definition.
         /// </summary>
-        /// <param name="tableName">The name of the main table to select from.</param>
-        /// <param name="tableJoinColumnName">The column name in the main table to join on.</param>
-        /// <param name="tempTableName">The name of the temporary table.</param>
-        /// <param name="tempTableColumnName">The column name in the temporary table.</param>
-        /// <param name="selectColumns">The columns to select in format "tableAlias.[columnName]".</param>
-        /// <returns>The SELECT query string.</returns>
-        public string BuildSelectFromTemporaryTableSingleColumn(
-            string tableName,
-            string tableJoinColumnName,
-            string tempTableName,
-            string tempTableColumnName,
-            params string[] selectColumns)
+        /// <typeparam name="TValue">The type of values to insert.</typeparam>
+        /// <param name="tempTable">The temporary table definition containing schema and insertion configuration.</param>
+        /// <param name="values">The list of values to insert.</param>
+        /// <param name="connection">The database connection.</param>
+        /// <param name="insertBatchSize">The number of values to insert per batch. Default value is 100.</param>
+        /// <returns>A completed task.</returns>
+        /// <exception cref="ArgumentNullException">If any required parameter is null.</exception>
+        /// <exception cref="InvalidOperationException">If the temporary table definition is invalid.</exception>
+        public async Task CreateAndPopulateTemporaryTableAsync<TValue>(
+            TemporaryTable tempTable,
+            IReadOnlyList<TValue> values,
+            DbConnection connection,
+            int insertBatchSize = 100)
         {
-            if (string.IsNullOrWhiteSpace(tableName))
-            {
-                throw new ArgumentNullException(nameof(tableName));
-            }
+            ArgumentNullException.ThrowIfNull(tempTable);
+            ArgumentNullException.ThrowIfNull(values);
+            ArgumentNullException.ThrowIfNull(connection);
 
-            if (string.IsNullOrWhiteSpace(tableJoinColumnName))
-            {
-                throw new ArgumentNullException(nameof(tableJoinColumnName));
-            }
+            await this.CreateTemporaryTableAsync(
+                tempTable.Name,
+                tempTable.Columns,
+                connection);
 
-            if (string.IsNullOrWhiteSpace(tempTableName))
-            {
-                throw new ArgumentNullException(nameof(tempTableName));
-            }
+            var insertColumns = tempTable.Columns
+                .Select(c => tempTable.GetInsertColumn<TValue>(c.Name))
+                .ToList();
 
-            if (string.IsNullOrWhiteSpace(tempTableColumnName))
-            {
-                throw new ArgumentNullException(nameof(tempTableColumnName));
-            }
+            await this.InsertValuesInTemporaryTableAsync(
+                tempTable.Name,
+                values,
+                insertColumns,
+                connection,
+                insertBatchSize);
+        }
 
+        /// <summary>
+        /// Builds a SELECT query that joins a main table with a temporary table based on defined join conditions.
+        /// </summary>
+        /// <param name="joinDefinition">The join definition specifying tables, aliases, and join conditions.</param>
+        /// <param name="selectColumns">The columns to select from the joined tables.</param>
+        /// <returns>The SELECT query string.</returns>
+        /// <exception cref="ArgumentNullException">If any required parameter is null.</exception>
+        /// <exception cref="ArgumentException">If selectColumns is empty.</exception>
+        public string BuildSelectFromTemporaryTableJoin(
+            TemporaryTableJoinDefinition joinDefinition,
+            params TemporaryTableSelectColumn[] selectColumns)
+        {
+            ArgumentNullException.ThrowIfNull(joinDefinition);
             ArgumentNullException.ThrowIfNull(selectColumns);
 
             if (selectColumns.Length == 0)
@@ -202,12 +222,9 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
                 throw new ArgumentException("At least one select column must be specified.", nameof(selectColumns));
             }
 
-            return this.GetSelectFromTemporaryTableSingleColumnSql(
-                tableName,
-                tableJoinColumnName,
-                tempTableName,
-                tempTableColumnName,
-                selectColumns);
+            joinDefinition.Validate();
+
+            return this.GetSelectFromTemporaryTableJoinSql(joinDefinition, selectColumns);
         }
 
         /// <summary>
@@ -241,10 +258,11 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
         /// Gets the SQL syntax for creating a temporary table for the specific database provider.
         /// </summary>
         /// <param name="tempTableName">The name of the temporary table.</param>
-        /// <param name="columnName">The column name to create in the temporary table.</param>
-        /// <param name="columnType">The SQL type of the column.</param>
+        /// <param name="columns">The column definitions.</param>
         /// <returns>The CREATE TABLE SQL statement.</returns>
-        protected abstract string GetCreateTableSql(string tempTableName, string columnName, string columnType);
+        protected abstract string GetCreateTableSql(
+            string tempTableName,
+            IReadOnlyList<TemporaryTableColumnDefinition> columns);
 
         /// <summary>
         /// Gets the SQL syntax for dropping a temporary table for the specific database provider.
@@ -257,10 +275,13 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
         /// Gets the SQL syntax for inserting values into a temporary table for the specific database provider.
         /// </summary>
         /// <param name="tempTableName">The name of the temporary table.</param>
-        /// <param name="columnName">The column name to insert values into.</param>
-        /// <param name="valueCount">The number of parameter placeholders required.</param>
+        /// <param name="columnNames">The column names to insert values into.</param>
+        /// <param name="valueCount">The number of rows to insert.</param>
         /// <returns>The INSERT SQL statement.</returns>
-        protected abstract string GetInsertSql(string tempTableName, string columnName, int valueCount);
+        protected abstract string GetInsertSql(
+            string tempTableName,
+            IReadOnlyList<string> columnNames,
+            int valueCount);
 
         /// <summary>
         /// Creates a parameter for the specific database provider.
@@ -271,20 +292,14 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
         protected abstract DbParameter CreateParameter(string parameterName, object value);
 
         /// <summary>
-        /// Gets the SQL syntax for a select query that joins a table with a temporary table containing a single column.
+        /// Gets the SQL syntax for a select query that joins a table with a temporary table.
         /// </summary>
-        /// <param name="tableName">The name of the main table to select from.</param>
-        /// <param name="tableJoinColumnName">The column name in the main table to join on.</param>
-        /// <param name="tempTableName">The name of the temporary table.</param>
-        /// <param name="tempTableColumnName">The column name in the temporary table.</param>
-        /// <param name="selectColumns">The columns to select in format "tableAlias.[columnName]".</param>
+        /// <param name="joinDefinition">The join definition specifying tables, aliases, and join conditions.</param>
+        /// <param name="selectColumns">The columns to select from the joined tables.</param>
         /// <returns>The SELECT query string.</returns>
-        protected abstract string GetSelectFromTemporaryTableSingleColumnSql(
-            string tableName,
-            string tableJoinColumnName,
-            string tempTableName,
-            string tempTableColumnName,
-            params string[] selectColumns);
+        protected abstract string GetSelectFromTemporaryTableJoinSql(
+            TemporaryTableJoinDefinition joinDefinition,
+            TemporaryTableSelectColumn[] selectColumns);
 
         /// <summary>
         /// Ensures the database connection is open.

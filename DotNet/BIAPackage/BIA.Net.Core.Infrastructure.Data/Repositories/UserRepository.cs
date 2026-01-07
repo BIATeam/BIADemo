@@ -118,10 +118,10 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <returns>A dictionary mapping logins to full names.</returns>
         private async Task<Dictionary<string, string>> GetUserFullNamesPerLoginsFromDatabaseAsync(List<string> logins)
         {
-            //if (logins.Count < 100)
-            //{
-            //    return await this.GetUserFullNamesPerLoginsFromDatabaseLinqAsync(logins);
-            //}
+            if (logins.Count < 100)
+            {
+                return await this.GetUserFullNamesPerLoginsFromDatabaseLinqAsync(logins);
+            }
 
             return await this.GetUserFullNamesPerLoginsFromDatabaseTemporaryTableAsync(logins);
         }
@@ -177,34 +177,37 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             var tempTableName = $"TempLogins_{Guid.NewGuid():N}";
 
             var connection = dbContext.Database.GetDbConnection();
-            if (connection.State != ConnectionState.Open)
-            {
-                await connection.OpenAsync();
-            }
 
             try
             {
-                const string temporaryTableColumnName = "Login";
-                await this.temporaryTableProvider.CreateTemporaryTableSingleColumnAsync(
-                    tempTableName,
-                    temporaryTableColumnName,
-                    loginColumnType,
-                    connection);
+                if (connection.State != ConnectionState.Open)
+                {
+                    await connection.OpenAsync();
+                }
 
-                await this.temporaryTableProvider.InsertValuesInTemporaryTableSingleColumnAsync(
-                    tempTableName,
+                const string tempTableLoginColumnName = "Login";
+                var tempTable = new TemporaryTable(tempTableName)
+                    .AddColumn(tempTableLoginColumnName, loginColumnType, isPrimaryKey: true)
+                    .AddInsertColumn<string>(tempTableLoginColumnName, login => login);
+
+                await this.temporaryTableProvider.CreateAndPopulateTemporaryTableAsync(
+                    tempTable,
                     logins,
-                    temporaryTableColumnName,
                     connection);
 
-                var selectQuery = this.temporaryTableProvider.BuildSelectFromTemporaryTableSingleColumn(
-                    tableName,
-                    loginColumnName,
-                    tempTableName,
-                    temporaryTableColumnName,
-                    loginColumnName,
-                    firstNameColumnName,
-                    lastNameColumnName);
+                var joinDefinition = new TemporaryTableJoinDefinition(tableName, tempTableName, "users", "loginTemp")
+                    .AddJoinCondition(loginColumnName, tempTableLoginColumnName);
+
+                var selectColumns = new[]
+                {
+                    new TemporaryTableSelectColumn("users", loginColumnName),
+                    new TemporaryTableSelectColumn("users", firstNameColumnName),
+                    new TemporaryTableSelectColumn("users", lastNameColumnName),
+                };
+
+                var selectQuery = this.temporaryTableProvider.BuildSelectFromTemporaryTableJoin(
+                    joinDefinition,
+                    selectColumns);
 
                 var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
                 var resultList = await TemporaryTableProvider.GetDataFromTemporaryTableAsync(
@@ -227,9 +230,9 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             }
             finally
             {
-                await this.temporaryTableProvider.DropTemporaryTableAsync(tempTableName, connection);
                 if (connection.State == ConnectionState.Open)
                 {
+                    await this.temporaryTableProvider.DropTemporaryTableAsync(tempTableName, connection);
                     await connection.CloseAsync();
                 }
             }

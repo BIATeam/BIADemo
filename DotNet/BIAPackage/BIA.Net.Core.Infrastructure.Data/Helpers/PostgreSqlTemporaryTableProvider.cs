@@ -4,6 +4,8 @@
 
 namespace BIA.Net.Core.Infrastructure.Data.Helpers
 {
+    using System;
+    using System.Collections.Generic;
     using System.Data.Common;
     using System.Linq;
     using Npgsql;
@@ -14,10 +16,23 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
     internal class PostgreSqlTemporaryTableProvider : TemporaryTableProvider
     {
         /// <inheritdoc/>
-        protected override string GetCreateTableSql(string tempTableName, string columnName, string columnType)
+        protected override string GetCreateTableSql(
+            string tempTableName,
+            IReadOnlyList<TemporaryTableColumnDefinition> columns)
         {
+            var columnDefinitions = columns.Select(col =>
+            {
+                var nullable = col.IsNullable ? "NULL" : "NOT NULL";
+                var primaryKey = col.IsPrimaryKey ? "PRIMARY KEY" : string.Empty;
+                var parts = new[] { $"\"{col.Name}\"", col.SqlType, nullable, primaryKey }
+                    .Where(p => !string.IsNullOrWhiteSpace(p))
+                    .ToList();
+                return string.Join(" ", parts);
+            });
+
+            var columnList = string.Join(",\n    ", columnDefinitions);
             return $@"CREATE TEMPORARY TABLE ""{tempTableName}"" (
-    ""{columnName}"" {columnType} NOT NULL PRIMARY KEY
+    {columnList}
 );";
         }
 
@@ -28,10 +43,16 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
         }
 
         /// <inheritdoc/>
-        protected override string GetInsertSql(string tempTableName, string columnName, int valueCount)
+        protected override string GetInsertSql(
+            string tempTableName,
+            IReadOnlyList<string> columnNames,
+            int valueCount)
         {
-            var valuesList = string.Join(",", Enumerable.Range(0, valueCount).Select(i => $"(@Value{i})"));
-            return $@"INSERT INTO ""{tempTableName}"" (""{columnName}"") VALUES {valuesList}";
+            var columns = string.Join("\", \"", columnNames);
+            var valuesList = string.Join(",", Enumerable.Range(0, valueCount)
+                .Select(i => $"({string.Join(",", Enumerable.Range(0, columnNames.Count).Select(j => $"@Value{(i * columnNames.Count) + j}"))})"));
+
+            return $@"INSERT INTO ""{tempTableName}"" (""{columns}"") VALUES {valuesList}";
         }
 
         /// <inheritdoc/>
@@ -41,18 +62,30 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
         }
 
         /// <inheritdoc/>
-        protected override string GetSelectFromTemporaryTableSingleColumnSql(
-            string tableName,
-            string tableJoinColumnName,
-            string tempTableName,
-            string tempTableColumnName,
-            params string[] selectColumns)
+        protected override string GetSelectFromTemporaryTableJoinSql(
+            TemporaryTableJoinDefinition joinDefinition,
+            TemporaryTableSelectColumn[] selectColumns)
         {
-            var selectList = string.Join(", ", selectColumns.Select(x => $"t.\"{x}\""));
+            var selectList = string.Join(", ", selectColumns.Select(col =>
+            {
+                var columnRef = $"\"{joinDefinition.MainTableAlias}\".\"{col.ColumnName}\"";
+                if (col.TableAlias == joinDefinition.TempTableAlias)
+                {
+                    columnRef = $"\"{joinDefinition.TempTableAlias}\".\"{col.ColumnName}\"";
+                }
+
+                return string.IsNullOrWhiteSpace(col.Alias)
+                    ? columnRef
+                    : $"{columnRef} AS \"{col.Alias}\"";
+            }));
+
+            var joinConditions = string.Join(" AND ", joinDefinition.JoinConditions.Select(jc =>
+                $"\"{joinDefinition.MainTableAlias}\".\"{jc.MainTableColumn}\" = \"{joinDefinition.TempTableAlias}\".\"{jc.TempTableColumn}\""));
+
             return $@"
 SELECT {selectList}
-FROM ""{tableName}"" t
-INNER JOIN ""{tempTableName}"" tt ON t.""{tableJoinColumnName}"" = tt.""{tempTableColumnName}""";
+FROM ""{joinDefinition.MainTableName}"" ""{joinDefinition.MainTableAlias}""
+INNER JOIN ""{joinDefinition.TempTableName}"" ""{joinDefinition.TempTableAlias}"" ON {joinConditions}";
         }
     }
 }
