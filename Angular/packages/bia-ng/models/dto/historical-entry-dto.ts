@@ -3,7 +3,7 @@ import { HistoricalEntryType } from 'packages/bia-ng/models/enum/public-api';
 export interface HistoricalEntryDto {
   entryType: HistoricalEntryType;
   entryDateTime: Date;
-  entryUserLogin: string;
+  entryUser: string;
   entryModifications: HistoricalEntryModification[];
 }
 
