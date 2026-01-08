@@ -1188,7 +1188,7 @@ namespace BIA.Net.Core.Domain.Service
                 {
                     var entry = new EntityHistoricalEntryDto
                     {
-                        EntryDateTime = audits[0].AuditDate,
+                        EntryDateTime = DateTime.SpecifyKind(audits[0].AuditDate, DateTimeKind.Utc),
                         EntryUser = audits[0].AuditUserLogin,
                     };
 
