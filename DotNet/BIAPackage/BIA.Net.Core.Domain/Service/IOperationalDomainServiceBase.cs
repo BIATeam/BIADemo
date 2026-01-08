@@ -20,6 +20,7 @@ namespace BIA.Net.Core.Domain.Service
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
+    using BIA.Net.Core.Domain.User.Entities;
 
     /// <summary>
     /// The interface defining the CRUD methods.
@@ -273,8 +274,10 @@ namespace BIA.Net.Core.Domain.Service
         /// <summary>
         /// Get the historical of an item by its <paramref name="id"/>.
         /// </summary>
+        /// <typeparam name="TUserEntity">The type of the user entity.</typeparam>
         /// <param name="id">The item ID.</param>
         /// <returns>Collection of <see cref="EntityHistoricalEntryDto>"/>.</returns>
-        Task<List<EntityHistoricalEntryDto>> GetHistoricalAsync(TKey id);
+        Task<List<EntityHistoricalEntryDto>> GetHistoricalAsync<TUserEntity>(TKey id)
+            where TUserEntity : BaseEntityUser;
     }
 }

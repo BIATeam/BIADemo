@@ -24,6 +24,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BIA.Net.Core.Common\BIA.Net.Core.Common.csproj" />
     <ProjectReference Include="..\BIA.Net.Core.Domain\BIA.Net.Core.Domain.csproj" />
+    <ProjectReference Include="..\BIA.Net.Core.Infrastructure.Service\BIA.Net.Core.Infrastructure.Service.csproj" />
   </ItemGroup>
 
   <ItemGroup>
