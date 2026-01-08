@@ -9,7 +9,6 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
     using System.Data;
     using System.Linq;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;
     using BIA.Net.Core.Infrastructure.Data.Helpers;
@@ -118,12 +117,14 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <returns>A dictionary mapping logins to full names.</returns>
         private async Task<Dictionary<string, string>> GetUserFullNamesPerLoginsFromDatabaseAsync(List<string> logins)
         {
-            if (logins.Count < 100)
-            {
-                return await this.GetUserFullNamesPerLoginsFromDatabaseLinqAsync(logins);
-            }
+            return await this.GetUserFullNamesPerLoginsFromDatabaseLinqAsync(logins);
 
+#pragma warning disable S1135 // Track uses of "TODO" tags
+            // TODO: to complete for V7
+#pragma warning disable CS0162 // Unreachable code detected
             return await this.GetUserFullNamesPerLoginsFromDatabaseTemporaryTableAsync(logins);
+#pragma warning restore CS0162 // Unreachable code detected
+#pragma warning restore S1135 // Track uses of "TODO" tags
         }
 
         /// <summary>

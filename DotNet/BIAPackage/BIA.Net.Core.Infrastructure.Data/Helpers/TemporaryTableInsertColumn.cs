@@ -1,4 +1,4 @@
-// <copyright file="TemporaryTableInsertDefinition.cs" company="BIA">
+// <copyright file="TemporaryTableInsertColumn.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -11,7 +11,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
     /// Represents a column and its associated value formatter for inserting into a temporary table.
     /// </summary>
     /// <typeparam name="TValue">The type of values to insert.</typeparam>
-    public class TemporaryTableInsertColumn<TValue>
+    internal class TemporaryTableInsertColumn<TValue>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TemporaryTableInsertColumn{TValue}"/> class.

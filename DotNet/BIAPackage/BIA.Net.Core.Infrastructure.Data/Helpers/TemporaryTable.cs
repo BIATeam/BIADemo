@@ -6,13 +6,12 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
     /// Represents a definition of a temporary table with its schema and insertion configuration.
     /// Encapsulates all metadata needed to create, populate, and interact with a temporary table.
     /// </summary>
-    public class TemporaryTable
+    internal class TemporaryTable
     {
         private readonly List<TemporaryTableColumnDefinition> columns;
         private readonly Dictionary<string, object> insertColumnsMap; // columnName -> TemporaryTableInsertColumn<TValue>
@@ -42,12 +41,6 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
         /// Gets the column definitions (read-only).
         /// </summary>
         public IReadOnlyList<TemporaryTableColumnDefinition> Columns => this.columns.AsReadOnly();
-
-        /// <summary>
-        /// Gets all insert column definitions mapped by column name (read-only).
-        /// </summary>
-        public IReadOnlyDictionary<string, object> InsertColumnsMap => 
-            new Dictionary<string, object>(this.insertColumnsMap);
 
         /// <summary>
         /// Gets the insert column definitions for a specific column name.
@@ -90,18 +83,6 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
             bool isNullable = false)
         {
             var column = new TemporaryTableColumnDefinition(columnName, sqlType, isPrimaryKey, isNullable);
-            this.columns.Add(column);
-            return this;
-        }
-
-        /// <summary>
-        /// Adds a column definition to the temporary table.
-        /// </summary>
-        /// <param name="column">The column definition to add.</param>
-        /// <returns>The current instance for method chaining.</returns>
-        public TemporaryTable AddColumn(TemporaryTableColumnDefinition column)
-        {
-            ArgumentNullException.ThrowIfNull(column);
             this.columns.Add(column);
             return this;
         }

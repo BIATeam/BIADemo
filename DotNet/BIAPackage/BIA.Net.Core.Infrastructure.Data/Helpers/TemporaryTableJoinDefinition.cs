@@ -11,7 +11,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
     /// <summary>
     /// Represents a join condition between a main table and a temporary table.
     /// </summary>
-    public class TemporaryTableJoinDefinition
+    internal class TemporaryTableJoinDefinition
     {
         private readonly List<(string MainTableColumn, string TempTableColumn)> joinConditions;
 

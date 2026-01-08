@@ -9,7 +9,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
     /// <summary>
     /// Represents a column to select in a SELECT query with table information.
     /// </summary>
-    public class TemporaryTableSelectColumn
+    internal class TemporaryTableSelectColumn
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TemporaryTableSelectColumn"/> class.

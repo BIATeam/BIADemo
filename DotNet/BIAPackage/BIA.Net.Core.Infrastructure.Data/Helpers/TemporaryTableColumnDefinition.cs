@@ -9,7 +9,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
     /// <summary>
     /// Represents a column definition for a temporary table.
     /// </summary>
-    public class TemporaryTableColumnDefinition
+    internal class TemporaryTableColumnDefinition
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TemporaryTableColumnDefinition"/> class.

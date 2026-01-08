@@ -12,7 +12,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
     /// Factory for creating and caching database provider-specific temporary table providers.
     /// This factory is a singleton that creates providers once and reuses them.
     /// </summary>
-    public static class TemporaryTableProviderFactory
+    internal static class TemporaryTableProviderFactory
     {
         private static readonly ConcurrentDictionary<DbProvider, TemporaryTableProvider> Providers = new();
 
