@@ -195,7 +195,7 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
               this.editFooter !== true))))
     ) {
       if (this.hasChanged === true) {
-        if (!rowData) {
+        if (!rowData || rowData.id !== this.form.value.id) {
           if (this.form.valid) {
             this.onSubmit();
           } else {
