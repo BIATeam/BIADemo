@@ -384,10 +384,9 @@ namespace BIA.Net.Core.Domain.Service
         }
 
         /// <inheritdoc />
-        public virtual async Task<List<EntityHistoricalEntryDto>> GetHistoricalAsync<TUserEntity>(TKey id)
-            where TUserEntity : BaseEntityUser
+        public virtual async Task<List<EntityHistoricalEntryDto>> GetHistoricalAsync(TKey id)
         {
-            return await this.GetHistoricalGenericAsync<TDto, TMapper, TUserEntity>(id);
+            return await this.GetHistoricalGenericAsync<TDto, TMapper>(id);
         }
 
         /// <summary>
@@ -1147,13 +1146,11 @@ namespace BIA.Net.Core.Domain.Service
         /// </summary>
         /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
         /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
-        /// <typeparam name="TUserEntity">The type of User Entity.</typeparam>
         /// <param name="id">The item ID.</param>
         /// <returns>Collection of <see cref="EntityHistoricalEntryDto>"/>.</returns>
-        protected virtual async Task<List<EntityHistoricalEntryDto>> GetHistoricalGenericAsync<TOtherDto, TOtherMapper, TUserEntity>(TKey id)
+        protected virtual async Task<List<EntityHistoricalEntryDto>> GetHistoricalGenericAsync<TOtherDto, TOtherMapper>(TKey id)
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherMapper : BiaBaseMapper<TOtherDto, TEntity, TKey>
-            where TUserEntity : BaseEntityUser
         {
             return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
             {
@@ -1207,7 +1204,7 @@ namespace BIA.Net.Core.Domain.Service
                     historical.Add(entry);
                 }
 
-                await this.SetHistoricalEntriesUserDisplay<TUserEntity>(historical);
+                await this.SetHistoricalEntriesUserDisplay(historical);
 
                 return historical;
             });
@@ -1217,11 +1214,9 @@ namespace BIA.Net.Core.Domain.Service
         /// Updates the user display information for each historical entry in the provided list according to the
         /// configured audit display mode.
         /// </summary>
-        /// <typeparam name="TUserEntity">The type of the user entity, which must inherit from <see cref="BaseEntityUser"/>.</typeparam>
         /// <param name="entries">A read-only list of historical entry DTOs whose user display information will be updated.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
-        protected virtual async Task SetHistoricalEntriesUserDisplay<TUserEntity>(IReadOnlyList<EntityHistoricalEntryDto> entries)
-            where TUserEntity : BaseEntityUser
+        protected virtual async Task SetHistoricalEntriesUserDisplay(IReadOnlyList<EntityHistoricalEntryDto> entries)
         {
             var historicalUserDisplay = this.BiaNetSection?.CommonFeatures?.AuditConfiguration?.HistoricalUserDisplay;
 
@@ -1229,7 +1224,7 @@ namespace BIA.Net.Core.Domain.Service
             if (historicalUserDisplay == Audit.HistoricalUserDisplayFullName)
             {
                 var entriesLogins = entries.Select(e => e.EntryUser).Distinct().ToList();
-                userFullNamesPerLogin = await this.Repository.ServiceProvider.GetRequiredService<IUserRepository<TUserEntity>>().GetUserFullNamesPerLoginsAsync(entriesLogins);
+                userFullNamesPerLogin = await this.Repository.ServiceProvider.GetRequiredService<ICoreUserRepository>().GetUserFullNamesPerLoginsAsync(entriesLogins);
             }
 
             foreach (var entry in entries)

@@ -24,7 +24,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="userIdentityKeyDomainService">The user IdentityKey Domain Service.</param>
         /// <param name="identityProviderRepository">The identity provider repository.</param>
         public UserSynchronizeDomainService(
-            IUserRepository<User> repository,
+            ITGenericRepository<User, int> repository,
             IUserDirectoryRepository<UserFromDirectoryDto, UserFromDirectory> adHelper,
             IUserIdentityKeyDomainService userIdentityKeyDomainService,
             IIdentityProviderRepository<UserFromDirectory> identityProviderRepository)

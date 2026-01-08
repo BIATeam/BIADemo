@@ -274,10 +274,8 @@ namespace BIA.Net.Core.Domain.Service
         /// <summary>
         /// Get the historical of an item by its <paramref name="id"/>.
         /// </summary>
-        /// <typeparam name="TUserEntity">The type of the user entity.</typeparam>
         /// <param name="id">The item ID.</param>
         /// <returns>Collection of <see cref="EntityHistoricalEntryDto>"/>.</returns>
-        Task<List<EntityHistoricalEntryDto>> GetHistoricalAsync<TUserEntity>(TKey id)
-            where TUserEntity : BaseEntityUser;
+        Task<List<EntityHistoricalEntryDto>> GetHistoricalAsync(TKey id);
     }
 }

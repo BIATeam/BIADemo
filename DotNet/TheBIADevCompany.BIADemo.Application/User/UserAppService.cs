@@ -35,7 +35,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="userIdentityKeyDomainService">The user Identity Key Domain Service.</param>
         /// <param name="principal">The principal.</param>
         public UserAppService(
-            IUserRepository<User> repository,
+            ITGenericRepository<User, int> repository,
             IBaseUserSynchronizeDomainService<User, UserFromDirectory> userSynchronizeDomainService,
             IOptions<BiaNetSection> configuration,
             IUserDirectoryRepository<UserFromDirectoryDto, UserFromDirectory> userDirectoryHelper,

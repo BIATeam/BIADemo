@@ -1,4 +1,4 @@
-﻿// <copyright file="UserRepository.cs" company="BIA">
+﻿// <copyright file="CoreUserRepository.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -11,17 +11,16 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;
-    using BIA.Net.Core.Infrastructure.Data.Helpers;
+    using BIA.Net.Core.Infrastructure.Data.Helpers.TemporaryTable;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
-    /// Provides a repository for managing user entities, supporting operations such as retrieving user information by
-    /// login. Inherits standard data access functionality for entities identified by an integer key.
+    /// Provides user repository core functionality.
     /// </summary>
-    /// <typeparam name="TUserEntity">The type of user entity managed by the repository. Must inherit from <see cref="BaseEntityUser"/>.</typeparam>
-    public sealed class UserRepository<TUserEntity> : TGenericRepositoryEF<TUserEntity, int>, IUserRepository<TUserEntity>
+    /// <typeparam name="TUserEntity">The user entity type, which must inherit from <see cref="BaseEntityUser"/>.</typeparam>
+    public sealed class CoreUserRepository<TUserEntity> : ICoreUserRepository
         where TUserEntity : BaseEntityUser
     {
         private const double UserFullNameLoginCacheDurationInMinutes = 60;
@@ -31,15 +30,14 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         private readonly TemporaryTableProvider temporaryTableProvider;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UserRepository{TUserEntity}"/> class using the specified unit of work and service.
+        /// Initializes a new instance of the <see cref="CoreUserRepository{TUserEntity}"/> class using the specified unit of work and service.
         /// provider.
         /// </summary>
         /// <param name="unitOfWork">The unit of work that manages database transactions and provides access to queryable data sources. Cannot be
         /// null.</param>
         /// <param name="serviceProvider">The service provider used to resolve application services and dependencies required by the repository.
         /// Cannot be null.</param>
-        public UserRepository(IQueryableUnitOfWork unitOfWork, IServiceProvider serviceProvider)
-            : base(unitOfWork, serviceProvider)
+        public CoreUserRepository(IQueryableUnitOfWork unitOfWork, IServiceProvider serviceProvider)
         {
             this.unitOfWork = unitOfWork;
             this.distributedCache = serviceProvider.GetRequiredService<IBiaDistributedCache>();

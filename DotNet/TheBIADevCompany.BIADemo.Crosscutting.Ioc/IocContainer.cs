@@ -259,7 +259,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 serviceLifetime: ServiceLifetime.Transient);
 
             // Must specify the User type explicitly
-            collection.AddScoped<IUserRepository<User>, UserRepository<User>>();
+            collection.AddScoped<ICoreUserRepository, CoreUserRepository<User>>();
         }
 #endif
 

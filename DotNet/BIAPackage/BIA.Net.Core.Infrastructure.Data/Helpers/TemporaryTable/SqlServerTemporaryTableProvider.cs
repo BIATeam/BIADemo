@@ -2,7 +2,7 @@
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Infrastructure.Data.Helpers
+namespace BIA.Net.Core.Infrastructure.Data.Helpers.TemporaryTable
 {
     using System.Data.Common;
     using Microsoft.Data.SqlClient;

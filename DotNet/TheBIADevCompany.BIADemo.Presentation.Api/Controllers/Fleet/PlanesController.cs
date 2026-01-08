@@ -22,7 +22,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
     using TheBIADevCompany.BIADemo.Application.Fleet;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// The API controller used to manage Planes.
@@ -352,7 +351,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         {
             try
             {
-                var dto = await this.planeService.GetHistoricalAsync<User>(id);
+                var dto = await this.planeService.GetHistoricalAsync(id);
                 return this.Ok(dto);
             }
             catch (ElementNotFoundException)

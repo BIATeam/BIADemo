@@ -1,4 +1,4 @@
-﻿// <copyright file="IUserRepository.cs" company="BIA">
+﻿// <copyright file="ICoreUserRepository.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -6,15 +6,11 @@ namespace BIA.Net.Core.Domain.RepoContract
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Domain.User.Entities;
 
     /// <summary>
-    /// Defines a contract for a repository that manages user entities and provides user-specific data retrieval
-    /// operations.
+    /// Interface for implementations of user repository core functionality.
     /// </summary>
-    /// <typeparam name="TUserEntity">The type of user entity managed by the repository. Must inherit from <see cref="BaseEntityUser"/>.</typeparam>
-    public interface IUserRepository<TUserEntity> : ITGenericRepository<TUserEntity, int>
-        where TUserEntity : BaseEntityUser
+    public interface ICoreUserRepository
     {
         /// <summary>
         /// Retrieves a dictionary mapping user login names to their corresponding full names.

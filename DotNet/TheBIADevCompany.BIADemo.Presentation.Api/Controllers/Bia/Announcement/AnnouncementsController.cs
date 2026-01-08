@@ -18,7 +18,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Announcement
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// The API controller used to manage Announcements.
@@ -237,7 +236,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Announcement
         {
             try
             {
-                var dto = await this.announcementService.GetHistoricalAsync<User>(id);
+                var dto = await this.announcementService.GetHistoricalAsync(id);
                 return this.Ok(dto);
             }
             catch (ElementNotFoundException)
