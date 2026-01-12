@@ -137,26 +137,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// </summary>
         public DbSet<UserDefaultTeam> UserDefaultTeams { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Announcements.
-        /// </summary>
-        public DbSet<Announcement> Announcements { get; set; }
-
-        /// <summary>
-        /// Gets or sets the AnnouncementTypes.
-        /// </summary>
-        public DbSet<AnnouncementType> AnnouncementTypes { get; set; }
-
-        /// <summary>
-        /// Gets or sets the AnnouncementTypeTranslations.
-        /// </summary>
-        public DbSet<AnnouncementTypeTranslation> AnnouncementTypeTranslations { get; set; }
-
-        /// <summary>
-        /// Gets or sets the AnnouncementAudit.
-        /// </summary>
-        public DbSet<AnnouncementAudit> AnnouncementAudit { get; set; }
-
         // Begin BIADemo
 
         /// <summary>

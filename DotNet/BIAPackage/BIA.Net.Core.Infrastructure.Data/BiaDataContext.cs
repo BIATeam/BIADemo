@@ -20,6 +20,7 @@ namespace BIA.Net.Core.Infrastructure.Data
     using BIA.Net.Core.Common.Error;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Common.Helpers;
+    using BIA.Net.Core.Domain.Announcement.Entities;
     using BIA.Net.Core.Domain.DistCache.Entities;
     using BIA.Net.Core.Domain.Translation.Entities;
     using BIA.Net.Core.Infrastructure.Data.Helpers;
@@ -63,6 +64,26 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// Gets or sets the distibued cache DBSet.
         /// </summary>
         public virtual DbSet<DistCache> DistCache { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Announcements.
+        /// </summary>
+        public DbSet<Announcement> Announcements { get; set; }
+
+        /// <summary>
+        /// Gets or sets the AnnouncementTypes.
+        /// </summary>
+        public DbSet<AnnouncementType> AnnouncementTypes { get; set; }
+
+        /// <summary>
+        /// Gets or sets the AnnouncementTypeTranslations.
+        /// </summary>
+        public DbSet<AnnouncementTypeTranslation> AnnouncementTypeTranslations { get; set; }
+
+        /// <summary>
+        /// Gets or sets the AnnouncementAudit.
+        /// </summary>
+        public DbSet<AnnouncementAudit> AnnouncementAudit { get; set; }
 
         /// <summary>
         /// Save Change on DataBase.
