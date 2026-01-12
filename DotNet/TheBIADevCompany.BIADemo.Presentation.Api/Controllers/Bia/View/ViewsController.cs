@@ -54,7 +54,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Planes.Read)]
+        [Authorize(Roles = BiaRights.Views.Read)]
         public async Task<IActionResult> Get(int id)
         {
             if (id == 0)

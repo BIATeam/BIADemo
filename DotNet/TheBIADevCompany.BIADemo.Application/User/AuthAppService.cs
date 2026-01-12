@@ -23,14 +23,18 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Service;
-    using TheBIADevCompany.BIADemo.Application.Site;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Api.RolesForApp;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
-    using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.User;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
 #endif
+
+    // Begin BIADemo
+    using TheBIADevCompany.BIADemo.Application.Site;
+    using TheBIADevCompany.BIADemo.Domain.RepoContract;
+
+    // End BIADemo
 
     /// <summary>
     /// Auth App Service.
@@ -50,14 +54,14 @@ namespace TheBIADevCompany.BIADemo.Application.User
         IConfiguration configuration,
         IOptions<BiaNetSection> biaNetconfiguration,
         IUserDirectoryRepository<UserFromDirectoryDto, UserFromDirectory> userDirectoryHelper,
-        ILdapRepositoryHelper ldapRepositoryHelper,
 
         // Begin BIADemo
         IBiaDemoRoleApiRepository roleApiRepository,
+        ISiteAppService siteAppService,
+        IMemberAppService memberAppService,
 
         // End BIADemo
-        ISiteAppService siteAppService,
-        IMemberAppService memberAppService)
+        ILdapRepositoryHelper ldapRepositoryHelper)
 #if BIA_FRONT_FEATURE
         : BaseFrontAuthAppService<UserDto, User, RoleId, TeamTypeId, UserFromDirectoryDto, UserFromDirectory, AdditionalInfoDto, UserDataDto>(
             userAppService,

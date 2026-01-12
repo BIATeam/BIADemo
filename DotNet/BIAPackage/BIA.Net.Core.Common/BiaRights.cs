@@ -220,6 +220,11 @@ namespace BIA.Net.Core.Common
         public static class Views
         {
             /// <summary>
+            /// The right to get a view of the current user.
+            /// </summary>
+            public const string Read = "View_Read";
+
+            /// <summary>
             /// The right to get all views of the current user.
             /// </summary>
             public const string List = "View_List";

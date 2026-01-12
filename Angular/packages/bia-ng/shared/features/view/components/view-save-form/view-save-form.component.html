@@ -83,7 +83,11 @@
         [disabled]="isSaveDisabled"
         (click)="saveView()"></button>
     </div>
-    @if (viewTypeForm === viewType.Team && otherAffectedTeamsLabel) {
+    @if (
+      viewTypeForm === viewType.Team &&
+      otherAffectedTeamsLabel &&
+      canUpdateTeamView
+    ) {
       <div class="affected-teams-box">
         <div class="affected-teams-title">
           <i class="pi pi-exclamation-triangle warning-icon"></i>

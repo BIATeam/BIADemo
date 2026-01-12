@@ -469,7 +469,7 @@
       },
       // View
       {
-        "Name": "View_List",
+        "Names": [ "View_List", "View_Read" ],
         "Roles": [ "Admin", "User" ]
       },
       {
