@@ -18,13 +18,13 @@
     "planesSpecific": "Avions (Specific)",
     "planesTypes": "Types d'avions",
     "airlines": "Compagnies aérienne",
+    "maintenance": "Maintenance",
+    "maintenanceTeams": "Equipes de maintenance",
+    "maintenanceContracts": "Contrats de maintenance",
     "End BIADemo": "To remove in project up to here",
     "teams": "Equipes",
     "users": "Utilisateurs",
-    "notifications": "Notifications",
-    "maintenance": "Maintenance",
-    "maintenanceTeams": "Equipes de maintenance",
-    "maintenanceContracts": "Contrats de maintenance"
+    "notifications": "Notifications"
   },
   "Begin BIADemo": "To remove in project from here",
   "aircraftMaintenanceCompany": {
