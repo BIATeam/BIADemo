@@ -34,13 +34,13 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "dotnet: build debug api",
-      "program": "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.Presentation.Api/bin/Debug/net8.0/TheBIADevCompany.BIADemo.Presentation.Api.dll",
+      "program": "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.Presentation.Api/bin/Debug/net10.0/TheBIADevCompany.BIADemo.Presentation.Api.dll",
       "args": [
         "--urls=http://localhost:32128",
         "--pathbase=/BIADemo/WebApi",
         "--hot-reload"
       ],
-      "cwd": "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.Presentation.Api/bin/Debug/net8.0/",
+      "cwd": "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.Presentation.Api/bin/Debug/net10.0/",
       "stopAtEntry": false,
       "serverReadyAction": {
         "action": "openExternally",
@@ -59,7 +59,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "dotnet: build debug worker",
-      "program": "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.WorkerService/bin/Debug/net8.0/TheBIADevCompany.BIADemo.WorkerService.dll",
+      "program": "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.WorkerService/bin/Debug/net10.0/TheBIADevCompany.BIADemo.WorkerService.dll",
       "args": ["--hot-reload"],
       "cwd": "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.WorkerService",
       "stopAtEntry": false,
@@ -74,7 +74,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "dotnet: build debug deploy db",
-      "program": "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.DeployDB/bin/Debug/net8.0/TheBIADevCompany.BIADemo.DeployDB.dll",
+      "program": "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.DeployDB/bin/Debug/net10.0/TheBIADevCompany.BIADemo.DeployDB.dll",
       "args": ["--hot-reload"],
       "cwd": "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.DeployDB",
       "stopAtEntry": false,
