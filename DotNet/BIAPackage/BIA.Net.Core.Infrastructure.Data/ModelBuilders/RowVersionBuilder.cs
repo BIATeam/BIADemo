@@ -6,7 +6,7 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
 {
     using System;
     using System.Linq;
-    using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain.Entity.Interface;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -25,21 +25,22 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
         public static void CreateRowVersion(ModelBuilder modelBuilder, DatabaseFacade databaseFacade)
         {
             foreach (Type clrType in from entityType in modelBuilder.Model.GetEntityTypes()
-                                    where typeof(VersionedTable).IsAssignableFrom(entityType.ClrType)
-                                    || typeof(IEntityVersioned).IsAssignableFrom(entityType.ClrType)
+                                    where typeof(IEntityVersioned).IsAssignableFrom(entityType.ClrType)
                                     select entityType.ClrType)
             {
                 EntityTypeBuilder entityTypeBuilder = modelBuilder.Entity(clrType);
+                var rowVersionPropertyName = ObjectHelper.FindPropertyByColumnAttributeName(clrType, nameof(IEntityVersioned.RowVersion)).Name;
+                var rowVersionXminPropertyName = ObjectHelper.FindPropertyByColumnAttributeName(clrType, nameof(IEntityVersioned.RowVersionXmin)).Name;
 
                 if (databaseFacade.IsNpgsql())
                 {
-                    entityTypeBuilder.Property<uint>(nameof(VersionedTable.RowVersionXmin)).IsRowVersion();
-                    entityTypeBuilder.Ignore(nameof(VersionedTable.RowVersion));
+                    entityTypeBuilder.Property<uint>(rowVersionXminPropertyName).IsRowVersion();
+                    entityTypeBuilder.Ignore(rowVersionPropertyName);
                 }
                 else
                 {
-                    entityTypeBuilder.Property<byte[]>(nameof(VersionedTable.RowVersion)).IsRowVersion();
-                    entityTypeBuilder.Ignore(nameof(VersionedTable.RowVersionXmin));
+                    entityTypeBuilder.Property<byte[]>(rowVersionPropertyName).IsRowVersion();
+                    entityTypeBuilder.Ignore(rowVersionXminPropertyName);
                 }
             }
         }

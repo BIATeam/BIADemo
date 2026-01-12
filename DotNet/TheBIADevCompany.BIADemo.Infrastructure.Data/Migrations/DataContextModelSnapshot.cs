@@ -17,7 +17,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.21")
+                .HasAnnotation("ProductVersion", "10.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -359,7 +359,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("NotificationUser");
                 });
 
-            modelBuilder.Entity("BIA.Net.Core.Domain.Translation.Entities.AnnouncementTranslation", b =>
+            modelBuilder.Entity("BIA.Net.Core.Domain.Translation.Entities.AnnouncementTypeTranslation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -2239,7 +2239,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<int>("OperationCount")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("RowVersionAircraftMaintenanceCompany")
+                    b.Property<byte[]>("RowVersionMaintenanceTeam")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion")
@@ -2379,7 +2379,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BIA.Net.Core.Domain.Translation.Entities.AnnouncementTranslation", b =>
+            modelBuilder.Entity("BIA.Net.Core.Domain.Translation.Entities.AnnouncementTypeTranslation", b =>
                 {
                     b.HasOne("BIA.Net.Core.Domain.Announcement.Entities.AnnouncementType", "AnnouncementType")
                         .WithMany("AnnouncementTypeTranslations")

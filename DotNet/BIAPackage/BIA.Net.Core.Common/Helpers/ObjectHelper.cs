@@ -5,6 +5,9 @@
 namespace BIA.Net.Core.Common.Helpers
 {
     using System;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Linq;
+    using System.Reflection;
 
     /// <summary>
     /// Object helper.
@@ -60,6 +63,21 @@ namespace BIA.Net.Core.Common.Helpers
             }
 
             return typed;
+        }
+
+        /// <summary>
+        /// Searches for a property in the specified type by matching the ColumnAttribute name or the property name.
+        /// </summary>
+        /// <param name="type">The type to search for the property.</param>
+        /// <param name="columnAttributeName">The name of the property or the ColumnAttribute name to match.</param>
+        /// <returns>The PropertyInfo of the matching property, or null if no match is found.</returns>
+        public static PropertyInfo FindPropertyByColumnAttributeName(Type type, string columnAttributeName)
+        {
+            var properties = type.GetProperties();
+
+            return properties
+                    .FirstOrDefault(x => x.GetCustomAttribute<ColumnAttribute>()?.Name == columnAttributeName)
+                ?? properties.FirstOrDefault(x => x.Name == columnAttributeName);
         }
     }
 }

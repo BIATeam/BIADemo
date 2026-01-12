@@ -5,6 +5,7 @@
 namespace BIA.Net.Core.Domain.Entity.Interface
 {
     using System;
+    using BIA.Net.Core.Common.Helpers;
 
     /// <summary>
     /// Inrerface of a fixable entity.
@@ -18,7 +19,7 @@ namespace BIA.Net.Core.Domain.Entity.Interface
         public byte[] RowVersion { get; set; }
 
         /// <summary>
-        /// Gets or sets the row version.
+        /// Gets or sets the row version (Postgre).
         /// </summary>
         public uint RowVersionXmin { get; set; }
 
@@ -29,18 +30,21 @@ namespace BIA.Net.Core.Domain.Entity.Interface
         {
             get
             {
-                if (this.RowVersion != default)
+                var type = this.GetType();
+                var rowVersionProperty = ObjectHelper.FindPropertyByColumnAttributeName(type, nameof(this.RowVersion));
+
+                if (rowVersionProperty != null)
                 {
-                    return Convert.ToBase64String(this.RowVersion);
+                    return rowVersionProperty.GetValue(this) is byte[] value ? Convert.ToBase64String(value) : null;
                 }
-                else if (this.RowVersionXmin != default)
+
+                var rowVersionXminProperty = ObjectHelper.FindPropertyByColumnAttributeName(type, nameof(this.RowVersionXmin));
+                if (rowVersionXminProperty != null)
                 {
-                    return this.RowVersionXmin.ToString();
+                    return rowVersionXminProperty.GetValue(this)?.ToString();
                 }
-                else
-                {
-                    return null;
-                }
+
+                return null;
             }
         }
     }

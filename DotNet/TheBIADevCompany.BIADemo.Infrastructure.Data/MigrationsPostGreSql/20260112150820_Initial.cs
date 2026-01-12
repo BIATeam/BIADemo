@@ -548,7 +548,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false),
-                    RowVersion = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: true)
+                    RowVersionXmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -593,7 +593,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false),
-                    RowVersion = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: true),
+                    RowVersionXmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false),
                     UniqueIdentifier = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -745,7 +745,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                 {
                     Id = table.Column<int>(type: "integer", nullable: false),
                     AircraftMaintenanceCompanyId = table.Column<int>(type: "integer", nullable: false),
-                    RowVersion = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: true),
+                    RowVersionXmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false),
                     Code = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
                     IsApproved = table.Column<bool>(type: "boolean", nullable: true),
