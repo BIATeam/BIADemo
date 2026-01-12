@@ -13,7 +13,7 @@ import {
   biaSuccessWaitRefreshSignalR,
 } from 'packages/bia-ng/core/public-api';
 import { AuthInfo, BaseDto } from 'packages/bia-ng/models/public-api';
-import { Subscription, filter, first, tap } from 'rxjs';
+import { Subscription, filter, tap } from 'rxjs';
 import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
 import { CrudItemFormComponent } from '../../components/crud-item-form/crud-item-form.component';
 import { FormReadOnlyMode } from '../../model/crud-config';
@@ -32,6 +32,7 @@ export class CrudItemEditComponent<CrudItem extends BaseDto<string | number>>
 {
   @Output() displayChange = new EventEmitter<boolean>();
   protected permissionSub = new Subscription();
+  protected onSubmitSub = new Subscription();
   private _formReadOnlyMode: FormReadOnlyMode;
   protected set formReadOnlyMode(value: FormReadOnlyMode) {
     this._formReadOnlyMode = value;
@@ -91,39 +92,37 @@ export class CrudItemEditComponent<CrudItem extends BaseDto<string | number>>
     }
 
     this.permissionSub.unsubscribe();
+    this.onSubmitSub.unsubscribe();
   }
 
   onSubmitted(crudItemToUpdate: CrudItem) {
     const successActionType = this.crudItemService.updateSuccessActionType;
     const failureActionType = this.crudItemService.updateFailureActionType;
 
-    if (successActionType) {
-      this.actions
-        .pipe(
-          filter(
-            (action: any) =>
-              action.type === successActionType ||
-              action.type === biaSuccessWaitRefreshSignalR.type
-          ),
-          first()
-        )
-        .subscribe(() => {
+    this.onSubmitSub.unsubscribe();
+    this.onSubmitSub = this.actions
+      .pipe(
+        filter((action: any) => {
+          return !!(
+            (successActionType && action.type === successActionType) ||
+            (failureActionType && action.type === failureActionType) ||
+            action.type === biaSuccessWaitRefreshSignalR.type
+          );
+        })
+      )
+      .subscribe((action: any) => {
+        if (
+          (successActionType && action.type === successActionType) ||
+          action.type === biaSuccessWaitRefreshSignalR.type
+        ) {
           this.navigateBack();
-        });
-    }
-
-    if (failureActionType) {
-      this.actions
-        .pipe(
-          filter((action: any) => action.type === failureActionType),
-          first()
-        )
-        .subscribe(action => {
+        }
+        if (failureActionType && action.type === failureActionType) {
           if (action.error?.status === HttpStatusCode.Conflict) {
             this.isCrudItemOutdated = true;
           }
-        });
-    }
+        }
+      });
 
     this.crudItemService.update(crudItemToUpdate);
 

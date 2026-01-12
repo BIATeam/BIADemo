@@ -36,7 +36,7 @@ import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { MenuItem, PrimeTemplate, SortMeta } from 'primeng/api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { combineLatest, Observable, Subscription } from 'rxjs';
-import { filter, first, skip, take, tap } from 'rxjs/operators';
+import { filter, skip, take, tap } from 'rxjs/operators';
 import { BiaButtonGroupItem } from '../../../../components/bia-button-group/bia-button-group.component';
 import { BiaLayoutService } from '../../../../components/layout/services/layout.service';
 import { BiaTableBehaviorControllerComponent } from '../../../../components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
@@ -156,6 +156,8 @@ export class CrudItemsIndexComponent<
   protected selectionActionsMenuItems: BiaButtonAndMenuItem[];
   protected listActionsMenuItems: MenuItem[];
   protected multiSortMeta?: SortMeta[] | undefined;
+
+  private handleCrudOperationSub = new Subscription();
 
   constructor(
     protected injector: Injector,
@@ -380,6 +382,7 @@ export class CrudItemsIndexComponent<
       this.sub.unsubscribe();
     }
     this.permissionSub.unsubscribe();
+    this.handleCrudOperationSub.unsubscribe();
     this.onHide();
   }
 
@@ -509,31 +512,28 @@ export class CrudItemsIndexComponent<
     failureActionType: string | undefined,
     crudOperation: (item: CrudItem) => void
   ) {
-    if (successActionType) {
-      this.actions
-        .pipe(
-          filter((action: any) => action.type === successActionType),
-          first()
-        )
-        .subscribe(() => {
+    this.handleCrudOperationSub.unsubscribe();
+    this.handleCrudOperationSub = this.actions
+      .pipe(
+        filter((action: any) => {
+          return !!(
+            (successActionType && action.type === successActionType) ||
+            (failureActionType && action.type === failureActionType)
+          );
+        })
+      )
+      .subscribe((action: any) => {
+        if (successActionType && action.type === successActionType) {
           this.resetEditableRow();
-        });
-    }
-
-    if (failureActionType) {
-      this.actions
-        .pipe(
-          filter((action: any) => action.type === failureActionType),
-          first()
-        )
-        .subscribe(action => {
+        }
+        if (failureActionType && action.type === failureActionType) {
           if (action.error?.status === HttpStatusCode.Conflict) {
             this.messageService.showWarning(
               this.translateService.instant('bia.outdatedData')
             );
           }
-        });
-    }
+        }
+      });
 
     crudOperation(crudItem);
 
@@ -598,12 +598,6 @@ export class CrudItemsIndexComponent<
 
   onSelectedViewChanged(view: View | null) {
     this.currentView = view;
-    if (this.tableStateKey) {
-      sessionStorage.setItem(
-        this.tableStateKey + 'View',
-        JSON.stringify(this.currentView)
-      );
-    }
     this.updateViewQueryParam(view);
   }
 
@@ -784,22 +778,15 @@ export class CrudItemsIndexComponent<
   }
 
   changeView(view: View | null) {
-    const currentUrl = this.router.url;
-    const [baseUrl] = currentUrl.split('?');
-    const segments = baseUrl.split('/').filter(Boolean);
+    const segments = this.router.url.split('?')[0].split('/').filter(Boolean);
 
     if (segments.length >= 2) {
       segments[segments.length - 2] = view?.id.toString() ?? '0';
-      const newBaseUrl = segments.join('/');
 
-      const tree = this.router.createUrlTree([`/${newBaseUrl}`], {
+      this.router.navigate(['/', ...segments], {
         relativeTo: this.activatedRoute,
-        queryParams: view?.name ? { view: view.name } : { view: null },
+        queryParams: { view: view?.name ?? null },
         queryParamsHandling: 'merge',
-      });
-
-      this.router.navigateByUrl(this.router.serializeUrl(tree), {
-        skipLocationChange: false,
         replaceUrl: true,
       });
     }

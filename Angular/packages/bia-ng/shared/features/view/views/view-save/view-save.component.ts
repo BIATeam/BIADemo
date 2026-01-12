@@ -70,6 +70,7 @@ export class ViewSaveComponent<
   canUpdateTeamView = false;
   teamList$: Observable<Team[]> = of([]);
   permissionAssignTeams?: PermissionTeams;
+  submittedView?: View;
 
   constructor(
     protected injector: Injector,
@@ -160,6 +161,7 @@ export class ViewSaveComponent<
   }
 
   onViewSubmitted(view: View) {
+    this.submittedView = view;
     if (view) {
       const json = this.getViewPreferenceAsString();
       if (json) {
@@ -171,9 +173,17 @@ export class ViewSaveComponent<
   }
 
   protected navigateBack() {
-    this.router.navigate(['../../../'], {
-      relativeTo: this.activatedRoute,
-      queryParamsHandling: 'preserve',
-    });
+    if (this.submittedView) {
+      this.router.navigate(['../../../'], {
+        relativeTo: this.activatedRoute,
+        queryParams: { view: this.submittedView.name ?? null },
+        queryParamsHandling: 'merge',
+      });
+    } else {
+      this.router.navigate(['../../../'], {
+        relativeTo: this.activatedRoute,
+        queryParamsHandling: 'preserve',
+      });
+    }
   }
 }

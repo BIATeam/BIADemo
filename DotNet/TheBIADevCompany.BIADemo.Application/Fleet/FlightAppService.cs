@@ -19,6 +19,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Mappers;
+    using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
     /// <summary>
     /// The application service used for flight.
@@ -68,10 +69,12 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
                 throw new ForbiddenException("Can only add Flight on current parent Team.");
             }
 
+            // Begin BIADemo
             if (string.IsNullOrWhiteSpace(dto.Id))
             {
                 throw new BadRequestException("The id cannot be null or empty.");
             }
+            // End BIADemo
 
             return await base.AddAsync(dto, mapperMode, autoCommit: autoCommit);
         }

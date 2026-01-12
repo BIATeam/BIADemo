@@ -187,25 +187,13 @@ namespace BIA.Net.Core.Domain.Mapper
 
             if (this.isVersionned)
             {
-                // RowVersion = Convert.ToBase64String(entity.RowVersion),
-                var rowVersionProperty = Expression.Property(
+                var rowVersionStringProperty = Expression.Property(
                     Expression.Convert(entityParam, typeof(IEntityVersioned)),
-                    nameof(IEntityVersioned.RowVersion));
+                    nameof(IEntityVersioned.RowVersionString));
 
-                var toBase64StringMethod = typeof(Convert).GetMethod(nameof(Convert.ToBase64String), new[] { typeof(byte[]) });
-
-                // Check if rowVersionProperty is null before converting
-                var rowVersionIsNull = Expression.Equal(
-                    rowVersionProperty,
-                    Expression.Constant(null));
-
-                // If rowVersionProperty is null, return null, otherwise call Convert.ToBase64String
-                var rowVersion = Expression.Condition(
-                    rowVersionIsNull,
-                    Expression.Constant(null, typeof(string)),
-                    Expression.Call(toBase64StringMethod, rowVersionProperty));
-
-                var bindRowVersion = Expression.Bind(typeof(TDto).GetProperty(nameof(IDtoVersioned.RowVersion)), rowVersion);
+                var bindRowVersion = Expression.Bind(
+                    typeof(TDto).GetProperty(nameof(IDtoVersioned.RowVersion)),
+                    rowVersionStringProperty);
 
                 bindings.Add(bindRowVersion);
             }
@@ -278,10 +266,9 @@ namespace BIA.Net.Core.Domain.Mapper
         public virtual void MapEntityKeysInDto(TEntity entity, TDto dto)
         {
             dto.Id = entity.Id;
-            if (this.isVersionned)
+            if (this.isVersionned && entity is IEntityVersioned entityVersioned)
             {
-                var rowVersion = (entity as IEntityVersioned).RowVersion;
-                (dto as IDtoVersioned).RowVersion = rowVersion != null ? Convert.ToBase64String(rowVersion) : null;
+                (dto as IDtoVersioned).RowVersion = entityVersioned.RowVersionString;
             }
         }
 

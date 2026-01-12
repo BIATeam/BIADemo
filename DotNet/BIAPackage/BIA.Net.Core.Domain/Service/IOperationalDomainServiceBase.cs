@@ -20,6 +20,7 @@ namespace BIA.Net.Core.Domain.Service
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
+    using BIA.Net.Core.Domain.User.Entities;
 
     /// <summary>
     /// The interface defining the CRUD methods.

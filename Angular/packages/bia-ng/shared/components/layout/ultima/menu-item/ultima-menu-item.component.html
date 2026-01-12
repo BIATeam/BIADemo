@@ -9,7 +9,7 @@
       routerLinkActive="active-route"
       [routerLinkActiveOptions]="
         item.routerLinkActiveOptions || {
-          paths: 'exact',
+          paths: 'subset',
           queryParams: 'ignored',
           matrixParams: 'ignored',
           fragment: 'ignored',
@@ -71,7 +71,7 @@
       routerLinkActive="active-route"
       [routerLinkActiveOptions]="
         item.routerLinkActiveOptions || {
-          paths: 'exact',
+          paths: 'subset',
           queryParams: 'ignored',
           matrixParams: 'ignored',
           fragment: 'ignored',

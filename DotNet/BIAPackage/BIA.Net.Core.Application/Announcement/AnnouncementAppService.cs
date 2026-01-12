@@ -14,6 +14,7 @@ namespace BIA.Net.Core.Application.Announcement
     using BIA.Net.Core.Domain.Announcement.Mappers;
     using BIA.Net.Core.Domain.Dto.Announcement;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Historic;
     using BIA.Net.Core.Domain.RepoContract;
 
     /// <summary>

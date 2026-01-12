@@ -16,6 +16,7 @@ namespace BIA.Net.Core.Infrastructure.Data
     using Audit.EntityFramework;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Error;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Common.Helpers;
@@ -339,6 +340,17 @@ namespace BIA.Net.Core.Infrastructure.Data
             return this.Database.GetDbConnection();
         }
 
+        /// <inheritdoc/>
+        public DbProvider GetDatabaseProviderEnum()
+        {
+            return this.Database switch
+            {
+                var db when db.IsSqlServer() => DbProvider.SqlServer,
+                var db when db.IsNpgsql() => DbProvider.PostGreSql,
+                _ => throw new NotSupportedException($"Database provider {this.Database.ProviderName} is not supported yet"),
+            };
+        }
+
         /// <inheritdoc />
         public void SetCommandTimeout(TimeSpan timeout)
         {
@@ -361,7 +373,7 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// <param name="modelBuilder">the model Builder.</param>
         protected virtual void OnEndModelCreating(ModelBuilder modelBuilder)
         {
-            RowVersionBuilder.CreateRowVersion(modelBuilder);
+            RowVersionBuilder.CreateRowVersion(modelBuilder, this.Database);
         }
 
         /// <summary>

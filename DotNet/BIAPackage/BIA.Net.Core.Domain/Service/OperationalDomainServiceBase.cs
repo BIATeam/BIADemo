@@ -9,6 +9,7 @@ namespace BIA.Net.Core.Domain.Service
     using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Reflection.Metadata.Ecma335;
     using System.Text;
     using System.Threading.Tasks;
     using System.Transactions;
@@ -30,8 +31,11 @@ namespace BIA.Net.Core.Domain.Service
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using BIA.Net.Core.Domain.Specification;
+    using BIA.Net.Core.Domain.User.Entities;
     using Microsoft.Extensions.DependencyInjection;
     using Newtonsoft.Json;
+    using static BIA.Net.Core.Common.BiaConstants;
+    using static BIA.Net.Core.Common.BiaRights;
 
     /// <summary>
     /// Base class for a service that need an implementation of a <see cref="DomainServiceBase{TEntity, TKey}"/> with operations.
@@ -731,7 +735,7 @@ namespace BIA.Net.Core.Domain.Service
 
                     if (entity is IEntityVersioned versionedEntity && dto is IDtoVersioned dtoVersioned
                     && !string.IsNullOrWhiteSpace(dtoVersioned.RowVersion)
-                    && !Convert.ToBase64String(versionedEntity.RowVersion).SequenceEqual(dtoVersioned.RowVersion))
+                    && !versionedEntity.RowVersionString.SequenceEqual(dtoVersioned.RowVersion))
                     {
                         throw new OutdateException();
                     }
@@ -1153,11 +1157,6 @@ namespace BIA.Net.Core.Domain.Service
                 var allAudits = await this.Repository.GetAuditsAsync(id);
                 var auditsPerSeconds = allAudits.Aggregate(new List<List<IAuditEntity>>(), (groups, audit) =>
                 {
-                    return GroupAuditPerSeconds(groups, audit);
-                });
-
-                static List<List<IAuditEntity>> GroupAuditPerSeconds(List<List<IAuditEntity>> groups, IAuditEntity audit)
-                {
                     if (groups.Count == 0)
                     {
                         groups.Add([audit]);
@@ -1178,7 +1177,7 @@ namespace BIA.Net.Core.Domain.Service
                     }
 
                     return groups;
-                }
+                });
 
                 var mapper = this.InitMapper<TOtherDto, TOtherMapper>();
                 var historical = new List<EntityHistoricalEntryDto>();
@@ -1186,15 +1185,15 @@ namespace BIA.Net.Core.Domain.Service
                 {
                     var entry = new EntityHistoricalEntryDto
                     {
-                        EntryDateTime = audits[0].AuditDate,
-                        EntryUserLogin = audits[0].AuditUserLogin,
+                        EntryDateTime = DateTime.SpecifyKind(audits[0].AuditDate, DateTimeKind.Utc),
+                        EntryUser = audits[0].AuditUserLogin,
                     };
 
                     // Single audit with no Update Action and no Linked Audit
-                    var createOrDeleteAudit = audits.SingleOrDefault(audit => audit.AuditAction != Core.Common.BiaConstants.Audit.UpdateAction && (mapper.AuditMapper is null || (!mapper.AuditMapper.LinkedAuditMappers.Any(mapper => mapper.LinkedAuditEntityType == audit.GetType()))));
+                    var createOrDeleteAudit = audits.SingleOrDefault(audit => audit.AuditAction != Audit.UpdateAction && (mapper.AuditMapper is null || (!mapper.AuditMapper.LinkedAuditMappers.Any(mapper => mapper.LinkedAuditEntityType == audit.GetType()))));
                     if (createOrDeleteAudit is not null)
                     {
-                        entry.EntryType = createOrDeleteAudit.AuditAction == Core.Common.BiaConstants.Audit.InsertAction ? EntityHistoricEntryType.Create : EntityHistoricEntryType.Delete;
+                        entry.EntryType = createOrDeleteAudit.AuditAction == Audit.InsertAction ? EntityHistoricEntryType.Create : EntityHistoricEntryType.Delete;
                     }
                     else
                     {
@@ -1205,8 +1204,54 @@ namespace BIA.Net.Core.Domain.Service
                     historical.Add(entry);
                 }
 
+                await this.SetHistoricalEntriesUserDisplay(historical);
+
                 return historical;
             });
+        }
+
+        /// <summary>
+        /// Updates the user display information for each historical entry in the provided list according to the
+        /// configured audit display mode.
+        /// </summary>
+        /// <param name="entries">A read-only list of historical entry DTOs whose user display information will be updated.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        protected virtual async Task SetHistoricalEntriesUserDisplay(IReadOnlyList<EntityHistoricalEntryDto> entries)
+        {
+            var historicalUserDisplay = this.BiaNetSection?.CommonFeatures?.AuditConfiguration?.HistoricalUserDisplay;
+
+            Dictionary<string, string> userFullNamesPerLogin = [];
+            if (historicalUserDisplay == Audit.HistoricalUserDisplayFullName)
+            {
+                var entriesLogins = entries.Select(e => e.EntryUser).Distinct().ToList();
+                userFullNamesPerLogin = await this.Repository.ServiceProvider.GetRequiredService<ICoreUserRepository>().GetUserFullNamesPerLoginsAsync(entriesLogins);
+            }
+
+            foreach (var entry in entries)
+            {
+                entry.EntryUser = historicalUserDisplay switch
+                {
+                    Audit.HistoricalUserDisplayFullName => userFullNamesPerLogin.TryGetValue(entry.EntryUser, out string auditUserFullName) ? auditUserFullName : entry.EntryUser,
+                    Audit.HistoricalUserDisplayLogin => entry.EntryUser,
+                    _ => string.Empty,
+                };
+            }
+        }
+
+        /// <summary>
+        /// Get the historical user display from audit user login.
+        /// </summary>
+        /// <param name="auditUserLogin">The audit user login.</param>
+        /// <param name="auditUsersFullNamePerLogin">The audits users full name per login.</param>
+        /// <returns><see cref="string"/> of the historical user to display.</returns>
+        protected virtual string GetHistoricalUserDisplayFromAuditUserLogin(string auditUserLogin, Dictionary<string, string> auditUsersFullNamePerLogin)
+        {
+            return this.BiaNetSection?.CommonFeatures?.AuditConfiguration?.HistoricalUserDisplay switch
+            {
+                Audit.HistoricalUserDisplayFullName => auditUsersFullNamePerLogin.TryGetValue(auditUserLogin, out string auditUserFullName) ? auditUserFullName : auditUserLogin,
+                Audit.HistoricalUserDisplayLogin => auditUserLogin,
+                _ => string.Empty,
+            };
         }
 
         /// <summary>
@@ -1401,10 +1446,10 @@ namespace BIA.Net.Core.Domain.Service
 
                     switch (audit.AuditAction)
                     {
-                        case Core.Common.BiaConstants.Audit.InsertAction:
+                        case Audit.InsertAction:
                             entryModification.NewValue = linkedAuditEntityDisplayPropertyValue;
                             break;
-                        case Core.Common.BiaConstants.Audit.DeleteAction:
+                        case Audit.DeleteAction:
                             entryModification.OldValue = linkedAuditEntityDisplayPropertyValue;
                             break;
                     }

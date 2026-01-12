@@ -26,8 +26,8 @@ import { ButtonDirective } from 'primeng/button';
 import { FloatLabel } from 'primeng/floatlabel';
 import { Select } from 'primeng/select';
 import { Tooltip } from 'primeng/tooltip';
-import { Subscription, combineLatest } from 'rxjs';
-import { map, skip } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { skip } from 'rxjs/operators';
 import { TableHelperService } from '../../../../services/table-helper.service';
 import { DefaultView } from '../../model/default-view';
 import { View } from '../../model/view';
@@ -53,8 +53,8 @@ import { ManageViewsDialogComponent } from '../manage-views-dialog/manage-views-
   ],
 })
 export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
-  readonly currentView = -10000;
-  readonly undefinedView = -10001;
+  readonly currentView = -10000000;
+  readonly undefinedView = -10000001;
 
   groupedViews: SelectItemGroup[];
   translateKeys: string[] = [
@@ -70,26 +70,14 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   _selectedView: number = this.undefinedView;
   set selectedView(value: number) {
     this._selectedView = value;
-    if (this._selectedView !== this.currentView) {
+    if (
+      this._selectedView !== this.currentView &&
+      this._selectedView !== this.undefinedView
+    ) {
       this.currentSelectedView = value;
-    } else {
-      const currentViewStored = sessionStorage.getItem(
-        this.tableStateKey + 'View'
-      );
-      if (currentViewStored) {
-        const view: View | null = JSON.parse(currentViewStored);
-        if (
-          view?.id &&
-          this.groupedViews.find(gv => gv.items.find(v => v.value === view.id))
-        ) {
-          this.currentSelectedView = view.id;
-        } else {
-          this.currentSelectedView = this.defaultView;
-        }
-      }
     }
-    this.selectedViewChanged.emit(this.getCurrentView());
   }
+
   get selectedView(): number {
     return this._selectedView;
   }
@@ -97,6 +85,14 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   _currentSelectedView: number = this.undefinedView;
   set currentSelectedView(value: number) {
     this._currentSelectedView = value;
+    const currentView = this.getCurrentView();
+    if (this.tableStateKey) {
+      sessionStorage.setItem(
+        this.tableStateKey + 'View',
+        JSON.stringify(currentView)
+      );
+    }
+    this.selectedViewChanged.emit(currentView?.id !== 0 ? currentView : null);
   }
 
   get currentSelectedView(): number {
@@ -126,36 +122,35 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   ) {}
 
   ngOnInit() {
-    const dataLoaded$ = this.store.pipe(select(ViewsStore.getDataLoaded));
-    const allView$ = this.store
-      .pipe(select(ViewsStore.getAllViews))
-      .pipe(
-        map(views => views.filter(view => view.tableId === this.tableStateKey))
-      );
+    const dataLoaded$ = this.store.pipe(
+      select(ViewsStore.getDataLoadedAndViews)
+    );
+
+    this.sub.add(
+      dataLoaded$.pipe(skip(1)).subscribe(state => {
+        if (state.dataLoaded === true && state.views) {
+          this.views = state.views.filter(
+            v => v.tableId === this.tableStateKey
+          );
+          this.initViewByQueryParam(this.views);
+          this.updateGroupedViews();
+          this.selectDefaultView();
+          this.updateFilterValues(this.getViewState(), false);
+        }
+      })
+    );
+
     const lastViewChanged$ = this.store.pipe(
       select(ViewsStore.getLastViewChanged)
     );
 
     this.sub.add(
-      combineLatest([dataLoaded$, allView$, lastViewChanged$])
-        .pipe(skip(1))
-        .subscribe(([dataLoaded, views, view]) => {
-          if (dataLoaded === true && views && view) {
-            if (
-              this.views === undefined ||
-              this.views.length !== views.length
-            ) {
-              // the list of view change, so we reset the view selection.
-              this.selectedView = this.undefinedView;
-            }
-            this.views = views;
-            if (view && view.id > 0) {
-              this.selectedView = view.id;
-            }
-            this.updateGroupedViews();
-            this.updateFilterValues(this.getViewState(), false);
-          }
-        })
+      lastViewChanged$.pipe(skip(1)).subscribe(view => {
+        this.selectedView =
+          view && view.tableId === this.tableStateKey
+            ? view.id
+            : this.defaultView;
+      })
     );
 
     this.sub.add(
@@ -205,12 +200,37 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   protected autoSelectView(tableStateStr: string) {
-    this.selectedView = this.getCorrespondingViewId(tableStateStr);
+    if (this.groupedViews) {
+      this.selectedView = this.getCorrespondingViewId(tableStateStr);
+    }
+  }
+
+  protected selectDefaultView() {
+    const currentViewStored = sessionStorage.getItem(
+      this.tableStateKey + 'View'
+    );
+    if (currentViewStored) {
+      const view: View | null = JSON.parse(currentViewStored);
+      if (
+        view &&
+        this.groupedViews.find(gv => gv.items.find(v => v.value === view.id))
+      ) {
+        this.selectedView = view.id;
+      } else {
+        this.selectedView = this.defaultView;
+      }
+    } else {
+      this.selectedView = this.defaultView;
+    }
   }
 
   public getCurrentView(): View | null {
     let view: View | null = null;
-    if (this.currentSelectedView > this.currentView && this.views?.length) {
+    if (
+      this.currentSelectedView !== this.currentView &&
+      this.currentSelectedView !== this.undefinedView &&
+      this.views?.length
+    ) {
       this.views.forEach(v => {
         if (v.id === this.currentSelectedView) {
           view = v;
@@ -219,46 +239,32 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
       });
     }
 
+    if (view === null && this.currentSelectedView === 0) {
+      view = {
+        id: 0,
+        name: 'default',
+        tableId: this.tableStateKey,
+        preference: JSON.stringify(this.defaultViewPref),
+        isUserDefault: false,
+        viewType: ViewType.System,
+        viewTeams: [],
+      } as unknown as View;
+    }
+
     return view;
   }
 
   protected getCorrespondingViewId(preference: string): number {
     const pref: BiaTableState = JSON.parse(preference);
     pref.columnWidths = undefined;
-
-    if (this.defaultViewPref !== undefined || this.views) {
-      let correspondingViews: number[] = [];
-      if (this.views) {
-        correspondingViews = this.views
-          .filter(v => {
-            const viewPref: BiaTableState = JSON.parse(v.preference);
-            return this.areViewsEgals(pref, viewPref);
-          })
-          .map(v => v.id);
-      }
-
-      if (this.defaultViewPref !== undefined) {
-        if (this.areViewsEgals(pref, this.defaultViewPref)) {
-          correspondingViews.push(this.defaultView);
-        }
-      }
-
-      if (correspondingViews?.length > 0) {
-        // There may be two identical views.
-        let correspondingView = correspondingViews.find(
-          id => id === this.currentSelectedView
-        );
-
-        if (correspondingView === undefined) {
-          correspondingView = correspondingViews[0];
-        }
-
-        if (correspondingView !== undefined) {
-          return correspondingView;
-        }
-      }
+    const view = this.views?.find(view => view.id === this.currentSelectedView);
+    if (
+      (view && this.areViewsEgals(pref, JSON.parse(view.preference))) ||
+      (this.currentSelectedView === 0 &&
+        this.areViewsEgals(pref, this.defaultViewPref))
+    ) {
+      return this.currentSelectedView;
     }
-
     return this.currentView;
   }
 
@@ -467,6 +473,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
 
     this.defaultView = defaultView;
   }
+
   protected initViewByQueryParam(views: View[]) {
     if (views?.length > 0) {
       const viewName = this.route.snapshot.queryParamMap.get(QUERY_STRING_VIEW);
@@ -479,7 +486,9 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
       }
     }
   }
+
   isFirstEmitDone = false;
+
   protected updateFilterValues(
     preference: string | null,
     manualChange: boolean
@@ -561,9 +570,20 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   openSave() {
+    const selectedView = this.views?.find(
+      v => v.id === this.currentSelectedView
+    );
+
     this.router.navigate(['view', this.currentSelectedView, 'saveView'], {
       relativeTo: this.activatedRoute,
-      queryParamsHandling: 'preserve',
+      queryParams: {
+        view:
+          this.currentSelectedView !== 0 && selectedView
+            ? selectedView.name
+            : null,
+      },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
     });
   }
 

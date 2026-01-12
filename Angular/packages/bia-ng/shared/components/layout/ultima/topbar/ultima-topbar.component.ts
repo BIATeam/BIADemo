@@ -93,7 +93,7 @@ export class BiaUltimaTopbarComponent
 
   @ViewChild('mobileMenuButton') mobileMenuButton!: ElementRef;
 
-  @ViewChild('toast', { static: true }) toast: Toast;
+  @ViewChild('biaToast', { static: true }) toast: Toast;
   notificationType = NotificationType;
 
   constructor(

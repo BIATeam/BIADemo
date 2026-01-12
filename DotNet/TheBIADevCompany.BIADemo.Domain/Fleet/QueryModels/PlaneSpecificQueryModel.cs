@@ -84,5 +84,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.QueryModels
 
         /// <inheritdoc/>
         public byte[] RowVersion { get; set; }
+
+        /// <inheritdoc/>
+        public uint RowVersionXmin { get; set; }
     }
 }

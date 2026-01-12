@@ -86,6 +86,15 @@ export namespace ViewsStore {
     state => state.dataLoaded
   );
 
+  export const getDataLoadedAndViews = createSelector(
+    getDataLoaded,
+    getAllViews,
+    (dataLoaded, views) => ({
+      dataLoaded,
+      views,
+    })
+  );
+
   export const getViewById = (id: number) =>
     createSelector(getViewsEntitiesState, fromViews.getViewById(id));
 }
