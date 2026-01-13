@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BiaViewModule } from '@bia-team/bia-ng/shared';
+import { BiaViewModule } from 'packages/bia-ng/shared/public-api';
 
 @NgModule({
   imports: [BiaViewModule],

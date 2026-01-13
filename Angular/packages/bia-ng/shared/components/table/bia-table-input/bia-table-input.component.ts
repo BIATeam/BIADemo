@@ -20,7 +20,7 @@ import {
 import {
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
-} from '@bia-team/bia-ng/models';
+} from 'packages/bia-ng/models/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { AutoFocusModule } from 'primeng/autofocus';
 import { BaseComponent } from 'primeng/basecomponent';

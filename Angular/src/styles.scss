@@ -1,7 +1,7 @@
-@use '../node_modules/@bia-team/bia-ng/styles/bia-typography';
-@use '../node_modules/@bia-team/bia-ng/styles/bia-global-utils';
-@use '../node_modules/@bia-team/bia-ng/styles/bia-variables';
-@use '../node_modules/@bia-team/bia-ng/styles/bia-custom-theme';
+@use '../packages/bia-ng/scss/bia-typography';
+@use '../packages/bia-ng/scss/bia-global-utils';
+@use '../packages/bia-ng/scss/bia-variables';
+@use '../packages/bia-ng/scss/bia-custom-theme';
 @use './scss/app-custom-theme';
 
 html,

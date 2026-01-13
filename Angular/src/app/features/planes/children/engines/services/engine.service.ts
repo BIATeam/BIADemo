@@ -1,9 +1,9 @@
 import { Injectable, Injector } from '@angular/core';
+import { Store } from '@ngrx/store';
 import {
   CrudItemService,
   CrudItemSignalRService,
-} from '@bia-team/bia-ng/shared';
-import { Store } from '@ngrx/store';
+} from 'packages/bia-ng/shared/public-api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { map, Observable } from 'rxjs';
 import { AppState } from 'src/app/store/state';

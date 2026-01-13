@@ -1,9 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PermissionGuard } from '@bia-team/bia-ng/core';
-import { DynamicLayoutComponent, LayoutMode } from '@bia-team/bia-ng/shared';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { PermissionGuard } from 'packages/bia-ng/core/public-api';
+import {
+  DynamicLayoutComponent,
+  LayoutMode,
+} from 'packages/bia-ng/shared/public-api';
 import { AirportOptionModule } from 'src/app/domains/airport-option/airport-option.module';
 import { CountryOptionModule } from 'src/app/domains/country-option/country-option.module';
 import { Permission } from 'src/app/shared/permission';

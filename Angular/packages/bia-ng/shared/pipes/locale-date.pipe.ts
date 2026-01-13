@@ -1,6 +1,9 @@
 import { DatePipe } from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
-import { BiaTranslationService, DateFormat } from '@bia-team/bia-ng/core';
+import {
+  BiaTranslationService,
+  DateFormat,
+} from 'packages/bia-ng/core/public-api';
 
 @Pipe({
   name: 'localeDate',

@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
-import { CrudItemNewComponent } from '@bia-team/bia-ng/shared';
+import { CrudItemNewComponent } from 'packages/bia-ng/shared/public-api';
 import { EngineFormComponent } from '../../components/engine-form/engine-form.component';
 import { engineCRUDConfiguration } from '../../engine.constants';
 import { Engine } from '../../model/engine';
