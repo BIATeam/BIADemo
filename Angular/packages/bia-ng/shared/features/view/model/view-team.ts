@@ -1,4 +1,4 @@
-import { BaseDto } from 'packages/bia-ng/models/public-api';
+import { BaseDto } from '@bia-team/bia-ng/models';
 
 export interface ViewTeam extends BaseDto<number> {
   teamTitle: string;

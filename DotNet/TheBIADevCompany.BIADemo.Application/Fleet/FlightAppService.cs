@@ -64,11 +64,6 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
         /// <inheritdoc/>
         public override async Task<FlightDto> AddAsync(FlightDto dto, string mapperMode = null, bool autoCommit = true)
         {
-            if (dto.SiteId != this.currentAncestorTeamId)
-            {
-                throw new ForbiddenException("Can only add Flight on current parent Team.");
-            }
-
             // Begin BIADemo
             if (string.IsNullOrWhiteSpace(dto.Id))
             {
@@ -76,6 +71,11 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
             }
 
             // End BIADemo
+            if (dto.SiteId != this.currentAncestorTeamId)
+            {
+                throw new ForbiddenException("Can only add Flight on current parent Team.");
+            }
+
             return await base.AddAsync(dto, mapperMode, autoCommit: autoCommit);
         }
 

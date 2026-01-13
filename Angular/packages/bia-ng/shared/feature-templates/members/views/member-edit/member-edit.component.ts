@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
-import { BiaPermission } from 'packages/bia-ng/core/public-api';
+import { BiaPermission } from '@bia-team/bia-ng/core';
 import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
 import { CrudItemEditComponent } from '../../../crud-items/views/crud-item-edit/crud-item-edit.component';
 import { MemberFormEditComponent } from '../../components/member-form-edit/member-form-edit.component';

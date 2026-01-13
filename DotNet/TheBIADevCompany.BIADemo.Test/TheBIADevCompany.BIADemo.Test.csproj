@@ -3,7 +3,7 @@
 		<TargetFramework>net10.0</TargetFramework>
 		<IsPackable>false</IsPackable>
 		<Company>TheBIADevCompany</Company>
-		<Copyright>Copyright © TheBIADevCompany 2025</Copyright>
+		<Copyright>Copyright © TheBIADevCompany 2026</Copyright>
 		<Configurations>Debug;Release</Configurations>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -35,9 +35,9 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-	</ItemGroup>
+    <PackageReference Include="BIA.Net.Core.Test" />
+  </ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\TheBIADevCompany.BIADemo.Presentation.Api\TheBIADevCompany.BIADemo.Presentation.Api.csproj" />
-		<ProjectReference Include="..\BIAPackage\BIA.Net.Core.Test\BIA.Net.Core.Test.csproj" />
 	</ItemGroup>
 </Project>

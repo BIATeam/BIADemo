@@ -1,4 +1,3 @@
-import { PropType } from 'packages/bia-ng/models/enum/public-api';
 import {
   BaseDto,
   BiaFieldConfig,
@@ -7,7 +6,8 @@ import {
   FixableDto,
   OptionDto,
   VersionedDto,
-} from 'packages/bia-ng/models/public-api';
+} from '@bia-team/bia-ng/models';
+import { PropType } from '@bia-team/bia-ng/models/enum';
 
 // TODO after creation of CRUD Flight : adapt the model
 export interface Flight extends BaseDto<string>, VersionedDto, FixableDto {
@@ -21,10 +21,9 @@ export const flightFieldsConfiguration: BiaFieldsConfig<Flight> = {
   columns: [
     Object.assign(new BiaFieldConfig('id', 'flight.id'), {
       type: PropType.String,
-      isOnlyInitializable: true,
-      // Begin BIAToolKit Generation Ignore
       isRequired: true,
-      // End BIAToolKit Generation Ignore
+      isEditable: false,
+      isOnlyInitializable: true,
     }),
     Object.assign(
       new BiaFieldConfig('departureAirport', 'flight.departureAirport'),

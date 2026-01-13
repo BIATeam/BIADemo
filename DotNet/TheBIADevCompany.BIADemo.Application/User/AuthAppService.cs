@@ -24,7 +24,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.Api.RolesForApp;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
     using TheBIADevCompany.BIADemo.Domain.User;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
@@ -32,6 +31,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Application.Site;
+    using TheBIADevCompany.BIADemo.Domain.Api.RolesForApp;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
     // End BIADemo

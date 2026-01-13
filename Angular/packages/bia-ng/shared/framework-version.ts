@@ -1,1 +1,1 @@
-export const FRAMEWORK_VERSION = '6.0.0-alpha';
+export const FRAMEWORK_VERSION = '6.0.1';

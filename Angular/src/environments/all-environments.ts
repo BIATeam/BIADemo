@@ -1,4 +1,4 @@
-import { AllEnvironments } from 'packages/bia-ng/models/public-api';
+import { AllEnvironments } from '@bia-team/bia-ng/models';
 
 export const allEnvironments: AllEnvironments & { [key: string]: any } = {
   appTitle: 'BIADemo',
@@ -14,6 +14,6 @@ export const allEnvironments: AllEnvironments & { [key: string]: any } = {
   urlErrorPage: './assets/bia/html/error.html',
   // Except BIADemo version: '0.0.0',
   // Begin BIADemo
-  version: '6.0.0-alpha',
+  version: '6.0.1',
   // End BIADemo
 };

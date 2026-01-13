@@ -1,4 +1,3 @@
-import { PropType } from 'packages/bia-ng/models/enum/public-api';
 import {
   BaseDto,
   BiaFieldConfig,
@@ -7,7 +6,8 @@ import {
   BiaFormLayoutConfig,
   BiaFormLayoutConfigField,
   BiaFormLayoutConfigRow,
-} from 'packages/bia-ng/models/public-api';
+} from '@bia-team/bia-ng/models';
+import { PropType } from '@bia-team/bia-ng/models/enum';
 import { ViewValidator } from '../validators/view.validator';
 import { ViewTeam } from './view-team';
 

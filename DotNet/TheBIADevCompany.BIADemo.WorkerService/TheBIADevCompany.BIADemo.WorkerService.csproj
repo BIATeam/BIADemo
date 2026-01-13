@@ -17,10 +17,10 @@
     <PackageReference Include="NLog.Extensions.Logging" />
     <PackageReference Include="Bonura.NLog.HangfireLayouts" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
+    <PackageReference Include="BIA.Net.Core.WorkerService" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Crosscutting.Ioc\TheBIADevCompany.BIADemo.Crosscutting.Ioc.csproj" />
-    <ProjectReference Include="..\BIAPackage\BIA.Net.Core.WorkerService\BIA.Net.Core.WorkerService.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="appsettings.*.json">

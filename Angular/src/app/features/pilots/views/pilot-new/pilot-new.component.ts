@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
-import { CrudItemNewComponent } from 'packages/bia-ng/shared/public-api';
+import { CrudItemNewComponent } from '@bia-team/bia-ng/shared';
 import { of } from 'rxjs';
 import { PilotFormComponent } from '../../components/pilot-form/pilot-form.component';
 import { Pilot } from '../../model/pilot';

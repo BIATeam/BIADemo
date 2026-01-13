@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AppSettingsService } from 'packages/bia-ng/core/public-api';
-import { IframeMessage } from 'packages/bia-ng/models/public-api';
+import { AppSettingsService } from '@bia-team/bia-ng/core';
+import { IframeMessage } from '@bia-team/bia-ng/models';
 import { BiaLayoutService } from '../../components/layout/services/layout.service';
 
 type MessageProcessor<T extends IframeMessage> = (message: T) => void;
