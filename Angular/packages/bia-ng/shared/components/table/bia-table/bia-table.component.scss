@@ -3,13 +3,6 @@
 }
 :host ::ng-deep {
   p-table {
-    .searchTR {
-      .p-float-label {
-        .p-inputtext {
-          padding-top: 2px !important;
-        }
-      }
-    }
     td,
     th {
       text-wrap: nowrap;
