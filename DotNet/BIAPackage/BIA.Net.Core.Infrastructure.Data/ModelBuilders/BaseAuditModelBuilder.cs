@@ -11,39 +11,41 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
     /// <summary>
     /// Class used to update the model builder for user domain.
     /// </summary>
-    public class BaseAuditModelBuilder
+    public abstract class BaseAuditModelBuilder
     {
         /// <summary>
-        /// Create the user model.
+        /// Create the audit models.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
         public virtual void CreateModel(ModelBuilder modelBuilder)
         {
-            this.CreateUserAuditModel(modelBuilder);
-            this.CreateAuditModel(modelBuilder);
+            this.CreateAuditLogModel(modelBuilder);
         }
 
         /// <summary>
-        /// Create the model for users.
+        /// Create the model for <see cref="AuditLog"/>.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        protected virtual void CreateAuditModel(ModelBuilder modelBuilder)
+        protected virtual void CreateAuditLogModel(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AuditLog>().HasKey(u => new { u.Id });
             modelBuilder.Entity<AuditLog>().Property(u => u.Table).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<AuditLog>().Property(u => u.PrimaryKey).IsRequired();
         }
 
         /// <summary>
         /// Create the model for users.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        protected virtual void CreateUserAuditModel(ModelBuilder modelBuilder)
+        /// <typeparam name="TAuditUser">The audit user entity.</typeparam>
+        /// <typeparam name="TUser">The user entity audited.</typeparam>
+        protected virtual void CreateUserAuditModel<TAuditUser, TUser>(ModelBuilder modelBuilder)
+            where TAuditUser : BaseUserAudit<TUser>
+            where TUser : BaseEntityUser
         {
-            modelBuilder.Entity<UserAudit>().HasKey(u => new { u.AuditId });
-            modelBuilder.Entity<UserAudit>().Property(u => u.FirstName).IsRequired().HasMaxLength(50);
-            modelBuilder.Entity<UserAudit>().Property(u => u.LastName).IsRequired().HasMaxLength(50);
-            modelBuilder.Entity<UserAudit>().Property(u => u.Login).IsRequired().HasMaxLength(50);
-            modelBuilder.Entity<UserAudit>().Property(u => u.Domain).IsRequired().HasDefaultValue("--");
+            modelBuilder.Entity<TAuditUser>().Property(u => u.FirstName).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<TAuditUser>().Property(u => u.LastName).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<TAuditUser>().Property(u => u.Login).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<TAuditUser>().Property(u => u.Domain).IsRequired().HasDefaultValue("--");
         }
     }
 }

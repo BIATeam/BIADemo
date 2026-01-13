@@ -1,0 +1,55 @@
+<div class="flex justify-content-between">
+  <h3>{{ title | translate }}</h3>
+  <div>
+    <button
+      pButton
+      icon="pi pi-times"
+      class="flex-initial"
+      [rounded]="true"
+      [text]="true"
+      (click)="navigateBack()"></button>
+  </div>
+</div>
+@if (crudItemService.crudItem$ | async; as crudItem) {
+  <bia-view-save-form
+    [crudItem]="crudItem"
+    [fields]="crudConfiguration.fieldsConfig.columns"
+    [formValidators]="crudConfiguration.fieldsConfig.formValidators"
+    [formLayoutConfig]="crudConfiguration.formLayoutConfig"
+    [formReadOnlyMode]="formReadOnlyMode"
+    [dictOptionDtos]="
+      (viewService.optionsService.dictOptionDtos$ | async) ?? []
+    "
+    [isCrudItemOutdated]="isCrudItemOutdated"
+    [showFixableState]="crudConfiguration.isFixable"
+    [canFix]="canFix"
+    (cancelled)="onCancelled()"
+    (save)="onViewSubmitted($event)"
+    (fixedChanged)="crudItemService.updateFixedStatus(crudItem.id, $event)"
+    [showPopupButton]="showPopupButton"
+    [showSplitButton]="showSplitButton"
+    [showFullPageButton]="false"
+    (layoutChanged)="notifyLayoutChange($event)"
+    [displayHistorical]="crudConfiguration.displayHistorical"
+    [historicalEntries]="(viewService.crudItemHistorical$ | async) ?? []"
+    [canAddTeamView]="canAddTeamView"
+    [canAddUserView]="canAddUserView"
+    [canUpdateUserView]="canUpdateUserView"
+    [canUpdateTeamView]="canUpdateTeamView"
+    [teamList]="(teamList$ | async) ?? []"
+    [permissionAssignTeams]="permissionAssignTeams"></bia-view-save-form>
+}
+@if (viewService.loadingGet$ | async) {
+  <bia-spinner [overlay]="true"></bia-spinner>
+}
+
+@if (featureConfiguration && featureService) {
+  <div class="mt-6">
+    <bia-view-state-recap
+      [tableState]="(viewPreference$ | async) ?? undefined"
+      [fieldsConfig]="featureConfiguration.fieldsConfig.columns"
+      [dictOptionDtos]="
+        (featureService.optionsService.dictOptionDtos$ | async) ?? undefined
+      "></bia-view-state-recap>
+  </div>
+}

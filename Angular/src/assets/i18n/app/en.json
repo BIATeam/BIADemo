@@ -6,7 +6,11 @@
     "aircraftMaintenanceCompanies": "Aircraft maintenance companies",
     "airports": "Airports",
     "engines": "Engines",
+    "fleet": "Fleet",
+    "flights": "Flights",
     "hangfire": "Hangfire",
+    "pilots": "Pilots",
+    "plane": "Plane",
     "planes": "Planes",
     "planesFullCode": "Planes (Full code)",
     "planesPageMode": "Planes (Page)",
@@ -14,12 +18,13 @@
     "planesSpecific": "Planes (Specific)",
     "planesTypes": "Planes types",
     "airlines": "Airlines",
+    "maintenance": "Maintenance",
+    "maintenanceTeams": "Maintenance Teams",
+    "maintenanceContracts": "Maintenance contracts",
     "End BIADemo": "To remove in project up to here",
     "teams": "Teams",
     "users": "Users",
-    "notifications": "Notifications",
-    "maintenanceTeams": "Maintenance Teams",
-    "maintenanceContracts": "Maintenance contracts"
+    "notifications": "Notifications"
   },
   "Begin BIADemo": "To remove in project from here",
   "aircraftMaintenanceCompany": {
@@ -66,6 +71,17 @@
     "installedParts": "Installed parts",
     "import": "Import engines"
   },
+  "flight": {
+    "add": "Add flight",
+    "arrivalAirport": "Arrival airport",
+    "departureAirport": "Departure airport",
+    "edit": "Edit flight",
+    "id": "Flight number",
+    "import": "Import flights",
+    "listOf": "List of flights",
+    "read": "Flight details",
+    "site": "Airline company"
+  },
   "maintenanceContract": {
     "listOf": "Liste of maintenance contracts",
     "contractNumber": "Contract number",
@@ -102,6 +118,17 @@
     "operationCountries": "Operations countries",
     "currentAirport": "Current airport",
     "operationAirports": "Operations airports"
+  },
+  "pilot": {
+    "add": "Add pilot",
+    "edit": "Edit pilot",
+    "flightHours": "Flight hours",
+    "identificationNumber": "Identification number",
+    "import": "Import pilots",
+    "information": "Information",
+    "listOf": "List of pilots",
+    "read": "Pilot details",
+    "site": "Airline company"
   },
   "plane": {
     "add": "Add plane",
@@ -169,7 +196,8 @@
     "Begin BIADemo": "To remove in project from here",
     "End BIADemo": "To remove in project up to here",
     "title": "Title",
-    "headerLabel": "Site"
+    "headerLabel": "Site",
+    "uniqueIdentifier": "Unique identifier"
   },
   "translation": {
     "defaultLanguage": "Default (English)"

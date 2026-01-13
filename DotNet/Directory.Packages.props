@@ -1,0 +1,8 @@
+﻿<!-- !!! DO NOT MODIFY THIS FILE !!! Add the versions of your packages in the Directory.Packages.Project.props file. -->
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <Import Project="Directory.Packages.Bia.props" />
+  <Import Project="Directory.Packages.Project.props" />
+</Project>

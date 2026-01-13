@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using Audit.EntityFramework;
     using BIA.Net.Core.Domain.Audit;
 #if BIA_FRONT_FEATURE
+    using BIA.Net.Core.Domain.Announcement.Entities;
     using BIA.Net.Core.Domain.Notification.Entities;
     using BIA.Net.Core.Domain.Translation.Entities;
     using BIA.Net.Core.Domain.User.Entities;
@@ -31,7 +32,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
 #endif
     using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
+#if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
+#endif
     using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders;
 
     /// <summary>
@@ -59,7 +62,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         }
 
         /// <summary>
-        /// Gets or sets the Plane DBSet.
+        /// Gets or sets the Audit logs.
         /// </summary>
         public DbSet<AuditLog> AuditLogs { get; set; }
 
@@ -152,11 +155,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         public DbSet<Airport> Airports { get; set; }
 
         /// <summary>
-        /// Gets or sets the Airport Audit DBSet.
-        /// </summary>
-        public DbSet<AirportAudit> AirportsAudit { get; set; }
-
-        /// <summary>
         /// Gets or sets the Plane DBSet.
         /// </summary>
         public DbSet<PlaneType> PlanesTypes { get; set; }
@@ -171,7 +169,35 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// </summary>
         public DbSet<Part> Parts { get; set; }
 
+        /// <summary>
+        /// Gets or sets the Plane DBSet.
+        /// </summary>
+        public DbSet<Pilot> Pilots { get; set; }
+
+        /// <summary>
+        /// Gets or sets the EngineAudit.
+        /// </summary>
+        public DbSet<EngineAudit> EngineAudit { get; set; }
+
+        /// <summary>
+        /// Gets or sets the PlaneAirportAudit.
+        /// </summary>
+        public DbSet<PlaneAirportAudit> PlaneAirportAudit { get; set; }
+
         // End BIADemo
+
+        // BIAToolKit - Begin DbSetAudit
+        // Begin BIAToolKit Generation Ignore
+        // BIAToolKit - Begin Partial DbSetAudit Plane
+
+        /// <summary>
+        /// Gets or sets the PlaneAudit.
+        /// </summary>
+        public DbSet<PlaneAudit> PlaneAudit { get; set; }
+
+        // BIAToolKit - End Partial DbSetAudit Plane
+        // End BIAToolKit Generation Ignore
+        // BIAToolKit - End DbSetAudit
 #endif
 
         /// <summary>
@@ -200,6 +226,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
             // Begin BIADemo
             PlaneModelBuilder.CreateModel(modelBuilder);
             AircraftMaintenanceCompanyModelBuilder.CreateModel(modelBuilder);
+            PilotModelBuilder.CreateModel(modelBuilder);
+            FlightModelBuilder.CreateModel(modelBuilder);
 
             // End BIADemo
 #endif

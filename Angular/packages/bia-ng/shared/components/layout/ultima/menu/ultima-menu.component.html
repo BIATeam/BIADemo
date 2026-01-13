@@ -1,0 +1,38 @@
+@if (isScrollable) {
+  <p-button
+    class="left-button"
+    icon="pi pi-angle-left"
+    severity="secondary"
+    [styleClass]="'w-2rem'"
+    [outlined]="true"
+    [disabled]="isAtStart"
+    (mousedown)="startScrolling($event, 'left')"
+    (mouseup)="stopScrolling()"
+    (mouseleave)="stopScrolling()"
+    (click)="$event.preventDefault()"></p-button>
+}
+<ul class="layout-menu" #scrollContent>
+  <ng-content select="[menu-top]"></ng-content>
+  @for (item of menuItems; track item.id; let i = $index) {
+    @if (!item.separator) {
+      <li bia-ultima-menu-item [item]="item" [index]="i" [root]="true"></li>
+    }
+    @if (item.separator) {
+      <li class="menu-separator"></li>
+    }
+  }
+  <ng-content select="[menu-bottom]"></ng-content>
+</ul>
+@if (isScrollable) {
+  <p-button
+    class="right-button"
+    icon="pi pi-angle-right"
+    severity="secondary"
+    [styleClass]="'w-2rem'"
+    [outlined]="true"
+    [disabled]="isAtEnd"
+    (mousedown)="startScrolling($event, 'right')"
+    (mouseup)="stopScrolling()"
+    (mouseleave)="stopScrolling()"
+    (click)="$event.preventDefault()"></p-button>
+}

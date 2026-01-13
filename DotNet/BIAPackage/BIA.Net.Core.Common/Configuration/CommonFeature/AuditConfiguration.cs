@@ -14,8 +14,8 @@ namespace BIA.Net.Core.Common.Configuration.CommonFeature
         public bool IsActive { get; set; }
 
         /// <summary>
-        /// Connexion string name for the database.
+        /// Get or set the historical user display.
         /// </summary>
-        public string ConnectionStringName { get; set; }
+        public string HistoricalUserDisplay { get; set; }
     }
 }

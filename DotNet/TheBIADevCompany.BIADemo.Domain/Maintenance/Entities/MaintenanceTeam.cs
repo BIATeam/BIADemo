@@ -9,6 +9,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Entities
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using Audit.EntityFramework;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
@@ -28,11 +30,18 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Entities
         public int AircraftMaintenanceCompanyId { get; set; }
 
         /// <summary>
-        /// Add row version timestamp in table Site.
+        /// Add row version timestamp in table MaintenanceTeam.
         /// </summary>
-        [Timestamp]
-        [Column("RowVersion")]
-        public byte[] RowVersionAircraftMaintenanceCompany { get; set; }
+        [Column(nameof(IEntityVersioned.RowVersion))]
+        [AuditIgnore]
+        public byte[] RowVersionMaintenanceTeam { get; set; }
+
+        /// <summary>
+        /// Add row version for Postgre in table MaintenanceTeam.
+        /// </summary>
+        [Column(nameof(IEntityVersioned.RowVersionXmin))]
+        [AuditIgnore]
+        public uint RowVersionXminMaintenanceTeam { get; set; }
 
         /// <summary>
         /// Gets or sets the maintenance team code.

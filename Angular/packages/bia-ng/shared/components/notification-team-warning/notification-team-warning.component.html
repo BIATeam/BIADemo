@@ -1,0 +1,7 @@
+@if (notification | isNotCurrentTeam) {
+  <div class="notification-teams">
+    <i class="pi pi-exclamation-triangle"></i>
+    {{ 'bia.relatedTo' | translate }}&nbsp;<b>{{ notification | teamList }}</b
+    >&nbsp;(auto-switch)
+  </div>
+}

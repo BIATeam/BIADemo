@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
-import { CrudItemNewComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-new/crud-item-new.component';
+import { CrudItemNewComponent } from '@bia-team/bia-ng/shared';
 import { MaintenanceTeamFormComponent } from '../../components/maintenance-team-form/maintenance-team-form.component';
 import { maintenanceTeamCRUDConfiguration } from '../../maintenance-team.constants';
 import { MaintenanceTeam } from '../../model/maintenance-team';

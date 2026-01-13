@@ -44,7 +44,8 @@ namespace BIA.Net.Core.Presentation.Api.Controller.Base
             this.orders = new Dictionary<string, uint>(
                 controllers.Where(c => c.GetCustomAttributes<SwaggerControllerOrderAttribute>().Any())
                 .Select(c => new { Name = ResolveControllerName(c.Name), c.GetCustomAttribute<SwaggerControllerOrderAttribute>().Order })
-                .ToDictionary(v => v.Name, v => v.Order), StringComparer.OrdinalIgnoreCase);
+                .ToDictionary(v => v.Name, v => v.Order),
+                StringComparer.OrdinalIgnoreCase);
         }
 
         /// <summary>

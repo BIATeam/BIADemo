@@ -49,7 +49,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
         [Authorize(Roles = BiaRights.ProfileImage.Get)]
         public async Task<IActionResult> Get()
         {
-            var image = await this.profileImageService.GetAsync(this.configuration.Value.ProfileConfiguration.ProfileImageUrlOrPath);
+            var image = await this.profileImageService.GetAsync(this.configuration.Value.ProfileConfiguration?.ProfileImageUrlOrPath);
 
             if (image != null)
             {

@@ -9,6 +9,7 @@ appsettings.*.json
 !appsettings.Example*.json
 bianetconfig.*.json
 !bianetconfig.Example*.json
+keycloakcerts.*.json
 # End BIATemplate only
 
 # User-specific files

@@ -9,9 +9,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
     using System.Linq;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
-    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Presentation.Api.Controller.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -60,7 +60,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
         [HttpPost("all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Authorize(Roles = Rights.Sites.ListAccess)]
-        public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
+        public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto<TeamAdvancedFilterDto> filters)
         {
             var (results, total) = await this.siteService.GetRangeAsync(filters);
 
@@ -259,13 +259,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
         /// <summary>
         /// Generates a csv file according to the filters.
         /// </summary>
-        /// <param name="filters">filters ( <see cref="PagingFilterFormatDto"/>).</param>
+        /// <param name="filters">filters ( <see cref="PagingFilterFormatDto{TAdvancedFilter}"/>).</param>
         /// <returns>a csv file.</returns>
         [HttpPost("csv")]
-        public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
+        public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto<TeamAdvancedFilterDto> filters)
         {
             byte[] buffer = await this.siteService.GetCsvAsync(filters);
-            return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Sites{BiaConstants.Csv.Extension}");
+            return this.File(buffer, BiaConstants.Csv.ContentType + $";charset={BiaConstants.Csv.CharsetEncoding}", $"Sites{BiaConstants.Csv.Extension}");
         }
     }
 }

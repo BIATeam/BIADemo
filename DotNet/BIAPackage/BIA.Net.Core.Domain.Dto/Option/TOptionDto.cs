@@ -7,7 +7,7 @@ namespace BIA.Net.Core.Domain.Dto.Option
     using BIA.Net.Core.Domain.Dto.Base;
 
     /// <summary>
-    /// The DTO used to represent a airport.
+    /// The generic DTO used to represent an option.
     /// </summary>
     /// <typeparam name="TKey">type of the key.</typeparam>
     public class TOptionDto<TKey> : BaseDto<TKey>

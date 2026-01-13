@@ -1,0 +1,34 @@
+<bia-form
+  [element]="crudItem"
+  [isAdd]="isAdd"
+  [fields]="fields"
+  [formLayoutConfig]="formLayoutConfig"
+  [formValidators]="formValidators"
+  [formReadOnlyMode]="formReadOnlyMode"
+  [dictOptionDtos]="dictOptionDtos"
+  [isCrudItemOutdated]="isCrudItemOutdated"
+  [showSubmitButton]="showSubmitButton"
+  [showFixableState]="showFixableState"
+  [canFix]="canFix"
+  [showPopupButton]="showPopupButton"
+  [showSplitButton]="showSplitButton"
+  [showFullPageButton]="showFullPageButton"
+  (save)="onSave($event)"
+  (cancelled)="onCancel()"
+  (fixableStateChanged)="onFixableStateChanged($event)"
+  (layoutChanged)="layoutChanged.emit($event)">
+  <ng-template pTemplate="specificOutput" let-field="field" let-data="data">
+    @switch (field.field) {
+      @case ('teams') {
+        @if (data?.length > 0) {
+          <div>
+            <label class="user-teams-label">{{
+              field.header | translate
+            }}</label>
+            <bia-user-teams [userTeams]="data"></bia-user-teams>
+          </div>
+        }
+      }
+    }
+  </ng-template>
+</bia-form>

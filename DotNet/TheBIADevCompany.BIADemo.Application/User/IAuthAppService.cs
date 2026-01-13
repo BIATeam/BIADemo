@@ -4,6 +4,7 @@
 
 namespace TheBIADevCompany.BIADemo.Application.User
 {
+    using System.Collections.Immutable;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.User;
     using BIA.Net.Core.Domain.Dto.User;

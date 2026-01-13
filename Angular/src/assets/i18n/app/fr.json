@@ -6,20 +6,25 @@
     "aircraftMaintenanceCompanies": "Entreprises de maintenance aéronautique",
     "airports": "Aéroports",
     "engines": "Moteurs",
+    "fleet": "Flotte",
+    "flights": "Vols",
     "hangfire": "Hangfire",
+    "pilots": "Pilotes",
     "planes": "Avions",
+    "plane": "Avion",
     "planesFullCode": "Avions (Full code)",
     "planesPageMode": "Avions (Page)",
     "planesOfflineMode": "Avions (Hors ligne)",
     "planesSpecific": "Avions (Specific)",
     "planesTypes": "Types d'avions",
     "airlines": "Compagnies aérienne",
+    "maintenance": "Maintenance",
+    "maintenanceTeams": "Equipes de maintenance",
+    "maintenanceContracts": "Contrats de maintenance",
     "End BIADemo": "To remove in project up to here",
     "teams": "Equipes",
     "users": "Utilisateurs",
-    "notifications": "Notifications",
-    "maintenanceTeams": "Equipes de maintenance",
-    "maintenanceContracts": "Contrats de maintenance"
+    "notifications": "Notifications"
   },
   "Begin BIADemo": "To remove in project from here",
   "aircraftMaintenanceCompany": {
@@ -66,6 +71,17 @@
     "installedParts": "Pièces installées",
     "import": "Importer moteurs"
   },
+  "flight": {
+    "add": "Ajouter vol",
+    "arrivalAirport": "Aéroport d'arrivé",
+    "departureAirport": "Aéroport de départ",
+    "edit": "Modifier vol",
+    "id": "Numéro de vol",
+    "import": "Importer vols",
+    "listOf": "Liste des vols",
+    "read": "Détails vol",
+    "site": "Compagnie aérienne"
+  },
   "maintenanceContract": {
     "listOf": "Liste des contrats de maintenance",
     "contractNumber": "Numéro de contrat",
@@ -102,6 +118,17 @@
     "operationCountries": "Pays des opérations",
     "currentAirport": "Aéroport actuel",
     "operationAirports": "Aéroports des opérations"
+  },
+  "pilot": {
+    "add": "Ajouter pilote",
+    "edit": "Modifier pilote",
+    "flightHours": "Heures de vol",
+    "identificationNumber": "Numéro d'identification",
+    "import": "Importer pilotes",
+    "information": "Informations",
+    "listOf": "Liste des pilotes",
+    "read": "Détails pilote",
+    "site": "Compagnie aérienne"
   },
   "plane": {
     "add": "Ajouter avion",
@@ -169,7 +196,8 @@
     "Begin BIADemo": "To remove in project from here",
     "End BIADemo": "To remove in project up to here",
     "title": "Titre",
-    "headerLabel": "Site"
+    "headerLabel": "Site",
+    "uniqueIdentifier": "Identifiant unique"
   },
   "translation": {
     "defaultLanguage": "Defaut (Anglais)"

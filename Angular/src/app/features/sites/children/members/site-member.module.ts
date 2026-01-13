@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
-import { DynamicLayoutComponent } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
-import { memberCRUDConfiguration } from 'src/app/shared/bia-shared/feature-templates/members/member.constants';
-import { MemberModule } from 'src/app/shared/bia-shared/feature-templates/members/member.module';
-import { MemberImportComponent } from 'src/app/shared/bia-shared/feature-templates/members/views/member-import/member-import.component';
+import { PermissionGuard } from '@bia-team/bia-ng/core';
+import {
+  DynamicLayoutComponent,
+  memberCRUDConfiguration,
+  MemberModule,
+} from '@bia-team/bia-ng/shared';
 import { Permission } from 'src/app/shared/permission';
-
 import { SiteMemberEditComponent } from './views/site-member-edit/site-member-edit.component';
+import { SiteMemberImportComponent } from './views/site-member-import/site-member-import.component';
 import { SiteMemberItemComponent } from './views/site-member-item/site-member-item.component';
 import { SiteMemberNewComponent } from './views/site-member-new/site-member-new.component';
 import { SiteMembersIndexComponent } from './views/site-members-index/site-members-index.component';
@@ -49,14 +50,14 @@ const ROUTES: Routes = [
           permission: Permission.Site_Member_Save,
           title: 'member.import',
         },
-        component: MemberImportComponent,
+        component: SiteMemberImportComponent,
         canActivate: [PermissionGuard],
       },
       {
         path: ':crudItemId',
         data: {
           breadcrumb: '',
-          canNavigate: true,
+          canNavigate: false,
         },
         component: SiteMemberItemComponent,
         canActivate: [PermissionGuard],

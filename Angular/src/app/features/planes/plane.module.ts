@@ -1,20 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PermissionGuard } from '@bia-team/bia-ng/core';
+import { DynamicLayoutComponent, LayoutMode } from '@bia-team/bia-ng/shared';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { AirportOptionModule } from 'src/app/domains/airport-option/airport-option.module';
 import { PlaneTypeOptionModule } from 'src/app/domains/plane-type-option/plane-type-option.module';
-import {
-  DynamicLayoutComponent,
-  LayoutMode,
-} from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { Permission } from 'src/app/shared/permission';
 import { PlaneReadComponent } from '../planes/views/plane-read/plane-read.component';
 import { planeCRUDConfiguration } from './plane.constants';
+import { PlaneService } from './services/plane.service';
 import { FeaturePlanesStore } from './store/plane.state';
 import { PlanesEffects } from './store/planes-effects';
 import { PlaneEditComponent } from './views/plane-edit/plane-edit.component';
+import { PlaneHistoricalComponent } from './views/plane-historical/plane-historical.component';
 import { PlaneImportComponent } from './views/plane-import/plane-import.component';
 import { PlaneItemComponent } from './views/plane-item/plane-item.component';
 import { PlaneNewComponent } from './views/plane-new/plane-new.component';
@@ -62,10 +61,20 @@ export const ROUTES: Routes = [
         canActivate: [PermissionGuard],
       },
       {
+        path: 'view',
+        data: {
+          featureConfiguration: planeCRUDConfiguration,
+          featureServiceType: PlaneService,
+          leftWidth: 60,
+        },
+        loadChildren: () =>
+          import('../../shared/bia-shared/view.module').then(m => m.ViewModule),
+      },
+      {
         path: ':crudItemId',
         data: {
           breadcrumb: '',
-          canNavigate: true,
+          canNavigate: false,
         },
         component: PlaneItemComponent,
         canActivate: [PermissionGuard],
@@ -91,6 +100,21 @@ export const ROUTES: Routes = [
               title: 'plane.edit',
             },
             component: PlaneEditComponent,
+            canActivate: [PermissionGuard],
+          },
+          {
+            path: 'historical',
+            data: {
+              breadcrumb: 'bia.historical',
+              canNavigate: false,
+              layoutMode: LayoutMode.popup,
+              style: {
+                minWidth: '50vw',
+              },
+              title: 'bia.historical',
+              permission: Permission.Plane_Read,
+            },
+            component: PlaneHistoricalComponent,
             canActivate: [PermissionGuard],
           },
           {

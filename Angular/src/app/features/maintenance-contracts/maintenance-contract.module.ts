@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PermissionGuard } from '@bia-team/bia-ng/core';
+import { DynamicLayoutComponent } from '@bia-team/bia-ng/shared';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { AircraftMaintenanceCompanyOptionModule } from 'src/app/domains/aircraft-maintenance-company-option/aircraft-maintenance-company-option.module';
 import { PlaneOptionModule } from 'src/app/domains/plane-option/plane-option.module';
 import { SiteOptionModule } from 'src/app/domains/site-option/site-option.module';
-import { DynamicLayoutComponent } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { Permission } from 'src/app/shared/permission';
 import { maintenanceContractCRUDConfiguration } from './maintenance-contract.constants';
+import { MaintenanceContractService } from './services/maintenance-contract.service';
 import { FeatureMaintenanceContractsStore } from './store/maintenance-contract.state';
 import { MaintenanceContractsEffects } from './store/maintenance-contracts-effects';
 import { MaintenanceContractEditComponent } from './views/maintenance-contract-edit/maintenance-contract-edit.component';
@@ -42,6 +43,16 @@ export const ROUTES: Routes = [
         canActivate: [PermissionGuard],
       },
       {
+        path: 'view',
+        data: {
+          featureConfiguration: maintenanceContractCRUDConfiguration,
+          featureServiceType: MaintenanceContractService,
+          leftWidth: 60,
+        },
+        loadChildren: () =>
+          import('../../shared/bia-shared/view.module').then(m => m.ViewModule),
+      },
+      {
         path: 'import',
         data: {
           breadcrumb: 'maintenance-contract.import',
@@ -61,7 +72,7 @@ export const ROUTES: Routes = [
         path: ':crudItemId',
         data: {
           breadcrumb: '',
-          canNavigate: true,
+          canNavigate: false,
         },
         component: MaintenanceContractItemComponent,
         canActivate: [PermissionGuard],

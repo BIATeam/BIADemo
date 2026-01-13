@@ -6,18 +6,24 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.Immutable;
     using System.Data;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Reflection;
     using System.Threading.Tasks;
+    using Audit.EntityFramework;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.Audit;
     using BIA.Net.Core.Domain.Entity.Interface;
+    using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using BIA.Net.Core.Domain.Specification;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Query;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
@@ -39,6 +45,16 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         private readonly IServiceProvider serviceProvider;
 
         /// <summary>
+        /// The audit feature.
+        /// </summary>
+        private readonly IAuditFeature auditFeature;
+
+        /// <summary>
+        /// The audit mapper.
+        /// </summary>
+        private readonly IAuditMapper auditMapper;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TGenericRepositoryEF{TEntity, TKey}"/> class.
         /// </summary>
         /// <param name="unitOfWork">The unit Of Work.</param>
@@ -47,6 +63,8 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         {
             this.unitOfWork = unitOfWork;
             this.serviceProvider = serviceProvider;
+            this.auditFeature = serviceProvider.GetRequiredService<IAuditFeature>();
+            this.auditMapper = serviceProvider.GetServices<IAuditMapper>().FirstOrDefault(mapper => mapper.EntityType == typeof(TEntity));
         }
 
         /// <summary>
@@ -124,7 +142,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         }
 
         /// <inheritdoc />
-        public void UpdateRange(IEnumerable<TEntity> items)
+        public virtual void UpdateRange(IEnumerable<TEntity> items)
         {
             if (items?.Any() != true)
             {
@@ -135,20 +153,20 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         }
 
         /// <inheritdoc />
-        public void RemoveRange(IEnumerable<TEntity> items)
+        public virtual void RemoveRange(IEnumerable<TEntity> items)
         {
             if (items?.Any() != true)
             {
                 return;
             }
 
-            var set = this.RetrieveSet();
+            DbSet<TEntity> set = this.RetrieveSet();
             set.AttachRange(items);
             set.RemoveRange(items);
         }
 
         /// <inheritdoc />
-        public async Task<int> DeleteByIdsAsync(IEnumerable<TKey> ids, int? batchSize = 100)
+        public virtual async Task<int> DeleteByIdsAsync(IEnumerable<TKey> ids, int? batchSize = 100)
         {
             int deletedCount = 0;
 
@@ -183,7 +201,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         }
 
         /// <inheritdoc />
-        public async Task<int> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> filter, int? batchSize = 100)
+        public virtual async Task<int> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> filter = default, int? batchSize = 100)
         {
             int deletedCount = 0;
 
@@ -192,12 +210,12 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
                 throw new ArgumentOutOfRangeException(nameof(batchSize));
             }
 
-            if (filter == null)
-            {
-                throw new ArgumentNullException(nameof(filter));
-            }
+            IQueryable<TEntity> query = this.RetrieveSet();
 
-            IQueryable<TEntity> query = this.RetrieveSet().Where(filter);
+            if (filter != default)
+            {
+                query = query.Where(filter);
+            }
 
             if (batchSize.HasValue)
             {
@@ -219,21 +237,126 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         }
 
         /// <inheritdoc />
-        public async Task<int> MassAddAsync(IEnumerable<TEntity> items, int batchSize = 100)
+        public virtual async Task<int> ExecuteUpdateAsync(IDictionary<string, object> fieldUpdates, Expression<Func<TEntity, bool>> filter = default, int? batchSize = 100)
         {
-            return await this.ExecuteMassOperationAsync(items, batchSize, this.AddRange);
+            int updatedCount = 0;
+
+            if (fieldUpdates?.Any() != true)
+            {
+                throw new ArgumentNullException(nameof(fieldUpdates));
+            }
+
+            if (batchSize.HasValue && batchSize.Value < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(batchSize));
+            }
+
+            IQueryable<TEntity> query = this.RetrieveSet();
+
+            if (filter != default)
+            {
+                query = query.Where(filter);
+            }
+
+            Action<UpdateSettersBuilder<TEntity>> setPropertyCalls = this.BuildUpdateSettersBuilderExpression(fieldUpdates);
+
+            if (batchSize.HasValue)
+            {
+                // First check the number of entities to be processed
+                int totalCount = await query.CountAsync();
+
+                // If the number is small, no need for batching
+                if (totalCount <= batchSize.Value)
+                {
+                    updatedCount = await query.ExecuteUpdateAsync(setPropertyCalls);
+                }
+                else
+                {
+                    // For large volumes, process in batches with progressive recovery of IDs
+                    int processedCount = 0;
+                    while (processedCount < totalCount)
+                    {
+                        List<TKey> batchIds = await query
+                            .Skip(processedCount)
+                            .Take(batchSize.Value)
+                            .Select(x => x.Id)
+                            .ToListAsync();
+
+                        if (!batchIds.Any())
+                        {
+                            break; // No more entities to process
+                        }
+
+                        IQueryable<TEntity> batchQuery = this.RetrieveSet().Where(x => batchIds.Contains(x.Id));
+                        int batchUpdated = await batchQuery.ExecuteUpdateAsync(setPropertyCalls);
+                        updatedCount += batchUpdated;
+                        processedCount += batchIds.Count;
+                    }
+                }
+            }
+            else
+            {
+                updatedCount = await query.ExecuteUpdateAsync(setPropertyCalls);
+            }
+
+            return updatedCount;
         }
 
         /// <inheritdoc />
-        public async Task<int> MassUpdateAsync(IEnumerable<TEntity> items, int batchSize = 100)
+        public virtual async Task<int> MassAddAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false)
         {
-            return await this.ExecuteMassOperationAsync(items, batchSize, this.UpdateRange);
+            List<TEntity> itemsList = items?.ToList();
+            if (itemsList?.Count == 0)
+            {
+                return 0;
+            }
+
+            if (useBulk && this.unitOfWork.IsAddBulkSupported())
+            {
+                return await this.unitOfWork.AddBulkAsync(itemsList);
+            }
+
+            return await this.ExecuteMassOperationAsync(itemsList, batchSize, this.AddRange);
         }
 
         /// <inheritdoc />
-        public async Task<int> MassDeleteAsync(IEnumerable<TEntity> items, int batchSize = 100)
+        public virtual async Task<int> MassUpdateAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false)
         {
-            return await this.ExecuteMassOperationAsync(items, batchSize, this.RemoveRange);
+            List<TEntity> itemsList = items?.ToList();
+            if (itemsList?.Count == 0)
+            {
+                return 0;
+            }
+
+            if (useBulk && this.unitOfWork.IsUpdateBulkSupported())
+            {
+                return await this.unitOfWork.UpdateBulkAsync(itemsList);
+            }
+
+            return await this.ExecuteMassOperationAsync(itemsList, batchSize, this.UpdateRange);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<int> MassDeleteAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false, bool useExecuteDelete = true)
+        {
+            List<TEntity> itemsList = items?.ToList();
+            if (itemsList?.Count == 0)
+            {
+                return 0;
+            }
+
+            if (useBulk && this.unitOfWork.IsRemoveBulkSupported())
+            {
+                return await this.unitOfWork.RemoveBulkAsync(itemsList);
+            }
+
+            if (useExecuteDelete)
+            {
+                IEnumerable<TKey> ids = itemsList.Select(item => item.Id);
+                return await this.DeleteByIdsAsync(ids, batchSize);
+            }
+
+            return await this.ExecuteMassOperationAsync(itemsList, batchSize, this.RemoveRange);
         }
 
         /// <summary>
@@ -477,6 +600,31 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             fixableEntity.IsFixed = isFixed;
             fixableEntity.FixedDate = isFixed ? DateTime.UtcNow : null;
             this.SetModified(fixableEntity as TEntity);
+        }
+
+        /// <inheritdoc/>
+        public async Task<ImmutableList<IAuditEntity>> GetAuditsAsync(TKey id)
+        {
+            var audits = new List<IAuditEntity>(await this.GetAudits(typeof(TEntity), id));
+
+            var entityType = this.unitOfWork.FindEntityType(typeof(TEntity));
+            foreach (var navigation in entityType.GetNavigations())
+            {
+                if (navigation.PropertyInfo.GetCustomAttributes<AuditIgnoreAttribute>().Any())
+                {
+                    continue;
+                }
+
+                var navigationEntityType = navigation.TargetEntityType.ClrType;
+                if (!navigationEntityType.GetCustomAttributes<AuditIncludeAttribute>().Any())
+                {
+                    continue;
+                }
+
+                audits.AddRange(await this.GetAudits(navigationEntityType, id));
+            }
+
+            return [.. audits.OrderByDescending(x => x.AuditDate)];
         }
 
         /// <summary>
@@ -764,18 +912,134 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
 
             if (batchSize < 1)
             {
-               throw new ArgumentOutOfRangeException(nameof(batchSize));
+                throw new ArgumentOutOfRangeException(nameof(batchSize));
             }
 
-            for (int i = 0; i < itemList.Count; i = i + batchSize)
+            if (itemList.Count <= batchSize)
             {
-                var packages = itemList.Skip(i).Take(batchSize).ToList();
-                operation(packages);
+                operation(itemList);
                 elementAffectedCount += await this.unitOfWork.CommitAsync();
                 this.unitOfWork.Reset();
             }
+            else
+            {
+                for (int i = 0; i < itemList.Count; i = i + batchSize)
+                {
+                    var packages = itemList.Skip(i).Take(batchSize).ToList();
+                    operation(packages);
+                    elementAffectedCount += await this.unitOfWork.CommitAsync();
+                    this.unitOfWork.Reset();
+                }
+            }
 
             return elementAffectedCount;
+        }
+
+        /// <summary>
+        /// Builds the SetProperty calls expression from the field updates dictionary.
+        /// </summary>
+        /// <param name="fieldUpdates">The field updates dictionary.</param>
+        /// <returns>The SetProperty calls expression.</returns>
+        protected virtual Action<UpdateSettersBuilder<TEntity>> BuildUpdateSettersBuilderExpression(IDictionary<string, object> fieldUpdates)
+        {
+            Type entityType = typeof(TEntity);
+            Type setPropertyCallsType = typeof(UpdateSettersBuilder<TEntity>);
+            MethodInfo setPropertyMethod = setPropertyCallsType.GetMethods()
+                .FirstOrDefault(m => m.Name == nameof(UpdateSettersBuilder<TEntity>.SetProperty) && m.GetParameters().Length == 2);
+
+            if (setPropertyMethod == null)
+            {
+                throw new InvalidOperationException("SetProperty method not found on UpdateSettersBuilder<TEntity>");
+            }
+
+            // Parameter for the lambda expression
+            ParameterExpression parameter = Expression.Parameter(setPropertyCallsType, "s");
+            Expression body = parameter;
+
+            foreach (KeyValuePair<string, object> fieldUpdate in fieldUpdates)
+            {
+                string propertyName = fieldUpdate.Key;
+                object propertyValue = fieldUpdate.Value;
+
+                // Get the property info
+                PropertyInfo propertyInfo = entityType.GetProperty(propertyName);
+                if (propertyInfo == null)
+                {
+                    throw new ArgumentException($"Property '{propertyName}' not found on entity type '{entityType.Name}'");
+                }
+
+                // Create lambda expression for property access: entity => entity.PropertyName
+                ParameterExpression entityParam = Expression.Parameter(entityType, "entity");
+                MemberExpression propertyAccess = Expression.Property(entityParam, propertyInfo);
+                LambdaExpression propertyLambda = Expression.Lambda(propertyAccess, entityParam);
+
+                // Create lambda expression for the value: entity => value
+                ConstantExpression valueExpression = Expression.Constant(propertyValue, propertyInfo.PropertyType);
+                LambdaExpression valueLambda = Expression.Lambda(valueExpression, entityParam);
+
+                // Create generic SetProperty method
+                MethodInfo genericSetPropertyMethod = setPropertyMethod.MakeGenericMethod(propertyInfo.PropertyType);
+
+                // Create method call: s.SetProperty(entity => entity.PropertyName, entity => value)
+                MethodCallExpression setPropertyCall = Expression.Call(body, genericSetPropertyMethod, propertyLambda, valueLambda);
+                body = setPropertyCall;
+            }
+
+            return Expression.Lambda<Action<UpdateSettersBuilder<TEntity>>>(body, parameter).Compile();
+        }
+
+        /// <summary>
+        /// Retrieve the audit of a specific entity by its type.
+        /// </summary>
+        /// <param name="entityType">The entity type.</param>
+        /// <param name="entityIdValue">The entity id property value.</param>
+        /// <returns>Collection of <see cref="IAuditEntity"/>.</returns>
+        private async Task<List<IAuditEntity>> GetAudits(Type entityType, TKey entityIdValue)
+        {
+            var entityAuditType = this.auditFeature.AuditTypeMapper(entityType);
+            if (!typeof(IAuditEntity).IsAssignableFrom(entityAuditType))
+            {
+                return [];
+            }
+
+            var auditSet = this.unitOfWork.RetrieveSet(entityAuditType);
+            var linkedAuditMapper = this.auditMapper?.LinkedAuditMappers.FirstOrDefault(x => x.LinkedAuditEntityType == entityAuditType);
+            if (linkedAuditMapper is not null)
+            {
+                if (entityAuditType.GetProperty(linkedAuditMapper.LinkedAuditEntityIdentifierPropertyName) is null)
+                {
+                    throw new BadBiaFrameworkUsageException($"Unable to find {linkedAuditMapper.LinkedAuditEntityIdentifierPropertyName} property on {entityAuditType.Name}.");
+                }
+
+                // Set expression : "WHERE audit.EntityId = entityIdValue"
+                var expressionParameter = Expression.Parameter(entityAuditType);
+                var expressionProperty = Expression.PropertyOrField(expressionParameter, linkedAuditMapper.LinkedAuditEntityIdentifierPropertyName);
+                var expression = Expression.Equal(expressionProperty, Expression.Constant(entityIdValue, expressionProperty.Type));
+                var expressionDelegateType = typeof(Func<,>).MakeGenericType(entityAuditType, typeof(bool));
+                var expressionLambda = Expression.Lambda(expressionDelegateType, expression, expressionParameter);
+
+                // Call expression : "SELECT FROM audit WHERE audit.EntityId = entityIdValue"
+                var expressionCall = Expression.Call(
+                    typeof(Queryable),
+                    nameof(Queryable.Where),
+                    [entityAuditType],
+                    auditSet.Expression,
+                    Expression.Quote(expressionLambda));
+
+                return await auditSet.Provider
+                    .CreateQuery(expressionCall)
+                    .Cast<IAuditEntity>()
+                    .AsNoTracking()
+                    .Where(x => x.AuditAction != BiaConstants.Audit.UpdateAction)
+                    .ToListAsync();
+            }
+
+            return await auditSet
+                .Cast<IAuditKeyedEntity<TKey>>()
+                .AsNoTracking()
+                .Where(x => x.Id.Equals(entityIdValue))
+                .Cast<IAuditEntity>()
+                .ToListAsync();
         }
     }
 }

@@ -7,7 +7,10 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     using System;
     using System.Collections.Generic;
     using System.IdentityModel.Tokens.Jwt;
+    using System.IO;
+    using System.IO.Compression;
     using System.Linq;
+    using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Net.Mime;
@@ -18,6 +21,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
+    using Microsoft.Net.Http.Headers;
     using Newtonsoft.Json;
 
     /// <summary>
@@ -36,36 +40,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         protected const string Bearer = "Bearer";
 
         /// <summary>
-        /// The distributed cache.
-        /// </summary>
-        private readonly IBiaDistributedCache distributedCache;
-
-        /// <summary>
-        /// Gets the HTTP client.
-        /// </summary>
-        private readonly HttpClient httpClient;
-
-        /// <summary>
-        /// Gets the logger.
-        /// </summary>
-        private readonly ILogger logger;
-
-        /// <summary>
-        /// The child class name.
-        /// </summary>
-        private readonly string className;
-
-        /// <summary>
-        /// Is httpClient currently being configured.
-        /// </summary>
-        private bool ongoingConfiguration = false;
-
-        /// <summary>
-        /// Is httpClient configured.
-        /// </summary>
-        private bool configuredHttpClient = false;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="WebApiRepository" /> class.
         /// </summary>
         /// <param name="httpClient">The HTTP client.</param>
@@ -78,13 +52,28 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             IBiaDistributedCache distributedCache,
             AuthenticationConfiguration configurationSection = null)
         {
-            this.httpClient = httpClient;
-            this.logger = logger;
-            this.distributedCache = distributedCache;
+            this.HttpClient = httpClient;
+            this.Logger = logger;
+            this.DistributedCache = distributedCache;
             this.AuthenticationConfiguration = configurationSection ?? new AuthenticationConfiguration { Mode = AuthenticationMode.Anonymous };
 
-            this.className = this.GetType().Name;
+            this.ClassName = this.GetType().Name;
         }
+
+        /// <summary>
+        /// Is httpClient currently being configured.
+        /// </summary>
+        protected bool OngoingConfiguration { get; set; }
+
+        /// <summary>
+        /// Is httpClient configured.
+        /// </summary>
+        protected bool ConfiguredHttpClient { get; set; }
+
+        /// <summary>
+        /// Gets or sets the compression level.
+        /// </summary>
+        protected CompressionLevel CompressionLevel { get; set; } = CompressionLevel.NoCompression;
 
         /// <summary>
         /// The authentication configuration for the API requests.
@@ -94,22 +83,22 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <summary>
         /// The distributed cache.
         /// </summary>
-        protected IBiaDistributedCache DistributedCache => this.distributedCache;
+        protected IBiaDistributedCache DistributedCache { get; init; }
 
         /// <summary>
         /// Gets the HTTP client.
         /// </summary>
-        protected HttpClient HttpClient => this.httpClient;
+        protected HttpClient HttpClient { get; init; }
 
         /// <summary>
         /// Gets the logger.
         /// </summary>
-        protected ILogger Logger => this.logger;
+        protected ILogger Logger { get; init; }
 
         /// <summary>
         /// The child class name.
         /// </summary>
-        protected string ClassName => this.className;
+        protected string ClassName { get; init; }
 
         /// <summary>
         /// Get the authentication configuration from the configuration section.
@@ -139,7 +128,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <returns>
         /// Result, IsSuccessStatusCode, ReasonPhrase.
         /// </returns>
-        protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase)> GetAsync<T>(string url, double cacheDurationInMinute = default)
+        protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase, HttpStatusCode StatusCode)> GetAsync<T>(string url, double cacheDurationInMinute = default)
         {
             return await this.SendAsync<T>(url: url, httpMethod: HttpMethod.Get, retry: false, cacheDurationInMinute: cacheDurationInMinute);
         }
@@ -207,7 +196,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <typeparam name="T">The result type.</typeparam>
         /// <param name="url">The URL.</param>
         /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
-        protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase)> DeleteAsync<T>(string url)
+        protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase, HttpStatusCode StatusCode)> DeleteAsync<T>(string url)
         {
             return await this.SendAsync<T>(url: url, httpMethod: HttpMethod.Delete, retry: false);
         }
@@ -221,7 +210,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="body">The body.</param>
         /// <param name="isFormUrlEncoded">if set to <c>true</c> [is form URL encoded].</param>
         /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
-        protected virtual async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase)> PutAsync<TResult, TBody>(string url, TBody body, bool isFormUrlEncoded = false)
+        protected virtual async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase, HttpStatusCode StatusCode)> PutAsync<TResult, TBody>(string url, TBody body, bool isFormUrlEncoded = false)
         {
             return await this.SendAsync<TResult, TBody>(url: url, body: body, httpMethod: HttpMethod.Put, isFormUrlEncoded: isFormUrlEncoded, retry: false);
         }
@@ -234,7 +223,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="httpContent">Content of the HTTP.</param>
         /// <param name="isFormUrlEncoded">if set to <c>true</c> [is form URL encoded].</param>
         /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
-        protected virtual async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase)> PutAsync<TResult>(string url, HttpContent httpContent, bool isFormUrlEncoded = false)
+        protected virtual async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase, HttpStatusCode StatusCode)> PutAsync<TResult>(string url, HttpContent httpContent, bool isFormUrlEncoded = false)
         {
             return await this.SendAsync<TResult, object>(url: url, httpContent: httpContent, httpMethod: HttpMethod.Put, retry: false);
         }
@@ -248,7 +237,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="body">The body.</param>
         /// <param name="isFormUrlEncoded">if set to <c>true</c> [is form URL encoded].</param>
         /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
-        protected virtual async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase)> PostAsync<TResult, TBody>(string url, TBody body, bool isFormUrlEncoded = false)
+        protected virtual async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase, HttpStatusCode StatusCode)> PostAsync<TResult, TBody>(string url, TBody body, bool isFormUrlEncoded = false)
         {
             return await this.SendAsync<TResult, TBody>(url: url, body: body, httpMethod: HttpMethod.Post, isFormUrlEncoded: isFormUrlEncoded, retry: false);
         }
@@ -261,7 +250,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="httpContent">Content of the HTTP.</param>
         /// <param name="isFormUrlEncoded">if set to <c>true</c> [is form URL encoded].</param>
         /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
-        protected virtual async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase)> PostAsync<TResult>(string url, HttpContent httpContent, bool isFormUrlEncoded = false)
+        protected virtual async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase, HttpStatusCode StatusCode)> PostAsync<TResult>(string url, HttpContent httpContent, bool isFormUrlEncoded = false)
         {
             return await this.SendAsync<TResult, object>(url: url, httpContent: httpContent, httpMethod: HttpMethod.Post, retry: false);
         }
@@ -302,7 +291,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 await this.SetBearerTokenInCacheAsync(bearerToken);
             }
 
-            this.httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(Bearer, bearerToken);
+            this.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(Bearer, bearerToken);
         }
 
         /// <summary>
@@ -348,7 +337,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <returns>The storage key.</returns>
         protected virtual string GetBearerCacheKey()
         {
-            return $"{this.className}|{Bearer}";
+            return $"{this.ClassName}|{Bearer}";
         }
 
         /// <summary>
@@ -357,7 +346,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <returns>The bearer token.</returns>
         protected virtual async Task<string> GetBearerTokenInCacheAsync()
         {
-            return await this.distributedCache.Get<string>(this.GetBearerCacheKey());
+            return await this.DistributedCache.Get<string>(this.GetBearerCacheKey());
         }
 
         /// <summary>
@@ -371,11 +360,11 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             {
                 DateTimeOffset expirationDate = this.GetJwtTokenExpirationDate(bearerToken);
                 TimeSpan expirationFromNow = expirationDate - DateTimeOffset.UtcNow.Add(new TimeSpan(0, 0, 10));
-                await this.distributedCache.Add(this.GetBearerCacheKey(), bearerToken, expirationFromNow.TotalMinutes);
+                await this.DistributedCache.Add(this.GetBearerCacheKey(), bearerToken, expirationFromNow.TotalMinutes);
             }
             else
             {
-                await this.distributedCache.Remove(this.GetBearerCacheKey());
+                await this.DistributedCache.Remove(this.GetBearerCacheKey());
             }
         }
 
@@ -385,7 +374,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <typeparam name="T">The result type.</typeparam>
         /// <param name="request">The request.</param>
         /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
-        protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase)> SendAsync<T>(HttpRequestMessage request)
+        protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase, HttpStatusCode StatusCode)> SendAsync<T>(HttpRequestMessage request)
         {
             return await this.SendAsync<T>(request: request, retry: false);
         }
@@ -402,7 +391,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <returns>
         /// Result, IsSuccessStatusCode, ReasonPhrase.
         /// </returns>
-        protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase)> SendAsync<T>(
+        protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase, HttpStatusCode StatusCode)> SendAsync<T>(
             string url = default,
             HttpMethod httpMethod = default,
             HttpRequestMessage request = default,
@@ -414,15 +403,15 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 if (!string.IsNullOrWhiteSpace(url))
                 {
                     string message = $"Call WebApi {httpMethod?.Method}: {url}";
-                    this.logger.LogInformation(message);
+                    this.Logger.LogInformation(message);
                 }
                 else
                 {
                     string message = $"Call WebApi {request?.Method?.Method}: {request?.RequestUri?.AbsoluteUri}";
-                    this.logger.LogInformation(message);
+                    this.Logger.LogInformation(message);
                 }
 
-                if (!this.ongoingConfiguration && !this.configuredHttpClient)
+                if (!this.OngoingConfiguration && !this.ConfiguredHttpClient)
                 {
                     await this.ConfigureHttpClientAsync();
                 }
@@ -433,13 +422,18 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 // POST, PUT
                 if (request != default)
                 {
-                    response = await this.httpClient.SendAsync(request);
+                    if (this.CompressionLevel != CompressionLevel.NoCompression)
+                    {
+                        await this.CompressRequestContentAsync(request);
+                    }
+
+                    response = await this.HttpClient.SendAsync(request);
                 }
 
                 // DELETE
                 else if (httpMethod?.Method == HttpMethod.Delete.Method)
                 {
-                    response = await this.httpClient.DeleteAsync(url);
+                    response = await this.HttpClient.DeleteAsync(url);
                 }
 
                 // GET
@@ -447,7 +441,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 {
                     if (cacheDurationInMinute > 0)
                     {
-                        string cachedResponse = await this.distributedCache.Get<string>(cacheKey);
+                        string cachedResponse = await this.DistributedCache.Get<string>(cacheKey);
                         if (!string.IsNullOrEmpty(cachedResponse))
                         {
                             response = new HttpResponseMessage(System.Net.HttpStatusCode.OK)
@@ -456,18 +450,18 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                             };
 
                             string message = $"Retrieve from cache {httpMethod?.Method}: {url}";
-                            this.logger.LogInformation(message);
+                            this.Logger.LogInformation(message);
 
                             cacheDurationInMinute = default;
                         }
                         else
                         {
-                            response = await this.httpClient.GetAsync(url);
+                            response = await this.HttpClient.GetAsync(url);
                         }
                     }
                     else
                     {
-                        response = await this.httpClient.GetAsync(url);
+                        response = await this.HttpClient.GetAsync(url);
                     }
                 }
 
@@ -480,26 +474,26 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     {
                         if (cacheDurationInMinute > 0)
                         {
-                            await this.distributedCache.Add(cacheKey, res, cacheDurationInMinute);
+                            await this.DistributedCache.Add(cacheKey, res, cacheDurationInMinute);
                         }
 
                         if (typeof(T) == typeof(string))
                         {
-                            return ((T)(object)res, response.IsSuccessStatusCode, default(string));
+                            return ((T)(object)res, response.IsSuccessStatusCode, default(string), response.StatusCode);
                         }
 
                         T result = JsonConvert.DeserializeObject<T>(res);
-                        return (result, response.IsSuccessStatusCode, default(string));
+                        return (result, response.IsSuccessStatusCode, default(string), response.StatusCode);
                     }
                     else
                     {
-                        this.logger.LogWarning("Expected JSON but got '{ContentType}'. Returning default value.", contentType);
-                        return (default(T), response.IsSuccessStatusCode, "Response is not JSON.");
+                        this.Logger.LogWarning("Expected JSON but got '{ContentType}'. Returning default value.", contentType);
+                        return (default(T), response.IsSuccessStatusCode, "Response is not JSON.", response.StatusCode);
                     }
                 }
                 else
                 {
-                    if (!this.ongoingConfiguration && !retry && this.CheckConditionRetry(response))
+                    if (!this.OngoingConfiguration && !retry && this.CheckConditionRetry(response))
                     {
                         await this.SetBearerTokenInCacheAsync(null);
                         await this.ConfigureHttpClientAsync();
@@ -507,12 +501,12 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     }
 
                     string message = $"Url:{url} ReasonPhrase:{response.ReasonPhrase}";
-                    this.logger.LogError(message);
-                    return (default(T), response.IsSuccessStatusCode, response.ReasonPhrase);
+                    this.Logger.LogError(message);
+                    return (default(T), response.IsSuccessStatusCode, response.ReasonPhrase, response.StatusCode);
                 }
             }
 
-            return (default(T), default(bool), default(string));
+            return (default(T), default(bool), default(string), default(HttpStatusCode));
         }
 
         /// <summary>
@@ -527,7 +521,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="isFormUrlEncoded">specify if form url is encoded.</param>
         /// <param name="retry">if true it is a retry operation.</param>
         /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
-        protected virtual async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase)> SendAsync<TResult, TBody>(
+        protected virtual async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase, HttpStatusCode StatusCode)> SendAsync<TResult, TBody>(
             string url,
             HttpMethod httpMethod,
             TBody body = default,
@@ -538,9 +532,9 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             if (!string.IsNullOrWhiteSpace(url) && (!object.Equals(body, default(TBody)) || httpContent != default))
             {
                 string message = $"Call WebApi {httpMethod.Method}: {url}";
-                this.logger.LogInformation(message);
+                this.Logger.LogInformation(message);
 
-                if (!this.ongoingConfiguration && !this.configuredHttpClient)
+                if (!this.OngoingConfiguration && !this.ConfiguredHttpClient)
                 {
                     await this.ConfigureHttpClientAsync();
                 }
@@ -561,13 +555,18 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     }
                 }
 
+                if (this.CompressionLevel != CompressionLevel.NoCompression)
+                {
+                    httpContent = await this.CompressRequestContentAsync(httpContent);
+                }
+
                 if (httpMethod.Method == HttpMethod.Put.Method)
                 {
-                    response = await this.httpClient.PutAsync(url, httpContent);
+                    response = await this.HttpClient.PutAsync(url, httpContent);
                 }
                 else
                 {
-                    response = await this.httpClient.PostAsync(url, httpContent);
+                    response = await this.HttpClient.PostAsync(url, httpContent);
                 }
 
                 if (response.IsSuccessStatusCode)
@@ -575,25 +574,25 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     string res = await response.Content.ReadAsStringAsync();
                     TResult result = JsonConvert.DeserializeObject<TResult>(res);
                     httpContent?.Dispose();
-                    return (result, response.IsSuccessStatusCode, default(string));
+                    return (result, response.IsSuccessStatusCode, default(string), response.StatusCode);
                 }
                 else
                 {
-                    if (!this.ongoingConfiguration && !retry && this.CheckConditionRetry(response))
+                    if (!this.OngoingConfiguration && !retry && this.CheckConditionRetry(response))
                     {
                         await this.SetBearerTokenInCacheAsync(null);
                         await this.ConfigureHttpClientAsync();
                         return await this.SendAsync<TResult, TBody>(url: url, httpMethod: httpMethod, body: body, httpContent: httpContent, isFormUrlEncoded: isFormUrlEncoded, retry: true);
                     }
 
-                    string message2 = $"Url:{url} ReasonPhrase:{response.ReasonPhrase}";
-                    this.logger.LogError(message2);
+                    string errorMessage = $"Url:{url} ReasonPhrase:{response.ReasonPhrase}";
+                    this.Logger.LogError(errorMessage);
                     httpContent?.Dispose();
-                    return (default(TResult), response.IsSuccessStatusCode, response.ReasonPhrase);
+                    return (default(TResult), response.IsSuccessStatusCode, response.ReasonPhrase, response.StatusCode);
                 }
             }
 
-            return (default(TResult), default(bool), default(string));
+            return (default(TResult), default(bool), default(string), default(HttpStatusCode));
         }
 
         /// <summary>
@@ -611,7 +610,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <returns>Task.</returns>
         protected virtual async Task ConfigureHttpClientAsync()
         {
-            this.ongoingConfiguration = true;
+            this.OngoingConfiguration = true;
             switch (this.AuthenticationConfiguration.Mode)
             {
                 case AuthenticationMode.Token:
@@ -632,8 +631,8 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     break;
             }
 
-            this.configuredHttpClient = true;
-            this.ongoingConfiguration = false;
+            this.ConfiguredHttpClient = true;
+            this.OngoingConfiguration = false;
         }
 
         /// <summary>
@@ -658,7 +657,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
             foreach (string cacheKey in cacheKeys)
             {
-                TResult obj = await this.distributedCache.Get<TResult>(cacheKey);
+                TResult obj = await this.DistributedCache.Get<TResult>(cacheKey);
                 if (!object.Equals(obj, default(TResult)))
                 {
                     returns.Add(obj);
@@ -687,7 +686,113 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
             foreach (var dict in dicts)
             {
-                await this.distributedCache.Add($"{typeof(TResult).Namespace}|{typeof(TResult).Name}|{dict.Key}", dict.Value, cacheDurationInMinute);
+                await this.DistributedCache.Add($"{typeof(TResult).Namespace}|{typeof(TResult).Name}|{dict.Key}", dict.Value, cacheDurationInMinute);
+            }
+        }
+
+        /// <summary>
+        /// Compresses the content of the given <see cref="HttpRequestMessage"/> using GZip if the request method is POST or PUT
+        /// and the content is not already compressed. Updates the request's content with the compressed version.
+        /// </summary>
+        /// <param name="request">The HTTP request message whose content may be compressed.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
+        protected virtual async Task CompressRequestContentAsync(HttpRequestMessage request)
+        {
+            if (request.Content != null &&
+                (request.Method == HttpMethod.Post || request.Method == HttpMethod.Put))
+            {
+                request.Content = await this.CompressContentIfNeededAsync(request.Content);
+            }
+        }
+
+        /// <summary>
+        /// Compresses the provided HttpContent using GZip if not already compressed.
+        /// Returns the compressed content, or the original if already compressed or null.
+        /// </summary>
+        /// <param name="httpContent">The HttpContent to compress.</param>
+        /// <returns>The compressed HttpContent, or the original if already compressed or null.</returns>
+        protected virtual async Task<HttpContent> CompressRequestContentAsync(HttpContent httpContent)
+        {
+            if (httpContent == null)
+            {
+                return null;
+            }
+
+            return await this.CompressContentIfNeededAsync(httpContent);
+        }
+
+        /// <summary>
+        /// Compresses the provided <see cref="HttpContent"/> using GZip if compression is enabled and the content
+        /// is not already compressed. Returns the compressed content, or the original if compression is not applied.
+        /// </summary>
+        /// <param name="content">The HTTP content to potentially compress.</param>
+        /// <returns>The compressed <see cref="HttpContent"/>, or the original if compression is not applied.</returns>
+        protected virtual async Task<HttpContent> CompressContentIfNeededAsync(HttpContent content)
+        {
+            if (content == null)
+            {
+                return null;
+            }
+
+            if (this.CompressionLevel != CompressionLevel.NoCompression && !content.Headers.ContentEncoding.Contains("gzip"))
+            {
+                string originalContent = await content.ReadAsStringAsync();
+                string mediaType = content.Headers.ContentType?.MediaType ?? MediaTypeNames.Application.Json;
+                ByteArrayContent compressedContent = this.CreateGzipCompressedContent(originalContent, mediaType);
+
+                // Do not copy the Content-Length header; it will be recalculated automatically.
+                foreach (var header in content.Headers.Where(header =>
+                    !compressedContent.Headers.Contains(header.Key) &&
+                    !string.Equals(header.Key, HeaderNames.ContentLength, StringComparison.OrdinalIgnoreCase)))
+                {
+                    compressedContent.Headers.TryAddWithoutValidation(header.Key, header.Value);
+                }
+
+                // Ensure that Content-Length is not present
+                if (compressedContent.Headers.Contains(HeaderNames.ContentLength))
+                {
+                    compressedContent.Headers.Remove(HeaderNames.ContentLength);
+                }
+
+                content.Dispose();
+                return compressedContent;
+            }
+
+            return content;
+        }
+
+        /// <summary>
+        /// Creates a GZip-compressed HTTP content from the specified string and media type.
+        /// </summary>
+        /// <param name="content">The string content to compress.</param>
+        /// <param name="mediaType">The media type of the content (e.g., "application/json").</param>
+        /// <returns>A <see cref="ByteArrayContent"/> containing the compressed data and appropriate headers.</returns>
+        protected virtual ByteArrayContent CreateGzipCompressedContent(string content, string mediaType)
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(content);
+            using (MemoryStream output = new MemoryStream())
+            {
+                using (GZipStream gzip = new GZipStream(output, this.CompressionLevel, true))
+                {
+                    gzip.Write(bytes, 0, bytes.Length);
+                }
+
+                byte[] compressed = output.ToArray();
+
+                // Log compression gain
+                double ratio = bytes.Length == 0 ? 0 : (1.0 - ((double)compressed.Length / bytes.Length)) * 100.0;
+                this.Logger.LogInformation(
+                    "GZip compression: CompressionLevel = {CompressionLevel}, original size = {OriginalSize} bytes, compressed size = {CompressedSize} bytes, gain = {Gain:F2}%.",
+                    this.CompressionLevel,
+                    bytes.Length,
+                    compressed.Length,
+                    ratio);
+
+                ByteArrayContent byteContent = new ByteArrayContent(compressed);
+                byteContent.Headers.ContentEncoding.Add("gzip");
+                byteContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(mediaType);
+
+                return byteContent;
             }
         }
     }

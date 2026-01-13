@@ -1,0 +1,144 @@
+<p-drawer
+  [(visible)]="visible"
+  position="right"
+  [blockScroll]="true"
+  [showCloseIcon]="false"
+  [baseZIndex]="1000"
+  [transitionOptions]="'.3s cubic-bezier(0, 0, 0.2, 1)'"
+  [header]="'bia.settings' | translate">
+  <div class="p-3">
+    <ng-content select="[app-config-top]"></ng-content>
+
+    @if (layoutService.configDisplay().showLang) {
+      <h3>{{ 'bia.language' | translate }}</h3>
+      <div class="flex flex-wrap row-gap-3">
+        @for (lang of getSupportedLangsSorted(); track $index) {
+          <div class="flex align-items-center gap-2 w-6">
+            <p-radioButton
+              name="lang"
+              [value]="lang"
+              [(ngModel)]="currentCulture"
+              [inputId]="lang"></p-radioButton>
+            <label [for]="lang">{{
+              getLanguageTranslateKey(lang) | translate
+            }}</label>
+          </div>
+        }
+      </div>
+    }
+    @if (layoutService.configDisplay().showScale) {
+      <h3>{{ 'bia.layoutScale' | translate }}</h3>
+      <div class="flex align-items-center">
+        <button
+          icon="pi pi-minus"
+          type="button"
+          pButton
+          (click)="decrementScale()"
+          class="p-button-text p-button-rounded w-2rem h-2rem mr-2"
+          [disabled]="scale === scales[0]"></button>
+        <div class="flex gap-2 align-items-center">
+          @for (s of scales; track $index) {
+            <i
+              class="pi pi-circle-fill scale-icon"
+              style="font-size: 0.9rem"
+              [ngClass]="{ 'selected-scale-icon': s === scale }"></i>
+          }
+        </div>
+        <button
+          icon="pi pi-plus"
+          type="button"
+          pButton
+          (click)="incrementScale()"
+          class="p-button-text p-button-rounded w-2rem h-2rem ml-2"
+          [disabled]="scale === scales[scales.length - 1]"></button>
+      </div>
+    }
+    @if (layoutService.configDisplay().showTheme) {
+      <h3>{{ 'bia.theme' | translate }}</h3>
+      <div class="flex gap-4">
+        <div class="field-radiobutton flex-1">
+          <p-radioButton
+            name="colorScheme"
+            value="light"
+            [(ngModel)]="colorScheme"
+            inputId="light"></p-radioButton>
+          <label for="light">{{ 'bia.themeLight' | translate }}</label>
+        </div>
+        <div class="field-radiobutton flex-1">
+          <p-radioButton
+            name="colorScheme"
+            value="dark"
+            [(ngModel)]="colorScheme"
+            inputId="dark"></p-radioButton>
+          <label for="dark">{{ 'bia.themeDark' | translate }}</label>
+        </div>
+      </div>
+    }
+    @if (layoutService.configDisplay().showMenuStyle.length) {
+      <h3>{{ 'bia.menuMode' | translate }}</h3>
+      <div class="flex flex-wrap row-gap-3">
+        @for (
+          mode of layoutService.configDisplay().showMenuStyle;
+          track $index
+        ) {
+          <div class="flex align-items-center gap-2 w-6">
+            <p-radioButton
+              name="menuMode"
+              [value]="mode"
+              [(ngModel)]="menuMode"
+              [inputId]="'menuMode' + $index"></p-radioButton>
+            <label [for]="'menuMode' + $index">{{
+              menuModeLabels[mode] || mode
+            }}</label>
+          </div>
+        }
+      </div>
+    }
+
+    @if (layoutService.configDisplay().showFooterStyle) {
+      <h3>{{ 'bia.footerMode' | translate }}</h3>
+      <div class="flex flex-wrap row-gap-3">
+        <div class="flex align-items-center gap-2 w-6">
+          <p-radioButton
+            name="footerMode"
+            value="bottom"
+            [(ngModel)]="footerMode"
+            inputId="footerMode1"></p-radioButton>
+          <label for="footerMode1">Bottom</label>
+        </div>
+        <div class="flex align-items-center gap-2 w-6">
+          <p-radioButton
+            name="footerMode"
+            value="overlay"
+            [(ngModel)]="footerMode"
+            inputId="footerMode2"></p-radioButton>
+          <label for="footerMode2">Overlay</label>
+        </div>
+      </div>
+    }
+
+    @if (layoutService.configDisplay().showMenuProfilePosition) {
+      <h3>{{ 'bia.menuProfilePosition' | translate }}</h3>
+      <div class="flex flex-wrap row-gap-3">
+        <div class="flex align-items-center gap-2 w-6">
+          <p-radioButton
+            name="menuProfilePosition"
+            value="start"
+            [(ngModel)]="menuProfilePosition"
+            inputId="menuProfilePosition1"></p-radioButton>
+          <label for="menuProfilePosition1">Start</label>
+        </div>
+        <div class="flex align-items-center gap-2 w-6">
+          <p-radioButton
+            name="menuProfilePosition"
+            value="end"
+            [(ngModel)]="menuProfilePosition"
+            inputId="menuProfilePosition2"></p-radioButton>
+          <label for="menuProfilePosition2">End</label>
+        </div>
+      </div>
+    }
+
+    <ng-content select="[app-config-bottom]"></ng-content>
+  </div>
+</p-drawer>

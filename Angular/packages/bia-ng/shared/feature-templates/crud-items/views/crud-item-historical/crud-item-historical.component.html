@@ -1,0 +1,26 @@
+<div class="bia-form">
+  <div class="bia-form-header">
+    <div class="title">
+      <h2>
+        {{ `app.${crudConfiguration.featureNameSingular}` | translate }}
+        {{ crudItemService.displayItemName$ | async }}
+      </h2>
+    </div>
+  </div>
+  <bia-crud-item-historical-timeline
+    class="timeline"
+    [historicalEntries]="(crudItemService.crudItemHistorical$ | async) ?? []"
+    [fields]="
+      crudConfiguration.fieldsConfig.columns
+    "></bia-crud-item-historical-timeline>
+
+  <div class="footer-container bia-form-fixed-buttons">
+    <div>
+      <p-button
+        icon="pi pi-times"
+        label="{{ 'bia.close' | translate }}"
+        type="button"
+        (click)="navigateBack()"></p-button>
+    </div>
+  </div>
+</div>

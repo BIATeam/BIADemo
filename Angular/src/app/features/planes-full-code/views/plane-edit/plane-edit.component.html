@@ -1,10 +1,11 @@
-<app-plane-form
-  *ngIf="planeService.plane$ | async; let plane"
-  [plane]="plane"
-  [airportOptions]="(planeOptionsService.airportOptions$ | async) ?? []"
-  [planeTypeOptions]="(planeOptionsService.planeTypeOptions$ | async) ?? []"
-  (cancelled)="onCancelled()"
-  (save)="onSubmitted($event)"></app-plane-form>
-<bia-spinner
-  *ngIf="planeService.loading$ | async"
-  [overlay]="true"></bia-spinner>
+@if (planeService.plane$ | async; as plane) {
+  <app-plane-form
+    [plane]="plane"
+    [airportOptions]="(planeOptionsService.airportOptions$ | async) ?? []"
+    [planeTypeOptions]="(planeOptionsService.planeTypeOptions$ | async) ?? []"
+    (cancelled)="onCancelled()"
+    (save)="onSubmitted($event)"></app-plane-form>
+}
+@if (planeService.loading$ | async) {
+  <bia-spinner [overlay]="true"></bia-spinner>
+}

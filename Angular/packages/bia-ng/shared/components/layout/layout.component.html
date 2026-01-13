@@ -1,0 +1,19 @@
+@if (isLoadingUserInfo) {
+  <bia-spinner [overlay]="true"></bia-spinner>
+}
+<bia-ultima-layout
+  [menus]="menus"
+  [version]="version"
+  [username]="username"
+  [lastname]="lastname"
+  [login]="login"
+  [headerLogos]="headerLogos"
+  [footerLogo]="footerLogo"
+  [supportedLangs]="supportedLangs"
+  [appTitle]="appTitle"
+  [helpUrl]="helpUrl"
+  [reportUrl]="reportUrl"
+  [enableNotifications]="enableNotifications"
+  [companyName]="companyName"
+  class="p-input-filled">
+</bia-ultima-layout>

@@ -62,6 +62,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
 
             services.AddCors();
             services.AddResponseCompression();
+            services.AddRequestDecompression();
 
             services.AddHsts(options =>
             {
@@ -121,21 +122,22 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             }
 
             app.UseResponseCompression();
+            app.UseRequestDecompression();
 
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
 
-            HangfireDashboardAuthorizations hangfireDashboardAuthorizations = new ();
-            hangfireDashboardAuthorizations.Authorization = new[] { new HangfireAuthorizationFilter(false, "Background_Task_Admin", this.biaNetSection.Jwt.SecretKey, jwtFactory) };
-            hangfireDashboardAuthorizations.AuthorizationReadOnly = new[] { new HangfireAuthorizationFilter(true, "Background_Task_Read_Only", this.biaNetSection.Jwt.SecretKey, jwtFactory) };
-
+            HangfireDashboardAuthorizations hangfireDashboardAuthorizations = new();
+            hangfireDashboardAuthorizations.Authorization = new[] { new HangfireAuthorizationFilter(false, "Background_Task_Admin", this.biaNetSection.Jwt?.SecretKey, jwtFactory) };
+            hangfireDashboardAuthorizations.AuthorizationReadOnly = new[] { new HangfireAuthorizationFilter(true, "Background_Task_Read_Only", this.biaNetSection.Jwt?.SecretKey, jwtFactory) };
+#if BIA_FRONT_FEATURE || BIA_USE_DATABASE
             if (this.biaNetSection.CommonFeatures?.AuditConfiguration?.IsActive == true)
             {
                 app.ApplicationServices.GetRequiredService<IAuditFeatureService>().EnableAuditFeatures();
             }
-
+#endif
             app.UseBiaApiFeatures(this.biaNetSection.ApiFeatures, hangfireDashboardAuthorizations);
         }
     }

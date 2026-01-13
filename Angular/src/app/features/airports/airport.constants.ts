@@ -1,4 +1,4 @@
-import { CrudConfig } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
+import { CrudConfig } from '@bia-team/bia-ng/shared';
 import { Airport, airportFieldsConfiguration } from './model/airport';
 
 // TODO after creation of CRUD Airport : adapt the global configuration

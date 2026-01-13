@@ -4,8 +4,8 @@
 
 namespace BIA.Net.Core.Domain.Entity
 {
-    using System.ComponentModel.DataAnnotations;
     using BIA.Net.Core.Domain.Entity.Interface;
+    using global::Audit.EntityFramework;
 
     /// <summary>
     /// The base class for Entity.
@@ -16,7 +16,13 @@ namespace BIA.Net.Core.Domain.Entity
         /// <summary>
         /// Gets or sets the row version.
         /// </summary>
-        [Timestamp]
+        [AuditIgnore]
         public byte[] RowVersion { get; set; }
+
+        /// <summary>
+        /// Gets or sets the row version.
+        /// </summary>
+        [AuditIgnore]
+        public uint RowVersionXmin { get; set; }
     }
 }

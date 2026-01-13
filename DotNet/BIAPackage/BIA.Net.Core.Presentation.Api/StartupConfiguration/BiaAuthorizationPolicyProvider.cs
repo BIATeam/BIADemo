@@ -22,7 +22,7 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
         /// </summary>
         public const string DefaultBiaAuthorizationPolicyName = "BiaAuthorizationPolicy";
 
-        private readonly BiaNetSection biaNetSection = new ();
+        private readonly BiaNetSection biaNetSection = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BiaAuthorizationPolicyProvider"/> class.

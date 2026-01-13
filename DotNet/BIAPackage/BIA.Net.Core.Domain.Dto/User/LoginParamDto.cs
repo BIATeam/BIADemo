@@ -4,20 +4,18 @@
 
 namespace BIA.Net.Core.Domain.Dto.User
 {
+    using System.Collections.Immutable;
+
     /// <summary>
     /// LoginParamDto.
     /// </summary>
+    /// <typeparam name="TTeamConfigDto">Team config dto type.</typeparam>
     public class LoginParamDto
     {
         /// <summary>
         /// Gets or sets is the current teams logged.
         /// </summary>
         public CurrentTeamDto[] CurrentTeamLogins { get; set; }
-
-        /// <summary>
-        /// Gets or sets is the teams config.
-        /// </summary>
-        public TeamConfigDto[] TeamsConfig { get; set; }
 
         /// <summary>
         /// Gets or sets if it required a light token (only permition taged light token).

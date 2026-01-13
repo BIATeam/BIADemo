@@ -1,0 +1,81 @@
+<div class="flex flex-row gap-3 bia-table-behavior-container">
+  @if (selectedLayout) {
+    <i
+      class="relative pi bia-pointer"
+      [class]="
+        (!selectedLayout.disabled ? 'enable' : 'disabled') +
+        ' ' +
+        selectedLayout.icon
+      "
+      (click)="op.toggle($event)"
+      [pTooltip]="selectedLayout.tooltip"
+      tooltipPosition="top">
+      @if (selectedLayout.name === 'Split') {
+        <div class="split-icon pi pi-minus"></div>
+      }
+    </i>
+  }
+  @if (crudConfiguration.showIcons.showView) {
+    <i
+      class="pi pi-eye bia-pointer"
+      [class]="crudConfiguration.useView ? 'enable' : 'disabled'"
+      (click)="useViewChanged.emit(!crudConfiguration.useView)"
+      pTooltip="{{ 'bia.useView' | translate }}"
+      tooltipPosition="top"></i>
+  }
+  @if (crudConfiguration.showIcons.showSignalR) {
+    <i
+      class="pi pi-sync bia-pointer"
+      [class]="crudConfiguration.useSignalR ? 'enable' : 'disabled'"
+      (click)="useSignalRChanged.emit(!crudConfiguration.useSignalR)"
+      pTooltip="{{ 'bia.useSignalR' | translate }}"
+      tooltipPosition="top"></i>
+  }
+  @if (crudConfiguration.showIcons.showCompactMode) {
+    <i
+      class="pi pi-arrow-down-left-and-arrow-up-right-to-center bia-pointer"
+      [class]="crudConfiguration.useCompactMode ? 'enable' : 'disabled'"
+      (click)="useCompactModeChanged.emit(!crudConfiguration.useCompactMode)"
+      pTooltip="{{ 'bia.useCompactMode' | translate }}"
+      tooltipPosition="top"></i>
+  }
+  @if (crudConfiguration.showIcons.showVirtualScroll) {
+    <i
+      class="pi pi-arrows-v bia-pointer"
+      [class]="crudConfiguration.useVirtualScroll ? 'enable' : 'disabled'"
+      (click)="
+        useVirtualScrollChanged.emit(!crudConfiguration.useVirtualScroll)
+      "
+      pTooltip="{{ 'bia.useVirtualScroll' | translate }}"
+      tooltipPosition="top"></i>
+  }
+  @if (crudConfiguration.showIcons.showResizableColumn) {
+    <i
+      class="pi pi-arrows-h bia-pointer"
+      [class]="crudConfiguration.useResizableColumn ? 'enable' : 'disabled'"
+      (click)="
+        useResizableColumnChanged.emit(!crudConfiguration.useResizableColumn)
+      "
+      pTooltip="{{ 'bia.useResizableColumn' | translate }}"
+      tooltipPosition="top"></i>
+  }
+</div>
+<p-popover #op styleClass="bia-behavior-icon-overlay">
+  <div class="bia-table-controller-container flex flex-column gap-3">
+    @for (item of visibleLayouts; track item.name) {
+      <div>
+        <i
+          class="relative pi bia-pointer"
+          [class]="(!item.disabled ? 'enable' : 'disabled') + ' ' + item.icon"
+          (click)="item.command(item)">
+          @if (item.name === 'Split') {
+            <div class="split-icon pi pi-minus"></div>
+          }
+        </i>
+        <span class="icon-label" (click)="item.command(item)">{{
+          item.tooltip
+        }}</span>
+      </div>
+    }
+  </div>
+</p-popover>

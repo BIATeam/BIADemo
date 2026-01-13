@@ -42,7 +42,7 @@ try
 
     BiaNetSection biaNetSection = new BiaNetSection();
     builder.Configuration.GetSection("BiaNet").Bind(biaNetSection);
-    startup.Configure(app, app.Environment, new JwtFactory(Options.Create<Jwt>(biaNetSection.Jwt)));
+    startup.Configure(app, app.Environment, new JwtFactory(Options.Create(biaNetSection.Jwt)));
 
     await app.RunAsync();
 }

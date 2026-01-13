@@ -5,11 +5,13 @@
 namespace BIA.Net.Core.Domain.Dto.App
 {
     using System.Collections.Generic;
+    using System.Collections.Immutable;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.Iframe;
     using BIA.Net.Core.Common.Configuration.Keycloak;
     using BIA.Net.Core.Common.Configuration.ProfileSection;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.User;
 
     /// <summary>
     /// The DTO used to represent a AppSettings.
@@ -45,5 +47,10 @@ namespace BIA.Net.Core.Domain.Dto.App
         /// Gets or sets the configuration when front called in iframe.
         /// </summary>
         public IframeConfiguration IframeConfiguration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the configuration of teams.
+        /// </summary>
+        public ImmutableList<TeamConfigDto> TeamsConfig { get; set; }
     }
 }

@@ -310,7 +310,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
             byte[] buffer = await this.planeService.GetCsvAsync(filters);
-            return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Planes{BiaConstants.Csv.Extension}");
+            return this.File(buffer, BiaConstants.Csv.ContentType + $";charset={BiaConstants.Csv.CharsetEncoding}", $"Planes{BiaConstants.Csv.Extension}");
         }
 
         /// <summary>
@@ -329,6 +329,29 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             try
             {
                 var dto = await this.planeService.UpdateFixedAsync(id, isFixed);
+                return this.Ok(dto);
+            }
+            catch (ElementNotFoundException)
+            {
+                return this.NotFound();
+            }
+        }
+
+        /// <summary>
+        /// Return the historical of an item by its id.
+        /// </summary>
+        /// <param name="id">ID of the item to update.</param>
+        /// <returns>Item's historical.</returns>
+        [HttpGet("{id}/historical")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = Rights.Planes.Read)]
+        public virtual async Task<IActionResult> GetHistorical(int id)
+        {
+            try
+            {
+                var dto = await this.planeService.GetHistoricalAsync(id);
                 return this.Ok(dto);
             }
             catch (ElementNotFoundException)

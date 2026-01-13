@@ -1,4 +1,9 @@
 import { Injectable } from '@angular/core';
+import {
+  BiaMessageService,
+  biaSuccessWaitRefreshSignalR,
+} from '@bia-team/bia-ng/core';
+import { DataResult } from '@bia-team/bia-ng/models';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
@@ -9,9 +14,6 @@ import {
   switchMap,
   withLatestFrom,
 } from 'rxjs/operators';
-import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
-import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
-import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
 import { maintenanceTeamCRUDConfiguration } from '../maintenance-team.constants';
 import { MaintenanceTeam } from '../model/maintenance-team';
@@ -229,13 +231,13 @@ export class MaintenanceTeamsEffects {
         return this.maintenanceTeamDas
           .updateFixedStatus({ id: x.id, fixed: x.isFixed })
           .pipe(
-            map(maintenanceTeam => {
+            map(() => {
               this.biaMessageService.showUpdateSuccess();
               this.store.dispatch(
-                FeatureMaintenanceTeamsActions.loadAllByPost({ event: event })
+                FeatureMaintenanceTeamsActions.load({ id: x.id })
               );
-              return FeatureMaintenanceTeamsActions.loadSuccess({
-                maintenanceTeam,
+              return FeatureMaintenanceTeamsActions.loadAllByPost({
+                event: event,
               });
             }),
             catchError(err => {

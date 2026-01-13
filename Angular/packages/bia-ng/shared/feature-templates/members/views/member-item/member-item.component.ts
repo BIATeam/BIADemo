@@ -1,0 +1,44 @@
+import { AsyncPipe } from '@angular/common';
+import { Component, Injector, OnInit } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { first } from 'rxjs/operators';
+import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
+import { CrudItemItemComponent } from '../../../crud-items/views/crud-item-item/crud-item-item.component';
+import { Member } from '../../model/member';
+import { MemberService } from '../../services/member.service';
+
+@Component({
+  selector: 'bia-members-item',
+  templateUrl:
+    '../../../crud-items/views/crud-item-item/crud-item-item.component.html',
+  styleUrls: [
+    '../../../crud-items/views/crud-item-item/crud-item-item.component.scss',
+  ],
+  imports: [RouterOutlet, SpinnerComponent, AsyncPipe],
+})
+export class MemberItemComponent
+  extends CrudItemItemComponent<Member>
+  implements OnInit
+{
+  protected memberService: MemberService;
+
+  constructor(protected injector: Injector) {
+    super(injector, injector.get<MemberService>(MemberService));
+    this.memberService = injector.get<MemberService>(MemberService);
+  }
+
+  ngOnInit() {
+    super.ngOnInit();
+    this.sub.add(
+      this.memberService.crudItem$.subscribe(member => {
+        // TODO after creation of CRUD Member : set the field of the item to display in the breadcrump
+        if (member?.user?.display) {
+          this.route.data.pipe(first()).subscribe(routeData => {
+            (routeData as any)['breadcrumb'] = member.user.display;
+          });
+          this.layoutService.refreshBreadcrumb();
+        }
+      })
+    );
+  }
+}

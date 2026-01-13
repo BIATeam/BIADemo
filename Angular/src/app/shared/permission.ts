@@ -1,18 +1,10 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 export enum Permission {
-  Background_Task_Admin = 'Background_Task_Admin',
-  Background_Task_Read_Only = 'Background_Task_Read_Only',
-
   // Begin BIADemo
   Hangfire_Access = 'Hangfire_Access',
   // End BIADemo
 
   Home_Access = 'Home_Access',
-  Notification_Create = 'Notification_Create',
-  Notification_List_Access = 'Notification_List_Access',
-  Notification_Delete = 'Notification_Delete',
-  Notification_Read = 'Notification_Read',
-  Notification_Update = 'Notification_Update',
 
   // BIAToolKit - Begin Permission
   // BIAToolKit - End Permission
@@ -69,6 +61,24 @@ export enum Permission {
   MaintenanceTeam_View_AssignToTeam = 'MaintenanceTeam_View_Assign_To_Team',
   MaintenanceTeam_Fix = 'MaintenanceTeam_Fix',
   // BIAToolKit - End Partial Permission MaintenanceTeam
+  // BIAToolKit - Begin Partial Permission Pilot
+  Pilot_Create = 'Pilot_Create',
+  Pilot_Delete = 'Pilot_Delete',
+  Pilot_List_Access = 'Pilot_List_Access',
+  Pilot_Read = 'Pilot_Read',
+  Pilot_Save = 'Pilot_Save',
+  Pilot_Update = 'Pilot_Update',
+  Pilot_Fix = 'Pilot_Fix',
+  // BIAToolKit - End Partial Permission Pilot
+  // BIAToolKit - Begin Partial Permission Flight
+  Flight_Create = 'Flight_Create',
+  Flight_Delete = 'Flight_Delete',
+  Flight_List_Access = 'Flight_List_Access',
+  Flight_Read = 'Flight_Read',
+  Flight_Save = 'Flight_Save',
+  Flight_Update = 'Flight_Update',
+  Flight_Fix = 'Flight_Fix',
+  // BIAToolKit - End Partial Permission Flight
   // End BIAToolKit Generation Ignore
 
   // Begin BIADemo
@@ -92,8 +102,8 @@ export enum Permission {
   MaintenanceContract_Read = 'MaintenanceContract_Read',
   MaintenanceContract_Save = 'MaintenanceContract_Save',
   MaintenanceContract_Update = 'MaintenanceContract_Update',
+
   // End BIADemo
-  Roles_List = 'Roles_List',
   Site_Create = 'Site_Create',
   Site_Delete = 'Site_Delete',
   Site_List_Access = 'Site_List_Access',
@@ -105,27 +115,4 @@ export enum Permission {
   Site_Member_List_Access = 'Site_Member_List_Access',
   Site_Member_Update = 'Site_Member_Update',
   Site_Member_Save = 'Site_Member_Save',
-
-  User_Add = 'User_Add',
-  User_Delete = 'User_Delete',
-  User_Save = 'User_Save',
-  User_List = 'User_List',
-  User_ListAD = 'User_ListAD',
-  User_List_Access = 'User_List_Access',
-  User_Sync = 'User_Sync',
-  User_UpdateRoles = 'User_UpdateRoles',
-
-  LdapDomains_List = 'LdapDomains_List',
-  View_List = 'View_List',
-  View_AddUserView = 'View_Add_UserView',
-  View_AddTeamViewSuffix = '_View_Add_TeamView',
-  View_UpdateUserView = 'View_Update_UserView',
-  View_UpdateTeamViewSuffix = '_View_Update_TeamView',
-  View_DeleteUserView = 'View_Delete_UserView',
-  View_DeleteTeamView = 'View_Delete_TeamView',
-  View_SetDefaultUserView = 'View_Set_Default_UserView',
-  View_SetDefaultTeamViewSuffix = '_View_Set_Default_TeamView',
-  View_AssignToTeamSuffix = '_View_Assign_To_Team',
-
-  Impersonation_Connection_Rights = 'Impersonation_Connection_Rights',
 }

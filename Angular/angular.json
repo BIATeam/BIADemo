@@ -35,7 +35,10 @@
           "builder": "@angular/build:application",
           "options": {
             "stylePreprocessorOptions": {
-              "includePaths": ["src/styles", "src/scss/bia"]
+              "includePaths": [
+                "src/styles",
+                "node_modules/@bia-team/bia-ng/styles"
+              ]
             },
             "outputPath": {
               "base": "dist/BIADemo",
@@ -180,6 +183,47 @@
           "options": {}
         }
       }
+      // Begin BIADemo
+    },
+    "bia-ng": {
+      "projectType": "library",
+      "root": "packages/bia-ng",
+      "sourceRoot": "packages/bia-ng/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "packages/bia-ng/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "packages/bia-ng/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "packages/bia-ng/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "packages/bia-ng/tsconfig.spec.json",
+            "polyfills": ["zone.js", "zone.js/testing"]
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "packages/bia-ng/**/*.ts",
+              "packages/bia-ng/**/*.html"
+            ]
+          }
+        }
+      }
+      // End BIADemo
     }
   },
   "cli": {
@@ -192,6 +236,30 @@
     },
     "@angular-eslint/schematics:library": {
       "setParserOptionsProject": true
+    },
+    "@schematics/angular:component": {
+      "type": "component"
+    },
+    "@schematics/angular:directive": {
+      "type": "directive"
+    },
+    "@schematics/angular:service": {
+      "type": "service"
+    },
+    "@schematics/angular:guard": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:interceptor": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:module": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:pipe": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:resolver": {
+      "typeSeparator": "."
     }
   }
 }

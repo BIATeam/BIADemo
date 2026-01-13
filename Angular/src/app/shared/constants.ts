@@ -1,3 +1,5 @@
+import { BiaTeamTypeId } from '@bia-team/bia-ng/models/enum';
+
 /* eslint-disable @typescript-eslint/naming-convention */
 export const APP_SUPPORTED_TRANSLATIONS = [
   'es-ES',
@@ -19,6 +21,7 @@ export const THEME_LIGHT = 'light';
 export const THEME_DARK = 'dark';
 
 export const TABLE_FILTER_GLOBAL = 'global|';
+export const DEFAULT_POPUP_MINWIDTH = '60vw';
 
 export enum ViewType {
   System = 0,
@@ -43,10 +46,7 @@ export enum RoleMode {
   MultiRoles = 3,
 }
 
-export enum TeamTypeId {
-  All = 0,
-  Root = 1,
-  Site = 2,
+enum AppTeamTypeId {
   // BIAToolKit - Begin TeamTypeIdConstants
   // Begin BIAToolKit Generation Ignore
   // BIAToolKit - Begin Partial TeamTypeIdConstants AircraftMaintenanceCompany
@@ -58,6 +58,9 @@ export enum TeamTypeId {
   // End BIAToolKit Generation Ignore
   // BIAToolKit - End TeamTypeIdConstants
 }
+
+export type TeamTypeId = AppTeamTypeId | BiaTeamTypeId;
+export const TeamTypeId = { ...AppTeamTypeId, ...BiaTeamTypeId };
 
 const TeamTypeRightPrefix: { key: TeamTypeId; value: string }[] = [
   { key: TeamTypeId.Site, value: 'Site' },

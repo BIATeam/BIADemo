@@ -8,6 +8,7 @@ namespace BIA.Net.Core.Domain.User.Mappers
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
@@ -77,9 +78,9 @@ namespace BIA.Net.Core.Domain.User.Mappers
         private UserContext UserContext { get; set; } = userContext;
 
         /// <inheritdoc/>
-        public override void DtoToEntity(MemberDto dto, ref Member entity)
+        public override void DtoToEntity(MemberDto dto, ref Member entity, string mapperMode)
         {
-            base.DtoToEntity(dto, ref entity);
+            base.DtoToEntity(dto, ref entity, mapperMode);
 
             entity.TeamId = dto.TeamId;
             entity.UserId = dto.User.Id;
@@ -91,13 +92,16 @@ namespace BIA.Net.Core.Domain.User.Mappers
                     continue;
                 }
 
-                entity.MemberRoles.Remove(memberRole);
+                if (mapperMode != BiaConstants.RoleApi.IsFromRoleApi || memberRole.IsFromRoleApi)
+                {
+                    entity.MemberRoles.Remove(memberRole);
+                }
             }
 
             entity.MemberRoles = entity.MemberRoles ?? new List<MemberRole>();
             foreach (var roleDto in dto.Roles.Where(w => w.DtoState == DtoState.Added))
             {
-                entity.MemberRoles.Add(new MemberRole { RoleId = roleDto.Id, MemberId = dto.Id });
+                entity.MemberRoles.Add(new MemberRole { RoleId = roleDto.Id, MemberId = dto.Id, IsFromRoleApi = mapperMode == BiaConstants.RoleApi.IsFromRoleApi });
             }
         }
 
@@ -146,7 +150,7 @@ namespace BIA.Net.Core.Domain.User.Mappers
         {
             return
             [
-                x => x.MemberRoles
+                x => x.MemberRoles,
             ];
         }
 

@@ -1,5 +1,6 @@
 {
   "BiaNet": {
+    // if BIA_FRONT_FEATURE || BIA_USE_DATABASE
     "CommonFeatures": {
       "DistributedCache": {
         "IsActive": true,
@@ -10,7 +11,7 @@
       },
       "AuditConfiguration": {
         "IsActive": true,
-        "ConnectionStringName": "ProjectDatabase"
+        "HistoricalUserDisplay": "Fullname"
       }
     },
     "ApiFeatures": {
@@ -33,6 +34,7 @@
         "IsActive": true
       }
     },
+    // endif
     "Security": {
       "Audience": "http://localhost/"
     },
@@ -123,6 +125,7 @@
         "LanguageId": "2"
       }
     ],
+    // if BIA_FRONT_FEATURE
     "Permissions": [
       // BIAToolKit - Begin Config
       // BIAToolKit - End Config
@@ -295,6 +298,36 @@
         ]
       },
       // BIAToolKit - End Partial Config MaintenanceTeam
+      // BIAToolKit - Begin Partial Config Pilot
+      // Pilot
+      {
+        "Names": [ "Pilot_List_Access", "Pilot_Read" ],
+        "Roles": [ "Admin", "Site_Member" ]
+      },
+      {
+        "Names": [ "Pilot_Update", "Pilot_Save" ],
+        "Roles": [ "Site_Admin" ]
+      },
+      {
+        "Names": [ "Pilot_Create", "Pilot_Delete", "Pilot_Fix" ],
+        "Roles": [ "Site_Admin" ]
+      },
+      // BIAToolKit - End Partial Config Pilot
+      // BIAToolKit - Begin Partial Config Flight
+      // Flight
+      {
+        "Names": [ "Flight_List_Access", "Flight_Read" ],
+        "Roles": [ "Admin", "Site_Member" ]
+      },
+      {
+        "Names": [ "Flight_Update", "Flight_Save" ],
+        "Roles": [ "Site_Admin" ]
+      },
+      {
+        "Names": [ "Flight_Create", "Flight_Delete", "Flight_Fix" ],
+        "Roles": [ "Site_Admin" ]
+      },
+      // BIAToolKit - End Partial Config Flight
       // End BIAToolKit Generation Ignore
 
       // Begin BIADemo
@@ -404,8 +437,13 @@
         "Roles": [ "Admin", "Site_Admin" ]
       },
       {
-        "Names": [ "Site_View_Add_TeamView", "Site_View_Update_TeamView", "Site_View_Set_Default_TeamView", "Site_View_Assign_To_Team" ],
+        "Names": [ "Site_View_Add_TeamView", "Site_View_Update_TeamView", "Site_View_Set_Default_TeamView" ],
         "Roles": [ "Admin", "Site_Admin" ]
+      },
+      {
+        "Names": [ "Site_View_Assign_To_Team" ],
+        "Roles": [ "Admin", "Site_Admin" ],
+        "IsTransversal": true
       },
       // Team
       {
@@ -431,18 +469,13 @@
       },
       // View
       {
-        "Name": "View_List",
+        "Names": [ "View_List", "View_Read" ],
         "Roles": [ "Admin", "User" ]
       },
       {
         "Names": [ "View_Add_UserView", "View_Update_UserView", "View_Delete_UserView", "View_Set_Default_UserView" ],
         "Roles": [ "User" ]
       },
-      // this functionnality is deprecated (the unassign do the job)
-      //{
-      //  "Name": "View_Delete_TeamView",
-      //  "Roles": [ "Admin" ]
-      //},
       // Notifications
       {
         "Names": [ "Notification_List_Access", "Notification_Delete", "Notification_Read", "NotificationType_Options" ],
@@ -466,7 +499,18 @@
         "Name": "Background_Task_Read_Only",
         "LightToken": true,
         "Roles": [ "Back_Read_Only" ]
+      },
+      // Announcement
+      {
+        "Names": [ "Announcement_List_Access", "Announcement_Read", "Announcement_Update", "Announcement_Create", "Announcement_Delete" ],
+        "Roles": [ "Admin" ]
+      },
+      // AnnouncementType
+      {
+        "Name": "AnnouncementType_Options",
+        "Roles": [ "Admin" ]
       }
     ]
+    // endif
   }
 }

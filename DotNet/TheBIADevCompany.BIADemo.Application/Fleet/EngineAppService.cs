@@ -12,6 +12,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
@@ -103,22 +104,6 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
 #pragma warning restore SA1611 // Element parameters should be documented
 #pragma warning restore SA1515 // Single-line comment should be preceded by blank line
 
-        /// <inheritdoc/>
-        public override async Task<EngineDto> UpdateFixedAsync(int id, bool isFixed)
-        {
-            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
-            {
-                // Update entity fixed status
-                var entity = await this.Repository.GetEntityAsync(id) ?? throw new ElementNotFoundException();
-                this.Repository.UpdateFixedAsync(entity, isFixed);
-
-                // BIAToolKit - Begin UpdateFixedChildrenEngine
-                // BIAToolKit - End UpdateFixedChildrenEngine
-                await this.Repository.UnitOfWork.CommitAsync();
-                return await this.GetAsync(id);
-            });
-        }
-
         // Begin BIADemo
 
         /// <inheritdoc />
@@ -137,7 +122,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
         // End BIADemo
 
         /// <inheritdoc/>
-        public override async Task<EngineDto> AddAsync(EngineDto dto, string mapperMode = null)
+        public override async Task<EngineDto> AddAsync(EngineDto dto, string mapperMode = null, bool autoCommit = true)
         {
             var planeParent = await this.planeRepository.GetEntityAsync(dto.PlaneId, isReadOnlyMode: true);
             if (planeParent.SiteId != this.currentAncestorTeamId)
@@ -150,25 +135,24 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
                 throw new FrontUserException("Plane parent is fixed");
             }
 
-            return await base.AddAsync(dto, mapperMode);
+            return await base.AddAsync(dto, mapperMode, autoCommit: autoCommit);
         }
 
         /// <inheritdoc/>
-#pragma warning disable S1006 // Method overrides should not change parameter defaults
-        public override async Task<(IEnumerable<EngineDto> Results, int Total)> GetRangeAsync(PagingFilterFormatDto filters = null, int id = default, Specification<Engine> specification = null, Expression<Func<Engine, bool>> filter = null, string accessMode = "Read", string queryMode = "ReadList", string mapperMode = null, bool isReadOnlyMode = false)
-#pragma warning restore S1006 // Method overrides should not change parameter defaults
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        protected override async Task ExecuteActionsOnUpdateFixedAsync(int entityUpdatedId, bool isFixed)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            specification ??= EngineSpecification.SearchGetAll(filters);
-            return await base.GetRangeAsync(filters, id, specification, filter, accessMode, queryMode, mapperMode, isReadOnlyMode);
+            // BIAToolKit - Begin UpdateFixedChildrenEngine
+            // BIAToolKit - End UpdateFixedChildrenEngine
         }
 
         /// <inheritdoc/>
-#pragma warning disable S1006 // Method overrides should not change parameter defaults
-        public override async Task<byte[]> GetCsvAsync(PagingFilterFormatDto filters = null, int id = default, Specification<Engine> specification = null, Expression<Func<Engine, bool>> filter = null, string accessMode = "Read", string queryMode = "ReadList", string mapperMode = null, bool isReadOnlyMode = false)
-#pragma warning restore S1006 // Method overrides should not change parameter defaults
+        protected override Specification<Engine> GetFilterSpecification(IPagingFilterFormatDto filters)
         {
-            specification ??= EngineSpecification.SearchGetAll(filters);
-            return await base.GetCsvAsync(filters, id, specification, filter, accessMode, queryMode, mapperMode, isReadOnlyMode);
+            var specification = base.GetFilterSpecification(filters);
+            specification &= EngineSpecification.SearchGetAll(filters);
+            return specification;
         }
     }
 }

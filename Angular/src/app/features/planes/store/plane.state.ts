@@ -44,6 +44,11 @@ export namespace FeaturePlanesStore {
     state => state.currentItem ?? <Plane>{}
   );
 
+  export const getCurrentPlaneHistorical = createSelector(
+    getPlanesEntitiesState,
+    state => state.currentItemHistorical
+  );
+
   export const getLastLazyLoadEvent = createSelector(
     getPlanesEntitiesState,
     state => state.lastLazyLoadEvent

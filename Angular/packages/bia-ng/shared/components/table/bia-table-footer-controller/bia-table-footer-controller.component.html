@@ -1,0 +1,22 @@
+<div class="bia-table-controller-container">
+  <div class="result">
+    <strong>{{
+      length
+        | i18nPlural: resultMessageMapping : translateService.currentLang
+        | translate: { length: length | number }
+    }}</strong>
+  </div>
+  @if (canChangePageSize) {
+    <div>
+      <span>{{ 'bia.itemsPerPage' | translate }} : </span>
+      <p-select
+        [class]="'p-variant-filled'"
+        [options]="pageSizes"
+        [(ngModel)]="pageSize"
+        (onChange)="onPageSizeChange()"
+        [style]="{ 'min-width': 'initial' }"
+        scrollHeight="50vh"
+        appendTo="body"></p-select>
+    </div>
+  }
+</div>

@@ -13,6 +13,8 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
+import { AuthService, BiaOptionService } from '@bia-team/bia-ng/core';
+import { OptionDto } from '@bia-team/bia-ng/models';
 import { TranslateModule } from '@ngx-translate/core';
 import { ButtonDirective } from 'primeng/button';
 import { Checkbox } from 'primeng/checkbox';
@@ -21,9 +23,6 @@ import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
 import { MultiSelect } from 'primeng/multiselect';
 import { Select } from 'primeng/select';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
-import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { Plane } from '../../model/plane';
 
@@ -54,6 +53,7 @@ export class PlaneFormComponent implements OnChanges {
   @Output() cancelled = new EventEmitter<void>();
 
   form: UntypedFormGroup;
+  submittingForm = false;
 
   constructor(
     public formBuilder: UntypedFormBuilder,
@@ -92,6 +92,7 @@ export class PlaneFormComponent implements OnChanges {
 
   onSubmit() {
     if (this.form.valid) {
+      this.submittingForm = true;
       const plane: Plane = <Plane>this.form.value;
       plane.id = plane.id > 0 ? plane.id : 0;
       plane.isActive = plane.isActive ? plane.isActive : false;
@@ -105,6 +106,9 @@ export class PlaneFormComponent implements OnChanges {
       plane.siteId = this.authService.getCurrentTeamId(TeamTypeId.Site);
       this.save.emit(plane);
       this.form.reset();
+      setTimeout(() => {
+        this.submittingForm = false;
+      }, 2000);
     }
   }
 }

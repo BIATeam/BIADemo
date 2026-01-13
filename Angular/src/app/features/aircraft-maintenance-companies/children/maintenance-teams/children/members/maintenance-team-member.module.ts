@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
-import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
-import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
-import { MemberModule } from 'src/app/shared/bia-shared/feature-templates/members/member.module';
+import { PermissionGuard } from '@bia-team/bia-ng/core';
+import {
+  DynamicLayoutComponent,
+  LayoutMode,
+  MemberModule,
+} from '@bia-team/bia-ng/shared';
 import { Permission } from 'src/app/shared/permission';
 
 import { MaintenanceTeamMemberEditComponent } from './views/maintenance-team-member-edit/maintenance-team-member-edit.component';
@@ -19,7 +21,7 @@ const ROUTES: Routes = [
       permission: Permission.MaintenanceTeam_Member_List_Access,
       injectComponent: MaintenanceTeamMembersIndexComponent,
     },
-    component: FullPageLayoutComponent,
+    component: DynamicLayoutComponent,
     canActivate: [PermissionGuard],
     // [Calc] : The children are not used in calc
     children: [
@@ -30,16 +32,16 @@ const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.MaintenanceTeam_Member_Create,
           title: 'member.add',
-          injectComponent: MaintenanceTeamMemberNewComponent,
+          layoutMode: LayoutMode.popup,
         },
-        component: PopupLayoutComponent,
+        component: MaintenanceTeamMemberNewComponent,
         canActivate: [PermissionGuard],
       },
       {
         path: ':crudItemId',
         data: {
           breadcrumb: '',
-          canNavigate: true,
+          canNavigate: false,
         },
         component: MaintenanceTeamMemberItemComponent,
         canActivate: [PermissionGuard],
@@ -51,9 +53,9 @@ const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.MaintenanceTeam_Member_Update,
               title: 'member.manage',
-              injectComponent: MaintenanceTeamMemberEditComponent,
+              layoutMode: LayoutMode.popup,
             },
-            component: PopupLayoutComponent,
+            component: MaintenanceTeamMemberEditComponent,
             canActivate: [PermissionGuard],
           },
           {

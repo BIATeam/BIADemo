@@ -52,7 +52,7 @@ namespace TheBIADevCompany.BIADemo.Application.Utilities
             return fileContentType switch
             {
                 "application/pdf" => DocumentType.Pdf,
-                _ => throw new NotImplementedException($"Document analysis for content type {fileContentType} is not implemented yet.")
+                _ => throw new NotImplementedException($"Document analysis for content type {fileContentType} is not implemented yet."),
             };
         }
     }

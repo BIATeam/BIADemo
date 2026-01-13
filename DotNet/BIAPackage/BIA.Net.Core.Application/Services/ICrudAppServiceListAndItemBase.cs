@@ -9,6 +9,7 @@ namespace BIA.Net.Core.Application.Services
     using System.Linq.Expressions;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
@@ -23,11 +24,11 @@ namespace BIA.Net.Core.Application.Services
     /// <typeparam name="TEntity">The entity type.</typeparam>
     /// <typeparam name="TKey">The primary key type.</typeparam>
     /// <typeparam name="TFilterDto">The filter DTO type.</typeparam>
-    public interface ICrudAppServiceListAndItemBase<TDto, TListItemDto, TEntity, TKey, TFilterDto> : ICrudAppServiceBase<TDto, TEntity, TKey, TFilterDto>
+    public interface ICrudAppServiceListAndItemBase<TDto, TListItemDto, TEntity, TKey, TFilterDto> : IOperationalDomainServiceBase<TDto, TListItemDto, TEntity, TKey, TFilterDto>
         where TDto : BaseDto<TKey>, new()
         where TListItemDto : BaseDto<TKey>, new()
         where TEntity : class, IEntity<TKey>, new()
-        where TFilterDto : LazyLoadDto, new()
+        where TFilterDto : class, IPagingFilterFormatDto, new()
     {
         /// <summary>
         /// Get the DTO list with paging and sorting.
@@ -50,52 +51,6 @@ namespace BIA.Net.Core.Application.Services
             string queryMode = QueryMode.ReadList,
             string mapperMode = null,
             bool isReadOnlyMode = false);
-
-        /// <summary>
-        /// Get the csv with other filter.
-        /// </summary>
-        /// <param name="filters">The filters.</param>
-        /// <param name="id">The id.</param>
-        /// <param name="specification">Specification Used to filter query.</param>
-        /// <param name="filter">Filter Query.</param>
-        /// <param name="accessMode">Acces mode, filter on right (optionnal).</param>
-        /// <param name="queryMode">Mode of the query (optionnal).</param>
-        /// <param name="mapperMode">Mode of the mapper (optionnal).</param>
-        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<byte[]> GetCsvAsync(
-            TFilterDto filters = null,
-            int id = 0,
-            Specification<TEntity> specification = null,
-            Expression<Func<TEntity, bool>> filter = null,
-            string accessMode = AccessMode.Read,
-            string queryMode = QueryMode.ReadList,
-            string mapperMode = null,
-            bool isReadOnlyMode = false);
-
-        /// <summary>
-        /// Get the csv with other filter.
-        /// </summary>
-        /// <typeparam name="TOtherFilter">The type for filter.</typeparam>
-        /// <param name="filters">The filters.</param>
-        /// <param name="id">The id.</param>
-        /// <param name="specification">Specification Used to filter query.</param>
-        /// <param name="filter">Filter Query.</param>
-        /// <param name="accessMode">Acces mode, filter on right (optionnal).</param>
-        /// <param name="queryMode">Mode of the query (optionnal).</param>
-        /// <param name="mapperMode">Mode of the mapper (optionnal).</param>
-        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<byte[]> GetCsvAsync<TOtherFilter>(
-            TOtherFilter filters,
-            int id = 0,
-            Specification<TEntity> specification = null,
-            Expression<Func<TEntity, bool>> filter = null,
-            string accessMode = AccessMode.Read,
-            string queryMode = QueryMode.ReadList,
-            string mapperMode = null,
-            bool isReadOnlyMode = false)
-             where TOtherFilter : LazyLoadDto, new();
 
         /// <summary>
         /// Get the DTO list.

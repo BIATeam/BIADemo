@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { OptionDto } from '@bia-team/bia-ng/models';
+import { CrudItemOptionsService, DictOptionDto } from '@bia-team/bia-ng/shared';
 import { Store } from '@ngrx/store';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -6,9 +8,6 @@ import { getAllAirportOptions } from 'src/app/domains/airport-option/store/airpo
 import { DomainAirportOptionsActions } from 'src/app/domains/airport-option/store/airport-options-actions';
 import { getAllPlaneTypeOptions } from 'src/app/domains/plane-type-option/store/plane-type-option.state';
 import { DomainPlaneTypeOptionsActions } from 'src/app/domains/plane-type-option/store/plane-type-options-actions';
-import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
-import { CrudItemOptionsService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-options.service';
-import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { AppState } from 'src/app/store/state';
 
 @Injectable({

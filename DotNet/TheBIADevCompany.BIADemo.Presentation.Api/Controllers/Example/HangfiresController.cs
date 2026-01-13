@@ -7,7 +7,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
 {
     using System;
     using BIA.Net.Core.Application.Services;
-    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Presentation.Api.Controller.Base;
     using Hangfire;
@@ -18,6 +17,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
     using TheBIADevCompany.BIADemo.Application.Job;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
 
     /// <summary>
@@ -93,6 +93,30 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
             {
                 return this.NotFound();
             }
+        }
+
+        /// <summary>
+        /// Throw unhandled exception.
+        /// </summary>
+        /// <returns><see cref="IActionResult"/>.</returns>
+        /// <exception cref="BadHttpRequestException">Thrown exception.</exception>
+        [HttpGet("[action]")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult GenerateUnhandledError()
+        {
+            throw new BadHttpRequestException("Unhandled error");
+        }
+
+        /// <summary>
+        /// Throw handled exception.
+        /// </summary>
+        /// <returns><see cref="IActionResult"/>.</returns>
+        /// <exception cref="FrontUserException">Thrown exception.</exception>
+        [HttpGet("[action]")]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        public IActionResult GenerateHandledError()
+        {
+            throw FrontUserException.Create(ErrorId.HangfireHandledError);
         }
     }
 }

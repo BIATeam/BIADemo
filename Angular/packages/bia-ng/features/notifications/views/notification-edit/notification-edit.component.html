@@ -1,0 +1,12 @@
+@if (notificationService.crudItem$ | async; as notification) {
+  <bia-notification-form
+    [notification]="notification"
+    [dictOptionDtos]="
+      (crudItemService.optionsService.dictOptionDtos$ | async) ?? []
+    "
+    (cancelled)="onCancelled()"
+    (save)="onSubmitted($event)"></bia-notification-form>
+}
+@if (notificationService.loadingGet$ | async) {
+  <bia-spinner [overlay]="true"></bia-spinner>
+}

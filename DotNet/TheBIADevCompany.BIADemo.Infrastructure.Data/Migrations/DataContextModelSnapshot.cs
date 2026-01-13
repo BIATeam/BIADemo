@@ -17,12 +17,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.18")
+                .HasAnnotation("ProductVersion", "10.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BIA.Net.Core.Domain.Audit.AuditLog", b =>
+            modelBuilder.Entity("BIA.Net.Core.Domain.Announcement.Entities.Announcement", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,19 +30,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AuditAction")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AuditChanges")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("AuditDate")
+                    b.Property<DateTime>("End")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("AuditUserLogin")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PrimaryKey")
+                    b.Property<string>("RawContent")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("RowVersion")
@@ -50,12 +42,108 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
+                    b.Property<DateTime>("Start")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TypeId");
+
+                    b.ToTable("Announcements");
+                });
+
+            modelBuilder.Entity("BIA.Net.Core.Domain.Announcement.Entities.AnnouncementAudit", b =>
+                {
+                    b.Property<int>("AuditId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditId"));
+
+                    b.Property<string>("AuditAction")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AuditChanges")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AuditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("AuditUserLogin")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("AuditId");
+
+                    b.ToTable("AnnouncementAudit");
+                });
+
+            modelBuilder.Entity("BIA.Net.Core.Domain.Announcement.Entities.AnnouncementType", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AnnouncementTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 0
+                        },
+                        new
+                        {
+                            Id = 1
+                        });
+                });
+
+            modelBuilder.Entity("BIA.Net.Core.Domain.Audit.AuditLog", b =>
+                {
+                    b.Property<int>("AuditId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditId"));
+
+                    b.Property<string>("AuditAction")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AuditChanges")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AuditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("AuditUserLogin")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PrimaryKey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Table")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("Id");
+                    b.HasKey("AuditId");
 
                     b.ToTable("AuditLogs");
                 });
@@ -269,6 +357,84 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasIndex("NotificationId");
 
                     b.ToTable("NotificationUser");
+                });
+
+            modelBuilder.Entity("BIA.Net.Core.Domain.Translation.Entities.AnnouncementTypeTranslation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AnnouncementTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LanguageId");
+
+                    b.HasIndex("AnnouncementTypeId", "LanguageId")
+                        .IsUnique();
+
+                    b.ToTable("AnnouncementTypeTranslations");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 101,
+                            AnnouncementTypeId = 0,
+                            Label = "Information",
+                            LanguageId = 1
+                        },
+                        new
+                        {
+                            Id = 102,
+                            AnnouncementTypeId = 1,
+                            Label = "Warning",
+                            LanguageId = 1
+                        },
+                        new
+                        {
+                            Id = 103,
+                            AnnouncementTypeId = 0,
+                            Label = "Information",
+                            LanguageId = 2
+                        },
+                        new
+                        {
+                            Id = 104,
+                            AnnouncementTypeId = 1,
+                            Label = "Avertissement",
+                            LanguageId = 2
+                        },
+                        new
+                        {
+                            Id = 105,
+                            AnnouncementTypeId = 0,
+                            Label = "Información",
+                            LanguageId = 3
+                        },
+                        new
+                        {
+                            Id = 106,
+                            AnnouncementTypeId = 1,
+                            Label = "Advertencia",
+                            LanguageId = 3
+                        });
                 });
 
             modelBuilder.Entity("BIA.Net.Core.Domain.Translation.Entities.Language", b =>
@@ -856,6 +1022,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<bool>("IsDefault")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsFromRoleApi")
+                        .HasColumnType("bit");
+
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
@@ -1007,60 +1176,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                             Id = 4,
                             Name = "MaintenanceTeam"
                         });
-                });
-
-            modelBuilder.Entity("BIA.Net.Core.Domain.User.Entities.UserAudit", b =>
-                {
-                    b.Property<int>("AuditId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditId"));
-
-                    b.Property<string>("AuditAction")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AuditChanges")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("AuditDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("AuditUserLogin")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Domain")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("--");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Login")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("AuditId");
-
-                    b.ToTable("UsersAudit");
                 });
 
             modelBuilder.Entity("BIA.Net.Core.Domain.User.Entities.UserDefaultTeam", b =>
@@ -1307,49 +1422,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("Airports");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.AirportAudit", b =>
-                {
-                    b.Property<int>("AuditId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditId"));
-
-                    b.Property<string>("AuditAction")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AuditChanges")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("AuditDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("AuditUserLogin")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("AuditId");
-
-                    b.ToTable("AirportsAudit");
-                });
-
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Engine", b =>
                 {
                     b.Property<int>("Id")
@@ -1439,6 +1511,44 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("Engines");
                 });
 
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.EngineAudit", b =>
+                {
+                    b.Property<int>("AuditId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditId"));
+
+                    b.Property<string>("AuditAction")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AuditChanges")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AuditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("AuditUserLogin")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlaneId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reference")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AuditId");
+
+                    b.ToTable("EngineAudit");
+                });
+
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.EnginePart", b =>
                 {
                     b.Property<int>("EngineId")
@@ -1457,6 +1567,48 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasIndex("PartId");
 
                     b.ToTable("EnginePart");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Flight", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("ArchivedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ArrivalAirportId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DepartureAirportId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("FixedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsFixed")
+                        .HasColumnType("bit");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int>("SiteId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArrivalAirportId");
+
+                    b.HasIndex("DepartureAirportId");
+
+                    b.HasIndex("SiteId");
+
+                    b.ToTable("Flight");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Part", b =>
@@ -1514,6 +1666,47 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                             Price = 25.99m,
                             SN = "P0004"
                         });
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Pilot", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ArchivedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FixedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FlightHours")
+                        .HasColumnType("int");
+
+                    b.Property<string>("IdentificationNumber")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsFixed")
+                        .HasColumnType("bit");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int>("SiteId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SiteId");
+
+                    b.ToTable("Pilots");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Plane", b =>
@@ -1638,6 +1831,75 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("PlaneAirport");
                 });
 
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.PlaneAirportAudit", b =>
+                {
+                    b.Property<int>("AuditId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditId"));
+
+                    b.Property<int>("AirportId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AirportName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AuditAction")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AuditChanges")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AuditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("AuditUserLogin")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PlaneId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AuditId");
+
+                    b.ToTable("PlaneAirportAudit");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.PlaneAudit", b =>
+                {
+                    b.Property<int>("AuditId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditId"));
+
+                    b.Property<string>("AuditAction")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AuditChanges")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AuditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("AuditUserLogin")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("AuditId");
+
+                    b.ToTable("PlaneAudit");
+                });
+
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.PlanePlaneType", b =>
                 {
                     b.Property<int>("PlaneId")
@@ -1746,8 +2008,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<string>("ContractNumber")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)")
-                        .UseCollation("SQL_Latin1_General_CP1_CS_AS");
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -1838,6 +2099,58 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("MaintenanceTeamCountry");
                 });
 
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.UserAudit", b =>
+                {
+                    b.Property<int>("AuditId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditId"));
+
+                    b.Property<string>("AuditAction")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AuditChanges")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AuditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("AuditUserLogin")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Domain")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("--");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("AuditId");
+
+                    b.ToTable("UsersAudit");
+                });
+
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.Notification", b =>
                 {
                     b.HasBaseType("BIA.Net.Core.Domain.Notification.Entities.BaseNotification");
@@ -1926,7 +2239,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<int>("OperationCount")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("RowVersionAircraftMaintenanceCompany")
+                    b.Property<byte[]>("RowVersionMaintenanceTeam")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion")
@@ -1960,6 +2273,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .HasColumnType("rowversion")
                         .HasColumnName("RowVersion");
 
+                    b.Property<string>("UniqueIdentifier")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasIndex("UniqueIdentifier")
+                        .IsUnique()
+                        .HasFilter("[UniqueIdentifier] IS NOT NULL");
+
                     b.ToTable("Sites", (string)null);
                 });
 
@@ -1972,6 +2292,17 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasDiscriminator().HasValue("User");
+                });
+
+            modelBuilder.Entity("BIA.Net.Core.Domain.Announcement.Entities.Announcement", b =>
+                {
+                    b.HasOne("BIA.Net.Core.Domain.Announcement.Entities.AnnouncementType", "Type")
+                        .WithMany()
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.Navigation("Type");
                 });
 
             modelBuilder.Entity("BIA.Net.Core.Domain.Notification.Entities.BaseNotification", b =>
@@ -2046,6 +2377,25 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("Notification");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BIA.Net.Core.Domain.Translation.Entities.AnnouncementTypeTranslation", b =>
+                {
+                    b.HasOne("BIA.Net.Core.Domain.Announcement.Entities.AnnouncementType", "AnnouncementType")
+                        .WithMany("AnnouncementTypeTranslations")
+                        .HasForeignKey("AnnouncementTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BIA.Net.Core.Domain.Translation.Entities.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AnnouncementType");
+
+                    b.Navigation("Language");
                 });
 
             modelBuilder.Entity("BIA.Net.Core.Domain.Translation.Entities.NotificationTranslation", b =>
@@ -2277,6 +2627,44 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("Part");
                 });
 
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Flight", b =>
+                {
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Airport", "ArrivalAirport")
+                        .WithMany()
+                        .HasForeignKey("ArrivalAirportId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Airport", "DepartureAirport")
+                        .WithMany()
+                        .HasForeignKey("DepartureAirportId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Site.Entities.Site", "Site")
+                        .WithMany()
+                        .HasForeignKey("SiteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ArrivalAirport");
+
+                    b.Navigation("DepartureAirport");
+
+                    b.Navigation("Site");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Pilot", b =>
+                {
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Site.Entities.Site", "Site")
+                        .WithMany()
+                        .HasForeignKey("SiteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Site");
+                });
+
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Plane", b =>
                 {
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Airport", "CurrentAirport")
@@ -2463,6 +2851,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .HasForeignKey("TheBIADevCompany.BIADemo.Domain.Site.Entities.Site", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("BIA.Net.Core.Domain.Announcement.Entities.AnnouncementType", b =>
+                {
+                    b.Navigation("AnnouncementTypeTranslations");
                 });
 
             modelBuilder.Entity("BIA.Net.Core.Domain.Notification.Entities.BaseNotification", b =>

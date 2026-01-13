@@ -1,14 +1,13 @@
 import { Validators } from '@angular/forms';
-import { PrimeIcons } from 'primeng/api';
 import {
+  BaseDto,
   BiaFieldConfig,
   BiaFieldsConfig,
-  PrimeNGFiltering,
-  PropType,
-} from 'src/app/shared/bia-shared/model/bia-field-config';
-import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
-import { VersionedDto } from 'src/app/shared/bia-shared/model/dto/versioned-dto';
-import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+  OptionDto,
+  VersionedDto,
+} from '@bia-team/bia-ng/models';
+import { PrimeNGFiltering, PropType } from '@bia-team/bia-ng/models/enum';
+import { PrimeIcons } from 'primeng/api';
 
 // TODO after creation of CRUD Plane : adapt the model
 export interface Plane extends BaseDto, VersionedDto {

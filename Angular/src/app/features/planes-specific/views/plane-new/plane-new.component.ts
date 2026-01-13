@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, Injector } from '@angular/core';
-import { CrudItemNewComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-new/crud-item-new.component';
+import { CrudItemNewComponent } from '@bia-team/bia-ng/shared';
 import { PlaneFormComponent } from '../../components/plane-form/plane-form.component';
 import { PlaneSpecific } from '../../model/plane-specific';
 import { planeSpecificCRUDConfiguration } from '../../plane.constants';

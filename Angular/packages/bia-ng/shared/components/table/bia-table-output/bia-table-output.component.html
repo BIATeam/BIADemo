@@ -1,0 +1,35 @@
+@if (
+  field !== undefined && field.specificOutput === true && !ignoreSpecificOutput
+) {
+  <ng-container
+    *ngTemplateOutlet="
+      specificOutputTemplate;
+      context: { field: field, data: data }
+    "></ng-container>
+}
+@if (
+  field !== undefined && (field.specificOutput !== true || ignoreSpecificOutput)
+) {
+  <div class="bia-table-output">
+    @switch (field.type) {
+      @case ('OneToMany') {
+        {{ data?.display }}
+      }
+      @case ('ManyToMany') {
+        {{
+          data && isArray(data)
+            ? (filterDtoState(data) | pluck: 'display' | join: ', ')
+            : data
+        }}
+      }
+      @case ('Boolean') {
+        @if (data === true) {
+          <i class="pi pi-check"></i>
+        }
+      }
+      @default {
+        {{ data | formatValue: field }}
+      }
+    }
+  </div>
+}

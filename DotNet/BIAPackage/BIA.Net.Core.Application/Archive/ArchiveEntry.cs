@@ -14,11 +14,11 @@ namespace BIA.Net.Core.Application.Archive
         /// <summary>
         /// Name of the entry in the archive.
         /// </summary>
-        required public string EntryName { get; set; }
+        public required string EntryName { get; set; }
 
         /// <summary>
         /// Stream content of the entry.
         /// </summary>
-        required public Stream ContentStream { get; set; }
+        public required Stream ContentStream { get; set; }
     }
 }

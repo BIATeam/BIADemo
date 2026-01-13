@@ -42,32 +42,44 @@ namespace BIA.Net.Core.Common
         /// </summary>
         /// <param name="items">The items.</param>
         /// <typeparam name="TEntity">The entity type.</typeparam>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task AddBulkAsync<TEntity>(IEnumerable<TEntity> items)
+        /// <returns>The number of elements added.</returns>
+        Task<int> AddBulkAsync<TEntity>(IEnumerable<TEntity> items)
             where TEntity : class;
 
         /// <summary>
-        /// Bulk method to update a list of item. Obsolete in V3.9.0.
+        /// Bulk method to update a list of item.
         /// </summary>
         /// <param name="items">The items.</param>
         /// <typeparam name="TEntity">The entity type.</typeparam>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-#pragma warning disable S1133 // Deprecated code should be removed
-        [Obsolete(message: "UpdateBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteUpdateAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
-#pragma warning restore S1133 // Deprecated code should be removed
-        Task UpdateBulkAsync<TEntity>(IEnumerable<TEntity> items)
+        /// <returns>The number of elements updated.</returns>
+        Task<int> UpdateBulkAsync<TEntity>(IEnumerable<TEntity> items)
             where TEntity : class;
 
         /// <summary>
-        /// Bulk method to remove a list of item. Obsolete in V3.9.0.
+        /// Bulk method to remove a list of item.
         /// </summary>
         /// <param name="items">The items.</param>
         /// <typeparam name="TEntity">The entity type.</typeparam>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-#pragma warning disable S1133 // Deprecated code should be removed
-        [Obsolete(message: "RemoveBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteDeleteAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
-#pragma warning restore S1133 // Deprecated code should be removed
-        Task RemoveBulkAsync<TEntity>(IEnumerable<TEntity> items)
+        /// <returns>The number of elements removed.</returns>
+        Task<int> RemoveBulkAsync<TEntity>(IEnumerable<TEntity> items)
             where TEntity : class;
+
+        /// <summary>
+        /// Determines whether bulk add operations are supported by the current database provider.
+        /// </summary>
+        /// <returns><c>true</c> if bulk add operations are supported; otherwise, <c>false</c>.</returns>
+        bool IsAddBulkSupported();
+
+        /// <summary>
+        /// Determines whether bulk update operations are supported by the current database provider.
+        /// </summary>
+        /// <returns><c>true</c> if bulk update operations are supported; otherwise, <c>false</c>.</returns>
+        bool IsUpdateBulkSupported();
+
+        /// <summary>
+        /// Determines whether bulk remove operations are supported by the current database provider.
+        /// </summary>
+        /// <returns><c>true</c> if bulk remove operations are supported; otherwise, <c>false</c>.</returns>
+        bool IsRemoveBulkSupported();
     }
 }

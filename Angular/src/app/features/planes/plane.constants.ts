@@ -1,7 +1,4 @@
-import {
-  CrudConfig,
-  FormReadOnlyMode,
-} from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
+import { CrudConfig, FormReadOnlyMode } from '@bia-team/bia-ng/shared';
 import { TeamTypeId } from 'src/app/shared/constants';
 import {
   Plane,
@@ -18,8 +15,10 @@ export const planeCRUDConfiguration: CrudConfig<Plane> = new CrudConfig({
   formEditReadOnlyMode: FormReadOnlyMode.off,
   hasReadView: true,
   isFixable: true,
+  displayHistorical: true,
   // Begin BIAToolKit Generation Ignore
   isCloneable: true,
+  featureNameSingular: 'plane',
   // End BIAToolKit Generation Ignore
   useCalcMode: true,
   useSignalR: false,

@@ -1,7 +1,0 @@
-<h1 *ngIf="this.pageTitle && this.pageTitle.length > 0" class="BiaPageTitle">
-  {{ this.pageTitle | translate }}
-</h1>
-<div [hidden]="!this.displayPageComponent" style="width: 100%">
-  <ng-template #dynamic></ng-template>
-</div>
-<router-outlet></router-outlet>

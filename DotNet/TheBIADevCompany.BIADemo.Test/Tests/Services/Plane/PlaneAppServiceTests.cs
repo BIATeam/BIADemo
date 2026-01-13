@@ -9,6 +9,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
     using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -69,9 +70,46 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
         }
 
         /// <summary>
+        /// Ensure that adding a plane for a different site raises a forbidden error.
+        /// </summary>
+        /// <returns>The asynchronous task.</returns>
+        [TestMethod(DisplayName = "PlaneAppServiceTests.AddAsync_SiteMismatch_ThrowsForbidden")]
+        public async Task AddAsync_SiteMismatch_ThrowsForbidden()
+        {
+            PlaneDto dto = new PlaneDto()
+            {
+                Id = 99,
+                SiteId = CurrentTeamId + 1,
+                Capacity = 150,
+                IsActive = true,
+                FirstFlightDate = new DateTime(2008, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+                NextMaintenanceDate = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+                TotalFlightHours = 1234,
+                FuelCapacity = 150F,
+                OriginalPrice = 1000000,
+                LastFlightDate = new DateTime(2010, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+                DeliveryDate = new DateTime(2009, 6, 1, 0, 0, 0, DateTimeKind.Utc),
+                SyncTime = "06:00:00",
+                Msn = "MSN-Forbidden",
+                SyncFlightDataTime = "07:00:00",
+                CurrentAirport = new OptionDto() { Id = 1, Display = "BDX" },
+            };
+
+            try
+            {
+                await this.service.AddAsync(dto);
+                Assert.Fail("Expected ForbiddenException was not thrown.");
+            }
+            catch (ForbiddenException)
+            {
+                // Expected exception
+            }
+        }
+
+        /// <summary>
         /// Test <see cref="IPlaneAppService.GetAllAsync(TFilterDto)"/> method.
         /// </summary>
-        [TestMethod("PlaneAppServiceTests.GetAllAsyncTest")]
+        [TestMethod(DisplayName = "PlaneAppServiceTests.GetAllAsyncTest")]
         public void GetAllAsyncTest()
         {
             (IEnumerable<PlaneDto> results, int total) = this.service.GetRangeAsync(null).Result;
@@ -84,7 +122,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
         /// <summary>
         /// Test <see cref="IPlaneAppService.AddAsync(TDto)"/> method.
         /// </summary>
-        [TestMethod("PlaneAppServiceTests.AddAsyncTest")]
+        [TestMethod(DisplayName = "PlaneAppServiceTests.AddAsyncTest")]
         public void AddAsyncTest()
         {
             // Retrieve the initial number of planes in DB.
@@ -134,7 +172,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
         /// Test parallel requests with readonly context.
         /// </summary>
         /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
-        [TestMethod("PlaneAppServiceTests.GetInParallelAsyncTest")]
+        [TestMethod(DisplayName = "PlaneAppServiceTests.GetInParallelAsyncTest")]
         public async Task GetInParallelAsyncTest()
         {
             int id1 = 1;

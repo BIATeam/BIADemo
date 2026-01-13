@@ -131,13 +131,6 @@ namespace BIA.Net.Core.Application.User
         Task<string> SaveAsync(List<TUserDto> userDtos);
 
         /// <summary>
-        /// Get Csv.
-        /// </summary>
-        /// <param name="filters">The filters.</param>
-        /// <returns>binary csv.</returns>
-        Task<byte[]> GetCsvAsync(PagingFilterFormatDto filters);
-
-        /// <summary>
         /// Sets the default site.
         /// </summary>
         /// <param name="teamId">The team identifier.</param>

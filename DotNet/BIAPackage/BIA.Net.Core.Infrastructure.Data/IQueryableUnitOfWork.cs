@@ -5,7 +5,9 @@
 namespace BIA.Net.Core.Infrastructure.Data
 {
     using System;
+    using System.Linq;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Enum;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -23,6 +25,13 @@ namespace BIA.Net.Core.Infrastructure.Data
             where TEntity : class;
 
         /// <summary>
+        /// Get the set of the entity by its <paramref name="entityType"/>.
+        /// </summary>
+        /// <param name="entityType">The entity type.</param>
+        /// <returns>The set of entity as <see cref="IQueryable"/>.</returns>
+        IQueryable RetrieveSet(Type entityType);
+
+        /// <summary>
         /// Set the item as modified.
         /// </summary>
         /// <param name="item">The item.</param>
@@ -32,5 +41,12 @@ namespace BIA.Net.Core.Infrastructure.Data
 
         /// <inheritdoc cref="IModel.FindEntityType(Type)"/>
         IEntityType FindEntityType(Type entityType);
+
+        /// <summary>
+        /// Gets the database provider enum for the current context.
+        /// </summary>
+        /// <returns>The database provider enum.</returns>
+        /// <exception cref="NotSupportedException">If the database provider is not supported.</exception>
+        DbProvider GetDatabaseProviderEnum();
     }
 }

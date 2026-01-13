@@ -72,7 +72,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
 
                         // Database Migrate CommandTimeout
                         string confCommandTimeout = "DatabaseMigrate:CommandTimeout";
-                        int timeout = int.Parse(this.configuration["DatabaseMigrate:CommandTimeout"]);
+                        int timeout = int.Parse(this.configuration[confCommandTimeout]);
 
                         message = $"{confCommandTimeout}: {timeout} minutes";
                         this.logger.LogInformation(message);

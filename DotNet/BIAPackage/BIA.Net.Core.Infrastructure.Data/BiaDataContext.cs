@@ -13,11 +13,14 @@ namespace BIA.Net.Core.Infrastructure.Data
     using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
+    using Audit.EntityFramework;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Enum;
+    using BIA.Net.Core.Common.Error;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Common.Helpers;
+    using BIA.Net.Core.Domain.Announcement.Entities;
     using BIA.Net.Core.Domain.DistCache.Entities;
     using BIA.Net.Core.Domain.Translation.Entities;
     using BIA.Net.Core.Infrastructure.Data.Helpers;
@@ -61,6 +64,26 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// Gets or sets the distibued cache DBSet.
         /// </summary>
         public virtual DbSet<DistCache> DistCache { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Announcements.
+        /// </summary>
+        public DbSet<Announcement> Announcements { get; set; }
+
+        /// <summary>
+        /// Gets or sets the AnnouncementTypes.
+        /// </summary>
+        public DbSet<AnnouncementType> AnnouncementTypes { get; set; }
+
+        /// <summary>
+        /// Gets or sets the AnnouncementTypeTranslations.
+        /// </summary>
+        public DbSet<AnnouncementTypeTranslation> AnnouncementTypeTranslations { get; set; }
+
+        /// <summary>
+        /// Gets or sets the AnnouncementAudit.
+        /// </summary>
+        public DbSet<AnnouncementAudit> AnnouncementAudit { get; set; }
 
         /// <summary>
         /// Save Change on DataBase.
@@ -144,54 +167,116 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// </summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="items">List of the items to add.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async Task AddBulkAsync<TEntity>(IEnumerable<TEntity> items)
+        /// <returns>The number of elements added.</returns>
+        public async Task<int> AddBulkAsync<TEntity>(IEnumerable<TEntity> items)
             where TEntity : class
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
+            var itemsList = items?.ToList();
+            if (itemsList?.Count == 0)
+            {
+                return 0;
+            }
+
             if (this.Database.IsSqlServer())
             {
-                await SqlServerBulkHelper.InsertAsync(this, items?.ToList());
+                await SqlServerBulkHelper.InsertAsync(this, itemsList);
+                return itemsList.Count;
             }
-            else
+
+            if (this.Database.IsNpgsql())
             {
-                throw new NotImplementedException("this.Database.ProviderName: " + this.Database.ProviderName);
+                await PostgreSqlBulkHelper.InsertAsync(this, itemsList);
+                return itemsList.Count;
             }
+
+            throw new NotSupportedException($"Bulk add operations are not supported for provider: {this.Database.ProviderName}");
         }
 
         /// <summary>
-        /// Bulk function to update entities. Obsolete in V3.9.0.
+        /// Bulk function to update entities.
         /// </summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="items">List of the items to update.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-#pragma warning disable S1133 // Deprecated code should be removed
-        [Obsolete(message: "UpdateBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteUpdateAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
-#pragma warning restore S1133 // Deprecated code should be removed
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async Task UpdateBulkAsync<TEntity>(IEnumerable<TEntity> items)
+        /// <returns>The number of elements updated.</returns>
+        public async Task<int> UpdateBulkAsync<TEntity>(IEnumerable<TEntity> items)
             where TEntity : class
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            throw new NotImplementedException();
+            var itemsList = items?.ToList();
+            if (itemsList?.Count == 0)
+            {
+                return 0;
+            }
+
+            if (this.Database.IsSqlServer())
+            {
+                await SqlServerBulkHelper.UpdateAsync(this, itemsList);
+                return itemsList.Count;
+            }
+
+            if (this.Database.IsNpgsql())
+            {
+                await PostgreSqlBulkHelper.UpdateAsync(this, itemsList);
+                return itemsList.Count;
+            }
+
+            throw new NotSupportedException($"Bulk update operations are not supported for provider: {this.Database.ProviderName}");
         }
 
         /// <summary>
-        /// Bulk function to delete entities. Obsolete in V3.9.0.
+        /// Bulk function to delete entities.
         /// </summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="items">List of the items to delete.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-#pragma warning disable S1133 // Deprecated code should be removed
-        [Obsolete(message: "RemoveBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteDeleteAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
-#pragma warning restore S1133 // Deprecated code should be removed
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async Task RemoveBulkAsync<TEntity>(IEnumerable<TEntity> items)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        /// <returns>The number of elements deleted.</returns>
+        public async Task<int> RemoveBulkAsync<TEntity>(IEnumerable<TEntity> items)
             where TEntity : class
         {
-            throw new NotImplementedException();
+            var itemsList = items?.ToList();
+            if (itemsList?.Count == 0)
+            {
+                return 0;
+            }
+
+            if (this.Database.IsSqlServer())
+            {
+                await SqlServerBulkHelper.DeleteAsync(this, itemsList);
+                return itemsList.Count;
+            }
+
+            if (this.Database.IsNpgsql())
+            {
+                await PostgreSqlBulkHelper.DeleteAsync(this, itemsList);
+                return itemsList.Count;
+            }
+
+            throw new NotSupportedException($"Bulk remove operations are not supported for provider: {this.Database.ProviderName}");
+        }
+
+        /// <summary>
+        /// Determines whether bulk add operations are supported by the current database provider.
+        /// </summary>
+        /// <returns><c>true</c> if bulk add operations are supported; otherwise, <c>false</c>.</returns>
+        public bool IsAddBulkSupported()
+        {
+            return this.Database.IsSqlServer() || this.Database.IsNpgsql();
+        }
+
+        /// <summary>
+        /// Determines whether bulk update operations are supported by the current database provider.
+        /// </summary>
+        /// <returns><c>true</c> if bulk update operations are supported; otherwise, <c>false</c>.</returns>
+        public bool IsUpdateBulkSupported()
+        {
+            return this.Database.IsSqlServer() || this.Database.IsNpgsql();
+        }
+
+        /// <summary>
+        /// Determines whether bulk remove operations are supported by the current database provider.
+        /// </summary>
+        /// <returns><c>true</c> if bulk remove operations are supported; otherwise, <c>false</c>.</returns>
+        public bool IsRemoveBulkSupported()
+        {
+            return this.Database.IsSqlServer() || this.Database.IsNpgsql();
         }
 
         /// <summary>
@@ -214,6 +299,12 @@ namespace BIA.Net.Core.Infrastructure.Data
             where TEntity : class
         {
             return this.Set<TEntity>();
+        }
+
+        /// <inheritdoc/>
+        public IQueryable RetrieveSet(Type entityType)
+        {
+            return this.Set(entityType) as IQueryable;
         }
 
         /// <summary>
@@ -270,6 +361,17 @@ namespace BIA.Net.Core.Infrastructure.Data
             return this.Database.GetDbConnection();
         }
 
+        /// <inheritdoc/>
+        public DbProvider GetDatabaseProviderEnum()
+        {
+            return this.Database switch
+            {
+                var db when db.IsSqlServer() => DbProvider.SqlServer,
+                var db when db.IsNpgsql() => DbProvider.PostGreSql,
+                _ => throw new NotSupportedException($"Database provider {this.Database.ProviderName} is not supported yet"),
+            };
+        }
+
         /// <inheritdoc />
         public void SetCommandTimeout(TimeSpan timeout)
         {
@@ -283,6 +385,7 @@ namespace BIA.Net.Core.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             DistCacheModelBuilder.CreateDistCacheModel(modelBuilder);
+            AnnouncementModelBuilder.CreateModel(modelBuilder);
         }
 
         /// <summary>
@@ -291,7 +394,7 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// <param name="modelBuilder">the model Builder.</param>
         protected virtual void OnEndModelCreating(ModelBuilder modelBuilder)
         {
-            RowVersionBuilder.CreateRowVersion(modelBuilder);
+            RowVersionBuilder.CreateRowVersion(modelBuilder, this.Database);
         }
 
         /// <summary>
@@ -306,7 +409,7 @@ namespace BIA.Net.Core.Infrastructure.Data
                 ValidationException validationEx => this.ManageException(validationEx),
                 DbUpdateException dbUpdateEx => this.ManageException(dbUpdateEx),
                 SqlException sqlEx => this.ManageException(sqlEx),
-                _ => new FrontUserException(exception)
+                _ => new FrontUserException(exception),
             };
         }
 
@@ -317,7 +420,7 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// <returns>A <see cref="FrontUserException"/> corresponding to the handled exception.</returns>
         protected virtual FrontUserException ManageException(ValidationException validationException)
         {
-            return new FrontUserException(FrontUserExceptionErrorMessageKey.ValidationEntity, validationException, validationException.ValidationResult.ErrorMessage);
+            return FrontUserException.Create(BiaErrorId.ValidationEntity, validationException, validationException.ValidationResult.ErrorMessage);
         }
 
         /// <summary>
@@ -333,9 +436,9 @@ namespace BIA.Net.Core.Infrastructure.Data
                 var entityTypeName = entry.Entity.GetType().Name;
                 return entry.State switch
                 {
-                    EntityState.Added => new FrontUserException(FrontUserExceptionErrorMessageKey.AddEntity, dbUpdateException, entityTypeName),
-                    EntityState.Modified => new FrontUserException(FrontUserExceptionErrorMessageKey.ModifyEntity, dbUpdateException, entityTypeName),
-                    EntityState.Deleted => new FrontUserException(FrontUserExceptionErrorMessageKey.DeleteEntity, dbUpdateException, entityTypeName),
+                    EntityState.Added => FrontUserException.Create(BiaErrorId.AddEntity, dbUpdateException, entityTypeName),
+                    EntityState.Modified => FrontUserException.Create(BiaErrorId.ModifyEntity, dbUpdateException, entityTypeName),
+                    EntityState.Deleted => FrontUserException.Create(BiaErrorId.DeleteEntity, dbUpdateException, entityTypeName),
                     _ => new FrontUserException(dbUpdateException),
                 };
             }
@@ -352,13 +455,13 @@ namespace BIA.Net.Core.Infrastructure.Data
         {
             return sqlException.Number switch
             {
-                515 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseNullValueInsert, sqlException, GetColumnNameFromSqlExceptionNullInsert(sqlException.Message)),
-                547 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseForeignKeyConstraint, sqlException),
-                2601 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseDuplicateKey, sqlException),
-                2627 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseUniqueConstraint, sqlException),
-                4060 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseOpen, sqlException),
-                18456 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseLoginUser, sqlException),
-                _ => new FrontUserException(sqlException)
+                515 => FrontUserException.Create(BiaErrorId.DatabaseNullValueInsert, sqlException, GetColumnNameFromSqlExceptionNullInsert(sqlException.Message)),
+                547 => FrontUserException.Create(BiaErrorId.DatabaseForeignKeyConstraint, sqlException),
+                2601 => FrontUserException.Create(BiaErrorId.DatabaseDuplicateKey, sqlException),
+                2627 => FrontUserException.Create(BiaErrorId.DatabaseUniqueConstraint, sqlException),
+                4060 => FrontUserException.Create(BiaErrorId.DatabaseOpen, sqlException),
+                18456 => FrontUserException.Create(BiaErrorId.DatabaseLoginUser, sqlException),
+                _ => new FrontUserException(sqlException),
             };
         }
 

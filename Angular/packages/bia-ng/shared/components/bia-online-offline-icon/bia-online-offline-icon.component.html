@@ -1,0 +1,15 @@
+@if (biaOnlineOfflineService) {
+  @if ((serverAvailable$ | async) !== true) {
+    <i
+      class="pi pi-wifi offline"
+      pTooltip="{{ 'biaMsg.ServerUnavailable' | translate }}">
+      <i class="pi pi-minus rotate-icon"></i>
+    </i>
+  }
+  @if ((serverAvailable$ | async) === true) {
+    <i
+      class="pi pi-wifi online"
+      pTooltip="{{ 'biaMsg.serverAvailable' | translate }}">
+    </i>
+  }
+}

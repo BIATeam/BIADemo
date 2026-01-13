@@ -4,18 +4,13 @@
 
 namespace BIA.Net.Core.Domain.Audit
 {
-    using BIA.Net.Core.Domain.Entity.Interface;
+    using System.ComponentModel.DataAnnotations;
 
     /// <summary>
-    /// The airport entity.
+    /// The audit log entity.
     /// </summary>
-    public class AuditLog : AuditEntity, IEntity<int>
+    public sealed class AuditLog : BaseAudit<int>
     {
-        /// <summary>
-        /// Gets or sets the id.
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Gets or sets the table name.
         /// </summary>

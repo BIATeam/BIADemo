@@ -4,8 +4,10 @@
 
 namespace TheBIADevCompany.BIADemo.Application.User
 {
+    using System.Collections.Immutable;
     using System.Security.Claims;
     using BIA.Net.Core.Application.User;
+    using BIA.Net.Core.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
 
     /// <summary>
@@ -23,5 +25,18 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="roleSuffix">the last part of the permission.</param>
         /// <returns>true if authorized.</returns>
         bool IsAuthorizeForTeamType(ClaimsPrincipal principal, TeamTypeId teamTypeId, int teamId, string roleSuffix);
+
+        /// <summary>
+        /// Get the list of <see cref="TeamConfigDto"/>.
+        /// </summary>
+        /// <returns><see cref="ImmutableList{T}"/> of <see cref="TeamConfigDto"/>.</returns>
+        ImmutableList<TeamConfigDto> GetTeamsConfig();
+
+        /// <summary>
+        /// Get permission prefix for a team type.
+        /// </summary>
+        /// <param name="teamId">the teamId used as reference to find the team type.</param>
+        /// <returns>the permission prefix as string.</returns>
+        Task<string> GetPermissionPrefixFromTeamId(int teamId);
     }
 }

@@ -1,15 +1,16 @@
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
+import { AuthService } from '@bia-team/bia-ng/core';
+import {
+  BiaTableBehaviorControllerComponent,
+  BiaTableComponent,
+  BiaTableControllerComponent,
+  BiaTableHeaderComponent,
+  CrudItemService,
+  CrudItemsIndexComponent,
+} from '@bia-team/bia-ng/shared';
 import { TranslateModule } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
-import { ButtonDirective } from 'primeng/button';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { BiaTableBehaviorControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
-import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
-import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
-import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
-import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
-import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
 import { Permission } from 'src/app/shared/permission';
 import { PlaneTableComponent } from '../../components/plane-table/plane-table.component';
 import { Plane } from '../../model/plane';
@@ -24,8 +25,6 @@ import { PlaneService } from '../../services/plane.service';
   imports: [
     NgClass,
     PrimeTemplate,
-    NgIf,
-    ButtonDirective,
     PlaneTableComponent,
     AsyncPipe,
     TranslateModule,
@@ -79,6 +78,8 @@ export class PlanesIndexComponent
     // End BIAToolKit Generation Ignore
     // BIAToolKit - End PlaneIndexTsCanViewChildSet
   }
+
+  // BIAToolKit - Begin PlaneIndexTsOnViewChild
   // Begin BIAToolKit Generation Ignore
   // BIAToolKit - Begin Partial PlaneIndexTsOnViewChild Engine
   onViewEngines(crudItemId: any) {
@@ -90,7 +91,24 @@ export class PlanesIndexComponent
   }
   // BIAToolKit - End Partial PlaneIndexTsOnViewChild Engine
   // End BIAToolKit Generation Ignore
-
-  // BIAToolKit - Begin PlaneIndexTsOnViewChild
   // BIAToolKit - End PlaneIndexTsOnViewChild
+
+  protected initSelectedButtonGroup() {
+    this.selectionActionsMenuItems = [
+      // BIAToolKit - Begin PlaneIndexTsSelectedButtonViewChild
+      // Begin BIAToolKit Generation Ignore
+      // BIAToolKit - Begin Partial PlaneIndexTsSelectedButtonViewChild Engine
+      {
+        visible: this.canViewEngines,
+        disabled: this.selectedCrudItems.length !== 1,
+        label: this.translateService.instant('plane.engines'),
+        tooltip: this.translateService.instant('plane.engines'),
+        command: () => this.onViewEngines(this.selectedCrudItems[0].id),
+        buttonOutlined: true,
+      },
+      // BIAToolKit - End Partial PlaneIndexTsSelectedButtonViewChild Engine
+      // End BIAToolKit Generation Ignore
+      // BIAToolKit - End PlaneIndexTsSelectedButtonViewChild
+    ];
+  }
 }

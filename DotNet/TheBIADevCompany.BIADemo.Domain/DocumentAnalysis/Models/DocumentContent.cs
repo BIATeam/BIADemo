@@ -31,6 +31,6 @@ namespace TheBIADevCompany.BIADemo.Domain.DocumentAnalysis.Models
         /// <summary>
         /// Pages of the document.
         /// </summary>
-        public List<DocumentPage> Pages { get; set; } = new ();
+        public List<DocumentPage> Pages { get; set; } = new();
     }
 }

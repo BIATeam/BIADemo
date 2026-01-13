@@ -1,14 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PermissionGuard } from '@bia-team/bia-ng/core';
+import { DynamicLayoutComponent, LayoutMode } from '@bia-team/bia-ng/shared';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
-import {
-  DynamicLayoutComponent,
-  LayoutMode,
-} from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { Permission } from 'src/app/shared/permission';
 import { aircraftMaintenanceCompanyCRUDConfiguration } from './aircraft-maintenance-company.constants';
+import { AircraftMaintenanceCompanyService } from './services/aircraft-maintenance-company.service';
 import { AircraftMaintenanceCompaniesEffects } from './store/aircraft-maintenance-companies-effects';
 import { FeatureAircraftMaintenanceCompaniesStore } from './store/aircraft-maintenance-company.state';
 import { AircraftMaintenanceCompaniesIndexComponent } from './views/aircraft-maintenance-companies-index/aircraft-maintenance-companies-index.component';
@@ -41,10 +39,20 @@ export const ROUTES: Routes = [
         canActivate: [PermissionGuard],
       },
       {
+        path: 'view',
+        data: {
+          featureConfiguration: aircraftMaintenanceCompanyCRUDConfiguration,
+          featureServiceType: AircraftMaintenanceCompanyService,
+          leftWidth: 60,
+        },
+        loadChildren: () =>
+          import('../../shared/bia-shared/view.module').then(m => m.ViewModule),
+      },
+      {
         path: ':crudItemId',
         data: {
           breadcrumb: '',
-          canNavigate: true,
+          canNavigate: false,
         },
         component: AircraftMaintenanceCompanyItemComponent,
         canActivate: [PermissionGuard],

@@ -1,10 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Copyright>Copyright © BIA 2025</Copyright>
+    <TargetFramework>net10.0</TargetFramework>
+    <Copyright>Copyright © BIA 2026</Copyright>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-    <Version>5.2.3</Version>
+    <Version>6.0.1</Version>
     <PackageIcon>LogoBIA.png</PackageIcon>
     <Authors>BIA Team</Authors>
     <Company>BIA</Company>
@@ -13,16 +13,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Audit.EntityFramework.Core" Version="30.0.*" />
-    <PackageReference Include="Audit.NET.SqlServer" Version="30.0.*" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.*" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="[8.0.*,9.0.0)" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[8.0.*,9.0.0)" />
+    <PackageReference Include="Audit.EntityFramework.Core" />
+    <PackageReference Include="Audit.NET.SqlServer" />
+    <PackageReference Include="Microsoft.Data.SqlClient" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BIA.Net.Core.Common\BIA.Net.Core.Common.csproj" />
     <ProjectReference Include="..\BIA.Net.Core.Domain\BIA.Net.Core.Domain.csproj" />
+    <ProjectReference Include="..\BIA.Net.Core.Infrastructure.Service\BIA.Net.Core.Infrastructure.Service.csproj" />
   </ItemGroup>
 
   <ItemGroup>

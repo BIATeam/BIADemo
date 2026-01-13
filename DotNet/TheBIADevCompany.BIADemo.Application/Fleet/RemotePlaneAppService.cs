@@ -31,11 +31,44 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
         /// <inheritdoc />
         public async Task<bool> CheckExistAsync(int id)
         {
-            var plane = new Plane();
-            plane.Id = id;
-
-            plane = await this.remotePlaneRepository.GetAsync(plane.Id);
+            Plane plane = await this.remotePlaneRepository.GetAsync(id);
             return plane?.Id > 0;
+        }
+
+        /// <inheritdoc />
+        public async Task<bool> CreateAsync()
+        {
+            Plane newPlane = GenerateFromValues();
+            newPlane = await this.remotePlaneRepository.PostAsync(newPlane);
+            return newPlane?.Id > 0;
+        }
+
+        private static Plane GenerateFromValues()
+        {
+            return new Plane
+            {
+                Msn = "MSN30013",
+                Manufacturer = "Manufacturer 561896418",
+                IsActive = false,
+                IsMaintenance = true,
+                FirstFlightDate = new DateTime(2027, 2, 3, 0, 0, 0, DateTimeKind.Utc),
+                LastFlightDate = null,
+                DeliveryDate = null,
+                NextMaintenanceDate = new DateTime(2024, 12, 9, 0, 0, 0, DateTimeKind.Utc),
+                SyncTime = null,
+                SyncFlightDataTime = TimeSpan.Parse("03:44:05", System.Globalization.CultureInfo.InvariantCulture),
+                Capacity = 45,
+                MotorsCount = 1,
+                TotalFlightHours = 9093,
+                Probability = null,
+                FuelCapacity = 2f,
+                FuelLevel = null,
+                OriginalPrice = 1911.24m,
+                EstimatedPrice = null,
+                SiteId = 1,
+                PlaneTypeId = 2,
+                CurrentAirportId = 7,
+            };
         }
     }
 }

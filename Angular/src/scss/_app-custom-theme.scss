@@ -1,5 +1,15 @@
 bia-ultima-layout {
   --footer-height: 4rem;
+
+  .content,
+  .layout-content {
+    background-image:
+      linear-gradient(
+        color-mix(in srgb, var(--p-content-background) 60%, transparent),
+        color-mix(in srgb, var(--p-content-background) 60%, transparent)
+      ),
+      url('../assets/bia/img/bg-default.jpg');
+  }
 }
 
 :root {

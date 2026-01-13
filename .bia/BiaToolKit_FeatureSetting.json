@@ -1,7 +1,7 @@
 [
   {
     "Id": 1,
-    "DisplayName": "FrontEnd",
+    "DisplayName": "Front End",
     "Description": "Add the Angular project. On the back end, add the features User, Member, Role, Team, Notification, Translation, Log, Audit",
     "IsSelected": true,
     "Tags": [
@@ -13,7 +13,7 @@
   },
   {
     "Id": 2,
-    "DisplayName": "BackToBackAuth",
+    "DisplayName": "Back To Back Authentication",
     "Description": "Add an authentication system for backend to backend exchange",
     "IsSelected": true,
     "Tags": [
@@ -21,8 +21,21 @@
     ]
   },
   {
+    "Id": 5,
+    "DisplayName": "Database",
+    "Description": "Add Infrastructure.Data layer and usage of services with repositories to access database",
+    "IsSelected": true,
+    "Tags": [
+      "BIA_USE_DATABASE"
+    ],
+	"FoldersToExcludes": [
+      ".*Infrastructure.Data$"
+    ],
+	"DisabledFeatures": [1,3,0]
+  },
+  {
     "Id": 3,
-    "DisplayName": "DeployDb",
+    "DisplayName": "Deploy Database",
     "Description": "Add the project allowing the deployment of the database",
     "IsSelected": true,
     "FoldersToExcludes": [
@@ -31,7 +44,7 @@
   },
   {
     "Id": 4,
-    "DisplayName": "WorkerService",
+    "DisplayName": "Worker Service",
     "Description": "Add the WorkerService project with Hangfire",
     "IsSelected": true,
     "FoldersToExcludes": [
@@ -40,7 +53,7 @@
   },
   {
     "Id": 0,
-    "DisplayName": "UserCustomFields",
+    "DisplayName": "User Custom Fields",
     "Description": "Add custom fields for User",
     "IsSelected": false,
     "Tags": [

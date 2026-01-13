@@ -1,0 +1,29 @@
+@if (layoutService.footerPortal$ | async; as footerPortal) {
+  <ng-template [cdkPortalOutlet]="footerPortal"></ng-template>
+} @else {
+  <footer
+    class="layout-footer flex-1 align-content-center"
+    [ngClass]="footerClass">
+    @if (layoutService.isFooterOverlay()) {
+      <a
+        #footerButton
+        class="layout-footer-button"
+        (click)="onFooterButtonClick()"
+        pRipple>
+        <i class="pi pi-chevron-up"></i>
+      </a>
+    }
+    <div class="copyright">
+      © 2026 {{ companyName }} v{{ frameworkVersion }}
+    </div>
+    <ng-content select="[footer-content]"></ng-content>
+    <div class="logos flex justify-content-center">
+      @for (logo of logos; track $index; let first = $first) {
+        @if (!first) {
+          <span class="flex align-self-center bia-separator"></span>
+        }
+        <img alt="logo" class="flex align-self-center" src="{{ logo }}" />
+      }
+    </div>
+  </footer>
+}

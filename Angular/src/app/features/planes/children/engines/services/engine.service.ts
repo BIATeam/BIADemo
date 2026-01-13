@@ -1,9 +1,11 @@
 import { Injectable, Injector } from '@angular/core';
+import {
+  CrudItemService,
+  CrudItemSignalRService,
+} from '@bia-team/bia-ng/shared';
 import { Store } from '@ngrx/store';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { map, Observable } from 'rxjs';
-import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
-import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { AppState } from 'src/app/store/state';
 import { PlaneService } from '../../../services/plane.service';
 import { engineCRUDConfiguration } from '../engine.constants';

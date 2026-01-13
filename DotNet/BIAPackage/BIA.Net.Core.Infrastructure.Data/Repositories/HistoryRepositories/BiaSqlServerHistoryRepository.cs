@@ -1,0 +1,69 @@
+﻿// <copyright file="BiaSqlServerHistoryRepository.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace BIA.Net.Core.Infrastructure.Data.Repositories.HistoryRepositories
+{
+    using System;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Infrastructure;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using Microsoft.EntityFrameworkCore.Migrations;
+    using Microsoft.EntityFrameworkCore.SqlServer.Migrations.Internal;
+    using Microsoft.Extensions.Options;
+
+    /// <summary>
+    /// History Repository for BIA SQL Server.
+    /// </summary>
+#pragma warning disable EF1001 // Internal EF Core API usage.
+    public sealed class BiaSqlServerHistoryRepository : SqlServerHistoryRepository
+    {
+        private readonly BiaHistoryRepositoryOptions options;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BiaSqlServerHistoryRepository"/> class.
+        /// </summary>
+        /// <param name="dependencies">The dependencies.</param>
+        public BiaSqlServerHistoryRepository(HistoryRepositoryDependencies dependencies)
+            : base(dependencies)
+#pragma warning restore EF1001 // Internal EF Core API usage.
+        {
+            if (!dependencies.CurrentContext.Context.Database.IsSqlServer())
+            {
+                throw new Common.Exceptions.BadBiaFrameworkUsageException($"Can't use {nameof(BiaSqlServerHistoryRepository)} with provider {dependencies.CurrentContext.Context.Database.ProviderName}");
+            }
+
+            this.options = dependencies.CurrentContext.Context.GetService<IOptions<BiaHistoryRepositoryOptions>>().Value;
+        }
+
+        /// <inheritdoc/>
+        public override string GetInsertScript(HistoryRow row)
+        {
+            var mappingString = this.Dependencies.TypeMappingSource.FindMapping(typeof(string));
+            var table = this.SqlGenerationHelper.DelimitIdentifier(this.TableName, this.TableSchema);
+            var migrationIdColumn = this.SqlGenerationHelper.DelimitIdentifier(this.MigrationIdColumnName);
+            var migrationId = mappingString.GenerateSqlLiteral(row.MigrationId);
+            var appColumn = this.SqlGenerationHelper.DelimitIdentifier("AppVersion");
+            var appVersion = !string.IsNullOrWhiteSpace(this.options.AppVersion)
+                ? mappingString.GenerateSqlLiteral(this.options.AppVersion)
+                : "NULL";
+
+            var updateScript = $@"
+UPDATE {table}
+SET {appColumn} = {appVersion}
+WHERE {migrationIdColumn} = {migrationId};
+";
+
+            return base.GetInsertScript(row) + updateScript;
+        }
+
+        /// <inheritdoc/>
+        protected override void ConfigureTable(EntityTypeBuilder<HistoryRow> history)
+        {
+            base.ConfigureTable(history);
+
+            history.Property<string>("AppVersion").HasMaxLength(64);
+            history.Property<DateTime?>("MigratedAt").HasDefaultValueSql("sysutcdatetime()");
+        }
+    }
+}

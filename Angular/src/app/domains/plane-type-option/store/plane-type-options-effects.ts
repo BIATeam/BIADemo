@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
+import {
+  BiaMessageService,
+  BiaOnlineOfflineService,
+} from '@bia-team/bia-ng/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
-import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
 import { PlaneTypeOptionDas } from '../services/plane-type-option-das.service';
 import { DomainPlaneTypeOptionsActions } from './plane-type-options-actions';
 /**

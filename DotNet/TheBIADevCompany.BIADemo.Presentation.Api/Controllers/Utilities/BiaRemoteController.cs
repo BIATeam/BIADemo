@@ -61,5 +61,17 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Utilities
             bool isOk = await this.remotePlaneService.CheckExistAsync(id);
             return this.Ok(isOk);
         }
+
+        /// <summary>
+        /// Creates the remote plane.
+        /// </summary>
+        /// <returns>Return true if plane created.</returns>
+        [HttpPost("planes/test")]
+        [AllowAnonymous]
+        public async Task<IActionResult> CreateRemotePlane()
+        {
+            bool isOk = await this.remotePlaneService.CreateAsync();
+            return this.Ok(isOk);
+        }
     }
 }

@@ -18,7 +18,7 @@ namespace BIA.Net.Core.Application.User
     /// <summary>
     /// The application service used for role.
     /// </summary>
-    public class RoleAppService : OperationalDomainServiceBase<Role, int>, IRoleAppService
+    public class RoleAppService : DomainServiceBase<Role, int>, IRoleAppService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RoleAppService"/> class.
@@ -28,16 +28,6 @@ namespace BIA.Net.Core.Application.User
         public RoleAppService(ITGenericRepository<Role, int> repository)
             : base(repository)
         {
-        }
-
-        /// <summary>
-        /// Return options.
-        /// </summary>
-        /// <returns>List of OptionDto.</returns>
-        /// <param name="teamTypeId">The team type id.</param>
-        public Task<IEnumerable<OptionDto>> GetAllOptionsAsync(int teamTypeId)
-        {
-            return this.GetAllAsync<OptionDto, RoleOptionMapper>(filter: teamTypeId == (int)BiaTeamTypeId.All ? null : r => r.TeamTypes.Any(t => t.Id == teamTypeId));
         }
 
         /// <summary>
@@ -69,6 +59,18 @@ namespace BIA.Net.Core.Application.User
                     IsDefault = entity.MemberRoles.Any(mr => mr.Member.UserId == userId && mr.Member.TeamId == teamId && mr.IsDefault),
                 },
                 filter: x => x.MemberRoles.Select(mr => mr.Member).Any(m => m.TeamId == teamId && m.UserId == userId));
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<RoleDto>> GetAllTeamRolesAsync(int teamTypeId)
+        {
+            return await this.Repository.GetAllResultAsync(
+                entity => new RoleDto
+                {
+                    Id = entity.Id,
+                    Code = entity.Code,
+                },
+                filter: x => x.TeamTypes.Any(tt => tt.Id == teamTypeId));
         }
     }
 }

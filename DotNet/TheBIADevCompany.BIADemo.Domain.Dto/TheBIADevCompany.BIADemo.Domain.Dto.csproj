@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Company>TheBIADevCompany</Company>
-    <Copyright>Copyright © TheBIADevCompany 2025</Copyright>
+    <Copyright>Copyright © TheBIADevCompany 2026</Copyright>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
@@ -18,51 +18,18 @@
     <!--BIADEMO-->
     <Compile Remove="**\*Aircraft*.cs" />
     <Compile Remove="**\*Airport*.cs" />
-    <Compile Remove="**\*BiaDemo*.cs" />
-    <Compile Remove="**\*BiaRemote*.cs" />
-    <Compile Remove="**\*RemoteBiaApi*.cs" />
     <Compile Remove="**\*Engine*.cs" />
-    <Compile Remove="**\*Example*.cs" />
     <Compile Remove="**\*Plane*.cs" />
     <Compile Remove="**\*MaintenanceContract*.cs" />
-    <Compile Remove="**\*Worker*.cs" />
-    <Compile Remove="**\*HangfiresController*.cs" />
     <Compile Remove="**\*Part*.cs" />
     <Compile Remove="**\*Country*.cs" />
-    <Compile Remove="**\*Document*.cs" />
-    <Compile Remove="**\*Analysis*.cs" />
     <!--BIATEMPLATE-->
-    <Compile Remove="**\*Error*.cs" />
-    <Compile Remove="**\*IdentityProvider*.cs" />
-    <Compile Remove="**\*LogsController*.cs" />
-    <Compile Remove="**\*Mapper*.cs" />
-    <Compile Remove="**\*Member*.cs" />
     <Compile Remove="**\*Notification*.cs" />
-    <Compile Remove="**\*Query*.cs" />
-    <Compile Remove="**\*SearchExpressionService*.cs" />
     <Compile Remove="**\*Site*.cs" />
-    <Compile Remove="**\*Synchronize*.cs" />
     <Compile Remove="**\*Team*.cs" />
-    <Compile Remove="**\*Translation*.cs" />
-    <Compile Remove="**\*View*.cs" />
-    <Compile Remove="**\Role.cs" />
-    <Compile Remove="**\RoleAppService.cs" />
-    <Compile Remove="**\IRoleAppService.cs" />
-    <Compile Remove="**\RolesController.cs" />
-    <Compile Remove="**\User.cs" />
-    <Compile Remove="**\UsersController.cs" />
-    <Compile Remove="**\UserAppService.cs" />
-    <Compile Remove="**\IUserAppService.cs" />
-    <Compile Remove="**\UserExtensions.cs" />
-    <Compile Remove="**\UserSelectBuilder.cs" />
-    <Compile Remove="**\UserSpecification.cs" />
-    <Compile Remove="**\WakeUpTask.cs" />
-    <Compile Remove="**\LanguagesController.cs" />
-    <Compile Remove="**\LdapDomainsController.cs" />
-    <Compile Remove="**\*ProfileImageController*.cs" />
-    <Compile Remove="**\UserModelBuilder.cs" />
   </ItemGroup>
+
   <ItemGroup>
-    <PackageReference Include="BIA.Net.Core.Domain.Dto" Version="5.2.3" />
+    <PackageReference Include="BIA.Net.Core.Domain.Dto" />
   </ItemGroup>
 </Project>

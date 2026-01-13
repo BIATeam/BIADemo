@@ -6,6 +6,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Site.Entities
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using Audit.EntityFramework;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.User.Entities;
 
     // Begin BIADemo
@@ -21,11 +23,23 @@ namespace TheBIADevCompany.BIADemo.Domain.Site.Entities
         /// <summary>
         /// Add row version timestamp in table Site.
         /// </summary>
-        [Timestamp]
-        [Column("RowVersion")]
+        [Column(nameof(IEntityVersioned.RowVersion))]
+        [AuditIgnore]
         public byte[] RowVersionSite { get; set; }
 
+        /// <summary>
+        /// Add row version for Postgre in table Site.
+        /// </summary>
+        [Column(nameof(IEntityVersioned.RowVersionXmin))]
+        [AuditIgnore]
+        public uint RowVersionXminSite { get; set; }
+
         // Begin BIADemo
+
+        /// <summary>
+        /// Get or set the unique identifier (common to all applications) of a site.
+        /// </summary>
+        public string UniqueIdentifier { get; set; }
 
         /// <summary>
         /// Gets or sets the Maintenance contracts.

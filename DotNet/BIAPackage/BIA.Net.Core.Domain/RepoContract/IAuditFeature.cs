@@ -16,5 +16,12 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// </summary>
         /// <param name="serviceProvider">The service provider.</param>
         void UseAuditFeatures(IServiceProvider serviceProvider);
+
+        /// <summary>
+        /// Audits the type mapper.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>The type of the Audit entity.</returns>
+        Type AuditTypeMapper(Type type);
     }
 }

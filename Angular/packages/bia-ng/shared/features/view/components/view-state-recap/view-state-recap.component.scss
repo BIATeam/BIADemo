@@ -1,0 +1,23 @@
+.app-action-col {
+  width: 120px !important;
+}
+
+table {
+  width: 100%;
+}
+
+.app-empty-message {
+  text-align: center !important;
+}
+
+.summary-box {
+  padding: 1rem;
+  background: var(--p-surface-200);
+  border-radius: 0.5rem;
+}
+
+:host-context(html.dark-theme) {
+  .summary-box {
+    background: var(--p-surface-700);
+  }
+}

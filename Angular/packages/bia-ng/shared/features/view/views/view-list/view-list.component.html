@@ -1,0 +1,68 @@
+<p-floatlabel variant="on">
+  <p-select
+    [options]="groupedViews"
+    [(ngModel)]="currentSelectedView"
+    [style]="{ 'min-width': '150px' }"
+    [group]="true"
+    (onChange)="onViewChange($event)"
+    scrollHeight="50vh">
+    <ng-template let-item pTemplate="selectedItem">
+      <span
+        >{{ selectedView === currentView ? '* ' : '' }}{{ item?.label }}</span
+      >
+      @if (defaultView === item?.value) {
+        <i class="pi pi-star"></i>
+      }
+    </ng-template>
+    <ng-template let-object pTemplate="item">
+      <span>{{ object.label }}</span>
+      @if (defaultView === object.value) {
+        <i class="pi pi-star"></i>
+      }
+    </ng-template>
+  </p-select>
+  <label>{{ 'bia.views.view' | translate }}</label>
+</p-floatlabel>
+<button
+  pButton
+  icon="pi pi-save"
+  variant="text"
+  severity="secondary"
+  [pTooltip]="'bia.views.saveTitle' | translate"
+  (click)="openSave()"
+  class="small-button"></button>
+<button
+  pButton
+  [disabled]="currentSelectedView === 0"
+  [icon]="
+    defaultView === currentSelectedView ? 'pi pi-star-fill' : 'pi pi-star'
+  "
+  variant="text"
+  severity="secondary"
+  [pTooltip]="'bia.views.defineDefault' | translate"
+  (click)="toggleDefault()"
+  class="small-button"></button>
+<button
+  pButton
+  [disabled]="selectedView !== currentView"
+  icon="pi pi-undo"
+  variant="text"
+  severity="secondary"
+  [pTooltip]="'bia.views.cancelModifications' | translate"
+  (click)="restoreView()"
+  class="small-button"></button>
+@if (showEditButton() === true) {
+  <button
+    pButton
+    icon="pi pi-cog"
+    variant="text"
+    severity="secondary"
+    [pTooltip]="'bia.views.manageViews' | translate"
+    (click)="onManageView()"
+    class="small-button"></button>
+}
+@if (showEditButton() === true) {
+  <bia-manage-views-dialog
+    [tableStateKey]="tableStateKey"
+    [useViewTeamWithTypeId]="useViewTeamWithTypeId"></bia-manage-views-dialog>
+}

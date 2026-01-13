@@ -7,7 +7,6 @@ namespace BIA.Net.Core.Application.User
     using System.Collections.Generic;
     using System.Collections.Immutable;
     using System.Linq;
-    using System.Reflection.Metadata.Ecma335;
     using System.Security.Claims;
     using System.Security.Principal;
     using System.Threading.Tasks;
@@ -15,19 +14,17 @@ namespace BIA.Net.Core.Application.User
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Enum;
-    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Common.Helpers;
-    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;
-    using BIA.Net.Core.Domain.User.Models;
     using BIA.Net.Core.Domain.User.Services;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
+    using static BIA.Net.Core.Common.BiaRights;
 
     /// <summary>
     /// Auth App Service.
@@ -192,6 +189,8 @@ namespace BIA.Net.Core.Application.User
 
             // Get Permissions
             List<string> userPermissions = this.UserPermissionDomainService.TranslateRolesInPermissions(globalRoles, loginParam.LightToken);
+            List<string> transversalUserPermissions = this.UserPermissionDomainService.TranslateRolesInPermissions(globalRoles, loginParam.LightToken, true);
+            List<PermissionTeamsDto> permissionsTeams = transversalUserPermissions.Select(p => new PermissionTeamsDto { Permission = p, IsGlobal = true, TeamIds = [] }).ToList();
 
             IEnumerable<BaseDtoVersionedTeam> allTeams = [];
             TUserDataDto userData = this.CreateUserData(userInfoFromDB);
@@ -210,6 +209,9 @@ namespace BIA.Net.Core.Application.User
                 // Translate Roles in Permissions
                 List<string> fineGrainedUserPermissions = this.UserPermissionDomainService.TranslateRolesInPermissions(fineGrainedRoles, loginParam.LightToken);
 
+                // Get all transversal permissions
+                userData.CrossTeamPermissions = await this.GetTransversalPermissionsForUserAndTeams(allTeams, userInfoFromDB.Id, teamsConfig, permissionsTeams);
+
                 // Concat global permissions and fine grained permissions
                 userPermissions = userPermissions.Union(fineGrainedUserPermissions).ToList();
             }
@@ -221,7 +223,7 @@ namespace BIA.Net.Core.Application.User
             userPermissions.Sort();
 
             // Create Token Dto
-            TokenDto<TUserDataDto> tokenDto = new ()
+            TokenDto<TUserDataDto> tokenDto = new()
             {
                 IdentityKey = identityKey,
                 Id = (userInfoFromDB?.Id).GetValueOrDefault(),
@@ -387,123 +389,210 @@ namespace BIA.Net.Core.Application.User
             var allRoles = new List<string>();
 
             // get user rights
-            if (loginParam.TeamsConfig != null)
+            foreach (var teamConfig in teamsConfig)
             {
-                foreach (var loginTeamConfigTeamTypeId in loginParam.TeamsConfig.Select(x => x.TeamTypeId))
+                var correspondingTeams = allTeams.Where(t => t.TeamTypeId == teamConfig.TeamTypeId);
+                var automaticallySelectedTeam = teamConfig.TeamAutomaticSelectionMode switch
                 {
-                    var teamConfig = teamsConfig.Single(tc => tc.TeamTypeId == loginTeamConfigTeamTypeId);
-                    var correspondingTeams = allTeams.Where(t => t.TeamTypeId == loginTeamConfigTeamTypeId);
-                    var automaticallySelectedTeam = teamConfig.TeamSelectionMode switch
+                    TeamSelectionMode.None => null,
+                    TeamSelectionMode.First => correspondingTeams.FirstOrDefault(),
+                    _ => throw new NotImplementedException(),
+                };
+                var defaultTeam = correspondingTeams.FirstOrDefault(x => x.IsDefault) ?? automaticallySelectedTeam;
+
+                CurrentTeamDto teamLogin = null;
+                if (loginParam.IsFirstLogin && defaultTeam != null)
+                {
+                    teamLogin = new CurrentTeamDto
                     {
-                        TeamSelectionMode.None => null,
-                        TeamSelectionMode.First => correspondingTeams.FirstOrDefault(),
-                        _ => throw new NotImplementedException()
+                        TeamTypeId = defaultTeam.TeamTypeId,
+                        TeamId = defaultTeam.Id,
+                        TeamTitle = defaultTeam.Title,
+                        UseDefaultRoles = true,
+                        CurrentRoleIds = { },
                     };
-                    var defaultTeam = correspondingTeams.FirstOrDefault(x => x.IsDefault) ?? automaticallySelectedTeam;
+                }
+                else if (!loginParam.IsFirstLogin)
+                {
+                    teamLogin = Array.Find(loginParam.CurrentTeamLogins, ct => ct.TeamTypeId == teamConfig.TeamTypeId);
+                }
 
-                    CurrentTeamDto teamLogin = null;
-                    if (loginParam.IsFirstLogin && defaultTeam != null)
+                if (teamLogin is null)
+                {
+                    continue;
+                }
+
+                var currentTeam = new CurrentTeamDto()
+                {
+                    TeamTypeId = teamLogin.TeamTypeId,
+                    TeamId = teamLogin.TeamId,
+                    TeamTitle = correspondingTeams.FirstOrDefault(s => s.Id == teamLogin.TeamId)?.Title,
+                };
+
+                if (currentTeam.TeamId <= 0)
+                {
+                    continue;
+                }
+
+                IEnumerable<RoleDto> roles = await this.RoleAppService.GetMemberRolesAsync(currentTeam.TeamId, userInfoId);
+                RoleMode roleMode = teamsConfig.Find(r => r.TeamTypeId == currentTeam.TeamTypeId)?.RoleMode ?? RoleMode.AllRoles;
+
+                if (roleMode == RoleMode.AllRoles)
+                {
+                    currentTeam.CurrentRoleIds = roles.Select(r => r.Id).ToList();
+                }
+                else if (roleMode == RoleMode.SingleRole)
+                {
+                    RoleDto role = roles?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
+                    if (role != null)
                     {
-                        teamLogin = new CurrentTeamDto
+                        if (teamLogin.CurrentRoleIds != null && teamLogin.CurrentRoleIds.Count == 1 && roles.Any(s => s.Id == teamLogin.CurrentRoleIds[0]))
                         {
-                            TeamTypeId = defaultTeam.TeamTypeId,
-                            TeamId = defaultTeam.Id,
-                            TeamTitle = defaultTeam.Title,
-                            UseDefaultRoles = true,
-                            CurrentRoleIds = { },
-                        };
-                    }
-                    else if (!loginParam.IsFirstLogin)
-                    {
-                        teamLogin = Array.Find(loginParam.CurrentTeamLogins, ct => ct.TeamTypeId == loginTeamConfigTeamTypeId);
-                    }
-
-                    if (teamLogin is null)
-                    {
-                        continue;
-                    }
-
-                    var currentTeam = new CurrentTeamDto()
-                    {
-                        TeamTypeId = teamLogin.TeamTypeId,
-                        TeamId = teamLogin.TeamId,
-                        TeamTitle = correspondingTeams.FirstOrDefault(s => s.Id == teamLogin.TeamId)?.Title,
-                    };
-
-                    if (currentTeam.TeamId <= 0)
-                    {
-                        continue;
-                    }
-
-                    IEnumerable<RoleDto> roles = await this.RoleAppService.GetMemberRolesAsync(currentTeam.TeamId, userInfoId);
-                    RoleMode roleMode = Array.Find(loginParam.TeamsConfig, r => r.TeamTypeId == currentTeam.TeamTypeId)?.RoleMode ?? RoleMode.AllRoles;
-
-                    if (roleMode == RoleMode.AllRoles)
-                    {
-                        currentTeam.CurrentRoleIds = roles.Select(r => r.Id).ToList();
-                    }
-                    else if (roleMode == RoleMode.SingleRole)
-                    {
-                        RoleDto role = roles?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
-                        if (role != null)
-                        {
-                            if (teamLogin.CurrentRoleIds != null && teamLogin.CurrentRoleIds.Count == 1 && roles.Any(s => s.Id == teamLogin.CurrentRoleIds[0]))
-                            {
-                                currentTeam.CurrentRoleIds = new List<int> { teamLogin.CurrentRoleIds[0] };
-                            }
-                            else
-                            {
-                                currentTeam.CurrentRoleIds = new List<int> { role.Id };
-                            }
+                            currentTeam.CurrentRoleIds = new List<int> { teamLogin.CurrentRoleIds[0] };
                         }
                         else
                         {
-                            currentTeam.CurrentRoleIds = new List<int>();
+                            currentTeam.CurrentRoleIds = new List<int> { role.Id };
                         }
                     }
                     else
                     {
-                        if (roles.Any())
+                        currentTeam.CurrentRoleIds = new List<int>();
+                    }
+                }
+                else
+                {
+                    if (roles.Any())
+                    {
+                        if (!teamLogin.UseDefaultRoles)
                         {
-                            if (!teamLogin.UseDefaultRoles)
-                            {
-                                List<int> roleIdsToSet = roles.Where(r => teamLogin.CurrentRoleIds != null && teamLogin.CurrentRoleIds.Exists(tr => tr == r.Id)).Select(r => r.Id).ToList();
-                                currentTeam.CurrentRoleIds = roleIdsToSet;
-                            }
-                            else
-                            {
-                                currentTeam.CurrentRoleIds = roles.Where(x => x.IsDefault).Select(r => r.Id).ToList();
-                            }
+                            List<int> roleIdsToSet = roles.Where(r => teamLogin.CurrentRoleIds != null && teamLogin.CurrentRoleIds.Exists(tr => tr == r.Id)).Select(r => r.Id).ToList();
+                            currentTeam.CurrentRoleIds = roleIdsToSet;
                         }
                         else
                         {
-                            currentTeam.CurrentRoleIds = new List<int>();
+                            currentTeam.CurrentRoleIds = roles.Where(x => x.IsDefault).Select(r => r.Id).ToList();
                         }
                     }
-
-                    if (allTeams.Any(team => team.Id == currentTeam.TeamId && team.TeamTypeId == currentTeam.TeamTypeId))
+                    else
                     {
-                        userData.CurrentTeams.Add(currentTeam);
+                        currentTeam.CurrentRoleIds = new List<int>();
                     }
-
-                    // add the sites roles (filter if singleRole mode is used)
-                    allRoles.AddRange(roles.Where(r => currentTeam.CurrentRoleIds.Exists(id => id == r.Id)).Select(r => r.Code).ToList());
-                    allRoles.Add(teamConfig.RightPrefix + BiaConstants.Role.TeamMemberSuffix);
-                    allRoles.Add(teamConfig.RightPrefix + BiaConstants.Role.TeamMemberOfOneSuffix);
-
-                    // add computed roles (can be customized)
                 }
 
-                foreach (var teamConfig in teamsConfig)
+                if (allTeams.Any(team => team.Id == currentTeam.TeamId && team.TeamTypeId == currentTeam.TeamTypeId))
                 {
-                    if (teamConfig.Parents == null && allTeams.Any(t => t.TeamTypeId == teamConfig.TeamTypeId))
-                    {
-                        allRoles.Add(teamConfig.RightPrefix + BiaConstants.Role.TeamMemberOfOneSuffix);
-                    }
+                    userData.CurrentTeams.Add(currentTeam);
+                }
+
+                // add the sites roles (filter if singleRole mode is used)
+                allRoles.AddRange(roles.Where(r => currentTeam.CurrentRoleIds.Exists(id => id == r.Id)).Select(r => r.Code).ToList());
+                allRoles.Add(teamConfig.RightPrefix + BiaConstants.Role.TeamMemberSuffix);
+                allRoles.Add(teamConfig.RightPrefix + BiaConstants.Role.TeamMemberOfOneSuffix);
+
+                // add computed roles (can be customized)
+            }
+
+            foreach (var teamConfig in teamsConfig)
+            {
+                if (teamConfig.Parents == null && allTeams.Any(t => t.TeamTypeId == teamConfig.TeamTypeId))
+                {
+                    allRoles.Add(teamConfig.RightPrefix + BiaConstants.Role.TeamMemberOfOneSuffix);
                 }
             }
 
             return allRoles;
+        }
+
+        /// <summary>
+        /// Gets the transversal permissions for a list of team and user.
+        /// </summary>
+        /// <param name="teams">The teams to look permissions for.</param>
+        /// <param name="userInfoId">The id of the user.</param>
+        /// <param name="teamsConfig">The teams config.</param
+        /// <param name="globalTransversalPermissions">The list of global transversal permissions.</param>
+        /// <returns>List of transversal permissions.</returns>
+        protected virtual async Task<List<PermissionTeamsDto>> GetTransversalPermissionsForUserAndTeams(IEnumerable<BaseDtoVersionedTeam> teams, int userInfoId, ImmutableList<BiaTeamConfig<BaseEntityTeam>> teamsConfig, List<PermissionTeamsDto> globalTransversalPermissions)
+        {
+            var permissionsTeams = globalTransversalPermissions ?? new List<PermissionTeamsDto>();
+            foreach (BaseDtoVersionedTeam team in teams)
+            {
+                var teamConfig = teamsConfig.Find(tc => tc.TeamTypeId == team.TeamTypeId);
+                var permissions = await this.GetTransversalPermissionsForTeam(team, userInfoId, teamConfig);
+                foreach (string permission in permissions)
+                {
+                    var permissionTeams = permissionsTeams.FirstOrDefault(pt => pt.Permission == permission);
+                    if (permissionTeams != null)
+                    {
+                        permissionTeams.TeamIds.Add(team.Id);
+                    }
+                    else
+                    {
+                        permissionsTeams.Add(new PermissionTeamsDto { Permission = permission, TeamIds = [team.Id], IsGlobal = false });
+                    }
+                }
+            }
+
+            return permissionsTeams;
+        }
+
+        /// <summary>
+        /// Gets the transversal permissions for a team and user.
+        /// </summary>
+        /// <param name="team">The team to look permissions for.</param>
+        /// <param name="userInfoId">The id of the user.</param>
+        /// <param name="teamConfig">The team config.</param>
+        /// <returns>List of transversal permissions.</returns>
+        protected virtual async Task<List<string>> GetTransversalPermissionsForTeam(BaseDtoVersionedTeam team, int userInfoId, BiaTeamConfig<BaseEntityTeam> teamConfig)
+        {
+            // the main roles
+            var allRoles = new List<string>();
+
+            IEnumerable<RoleDto> roles = await this.RoleAppService.GetMemberRolesAsync(team.Id, userInfoId);
+            RoleMode roleMode = teamConfig.RoleMode;
+
+            List<int> currentRoleIds;
+
+            if (roleMode == RoleMode.AllRoles)
+            {
+                currentRoleIds = roles.Select(r => r.Id).ToList();
+            }
+            else if (roleMode == RoleMode.SingleRole)
+            {
+                RoleDto role = roles?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
+                if (role != null)
+                {
+                    currentRoleIds = new List<int> { role.Id };
+                }
+                else
+                {
+                    currentRoleIds = new List<int>();
+                }
+            }
+            else
+            {
+                if (roles.Any())
+                {
+                    currentRoleIds = roles.Where(x => x.IsDefault).Select(r => r.Id).ToList();
+                }
+                else
+                {
+                    currentRoleIds = new List<int>();
+                }
+            }
+
+            // add the sites roles (filter if singleRole mode is used)
+            allRoles.AddRange(roles.Where(r => currentRoleIds.Exists(id => id == r.Id)).Select(r => r.Code).ToList());
+            allRoles.Add(teamConfig.RightPrefix + BiaConstants.Role.TeamMemberSuffix);
+            allRoles.Add(teamConfig.RightPrefix + BiaConstants.Role.TeamMemberOfOneSuffix);
+
+            // add computed roles (can be customized)
+            if (teamConfig.Parents == null)
+            {
+                allRoles.Add(teamConfig.RightPrefix + BiaConstants.Role.TeamMemberOfOneSuffix);
+            }
+
+            return this.UserPermissionDomainService.TranslateRolesInPermissions(allRoles, transversal: true);
         }
     }
 }

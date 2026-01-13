@@ -1,7 +1,9 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
-import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
-import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
+import {
+  CrudItemEditComponent,
+  SpinnerComponent,
+} from '@bia-team/bia-ng/shared';
 import { aircraftMaintenanceCompanyCRUDConfiguration } from '../../aircraft-maintenance-company.constants';
 import { AircraftMaintenanceCompanyFormComponent } from '../../components/aircraft-maintenance-company-form/aircraft-maintenance-company-form.component';
 import { AircraftMaintenanceCompany } from '../../model/aircraft-maintenance-company';
@@ -11,7 +13,6 @@ import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maint
   selector: 'app-aircraft-maintenance-company-edit',
   templateUrl: './aircraft-maintenance-company-edit.component.html',
   imports: [
-    NgIf,
     AircraftMaintenanceCompanyFormComponent,
     AsyncPipe,
     SpinnerComponent,

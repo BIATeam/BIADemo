@@ -66,12 +66,14 @@ namespace TheBIADevCompany.BIADemo.Test.Tests
         /// <summary>
         /// A basic test method.
         /// </summary>
-        [TestMethod("UnitTestExample.TestMethod")]
+        [TestMethod(DisplayName = "UnitTestExample.TestMethod")]
         public void TestMethod()
         {
             // Code your test here.
 #pragma warning disable S2701 // Literal boolean values should not be used in assertions
+#pragma warning disable MSTEST0032 // Assertion condition is always true
             Assert.IsTrue(true);
+#pragma warning restore MSTEST0032 // Assertion condition is always true
 #pragma warning restore S2701 // Literal boolean values should not be used in assertions
         }
 
@@ -81,7 +83,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests
         /// </summary>
         /// <param name="value">The value to test.</param>
         /// <param name="expectedResult">The expected result.</param>
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(-1, true)]
         [DataRow(0, true)]
         [DataRow(1, true)]

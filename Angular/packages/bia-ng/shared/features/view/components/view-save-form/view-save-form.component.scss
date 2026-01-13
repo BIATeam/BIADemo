@@ -1,0 +1,49 @@
+:host {
+  ::ng-deep {
+    bia-form .footer-container {
+      display: none;
+    }
+
+    .view-actions .p-button-label {
+      max-width: unset;
+    }
+
+    .affected-teams-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      background: var(--p-surface-200);
+      border-radius: 0.5rem;
+      margin-top: 0.5rem;
+      max-width: 17rem;
+      font-size: 0.9rem;
+    }
+
+    .affected-teams-title {
+      display: flex;
+      align-items: baseline;
+      gap: 0.4rem;
+    }
+
+    .affected-teams-team {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      display: block;
+      width: 100%;
+      text-align: center;
+    }
+
+    .warning-icon {
+      color: var(--p-yellow-600);
+      font-size: 1.3rem;
+    }
+  }
+}
+
+:host-context(html.dark-theme) {
+  .affected-teams-box {
+    background: var(--p-surface-700);
+  }
+}

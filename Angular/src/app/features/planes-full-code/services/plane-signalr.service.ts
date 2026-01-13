@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
+import { AuthService, BiaSignalRService } from '@bia-team/bia-ng/core';
+import { TargetedFeature } from '@bia-team/bia-ng/models';
 import { Store } from '@ngrx/store';
 import { first } from 'rxjs/operators';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { BiaSignalRService } from 'src/app/core/bia-core/services/bia-signalr.service';
-import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
 import { getLastLazyLoadEvent } from '../store/plane.state';

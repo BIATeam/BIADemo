@@ -1,19 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PermissionGuard } from '@bia-team/bia-ng/core';
+import { DynamicLayoutComponent, LayoutMode } from '@bia-team/bia-ng/shared';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { AirportOptionModule } from 'src/app/domains/airport-option/airport-option.module';
 import { CountryOptionModule } from 'src/app/domains/country-option/country-option.module';
-import {
-  DynamicLayoutComponent,
-  LayoutMode,
-} from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { Permission } from 'src/app/shared/permission';
 import { aircraftMaintenanceCompanyCRUDConfiguration } from '../../aircraft-maintenance-company.constants';
 import { AircraftMaintenanceCompaniesEffects } from '../../store/aircraft-maintenance-companies-effects';
 import { FeatureAircraftMaintenanceCompaniesStore } from '../../store/aircraft-maintenance-company.state';
 import { maintenanceTeamCRUDConfiguration } from './maintenance-team.constants';
+import { MaintenanceTeamService } from './services/maintenance-team.service';
 import { FeatureMaintenanceTeamsStore } from './store/maintenance-team.state';
 import { MaintenanceTeamsEffects } from './store/maintenance-teams-effects';
 import { MaintenanceTeamEditComponent } from './views/maintenance-team-edit/maintenance-team-edit.component';
@@ -46,10 +44,22 @@ export const ROUTES: Routes = [
         canActivate: [PermissionGuard],
       },
       {
+        path: 'view',
+        data: {
+          featureConfiguration: maintenanceTeamCRUDConfiguration,
+          featureServiceType: MaintenanceTeamService,
+          leftWidth: 60,
+        },
+        loadChildren: () =>
+          import('../../../../shared/bia-shared/view.module').then(
+            m => m.ViewModule
+          ),
+      },
+      {
         path: ':crudItemId',
         data: {
           breadcrumb: '',
-          canNavigate: true,
+          canNavigate: false,
         },
         component: MaintenanceTeamItemComponent,
         canActivate: [PermissionGuard],

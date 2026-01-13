@@ -1,0 +1,10 @@
+<bia-member-form-edit
+  [member]="memberService.crudItem$ | async"
+  [roleOptions]="(memberService.optionsService.roleOptions$ | async) ?? []"
+  [userOptions]="(memberService.optionsService.userOptions$ | async) ?? []"
+  [canAddFromDirectory]="canAddFromDirectory"
+  (cancelled)="onCancelled()"
+  (save)="onSubmitted($event)"></bia-member-form-edit>
+@if (memberService.loadingGet$ | async) {
+  <bia-spinner [overlay]="true"></bia-spinner>
+}

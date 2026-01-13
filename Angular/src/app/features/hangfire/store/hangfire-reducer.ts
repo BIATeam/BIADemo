@@ -1,7 +1,7 @@
-import { createEntityAdapter } from '@ngrx/entity';
+import { OptionDto } from '@bia-team/bia-ng/models';
+import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer } from '@ngrx/store';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 // This adapter will allow is to manipulate hangfire (mostly CRUD operations)
 export const hangfireAdapter = createEntityAdapter<OptionDto>({
@@ -19,7 +19,7 @@ export const hangfireAdapter = createEntityAdapter<OptionDto>({
 // -> ids arrays allow us to sort data easily
 // -> entities map allows us to access the data quickly without iterating/filtering though an array of objects
 
-export interface State {
+export interface State extends EntityState<OptionDto> {
   // additional props here
   lastLazyLoadEvent: TableLazyLoadEvent;
   loadingGet: boolean;

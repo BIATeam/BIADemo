@@ -1,15 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PermissionGuard } from '@bia-team/bia-ng/core';
+import { DynamicLayoutComponent, LayoutMode } from '@bia-team/bia-ng/shared';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { PartOptionModule } from 'src/app/domains/part-option/part-option.module';
-import {
-  DynamicLayoutComponent,
-  LayoutMode,
-} from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { Permission } from 'src/app/shared/permission';
 import { engineCRUDConfiguration } from './engine.constants';
+import { EngineService } from './services/engine.service';
 import { FeatureEnginesStore } from './store/engine.state';
 import { EnginesEffects } from './store/engines-effects';
 import { EngineEditComponent } from './views/engine-edit/engine-edit.component';
@@ -60,10 +58,22 @@ export const ROUTES: Routes = [
         canActivate: [PermissionGuard],
       },
       {
+        path: 'view',
+        data: {
+          featureConfiguration: engineCRUDConfiguration,
+          featureServiceType: EngineService,
+          leftWidth: 60,
+        },
+        loadChildren: () =>
+          import('../../../../shared/bia-shared/view.module').then(
+            m => m.ViewModule
+          ),
+      },
+      {
         path: ':crudItemId',
         data: {
           breadcrumb: '',
-          canNavigate: true,
+          canNavigate: false,
         },
         component: EngineItemComponent,
         canActivate: [PermissionGuard],

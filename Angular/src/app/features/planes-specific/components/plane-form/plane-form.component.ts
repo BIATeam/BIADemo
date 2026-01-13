@@ -1,4 +1,3 @@
-import { NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
 import {
   Component,
   OnChanges,
@@ -8,20 +7,21 @@ import {
   WritableSignal,
 } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { clone } from '@bia-team/bia-ng/core';
+import { BiaFieldsConfig, KeyValuePair } from '@bia-team/bia-ng/models';
+import { DtoState } from '@bia-team/bia-ng/models/enum';
+import {
+  BiaFormComponent,
+  BiaTableHeaderComponent,
+  CrudHelperService,
+  CrudItemFormComponent,
+} from '@bia-team/bia-ng/shared';
 import { TranslateModule } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
 import { Checkbox } from 'primeng/checkbox';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
 import { MultiSelect } from 'primeng/multiselect';
-import { BiaFormComponent } from 'src/app/shared/bia-shared/components/form/bia-form/bia-form.component';
-import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
-import { CrudItemFormComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component';
-import { BiaFieldsConfig } from 'src/app/shared/bia-shared/model/bia-field-config';
-import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
-import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
-import { CrudHelperService } from 'src/app/shared/bia-shared/services/crud-helper.service';
-import { clone } from 'src/app/shared/bia-shared/utils';
 import { EngineTableComponent } from '../../children/engines/components/engine-table/engine-table.component';
 import { engineCRUDConfiguration } from '../../children/engines/engine.constants';
 import { Engine } from '../../model/engine';
@@ -31,17 +31,14 @@ import { PlaneSpecific } from '../../model/plane-specific';
   selector: 'app-plane-specific-form',
   templateUrl: 'plane-form.component.html',
   styleUrls: [
-    '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
+    '../../../../../../node_modules/@bia-team/bia-ng/templates/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
   ],
   imports: [
     PrimeTemplate,
     FormsModule,
     ReactiveFormsModule,
-    NgSwitch,
-    NgSwitchCase,
     Checkbox,
     InputText,
-    NgIf,
     EngineTableComponent,
     TranslateModule,
     BiaFormComponent,

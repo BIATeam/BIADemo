@@ -28,6 +28,11 @@ namespace BIA.Net.Core.Common
             /// the extension of a csv file.
             /// </summary>
             public const string ContentType = "text/csv";
+
+            /// <summary>
+            /// The charset encoding of a csv file.
+            /// </summary>
+            public const string CharsetEncoding = "windows-1252";
         }
 
         /// <summary>
@@ -178,6 +183,53 @@ namespace BIA.Net.Core.Common
                 /// </summary>
                 public const string EnableLegacyTimestampBehavior = "Npgsql.EnableLegacyTimestampBehavior";
             }
+        }
+
+        /// <summary>
+        /// Audit.
+        /// </summary>
+        public static class Audit
+        {
+            /// <summary>
+            /// Audit update action.
+            /// </summary>
+            public const string UpdateAction = "Update";
+
+            /// <summary>
+            /// Audit insert action.
+            /// </summary>
+            public const string InsertAction = "Insert";
+
+            /// <summary>
+            /// Audit delete action.
+            /// </summary>
+            public const string DeleteAction = "Delete";
+
+            /// <summary>
+            /// Custom field user login.
+            /// </summary>
+            public const string UserLoginCustomField = "UserLogin";
+
+            /// <summary>
+            /// Display login for the user in audit historical.
+            /// </summary>
+            public const string HistoricalUserDisplayLogin = "Login";
+
+            /// <summary>
+            /// Display full name for the user in audit historical.
+            /// </summary>
+            public const string HistoricalUserDisplayFullName = "Fullname";
+        }
+
+        /// <summary>
+        /// RoleApi.
+        /// </summary>
+        public static class RoleApi
+        {
+            /// <summary>
+            /// Role is coming from an external API.
+            /// </summary>
+            public const string IsFromRoleApi = "IsFromRoleApi";
         }
     }
 }

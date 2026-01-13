@@ -59,7 +59,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
         /// <summary>
         /// Test site removal from the controller.
         /// </summary>
-        [TestMethod("SitesControllerTests.RemoveSiteByController")]
+        [TestMethod(DisplayName = "SitesControllerTests.RemoveSiteByController")]
         public void RemoveSiteByController()
         {
             // Add default data in DB.
@@ -93,7 +93,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
         /// </summary>
         /// <param name="siteId">The ID of the site to remove.</param>
         /// <param name="expectedResult">The expected HTTP status.</param>
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(0, HttpStatusCode.BadRequest)]
         [DataRow(1, HttpStatusCode.OK)]
         [DataRow(2, HttpStatusCode.OK)]
@@ -127,7 +127,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
         /// </summary>
         /// <param name="siteId">The site identifier.</param>
         /// <param name="expectedResult">The expected result.</param>
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(-1, HttpStatusCode.NotFound)]
         [DataRow(0, HttpStatusCode.BadRequest)]
         [DataRow(1, HttpStatusCode.OK)]
@@ -163,7 +163,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
         /// <summary>
         /// Test outcomes of <see cref="SitesController.Update(int, SiteDto)"/> when the ID of the site to update is not the same as the given one.
         /// </summary>
-        [TestMethod("SitesControllerTests.TryUpdateSite_NotMatchingIds_ByController")]
+        [TestMethod(DisplayName = "SitesControllerTests.TryUpdateSite_NotMatchingIds_ByController")]
         public void TryUpdateSite_NotMatchingIds_ByController()
         {
             // Add default data in DB.
@@ -192,7 +192,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
         /// <summary>
         /// Test site update workflow by controller.
         /// </summary>
-        [TestMethod("SitesControllerTests.UpdateSiteWorkflowByController")]
+        [TestMethod(DisplayName = "SitesControllerTests.UpdateSiteWorkflowByController")]
         public void UpdateSiteWorkflowByController()
         {
             #region Setup additional context
@@ -208,10 +208,10 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
             #endregion Setup additional context
 
             // Check GetAll behavior (used when displaying the list of available sites).
-            PagingFilterFormatDto filter = new PagingFilterFormatDto()
+            PagingFilterFormatDto<TeamAdvancedFilterDto> filter = new()
             {
                 Filters = null,
-                AdvancedFilter = JsonConvert.SerializeObject(new TeamAdvancedFilterDto() { UserId = 1 }),
+                AdvancedFilter = new TeamAdvancedFilterDto() { UserId = 1 },
             };
             ObjectResult response = this.controller.GetAll(filter).Result as ObjectResult;
             Assert.IsNotNull(response);
@@ -258,7 +258,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
         /// </summary>
         /// <param name="siteId">The site identifier.</param>
         /// <param name="expectedResult">The expected result.</param>
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(-1, HttpStatusCode.Created)]
         [DataRow(0, HttpStatusCode.Created)]
         [DataRow(1, HttpStatusCode.InternalServerError)]
@@ -308,7 +308,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
         /// <summary>
         /// Test site creation by controller.
         /// </summary>
-        [TestMethod("SitesControllerTests.InsertSiteByController")]
+        [TestMethod(DisplayName = "SitesControllerTests.InsertSiteByController")]
         public void InsertSiteByController()
         {
             this.InitCurrentTeam(1);
@@ -358,7 +358,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
         /// <summary>
         /// Create a site, then update it by controller.
         /// </summary>
-        [TestMethod("SitesControllerTests.UpdateCreatedSiteByController")]
+        [TestMethod(DisplayName = "SitesControllerTests.UpdateCreatedSiteByController")]
         public void UpdateCreatedSiteByController()
         {
             this.InitCurrentTeam(1);

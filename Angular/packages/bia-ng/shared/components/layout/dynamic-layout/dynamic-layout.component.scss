@@ -1,0 +1,16 @@
+.BiaPageTitle {
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 1.75rem;
+  margin-top: 0.25rem;
+}
+
+.split-zone {
+  width: 1rem;
+  background-color: transparent;
+}
+
+.handle {
+  cursor: col-resize;
+  user-select: none; /* Prevent text selection */
+}

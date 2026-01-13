@@ -13,7 +13,8 @@
       [selectedElements]="selectedCrudItems"
       [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
       [tableControllerVisible]="showTableController"
-      (toggleTableControllerVisibility)="toggleTableControllerVisibility()">
+      (toggleTableControllerVisibility)="toggleTableControllerVisibility()"
+      [selectionActionsMenuItems]="selectionActionsMenuItems">
       <!-- BIAToolKit - Begin AirportIndexHtml -->
       <!-- BIAToolKit - End AirportIndexHtml -->
     </bia-table-header>
@@ -27,6 +28,7 @@
       (clearFilters)="onClearFilters()"
       (toggleSearch)="onToggleSearch()"
       (viewChange)="onViewChange($event)"
+      (selectedViewChanged)="onSelectedViewChanged($event)"
       [tableStateKey]="tableStateKey"
       [tableState]="tableState"
       [defaultViewPref]="defaultViewPref"
@@ -47,54 +49,55 @@
           "></bia-table-behavior-controller>
       </ng-template>
     </bia-table-controller>
-    <bia-table
-      *ngIf="!crudConfiguration.useCalcMode"
-      [elements]="(crudItems$ | async) ?? []"
-      [dictOptionDtos]="
-        (airportService.optionsService.dictOptionDtos$ | async) ?? []
-      "
-      [totalRecord]="(totalCount$ | async) ?? 0"
-      [columnToDisplays]="displayedColumns"
-      [pageSize]="pageSize"
-      (pageSizeChange)="onPageSizeChange($event)"
-      [configuration]="crudConfiguration.fieldsConfig"
-      [(showColSearch)]="showColSearch"
-      [globalSearchValue]="globalSearchValue"
-      [canClickRow]="canEdit"
-      [canSelectElement]="canDelete"
-      [loading]="(loading$ | async) ?? false"
-      (clickRowId)="onClickRow($event)"
-      (loadLazy)="onLoadLazy($event)"
-      [viewPreference]="viewPreference"
-      [tableStateKey]="tableStateKey"
-      (selectedElementsChanged)="onSelectedElementsChanged($event)"
-      [sortFieldValue]="sortFieldValue"
-      (stateSave)="onStateSave($event)"
-      [scrollHeightValue]="getFillScrollHeightValue()"></bia-table>
-    <app-airport-table
-      *ngIf="crudConfiguration.useCalcMode"
-      [elements]="(crudItems$ | async) ?? []"
-      [dictOptionDtos]="
-        (airportService.optionsService.dictOptionDtos$ | async) ?? []
-      "
-      [totalRecord]="(totalCount$ | async) ?? 0"
-      [columnToDisplays]="displayedColumns"
-      [pageSize]="pageSize"
-      (pageSizeChange)="onPageSizeChange($event)"
-      [configuration]="crudConfiguration.fieldsConfig"
-      [(showColSearch)]="showColSearch"
-      [globalSearchValue]="globalSearchValue"
-      [canEdit]="canEdit"
-      [canAdd]="canAdd"
-      [canSelectElement]="canDelete"
-      [loading]="(loading$ | async) ?? false"
-      (loadLazy)="onLoadLazy($event)"
-      [viewPreference]="viewPreference"
-      [tableStateKey]="tableStateKey"
-      (selectedElementsChanged)="onSelectedElementsChanged($event)"
-      [sortFieldValue]="sortFieldValue"
-      (stateSave)="onStateSave($event)"
-      (save)="onSave($event)"
-      [scrollHeightValue]="getFillScrollHeightValue()"></app-airport-table>
+    @if (!crudConfiguration.useCalcMode) {
+      <bia-table
+        [elements]="(crudItems$ | async) ?? []"
+        [dictOptionDtos]="
+          (airportService.optionsService.dictOptionDtos$ | async) ?? []
+        "
+        [totalRecord]="(totalCount$ | async) ?? 0"
+        [columnToDisplays]="displayedColumns"
+        [pageSize]="pageSize"
+        (pageSizeChange)="onPageSizeChange($event)"
+        [configuration]="crudConfiguration.fieldsConfig"
+        [(showColSearch)]="showColSearch"
+        [globalSearchValue]="globalSearchValue"
+        [canClickRow]="canEdit"
+        [canSelectElement]="canDelete"
+        [loading]="(loading$ | async) ?? false"
+        (clickRowId)="onClickRow($event)"
+        (loadLazy)="onLoadLazy($event)"
+        [viewPreference]="viewPreference"
+        [tableStateKey]="tableStateKey"
+        (selectedElementsChanged)="onSelectedElementsChanged($event)"
+        [sortFieldValue]="sortFieldValue"
+        (stateSave)="onStateSave($event)"
+        [scrollHeightValue]="getFillScrollHeightValue()"></bia-table>
+    } @else {
+      <app-airport-table
+        [elements]="(crudItems$ | async) ?? []"
+        [dictOptionDtos]="
+          (airportService.optionsService.dictOptionDtos$ | async) ?? []
+        "
+        [totalRecord]="(totalCount$ | async) ?? 0"
+        [columnToDisplays]="displayedColumns"
+        [pageSize]="pageSize"
+        (pageSizeChange)="onPageSizeChange($event)"
+        [configuration]="crudConfiguration.fieldsConfig"
+        [(showColSearch)]="showColSearch"
+        [globalSearchValue]="globalSearchValue"
+        [canEdit]="canEdit"
+        [canAdd]="canAdd"
+        [canSelectElement]="canDelete"
+        [loading]="(loading$ | async) ?? false"
+        (loadLazy)="onLoadLazy($event)"
+        [viewPreference]="viewPreference"
+        [tableStateKey]="tableStateKey"
+        (selectedElementsChanged)="onSelectedElementsChanged($event)"
+        [sortFieldValue]="sortFieldValue"
+        (stateSave)="onStateSave($event)"
+        (save)="onSave($event)"
+        [scrollHeightValue]="getFillScrollHeightValue()"></app-airport-table>
+    }
   </div>
 </div>

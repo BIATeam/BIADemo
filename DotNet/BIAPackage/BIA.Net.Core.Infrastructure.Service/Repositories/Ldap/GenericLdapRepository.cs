@@ -27,6 +27,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Services;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Ldap;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
 
@@ -66,6 +67,11 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         protected readonly BiaNetSection configuration;
 
         /// <summary>
+        /// The configuration of the app settings section.
+        /// </summary>
+        protected readonly IConfiguration appConfiguration;
+
+        /// <summary>
         /// The configuration of the BiaNet section.
         /// </summary>
         protected readonly IEnumerable<LdapDomain> ldapDomains;
@@ -90,22 +96,25 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// </summary>
         protected readonly int LdapCacheUserDuration;
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="GenericLdapRepository"/> class.
         /// </summary>
         /// <param name="logger">The logger.</param>
         /// <param name="configuration">The configuration.</param>
-        public GenericLdapRepository(ILogger<GenericLdapRepository<TUserFromDirectoryDto, TUserFromDirectory>> logger, IOptions<BiaNetSection> configuration, ILdapRepositoryHelper ldapRepositoryHelper, IUserIdentityKeyDomainService userIdentityKeyDomainService)
+        public GenericLdapRepository(
+            ILogger<GenericLdapRepository<TUserFromDirectoryDto, TUserFromDirectory>> logger,
+            IOptions<BiaNetSection> configuration,
+            ILdapRepositoryHelper ldapRepositoryHelper,
+            IUserIdentityKeyDomainService userIdentityKeyDomainService)
         {
             this.logger = logger;
             this.configuration = configuration.Value;
             this.ldapRepositoryHelper = (LdapRepositoryHelper)ldapRepositoryHelper;
 
-            this.ldapDomains = this.configuration.Authentication.LdapDomains;
+            this.ldapDomains = this.configuration.Authentication?.LdapDomains;
             this.ldapDomainsUsers = this.ldapDomains?.Where(l => l.ContainsUser == true);
-            this.LdapCacheGroupDuration = configuration.Value.Authentication.LdapCacheGroupDuration;
-            this.LdapCacheUserDuration = configuration.Value.Authentication.LdapCacheUserDuration;
+            this.LdapCacheGroupDuration = configuration.Value.Authentication?.LdapCacheGroupDuration ?? 200;
+            this.LdapCacheUserDuration = configuration.Value.Authentication?.LdapCacheUserDuration ?? 1800;
             this.userIdentityKeyDomainService = userIdentityKeyDomainService;
         }
 
@@ -738,7 +747,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             this.cacheGroupPrincipal.Clear();
             IEnumerable<BIA.Net.Core.Common.Configuration.Role> rolesSection = this.configuration.Roles;
 
-            var gobalRoles = new ConcurrentBag<string>();
+            var globalRoles = new ConcurrentBag<string>();
 
             if (rolesSection != null)
             {
@@ -808,12 +817,12 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 {
                     if (role != null)
                     {
-                        gobalRoles.Add(role);
+                        globalRoles.Add(role);
                     }
                 }
             }
 
-            return gobalRoles.ToList();
+            return globalRoles.ToList();
         }
 
         protected virtual async Task<string> GetSidHistory(string sid, string userDomain)

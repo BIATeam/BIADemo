@@ -35,23 +35,24 @@ namespace BIA.Net.Core.Domain.View.Mappers
                 Description = entity.Description,
                 IsUserDefault = entity.ViewUsers.Any(a => a.UserId == userId && a.IsDefault),
                 Preference = entity.Preference,
-                ViewTeams = entity.ViewTeams.Select(x => new ViewTeamDto() { TeamId = x.Team.Id, TeamTitle = x.Team.Title, IsDefault = x.IsDefault }).ToList(),
+                ViewTeams = entity.ViewTeams.Select(x => new ViewTeamDto() { Id = x.Team.Id, TeamTitle = x.Team.Title, IsDefault = x.IsDefault }).ToList(),
             };
         }
 
         /// <summary>
-        /// Mappers the add user view.
+        /// Mappers the add view.
         /// </summary>
         /// <param name="dto">The dto.</param>
         /// <param name="entity">The entity.</param>
         /// <param name="userId">The user identifier.</param>
-        public static void MapperAddUserView(ViewDto dto, View entity, int userId)
+        public static void MapperView(ViewDto dto, View entity, int userId)
         {
             if (dto != null)
             {
                 if (entity == null)
                 {
                     entity = new View();
+                    entity.ViewTeams = [];
                 }
 
                 entity.Id = dto.Id;
@@ -59,54 +60,35 @@ namespace BIA.Net.Core.Domain.View.Mappers
                 entity.Name = dto.Name;
                 entity.Description = dto.Description;
                 entity.Preference = dto.Preference;
-                entity.ViewType = ViewType.User;
-                entity.ViewUsers = new List<ViewUser>();
-                entity.ViewUsers.Add(new ViewUser { IsDefault = false, ViewId = entity.Id, UserId = userId });
-            }
-        }
-
-        /// <summary>
-        /// Mappers the add site view.
-        /// </summary>
-        /// <param name="dto">The dto.</param>
-        /// <param name="entity">The entity.</param>
-        public static void MapperAddTeamView(TeamViewDto dto, View entity)
-        {
-            if (dto != null && dto.TeamId > 0)
-            {
-                if (entity == null)
+                entity.ViewType = dto.ViewType == (int)ViewType.Team ? ViewType.Team : ViewType.User;
+                if (entity.ViewType == ViewType.User && dto.Id == 0)
                 {
-                    entity = new View();
+                    entity.ViewUsers = [new ViewUser { IsDefault = false, ViewId = entity.Id, UserId = userId }];
                 }
 
-                entity.Id = dto.Id;
-                entity.TableId = dto.TableId;
-                entity.Name = dto.Name;
-                entity.Description = dto.Description;
-                entity.Preference = dto.Preference;
-                entity.ViewType = ViewType.Team;
-                entity.ViewTeams = new List<ViewTeam>();
-                entity.ViewTeams.Add(new ViewTeam { IsDefault = false, ViewId = entity.Id, TeamId = dto.TeamId });
-            }
-        }
-
-        /// <summary>
-        /// Mappers the update view.
-        /// </summary>
-        /// <param name="dto">The dto.</param>
-        /// <param name="entity">The entity.</param>
-        public static void MapperUpdateView(ViewDto dto, View entity)
-        {
-            if (dto != null)
-            {
-                if (entity == null)
+                if (entity.ViewType == ViewType.Team)
                 {
-                    entity = new View();
-                }
+                    if (entity.ViewTeams == null)
+                    {
+                        entity.ViewTeams = [];
+                    }
 
-                entity.Name = dto.Name;
-                entity.Description = dto.Description;
-                entity.Preference = dto.Preference;
+                    foreach (var item in dto.ViewTeams)
+                    {
+                        if (dto.Id == 0 || item.DtoState == Dto.Base.DtoState.Added)
+                        {
+                            entity.ViewTeams.Add(new ViewTeam { IsDefault = item.IsDefault, ViewId = entity.Id, TeamId = item.Id });
+                        }
+                        else if (item.DtoState == Dto.Base.DtoState.Deleted)
+                        {
+                            var viewTeam = entity.ViewTeams.FirstOrDefault(x => x.TeamId == item.Id);
+                            if (viewTeam != null)
+                            {
+                                entity.ViewTeams.Remove(viewTeam);
+                            }
+                        }
+                    }
+                }
             }
         }
     }

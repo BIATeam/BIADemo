@@ -11,6 +11,7 @@ namespace TheBIADevCompany.BIADemo.Application.Site
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
@@ -26,7 +27,7 @@ namespace TheBIADevCompany.BIADemo.Application.Site
     /// <summary>
     /// The application service used for site.
     /// </summary>
-    public class SiteAppService : CrudAppServiceBase<SiteDto, Site, int, PagingFilterFormatDto, SiteMapper>, ISiteAppService
+    public class SiteAppService : CrudAppServiceBase<SiteDto, Site, int, PagingFilterFormatDto<TeamAdvancedFilterDto>, SiteMapper>, ISiteAppService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SiteAppService"/> class.
@@ -43,24 +44,6 @@ namespace TheBIADevCompany.BIADemo.Application.Site
             this.FiltersContext.Add(
                 AccessMode.Update,
                 TeamAppService.UpdateSpecification<Site, UserDataDto>(TeamTypeId.Site, principal));
-        }
-
-        /// <inheritdoc/>
-#pragma warning disable S1006 // Method overrides should not change parameter defaults
-        public override Task<(IEnumerable<SiteDto> Results, int Total)> GetRangeAsync(PagingFilterFormatDto filters = null, int id = default, Specification<Site> specification = null, Expression<Func<Site, bool>> filter = null, string accessMode = "Read", string queryMode = "ReadList", string mapperMode = null, bool isReadOnlyMode = false)
-#pragma warning restore S1006 // Method overrides should not change parameter defaults
-        {
-            specification ??= TeamAdvancedFilterSpecification<Site>.Filter(filters);
-            return base.GetRangeAsync(filters, id, specification, filter, accessMode, queryMode, mapperMode, isReadOnlyMode);
-        }
-
-        /// <inheritdoc/>
-#pragma warning disable S1006 // Method overrides should not change parameter defaults
-        public override Task<byte[]> GetCsvAsync(PagingFilterFormatDto filters = null, int id = default, Specification<Site> specification = null, Expression<Func<Site, bool>> filter = null, string accessMode = "Read", string queryMode = "ReadList", string mapperMode = null, bool isReadOnlyMode = false)
-#pragma warning restore S1006 // Method overrides should not change parameter defaults
-        {
-            specification ??= TeamAdvancedFilterSpecification<Site>.Filter(filters);
-            return base.GetCsvAsync(filters, id, specification, filter, accessMode, queryMode, mapperMode, isReadOnlyMode);
         }
     }
 }

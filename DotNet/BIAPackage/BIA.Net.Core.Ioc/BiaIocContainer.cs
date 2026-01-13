@@ -41,7 +41,6 @@ namespace BIA.Net.Core.Ioc
         {
             ConfigureInfrastructureServiceContainer(collection, configuration);
             ConfigureDomainContainer(collection);
-            ConfigureApplicationContainer(collection);
 
             if (!isUnitTest)
             {
@@ -105,7 +104,7 @@ namespace BIA.Net.Core.Ioc
             IEnumerable<Type> classTypes = classAssembly.GetTypes().Where(type => type.IsClass && !type.IsAbstract);
             IEnumerable<Type> interfaceTypes = interfaceAssembly.GetTypes().Where(type => type.IsInterface);
 
-            IEnumerable<(Type classType, Type interfaceType)> mappings = from classType in classTypes
+            IEnumerable<(Type ClassType, Type InterfaceType)> mappings = from classType in classTypes
                                                                          join interfaceType in interfaceTypes
                                                                          on "I" + classType.Name equals interfaceType.Name
                                                                          where (excludedServiceNames == null || !excludedServiceNames.Contains(classType.Name)) &&
@@ -135,15 +134,6 @@ namespace BIA.Net.Core.Ioc
             }
         }
 
-        private static void ConfigureApplicationContainer(IServiceCollection collection)
-        {
-            // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
-            RegisterServicesFromAssembly(
-                collection: collection,
-                assemblyName: "BIA.Net.Core.Application",
-                serviceLifetime: ServiceLifetime.Transient);
-        }
-
         private static void ConfigureDomainContainer(IServiceCollection collection)
         {
             // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
@@ -153,10 +143,18 @@ namespace BIA.Net.Core.Ioc
                 serviceLifetime: ServiceLifetime.Transient);
 
             // Domain
-            Type templateType = typeof(BiaBaseMapper<,,>);
             Assembly assembly = Assembly.Load("BIA.Net.Core.Domain");
-            List<Type> derivedTypes = ReflectiveEnumerator.GetDerivedTypes(assembly, templateType);
-            foreach (var type in derivedTypes)
+
+            Type biaBaseMapperType = typeof(BiaBaseMapper<,,>);
+            List<Type> derivedBiaBaseMapperTypes = ReflectiveEnumerator.GetDerivedTypes(assembly, biaBaseMapperType);
+            foreach (var type in derivedBiaBaseMapperTypes)
+            {
+                collection.AddScoped(type);
+            }
+
+            Type biaBaseQueryModelMapperType = typeof(BiaBaseQueryModelMapper<,,,,,>);
+            List<Type> derivedBiaBaseQueryModelMapperTypes = ReflectiveEnumerator.GetDerivedTypes(assembly, biaBaseQueryModelMapperType);
+            foreach (var type in derivedBiaBaseQueryModelMapperTypes)
             {
                 collection.AddScoped(type);
             }
@@ -208,7 +206,7 @@ namespace BIA.Net.Core.Ioc
 
             collection.AddTransient<IFileRepository, FileRepository>();
             collection.AddHttpClient<IImageUrlRepository, ImageUrlRepository>().ConfigurePrimaryHttpMessageHandler(() =>
-                GetHttpMessagehandler(biaNetSection.ProfileConfiguration.AuthenticationConfiguration, biaNetSection));
+                GetHttpMessagehandler(biaNetSection.ProfileConfiguration?.AuthenticationConfiguration, biaNetSection));
 
             collection.AddHttpClient<IBiaWebApiAuthRepository, BiaWebApiAuthRepository>().ConfigurePrimaryHttpMessageHandler(() =>
             CreateHttpClientHandler(biaNetSection));

@@ -17,7 +17,7 @@ namespace BIA.Net.Core.Application.Translation
     /// <summary>
     /// The application service used for language.
     /// </summary>
-    public class LanguageAppService : OperationalDomainServiceBase<Language, int>, ILanguageAppService
+    public class LanguageAppService : OptionAppServiceBase<OptionDto, Language, int, LanguageOptionMapper>, ILanguageAppService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LanguageAppService"/> class.
@@ -28,15 +28,6 @@ namespace BIA.Net.Core.Application.Translation
         public LanguageAppService(ITGenericRepository<Language, int> repository)
             : base(repository)
         {
-        }
-
-        /// <summary>
-        /// Return options.
-        /// </summary>
-        /// <returns>List of OptionDto.</returns>
-        public Task<IEnumerable<OptionDto>> GetAllOptionsAsync()
-        {
-            return this.GetAllAsync<OptionDto, LanguageOptionMapper>();
         }
     }
 }

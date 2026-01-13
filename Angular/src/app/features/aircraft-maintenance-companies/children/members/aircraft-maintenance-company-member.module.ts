@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
-import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
-import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
-import { MemberModule } from 'src/app/shared/bia-shared/feature-templates/members/member.module';
+import { PermissionGuard } from '@bia-team/bia-ng/core';
+import {
+  DynamicLayoutComponent,
+  LayoutMode,
+  MemberModule,
+} from '@bia-team/bia-ng/shared';
 import { Permission } from 'src/app/shared/permission';
 
 import { AircraftMaintenanceCompanyMemberEditComponent } from './views/aircraft-maintenance-company-member-edit/aircraft-maintenance-company-member-edit.component';
@@ -19,7 +21,7 @@ const ROUTES: Routes = [
       permission: Permission.AircraftMaintenanceCompany_Member_List_Access,
       injectComponent: AircraftMaintenanceCompanyMembersIndexComponent,
     },
-    component: FullPageLayoutComponent,
+    component: DynamicLayoutComponent,
     canActivate: [PermissionGuard],
     // [Calc] : The children are not used in calc
     children: [
@@ -30,16 +32,16 @@ const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.AircraftMaintenanceCompany_Member_Create,
           title: 'member.add',
-          injectComponent: AircraftMaintenanceCompanyMemberNewComponent,
+          layoutMode: LayoutMode.popup,
         },
-        component: PopupLayoutComponent,
+        component: AircraftMaintenanceCompanyMemberNewComponent,
         canActivate: [PermissionGuard],
       },
       {
         path: ':crudItemId',
         data: {
           breadcrumb: '',
-          canNavigate: true,
+          canNavigate: false,
         },
         component: AircraftMaintenanceCompanyMemberItemComponent,
         canActivate: [PermissionGuard],
@@ -51,9 +53,9 @@ const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.AircraftMaintenanceCompany_Member_Update,
               title: 'member.manage',
-              injectComponent: AircraftMaintenanceCompanyMemberEditComponent,
+              layoutMode: LayoutMode.popup,
             },
-            component: PopupLayoutComponent,
+            component: AircraftMaintenanceCompanyMemberEditComponent,
             canActivate: [PermissionGuard],
           },
           {

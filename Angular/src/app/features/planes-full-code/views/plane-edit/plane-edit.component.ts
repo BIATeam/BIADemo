@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -7,10 +7,10 @@ import {
   Output,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BiaTranslationService } from '@bia-team/bia-ng/core';
+import { SpinnerComponent } from '@bia-team/bia-ng/shared';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
-import { SpinnerComponent } from 'src/app/shared/bia-shared/components/spinner/spinner.component';
 import { AppState } from 'src/app/store/state';
 import { PlaneFormComponent } from '../../components/plane-form/plane-form.component';
 import { Plane } from '../../model/plane';
@@ -22,7 +22,7 @@ import { FeaturePlanesActions } from '../../store/planes-actions';
   selector: 'app-plane-edit',
   templateUrl: './plane-edit.component.html',
   styleUrls: ['./plane-edit.component.scss'],
-  imports: [NgIf, PlaneFormComponent, AsyncPipe, SpinnerComponent],
+  imports: [PlaneFormComponent, AsyncPipe, SpinnerComponent],
 })
 export class PlaneEditComponent implements OnInit, OnDestroy {
   @Output() displayChange = new EventEmitter<boolean>();

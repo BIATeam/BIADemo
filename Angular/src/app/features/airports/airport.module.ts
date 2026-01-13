@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PermissionGuard } from '@bia-team/bia-ng/core';
+import { DynamicLayoutComponent } from '@bia-team/bia-ng/shared';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
-import { DynamicLayoutComponent } from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { Permission } from 'src/app/shared/permission';
 import { airportCRUDConfiguration } from './airport.constants';
+import { AirportService } from './services/airport.service';
 import { FeatureAirportsStore } from './store/airport.state';
 import { AirportsEffects } from './store/airports-effects';
 import { AirportEditComponent } from './views/airport-edit/airport-edit.component';
@@ -38,10 +39,20 @@ export const ROUTES: Routes = [
         canActivate: [PermissionGuard],
       },
       {
+        path: 'view',
+        data: {
+          featureConfiguration: airportCRUDConfiguration,
+          featureServiceType: AirportService,
+          leftWidth: 60,
+        },
+        loadChildren: () =>
+          import('../../shared/bia-shared/view.module').then(m => m.ViewModule),
+      },
+      {
         path: ':crudItemId',
         data: {
           breadcrumb: '',
-          canNavigate: true,
+          canNavigate: false,
         },
         component: AirportItemComponent,
         canActivate: [PermissionGuard],

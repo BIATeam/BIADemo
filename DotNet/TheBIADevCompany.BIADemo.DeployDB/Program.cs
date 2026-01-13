@@ -10,8 +10,8 @@ namespace TheBIADevCompany.BIADemo.DeployDB
     using BIA.Net.Core.Application.Clean;
 #if BIA_FRONT_FEATURE
     using BIA.Net.Core.Application.Job;
-    using BIA.Net.Core.Common;
 #endif
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Infrastructure.Data;
@@ -137,10 +137,13 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                 {
                     IConfiguration configuration = hostingContext.Configuration;
                     LogManager.Configuration = new NLogLoggingConfiguration(configuration.GetSection("NLog"));
+                    LogManager.GetCurrentClassLogger().Info("Start of DeployDB");
                     LogManager.GetCurrentClassLogger().Info($"{Constants.Application.Environment}: {Environment.GetEnvironmentVariable(Constants.Application.Environment)}");
                 })
                 .UseNLog()
                 .RunConsoleAsync();
+
+            LogManager.GetLogger(typeof(Program).ToString()).Info("End of DeployDB");
         }
     }
 }

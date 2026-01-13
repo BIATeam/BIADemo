@@ -6,20 +6,25 @@
     "aircraftMaintenanceCompanies": "Empresas de mantenimiento de aeronaves",
     "airports": "Aeropuertos",
     "engines": "Motor",
+    "fleet": "Flota",
+    "flights": "Vuelos",
     "hangfire": "Hangfire",
+    "pilots": "Pilotos",
     "planes": "Aviones",
+    "plane": "Avión",
     "planesFullCode": "Aviones (Full code)",
     "planesPageMode": "Aviones (Página)",
     "planesOfflineMode": "Aviones (Desconectado)",
     "planesSpecific": "Aviones (Specific)",
     "planesTypes": "Tipos de aviones",
     "airlines": "Aerolíneas",
+    "maintenance": "Mantenimiento",
+    "maintenanceTeams": "Mantenimiento equipos",
+    "maintenanceContracts": "Contratos de mantenimiento",
     "End BIADemo": "To remove in project up to here",
     "teams": "Equipos",
     "users": "Usuarios",
-    "notifications": "Notificaciones",
-    "maintenanceTeams": "Mantenimiento equipos",
-    "maintenanceContracts": "Contratos de mantenimiento"
+    "notifications": "Notificaciones"
   },
   "Begin BIADemo": "To remove in project from here",
   "aircraftMaintenanceCompany": {
@@ -29,7 +34,7 @@
     "goto": "Ver empresa",
     "listOf": "Lista de empresas de mantenimiento de aeronaves",
     "maintenanceTeams": "Equipos de mantenimiento",
-    "title": "Name",
+    "title": "Nombre",
     "headerLabel": "Empresa de mantenimiento de aeronaves"
   },
   "airport": {
@@ -66,6 +71,17 @@
     "installedParts": "Partes instaladas",
     "import": "Importar motors"
   },
+  "flight": {
+    "add": "Añadir vuelo",
+    "arrivalAirport": "Aeropuerto de llegada",
+    "departureAirport": "Aeropuerto de salida",
+    "edit": "Editar vuelo",
+    "id": "Número de vuelo",
+    "import": "Importar vuelos",
+    "listOf": "Lista de vuelos",
+    "read": "Detalles del vuelo",
+    "site": "Compañía aérea"
+  },
   "maintenanceContract": {
     "listOf": "Listado de contratos de mantenimiento",
     "contractNumber": "Número de contrato",
@@ -80,7 +96,7 @@
     "edit": "Editar equipo de mantenimiento",
     "headerLabel": "Equipo de mantenimiento",
     "listOf": "Lista de equipos de mantenimiento",
-    "title": "Name",
+    "title": "Nombre",
     "code": "Código",
     "isActive": "Activo",
     "isApproved": "Aprobado",
@@ -102,6 +118,17 @@
     "operationCountries": "Países de operaciones",
     "currentAirport": "Aeropuerto actual",
     "operationAirports": "Aeropuertos de operaciones"
+  },
+  "pilot": {
+    "add": "Añadir piloto",
+    "edit": "Editar piloto",
+    "flightHours": "Horas de vuelo",
+    "identificationNumber": "Número de identificación",
+    "import": "Importar pilotos",
+    "information": "Información",
+    "listOf": "Lista de pilotos",
+    "read": "Detalles del piloto",
+    "site": "Compañía aérea"
   },
   "plane": {
     "add": "Añadir avión",
@@ -168,8 +195,9 @@
     "listOf": "Lista de sitios",
     "Begin BIADemo": "To remove in project from here",
     "End BIADemo": "To remove in project up to here",
-    "title": "Title",
-    "headerLabel": "Sitios"
+    "title": "Título",
+    "headerLabel": "Sitios",
+    "uniqueIdentifier": "Identificador único"
   },
   "translation": {
     "defaultLanguage": "Defecto (Inglés)"

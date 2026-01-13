@@ -1,0 +1,15 @@
+@if (announcements) {
+  <div class="announcement-container">
+    <div class="announcement-title">
+      <span>{{ 'announcement.announcements' | translate }}</span>
+      <i class="pi pi-megaphone icon-title"></i>
+    </div>
+
+    <div class="announcement-content-container" #contentContainer>
+      <div
+        #scrollContent
+        class="announcement-content"
+        [innerHTML]="formatedAnnouncements | safeHtml"></div>
+    </div>
+  </div>
+}

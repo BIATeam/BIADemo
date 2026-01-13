@@ -1,0 +1,264 @@
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
+import { AppSettings } from '@bia-team/bia-ng/models';
+import { BiaAppState } from '@bia-team/bia-ng/store';
+import { Store } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
+import { PrimeNG } from 'primeng/config';
+import { DatePicker } from 'primeng/datepicker';
+import { BehaviorSubject, Observable, combineLatest, forkJoin, of } from 'rxjs';
+import { distinctUntilChanged, map, skip, tap } from 'rxjs/operators';
+import { getAppSettings } from '../app-settings/store/app-settings.state';
+import { AuthService } from './auth.service';
+import { BiaAppConstantsService } from './bia-app-constants.service';
+
+// export const BIA_DEFAULT_LOCALE_ID = new InjectionToken('biaDefaultLocaleId');
+const TRANSLATION_LANG_KEY = '@@lang';
+export const STORAGE_CULTURE_KEY = 'bia-culture';
+
+// Return last choosed lang or browser lang.
+export const getCurrentCulture = () => {
+  let culture;
+  try {
+    culture = localStorage.getItem(STORAGE_CULTURE_KEY);
+  } catch (err) {
+    console.error(err);
+  }
+  if (!culture) {
+    if (navigator.languages) {
+      culture = navigator.languages[0];
+      for (let i = 0; i < navigator.languages.length; i++) {
+        if (
+          BiaAppConstantsService.supportedTranslations.indexOf(
+            navigator.languages[i]
+          ) !== -1
+        ) {
+          culture = navigator.languages[i];
+          break;
+        }
+      }
+    } else {
+      culture = navigator.language;
+    }
+    if (culture.length === 2) culture = culture + '-' + culture.toUpperCase();
+  }
+  if (BiaAppConstantsService.supportedTranslations.indexOf(culture) !== -1) {
+    try {
+      localStorage.setItem(STORAGE_CULTURE_KEY, culture);
+    } catch (err) {
+      console.error(err);
+    }
+    return culture;
+  }
+  return 'en-US';
+};
+
+export interface DateFormat {
+  dateFormat: string;
+  dateTimeFormat: string;
+  primeDateFormat: string;
+  hourFormat: number;
+  timeFormat: string;
+  timeFormatSec: string;
+}
+
+// Same as @ngx-translate/http-loader but keep the previous translations (usefull for lazy loading of translation)
+
+// Workaround for https://github.com/ngx-translate/core/issues/425
+// Also force ngx-translate to load translations
+@Injectable({
+  providedIn: 'root',
+})
+export class BiaTranslationService {
+  protected translationsLoaded: { [lang: string]: boolean } = {};
+  protected lazyTranslateServices: TranslateService[] = [];
+  protected cultureSubject: BehaviorSubject<string | null> =
+    new BehaviorSubject<string | null>(getCurrentCulture());
+  public currentCulture$: Observable<string | null> =
+    this.cultureSubject.asObservable();
+  public appSettings$: Observable<AppSettings | null>;
+  public currentCultureDateFormat$: Observable<DateFormat>;
+  public languageId$: Observable<number>;
+
+  protected currentCulture = 'None';
+  protected currentLanguage = 'None';
+
+  // stocke les JSON BIA pour les réappliquer après un charge HTTP
+  protected biaLocales: { [lang: string]: any } = {};
+
+  get currentCultureValue() {
+    return this.currentCulture;
+  }
+
+  constructor(
+    protected translate: TranslateService,
+    @Inject(LOCALE_ID) localeId: string,
+    protected store: Store<BiaAppState>,
+    protected primeNgConfig: PrimeNG,
+    protected authService: AuthService
+  ) {
+    this.appSettings$ = this.store.select(getAppSettings);
+    this.currentCultureDateFormat$ = combineLatest([
+      this.currentCulture$,
+      this.appSettings$,
+    ]).pipe(
+      map(([currentCulture, appSettings]) =>
+        this.getDateFormatByCulture(currentCulture, appSettings)
+      )
+    );
+    this.languageId$ = combineLatest([this.currentCulture$, this.appSettings$])
+      .pipe(
+        map(([currentCulture, appSettings]) =>
+          this.getLanguageId(currentCulture, appSettings)
+        )
+      )
+      .pipe(distinctUntilChanged())
+      .pipe(skip(1));
+    // force language initialization to avoid double authentication.
+    this.loadAndChangeLanguage(getCurrentCulture(), false);
+    this.currentCultureDateFormat$.subscribe(dateFormat => {
+      DatePicker.prototype.getDateFormat = function () {
+        return (
+          (this as unknown as DatePicker).dateFormat ||
+          dateFormat.primeDateFormat
+        );
+      };
+    });
+  }
+
+  // Translation for bia are not loaded with http client (arguably unnecessary)
+  registerLocaleData(data: { [k: string]: any }) {
+    if (!data[TRANSLATION_LANG_KEY]) {
+      throw new Error('invalid translation file');
+    }
+    const lang = data[TRANSLATION_LANG_KEY];
+    this.biaLocales[lang] = this.biaLocales[lang] ?? {
+      ...this.biaLocales[lang],
+      ...data,
+    };
+    this.translate.setTranslation(lang, data, true);
+  }
+
+  // Because we add some translations (registerLocaleData), ngx-translate doesn't modules translations
+  // So we need to call getTranslation manually
+  // NOTE: Check if it's still usefull
+  loadAndChangeLanguage(culture: string, reLoginIfRequiered = true) {
+    if (this.currentCulture !== culture) {
+      const lang = culture.split('-')[0];
+      this.currentCulture = culture;
+      const translationLoaders$ = [];
+      const translateServices = [this.translate, ...this.lazyTranslateServices];
+      if (!this.translationsLoaded[lang]) {
+        for (const translateService of translateServices) {
+          translationLoaders$.push(translateService.reloadLang(lang));
+        }
+      }
+      let lang$: Observable<any> = of(undefined);
+      if (translationLoaders$.length) {
+        lang$ = this.loadTranslations(translationLoaders$, lang);
+      } else {
+        lang$ = this.translate.use(lang);
+      }
+      lang$.subscribe(() => {
+        const biaLocale = this.biaLocales[lang];
+        if (biaLocale) {
+          this.translate.setTranslation(lang, biaLocale, true);
+        }
+        this.translate.use(lang);
+        this.translate
+          .get('primeng')
+          .subscribe(res => this.primeNgConfig.setTranslation(res));
+        try {
+          localStorage.setItem(STORAGE_CULTURE_KEY, culture);
+        } catch (err) {
+          console.error(err);
+        }
+        this.cultureSubject.next(culture);
+      });
+
+      if (this.currentLanguage !== lang) {
+        this.currentLanguage = lang;
+        if (reLoginIfRequiered) this.authService.reLogin();
+      }
+    }
+  }
+
+  protected loadTranslations(
+    translationLoaders$: Observable<any>[],
+    lang: string,
+    defaultLang?: string
+  ) {
+    return forkJoin(translationLoaders$).pipe(
+      tap(() => {
+        this.translationsLoaded[lang] = true;
+        if (defaultLang) {
+          this.translationsLoaded[defaultLang] = true;
+        }
+      })
+    );
+  }
+
+  protected getDateFormatByCulture(
+    code: string | null,
+    appSettings: AppSettings | null
+  ): DateFormat {
+    let dateFormat = 'yyyy-MM-dd';
+    let timeFormat = 'HH:mm';
+    let timeFormatSec = 'HH:mm:ss';
+    if (appSettings) {
+      let culture;
+
+      if (!code) {
+        culture = appSettings.cultures.filter(
+          c => c.acceptedCodes.indexOf('default') > -1
+        )[0];
+      }
+      if (!culture) {
+        culture = appSettings.cultures.filter(c => c.code === code)[0];
+      }
+
+      if (culture) {
+        dateFormat = culture.dateFormat;
+        timeFormat = culture.timeFormat;
+        timeFormatSec = culture.timeFormatSec;
+      }
+    }
+    const primeDateFormat = dateFormat
+      .replace('MM', 'mm')
+      .replace('yyyy', 'yy');
+    let hourFormat = 24;
+    if (timeFormat.indexOf('h:') > -1) {
+      hourFormat = 12;
+    }
+
+    return {
+      dateFormat: dateFormat,
+      dateTimeFormat: `${dateFormat} ${timeFormat}`,
+      primeDateFormat: primeDateFormat,
+      hourFormat: hourFormat,
+      timeFormat: timeFormat,
+      timeFormatSec: timeFormatSec,
+    };
+  }
+  protected getLanguageId(
+    code: string | null,
+    appSettings: AppSettings | null
+  ): number {
+    let languageId = 0;
+    if (appSettings) {
+      let culture;
+
+      if (code === null) {
+        culture = appSettings.cultures.filter(
+          c => c.acceptedCodes.indexOf('default') > -1
+        )[0];
+      } else {
+        culture = appSettings.cultures.filter(c => c.code === code)[0];
+      }
+
+      if (culture) {
+        languageId = culture.languageId;
+      }
+    }
+    return languageId;
+  }
+}

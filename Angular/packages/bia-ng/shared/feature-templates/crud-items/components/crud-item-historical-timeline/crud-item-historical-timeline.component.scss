@@ -1,0 +1,109 @@
+:host {
+  ::ng-deep .p-timeline-event-opposite {
+    flex: 1 !important;
+    min-width: 14rem;
+  }
+  ::ng-deep .p-timeline-event-content {
+    flex: 1 100% !important;
+  }
+}
+
+.historical-entry-icon-container {
+  color: var(--primary-color-text);
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 9999px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+
+  &-add {
+    @extend .historical-entry-icon-container;
+    background-color: var(--p-green-600);
+  }
+
+  &-edit {
+    @extend .historical-entry-icon-container;
+    background-color: var(--p-primary-300);
+  }
+
+  &-delete {
+    @extend .historical-entry-icon-container;
+    background-color: var(--p-red-600);
+  }
+
+  &-fix {
+    @extend .historical-entry-icon-container;
+    background-color: var(--p-orange-500);
+  }
+
+  &-unfix {
+    @extend .historical-entry-icon-container;
+    background-color: var(--p-orange-300);
+  }
+
+  i {
+    font-size: 0.9rem;
+    font-weight: bold;
+  }
+}
+
+.historical-entry-modification-container {
+  display: flex;
+  gap: 0.1rem;
+  align-items: center;
+
+  .historical-entry-modification {
+    padding: 0 0.2rem;
+    font-size: 0.9rem;
+
+    &-old {
+      @extend .historical-entry-modification;
+      background-color: var(--p-red-300);
+    }
+
+    &-new {
+      @extend .historical-entry-modification;
+      background-color: var(--p-primary-100);
+    }
+
+    &-arrow-icon {
+      @extend .historical-entry-modification;
+      font-size: 0.8rem;
+    }
+
+    &-link-icon {
+      @extend .historical-entry-modification;
+      margin-right: 0;
+      padding-right: 0;
+      padding-left: 0.1rem;
+      font-weight: bold;
+      font-size: 0.8rem;
+    }
+
+    &-empty-icon {
+      @extend .historical-entry-modification;
+      font-weight: bold;
+      font-size: 0.8rem;
+    }
+  }
+}
+
+:host-context(html.dark-theme) {
+  .historical-entry-modification-container .historical-entry-modification-old {
+    background-color: var(--p-red-400);
+  }
+
+  .historical-entry-modification-container .historical-entry-modification-new {
+    background-color: var(--p-primary-300);
+  }
+}
+
+.historical-entry-title {
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.empty-modification {
+  white-space: pre;
+}

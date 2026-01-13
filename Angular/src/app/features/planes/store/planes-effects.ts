@@ -1,4 +1,9 @@
 import { Injectable } from '@angular/core';
+import {
+  BiaMessageService,
+  biaSuccessWaitRefreshSignalR,
+} from '@bia-team/bia-ng/core';
+import { DataResult } from '@bia-team/bia-ng/models';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
@@ -9,9 +14,6 @@ import {
   switchMap,
   withLatestFrom,
 } from 'rxjs/operators';
-import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
-import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
-import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
 import { Plane } from '../model/plane';
 import { planeCRUDConfiguration } from '../plane.constants';
@@ -53,7 +55,14 @@ export class PlanesEffects {
       map(x => x?.id),
       switchMap(id => {
         return this.planeDas.get({ id: id }).pipe(
-          map(plane => FeaturePlanesActions.loadSuccess({ plane })),
+          map(plane => {
+            if (planeCRUDConfiguration.displayHistorical) {
+              this.store.dispatch(
+                FeaturePlanesActions.loadHistorical({ id: plane.id })
+              );
+            }
+            return FeaturePlanesActions.loadSuccess({ plane });
+          }),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
             return of(FeaturePlanesActions.failure({ error: err }));
@@ -264,18 +273,34 @@ export class PlanesEffects {
         return this.planeDas
           .updateFixedStatus({ id: x.id, fixed: x.isFixed })
           .pipe(
-            map(plane => {
+            map(() => {
               this.biaMessageService.showUpdateSuccess();
-              this.store.dispatch(
-                FeaturePlanesActions.loadAllByPost({ event: event })
-              );
-              return FeaturePlanesActions.loadSuccess({ plane });
+              this.store.dispatch(FeaturePlanesActions.load({ id: x.id }));
+              return FeaturePlanesActions.loadAllByPost({ event: event });
             }),
             catchError(err => {
               this.biaMessageService.showErrorHttpResponse(err);
               return of(FeaturePlanesActions.failure({ error: err }));
             })
           );
+      })
+    )
+  );
+
+  loadHistorical$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(FeaturePlanesActions.loadHistorical),
+      map(x => x?.id),
+      switchMap(id => {
+        return this.planeDas.getHistorical({ id: id }).pipe(
+          map(historical => {
+            return FeaturePlanesActions.loadHistoricalSuccess({ historical });
+          }),
+          catchError(err => {
+            this.biaMessageService.showErrorHttpResponse(err);
+            return of(FeaturePlanesActions.failure({ error: err }));
+          })
+        );
       })
     )
   );

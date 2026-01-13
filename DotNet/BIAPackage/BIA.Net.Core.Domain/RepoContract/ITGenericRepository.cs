@@ -6,9 +6,11 @@ namespace BIA.Net.Core.Domain.RepoContract
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.Immutable;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Domain.Audit;
     using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
@@ -199,31 +201,50 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="filter">Filter expression.</param>
         /// <param name="batchSize">Batch size.</param>
         /// <returns>Number of entities deleted.</returns>
-        Task<int> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> filter, int? batchSize = 100);
+        Task<int> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> filter = default, int? batchSize = 100);
+
+        /// <summary>
+        /// Execute a update operation according to a filter.
+        /// </summary>
+        /// <param name="fieldUpdates">The field updates.</param>
+        /// <param name="filter">Filter expression.</param>
+        /// <param name="batchSize">Batch size.</param>
+        /// <returns>Number of entities updated.</returns>
+        Task<int> ExecuteUpdateAsync(IDictionary<string, object> fieldUpdates, Expression<Func<TEntity, bool>> filter = default, int? batchSize = 100);
 
         /// <summary>
         /// Massively add entities in batch.
         /// </summary>
         /// <param name="items">Entities to add.</param>
-        /// <param name="batchSize">Batch size.</param>
-        /// <returns>Number of element affected.</returns>
-        Task<int> MassAddAsync(IEnumerable<TEntity> items, int batchSize = 100);
+        /// <param name="batchSize">Batch size (not used in bulk mode).</param>
+        /// <param name="useBulk">if set to <c>true</c> [use bulk].</param>
+        /// <returns>
+        /// Number of element affected.
+        /// </returns>
+        Task<int> MassAddAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false);
 
         /// <summary>
         /// Massively update entities in batch.
         /// </summary>
         /// <param name="items">Entities to update.</param>
-        /// <param name="batchSize">Batch size.</param>
-        /// <returns>Number of element affected.</returns>
-        Task<int> MassUpdateAsync(IEnumerable<TEntity> items, int batchSize = 100);
+        /// <param name="batchSize">Batch size (not used in bulk mode).</param>
+        /// <param name="useBulk">if set to <c>true</c> [use bulk].</param>
+        /// <returns>
+        /// Number of element affected.
+        /// </returns>
+        Task<int> MassUpdateAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false);
 
         /// <summary>
         /// Massively delete entities in batch.
         /// </summary>
         /// <param name="items">Entities to delete.</param>
-        /// <param name="batchSize">Batch size.</param>
-        /// <returns>Number of element affected.</returns>
-        Task<int> MassDeleteAsync(IEnumerable<TEntity> items, int batchSize = 100);
+        /// <param name="batchSize">Batch size (not used in bulk mode).</param>
+        /// <param name="useBulk">if set to <c>true</c> [use bulk].</param>
+        /// <param name="useExecuteDelete">if set to <c>true</c> [use execute delete].</param>
+        /// <returns>
+        /// Number of element affected.
+        /// </returns>
+        Task<int> MassDeleteAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false, bool useExecuteDelete = true);
 
         /// <summary>
         /// Set an item as modified in the current context to force update of all fields
@@ -239,5 +260,12 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="item">The entity.</param>
         /// <param name="isFixed">Fixed status.</param>
         void UpdateFixedAsync(TEntity item, bool isFixed);
+
+        /// <summary>
+        /// Return the audits of an item by its <paramref name="id"/>.
+        /// </summary>
+        /// <param name="id">The item id.</param>
+        /// <returns>Immutable collection of <see cref="IAuditEntity"/>.</returns>
+        Task<ImmutableList<IAuditEntity>> GetAuditsAsync(TKey id);
     }
 }

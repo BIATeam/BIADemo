@@ -47,6 +47,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Base
         }
 
         /// <summary>
+        /// Get permission prefix for a team type.
+        /// </summary>
+        /// <param name="teamId">the teamId used as reference to find the team type.</param>
+        /// <returns>the permission prefix as string.</returns>
+        protected async Task<string> GetPermissionPrefixFromTeamId(int teamId)
+        {
+            return await this.teamAppService.GetPermissionPrefixFromTeamId(teamId);
+        }
+
+        /// <summary>
         /// Check autorize based on teamTypeId.
         /// </summary>
         /// <param name="teamTypeId">the type team Id.</param>

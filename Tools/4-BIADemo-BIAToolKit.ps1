@@ -48,8 +48,14 @@ Write-Host "Archiving BIADemo v.$biademoVersion into BIAToolkit" -ForegroundColo
 
 $biaToolKitVersionTargetPath = $biaToolKitProjectPath + "\BIADemoVersions\$biademoVersion"
 if(Test-Path $biaToolKitVersionTargetPath) {
+  Write-Host "Delete existing version content in BIAToolKit folder..." -ForegroundColor Blue
   Remove-Item $biaToolKitVersionTargetPath -Force -Recurse
 }
+
+Write-Host "Apply bi-ng angular references to BIADemo..." -ForegroundColor Blue
+Set-Location ($biaDemoProjectPath + "\Angular")
+.\switch-to-bia-ng.ps1
+Set-Location $scriptPath
 
 Write-Host "Copy BIADemo to BIAToolKit..." -ForegroundColor Blue
 robocopy "$biaDemoProjectPath\DotNet" "$biaToolKitVersionTargetPath\DotNet" /E /XD BIAPackage .vs .vscode bin obj | Out-Null
@@ -69,13 +75,22 @@ $biaDemoArchivePath = $biaToolKitVersionTargetPath + "\..\BIADemo_$biaDemoVersio
 $biaDemoExtarctedArchivePath = $biaToolKitVersionTargetPath + "\..\BIADemo_$biaDemoVersion"
 Write-Host "Target archive : $biaDemoArchivePath" -ForegroundColor DarkGray
 if(Test-Path $biaDemoArchivePath) {
+  Write-Host "Delete existing target archive..." -ForegroundColor Blue
   Remove-Item $biaDemoArchivePath -Force
 }
 if(Test-Path $biaDemoExtarctedArchivePath) {
+  Write-Host "Delete existing target archive extracted content..." -ForegroundColor Blue
   Remove-Item $biaDemoExtarctedArchivePath -Force -Recurse
 }
 
+Write-Host "Creating archive..." -ForegroundColor Blue
 Compress-Archive -Path "$biaToolKitVersionTargetPath\*" -DestinationPath $biaDemoArchivePath
+Write-Host "Delete archived version content..." -ForegroundColor Blue
 Remove-Item $biaToolKitVersionTargetPath -Force -Recurse
+
+Write-Host "Restore direct angular references to BIADemo..." -ForegroundColor Blue
+Set-Location ($biaDemoProjectPath + "\Angular")
+.\switch-to-direct-references.ps1
+Set-Location $scriptPath
 
 Write-Host "Finished !" -ForegroundColor Yellow

@@ -2,6 +2,9 @@
   "compileOnSave": false,
   "compilerOptions": {
     "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@bia-team/bia-ng/*": ["./dist/bia-ng/*"]
+    },
     "baseUrl": "./",
     "esModuleInterop": true,
     "noUnusedLocals": true,

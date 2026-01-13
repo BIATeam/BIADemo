@@ -1,14 +1,16 @@
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, Injector, ViewChild } from '@angular/core';
+import { AuthService } from '@bia-team/bia-ng/core';
+import {
+  BiaTableBehaviorControllerComponent,
+  BiaTableComponent,
+  BiaTableControllerComponent,
+  BiaTableHeaderComponent,
+  CrudItemService,
+  CrudItemsIndexComponent,
+} from '@bia-team/bia-ng/shared';
 import { TranslateModule } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { BiaTableBehaviorControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
-import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
-import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
-import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
-import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
-import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
 import { Permission } from 'src/app/shared/permission';
 import { MaintenanceContractTableComponent } from '../../components/maintenance-contract-table/maintenance-contract-table.component';
 import { maintenanceContractCRUDConfiguration } from '../../maintenance-contract.constants';
@@ -22,7 +24,6 @@ import { MaintenanceContractService } from '../../services/maintenance-contract.
   imports: [
     NgClass,
     PrimeTemplate,
-    NgIf,
     MaintenanceContractTableComponent,
     AsyncPipe,
     TranslateModule,
@@ -72,4 +73,11 @@ export class MaintenanceContractsIndexComponent extends CrudItemsIndexComponent<
 
   // BIAToolKit - Begin MaintenanceContractIndexTsOnViewChild
   // BIAToolKit - End MaintenanceContractIndexTsOnViewChild
+
+  protected initSelectedButtonGroup() {
+    this.selectionActionsMenuItems = [
+      // BIAToolKit - Begin MaintenanceContractIndexTsSelectedButtonViewChild
+      // BIAToolKit - End MaintenanceContractIndexTsSelectedButtonViewChild
+    ];
+  }
 }

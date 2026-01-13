@@ -31,7 +31,7 @@ namespace BIA.Net.Core.Application.User
     /// </summary>
     /// <typeparam name="TEnumTeamTypeId">The type for enum Team Type Id.</typeparam>
     /// <typeparam name="TTeamMapper">The type of team Mapper.</typeparam>
-    public class BaseTeamAppService<TEnumTeamTypeId, TTeamMapper> : CrudAppServiceBase<BaseDtoVersionedTeam, BaseEntityTeam, int, PagingFilterFormatDto, TTeamMapper>, IBaseTeamAppService<TEnumTeamTypeId>
+    public class BaseTeamAppService<TEnumTeamTypeId, TTeamMapper> : CrudAppServiceBase<BaseDtoVersionedTeam, BaseEntityTeam, int, PagingFilterFormatDto<TeamAdvancedFilterDto>, TTeamMapper>, IBaseTeamAppService<TEnumTeamTypeId>
         where TEnumTeamTypeId : struct, Enum
         where TTeamMapper : BiaBaseMapper<BaseDtoVersionedTeam, BaseEntityTeam, int>, ITeamMapper
     {
@@ -240,7 +240,7 @@ namespace BIA.Net.Core.Application.User
         /// <param name="teamTypeId">The team type id.</param>
         public Task<IEnumerable<OptionDto>> GetAllOptionsAsync()
         {
-            return this.GetAllAsync<OptionDto, TeamOptionMapper>();
+            return this.GetAllGenericAsync<OptionDto, TeamOptionMapper>();
         }
 
         /// <inheritdoc />
@@ -308,6 +308,26 @@ namespace BIA.Net.Core.Application.User
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Get the <see cref="TeamConfigDto"/> list from <paramref name="teamsConfig"/>.
+        /// </summary>
+        /// <param name="teamsConfig">The list of team config.</param>
+        /// <returns><see cref="ImmutableList{T}"/> of <see cref="TeamConfigDto"/>.</returns>
+        protected ImmutableList<TeamConfigDto> GetTeamsConfig(ImmutableList<BiaTeamConfig<BaseEntityTeam>> teamsConfig)
+        {
+            return teamsConfig.Select(tc => new TeamConfigDto()
+            {
+                TeamTypeId = tc.TeamTypeId,
+                DisplayAlways = tc.DisplayAlways,
+                DisplayLabel = tc.DisplayLabel,
+                DisplayOne = tc.DisplayOne,
+                InHeader = tc.DisplayInHeader,
+                Label = tc.Label,
+                RoleMode = tc.RoleMode,
+                TeamSelectionCanBeEmpty = tc.TeamSelectionCanBeEmpty,
+            }).ToImmutableList();
         }
     }
 }

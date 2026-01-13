@@ -329,7 +329,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
             byte[] buffer = await this.maintenanceContractService.GetCsvAsync(filters);
-            return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"MaintenanceContracts{BiaConstants.Csv.Extension}");
+            return this.File(buffer, BiaConstants.Csv.ContentType + $";charset={BiaConstants.Csv.CharsetEncoding}", $"MaintenanceContracts{BiaConstants.Csv.Extension}");
         }
     }
 }

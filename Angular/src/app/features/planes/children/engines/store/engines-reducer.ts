@@ -1,9 +1,6 @@
+import { CrudState, DEFAULT_CRUD_STATE } from '@bia-team/bia-ng/models';
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import {
-  CrudState,
-  DEFAULT_CRUD_STATE,
-} from 'src/app/shared/bia-shared/model/crud-state';
 import { Engine } from '../model/engine';
 import { FeatureEnginesActions } from './engines-actions';
 

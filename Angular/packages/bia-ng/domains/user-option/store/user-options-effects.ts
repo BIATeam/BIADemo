@@ -1,0 +1,67 @@
+import { inject, Injectable } from '@angular/core';
+import { BiaMessageService } from '@bia-team/bia-ng/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { of } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { UserOptionDas } from '../services/user-option-das.service';
+import { DomainUserOptionsActions } from './user-options-actions';
+/**
+ * Effects file is for isolating and managing side effects of the application in one place
+ * Http requests, Sockets, Routing, LocalStorage, etc
+ */
+
+@Injectable()
+export class UserOptionsEffects {
+  protected actions$: Actions = inject(Actions);
+  protected userDas: UserOptionDas = inject(UserOptionDas);
+  protected biaMessageService: BiaMessageService = inject(BiaMessageService);
+
+  loadAll$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DomainUserOptionsActions.loadAll) /* When action is dispatched */,
+      /* startWith(loadAll()), */
+      /* Hit the Users Index endpoint of our REST API */
+      /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
+      /* 'Users Reducers' will take care of the rest */
+      switchMap(() =>
+        this.userDas.getList({ endpoint: 'allOptions' }).pipe(
+          map(users =>
+            DomainUserOptionsActions.loadAllSuccess({
+              users: users?.sort((a, b) => a.display.localeCompare(b.display)),
+            })
+          ),
+          catchError(err => {
+            this.biaMessageService.showErrorHttpResponse(err);
+            return of(DomainUserOptionsActions.failure({ error: err }));
+          })
+        )
+      )
+    )
+  );
+
+  loadAllByFilter$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(
+        DomainUserOptionsActions.loadAllByFilter
+      ) /* When action is dispatched */,
+      /* startWith(loadAll()), */
+      /* Hit the Users Index endpoint of our REST API */
+      /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
+      /* 'Users Reducers' will take care of the rest */
+      switchMap(action =>
+        this.userDas
+          .getList({
+            endpoint: 'allOptions',
+            options: { params: { filter: action.filter } },
+          })
+          .pipe(
+            map(users => DomainUserOptionsActions.loadAllSuccess({ users })),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(DomainUserOptionsActions.failure({ error: err }));
+            })
+          )
+      )
+    )
+  );
+}

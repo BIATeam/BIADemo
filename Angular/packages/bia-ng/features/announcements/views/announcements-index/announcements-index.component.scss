@@ -1,0 +1,24 @@
+:host {
+  flex-direction: column;
+}
+
+.raw-content-block {
+  font-family: 'oswald-light';
+  font-size: 15px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid var(--p-surface-300);
+  background: var(--p-surface-300);
+
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+:host-context(html.dark-theme) {
+  .raw-content-block {
+    background: var(--p-surface-400);
+    border: 1px solid var(--p-surface-400);
+  }
+}

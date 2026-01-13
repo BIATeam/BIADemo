@@ -1,11 +1,11 @@
-// BIADemo only
+﻿// BIADemo only
 // <copyright file="EngineSpecification.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Domain.Fleet.Specifications
 {
-    using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Specification;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
@@ -19,7 +19,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Specifications
         /// </summary>
         /// <param name="filter">The filter.</param>
         /// <returns>The specification.</returns>
-        public static Specification<Engine> SearchGetAll(PagingFilterFormatDto filter)
+        public static Specification<Engine> SearchGetAll(IPagingFilterFormatDto filter)
         {
             Specification<Engine> specification = new TrueSpecification<Engine>();
 

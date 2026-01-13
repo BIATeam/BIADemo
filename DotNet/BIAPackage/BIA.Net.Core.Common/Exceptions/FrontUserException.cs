@@ -4,8 +4,7 @@
 namespace BIA.Net.Core.Common.Exceptions
 {
     using System;
-    using BIA.Net.Core.Common.Enum;
-    using BIA.Net.Core.Common.Helpers;
+    using BIA.Net.Core.Common.Error;
 
     /// <summary>
     /// Exception to return to the front user.
@@ -35,29 +34,29 @@ namespace BIA.Net.Core.Common.Exceptions
         /// </summary>
         /// <param name="innerException">The inner exception if exists.</param>
         public FrontUserException(Exception innerException)
-            : this(string.Empty, innerException)
+            : this(null, innerException)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FrontUserException"/> class.
         /// </summary>
-        /// <param name="messageKey">The error message key used to get the corresponding error message to return with <see cref="GetFormatedErrorMessage"/>.</param>
+        /// <param name="errorId">The error id.</param>
         /// <param name="innerException">The inner exception if exists.</param>
-        public FrontUserException(FrontUserExceptionErrorMessageKey messageKey, Exception innerException = null)
-            : this(ExceptionHelper.GetErrorMessage(messageKey), innerException)
+        public FrontUserException(int errorId, Exception innerException = null)
+            : this(null, innerException)
         {
-            this.ErrorMessageKey = messageKey;
+            this.ErrorId = errorId;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FrontUserException"/> class.
         /// </summary>
-        /// <param name="messageKey">The error message key used to get the corresponding error message to return with <see cref="GetFormatedErrorMessage"/>.</param>
+        /// <param name="errorId">The error id.</param>
         /// <param name="innerException">The inner exception if exists.</param>
         /// <param name="messageParameters">The parameters to format into the error message with the function <see cref="GetFormatedErrorMessage"/>.</param>
-        public FrontUserException(FrontUserExceptionErrorMessageKey messageKey, Exception innerException = null, params string[] messageParameters)
-            : this(messageKey, innerException)
+        public FrontUserException(int errorId, Exception innerException = null, params string[] messageParameters)
+            : this(errorId, innerException)
         {
             this.ErrorMessageParameters = messageParameters;
         }
@@ -65,11 +64,38 @@ namespace BIA.Net.Core.Common.Exceptions
         /// <summary>
         /// The error message key.
         /// </summary>
-        public FrontUserExceptionErrorMessageKey ErrorMessageKey { get; } = FrontUserExceptionErrorMessageKey.Unknown;
+        public int ErrorId { get; } = (int)BiaErrorId.Unknown;
 
         /// <summary>
         /// The parameters to format into the current <see cref="Exception.Message"/>.
         /// </summary>
-        public string[] ErrorMessageParameters { get; } = Array.Empty<string>();
+        public string[] ErrorMessageParameters { get; } = [];
+
+        /// <summary>
+        /// Create  a new instance of <see cref="FrontUserException"/> class.
+        /// </summary>
+        /// <typeparam name="TEnum">Error id enum type.</typeparam>
+        /// <param name="errorId">Error id.</param>
+        /// <param name="innerException">Inner exception if exists.</param>
+        /// <param name="messageParameters">Error message parameters.</param>
+        /// <returns><see cref="FrontUserException"/>.</returns>
+        public static FrontUserException Create<TEnum>(TEnum errorId, Exception innerException = null, params string[] messageParameters)
+            where TEnum : Enum
+        {
+            return new FrontUserException(Convert.ToInt32(errorId), innerException, messageParameters);
+        }
+
+        /// <summary>
+        /// Create  a new instance of <see cref="FrontUserException"/> class.
+        /// </summary>
+        /// <typeparam name="TEnum">Error id enum type.</typeparam>
+        /// <param name="errorId">Error id.</param>
+        /// <param name="innerException">Inner exception if exists.</param>
+        /// <returns><see cref="FrontUserException"/>.</returns>
+        public static FrontUserException Create<TEnum>(TEnum errorId, Exception innerException = null)
+            where TEnum : Enum
+        {
+            return new FrontUserException(Convert.ToInt32(errorId), innerException);
+        }
     }
 }

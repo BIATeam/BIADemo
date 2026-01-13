@@ -41,6 +41,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
         protected override Task<string> SerializeItem(Plane item)
         {
             // Customize the content before serializing the item to archive, or return your own JSON
+            this.Logger.LogInformation("Using overrided method");
             return base.SerializeItem(item);
         }
 

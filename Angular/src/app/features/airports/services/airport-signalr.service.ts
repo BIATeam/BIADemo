@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BiaSignalRService } from 'src/app/core/bia-core/services/bia-signalr.service';
-import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
+import { BiaSignalRService } from '@bia-team/bia-ng/core';
+import { TargetedFeature } from '@bia-team/bia-ng/models';
 
 /**
  * Service managing SignalR events for hangfire jobs.

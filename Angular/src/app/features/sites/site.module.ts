@@ -1,14 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PermissionGuard } from '@bia-team/bia-ng/core';
+import { DynamicLayoutComponent, LayoutMode } from '@bia-team/bia-ng/shared';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
-import {
-  DynamicLayoutComponent,
-  LayoutMode,
-} from 'src/app/shared/bia-shared/components/layout/dynamic-layout/dynamic-layout.component';
 import { Permission } from 'src/app/shared/permission';
 
+import { SiteService } from './services/site.service';
 import { siteCRUDConfiguration } from './site.constants';
 import { FeatureSitesStore } from './store/site.state';
 import { SitesEffects } from './store/sites-effects';
@@ -40,6 +38,16 @@ export const ROUTES: Routes = [
         },
         component: SiteNewComponent,
         canActivate: [PermissionGuard],
+      },
+      {
+        path: 'view',
+        data: {
+          featureConfiguration: siteCRUDConfiguration,
+          featureServiceType: SiteService,
+          leftWidth: 60,
+        },
+        loadChildren: () =>
+          import('../../shared/bia-shared/view.module').then(m => m.ViewModule),
       },
       {
         path: ':crudItemId',

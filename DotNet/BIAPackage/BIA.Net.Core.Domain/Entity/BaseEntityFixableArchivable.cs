@@ -6,6 +6,7 @@ namespace BIA.Net.Core.Domain.Entity
 {
     using System;
     using BIA.Net.Core.Domain.Entity.Interface;
+    using global::Audit.EntityFramework;
 
     /// <summary>
     /// The base class for Entity.
@@ -21,6 +22,7 @@ namespace BIA.Net.Core.Domain.Entity
         /// <summary>
         /// Gets or sets the archived date.
         /// </summary>
+        [AuditIgnore]
         public DateTime? ArchivedDate { get; set; }
     }
 }

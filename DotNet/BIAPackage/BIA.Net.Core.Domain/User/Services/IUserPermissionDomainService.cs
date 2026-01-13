@@ -17,7 +17,15 @@ namespace BIA.Net.Core.Domain.User.Services
         /// </summary>
         /// <param name="roles">The list of roles.</param>
         /// <param name="lightToken">if true select only lightToken permission.</param>
+        /// <param name="transversal">transversal permissions independant to current team.</param>
         /// <returns>The list of rights.</returns>
-        List<string> TranslateRolesInPermissions(List<string> roles, bool lightToken = false);
+        List<string> TranslateRolesInPermissions(List<string> roles, bool lightToken = false, bool transversal = false);
+
+        /// <summary>
+        /// Get the roles that have the specified permission.
+        /// </summary>
+        /// <param name="permission">The permission.</param>
+        /// <returns>The list of roles.</returns>
+        List<string> GetRolesForPermission(string permission);
     }
 }

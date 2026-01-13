@@ -1,15 +1,17 @@
 import { Validators } from '@angular/forms';
 import {
+  BaseDto,
   BiaFieldConfig,
   BiaFieldNumberFormat,
   BiaFieldsConfig,
+  OptionDto,
+  VersionedDto,
+} from '@bia-team/bia-ng/models';
+import {
   NumberMode,
   PrimeNGFiltering,
   PropType,
-} from 'src/app/shared/bia-shared/model/bia-field-config';
-import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
-import { VersionedDto } from 'src/app/shared/bia-shared/model/dto/versioned-dto';
-import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+} from '@bia-team/bia-ng/models/enum';
 
 export interface Engine extends BaseDto, VersionedDto {
   reference: string;

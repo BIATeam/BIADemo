@@ -1,6 +1,6 @@
+import { OptionDto } from '@bia-team/bia-ng/models';
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { DomainPlaneOptionsActions } from './plane-options-actions';
 
 // This adapter will allow is to manipulate planes (mostly CRUD operations)

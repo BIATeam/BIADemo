@@ -15,6 +15,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Services;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;

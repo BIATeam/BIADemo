@@ -1,6 +1,6 @@
+import { DataResult } from '@bia-team/bia-ng/models';
 import { createAction, props } from '@ngrx/store';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { aircraftMaintenanceCompanyCRUDConfiguration } from '../aircraft-maintenance-company.constants';
 import { AircraftMaintenanceCompany } from '../model/aircraft-maintenance-company';
 

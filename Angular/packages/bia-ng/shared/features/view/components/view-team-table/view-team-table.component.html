@@ -1,0 +1,107 @@
+<p-table
+  #viewTeamTable
+  [value]="views"
+  [sortField]="'name'"
+  [scrollable]="true"
+  [scrollHeight]="'100vh'"
+  dataKey="id">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>{{ 'bia.views.viewType' | translate }}</th>
+      <th>{{ 'bia.views.name' | translate }}</th>
+      <th>{{ 'bia.views.teams' | translate }}</th>
+      <th>{{ 'bia.views.default' | translate }}</th>
+      <th>{{ 'bia.actions' | translate }}</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-view>
+    <tr [pSelectableRow]="view">
+      <td>
+        <i
+          class="pi pi-users"
+          [pTooltip]="'bia.views.teamView' | translate"></i>
+      </td>
+      <td>
+        {{ view.name }}
+      </td>
+      <td>{{ formatTeams(view.viewTeams) }}</td>
+      <td>
+        @if (!showLinkWithTeam(view)) {
+          <button
+            pButton
+            [icon]="isTeamDefault(view) ? 'pi pi-star-fill' : 'pi pi-star'"
+            variant="text"
+            severity="secondary"
+            [pTooltip]="'bia.views.defineDefault' | translate"
+            (click)="toggleTeamDefaultView(view)"
+            class="small-button"></button>
+        }
+      </td>
+      <td>
+        @if (showLinkWithTeam(view)) {
+          <button
+            pButton
+            class="p-button-icon-only"
+            [pTooltip]="linkWithTeamTooltipLabel"
+            (click)="onAssignViewToTeam(view.id, true)">
+            <svg
+              width="1.3rem"
+              height="1.3rem"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M7.7574 10.5858L4.92897 13.4142C3.7574 14.5858 3.7574 16.4853 4.92897 17.6569L6.34319 19.0711C7.51476 20.2427 9.41425 20.2427 10.5858 19.0711L13.4143 16.2427M9.87873 14.1214L14.1214 9.87873M10.5858 7.7574L13.4142 4.92897C14.5858 3.7574 16.4853 3.7574 17.6569 4.92897L19.0711 6.34319C20.2427 7.51476 20.2427 9.41425 19.0711 10.5858L16.2427 13.4143"
+                stroke="var(--p-button-primary-color)"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </button>
+        }
+        @if (showUnLinkWithTeamAsDelete(view)) {
+          <button
+            pButton
+            icon="pi pi-trash"
+            pTooltip="{{ 'bia.delete' | translate }}"
+            tooltipPosition="top"
+            (click)="onAssignViewToTeamWithDelete(view.id, false)"></button>
+        }
+        @if (showUnlinkWithTeam(view)) {
+          <button
+            pButton
+            class="p-button-icon-only"
+            [pTooltip]="unlinkWithTeamTooltipLabel"
+            (click)="onAssignViewToTeam(view.id, false)">
+            <svg
+              width="1.3rem"
+              height="1.3rem"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M7.05029 11.2929L4.92897 13.4142C3.7574 14.5858 3.7574 16.4853 4.92897 17.6568L6.34319 19.0711C7.51476 20.2426 9.41425 20.2426 10.5858 19.0711L12.7071 16.9497M5.00004 5L19 19"
+                stroke="var(--p-button-primary-color)"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round" />
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M11.8358 10.75L9.17156 13.4142C8.78103 13.8048 8.78103 14.4379 9.17156 14.8284C9.56208 15.219 10.1952 15.219 10.5858 14.8284L13.25 12.1642L11.8358 10.75ZM17.4926 13.5785L16.0784 12.1643L16.2426 12L17.6568 10.5858L18.3639 9.87872C19.145 9.09767 19.145 7.83134 18.3639 7.05029L16.9497 5.63608C16.1687 4.85503 14.9024 4.85503 14.1213 5.63608L13.4142 6.34319L12 7.7574L11.8358 7.92161L10.4216 6.5074L10.5858 6.34319L12 4.92897L12.7071 4.22187C14.2692 2.65977 16.8019 2.65977 18.3639 4.22187L19.7782 5.63608C21.3403 7.19818 21.3403 9.73084 19.7782 11.2929L19.0711 12L17.6568 13.4143L17.4926 13.5785ZM13.25 9.33581L13.4142 9.1716C13.8047 8.78107 14.4379 8.78107 14.8284 9.1716C15.2189 9.56212 15.2189 10.1953 14.8284 10.5858L14.6642 10.75L13.25 9.33581Z"
+                fill="var(--p-button-primary-color)" />
+            </svg>
+          </button>
+        }
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage" let-view>
+    <tr>
+      <td class="app-empty-message" [attr.colspan]="3">
+        {{ 'bia.NoRecordsFound' | translate }}
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+<p-confirmDialog key="view-team-confirm"></p-confirmDialog>

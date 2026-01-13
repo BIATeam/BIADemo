@@ -1,6 +1,6 @@
+import { DataResult, HistoricalEntryDto } from '@bia-team/bia-ng/models';
 import { createAction, props } from '@ngrx/store';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { Plane } from '../model/plane';
 import { planeCRUDConfiguration } from '../plane.constants';
 
@@ -66,5 +66,15 @@ export namespace FeaturePlanesActions {
   export const updateFixedStatus = createAction(
     '[' + planeCRUDConfiguration.storeKey + '] Update fixed status',
     props<{ id: number; isFixed: boolean }>()
+  );
+
+  export const loadHistorical = createAction(
+    '[' + planeCRUDConfiguration.storeKey + '] Load historical',
+    props<{ id: number }>()
+  );
+
+  export const loadHistoricalSuccess = createAction(
+    '[' + planeCRUDConfiguration.storeKey + '] Load historical success',
+    props<{ historical: HistoricalEntryDto[] }>()
   );
 }

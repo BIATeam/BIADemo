@@ -1,13 +1,17 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import {
+  BiaInjectExternalService,
+  BiaMatomoService,
+} from '@bia-team/bia-ng/core';
+import { IframeMessage } from '@bia-team/bia-ng/models';
+import {
+  BiaLayoutService,
+  IframeCommunicationService,
+  IframeConfigMessageService,
+} from '@bia-team/bia-ng/shared';
 import { TranslateService } from '@ngx-translate/core';
 import { PrimeNG } from 'primeng/config';
-import { BiaInjectExternalService } from './core/bia-core/services/bia-inject-external.service';
-import { BiaMatomoService } from './core/bia-core/services/matomo/bia-matomo.service';
-import { BiaLayoutService } from './shared/bia-shared/components/layout/services/layout.service';
-import { IframeMessage } from './shared/bia-shared/model/iframe-message';
-import { IframeCommunicationService } from './shared/bia-shared/services/iframe/iframe-communication.service';
-import { IframeConfigMessageService } from './shared/bia-shared/services/iframe/iframe-config-message.service';
 
 @Component({
   selector: 'app-root',
@@ -32,7 +36,15 @@ export class AppComponent implements OnInit {
     this.layoutService.defaultConfigUpdate({});
     this.layoutService.setConfigDisplay({
       // Begin BIADemo
-      showMenuStyle: true,
+      showMenuStyle: [
+        'static',
+        'overlay',
+        'horizontal',
+        'slim',
+        'slim-plus',
+        'reveal',
+        'drawer',
+      ],
       showFooterStyle: true,
       showMenuProfilePosition: true,
       // End BIADemo
@@ -61,7 +73,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  @HostListener('window:resize', ['$event'])
+  @HostListener('window:resize')
   checkSmallScreen() {
     this.layoutService.checkSmallScreen();
   }

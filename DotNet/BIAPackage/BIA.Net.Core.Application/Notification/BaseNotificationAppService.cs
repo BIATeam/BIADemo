@@ -40,7 +40,7 @@ namespace BIA.Net.Core.Application.Notification
             TBaseNotificationListItemDto,
             TBaseNotification,
             int,
-            LazyLoadDto,
+            PagingFilterFormatDto,
             TBaseNotificationMapper,
             TBaseNotificationListItemMapper>
         where TBaseNotificationDto : BaseNotificationDto, new()
@@ -138,7 +138,8 @@ namespace BIA.Net.Core.Application.Notification
             TBaseNotificationDto dto,
             string accessMode = AccessMode.Update,
             string queryMode = QueryMode.Update,
-            string mapperMode = null)
+            string mapperMode = null,
+            bool autoCommit = true)
         {
             if (dto != null)
             {
@@ -177,18 +178,19 @@ namespace BIA.Net.Core.Application.Notification
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,
             string mapperMode = null,
-            bool bypassFixed = false)
+            bool bypassFixed = false,
+            bool autoCommit = true)
         {
-            var notification = await base.RemoveAsync(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, bypassFixed: bypassFixed);
+            var notification = await base.RemoveAsync(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, bypassFixed: bypassFixed, autoCommit: autoCommit);
             _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notification-domain" }, "notification-removeUnread", notification.Id);
             _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notification", notification);
             return notification;
         }
 
         /// <inheritdoc/>
-        public override async Task<List<TBaseNotificationDto>> RemoveAsync(List<int> ids, string accessMode = "Delete", string queryMode = "Delete", string mapperMode = null, bool bypassFixed = false)
+        public override async Task<List<TBaseNotificationDto>> RemoveAsync(List<int> ids, string accessMode = "Delete", string queryMode = "Delete", string mapperMode = null, bool bypassFixed = false, bool autoCommit = true)
         {
-            var deletedDtos = await base.RemoveAsync(ids, accessMode, queryMode, mapperMode, bypassFixed: bypassFixed);
+            var deletedDtos = await base.RemoveAsync(ids, accessMode, queryMode, mapperMode, bypassFixed: bypassFixed, autoCommit: autoCommit);
 
             _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notification-domain" }, "notification-removeSeveralUnread", deletedDtos.Select(s => s.Id).ToList());
             _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notifications-several", deletedDtos);
@@ -197,9 +199,9 @@ namespace BIA.Net.Core.Application.Notification
         }
 
         /// <inheritdoc/>
-        public override async Task<TBaseNotificationDto> AddAsync(TBaseNotificationDto dto, string mapperMode = null)
+        public override async Task<TBaseNotificationDto> AddAsync(TBaseNotificationDto dto, string mapperMode = null, bool autoCommit = true)
         {
-            var notification = await base.AddAsync(dto, mapperMode);
+            var notification = await base.AddAsync(dto, mapperMode, autoCommit: autoCommit);
 
             if (!dto.Read)
             {

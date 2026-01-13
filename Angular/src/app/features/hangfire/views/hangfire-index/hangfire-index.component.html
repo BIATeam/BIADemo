@@ -3,7 +3,7 @@
     class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch"></div>
   <div
     class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
-    <h1>Launch random review plane in hangfire job.</h1>
+    <h1>Launch random review plane in hangfire job</h1>
   </div>
   <div
     class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch"></div>
@@ -16,16 +16,17 @@
 <BR />
 <div
   class="flex flex-row flex-wrap justify-content-around align-content-around">
-  <ng-container *ngFor="let team of allTeams$ | async">
-    <button
-      *ngIf="team.teamTypeId === teamTypeId.Site"
-      pButton
-      type="button"
-      (click)="randomReviewPlane(team.id)"
-      label="{{ team.title }}"
-      pTooltip="{{ team.title }}"
-      tooltipPosition="top"></button>
-  </ng-container>
+  @for (team of allTeams$ | async; track team.id) {
+    @if (team.teamTypeId === teamTypeId.Site) {
+      <button
+        pButton
+        type="button"
+        (click)="randomReviewPlane(team.id)"
+        label="{{ team.title }}"
+        pTooltip="{{ team.title }}"
+        tooltipPosition="top"></button>
+    }
+  }
 </div>
 <BR />
 <BR />
@@ -37,16 +38,17 @@
 <BR />
 <div
   class="flex flex-row flex-wrap justify-content-around align-content-around">
-  <ng-container *ngFor="let team of allTeams$ | async">
-    <button
-      *ngIf="team.teamTypeId === teamTypeId.AircraftMaintenanceCompany"
-      pButton
-      type="button"
-      (click)="randomReviewPlane(team.id)"
-      label="{{ team.title }}"
-      pTooltip="{{ team.title }}"
-      tooltipPosition="top"></button>
-  </ng-container>
+  @for (team of allTeams$ | async; track team.id) {
+    @if (team.teamTypeId === teamTypeId.AircraftMaintenanceCompany) {
+      <button
+        pButton
+        type="button"
+        (click)="randomReviewPlane(team.id)"
+        label="{{ team.title }}"
+        pTooltip="{{ team.title }}"
+        tooltipPosition="top"></button>
+    }
+  }
 </div>
 <BR />
 <BR />
@@ -58,14 +60,48 @@
 <BR />
 <div
   class="flex flex-row flex-wrap justify-content-around align-content-around">
-  <ng-container *ngFor="let team of allTeams$ | async">
-    <button
-      *ngIf="team.teamTypeId === teamTypeId.MaintenanceTeam"
-      pButton
-      type="button"
-      (click)="randomReviewPlane(team.id)"
-      label="{{ team.parentTeamTitle }} > {{ team.title }}"
-      pTooltip="{{ team.parentTeamTitle }} > {{ team.title }}"
-      tooltipPosition="top"></button>
-  </ng-container>
+  @for (team of allTeams$ | async; track team.id) {
+    @if (team.teamTypeId === teamTypeId.MaintenanceTeam) {
+      <button
+        pButton
+        type="button"
+        (click)="randomReviewPlane(team.id)"
+        label="{{ team.parentTeamTitle }} > {{ team.title }}"
+        pTooltip="{{ team.parentTeamTitle }} > {{ team.title }}"
+        tooltipPosition="top"></button>
+    }
+  }
 </div>
+<BR />
+<div class="flex flex-row flex-wrap"><b>Generate server errors</b></div>
+<div
+  class="flex flex-row flex-wrap justify-content-around align-content-around">
+  <button
+    pButton
+    type="button"
+    label="Unhandled error"
+    pTooltip="Unhandled error"
+    tooltipPosition="top"
+    severity="danger"
+    (click)="onGenerateUnhandledErrorClick()"></button>
+  <button
+    pButton
+    type="button"
+    label="Handled error"
+    pTooltip="Handled error"
+    tooltipPosition="top"
+    severity="danger"
+    (click)="onGenerateHandledErrorClick()"></button>
+</div>
+<div class="header flex flex-row justify-content-between align-content-between">
+  <div
+    class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch"></div>
+  <div
+    class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
+    <h1>Examples of date display</h1>
+  </div>
+  <div
+    class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch"></div>
+</div>
+<div>Date formatted to locale: {{ date | localeDate }}</div>
+<div>Date with time formatted to locale: {{ date | localeDate: true }}</div>

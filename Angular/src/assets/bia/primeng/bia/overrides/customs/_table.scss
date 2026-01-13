@@ -1,23 +1,22 @@
+// frozen-column
+.p-datatable-scrollable .p-datatable-frozen-column {
+  z-index: 1;
+}
+
+// tfoot
+.p-datatable-scrollable .p-datatable-tfoot tr {
+  background: var(--p-datatable-footer-background);
+}
+
+.p-datatable-scrollable .p-datatable-tfoot tr td {
+  background: var(--p-datatable-footer-cell-background);
+}
+
+// footer
 .p-datatable .p-datatable-footer {
   border: none;
   background-color: var(--surface-ground);
 }
-
-.p-datatable.p-datatable-striped .p-datatable-tbody > tr.p-even-row,
-.p-datatable.p-datatable-striped
-  .p-datatable-tbody
-  > tr.p-even-row
-  .p-datatable-frozen-column {
-  background: var(--p-datatable-row-background);
-}
-
-// .p-datatable.p-datatable-striped .p-datatable-tbody > tr:not(.p-even-row),
-// .p-datatable.p-datatable-striped
-//   .p-datatable-tbody
-//   > tr:not(.p-even-row)
-//   .p-datatable-frozen-column {
-//   background: var(--p-datatable-row-striped-background);
-// }
 
 .p-datatable .p-datatable-footer {
   padding: 0.375rem 0.75rem;

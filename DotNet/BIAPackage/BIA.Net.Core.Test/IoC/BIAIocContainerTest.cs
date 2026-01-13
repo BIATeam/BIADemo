@@ -62,7 +62,8 @@ namespace BIA.Net.Core.Test.IoC
                {
                    options.UseInMemoryDatabase(Guid.NewGuid().ToString());
                    options.EnableSensitiveDataLogging();
-               }, contextLifetime: ServiceLifetime.Transient);
+               },
+               contextLifetime: ServiceLifetime.Transient);
 
             services.AddScoped(typeof(ITGenericRepository<,>), typeof(TGenericRepositoryEF<,>));
         }

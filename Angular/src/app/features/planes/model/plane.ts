@@ -1,24 +1,24 @@
 import { Validators } from '@angular/forms';
 import {
+  BaseDto,
   BiaFieldConfig,
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
   BiaFieldsConfig,
-  NumberMode,
-  PrimeNGFiltering,
-  PropType,
-} from 'src/app/shared/bia-shared/model/bia-field-config';
-import {
   BiaFormLayoutConfig,
   BiaFormLayoutConfigColumnSize,
   BiaFormLayoutConfigField,
   BiaFormLayoutConfigGroup,
   BiaFormLayoutConfigRow,
-} from 'src/app/shared/bia-shared/model/bia-form-layout-config';
-import { BaseDto } from 'src/app/shared/bia-shared/model/dto/base-dto';
-import { FixableDto } from 'src/app/shared/bia-shared/model/dto/fixable-dto';
-import { VersionedDto } from 'src/app/shared/bia-shared/model/dto/versioned-dto';
-import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+  FixableDto,
+  OptionDto,
+  VersionedDto,
+} from '@bia-team/bia-ng/models';
+import {
+  NumberMode,
+  PrimeNGFiltering,
+  PropType,
+} from '@bia-team/bia-ng/models/enum';
 
 // TODO after creation of CRUD Plane : adapt the model
 export interface Plane extends BaseDto, VersionedDto, FixableDto {
@@ -53,9 +53,15 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
     Object.assign(new BiaFieldConfig('msn', 'plane.msn'), {
       type: PropType.String,
       isRequired: true,
+      // Begin BIAToolKit Generation Ignore
+      isOnlyInitializable: true,
+      // End BIAToolKit Generation Ignore
     }),
     Object.assign(new BiaFieldConfig('manufacturer', 'plane.manufacturer'), {
       type: PropType.String,
+      // Begin BIAToolKit Generation Ignore
+      isOnlyUpdatable: true,
+      // End BIAToolKit Generation Ignore
     }),
     Object.assign(new BiaFieldConfig('isActive', 'plane.isActive'), {
       type: PropType.Boolean,
@@ -234,6 +240,9 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       {
         type: PropType.ManyToMany,
         isRequired: true,
+        // Begin BIAToolKit Generation Ignore
+        maxWidth: '15rem',
+        // End BIAToolKit Generation Ignore
       }
     ),
     Object.assign(new BiaFieldConfig('rowVersion', 'plane.rowVersion'), {

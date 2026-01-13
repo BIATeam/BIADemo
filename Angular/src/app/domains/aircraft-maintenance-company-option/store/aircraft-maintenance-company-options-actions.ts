@@ -1,5 +1,5 @@
+import { OptionDto } from '@bia-team/bia-ng/models';
 import { createAction, props } from '@ngrx/store';
-import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { storeKey } from '../aircraft-maintenance-company-option.contants';
 
 export namespace DomainAircraftMaintenanceCompanyOptionsActions {

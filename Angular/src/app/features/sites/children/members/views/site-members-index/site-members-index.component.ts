@@ -1,30 +1,31 @@
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
+import {
+  BiaTableBehaviorControllerComponent,
+  BiaTableComponent,
+  BiaTableControllerComponent,
+  BiaTableHeaderComponent,
+  CrudItemService,
+  MemberModule,
+  MembersIndexComponent,
+  MemberTableComponent,
+} from '@bia-team/bia-ng/shared';
 import { TranslateModule } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
 import { SiteService } from 'src/app/features/sites/services/site.service';
-import { BiaTableBehaviorControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-behavior-controller/bia-table-behavior-controller.component';
-import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
-import { BiaTableHeaderComponent } from 'src/app/shared/bia-shared/components/table/bia-table-header/bia-table-header.component';
-import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
-import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
-import { MemberTableComponent } from 'src/app/shared/bia-shared/feature-templates/members/components/member-table/member-table.component';
-import { MembersIndexComponent } from 'src/app/shared/bia-shared/feature-templates/members/views/members-index/members-index.component';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { Permission } from 'src/app/shared/permission';
-import { MemberModule } from '../../../../../../shared/bia-shared/feature-templates/members/member.module';
 
 @Component({
   selector: 'app-site-members-index',
   templateUrl:
-    '../../../../../../shared/bia-shared/feature-templates/members/views/members-index/members-index.component.html',
+    '../../../../../../../../node_modules/@bia-team/bia-ng/templates/feature-templates/members/views/members-index/members-index.component.html',
   styleUrls: [
-    '../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component.scss',
+    '../../../../../../../../node_modules/@bia-team/bia-ng/templates/feature-templates/crud-items/views/crud-items-index/crud-items-index.component.scss',
   ],
   imports: [
     NgClass,
     PrimeTemplate,
-    NgIf,
     MemberModule,
     AsyncPipe,
     TranslateModule,

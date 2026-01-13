@@ -13,6 +13,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Application.User;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Error;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
@@ -20,7 +21,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.User;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Base;
 
@@ -39,11 +39,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// </summary>
         private readonly IUserAppService userService;
 
-        /// <summary>
-        /// The user context service for message translation.
-        /// </summary>
-        private readonly IUserContextService userContextService;
-
 #if UseHubForClientInMember || UseHubForClientInUser
         /// <summary>
         /// the client for hub (signalR) service.
@@ -58,13 +53,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// <param name="userService">The user application service.</param>
         /// <param name="memberService">The member application service.</param>
         /// <param name="teamAppService">The team service.</param>
-        /// <param name="userContextService">The user context service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
         public MembersController(
             IUserAppService userService,
             IMemberAppService memberService,
             ITeamAppService teamAppService,
-            IUserContextService userContextService,
             IClientForHubService clientForHubService)
 #else
         /// <summary>
@@ -73,11 +66,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         /// <param name="userService">The user application service.</param>
         /// <param name="memberService">The member application service.</param>
         /// <param name="teamAppService">The team service.</param>
-        /// <param name="userContextService">The user context service.</param>
         public MembersController(
             IUserAppService userService,
             IMemberAppService memberService,
-            IUserContextService userContextService,
             ITeamAppService teamAppService)
 #endif
             : base(teamAppService)
@@ -87,7 +78,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
 #endif
             this.memberService = memberService;
             this.userService = userService;
-            this.userContextService = userContextService;
         }
 
         /// <summary>
@@ -113,7 +103,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
                 return this.StatusCode(StatusCodes.Status403Forbidden);
             }
 
-            var (results, total) = await this.memberService.GetRangeByTeamAsync(filters);
+            var (results, total) = await this.memberService.GetRangeAsync(filters);
             this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
             return this.Ok(results);
         }
@@ -197,7 +187,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
             }
             catch (InvalidOperationException)
             {
-                return this.UnprocessableEntity(ErrorMessage.GetMessage(ErrorId.MemberAlreadyExists, this.userContextService.GetLanguageId()));
+                throw FrontUserException.Create(BiaErrorId.MemberAlreadyExists);
             }
         }
 
@@ -453,7 +443,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
             }
 
             byte[] buffer = await this.memberService.GetCsvAsync(filters);
-            return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Members{BiaConstants.Csv.Extension}");
+            return this.File(buffer, BiaConstants.Csv.ContentType + $";charset={BiaConstants.Csv.CharsetEncoding}", $"Members{BiaConstants.Csv.Extension}");
         }
 
         /// <summary>

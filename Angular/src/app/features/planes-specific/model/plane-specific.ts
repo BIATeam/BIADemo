@@ -1,16 +1,14 @@
 import {
   BiaFieldConfig,
   BiaFieldsConfig,
-  PropType,
-} from 'src/app/shared/bia-shared/model/bia-field-config';
-import {
   BiaFormLayoutConfig,
   BiaFormLayoutConfigField,
   BiaFormLayoutConfigGroup,
   BiaFormLayoutConfigRow,
   BiaFormLayoutConfigTab,
   BiaFormLayoutConfigTabGroup,
-} from 'src/app/shared/bia-shared/model/bia-form-layout-config';
+} from '@bia-team/bia-ng/models';
+import { PropType } from '@bia-team/bia-ng/models/enum';
 import { Engine } from './engine';
 import { Plane, planeFieldsConfiguration } from './plane';
 

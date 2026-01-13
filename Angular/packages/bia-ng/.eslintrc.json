@@ -1,0 +1,28 @@
+{
+  "root": true,
+  "extends": "../../.eslintrc.json",
+  "ignorePatterns": ["!**/*", "node_modules"],
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "rules": {
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "type": "attribute",
+            "prefix": "bia",
+            "style": "camelCase"
+          }
+        ],
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "type": "element",
+            "prefix": "bia",
+            "style": "kebab-case"
+          }
+        ]
+      }
+    }
+  ]
+}

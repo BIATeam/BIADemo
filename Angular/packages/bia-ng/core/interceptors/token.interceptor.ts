@@ -1,0 +1,213 @@
+import {
+  HTTP_INTERCEPTORS,
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+  HttpStatusCode,
+} from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { from, Observable, of, throwError } from 'rxjs';
+import { catchError, filter, finalize, switchMap, take } from 'rxjs/operators';
+// import { allEnvironments } from 'src/environments/all-environments';
+import { AuthInfo, Token } from '@bia-team/bia-ng/models';
+import { HttpStatusCodeCustom } from '@bia-team/bia-ng/models/enum';
+import Keycloak from 'keycloak-js';
+import { AppSettingsService } from '../app-settings/services/app-settings.service';
+import { AuthService } from '../services/auth.service';
+import { BiaAppConstantsService } from '../services/bia-app-constants.service';
+import { getCurrentCulture } from '../services/bia-translation.service';
+import { RefreshTokenService } from '../services/refresh-token.service';
+
+@Injectable()
+export class TokenInterceptor implements HttpInterceptor {
+  protected isRefreshing = false;
+  protected readonly keycloakService: Keycloak | null = inject(Keycloak, {
+    optional: true,
+  });
+
+  constructor(
+    public authService: AuthService,
+
+    protected appSettingsService: AppSettingsService
+  ) {}
+
+  intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    if (this.checkUrlNoToken(request.url)) {
+      if (this.appSettingsService.appSettings?.keycloak?.isActive === true) {
+        return this.launchRequestKeycloak(request, next);
+      } else {
+        return next.handle(this.addLanguageOnly(request));
+      }
+    }
+    if (this.isRefreshing === false) {
+      return this.launchRequest(request, next);
+    } else {
+      return this.waitLogin(request, next);
+    }
+  }
+
+  protected checkUrlNoToken(url: string) {
+    return (
+      url
+        .toLowerCase()
+        .indexOf(BiaAppConstantsService.allEnvironments.urlAuth.toLowerCase()) >
+        -1 ||
+      url
+        .toLowerCase()
+        .indexOf(BiaAppConstantsService.allEnvironments.urlLog.toLowerCase()) >
+        -1 ||
+      url
+        .toLowerCase()
+        .indexOf(BiaAppConstantsService.allEnvironments.urlEnv.toLowerCase()) >
+        -1 ||
+      url
+        .toLowerCase()
+        .indexOf(
+          BiaAppConstantsService.allEnvironments.urlAppSettings.toLowerCase()
+        ) > -1 ||
+      url.toLowerCase().indexOf('./assets/') > -1 ||
+      (this.appSettingsService.appSettings?.keycloak?.isActive === true &&
+        url
+          .toLowerCase()
+          .startsWith(
+            this.appSettingsService.appSettings?.keycloak?.baseUrl
+          ) === true)
+    );
+  }
+
+  protected launchRequestKeycloak(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    return of(this.keycloakService?.token || '').pipe(
+      switchMap(jwtToken => {
+        if (jwtToken?.length > 0) {
+          request = this.addToken(request, jwtToken);
+        }
+        return next.handle(this.addLanguageOnly(request));
+      })
+    );
+  }
+
+  protected launchRequest(request: HttpRequest<any>, next: HttpHandler) {
+    if (
+      RefreshTokenService.shouldRefreshToken ||
+      this.isTokenExpired(this.authService.getDecryptedToken())
+    ) {
+      return this.handle401Error(request, next);
+    }
+    const jwtToken = this.authService.getToken();
+    request = this.addToken(request, jwtToken);
+
+    return next.handle(request).pipe(
+      catchError(error => {
+        if (
+          error instanceof HttpErrorResponse &&
+          (error.status === HttpStatusCode.Unauthorized ||
+            error.status === HttpStatusCodeCustom.InvalidToken)
+        ) {
+          return this.handle401Error(request, next);
+        } else {
+          return throwError(() => error);
+        }
+      })
+    );
+  }
+
+  protected addToken(request: HttpRequest<any>, token: string) {
+    const langSelected = getCurrentCulture();
+    return request.clone({
+      withCredentials: false,
+      setHeaders: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        Authorization: `Bearer ${token}`,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        'Accept-Language': langSelected !== null ? langSelected : '',
+      },
+    });
+  }
+
+  protected addLanguageOnly(request: HttpRequest<any>) {
+    const langSelected = getCurrentCulture();
+    return request.clone({
+      setHeaders: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        'Accept-Language': langSelected !== null ? langSelected : '',
+      },
+    });
+  }
+
+  protected handle401Error(request: HttpRequest<any>, next: HttpHandler) {
+    console.info('Handler 401');
+    if (this.isRefreshing === false) {
+      return this.login(request, next);
+    } else {
+      return this.waitLogin(request, next);
+    }
+  }
+
+  protected login(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    this.isRefreshing = true;
+    this.authService.logout();
+    console.info('Login start from interceptor.');
+    const obs$: Observable<HttpEvent<any>> = this.authService.login().pipe(
+      switchMap((authInfo: AuthInfo) => {
+        console.info('Login end from interceptor.');
+        this.isRefreshing = false;
+        return next.handle(this.addToken(request, authInfo.token));
+      }),
+      finalize(() => {
+        // Requests can be canceled while login is ongoing.
+        // If it happens, we must set the information that the refresh is over to
+        // either let another request refresh the token
+        // or inform that this request has correctly refreshed the token despite the cancelling
+        if (this.isRefreshing) {
+          this.isRefreshing = false;
+          console.info('Login end from interceptor from finalize.');
+        }
+      })
+    );
+
+    if (this.appSettingsService.appSettings?.keycloak?.isActive === true) {
+      return from([this.keycloakService?.authenticated]).pipe(
+        filter(x => x === true),
+        switchMap(() => obs$)
+      );
+    } else {
+      return obs$;
+    }
+  }
+
+  protected waitLogin(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    return this.authService.authInfo$.pipe(
+      filter(authInfo => authInfo.token !== ''),
+      take(1),
+      switchMap(authInfo => {
+        return next.handle(
+          this.addToken(request, authInfo ? authInfo.token : '')
+        );
+      })
+    );
+  }
+
+  protected isTokenExpired(token: Token) {
+    return token.expiredAt < Math.floor(Date.now() / 1000);
+  }
+}
+
+export const biaTokenInterceptor = {
+  provide: HTTP_INTERCEPTORS,
+  useClass: TokenInterceptor,
+  multi: true,
+};

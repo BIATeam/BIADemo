@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PermissionGuard } from '@bia-team/bia-ng/core';
+import { DynamicLayoutComponent, LayoutMode } from '@bia-team/bia-ng/shared';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { AirportOptionModule } from 'src/app/domains/airport-option/airport-option.module';
 import { PlaneTypeOptionModule } from 'src/app/domains/plane-type-option/plane-type-option.module';
-import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
-import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
 import { Permission } from 'src/app/shared/permission';
 
 import { storeKey, usePopup } from './plane.constants';
@@ -25,7 +24,7 @@ const ROUTES: Routes = [
       permission: Permission.Plane_List_Access,
       injectComponent: PlanesIndexComponent,
     },
-    component: FullPageLayoutComponent,
+    component: DynamicLayoutComponent,
     canActivate: [PermissionGuard],
     // [Calc] : The children are not used in calc
     children: [
@@ -36,9 +35,9 @@ const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.Plane_Create,
           title: 'plane.add',
-          injectComponent: PlaneNewComponent,
+          layoutMode: usePopup ? LayoutMode.popup : LayoutMode.fullPage,
         },
-        component: usePopup ? PopupLayoutComponent : FullPageLayoutComponent,
+        component: PlaneNewComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -57,11 +56,9 @@ const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.Plane_Update,
               title: 'plane.edit',
-              injectComponent: PlaneEditComponent,
+              layoutMode: usePopup ? LayoutMode.popup : LayoutMode.fullPage,
             },
-            component: usePopup
-              ? PopupLayoutComponent
-              : FullPageLayoutComponent,
+            component: PlaneEditComponent,
             canActivate: [PermissionGuard],
           },
           {

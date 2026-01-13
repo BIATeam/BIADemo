@@ -40,7 +40,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
         /// <summary>
         /// Test <see cref="ISiteAppService.GetAllAsync"/> method when user has <see cref="Rights.Sites.AccessAll"/> rights.
         /// </summary>
-        [TestMethod("SiteAppServiceTests.GetAllAsync_UserPermissions_AccessAllTest")]
+        [TestMethod(DisplayName = "SiteAppServiceTests.GetAllAsync_UserPermissions_AccessAllTest")]
         public void GetAllAsync_UserPermissions_AccessAllTest()
         {
             #region Setup context
@@ -66,7 +66,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
         /// - has <see cref="Rights.Sites.ListAccess"/> rights
         /// - is not a member of any site.
         /// </summary>
-        [TestMethod("SiteAppServiceTests.GetAllAsync_UserPermissions_ListAccess_NotMemberTest")]
+        [TestMethod(DisplayName = "SiteAppServiceTests.GetAllAsync_UserPermissions_ListAccess_NotMemberTest")]
         public void GetAllAsync_UserPermissions_ListAccess_NotMemberTest()
         {
             #region Setup context
@@ -93,7 +93,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
         /// - has <see cref="Rights.Sites.ListAccess"/> rights
         /// - is member of one site.
         /// </summary>
-        [TestMethod("SiteAppServiceTests.GetAllAsync_UserPermissions_ListAccess_MemberTest")]
+        [TestMethod(DisplayName = "SiteAppServiceTests.GetAllAsync_UserPermissions_ListAccess_MemberTest")]
         public void GetAllAsync_UserPermissions_ListAccess_MemberTest()
         {
             #region Setup context
@@ -123,11 +123,11 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
         }
 
         /// <summary>
-        /// Test <see cref="ISiteAppService.GetAllWithMembersAsync(PagingFilterFormatDto.SiteAdvancedFilterDto)"/> method when user:
+        /// Test <see cref="ISiteAppService.GetAllWithMembersAsync(PagingFilterFormatDto{TAdvancedFilter})"/> method when user:
         /// - has <see cref="Rights.Sites.ListAccess"/> rights
         /// - is member of one site.
         /// </summary>
-        [TestMethod("SiteAppServiceTests.GetAllWithMembersAsync_UserPermissions_ListAccess_MemberTest")]
+        [TestMethod(DisplayName = "SiteAppServiceTests.GetAllWithMembersAsync_UserPermissions_ListAccess_MemberTest")]
         public void GetAllWithMembersAsync_UserPermissions_ListAccess_MemberTest()
         {
             #region Setup context
@@ -156,11 +156,11 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
             ISiteAppService service = this.GetService<ISiteAppService>();
             #endregion Setup context
 
-            PagingFilterFormatDto filters = new PagingFilterFormatDto()
+            PagingFilterFormatDto<TeamAdvancedFilterDto> filters = new()
             {
                 Filters = new Dictionary<string, JsonElement>(),
             };
-            (IEnumerable<SiteDto> sites, int total) = service.GetRangeAsync(filters, specification: TeamAdvancedFilterSpecification<Site>.Filter(filters)).Result;
+            (IEnumerable<SiteDto> sites, int total) = service.GetRangeAsync(filters).Result;
 
             // Only one site is returned (the one the user is a member of).
             Assert.IsNotNull(sites);
@@ -174,7 +174,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
         /// <summary>
         /// Test <see cref="ISiteAppService.GetAsync"/> method.
         /// </summary>
-        [TestMethod("SiteAppServiceTests.GetAsyncTest")]
+        [TestMethod(DisplayName = "SiteAppServiceTests.GetAsyncTest")]
         public void GetAsyncTest()
         {
             #region Setup context
@@ -197,7 +197,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
         /// <summary>
         /// Test <see cref="ISiteAppService.AddAsync"/> method.
         /// </summary>
-        [TestMethod("SiteAppServiceTests.AddAsyncTest")]
+        [TestMethod(DisplayName = "SiteAppServiceTests.AddAsyncTest")]
         public void AddAsyncTest()
         {
             // Initialize the service to test.
@@ -219,7 +219,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
         /// Test <see cref="ISiteAppService.RemoveAsync"/> method.
         /// </summary>
         /// <returns>The <see cref="Task"/> representing the asynchronous operation to perform.</returns>
-        [TestMethod("SiteAppServiceTests.RemoveAsyncTest")]
+        [TestMethod(DisplayName = "SiteAppServiceTests.RemoveAsyncTest")]
         public async Task RemoveAsyncTest()
         {
             int teamId = 2;
@@ -258,7 +258,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
         /// <summary>
         /// Test <see cref="ISiteAppService.UpdateAsync"/> method.
         /// </summary>
-        [TestMethod("SiteAppServiceTests.UpdateAsyncTest")]
+        [TestMethod(DisplayName = "SiteAppServiceTests.UpdateAsyncTest")]
         public void UpdateAsyncTest()
         {
             int teamId = 2;

@@ -45,20 +45,20 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
         {
             services.AddSingleton<IJwtFactory, JwtFactory>();
 
-            SymmetricSecurityKey signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.Jwt.SecretKey));
+            SymmetricSecurityKey signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.Jwt?.SecretKey));
 
             // Configure JwtIssuerOptions
             services.Configure<Jwt>(options =>
             {
-                options.Issuer = configuration.Jwt.Issuer;
+                options.Issuer = configuration.Jwt?.Issuer;
                 options.Audience = configuration.Security?.Audience;
-                options.SecretKey = configuration.Jwt.SecretKey;
-                options.ValidTime = configuration.Jwt.ValidTime;
+                options.SecretKey = configuration.Jwt?.SecretKey;
+                options.ValidTime = configuration.Jwt?.ValidTime ?? 0;
             });
             var tokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,
-                ValidIssuer = configuration.Jwt.Issuer,
+                ValidIssuer = configuration.Jwt?.Issuer,
 
                 ValidateAudience = true,
                 ValidAudience = configuration.Security?.Audience,
@@ -95,7 +95,7 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(JwtBearerDefault, configureOptions =>
             {
-                configureOptions.ClaimsIssuer = configuration.Jwt.Issuer;
+                configureOptions.ClaimsIssuer = configuration.Jwt?.Issuer;
                 configureOptions.TokenValidationParameters = tokenValidationParameters;
                 configureOptions.Events = jwtBearerEvents;
             });
@@ -121,12 +121,12 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
                         }
                         else
                         {
-                            o.Authority = configuration.Authentication.Keycloak.BaseUrl + configuration.Authentication.Keycloak.Configuration.Authority;
+                            o.Authority = configuration.Authentication.Keycloak.BaseUrl + configuration.Authentication.Keycloak.Configuration?.Authority;
                         }
 
-                        o.RequireHttpsMetadata = configuration.Authentication.Keycloak.Configuration.RequireHttpsMetadata;
+                        o.RequireHttpsMetadata = configuration.Authentication.Keycloak.Configuration?.RequireHttpsMetadata ?? false;
 
-                        string certFileName = configuration.Authentication.Keycloak.Configuration.CertFileName;
+                        string certFileName = configuration.Authentication.Keycloak.Configuration?.CertFileName;
                         if (!string.IsNullOrWhiteSpace(certFileName))
                         {
                             // Set MetadataAddress to a dummy value to prevent automatic metadata fetching
@@ -135,19 +135,19 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
 
                             o.TokenValidationParameters = new TokenValidationParameters
                             {
-                                ValidIssuer = configuration.Authentication.Keycloak.BaseUrl + configuration.Authentication.Keycloak.Configuration.Authority,
-                                ValidAudience = configuration.Authentication.Keycloak.Configuration.ValidAudience,
+                                ValidIssuer = configuration.Authentication.Keycloak.BaseUrl + configuration.Authentication.Keycloak.Configuration?.Authority,
+                                ValidAudience = configuration.Authentication.Keycloak.Configuration?.ValidAudience,
                                 ValidateIssuerSigningKey = true,
                                 IssuerSigningKeys = RetrieveKeycloakKeySet(certFileName),
                             };
                         }
                         else
                         {
-                            o.RequireHttpsMetadata = configuration.Authentication.Keycloak.Configuration.RequireHttpsMetadata;
+                            o.RequireHttpsMetadata = configuration.Authentication.Keycloak.Configuration?.RequireHttpsMetadata ?? false;
 
                             o.TokenValidationParameters = new TokenValidationParameters
                             {
-                                ValidAudience = configuration.Authentication.Keycloak.Configuration.ValidAudience,
+                                ValidAudience = configuration.Authentication.Keycloak.Configuration?.ValidAudience,
                                 ValidateIssuerSigningKey = true,
                             };
                         }

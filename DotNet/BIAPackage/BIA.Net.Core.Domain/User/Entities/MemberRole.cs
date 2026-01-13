@@ -35,5 +35,10 @@ namespace BIA.Net.Core.Domain.User.Entities
         /// Gets or sets a value indicating whether the role is the default one.
         /// </summary>
         public bool IsDefault { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the role has been created through an external API.
+        /// </summary>
+        public bool IsFromRoleApi { get; set; }
     }
 }

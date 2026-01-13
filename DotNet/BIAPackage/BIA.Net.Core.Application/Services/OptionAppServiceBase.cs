@@ -6,6 +6,7 @@ namespace BIA.Net.Core.Application.Services
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.Mapper;
@@ -19,7 +20,7 @@ namespace BIA.Net.Core.Application.Services
     /// <typeparam name="TEntity">The entity type.</typeparam>
     /// <typeparam name="TKey">The key type of the option DTO and entity.</typeparam>
     /// <typeparam name="TMapper">The mapper between entity and option DTO.</typeparam>
-    public abstract class OptionAppServiceBase<TOptionDto, TEntity, TKey, TMapper> : OperationalDomainServiceBase<TEntity, TKey>, IOptionAppServiceBase<TOptionDto, TKey>
+    public abstract class OptionAppServiceBase<TOptionDto, TEntity, TKey, TMapper> : OperationalDomainServiceBase<TOptionDto, TOptionDto, TEntity, TKey, PagingFilterFormatDto, TMapper, TMapper>, IOptionAppServiceBase<TOptionDto, TKey>
         where TOptionDto : TOptionDto<TKey>, new()
         where TEntity : class, IEntity<TKey>, new()
         where TMapper : BiaBaseMapper<TOptionDto, TEntity, TKey>
@@ -34,9 +35,9 @@ namespace BIA.Net.Core.Application.Services
         }
 
         /// <inheritdoc/>
-        public virtual async Task<IEnumerable<TOptionDto>> GetAllOptionsAsync()
+        public async Task<IEnumerable<TOptionDto>> GetAllOptionsAsync()
         {
-            return await this.GetAllAsync<TOptionDto, TMapper>();
+            return await this.GetAllGenericAsync<TOptionDto, TMapper>();
         }
     }
 }

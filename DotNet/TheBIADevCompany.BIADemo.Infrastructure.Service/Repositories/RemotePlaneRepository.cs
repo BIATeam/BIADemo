@@ -47,6 +47,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
              : base(httpClient, logger, distributedCache, biaWebApiAuthRepository, configuration.GetSection("MyBiaWebApi").Get<BiaWebApi>())
         {
             this.urlPlane = "/api/Planes/";
+            this.CompressionLevel = System.IO.Compression.CompressionLevel.SmallestSize;
         }
 
         /// <inheritdoc />

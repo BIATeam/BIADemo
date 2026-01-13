@@ -1,0 +1,83 @@
+@use 'sass:math';
+
+:host > div:last-child {
+  margin-bottom: -0.5rem;
+}
+
+.bia-form-group {
+  margin-bottom: 1.5rem;
+  display: block;
+  h6 {
+    margin: 0rem 0rem 0.5rem 0rem;
+  }
+}
+
+.bia-form-row {
+  margin-bottom: -1rem;
+}
+
+/* Container queries must target the split container (.left-container/.right-container).
+  Do not set container-type on :host to avoid impacting non-split pages. */
+
+// PrimeFlex column classes (base + responsive) to override inside the split container
+@function pf-col-width($i) {
+  @return math.percentage(calc($i / 12));
+}
+
+@mixin pf-apply-col-set($prefix) {
+  // fluid column
+  .#{$prefix}col {
+    flex-grow: 1 !important;
+    flex-basis: 0 !important;
+    min-width: 0;
+  }
+
+  // fixed column
+  .#{$prefix}col-fixed {
+    flex: 0 0 auto !important;
+    max-width: none !important;
+  }
+
+  // numbered columns 1..12
+  @for $i from 1 through 12 {
+    $w: pf-col-width($i);
+    .#{$prefix}col-#{$i} {
+      flex: 0 0 $w !important;
+      max-width: $w !important;
+    }
+  }
+
+  // offsets
+  @for $i from 0 through 12 {
+    $w: pf-col-width($i);
+    .#{$prefix}col-offset-#{$i} {
+      margin-left: $w !important;
+    }
+  }
+}
+
+/* Breakpoints for Container Queries (aligned with PrimeNG Ultima theme) */
+/* sm: 576px, md: 768px, lg: 992px, xl: 1200px */
+
+/* Scope to split containers via :host-context */
+:host-context(.bia-form-container) {
+  // Base (no prefix) always active on the container
+  @include pf-apply-col-set('');
+
+  // Mirror PrimeFlex breakpoints, but evaluated on the container width
+  @container (min-width: 576px) {
+    @include pf-apply-col-set('sm\\:');
+  }
+
+  @container (min-width: 768px) {
+    @include pf-apply-col-set('md\\:');
+  }
+
+  @container (min-width: 992px) {
+    @include pf-apply-col-set('lg\\:');
+  }
+
+  @container (min-width: 1200px) {
+    @include pf-apply-col-set('xl\\:');
+  }
+}
