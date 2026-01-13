@@ -7,10 +7,8 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Application\TheBIADevCompany.BIADemo.Application.csproj" />
-    <ProjectReference Include="..\TheBIADevCompany.BIADemo.Infrastructure.Data\TheBIADevCompany.BIADemo.Infrastructure.Data.csproj" Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\BIA_USE_DATABASE\b'))"  />
+    <ProjectReference Include="..\TheBIADevCompany.BIADemo.Infrastructure.Data\TheBIADevCompany.BIADemo.Infrastructure.Data.csproj" Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\BIA_USE_DATABASE\b'))" />
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Infrastructure.Service\TheBIADevCompany.BIADemo.Infrastructure.Service.csproj" />
-    <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Ioc\BIA.Net.Core.Ioc.csproj" />
-    <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Presentation.Common\BIA.Net.Core.Presentation.Common.csproj" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>$(DefineConstants);BIA_BACK_TO_BACK_AUTH;BIA_FRONT_FEATURE;BIA_USE_DATABASE</DefineConstants>
@@ -18,4 +16,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>$(DefineConstants);BIA_BACK_TO_BACK_AUTH;BIA_FRONT_FEATURE;BIA_USE_DATABASE</DefineConstants>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BIA.Net.Core.Ioc" />
+    <PackageReference Include="BIA.Net.Core.Presentation.Common" />
+  </ItemGroup>
 </Project>
