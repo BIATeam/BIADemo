@@ -39,7 +39,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 #if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
-    using TheBIADevCompany.BIADemo.Domain.Api.RolesForApp;
 #endif
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
 #if BIA_FRONT_FEATURE
