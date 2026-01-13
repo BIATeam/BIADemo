@@ -3,7 +3,7 @@
 		<TargetFramework>net10.0</TargetFramework>
 		<IsPackable>false</IsPackable>
 		<Company>TheBIADevCompany</Company>
-		<Copyright>Copyright © TheBIADevCompany 2025</Copyright>
+		<Copyright>Copyright © TheBIADevCompany 2026</Copyright>
 		<Configurations>Debug;Release</Configurations>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
