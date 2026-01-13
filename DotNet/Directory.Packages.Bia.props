@@ -36,7 +36,7 @@
 		<PackageVersion Include="Microsoft.Extensions.Hosting.WindowsServices" Version="10.0.1" />
 		<PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.1" />
 		<PackageVersion Include="Microsoft.Extensions.Options" Version="10.0.1" />
-		<PackageVersion Include="Microsoft.Identity.Client" Version="4.80.0" />
+		<PackageVersion Include="Microsoft.Identity.Client" Version="4.81.0" />
 		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
 		<PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
 		<PackageVersion Include="Microsoft.VSSDK.BuildTools" Version="17.14.2120" />
@@ -51,7 +51,7 @@
 		<PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
 		<PackageVersion Include="PdfPig" Version="0.1.13" />
 		<PackageVersion Include="RabbitMQ.Client" Version="7.2.0" />
-		<PackageVersion Include="SonarAnalyzer.CSharp" Version="10.17.0.131074" />
+		<PackageVersion Include="SonarAnalyzer.CSharp" Version="10.18.0.131500" />
 		<PackageVersion Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.1.0" />
 		<PackageVersion Include="System.Configuration.ConfigurationManager" Version="10.0.1" />
 		<PackageVersion Include="System.DirectoryServices" Version="10.0.1" />
