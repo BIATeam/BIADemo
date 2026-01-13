@@ -21,10 +21,9 @@ export const flightFieldsConfiguration: BiaFieldsConfig<Flight> = {
   columns: [
     Object.assign(new BiaFieldConfig('id', 'flight.id'), {
       type: PropType.String,
-      isOnlyInitializable: true,
-      // Begin BIAToolKit Generation Ignore
       isRequired: true,
-      // End BIAToolKit Generation Ignore
+      isEditable: false,
+      isOnlyInitializable: true,
     }),
     Object.assign(
       new BiaFieldConfig('departureAirport', 'flight.departureAirport'),
