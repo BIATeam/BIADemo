@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
 import {
   BiaFormComponent,
   CrudItemFormComponent,
-} from 'packages/bia-ng/shared/public-api';
+} from '@bia-team/bia-ng/shared';
+import { TranslateModule } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
 import { User } from '../../model/user';
 import { UserTeamsComponent } from '../user-teams/user-teams.component';

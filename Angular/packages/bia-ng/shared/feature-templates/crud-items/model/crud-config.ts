@@ -2,7 +2,7 @@ import {
   BiaFieldsConfig,
   BiaFormLayoutConfig,
   BiaTableState,
-} from 'packages/bia-ng/models/public-api';
+} from '@bia-team/bia-ng/models';
 
 export enum FormReadOnlyMode {
   off,

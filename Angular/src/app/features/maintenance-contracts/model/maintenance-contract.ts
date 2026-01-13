@@ -1,5 +1,4 @@
 import { Validators } from '@angular/forms';
-import { PropType } from 'packages/bia-ng/models/enum/public-api';
 import {
   ArchivableDto,
   BaseDto,
@@ -7,7 +6,8 @@ import {
   BiaFieldsConfig,
   FixableDto,
   OptionDto,
-} from 'packages/bia-ng/models/public-api';
+} from '@bia-team/bia-ng/models';
+import { PropType } from '@bia-team/bia-ng/models/enum';
 
 // TODO after creation of CRUD MaintenanceContract : adapt the model
 export interface MaintenanceContract

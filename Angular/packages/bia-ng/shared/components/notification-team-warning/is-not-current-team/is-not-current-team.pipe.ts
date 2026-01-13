@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { AuthService, Notification } from 'packages/bia-ng/core/public-api';
+import { AuthService, Notification } from '@bia-team/bia-ng/core';
 
 @Pipe({ name: 'isNotCurrentTeam' })
 export class IsNotCurrentTeamPipe implements PipeTransform {

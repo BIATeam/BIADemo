@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, Injector } from '@angular/core';
-import { CrudItemNewComponent } from 'packages/bia-ng/shared/public-api';
+import { CrudItemNewComponent } from '@bia-team/bia-ng/shared';
 import { airportCRUDConfiguration } from '../../airport.constants';
 import { AirportFormComponent } from '../../components/airport-form/airport-form.component';
 import { Airport } from '../../model/airport';

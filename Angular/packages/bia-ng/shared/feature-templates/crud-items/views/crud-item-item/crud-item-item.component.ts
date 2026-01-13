@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
-import { BaseDto } from 'packages/bia-ng/models/public-api';
+import { BaseDto } from '@bia-team/bia-ng/models';
 import { first, Subscription } from 'rxjs';
 import { BiaLayoutService } from '../../../../components/layout/services/layout.service';
 import { SpinnerComponent } from '../../../../components/spinner/spinner.component';

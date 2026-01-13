@@ -1,5 +1,5 @@
-import { BiaPermission } from 'packages/bia-ng/core/public-api';
-import { BiaNavigation } from 'packages/bia-ng/models/public-api';
+import { BiaPermission } from '@bia-team/bia-ng/core';
+import { BiaNavigation } from '@bia-team/bia-ng/models';
 import { Permission } from './permission';
 
 export const NAVIGATION: BiaNavigation[] = [

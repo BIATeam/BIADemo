@@ -1,5 +1,5 @@
-import { DtoState } from 'packages/bia-ng/models/enum/public-api';
-import { BaseDto } from 'packages/bia-ng/models/public-api';
+import { BaseDto } from '@bia-team/bia-ng/models';
+import { DtoState } from '@bia-team/bia-ng/models/enum';
 
 export class BiaOptionService {
   public static clone<T>(value: any) {

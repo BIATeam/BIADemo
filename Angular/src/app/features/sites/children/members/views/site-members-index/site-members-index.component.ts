@@ -1,6 +1,5 @@
 import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
 import {
   BiaTableBehaviorControllerComponent,
   BiaTableComponent,
@@ -10,7 +9,8 @@ import {
   MemberModule,
   MembersIndexComponent,
   MemberTableComponent,
-} from 'packages/bia-ng/shared/public-api';
+} from '@bia-team/bia-ng/shared';
+import { TranslateModule } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
 import { SiteService } from 'src/app/features/sites/services/site.service';
 import { TeamTypeId } from 'src/app/shared/constants';
@@ -19,9 +19,9 @@ import { Permission } from 'src/app/shared/permission';
 @Component({
   selector: 'app-site-members-index',
   templateUrl:
-    '../../../../../../../../packages/bia-ng/shared/feature-templates/members/views/members-index/members-index.component.html',
+    '../../../../../../../../node_modules/@bia-team/bia-ng/templates/feature-templates/members/views/members-index/members-index.component.html',
   styleUrls: [
-    '../../../../../../../../packages/bia-ng/shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component.scss',
+    '../../../../../../../../node_modules/@bia-team/bia-ng/templates/feature-templates/crud-items/views/crud-items-index/crud-items-index.component.scss',
   ],
   imports: [
     NgClass,
