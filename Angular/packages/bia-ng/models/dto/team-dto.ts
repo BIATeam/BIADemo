@@ -16,5 +16,6 @@ export const teamFieldsConfigurationColumns: BiaFieldConfig<TeamDto>[] = [
   Object.assign(new BiaFieldConfig('admins', 'bia.team.admins'), {
     type: PropType.ManyToMany,
     isEditable: false,
+    isVisible: false,
   }),
 ];
