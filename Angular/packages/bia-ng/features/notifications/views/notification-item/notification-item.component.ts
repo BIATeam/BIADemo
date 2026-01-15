@@ -1,10 +1,13 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
-import { BiaTranslationService } from '@bia-team/bia-ng/core';
-import { BiaLayoutService, SpinnerComponent } from '@bia-team/bia-ng/shared';
-import { BiaAppState } from '@bia-team/bia-ng/store';
 import { Store } from '@ngrx/store';
+import { BiaTranslationService } from 'packages/bia-ng/core/public-api';
+import {
+  BiaLayoutService,
+  SpinnerComponent,
+} from 'packages/bia-ng/shared/public-api';
+import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { Observable, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Notification } from '../../model/notification';

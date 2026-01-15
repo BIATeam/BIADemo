@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, Injector } from '@angular/core';
-import { BaseDto } from '@bia-team/bia-ng/models';
 import { TranslateModule } from '@ngx-translate/core';
+import { BaseDto } from 'packages/bia-ng/models/public-api';
 import { Button } from 'primeng/button';
 import { CrudItemHistoricalTimelineComponent } from '../../components/crud-item-historical-timeline/crud-item-historical-timeline.component';
 import { CrudConfig } from '../../model/crud-config';

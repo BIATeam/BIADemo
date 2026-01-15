@@ -1,4 +1,5 @@
 import { Validators } from '@angular/forms';
+import { PropType } from 'packages/bia-ng/models/enum/public-api';
 import {
   Announcement,
   BiaFieldConfig,
@@ -6,8 +7,7 @@ import {
   BiaFormLayoutConfig,
   BiaFormLayoutConfigField,
   BiaFormLayoutConfigRow,
-} from '@bia-team/bia-ng/models';
-import { PropType } from '@bia-team/bia-ng/models/enum';
+} from 'packages/bia-ng/models/public-api';
 
 // TODO after creation of CRUD Announcement : adapt the field configuration
 export const announcementFieldsConfiguration: BiaFieldsConfig<Announcement> = {

@@ -1,6 +1,6 @@
-import { OptionDto } from '@bia-team/bia-ng/models';
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
+import { OptionDto } from 'packages/bia-ng/models/public-api';
 import { DomainAirportOptionsActions } from './airport-options-actions';
 
 // This adapter will allow is to manipulate airports (mostly CRUD operations)

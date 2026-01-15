@@ -1,5 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
-import { AppSettings } from '@bia-team/bia-ng/models';
+import { AppSettings } from 'packages/bia-ng/models/public-api';
 import { AbstractDas } from '../../services/abstract-das.service';
 
 @Injectable({

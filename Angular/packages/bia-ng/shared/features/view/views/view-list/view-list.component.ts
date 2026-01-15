@@ -11,16 +11,16 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store, select } from '@ngrx/store';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
   AuthService,
   BiaAppConstantsService,
   BiaPermission,
-} from '@bia-team/bia-ng/core';
-import { BiaTableState, KeyValuePair } from '@bia-team/bia-ng/models';
-import { ViewType } from '@bia-team/bia-ng/models/enum';
-import { BiaAppState } from '@bia-team/bia-ng/store';
-import { Store, select } from '@ngrx/store';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+} from 'packages/bia-ng/core/public-api';
+import { ViewType } from 'packages/bia-ng/models/enum/public-api';
+import { BiaTableState, KeyValuePair } from 'packages/bia-ng/models/public-api';
+import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { FilterMetadata, PrimeTemplate, SelectItemGroup } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { FloatLabel } from 'primeng/floatlabel';

@@ -1,17 +1,17 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { Component, Inject } from '@angular/core';
+import { Store } from '@ngrx/store';
 import {
   AuthService,
   BiaTranslationService,
   NavigationService,
-} from '@bia-team/bia-ng/core';
+} from 'packages/bia-ng/core/public-api';
 import {
   BiaLayoutService,
   BiaUltimaLayoutComponent,
   LayoutComponent,
   SpinnerComponent,
-} from '@bia-team/bia-ng/shared';
-import { Store } from '@ngrx/store';
+} from 'packages/bia-ng/shared/public-api';
 
 @Component({
   selector: 'app-custom-layout',

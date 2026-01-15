@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BiaAnnouncementModule } from '@bia-team/bia-ng/features';
+import { BiaAnnouncementModule } from 'packages/bia-ng/features/public-api';
 
 @NgModule({
   imports: [BiaAnnouncementModule],

@@ -1,6 +1,9 @@
-import { CrudState, DEFAULT_CRUD_STATE } from '@bia-team/bia-ng/models';
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
+import {
+  CrudState,
+  DEFAULT_CRUD_STATE,
+} from 'packages/bia-ng/models/public-api';
 import { AircraftMaintenanceCompany } from '../model/aircraft-maintenance-company';
 import { FeatureAircraftMaintenanceCompaniesActions } from './aircraft-maintenance-companies-actions';
 

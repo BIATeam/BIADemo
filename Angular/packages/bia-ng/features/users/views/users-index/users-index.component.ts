@@ -1,11 +1,12 @@
 import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import {
   AppSettingsService,
   AuthService,
   BiaPermission,
-} from '@bia-team/bia-ng/core';
-import { DomainUserOptionsStore } from '@bia-team/bia-ng/domains';
+} from 'packages/bia-ng/core/public-api';
+import { DomainUserOptionsStore } from 'packages/bia-ng/domains/public-api';
 import {
   BiaTableBehaviorControllerComponent,
   BiaTableComponent,
@@ -14,8 +15,7 @@ import {
   CrudItemService,
   CrudItemsIndexComponent,
   UserAddFromLdapComponent,
-} from '@bia-team/bia-ng/shared';
-import { TranslateModule } from '@ngx-translate/core';
+} from 'packages/bia-ng/shared/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { skip } from 'rxjs/operators';

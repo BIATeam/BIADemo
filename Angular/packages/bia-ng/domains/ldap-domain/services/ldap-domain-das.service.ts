@@ -1,6 +1,6 @@
 import { Injectable, Injector } from '@angular/core';
-import { AbstractDas } from '@bia-team/bia-ng/core';
-import { LdapDomain } from '@bia-team/bia-ng/models';
+import { AbstractDas } from 'packages/bia-ng/core/public-api';
+import { LdapDomain } from 'packages/bia-ng/models/public-api';
 import { Observable } from 'rxjs';
 import { LdapDomainService } from './ldap-domain.service';
 

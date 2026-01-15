@@ -1,6 +1,7 @@
 import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
-import { AuthService } from '@bia-team/bia-ng/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { AuthService } from 'packages/bia-ng/core/public-api';
 import {
   BiaTableBehaviorControllerComponent,
   BiaTableComponent,
@@ -8,8 +9,7 @@ import {
   BiaTableHeaderComponent,
   CrudItemService,
   CrudItemsIndexComponent,
-} from '@bia-team/bia-ng/shared';
-import { TranslateModule } from '@ngx-translate/core';
+} from 'packages/bia-ng/shared/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { filter } from 'rxjs';
