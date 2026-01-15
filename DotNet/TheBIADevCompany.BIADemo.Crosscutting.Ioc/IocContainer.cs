@@ -99,6 +99,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 collection.Configure<ApiFeatures>(configuration.GetSection("BiaNet:ApiFeatures"));
             }
 #if BIA_FRONT_FEATURE
+
             ErrorMessage.FillErrorTranslations();
 #endif
         }
@@ -117,8 +118,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient(typeof(IBaseTeamAppService<TeamTypeId>), typeof(TeamAppService));
             collection.AddTransient(typeof(ITeamAppService), typeof(TeamAppService));
 #endif
-
 #if BIA_FRONT_FEATURE || BIA_USE_DATABASE
+
             // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
             BiaIocContainer.RegisterServicesFromAssembly(
                 collection: collection,
@@ -160,8 +161,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             {
                 collection.AddScoped(type);
             }
-
 #if BIA_FRONT_FEATURE || BIA_USE_DATABASE
+
             collection.AddSingleton<IAuditMapper, AnnouncementAuditMapper>();
 
             Type auditMapperType = typeof(IAuditMapper);
@@ -257,8 +258,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 interfaceAssemblyName: "TheBIADevCompany.BIADemo.Domain",
                 serviceLifetime: ServiceLifetime.Transient);
 
+#if BIA_FRONT_FEATURE
             // Must specify the User type explicitly
             collection.AddScoped<ICoreUserRepository, CoreUserRepository<User>>();
+#endif
         }
 #endif
 

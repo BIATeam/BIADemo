@@ -138,6 +138,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
                 app.ApplicationServices.GetRequiredService<IAuditFeatureService>().EnableAuditFeatures();
             }
 #endif
+
             app.UseBiaApiFeatures(this.biaNetSection.ApiFeatures, hangfireDashboardAuthorizations);
         }
     }
