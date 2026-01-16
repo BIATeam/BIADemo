@@ -1,6 +1,7 @@
 [
   {
     "Id": 1,
+    "Name": "FrontEnd",
     "DisplayName": "Front End",
     "Description": "Add the Angular project. On the back end, add the features User, Member, Role, Team, Notification, Translation, Log, Audit",
     "IsSelected": true,
@@ -10,6 +11,7 @@
   },
   {
     "Id": 2,
+    "Name": "BackToBackAuth",
     "DisplayName": "Back To Back Authentication",
     "Description": "Add an authentication system for backend to backend exchange",
     "IsSelected": true,
@@ -17,6 +19,7 @@
   },
   {
     "Id": 5,
+    "Name": "Database",
     "DisplayName": "Database",
     "Description": "Add Infrastructure.Data layer and usage of services with repositories to access database",
     "IsSelected": true,
@@ -26,6 +29,7 @@
   },
   {
     "Id": 3,
+    "Name": "DeployDb",
     "DisplayName": "Deploy Database",
     "Description": "Add the project allowing the deployment of the database",
     "IsSelected": true,
@@ -33,6 +37,7 @@
   },
   {
     "Id": 4,
+    "Name": "WorkerService",
     "DisplayName": "Worker Service",
     "Description": "Add the WorkerService project with Hangfire",
     "IsSelected": true,
@@ -40,6 +45,7 @@
   },
   {
     "Id": 0,
+    "Name": "UserCustomFields",
     "DisplayName": "User Custom Fields",
     "Description": "Add custom fields for User",
     "IsSelected": false,
