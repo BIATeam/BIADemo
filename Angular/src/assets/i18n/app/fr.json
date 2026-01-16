@@ -163,7 +163,14 @@
     "originalPrice": "Prix d'origine",
     "groupIdentification": "Identification",
     "groupStatus": "Statut",
-    "groupTracking": "Suivi"
+    "groupTracking": "Suivi",
+    "enginesNumberRange": {
+      "title": "Nombre de moteurs",
+      "zero": "0 moteurs",
+      "oneOrTwo": "1 ou 2 moteurs",
+      "threeToFive": "3 à 5 moteurs",
+      "sixOrMore": "6 moteurs ou plus"
+    }
   },
   "planeType": {
     "add": "Ajouter type d'avions",

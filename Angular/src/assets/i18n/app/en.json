@@ -163,7 +163,14 @@
     "originalPrice": "Original price",
     "groupIdentification": "Identification",
     "groupStatus": "Status",
-    "groupTracking": "Tracking"
+    "groupTracking": "Tracking",
+    "enginesNumberRange": {
+      "title": "Number of engines",
+      "zero": "0 engines",
+      "oneOrTwo": "1 or 2 engines",
+      "threeToFive": "3 to 5 engines",
+      "sixOrMore": "6 or more engines"
+    }
   },
   "planeType": {
     "add": "Add type of planes",

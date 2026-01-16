@@ -26,9 +26,11 @@ import { map, take } from 'rxjs';
 import { EngineDas } from 'src/app/features/planes/children/engines/services/engine-das.service';
 import { Permission } from 'src/app/shared/permission';
 import { engineCRUDConfiguration } from '../../children/engines/engine.constants';
+import { PlaneAdvancedFilterComponent } from '../../components/plane-advanced-filter/plane-advanced-filter.component';
 import { PlaneTableComponent } from '../../components/plane-table/plane-table.component';
 import { Engine } from '../../model/engine';
 import { Plane } from '../../model/plane';
+import { PlaneAdvancedFilterDto } from '../../model/plane-advanced-filter-dto';
 import { PlaneSpecific } from '../../model/plane-specific';
 import { planeCRUDConfiguration } from '../../plane.constants';
 import { PlaneService } from '../../services/plane.service';
@@ -49,6 +51,7 @@ import { PlaneService } from '../../services/plane.service';
     CommonModule,
     TableModule,
     SpinnerComponent,
+    PlaneAdvancedFilterComponent,
   ],
   providers: [{ provide: CrudItemService, useExisting: PlaneService }],
 })
@@ -119,5 +122,11 @@ export class PlanesIndexComponent extends CrudItemsIndexComponent<
         })
       )
       .subscribe();
+  }
+
+  checkhasAdvancedFilter() {
+    this.hasAdvancedFilter = PlaneAdvancedFilterDto.hasFilter(
+      this.crudConfiguration.fieldsConfig.advancedFilter
+    );
   }
 }

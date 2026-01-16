@@ -13,7 +13,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
     /// <summary>
     /// The interface defining the application service for plane.
     /// </summary>
-    public interface IPlaneSpecificAppService : ICrudAppServiceListAndItemBase<PlaneSpecificDto, PlaneDto, Plane, int, PagingFilterFormatDto>
+    public interface IPlaneSpecificAppService : ICrudAppServiceListAndItemBase<PlaneSpecificDto, PlaneDto, Plane, int, PagingFilterFormatDto<PlaneAdvancedFilterDto>>
     {
     }
 }
