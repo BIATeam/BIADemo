@@ -107,8 +107,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             entity.Manufacturer = dto.Manufacturer;
             entity.IsActive = dto.IsActive;
             entity.IsMaintenance = dto.IsMaintenance;
-            entity.FirstFlightDate = dto.FirstFlightDate;
-            entity.LastFlightDate = dto.LastFlightDate;
+            entity.FirstFlightDate = dto.FirstFlightDate.UtcDateTime;
+            entity.LastFlightDate = dto.LastFlightDate.HasValue ? dto.LastFlightDate.GetValueOrDefault().UtcDateTime : null;
             entity.DeliveryDate = dto.DeliveryDate;
             entity.NextMaintenanceDate = dto.NextMaintenanceDate;
             entity.SyncTime = string.IsNullOrEmpty(dto.SyncTime) ? null : TimeSpan.Parse(dto.SyncTime, new CultureInfo("en-US"));
@@ -240,8 +240,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
                 { HeaderName.Manufacturer, () => CSVString(dto.Manufacturer) },
                 { HeaderName.IsActive, () => CSVBool(dto.IsActive) },
                 { HeaderName.IsMaintenance, () => CSVBool(dto.IsMaintenance) },
-                { HeaderName.FirstFlightDate, () => CSVDateTime(dto.FirstFlightDate) },
-                { HeaderName.LastFlightDate, () => CSVDateTimeSeconds(dto.LastFlightDate) },
+                { HeaderName.FirstFlightDate, () => CSVDateTime(dto.FirstFlightDate.DateTime) },
+                { HeaderName.LastFlightDate, () => CSVDateTimeSeconds(dto.LastFlightDate?.DateTime) },
                 { HeaderName.DeliveryDate, () => CSVDateYear(dto.DeliveryDate) },
                 { HeaderName.NextMaintenanceDate, () => CSVDateMonth(dto.NextMaintenanceDate) },
                 { HeaderName.SyncTime, () => CSVTime(dto.SyncTime) },

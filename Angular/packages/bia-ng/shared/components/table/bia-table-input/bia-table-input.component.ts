@@ -17,6 +17,7 @@ import {
   ReactiveFormsModule,
   UntypedFormGroup,
 } from '@angular/forms';
+import { DateHelperService } from 'packages/bia-ng/core/public-api';
 import {
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
@@ -30,7 +31,6 @@ import { InputNumber } from 'primeng/inputnumber';
 import { InputText } from 'primeng/inputtext';
 import { MultiSelect } from 'primeng/multiselect';
 import { Select } from 'primeng/select';
-import { Subscription } from 'rxjs';
 import { CrudHelperService } from '../../../services/crud-helper.service';
 import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.component';
 import { DictOptionDto } from '../bia-table/dict-option-dto';
@@ -66,7 +66,38 @@ export class BiaTableInputComponent<CrudItem>
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   specificInputTemplate: TemplateRef<any>;
-  protected sub = new Subscription();
+
+  ngOnInit(): void {
+    super.ngOnInit();
+
+    if (
+      this.field.displayFormat instanceof BiaFieldDateFormat &&
+      this.field.displayFormat.autoTimezone === 'UTC'
+    ) {
+      const value = this.form.controls[this.field.field].value;
+      if (value instanceof Date) {
+        console.log('Date before', value);
+        const utcDate = DateHelperService.toUtcPickerDate(value);
+        console.log('Date UTC after', utcDate);
+        this.form.controls[this.field.field].setValue(utcDate, {
+          emitEvent: false,
+        });
+      }
+      // this.sub.add(
+      //   this.form.controls[this.field.field].valueChanges.subscribe(() => {
+      //     const value = this.form.controls[this.field.field].value;
+      //     if (value instanceof Date) {
+      //       this.form.controls[this.field.field].setValue(
+      //         DateHelperService.toUtcPickerDate(value),
+      //         {
+      //           emitEvent: false,
+      //         }
+      //       );
+      //     }
+      //   })
+      // );
+    }
+  }
 
   getDisplayDateFormat(
     displayFormat: BiaFieldNumberFormat | BiaFieldDateFormat | null

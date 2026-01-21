@@ -83,6 +83,14 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       {
         type: PropType.DateTime,
         isRequired: true,
+        // Begin BIAToolKit Generation Ignore
+        displayFormat: Object.assign(new BiaFieldDateFormat(), {
+          autoFormatDate: 'dd/MM/yyyy HH:mm:ss',
+          autoPrimeDateFormat: 'dd/mm/yy',
+          autoHourFormat: '24',
+          autoTimezone: 'UTC',
+        }),
+        // End BIAToolKit Generation Ignore
       }
     ),
     Object.assign(

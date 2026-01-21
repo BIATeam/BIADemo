@@ -51,13 +51,13 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Fleet
         /// Gets or sets the first flight date.
         /// </summary>
         [BiaDtoField(Required = true, Type = "datetime")]
-        public DateTime FirstFlightDate { get; set; }
+        public DateTimeOffset FirstFlightDate { get; set; }
 
         /// <summary>
         /// Gets or sets the last flight date.
         /// </summary>
         [BiaDtoField(Required = false, Type = "datetime")]
-        public DateTime? LastFlightDate { get; set; }
+        public DateTimeOffset? LastFlightDate { get; set; }
 
         /// <summary>
         /// Gets or sets the delivery date.

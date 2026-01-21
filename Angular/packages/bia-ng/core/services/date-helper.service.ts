@@ -19,7 +19,7 @@ export class DateHelperService {
       Object.keys(data).forEach((key: string) => {
         const value = (data as any)[key];
         if (value instanceof Date === true) {
-          (data as any)[key] = DateHelperService.toUtc(value);
+          (data as any)[key] = value.toISOString();
         } else if (DateHelperService.isDate(value)) {
           (data as any)[key] = new Date(value);
         } else if (value instanceof Object === true) {
@@ -52,6 +52,18 @@ export class DateHelperService {
         date.getMinutes(),
         date.getSeconds()
       )
+    );
+  }
+
+  public static toUtcPickerDate(d: Date): Date {
+    return new Date(
+      d.getUTCFullYear(),
+      d.getUTCMonth(),
+      d.getUTCDate(),
+      d.getUTCHours(),
+      d.getUTCMinutes(),
+      d.getUTCSeconds(),
+      d.getUTCMilliseconds()
     );
   }
 
