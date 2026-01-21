@@ -156,7 +156,11 @@ export abstract class GenericDas {
     param.endpoint = param.endpoint ?? 'save';
     if (param.items) {
       param.items.forEach(item => {
-        DateHelperService.fillDate(item);
+        if (param.utcFields && param.utcFields.length > 0) {
+          DateHelperService.fillDateWithUtcFields(item, param.utcFields);
+        } else {
+          DateHelperService.fillDate(item);
+        }
       });
     }
 
@@ -175,7 +179,11 @@ export abstract class GenericDas {
     // param might contains ngrx state item which is immutable : clone to allow update
     param = clone(param);
     param.endpoint = param.endpoint ?? '';
-    DateHelperService.fillDate(param.item);
+    if (param.utcFields && param.utcFields.length > 0) {
+      DateHelperService.fillDateWithUtcFields(param.item, param.utcFields);
+    } else {
+      DateHelperService.fillDate(param.item);
+    }
 
     const url = `${this.route}${param.endpoint}${param.id}`;
     if (param.offlineMode === true) {
@@ -198,7 +206,11 @@ export abstract class GenericDas {
     // param might contains ngrx state item which is immutable : clone to allow update
     param = clone(param);
     param.endpoint = param.endpoint ?? '';
-    DateHelperService.fillDate(param.item);
+    if (param.utcFields && param.utcFields.length > 0) {
+      DateHelperService.fillDateWithUtcFields(param.item, param.utcFields);
+    } else {
+      DateHelperService.fillDate(param.item);
+    }
 
     const url = `${this.route}${param.endpoint}`;
     if (param.offlineMode === true) {

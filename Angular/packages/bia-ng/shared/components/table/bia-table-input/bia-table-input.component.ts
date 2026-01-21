@@ -76,26 +76,11 @@ export class BiaTableInputComponent<CrudItem>
     ) {
       const value = this.form.controls[this.field.field].value;
       if (value instanceof Date) {
-        console.log('Date before', value);
         const utcDate = DateHelperService.toUtcPickerDate(value);
-        console.log('Date UTC after', utcDate);
         this.form.controls[this.field.field].setValue(utcDate, {
           emitEvent: false,
         });
       }
-      // this.sub.add(
-      //   this.form.controls[this.field.field].valueChanges.subscribe(() => {
-      //     const value = this.form.controls[this.field.field].value;
-      //     if (value instanceof Date) {
-      //       this.form.controls[this.field.field].setValue(
-      //         DateHelperService.toUtcPickerDate(value),
-      //         {
-      //           emitEvent: false,
-      //         }
-      //       );
-      //     }
-      //   })
-      // );
     }
   }
 

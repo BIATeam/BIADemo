@@ -5,6 +5,11 @@ interface HttpParam {
   offlineMode?: boolean;
   options?: HttpOptions;
   endpoint?: string;
+  /**
+   * Liste des champs qui utilisent une timezone UTC picker
+   * Ces champs seront sérialisés en UTC ISO string correctement
+   */
+  utcFields?: string[];
 }
 
 export interface GetParam extends HttpParam {

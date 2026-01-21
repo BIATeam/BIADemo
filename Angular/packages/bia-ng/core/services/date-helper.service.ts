@@ -29,6 +29,39 @@ export class DateHelperService {
     }
   }
 
+  /**
+   * Sérialise les dates en tenant compte des champs UTC picker.
+   * Pour les champs UTC, utilise toISOStringFromUtcPickerDate
+   * Pour les autres, utilise toISOString standard
+   *
+   * @param data L'objet à sérialiser
+   * @param utcFields Liste des champs qui sont des UTC pickers
+   */
+  public static fillDateWithUtcFields<TOut>(
+    data: TOut,
+    utcFields: string[] = []
+  ): void {
+    if (!data) return;
+
+    const utcFieldsSet = new Set(utcFields);
+
+    Object.keys(data).forEach((key: string) => {
+      const value = (data as any)[key];
+      if (value instanceof Date === true) {
+        if (utcFieldsSet.has(key)) {
+          (data as any)[key] =
+            DateHelperService.toISOStringFromUtcPickerDate(value);
+        } else {
+          (data as any)[key] = value.toISOString();
+        }
+      } else if (DateHelperService.isDate(value)) {
+        (data as any)[key] = new Date(value);
+      } else if (value instanceof Object === true) {
+        this.fillDateWithUtcFields(value, utcFields);
+      }
+    });
+  }
+
   public static fillDateISO<TOut>(data: TOut): TOut {
     if (!data) return data;
 
@@ -65,6 +98,26 @@ export class DateHelperService {
       d.getUTCSeconds(),
       d.getUTCMilliseconds()
     );
+  }
+
+  /**
+   * Reconvertit une date UTC picker vers UTC ISO string.
+   * Une date UTC picker est une date locale qui représente visuellement l'heure UTC.
+   * Exemple: Date(2024,0,15,14,30) représente 2024-01-15T14:30:00Z
+   * Cette fonction retourne le string ISO correspondant.
+   */
+  public static toISOStringFromUtcPickerDate(d: Date): string {
+    return new Date(
+      Date.UTC(
+        d.getFullYear(),
+        d.getMonth(),
+        d.getDate(),
+        d.getHours(),
+        d.getMinutes(),
+        d.getSeconds(),
+        d.getMilliseconds()
+      )
+    ).toISOString();
   }
 
   public static isValidDate(d: Date): boolean {
