@@ -29,22 +29,6 @@ export class DateHelperService {
     }
   }
 
-  /**
-   * Sérialise les dates en tenant compte du mode de timezone.
-   *
-   * PAR DÉFAUT (comportement historique) :
-   *   - Conversion UTC : toUtc() puis toISOString()
-   *   - Backend DateTime (stocké en UTC)
-   *   - Compatible avec l'existant
-   *
-   * Pour les champs LOCAUX (autoTimezone === '') :
-   *   - Mode nouveau avec DateTimeOffset backend
-   *   - Utilise toISOString() standard qui préserve l'offset de timezone
-   *   - Le backend recevra le DateTimeOffset avec l'info de timezone
-   *
-   * @param data L'objet à sérialiser
-   * @param localTimeFields Liste des champs qui utilisent le mode LOCAL (DateTimeOffset)
-   */
   public static fillDateWithLocalFields<TOut>(
     data: TOut,
     localTimeFields: string[] = []
@@ -57,6 +41,7 @@ export class DateHelperService {
       const value = (data as any)[key];
       if (value instanceof Date === true) {
         if (localFieldsSet.has(key)) {
+          console.log('ISO Date for local field:', key);
           (data as any)[key] = value.toISOString();
         } else {
           (data as any)[key] = DateHelperService.toUtc(value);

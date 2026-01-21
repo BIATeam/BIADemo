@@ -26,7 +26,7 @@ export class PlaneDas extends AbstractDas<Plane> {
       .filter(
         field =>
           field.displayFormat instanceof BiaFieldDateFormat &&
-          field.displayFormat.autoTimezone === ''
+          field.displayFormat.autoTimezone === undefined
       )
       .map(field => field.field as string);
   }
