@@ -40,7 +40,7 @@ export class BiaFieldDateFormat {
   autoFormatDate: string; // property automaticaly set when culture change.
   autoPrimeDateFormat: string; // property automaticaly set when culture change.
   autoHourFormat: number; // property automaticaly set when culture change.
-  isLocale: boolean; // property automaticaly set when culture change.
+  isLocale: boolean;
   constructor() {
     this.autoFormatDate = '';
     this.autoPrimeDateFormat = 'yy/mm/dd';

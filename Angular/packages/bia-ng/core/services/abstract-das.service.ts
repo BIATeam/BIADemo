@@ -1,5 +1,7 @@
 import { Injector } from '@angular/core';
 import {
+  BiaFieldDateFormat,
+  BiaFieldsConfig,
   DataResult,
   DeleteParam,
   DeletesParam,
@@ -22,8 +24,26 @@ export abstract class AbstractDas<
   TOut = TOutList,
   TIn = Pick<TOut, Exclude<keyof TOut, 'id'>>,
 > extends GenericDas {
-  constructor(injector: Injector, endpoint: string) {
+  private localTimeFields: string[] | undefined;
+
+  constructor(
+    injector: Injector,
+    endpoint: string,
+    biaFieldsConfig?: BiaFieldsConfig<TOut>
+  ) {
     super(injector, endpoint);
+    this.setLocalTimeFields(biaFieldsConfig);
+  }
+
+  private setLocalTimeFields(biaFieldsConfig?: BiaFieldsConfig<TOut>) {
+    this.localTimeFields =
+      biaFieldsConfig?.columns
+        .filter(
+          field =>
+            field.displayFormat instanceof BiaFieldDateFormat &&
+            field.displayFormat.isLocale === true
+        )
+        .map(field => field.field as string) ?? [];
   }
 
   getList(param?: GetListParam): Observable<TOutList[]> {
@@ -39,14 +59,17 @@ export abstract class AbstractDas<
   }
 
   save(param: SaveParam<TIn>) {
+    param.localTimeFields = this.localTimeFields;
     return this.saveItem<TIn, TOut>(param);
   }
 
   put(param: PutParam<TIn>) {
+    param.localTimeFields = this.localTimeFields;
     return this.putItem<TIn, TOut>(param);
   }
 
   post(param: PostParam<TIn>) {
+    param.localTimeFields = this.localTimeFields;
     return this.postItem<TIn, TOut>(param);
   }
 

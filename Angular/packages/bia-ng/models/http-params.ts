@@ -5,11 +5,6 @@ interface HttpParam {
   offlineMode?: boolean;
   options?: HttpOptions;
   endpoint?: string;
-  /**
-   * Liste des champs qui utilisent le mode LOCAL TIME (DateTimeOffset backend)
-   * Par défaut, tous les champs sont en mode UTC (DateTime backend)
-   * Ces champs seront sérialisés en ISO standard avec offset de timezone
-   */
   localTimeFields?: string[];
 }
 

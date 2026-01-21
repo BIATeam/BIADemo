@@ -154,18 +154,10 @@ export abstract class GenericDas {
     // param might contains ngrx state item which is immutable : clone to allow update
     param = clone(param);
     param.endpoint = param.endpoint ?? 'save';
-    if (param.items) {
-      param.items.forEach(item => {
-        if (param.localTimeFields && param.localTimeFields.length > 0) {
-          DateHelperService.fillDateWithLocalFields(
-            item,
-            param.localTimeFields
-          );
-        } else {
-          DateHelperService.fillDate(item);
-        }
-      });
-    }
+    DateHelperService.fillDateWithLocalTimeFields(
+      param.items,
+      param.localTimeFields
+    );
 
     const url = `${this.route}${param.endpoint}`;
     if (param.offlineMode === true) {
@@ -182,14 +174,10 @@ export abstract class GenericDas {
     // param might contains ngrx state item which is immutable : clone to allow update
     param = clone(param);
     param.endpoint = param.endpoint ?? '';
-    if (param.localTimeFields && param.localTimeFields.length > 0) {
-      DateHelperService.fillDateWithLocalFields(
-        param.item,
-        param.localTimeFields
-      );
-    } else {
-      DateHelperService.fillDate(param.item);
-    }
+    DateHelperService.fillDateWithLocalTimeFields(
+      param.item,
+      param.localTimeFields
+    );
 
     const url = `${this.route}${param.endpoint}${param.id}`;
     if (param.offlineMode === true) {
@@ -212,14 +200,10 @@ export abstract class GenericDas {
     // param might contains ngrx state item which is immutable : clone to allow update
     param = clone(param);
     param.endpoint = param.endpoint ?? '';
-    if (param.localTimeFields && param.localTimeFields.length > 0) {
-      DateHelperService.fillDateWithLocalFields(
-        param.item,
-        param.localTimeFields
-      );
-    } else {
-      DateHelperService.fillDate(param.item);
-    }
+    DateHelperService.fillDateWithLocalTimeFields(
+      param.item,
+      param.localTimeFields
+    );
 
     const url = `${this.route}${param.endpoint}`;
     if (param.offlineMode === true) {

@@ -29,13 +29,13 @@ export class DateHelperService {
     }
   }
 
-  public static fillDateWithLocalFields<TOut>(
+  public static fillDateWithLocalTimeFields<TOut>(
     data: TOut,
-    localTimeFields: string[] = []
+    localTimeFields: string[] | undefined
   ): void {
     if (!data) return;
 
-    const localFieldsSet = new Set(localTimeFields);
+    const localFieldsSet = new Set(localTimeFields ?? []);
 
     Object.keys(data).forEach((key: string) => {
       const value = (data as any)[key];
@@ -48,7 +48,7 @@ export class DateHelperService {
       } else if (DateHelperService.isDate(value)) {
         (data as any)[key] = new Date(value);
       } else if (value instanceof Object === true) {
-        this.fillDateWithLocalFields(value, localTimeFields);
+        this.fillDateWithLocalTimeFields(value, localTimeFields);
       }
     });
   }
