@@ -4,6 +4,7 @@ export interface AllEnvironments {
   enableNotifications: boolean;
   enableWorkerService?: boolean;
   enableAnnouncements?: boolean;
+  enableOfflineMode?: boolean;
   urlAuth: string;
   urlAppSettings: string;
   urlLog: string;

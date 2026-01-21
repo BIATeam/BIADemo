@@ -6,6 +6,7 @@ export const allEnvironments: AllEnvironments & { [key: string]: any } = {
   enableNotifications: true,
   enableWorkerService: true,
   enableAnnouncements: true,
+  enableOfflineMode: false,
   urlAuth: '/api/Auth',
   urlLog: '/api/logs',
   urlEnv: '/api/AppSettings/Environment',

@@ -21,18 +21,15 @@ import {
 } from '../shared/constants';
 import { NAVIGATION } from '../shared/navigation';
 
-// Begin BIADemo
 import {
   AppDB,
   biaOnlineOfflineInterceptor,
   BiaOnlineOfflineService,
 } from 'packages/bia-ng/core/public-api';
-const ONLINEOFFLINE = [
-  BiaOnlineOfflineService,
-  biaOnlineOfflineInterceptor,
-  AppDB,
-];
-// End BIADemo
+const ONLINEOFFLINE =
+  allEnvironments.enableOfflineMode === true
+    ? [BiaOnlineOfflineService, biaOnlineOfflineInterceptor, AppDB]
+    : [];
 
 @NgModule({
   imports: [
@@ -48,9 +45,7 @@ const ONLINEOFFLINE = [
       DEFAULT_POPUP_MINWIDTH
     ),
   ],
-  // Begin BIADemo
   providers: [...ONLINEOFFLINE],
-  // End BIADemo
 })
 
 // https://medium.com/@benmohamehdi/angular-best-practices-coremodule-vs-sharedmodule-25f6721aa2ef
