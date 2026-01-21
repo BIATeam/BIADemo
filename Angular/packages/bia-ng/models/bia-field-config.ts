@@ -40,12 +40,10 @@ export class BiaFieldDateFormat {
   autoFormatDate: string; // property automaticaly set when culture change.
   autoPrimeDateFormat: string; // property automaticaly set when culture change.
   autoHourFormat: number; // property automaticaly set when culture change.
-  isLocale: boolean;
   constructor() {
     this.autoFormatDate = '';
     this.autoPrimeDateFormat = 'yy/mm/dd';
     this.autoHourFormat = 12;
-    this.isLocale = false;
   }
 }
 
@@ -91,6 +89,7 @@ export class BiaFieldConfig<TDto> {
   filterWithDisplay: boolean;
   customDisplayFormat: boolean = true;
   multiline?: BiaFieldMultilineString;
+  asLocalDateTime: boolean = false;
 
   get isDate() {
     return (
@@ -136,6 +135,7 @@ export class BiaFieldConfig<TDto> {
     this.isVisibleInTable = true;
     this.filterWithDisplay = false;
     this.multiline = undefined;
+    this.asLocalDateTime = false;
   }
 
   public clone(): BiaFieldConfig<TDto> {
@@ -168,6 +168,7 @@ export class BiaFieldConfig<TDto> {
         filterWithDisplay: this.filterWithDisplay,
         customDisplayFormat: this.customDisplayFormat,
         multiline: this.multiline,
+        asLocaleDateTime: this.asLocalDateTime,
       }
     );
   }

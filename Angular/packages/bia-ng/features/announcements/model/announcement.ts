@@ -3,7 +3,6 @@ import { PropType } from 'packages/bia-ng/models/enum/public-api';
 import {
   Announcement,
   BiaFieldConfig,
-  BiaFieldDateFormat,
   BiaFieldsConfig,
   BiaFormLayoutConfig,
   BiaFormLayoutConfigField,
@@ -17,23 +16,13 @@ export const announcementFieldsConfiguration: BiaFieldsConfig<Announcement> = {
       type: PropType.DateTime,
       isRequired: true,
       isSearchable: false,
-      displayFormat: Object.assign(new BiaFieldDateFormat(), {
-        autoFormatDate: 'dd/MM/yyyy HH:mm:ss',
-        autoPrimeDateFormat: 'dd/mm/yy',
-        autoHourFormat: '24',
-        isLocale: true,
-      }),
+      asLocalDateTime: true,
     }),
     Object.assign(new BiaFieldConfig('end', 'announcement.end'), {
       type: PropType.DateTime,
       isRequired: true,
       isSearchable: false,
-      displayFormat: Object.assign(new BiaFieldDateFormat(), {
-        autoFormatDate: 'dd/MM/yyyy HH:mm:ss',
-        autoPrimeDateFormat: 'dd/mm/yy',
-        autoHourFormat: '24',
-        isLocale: true,
-      }),
+      asLocalDateTime: true,
     }),
     Object.assign(new BiaFieldConfig('type', 'announcement.type'), {
       type: PropType.OneToMany,

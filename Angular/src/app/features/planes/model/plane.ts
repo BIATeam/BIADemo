@@ -88,8 +88,8 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
           autoFormatDate: 'dd/MM/yyyy HH:mm:ss',
           autoPrimeDateFormat: 'dd/mm/yy',
           autoHourFormat: '24',
-          isLocale: true,
         }),
+        asLocalDateTime: true,
         // End BIAToolKit Generation Ignore
       }
     ),

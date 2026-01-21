@@ -1,6 +1,5 @@
 import { Injector } from '@angular/core';
 import {
-  BiaFieldDateFormat,
   BiaFieldsConfig,
   DataResult,
   DeleteParam,
@@ -38,11 +37,7 @@ export abstract class AbstractDas<
   private setLocalTimeFields(biaFieldsConfig?: BiaFieldsConfig<TOut>) {
     this.localTimeFields =
       biaFieldsConfig?.columns
-        .filter(
-          field =>
-            field.displayFormat instanceof BiaFieldDateFormat &&
-            field.displayFormat.isLocale === true
-        )
+        .filter(field => field.asLocalDateTime === true)
         .map(field => field.field as string) ?? [];
   }
 
