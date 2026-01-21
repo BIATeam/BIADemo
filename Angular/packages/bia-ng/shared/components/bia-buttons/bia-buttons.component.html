@@ -38,7 +38,7 @@
     }
   } @else if (item.items && item.visible !== false) {
     <div>
-      <p-tieredmenu #menu [model]="item.items" [popup]="true" />
+      <p-tieredmenu #menu [model]="item.items" [popup]="true" appendTo="body" />
       <button
         pButton
         [class]="
