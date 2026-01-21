@@ -54,7 +54,6 @@ export abstract class AbstractDas<
   }
 
   save(param: SaveParam<TIn>) {
-    param.localTimeFields = this.localTimeFields;
     return this.saveItem<TIn, TOut>(param);
   }
 
