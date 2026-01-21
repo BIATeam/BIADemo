@@ -34,13 +34,11 @@ export class DateHelperService {
     localTimeFields: string[] | undefined
   ): void {
     if (!data) return;
-
-    const localFieldsSet = new Set(localTimeFields ?? []);
-
+    const localTimeFieldsSet = new Set(localTimeFields ?? []);
     Object.keys(data).forEach((key: string) => {
       const value = (data as any)[key];
       if (value instanceof Date === true) {
-        if (localFieldsSet.has(key)) {
+        if (localTimeFieldsSet.has(key)) {
           (data as any)[key] = value.toISOString();
         } else {
           (data as any)[key] = DateHelperService.toUtc(value);

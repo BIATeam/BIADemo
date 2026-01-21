@@ -154,9 +154,8 @@ export abstract class GenericDas {
     // param might contains ngrx state item which is immutable : clone to allow update
     param = clone(param);
     param.endpoint = param.endpoint ?? 'save';
-    DateHelperService.fillDateWithLocalTimeFields(
-      param.items,
-      param.localTimeFields
+    DateHelperService.fillDate(
+      param.items
     );
 
     const url = `${this.route}${param.endpoint}`;
