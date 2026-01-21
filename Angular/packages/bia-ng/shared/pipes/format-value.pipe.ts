@@ -47,24 +47,15 @@ export class FormatValuePipe implements PipeTransform {
     }
     if (col.isDate && col.displayFormat instanceof BiaFieldDateFormat) {
       if (value instanceof Date) {
-        return this.datePipe.transform(
-          value,
-          col.displayFormat.autoFormatDate,
-          col.displayFormat.autoTimezone
-        );
+        return this.datePipe.transform(value, col.displayFormat.autoFormatDate);
       } else if (this.isTime(value) || col.type === PropType.Time) {
         return this.datePipe.transform(
           '1990-10-10 ' + value,
-          col.displayFormat.autoFormatDate,
-          col.displayFormat.autoTimezone
+          col.displayFormat.autoFormatDate
         );
       }
       try {
-        return this.datePipe.transform(
-          value,
-          col.displayFormat.autoFormatDate,
-          col.displayFormat.autoTimezone
-        );
+        return this.datePipe.transform(value, col.displayFormat.autoFormatDate);
       } catch {}
       return this.translateService.instant('bia.errorDateFormat');
     }

@@ -41,7 +41,6 @@ export class DateHelperService {
       const value = (data as any)[key];
       if (value instanceof Date === true) {
         if (localFieldsSet.has(key)) {
-          console.log('ISO Date for local field:', key);
           (data as any)[key] = value.toISOString();
         } else {
           (data as any)[key] = DateHelperService.toUtc(value);

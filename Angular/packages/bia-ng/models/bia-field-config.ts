@@ -40,12 +40,12 @@ export class BiaFieldDateFormat {
   autoFormatDate: string; // property automaticaly set when culture change.
   autoPrimeDateFormat: string; // property automaticaly set when culture change.
   autoHourFormat: number; // property automaticaly set when culture change.
-  autoTimezone: string | undefined; // property automaticaly set when culture change.
+  isLocale: boolean; // property automaticaly set when culture change.
   constructor() {
     this.autoFormatDate = '';
     this.autoPrimeDateFormat = 'yy/mm/dd';
     this.autoHourFormat = 12;
-    this.autoTimezone = 'UTC';
+    this.isLocale = false;
   }
 }
 
