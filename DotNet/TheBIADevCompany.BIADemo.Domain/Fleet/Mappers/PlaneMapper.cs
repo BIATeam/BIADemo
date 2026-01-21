@@ -108,7 +108,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             entity.IsActive = dto.IsActive;
             entity.IsMaintenance = dto.IsMaintenance;
             entity.FirstFlightDate = dto.FirstFlightDate.UtcDateTime;
-            entity.LastFlightDate = dto.LastFlightDate.HasValue ? dto.LastFlightDate.GetValueOrDefault().UtcDateTime : null;
+            entity.LastFlightDate = dto.LastFlightDate;
             entity.DeliveryDate = dto.DeliveryDate;
             entity.NextMaintenanceDate = dto.NextMaintenanceDate;
             entity.SyncTime = string.IsNullOrEmpty(dto.SyncTime) ? null : TimeSpan.Parse(dto.SyncTime, new CultureInfo("en-US"));
@@ -241,7 +241,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
                 { HeaderName.IsActive, () => CSVBool(dto.IsActive) },
                 { HeaderName.IsMaintenance, () => CSVBool(dto.IsMaintenance) },
                 { HeaderName.FirstFlightDate, () => CSVDateTime(dto.FirstFlightDate.DateTime) },
-                { HeaderName.LastFlightDate, () => CSVDateTimeSeconds(dto.LastFlightDate?.DateTime) },
+                { HeaderName.LastFlightDate, () => CSVDateTimeSeconds(dto.LastFlightDate) },
                 { HeaderName.DeliveryDate, () => CSVDateYear(dto.DeliveryDate) },
                 { HeaderName.NextMaintenanceDate, () => CSVDateMonth(dto.NextMaintenanceDate) },
                 { HeaderName.SyncTime, () => CSVTime(dto.SyncTime) },

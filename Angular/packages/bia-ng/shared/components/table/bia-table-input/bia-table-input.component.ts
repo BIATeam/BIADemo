@@ -17,7 +17,6 @@ import {
   ReactiveFormsModule,
   UntypedFormGroup,
 } from '@angular/forms';
-import { DateHelperService } from 'packages/bia-ng/core/public-api';
 import {
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
@@ -66,23 +65,6 @@ export class BiaTableInputComponent<CrudItem>
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   specificInputTemplate: TemplateRef<any>;
-
-  ngOnInit(): void {
-    super.ngOnInit();
-
-    if (
-      this.field.displayFormat instanceof BiaFieldDateFormat &&
-      this.field.displayFormat.autoTimezone === 'UTC'
-    ) {
-      const value = this.form.controls[this.field.field].value;
-      if (value instanceof Date) {
-        const utcDate = DateHelperService.toUtcPickerDate(value);
-        this.form.controls[this.field.field].setValue(utcDate, {
-          emitEvent: false,
-        });
-      }
-    }
-  }
 
   getDisplayDateFormat(
     displayFormat: BiaFieldNumberFormat | BiaFieldDateFormat | null

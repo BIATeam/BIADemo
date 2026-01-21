@@ -45,7 +45,7 @@ export class BiaFieldDateFormat {
     this.autoFormatDate = '';
     this.autoPrimeDateFormat = 'yy/mm/dd';
     this.autoHourFormat = 12;
-    this.autoTimezone = '';
+    this.autoTimezone = 'UTC';
   }
 }
 

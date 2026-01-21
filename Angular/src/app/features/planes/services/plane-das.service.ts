@@ -17,48 +17,49 @@ export class PlaneDas extends AbstractDas<Plane> {
   }
 
   /**
-   * Extrait les champs qui utilisent la timezone UTC
-   * D'après la configuration des champs, identifie les champs avec autoTimezone === 'UTC'
+   * Extrait les champs qui utilisent le mode LOCAL TIME (DateTimeOffset backend)
+   * D'après la configuration des champs, identifie les champs avec autoTimezone === '' (vide)
+   * Par défaut, tous les autres champs sont en mode UTC (DateTime backend)
    */
-  private getUtcFields(): string[] {
+  private getLocalTimeFields(): string[] {
     return planeFieldsConfiguration.columns
       .filter(
         field =>
           field.displayFormat instanceof BiaFieldDateFormat &&
-          field.displayFormat.autoTimezone === 'UTC'
+          field.displayFormat.autoTimezone === ''
       )
       .map(field => field.field as string);
   }
 
   /**
-   * Override saveItem pour ajouter les champs UTC
+   * Override saveItem pour ajouter les champs LOCAL TIME
    */
   override saveItem<Plane>(param: SaveParam<Plane>) {
-    // Ajoute les champs UTC au paramètre
-    if (!param.utcFields) {
-      param.utcFields = this.getUtcFields();
+    // Ajoute les champs LOCAL TIME au paramètre
+    if (!param.localTimeFields) {
+      param.localTimeFields = this.getLocalTimeFields();
     }
     return super.saveItem(param);
   }
 
   /**
-   * Override putItem pour ajouter les champs UTC
+   * Override putItem pour ajouter les champs LOCAL TIME
    */
   override putItem<Plane>(param: PutParam<Plane>) {
-    // Ajoute les champs UTC au paramètre
-    if (!param.utcFields) {
-      param.utcFields = this.getUtcFields();
+    // Ajoute les champs LOCAL TIME au paramètre
+    if (!param.localTimeFields) {
+      param.localTimeFields = this.getLocalTimeFields();
     }
     return super.putItem(param);
   }
 
   /**
-   * Override postItem pour ajouter les champs UTC
+   * Override postItem pour ajouter les champs LOCAL TIME
    */
   override postItem<Plane>(param: PostParam<Plane>) {
-    // Ajoute les champs UTC au paramètre
-    if (!param.utcFields) {
-      param.utcFields = this.getUtcFields();
+    // Ajoute les champs LOCAL TIME au paramètre
+    if (!param.localTimeFields) {
+      param.localTimeFields = this.getLocalTimeFields();
     }
     return super.postItem(param);
   }

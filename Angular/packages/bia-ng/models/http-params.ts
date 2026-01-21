@@ -6,10 +6,11 @@ interface HttpParam {
   options?: HttpOptions;
   endpoint?: string;
   /**
-   * Liste des champs qui utilisent une timezone UTC picker
-   * Ces champs seront sérialisés en UTC ISO string correctement
+   * Liste des champs qui utilisent le mode LOCAL TIME (DateTimeOffset backend)
+   * Par défaut, tous les champs sont en mode UTC (DateTime backend)
+   * Ces champs seront sérialisés en ISO standard avec offset de timezone
    */
-  utcFields?: string[];
+  localTimeFields?: string[];
 }
 
 export interface GetParam extends HttpParam {

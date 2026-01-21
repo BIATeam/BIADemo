@@ -19,7 +19,7 @@ export class DateHelperService {
       Object.keys(data).forEach((key: string) => {
         const value = (data as any)[key];
         if (value instanceof Date === true) {
-          (data as any)[key] = value.toISOString();
+          (data as any)[key] = DateHelperService.toUtc(value);
         } else if (DateHelperService.isDate(value)) {
           (data as any)[key] = new Date(value);
         } else if (value instanceof Object === true) {
@@ -30,34 +30,41 @@ export class DateHelperService {
   }
 
   /**
-   * Sérialise les dates en tenant compte des champs UTC picker.
-   * Pour les champs UTC, utilise toISOStringFromUtcPickerDate
-   * Pour les autres, utilise toISOString standard
+   * Sérialise les dates en tenant compte du mode de timezone.
+   *
+   * PAR DÉFAUT (comportement historique) :
+   *   - Conversion UTC : toUtc() puis toISOString()
+   *   - Backend DateTime (stocké en UTC)
+   *   - Compatible avec l'existant
+   *
+   * Pour les champs LOCAUX (autoTimezone === '') :
+   *   - Mode nouveau avec DateTimeOffset backend
+   *   - Utilise toISOString() standard qui préserve l'offset de timezone
+   *   - Le backend recevra le DateTimeOffset avec l'info de timezone
    *
    * @param data L'objet à sérialiser
-   * @param utcFields Liste des champs qui sont des UTC pickers
+   * @param localTimeFields Liste des champs qui utilisent le mode LOCAL (DateTimeOffset)
    */
-  public static fillDateWithUtcFields<TOut>(
+  public static fillDateWithLocalFields<TOut>(
     data: TOut,
-    utcFields: string[] = []
+    localTimeFields: string[] = []
   ): void {
     if (!data) return;
 
-    const utcFieldsSet = new Set(utcFields);
+    const localFieldsSet = new Set(localTimeFields);
 
     Object.keys(data).forEach((key: string) => {
       const value = (data as any)[key];
       if (value instanceof Date === true) {
-        if (utcFieldsSet.has(key)) {
-          (data as any)[key] =
-            DateHelperService.toISOStringFromUtcPickerDate(value);
-        } else {
+        if (localFieldsSet.has(key)) {
           (data as any)[key] = value.toISOString();
+        } else {
+          (data as any)[key] = DateHelperService.toUtc(value);
         }
       } else if (DateHelperService.isDate(value)) {
         (data as any)[key] = new Date(value);
       } else if (value instanceof Object === true) {
-        this.fillDateWithUtcFields(value, utcFields);
+        this.fillDateWithLocalFields(value, localTimeFields);
       }
     });
   }
@@ -86,38 +93,6 @@ export class DateHelperService {
         date.getSeconds()
       )
     );
-  }
-
-  public static toUtcPickerDate(d: Date): Date {
-    return new Date(
-      d.getUTCFullYear(),
-      d.getUTCMonth(),
-      d.getUTCDate(),
-      d.getUTCHours(),
-      d.getUTCMinutes(),
-      d.getUTCSeconds(),
-      d.getUTCMilliseconds()
-    );
-  }
-
-  /**
-   * Reconvertit une date UTC picker vers UTC ISO string.
-   * Une date UTC picker est une date locale qui représente visuellement l'heure UTC.
-   * Exemple: Date(2024,0,15,14,30) représente 2024-01-15T14:30:00Z
-   * Cette fonction retourne le string ISO correspondant.
-   */
-  public static toISOStringFromUtcPickerDate(d: Date): string {
-    return new Date(
-      Date.UTC(
-        d.getFullYear(),
-        d.getMonth(),
-        d.getDate(),
-        d.getHours(),
-        d.getMinutes(),
-        d.getSeconds(),
-        d.getMilliseconds()
-      )
-    ).toISOString();
   }
 
   public static isValidDate(d: Date): boolean {

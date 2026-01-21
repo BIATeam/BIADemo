@@ -156,8 +156,11 @@ export abstract class GenericDas {
     param.endpoint = param.endpoint ?? 'save';
     if (param.items) {
       param.items.forEach(item => {
-        if (param.utcFields && param.utcFields.length > 0) {
-          DateHelperService.fillDateWithUtcFields(item, param.utcFields);
+        if (param.localTimeFields && param.localTimeFields.length > 0) {
+          DateHelperService.fillDateWithLocalFields(
+            item,
+            param.localTimeFields
+          );
         } else {
           DateHelperService.fillDate(item);
         }
@@ -179,8 +182,11 @@ export abstract class GenericDas {
     // param might contains ngrx state item which is immutable : clone to allow update
     param = clone(param);
     param.endpoint = param.endpoint ?? '';
-    if (param.utcFields && param.utcFields.length > 0) {
-      DateHelperService.fillDateWithUtcFields(param.item, param.utcFields);
+    if (param.localTimeFields && param.localTimeFields.length > 0) {
+      DateHelperService.fillDateWithLocalFields(
+        param.item,
+        param.localTimeFields
+      );
     } else {
       DateHelperService.fillDate(param.item);
     }
@@ -206,8 +212,11 @@ export abstract class GenericDas {
     // param might contains ngrx state item which is immutable : clone to allow update
     param = clone(param);
     param.endpoint = param.endpoint ?? '';
-    if (param.utcFields && param.utcFields.length > 0) {
-      DateHelperService.fillDateWithUtcFields(param.item, param.utcFields);
+    if (param.localTimeFields && param.localTimeFields.length > 0) {
+      DateHelperService.fillDateWithLocalFields(
+        param.item,
+        param.localTimeFields
+      );
     } else {
       DateHelperService.fillDate(param.item);
     }

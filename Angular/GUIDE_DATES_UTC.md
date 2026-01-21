@@ -1,190 +1,259 @@
-/\*\*
+# GUIDE: Gestion des Dates dans BIA Framework
 
-- GUIDE: Gestion des Dates UTC dans BIA Framework
--
-- Cette solution permet de gérer correctement les dates UTC picker (dates affichées en UTC)
-- lors de l'envoi au backend, en évitant les offset de timezone indésirés.
-  \*/
+Cette solution permet de gérer deux modes de dates :
 
-// ============================================================================
-// 1. CONCEPT
-// ============================================================================
-//
-// Le framework gère deux types de dates :
-//
-// MODE NORMAL:
-// - Les dates sont affichées et manipulées selon la timezone locale
-// - Ex: Un utilisateur en timezone CET voit "15:30" pour "14:30 UTC"
-// - Sérialisation: toISOString() standard
-//
-// MODE UTC (autoTimezone === 'UTC'):
-// - Les dates sont affichées et manipulées en UTC
-// - Ex: Un datepicker affiche "14:30" pour "2024-01-15T14:30:00Z"
-// - Sérialisation spéciale: toISOStringFromUtcPickerDate()
-//
-// ============================================================================
-// 2. IMPLEMENTATION CÔTÉ FRONTEND
-// ============================================================================
-//
-// Dans BiaTableInputComponent (ngOnInit):
-//
-// if (this.field.displayFormat instanceof BiaFieldDateFormat &&
-// this.field.displayFormat.autoTimezone === 'UTC') {
-// const value = this.form.controls[this.field.field].value;
-// if (value instanceof Date) {
-// const utcDate = DateHelperService.toUtcPickerDate(value);
-// this.form.controls[this.field.field].setValue(utcDate, {
-// emitEvent: false,
-// });
-// }
-// }
-//
-// ============================================================================
-// 3. IMPLEMENTATION CÔTÉ SERVICE CRUD
-// ============================================================================
-//
-// Quand vous appellez le service pour sauvegarder, vous devez transmettre
-// la liste des champs UTC pour que la sérialisation soit correcte:
-//
-// AVANT (ne fonctionne pas pour UTC):
-//
-// const crudItem = this.form.value;
-// this.crudItemService.update(crudItem).subscribe(...);
-//
-// APRÈS (fonctionne correctement):
-//
-// const crudItem = this.form.value;
-// const utcFields = ['startDate', 'endDate']; // Les champs UTC
-// this.crudItemService.update(crudItem, { utcFields }).subscribe(...);
-//
-// ============================================================================
-// 4. IMPLEMENTATION CÔTÉ CRUDITEMSERVICE
-// ============================================================================
-//
-// Dans votre CrudItemService (qui étend une classe avec DAS), vous pouvez:
-//
-// A) Extraire les champs UTC automatiquement depuis la config:
-//
-// update(item: CrudItem, options?: any) {
-// const crudConfig = this.crudConfig; // Votre configuration
-// const utcFields = crudConfig.fieldsConfig.columns
-// .filter(f => f.displayFormat instanceof BiaFieldDateFormat &&
-// f.displayFormat.autoTimezone === 'UTC')
-// .map(f => f.field as string);
-//
-// return this.putItem({
-// item,
-// id: item.id,
-// utcFields
-// });
-// }
-//
-// B) Ou le passer explicitement:
-//
-// update(item: CrudItem, options?: { utcFields?: string[] }) {
-// return this.putItem({
-// item,
-// id: item.id,
-// utcFields: options?.utcFields
-// });
-// }
-//
-// ============================================================================
-// 5. METHODES DISPONIBLES DANS DateHelperService
-// ============================================================================
-//
-// toUtcPickerDate(d: Date): Date
-// - Convertit une date UTC en date locale qui affiche visuellement l'heure UTC
-// - À utiliser à la réception des données du backend
-// - Exemple: "2024-01-15T14:30:00Z" → Date(2024,0,15,14,30) [locale]
-//
-// toISOStringFromUtcPickerDate(d: Date): string
-// - Convertit une date UTC picker vers son ISO string correct
-// - À utiliser lors de la sérialisation pour l'envoi au backend
-// - Exemple: Date(2024,0,15,14,30) [locale] → "2024-01-15T14:30:00Z"
-//
-// fillDateWithUtcFields(data: T, utcFields: string[]): void
-// - Sérialise les dates d'un objet en tenant compte des champs UTC
-// - Appelée automatiquement par GenericDasService.saveItem/putItem/postItem
-// - Si utcFields est fourni, utilise toISOStringFromUtcPickerDate pour ces champs
-//
-// ============================================================================
-// 6. EXEMPLE COMPLET
-// ============================================================================
-//
-// DTO:
-//
-// export class FlightDto {
-// id: number;
-// name: string;
-// departureTime: Date; // UTC picker
-// arrivalTime: Date; // UTC picker
-// createdAt: Date; // Normal (timezone locale)
-// }
-//
-// Configuration:
-//
-// const flightFields = [
-// new BiaFieldConfig('id', 'ID'),
-// new BiaFieldConfig('name', 'Name'),
-// new BiaFieldConfig('departureTime', 'Departure Time').displayFormat =
-// new BiaFieldDateFormat() { autoTimezone: 'UTC' },
-// new BiaFieldConfig('arrivalTime', 'Arrival Time').displayFormat =
-// new BiaFieldDateFormat() { autoTimezone: 'UTC' },
-// new BiaFieldConfig('createdAt', 'Created At').displayFormat =
-// new BiaFieldDateFormat() { autoTimezone: '' } // Normal
-// ];
-//
-// Service:
-//
-// export class FlightCrudService extends CrudItemService {
-//  
-// update(flight: FlightDto) {
-// // Extraire les champs UTC automatiquement
-// const utcFields = this.getUtcFields();
-//  
-// return this.putItem({
-// item: flight,
-// id: flight.id,
-// utcFields // ['departureTime', 'arrivalTime']
-// });
-// }
-//
-// private getUtcFields(): string[] {
-// return this.crudConfig.fieldsConfig.columns
-// .filter(f => f.displayFormat instanceof BiaFieldDateFormat &&
-// f.displayFormat.autoTimezone === 'UTC')
-// .map(f => f.field as string);
-// }
-// }
-//
-// ============================================================================
-// 7. FLUX DE DONNÉES
-// ============================================================================
-//
-// Données reçues du backend:
-// "2024-01-15T14:30:00Z"
-// ↓
-// DateHelperService.fillDate() [réception]
-// ↓
-// Date JavaScript en UTC: Date(2024,0,15,...) [utc)
-// ↓
-// DateHelperService.toUtcPickerDate() [affichage]
-// ↓
-// Date locale affichant 14:30: Date(2024,0,15,14,30,...) [local]
-// ↓
-// Utilisateur voit "14:30" dans le datepicker ✓
-// ↓
-// Utilisateur modifie la date
-// ↓
-// Form value: Date(2024,0,15,14,30,...) [local]
-// ↓
-// DateHelperService.fillDateWithUtcFields(['departureTime'])
-// ↓
-// Utilise toISOStringFromUtcPickerDate()
-// ↓
-// Envoie au backend: "2024-01-15T14:30:00Z" ✓
-// ↓
-// Backend reçoit la valeur UTC correcte ✓
-//
-// ============================================================================
+- **Mode par défaut UTC** (DateTime backend) - Comportement historique
+- **Mode nouveau Local Time** (DateTimeOffset backend) - Nouveau cas d'usage
+
+## 1. CONCEPT - DEUX MODES DE FONCTIONNEMENT
+
+Le framework supporte deux modes pour gérer les dates selon le type backend :
+
+### MODE PAR DÉFAUT UTC (comportement historique)
+
+- **Backend** : DateTime (UTC stocké)
+- **Frontend** : Conversion `toUtc()` avant sérialisation ISO
+- **Affichage** : Date en UTC pour tous les utilisateurs (avec `toUtcPickerDate()` si configuré)
+- **Exemple** : Un vol à "14:30 UTC" s'affiche "14:30" partout
+- **Sérialisation** : `toUtc()` puis `toISOString()`
+- **Compatibilité** : **Par défaut** - tout le code existant fonctionne tel quel ✅
+- **Configuration** : `autoTimezone === 'UTC'` OU non défini
+
+### MODE NOUVEAU LOCAL TIME (`autoTimezone === ''` vide)
+
+- **Backend** : DateTimeOffset (avec offset de timezone)
+- **Frontend** : Sérialisation ISO standard (préserve offset)
+- **Affichage** : Date adaptée au fuseau horaire du client
+- **Exemple** : Un événement à "15:30 CET" s'affiche "09:30" pour un client à NY
+- **Sérialisation** : `toISOString()` standard
+- **Backend reçoit** : `"2024-01-15T15:30:00+01:00"`
+- **Configuration** : `autoTimezone === ''` (chaîne vide explicite)
+
+## 2. CONFIGURATION DES CHAMPS
+
+### MODE PAR DÉFAUT UTC (DateTime backend) - Comportement historique
+
+```typescript
+// Option 1: Avec autoTimezone explicite 'UTC'
+Object.assign(new BiaFieldConfig('firstFlightDate', 'plane.firstFlightDate'), {
+  type: PropType.DateTime,
+  displayFormat: Object.assign(new BiaFieldDateFormat(), {
+    autoTimezone: 'UTC', // ← Mode UTC explicite
+  }),
+});
+
+// Option 2: Sans displayFormat (par défaut = UTC)
+Object.assign(new BiaFieldConfig('createdDate', 'plane.createdDate'), {
+  type: PropType.DateTime,
+  // Pas de displayFormat = mode UTC par défaut
+});
+```
+
+### MODE NOUVEAU LOCAL TIME (DateTimeOffset backend)
+
+```typescript
+Object.assign(new BiaFieldConfig('eventDate', 'event.eventDate'), {
+  type: PropType.DateTime,
+  displayFormat: Object.assign(new BiaFieldDateFormat(), {
+    autoTimezone: '', // ← Chaîne VIDE = Mode local time
+  }),
+});
+```
+
+## 3. BACKEND - TYPES DE DONNÉES
+
+### MODE PAR DÉFAUT UTC
+
+```csharp
+public class PlaneDto
+{
+    public DateTime FirstFlightDate { get; set; }  // ← DateTime
+    // Stocké en UTC dans la base
+    // Le frontend envoie : "2024-01-15T14:30:00Z"
+    // Le backend reçoit et stocke : DateTime en UTC
+}
+```
+
+### MODE NOUVEAU LOCAL TIME
+
+```csharp
+public class EventDto
+{
+    public DateTimeOffset EventDate { get; set; }  // ← DateTimeOffset
+    // Préserve l'offset de timezone
+    // Le frontend envoie : "2024-01-15T15:30:00+01:00"
+    // Le backend reçoit : DateTimeOffset avec offset +01:00
+    // .UtcDateTime donne l'heure UTC équivalente
+}
+```
+
+## 4. IMPLEMENTATION CÔTÉ SERVICE (DAS)
+
+Dans votre service DAS, extrayez automatiquement les champs en mode local time depuis la configuration :
+
+```typescript
+import { Injectable, Injector } from '@angular/core';
+import { AbstractDas } from 'packages/bia-ng/core/public-api';
+import {
+  BiaFieldDateFormat,
+  SaveParam,
+  PutParam,
+  PostParam,
+} from 'packages/bia-ng/models/public-api';
+import { Plane, planeFieldsConfiguration } from '../model/plane';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class PlaneDas extends AbstractDas<Plane> {
+  constructor(injector: Injector) {
+    super(injector, 'Planes');
+  }
+
+  /**
+   * Extrait les champs en mode LOCAL TIME (autoTimezone === '')
+   * Ces champs sont des exceptions au comportement par défaut UTC
+   */
+  private getLocalTimeFields(): string[] {
+    return planeFieldsConfiguration.columns
+      .filter(
+        field =>
+          field.displayFormat instanceof BiaFieldDateFormat &&
+          field.displayFormat.autoTimezone === '' // ← Chaîne vide = local time
+      )
+      .map(field => field.field as string);
+  }
+
+  override saveItem<TOut>(param: SaveParam<Plane>) {
+    if (!param.localTimeFields) {
+      param.localTimeFields = this.getLocalTimeFields();
+    }
+    return super.saveItem(param);
+  }
+
+  override putItem<TOut>(param: PutParam<Plane>) {
+    if (!param.localTimeFields) {
+      param.localTimeFields = this.getLocalTimeFields();
+    }
+    return super.putItem(param);
+  }
+
+  override postItem<TOut>(param: PostParam<Plane>) {
+    if (!param.localTimeFields) {
+      param.localTimeFields = this.getLocalTimeFields();
+    }
+    return super.postItem(param);
+  }
+}
+```
+
+## 5. FLUX DE DONNÉES COMPLETS
+
+### MODE HISTORIQUE UTC (autoTimezone === 'UTC')
+
+**Réception depuis backend:**
+
+```
+Backend DateTime (UTC): 2024-01-15 14:30:00
+   ↓
+Envoyé en JSON: "2024-01-15T14:30:00Z"
+   ↓
+fillDate() convertit en Date JS
+   ↓
+toUtcPickerDate() pour affichage
+   ↓
+Datepicker affiche: "14:30" (visuel UTC)
+   ↓
+Utilisateur modifie: "15:30"
+   ↓
+fillDateWithUtcFields() avec utcFields=['firstFlightDate']
+   ↓
+toUtc() convertit: 15:30 local → 14:30 UTC
+   ↓
+toISOString(): "2024-01-15T14:30:00Z"
+   ↓
+Backend DateTime reçoit: 14:30 UTC ✓
+```
+
+### MODE NOUVEAU LOCAL TIME (autoTimezone === '')
+
+**Réception depuis backend:**
+
+```
+Backend DateTimeOffset: 2024-01-15 15:30:00 +01:00
+   ↓
+Envoyé en JSON: "2024-01-15T15:30:00+01:00"
+   ↓
+fillDate() convertit en Date JS (adapté timezone client)
+   ↓
+Datepicker affiche selon timezone client
+   Client CET: "15:30"
+   Client NY: "09:30"
+   ↓
+Utilisateur modifie selon sa timezone
+   ↓
+fillDateWithUtcFields() SANS ce champ dans utcFields
+   ↓
+toISOString() standard avec offset client
+   ↓
+Envoi: "2024-01-15T16:30:00+01:00" (si modifié à 16:30 CET)
+   ↓
+Backend DateTimeOffset reçoit avec offset ✓
+```
+
+## 6. AVANTAGES DE CETTE APPROCHE
+
+### ✅ Compatibilité Rétroactive
+
+- Le code existant continue de fonctionner sans modification
+- Les champs DateTime historiques utilisent automatiquement le mode UTC
+- Pas de refactorisation massive nécessaire
+
+### ✅ Flexibilité
+
+- Choisissez le mode approprié champ par champ
+- DateTime backend pour données UTC fixes (vols, logs, etc.)
+- DateTimeOffset backend pour événements localisés (réunions, rendez-vous, etc.)
+
+### ✅ Clarté
+
+- Par défaut = mode UTC (comportement historique préservé)
+- `autoTimezone === ''` = Mode local time explicite (nouveau cas d'usage)
+- La configuration reflète le type backend
+
+### ✅ Automatisation
+
+- Les champs local time sont extraits automatiquement de la config
+- Pas besoin de maintenir des listes manuellement
+- Un seul endroit pour configurer : le BiaFieldConfig
+
+## 7. QUAND UTILISER QUEL MODE ?
+
+### Utilisez MODE PAR DÉFAUT UTC quand :
+
+- ✅ Vous avez des données existantes en DateTime (backend)
+- ✅ La date représente un moment absolu (vol, log, événement global)
+- ✅ Tous les utilisateurs doivent voir la même heure
+- ✅ Exemple : Heure de décollage d'un avion
+- ✅ **C'est le comportement par défaut - aucune configuration spéciale requise**
+
+### Utilisez MODE NOUVEAU LOCAL TIME quand :
+
+- ✅ Vous créez un nouveau champ avec DateTimeOffset backend
+- ✅ La date représente un événement local (réunion, rendez-vous)
+- ✅ Les utilisateurs doivent voir l'heure adaptée à leur timezone
+- ✅ Vous pouvez utiliser DateTimeOffset côté backend
+- ✅ Exemple : Réunion d'équipe à 15h à Paris
+- ✅ **Configuration explicite avec `autoTimezone === ''` requise**
+
+## 8. MIGRATION PROGRESSIVE
+
+Vous pouvez migrer progressivement :
+
+1. **Gardez l'existant** : Tous les champs DateTime restent en mode UTC (par défaut)
+2. **Ajoutez nouveaux champs** : Utilisez DateTimeOffset + mode local time (opt-in)
+3. **Migrez sélectivement** : Changez champ par champ selon les besoins
+
+Aucune "big bang" migration requise ! 🎉
+
+**Important** : Le comportement par défaut préserve la compatibilité totale avec l'existant.
