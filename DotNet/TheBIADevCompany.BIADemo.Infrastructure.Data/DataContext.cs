@@ -184,6 +184,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// </summary>
         public DbSet<PlaneAirportAudit> PlaneAirportAudit { get; set; }
 
+        /// <summary>
+        /// Gets or sets the PlanePlaneTypeAudit.
+        /// </summary>
+        public DbSet<PlanePlaneTypeAudit> PlanePlaneTypeAudit { get; set; }
+
         // End BIADemo
 
         // BIAToolKit - Begin DbSetAudit

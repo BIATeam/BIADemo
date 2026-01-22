@@ -42,7 +42,7 @@ export interface Plane extends BaseDto, VersionedDto, FixableDto {
   originalPrice: number;
   estimatedPrice: number | null;
   planeType: OptionDto | null;
-  similarTypes: OptionDto[] | null;
+  similarPlaneTypes: OptionDto[] | null;
   currentAirport: OptionDto;
   connectingAirports: OptionDto[];
 }
@@ -225,9 +225,12 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
     Object.assign(new BiaFieldConfig('planeType', 'plane.planeType'), {
       type: PropType.OneToMany,
     }),
-    Object.assign(new BiaFieldConfig('similarTypes', 'plane.similarTypes'), {
-      type: PropType.ManyToMany,
-    }),
+    Object.assign(
+      new BiaFieldConfig('similarPlaneTypes', 'plane.similarPlaneTypes'),
+      {
+        type: PropType.ManyToMany,
+      }
+    ),
     Object.assign(
       new BiaFieldConfig('currentAirport', 'plane.currentAirport'),
       {

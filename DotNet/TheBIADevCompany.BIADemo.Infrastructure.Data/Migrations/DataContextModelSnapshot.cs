@@ -1920,6 +1920,44 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("PlanePlaneType");
                 });
 
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.PlanePlaneTypeAudit", b =>
+                {
+                    b.Property<int>("AuditId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditId"));
+
+                    b.Property<string>("AuditAction")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AuditChanges")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AuditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("AuditUserLogin")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PlaneId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlaneTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PlaneTypeTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AuditId");
+
+                    b.ToTable("PlanePlaneTypeAudit");
+                });
+
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.PlaneType", b =>
                 {
                     b.Property<int>("Id")
@@ -2712,7 +2750,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.PlanePlaneType", b =>
                 {
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Plane", "Plane")
-                        .WithMany("SimilarPlaneType")
+                        .WithMany("SimilarPlanePlaneTypes")
                         .HasForeignKey("PlaneId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2931,7 +2969,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.Navigation("Engines");
 
-                    b.Navigation("SimilarPlaneType");
+                    b.Navigation("SimilarPlanePlaneTypes");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceContract", b =>

@@ -64,7 +64,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
                     { HeaderName.PlaneType, plane => plane.PlaneType != null ? plane.PlaneType.Title : null },
                     { HeaderName.ConnectingAirports, plane => plane.ConnectingAirports.Select(x => x.Name).OrderBy(x => x) },
                     { HeaderName.CurrentAirport, plane => plane.CurrentAirport != null ? plane.CurrentAirport.Name : null },
-                    { HeaderName.SimilarTypes, plane => plane.SimilarTypes.Select(x => x.Title).OrderBy(x => x) },
+                    { HeaderName.SimilarTypes, plane => plane.SimilarPlaneTypes.Select(x => x.Title).OrderBy(x => x) },
                 };
             }
         }
@@ -79,7 +79,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
                     new ExpressionCollection<Plane>()
                     {
                         { HeaderName.PlaneType, plane => plane.PlaneType.Id },
-                        { HeaderName.SimilarTypes, plane => plane.SimilarTypes.Select(x => x.Id) },
+                        { HeaderName.SimilarTypes, plane => plane.SimilarPlaneTypes.Select(x => x.Id) },
                         { HeaderName.CurrentAirport, plane => plane.CurrentAirport.Id },
                         { HeaderName.ConnectingAirports, plane => plane.ConnectingAirports.Select(x => x.Id) },
                     });
@@ -120,7 +120,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
                 { HeaderName.OriginalPrice, () => CSVNumber(dto.OriginalPrice) },
                 { HeaderName.EstimatedPrice, () => CSVNumber(dto.EstimatedPrice) },
                 { HeaderName.CurrentAirport, () => CSVString(dto.CurrentAirport?.Display) },
-                { HeaderName.SimilarTypes, () => CSVList(dto.SimilarTypes) },
+                { HeaderName.SimilarTypes, () => CSVList(dto.SimilarPlaneTypes) },
             };
         }
 
