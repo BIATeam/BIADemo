@@ -42,6 +42,7 @@ interface LayoutState {
   fullscreen: boolean;
   isSmallScreen: boolean;
   isInIframe: boolean;
+  isAnnouncementBarVisible: boolean;
 }
 
 const DEFAULT_LAYOUT_CONFIG: AppConfig = {
@@ -85,6 +86,7 @@ export class BiaLayoutService {
     menuProfileActive: false,
     isSmallScreen: false,
     isInIframe: false,
+    isAnnouncementBarVisible: false,
   };
 
   config = signal<AppConfig>(this._config);
@@ -470,5 +472,9 @@ export class BiaLayoutService {
 
   openConfigSidebar(): void {
     this.state.configSidebarVisible = true;
+  }
+
+  updateAnnouncementBarVisibility(isVisible: boolean): void {
+    this.state.isAnnouncementBarVisible = isVisible;
   }
 }

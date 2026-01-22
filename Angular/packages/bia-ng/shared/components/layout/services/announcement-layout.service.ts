@@ -10,6 +10,7 @@ import {
   TargetedFeature,
 } from 'packages/bia-ng/models/public-api';
 import { BehaviorSubject, Subscription, tap } from 'rxjs';
+import { BiaLayoutService } from './layout.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,7 @@ export class AnnouncementLayoutService extends AbstractDas<Announcement> {
   private biaOnlineOfflineService: BiaOnlineOfflineService = inject(
     BiaOnlineOfflineService
   );
+  private layoutService: BiaLayoutService = inject(BiaLayoutService);
 
   private targetedFeature: TargetedFeature;
   private pollingInterval: NodeJS.Timeout | undefined;
@@ -87,6 +89,9 @@ export class AnnouncementLayoutService extends AbstractDas<Announcement> {
       this.getListItems<Announcement>({ endpoint: 'actives' })
         .pipe(
           tap(messages => {
+            this.layoutService.updateAnnouncementBarVisibility(
+              messages.length > 0
+            );
             this.activeAnnouncements$.next(messages);
             this.firstRefresh = false;
           })
