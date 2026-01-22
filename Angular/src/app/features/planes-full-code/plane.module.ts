@@ -44,6 +44,15 @@ const ROUTES: Routes = [
         canActivate: [PermissionGuard],
       },
       {
+        path: 'view',
+        data: {
+          featureStateKey: 'planesGrid',
+          leftWidth: 60,
+        },
+        loadChildren: () =>
+          import('../../shared/bia-shared/view.module').then(m => m.ViewModule),
+      },
+      {
         path: ':planeId',
         data: {
           breadcrumb: '',
