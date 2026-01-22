@@ -8,6 +8,8 @@ namespace BIA.Net.Core.Common.Helpers
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
     using System.Reflection;
+    using BIA.Net.Core.Common.Attributes;
+    using BIA.Net.Core.Common.Enum;
 
     /// <summary>
     /// Object helper.
@@ -66,18 +68,14 @@ namespace BIA.Net.Core.Common.Helpers
         }
 
         /// <summary>
-        /// Searches for a property in the specified type by matching the ColumnAttribute name or the property name.
+        /// Gets the property marked with the BiaRowVersionPropertyAttribute for the specified provider.
         /// </summary>
         /// <param name="type">The type to search for the property.</param>
-        /// <param name="columnAttributeName">The name of the property or the ColumnAttribute name to match.</param>
+        /// <param name="provider">The database provider.</param>
         /// <returns>The PropertyInfo of the matching property, or null if no match is found.</returns>
-        public static PropertyInfo FindPropertyByColumnAttributeName(Type type, string columnAttributeName)
+        public static PropertyInfo GetBiaRowVersionProperty(this Type type, DbProvider provider)
         {
-            var properties = type.GetProperties();
-
-            return properties
-                    .FirstOrDefault(x => x.GetCustomAttribute<ColumnAttribute>()?.Name == columnAttributeName)
-                ?? properties.FirstOrDefault(x => x.Name == columnAttributeName);
+            return type.GetProperties().SingleOrDefault(x => x.GetCustomAttribute<BiaRowVersionPropertyAttribute>()?.Provider == provider);
         }
     }
 }

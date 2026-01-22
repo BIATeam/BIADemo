@@ -6,6 +6,7 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
 {
     using System;
     using System.Linq;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain.Entity.Interface;
     using Microsoft.EntityFrameworkCore;
@@ -29,8 +30,8 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
                                     select entityType.ClrType)
             {
                 EntityTypeBuilder entityTypeBuilder = modelBuilder.Entity(clrType);
-                var rowVersionPropertyName = ObjectHelper.FindPropertyByColumnAttributeName(clrType, nameof(IEntityVersioned.RowVersion)).Name;
-                var rowVersionXminPropertyName = ObjectHelper.FindPropertyByColumnAttributeName(clrType, nameof(IEntityVersioned.RowVersionXmin)).Name;
+                var rowVersionPropertyName = clrType.GetBiaRowVersionProperty(DbProvider.SqlServer)?.Name ?? nameof(IEntityVersioned.RowVersion);
+                var rowVersionXminPropertyName = clrType.GetBiaRowVersionProperty(DbProvider.PostGreSql)?.Name ?? nameof(IEntityVersioned.RowVersionXmin);
 
                 if (databaseFacade.IsNpgsql())
                 {
@@ -39,7 +40,7 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
                 }
                 else
                 {
-                    entityTypeBuilder.Property<byte[]>(rowVersionPropertyName).IsRowVersion();
+                    entityTypeBuilder.Property<byte[]>(rowVersionPropertyName).HasColumnName(nameof(IEntityVersioned.RowVersion)).IsRowVersion();
                     entityTypeBuilder.Ignore(rowVersionXminPropertyName);
                 }
             }
