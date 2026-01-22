@@ -26,6 +26,7 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.OpenApi" />
 		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" />
+		<PackageReference Include="TimeZoneConverter" />
 	</ItemGroup>
 
 	<ItemGroup>
