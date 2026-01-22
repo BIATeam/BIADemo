@@ -11,6 +11,7 @@ import {
   TemplateRef,
   ViewContainerRef,
   effect,
+  inject,
   signal,
 } from '@angular/core';
 import {
@@ -24,6 +25,7 @@ import {
 } from 'packages/bia-ng/models/public-api';
 import { MenuItem } from 'primeng/api';
 import { BehaviorSubject, Subject, debounceTime } from 'rxjs';
+import { AnnouncementLayoutService } from './announcement-layout.service';
 import { STORAGE_THEME_KEY } from './bia-theme.service';
 
 export const BIA_LAYOUT_DATA = new InjectionToken<any>('BiaLayoutData');
@@ -92,6 +94,8 @@ export class BiaLayoutService {
   config = signal<AppConfig>(this._config);
   configDisplay = signal<ConfigDisplay>(this._configDisplay);
 
+  private announcementLayoutService = inject(AnnouncementLayoutService);
+
   protected configUpdate = new BehaviorSubject<AppConfig>(this._config);
   protected configDisplayUpdate = new BehaviorSubject<ConfigDisplay>(
     this._configDisplay
@@ -138,7 +142,10 @@ export class BiaLayoutService {
         BiaAppConstantsService.storageBiaUserConfigKey(),
         JSON.stringify(config)
       );
+      this.state.isAnnouncementBarVisible =
+        this.announcementLayoutService.activeAnnouncements().length > 0;
     });
+
     this.checkSmallScreen();
   }
 
@@ -472,9 +479,5 @@ export class BiaLayoutService {
 
   openConfigSidebar(): void {
     this.state.configSidebarVisible = true;
-  }
-
-  updateAnnouncementBarVisibility(isVisible: boolean): void {
-    this.state.isAnnouncementBarVisible = isVisible;
   }
 }

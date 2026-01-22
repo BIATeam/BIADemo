@@ -6,6 +6,7 @@ import {
   OnDestroy,
   OnInit,
   Renderer2,
+  signal,
   ViewChild,
 } from '@angular/core';
 import {
@@ -94,7 +95,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
   envName$: Observable<string | undefined>;
   showEnvironmentMessage$: Observable<boolean>;
   cssClassEnv: string;
-  activeAnnouncements$: Observable<Announcement[]>;
+  activeAnnouncements = signal<Announcement[]>([]);
 
   constructor(
     protected biaTranslation: BiaTranslationService,
@@ -302,8 +303,8 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.activeAnnouncements$ =
-      this.announcementLayoutService.activeAnnouncements$.asObservable();
+    this.activeAnnouncements =
+      this.announcementLayoutService.activeAnnouncements;
     this.announcementLayoutService.init();
   }
 
