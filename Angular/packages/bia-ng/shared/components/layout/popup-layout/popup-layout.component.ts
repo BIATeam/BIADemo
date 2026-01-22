@@ -17,9 +17,6 @@ import {
 import { SharedModule } from 'primeng/api';
 import { Dialog } from 'primeng/dialog';
 
-/**
- * @deprecated This class is deprecated. Use DynamicLayoutComponent instead. See documentation in BiaDocs
- */
 @Component({
   selector: 'bia-popup-layout',
   templateUrl: './popup-layout.component.html',
