@@ -19,8 +19,10 @@
     "build:ocp": "ng build --configuration production,ocp",
     "build:rosa": "ng build --configuration production,rosa",
     "build:docker": "ng build --configuration docker",
+    // Begin BIADemo
     "build-bia-ng": "ng build bia-ng",
     "build-bia-ng:prod": "ng build bia-ng --configuration production",
+    // End BIADemo
     "deploy": "ng deploy --base-href=/BIADemo/",
     "styles": "dart compile-sass.dart ./src/assets/bia/primeng/bia/layout-primeng-bia.scss ./src/assets/bia/primeng/layout/styles/layout/layout.css --output-style compressed",
     "stats-compute": "ng build --configuration production --base-href /BIADemo/App/ --stats-json",
