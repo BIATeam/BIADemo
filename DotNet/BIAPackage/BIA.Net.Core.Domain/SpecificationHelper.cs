@@ -36,11 +36,11 @@ namespace BIA.Net.Core.Domain
         /// <param name="specification">The specification to update.</param>
         /// <param name="matcher">The matcher.</param>
         /// <param name="dto">The lazy DTO.</param>
-        /// <param name="clientTimeZoneContext">Optional client time zone context.</param>
+        /// <param name="clientTimeZoneContext">Client time zone context.</param>
         /// <returns>
         /// The specification updated.
         /// </returns>
-        public static Specification<TEntity> GetLazyLoad<TEntity, TKey, TMapper>(Specification<TEntity> specification, TMapper matcher, IPagingFilterFormatDto dto, IClientTimeZoneContext clientTimeZoneContext = null)
+        public static Specification<TEntity> GetLazyLoad<TEntity, TKey, TMapper>(Specification<TEntity> specification, TMapper matcher, IPagingFilterFormatDto dto, IClientTimeZoneContext clientTimeZoneContext)
         where TEntity : class, IEntity<TKey>, new()
         where TMapper : BaseEntityMapper<TEntity>
         {
@@ -109,7 +109,7 @@ namespace BIA.Net.Core.Domain
                 || (valueType.Name.Length > 18 && valueType.Name.Substring(0, 18) == "IOrderedEnumerable");
         }
 
-        private static void AddSpecByValue<TEntity, TKey>(ref Specification<TEntity> specification, ExpressionCollection<TEntity> whereClauses, ref Specification<TEntity> globalFilterSpecification, string key, Dictionary<string, object> value, IClientTimeZoneContext clientTimeZoneContext = null)
+        private static void AddSpecByValue<TEntity, TKey>(ref Specification<TEntity> specification, ExpressionCollection<TEntity> whereClauses, ref Specification<TEntity> globalFilterSpecification, string key, Dictionary<string, object> value, IClientTimeZoneContext clientTimeZoneContext)
             where TEntity : class, IEntity<TKey>, new()
         {
             if (value["value"] == null && value["matchMode"]?.ToString() != "empty" && value["matchMode"]?.ToString() != "notEmpty" && value["matchMode"]?.ToString() != "today" && value["matchMode"]?.ToString() != "beforeToday" && value["matchMode"]?.ToString() != "afterToday")
@@ -136,8 +136,7 @@ namespace BIA.Net.Core.Domain
 
                 var isLocalTimeCriteria = IsDateTimeSelector(expression) &&
                     value.TryGetValue("isLocal", out var isLocalRawValue) &&
-                    bool.Parse(isLocalRawValue.ToString()) &&
-                    clientTimeZoneContext != null;
+                    bool.Parse(isLocalRawValue.ToString());
 
                 matchingCriteria = LazyDynamicFilterExpression<TEntity>(
                     expression,
@@ -226,10 +225,11 @@ namespace BIA.Net.Core.Domain
         /// <param name="criteria">The matching criteria.</param>
         /// <param name="value">The value to filter with.</param>
         /// <param name="isLocalTimeCriteria">Indicates if the criteria value is expressed as local time.</param>
+        /// <param name="clientTimeZoneContext">Client time zone context.</param>
         /// <returns>The expression created dynamically.</returns>
         private static Expression<Func<TEntity, bool>>
             LazyDynamicFilterExpression<TEntity>(
-                LambdaExpression expression, string criteria, string value, bool isLocalTimeCriteria, IClientTimeZoneContext clientTimeZoneContext = null)
+                LambdaExpression expression, string criteria, string value, bool isLocalTimeCriteria, IClientTimeZoneContext clientTimeZoneContext)
                     where TEntity : class
         {
             ConstantExpression valueExpression;
@@ -379,6 +379,10 @@ namespace BIA.Net.Core.Domain
                     break;
 
                 case "contains":
+                    if (isLocalTimeCriteria)
+                    {
+                        // Convert SQL date value to local client time zone before string comparison contains in provider
+                    }
                     binaryExpression = ComputeExpression(expressionBody, "Contains", value);
                     break;
 
