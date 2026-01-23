@@ -5,7 +5,6 @@ import {
   ComponentRef,
   ElementRef,
   HostBinding,
-  HostListener,
   OnDestroy,
   OnInit,
   Renderer2,
@@ -85,6 +84,9 @@ export class DynamicLayoutComponent<TDto extends { id: number | string }>
   protected startX: number;
   protected startWidthLeft: number;
   protected startWidthRight: number;
+
+  private removeMouseMoveListener?: () => void;
+  private removeMouseUpListener?: () => void;
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -219,42 +221,68 @@ export class DynamicLayoutComponent<TDto extends { id: number | string }>
   }
 
   ngOnDestroy() {
+    this.stopResize();
+
     if (this.dynamicComponent !== undefined) {
       this.dynamicComponent.destroy();
     }
   }
 
   startResize(event: MouseEvent) {
-    if (this.allowSplitScreenResize) {
-      this.isResizing = true;
-      this.startX = event.clientX;
-      this.startWidthLeft = this.leftContainer.nativeElement.offsetWidth;
-      this.startWidthRight = this.rightContainer.nativeElement.offsetWidth;
+    if (!this.allowSplitScreenResize) {
+      return;
     }
+
+    this.isResizing = true;
+    this.startX = event.clientX;
+    this.startWidthLeft = this.leftContainer.nativeElement.offsetWidth;
+    this.startWidthRight = this.rightContainer.nativeElement.offsetWidth;
+
+    this.removeMouseMoveListener = this.renderer.listen(
+      'document',
+      'mousemove',
+      (e: MouseEvent) => this.onMouseMove(e)
+    );
+
+    this.removeMouseUpListener = this.renderer.listen(
+      'document',
+      'mouseup',
+      () => this.stopResize()
+    );
   }
 
-  @HostListener('document:mousemove', ['$event'])
   onMouseMove(event: MouseEvent) {
-    if (this.allowSplitScreenResize && this.isResizing) {
-      const deltaX = event.clientX - this.startX;
-      const newWidthLeft = this.startWidthLeft + deltaX;
-      const newWidthRight = this.startWidthRight - deltaX;
-
-      this.renderer.setStyle(
-        this.leftContainer.nativeElement,
-        'flex',
-        `${newWidthLeft}px`
-      );
-      this.renderer.setStyle(
-        this.rightContainer.nativeElement,
-        'flex',
-        `${newWidthRight}px`
-      );
+    if (!this.isResizing) {
+      return;
     }
+
+    const deltaX = event.clientX - this.startX;
+    const newWidthLeft = this.startWidthLeft + deltaX;
+    const newWidthRight = this.startWidthRight - deltaX;
+
+    this.renderer.setStyle(
+      this.leftContainer.nativeElement,
+      'flex',
+      `${newWidthLeft}px`
+    );
+    this.renderer.setStyle(
+      this.rightContainer.nativeElement,
+      'flex',
+      `${newWidthRight}px`
+    );
   }
 
-  @HostListener('document:mouseup')
-  onMouseUp() {
+  stopResize() {
     this.isResizing = false;
+
+    if (this.removeMouseMoveListener) {
+      this.removeMouseMoveListener();
+      this.removeMouseMoveListener = undefined;
+    }
+
+    if (this.removeMouseUpListener) {
+      this.removeMouseUpListener();
+      this.removeMouseUpListener = undefined;
+    }
   }
 }
