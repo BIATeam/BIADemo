@@ -152,6 +152,10 @@ RemoveCodeExample -Path $newPath -ExcludeDir ('dist', 'node_modules', 'packages'
 Write-Host "Remove comment except BIADemo"
 RemoveCommentExceptBIADemo -Path $newPath -ExcludeDir ('dist', 'node_modules', 'packages', '.angular', $docsFolder, 'scss' )
 
+Write-Host "Remove bia-ng from package.json scripts"
+Remove-PropertyFromJson -JsonFilePath ".\package.json" -PropertyName "build-bia-ng"
+Remove-PropertyFromJson -JsonFilePath ".\package.json" -PropertyName "build-bia-ng:prod"
+
 Write-Host "replace project name"
 ReplaceProjectNameRecurse -oldName $oldName -newName $newName -Path $newPath -ExcludeDir ('dist', 'node_modules', 'packages', '.angular', 'scss')
 ReplaceProjectNameRecurse -oldName $oldName.ToLower() -newName $newName.ToLower() -Path $newPath -ExcludeDir ('dist', 'node_modules', 'packages', '.angular', 'scss')
