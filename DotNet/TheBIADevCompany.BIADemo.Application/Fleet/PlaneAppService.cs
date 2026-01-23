@@ -15,6 +15,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
+    using NodaTime;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
@@ -67,7 +68,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
             // BIAToolKit - End Partial FixedChildrenRepositoryInjectionPlane Engine
             // End BIAToolKit Generation Ignore
             // BIAToolKit - End FixedChildrenRepositoryInjectionPlane
-            IPrincipal principal, IClientTimeZoneContext clientTimeZoneContext)
+            IPrincipal principal)
             : base(repository)
         {
             var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();

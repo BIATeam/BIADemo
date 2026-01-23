@@ -58,7 +58,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
             services.AddTransient(provider => new UserContext(provider.GetService<IHttpContextAccessor>().HttpContext.Request.Headers.AcceptLanguage.ToString(), biaNetSection.Cultures));
 
             // Client TimeZone
-            services.AddScoped<IClientTimeZoneContext, ClientTimeZoneContext>();
+            services.AddScoped<IClientTimeZoneContext, HttpClientTimeZoneContext>();
 
             // Swagger
             if (apiFeatures.Swagger?.IsActive == true)

@@ -426,7 +426,7 @@ namespace BIA.Net.Core.Domain.Service
                     this.GetFilterSpecification(accessMode, this.FiltersContext) & specification,
                     mapper,
                     filters,
-                    this.ClientTimeZoneContext);
+                    this.GetClientTimeZoneContext());
 
                 var queryOrder = this.GetQueryOrder(mapper.ExpressionCollectionOrder, filters?.SortField, filters?.SortOrder == 1, filters?.MultiSortMeta);
 

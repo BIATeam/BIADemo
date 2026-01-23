@@ -19,7 +19,7 @@ namespace BIA.Net.Core.Common
         public string IanaTimeZoneId { get; }
 
         /// <summary>
-        /// Windows time zone.
+        /// Windows time zone info.
         /// </summary>
         public TimeZoneInfo WindowsTimeZone { get; }
 

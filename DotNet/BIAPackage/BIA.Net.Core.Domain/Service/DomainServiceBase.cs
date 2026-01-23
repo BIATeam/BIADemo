@@ -44,11 +44,6 @@ namespace BIA.Net.Core.Domain.Service
         protected ITGenericRepository<TEntity, TKey> Repository { get; }
 
         /// <summary>
-        /// Provides access to the client time zone context from the service provider.
-        /// </summary>
-        protected IClientTimeZoneContext ClientTimeZoneContext => this.Repository.ServiceProvider.GetService<IClientTimeZoneContext>();
-
-        /// <summary>
         /// Init the mapper and the user context.
         /// </summary>
         /// <typeparam name="TOtherDto">Dto type.</typeparam>
@@ -62,5 +57,11 @@ namespace BIA.Net.Core.Domain.Service
 
             return mapper;
         }
+
+        /// <summary>
+        /// Gets the client time zone context. Return by default the implementation from the service provider.
+        /// </summary>
+        /// <returns>IClientTimeZoneContext.</returns>
+        protected virtual IClientTimeZoneContext GetClientTimeZoneContext() => this.Repository.ServiceProvider.GetService<IClientTimeZoneContext>();
     }
 }
