@@ -134,21 +134,17 @@ namespace BIA.Net.Core.Domain
                     return;
                 }
 
-                var isDateTime = IsDateTimeSelector(expression);
-                if (value.TryGetValue("isLocal", out var isLocalRawValue))
-                {
-                    var isLocal = bool.Parse(isLocalRawValue.ToString());
-                    var isContainsMatchMode = value["matchMode"].ToString().Equals("contains", StringComparison.InvariantCultureIgnoreCase);
-                    if (isDateTime && isLocal && isContainsMatchMode && clientTimeZoneContext != null)
-                    {
-                        Debug.WriteLine($"### Adjusting DateTime value from client time zone to UTC for 'contains' match mode of field {matchKey}");
-                    }
-                }
+                var isLocalTimeCriteria = IsDateTimeSelector(expression) &&
+                    value.TryGetValue("isLocal", out var isLocalRawValue) &&
+                    bool.Parse(isLocalRawValue.ToString()) &&
+                    clientTimeZoneContext != null;
 
                 matchingCriteria = LazyDynamicFilterExpression<TEntity>(
                     expression,
                     value["matchMode"].ToString(),
-                    value["value"]?.ToString());
+                    value["value"]?.ToString(),
+                    isLocalTimeCriteria,
+                    clientTimeZoneContext);
 
                 if (isGlobal)
                 {
@@ -229,10 +225,11 @@ namespace BIA.Net.Core.Domain
         /// <param name="expression">The expression used to get the property.</param>
         /// <param name="criteria">The matching criteria.</param>
         /// <param name="value">The value to filter with.</param>
+        /// <param name="isLocalTimeCriteria">Indicates if the criteria value is expressed as local time.</param>
         /// <returns>The expression created dynamically.</returns>
         private static Expression<Func<TEntity, bool>>
             LazyDynamicFilterExpression<TEntity>(
-                LambdaExpression expression, string criteria, string value)
+                LambdaExpression expression, string criteria, string value, bool isLocalTimeCriteria, IClientTimeZoneContext clientTimeZoneContext = null)
                     where TEntity : class
         {
             ConstantExpression valueExpression;
@@ -258,6 +255,11 @@ namespace BIA.Net.Core.Domain
                     {
                         var culture = new CultureInfo("en-US");
                         object valueFormated = TypeDescriptor.GetConverter(expressionBody.Type).ConvertFromString(null, culture, value);
+                        if (isLocalTimeCriteria && valueFormated is DateTime valueDateTime)
+                        {
+                            valueFormated = valueDateTime.ToUniversalTime();
+                        }
+
                         switch (criteria.ToLower())
                         {
                             case "gt":
@@ -310,7 +312,7 @@ namespace BIA.Net.Core.Domain
                     try
                     {
                         var culture = new CultureInfo("en-US");
-                        DateTime now = DateTime.Now.Date;
+                        DateTime now = isLocalTimeCriteria ? clientTimeZoneContext.GetClientNow().Date : DateTime.Now.Date;
                         DateTime tomorrow = now.AddDays(1);
 
                         object todayFormatted = TypeDescriptor.GetConverter(expressionBody.Type)

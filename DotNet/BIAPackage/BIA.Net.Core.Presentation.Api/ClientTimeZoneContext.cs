@@ -35,5 +35,12 @@ namespace BIA.Net.Core.Presentation.Api
 
         /// <inheritdoc/>
         public DateTimeZone Zone { get; }
+
+        /// <inheritdoc/>
+        public DateTime GetClientNow()
+        => SystemClock.Instance.GetCurrentInstant()
+            .InZone(this.Zone)
+            .LocalDateTime
+            .ToDateTimeUnspecified();
     }
 }

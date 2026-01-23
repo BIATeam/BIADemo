@@ -93,6 +93,7 @@
                 ) {
                   <p-date-picker
                     [ngModel]="filterConstraint?.value"
+                    [showTime]="field.type === propType.DateTime"
                     (ngModelChange)="
                       filterConstraint.value = $event
                     "></p-date-picker>

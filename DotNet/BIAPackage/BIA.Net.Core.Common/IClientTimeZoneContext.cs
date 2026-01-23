@@ -27,5 +27,11 @@ namespace BIA.Net.Core.Common
         /// Zone information.
         /// </summary>
         public DateTimeZone Zone { get; }
+
+        /// <summary>
+        /// Gets the current date and time according to the client's time zone.
+        /// </summary>
+        /// <returns>A DateTime value representing the client's current local time.</returns>
+        public DateTime GetClientNow();
     }
 }
