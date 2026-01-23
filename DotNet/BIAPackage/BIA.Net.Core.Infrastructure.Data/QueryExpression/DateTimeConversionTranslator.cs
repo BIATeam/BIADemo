@@ -43,13 +43,13 @@ namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
         /// <summary>
         /// Gets the SQL expression factory, resolving it lazily on first use.
         /// </summary>
-        private ISqlExpressionFactory SqlExpressionFactory 
+        private ISqlExpressionFactory SqlExpressionFactory
             => this.sqlExpressionFactory ??= this.serviceProvider.GetRequiredService<ISqlExpressionFactory>();
 
         /// <summary>
         /// Gets the type mapping source, resolving it lazily on first use.
         /// </summary>
-        private IRelationalTypeMappingSource TypeMappingSource 
+        private IRelationalTypeMappingSource TypeMappingSource
             => this.typeMappingSource ??= this.serviceProvider.GetRequiredService<IRelationalTypeMappingSource>();
 
         /// <inheritdoc/>
