@@ -40,7 +40,11 @@ namespace BIA.Net.Core.Domain
         /// <returns>
         /// The specification updated.
         /// </returns>
-        public static Specification<TEntity> GetLazyLoad<TEntity, TKey, TMapper>(Specification<TEntity> specification, TMapper matcher, IPagingFilterFormatDto dto, IClientTimeZoneContext clientTimeZoneContext)
+        public static Specification<TEntity> GetLazyLoad<TEntity, TKey, TMapper>(
+            Specification<TEntity> specification,
+            TMapper matcher,
+            IPagingFilterFormatDto dto,
+            IClientTimeZoneContext clientTimeZoneContext)
         where TEntity : class, IEntity<TKey>, new()
         where TMapper : BaseEntityMapper<TEntity>
         {
@@ -109,7 +113,13 @@ namespace BIA.Net.Core.Domain
                 || (valueType.Name.Length > 18 && valueType.Name.Substring(0, 18) == "IOrderedEnumerable");
         }
 
-        private static void AddSpecByValue<TEntity, TKey>(ref Specification<TEntity> specification, ExpressionCollection<TEntity> whereClauses, ref Specification<TEntity> globalFilterSpecification, string key, Dictionary<string, object> value, IClientTimeZoneContext clientTimeZoneContext)
+        private static void AddSpecByValue<TEntity, TKey>(
+            ref Specification<TEntity> specification,
+            ExpressionCollection<TEntity> whereClauses,
+            ref Specification<TEntity> globalFilterSpecification,
+            string key,
+            Dictionary<string, object> value,
+            IClientTimeZoneContext clientTimeZoneContext)
             where TEntity : class, IEntity<TKey>, new()
         {
             if (value["value"] == null && value["matchMode"]?.ToString() != "empty" && value["matchMode"]?.ToString() != "notEmpty" && value["matchMode"]?.ToString() != "today" && value["matchMode"]?.ToString() != "beforeToday" && value["matchMode"]?.ToString() != "afterToday")
@@ -229,7 +239,11 @@ namespace BIA.Net.Core.Domain
         /// <returns>The expression created dynamically.</returns>
         private static Expression<Func<TEntity, bool>>
             LazyDynamicFilterExpression<TEntity>(
-                LambdaExpression expression, string criteria, string value, bool isLocalTimeCriteria, IClientTimeZoneContext clientTimeZoneContext)
+                LambdaExpression expression,
+                string criteria,
+                string value,
+                bool isLocalTimeCriteria,
+                IClientTimeZoneContext clientTimeZoneContext)
                     where TEntity : class
         {
             ConstantExpression valueExpression;
@@ -379,10 +393,20 @@ namespace BIA.Net.Core.Domain
                     break;
 
                 case "contains":
-                    if (isLocalTimeCriteria)
+                    if (isLocalTimeCriteria && clientTimeZoneContext != null && !string.IsNullOrEmpty(clientTimeZoneContext.IanaTimeZoneId))
                     {
-                        // Convert SQL date value to local client time zone before string comparison contains in provider
+                        // Convert DateTime to localized string for text comparison using AT TIME ZONE
+                        var localizedStringExpression = CreateDateTimeToLocalStringExpression(
+                            expressionBody,
+                            clientTimeZoneContext.IanaTimeZoneId);
+
+                        if (localizedStringExpression != null)
+                        {
+                            binaryExpression = ComputeExpressionOnString(localizedStringExpression, "Contains", value);
+                            break;
+                        }
                     }
+
                     binaryExpression = ComputeExpression(expressionBody, "Contains", value);
                     break;
 
@@ -449,6 +473,82 @@ namespace BIA.Net.Core.Domain
             return Expression.Lambda<Func<TEntity, bool>>(binaryExpression, parameterExpression);
         }
 
+        /// <summary>
+        /// Computes a string method call expression on an expression that is already a string.
+        /// </summary>
+        /// <param name="stringExpression">The expression that returns a string.</param>
+        /// <param name="filterFunction">The string method name (Contains, StartsWith, EndsWith).</param>
+        /// <param name="value">The value to compare with.</param>
+        /// <returns>The expression for the string method call.</returns>
+        private static Expression ComputeExpressionOnString(Expression stringExpression, string filterFunction, string value)
+        {
+            var valueExpression = Expression.Constant(value);
+            var method = typeof(string).GetMethod(filterFunction, new[] { typeof(string) });
+
+            // Handle nullable string (from conditional expressions)
+            if (stringExpression.Type == typeof(string))
+            {
+                return Expression.Call(stringExpression, method ?? throw new InvalidOperationException(), valueExpression);
+            }
+
+            // If expression might be null, add null check
+            var nullCheck = Expression.Equal(stringExpression, Expression.Constant(null, stringExpression.Type));
+            var methodCall = Expression.Call(stringExpression, method ?? throw new InvalidOperationException(), valueExpression);
+            return Expression.Condition(nullCheck, Expression.Constant(false), methodCall);
+        }
+
+        /// <summary>
+        /// Creates an expression that calls DatabaseDateTimeExpressionConverter.ConvertDateTimeToLocalString.
+        /// This expression will be translated by EF Core to SQL with AT TIME ZONE.
+        /// </summary>
+        /// <param name="dateTimeExpression">The DateTime expression.</param>
+        /// <param name="timeZoneId">The target time zone identifier.</param>
+        /// <returns>An expression calling the conversion method, or null if not applicable.</returns>
+        private static Expression CreateDateTimeToLocalStringExpression(Expression dateTimeExpression, string timeZoneId)
+        {
+            if (dateTimeExpression == null || string.IsNullOrEmpty(timeZoneId))
+            {
+                return null;
+            }
+
+            try
+            {
+                // Load the type dynamically to avoid circular reference between Domain and Infrastructure.Data
+                var converterType = Type.GetType("BIA.Net.Core.Infrastructure.Data.QueryExpression.DatabaseDateTimeExpressionConverter, BIA.Net.Core.Infrastructure.Data");
+                if (converterType == null)
+                {
+                    return null;
+                }
+
+                var convertMethod = converterType.GetMethod("ConvertDateTimeToLocalString", BindingFlags.Public | BindingFlags.Static);
+                if (convertMethod == null)
+                {
+                    return null;
+                }
+
+                var timeZoneConstant = Expression.Constant(timeZoneId, typeof(string));
+
+                // Handle nullable DateTime
+                if (dateTimeExpression.Type == typeof(DateTime?))
+                {
+                    var hasValueProperty = Expression.Property(dateTimeExpression, "HasValue");
+                    var valueProperty = Expression.Property(dateTimeExpression, "Value");
+
+                    var convertCall = Expression.Call(convertMethod, valueProperty, timeZoneConstant);
+                    return Expression.Condition(
+                        hasValueProperty,
+                        convertCall,
+                        Expression.Constant(null, typeof(string)));
+                }
+
+                return Expression.Call(convertMethod, dateTimeExpression, timeZoneConstant);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         private static Expression ComputeExpression(Expression expressionBody, string filterFonction, string value)
         {
             ConstantExpression valueExpression;
@@ -478,30 +578,30 @@ namespace BIA.Net.Core.Domain
             }
 
             return binaryExpression;
+        }
 #pragma warning disable S125 // Sections of code should not be commented out
 
-            // PostgreSQL : use like function only to do search action with no case sensitive => Contains is case sensitive with database without database CI
-            // if (IsCollectionType(valueType))
-            // {
-            //    valueExpression = Expression.Constant(valueFormated);
-            //    method = typeof(string).GetMethod("ILike", new[] { typeof(string) });
-            //    ParameterExpression pe = Expression.Parameter(typeof(string), "a");
-            //    var predicate = Expression.Call(pe, method ?? throw new InvalidOperationException(), valueExpression);
-            //    var predicateExpr = Expression.Lambda<Func<string, bool>>(predicate, pe);
-            //    binaryExpression = Expression.Call(typeof(Enumerable), "Any", new[] { typeof(string) }, expressionBody, predicateExpr);
-            // }
-            // else
-            // {
-            //    if (expressionBody.Type != typeof(string))
-            //    {
-            //        expressionBody = Expression.Call(expressionBody, methodToString ?? throw new InvalidOperationException());
-            //    }
-            //
-            //    binaryExpression = Expression.Call(typeof(NpgsqlDbFunctionsExtensions), nameof(NpgsqlDbFunctionsExtensions.ILike),
-            //        Type.EmptyTypes, Expression.Property(null, typeof(EF), nameof(EF.Functions)),
-            //        expressionBody, Expression.Constant($"%{valueFormated}%"));
-            // }
+        // PostgreSQL : use like function only to do search action with no case sensitive => Contains is case sensitive with database without database CI
+        // if (IsCollectionType(valueType))
+        // {
+        //    valueExpression = Expression.Constant(valueFormated);
+        //    method = typeof(string).GetMethod("ILike", new[] { typeof(string) });
+        //    ParameterExpression pe = Expression.Parameter(typeof(string), "a");
+        //    var predicate = Expression.Call(pe, method ?? throw new InvalidOperationException(), valueExpression);
+        //    var predicateExpr = Expression.Lambda<Func<string, bool>>(predicate, pe);
+        //    binaryExpression = Expression.Call(typeof(Enumerable), "Any", new[] { typeof(string) }, expressionBody, predicateExpr);
+        // }
+        // else
+        // {
+        //    if (expressionBody.Type != typeof(string))
+        //    {
+        //        expressionBody = Expression.Call(expressionBody, methodToString ?? throw new InvalidOperationException());
+        //    }
+        //
+        //    binaryExpression = Expression.Call(typeof(NpgsqlDbFunctionsExtensions), nameof(NpgsqlDbFunctionsExtensions.ILike),
+        //        Type.EmptyTypes, Expression.Property(null, typeof(EF), nameof(EF.Functions)),
+        //        expressionBody, Expression.Constant($"%{valueFormated}%"));
+        // }
 #pragma warning restore S125 // Sections of code should not be commented out
-        }
     }
 }

@@ -18,12 +18,16 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
     using BIA.Net.Core.Common.Enum;
+    using BIA.Net.Core.Infrastructure.Data.QueryExpression;
+    using Microsoft.EntityFrameworkCore.Infrastructure;
+    using Microsoft.EntityFrameworkCore.Query;
     using BIA.Net.Core.Domain.Announcement.Mappers;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Mappers;
     using BIA.Net.Core.Domain.User.Services;
     using BIA.Net.Core.Infrastructure.Data;
+    using BIA.Net.Core.Infrastructure.Data.QueryExpression;
     using BIA.Net.Core.Infrastructure.Data.Repositories;
     using BIA.Net.Core.Infrastructure.Data.Repositories.HistoryRepositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
@@ -200,20 +204,24 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                         {
                             if (dbEngine == DbProvider.PostGreSql)
                             {
-                                options.UseNpgsql(connectionString, options =>
+                                options.UseNpgsql(connectionString, npgsqlOptions =>
                                 {
-                                    options.EnableRetryOnFailure();
+                                    npgsqlOptions.EnableRetryOnFailure();
                                 });
                                 options.ReplaceService<IHistoryRepository, BiaNpgsqlHistoryRepository>();
                             }
                             else
                             {
-                                options.UseSqlServer(connectionString, options =>
+                                options.UseSqlServer(connectionString, sqlServerOptions =>
                                 {
-                                    options.EnableRetryOnFailure();
+                                    sqlServerOptions.EnableRetryOnFailure();
                                 });
                                 options.ReplaceService<IHistoryRepository, BiaSqlServerHistoryRepository>();
                             }
+                            
+                            // Register DateTime translator via infrastructure (works with EF Core's internal service provider)
+                            ((IDbContextOptionsBuilderInfrastructure)options).AddOrUpdateExtension(
+                                new DateTimeConversionDbContextOptionsExtension(dbEngine));
 
                             options.EnableSensitiveDataLogging();
                             options.AddInterceptors(new AuditSaveChangesInterceptor());
@@ -224,20 +232,24 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                         {
                             if (dbEngine == DbProvider.PostGreSql)
                             {
-                                options.UseNpgsql(connectionString, options =>
+                                options.UseNpgsql(connectionString, npgsqlOptions =>
                                 {
-                                    options.EnableRetryOnFailure();
+                                    npgsqlOptions.EnableRetryOnFailure();
                                 });
                                 options.ReplaceService<IHistoryRepository, BiaNpgsqlHistoryRepository>();
                             }
                             else
                             {
-                                options.UseSqlServer(connectionString, options =>
+                                options.UseSqlServer(connectionString, sqlServerOptions =>
                                 {
-                                    options.EnableRetryOnFailure();
+                                    sqlServerOptions.EnableRetryOnFailure();
                                 });
                                 options.ReplaceService<IHistoryRepository, BiaSqlServerHistoryRepository>();
                             }
+                            
+                            // Register DateTime translator via infrastructure (works with EF Core's internal service provider)
+                            ((IDbContextOptionsBuilderInfrastructure)options).AddOrUpdateExtension(
+                                new DateTimeConversionDbContextOptionsExtension(dbEngine));
 
                             options.EnableSensitiveDataLogging();
                         },
