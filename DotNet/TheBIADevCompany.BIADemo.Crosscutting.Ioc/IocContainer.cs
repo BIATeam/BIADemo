@@ -114,9 +114,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 #if BIA_FRONT_FEATURE
             collection.AddTransient(typeof(IBaseUserSynchronizeDomainService<User, UserFromDirectory>), typeof(UserSynchronizeDomainService));
             collection.AddTransient(typeof(IBaseUserAppService<UserDto, User, UserFromDirectoryDto, UserFromDirectory>), typeof(UserAppService));
-            collection.AddTransient(typeof(IUserAppService), typeof(UserAppService));
             collection.AddTransient(typeof(IBaseTeamAppService<TeamTypeId>), typeof(TeamAppService));
-            collection.AddTransient(typeof(ITeamAppService), typeof(TeamAppService));
 #endif
 #if BIA_FRONT_FEATURE || BIA_USE_DATABASE
 
