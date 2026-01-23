@@ -4,6 +4,7 @@
 
 namespace BIA.Net.Core.Domain.Service
 {
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Entity.Interface;
@@ -41,6 +42,11 @@ namespace BIA.Net.Core.Domain.Service
         /// Gets the repository.
         /// </summary>
         protected ITGenericRepository<TEntity, TKey> Repository { get; }
+
+        /// <summary>
+        /// Provides access to the client time zone context from the service provider.
+        /// </summary>
+        protected IClientTimeZoneContext ClientTimeZoneContext => this.Repository.ServiceProvider.GetService<IClientTimeZoneContext>();
 
         /// <summary>
         /// Init the mapper and the user context.

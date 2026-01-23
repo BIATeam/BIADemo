@@ -7,11 +7,14 @@ namespace BIA.Net.Core.Domain
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics;
     using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
+    using System.Runtime.CompilerServices;
     using System.Text.Json;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Entity.Interface;
@@ -33,10 +36,11 @@ namespace BIA.Net.Core.Domain
         /// <param name="specification">The specification to update.</param>
         /// <param name="matcher">The matcher.</param>
         /// <param name="dto">The lazy DTO.</param>
+        /// <param name="clientTimeZoneContext">Optional client time zone context.</param>
         /// <returns>
         /// The specification updated.
         /// </returns>
-        public static Specification<TEntity> GetLazyLoad<TEntity, TKey, TMapper>(Specification<TEntity> specification, TMapper matcher, IPagingFilterFormatDto dto)
+        public static Specification<TEntity> GetLazyLoad<TEntity, TKey, TMapper>(Specification<TEntity> specification, TMapper matcher, IPagingFilterFormatDto dto, IClientTimeZoneContext clientTimeZoneContext = null)
         where TEntity : class, IEntity<TKey>, new()
         where TMapper : BaseEntityMapper<TEntity>
         {
@@ -60,11 +64,11 @@ namespace BIA.Net.Core.Domain
                     {
                         if (value["matchMode"]?.ToString() == "in")
                         {
-                            AddSpecByValue<TEntity, TKey>(ref ruleSpecification, whereClausesFilterIn, ref globalFilterSpecification, key, value);
+                            AddSpecByValue<TEntity, TKey>(ref ruleSpecification, whereClausesFilterIn, ref globalFilterSpecification, key, value, clientTimeZoneContext);
                         }
                         else
                         {
-                            AddSpecByValue<TEntity, TKey>(ref ruleSpecification, whereClausesFilter, ref globalFilterSpecification, key, value);
+                            AddSpecByValue<TEntity, TKey>(ref ruleSpecification, whereClausesFilter, ref globalFilterSpecification, key, value, clientTimeZoneContext);
                         }
                     }
 
@@ -75,11 +79,11 @@ namespace BIA.Net.Core.Domain
                     var value = JsonSerializer.Deserialize<Dictionary<string, object>>(json);
                     if (value["matchMode"]?.ToString() == "in")
                     {
-                        AddSpecByValue<TEntity, TKey>(ref specification, whereClausesFilterIn, ref globalFilterSpecification, key, value);
+                        AddSpecByValue<TEntity, TKey>(ref specification, whereClausesFilterIn, ref globalFilterSpecification, key, value, clientTimeZoneContext);
                     }
                     else
                     {
-                        AddSpecByValue<TEntity, TKey>(ref specification, whereClausesFilter, ref globalFilterSpecification, key, value);
+                        AddSpecByValue<TEntity, TKey>(ref specification, whereClausesFilter, ref globalFilterSpecification, key, value, clientTimeZoneContext);
                     }
                 }
             }
@@ -105,7 +109,7 @@ namespace BIA.Net.Core.Domain
                 || (valueType.Name.Length > 18 && valueType.Name.Substring(0, 18) == "IOrderedEnumerable");
         }
 
-        private static void AddSpecByValue<TEntity, TKey>(ref Specification<TEntity> specification, ExpressionCollection<TEntity> whereClauses, ref Specification<TEntity> globalFilterSpecification, string key, Dictionary<string, object> value)
+        private static void AddSpecByValue<TEntity, TKey>(ref Specification<TEntity> specification, ExpressionCollection<TEntity> whereClauses, ref Specification<TEntity> globalFilterSpecification, string key, Dictionary<string, object> value, IClientTimeZoneContext clientTimeZoneContext = null)
             where TEntity : class, IEntity<TKey>, new()
         {
             if (value["value"] == null && value["matchMode"]?.ToString() != "empty" && value["matchMode"]?.ToString() != "notEmpty" && value["matchMode"]?.ToString() != "today" && value["matchMode"]?.ToString() != "beforeToday" && value["matchMode"]?.ToString() != "afterToday")
@@ -128,6 +132,17 @@ namespace BIA.Net.Core.Domain
                 if (expression == null)
                 {
                     return;
+                }
+
+                var isDateTime = IsDateTimeSelector(expression);
+                if (value.TryGetValue("isLocal", out var isLocalRawValue))
+                {
+                    var isLocal = bool.Parse(isLocalRawValue.ToString());
+                    var isContainsMatchMode = value["matchMode"].ToString().Equals("contains", StringComparison.InvariantCultureIgnoreCase);
+                    if (isDateTime && isLocal && isContainsMatchMode && clientTimeZoneContext != null)
+                    {
+                        Debug.WriteLine($"### Adjusting DateTime value from client time zone to UTC for 'contains' match mode of field {matchKey}");
+                    }
                 }
 
                 matchingCriteria = LazyDynamicFilterExpression<TEntity>(
@@ -171,6 +186,40 @@ namespace BIA.Net.Core.Domain
                 return;
 #pragma warning restore S3626 // Jump statements should not be redundant
             }
+        }
+
+        /// <summary>
+        /// Checks if the selector is a DateTime or Nullable DateTime.
+        /// </summary>
+        /// <param name="expression">Expression to check.</param>
+        /// <returns>Boolean indicating if the selector is a DateTime or Nullable DateTime.</returns>
+        private static bool IsDateTimeSelector(LambdaExpression expression)
+        {
+            PropertyInfo propertyInfo = null;
+
+            if (expression.Body is MemberExpression memberExpression)
+            {
+                propertyInfo = memberExpression.Member as PropertyInfo;
+            }
+            else if (expression.Body is ConditionalExpression conditionalExpression && conditionalExpression.IfTrue is MemberExpression ifTrueMember)
+            {
+                propertyInfo = ifTrueMember.Member as PropertyInfo;
+            }
+            else if (expression.Body is MethodCallExpression methodCallExpression && methodCallExpression.Object is MemberExpression objectMember)
+            {
+                propertyInfo = objectMember.Member as PropertyInfo;
+            }
+
+            if (propertyInfo == null)
+            {
+                return false;
+            }
+
+            var propertyType = propertyInfo.PropertyType;
+            return propertyType == typeof(DateTime) ||
+                   (propertyType.IsGenericType &&
+                    propertyType.GetGenericTypeDefinition() == typeof(Nullable<>) &&
+                    propertyType.GenericTypeArguments[0] == typeof(DateTime));
         }
 
         /// <summary>

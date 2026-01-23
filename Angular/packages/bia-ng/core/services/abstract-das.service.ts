@@ -41,11 +41,32 @@ export abstract class AbstractDas<
         .map(field => field.field as string) ?? [];
   }
 
+  private markLocalFiltersAsLocal(event?: TableLazyLoadEvent) {
+    const localTimeFields = this.localTimeFields;
+    if (!event?.filters || !localTimeFields?.length) {
+      return;
+    }
+
+    Object.keys(event.filters).forEach(key => {
+      if (localTimeFields.includes(key)) {
+        const filter = event.filters![key];
+        if (Array.isArray(filter)) {
+          filter.forEach(f => {
+            (f as any).isLocal = true;
+          });
+        } else if (filter) {
+          (filter as any).isLocal = true;
+        }
+      }
+    });
+  }
+
   getList(param?: GetListParam): Observable<TOutList[]> {
     return this.getListItems<TOutList>(param);
   }
 
   getListByPost(param: GetListByPostParam): Observable<DataResult<TOutList[]>> {
+    this.markLocalFiltersAsLocal(param.event);
     return this.getListItemsByPost<TOutList>(param);
   }
 

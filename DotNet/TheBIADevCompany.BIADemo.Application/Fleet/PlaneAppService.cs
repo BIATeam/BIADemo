@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
@@ -66,7 +67,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
             // BIAToolKit - End Partial FixedChildrenRepositoryInjectionPlane Engine
             // End BIAToolKit Generation Ignore
             // BIAToolKit - End FixedChildrenRepositoryInjectionPlane
-            IPrincipal principal)
+            IPrincipal principal, IClientTimeZoneContext clientTimeZoneContext)
             : base(repository)
         {
             var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
