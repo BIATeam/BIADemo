@@ -61,13 +61,13 @@ namespace BIA.Net.Core.Infrastructure.Data.DateTimeConversion
             // arguments[0] = DateTime column
             // arguments[1] = timeZoneId string
             var dateTimeColumn = arguments[0];
-            var timeZoneId = arguments[1];
+            var ianaTimeZoneId = arguments[1];
 
             var stringTypeMapping = this.typeMappingSource.FindMapping(typeof(string));
 
             // Convert timezone format based on database provider
             SqlExpression processedTimeZone = null;
-            if (this.dbProvider == DbProvider.SqlServer && timeZoneId is SqlConstantExpression constantTz && constantTz.Value is string tzValue)
+            if (this.dbProvider == DbProvider.SqlServer && ianaTimeZoneId is SqlConstantExpression constantTz && constantTz.Value is string tzValue)
             {
                 // SQL Server needs Windows timezone - convert IANA to Windows if it's a constant
                 if (TimeZoneInfo.TryConvertIanaIdToWindowsId(tzValue, out var windowsId))
@@ -77,17 +77,17 @@ namespace BIA.Net.Core.Infrastructure.Data.DateTimeConversion
                 else
                 {
                     // Already Windows format or conversion failed - use as-is
-                    processedTimeZone = timeZoneId.TypeMapping == null
-                        ? this.sqlExpressionFactory.ApplyTypeMapping(timeZoneId, stringTypeMapping)
-                        : timeZoneId;
+                    processedTimeZone = ianaTimeZoneId.TypeMapping == null
+                        ? this.sqlExpressionFactory.ApplyTypeMapping(ianaTimeZoneId, stringTypeMapping)
+                        : ianaTimeZoneId;
                 }
             }
             else if (this.dbProvider == DbProvider.PostGreSql)
             {
                 // PostgreSQL uses IANA natively, or it's a parameter (can't convert at translation time)
-                processedTimeZone = timeZoneId.TypeMapping == null
-                    ? this.sqlExpressionFactory.ApplyTypeMapping(timeZoneId, stringTypeMapping)
-                    : timeZoneId;
+                processedTimeZone = ianaTimeZoneId.TypeMapping == null
+                    ? this.sqlExpressionFactory.ApplyTypeMapping(ianaTimeZoneId, stringTypeMapping)
+                    : ianaTimeZoneId;
             }
 
             // Create the complete expression

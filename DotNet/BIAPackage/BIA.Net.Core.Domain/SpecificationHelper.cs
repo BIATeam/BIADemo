@@ -395,15 +395,13 @@ namespace BIA.Net.Core.Domain
                 case "contains":
                     if (isLocalTimeCriteria && !string.IsNullOrEmpty(clientTimeZoneContext?.IanaTimeZoneId))
                     {
-                        // Convert DateTime to localized string for text comparison using AT TIME ZONE
-                        // Use IANA timezone ID (PostgreSQL native, SQL Server translator will convert to Windows)
                         var localizedStringExpression = CreateDateTimeToLocalStringExpression(
                             expressionBody,
                             clientTimeZoneContext.IanaTimeZoneId);
 
                         if (localizedStringExpression != null)
                         {
-                            binaryExpression = ComputeExpressionOnString(localizedStringExpression, "Contains", value);
+                            binaryExpression = ComputeExpression(localizedStringExpression, "Contains", value);
                             break;
                         }
                     }
@@ -475,39 +473,15 @@ namespace BIA.Net.Core.Domain
         }
 
         /// <summary>
-        /// Computes a string method call expression on an expression that is already a string.
-        /// </summary>
-        /// <param name="stringExpression">The expression that returns a string.</param>
-        /// <param name="filterFunction">The string method name (Contains, StartsWith, EndsWith).</param>
-        /// <param name="value">The value to compare with.</param>
-        /// <returns>The expression for the string method call.</returns>
-        private static Expression ComputeExpressionOnString(Expression stringExpression, string filterFunction, string value)
-        {
-            var valueExpression = Expression.Constant(value);
-            var method = typeof(string).GetMethod(filterFunction, new[] { typeof(string) });
-
-            // Handle nullable string (from conditional expressions)
-            if (stringExpression.Type == typeof(string))
-            {
-                return Expression.Call(stringExpression, method ?? throw new InvalidOperationException(), valueExpression);
-            }
-
-            // If expression might be null, add null check
-            var nullCheck = Expression.Equal(stringExpression, Expression.Constant(null, stringExpression.Type));
-            var methodCall = Expression.Call(stringExpression, method ?? throw new InvalidOperationException(), valueExpression);
-            return Expression.Condition(nullCheck, Expression.Constant(false), methodCall);
-        }
-
-        /// <summary>
         /// Creates an expression that calls DatabaseDateTimeExpressionConverter.ConvertDateTimeToLocalString.
         /// This expression will be translated by EF Core to SQL with AT TIME ZONE.
         /// </summary>
         /// <param name="dateTimeExpression">The DateTime expression.</param>
-        /// <param name="timeZoneId">The target time zone identifier (IANA format, translator will convert to Windows for SQL Server).</param>
+        /// <param name="ianaTimeZoneId">The target time zone identifier (IANA format, translator will convert to Windows for SQL Server).</param>
         /// <returns>An expression calling the conversion method, or null if not applicable.</returns>
-        private static Expression CreateDateTimeToLocalStringExpression(Expression dateTimeExpression, string timeZoneId)
+        private static Expression CreateDateTimeToLocalStringExpression(Expression dateTimeExpression, string ianaTimeZoneId)
         {
-            if (dateTimeExpression == null || string.IsNullOrEmpty(timeZoneId))
+            if (dateTimeExpression == null || string.IsNullOrEmpty(ianaTimeZoneId))
             {
                 return null;
             }
@@ -528,7 +502,7 @@ namespace BIA.Net.Core.Domain
                     return null;
                 }
 
-                var timeZoneConstant = Expression.Constant(timeZoneId, typeof(string));
+                var timeZoneConstant = Expression.Constant(ianaTimeZoneId, typeof(string));
 
                 // Handle nullable DateTime
                 if (dateTimeExpression.Type == typeof(DateTime?))
