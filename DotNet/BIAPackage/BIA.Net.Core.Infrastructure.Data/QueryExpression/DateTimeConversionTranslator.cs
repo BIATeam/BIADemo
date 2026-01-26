@@ -67,31 +67,24 @@ namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
             var dateTimeColumn = arguments[0];
             var timeZoneId = arguments[1];
 
-            // Create the AT TIME ZONE expression: column AT TIME ZONE 'UTC' AT TIME ZONE @timeZoneId
-            var utcConstant = this.sqlExpressionFactory.Constant("UTC");
-            var atTimeZoneExpression = new DateTimeAtTimeZoneExpression(
-                dateTimeColumn,
-                utcConstant,
-                timeZoneId,
-                typeof(DateTimeOffset),
-                this.typeMappingSource.FindMapping(typeof(DateTimeOffset)));
+            var stringTypeMapping = this.typeMappingSource.FindMapping(typeof(string));
 
-            // Wrap with FORMAT (SQL Server) or TO_CHAR (PostgreSQL)
-            return this.DbProvider == DbProvider.SqlServer
-                ? this.sqlExpressionFactory.Function(
-                    "FORMAT",
-                    new[] { atTimeZoneExpression, this.sqlExpressionFactory.Constant("yyyy-MM-dd HH:mm:ss") },
-                    nullable: true,
-                    argumentsPropagateNullability: new[] { true, false },
-                    typeof(string),
-                    this.typeMappingSource.FindMapping(typeof(string)))
-                : this.sqlExpressionFactory.Function(
-                    "TO_CHAR",
-                    new[] { atTimeZoneExpression, this.sqlExpressionFactory.Constant("YYYY-MM-DD HH24:MI:SS") },
-                    nullable: true,
-                    argumentsPropagateNullability: new[] { true, false },
-                    typeof(string),
-                    this.typeMappingSource.FindMapping(typeof(string)));
+            // Ensure timeZoneId has a type mapping
+            var timeZoneIdWithMapping = timeZoneId is SqlExpression sqlExpression && sqlExpression.TypeMapping == null
+                ? this.sqlExpressionFactory.ApplyTypeMapping(sqlExpression, stringTypeMapping)
+                : timeZoneId;
+
+            // Create the complete expression that generates: FORMAT([column] AT TIME ZONE 'UTC' AT TIME ZONE @timezone, 'format')
+            // This avoids composition issues by generating all SQL in one Print() method
+            var formatString = this.DbProvider == DbProvider.SqlServer
+                ? "yyyy-MM-dd HH:mm:ss"
+                : "YYYY-MM-DD HH24:MI:SS";
+
+            return new DateTimeFormatWithTimeZoneExpression(
+                dateTimeColumn,
+                timeZoneIdWithMapping,
+                this.sqlExpressionFactory.Constant(formatString, stringTypeMapping),
+                stringTypeMapping);
         }
     }
 

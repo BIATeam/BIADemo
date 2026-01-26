@@ -47,6 +47,7 @@ namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
                 {
                     return GetMethodCallTranslatorPlugin(serviceProvider, this.DbProvider);
                 });
+                services.AddScoped<IRelationalParameterBasedSqlProcessorFactory, SqlServerDateTimeConversionParameterBasedSqlProcessorFactory>();
             }
 
             if (this.serviceLifetime == ServiceLifetime.Transient)

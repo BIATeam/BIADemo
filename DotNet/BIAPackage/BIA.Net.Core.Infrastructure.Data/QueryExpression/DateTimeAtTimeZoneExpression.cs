@@ -67,15 +67,13 @@ namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
         /// <inheritdoc/>
         protected override Expression VisitChildren(ExpressionVisitor visitor)
         {
-            var operand = (SqlExpression)visitor.Visit(this.Operand);
-            var utcTimeZone = (SqlExpression)visitor.Visit(this.UtcTimeZone);
-            var targetTimeZone = (SqlExpression)visitor.Visit(this.TargetTimeZone);
-
-            return this.Update(operand, utcTimeZone, targetTimeZone);
+            // Return this without visiting children to prevent decomposition
+            // The custom SqlNullabilityProcessor will handle visiting if needed
+            return this;
         }
 
         /// <summary>
-        /// Creates a new expression with the given children.
+        /// Creates a new expression with updated arguments.
         /// </summary>
         /// <param name="operand">The new operand.</param>
         /// <param name="utcTimeZone">The new UTC time zone.</param>
@@ -91,6 +89,8 @@ namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
         /// <inheritdoc/>
         protected override void Print(ExpressionPrinter expressionPrinter)
         {
+            // Generate our custom SQL syntax
+            // Use parentheses to ensure correct precedence
             expressionPrinter.Append("(");
             expressionPrinter.Visit(this.Operand);
             expressionPrinter.Append(" AT TIME ZONE ");
