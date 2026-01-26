@@ -44,7 +44,10 @@ namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
                 this.Sql.Append("FORMAT(");
                 this.Visit(dateTimeFormat.DateTimeColumn);
                 this.Sql.Append(" AT TIME ZONE N'UTC' AT TIME ZONE ");
+                
+                // The timezone should already be in Windows format from IClientTimeZoneContext.WindowsTimeZone.Id
                 this.Visit(dateTimeFormat.TimeZoneId);
+                
                 this.Sql.Append(", ");
                 this.Visit(dateTimeFormat.FormatString);
                 this.Sql.Append(")");

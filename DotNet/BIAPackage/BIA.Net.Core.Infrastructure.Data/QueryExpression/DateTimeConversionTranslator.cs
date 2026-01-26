@@ -63,15 +63,15 @@ namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
             }
 
             // arguments[0] = DateTime column
-            // arguments[1] = timeZoneId string
+            // arguments[1] = timeZoneId string (expected to be Windows format from IClientTimeZoneContext.WindowsTimeZone.Id)
             var dateTimeColumn = arguments[0];
             var timeZoneId = arguments[1];
 
             var stringTypeMapping = this.typeMappingSource.FindMapping(typeof(string));
 
-            // Ensure timeZoneId has a type mapping
-            var timeZoneIdWithMapping = timeZoneId is SqlExpression sqlExpression && sqlExpression.TypeMapping == null
-                ? this.sqlExpressionFactory.ApplyTypeMapping(sqlExpression, stringTypeMapping)
+            // Apply type mapping to timezone if needed
+            var processedTimeZone = timeZoneId.TypeMapping == null
+                ? this.sqlExpressionFactory.ApplyTypeMapping(timeZoneId, stringTypeMapping)
                 : timeZoneId;
 
             // Create the complete expression that generates: FORMAT([column] AT TIME ZONE 'UTC' AT TIME ZONE @timezone, 'format')
@@ -82,7 +82,7 @@ namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
 
             return new DateTimeFormatWithTimeZoneExpression(
                 dateTimeColumn,
-                timeZoneIdWithMapping,
+                processedTimeZone,
                 this.sqlExpressionFactory.Constant(formatString, stringTypeMapping),
                 stringTypeMapping);
         }

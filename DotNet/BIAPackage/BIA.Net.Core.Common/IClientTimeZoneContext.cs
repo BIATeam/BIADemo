@@ -19,6 +19,12 @@ namespace BIA.Net.Core.Common
         public string IanaTimeZoneId { get; }
 
         /// <summary>
+        /// Windows time zone identifier (e.g., "Romance Standard Time").
+        /// This is the format required by SQL Server AT TIME ZONE.
+        /// </summary>
+        public string WindowsTimeZoneId { get; }
+
+        /// <summary>
         /// Windows time zone info.
         /// </summary>
         public TimeZoneInfo WindowsTimeZone { get; }

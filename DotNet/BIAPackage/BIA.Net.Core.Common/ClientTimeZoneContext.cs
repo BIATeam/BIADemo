@@ -17,6 +17,9 @@ namespace BIA.Net.Core.Common
         public string IanaTimeZoneId { get; set; }
 
         /// <inheritdoc/>
+        public string WindowsTimeZoneId { get; set; }
+
+        /// <inheritdoc/>
         public TimeZoneInfo WindowsTimeZone { get; set; }
 
         /// <inheritdoc/>

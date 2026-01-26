@@ -393,12 +393,13 @@ namespace BIA.Net.Core.Domain
                     break;
 
                 case "contains":
-                    if (isLocalTimeCriteria && !string.IsNullOrEmpty(clientTimeZoneContext.IanaTimeZoneId))
+                    if (isLocalTimeCriteria && !string.IsNullOrEmpty(clientTimeZoneContext?.WindowsTimeZoneId))
                     {
                         // Convert DateTime to localized string for text comparison using AT TIME ZONE
+                        // Use Windows timezone ID which is required by SQL Server
                         var localizedStringExpression = CreateDateTimeToLocalStringExpression(
                             expressionBody,
-                            clientTimeZoneContext.IanaTimeZoneId);
+                            clientTimeZoneContext.WindowsTimeZoneId);
 
                         if (localizedStringExpression != null)
                         {
@@ -502,7 +503,7 @@ namespace BIA.Net.Core.Domain
         /// This expression will be translated by EF Core to SQL with AT TIME ZONE.
         /// </summary>
         /// <param name="dateTimeExpression">The DateTime expression.</param>
-        /// <param name="timeZoneId">The target time zone identifier.</param>
+        /// <param name="timeZoneId">The target time zone identifier (Windows format, from IClientTimeZoneContext.WindowsTimeZoneId).</param>
         /// <returns>An expression calling the conversion method, or null if not applicable.</returns>
         private static Expression CreateDateTimeToLocalStringExpression(Expression dateTimeExpression, string timeZoneId)
         {
