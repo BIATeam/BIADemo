@@ -221,7 +221,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                             
                             // Register DateTime translator via infrastructure (works with EF Core's internal service provider)
                             ((IDbContextOptionsBuilderInfrastructure)options).AddOrUpdateExtension(
-                                new DateTimeConversionDbContextOptionsExtension(dbEngine));
+                                new DateTimeConversionDbContextOptionsExtension(dbEngine, ServiceLifetime.Scoped));
 
                             options.EnableSensitiveDataLogging();
                             options.AddInterceptors(new AuditSaveChangesInterceptor());
@@ -249,7 +249,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                             
                             // Register DateTime translator via infrastructure (works with EF Core's internal service provider)
                             ((IDbContextOptionsBuilderInfrastructure)options).AddOrUpdateExtension(
-                                new DateTimeConversionDbContextOptionsExtension(dbEngine));
+                                new DateTimeConversionDbContextOptionsExtension(dbEngine, ServiceLifetime.Transient));
 
                             options.EnableSensitiveDataLogging();
                         },
