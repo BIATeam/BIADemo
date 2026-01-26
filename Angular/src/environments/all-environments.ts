@@ -6,7 +6,10 @@ export const allEnvironments: AllEnvironments & { [key: string]: any } = {
   enableNotifications: true,
   enableWorkerService: true,
   enableAnnouncements: true,
-  enableOfflineMode: false,
+  // Except BIADemo enableOfflineMode: false,
+  // Begin BIADemo
+  enableOfflineMode: true,
+  // End BIADemo
   urlAuth: '/api/Auth',
   urlLog: '/api/logs',
   urlEnv: '/api/AppSettings/Environment',
