@@ -90,12 +90,13 @@ namespace BIA.Net.Core.Infrastructure.Data.DateTimeConversion
                     : timeZoneId;
             }
 
-            // Create the complete expression that generates: FORMAT([column] AT TIME ZONE 'UTC' AT TIME ZONE @timezone, 'format')
-            // This avoids composition issues by generating all SQL in one Print() method
-
+            // Create the complete expression
+            // Note: The actual format is determined by the QuerySqlGenerator:
+            //   - SQL Server: Uses CONVERT style 120 (yyyy-mm-dd hh:mi:ss 24h) - ignores this formatString
+            //   - PostgreSQL: Uses TO_CHAR with this formatString
             var formatString = this.dbProvider switch
             {
-                DbProvider.SqlServer => "yyyy-MM-dd HH:mm:ss",
+                DbProvider.SqlServer => string.Empty, // Not used - CONVERT style 120 is hardcoded
                 DbProvider.PostGreSql => "YYYY-MM-DD HH24:MI:SS",
                 _ => throw new NotSupportedException($"The database provider '{this.dbProvider}' is not supported for DateTime conversion."),
             };
