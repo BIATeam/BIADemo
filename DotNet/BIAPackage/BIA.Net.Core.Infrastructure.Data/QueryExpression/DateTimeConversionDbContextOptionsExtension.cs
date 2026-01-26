@@ -17,15 +17,17 @@ namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
     /// </summary>
     public class DateTimeConversionDbContextOptionsExtension : IDbContextOptionsExtension
     {
+        private readonly ServiceLifetime serviceLifetime;
         private DbContextOptionsExtensionInfo info;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DateTimeConversionDbContextOptionsExtension"/> class.
         /// </summary>
         /// <param name="dbProvider">The database provider.</param>
-        public DateTimeConversionDbContextOptionsExtension(DbProvider dbProvider)
+        public DateTimeConversionDbContextOptionsExtension(DbProvider dbProvider, ServiceLifetime serviceLifetime)
         {
             this.DbProvider = dbProvider;
+            this.serviceLifetime = serviceLifetime;
         }
 
         /// <summary>
@@ -39,14 +41,31 @@ namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
         /// <inheritdoc/>
         public void ApplyServices(IServiceCollection services)
         {
-            // Use factory lambda to defer dependency resolution until EF Core's service provider is built
-            // The lambda captures this.DbProvider in its closure
-            services.AddScoped<IMethodCallTranslatorPlugin>(serviceProvider =>
+            if (this.serviceLifetime == ServiceLifetime.Scoped)
             {
-                return this.DbProvider == DbProvider.SqlServer
-                    ? new SqlServerDateTimeConversionTranslator(serviceProvider)
-                    : new PostgreSqlDateTimeConversionTranslator(serviceProvider);
-            });
+                services.AddScoped(serviceProvider =>
+                {
+                    return GetMethodCallTranslatorPlugin(serviceProvider, this.DbProvider);
+                });
+            }
+
+            if (this.serviceLifetime == ServiceLifetime.Transient)
+            {
+                services.AddTransient(serviceProvider =>
+                {
+                    return GetMethodCallTranslatorPlugin(serviceProvider, this.DbProvider);
+                });
+            }
+        }
+
+        private static IMethodCallTranslatorPlugin GetMethodCallTranslatorPlugin(IServiceProvider serviceProvider, DbProvider dbProvider)
+        {
+            return dbProvider switch
+            {
+                DbProvider.SqlServer => new SqlServerDateTimeConversionTranslator(serviceProvider),
+                DbProvider.PostGreSql => new PostgreSqlDateTimeConversionTranslator(serviceProvider),
+                _ => throw new NotSupportedException($"The provider '{dbProvider}' is not supported for DateTime conversion."),
+            };
         }
 
         /// <inheritdoc/>
