@@ -39,13 +39,13 @@ namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
         /// <inheritdoc/>
         public void ApplyServices(IServiceCollection services)
         {
-            // Register with factory that passes ServiceProvider for lazy resolution
-            // The translator will resolve ISqlExpressionFactory and IRelationalTypeMappingSource when first used
-            services.AddSingleton<IMethodCallTranslatorPlugin>(sp =>
+            // Use factory lambda to defer dependency resolution until EF Core's service provider is built
+            // The lambda captures this.DbProvider in its closure
+            services.AddScoped<IMethodCallTranslatorPlugin>(serviceProvider =>
             {
                 return this.DbProvider == DbProvider.SqlServer
-                    ? new SqlServerDateTimeConversionTranslator(sp)
-                    : new PostgreSqlDateTimeConversionTranslator(sp);
+                    ? new SqlServerDateTimeConversionTranslator(serviceProvider)
+                    : new PostgreSqlDateTimeConversionTranslator(serviceProvider);
             });
         }
 

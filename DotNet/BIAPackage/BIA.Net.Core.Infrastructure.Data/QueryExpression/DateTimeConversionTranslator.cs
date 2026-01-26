@@ -18,39 +18,31 @@ namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
 
     /// <summary>
     /// Base class that handles all DateTime AT TIME ZONE translation logic.
-    /// Uses lazy initialization of EF Core services.
+    /// EF Core will inject ISqlExpressionFactory and IRelationalTypeMappingSource automatically.
     /// </summary>
     public abstract class DateTimeConversionTranslator : IMethodCallTranslatorPlugin, IMethodCallTranslator
     {
         private readonly IServiceProvider serviceProvider;
-        private ISqlExpressionFactory? sqlExpressionFactory;
-        private IRelationalTypeMappingSource? typeMappingSource;
+        private readonly ISqlExpressionFactory sqlExpressionFactory;
+        private readonly IRelationalTypeMappingSource typeMappingSource;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DateTimeConversionTranslator"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The service provider to resolve EF Core services lazily.</param>
-        protected DateTimeConversionTranslator(IServiceProvider serviceProvider)
+        /// <param name="sqlExpressionFactory">The SQL expression factory.</param>
+        /// <param name="typeMappingSource">The type mapping source.</param>
+        protected DateTimeConversionTranslator(
+            IServiceProvider serviceProvider)
         {
             this.serviceProvider = serviceProvider;
+            this.sqlExpressionFactory = serviceProvider.GetRequiredService<ISqlExpressionFactory>();
+            this.typeMappingSource = serviceProvider.GetRequiredService<IRelationalTypeMappingSource>();
         }
 
         /// <summary>
         /// Gets the database provider type.
         /// </summary>
         protected abstract DbProvider DbProvider { get; }
-
-        /// <summary>
-        /// Gets the SQL expression factory, resolving it lazily on first use.
-        /// </summary>
-        private ISqlExpressionFactory SqlExpressionFactory
-            => this.sqlExpressionFactory ??= this.serviceProvider.GetRequiredService<ISqlExpressionFactory>();
-
-        /// <summary>
-        /// Gets the type mapping source, resolving it lazily on first use.
-        /// </summary>
-        private IRelationalTypeMappingSource TypeMappingSource
-            => this.typeMappingSource ??= this.serviceProvider.GetRequiredService<IRelationalTypeMappingSource>();
 
         /// <inheritdoc/>
         public IEnumerable<IMethodCallTranslator> Translators => new[] { this };
@@ -63,8 +55,8 @@ namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
             IDiagnosticsLogger<DbLoggerCategory.Query> logger)
         {
             // Check if this is our ConvertDateTimeToLocalString method
-            if (method.DeclaringType?.FullName != "BIA.Net.Core.Infrastructure.Data.QueryExpression.DatabaseDateTimeExpressionConverter"
-                || method.Name != "ConvertDateTimeToLocalString"
+            if (method.DeclaringType?.FullName != typeof(DatabaseDateTimeExpressionConverter).FullName
+                || method.Name != nameof(DatabaseDateTimeExpressionConverter.ConvertDateTimeToLocalString)
                 || arguments.Count != 2)
             {
                 return null;
@@ -76,30 +68,30 @@ namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
             var timeZoneId = arguments[1];
 
             // Create the AT TIME ZONE expression: column AT TIME ZONE 'UTC' AT TIME ZONE @timeZoneId
-            var utcConstant = this.SqlExpressionFactory.Constant("UTC");
+            var utcConstant = this.sqlExpressionFactory.Constant("UTC");
             var atTimeZoneExpression = new DateTimeAtTimeZoneExpression(
                 dateTimeColumn,
                 utcConstant,
                 timeZoneId,
                 typeof(DateTimeOffset),
-                this.TypeMappingSource.FindMapping(typeof(DateTimeOffset)));
+                this.typeMappingSource.FindMapping(typeof(DateTimeOffset)));
 
             // Wrap with FORMAT (SQL Server) or TO_CHAR (PostgreSQL)
             return this.DbProvider == DbProvider.SqlServer
-                ? this.SqlExpressionFactory.Function(
+                ? this.sqlExpressionFactory.Function(
                     "FORMAT",
-                    new[] { atTimeZoneExpression, this.SqlExpressionFactory.Constant("yyyy-MM-dd HH:mm:ss") },
+                    new[] { atTimeZoneExpression, this.sqlExpressionFactory.Constant("yyyy-MM-dd HH:mm:ss") },
                     nullable: true,
                     argumentsPropagateNullability: new[] { true, false },
                     typeof(string),
-                    this.TypeMappingSource.FindMapping(typeof(string)))
-                : this.SqlExpressionFactory.Function(
+                    this.typeMappingSource.FindMapping(typeof(string)))
+                : this.sqlExpressionFactory.Function(
                     "TO_CHAR",
-                    new[] { atTimeZoneExpression, this.SqlExpressionFactory.Constant("YYYY-MM-DD HH24:MI:SS") },
+                    new[] { atTimeZoneExpression, this.sqlExpressionFactory.Constant("YYYY-MM-DD HH24:MI:SS") },
                     nullable: true,
                     argumentsPropagateNullability: new[] { true, false },
                     typeof(string),
-                    this.TypeMappingSource.FindMapping(typeof(string)));
+                    this.typeMappingSource.FindMapping(typeof(string)));
         }
     }
 
@@ -111,8 +103,10 @@ namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
         /// <summary>
         /// Initializes a new instance of the <see cref="SqlServerDateTimeConversionTranslator"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The service provider.</param>
-        public SqlServerDateTimeConversionTranslator(IServiceProvider serviceProvider)
+        /// <param name="sqlExpressionFactory">The SQL expression factory.</param>
+        /// <param name="typeMappingSource">The type mapping source.</param>
+        public SqlServerDateTimeConversionTranslator(
+            IServiceProvider serviceProvider)
             : base(serviceProvider)
         {
         }
@@ -129,8 +123,10 @@ namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
         /// <summary>
         /// Initializes a new instance of the <see cref="PostgreSqlDateTimeConversionTranslator"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The service provider.</param>
-        public PostgreSqlDateTimeConversionTranslator(IServiceProvider serviceProvider)
+        /// <param name="sqlExpressionFactory">The SQL expression factory.</param>
+        /// <param name="typeMappingSource">The type mapping source.</param>
+        public PostgreSqlDateTimeConversionTranslator(
+            IServiceProvider serviceProvider)
             : base(serviceProvider)
         {
         }

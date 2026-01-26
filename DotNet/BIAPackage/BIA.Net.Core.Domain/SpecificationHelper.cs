@@ -393,7 +393,7 @@ namespace BIA.Net.Core.Domain
                     break;
 
                 case "contains":
-                    if (isLocalTimeCriteria && clientTimeZoneContext != null && !string.IsNullOrEmpty(clientTimeZoneContext.IanaTimeZoneId))
+                    if (isLocalTimeCriteria && !string.IsNullOrEmpty(clientTimeZoneContext.IanaTimeZoneId))
                     {
                         // Convert DateTime to localized string for text comparison using AT TIME ZONE
                         var localizedStringExpression = CreateDateTimeToLocalStringExpression(
@@ -514,7 +514,8 @@ namespace BIA.Net.Core.Domain
             try
             {
                 // Load the type dynamically to avoid circular reference between Domain and Infrastructure.Data
-                var converterType = Type.GetType("BIA.Net.Core.Infrastructure.Data.QueryExpression.DatabaseDateTimeExpressionConverter, BIA.Net.Core.Infrastructure.Data");
+                var converterType = Assembly.Load("BIA.Net.Core.Infrastructure.Data")
+                    .GetType("BIA.Net.Core.Infrastructure.Data.QueryExpression.DatabaseDateTimeExpressionConverter");
                 if (converterType == null)
                 {
                     return null;
