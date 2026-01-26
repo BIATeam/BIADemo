@@ -2,7 +2,7 @@
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
+namespace BIA.Net.Core.Infrastructure.Data.DateTimeConversion
 {
     using System;
     using System.Linq.Expressions;
@@ -60,17 +60,6 @@ namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
                 this.TypeMapping);
         }
 
-        /// <inheritdoc/>
-        protected override Expression VisitChildren(ExpressionVisitor visitor)
-        {
-            // Visit children to allow parameter binding and column references
-            var newDateTimeColumn = (SqlExpression)visitor.Visit(this.DateTimeColumn);
-            var newTimeZoneId = (SqlExpression)visitor.Visit(this.TimeZoneId);
-            var newFormatString = (SqlExpression)visitor.Visit(this.FormatString);
-
-            return this.Update(newDateTimeColumn, newTimeZoneId, newFormatString);
-        }
-
         /// <summary>
         /// Creates a new expression with updated children.
         /// </summary>
@@ -86,6 +75,17 @@ namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
             return dateTimeColumn != this.DateTimeColumn || timeZoneId != this.TimeZoneId || formatString != this.FormatString
                 ? new DateTimeFormatWithTimeZoneExpression(dateTimeColumn, timeZoneId, formatString, this.TypeMapping)
                 : this;
+        }
+
+        /// <inheritdoc/>
+        protected override Expression VisitChildren(ExpressionVisitor visitor)
+        {
+            // Visit children to allow parameter binding and column references
+            var newDateTimeColumn = (SqlExpression)visitor.Visit(this.DateTimeColumn);
+            var newTimeZoneId = (SqlExpression)visitor.Visit(this.TimeZoneId);
+            var newFormatString = (SqlExpression)visitor.Visit(this.FormatString);
+
+            return this.Update(newDateTimeColumn, newTimeZoneId, newFormatString);
         }
 
         /// <inheritdoc/>

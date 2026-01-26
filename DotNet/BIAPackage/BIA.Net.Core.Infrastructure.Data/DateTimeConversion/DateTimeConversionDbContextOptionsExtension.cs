@@ -2,11 +2,13 @@
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
+namespace BIA.Net.Core.Infrastructure.Data.DateTimeConversion
 {
     using System;
     using System.Collections.Generic;
     using BIA.Net.Core.Common.Enum;
+    using BIA.Net.Core.Infrastructure.Data.DateTimeConversion.PostgreSql;
+    using BIA.Net.Core.Infrastructure.Data.DateTimeConversion.SqlServer;
     using Microsoft.EntityFrameworkCore.Infrastructure;
     using Microsoft.EntityFrameworkCore.Query;
     using Microsoft.EntityFrameworkCore.Storage;
@@ -24,6 +26,7 @@ namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
         /// Initializes a new instance of the <see cref="DateTimeConversionDbContextOptionsExtension"/> class.
         /// </summary>
         /// <param name="dbProvider">The database provider.</param>
+        /// <param name="serviceLifetime">The service lifetime for the registered services.</param>
         public DateTimeConversionDbContextOptionsExtension(DbProvider dbProvider, ServiceLifetime serviceLifetime)
         {
             this.DbProvider = dbProvider;
@@ -43,37 +46,41 @@ namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
         {
             if (this.serviceLifetime == ServiceLifetime.Scoped)
             {
-                services.AddScoped(serviceProvider =>
+                services.AddScoped<IMethodCallTranslatorPlugin>(serviceProvider =>
                 {
-                    return GetMethodCallTranslatorPlugin(serviceProvider, this.DbProvider);
+                    return new DateTimeConversionTranslator(serviceProvider, this.DbProvider);
                 });
 
-                // Register custom SQL generator for SQL Server
                 if (this.DbProvider == DbProvider.SqlServer)
                 {
                     services.AddScoped<IQuerySqlGeneratorFactory, SqlServerDateTimeConversionQuerySqlGeneratorFactory>();
+                    services.AddScoped<IRelationalParameterBasedSqlProcessorFactory, SqlServerDateTimeConversionParameterBasedSqlProcessorFactory>();
                 }
-
-                services.AddScoped<IRelationalParameterBasedSqlProcessorFactory, SqlServerDateTimeConversionParameterBasedSqlProcessorFactory>();
+                else if (this.DbProvider == DbProvider.PostGreSql)
+                {
+                    services.AddScoped<IQuerySqlGeneratorFactory, PostgreSqlDateTimeConversionQuerySqlGeneratorFactory>();
+                    services.AddScoped<IRelationalParameterBasedSqlProcessorFactory, PostgreSqlDateTimeConversionParameterBasedSqlProcessorFactory>();
+                }
             }
 
             if (this.serviceLifetime == ServiceLifetime.Transient)
             {
-                services.AddTransient(serviceProvider =>
+                services.AddTransient<IMethodCallTranslatorPlugin>(serviceProvider =>
                 {
-                    return GetMethodCallTranslatorPlugin(serviceProvider, this.DbProvider);
+                    return new DateTimeConversionTranslator(serviceProvider, this.DbProvider);
                 });
-            }
-        }
 
-        private static IMethodCallTranslatorPlugin GetMethodCallTranslatorPlugin(IServiceProvider serviceProvider, DbProvider dbProvider)
-        {
-            return dbProvider switch
-            {
-                DbProvider.SqlServer => new SqlServerDateTimeConversionTranslator(serviceProvider),
-                DbProvider.PostGreSql => new PostgreSqlDateTimeConversionTranslator(serviceProvider),
-                _ => throw new NotSupportedException($"The provider '{dbProvider}' is not supported for DateTime conversion."),
-            };
+                if (this.DbProvider == DbProvider.SqlServer)
+                {
+                    services.AddTransient<IQuerySqlGeneratorFactory, SqlServerDateTimeConversionQuerySqlGeneratorFactory>();
+                    services.AddTransient<IRelationalParameterBasedSqlProcessorFactory, SqlServerDateTimeConversionParameterBasedSqlProcessorFactory>();
+                }
+                else if (this.DbProvider == DbProvider.PostGreSql)
+                {
+                    services.AddTransient<IQuerySqlGeneratorFactory, PostgreSqlDateTimeConversionQuerySqlGeneratorFactory>();
+                    services.AddTransient<IRelationalParameterBasedSqlProcessorFactory, PostgreSqlDateTimeConversionParameterBasedSqlProcessorFactory>();
+                }
+            }
         }
 
         /// <inheritdoc/>

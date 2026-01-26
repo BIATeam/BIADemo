@@ -393,13 +393,13 @@ namespace BIA.Net.Core.Domain
                     break;
 
                 case "contains":
-                    if (isLocalTimeCriteria && !string.IsNullOrEmpty(clientTimeZoneContext?.WindowsTimeZoneId))
+                    if (isLocalTimeCriteria && !string.IsNullOrEmpty(clientTimeZoneContext?.IanaTimeZoneId))
                     {
                         // Convert DateTime to localized string for text comparison using AT TIME ZONE
-                        // Use Windows timezone ID which is required by SQL Server
+                        // Use IANA timezone ID (PostgreSQL native, SQL Server translator will convert to Windows)
                         var localizedStringExpression = CreateDateTimeToLocalStringExpression(
                             expressionBody,
-                            clientTimeZoneContext.WindowsTimeZoneId);
+                            clientTimeZoneContext.IanaTimeZoneId);
 
                         if (localizedStringExpression != null)
                         {
@@ -503,7 +503,7 @@ namespace BIA.Net.Core.Domain
         /// This expression will be translated by EF Core to SQL with AT TIME ZONE.
         /// </summary>
         /// <param name="dateTimeExpression">The DateTime expression.</param>
-        /// <param name="timeZoneId">The target time zone identifier (Windows format, from IClientTimeZoneContext.WindowsTimeZoneId).</param>
+        /// <param name="timeZoneId">The target time zone identifier (IANA format, translator will convert to Windows for SQL Server).</param>
         /// <returns>An expression calling the conversion method, or null if not applicable.</returns>
         private static Expression CreateDateTimeToLocalStringExpression(Expression dateTimeExpression, string timeZoneId)
         {
@@ -516,7 +516,7 @@ namespace BIA.Net.Core.Domain
             {
                 // Load the type dynamically to avoid circular reference between Domain and Infrastructure.Data
                 var converterType = Assembly.Load("BIA.Net.Core.Infrastructure.Data")
-                    .GetType("BIA.Net.Core.Infrastructure.Data.QueryExpression.DatabaseDateTimeExpressionConverter");
+                    .GetType("BIA.Net.Core.Infrastructure.Data.DateTimeConversion.DatabaseDateTimeExpressionConverter");
                 if (converterType == null)
                 {
                     return null;

@@ -2,7 +2,7 @@
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
+namespace BIA.Net.Core.Infrastructure.Data.DateTimeConversion.SqlServer
 {
     using Microsoft.EntityFrameworkCore.Query;
     using Microsoft.EntityFrameworkCore.SqlServer.Infrastructure.Internal;
@@ -11,6 +11,7 @@ namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
     /// <summary>
     /// Factory for creating SQL Server parameter-based SQL processors with custom nullability handling.
     /// </summary>
+#pragma warning disable EF1001 // Internal EF Core API usage.
     public class SqlServerDateTimeConversionParameterBasedSqlProcessorFactory : IRelationalParameterBasedSqlProcessorFactory
     {
         private readonly RelationalParameterBasedSqlProcessorDependencies dependencies;
@@ -38,4 +39,5 @@ namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
                 this.sqlServerOptions);
         }
     }
+#pragma warning restore EF1001 // Internal EF Core API usage.
 }

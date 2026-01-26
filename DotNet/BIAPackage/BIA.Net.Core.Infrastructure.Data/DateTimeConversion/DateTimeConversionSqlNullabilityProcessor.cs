@@ -2,7 +2,7 @@
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
+namespace BIA.Net.Core.Infrastructure.Data.DateTimeConversion
 {
     using Microsoft.EntityFrameworkCore.Query;
     using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
@@ -40,51 +40,28 @@ namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
             if (sqlExpression is DateTimeFormatWithTimeZoneExpression dateTimeFormat)
             {
                 // Visit the datetime column
-                var newDateTimeColumn = (SqlExpression)this.Visit(
+                var newDateTimeColumn = this.Visit(
                     dateTimeFormat.DateTimeColumn,
                     allowOptimizedExpansion,
                     out var columnNullable);
 
                 // Visit the timezone ID parameter
-                var newTimeZoneId = (SqlExpression)this.Visit(
+                var newTimeZoneId = this.Visit(
                     dateTimeFormat.TimeZoneId,
                     allowOptimizedExpansion,
                     out var timezoneNullable);
 
                 // Visit the format string constant
-                var newFormatString = (SqlExpression)this.Visit(
+                var newFormatString = this.Visit(
                     dateTimeFormat.FormatString,
                     allowOptimizedExpansion,
-                    out var formatNullable);
+                    out _);
 
                 // The result is nullable if any input is nullable
                 nullable = columnNullable || timezoneNullable;
 
                 // Return updated expression if any child changed
                 return dateTimeFormat.Update(newDateTimeColumn, newTimeZoneId, newFormatString);
-            }
-
-            // Handle legacy DateTimeAtTimeZoneExpression (if still in use)
-            if (sqlExpression is DateTimeAtTimeZoneExpression dateTimeAtTimeZone)
-            {
-                var newOperand = (SqlExpression)this.Visit(
-                    dateTimeAtTimeZone.Operand,
-                    allowOptimizedExpansion,
-                    out var operandNullable);
-
-                var newUtcTimeZone = (SqlExpression)this.Visit(
-                    dateTimeAtTimeZone.UtcTimeZone,
-                    allowOptimizedExpansion,
-                    out var utcNullable);
-
-                var newTargetTimeZone = (SqlExpression)this.Visit(
-                    dateTimeAtTimeZone.TargetTimeZone,
-                    allowOptimizedExpansion,
-                    out var targetNullable);
-
-                nullable = operandNullable || utcNullable || targetNullable;
-
-                return dateTimeAtTimeZone.Update(newOperand, newUtcTimeZone, newTargetTimeZone);
             }
 
             // For any other custom expression, call base (which will throw)

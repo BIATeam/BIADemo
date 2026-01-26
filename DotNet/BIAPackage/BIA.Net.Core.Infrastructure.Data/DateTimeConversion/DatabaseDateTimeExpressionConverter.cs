@@ -2,7 +2,7 @@
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
+namespace BIA.Net.Core.Infrastructure.Data.DateTimeConversion
 {
     using System;
 
@@ -16,11 +16,10 @@ namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
         /// Converts a UTC DateTime to a localized string representation.
         /// This method is a marker and will be translated to SQL AT TIME ZONE by EF Core.
         /// NEVER called at runtime - only used for LINQ expression translation.
-        /// For SQL Server, the timezone ID must be a Windows timezone name (e.g., "Romance Standard Time").
-        /// The <see cref="IClientTimeZoneContext.WindowsTimeZoneId"/> provides the correct format.
+        /// Pass IANA timezone ID (e.g., "Europe/Paris") - the translator will convert to Windows format for SQL Server.
         /// </summary>
         /// <param name="dateTime">The UTC DateTime to convert.</param>
-        /// <param name="timeZoneId">The target timezone identifier (Windows format for SQL Server, from IClientTimeZoneContext.WindowsTimeZoneId).</param>
+        /// <param name="timeZoneId">The target timezone identifier (IANA format like "Europe/Paris").</param>
         /// <returns>A string representation of the DateTime in the target time zone.</returns>
         public static string ConvertDateTimeToLocalString(DateTime dateTime, string timeZoneId)
         {

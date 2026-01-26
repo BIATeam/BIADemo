@@ -1,10 +1,11 @@
-// <copyright file="DateTimeConversionParameterBasedSqlProcessor.cs" company="BIA">
+// <copyright file="SqlServerDateTimeConversionParameterBasedSqlProcessor.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
+namespace BIA.Net.Core.Infrastructure.Data.DateTimeConversion.SqlServer
 {
     using System.Linq.Expressions;
+    using BIA.Net.Core.Infrastructure.Data.DateTimeConversion;
     using Microsoft.EntityFrameworkCore.Query;
     using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
     using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
@@ -13,6 +14,7 @@ namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
     /// Custom SQL parameter processor for SQL Server that uses our custom nullability processor
     /// and converts IANA timezone parameters to Windows timezones.
     /// </summary>
+#pragma warning disable EF1001 // Internal EF Core API usage.
     public class SqlServerDateTimeConversionParameterBasedSqlProcessor : SqlServerParameterBasedSqlProcessor
     {
         /// <summary>
@@ -47,4 +49,5 @@ namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
             return processor.Process(selectExpression, Decorator);
         }
     }
+#pragma warning restore EF1001 // Internal EF Core API usage.
 }

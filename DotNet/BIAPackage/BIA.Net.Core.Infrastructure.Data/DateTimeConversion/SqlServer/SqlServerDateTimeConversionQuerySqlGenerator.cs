@@ -1,10 +1,11 @@
-// <copyright file="DateTimeConversionQuerySqlGenerator.cs" company="BIA">
+// <copyright file="SqlServerDateTimeConversionQuerySqlGenerator.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
+namespace BIA.Net.Core.Infrastructure.Data.DateTimeConversion.SqlServer
 {
     using System.Linq.Expressions;
+    using BIA.Net.Core.Infrastructure.Data.DateTimeConversion;
     using Microsoft.EntityFrameworkCore.Query;
     using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
     using Microsoft.EntityFrameworkCore.SqlServer.Infrastructure.Internal;
@@ -34,43 +35,29 @@ namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
         /// <summary>
         /// Visits a SQL expression and generates SQL for it.
         /// </summary>
-        /// <param name="expression">The expression to visit.</param>
+        /// <param name="extensionExpression">The expression to visit.</param>
         /// <returns>The visited expression.</returns>
-        protected override Expression VisitExtension(Expression expression)
+        protected override Expression VisitExtension(Expression extensionExpression)
         {
             // Handle our custom DateTimeFormatWithTimeZoneExpression
-            if (expression is DateTimeFormatWithTimeZoneExpression dateTimeFormat)
+            if (extensionExpression is DateTimeFormatWithTimeZoneExpression dateTimeFormat)
             {
                 this.Sql.Append("FORMAT(");
                 this.Visit(dateTimeFormat.DateTimeColumn);
                 this.Sql.Append(" AT TIME ZONE N'UTC' AT TIME ZONE ");
-                
+
                 // The timezone should already be in Windows format from IClientTimeZoneContext.WindowsTimeZone.Id
                 this.Visit(dateTimeFormat.TimeZoneId);
-                
+
                 this.Sql.Append(", ");
                 this.Visit(dateTimeFormat.FormatString);
                 this.Sql.Append(")");
 
-                return expression;
-            }
-
-            // Handle legacy DateTimeAtTimeZoneExpression if needed
-            if (expression is DateTimeAtTimeZoneExpression atTimeZone)
-            {
-                this.Sql.Append("(");
-                this.Visit(atTimeZone.Operand);
-                this.Sql.Append(" AT TIME ZONE ");
-                this.Visit(atTimeZone.UtcTimeZone);
-                this.Sql.Append(" AT TIME ZONE ");
-                this.Visit(atTimeZone.TargetTimeZone);
-                this.Sql.Append(")");
-
-                return expression;
+                return extensionExpression;
             }
 
             // For all other expressions, use base implementation
-            return base.VisitExtension(expression);
+            return base.VisitExtension(extensionExpression);
         }
     }
 #pragma warning restore EF1001
