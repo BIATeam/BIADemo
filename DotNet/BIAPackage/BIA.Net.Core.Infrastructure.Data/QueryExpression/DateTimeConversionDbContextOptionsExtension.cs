@@ -47,6 +47,13 @@ namespace BIA.Net.Core.Infrastructure.Data.QueryExpression
                 {
                     return GetMethodCallTranslatorPlugin(serviceProvider, this.DbProvider);
                 });
+                
+                // Register custom SQL generator for SQL Server
+                if (this.DbProvider == DbProvider.SqlServer)
+                {
+                    services.AddScoped<IQuerySqlGeneratorFactory, SqlServerDateTimeConversionQuerySqlGeneratorFactory>();
+                }
+                
                 services.AddScoped<IRelationalParameterBasedSqlProcessorFactory, SqlServerDateTimeConversionParameterBasedSqlProcessorFactory>();
             }
 
