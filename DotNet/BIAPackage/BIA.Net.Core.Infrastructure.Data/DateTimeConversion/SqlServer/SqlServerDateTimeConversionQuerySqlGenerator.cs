@@ -14,6 +14,7 @@ namespace BIA.Net.Core.Infrastructure.Data.DateTimeConversion.SqlServer
 
     /// <summary>
     /// Custom SQL query generator for SQL Server that knows how to render DateTimeFormatWithTimeZoneExpression.
+    /// Uses CONVERT instead of FORMAT for significantly better performance (FORMAT uses CLR and is 10-50x slower).
     /// </summary>
 #pragma warning disable EF1001 // Internal EF Core API usage
     public class SqlServerDateTimeConversionQuerySqlGenerator : SqlServerQuerySqlGenerator
@@ -42,16 +43,17 @@ namespace BIA.Net.Core.Infrastructure.Data.DateTimeConversion.SqlServer
             // Handle our custom DateTimeFormatWithTimeZoneExpression
             if (extensionExpression is DateTimeFormatWithTimeZoneExpression dateTimeFormat)
             {
-                this.Sql.Append("FORMAT(");
+                // Use CONVERT instead of FORMAT for better performance
+                // FORMAT uses CLR and is much slower than native CONVERT
+                // CONVERT style 120 produces: yyyy-mm-dd hh:mi:ss(24h)
+                this.Sql.Append("CONVERT(varchar(19), CONVERT(datetime2(0), (");
                 this.Visit(dateTimeFormat.DateTimeColumn);
-                this.Sql.Append(" AT TIME ZONE N'UTC' AT TIME ZONE ");
+                this.Sql.Append(" AT TIME ZONE N'UTC') AT TIME ZONE ");
 
                 // The timezone should already be in Windows format from IClientTimeZoneContext.WindowsTimeZone.Id
                 this.Visit(dateTimeFormat.TimeZoneId);
 
-                this.Sql.Append(", ");
-                this.Visit(dateTimeFormat.FormatString);
-                this.Sql.Append(")");
+                this.Sql.Append("), 120)");
 
                 return extensionExpression;
             }
