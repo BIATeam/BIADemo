@@ -10,9 +10,12 @@ function RemoveProjectFromSlnf {
     }
     
     $slnfContent = Get-Content $slnfFile -Raw | ConvertFrom-Json
-    $normalizedProjectPath = $projectPath -replace '/', '\\'
-    $slnfContent.solution.projects = $slnfContent.solution.projects | Where-Object { $_ -ne $normalizedProjectPath }
-    $slnfContent | ConvertTo-Json -Depth 10 | Set-Content $slnfFile
+    # Filter out the project to remove
+    $slnfContent.solution.projects = @($slnfContent.solution.projects | Where-Object { $_ -ne $projectPath })
+    
+    # Save with proper formatting
+    $json = $slnfContent | ConvertTo-Json -Depth 10
+    [System.IO.File]::WriteAllText($slnfFile, $json, [System.Text.Encoding]::UTF8)
 }
 
 function EnsurePackageReferenceWithoutVersion {
@@ -130,7 +133,7 @@ function AddBIAPackageToSolution {
     }
     
     # Remove from .slnf files
-    $slnfProjectPath = "BIAPackage\\BIA.Net.Core.$layerPackage\\BIA.Net.Core.$layerPackage.csproj"
+    $slnfProjectPath = "BIAPackage\BIA.Net.Core.$layerPackage\BIA.Net.Core.$layerPackage.csproj"
     RemoveProjectFromSlnf "${SolutionName}_DeployDB.slnf" $slnfProjectPath
     RemoveProjectFromSlnf "${SolutionName}_WithoutDeployDB.slnf" $slnfProjectPath
 }
@@ -151,8 +154,8 @@ AddBIAPackageToSolution "WorkerService" "WorkerService"
 dotnet sln "$SolutionName.sln" remove "$RelativePathToBIAPackage\NuGetPackage\NuGetPackage.csproj"
 
 # Remove NuGetPackage from .slnf files
-RemoveProjectFromSlnf "${SolutionName}_DeployDB.slnf" "BIAPackage\\NuGetPackage\\NuGetPackage.csproj"
-RemoveProjectFromSlnf "${SolutionName}_WithoutDeployDB.slnf" "BIAPackage\\NuGetPackage\\NuGetPackage.csproj"
+RemoveProjectFromSlnf "${SolutionName}_DeployDB.slnf" "BIAPackage\NuGetPackage\NuGetPackage.csproj"
+RemoveProjectFromSlnf "${SolutionName}_WithoutDeployDB.slnf" "BIAPackage\NuGetPackage\NuGetPackage.csproj"
 
 function UpdateDirectoryBuildPropsAnalyzersReferences {
     $propsFilePath = "Directory.Build.props"
@@ -209,7 +212,7 @@ function RemoveAnalyzerProjectToSolution {
     dotnet sln $SlnFile remove $AnalyzerProjectFile
     
     # Remove from .slnf files
-    $slnfProjectPath = "BIAPackage\\BIA.Net.Analyzers\\$analyzerProjectName\\$analyzerProjectName.csproj"
+    $slnfProjectPath = "BIAPackage\BIA.Net.Analyzers\$analyzerProjectName\$analyzerProjectName.csproj"
     RemoveProjectFromSlnf "${SolutionName}_DeployDB.slnf" $slnfProjectPath
     RemoveProjectFromSlnf "${SolutionName}_WithoutDeployDB.slnf" $slnfProjectPath
 }

@@ -10,13 +10,15 @@ function AddProjectToSlnf {
     }
     
     $slnfContent = Get-Content $slnfFile -Raw | ConvertFrom-Json
-    $normalizedProjectPath = $projectPath -replace '/', '\\'
     
     # Check if project already exists
-    if ($slnfContent.solution.projects -notcontains $normalizedProjectPath) {
-        $slnfContent.solution.projects += $normalizedProjectPath
-        $slnfContent.solution.projects = $slnfContent.solution.projects | Sort-Object
-        $slnfContent | ConvertTo-Json -Depth 10 | Set-Content $slnfFile
+    if ($slnfContent.solution.projects -notcontains $projectPath) {
+        $slnfContent.solution.projects = @($slnfContent.solution.projects) + $projectPath
+        $slnfContent.solution.projects = @($slnfContent.solution.projects | Sort-Object)
+        
+        # Save with proper formatting
+        $json = $slnfContent | ConvertTo-Json -Depth 10
+        [System.IO.File]::WriteAllText($slnfFile, $json, [System.Text.Encoding]::UTF8)
     }
 }
 
@@ -37,7 +39,7 @@ function AddBIAProjectToSolution {
     }
     
     # Add to .slnf files
-    $slnfProjectPath = "BIAPackage\\BIA.Net.Core.$layerPackage\\BIA.Net.Core.$layerPackage.csproj"
+    $slnfProjectPath = "BIAPackage\BIA.Net.Core.$layerPackage\BIA.Net.Core.$layerPackage.csproj"
     AddProjectToSlnf "${SolutionName}_DeployDB.slnf" $slnfProjectPath
     AddProjectToSlnf "${SolutionName}_WithoutDeployDB.slnf" $slnfProjectPath
 }
@@ -58,8 +60,8 @@ AddBIAProjectToSolution "WorkerService" "WorkerService"
 dotnet sln "$SolutionName.sln" add -s "BIAPackage" "$RelativePathToBIAPackage\NuGetPackage\NuGetPackage.csproj"
 
 # Add NuGetPackage to .slnf files
-AddProjectToSlnf "${SolutionName}_DeployDB.slnf" "BIAPackage\\NuGetPackage\\NuGetPackage.csproj"
-AddProjectToSlnf "${SolutionName}_WithoutDeployDB.slnf" "BIAPackage\\NuGetPackage\\NuGetPackage.csproj"
+AddProjectToSlnf "${SolutionName}_DeployDB.slnf" "BIAPackage\NuGetPackage\NuGetPackage.csproj"
+AddProjectToSlnf "${SolutionName}_WithoutDeployDB.slnf" "BIAPackage\NuGetPackage\NuGetPackage.csproj"
 
 function UpdateDirectoryBuildPropsAnalyzersReferences {
     $propsFilePath = "Directory.Build.props"
@@ -90,7 +92,7 @@ function UpdateDirectoryBuildPropsAnalyzersReferences {
     # Add ProjectReference entries for Analyzers and CodeFixes
     $itemGroup1 = $xmlContent.CreateElement("ItemGroup")
     $itemGroup1.SetAttribute("Label", "AnalyzerReferencesProject")
-    $itemGroup1.SetAttribute("Condition", "!`$(MSBuildProjectDirectory.Contains('BIAPackage'))")
+    $itemGroup1.SetAttribute("Condition", "!`$(MSBuildProjectDirectory.Contains('BIAPackage')) and !`$(MSBuildProjectDirectory.Contains('Migrations'))")
 
     $analyzerReference1 = $xmlContent.CreateElement("ProjectReference")
     $analyzerReference1.SetAttribute("Include", "..\BIAPackage\BIA.Net.Analyzers\BIA.Net.Analyzers\BIA.Net.Analyzers.csproj")
@@ -143,7 +145,7 @@ function AddAnalyzerProjectToSolution {
     dotnet sln $SlnFile add -s "BIAPackage\BIA.Net.Analyzers" $AnalyzerProjectFile
     
     # Add to .slnf files
-    $slnfProjectPath = "BIAPackage\\BIA.Net.Analyzers\\$analyzerProjectName\\$analyzerProjectName.csproj"
+    $slnfProjectPath = "BIAPackage\BIA.Net.Analyzers\$analyzerProjectName\$analyzerProjectName.csproj"
     AddProjectToSlnf "${SolutionName}_DeployDB.slnf" $slnfProjectPath
     AddProjectToSlnf "${SolutionName}_WithoutDeployDB.slnf" $slnfProjectPath
 }
