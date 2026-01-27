@@ -203,7 +203,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                                 options.UseNpgsql(connectionString, options =>
                                 {
                                     options.EnableRetryOnFailure();
-                                    options.MigrationsAssembly(Constants.DatabaseMigrations.AssemblyNamePostgreSQL);
                                 });
                                 options.ReplaceService<IHistoryRepository, BiaNpgsqlHistoryRepository>();
                             }
@@ -212,7 +211,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                                 options.UseSqlServer(connectionString, options =>
                                 {
                                     options.EnableRetryOnFailure();
-                                    options.MigrationsAssembly(Constants.DatabaseMigrations.AssemblyNameSqlServer);
                                 });
                                 options.ReplaceService<IHistoryRepository, BiaSqlServerHistoryRepository>();
                             }
@@ -229,7 +227,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                                 options.UseNpgsql(connectionString, options =>
                                 {
                                     options.EnableRetryOnFailure();
-                                    options.MigrationsAssembly(Constants.DatabaseMigrations.AssemblyNamePostgreSQL);
                                 });
                                 options.ReplaceService<IHistoryRepository, BiaNpgsqlHistoryRepository>();
                             }
@@ -238,7 +235,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                                 options.UseSqlServer(connectionString, options =>
                                 {
                                     options.EnableRetryOnFailure();
-                                    options.MigrationsAssembly(Constants.DatabaseMigrations.AssemblyNameSqlServer);
                                 });
                                 options.ReplaceService<IHistoryRepository, BiaSqlServerHistoryRepository>();
                             }
