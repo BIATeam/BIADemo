@@ -19,9 +19,9 @@ namespace BIA.Net.Core.Infrastructure.Data.DateTimeConversion
         /// Pass IANA timezone ID (e.g., "Europe/Paris") - the translator will convert to Windows format for SQL Server.
         /// </summary>
         /// <param name="dateTime">The UTC DateTime to convert.</param>
-        /// <param name="timeZoneId">The target timezone identifier (IANA format like "Europe/Paris").</param>
+        /// <param name="ianaTimeZoneId">The target timezone identifier (IANA format like "Europe/Paris").</param>
         /// <returns>A string representation of the DateTime in the target time zone.</returns>
-        public static string ConvertDateTimeToLocalString(DateTime dateTime, string timeZoneId)
+        public static string ConvertDateTimeToLocalString(DateTime dateTime, string ianaTimeZoneId)
         {
             // This method should NEVER be executed
             // It's only a marker for EF Core query translation

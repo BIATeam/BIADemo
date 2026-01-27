@@ -14,7 +14,7 @@ namespace BIA.Net.Core.Infrastructure.Data.DateTimeConversion
     /// Custom SQL expression that generates the complete FORMAT([column] AT TIME ZONE 'UTC' AT TIME ZONE [timezone], 'format') SQL.
     /// This generates the entire SQL statement in one go to avoid composition issues.
     /// </summary>
-    public class DateTimeFormatWithTimeZoneExpression : SqlExpression
+    internal sealed class DateTimeFormatWithTimeZoneExpression : SqlExpression
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DateTimeFormatWithTimeZoneExpression"/> class.
@@ -91,8 +91,7 @@ namespace BIA.Net.Core.Infrastructure.Data.DateTimeConversion
         /// <inheritdoc/>
         protected override void Print(ExpressionPrinter expressionPrinter)
         {
-            // Generate the complete SQL: FORMAT([column] AT TIME ZONE 'UTC' AT TIME ZONE [timezone], [format])
-            expressionPrinter.Append("FORMAT(");
+            expressionPrinter.Append("CONVERT(");
             expressionPrinter.Visit(this.DateTimeColumn);
             expressionPrinter.Append(" AT TIME ZONE N'UTC' AT TIME ZONE ");
             expressionPrinter.Visit(this.TimeZoneId);

@@ -12,7 +12,7 @@ namespace BIA.Net.Core.Infrastructure.Data.DateTimeConversion.PostgreSql
     /// Factory for creating PostgreSQL query SQL generators with custom DateTime conversion support.
     /// </summary>
 #pragma warning disable EF1001 // Internal EF Core API usage.
-    public class PostgreSqlDateTimeConversionQuerySqlGeneratorFactory : IQuerySqlGeneratorFactory
+    internal sealed class PostgreSqlDateTimeConversionQuerySqlGeneratorFactory : IQuerySqlGeneratorFactory
     {
         private readonly QuerySqlGeneratorDependencies dependencies;
         private readonly IRelationalTypeMappingSource typeMappingSource;

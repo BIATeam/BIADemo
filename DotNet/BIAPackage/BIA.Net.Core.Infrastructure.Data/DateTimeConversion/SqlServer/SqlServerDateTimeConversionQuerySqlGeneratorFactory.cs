@@ -12,7 +12,7 @@ namespace BIA.Net.Core.Infrastructure.Data.DateTimeConversion.SqlServer
     /// Factory for creating SQL Server query SQL generators with custom DateTime conversion support.
     /// </summary>
 #pragma warning disable EF1001 // Internal EF Core API usage.
-    public class SqlServerDateTimeConversionQuerySqlGeneratorFactory : IQuerySqlGeneratorFactory
+    internal sealed class SqlServerDateTimeConversionQuerySqlGeneratorFactory : IQuerySqlGeneratorFactory
     {
         private readonly QuerySqlGeneratorDependencies dependencies;
         private readonly IRelationalTypeMappingSource typeMappingSource;

@@ -12,7 +12,7 @@ namespace BIA.Net.Core.Infrastructure.Data.DateTimeConversion.PostgreSql
     /// Custom SQL parameter processor for PostgreSQL that uses our custom nullability processor.
     /// </summary>
 #pragma warning disable EF1001 // Internal EF Core API usage.
-    public class PostgreSqlDateTimeConversionParameterBasedSqlProcessor : NpgsqlParameterBasedSqlProcessor
+    internal sealed class PostgreSqlDateTimeConversionParameterBasedSqlProcessor : NpgsqlParameterBasedSqlProcessor
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PostgreSqlDateTimeConversionParameterBasedSqlProcessor"/> class.

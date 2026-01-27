@@ -12,7 +12,7 @@ namespace BIA.Net.Core.Infrastructure.Data.DateTimeConversion.PostgreSql
     /// Factory for creating PostgreSQL parameter-based SQL processors with custom nullability handling.
     /// </summary>
 #pragma warning disable EF1001 // Internal EF Core API usage.
-    public class PostgreSqlDateTimeConversionParameterBasedSqlProcessorFactory : IRelationalParameterBasedSqlProcessorFactory
+    internal sealed class PostgreSqlDateTimeConversionParameterBasedSqlProcessorFactory : IRelationalParameterBasedSqlProcessorFactory
     {
         private readonly RelationalParameterBasedSqlProcessorDependencies dependencies;
 

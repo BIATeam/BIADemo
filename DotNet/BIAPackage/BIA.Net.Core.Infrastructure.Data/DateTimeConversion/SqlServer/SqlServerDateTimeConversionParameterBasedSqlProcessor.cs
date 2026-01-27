@@ -15,7 +15,7 @@ namespace BIA.Net.Core.Infrastructure.Data.DateTimeConversion.SqlServer
     /// and converts IANA timezone parameters to Windows timezones.
     /// </summary>
 #pragma warning disable EF1001 // Internal EF Core API usage.
-    public class SqlServerDateTimeConversionParameterBasedSqlProcessor : SqlServerParameterBasedSqlProcessor
+    internal sealed class SqlServerDateTimeConversionParameterBasedSqlProcessor : SqlServerParameterBasedSqlProcessor
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SqlServerDateTimeConversionParameterBasedSqlProcessor"/> class.

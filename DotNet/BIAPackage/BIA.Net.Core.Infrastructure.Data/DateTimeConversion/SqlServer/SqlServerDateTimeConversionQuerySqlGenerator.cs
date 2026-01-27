@@ -17,7 +17,7 @@ namespace BIA.Net.Core.Infrastructure.Data.DateTimeConversion.SqlServer
     /// Uses CONVERT instead of FORMAT for significantly better performance (FORMAT uses CLR and is 10-50x slower).
     /// </summary>
 #pragma warning disable EF1001 // Internal EF Core API usage
-    public class SqlServerDateTimeConversionQuerySqlGenerator : SqlServerQuerySqlGenerator
+    internal sealed class SqlServerDateTimeConversionQuerySqlGenerator : SqlServerQuerySqlGenerator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SqlServerDateTimeConversionQuerySqlGenerator"/> class.

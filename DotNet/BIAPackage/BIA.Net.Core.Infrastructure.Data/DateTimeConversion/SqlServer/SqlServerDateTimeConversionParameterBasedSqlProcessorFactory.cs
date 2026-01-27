@@ -12,7 +12,7 @@ namespace BIA.Net.Core.Infrastructure.Data.DateTimeConversion.SqlServer
     /// Factory for creating SQL Server parameter-based SQL processors with custom nullability handling.
     /// </summary>
 #pragma warning disable EF1001 // Internal EF Core API usage.
-    public class SqlServerDateTimeConversionParameterBasedSqlProcessorFactory : IRelationalParameterBasedSqlProcessorFactory
+    internal sealed class SqlServerDateTimeConversionParameterBasedSqlProcessorFactory : IRelationalParameterBasedSqlProcessorFactory
     {
         private readonly RelationalParameterBasedSqlProcessorDependencies dependencies;
         private readonly ISqlServerSingletonOptions sqlServerOptions;

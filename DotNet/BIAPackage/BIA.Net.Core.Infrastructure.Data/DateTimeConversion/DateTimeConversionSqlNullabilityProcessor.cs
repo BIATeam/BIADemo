@@ -10,7 +10,7 @@ namespace BIA.Net.Core.Infrastructure.Data.DateTimeConversion
     /// <summary>
     /// Custom SQL nullability processor that knows how to handle DateTimeAtTimeZoneExpression.
     /// </summary>
-    public class DateTimeConversionSqlNullabilityProcessor : SqlNullabilityProcessor
+    internal sealed class DateTimeConversionSqlNullabilityProcessor : SqlNullabilityProcessor
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DateTimeConversionSqlNullabilityProcessor"/> class.

@@ -16,7 +16,7 @@ namespace BIA.Net.Core.Infrastructure.Data.DateTimeConversion.PostgreSql
     /// Custom SQL query generator for PostgreSQL that knows how to render DateTimeFormatWithTimeZoneExpression.
     /// </summary>
 #pragma warning disable EF1001 // Internal EF Core API usage
-    public class PostgreSqlDateTimeConversionQuerySqlGenerator : NpgsqlQuerySqlGenerator
+    internal sealed class PostgreSqlDateTimeConversionQuerySqlGenerator : NpgsqlQuerySqlGenerator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PostgreSqlDateTimeConversionQuerySqlGenerator"/> class.
