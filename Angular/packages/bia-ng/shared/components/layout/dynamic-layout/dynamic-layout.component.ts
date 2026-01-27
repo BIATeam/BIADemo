@@ -25,7 +25,7 @@ import {
 } from 'packages/bia-ng/core/public-api';
 import { SharedModule } from 'primeng/api';
 import { Dialog } from 'primeng/dialog';
-import { BehaviorSubject, filter } from 'rxjs';
+import { BehaviorSubject, Subject, filter, takeUntil } from 'rxjs';
 import { CrudConfig } from '../../../feature-templates/crud-items/model/crud-config';
 import { LayoutHelperService } from '../../../services/layout-helper.service';
 import { BiaLayoutService } from '../services/layout.service';
@@ -87,6 +87,7 @@ export class DynamicLayoutComponent<TDto extends { id: number | string }>
 
   private removeMouseMoveListener?: () => void;
   private removeMouseUpListener?: () => void;
+  private readonly destroy$ = new Subject<void>();
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -158,7 +159,10 @@ export class DynamicLayoutComponent<TDto extends { id: number | string }>
       snapshot.data['allowSplitScreenResize'] ?? true;
     this.checkChildrenRules();
     this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        takeUntil(this.destroy$)
+      )
       .subscribe(() => {
         this.checkChildrenRules();
       });
@@ -196,7 +200,7 @@ export class DynamicLayoutComponent<TDto extends { id: number | string }>
   }
 
   ngAfterViewInit() {
-    this.$displayPageComponent.subscribe(() => {
+    this.$displayPageComponent.pipe(takeUntil(this.destroy$)).subscribe(() => {
       const snapshot = this.activatedRoute.snapshot;
       if (
         this.$displayPageComponent.value &&
@@ -222,6 +226,11 @@ export class DynamicLayoutComponent<TDto extends { id: number | string }>
 
   ngOnDestroy() {
     this.stopResize();
+
+    this.destroy$.next();
+    this.destroy$.complete();
+
+    this.$displayPageComponent?.complete?.();
 
     if (this.dynamicComponent !== undefined) {
       this.dynamicComponent.destroy();
