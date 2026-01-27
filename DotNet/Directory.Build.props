@@ -5,12 +5,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)BIA.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <ItemGroup Label="AnalyzersNugets">
+  <ItemGroup Label="AnalyzersNugets" Condition="!$(MSBuildProjectDirectory.Contains('Migrations'))">
     <PackageReference Include="SonarAnalyzer.CSharp">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="NewStyleCop.Analyzers">
+    <PackageReference Include="NewStyleCop.Analyzers" Condition="!$(MSBuildProjectDirectory.Contains('Migrations'))">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -24,7 +24,7 @@
     <Using Include="System.Threading.Tasks" />
     <Using Include="System.Linq" />
   </ItemGroup>
-  <ItemGroup Label="AnalyzerReferencesProject" Condition="!$(MSBuildProjectDirectory.Contains('BIAPackage'))">
+  <ItemGroup Label="AnalyzerReferencesProject" Condition="!$(MSBuildProjectDirectory.Contains('BIAPackage')) and !$(MSBuildProjectDirectory.Contains('Migrations'))">
     <ProjectReference Include="..\BIAPackage\BIA.Net.Analyzers\BIA.Net.Analyzers\BIA.Net.Analyzers.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
     <ProjectReference Include="..\BIAPackage\BIA.Net.Analyzers\BIA.Net.Analyzers.CodeFixes\BIA.Net.Analyzers.CodeFixes.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
   </ItemGroup>
