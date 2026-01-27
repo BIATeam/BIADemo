@@ -25,10 +25,12 @@ export interface SaveParam<TIn> extends HttpParam {
 export interface PutParam<TIn> extends HttpParam {
   item: TIn;
   id: string | number;
+  localTimeFields?: string[];
 }
 
 export interface PostParam<TIn> extends HttpParam {
   item: TIn;
+  localTimeFields?: string[];
 }
 
 export interface DeleteParam extends HttpParam {

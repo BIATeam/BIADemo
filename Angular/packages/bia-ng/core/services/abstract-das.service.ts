@@ -1,5 +1,6 @@
 import { Injector } from '@angular/core';
 import {
+  BiaFieldsConfig,
   DataResult,
   DeleteParam,
   DeletesParam,
@@ -22,8 +23,42 @@ export abstract class AbstractDas<
   TOut = TOutList,
   TIn = Pick<TOut, Exclude<keyof TOut, 'id'>>,
 > extends GenericDas {
-  constructor(injector: Injector, endpoint: string) {
+  private localTimeFields: string[] | undefined;
+
+  constructor(
+    injector: Injector,
+    endpoint: string,
+    biaFieldsConfig?: BiaFieldsConfig<TOut>
+  ) {
     super(injector, endpoint);
+    this.setLocalTimeFields(biaFieldsConfig);
+  }
+
+  private setLocalTimeFields(biaFieldsConfig?: BiaFieldsConfig<TOut>) {
+    this.localTimeFields =
+      biaFieldsConfig?.columns
+        .filter(field => field.asLocalDateTime === true)
+        .map(field => field.field as string) ?? [];
+  }
+
+  private markLocalFiltersAsLocal(event?: TableLazyLoadEvent) {
+    const localTimeFields = this.localTimeFields;
+    if (!event?.filters || !localTimeFields?.length) {
+      return;
+    }
+
+    Object.keys(event.filters).forEach(key => {
+      if (localTimeFields.includes(key)) {
+        const filter = event.filters![key];
+        if (Array.isArray(filter)) {
+          filter.forEach(f => {
+            (f as any).isLocal = true;
+          });
+        } else if (filter) {
+          (filter as any).isLocal = true;
+        }
+      }
+    });
   }
 
   getList(param?: GetListParam): Observable<TOutList[]> {
@@ -31,6 +66,7 @@ export abstract class AbstractDas<
   }
 
   getListByPost(param: GetListByPostParam): Observable<DataResult<TOutList[]>> {
+    this.markLocalFiltersAsLocal(param.event);
     return this.getListItemsByPost<TOutList>(param);
   }
 
@@ -43,10 +79,12 @@ export abstract class AbstractDas<
   }
 
   put(param: PutParam<TIn>) {
+    param.localTimeFields = this.localTimeFields;
     return this.putItem<TIn, TOut>(param);
   }
 
   post(param: PostParam<TIn>) {
+    param.localTimeFields = this.localTimeFields;
     return this.postItem<TIn, TOut>(param);
   }
 

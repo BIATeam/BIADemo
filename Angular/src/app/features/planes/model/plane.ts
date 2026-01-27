@@ -83,6 +83,9 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       {
         type: PropType.DateTime,
         isRequired: true,
+        // Begin BIAToolKit Generation Ignore
+        asLocalDateTime: true,
+        // End BIAToolKit Generation Ignore
       }
     ),
     Object.assign(

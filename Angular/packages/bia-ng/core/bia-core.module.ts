@@ -16,6 +16,7 @@ import {
 import { MessageService } from 'primeng/api';
 
 // Interceptor
+import { biaClientTimeZoneInterceptor } from './interceptors/bia-client-timezone.interceptor';
 import { biaXhrWithCredInterceptor } from './interceptors/bia-xhr-with-cred-interceptor.service';
 import { standardEncodeHttpParamsInterceptor } from './interceptors/standard-encode-http-params-interceptor.service';
 import { biaTokenInterceptor } from './interceptors/token.interceptor';
@@ -49,6 +50,7 @@ const INTERCEPTORS = [
   standardEncodeHttpParamsInterceptor,
   biaXhrWithCredInterceptor,
   biaTokenInterceptor,
+  biaClientTimeZoneInterceptor,
 ];
 
 const SERVICES = [
