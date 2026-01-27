@@ -1,0 +1,33 @@
+{
+  "solution": {
+    "path": "BIADemo.sln",
+    "projects": [
+      "BIAPackage\\BIA.Net.Analyzers\\BIA.Net.Analyzers.CodeFixes\\BIA.Net.Analyzers.CodeFixes.csproj",
+      "BIAPackage\\BIA.Net.Analyzers\\BIA.Net.Analyzers.Package\\BIA.Net.Analyzers.Package.csproj",
+      "BIAPackage\\BIA.Net.Analyzers\\BIA.Net.Analyzers.Vsix\\BIA.Net.Analyzers.Vsix.csproj",
+      "BIAPackage\\BIA.Net.Analyzers\\BIA.Net.Analyzers\\BIA.Net.Analyzers.csproj",
+      "BIAPackage\\BIA.Net.Core.Application\\BIA.Net.Core.Application.csproj",
+      "BIAPackage\\BIA.Net.Core.Common\\BIA.Net.Core.Common.csproj",
+      "BIAPackage\\BIA.Net.Core.Domain.Dto\\BIA.Net.Core.Domain.Dto.csproj",
+      "BIAPackage\\BIA.Net.Core.Domain\\BIA.Net.Core.Domain.csproj",
+      "BIAPackage\\BIA.Net.Core.Infrastructure.Data\\BIA.Net.Core.Infrastructure.Data.csproj",
+      "BIAPackage\\BIA.Net.Core.Infrastructure.Service\\BIA.Net.Core.Infrastructure.Service.csproj",
+      "BIAPackage\\BIA.Net.Core.Ioc\\BIA.Net.Core.Ioc.csproj",
+      "BIAPackage\\BIA.Net.Core.Presentation.Api\\BIA.Net.Core.Presentation.Api.csproj",
+      "BIAPackage\\BIA.Net.Core.Presentation.Common\\BIA.Net.Core.Presentation.Common.csproj",
+      "BIAPackage\\BIA.Net.Core.Test\\BIA.Net.Core.Test.csproj",
+      "BIAPackage\\BIA.Net.Core.WorkerService\\BIA.Net.Core.WorkerService.csproj",
+      "BIAPackage\\NuGetPackage\\NuGetPackage.csproj",
+      "TheBIADevCompany.BIADemo.Application\\TheBIADevCompany.BIADemo.Application.csproj",
+      "TheBIADevCompany.BIADemo.Crosscutting.Common\\TheBIADevCompany.BIADemo.Crosscutting.Common.csproj",
+      "TheBIADevCompany.BIADemo.Crosscutting.Ioc\\TheBIADevCompany.BIADemo.Crosscutting.Ioc.csproj",
+      "TheBIADevCompany.BIADemo.DeployDB\\TheBIADevCompany.BIADemo.DeployDB.csproj",
+      "TheBIADevCompany.BIADemo.Domain.Dto\\TheBIADevCompany.BIADemo.Domain.Dto.csproj",
+      "TheBIADevCompany.BIADemo.Domain\\TheBIADevCompany.BIADemo.Domain.csproj",
+      "TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL\\TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.csproj",
+      "TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer\\TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.csproj",
+      "TheBIADevCompany.BIADemo.Infrastructure.Data\\TheBIADevCompany.BIADemo.Infrastructure.Data.csproj",
+      "TheBIADevCompany.BIADemo.Infrastructure.Service\\TheBIADevCompany.BIADemo.Infrastructure.Service.csproj"
+    ]
+  }
+}
