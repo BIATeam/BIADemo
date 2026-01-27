@@ -16,13 +16,10 @@
     <PackageReference Include="NLog.Extensions.Hosting" />
     <PackageReference Include="NLog.Extensions.Logging" />
     <PackageReference Include="Bonura.NLog.HangfireLayouts" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Crosscutting.Ioc\TheBIADevCompany.BIADemo.Crosscutting.Ioc.csproj" />
     <ProjectReference Include="..\BIAPackage\BIA.Net.Core.WorkerService\BIA.Net.Core.WorkerService.csproj" />
-    <ProjectReference Include="..\TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL\TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.csproj" />
-    <ProjectReference Include="..\TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer\TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="appsettings.*.json">

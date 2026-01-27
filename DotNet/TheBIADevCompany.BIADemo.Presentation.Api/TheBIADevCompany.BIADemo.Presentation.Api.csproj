@@ -14,17 +14,11 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
     <PackageReference Include="NLog.Web.AspNetCore" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Crosscutting.Ioc\TheBIADevCompany.BIADemo.Crosscutting.Ioc.csproj" />
     <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Presentation.Api\BIA.Net.Core.Presentation.Api.csproj" />
-    <ProjectReference Include="..\TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL\TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.csproj" />
-    <ProjectReference Include="..\TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer\TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="web.config">
