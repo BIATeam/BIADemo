@@ -115,11 +115,13 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
     this.topBarMenuSubscription();
     this.menuProfileSubscription();
 
-    this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
-        this.hideMenu();
-      });
+    this.sub.add(
+      this.router.events
+        .pipe(filter(event => event instanceof NavigationEnd))
+        .subscribe(() => {
+          this.hideMenu();
+        })
+    );
 
     this.envName$ = this.store.select(getAppSettings).pipe(
       map(settings => {
@@ -287,13 +289,15 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
         .stream('bia.language')
         .subscribe(() => this.updateMenuItems())
     );
-    this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
-        this.setNoMargin(this.activatedRoute);
-        this.setNoPadding(this.activatedRoute);
-        this.updateMenuItems();
-      });
+    this.sub.add(
+      this.router.events
+        .pipe(filter(event => event instanceof NavigationEnd))
+        .subscribe(() => {
+          this.setNoMargin(this.activatedRoute);
+          this.setNoPadding(this.activatedRoute);
+          this.updateMenuItems();
+        })
+    );
 
     this.sub.add(
       this.layoutService.breadcrumbRefresh$.subscribe(() => {

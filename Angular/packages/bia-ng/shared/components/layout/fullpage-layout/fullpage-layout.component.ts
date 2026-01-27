@@ -2,12 +2,15 @@ import {
   AfterViewInit,
   Component,
   ComponentRef,
+  DestroyRef,
   HostBinding,
   OnDestroy,
   OnInit,
   ViewChild,
   ViewContainerRef,
+  inject,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   ActivatedRoute,
   ActivatedRouteSnapshot,
@@ -43,6 +46,8 @@ export class FullPageLayoutComponent
     protected serviceInjector: BiaInjectorService
   ) {}
 
+  private readonly destroyRef = inject(DestroyRef);
+
   pageTitle: string;
   public $displayPageComponent: BehaviorSubject<boolean>;
   public displayPageComponent: boolean;
@@ -56,7 +61,10 @@ export class FullPageLayoutComponent
     this.displayPageComponent = true;
     this.checkVisibility();
     this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        takeUntilDestroyed(this.destroyRef)
+      )
       .subscribe(() => {
         this.checkVisibility();
       });
@@ -81,29 +89,31 @@ export class FullPageLayoutComponent
     }
   }
   ngAfterViewInit() {
-    this.$displayPageComponent.subscribe(() => {
-      const snapshot = this.activatedRoute.snapshot;
-      if (
-        this.$displayPageComponent.value &&
-        this.dynamicComponent === undefined
-      ) {
-        setTimeout(() => {
-          this.dynamicComponent = this.serviceInjector.addDynamicComponent(
-            this.viewContainerRef,
-            snapshot.data['injectComponent']
-          );
-        }, 0);
-      } else {
-        if (this.dynamicComponent !== undefined) {
-          if (this.$displayPageComponent.value) {
-            this.dynamicComponent.instance.onDisplay();
-          } else {
-            this.dynamicComponent.instance.onHide();
+    this.$displayPageComponent
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        const snapshot = this.activatedRoute.snapshot;
+        if (
+          this.$displayPageComponent.value &&
+          this.dynamicComponent === undefined
+        ) {
+          setTimeout(() => {
+            this.dynamicComponent = this.serviceInjector.addDynamicComponent(
+              this.viewContainerRef,
+              snapshot.data['injectComponent']
+            );
+          }, 0);
+        } else {
+          if (this.dynamicComponent !== undefined) {
+            if (this.$displayPageComponent.value) {
+              this.dynamicComponent.instance.onDisplay();
+            } else {
+              this.dynamicComponent.instance.onHide();
+            }
           }
         }
         // if( this.dynamicComponent !== undefined ) this.dynamicComponent.destroy();
-      }
-    });
+      });
   }
   ngOnDestroy() {
     if (this.dynamicComponent !== undefined) {

@@ -45,12 +45,15 @@ export class CrudItemItemComponent<
       })
     );
 
-    this.route.params.subscribe(routeParams => {
-      this.crudItemService.currentCrudItemId = routeParams.crudItemId;
-    });
+    this.sub.add(
+      this.route.params.subscribe(routeParams => {
+        this.crudItemService.currentCrudItemId = routeParams.crudItemId;
+      })
+    );
   }
 
   ngOnDestroy() {
+    this.sub.unsubscribe();
     this.crudItemService.clearCurrent();
   }
 }
