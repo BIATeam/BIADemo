@@ -2,6 +2,24 @@ $RelativePathToBIAPackage = "..\..\BIADemo\DotNet\BIAPackage"
 $SolutionName = "BIADemo"
 $ProjectPrefix = "TheBIADevCompany." + $SolutionName
 
+function AddProjectToSlnf {
+    param([string]$slnfFile, [string]$projectPath)
+    
+    if (-not (Test-Path $slnfFile)) {
+        return
+    }
+    
+    $slnfContent = Get-Content $slnfFile -Raw | ConvertFrom-Json
+    $normalizedProjectPath = $projectPath -replace '/', '\\'
+    
+    # Check if project already exists
+    if ($slnfContent.solution.projects -notcontains $normalizedProjectPath) {
+        $slnfContent.solution.projects += $normalizedProjectPath
+        $slnfContent.solution.projects = $slnfContent.solution.projects | Sort-Object
+        $slnfContent | ConvertTo-Json -Depth 10 | Set-Content $slnfFile
+    }
+}
+
 function AddBIAProjectToSolution {
     param([string]$layerProject, [string]$layerPackage)
 	
@@ -17,6 +35,11 @@ function AddBIAProjectToSolution {
         # Remove the NuGet package reference
         dotnet remove $ProjectFile package BIA.Net.Core.$layerPackage
     }
+    
+    # Add to .slnf files
+    $slnfProjectPath = "BIAPackage\\BIA.Net.Core.$layerPackage\\BIA.Net.Core.$layerPackage.csproj"
+    AddProjectToSlnf "${SolutionName}_DeployDB.slnf" $slnfProjectPath
+    AddProjectToSlnf "${SolutionName}_WithoutDeployDB.slnf" $slnfProjectPath
 }
 
 AddBIAProjectToSolution "Crosscutting.Common" "Common"
@@ -33,6 +56,10 @@ AddBIAProjectToSolution "WorkerService" "WorkerService"
 
 # Add the library project to the solution
 dotnet sln "$SolutionName.sln" add -s "BIAPackage" "$RelativePathToBIAPackage\NuGetPackage\NuGetPackage.csproj"
+
+# Add NuGetPackage to .slnf files
+AddProjectToSlnf "${SolutionName}_DeployDB.slnf" "BIAPackage\\NuGetPackage\\NuGetPackage.csproj"
+AddProjectToSlnf "${SolutionName}_WithoutDeployDB.slnf" "BIAPackage\\NuGetPackage\\NuGetPackage.csproj"
 
 function UpdateDirectoryBuildPropsAnalyzersReferences {
     $propsFilePath = "Directory.Build.props"
@@ -114,6 +141,11 @@ function AddAnalyzerProjectToSolution {
     
     # Add the analyzer project to the solution
     dotnet sln $SlnFile add -s "BIAPackage\BIA.Net.Analyzers" $AnalyzerProjectFile
+    
+    # Add to .slnf files
+    $slnfProjectPath = "BIAPackage\\BIA.Net.Analyzers\\$analyzerProjectName\\$analyzerProjectName.csproj"
+    AddProjectToSlnf "${SolutionName}_DeployDB.slnf" $slnfProjectPath
+    AddProjectToSlnf "${SolutionName}_WithoutDeployDB.slnf" $slnfProjectPath
 }
 
 # Add Analyzer projects to the solution
