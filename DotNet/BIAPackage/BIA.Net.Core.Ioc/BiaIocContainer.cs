@@ -106,17 +106,32 @@ namespace BIA.Net.Core.Ioc
             IEnumerable<Type> classTypes = classAssembly.GetTypes().Where(type => type.IsClass && !type.IsAbstract);
             IEnumerable<Type> interfaceTypes = interfaceAssembly.GetTypes().Where(type => type.IsInterface);
 
-            IEnumerable<(Type ClassType, Type InterfaceType)> mappings = from classType in classTypes
-                                                                         join interfaceType in interfaceTypes
-                                                                         on "I" + classType.Name equals interfaceType.Name
-                                                                         where (excludedServiceNames == null || !excludedServiceNames.Contains(classType.Name)) &&
-                                                                               (includedServiceNames == null || includedServiceNames.Contains(classType.Name))
-                                                                         select (classType, interfaceType);
-
-            foreach (var (classType, interfaceType) in mappings)
+            if (excludedServiceNames != null)
             {
+                classTypes = classTypes.Where(c => !excludedServiceNames.Contains(c.Name));
+                interfaceTypes = interfaceTypes.Where(i => !excludedServiceNames.Contains(i.Name));
+            }
+
+            if (includedServiceNames != null)
+            {
+                classTypes = classTypes.Where(c => includedServiceNames.Contains(c.Name));
+                interfaceTypes = interfaceTypes.Where(i => includedServiceNames.Contains(i.Name));
+            }
+
+            var classesImplementationsByInterface = new Dictionary<Type, List<Type>>();
+            foreach (var interfaceType in interfaceTypes)
+            {
+                classesImplementationsByInterface[interfaceType] = [.. classTypes.Where(c => c.IsAssignableTo(interfaceType))];
+            }
+
+            foreach (var kvp in classesImplementationsByInterface)
+            {
+                var interfaceType = kvp.Key;
+
                 if (!collection.Any(s => s.ServiceType == interfaceType))
                 {
+                    foreach (var classType in kvp.Value)
+                    {
                     switch (serviceLifetime)
                     {
                         case ServiceLifetime.Singleton:
@@ -134,6 +149,7 @@ namespace BIA.Net.Core.Ioc
                     }
                 }
             }
+        }
         }
 
         private static void ConfigureDomainContainer(IServiceCollection collection)
