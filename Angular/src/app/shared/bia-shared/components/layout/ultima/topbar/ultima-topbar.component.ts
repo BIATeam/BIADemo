@@ -1,13 +1,12 @@
 import { Platform } from '@angular/cdk/platform';
 import {
   AsyncPipe,
-  DOCUMENT,
   NgClass,
   NgFor,
   NgIf,
   NgSwitch,
   NgSwitchCase,
-  NgSwitchDefault,
+  NgSwitchDefault
 } from '@angular/common';
 import {
   AfterViewInit,
@@ -19,6 +18,7 @@ import {
   OnInit,
   Renderer2,
   ViewChild,
+  DOCUMENT
 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
