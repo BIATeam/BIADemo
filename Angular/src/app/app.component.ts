@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import {
@@ -12,6 +12,8 @@ import {
   IframeConfigMessageService,
 } from 'packages/bia-ng/shared/public-api';
 import { PrimeNG } from 'primeng/config';
+import { Subject, fromEvent } from 'rxjs';
+import { auditTime, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -21,8 +23,9 @@ import { PrimeNG } from 'primeng/config';
   ],
   imports: [RouterOutlet],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   isInIframe: boolean;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private biaMatomoService: BiaMatomoService,
@@ -31,7 +34,8 @@ export class AppComponent implements OnInit {
     private translateService: TranslateService,
     private layoutService: BiaLayoutService,
     private iframeCommunicationService: IframeCommunicationService,
-    private iframeConfigMessageService: IframeConfigMessageService
+    private iframeConfigMessageService: IframeConfigMessageService,
+    private ngZone: NgZone
   ) {
     this.layoutService.defaultConfigUpdate({});
     this.layoutService.setConfigDisplay({
@@ -55,7 +59,6 @@ export class AppComponent implements OnInit {
     this.isInIframe = window !== window.top;
     if (this.isInIframe) {
       this.iframeConfigMessageService.register();
-      window.addEventListener('message', this.receiveMessage, false);
       this.iframeCommunicationService.initLayoutInsideIframe();
     }
     this.biaMatomoService.init();
@@ -63,18 +66,38 @@ export class AppComponent implements OnInit {
     this.translateService
       .get('primeng')
       .subscribe(res => this.primeNgConfig.setTranslation(res));
+    this.registerWindowListeners();
     this.checkSmallScreen();
   }
 
-  @HostListener('window:message', ['$event'])
   receiveMessage(event: MessageEvent<IframeMessage>) {
     if (this.iframeCommunicationService) {
       this.iframeCommunicationService.readMessage(event);
     }
   }
 
-  @HostListener('window:resize')
   checkSmallScreen() {
     this.layoutService.checkSmallScreen();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private registerWindowListeners() {
+    this.ngZone.runOutsideAngular(() => {
+      if (this.isInIframe) {
+        fromEvent<MessageEvent<IframeMessage>>(window, 'message')
+          .pipe(takeUntil(this.destroy$))
+          .subscribe(event =>
+            this.ngZone.run(() => this.receiveMessage(event))
+          );
+      }
+
+      fromEvent<Event>(window, 'resize')
+        .pipe(auditTime(150), takeUntil(this.destroy$))
+        .subscribe(() => this.ngZone.run(() => this.checkSmallScreen()));
+    });
   }
 }
