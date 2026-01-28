@@ -93,6 +93,9 @@ export class BiaTranslationService {
   protected currentCulture = 'None';
   protected currentLanguage = 'None';
 
+  // stocke les JSON BIA pour les réappliquer après un charge HTTP
+  protected biaLocales: { [lang: string]: any } = {};
+
   get currentCultureValue() {
     return this.currentCulture;
   }
@@ -121,9 +124,17 @@ export class BiaTranslationService {
     if (!data[TRANSLATION_LANG_KEY]) {
       throw new Error('invalid translation file');
     }
-    this.translate.setTranslation(data[TRANSLATION_LANG_KEY], data, true);
+    const lang = data[TRANSLATION_LANG_KEY];
+    this.biaLocales[lang] = this.biaLocales[lang] ?? {
+      ...this.biaLocales[lang],
+      ...data,
+    };
+    this.translate.setTranslation(lang, data, true);
   }
 
+  // Because we add some translations (registerLocaleData), ngx-translate doesn't modules translations
+  // So we need to call getTranslation manually
+  // NOTE: Check if it's still usefull
   // Because we add some translations (registerLocaleData), ngx-translate doesn't modules translations
   // So we need to call getTranslation manually
   // NOTE: Check if it's still usefull
@@ -135,16 +146,24 @@ export class BiaTranslationService {
       const translateServices = [this.translate, ...this.lazyTranslateServices];
       if (!this.translationsLoaded[lang]) {
         for (const translateService of translateServices) {
-          // eslint-disable-next-line @typescript-eslint/no-deprecated
-          translationLoaders$.push(translateService.getTranslation(lang));
+          translationLoaders$.push(translateService.reloadLang(lang));
         }
       }
       let lang$: Observable<any> = of(undefined);
       if (translationLoaders$.length) {
         lang$ = this.loadTranslations(translationLoaders$, lang);
+      } else {
+        lang$ = this.translate.use(lang);
       }
       lang$.subscribe(() => {
+        const biaLocale = this.biaLocales[lang];
+        if (biaLocale) {
+          this.translate.setTranslation(lang, biaLocale, true);
+        }
         this.translate.use(lang);
+        this.translate
+          .get('primeng')
+          .subscribe(res => this.primeNgConfig.setTranslation(res));
         try {
           localStorage.setItem(STORAGE_CULTURE_KEY, culture);
         } catch (err) {
@@ -152,9 +171,7 @@ export class BiaTranslationService {
         }
         this.cultureSubject.next(culture);
       });
-      this.translate
-        .get('primeng')
-        .subscribe(res => this.primeNgConfig.setTranslation(res));
+
       if (this.currentLanguage !== lang) {
         this.currentLanguage = lang;
         if (reLoginIfRequiered) this.authService.reLogin();

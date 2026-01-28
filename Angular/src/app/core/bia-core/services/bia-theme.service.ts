@@ -1,5 +1,10 @@
-
-import { Inject, Injectable, Renderer2, RendererFactory2, DOCUMENT } from '@angular/core';
+import {
+  DOCUMENT,
+  Inject,
+  Injectable,
+  Renderer2,
+  RendererFactory2,
+} from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {

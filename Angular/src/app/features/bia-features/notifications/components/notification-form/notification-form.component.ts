@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+﻿import { NgFor, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -23,7 +23,6 @@ import { DatePicker } from 'primeng/datepicker';
 import { Fieldset } from 'primeng/fieldset';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
-import { Textarea } from 'primeng/inputtextarea';
 import { MultiSelect } from 'primeng/multiselect';
 import { Ripple } from 'primeng/ripple';
 import { Select } from 'primeng/select';
@@ -69,7 +68,6 @@ import {
     TableModule,
     Tooltip,
     MultiSelect,
-    Textarea,
     TranslateModule,
     FloatLabel,
   ],

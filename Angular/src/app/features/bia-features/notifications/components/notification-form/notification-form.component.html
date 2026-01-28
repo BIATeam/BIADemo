@@ -1,4 +1,4 @@
-<form (submit)="onSubmit()" class="flex flex-column" [formGroup]="form">
+﻿<form (submit)="onSubmit()" class="flex flex-column" [formGroup]="form">
   <div
     class="flex flex-row justify-content-center flex-1"
     style="max-width: 100%">
@@ -217,10 +217,7 @@
       <div class="flex flex-row justify-content-center">
         <div class="flex-1" style="max-width: 100%">
           <p-fieldset legend="{{ 'notification.notifiedTeams' | translate }}">
-            <p-table
-              [value]="notifiedTeams.controls"
-              [responsive]="true"
-              stripedRows>
+            <p-table [value]="notifiedTeams.controls" stripedRows>
               <ng-template pTemplate="header">
                 <tr>
                   <th>Team</th>

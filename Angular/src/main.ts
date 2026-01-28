@@ -35,8 +35,8 @@ import { appConfig } from './app/shared/theme';
 import { ROOT_REDUCERS, metaReducers } from './app/store/state';
 import { environment } from './environments/environment';
 
-export function createTranslateLoader(http: HttpClient, store: TranslateStore) {
-  return new BiaTranslateHttpLoader(http, store, './assets/i18n/app/');
+export function createTranslateLoader(http: HttpClient) {
+  return new BiaTranslateHttpLoader(http, './assets/i18n/app/');
 }
 
 if (environment.production) {
