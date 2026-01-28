@@ -132,24 +132,24 @@ namespace BIA.Net.Core.Ioc
                 {
                     foreach (var classType in kvp.Value)
                     {
-                    switch (serviceLifetime)
-                    {
-                        case ServiceLifetime.Singleton:
-                            collection.AddSingleton(interfaceType, classType);
-                            break;
-                        case ServiceLifetime.Scoped:
-                            collection.AddScoped(interfaceType, classType);
-                            break;
-                        case ServiceLifetime.Transient:
-                            collection.AddTransient(interfaceType, classType);
-                            break;
-                        default:
-                            collection.AddScoped(interfaceType, classType);
-                            break;
+                        switch (serviceLifetime)
+                        {
+                            case ServiceLifetime.Singleton:
+                                collection.AddSingleton(interfaceType, classType);
+                                break;
+                            case ServiceLifetime.Scoped:
+                                collection.AddScoped(interfaceType, classType);
+                                break;
+                            case ServiceLifetime.Transient:
+                                collection.AddTransient(interfaceType, classType);
+                                break;
+                            default:
+                                collection.AddScoped(interfaceType, classType);
+                                break;
+                        }
                     }
                 }
             }
-        }
         }
 
         private static void ConfigureDomainContainer(IServiceCollection collection)
@@ -158,7 +158,8 @@ namespace BIA.Net.Core.Ioc
             RegisterServicesFromAssembly(
                 collection: collection,
                 assemblyName: "BIA.Net.Core.Domain",
-                serviceLifetime: ServiceLifetime.Transient);
+                serviceLifetime: ServiceLifetime.Transient,
+                excludedServiceNames: [nameof(IAuditPropertyMapper), nameof(ILinkedAuditMapper)]);
 
             // Domain
             Assembly assembly = Assembly.Load("BIA.Net.Core.Domain");
