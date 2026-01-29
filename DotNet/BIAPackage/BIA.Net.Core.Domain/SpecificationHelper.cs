@@ -502,7 +502,7 @@ namespace BIA.Net.Core.Domain
                 var timeZoneConstant = Expression.Constant(ianaTimeZoneId, typeof(string));
 
                 // Handle nullable DateTime
-                if (dateTimeExpression.Type == typeof(DateTime?))
+                if (dateTimeExpression.Type == typeof(DateTimeOffset?) || dateTimeExpression.Type == typeof(DateTime?))
                 {
                     var hasValueProperty = Expression.Property(dateTimeExpression, "HasValue");
                     var valueProperty = Expression.Property(dateTimeExpression, "Value");

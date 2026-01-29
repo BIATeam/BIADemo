@@ -15,13 +15,11 @@ export const announcementFieldsConfiguration: BiaFieldsConfig<Announcement> = {
     Object.assign(new BiaFieldConfig('start', 'announcement.start'), {
       type: PropType.DateTime,
       isRequired: true,
-      isSearchable: false,
       asLocalDateTime: true,
     }),
     Object.assign(new BiaFieldConfig('end', 'announcement.end'), {
       type: PropType.DateTime,
       isRequired: true,
-      isSearchable: false,
       asLocalDateTime: true,
     }),
     Object.assign(new BiaFieldConfig('type', 'announcement.type'), {

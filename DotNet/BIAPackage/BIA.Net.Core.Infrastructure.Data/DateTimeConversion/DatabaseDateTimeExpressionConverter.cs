@@ -13,18 +13,16 @@ namespace BIA.Net.Core.Infrastructure.Data.DateTimeConversion
     public static class DatabaseDateTimeExpressionConverter
     {
         /// <summary>
-        /// Converts a UTC DateTime to a localized string representation.
+        /// Converts a DateTimeOffset to a localized string representation.
         /// This method is a marker and will be translated to SQL AT TIME ZONE by EF Core.
         /// NEVER called at runtime - only used for LINQ expression translation.
         /// Pass IANA timezone ID (e.g., "Europe/Paris") - the translator will convert to Windows format for SQL Server.
         /// </summary>
-        /// <param name="dateTime">The UTC DateTime to convert.</param>
+        /// <param name="dateTimeOffset">The UTC DateTimeOffset to convert.</param>
         /// <param name="ianaTimeZoneId">The target timezone identifier (IANA format like "Europe/Paris").</param>
         /// <returns>A string representation of the DateTime in the target time zone.</returns>
-        public static string ConvertDateTimeToLocalString(DateTime dateTime, string ianaTimeZoneId)
+        public static string ConvertDateTimeToLocalString(DateTimeOffset dateTimeOffset, string ianaTimeZoneId)
         {
-            // This method should NEVER be executed
-            // It's only a marker for EF Core query translation
             throw new NotSupportedException(
                 "ConvertDateTimeToLocalString is a marker method for EF Core query translation. " +
                 "It should never be executed directly.");
