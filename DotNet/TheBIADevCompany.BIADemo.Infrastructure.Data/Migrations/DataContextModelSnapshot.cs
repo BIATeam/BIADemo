@@ -30,8 +30,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("End")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("End")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("RawContent")
                         .IsRequired()
@@ -42,8 +42,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<DateTime>("Start")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("Start")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int>("TypeId")
                         .HasColumnType("int");
