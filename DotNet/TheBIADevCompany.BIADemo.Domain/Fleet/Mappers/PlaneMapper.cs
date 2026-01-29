@@ -107,7 +107,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             entity.Manufacturer = dto.Manufacturer;
             entity.IsActive = dto.IsActive;
             entity.IsMaintenance = dto.IsMaintenance;
-            entity.FirstFlightDate = dto.FirstFlightDate.UtcDateTime;
+            entity.FirstFlightDate = dto.FirstFlightDate;
             entity.LastFlightDate = dto.LastFlightDate;
             entity.DeliveryDate = dto.DeliveryDate;
             entity.NextMaintenanceDate = dto.NextMaintenanceDate;
@@ -240,7 +240,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
                 { HeaderName.Manufacturer, () => CSVString(dto.Manufacturer) },
                 { HeaderName.IsActive, () => CSVBool(dto.IsActive) },
                 { HeaderName.IsMaintenance, () => CSVBool(dto.IsMaintenance) },
-                { HeaderName.FirstFlightDate, () => CSVDateTime(dto.FirstFlightDate.DateTime) },
+                { HeaderName.FirstFlightDate, () => CSVDateTime(dto.FirstFlightDate) },
                 { HeaderName.LastFlightDate, () => CSVDateTimeSeconds(dto.LastFlightDate) },
                 { HeaderName.DeliveryDate, () => CSVDateYear(dto.DeliveryDate) },
                 { HeaderName.NextMaintenanceDate, () => CSVDateMonth(dto.NextMaintenanceDate) },

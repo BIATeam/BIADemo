@@ -103,7 +103,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
                 { HeaderName.Manufacturer, () => CSVString(dto.Manufacturer) },
                 { HeaderName.IsActive, () => CSVBool(dto.IsActive) },
                 { HeaderName.IsMaintenance, () => CSVBool(dto.IsMaintenance) },
-                { HeaderName.FirstFlightDate, () => CSVDateTime(dto.FirstFlightDate.DateTime) },
+                { HeaderName.FirstFlightDate, () => CSVDateTime(dto.FirstFlightDate) },
                 { HeaderName.LastFlightDate, () => CSVDateTime(dto.LastFlightDate) },
                 { HeaderName.DeliveryDate, () => CSVDate(dto.DeliveryDate) },
                 { HeaderName.NextMaintenanceDate, () => CSVDate(dto.NextMaintenanceDate) },
