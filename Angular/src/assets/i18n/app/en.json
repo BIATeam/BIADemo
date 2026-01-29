@@ -122,10 +122,12 @@
   "pilot": {
     "add": "Add pilot",
     "edit": "Edit pilot",
+    "firstFlightDate": "First flight date",
     "flightHours": "Flight hours",
     "identificationNumber": "Identification number",
     "import": "Import pilots",
     "information": "Information",
+    "lastFlightDate": "Last flight date",
     "listOf": "List of pilots",
     "read": "Pilot details",
     "site": "Airline company"

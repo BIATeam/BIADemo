@@ -1677,6 +1677,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<DateTime?>("ArchivedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTimeOffset>("FirstFlightDate")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<DateTime?>("FixedDate")
                         .HasColumnType("datetime2");
 
@@ -1693,6 +1696,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.Property<bool>("IsFixed")
                         .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LastFlightDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
