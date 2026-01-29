@@ -144,10 +144,7 @@ namespace BIA.Net.Core.Domain
                     return;
                 }
 
-                var isLocalTimeCriteria = IsDateTimeSelector(expression) &&
-                    value.TryGetValue("isLocal", out var isLocalRawValue) &&
-                    bool.Parse(isLocalRawValue.ToString());
-
+                var isLocalTimeCriteria = IsDateTimeOffsetSelector(expression);
                 matchingCriteria = LazyDynamicFilterExpression<TEntity>(
                     expression,
                     value["matchMode"].ToString(),
@@ -198,7 +195,7 @@ namespace BIA.Net.Core.Domain
         /// </summary>
         /// <param name="expression">Expression to check.</param>
         /// <returns>Boolean indicating if the selector is a DateTime or Nullable DateTime.</returns>
-        private static bool IsDateTimeSelector(LambdaExpression expression)
+        private static bool IsDateTimeOffsetSelector(LambdaExpression expression)
         {
             PropertyInfo propertyInfo = null;
 
@@ -221,10 +218,10 @@ namespace BIA.Net.Core.Domain
             }
 
             var propertyType = propertyInfo.PropertyType;
-            return propertyType == typeof(DateTime) ||
+            return propertyType == typeof(DateTimeOffset) ||
                    (propertyType.IsGenericType &&
                     propertyType.GetGenericTypeDefinition() == typeof(Nullable<>) &&
-                    propertyType.GenericTypeArguments[0] == typeof(DateTime));
+                    propertyType.GenericTypeArguments[0] == typeof(DateTimeOffset));
         }
 
         /// <summary>
