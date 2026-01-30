@@ -479,7 +479,7 @@ export class BiaTableHeaderComponent
     const siblingRect = sibling.getBoundingClientRect();
     const containerRect = containerRef.getBoundingClientRect();
 
-    let gap = siblingRect.left - containerRect.right;
+    const gap = siblingRect.left - containerRect.right;
 
     return this.calculateAvailableSpaceRight(
       sibling,
@@ -500,7 +500,7 @@ export class BiaTableHeaderComponent
     const siblingRect = sibling.getBoundingClientRect();
     const containerRect = containerRef.getBoundingClientRect();
 
-    let gap = containerRect.left - siblingRect.right;
+    const gap = containerRect.left - siblingRect.right;
 
     return this.calculateAvailableSpaceLeft(
       sibling,
