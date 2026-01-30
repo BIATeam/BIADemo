@@ -286,11 +286,15 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             }
 
             // Begin BIADemo
-            collection.AddHttpClient<IRemoteBiaApiRwRepository, RemoteBiaApiRwRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection));
-            collection.AddHttpClient<IRemotePlaneRepository, RemotePlaneRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
             collection.AddSingleton<Infrastructure.Service.Repositories.DocumentAnalysis.PdfAnalysisRepository>();
             collection.AddSingleton<IDocumentAnalysisRepositoryFactory, Infrastructure.Service.Repositories.DocumentAnalysis.DocumentAnalysisRepositoryFactory>();
-            collection.AddHttpClient<IBiaDemoRoleApiRepository, BiaDemoRoleApiRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection));
+
+            collection.AddHttpClient<IRemoteBiaApiRwRepository, RemoteBiaApiRwRepository>()
+                .ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection)).AddStandardResilienceHandler();
+            collection.AddHttpClient<IRemotePlaneRepository, RemotePlaneRepository>()
+                .ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false)).AddStandardResilienceHandler();
+            collection.AddHttpClient<IBiaDemoRoleApiRepository, BiaDemoRoleApiRepository>()
+                .ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection));
 
             // End BIADemo
 #endif
