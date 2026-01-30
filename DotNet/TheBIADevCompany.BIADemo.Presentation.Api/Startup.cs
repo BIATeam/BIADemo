@@ -9,7 +9,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.Common.Configuration.ApiFeature;
+    using BIA.Net.Core.Ioc.HealthChecks;
     using BIA.Net.Core.Presentation.Api.Features;
     using BIA.Net.Core.Presentation.Api.Features.HangfireDashboard;
     using BIA.Net.Core.Presentation.Api.StartupConfiguration;
@@ -86,6 +86,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
 
             // Configure IoC for classes not in the API project.
             IocContainer.ConfigureContainer(services, this.configuration, true);
+
+            // Configure health checks: liveness
+            services.AddBiaHealthChecksLiveness();
+#if BIA_USE_DATABASE
+            // Configure health checks: readiness (DB)
+            services.AddBiaHealthChecksDbReadiness<DbContextHealthCheck<Infrastructure.Data.DataContext>>();
+#endif
         }
 
         /// <summary>
@@ -140,6 +147,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
 #endif
 
             app.UseBiaApiFeatures(this.biaNetSection.ApiFeatures, hangfireDashboardAuthorizations);
+            app.UseBiaHealthChecks();
         }
     }
 }

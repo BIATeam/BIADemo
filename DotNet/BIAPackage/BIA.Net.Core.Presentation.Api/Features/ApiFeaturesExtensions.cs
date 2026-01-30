@@ -5,6 +5,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using System.Security.Principal;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
@@ -23,9 +24,12 @@ namespace BIA.Net.Core.Presentation.Api.Features
     using Hangfire.PostgreSql.Factories;
     using Hangfire.SqlServer;
     using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Diagnostics.HealthChecks;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Diagnostics.HealthChecks;
+    using Microsoft.Extensions.Options;
     using StackExchange.Redis;
 
     /// <summary>
@@ -197,6 +201,66 @@ namespace BIA.Net.Core.Presentation.Api.Features
                 {
                     IsReadOnlyFunc = (DashboardContext context) => true,
                     Authorization = hangfireServerAuthorizations.AuthorizationReadOnly,
+                });
+            }
+
+            return app;
+        }
+
+        /// <summary>
+        /// Register health checks (live).
+        /// </summary>
+        /// <param name="services">The services.</param>
+        /// <returns>A <see cref="IServiceCollection"/>.</returns>
+        public static IServiceCollection AddBiaHealthChecksLiveness([NotNull] this IServiceCollection services)
+        {
+            services
+                .AddHealthChecks()
+                .AddCheck("self", () => HealthCheckResult.Healthy(), tags: new[] { "live" });
+
+            return services;
+        }
+
+        /// <summary>
+        /// Register health checks (database ready).
+        /// </summary>
+        /// <typeparam name="THealthCheck">The type of the health check.</typeparam>
+        /// <param name="services">The services.</param>
+        /// <returns><see cref="IServiceCollection"/>.</returns>
+        public static IServiceCollection AddBiaHealthChecksDbReadiness<THealthCheck>([NotNull] this IServiceCollection services)
+            where THealthCheck : class, IHealthCheck
+        {
+            services
+                .AddHealthChecks()
+                .AddCheck<THealthCheck>("database", tags: new[] { "ready" });
+
+            return services;
+        }
+
+        /// <summary>
+        /// Adds a middleware that provides health check status.
+        /// </summary>
+        /// <param name="app">The application.</param>
+        /// <returns><see cref="IApplicationBuilder"/>.</returns>
+        public static IApplicationBuilder UseBiaHealthChecks([NotNull] this IApplicationBuilder app)
+        {
+            HealthCheckServiceOptions healthCheckOptions = app.ApplicationServices.GetService<IOptions<HealthCheckServiceOptions>>()?.Value;
+            bool hasLive = healthCheckOptions?.Registrations?.Any(r => r.Tags.Contains("live")) == true;
+            bool hasReady = healthCheckOptions?.Registrations?.Any(r => r.Tags.Contains("ready")) == true;
+
+            if (hasLive)
+            {
+                app.UseHealthChecks("/health/live", new HealthCheckOptions
+                {
+                    Predicate = r => r.Tags.Contains("live"),
+                });
+            }
+
+            if (hasReady)
+            {
+                app.UseHealthChecks("/health/ready", new HealthCheckOptions
+                {
+                    Predicate = r => r.Tags.Contains("ready"),
                 });
             }
 
