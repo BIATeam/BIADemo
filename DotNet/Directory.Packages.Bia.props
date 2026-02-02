@@ -46,14 +46,14 @@
 		<PackageVersion Include="MSTest.TestFramework" Version="4.0.2" />
 		<PackageVersion Include="NewStyleCop.Analyzers" Version="1.2.1" />
 		<PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
-		<PackageVersion Include="NLog.Extensions.Hosting" Version="6.1.0" />
-		<PackageVersion Include="NLog.Extensions.Logging" Version="6.1.0" />
-		<PackageVersion Include="NLog.Web.AspNetCore" Version="6.1.0" />
+		<PackageVersion Include="NLog.Extensions.Hosting" Version="6.1.1" />
+		<PackageVersion Include="NLog.Extensions.Logging" Version="6.1.1" />
+		<PackageVersion Include="NLog.Web.AspNetCore" Version="6.1.1" />
 		<PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
 		<PackageVersion Include="PdfPig" Version="0.1.13" />
 		<PackageVersion Include="RabbitMQ.Client" Version="7.2.0" />
 		<PackageVersion Include="SonarAnalyzer.CSharp" Version="10.19.0.132793" />
-		<PackageVersion Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.1.0" />
+		<PackageVersion Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.1.1" />
 		<PackageVersion Include="System.Configuration.ConfigurationManager" Version="10.0.2" />
 		<PackageVersion Include="System.DirectoryServices" Version="10.0.2" />
 		<PackageVersion Include="System.DirectoryServices.AccountManagement" Version="10.0.2" />

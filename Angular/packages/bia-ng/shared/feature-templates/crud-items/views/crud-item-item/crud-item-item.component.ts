@@ -14,9 +14,9 @@ import { CrudItemService } from '../../services/crud-item.service';
   imports: [RouterOutlet, SpinnerComponent, AsyncPipe],
 })
 export class CrudItemItemComponent<
-    ListCrudItem extends BaseDto<string | number>,
-    CrudItem extends BaseDto<string | number> = ListCrudItem,
-  >
+  ListCrudItem extends BaseDto<string | number>,
+  CrudItem extends BaseDto<string | number> = ListCrudItem,
+>
   implements OnInit, OnDestroy
 {
   protected sub = new Subscription();

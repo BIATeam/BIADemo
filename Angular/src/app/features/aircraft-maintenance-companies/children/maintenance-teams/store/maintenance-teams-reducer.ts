@@ -14,8 +14,7 @@ export const maintenanceTeamsAdapter = createEntityAdapter<MaintenanceTeam>({
 });
 
 export interface State
-  extends CrudState<MaintenanceTeam>,
-    EntityState<MaintenanceTeam> {
+  extends CrudState<MaintenanceTeam>, EntityState<MaintenanceTeam> {
   // additional props here
 }
 

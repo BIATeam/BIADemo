@@ -19,10 +19,7 @@ import {
 
 // TODO after creation of CRUD Team MaintenanceTeam : adapt the model
 export interface MaintenanceTeam
-  extends BaseDto,
-    VersionedDto,
-    TeamDto,
-    FixableDto {
+  extends BaseDto, VersionedDto, TeamDto, FixableDto {
   code: string | null;
   isActive: boolean;
   isApproved: boolean | null;

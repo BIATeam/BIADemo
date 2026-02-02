@@ -10,9 +10,7 @@ import {
 
 // TODO after creation of CRUD Team AircraftMaintenanceCompany : adapt the model
 export interface AircraftMaintenanceCompany
-  extends BaseDto,
-    VersionedDto,
-    TeamDto {}
+  extends BaseDto, VersionedDto, TeamDto {}
 
 // TODO after creation of CRUD Team AircraftMaintenanceCompany : adapt the field configuration
 export const aircraftMaintenanceCompanyFieldsConfiguration: BiaFieldsConfig<AircraftMaintenanceCompany> =

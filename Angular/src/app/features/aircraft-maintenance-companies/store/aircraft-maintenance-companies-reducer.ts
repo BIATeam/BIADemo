@@ -16,7 +16,8 @@ export const aircraftMaintenanceCompaniesAdapter =
   });
 
 export interface State
-  extends CrudState<AircraftMaintenanceCompany>,
+  extends
+    CrudState<AircraftMaintenanceCompany>,
     EntityState<AircraftMaintenanceCompany> {
   // additional props here
 }
