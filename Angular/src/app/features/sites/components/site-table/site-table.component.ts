@@ -11,6 +11,7 @@ import {
   BiaMessageService,
 } from 'packages/bia-ng/core/public-api';
 import {
+  BiaCalcTableCellComponent,
   BiaFrozenColumnDirective,
   BiaTableFilterComponent,
   BiaTableFooterControllerComponent,
@@ -48,6 +49,7 @@ import { Site } from '../../model/site';
     BiaTableOutputComponent,
     BiaTableFooterControllerComponent,
     BiaFrozenColumnDirective,
+    BiaCalcTableCellComponent,
   ],
 })
 export class SiteTableComponent extends CrudItemTableComponent<Site> {

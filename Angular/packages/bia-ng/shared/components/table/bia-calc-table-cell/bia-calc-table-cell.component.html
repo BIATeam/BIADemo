@@ -1,5 +1,5 @@
 @if (
-  editingRowId() === rowData?.id || (editFooterSignal() && isFooter(rowData))
+  editingRowId() === rowData.id || (editFooterSignal() && isFooter(rowData))
 ) {
   @if (canDisplayEditInput(col)) {
     <!-- INPUT MODE -->
