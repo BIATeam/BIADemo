@@ -3,7 +3,6 @@ import {
   LOCALE_ID,
   enableProdMode,
   importProvidersFrom,
-  provideZoneChangeDetection,
 } from '@angular/core';
 
 import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
@@ -50,10 +49,6 @@ async function bootstrap() {
   try {
     await bootstrapApplication(AppComponent, {
       providers: [
-        provideZoneChangeDetection({
-          eventCoalescing: true,
-          runCoalescing: true,
-        }),
         importProvidersFrom(
           LoggerModule.forRoot(BiaEnvironmentService.getLoggingConf(), {
             serverProvider: {
