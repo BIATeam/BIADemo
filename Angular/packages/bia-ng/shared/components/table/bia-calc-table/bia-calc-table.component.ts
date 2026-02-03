@@ -158,8 +158,18 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
     throw new Error('initForm not Implemented');
   }
 
-  public isFooter(element: any) {
-    return element.id === 0 || element.id === '';
+  public isFooter(rowData: any): boolean {
+    return rowData?.id === 0 || rowData?.id === '';
+  }
+
+  public isCellEditing(rowData: any): boolean {
+    if (this.isFooter(rowData)) {
+      return this.editFooter === true;
+    }
+    return !!(
+      this.table?.editingRowKeys &&
+      this.table.editingRowKeys[rowData?.id] === true
+    );
   }
 
   public onChange() {
