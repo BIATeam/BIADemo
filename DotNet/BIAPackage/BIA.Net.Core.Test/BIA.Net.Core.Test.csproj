@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>net10.0</TargetFramework>
-		<Version>6.0.1</Version>
+		<Version>6.0.2</Version>
 		<Authors>BIA Team</Authors>
 		<Company>BIA</Company>
 		<Description>Unit test classes for BIA.Net Core Framework</Description>
