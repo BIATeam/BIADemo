@@ -17,6 +17,7 @@ import {
   APP_TANSLATION_IDS_TO_NOT_ADD_MANUALY,
   DEFAULT_PAGE_SIZE,
   DEFAULT_POPUP_MINWIDTH,
+  SHOW_FPS,
   TeamTypeRightPrefix,
 } from '../shared/constants';
 import { NAVIGATION } from '../shared/navigation';
@@ -42,7 +43,8 @@ const ONLINEOFFLINE =
       DEFAULT_PAGE_SIZE,
       TeamTypeRightPrefix,
       APP_TANSLATION_IDS_TO_NOT_ADD_MANUALY,
-      DEFAULT_POPUP_MINWIDTH
+      DEFAULT_POPUP_MINWIDTH,
+      SHOW_FPS
     ),
   ],
   providers: [...ONLINEOFFLINE],
