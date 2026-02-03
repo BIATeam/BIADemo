@@ -29,6 +29,7 @@ import { Skeleton } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 import { Tooltip } from 'primeng/tooltip';
 import { Subscription } from 'rxjs';
+import { BiaCalcTableCellComponent } from '../bia-calc-table-cell/bia-calc-table-cell.component';
 import { BiaFrozenColumnDirective } from '../bia-frozen-column/bia-frozen-column.directive';
 import { BiaTableFilterComponent } from '../bia-table-filter/bia-table-filter.component';
 import { BiaTableFooterControllerComponent } from '../bia-table-footer-controller/bia-table-footer-controller.component';
@@ -57,6 +58,7 @@ import { BiaTableComponent } from '../bia-table/bia-table.component';
     AsyncPipe,
     TranslateModule,
     BiaFrozenColumnDirective,
+    BiaCalcTableCellComponent,
   ],
 })
 export class BiaCalcTableComponent<TDto extends { id: number | string }>

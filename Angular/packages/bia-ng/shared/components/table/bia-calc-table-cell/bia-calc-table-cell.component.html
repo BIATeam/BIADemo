@@ -1,0 +1,51 @@
+@if (
+  editingRowId() === rowData?.id || (editFooterSignal() && isFooter(rowData))
+) {
+  @if (canDisplayEditInput(col)) {
+    <!-- INPUT MODE -->
+    <bia-table-input
+      [field]="col"
+      [form]="form"
+      [dictOptionDtos]="dictOptionDtos"
+      (valueChange)="onChange()"
+      (complexInput)="onComplexInput($event)">
+      <ng-template pTemplate="specificInput">
+        <ng-container
+          *ngTemplateOutlet="
+            specificInputTemplate;
+            context: { field: col, form: form }
+          "></ng-container>
+      </ng-template>
+    </bia-table-input>
+  } @else if (!isFooter(rowData)) {
+    <!-- OUTPUT MODE (Non-editable field) -->
+    <bia-table-output [field]="col" [data]="getCellData(rowData, col)">
+      <ng-template pTemplate="specificOutput">
+        <ng-container
+          *ngTemplateOutlet="
+            specificOutputTemplate;
+            context: {
+              rowData: rowData,
+              field: col,
+              data: getCellData(rowData, col),
+            }
+          "></ng-container>
+      </ng-template>
+    </bia-table-output>
+  }
+} @else if (!isFooter(rowData)) {
+  <!-- OUTPUT MODE -->
+  <bia-table-output [field]="col" [data]="getCellData(rowData, col)">
+    <ng-template pTemplate="specificOutput">
+      <ng-container
+        *ngTemplateOutlet="
+          specificOutputTemplate;
+          context: {
+            rowData: rowData,
+            field: col,
+            data: getCellData(rowData, col),
+          }
+        "></ng-container>
+    </ng-template>
+  </bia-table-output>
+}
