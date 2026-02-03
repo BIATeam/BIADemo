@@ -167,16 +167,6 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
     return rowData?.id === 0 || rowData?.id === '';
   }
 
-  public isCellEditing(rowData: any): boolean {
-    if (this.isFooter(rowData)) {
-      return this.editFooter === true;
-    }
-    return !!(
-      this.table?.editingRowKeys &&
-      this.table.editingRowKeys[rowData?.id] === true
-    );
-  }
-
   public onChange() {
     this.hasChanged = true;
   }
