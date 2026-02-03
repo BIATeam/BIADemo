@@ -35,9 +35,9 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+    <PackageReference Include="BIA.Net.Core.Test" />
   </ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\TheBIADevCompany.BIADemo.Presentation.Api\TheBIADevCompany.BIADemo.Presentation.Api.csproj" />
-		<ProjectReference Include="..\BIAPackage\BIA.Net.Core.Test\BIA.Net.Core.Test.csproj" />
 	</ItemGroup>
 </Project>
