@@ -7,6 +7,7 @@ import {
   Input,
   OnInit,
   Output,
+  signal,
   SimpleChanges,
   TemplateRef,
 } from '@angular/core';
@@ -77,6 +78,10 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
   protected isInComplexInput = false;
   public footerRowData: any;
   public editFooter = false;
+
+  // Signals pour la gestion de l'édition
+  public editingRowId = signal<number | string | null>(null);
+  public editFooterSignal = signal<boolean>(false);
 
   specificInputTemplate: TemplateRef<any>;
 
@@ -227,14 +232,19 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
       if (rowData.id === 0 || rowData.id === '') {
         if (this.canAdd === true) {
           this.editFooter = true;
+          this.editFooterSignal.set(true);
+          this.editingRowId.set(null);
           this.isEditing.emit(true);
         }
       } else {
         this.editFooter = false;
+        this.editFooterSignal.set(false);
         if (this.canEdit === true) {
           this.table?.initRowEdit(rowData);
+          this.editingRowId.set(rowData.id);
           this.isEditing.emit(true);
         } else {
+          this.editingRowId.set(null);
           this.isEditing.emit(false);
         }
       }
@@ -250,6 +260,8 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
       this.table.editingRowKeys = {};
     }
     this.editFooter = false;
+    this.editFooterSignal.set(false);
+    this.editingRowId.set(null);
     this.isEditing.emit(false);
   }
 
