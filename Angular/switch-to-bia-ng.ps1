@@ -1,12 +1,12 @@
 $SourceFrontEnd = "."
 
 # Prompt user whether to use published npm package or local dist package
-$userChoice = Read-Host "Use npm package @bia-team/bia-ng instead of local dist package? (y/N)"
+$userChoice = Read-Host "Would you like to use the @bia-team/bia-ng npm package from the local folder (instead of the npm registry)? (y/N)"
 if ($userChoice -match '^[yY]') {
-  $UseNpmPackage = $true
+  $UseNpmPackage = $false
 }
 else {
-  $UseNpmPackage = $false
+  $UseNpmPackage = $true
 }
 $ExcludeDir = ('dist', 'node_modules', 'docs', 'scss', '.git', '.vscode', '.angular', '.dart_tool', '.bia')
 
