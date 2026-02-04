@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+﻿import { Pipe, PipeTransform } from '@angular/core';
 import { Notification } from '@bia-team/bia-ng/core';
 
 @Pipe({ name: 'teamList' })

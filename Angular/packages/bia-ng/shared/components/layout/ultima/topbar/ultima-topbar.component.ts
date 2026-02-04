@@ -1,4 +1,4 @@
-import { Platform } from '@angular/cdk/platform';
+﻿import { Platform } from '@angular/cdk/platform';
 import { AsyncPipe, NgClass } from '@angular/common';
 import {
   AfterViewInit,

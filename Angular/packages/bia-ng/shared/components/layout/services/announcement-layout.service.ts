@@ -1,4 +1,4 @@
-import { inject, Injectable, Injector } from '@angular/core';
+﻿import { inject, Injectable, Injector, signal } from '@angular/core';
 import {
   AbstractDas,
   BiaAppConstantsService,
@@ -6,7 +6,7 @@ import {
   BiaSignalRService,
 } from '@bia-team/bia-ng/core';
 import { Announcement, TargetedFeature } from '@bia-team/bia-ng/models';
-import { BehaviorSubject, Subscription, tap } from 'rxjs';
+import { Subscription, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -16,16 +16,13 @@ export class AnnouncementLayoutService extends AbstractDas<Announcement> {
   private biaOnlineOfflineService: BiaOnlineOfflineService = inject(
     BiaOnlineOfflineService
   );
-
   private targetedFeature: TargetedFeature;
   private pollingInterval: NodeJS.Timeout | undefined;
   private serverAvailable: boolean;
   private sub = new Subscription();
   private firstRefresh: boolean = true;
 
-  activeAnnouncements$: BehaviorSubject<Announcement[]> = new BehaviorSubject<
-    Announcement[]
-  >([]);
+  activeAnnouncements = signal<Announcement[]>([]);
 
   constructor() {
     super(inject(Injector), 'Announcements');
@@ -84,7 +81,7 @@ export class AnnouncementLayoutService extends AbstractDas<Announcement> {
       this.getListItems<Announcement>({ endpoint: 'actives' })
         .pipe(
           tap(messages => {
-            this.activeAnnouncements$.next(messages);
+            this.activeAnnouncements.set(messages);
             this.firstRefresh = false;
           })
         )

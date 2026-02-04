@@ -1,4 +1,4 @@
-import { BaseDto } from '@bia-team/bia-ng/models';
+﻿import { BaseDto } from '@bia-team/bia-ng/models';
 import { DtoState } from '@bia-team/bia-ng/models/enum';
 
 export class BiaOptionService {

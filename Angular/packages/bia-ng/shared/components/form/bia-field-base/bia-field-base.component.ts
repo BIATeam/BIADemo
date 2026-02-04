@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+﻿import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { BiaTranslationService } from '@bia-team/bia-ng/core';
 import { BiaFieldConfig, BiaFieldNumberFormat } from '@bia-team/bia-ng/models';
 import { PropType } from '@bia-team/bia-ng/models/enum';

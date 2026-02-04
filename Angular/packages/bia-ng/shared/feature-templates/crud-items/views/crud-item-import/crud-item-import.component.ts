@@ -1,4 +1,4 @@
-import {
+﻿import {
   AfterViewInit,
   Component,
   Injector,
@@ -30,8 +30,8 @@ import { CrudItemService } from '../../services/crud-item.service';
   template: '',
 })
 export abstract class CrudItemImportComponent<
-    CrudItem extends BaseDto<string | number>,
-  >
+  CrudItem extends BaseDto<string | number>,
+>
   implements OnInit, AfterViewInit, OnDestroy
 {
   protected sub = new Subscription();

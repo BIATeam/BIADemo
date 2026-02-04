@@ -9,6 +9,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Entities
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using Audit.EntityFramework;
+    using BIA.Net.Core.Common.Attributes;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.User.Entities;
 
@@ -20,14 +22,14 @@ namespace TheBIADevCompany.BIADemo.Domain.Maintenance.Entities
         /// <summary>
         /// Add row version timestamp in table AircraftMaintenanceCompany.
         /// </summary>
-        [Column(nameof(IEntityVersioned.RowVersion))]
+        [BiaRowVersionProperty(DbProvider.SqlServer)]
         [AuditIgnore]
         public byte[] RowVersionAircraftMaintenanceCompany { get; set; }
 
         /// <summary>
         /// Add row version for Postgre in table AircraftMaintenanceCompany.
         /// </summary>
-        [Column(nameof(IEntityVersioned.RowVersionXmin))]
+        [BiaRowVersionProperty(DbProvider.PostGreSql)]
         [AuditIgnore]
         public uint RowVersionXminAircraftMaintenanceCompany { get; set; }
 

@@ -1,4 +1,4 @@
-import { CrudConfig } from '@bia-team/bia-ng/shared';
+﻿import { CrudConfig } from '@bia-team/bia-ng/shared';
 import {
   MaintenanceContract,
   maintenanceContractFieldsConfiguration,

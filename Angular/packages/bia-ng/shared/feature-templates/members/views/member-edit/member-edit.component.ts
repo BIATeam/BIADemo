@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+﻿import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import { BiaPermission } from '@bia-team/bia-ng/core';
 import { SpinnerComponent } from '../../../../components/spinner/spinner.component';

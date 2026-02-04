@@ -1,4 +1,4 @@
-import { clone } from '@bia-team/bia-ng/core';
+﻿import { clone } from '@bia-team/bia-ng/core';
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { TableLazyLoadEvent } from 'primeng/table';

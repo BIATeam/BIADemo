@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { OptionDto } from '@bia-team/bia-ng/models';
 import { CrudItemOptionsService, DictOptionDto } from '@bia-team/bia-ng/shared';
 import { Store } from '@ngrx/store';
@@ -33,7 +33,7 @@ export class PlaneOptionsService extends CrudItemOptionsService {
       map(options => {
         return <DictOptionDto[]>[
           new DictOptionDto('planeType', options[planeType]),
-          new DictOptionDto('similarTypes', options[planeType]),
+          new DictOptionDto('similarPlaneTypes', options[planeType]),
           new DictOptionDto('currentAirport', options[airport]),
           new DictOptionDto('connectingAirports', options[airport]),
         ];

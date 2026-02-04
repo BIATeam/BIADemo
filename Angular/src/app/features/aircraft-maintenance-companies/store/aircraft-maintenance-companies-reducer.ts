@@ -1,4 +1,4 @@
-import { CrudState, DEFAULT_CRUD_STATE } from '@bia-team/bia-ng/models';
+﻿import { CrudState, DEFAULT_CRUD_STATE } from '@bia-team/bia-ng/models';
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { AircraftMaintenanceCompany } from '../model/aircraft-maintenance-company';
@@ -13,7 +13,8 @@ export const aircraftMaintenanceCompaniesAdapter =
   });
 
 export interface State
-  extends CrudState<AircraftMaintenanceCompany>,
+  extends
+    CrudState<AircraftMaintenanceCompany>,
     EntityState<AircraftMaintenanceCompany> {
   // additional props here
 }

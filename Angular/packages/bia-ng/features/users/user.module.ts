@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+﻿import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BiaPermission, PermissionGuard } from '@bia-team/bia-ng/core';
 import { RoleOptionModule } from '@bia-team/bia-ng/domains';

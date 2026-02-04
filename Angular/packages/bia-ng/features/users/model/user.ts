@@ -1,4 +1,4 @@
-import {
+﻿import {
   BaseDto,
   BiaFieldConfig,
   BiaFieldsConfig,

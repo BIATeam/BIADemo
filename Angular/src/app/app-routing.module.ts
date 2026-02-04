@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+﻿import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent, PageLayoutComponent } from '@bia-team/bia-ng/shared';
 import { HOME_ROUTES } from './features/home/home.module';
@@ -31,9 +31,9 @@ const routes: Routes = [
                   canNavigate: true,
                 },
                 loadChildren: () =>
-                  import(
-                    './features/aircraft-maintenance-companies/aircraft-maintenance-company.module'
-                  ).then(m => m.AircraftMaintenanceCompanyModule),
+                  import('./features/aircraft-maintenance-companies/aircraft-maintenance-company.module').then(
+                    m => m.AircraftMaintenanceCompanyModule
+                  ),
               },
               // BIAToolKit - End Partial RoutingDomainMaintenanceChildren AircraftMaintenanceCompany
               // BIAToolKit - Begin Partial RoutingDomainMaintenanceChildren MaintenanceTeam
@@ -44,9 +44,9 @@ const routes: Routes = [
                   canNavigate: true,
                 },
                 loadChildren: () =>
-                  import(
-                    './features/aircraft-maintenance-companies/children/maintenance-teams/maintenance-team.module'
-                  ).then(m => m.MaintenanceTeamModule),
+                  import('./features/aircraft-maintenance-companies/children/maintenance-teams/maintenance-team.module').then(
+                    m => m.MaintenanceTeamModule
+                  ),
               },
               // BIAToolKit - End Partial RoutingDomainMaintenanceChildren MaintenanceTeam
               // BIAToolKit - End RoutingDomainMaintenanceChildren
@@ -58,9 +58,9 @@ const routes: Routes = [
                   canNavigate: true,
                 },
                 loadChildren: () =>
-                  import(
-                    './features/maintenance-contracts/maintenance-contract.module'
-                  ).then(m => m.MaintenanceContractModule),
+                  import('./features/maintenance-contracts/maintenance-contract.module').then(
+                    m => m.MaintenanceContractModule
+                  ),
               },
               // End BIADemo
             ],
@@ -209,9 +209,9 @@ const routes: Routes = [
               canNavigate: true,
             },
             loadChildren: () =>
-              import(
-                './features/bia-features/notifications/notification.module'
-              ).then(m => m.NotificationModule),
+              import('./features/bia-features/notifications/notification.module').then(
+                m => m.NotificationModule
+              ),
           },
           {
             path: 'backgroundtask',
@@ -222,9 +222,9 @@ const routes: Routes = [
               noPadding: true,
             },
             loadChildren: () =>
-              import(
-                './features/bia-features/background-task/background-task.module'
-              ).then(m => m.BackgroundTaskModule),
+              import('./features/bia-features/background-task/background-task.module').then(
+                m => m.BackgroundTaskModule
+              ),
           },
           {
             path: 'announcements',
@@ -233,9 +233,9 @@ const routes: Routes = [
               canNavigate: true,
             },
             loadChildren: () =>
-              import(
-                './features/bia-features/announcements/announcement.module'
-              ).then(m => m.AnnouncementModule),
+              import('./features/bia-features/announcements/announcement.module').then(
+                m => m.AnnouncementModule
+              ),
           },
         ],
       },

@@ -1,4 +1,4 @@
-import { CrudState, DEFAULT_CRUD_STATE } from '@bia-team/bia-ng/models';
+﻿import { CrudState, DEFAULT_CRUD_STATE } from '@bia-team/bia-ng/models';
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { MaintenanceContract } from '../model/maintenance-contract';
@@ -24,8 +24,7 @@ export const maintenanceContractsAdapter =
 // -> entities map allows us to access the data quickly without iterating/filtering though an array of objects
 
 export interface State
-  extends CrudState<MaintenanceContract>,
-    EntityState<MaintenanceContract> {
+  extends CrudState<MaintenanceContract>, EntityState<MaintenanceContract> {
   // additional props here
 }
 

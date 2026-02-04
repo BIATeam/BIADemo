@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { CrudItemOptionsService } from '@bia-team/bia-ng/shared';
 
 @Injectable({

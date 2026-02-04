@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass } from '@angular/common';
+﻿import { AsyncPipe, NgClass } from '@angular/common';
 import { AfterViewInit, Component, Injector, OnInit } from '@angular/core';
 import { AuthService, BiaPermission } from '@bia-team/bia-ng/core';
 import { Announcement } from '@bia-team/bia-ng/models';

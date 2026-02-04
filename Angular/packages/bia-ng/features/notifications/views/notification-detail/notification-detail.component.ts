@@ -1,4 +1,4 @@
-import { AsyncPipe, DatePipe } from '@angular/common';
+﻿import { AsyncPipe, DatePipe } from '@angular/common';
 import {
   Component,
   EventEmitter,

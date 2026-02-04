@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { TargetedFeature, Team } from '@bia-team/bia-ng/models';
 import { BiaAppState } from '@bia-team/bia-ng/store';
 import { Store } from '@ngrx/store';

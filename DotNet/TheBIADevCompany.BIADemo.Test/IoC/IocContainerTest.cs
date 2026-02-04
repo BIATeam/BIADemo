@@ -36,14 +36,11 @@ namespace TheBIADevCompany.BIADemo.Test.IoC
         {
             IConfiguration configuration = BuildConfiguration();
             services.AddSingleton(configuration);
-
             IocContainer.ConfigureContainer(services, null, true, true);
-
 #if BIA_USE_DATABASE
             BIAIocContainerTest.ConfigureContainerTest<DataContext, DataContextNoTracking>(services);
             services.AddTransient<IMockEntityFramework<DataContext, DataContextNoTracking>, MockEntityFrameworkInMemory>();
 #endif
-
             RegisterControllersFromAssembly(services, "TheBIADevCompany.BIADemo.Presentation.Api");
         }
 

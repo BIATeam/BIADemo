@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+﻿import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { BaseDto } from '@bia-team/bia-ng/models';
@@ -14,9 +14,9 @@ import { CrudItemService } from '../../services/crud-item.service';
   imports: [RouterOutlet, SpinnerComponent, AsyncPipe],
 })
 export class CrudItemItemComponent<
-    ListCrudItem extends BaseDto<string | number>,
-    CrudItem extends BaseDto<string | number> = ListCrudItem,
-  >
+  ListCrudItem extends BaseDto<string | number>,
+  CrudItem extends BaseDto<string | number> = ListCrudItem,
+>
   implements OnInit, OnDestroy
 {
   protected sub = new Subscription();
@@ -45,12 +45,15 @@ export class CrudItemItemComponent<
       })
     );
 
-    this.route.params.subscribe(routeParams => {
-      this.crudItemService.currentCrudItemId = routeParams.crudItemId;
-    });
+    this.sub.add(
+      this.route.params.subscribe(routeParams => {
+        this.crudItemService.currentCrudItemId = routeParams.crudItemId;
+      })
+    );
   }
 
   ngOnDestroy() {
+    this.sub.unsubscribe();
     this.crudItemService.clearCurrent();
   }
 }

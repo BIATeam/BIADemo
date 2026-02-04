@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+﻿import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { BiaFieldConfig, BiaTableState } from '@bia-team/bia-ng/models';
 import { TranslateModule } from '@ngx-translate/core';

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { AppSettingsService } from '@bia-team/bia-ng/core';
 import { IframeMessage } from '@bia-team/bia-ng/models';
 import { BiaLayoutService } from '../../components/layout/services/layout.service';

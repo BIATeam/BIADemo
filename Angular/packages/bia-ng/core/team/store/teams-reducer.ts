@@ -1,4 +1,4 @@
-import { RoleDto, Team } from '@bia-team/bia-ng/models';
+﻿import { RoleDto, Team } from '@bia-team/bia-ng/models';
 import { EntityState, Update, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { BiaTeamsActions } from './teams-actions';

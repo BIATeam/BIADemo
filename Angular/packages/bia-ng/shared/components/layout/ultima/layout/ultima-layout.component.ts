@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass } from '@angular/common';
+﻿import { AsyncPipe, NgClass } from '@angular/common';
 import {
   Component,
   HostBinding,
@@ -6,6 +6,7 @@ import {
   OnDestroy,
   OnInit,
   Renderer2,
+  signal,
   ViewChild,
 } from '@angular/core';
 import {
@@ -94,7 +95,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
   envName$: Observable<string | undefined>;
   showEnvironmentMessage$: Observable<boolean>;
   cssClassEnv: string;
-  activeAnnouncements$: Observable<Announcement[]>;
+  activeAnnouncements = signal<Announcement[]>([]);
 
   constructor(
     protected biaTranslation: BiaTranslationService,
@@ -114,11 +115,13 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
     this.topBarMenuSubscription();
     this.menuProfileSubscription();
 
-    this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
-        this.hideMenu();
-      });
+    this.sub.add(
+      this.router.events
+        .pipe(filter(event => event instanceof NavigationEnd))
+        .subscribe(() => {
+          this.hideMenu();
+        })
+    );
 
     this.envName$ = this.store.select(getAppSettings).pipe(
       map(settings => {
@@ -286,13 +289,15 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
         .stream('bia.language')
         .subscribe(() => this.updateMenuItems())
     );
-    this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
-        this.setNoMargin(this.activatedRoute);
-        this.setNoPadding(this.activatedRoute);
-        this.updateMenuItems();
-      });
+    this.sub.add(
+      this.router.events
+        .pipe(filter(event => event instanceof NavigationEnd))
+        .subscribe(() => {
+          this.setNoMargin(this.activatedRoute);
+          this.setNoPadding(this.activatedRoute);
+          this.updateMenuItems();
+        })
+    );
 
     this.sub.add(
       this.layoutService.breadcrumbRefresh$.subscribe(() => {
@@ -302,8 +307,8 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.activeAnnouncements$ =
-      this.announcementLayoutService.activeAnnouncements$.asObservable();
+    this.activeAnnouncements =
+      this.announcementLayoutService.activeAnnouncements;
     this.announcementLayoutService.init();
   }
 

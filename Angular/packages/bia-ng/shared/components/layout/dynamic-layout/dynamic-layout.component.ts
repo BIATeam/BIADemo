@@ -1,11 +1,10 @@
-import { NgClass, NgStyle } from '@angular/common';
+﻿import { NgClass, NgStyle } from '@angular/common';
 import {
   AfterViewInit,
   Component,
   ComponentRef,
   ElementRef,
   HostBinding,
-  HostListener,
   OnDestroy,
   OnInit,
   Renderer2,
@@ -26,7 +25,7 @@ import {
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from 'primeng/api';
 import { Dialog } from 'primeng/dialog';
-import { BehaviorSubject, filter } from 'rxjs';
+import { BehaviorSubject, Subject, filter, takeUntil } from 'rxjs';
 import { CrudConfig } from '../../../feature-templates/crud-items/model/crud-config';
 import { LayoutHelperService } from '../../../services/layout-helper.service';
 import { BiaLayoutService } from '../services/layout.service';
@@ -85,6 +84,10 @@ export class DynamicLayoutComponent<TDto extends { id: number | string }>
   protected startX: number;
   protected startWidthLeft: number;
   protected startWidthRight: number;
+
+  private removeMouseMoveListener?: () => void;
+  private removeMouseUpListener?: () => void;
+  private readonly destroy$ = new Subject<void>();
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -156,7 +159,10 @@ export class DynamicLayoutComponent<TDto extends { id: number | string }>
       snapshot.data['allowSplitScreenResize'] ?? true;
     this.checkChildrenRules();
     this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        takeUntil(this.destroy$)
+      )
       .subscribe(() => {
         this.checkChildrenRules();
       });
@@ -194,7 +200,7 @@ export class DynamicLayoutComponent<TDto extends { id: number | string }>
   }
 
   ngAfterViewInit() {
-    this.$displayPageComponent.subscribe(() => {
+    this.$displayPageComponent.pipe(takeUntil(this.destroy$)).subscribe(() => {
       const snapshot = this.activatedRoute.snapshot;
       if (
         this.$displayPageComponent.value &&
@@ -219,42 +225,73 @@ export class DynamicLayoutComponent<TDto extends { id: number | string }>
   }
 
   ngOnDestroy() {
+    this.stopResize();
+
+    this.destroy$.next();
+    this.destroy$.complete();
+
+    this.$displayPageComponent?.complete?.();
+
     if (this.dynamicComponent !== undefined) {
       this.dynamicComponent.destroy();
     }
   }
 
   startResize(event: MouseEvent) {
-    if (this.allowSplitScreenResize) {
-      this.isResizing = true;
-      this.startX = event.clientX;
-      this.startWidthLeft = this.leftContainer.nativeElement.offsetWidth;
-      this.startWidthRight = this.rightContainer.nativeElement.offsetWidth;
+    if (!this.allowSplitScreenResize) {
+      return;
     }
+
+    this.isResizing = true;
+    this.startX = event.clientX;
+    this.startWidthLeft = this.leftContainer.nativeElement.offsetWidth;
+    this.startWidthRight = this.rightContainer.nativeElement.offsetWidth;
+
+    this.removeMouseMoveListener = this.renderer.listen(
+      'document',
+      'mousemove',
+      (e: MouseEvent) => this.onMouseMove(e)
+    );
+
+    this.removeMouseUpListener = this.renderer.listen(
+      'document',
+      'mouseup',
+      () => this.stopResize()
+    );
   }
 
-  @HostListener('document:mousemove', ['$event'])
   onMouseMove(event: MouseEvent) {
-    if (this.allowSplitScreenResize && this.isResizing) {
-      const deltaX = event.clientX - this.startX;
-      const newWidthLeft = this.startWidthLeft + deltaX;
-      const newWidthRight = this.startWidthRight - deltaX;
-
-      this.renderer.setStyle(
-        this.leftContainer.nativeElement,
-        'flex',
-        `${newWidthLeft}px`
-      );
-      this.renderer.setStyle(
-        this.rightContainer.nativeElement,
-        'flex',
-        `${newWidthRight}px`
-      );
+    if (!this.isResizing) {
+      return;
     }
+
+    const deltaX = event.clientX - this.startX;
+    const newWidthLeft = this.startWidthLeft + deltaX;
+    const newWidthRight = this.startWidthRight - deltaX;
+
+    this.renderer.setStyle(
+      this.leftContainer.nativeElement,
+      'flex',
+      `${newWidthLeft}px`
+    );
+    this.renderer.setStyle(
+      this.rightContainer.nativeElement,
+      'flex',
+      `${newWidthRight}px`
+    );
   }
 
-  @HostListener('document:mouseup')
-  onMouseUp() {
+  stopResize() {
     this.isResizing = false;
+
+    if (this.removeMouseMoveListener) {
+      this.removeMouseMoveListener();
+      this.removeMouseMoveListener = undefined;
+    }
+
+    if (this.removeMouseUpListener) {
+      this.removeMouseUpListener();
+      this.removeMouseUpListener = undefined;
+    }
   }
 }

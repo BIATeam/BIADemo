@@ -1,4 +1,4 @@
-import { APP_BASE_HREF } from '@angular/common';
+﻿import { APP_BASE_HREF } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import {
   AuthService,

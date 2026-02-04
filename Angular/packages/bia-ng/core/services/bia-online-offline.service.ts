@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/naming-convention */
+﻿/* eslint-disable @typescript-eslint/naming-convention */
 import {
   HttpClient,
   HttpErrorResponse,
@@ -20,6 +20,7 @@ import {
 import { catchError, filter, first, skip } from 'rxjs/operators';
 import { AppSettingsService } from '../app-settings/services/app-settings.service';
 import { AppDB } from '../db';
+import { BiaAppConstantsService } from './bia-app-constants.service';
 import { BiaEnvironmentService } from './bia-environment.service';
 import { BiaMessageService } from './bia-message.service';
 
@@ -45,9 +46,8 @@ export class BiaOnlineOfflineService implements OnDestroy {
     this.syncCompletedSubject.asObservable();
   public static readonly httpHeaderRetry: string = 'X-HttpRequest-Retry';
   protected sub = new Subscription();
-  protected static _IsModeEnabled = false;
   public static get isModeEnabled() {
-    return BiaOnlineOfflineService._IsModeEnabled;
+    return BiaAppConstantsService.allEnvironments?.enableOfflineMode === true;
   }
 
   constructor(
@@ -57,8 +57,12 @@ export class BiaOnlineOfflineService implements OnDestroy {
     protected translateService: TranslateService,
     protected appSettingsService: AppSettingsService
   ) {
-    BiaOnlineOfflineService._IsModeEnabled = true;
-    this.init();
+    if (BiaOnlineOfflineService.isModeEnabled === true) {
+      this.init();
+    } else {
+      this.serverAvailableSubject.next(true);
+      this.syncCompletedSubject.next(true);
+    }
   }
 
   ngOnDestroy() {
@@ -107,6 +111,10 @@ export class BiaOnlineOfflineService implements OnDestroy {
     httpRequest: HttpRequest<any>,
     httpErrorResponse: HttpErrorResponse
   ) {
+    if (BiaOnlineOfflineService.isModeEnabled !== true) {
+      return;
+    }
+
     if (BiaOnlineOfflineService.isServerAvailable(httpErrorResponse) !== true) {
       if (
         httpRequest.headers?.has(BiaOnlineOfflineService.httpHeaderRetry) ===

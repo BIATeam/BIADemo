@@ -1,4 +1,4 @@
-import { BiaTeamTypeId } from '@bia-team/bia-ng/models/enum';
+﻿import { BiaTeamTypeId } from '@bia-team/bia-ng/models/enum';
 import { CrudConfig } from '@bia-team/bia-ng/shared';
 import {
   notificationFieldsConfiguration,

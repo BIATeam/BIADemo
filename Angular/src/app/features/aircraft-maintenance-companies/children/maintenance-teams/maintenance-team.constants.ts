@@ -1,4 +1,4 @@
-import { CrudConfig } from '@bia-team/bia-ng/shared';
+﻿import { CrudConfig } from '@bia-team/bia-ng/shared';
 import { TeamTypeId } from 'src/app/shared/constants';
 import {
   MaintenanceTeam,

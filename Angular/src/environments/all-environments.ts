@@ -1,4 +1,4 @@
-import { AllEnvironments } from '@bia-team/bia-ng/models';
+﻿import { AllEnvironments } from '@bia-team/bia-ng/models';
 
 export const allEnvironments: AllEnvironments & { [key: string]: any } = {
   appTitle: 'BIADemo',
@@ -6,6 +6,10 @@ export const allEnvironments: AllEnvironments & { [key: string]: any } = {
   enableNotifications: true,
   enableWorkerService: true,
   enableAnnouncements: true,
+  // Except BIADemo enableOfflineMode: false,
+  // Begin BIADemo
+  enableOfflineMode: true,
+  // End BIADemo
   urlAuth: '/api/Auth',
   urlLog: '/api/logs',
   urlEnv: '/api/AppSettings/Environment',
@@ -14,6 +18,6 @@ export const allEnvironments: AllEnvironments & { [key: string]: any } = {
   urlErrorPage: './assets/bia/html/error.html',
   // Except BIADemo version: '0.0.0',
   // Begin BIADemo
-  version: '6.0.1',
+  version: '6.0.2',
   // End BIADemo
 };

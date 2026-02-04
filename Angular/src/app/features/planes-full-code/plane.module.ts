@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+﻿import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PermissionGuard } from '@bia-team/bia-ng/core';
 import { DynamicLayoutComponent, LayoutMode } from '@bia-team/bia-ng/shared';
@@ -39,6 +39,15 @@ const ROUTES: Routes = [
         },
         component: PlaneNewComponent,
         canActivate: [PermissionGuard],
+      },
+      {
+        path: 'view',
+        data: {
+          featureStateKey: 'planesGrid',
+          leftWidth: 60,
+        },
+        loadChildren: () =>
+          import('../../shared/bia-shared/view.module').then(m => m.ViewModule),
       },
       {
         path: ':planeId',

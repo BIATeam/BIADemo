@@ -1,11 +1,4 @@
-import {
-  AfterViewInit,
-  Directive,
-  ElementRef,
-  Input,
-  NgZone,
-  OnDestroy,
-} from '@angular/core';
+import { Directive, ElementRef, Input, NgZone, OnDestroy } from '@angular/core';
 import { DomHandler } from 'primeng/dom';
 
 @Directive({
@@ -22,7 +15,7 @@ import { DomHandler } from 'primeng/dom';
       'frozen && alignFrozen === "right"',
   },
 })
-export class BiaFrozenColumnDirective implements AfterViewInit, OnDestroy {
+export class BiaFrozenColumnDirective implements OnDestroy {
   _frozen = true;
 
   @Input() get frozen(): boolean {
@@ -31,7 +24,14 @@ export class BiaFrozenColumnDirective implements AfterViewInit, OnDestroy {
 
   set frozen(val: boolean) {
     this._frozen = val;
-    if (val) {
+    if (val === true) {
+      this.zone.runOutsideAngular(() => {
+        setTimeout(() => {
+          this.initSiblings();
+          this.updateStickyPositionWithDelay(false);
+        }, 200);
+      });
+
       Promise.resolve(null).then(() => {
         this.listenToOtherTableElements();
         this.updateStickyPosition(true);
@@ -59,15 +59,6 @@ export class BiaFrozenColumnDirective implements AfterViewInit, OnDestroy {
     private el: ElementRef,
     private zone: NgZone
   ) {}
-
-  ngAfterViewInit() {
-    this.zone.runOutsideAngular(() => {
-      setTimeout(() => {
-        this.initSiblings();
-        this.updateStickyPositionWithDelay(false);
-      }, 200);
-    });
-  }
 
   initSiblings() {
     this.setFirstFrozenColumnCell();

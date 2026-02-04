@@ -41,7 +41,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     /// The database context.
     /// </summary>
     [AuditDbContext(Mode = AuditOptionMode.OptIn, IncludeEntityObjects = false, AuditEventType = "{database}_{context}")]
-    public class DataContext : BiaDataContext
+    public partial class DataContext : BiaDataContext
     {
         /// <summary>
         /// The current logger.
@@ -183,6 +183,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// Gets or sets the PlaneAirportAudit.
         /// </summary>
         public DbSet<PlaneAirportAudit> PlaneAirportAudit { get; set; }
+
+        /// <summary>
+        /// Gets or sets the PlanePlaneTypeAudit.
+        /// </summary>
+        public DbSet<PlanePlaneTypeAudit> PlanePlaneTypeAudit { get; set; }
 
         // End BIADemo
 

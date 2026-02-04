@@ -75,6 +75,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
         {
             // Place here the headers for custom user fields to retrieve in front.
 #if BIA_USER_CUSTOM_FIELDS_FRONT
+
             /// <summary>
             /// header name LastName.
             /// </summary>

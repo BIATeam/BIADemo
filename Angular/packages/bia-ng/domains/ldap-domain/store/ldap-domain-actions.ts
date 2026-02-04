@@ -1,4 +1,4 @@
-import { LdapDomain } from '@bia-team/bia-ng/models';
+﻿import { LdapDomain } from '@bia-team/bia-ng/models';
 import { createAction, props } from '@ngrx/store';
 
 export namespace DomainLdapDomainsActions {

@@ -1,4 +1,4 @@
-import { AsyncPipe, CommonModule } from '@angular/common';
+﻿import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {

@@ -1,4 +1,4 @@
-import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+﻿import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { isHttpErrorReport } from '@bia-team/bia-ng/models';
 import { TranslateService } from '@ngx-translate/core';

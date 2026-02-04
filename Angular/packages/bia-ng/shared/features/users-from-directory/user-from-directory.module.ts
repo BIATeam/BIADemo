@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+﻿import { NgModule } from '@angular/core';
 import { LdapDomainModule, UserOptionModule } from '@bia-team/bia-ng/domains';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+﻿import { Component, Input } from '@angular/core';
 import { Notification } from '@bia-team/bia-ng/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { IsNotCurrentTeamPipe } from './is-not-current-team/is-not-current-team.pipe';

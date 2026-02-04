@@ -1,4 +1,4 @@
-import { DatePipe, NgClass } from '@angular/common';
+﻿import { DatePipe, NgClass } from '@angular/common';
 import {
   Component,
   EventEmitter,

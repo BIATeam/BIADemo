@@ -1,4 +1,4 @@
-import { DateFormat } from '@bia-team/bia-ng/core';
+﻿import { DateFormat } from '@bia-team/bia-ng/core';
 import { BiaFieldConfig, BiaFieldDateFormat } from '@bia-team/bia-ng/models';
 import { PropType } from '@bia-team/bia-ng/models/enum';
 

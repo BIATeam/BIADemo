@@ -1,4 +1,4 @@
-import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+﻿import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { ViewType } from '@bia-team/bia-ng/models/enum';
 
 export class ViewValidator {
