@@ -1,10 +1,10 @@
-import { AsyncPipe } from '@angular/common';
+﻿import { AsyncPipe } from '@angular/common';
 import { Component, Injector } from '@angular/core';
 import {
   CrudItemReadComponent,
   FormReadOnlyMode,
   SpinnerComponent,
-} from 'packages/bia-ng/shared/public-api';
+} from '@bia-team/bia-ng/shared';
 import { filter } from 'rxjs';
 import { Permission } from 'src/app/shared/permission';
 import { PilotFormComponent } from '../../components/pilot-form/pilot-form.component';

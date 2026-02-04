@@ -1,5 +1,5 @@
-import { BiaTeamTypeId } from 'packages/bia-ng/models/enum/public-api';
-import { CrudConfig } from 'packages/bia-ng/shared/public-api';
+﻿import { BiaTeamTypeId } from '@bia-team/bia-ng/models/enum';
+import { CrudConfig } from '@bia-team/bia-ng/shared';
 import {
   notificationFieldsConfiguration,
   NotificationListItem,

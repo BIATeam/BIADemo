@@ -1,15 +1,15 @@
-import { NgTemplateOutlet } from '@angular/common';
+﻿import { NgTemplateOutlet } from '@angular/common';
 import { Component, Input, TemplateRef } from '@angular/core';
 import {
   FormsModule,
   ReactiveFormsModule,
   UntypedFormGroup,
 } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 import {
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
-} from 'packages/bia-ng/models/public-api';
+} from '@bia-team/bia-ng/models';
+import { TranslateModule } from '@ngx-translate/core';
 import { Checkbox } from 'primeng/checkbox';
 import { DatePicker } from 'primeng/datepicker';
 import { FloatLabel } from 'primeng/floatlabel';

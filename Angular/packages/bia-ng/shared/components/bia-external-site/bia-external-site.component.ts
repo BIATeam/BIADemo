@@ -1,4 +1,4 @@
-import {
+﻿import {
   Component,
   effect,
   ElementRef,
@@ -10,15 +10,12 @@ import {
 } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import {
-  AuthService,
-  BiaTranslationService,
-} from 'packages/bia-ng/core/public-api';
+import { AuthService, BiaTranslationService } from '@bia-team/bia-ng/core';
 import {
   ExternalSiteConfig,
   IframeConfig,
   IframeMessage,
-} from 'packages/bia-ng/models/public-api';
+} from '@bia-team/bia-ng/models';
 import { Subscription, tap } from 'rxjs';
 import { LayoutHelperService } from '../../services/layout-helper.service';
 import { BiaLayoutService } from '../layout/services/layout.service';

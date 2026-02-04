@@ -1,4 +1,4 @@
-import { PropType } from 'packages/bia-ng/models/enum/public-api';
+﻿import { PropType } from '@bia-team/bia-ng/models/enum';
 import { BiaFieldConfig } from '../bia-field-config';
 import { OptionDto } from '../option-dto';
 

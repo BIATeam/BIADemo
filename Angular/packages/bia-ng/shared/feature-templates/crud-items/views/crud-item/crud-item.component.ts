@@ -1,10 +1,10 @@
-import { Injector } from '@angular/core';
+﻿import { Injector } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BiaTranslationService } from '@bia-team/bia-ng/core';
+import { BaseDto } from '@bia-team/bia-ng/models';
+import { BiaAppState } from '@bia-team/bia-ng/store';
 import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { BiaTranslationService } from 'packages/bia-ng/core/public-api';
-import { BaseDto } from 'packages/bia-ng/models/public-api';
-import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { Subscription } from 'rxjs';
 import { LayoutMode } from '../../../../components/layout/dynamic-layout/dynamic-layout.component';
 import { CrudConfig } from '../../model/crud-config';

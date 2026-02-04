@@ -1,10 +1,10 @@
-import { AsyncPipe } from '@angular/common';
+﻿import { AsyncPipe } from '@angular/common';
 import { Component, Injector } from '@angular/core';
 import {
   BiaFormComponent,
   CrudItemImportComponent,
   CrudItemImportFormComponent,
-} from 'packages/bia-ng/shared/public-api';
+} from '@bia-team/bia-ng/shared';
 import { Permission } from 'src/app/shared/permission';
 import { Plane } from '../../model/plane';
 import { planeCRUDConfiguration } from '../../plane.constants';
@@ -13,7 +13,7 @@ import { PlaneService } from '../../services/plane.service';
 @Component({
   selector: 'app-plane-import',
   templateUrl:
-    '../../../../../../packages/bia-ng/shared/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
+    '../../../../../../node_modules/@bia-team/bia-ng/templates/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
   imports: [CrudItemImportFormComponent, AsyncPipe, BiaFormComponent],
 })
 export class PlaneImportComponent extends CrudItemImportComponent<Plane> {

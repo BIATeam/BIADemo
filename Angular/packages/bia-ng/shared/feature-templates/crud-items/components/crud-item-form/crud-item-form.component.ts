@@ -1,4 +1,4 @@
-import {
+﻿import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
@@ -12,7 +12,7 @@ import {
   BiaFieldConfig,
   BiaFormLayoutConfig,
   HistoricalEntryDto,
-} from 'packages/bia-ng/models/public-api';
+} from '@bia-team/bia-ng/models';
 import { BiaFormComponent } from '../../../../components/form/bia-form/bia-form.component';
 import { LayoutMode } from '../../../../components/layout/dynamic-layout/dynamic-layout.component';
 import { DictOptionDto } from '../../../../components/table/bia-table/dict-option-dto';

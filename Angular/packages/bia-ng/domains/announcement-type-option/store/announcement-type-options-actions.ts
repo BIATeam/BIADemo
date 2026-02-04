@@ -1,5 +1,5 @@
+﻿import { OptionDto } from '@bia-team/bia-ng/models';
 import { createAction, props } from '@ngrx/store';
-import { OptionDto } from 'packages/bia-ng/models/public-api';
 import { storeKey } from '../announcement-type-option.constants';
 
 export namespace DomainAnnouncementTypeOptionsActions {

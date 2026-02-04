@@ -1,13 +1,13 @@
-import {
+﻿import {
   Component,
   EventEmitter,
   Input,
   Output,
   ViewChild,
 } from '@angular/core';
+import { BiaDialogService } from '@bia-team/bia-ng/core';
+import { ViewType } from '@bia-team/bia-ng/models/enum';
 import { TranslateModule } from '@ngx-translate/core';
-import { BiaDialogService } from 'packages/bia-ng/core/public-api';
-import { ViewType } from 'packages/bia-ng/models/enum/public-api';
 import { Confirmation, ConfirmationService, PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';

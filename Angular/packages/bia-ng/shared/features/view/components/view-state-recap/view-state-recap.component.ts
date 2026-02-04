@@ -1,10 +1,7 @@
-import { CommonModule } from '@angular/common';
+﻿import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { BiaFieldConfig, BiaTableState } from '@bia-team/bia-ng/models';
 import { TranslateModule } from '@ngx-translate/core';
-import {
-  BiaFieldConfig,
-  BiaTableState,
-} from 'packages/bia-ng/models/public-api';
 import { FilterMetadata } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import { BiaTableFilterRecapComponent } from '../../../../components/table/bia-table-filter-recap/bia-table-filter-recap.component';

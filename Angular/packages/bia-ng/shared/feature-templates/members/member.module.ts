@@ -1,10 +1,7 @@
-import { NgModule } from '@angular/core';
+﻿import { NgModule } from '@angular/core';
+import { RoleOptionModule, UserOptionModule } from '@bia-team/bia-ng/domains';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import {
-  RoleOptionModule,
-  UserOptionModule,
-} from 'packages/bia-ng/domains/public-api';
 
 import { UserFromDirectoryModule } from '../../features/users-from-directory/user-from-directory.module';
 import { memberCRUDConfiguration } from './member.constants';

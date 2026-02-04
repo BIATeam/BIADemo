@@ -1,6 +1,6 @@
-import { inject, Injectable } from '@angular/core';
+﻿import { inject, Injectable } from '@angular/core';
+import { AppSettings } from '@bia-team/bia-ng/models';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { AppSettings } from 'packages/bia-ng/models/public-api';
 import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { BiaAppConstantsService } from '../../services/bia-app-constants.service';

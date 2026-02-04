@@ -1,4 +1,4 @@
-import { APP_BASE_HREF } from '@angular/common';
+﻿import { APP_BASE_HREF } from '@angular/common';
 import {
   HttpClient,
   HttpHeaders,
@@ -19,7 +19,7 @@ import {
   PutParam,
   SaveParam,
   UpdateFixedStatusParam,
-} from 'packages/bia-ng/models/public-api';
+} from '@bia-team/bia-ng/models';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { NEVER, Observable, from, of, throwError } from 'rxjs';
 import { catchError, first, map, tap } from 'rxjs/operators';

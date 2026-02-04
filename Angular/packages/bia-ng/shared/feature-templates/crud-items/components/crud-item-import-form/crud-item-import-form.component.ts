@@ -1,4 +1,4 @@
-import { DatePipe, NgClass } from '@angular/common';
+﻿import { DatePipe, NgClass } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -13,15 +13,15 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
-import { clone } from 'packages/bia-ng/core/public-api';
-import { PropType } from 'packages/bia-ng/models/enum/public-api';
+import { clone } from '@bia-team/bia-ng/core';
 import {
   AppSettings,
   BiaFieldConfig,
   BiaFieldsConfig,
   KeyValuePair,
-} from 'packages/bia-ng/models/public-api';
+} from '@bia-team/bia-ng/models';
+import { PropType } from '@bia-team/bia-ng/models/enum';
+import { TranslateModule } from '@ngx-translate/core';
 import {
   Accordion,
   AccordionContent,

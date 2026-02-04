@@ -1,4 +1,4 @@
-import { NgTemplateOutlet } from '@angular/common';
+﻿import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -10,8 +10,8 @@ import {
   ReactiveFormsModule,
   UntypedFormGroup,
 } from '@angular/forms';
+import { BiaFormLayoutConfig } from '@bia-team/bia-ng/models';
 import { TranslateModule } from '@ngx-translate/core';
-import { BiaFormLayoutConfig } from 'packages/bia-ng/models/public-api';
 import { Badge } from 'primeng/badge';
 import { PanelModule } from 'primeng/panel';
 import { Ripple } from 'primeng/ripple';

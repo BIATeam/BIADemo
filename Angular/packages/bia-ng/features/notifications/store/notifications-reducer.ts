@@ -1,6 +1,6 @@
+﻿import { clone } from '@bia-team/bia-ng/core';
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { clone } from 'packages/bia-ng/core/public-api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { Notification } from '../model/notification';
 import { NotificationListItem } from '../model/notification-list-item';

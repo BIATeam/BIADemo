@@ -1,9 +1,9 @@
-import { inject, Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+﻿import { inject, Injectable } from '@angular/core';
 import {
   BiaMessageService,
   BiaOnlineOfflineService,
-} from 'packages/bia-ng/core/public-api';
+} from '@bia-team/bia-ng/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { AnnouncementTypeOptionDas } from '../services/announcement-type-option-das.service';

@@ -1,4 +1,4 @@
-import {
+﻿import {
   AfterViewInit,
   Component,
   ComponentRef,
@@ -18,8 +18,8 @@ import {
   Router,
   RouterOutlet,
 } from '@angular/router';
+import { BiaInjectorService } from '@bia-team/bia-ng/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { BiaInjectorService } from 'packages/bia-ng/core/public-api';
 import { BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 

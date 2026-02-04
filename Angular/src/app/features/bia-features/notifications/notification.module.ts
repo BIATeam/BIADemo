@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { BiaNotificationModule } from 'packages/bia-ng/features/public-api';
+﻿import { NgModule } from '@angular/core';
+import { BiaNotificationModule } from '@bia-team/bia-ng/features';
 
 @NgModule({
   imports: [BiaNotificationModule],

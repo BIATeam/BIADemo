@@ -1,4 +1,4 @@
-import { HistoricalEntryType } from 'packages/bia-ng/models/enum/public-api';
+﻿import { HistoricalEntryType } from '@bia-team/bia-ng/models/enum';
 
 export interface HistoricalEntryDto {
   entryType: HistoricalEntryType;

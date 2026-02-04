@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass } from '@angular/common';
+﻿import { AsyncPipe, NgClass } from '@angular/common';
 import {
   Component,
   HostBinding,
@@ -15,8 +15,6 @@ import {
   Router,
   RouterOutlet,
 } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
   BiaAppConstantsService,
   BiaTranslationService,
@@ -25,10 +23,12 @@ import {
   ROUTE_DATA_CAN_NAVIGATE,
   ROUTE_DATA_NO_MARGIN,
   ROUTE_DATA_NO_PADDING,
-} from 'packages/bia-ng/core/public-api';
-import { EnvironmentType } from 'packages/bia-ng/models/enum/public-api';
-import { Announcement, BiaNavigation } from 'packages/bia-ng/models/public-api';
-import { BiaAppState } from 'packages/bia-ng/store/public-api';
+} from '@bia-team/bia-ng/core';
+import { Announcement, BiaNavigation } from '@bia-team/bia-ng/models';
+import { EnvironmentType } from '@bia-team/bia-ng/models/enum';
+import { BiaAppState } from '@bia-team/bia-ng/store';
+import { Store } from '@ngrx/store';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MenuItem } from 'primeng/api';
 import { Breadcrumb } from 'primeng/breadcrumb';
 import { filter, map, Observable, Subscription } from 'rxjs';

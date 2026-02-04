@@ -1,8 +1,7 @@
-import { AsyncPipe, NgClass } from '@angular/common';
+﻿import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
-import { AuthService } from 'packages/bia-ng/core/public-api';
-import { TeamAdvancedFilterDto } from 'packages/bia-ng/models/public-api';
+import { AuthService } from '@bia-team/bia-ng/core';
+import { TeamAdvancedFilterDto } from '@bia-team/bia-ng/models';
 import {
   BiaTableBehaviorControllerComponent,
   BiaTableComponent,
@@ -11,7 +10,8 @@ import {
   CrudItemService,
   CrudItemsIndexComponent,
   TeamAdvancedFilterComponent,
-} from 'packages/bia-ng/shared/public-api';
+} from '@bia-team/bia-ng/shared';
+import { TranslateModule } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { Permission } from 'src/app/shared/permission';

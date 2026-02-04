@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+﻿import { Injectable } from '@angular/core';
 import {
   BiaMessageService,
   BiaOnlineOfflineService,
-} from 'packages/bia-ng/core/public-api';
+} from '@bia-team/bia-ng/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { PartOptionDas } from '../services/part-option-das.service';

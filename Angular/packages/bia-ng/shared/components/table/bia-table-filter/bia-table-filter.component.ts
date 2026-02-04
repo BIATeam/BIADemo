@@ -1,4 +1,4 @@
-import { NgClass } from '@angular/common';
+﻿import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,18 +9,15 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { BiaTranslationService } from 'packages/bia-ng/core/public-api';
-import {
-  PrimeNGFiltering,
-  PropType,
-} from 'packages/bia-ng/models/enum/public-api';
+import { BiaTranslationService } from '@bia-team/bia-ng/core';
 import {
   BiaFieldConfig,
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
   OptionDto,
-} from 'packages/bia-ng/models/public-api';
+} from '@bia-team/bia-ng/models';
+import { PrimeNGFiltering, PropType } from '@bia-team/bia-ng/models/enum';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
   FilterMatchMode,
   FilterMetadata,

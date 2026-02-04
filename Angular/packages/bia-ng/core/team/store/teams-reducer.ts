@@ -1,6 +1,6 @@
+﻿import { RoleDto, Team } from '@bia-team/bia-ng/models';
 import { EntityState, Update, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { RoleDto, Team } from 'packages/bia-ng/models/public-api';
 import { BiaTeamsActions } from './teams-actions';
 
 // This adapter will allow is to manipulate teams (mostly CRUD operations)

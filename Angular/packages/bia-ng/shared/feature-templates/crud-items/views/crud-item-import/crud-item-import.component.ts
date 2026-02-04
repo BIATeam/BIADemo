@@ -1,4 +1,4 @@
-import {
+﻿import {
   AfterViewInit,
   Component,
   Injector,
@@ -11,9 +11,9 @@ import {
   AuthService,
   BiaTranslationService,
   clone,
-} from 'packages/bia-ng/core/public-api';
-import { PropType } from 'packages/bia-ng/models/enum/public-api';
-import { BaseDto, BiaFieldConfig } from 'packages/bia-ng/models/public-api';
+} from '@bia-team/bia-ng/core';
+import { BaseDto, BiaFieldConfig } from '@bia-team/bia-ng/models';
+import { PropType } from '@bia-team/bia-ng/models/enum';
 import { Subscription, take } from 'rxjs';
 import { BiaFieldHelperService } from '../../../../components/form/bia-field-base/bia-field-helper.service';
 import { BiaFormComponent } from '../../../../components/form/bia-form/bia-form.component';

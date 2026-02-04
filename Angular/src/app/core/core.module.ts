@@ -1,12 +1,9 @@
-import { registerLocaleData } from '@angular/common';
+﻿import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import localeFr from '@angular/common/locales/fr';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import {
-  BiaCoreModule,
-  BiaTranslationService,
-} from 'packages/bia-ng/core/public-api';
+import { BiaCoreModule, BiaTranslationService } from '@bia-team/bia-ng/core';
 import { allEnvironments } from 'src/environments/all-environments';
 import { environment } from 'src/environments/environment';
 import biaLocaleEn from '../../assets/bia/i18n/en.json';
@@ -25,7 +22,7 @@ import {
   AppDB,
   biaOnlineOfflineInterceptor,
   BiaOnlineOfflineService,
-} from 'packages/bia-ng/core/public-api';
+} from '@bia-team/bia-ng/core';
 const ONLINEOFFLINE =
   allEnvironments.enableOfflineMode === true
     ? [BiaOnlineOfflineService, biaOnlineOfflineInterceptor, AppDB]

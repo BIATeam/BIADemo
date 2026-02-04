@@ -1,5 +1,5 @@
-import { DtoState } from 'packages/bia-ng/models/enum/public-api';
-import { BaseDto, OptionDto } from 'packages/bia-ng/models/public-api';
+﻿import { BaseDto, OptionDto } from '@bia-team/bia-ng/models';
+import { DtoState } from '@bia-team/bia-ng/models/enum';
 
 export interface Notification extends BaseDto {
   title: string;

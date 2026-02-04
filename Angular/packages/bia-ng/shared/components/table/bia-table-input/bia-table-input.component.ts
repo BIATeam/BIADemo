@@ -1,4 +1,4 @@
-import { NgTemplateOutlet } from '@angular/common';
+﻿import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -20,7 +20,7 @@ import {
 import {
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
-} from 'packages/bia-ng/models/public-api';
+} from '@bia-team/bia-ng/models';
 import { PrimeTemplate } from 'primeng/api';
 import { AutoFocusModule } from 'primeng/autofocus';
 import { BaseComponent } from 'primeng/basecomponent';

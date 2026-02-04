@@ -1,10 +1,10 @@
-import { PropType } from 'packages/bia-ng/models/enum/public-api';
-import {
+﻿import {
   BaseDto,
   BiaFieldConfig,
   BiaFieldsConfig,
   OptionDto,
-} from 'packages/bia-ng/models/public-api';
+} from '@bia-team/bia-ng/models';
+import { PropType } from '@bia-team/bia-ng/models/enum';
 import { FieldValidator } from '../../../validators/field.validator';
 
 // TODO after creation of CRUD Member : adapt the model

@@ -1,16 +1,16 @@
-import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
+﻿import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
 import {
   BiaInjectExternalService,
   BiaMatomoService,
-} from 'packages/bia-ng/core/public-api';
-import { IframeMessage } from 'packages/bia-ng/models/public-api';
+} from '@bia-team/bia-ng/core';
+import { IframeMessage } from '@bia-team/bia-ng/models';
 import {
   BiaLayoutService,
   IframeCommunicationService,
   IframeConfigMessageService,
-} from 'packages/bia-ng/shared/public-api';
+} from '@bia-team/bia-ng/shared';
+import { TranslateService } from '@ngx-translate/core';
 import { PrimeNG } from 'primeng/config';
 import { Subject, fromEvent } from 'rxjs';
 import { auditTime, takeUntil } from 'rxjs/operators';

@@ -1,4 +1,4 @@
-import { CrudConfig } from 'packages/bia-ng/shared/public-api';
+﻿import { CrudConfig } from '@bia-team/bia-ng/shared';
 import { User, userFieldsConfiguration } from './model/user';
 
 // TODO after creation of CRUD User : adapt the global configuration

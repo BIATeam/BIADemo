@@ -1,11 +1,11 @@
-import { HttpResponse, HttpStatusCode } from '@angular/common/http';
+﻿import { HttpResponse, HttpStatusCode } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import {
   AbstractDas,
   BiaOnlineOfflineService,
   clone,
   DateHelperService,
-} from 'packages/bia-ng/core/public-api';
+} from '@bia-team/bia-ng/core';
 import {
   Announcement,
   DataResult,
@@ -15,7 +15,7 @@ import {
   PostParam,
   PutParam,
   SaveParam,
-} from 'packages/bia-ng/models/public-api';
+} from '@bia-team/bia-ng/models';
 import { catchError, map, Observable, of, throwError } from 'rxjs';
 
 @Injectable({

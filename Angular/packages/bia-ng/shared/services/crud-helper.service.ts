@@ -1,10 +1,6 @@
-import { BiaOptionService } from 'packages/bia-ng/core/public-api';
-import { DtoState, PropType } from 'packages/bia-ng/models/enum/public-api';
-import {
-  BaseDto,
-  BiaFieldConfig,
-  OptionDto,
-} from 'packages/bia-ng/models/public-api';
+﻿import { BiaOptionService } from '@bia-team/bia-ng/core';
+import { BaseDto, BiaFieldConfig, OptionDto } from '@bia-team/bia-ng/models';
+import { DtoState, PropType } from '@bia-team/bia-ng/models/enum';
 
 export class CrudHelperService {
   public static readonly newIdStartingValue: number = -1;

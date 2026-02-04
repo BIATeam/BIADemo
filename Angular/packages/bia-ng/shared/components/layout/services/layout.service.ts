@@ -1,4 +1,4 @@
-import {
+﻿import {
   ComponentPortal,
   ComponentType,
   Portal,
@@ -17,12 +17,12 @@ import {
 import {
   BiaAppConstantsService,
   STORAGE_CULTURE_KEY,
-} from 'packages/bia-ng/core/public-api';
+} from '@bia-team/bia-ng/core';
 import {
   AppConfig,
   BiaNavigation,
   ConfigDisplay,
-} from 'packages/bia-ng/models/public-api';
+} from '@bia-team/bia-ng/models';
 import { MenuItem } from 'primeng/api';
 import { BehaviorSubject, Subject, debounceTime } from 'rxjs';
 import { AnnouncementLayoutService } from './announcement-layout.service';

@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgStyle, NgTemplateOutlet } from '@angular/common';
+﻿import { AsyncPipe, NgClass, NgStyle, NgTemplateOutlet } from '@angular/common';
 import { Component, OnChanges } from '@angular/core';
 import {
   FormsModule,
@@ -7,13 +7,10 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
+import { AuthService, BiaMessageService } from '@bia-team/bia-ng/core';
+import { BaseDto } from '@bia-team/bia-ng/models';
+import { DtoState } from '@bia-team/bia-ng/models/enum';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import {
-  AuthService,
-  BiaMessageService,
-} from 'packages/bia-ng/core/public-api';
-import { DtoState } from 'packages/bia-ng/models/enum/public-api';
-import { BaseDto } from 'packages/bia-ng/models/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';

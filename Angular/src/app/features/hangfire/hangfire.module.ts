@@ -1,11 +1,8 @@
-import { NgModule } from '@angular/core';
+﻿import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { BiaPermission, PermissionGuard } from '@bia-team/bia-ng/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import {
-  BiaPermission,
-  PermissionGuard,
-} from 'packages/bia-ng/core/public-api';
 
 import { HangfireEffects } from './store/hangfire-effects';
 import { reducers } from './store/hangfire.state';

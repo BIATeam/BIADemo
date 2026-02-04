@@ -1,10 +1,10 @@
+﻿import { Announcement } from '@bia-team/bia-ng/models';
 import {
   Action,
   combineReducers,
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
-import { Announcement } from 'packages/bia-ng/models/public-api';
 import { announcementCRUDConfiguration } from '../announcement.constants';
 import * as fromAnnouncements from './announcements-reducer';
 

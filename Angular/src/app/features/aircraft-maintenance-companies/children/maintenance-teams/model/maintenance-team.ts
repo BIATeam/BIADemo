@@ -1,9 +1,4 @@
-import { Validators } from '@angular/forms';
-import {
-  NumberMode,
-  PrimeNGFiltering,
-  PropType,
-} from 'packages/bia-ng/models/enum/public-api';
+﻿import { Validators } from '@angular/forms';
 import {
   BaseDto,
   BiaFieldConfig,
@@ -15,7 +10,12 @@ import {
   TeamDto,
   teamFieldsConfigurationColumns,
   VersionedDto,
-} from 'packages/bia-ng/models/public-api';
+} from '@bia-team/bia-ng/models';
+import {
+  NumberMode,
+  PrimeNGFiltering,
+  PropType,
+} from '@bia-team/bia-ng/models/enum';
 
 // TODO after creation of CRUD Team MaintenanceTeam : adapt the model
 export interface MaintenanceTeam
