@@ -16,15 +16,15 @@ import {
   UntypedFormBuilder,
   UntypedFormGroup,
 } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
 import {
   DomainUserOptionsActions,
   UserOptionModule,
-} from 'packages/bia-ng/domains/public-api';
-import { DtoState } from 'packages/bia-ng/models/enum/public-api';
-import { OptionDto } from 'packages/bia-ng/models/public-api';
-import { BiaAppState } from 'packages/bia-ng/store/public-api';
+} from '@bia-team/bia-ng/domains';
+import { OptionDto } from '@bia-team/bia-ng/models';
+import { DtoState } from '@bia-team/bia-ng/models/enum';
+import { BiaAppState } from '@bia-team/bia-ng/store';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import { ButtonDirective } from 'primeng/button';
 import { FloatLabel } from 'primeng/floatlabel';
 import { Select } from 'primeng/select';

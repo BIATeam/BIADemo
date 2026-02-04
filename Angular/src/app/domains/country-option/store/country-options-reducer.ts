@@ -1,6 +1,6 @@
+import { OptionDto } from '@bia-team/bia-ng/models';
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { OptionDto } from 'packages/bia-ng/models/public-api';
 import { DomainCountryOptionsActions } from './country-options-actions';
 
 // This adapter will allow is to manipulate countries (mostly CRUD operations)

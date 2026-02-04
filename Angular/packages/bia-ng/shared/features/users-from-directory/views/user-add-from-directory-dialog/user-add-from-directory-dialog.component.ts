@@ -1,13 +1,13 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
 import {
   DomainLdapDomainsActions,
   DomainLdapDomainsStore,
-} from 'packages/bia-ng/domains/public-api';
-import { LdapDomain } from 'packages/bia-ng/models/public-api';
-import { BiaAppState } from 'packages/bia-ng/store/public-api';
+} from '@bia-team/bia-ng/domains';
+import { LdapDomain } from '@bia-team/bia-ng/models';
+import { BiaAppState } from '@bia-team/bia-ng/store';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from 'primeng/api';
 import { Dialog } from 'primeng/dialog';
 import { Observable } from 'rxjs';
