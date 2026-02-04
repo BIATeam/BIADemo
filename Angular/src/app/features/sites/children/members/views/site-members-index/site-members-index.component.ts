@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass } from '@angular/common';
+﻿import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import {
   BiaTableBehaviorControllerComponent,

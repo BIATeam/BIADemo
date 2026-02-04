@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+﻿import { AsyncPipe } from '@angular/common';
 import { Component, Injector } from '@angular/core';
 import { AuthService } from '@bia-team/bia-ng/core';
 import { CrudItemNewComponent } from '@bia-team/bia-ng/shared';

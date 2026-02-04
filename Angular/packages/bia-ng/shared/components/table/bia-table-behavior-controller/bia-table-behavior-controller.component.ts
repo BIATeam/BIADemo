@@ -1,4 +1,4 @@
-import {
+﻿import {
   Component,
   EventEmitter,
   Input,
@@ -31,8 +31,8 @@ export interface BiaBehaviorIcon {
   imports: [Tooltip, Popover, TranslateModule],
 })
 export class BiaTableBehaviorControllerComponent<
-    TDto extends BaseDto<string | number>,
-  >
+  TDto extends BaseDto<string | number>,
+>
   implements OnInit, OnDestroy
 {
   selectedLayout?: BiaBehaviorIcon;

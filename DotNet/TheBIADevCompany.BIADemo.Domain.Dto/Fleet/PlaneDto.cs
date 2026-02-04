@@ -141,7 +141,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Fleet
         /// Gets or sets the list of similar types.
         /// </summary>
         [BiaDtoField(Required = false, ItemType = "PlaneType")]
-        public ICollection<OptionDto> SimilarTypes { get; set; }
+        public ICollection<OptionDto> SimilarPlaneTypes { get; set; }
 
         /// <summary>
         /// Gets or sets the current airport.

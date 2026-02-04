@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+﻿import { Component, Input } from '@angular/core';
 import { AppSettingsService, AuthService } from '@bia-team/bia-ng/core';
 import { LoginParamDto } from '@bia-team/bia-ng/models';
 import { BiaTeamTypeId } from '@bia-team/bia-ng/models/enum';

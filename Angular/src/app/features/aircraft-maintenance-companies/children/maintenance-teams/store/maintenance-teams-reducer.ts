@@ -1,4 +1,4 @@
-import { CrudState, DEFAULT_CRUD_STATE } from '@bia-team/bia-ng/models';
+﻿import { CrudState, DEFAULT_CRUD_STATE } from '@bia-team/bia-ng/models';
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { MaintenanceTeam } from '../model/maintenance-team';
@@ -11,8 +11,7 @@ export const maintenanceTeamsAdapter = createEntityAdapter<MaintenanceTeam>({
 });
 
 export interface State
-  extends CrudState<MaintenanceTeam>,
-    EntityState<MaintenanceTeam> {
+  extends CrudState<MaintenanceTeam>, EntityState<MaintenanceTeam> {
   // additional props here
 }
 

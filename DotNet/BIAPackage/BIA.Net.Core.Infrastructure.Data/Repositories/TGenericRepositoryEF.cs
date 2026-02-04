@@ -320,7 +320,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         }
 
         /// <inheritdoc />
-        public virtual async Task<int> MassUpdateAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false)
+        public virtual async Task<int> MassUpdateAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false, bool useSetModified = false)
         {
             List<TEntity> itemsList = items?.ToList();
             if (itemsList?.Count == 0)
@@ -331,6 +331,20 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             if (useBulk && this.unitOfWork.IsUpdateBulkSupported())
             {
                 return await this.unitOfWork.UpdateBulkAsync(itemsList);
+            }
+
+            if (useSetModified)
+            {
+                return await this.ExecuteMassOperationAsync(
+                    itemsList,
+                    batchSize,
+                    delegate(IEnumerable<TEntity> entities)
+                    {
+                        foreach (TEntity entity in entities)
+                        {
+                            this.SetModified(entity);
+                        }
+                    });
             }
 
             return await this.ExecuteMassOperationAsync(itemsList, batchSize, this.UpdateRange);

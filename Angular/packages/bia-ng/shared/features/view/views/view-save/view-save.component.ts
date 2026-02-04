@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+﻿import { CommonModule } from '@angular/common';
 import { Component, Inject, Injector } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -127,8 +127,10 @@ export class ViewSaveComponent<
     }
 
     this.featureConfiguration = parent.snapshot.data['featureConfiguration'];
+    this.tableStateKey =
+      this.featureConfiguration?.tableStateKey ??
+      parent.snapshot.data['featureStateKey'];
     if (this.featureConfiguration?.useViewTeamWithTypeId) {
-      this.tableStateKey = this.featureConfiguration?.tableStateKey;
       this.teamList$ = this.store.select(
         CoreTeamsStore.getAllTeamsOfType(
           this.featureConfiguration?.useViewTeamWithTypeId

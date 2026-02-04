@@ -98,6 +98,8 @@ export class BiaUltimaMenuItemComponent
 
   menuResetSubscription: Subscription;
 
+  routerEventsSubscription: Subscription;
+
   key = '';
 
   constructor(
@@ -129,7 +131,7 @@ export class BiaUltimaMenuItemComponent
       this.active = false;
     });
 
-    this.router.events
+    this.routerEventsSubscription = this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
         if (this.isSlimPlus || this.isSlim || this.isHorizontal) {
@@ -319,6 +321,10 @@ export class BiaUltimaMenuItemComponent
 
     if (this.menuResetSubscription) {
       this.menuResetSubscription.unsubscribe();
+    }
+
+    if (this.routerEventsSubscription) {
+      this.routerEventsSubscription.unsubscribe();
     }
   }
 }

@@ -177,22 +177,25 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
         {
             if (configuration?.Policies != null)
             {
-                foreach (Policy policy in configuration.Policies.Where(p => !string.IsNullOrWhiteSpace(p.Name) && p.RequireClaims?.Any() == true))
+                foreach (Policy policy in configuration.Policies.Where(p => !string.IsNullOrWhiteSpace(p.Name)))
                 {
-                    options.AddPolicy(policy.Name, policyBuilder =>
+                    if (policy.RequireClaims?.Any() == true)
                     {
-                        policyBuilder.RequireAssertion(context =>
+                        options.AddPolicy(policy.Name, policyBuilder =>
                         {
-                            return policy.RequireClaims.Any(requireClaim =>
-                                context.User.HasClaim(claim => claim.Type == requireClaim.Type && requireClaim.AllowedValues.Contains(claim.Value)));
+                            policyBuilder.RequireAssertion(context =>
+                            {
+                                return policy.RequireClaims.Any(requireClaim =>
+                                    context.User.HasClaim(claim => claim.Type == requireClaim.Type && requireClaim.AllowedValues.Contains(claim.Value)));
+                            });
                         });
-                    });
+                    }
+                    else
+                    {
+                        // If a policy has no required claims, add a permissive policy
+                        options.AddPolicy(policy.Name, policy => policy.RequireAssertion(_ => true));
+                    }
                 }
-            }
-
-            if (configuration?.Policies?.Any(confPolicy => confPolicy.Name == BiaConstants.Policy.ServiceApiRW) != true)
-            {
-                options.AddPolicy(BiaConstants.Policy.ServiceApiRW, policy => policy.RequireAssertion(_ => true));
             }
         }
 

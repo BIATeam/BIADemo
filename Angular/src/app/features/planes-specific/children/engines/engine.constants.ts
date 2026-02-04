@@ -1,4 +1,4 @@
-import { CrudConfig } from '@bia-team/bia-ng/shared';
+﻿import { CrudConfig } from '@bia-team/bia-ng/shared';
 import { Engine, engineFieldsConfiguration } from '../../model/engine';
 
 export const engineCRUDConfiguration: CrudConfig<Engine> = new CrudConfig({

@@ -1,4 +1,4 @@
-import { DatePipe, NgClass, NgTemplateOutlet } from '@angular/common';
+﻿import { DatePipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { BiaFieldConfig, HistoricalEntryDto } from '@bia-team/bia-ng/models';
 import { HistoricalEntryType } from '@bia-team/bia-ng/models/enum';

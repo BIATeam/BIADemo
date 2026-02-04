@@ -1,4 +1,4 @@
-import {
+﻿import {
   Announcement,
   CrudState,
   DEFAULT_CRUD_STATE,
@@ -15,8 +15,7 @@ export const announcementsAdapter = createEntityAdapter<Announcement>({
 });
 
 export interface State
-  extends CrudState<Announcement>,
-    EntityState<Announcement> {
+  extends CrudState<Announcement>, EntityState<Announcement> {
   // additional props here
   currentItemHistorical: HistoricalEntryDto[];
 }

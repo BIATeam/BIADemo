@@ -33,6 +33,12 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
                     LinkedAuditEntityDisplayProperty = audit => audit.AirportName,
                     LinkedAuditEntityIdentifierProperty = audit => audit.PlaneId,
                 },
+                new LinkedAuditMapper<Plane, PlanePlaneTypeAudit>
+                {
+                    EntityProperty = plane => plane.SimilarPlaneTypes,
+                    LinkedAuditEntityDisplayProperty = audit => audit.PlaneTypeTitle,
+                    LinkedAuditEntityIdentifierProperty = audit => audit.PlaneId,
+                },
             ];
             this.AuditPropertyMappers =
             [
@@ -41,6 +47,12 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
                     EntityProperty = plane => plane.CurrentAirport,
                     EntityPropertyIdentifier = plane => plane.CurrentAirportId,
                     LinkedEntityPropertyDisplay = airport => airport.Name,
+                },
+                new AuditPropertyMapper<Plane, PlaneType>
+                {
+                    EntityProperty = plane => plane.PlaneType,
+                    EntityPropertyIdentifier = plane => plane.PlaneTypeId,
+                    LinkedEntityPropertyDisplay = planeType => planeType.Title,
                 },
             ];
 

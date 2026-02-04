@@ -1,4 +1,4 @@
-import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
+﻿import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { Injectable, Pipe, PipeTransform } from '@angular/core';
 import {
   BiaFieldConfig,

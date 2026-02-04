@@ -1,10 +1,12 @@
-import { NgModule } from '@angular/core';
+﻿import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PermissionGuard } from '@bia-team/bia-ng/core';
 import {
   DynamicLayoutComponent,
   LayoutMode,
+  memberCRUDConfiguration,
   MemberModule,
+  MemberService,
 } from '@bia-team/bia-ng/shared';
 import { Permission } from 'src/app/shared/permission';
 
@@ -20,6 +22,7 @@ const ROUTES: Routes = [
       breadcrumb: null,
       permission: Permission.MaintenanceTeam_Member_List_Access,
       injectComponent: MaintenanceTeamMembersIndexComponent,
+      configuration: memberCRUDConfiguration,
     },
     component: DynamicLayoutComponent,
     canActivate: [PermissionGuard],
@@ -36,6 +39,18 @@ const ROUTES: Routes = [
         },
         component: MaintenanceTeamMemberNewComponent,
         canActivate: [PermissionGuard],
+      },
+      {
+        path: 'view',
+        data: {
+          featureConfiguration: memberCRUDConfiguration,
+          featureServiceType: MemberService,
+          leftWidth: 60,
+        },
+        loadChildren: () =>
+          import('../../../../../../shared/bia-shared/view.module').then(
+            m => m.ViewModule
+          ),
       },
       {
         path: ':crudItemId',

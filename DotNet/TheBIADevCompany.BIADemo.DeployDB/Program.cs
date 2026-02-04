@@ -24,13 +24,10 @@ namespace TheBIADevCompany.BIADemo.DeployDB
     using NLog;
     using NLog.Extensions.Hosting;
     using NLog.Extensions.Logging;
-
 #if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Application.Job;
-
 #endif
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
-
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
 
     /// <summary>

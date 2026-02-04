@@ -91,7 +91,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
                     Site = entry.Properties["description"].Value?.ToString(),
 #endif
                 };
-
 #if BIA_USER_CUSTOM_FIELDS_BACK
 
                 // Set external company

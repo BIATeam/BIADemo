@@ -1,4 +1,4 @@
-import { AppSettings } from '@bia-team/bia-ng/models';
+﻿import { AppSettings } from '@bia-team/bia-ng/models';
 import { createAction, props } from '@ngrx/store';
 
 export namespace CoreAppSettingsActions {

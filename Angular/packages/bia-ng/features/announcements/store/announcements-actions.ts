@@ -1,4 +1,4 @@
-import {
+﻿import {
   Announcement,
   DataResult,
   HistoricalEntryDto,

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { AuthInfo, BiaNavigation } from '@bia-team/bia-ng/models';
 
 @Injectable({

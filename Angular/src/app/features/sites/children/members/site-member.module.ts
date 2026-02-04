@@ -1,10 +1,11 @@
-import { NgModule } from '@angular/core';
+﻿import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PermissionGuard } from '@bia-team/bia-ng/core';
 import {
   DynamicLayoutComponent,
   memberCRUDConfiguration,
   MemberModule,
+  MemberService,
 } from '@bia-team/bia-ng/shared';
 import { Permission } from 'src/app/shared/permission';
 import { SiteMemberEditComponent } from './views/site-member-edit/site-member-edit.component';
@@ -52,6 +53,18 @@ const ROUTES: Routes = [
         },
         component: SiteMemberImportComponent,
         canActivate: [PermissionGuard],
+      },
+      {
+        path: 'view',
+        data: {
+          featureConfiguration: memberCRUDConfiguration,
+          featureServiceType: MemberService,
+          leftWidth: 60,
+        },
+        loadChildren: () =>
+          import('../../../../shared/bia-shared/view.module').then(
+            m => m.ViewModule
+          ),
       },
       {
         path: ':crudItemId',

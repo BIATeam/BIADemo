@@ -1,4 +1,4 @@
-import { PropType } from '@bia-team/bia-ng/models/enum';
+﻿import { PropType } from '@bia-team/bia-ng/models/enum';
 import { BiaFieldConfig } from '../bia-field-config';
 import { OptionDto } from '../option-dto';
 
@@ -10,11 +10,12 @@ export interface TeamDto {
 }
 
 export const teamFieldsConfigurationColumns: BiaFieldConfig<TeamDto>[] = [
-  Object.assign(new BiaFieldConfig<TeamDto>('title', 'site.title'), {
+  Object.assign(new BiaFieldConfig<TeamDto>('title', 'bia.team.title'), {
     isRequired: true,
   }),
   Object.assign(new BiaFieldConfig('admins', 'bia.team.admins'), {
     type: PropType.ManyToMany,
     isEditable: false,
+    isVisible: false,
   }),
 ];

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+﻿import { NgModule } from '@angular/core';
 import { BiaViewModule } from '@bia-team/bia-ng/shared';
 
 @NgModule({

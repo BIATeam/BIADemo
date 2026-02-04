@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { AppSettings } from '@bia-team/bia-ng/models';
 
 @Injectable({

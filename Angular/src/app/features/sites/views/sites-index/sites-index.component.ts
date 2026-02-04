@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass } from '@angular/common';
+﻿import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, Injector, ViewChild } from '@angular/core';
 import { AuthService } from '@bia-team/bia-ng/core';
 import { TeamAdvancedFilterDto } from '@bia-team/bia-ng/models';

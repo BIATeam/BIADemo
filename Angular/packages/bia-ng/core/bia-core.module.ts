@@ -1,4 +1,4 @@
-// Modules
+﻿// Modules
 import {
   provideHttpClient,
   withInterceptorsFromDi,

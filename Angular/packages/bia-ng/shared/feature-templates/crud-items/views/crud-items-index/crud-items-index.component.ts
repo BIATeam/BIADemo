@@ -1,4 +1,4 @@
-import { AsyncPipe, Location, NgClass } from '@angular/common';
+﻿import { AsyncPipe, Location, NgClass } from '@angular/common';
 import { HttpStatusCode } from '@angular/common/http';
 import {
   Component,
@@ -68,9 +68,9 @@ import { CrudItemService } from '../../services/crud-item.service';
   ],
 })
 export class CrudItemsIndexComponent<
-    ListCrudItem extends BaseDto<string | number>,
-    CrudItem extends BaseDto<string | number> = ListCrudItem,
-  >
+  ListCrudItem extends BaseDto<string | number>,
+  CrudItem extends BaseDto<string | number> = ListCrudItem,
+>
   implements OnInit, OnDestroy
 {
   public crudConfiguration: CrudConfig<ListCrudItem>;

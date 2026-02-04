@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+﻿import { AsyncPipe, Location } from '@angular/common';
 import {
   Component,
   HostBinding,
@@ -20,6 +20,7 @@ import {
   BiaTableControllerComponent,
   BiaTableHeaderComponent,
   TableHelperService,
+  View,
   ViewsActions,
 } from '@bia-team/bia-ng/shared';
 import { Store } from '@ngrx/store';
@@ -115,7 +116,8 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
     private biaTranslationService: BiaTranslationService,
     private planesSignalRService: PlanesSignalRService,
     public planeOptionsService: PlaneOptionsService,
-    private tableHelperService: TableHelperService
+    private tableHelperService: TableHelperService,
+    private location: Location
   ) {}
 
   ngOnInit() {
@@ -340,5 +342,47 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
     );
     this.displayedColumns = [...this.columns];
     //}));
+  }
+
+  currentView: View | null;
+
+  onSelectedViewChanged(view: View | null) {
+    this.currentView = view;
+    this.updateViewQueryParam(view);
+  }
+
+  updateViewQueryParam(view: View | null) {
+    if (this.isViewRouteLoaded()) {
+      this.changeView(view);
+    } else {
+      const tree = this.router.createUrlTree([], {
+        relativeTo: this.activatedRoute,
+        queryParams: view?.name ? { view: view.name } : { view: null },
+        queryParamsHandling: 'merge',
+      });
+
+      this.location.replaceState(this.router.serializeUrl(tree));
+    }
+  }
+
+  isViewRouteLoaded(): boolean {
+    const currentUrl = this.router.url;
+    const baseUrl = currentUrl.split('?')[0];
+    return baseUrl.endsWith('/saveView');
+  }
+
+  changeView(view: View | null) {
+    const segments = this.router.url.split('?')[0].split('/').filter(Boolean);
+
+    if (segments.length >= 2) {
+      segments[segments.length - 2] = view?.id.toString() ?? '0';
+
+      this.router.navigate(['/', ...segments], {
+        relativeTo: this.activatedRoute,
+        queryParams: { view: view?.name ?? null },
+        queryParamsHandling: 'merge',
+        replaceUrl: true,
+      });
+    }
   }
 }

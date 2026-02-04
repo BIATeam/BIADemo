@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+﻿import { Injectable, OnDestroy } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { AppSettings } from '@bia-team/bia-ng/models';
 import { BiaAppState } from '@bia-team/bia-ng/store';

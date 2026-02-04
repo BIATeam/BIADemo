@@ -69,3 +69,6 @@ src/config.json
 .bia/crud/*
 .bia/crud-parent/*
 .bia/team/*
+
+# License
+/src/assets/bia/primeng/license

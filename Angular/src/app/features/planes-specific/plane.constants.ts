@@ -1,4 +1,4 @@
-import { CrudConfig, FormReadOnlyMode } from '@bia-team/bia-ng/shared';
+﻿import { CrudConfig, FormReadOnlyMode } from '@bia-team/bia-ng/shared';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { Plane, planeFieldsConfiguration } from './model/plane';
 import {

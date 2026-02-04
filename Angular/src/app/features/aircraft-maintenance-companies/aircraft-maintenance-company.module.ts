@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+﻿import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PermissionGuard } from '@bia-team/bia-ng/core';
 import { DynamicLayoutComponent, LayoutMode } from '@bia-team/bia-ng/shared';
@@ -67,9 +67,9 @@ export const ROUTES: Routes = [
               layoutMode: LayoutMode.fullPage,
             },
             loadChildren: () =>
-              import(
-                './children/members/aircraft-maintenance-company-member.module'
-              ).then(m => m.AircraftMaintenanceCompanyMemberModule),
+              import('./children/members/aircraft-maintenance-company-member.module').then(
+                m => m.AircraftMaintenanceCompanyMemberModule
+              ),
           },
           {
             path: 'edit',
@@ -99,9 +99,9 @@ export const ROUTES: Routes = [
               layoutMode: LayoutMode.fullPage,
             },
             loadChildren: () =>
-              import(
-                './children/maintenance-teams/maintenance-team.module'
-              ).then(m => m.MaintenanceTeamModule),
+              import('./children/maintenance-teams/maintenance-team.module').then(
+                m => m.MaintenanceTeamModule
+              ),
           },
           // BIAToolKit - End Partial AircraftMaintenanceCompanyModuleChildPath MaintenanceTeam
           // End BIAToolKit Generation Ignore

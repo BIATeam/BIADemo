@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+﻿import { AsyncPipe } from '@angular/common';
 import { Component, Injector } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MemberItemComponent, SpinnerComponent } from '@bia-team/bia-ng/shared';

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { LdapDomain } from '@bia-team/bia-ng/models';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';

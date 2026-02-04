@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+﻿import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import { CrudItemNewComponent } from '@bia-team/bia-ng/shared';
 import { PlaneFormComponent } from '../../components/plane-form/plane-form.component';

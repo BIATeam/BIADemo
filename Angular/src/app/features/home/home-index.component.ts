@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+﻿import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BiaLayoutService } from '@bia-team/bia-ng/shared';
 import { TranslateModule } from '@ngx-translate/core';
 

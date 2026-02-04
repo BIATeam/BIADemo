@@ -1,4 +1,4 @@
-import { Announcement } from '@bia-team/bia-ng/models';
+﻿import { Announcement } from '@bia-team/bia-ng/models';
 import {
   Action,
   combineReducers,
