@@ -11,6 +11,7 @@ namespace BIA.Net.Core.Ioc
     using System.Reflection;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Application.Translation;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.AuthenticationSection;
     using BIA.Net.Core.Domain.Mapper;
@@ -164,6 +165,9 @@ namespace BIA.Net.Core.Ioc
         {
             // Configuration
             collection.Configure<BiaNetSection>(options => configuration.GetSection("BiaNet").Bind(options));
+
+            // Permission ID Converter for BIA Framework permissions
+            collection.AddScoped<IPermissionIdConverter, PermissionIdConverter<BiaPermissionId>>();
         }
 
         private static void ConfigureInfrastructureDataContainer(IServiceCollection collection)
