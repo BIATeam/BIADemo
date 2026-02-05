@@ -172,36 +172,43 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
             : permIdsClaim;
 
         // Map IDs to Permission/PermissionOptions/BiaPermission enum values by ordinal with ID ranges:
-        // - IDs 0-999: Project CRUD permissions (Permission enum, ordinal = ID)
-        // - IDs 1000-9999: Project Options permissions (PermissionOptions enum, ordinal = ID - 1000)
-        // - IDs 10000+: BIA Framework permissions (BiaPermission enum, ordinal = ID - 10000)
+        // - IDs 0-999: BIA Framework permissions (BiaPermission enum, ordinal = ID)
+        // - IDs 1000-1999: Project Options permissions (PermissionOptions enum, ordinal = ID - 1000)
+        // - IDs 2000+: Project CRUD permissions (Permission enum, ordinal = ID - 2000)
         const projectPermissionValues = Object.values(Permission);
         const projectOptionsPermissionValues = Object.values(PermissionOptions);
         const biaPermissionValues = Object.values(BiaPermission);
         const OPTIONS_PERMISSION_ID_OFFSET = 1000;
-        const BIA_PERMISSION_ID_OFFSET = 10000;
+        const PROJECT_PERMISSION_ID_OFFSET = 2000;
 
+        const unmappedIds: number[] = [];
         permissions = permIds
           .map(id => {
+            let permission: string | undefined;
             if (id < OPTIONS_PERMISSION_ID_OFFSET) {
-              // Project CRUD permission (0-999)
-              return projectPermissionValues[id] as string;
-            } else if (id < BIA_PERMISSION_ID_OFFSET) {
-              // Project Options permission (1000-9999)
+              // BIA Framework permission (0-999)
+              permission = biaPermissionValues[id] as string;
+            } else if (id < PROJECT_PERMISSION_ID_OFFSET) {
+              // Project Options permission (1000-1999)
               const optionsOrdinal = id - OPTIONS_PERMISSION_ID_OFFSET;
-              return projectOptionsPermissionValues[optionsOrdinal] as string;
+              permission = projectOptionsPermissionValues[
+                optionsOrdinal
+              ] as string;
             } else {
-              // BIA Framework permission (10000+)
-              const biaOrdinal = id - BIA_PERMISSION_ID_OFFSET;
-              return biaPermissionValues[biaOrdinal] as string;
+              // Project CRUD permission (2000+)
+              const projectOrdinal = id - PROJECT_PERMISSION_ID_OFFSET;
+              permission = projectPermissionValues[projectOrdinal] as string;
             }
+            if (!permission) {
+              unmappedIds.push(id);
+            }
+            return permission;
           })
           .filter(perm => perm !== undefined);
 
-        if (permissions.length !== permIds.length) {
-          const unmappedCount = permIds.length - permissions.length;
+        if (unmappedIds.length > 0) {
           console.warn(
-            `${unmappedCount} permission ID(s) could not be mapped - fallback to string permissions (enum sync may be out of sync)`
+            `${unmappedIds.length} permission ID(s) could not be mapped: [${unmappedIds.join(', ')}] - fallback to string permissions (enum sync may be out of sync)`
           );
           // Fallback: use string permissions from role claim
           permissions = this.extractPermissionsFromRoles(objDecodedToken);

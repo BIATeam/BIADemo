@@ -10,14 +10,15 @@ namespace BIA.Net.Core.Common
     /// When adding new permissions:
     /// 1. Add to both BiaPermission.ts (Angular) and this enum (C#) in the SAME ORDER
     /// 2. DO NOT specify explicit values - order is implicit (0, 1, 2, ...)
-    /// 3. If out of sync, fallback to string claims ensures zero auth breakage, but watch logs for warnings
+    /// 3. These permissions start at ID 0 (BIA Framework range: 0-999)
+    /// 4. If out of sync, fallback to string claims ensures zero auth breakage, but watch logs for warnings
     /// </summary>
     public enum BiaPermissionId
     {
         /// <summary>
         /// Background Task Admin.
         /// </summary>
-        Background_Task_Admin = 10000,
+        Background_Task_Admin,
 
         /// <summary>
         /// Background Task Read Only.

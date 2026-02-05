@@ -10,15 +10,16 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
     /// When adding new permissions:
     /// 1. Add to both Permission.ts (Angular) and this enum (C#) in the SAME ORDER
     /// 2. DO NOT specify explicit values for regular permissions - order is implicit (0, 1, 2, ...)
-    /// 3. Options permissions are in a separate enum: PermissionOptionsId (IDs 1000+)
-    /// 4. If out of sync, fallback to string claims ensures zero auth breakage, but watch logs for warnings
+    /// 3. These permissions start at ID 2000 (Project CRUD range: 2000+)
+    /// 4. Options permissions are in a separate enum: PermissionOptionsId (IDs 1000-1999)
+    /// 5. If out of sync, fallback to string claims ensures zero auth breakage, but watch logs for warnings
     /// </summary>
     public enum PermissionId
     {
         /// <summary>
         /// Home Access.
         /// </summary>
-        Home_Access,
+        Home_Access = 2000,
 
         /// <summary>
         /// Site Create.
