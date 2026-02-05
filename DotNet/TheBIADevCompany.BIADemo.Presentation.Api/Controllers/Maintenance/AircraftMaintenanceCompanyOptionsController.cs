@@ -13,6 +13,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.Maintenance;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
 
     /// <summary>
     /// The API controller used to manage aircraftMaintenanceCompany options.
@@ -42,7 +43,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.AircraftMaintenanceCompanyOptions.Options)]
+        [Authorize(Roles = nameof(OptionPermissionId.AircraftMaintenanceCompany_Options))]
         public async Task<IActionResult> GetAllOptions()
         {
             var results = await this.aircraftMaintenanceCompanyOptionService.GetAllOptionsAsync();

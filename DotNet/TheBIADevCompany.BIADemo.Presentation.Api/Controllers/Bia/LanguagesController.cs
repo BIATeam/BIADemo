@@ -1,4 +1,4 @@
-// <copyright file="LanguagesController.cs" company="TheBIADevCompany">
+﻿// <copyright file="LanguagesController.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -40,7 +40,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = BiaRights.Languages.Options)]
+        [Authorize(Roles = nameof(BiaPermissionId.Languages_Options))]
         public async Task<IActionResult> GetAllOptions()
         {
             var results = await this.languageService.GetAllOptionsAsync();

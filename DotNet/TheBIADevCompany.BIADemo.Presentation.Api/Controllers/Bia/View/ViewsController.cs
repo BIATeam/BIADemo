@@ -54,7 +54,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = BiaRights.Views.Read)]
+        [Authorize(Roles = nameof(BiaPermissionId.View_Read))]
         public async Task<IActionResult> Get(int id)
         {
             if (id == 0)
@@ -79,7 +79,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         /// <returns>The list of views.</returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [Authorize(Roles = BiaRights.Views.List)]
+        [Authorize(Roles = nameof(BiaPermissionId.View_List))]
         public async Task<IActionResult> GetAll()
         {
             var results = await this.viewAppService.GetAllAsync();
@@ -99,7 +99,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = BiaRights.Views.UpdateUserView)]
+        [Authorize(Roles = nameof(BiaPermissionId.View_Update_UserView))]
         public async Task<IActionResult> UpdateView(int id, [FromBody] ViewDto dto)
         {
             if (id == 0 || dto == null || dto.Id != id)
@@ -148,7 +148,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = BiaRights.Views.AddUserView)]
+        [Authorize(Roles = nameof(BiaPermissionId.View_Add_UserView))]
         public async Task<IActionResult> AddView([FromBody] ViewDto dto)
         {
             try
@@ -188,7 +188,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = BiaRights.Views.DeleteUserView)]
+        [Authorize(Roles = nameof(BiaPermissionId.View_Delete_UserView))]
         public async Task<IActionResult> RemoveUserView(int id)
         {
             return await this.RemoveView(id);
@@ -207,7 +207,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = BiaRights.Views.SetDefaultUserView)]
+        [Authorize(Roles = nameof(BiaPermissionId.View_Set_Default_UserView))]
         public async Task<IActionResult> SetDefaultUserView(int id, [FromBody] DefaultViewDto dto)
         {
             if (id == 0 || dto == null || dto.Id != id)
@@ -260,7 +260,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = BiaRights.Views.DeleteTeamView)]
+        [Authorize(Roles = nameof(BiaPermissionId.View_Delete_TeamView))]
         public async Task<IActionResult> RemoveTeamView(int id)
         {
             return await this.RemoveView(id);

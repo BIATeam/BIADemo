@@ -1,4 +1,4 @@
-﻿// <copyright file="BaseUsersController.cs" company="BIA">
+// <copyright file="BaseUsersController.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 namespace BIA.Net.Core.Presentation.Api.Controller.User
@@ -70,7 +70,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.User
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = BiaRights.Users.Options)]
+        [Authorize(Roles = nameof(BiaPermissionId.User_Options))]
         public async Task<IActionResult> GetAllOptions(string filter = null)
         {
             var results = await this.userService.GetAllOptionsAsync(filter);
@@ -84,7 +84,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.User
         /// <returns>The list of user DTO.</returns>
         [HttpPost("all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [Authorize(Roles = BiaRights.Users.ListAccess)]
+        [Authorize(Roles = nameof(BiaPermissionId.User_List_Access))]
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
             var (results, total) = await this.userService.GetRangeAsync(filters);
@@ -101,7 +101,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.User
         /// <returns>The list of users.</returns>
         [HttpGet("fromAD")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [Authorize(Roles = BiaRights.Users.ListAD)]
+        [Authorize(Roles = nameof(BiaPermissionId.User_ListAD))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAllFromAD(string filter, string ldapName = null, int returnSize = 10)
         {
@@ -138,7 +138,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.User
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = BiaRights.Users.Read)]
+        [Authorize(Roles = nameof(BiaPermissionId.User_Read))]
         public async Task<IActionResult> Get(int id)
         {
             if (id == 0)
@@ -168,7 +168,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.User
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [Authorize(Roles = BiaRights.Users.Add)]
+        [Authorize(Roles = nameof(BiaPermissionId.User_Add))]
         public async Task<IActionResult> Add([FromBody] TUserDto dto)
         {
             try
@@ -195,7 +195,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.User
         [HttpPost("addFromDirectory")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status303SeeOther)]
-        [Authorize(Roles = BiaRights.Users.Add)]
+        [Authorize(Roles = nameof(BiaPermissionId.User_Add))]
         public async Task<IActionResult> Add([FromBody] IEnumerable<TUserFromDirectoryDto> users)
         {
             ResultAddUsersFromDirectoryDto result = await this.userService.AddFromDirectory(users);
@@ -219,7 +219,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.User
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = BiaRights.Users.UpdateRoles)]
+        [Authorize(Roles = nameof(BiaPermissionId.User_UpdateRoles))]
         public async Task<IActionResult> Update(int id, [FromBody] TUserDto dto)
         {
             if (id == 0 || dto == null || dto.Id != id)
@@ -254,7 +254,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.User
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [Authorize(Roles = BiaRights.Users.Delete)]
+        [Authorize(Roles = nameof(BiaPermissionId.User_Delete))]
         public async Task<IActionResult> RemoveInGroup(int id)
         {
             if (id == 0)
@@ -281,7 +281,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.User
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = BiaRights.Users.Delete)]
+        [Authorize(Roles = nameof(BiaPermissionId.User_Delete))]
         public async Task<IActionResult> Remove([FromQuery] List<int> ids)
         {
             if (ids?.Any() != true)
@@ -320,7 +320,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.User
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [Authorize(Roles = BiaRights.Users.Save)]
+        [Authorize(Roles = nameof(BiaPermissionId.User_Save))]
         public async Task<IActionResult> Save(IEnumerable<TUserDto> dtos)
         {
             var dtoList = dtos.ToList();
@@ -358,7 +358,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.User
         /// <returns>The OK result.</returns>
         [HttpGet("synchronize")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [Authorize(Roles = BiaRights.Users.Sync)]
+        [Authorize(Roles = nameof(BiaPermissionId.User_Sync))]
         public async Task<IActionResult> Synchronize(bool fullSynchro = false)
         {
             if (this.configuration?.Authentication?.Keycloak?.IsActive == true)
@@ -379,7 +379,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.User
         /// <param name="filters">filters ( <see cref="PagingFilterFormatDto"/>).</param>
         /// <returns>a csv file.</returns>
         [HttpPost("csv")]
-        [Authorize(Roles = BiaRights.Users.ListAccess)]
+        [Authorize(Roles = nameof(BiaPermissionId.User_List_Access))]
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
             byte[] buffer = await this.userService.GetCsvAsync(filters);

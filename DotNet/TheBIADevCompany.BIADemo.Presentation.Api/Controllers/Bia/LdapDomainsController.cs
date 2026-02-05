@@ -1,4 +1,4 @@
-﻿// <copyright file="LdapDomainsController.cs" company="TheBIADevCompany">
+// <copyright file="LdapDomainsController.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
@@ -38,7 +38,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
         /// <returns>The list of LDAP domains.</returns>
         [HttpGet]
         [ProducesResponseType<IEnumerable<LdapDomain>>(StatusCodes.Status200OK)]
-        [Authorize(Roles = BiaRights.LdapDomains.List)]
+        [Authorize(Roles = nameof(BiaPermissionId.LdapDomains_List))]
         public IActionResult GetAll()
         {
             IEnumerable<LdapDomain> ldapDomains = this.configuration?.Authentication?.LdapDomains?.Where(o => o.ContainsUser);

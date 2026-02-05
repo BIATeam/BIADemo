@@ -45,7 +45,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = BiaRights.Roles.Options)]
+        [Authorize(Roles = nameof(BiaPermissionId.Roles_Options))]
         public async Task<IActionResult> GetAllOptions(int teamTypeId)
         {
             var results = await this.roleOptionService.GetAllOptionsAsync(teamTypeId);

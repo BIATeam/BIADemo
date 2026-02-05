@@ -46,7 +46,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
         /// <returns>Bytes of the image.</returns>
         [HttpGet("get")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Authorize(Roles = BiaRights.ProfileImage.Get)]
+        [Authorize(Roles = nameof(BiaPermissionId.ProfileImage_Get))]
         public async Task<IActionResult> Get()
         {
             var image = await this.profileImageService.GetAsync(this.configuration.Value.ProfileConfiguration?.ProfileImageUrlOrPath);

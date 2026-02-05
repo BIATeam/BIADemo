@@ -40,7 +40,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Notification
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = BiaRights.NotificationTypes.Options)]
+        [Authorize(Roles = nameof(BiaPermissionId.NotificationType_Options))]
         public async Task<IActionResult> GetAllOptions()
         {
             var results = await this.notificationTypeService.GetAllOptionsAsync();
