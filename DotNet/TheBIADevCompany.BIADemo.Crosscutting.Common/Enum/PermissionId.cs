@@ -71,6 +71,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         Site_Member_List_Access,
 
         /// <summary>
+        /// Site Member Read.
+        /// </summary>
+        Site_Member_Read,
+
+        /// <summary>
         /// Site Member Update.
         /// </summary>
         Site_Member_Update,
@@ -79,6 +84,31 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         /// Site Member Save.
         /// </summary>
         Site_Member_Save,
+
+        /// <summary>
+        /// Site View Add Team View.
+        /// </summary>
+        Site_View_Add_TeamView,
+
+        /// <summary>
+        /// Site View Update Team View.
+        /// </summary>
+        Site_View_Update_TeamView,
+
+        /// <summary>
+        /// Site View Set Default Team View.
+        /// </summary>
+        Site_View_Set_Default_TeamView,
+
+        /// <summary>
+        /// Site View Assign To Team.
+        /// </summary>
+        Site_View_Assign_To_Team,
+
+        /// <summary>
+        /// Site Access All.
+        /// </summary>
+        Site_Access_All,
 
         /// <summary>
         /// Plane Create.
@@ -191,9 +221,19 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         AircraftMaintenanceCompany_Member_Delete,
 
         /// <summary>
+        /// Aircraft Maintenance Company Member Save.
+        /// </summary>
+        AircraftMaintenanceCompany_Member_Save,
+
+        /// <summary>
         /// Aircraft Maintenance Company Member Create.
         /// </summary>
         AircraftMaintenanceCompany_Member_Create,
+
+        /// <summary>
+        /// Aircraft Maintenance Company Member Read.
+        /// </summary>
+        AircraftMaintenanceCompany_Member_Read,
 
         /// <summary>
         /// Aircraft Maintenance Company Member List Access.
@@ -261,9 +301,19 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         MaintenanceTeam_Member_Delete,
 
         /// <summary>
+        /// Maintenance Team Member Save.
+        /// </summary>
+        MaintenanceTeam_Member_Save,
+
+        /// <summary>
         /// Maintenance Team Member Create.
         /// </summary>
         MaintenanceTeam_Member_Create,
+
+        /// <summary>
+        /// Maintenance Team Member Read.
+        /// </summary>
+        MaintenanceTeam_Member_Read,
 
         /// <summary>
         /// Maintenance Team Member List Access.
@@ -493,6 +543,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         /// Announcement Type Options.
         /// </summary>
         AnnouncementType_Options,
+
+        /// <summary>
+        /// Part Options.
+        /// </summary>
+        Part_Options,
 
         /// <summary>
         /// Hangfire Run Worker.

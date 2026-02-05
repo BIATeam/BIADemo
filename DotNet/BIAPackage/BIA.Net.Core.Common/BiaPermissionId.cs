@@ -55,6 +55,16 @@ namespace BIA.Net.Core.Common
         Roles_List,
 
         /// <summary>
+        /// Roles Options.
+        /// </summary>
+        Roles_Options,
+
+        /// <summary>
+        /// Roles List For Current User.
+        /// </summary>
+        Roles_List_For_Current_User,
+
+        /// <summary>
         /// User Add.
         /// </summary>
         User_Add,
@@ -68,6 +78,11 @@ namespace BIA.Net.Core.Common
         /// User Save.
         /// </summary>
         User_Save,
+
+        /// <summary>
+        /// User Save.
+        /// </summary>
+        User_Read,
 
         /// <summary>
         /// User List.
@@ -95,14 +110,64 @@ namespace BIA.Net.Core.Common
         User_UpdateRoles,
 
         /// <summary>
+        /// User Options.
+        /// </summary>
+        User_Options,
+
+        /// <summary>
         /// LDAP Domains List.
         /// </summary>
         LdapDomains_List,
 
         /// <summary>
+        /// Languages Options.
+        /// </summary>
+        Languages_Options,
+
+        /// <summary>
+        /// Profile Image Get.
+        /// </summary>
+        ProfileImage_Get,
+
+        /// <summary>
+        /// Logs Create.
+        /// </summary>
+        Logs_Create,
+
+        /// <summary>
+        /// Team Access All.
+        /// </summary>
+        Team_Access_All,
+
+        /// <summary>
+        /// Team List Access.
+        /// </summary>
+        Team_List_Access,
+
+        /// <summary>
+        /// Team Options.
+        /// </summary>
+        Team_Options,
+
+        /// <summary>
+        /// Team Set Default Team.
+        /// </summary>
+        Team_Set_Default_Team,
+
+        /// <summary>
+        /// Team Set Default Roles.
+        /// </summary>
+        Team_Set_Default_Roles,
+
+        /// <summary>
         /// View List.
         /// </summary>
         View_List,
+
+        /// <summary>
+        /// View Read.
+        /// </summary>
+        View_Read,
 
         /// <summary>
         /// View Add User View.
@@ -178,5 +243,15 @@ namespace BIA.Net.Core.Common
         /// Announcement Update.
         /// </summary>
         Announcement_Update,
+
+        /// <summary>
+        /// Notification Type Options.
+        /// </summary>
+        NotificationType_Options,
+
+        /// <summary>
+        /// Announcement Type Options.
+        /// </summary>
+        AnnouncementType_Options,
     }
 }
