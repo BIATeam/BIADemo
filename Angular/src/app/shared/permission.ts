@@ -1,16 +1,13 @@
 /**
  * Permission enum (values = permission strings for auth checks)
- * IMPORTANT: Keep enum member order in sync with PermissionId enum in DotNet/BIAPackage/BIA.Net.Core.Common/PermissionId.cs
+ * IMPORTANT: Keep enum member order in sync with PermissionId enum in DotNet/TheBIADevCompany.BIADemo.Crosscutting.Common/Enum/PermissionId.cs
  * When adding new permissions:
  * 1. Add to both this enum (Angular) and PermissionId.cs (C#) in the SAME ORDER
- * 2. If out of sync, fallback to string claims ensures zero auth breakage
+ * 2. Options permissions are in a separate enum: PermissionOptions
+ * 3. If out of sync, fallback to string claims ensures zero auth breakage
  */
 /* eslint-disable @typescript-eslint/naming-convention */
 export enum Permission {
-  // Begin BIADemo
-  Hangfire_Access = 'Hangfire_Access',
-  // End BIADemo
-
   // Home
   Home_Access = 'Home_Access',
 
@@ -26,6 +23,16 @@ export enum Permission {
   Site_Member_List_Access = 'Site_Member_List_Access',
   Site_Member_Update = 'Site_Member_Update',
   Site_Member_Save = 'Site_Member_Save',
+  Site_View_Add_TeamView = 'Site_View_Add_TeamView',
+  Site_View_Update_TeamView = 'Site_View_Update_TeamView',
+  Site_View_Set_Default_TeamView = 'Site_View_Set_Default_TeamView',
+  Site_View_Assign_To_Team = 'Site_View_Assign_To_Team',
+  Site_Access_All = 'Site_Access_All',
+
+  // Begin BIADemo
+  Hangfire_Access = 'Hangfire_Access',
+  Hangfire_Run_Worker = 'Hangfire_Run_Worker',
+  // End BIADemo
 
   // BIAToolKit - Begin Permission
   // BIAToolKit - End Permission
@@ -61,6 +68,7 @@ export enum Permission {
   AircraftMaintenanceCompany_Member_Update = 'AircraftMaintenanceCompany_Member_Update',
   AircraftMaintenanceCompany_Member_Delete = 'AircraftMaintenanceCompany_Member_Delete',
   AircraftMaintenanceCompany_Member_Create = 'AircraftMaintenanceCompany_Member_Create',
+  AircraftMaintenanceCompany_Member_Read = 'AircraftMaintenanceCompany_Member_Read',
   AircraftMaintenanceCompany_Member_List_Access = 'AircraftMaintenanceCompany_Member_List_Access',
   AircraftMaintenanceCompany_View_AddTeamView = 'AircraftMaintenanceCompany_View_Add_TeamView',
   AircraftMaintenanceCompany_View_UpdateTeamView = 'AircraftMaintenanceCompany_View_Update_TeamView',
@@ -78,6 +86,7 @@ export enum Permission {
   MaintenanceTeam_Member_Update = 'MaintenanceTeam_Member_Update',
   MaintenanceTeam_Member_Delete = 'MaintenanceTeam_Member_Delete',
   MaintenanceTeam_Member_Create = 'MaintenanceTeam_Member_Create',
+  MaintenanceTeam_Member_Read = 'MaintenanceTeam_Member_Read',
   MaintenanceTeam_Member_List_Access = 'MaintenanceTeam_Member_List_Access',
   MaintenanceTeam_View_AddTeamView = 'MaintenanceTeam_View_Add_TeamView',
   MaintenanceTeam_View_UpdateTeamView = 'MaintenanceTeam_View_Update_TeamView',

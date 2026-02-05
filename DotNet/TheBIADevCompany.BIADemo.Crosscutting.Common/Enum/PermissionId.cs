@@ -5,21 +5,16 @@
 namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
 {
     /// <summary>
-    /// Permission identifiers for BIADemo project (ordinales for JWT compaction).
+    /// Permission identifiers for BIADemo project CRUD operations (ordinales for JWT compaction).
     /// IMPORTANT: Keep enum member order in sync with Permission enum in Angular/src/app/shared/permission.ts
     /// When adding new permissions:
     /// 1. Add to both Permission.ts (Angular) and this enum (C#) in the SAME ORDER
     /// 2. DO NOT specify explicit values for regular permissions - order is implicit (0, 1, 2, ...)
-    /// 3. Options permissions start at 1000 to separate from CRUD permissions
+    /// 3. Options permissions are in a separate enum: PermissionOptionsId (IDs 1000+)
     /// 4. If out of sync, fallback to string claims ensures zero auth breakage, but watch logs for warnings
     /// </summary>
     public enum PermissionId
     {
-        /// <summary>
-        /// Hangfire Access.
-        /// </summary>
-        Hangfire_Access,
-
         /// <summary>
         /// Home Access.
         /// </summary>
@@ -109,6 +104,16 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         /// Site Access All.
         /// </summary>
         Site_Access_All,
+
+        /// <summary>
+        /// Hangfire Access.
+        /// </summary>
+        Hangfire_Access,
+
+        /// <summary>
+        /// Hangfire Run Worker.
+        /// </summary>
+        Hangfire_Run_Worker,
 
         /// <summary>
         /// Plane Create.
@@ -504,54 +509,5 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         /// Maintenance Contract Update.
         /// </summary>
         MaintenanceContract_Update,
-
-        // ========== OPTIONS PERMISSIONS (1000+) ==========
-        // Options permissions for dropdown lists and autocomplete
-        // Starting at 1000 to clearly separate from regular CRUD permissions
-
-        /// <summary>
-        /// Site Options.
-        /// </summary>
-        Site_Options = 1000,
-
-        /// <summary>
-        /// Country Options.
-        /// </summary>
-        Country_Options,
-
-        /// <summary>
-        /// Airport Options.
-        /// </summary>
-        Airport_Options,
-
-        /// <summary>
-        /// Plane Options.
-        /// </summary>
-        Plane_Options,
-
-        /// <summary>
-        /// Plane Type Options.
-        /// </summary>
-        PlaneType_Options,
-
-        /// <summary>
-        /// Aircraft Maintenance Company Options.
-        /// </summary>
-        AircraftMaintenanceCompany_Options,
-
-        /// <summary>
-        /// Announcement Type Options.
-        /// </summary>
-        AnnouncementType_Options,
-
-        /// <summary>
-        /// Part Options.
-        /// </summary>
-        Part_Options,
-
-        /// <summary>
-        /// Hangfire Run Worker.
-        /// </summary>
-        Hangfire_Run_Worker,
     }
 }

@@ -261,8 +261,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             // Must specify the User type explicitly
             collection.AddScoped<ICoreUserRepository, CoreUserRepository<User>>();
 
-            // Register the project-specific permission ID converter with PermissionId enum
+            // Register the project-specific permission ID converters
             collection.AddScoped<IPermissionIdConverter, PermissionIdConverter<PermissionId>>();
+            collection.AddScoped<IPermissionIdConverter, PermissionIdConverter<PermissionOptionsId>>();
 #endif
         }
 #endif

@@ -22,13 +22,14 @@ import {
   switchMap,
   take,
 } from 'rxjs/operators';
+import { Permission } from 'src/app/shared/permission';
+import { PermissionOptions } from 'src/app/shared/permission-options';
 import { AppSettingsService } from '../app-settings/services/app-settings.service';
-import { IsAnnouncementPermission } from '../bia-permission';
+import { BiaPermission, IsAnnouncementPermission } from '../bia-permission';
 import { BiaTeamsActions } from '../team/store/teams-actions';
 import { AbstractDas } from './abstract-das.service';
 import { BiaAppConstantsService } from './bia-app-constants.service';
 import { BiaMessageService } from './bia-message.service';
-import { Permission } from 'src/app/shared/permission';
 import { BiaOnlineOfflineService } from './bia-online-offline.service';
 import { BiaSwUpdateService } from './bia-sw-update.service';
 import { RefreshTokenService } from './refresh-token.service';
@@ -158,34 +159,65 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
 
   public decodeToken(token: string): Token {
     const objDecodedToken: any = jwtDecode(token);
-    
+
     // Decode permission IDs (compact format) with fallback to string permissions
     let permissions: string[] = [];
-    
+
     const permIdsClaim = objDecodedToken['urn:bia:permission_ids'];
     if (permIdsClaim) {
       try {
-        const permIds: number[] = typeof permIdsClaim === 'string' ? JSON.parse(permIdsClaim) : permIdsClaim;
-        // Map IDs to Permission enum values by ordinal
-        const permissionValues = Object.values(Permission);
+        const permIds: number[] =
+          typeof permIdsClaim === 'string'
+            ? JSON.parse(permIdsClaim)
+            : permIdsClaim;
+
+        // Map IDs to Permission/PermissionOptions/BiaPermission enum values by ordinal with ID ranges:
+        // - IDs 0-999: Project CRUD permissions (Permission enum, ordinal = ID)
+        // - IDs 1000-9999: Project Options permissions (PermissionOptions enum, ordinal = ID - 1000)
+        // - IDs 10000+: BIA Framework permissions (BiaPermission enum, ordinal = ID - 10000)
+        const projectPermissionValues = Object.values(Permission);
+        const projectOptionsPermissionValues = Object.values(PermissionOptions);
+        const biaPermissionValues = Object.values(BiaPermission);
+        const OPTIONS_PERMISSION_ID_OFFSET = 1000;
+        const BIA_PERMISSION_ID_OFFSET = 10000;
+
         permissions = permIds
-          .map(id => permissionValues[id] as string)
+          .map(id => {
+            if (id < OPTIONS_PERMISSION_ID_OFFSET) {
+              // Project CRUD permission (0-999)
+              return projectPermissionValues[id] as string;
+            } else if (id < BIA_PERMISSION_ID_OFFSET) {
+              // Project Options permission (1000-9999)
+              const optionsOrdinal = id - OPTIONS_PERMISSION_ID_OFFSET;
+              return projectOptionsPermissionValues[optionsOrdinal] as string;
+            } else {
+              // BIA Framework permission (10000+)
+              const biaOrdinal = id - BIA_PERMISSION_ID_OFFSET;
+              return biaPermissionValues[biaOrdinal] as string;
+            }
+          })
           .filter(perm => perm !== undefined);
-        
+
         if (permissions.length !== permIds.length) {
-          console.warn('Some permission IDs could not be mapped - fallback to string permissions (enum sync may be out of sync)');
+          const unmappedCount = permIds.length - permissions.length;
+          console.warn(
+            `${unmappedCount} permission ID(s) could not be mapped - fallback to string permissions (enum sync may be out of sync)`
+          );
           // Fallback: use string permissions from role claim
           permissions = this.extractPermissionsFromRoles(objDecodedToken);
         }
       } catch (e) {
-        console.warn('Failed to decode permission IDs, fallback to string permissions', e);
+        console.warn(
+          'Failed to decode permission IDs, fallback to string permissions',
+          e
+        );
         permissions = this.extractPermissionsFromRoles(objDecodedToken);
       }
     } else {
       // No compact IDs: fallback to traditional role claim
       permissions = this.extractPermissionsFromRoles(objDecodedToken);
     }
-    
+
     const decodedToken = <Token>{
       id: +objDecodedToken[
         'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid'
@@ -207,8 +239,11 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   }
 
   private extractPermissionsFromRoles(decodedToken: any): string[] {
-    const roleClaim = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || [];
-    return Array.isArray(roleClaim) ? roleClaim : (roleClaim ? [roleClaim] : []);
+    const roleClaim =
+      decodedToken[
+        'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+      ] || [];
+    return Array.isArray(roleClaim) ? roleClaim : roleClaim ? [roleClaim] : [];
   }
 
   public getAdditionalInfos(): AdditionalInfos {
