@@ -28,7 +28,7 @@ namespace BIA.Net.Core.Application.Authentication
         /// <summary>
         /// Claim type for compact permission IDs.
         /// </summary>
-        public const string PermissionIds = "urn:bia:permission_ids";
+        public const string PermissionIds = "urn:bia:permissionid";
 
         /// <summary>
         /// The current JWT options.

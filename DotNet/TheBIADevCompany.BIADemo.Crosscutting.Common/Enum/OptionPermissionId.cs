@@ -13,7 +13,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
     /// 3. These permissions start at ID 1000 (Options range: 1000-1999)
     /// 4. If out of sync, fallback to string claims ensures zero auth breakage, but watch logs for warnings
     /// </summary>
-    public enum PermissionOptionsId
+    public enum OptionPermissionId
     {
         /// <summary>
         /// Site Options.
@@ -44,11 +44,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         /// Aircraft Maintenance Company Options.
         /// </summary>
         AircraftMaintenanceCompany_Options,
-
-        /// <summary>
-        /// Announcement Type Options.
-        /// </summary>
-        AnnouncementType_Options,
 
         /// <summary>
         /// Part Options.

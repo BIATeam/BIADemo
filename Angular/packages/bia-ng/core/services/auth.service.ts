@@ -22,8 +22,8 @@ import {
   switchMap,
   take,
 } from 'rxjs/operators';
+import { OptionPermission } from 'src/app/shared/option-permission';
 import { Permission } from 'src/app/shared/permission';
-import { PermissionOptions } from 'src/app/shared/permission-options';
 import { AppSettingsService } from '../app-settings/services/app-settings.service';
 import { BiaPermission, IsAnnouncementPermission } from '../bia-permission';
 import { BiaTeamsActions } from '../team/store/teams-actions';
@@ -163,7 +163,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     // Decode permission IDs (compact format) with fallback to string permissions
     let permissions: string[] = [];
 
-    const permIdsClaim = objDecodedToken['urn:bia:permission_ids'];
+    const permIdsClaim = objDecodedToken['urn:bia:permissionid'];
     if (permIdsClaim) {
       try {
         const permIds: number[] =
@@ -176,7 +176,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
         // - IDs 1000-1999: Project Options permissions (PermissionOptions enum, ordinal = ID - 1000)
         // - IDs 2000+: Project CRUD permissions (Permission enum, ordinal = ID - 2000)
         const projectPermissionValues = Object.values(Permission);
-        const projectOptionsPermissionValues = Object.values(PermissionOptions);
+        const projectOptionsPermissionValues = Object.values(OptionPermission);
         const biaPermissionValues = Object.values(BiaPermission);
         const OPTIONS_PERMISSION_ID_OFFSET = 1000;
         const PROJECT_PERMISSION_ID_OFFSET = 2000;

@@ -260,7 +260,7 @@ namespace BIA.Net.Core.Application.User
                 Id = (userInfoFromDB?.Id).GetValueOrDefault(),
                 RoleIds = roleIds,
                 Permissions = userPermissions,
-                PermissionIds = permissionIds,
+                PermissionIds = [.. permissionIds.Order()],
                 UserData = userData,
             };
 

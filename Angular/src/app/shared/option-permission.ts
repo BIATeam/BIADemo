@@ -7,13 +7,12 @@
  * 3. If out of sync, fallback to string claims ensures zero auth breakage
  */
 /* eslint-disable @typescript-eslint/naming-convention */
-export enum PermissionOptions {
+export enum OptionPermission {
   Site_Options = 'Site_Options',
   Country_Options = 'Country_Options',
   Airport_Options = 'Airport_Options',
   Plane_Options = 'Plane_Options',
   PlaneType_Options = 'PlaneType_Options',
   AircraftMaintenanceCompany_Options = 'AircraftMaintenanceCompany_Options',
-  AnnouncementType_Options = 'AnnouncementType_Options',
   Part_Options = 'Part_Options',
 }

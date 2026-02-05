@@ -263,7 +263,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
             // Register the project-specific permission ID converters
             collection.AddScoped<IPermissionIdConverter, PermissionIdConverter<PermissionId>>();
-            collection.AddScoped<IPermissionIdConverter, PermissionIdConverter<PermissionOptionsId>>();
+            collection.AddScoped<IPermissionIdConverter, PermissionIdConverter<OptionPermissionId>>();
 #endif
         }
 #endif
