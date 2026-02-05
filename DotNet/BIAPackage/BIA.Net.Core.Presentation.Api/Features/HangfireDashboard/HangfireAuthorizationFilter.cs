@@ -5,11 +5,15 @@
 namespace BIA.Net.Core.Presentation.Api.Features.HangfireDashboard
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using BIA.Net.Core.Application.Authentication;
+    using BIA.Net.Core.Common;
     using Hangfire.Dashboard;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.Extensions.DependencyInjection;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// Manage the authorisation to acced to the dashboard.
@@ -78,9 +82,38 @@ namespace BIA.Net.Core.Presentation.Api.Features.HangfireDashboard
             }
 
             var principal = this.jwtFactory.GetPrincipalFromToken(jwtToken, this.secretKey);
-            if (principal.IsInRole(this.userPermission))
+            if (principal == null)
             {
-                return true;
+                return false;
+            }
+
+            // Check if the user has the required permission by decoding permission IDs
+            var permIdsClaim = principal.Claims.FirstOrDefault(c => c.Type == JwtFactory.PermissionIds);
+            if (permIdsClaim != null && !string.IsNullOrWhiteSpace(permIdsClaim.Value))
+            {
+                try
+                {
+                    var permIds = JsonConvert.DeserializeObject<List<int>>(permIdsClaim.Value);
+                    if (permIds?.Count > 0)
+                    {
+                        // Get all converters from DI (supports multiple permission enum types)
+                        var converters = httpContext.RequestServices.GetServices<IPermissionIdConverter>();
+
+                        foreach (var converter in converters)
+                        {
+                            var permissionNames = converter.ConvertToNames(permIds);
+                            if (permissionNames.Contains(this.userPermission))
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+                catch
+                {
+                    // If deserialization fails, deny access
+                    return false;
+                }
             }
 
             return false;
