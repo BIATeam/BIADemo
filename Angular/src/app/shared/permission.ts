@@ -11,7 +11,21 @@ export enum Permission {
   Hangfire_Access = 'Hangfire_Access',
   // End BIADemo
 
+  // Home
   Home_Access = 'Home_Access',
+
+  // Site
+  Site_Create = 'Site_Create',
+  Site_Delete = 'Site_Delete',
+  Site_List_Access = 'Site_List_Access',
+  Site_Read = 'Site_Read',
+  Site_Save = 'Site_Save',
+  Site_Update = 'Site_Update',
+  Site_Member_Create = 'Site_Member_Create',
+  Site_Member_Delete = 'Site_Member_Delete',
+  Site_Member_List_Access = 'Site_Member_List_Access',
+  Site_Member_Update = 'Site_Member_Update',
+  Site_Member_Save = 'Site_Member_Save',
 
   // BIAToolKit - Begin Permission
   // BIAToolKit - End Permission
@@ -26,6 +40,7 @@ export enum Permission {
   Plane_Update = 'Plane_Update',
   Plane_Fix = 'Plane_Fix',
   // BIAToolKit - End Partial Permission Plane
+
   // BIAToolKit - Begin Partial Permission Engine
   Engine_Create = 'Engine_Create',
   Engine_Delete = 'Engine_Delete',
@@ -35,6 +50,7 @@ export enum Permission {
   Engine_Update = 'Engine_Update',
   Engine_Fix = 'Engine_Fix',
   // BIAToolKit - End Partial Permission Engine
+
   // BIAToolKit - Begin Partial Permission AircraftMaintenanceCompany
   AircraftMaintenanceCompany_Create = 'AircraftMaintenanceCompany_Create',
   AircraftMaintenanceCompany_Delete = 'AircraftMaintenanceCompany_Delete',
@@ -51,6 +67,7 @@ export enum Permission {
   AircraftMaintenanceCompany_View_SetDefaultTeamView = 'AircraftMaintenanceCompany_View_Set_Default_TeamView',
   AircraftMaintenanceCompany_View_AssignToTeam = 'AircraftMaintenanceCompany_View_Assign_To_Team',
   // BIAToolKit - End Partial Permission AircraftMaintenanceCompany
+
   // BIAToolKit - Begin Partial Permission MaintenanceTeam
   MaintenanceTeam_Create = 'MaintenanceTeam_Create',
   MaintenanceTeam_Delete = 'MaintenanceTeam_Delete',
@@ -68,6 +85,7 @@ export enum Permission {
   MaintenanceTeam_View_AssignToTeam = 'MaintenanceTeam_View_Assign_To_Team',
   MaintenanceTeam_Fix = 'MaintenanceTeam_Fix',
   // BIAToolKit - End Partial Permission MaintenanceTeam
+
   // BIAToolKit - Begin Partial Permission Pilot
   Pilot_Create = 'Pilot_Create',
   Pilot_Delete = 'Pilot_Delete',
@@ -77,6 +95,7 @@ export enum Permission {
   Pilot_Update = 'Pilot_Update',
   Pilot_Fix = 'Pilot_Fix',
   // BIAToolKit - End Partial Permission Pilot
+
   // BIAToolKit - Begin Partial Permission Flight
   Flight_Create = 'Flight_Create',
   Flight_Delete = 'Flight_Delete',
@@ -86,6 +105,7 @@ export enum Permission {
   Flight_Update = 'Flight_Update',
   Flight_Fix = 'Flight_Fix',
   // BIAToolKit - End Partial Permission Flight
+
   // End BIAToolKit Generation Ignore
 
   // Begin BIADemo
@@ -110,16 +130,17 @@ export enum Permission {
   MaintenanceContract_Save = 'MaintenanceContract_Save',
   MaintenanceContract_Update = 'MaintenanceContract_Update',
 
+  // ========== OPTIONS PERMISSIONS (1000+) ==========
+  // Options permissions for dropdown lists and autocomplete
+  // Starting at 1000 to clearly separate from regular CRUD permissions
+  // IMPORTANT: These must match PermissionId.cs explicit values (1000, 1001, etc.)
+  Site_Options = 'Site_Options',
+  Country_Options = 'Country_Options',
+  Airport_Options = 'Airport_Options',
+  Plane_Options = 'Plane_Options',
+  PlaneType_Options = 'PlaneType_Options',
+  AircraftMaintenanceCompany_Options = 'AircraftMaintenanceCompany_Options',
+  AnnouncementType_Options = 'AnnouncementType_Options',
+  Hangfire_Run_Worker = 'Hangfire_Run_Worker',
   // End BIADemo
-  Site_Create = 'Site_Create',
-  Site_Delete = 'Site_Delete',
-  Site_List_Access = 'Site_List_Access',
-  Site_Read = 'Site_Read',
-  Site_Save = 'Site_Save',
-  Site_Update = 'Site_Update',
-  Site_Member_Create = 'Site_Member_Create',
-  Site_Member_Delete = 'Site_Member_Delete',
-  Site_Member_List_Access = 'Site_Member_List_Access',
-  Site_Member_Update = 'Site_Member_Update',
-  Site_Member_Save = 'Site_Member_Save',
 }
