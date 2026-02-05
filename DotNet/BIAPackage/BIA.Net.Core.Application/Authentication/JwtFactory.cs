@@ -5,6 +5,7 @@
 namespace BIA.Net.Core.Application.Authentication
 {
     using System;
+    using System.Collections.Generic;
     using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
     using System.Security.Claims;
@@ -24,6 +25,11 @@ namespace BIA.Net.Core.Application.Authentication
     /// </summary>
     public class JwtFactory : IJwtFactory
     {
+        /// <summary>
+        /// Claim type for compact permission IDs.
+        /// </summary>
+        public const string PermissionIds = "urn:bia:permission_ids";
+
         /// <summary>
         /// The current JWT options.
         /// </summary>
@@ -98,9 +104,23 @@ namespace BIA.Net.Core.Application.Authentication
         public ClaimsIdentity GenerateClaimsIdentity<TUserDataDto>(TokenDto<TUserDataDto> tokenDto)
             where TUserDataDto : BaseUserDataDto
         {
-            var claims = tokenDto.Permissions.Select(s => new Claim(ClaimTypes.Role, s)).ToList();
+            var claims = new List<Claim>();
+
+            // Add compact permission IDs if present
+            if (tokenDto.PermissionIds?.Count > 0)
+            {
+                claims.Add(new Claim(JwtFactory.PermissionIds, JsonConvert.SerializeObject(tokenDto.PermissionIds)));
+            }
+
+            // Add legacy string permissions only if UseCompactPermissionsOnly is false (for backward compatibility)
+            if (!this.jwt.UseCompactPermissionsOnly)
+            {
+                claims.AddRange(tokenDto.Permissions.Select(s => new Claim(ClaimTypes.Role, s)).ToList());
+            }
+
             claims.AddRange(tokenDto.RoleIds.Select(s => new Claim(BiaClaimsPrincipal.RoleId, s.ToString())).ToList());
             claims.Add(new Claim(ClaimTypes.Sid, tokenDto.Id.ToString()));
+
             if (tokenDto.UserData != null)
             {
                 claims.Add(new Claim(ClaimTypes.UserData, JsonConvert.SerializeObject(tokenDto.UserData)));

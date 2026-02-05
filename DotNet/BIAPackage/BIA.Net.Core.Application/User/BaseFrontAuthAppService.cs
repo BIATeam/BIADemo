@@ -222,6 +222,20 @@ namespace BIA.Net.Core.Application.User
             // Sort User Permissions
             userPermissions.Sort();
 
+            // Map permission strings to PermissionId ordinales
+            List<int> permissionIds = new List<int>();
+            foreach (var permission in userPermissions)
+            {
+                if (Enum.TryParse<BIA.Net.Core.Common.PermissionId>(permission, out var permId))
+                {
+                    permissionIds.Add((int)permId);
+                }
+                else
+                {
+                    this.Logger.LogError($"Permission '{permission}' not found in PermissionId enum - sync issue detected");
+                }
+            }
+
             // Create Token Dto
             TokenDto<TUserDataDto> tokenDto = new()
             {
@@ -229,6 +243,7 @@ namespace BIA.Net.Core.Application.User
                 Id = (userInfoFromDB?.Id).GetValueOrDefault(),
                 RoleIds = roleIds,
                 Permissions = userPermissions,
+                PermissionIds = permissionIds,
                 UserData = userData,
             };
 

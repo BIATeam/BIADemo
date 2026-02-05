@@ -8,6 +8,7 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Security.Claims;
     using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Authentication;
@@ -54,6 +55,7 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
                 options.Audience = configuration.Security?.Audience;
                 options.SecretKey = configuration.Jwt?.SecretKey;
                 options.ValidTime = configuration.Jwt?.ValidTime ?? 0;
+                options.UseCompactPermissionsOnly = configuration.Jwt?.UseCompactPermissionsOnly ?? false;
             });
             var tokenValidationParameters = new TokenValidationParameters
             {
@@ -84,6 +86,45 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
                         context.Response.StatusCode = 498; // 498 = Token expired/invalid
                         await context.Response.WriteAsync("Un-Authorized");
                     });
+
+                    return Task.CompletedTask;
+                },
+                OnTokenValidated = context =>
+                {
+                    // Enrich claims with permission strings decoded from permission IDs
+                    // This ensures [Authorize(Roles = ...)] works even with compact permissions
+                    var identity = context.Principal?.Identity as ClaimsIdentity;
+                    if (identity != null)
+                    {
+                        var permIdsClaim = identity.FindFirst(JwtFactory.PermissionIds);
+
+                        if (permIdsClaim != null && !string.IsNullOrWhiteSpace(permIdsClaim.Value))
+                        {
+                            try
+                            {
+                                var permIds = Newtonsoft.Json.JsonConvert.DeserializeObject<List<int>>(permIdsClaim.Value);
+                                if (permIds?.Count > 0)
+                                {
+                                    // Convert IDs to permission strings and add as Role claims
+                                    foreach (var id in permIds)
+                                    {
+                                        if (System.Enum.IsDefined(typeof(BIA.Net.Core.Common.PermissionId), id))
+                                        {
+                                            var permissionName = System.Enum.GetName(typeof(BIA.Net.Core.Common.PermissionId), id);
+                                            if (!string.IsNullOrEmpty(permissionName))
+                                            {
+                                                identity.AddClaim(new Claim(ClaimTypes.Role, permissionName));
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            catch
+                            {
+                                // Silently fail - legacy string claims will be used if present
+                            }
+                        }
+                    }
 
                     return Task.CompletedTask;
                 },

@@ -28,6 +28,7 @@ import { BiaTeamsActions } from '../team/store/teams-actions';
 import { AbstractDas } from './abstract-das.service';
 import { BiaAppConstantsService } from './bia-app-constants.service';
 import { BiaMessageService } from './bia-message.service';
+import { Permission } from 'src/app/shared/permission';
 import { BiaOnlineOfflineService } from './bia-online-offline.service';
 import { BiaSwUpdateService } from './bia-sw-update.service';
 import { RefreshTokenService } from './refresh-token.service';
@@ -157,6 +158,34 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
 
   public decodeToken(token: string): Token {
     const objDecodedToken: any = jwtDecode(token);
+    
+    // Decode permission IDs (compact format) with fallback to string permissions
+    let permissions: string[] = [];
+    
+    const permIdsClaim = objDecodedToken['urn:bia:permission_ids'];
+    if (permIdsClaim) {
+      try {
+        const permIds: number[] = typeof permIdsClaim === 'string' ? JSON.parse(permIdsClaim) : permIdsClaim;
+        // Map IDs to Permission enum values by ordinal
+        const permissionValues = Object.values(Permission);
+        permissions = permIds
+          .map(id => permissionValues[id] as string)
+          .filter(perm => perm !== undefined);
+        
+        if (permissions.length !== permIds.length) {
+          console.warn('Some permission IDs could not be mapped - fallback to string permissions (enum sync may be out of sync)');
+          // Fallback: use string permissions from role claim
+          permissions = this.extractPermissionsFromRoles(objDecodedToken);
+        }
+      } catch (e) {
+        console.warn('Failed to decode permission IDs, fallback to string permissions', e);
+        permissions = this.extractPermissionsFromRoles(objDecodedToken);
+      }
+    } else {
+      // No compact IDs: fallback to traditional role claim
+      permissions = this.extractPermissionsFromRoles(objDecodedToken);
+    }
+    
     const decodedToken = <Token>{
       id: +objDecodedToken[
         'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid'
@@ -170,14 +199,16 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
           'http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata'
         ]
       ),
-      permissions:
-        objDecodedToken[
-          'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
-        ],
+      permissions: permissions,
       expiredAt: objDecodedToken['exp'],
     };
 
     return decodedToken;
+  }
+
+  private extractPermissionsFromRoles(decodedToken: any): string[] {
+    const roleClaim = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || [];
+    return Array.isArray(roleClaim) ? roleClaim : (roleClaim ? [roleClaim] : []);
   }
 
   public getAdditionalInfos(): AdditionalInfos {

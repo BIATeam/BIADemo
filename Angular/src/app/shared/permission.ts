@@ -1,3 +1,10 @@
+/**
+ * Permission enum (values = permission strings for auth checks)
+ * IMPORTANT: Keep enum member order in sync with PermissionId enum in DotNet/BIAPackage/BIA.Net.Core.Common/PermissionId.cs
+ * When adding new permissions:
+ * 1. Add to both this enum (Angular) and PermissionId.cs (C#) in the SAME ORDER
+ * 2. If out of sync, fallback to string claims ensures zero auth breakage
+ */
 /* eslint-disable @typescript-eslint/naming-convention */
 export enum Permission {
   // Begin BIADemo
