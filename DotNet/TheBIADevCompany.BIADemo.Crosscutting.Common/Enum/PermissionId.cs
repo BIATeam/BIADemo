@@ -1,16 +1,17 @@
-// <copyright file="PermissionId.cs" company="BIA">
-// Copyright (c) BIA. All rights reserved.
+// <copyright file="PermissionId.cs" company="TheBIADevCompany">
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Common
+namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
 {
     /// <summary>
-    /// Permission identifiers (ordinales for JWT compaction).
+    /// Permission identifiers for BIADemo project (ordinales for JWT compaction).
     /// IMPORTANT: Keep enum member order in sync with Permission enum in Angular/src/app/shared/permission.ts
     /// When adding new permissions:
     /// 1. Add to both Permission.ts (Angular) and this enum (C#) in the SAME ORDER
-    /// 2. DO NOT specify explicit values - order is implicit (0, 1, 2, ...)
-    /// 3. If out of sync, fallback to string claims ensures zero auth breakage, but watch logs for "sync issue detected"
+    /// 2. DO NOT specify explicit values for regular permissions - order is implicit (0, 1, 2, ...)
+    /// 3. Options permissions start at 1000 to separate from CRUD permissions
+    /// 4. If out of sync, fallback to string claims ensures zero auth breakage, but watch logs for warnings
     /// </summary>
     public enum PermissionId
     {

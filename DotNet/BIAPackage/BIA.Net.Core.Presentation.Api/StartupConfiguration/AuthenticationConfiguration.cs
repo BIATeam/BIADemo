@@ -19,6 +19,7 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using Microsoft.IdentityModel.Logging;
     using Microsoft.IdentityModel.Tokens;
 
@@ -105,17 +106,32 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
                                 var permIds = Newtonsoft.Json.JsonConvert.DeserializeObject<List<int>>(permIdsClaim.Value);
                                 if (permIds?.Count > 0)
                                 {
-                                    // Convert IDs to permission strings and add as Role claims
-                                    foreach (var id in permIds)
+                                    // Get all converters from DI (supports multiple permission enum types)
+                                    var converters = context.HttpContext.RequestServices.GetServices<IPermissionIdConverter>();
+                                    var convertedIds = new HashSet<int>();
+
+                                    foreach (var converter in converters)
                                     {
-                                        if (System.Enum.IsDefined(typeof(BIA.Net.Core.Common.PermissionId), id))
+                                        var permissionNames = converter.ConvertToNames(permIds);
+                                        foreach (var permissionName in permissionNames)
                                         {
-                                            var permissionName = System.Enum.GetName(typeof(BIA.Net.Core.Common.PermissionId), id);
-                                            if (!string.IsNullOrEmpty(permissionName))
-                                            {
-                                                identity.AddClaim(new Claim(ClaimTypes.Role, permissionName));
-                                            }
+                                            identity.AddClaim(new Claim(ClaimTypes.Role, permissionName));
                                         }
+
+                                        // Track which IDs were successfully converted
+                                        var thisConverterIds = converter.ConvertToIds(permissionNames);
+                                        foreach (var id in thisConverterIds)
+                                        {
+                                            convertedIds.Add(id);
+                                        }
+                                    }
+
+                                    // Log warning for any IDs that weren't converted by any converter
+                                    var unconvertedIds = permIds.Except(convertedIds).ToList();
+                                    if (unconvertedIds.Any())
+                                    {
+                                        var logger = context.HttpContext.RequestServices.GetService<Microsoft.Extensions.Logging.ILogger<JwtFactory>>();
+                                        logger?.LogWarning($"Permission IDs not found in any registered converter: [{string.Join(", ", unconvertedIds)}] - may indicate synchronization issue");
                                     }
                                 }
                             }

@@ -48,6 +48,10 @@ namespace BIA.Net.Core.Application.User
         where TUserDataDto : BaseUserDataDto, new()
     {
         /// <summary>
+        /// The permission ID converters (supports multiple permission enum types).
+        /// </summary>
+        protected readonly IEnumerable<IPermissionIdConverter> permissionIdConverters;
+        /// <summary>
         /// Initializes a new instance of the <see cref="BaseFrontAuthAppService{TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId, TUserFromDirectoryDto, TUserFromDirectory, TAdditionalInfoDto, TUserDataDto}" /> class.
         /// </summary>
         /// <param name="userAppService">The user application service.</param>
@@ -62,6 +66,7 @@ namespace BIA.Net.Core.Application.User
         /// <param name="biaNetconfiguration">The bia netconfiguration.</param>
         /// <param name="userDirectoryHelper">The user directory helper.</param>
         /// <param name="ldapRepositoryHelper">The LDAP repository helper.</param>
+        /// <param name="permissionIdConverters">The permission ID converters (all registered implementations).</param>
         protected BaseFrontAuthAppService(
             IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory> userAppService,
             IBaseTeamAppService<TEnumTeamTypeId> teamAppService,
@@ -74,7 +79,8 @@ namespace BIA.Net.Core.Application.User
             IConfiguration configuration,
             IOptions<BiaNetSection> biaNetconfiguration,
             IUserDirectoryRepository<TUserFromDirectoryDto, TUserFromDirectory> userDirectoryHelper,
-            ILdapRepositoryHelper ldapRepositoryHelper)
+            ILdapRepositoryHelper ldapRepositoryHelper,
+            IEnumerable<IPermissionIdConverter> permissionIdConverters = null)
             : base(jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper)
         {
             this.UserAppService = userAppService;
@@ -82,6 +88,7 @@ namespace BIA.Net.Core.Application.User
             this.RoleAppService = roleAppService;
             this.IdentityProviderRepository = identityProviderRepository;
             this.RolesConfiguration = biaNetconfiguration.Value.Roles;
+            this.permissionIdConverters = permissionIdConverters ?? Enumerable.Empty<IPermissionIdConverter>();
         }
 
         /// <summary>
@@ -222,18 +229,28 @@ namespace BIA.Net.Core.Application.User
             // Sort User Permissions
             userPermissions.Sort();
 
-            // Map permission strings to PermissionId ordinales
+            // Map permission strings to IDs using all registered converters
             List<int> permissionIds = new List<int>();
-            foreach (var permission in userPermissions)
+            HashSet<string> convertedPermissions = new HashSet<string>();
+            
+            foreach (var converter in this.permissionIdConverters)
             {
-                if (Enum.TryParse<BIA.Net.Core.Common.PermissionId>(permission, out var permId))
+                var ids = converter.ConvertToIds(userPermissions);
+                permissionIds.AddRange(ids);
+                
+                // Track which permissions were successfully converted by this converter
+                var names = converter.ConvertToNames(ids);
+                foreach (var name in names)
                 {
-                    permissionIds.Add((int)permId);
+                    convertedPermissions.Add(name);
                 }
-                else
-                {
-                    this.Logger.LogError($"Permission '{permission}' not found in PermissionId enum - sync issue detected");
-                }
+            }
+            
+            // Log warning for permissions that weren't converted by any converter
+            var unconvertedPermissions = userPermissions.Except(convertedPermissions).ToList();
+            if (unconvertedPermissions.Any())
+            {
+                this.Logger.LogWarning($"Permissions not found in any registered PermissionId enum: [{string.Join(", ", unconvertedPermissions)}] - may need synchronization");
             }
 
             // Create Token Dto

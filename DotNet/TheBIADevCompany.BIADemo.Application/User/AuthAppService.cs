@@ -35,6 +35,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
     // End BIADemo
+    using BIA.Net.Core.Common;
+
+    // End BIADemo
 
     /// <summary>
     /// Auth App Service.
@@ -61,7 +64,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
         IMemberAppService memberAppService,
 
         // End BIADemo
-        ILdapRepositoryHelper ldapRepositoryHelper)
+        ILdapRepositoryHelper ldapRepositoryHelper,
+        IEnumerable<IPermissionIdConverter> permissionIdConverters = null)
 #if BIA_FRONT_FEATURE
         : BaseFrontAuthAppService<UserDto, User, RoleId, TeamTypeId, UserFromDirectoryDto, UserFromDirectory, AdditionalInfoDto, UserDataDto>(
             userAppService,
@@ -75,7 +79,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
             configuration,
             biaNetconfiguration,
             userDirectoryHelper,
-            ldapRepositoryHelper),
+            ldapRepositoryHelper,
+            permissionIdConverters),
         IAuthAppService
 #else
         : BaseAuthAppService<UserFromDirectoryDto, UserFromDirectory, AdditionalInfoDto, UserDataDto>(jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper), IAuthAppService

@@ -34,6 +34,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.EntityFrameworkCore.Migrations;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
 #if BIA_FRONT_FEATURE
@@ -259,6 +260,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 #if BIA_FRONT_FEATURE
             // Must specify the User type explicitly
             collection.AddScoped<ICoreUserRepository, CoreUserRepository<User>>();
+
+            // Register the project-specific permission ID converter with PermissionId enum
+            collection.AddScoped<IPermissionIdConverter, PermissionIdConverter<PermissionId>>();
 #endif
         }
 #endif

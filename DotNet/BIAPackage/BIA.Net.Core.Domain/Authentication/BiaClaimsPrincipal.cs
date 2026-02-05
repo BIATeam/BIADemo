@@ -139,49 +139,12 @@ namespace BIA.Net.Core.Domain.Authentication
         /// Get the user rights in the claims.
         /// This method is called GetUserPermissions while we retrieve the roles. Because we use this claim to store the permissions in the application token.
         /// Supports both compact permission IDs (urn:bia:permission_ids) and legacy string permissions (ClaimTypes.Role).
+        /// Note: Compact IDs are already decoded to Role claims by OnTokenValidated event, so this typically returns ClaimTypes.Role.
         /// </summary>
         /// <returns>The user rights.</returns>
         public virtual IEnumerable<string> GetUserPermissions()
         {
-            // Check for compact permission IDs first
-            if (this.HasClaim(x => x.Type == PermissionIds))
-            {
-                var permIdsJson = this.FindFirst(x => x.Type == PermissionIds)?.Value;
-                if (!string.IsNullOrWhiteSpace(permIdsJson))
-                {
-                    try
-                    {
-                        var permIds = JsonConvert.DeserializeObject<List<int>>(permIdsJson);
-                        if (permIds?.Count > 0)
-                        {
-                            // Convert IDs to permission strings using PermissionId enum
-                            var permissions = new List<string>();
-                            foreach (var id in permIds)
-                            {
-                                if (System.Enum.IsDefined(typeof(BIA.Net.Core.Common.PermissionId), id))
-                                {
-                                    var permissionName = System.Enum.GetName(typeof(BIA.Net.Core.Common.PermissionId), id);
-                                    if (!string.IsNullOrEmpty(permissionName))
-                                    {
-                                        permissions.Add(permissionName);
-                                    }
-                                }
-                            }
-
-                            if (permissions.Count > 0)
-                            {
-                                return permissions;
-                            }
-                        }
-                    }
-                    catch
-                    {
-                        // Fallback to string claims on any error
-                    }
-                }
-            }
-
-            // Fallback to legacy string permissions in ClaimTypes.Role
+            // Return permissions from ClaimTypes.Role (already decoded by OnTokenValidated if compact IDs were used)
             return this.GetClaimValues(ClaimTypes.Role);
         }
 
