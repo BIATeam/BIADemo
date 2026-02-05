@@ -5,7 +5,7 @@ import {
   BiaOnlineOfflineService,
   clone,
   DateHelperService,
-} from '@bia-team/bia-ng/core';
+} from 'packages/bia-ng/core/public-api';
 import {
   Announcement,
   DataResult,
@@ -15,7 +15,7 @@ import {
   PostParam,
   PutParam,
   SaveParam,
-} from '@bia-team/bia-ng/models';
+} from 'packages/bia-ng/models/public-api';
 import { catchError, map, Observable, of, throwError } from 'rxjs';
 
 @Injectable({

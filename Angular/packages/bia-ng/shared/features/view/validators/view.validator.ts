@@ -1,5 +1,5 @@
 ﻿import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { ViewType } from '@bia-team/bia-ng/models/enum';
+import { ViewType } from 'packages/bia-ng/models/enum/public-api';
 
 export class ViewValidator {
   static teamViewWithTeams(): ValidatorFn {

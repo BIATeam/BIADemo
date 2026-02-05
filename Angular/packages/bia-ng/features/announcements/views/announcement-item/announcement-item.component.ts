@@ -1,12 +1,12 @@
 ﻿import { AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Announcement } from '@bia-team/bia-ng/models';
+import { Announcement } from 'packages/bia-ng/models/public-api';
 import {
   CrudItemItemComponent,
   CrudItemService,
   SpinnerComponent,
-} from '@bia-team/bia-ng/shared';
+} from 'packages/bia-ng/shared/public-api';
 import { AnnouncementService } from '../../services/announcement.service';
 
 @Component({

@@ -9,9 +9,9 @@
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { Announcement } from '@bia-team/bia-ng/models';
-import { BiaAnnouncementType } from '@bia-team/bia-ng/models/enum';
 import { TranslateModule } from '@ngx-translate/core';
+import { BiaAnnouncementType } from 'packages/bia-ng/models/enum/public-api';
+import { Announcement } from 'packages/bia-ng/models/public-api';
 import { SafeHtmlPipe } from '../../../pipes/safe-html.pipe';
 
 @Component({
