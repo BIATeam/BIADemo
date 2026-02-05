@@ -129,18 +129,5 @@ export enum Permission {
   MaintenanceContract_Read = 'MaintenanceContract_Read',
   MaintenanceContract_Save = 'MaintenanceContract_Save',
   MaintenanceContract_Update = 'MaintenanceContract_Update',
-
-  // ========== OPTIONS PERMISSIONS (1000+) ==========
-  // Options permissions for dropdown lists and autocomplete
-  // Starting at 1000 to clearly separate from regular CRUD permissions
-  // IMPORTANT: These must match PermissionId.cs explicit values (1000, 1001, etc.)
-  Site_Options = 'Site_Options',
-  Country_Options = 'Country_Options',
-  Airport_Options = 'Airport_Options',
-  Plane_Options = 'Plane_Options',
-  PlaneType_Options = 'PlaneType_Options',
-  AircraftMaintenanceCompany_Options = 'AircraftMaintenanceCompany_Options',
-  AnnouncementType_Options = 'AnnouncementType_Options',
-  Hangfire_Run_Worker = 'Hangfire_Run_Worker',
   // End BIADemo
 }

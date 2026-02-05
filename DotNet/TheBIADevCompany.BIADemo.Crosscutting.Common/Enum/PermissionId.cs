@@ -203,22 +203,22 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         /// <summary>
         /// Aircraft Maintenance Company View Add Team View.
         /// </summary>
-        AircraftMaintenanceCompany_View_AddTeamView,
+        AircraftMaintenanceCompany_View_Add_TeamView,
 
         /// <summary>
         /// Aircraft Maintenance Company View Update Team View.
         /// </summary>
-        AircraftMaintenanceCompany_View_UpdateTeamView,
+        AircraftMaintenanceCompany_View_Update_TeamView,
 
         /// <summary>
         /// Aircraft Maintenance Company View Set Default Team View.
         /// </summary>
-        AircraftMaintenanceCompany_View_SetDefaultTeamView,
+        AircraftMaintenanceCompany_View_Set_Default_TeamView,
 
         /// <summary>
         /// Aircraft Maintenance Company View Assign To Team.
         /// </summary>
-        AircraftMaintenanceCompany_View_AssignToTeam,
+        AircraftMaintenanceCompany_View_Assign_To_Team,
 
         /// <summary>
         /// Maintenance Team Create.
@@ -273,22 +273,22 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         /// <summary>
         /// Maintenance Team View Add Team View.
         /// </summary>
-        MaintenanceTeam_View_AddTeamView,
+        MaintenanceTeam_View_Add_TeamView,
 
         /// <summary>
         /// Maintenance Team View Update Team View.
         /// </summary>
-        MaintenanceTeam_View_UpdateTeamView,
+        MaintenanceTeam_View_Update_TeamView,
 
         /// <summary>
         /// Maintenance Team View Set Default Team View.
         /// </summary>
-        MaintenanceTeam_View_SetDefaultTeamView,
+        MaintenanceTeam_View_Set_Default_TeamView,
 
         /// <summary>
         /// Maintenance Team View Assign To Team.
         /// </summary>
-        MaintenanceTeam_View_AssignToTeam,
+        MaintenanceTeam_View_Assign_To_Team,
 
         /// <summary>
         /// Maintenance Team Fix.
