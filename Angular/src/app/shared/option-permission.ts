@@ -8,11 +8,11 @@
  */
 /* eslint-disable @typescript-eslint/naming-convention */
 export enum OptionPermission {
-  Site_Options = 'Site_Options',
-  Country_Options = 'Country_Options',
-  Airport_Options = 'Airport_Options',
-  Plane_Options = 'Plane_Options',
-  PlaneType_Options = 'PlaneType_Options',
-  AircraftMaintenanceCompany_Options = 'AircraftMaintenanceCompany_Options',
-  Part_Options = 'Part_Options',
+  Site_Options,
+  Country_Options,
+  Airport_Options,
+  Plane_Options,
+  PlaneType_Options,
+  AircraftMaintenanceCompany_Options,
+  Part_Options,
 }

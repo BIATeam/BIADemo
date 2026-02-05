@@ -277,18 +277,20 @@ export class ManageViewsDialogComponent implements OnInit, OnDestroy {
         BiaAppConstantsService.teamTypeRightPrefix.find(
           t => t.key === this.useViewTeamWithTypeId
         )?.value;
-      this.canAddTeamView = this.authService.hasPermission(
-        teamTypeRightPrefix + BiaPermission.View_AddTeamViewSuffix
-      );
-      this.canUpdateTeamView = this.authService.hasPermission(
-        teamTypeRightPrefix + BiaPermission.View_UpdateTeamViewSuffix
-      );
-      this.canSetDefaultTeamView = this.authService.hasPermission(
-        teamTypeRightPrefix + BiaPermission.View_SetDefaultTeamViewSuffix
-      );
-      this.canAssignTeamView = this.authService.hasPermission(
-        teamTypeRightPrefix + BiaPermission.View_AssignToTeamSuffix
-      );
+      if (teamTypeRightPrefix) {
+        this.canAddTeamView = this.authService.hasPermission(
+          teamTypeRightPrefix + BiaPermission.View_AddTeamViewSuffix
+        );
+        this.canUpdateTeamView = this.authService.hasPermission(
+          teamTypeRightPrefix + BiaPermission.View_UpdateTeamViewSuffix
+        );
+        this.canSetDefaultTeamView = this.authService.hasPermission(
+          teamTypeRightPrefix + BiaPermission.View_SetDefaultTeamViewSuffix
+        );
+        this.canAssignTeamView = this.authService.hasPermission(
+          teamTypeRightPrefix + BiaPermission.View_AssignToTeamSuffix
+        );
+      }
       this.canDeleteTeamView = this.authService.hasPermission(
         BiaPermission.View_DeleteTeamView
       );

@@ -96,19 +96,21 @@ export class ViewSaveComponent<
         BiaAppConstantsService.teamTypeRightPrefix.find(
           t => t.key === this.featureConfiguration?.useViewTeamWithTypeId
         )?.value;
-      this.canAddTeamView = this.authService.hasPermission(
-        teamTypeRightPrefix + BiaPermission.View_AddTeamViewSuffix
-      );
-      this.canUpdateTeamView = this.authService.hasPermission(
-        teamTypeRightPrefix + BiaPermission.View_UpdateTeamViewSuffix
-      );
-      this.permissionAssignTeams = this.authService
-        .getDecryptedToken()
-        .userData.crossTeamPermissions?.find(
-          p =>
-            p.permission ===
-            teamTypeRightPrefix + BiaPermission.View_AssignToTeamSuffix
+      if (teamTypeRightPrefix) {
+        this.canAddTeamView = this.authService.hasPermission(
+          teamTypeRightPrefix + BiaPermission.View_AddTeamViewSuffix
         );
+        this.canUpdateTeamView = this.authService.hasPermission(
+          teamTypeRightPrefix + BiaPermission.View_UpdateTeamViewSuffix
+        );
+        this.permissionAssignTeams = this.authService
+          .getDecryptedToken()
+          .userData.crossTeamPermissions?.find(
+            p =>
+              p.permission ===
+              teamTypeRightPrefix + BiaPermission.View_AssignToTeamSuffix
+          );
+      }
     }
     this.canAddUserView = this.authService.hasPermission(
       BiaPermission.View_AddUserView

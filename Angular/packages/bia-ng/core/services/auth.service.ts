@@ -118,27 +118,73 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     );
   }
 
-  public hasPermission(permission: string): boolean {
-    return this.checkPermission(this.authInfoSubject.value, permission);
+  public hasPermission(
+    permission: string | Permission | OptionPermission | BiaPermission
+  ): boolean {
+    // Convert enum number to its string name if needed
+    const permissionName =
+      typeof permission === 'number'
+        ? this.getEnumName(permission)
+        : permission;
+    if (!permissionName) {
+      return true;
+    }
+    return this.checkPermission(this.authInfoSubject.value, permissionName);
   }
 
-  public hasPermissionObs(permission: string): Observable<boolean> {
-    if (!permission) {
+  public hasPermissionObs(
+    permission: string | Permission | OptionPermission | BiaPermission
+  ): Observable<boolean> {
+    // Convert enum number to its string name if needed
+    const permissionName =
+      typeof permission === 'number'
+        ? this.getEnumName(permission)
+        : permission;
+    if (!permissionName) {
       return of(true);
     }
     if (RefreshTokenService.shouldRefreshToken) {
       console.info('Login from hasPermissionObs.');
       return this.login().pipe(
         map((authInfo: AuthInfo | null) => {
-          return this.checkPermission(authInfo, permission);
+          return this.checkPermission(authInfo, permissionName);
         })
       );
     }
     return this.authInfo$.pipe(
       map((authInfo: AuthInfo) => {
-        return this.checkPermission(authInfo, permission);
+        return this.checkPermission(authInfo, permissionName);
       })
     );
+  }
+
+  private getEnumName(value: number): string | undefined {
+    // Check which enum range this value belongs to
+    // Permission enum (project CRUD)
+    const permissionKeys = Object.keys(Permission).filter(k =>
+      isNaN(Number(k))
+    );
+    if (value >= 0 && value < permissionKeys.length) {
+      return permissionKeys[value];
+    }
+
+    // OptionPermission enum
+    const optionPermissionKeys = Object.keys(OptionPermission).filter(k =>
+      isNaN(Number(k))
+    );
+    if (value >= 0 && value < optionPermissionKeys.length) {
+      return optionPermissionKeys[value];
+    }
+
+    // BiaPermission enum
+    const biaPermissionKeys = Object.keys(BiaPermission).filter(k =>
+      isNaN(Number(k))
+    );
+    if (value >= 0 && value < biaPermissionKeys.length) {
+      return biaPermissionKeys[value];
+    }
+
+    return undefined;
   }
 
   public getToken(): string {
@@ -171,13 +217,20 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
             ? JSON.parse(permIdsClaim)
             : permIdsClaim;
 
-        // Map IDs to Permission/PermissionOptions/BiaPermission enum values by ordinal with ID ranges:
+        // Map IDs to Permission/PermissionOptions/BiaPermission enum names by ordinal with ID ranges:
         // - IDs 0-999: BIA Framework permissions (BiaPermission enum, ordinal = ID)
         // - IDs 1000-1999: Project Options permissions (PermissionOptions enum, ordinal = ID - 1000)
         // - IDs 2000+: Project CRUD permissions (Permission enum, ordinal = ID - 2000)
-        const projectPermissionValues = Object.values(Permission);
-        const projectOptionsPermissionValues = Object.values(OptionPermission);
-        const biaPermissionValues = Object.values(BiaPermission);
+        // Since enums now use numeric values, we use Object.keys() to get enum member names
+        const projectPermissionKeys = Object.keys(Permission).filter(k =>
+          isNaN(Number(k))
+        );
+        const projectOptionsPermissionKeys = Object.keys(
+          OptionPermission
+        ).filter(k => isNaN(Number(k)));
+        const biaPermissionKeys = Object.keys(BiaPermission).filter(k =>
+          isNaN(Number(k))
+        );
         const OPTIONS_PERMISSION_ID_OFFSET = 1000;
         const PROJECT_PERMISSION_ID_OFFSET = 2000;
 
@@ -187,17 +240,15 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
             let permission: string | undefined;
             if (id < OPTIONS_PERMISSION_ID_OFFSET) {
               // BIA Framework permission (0-999)
-              permission = biaPermissionValues[id] as string;
+              permission = biaPermissionKeys[id];
             } else if (id < PROJECT_PERMISSION_ID_OFFSET) {
               // Project Options permission (1000-1999)
               const optionsOrdinal = id - OPTIONS_PERMISSION_ID_OFFSET;
-              permission = projectOptionsPermissionValues[
-                optionsOrdinal
-              ] as string;
+              permission = projectOptionsPermissionKeys[optionsOrdinal];
             } else {
               // Project CRUD permission (2000+)
               const projectOrdinal = id - PROJECT_PERMISSION_ID_OFFSET;
-              permission = projectPermissionValues[projectOrdinal] as string;
+              permission = projectPermissionKeys[projectOrdinal];
             }
             if (!permission) {
               unmappedIds.push(id);
