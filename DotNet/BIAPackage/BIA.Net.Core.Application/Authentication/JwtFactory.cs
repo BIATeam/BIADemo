@@ -26,11 +26,6 @@ namespace BIA.Net.Core.Application.Authentication
     public class JwtFactory : IJwtFactory
     {
         /// <summary>
-        /// Claim type for compact permission IDs.
-        /// </summary>
-        public const string PermissionIds = "urn:bia:permissionid";
-
-        /// <summary>
         /// The current JWT options.
         /// </summary>
         private readonly Jwt jwt;
@@ -107,7 +102,7 @@ namespace BIA.Net.Core.Application.Authentication
             var claims = new List<Claim>
             {
                 new(ClaimTypes.Sid, tokenDto.Id.ToString()),
-                new(PermissionIds, JsonConvert.SerializeObject(tokenDto.PermissionIds)),
+                new(ClaimTypes.Role, JsonConvert.SerializeObject(tokenDto.PermissionIds)),
             };
 
             claims.AddRange(tokenDto.RoleIds.Select(s => new Claim(BiaClaimsPrincipal.RoleId, s.ToString())));

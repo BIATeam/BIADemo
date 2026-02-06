@@ -164,31 +164,6 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   public decodeToken(token: string): Token {
     const objDecodedToken: any = jwtDecode(token);
 
-    // Decode permission IDs (compact format) with fallback to string permissions
-    let permissions: string[] = [];
-
-    const permIdsClaim = objDecodedToken['urn:bia:permissionid'];
-    if (permIdsClaim) {
-      try {
-        const permIds: number[] =
-          typeof permIdsClaim === 'string'
-            ? JSON.parse(permIdsClaim)
-            : permIdsClaim;
-        permissions = permIds.map(id => id.toString());
-      } catch (e) {
-        console.warn(
-          'Failed to decode permission IDs, fallback to string permissions',
-          e
-        );
-      }
-    }
-
-    permissions.push(
-      ...objDecodedToken[
-        'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
-      ]
-    );
-
     const decodedToken = <Token>{
       id: +objDecodedToken[
         'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid'
@@ -202,10 +177,13 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
           'http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata'
         ]
       ),
-      permissions: permissions,
+      permissions: JSON.parse(
+        objDecodedToken[
+          'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+        ]
+      ),
       expiredAt: objDecodedToken['exp'],
     };
-
     return decodedToken;
   }
 
@@ -376,7 +354,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       return true;
     }
 
-    if (!authInfo) {
+    if (!authInfo?.decryptedToken?.permissions) {
       return false;
     }
 
@@ -388,11 +366,16 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     const appSettingPermission = appSettings.permissions.find(
       p => p.name === permission
     );
+    if (!appSettingPermission) {
+      console.warn(
+        `Permission ${permission} not found in app settings permissions`
+      );
+      return false;
+    }
 
-    const permissionToCompare = appSettingPermission
-      ? appSettingPermission.permissionId.toString()
-      : permission;
-    return authInfo.decryptedToken.permissions.includes(permissionToCompare);
+    return authInfo.decryptedToken.permissions.includes(
+      appSettingPermission.permissionId
+    );
   }
 
   protected getAuthInfo() {
@@ -411,13 +394,12 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       map((authInfo: AuthInfo) => {
         if (authInfo) {
           authInfo.decryptedToken = this.decodeToken(authInfo.token);
-
           if (!BiaAppConstantsService.allEnvironments.enableAnnouncements) {
             const appSettings = this.appSettingsService.appSettings;
             if (appSettings?.permissions) {
               const announcementPermissionIds = appSettings.permissions
                 .filter(p => IsAnnouncementPermission(p.name))
-                .map(p => p.permissionId.toString());
+                .map(p => p.permissionId);
 
               authInfo.decryptedToken.permissions =
                 authInfo.decryptedToken.permissions.filter(

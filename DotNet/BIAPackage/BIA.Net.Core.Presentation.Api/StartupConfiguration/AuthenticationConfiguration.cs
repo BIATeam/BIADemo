@@ -96,7 +96,7 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
                     var identity = context.Principal?.Identity as ClaimsIdentity;
                     if (identity != null)
                     {
-                        var permIdsClaim = identity.FindFirst(JwtFactory.PermissionIds);
+                        var permIdsClaim = identity.FindFirst(ClaimTypes.Role);
 
                         if (permIdsClaim != null && !string.IsNullOrWhiteSpace(permIdsClaim.Value))
                         {

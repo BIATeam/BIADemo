@@ -8,6 +8,7 @@ namespace BIA.Net.Core.Presentation.Api.Features.HangfireDashboard
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
+    using System.Security.Claims;
     using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Common;
     using Hangfire.Dashboard;
@@ -88,7 +89,7 @@ namespace BIA.Net.Core.Presentation.Api.Features.HangfireDashboard
             }
 
             // Check if the user has the required permission by decoding permission IDs
-            var permIdsClaim = principal.Claims.FirstOrDefault(c => c.Type == JwtFactory.PermissionIds);
+            var permIdsClaim = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
             if (permIdsClaim != null && !string.IsNullOrWhiteSpace(permIdsClaim.Value))
             {
                 try

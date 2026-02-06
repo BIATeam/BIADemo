@@ -46,11 +46,7 @@ export class LayoutComponent implements OnInit {
     protected readonly store: Store,
     // protected notificationSignalRService: NotificationSignalRService,
     @Inject(APP_BASE_HREF) public baseHref: string
-  ) {
-    this.enableNotifications =
-      BiaAppConstantsService.allEnvironments.enableNotifications &&
-      this.authService.hasPermission(BiaPermission.Notification_List_Access);
-  }
+  ) {}
 
   public showEnvironmentMessage(environmentType: EnvironmentType | undefined) {
     return environmentType !== EnvironmentType.PRD;
