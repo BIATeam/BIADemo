@@ -12,7 +12,7 @@ export interface AppSettings {
   profileConfiguration?: ProfileConfiguration;
   iframeConfiguration?: IframeConfiguration;
   teamsConfig: TeamConfigDto[];
-  permissions?: PermissionInfo[];
+  permissions: PermissionInfo[];
 }
 
 export interface TeamConfigDto {

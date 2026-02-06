@@ -177,11 +177,10 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
           'http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata'
         ]
       ),
-      permissions: JSON.parse(
+      permissions:
         objDecodedToken[
           'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
-        ]
-      ),
+        ],
       expiredAt: objDecodedToken['exp'],
     };
     return decodedToken;
@@ -358,14 +357,10 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       return false;
     }
 
-    const appSettings = this.appSettingsService.appSettings;
-    if (!appSettings?.permissions) {
-      return false;
-    }
-
-    const appSettingPermission = appSettings.permissions.find(
-      p => p.name === permission
-    );
+    const appSettingPermission =
+      this.appSettingsService.appSettings.permissions.find(
+        p => p.name === permission
+      );
     if (!appSettingPermission) {
       console.warn(
         `Permission ${permission} not found in app settings permissions`
@@ -395,17 +390,15 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
         if (authInfo) {
           authInfo.decryptedToken = this.decodeToken(authInfo.token);
           if (!BiaAppConstantsService.allEnvironments.enableAnnouncements) {
-            const appSettings = this.appSettingsService.appSettings;
-            if (appSettings?.permissions) {
-              const announcementPermissionIds = appSettings.permissions
+            const announcementPermissionIds =
+              this.appSettingsService.appSettings.permissions
                 .filter(p => IsAnnouncementPermission(p.name))
                 .map(p => p.permissionId);
 
-              authInfo.decryptedToken.permissions =
-                authInfo.decryptedToken.permissions.filter(
-                  permId => !announcementPermissionIds.includes(permId)
-                );
-            }
+            authInfo.decryptedToken.permissions =
+              authInfo.decryptedToken.permissions.filter(
+                permId => !announcementPermissionIds.includes(permId)
+              );
           }
         }
 

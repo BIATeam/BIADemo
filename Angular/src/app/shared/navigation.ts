@@ -2,9 +2,6 @@
 import { BiaNavigation } from 'packages/bia-ng/models/public-api';
 import { Permission } from './permission';
 
-/**
- * Get navigation items (evaluated after Permission registry is initialized)
- */
 export const NAVIGATION: BiaNavigation[] = [
   {
     labelKey: 'app.users',
