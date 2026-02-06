@@ -6,6 +6,7 @@ export * from './db';
 export * from './guards/public-api';
 export * from './interceptors/public-api';
 export * from './notification/public-api';
+export * from './permission-registry';
 export * from './services/public-api';
 export * from './shared/public-api';
 export * from './team/public-api';

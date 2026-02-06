@@ -1,0 +1,56 @@
+// <copyright file="ProjectPermissionService.cs" company="TheBIADevCompany">
+// Copyright (c) TheBIADevCompany. All rights reserved.
+// </copyright>
+
+namespace TheBIADevCompany.BIADemo.Application.Permission
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using BIA.Net.Core.Application.Permission;
+    using BIA.Net.Core.Domain.Dto.App;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+
+    /// <summary>
+    /// Project-specific permission service that includes PermissionId and OptionPermissionId.
+    /// </summary>
+    public class ProjectPermissionService : PermissionService
+    {
+        /// <summary>
+        /// Gets all permissions including BiaPermissionId, PermissionId, and OptionPermissionId.
+        /// </summary>
+        /// <returns>List of all permissions.</returns>
+        public new IEnumerable<PermissionDto> GetAllPermissions()
+        {
+            var permissions = new List<PermissionDto>();
+
+            // Get BIA framework permissions
+            permissions.AddRange(base.GetAllPermissions());
+
+            // Extract PermissionId enum
+            foreach (PermissionId permission in Enum.GetValues(typeof(PermissionId)))
+            {
+                permissions.Add(new PermissionDto
+                {
+                    Name = permission.ToString(),
+                    PermissionId = (int)permission,
+                    Category = "Permission",
+                });
+            }
+
+            // Extract OptionPermissionId enum
+            foreach (OptionPermissionId permission in Enum.GetValues(typeof(OptionPermissionId)))
+            {
+                permissions.Add(new PermissionDto
+                {
+                    Name = permission.ToString(),
+                    PermissionId = (int)permission,
+                    Category = "OptionPermission",
+                });
+            }
+
+            return permissions.OrderBy(p => p.PermissionId).ToList();
+        }
+    }
+}

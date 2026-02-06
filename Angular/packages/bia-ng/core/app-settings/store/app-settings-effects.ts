@@ -6,6 +6,7 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 import { BiaAppConstantsService } from '../../services/bia-app-constants.service';
 import { BiaMessageService } from '../../services/bia-message.service';
 import { BiaOnlineOfflineService } from '../../services/bia-online-offline.service';
+import { DynamicPermissionService } from '../../services/dynamic-permission.service';
 import { AppSettingsDas } from '../services/app-settings-das.service';
 import { AppSettingsService } from '../services/app-settings.service';
 import { CoreAppSettingsActions } from './app-settings-actions';
@@ -16,6 +17,9 @@ export class AppSettingsEffects {
   protected appSettingsDas: AppSettingsDas = inject(AppSettingsDas);
   protected biaMessageService: BiaMessageService = inject(BiaMessageService);
   protected appSettingsService: AppSettingsService = inject(AppSettingsService);
+  protected dynamicPermissionService: DynamicPermissionService = inject(
+    DynamicPermissionService
+  );
 
   load$ = createEffect(() =>
     this.actions$.pipe(
@@ -30,6 +34,12 @@ export class AppSettingsEffects {
               );
             }
             this.appSettingsService.appSettings = appSettings;
+
+            // Initialize Permission registry from backend
+            if (appSettings?.permissions) {
+              this.dynamicPermissionService.initialize(appSettings.permissions);
+            }
+
             return CoreAppSettingsActions.loadAllSuccess({ appSettings });
           }),
           catchError(err => {
@@ -43,6 +53,14 @@ export class AppSettingsEffects {
               if (json) {
                 const appSettings = <AppSettings>JSON.parse(json);
                 this.appSettingsService.appSettings = appSettings;
+
+                // Initialize Permission registry from cached AppSettings (offline mode)
+                if (appSettings?.permissions) {
+                  this.dynamicPermissionService.initialize(
+                    appSettings.permissions
+                  );
+                }
+
                 return of(
                   CoreAppSettingsActions.loadAllSuccess({ appSettings })
                 );

@@ -12,6 +12,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 #if BIA_FRONT_FEATURE
     using BIA.Net.Core.Application.User;
 #endif
+    using BIA.Net.Core.Application.Permission;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
@@ -132,6 +133,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 assemblyName: "TheBIADevCompany.BIADemo.Application",
                 excludedServiceNames: new List<string>() { nameof(AuthAppService) },
                 serviceLifetime: ServiceLifetime.Transient);
+
+            // Override BIA PermissionService with project-specific implementation
+            collection.AddTransient(typeof(IPermissionService), typeof(TheBIADevCompany.BIADemo.Application.Permission.ProjectPermissionService));
 
             if (isApi)
             {
