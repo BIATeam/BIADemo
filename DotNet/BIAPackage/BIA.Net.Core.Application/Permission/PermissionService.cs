@@ -24,13 +24,12 @@ namespace BIA.Net.Core.Application.Permission
             var permissions = new List<PermissionDto>();
 
             // Extract BiaPermissionId enum
-            foreach (BiaPermissionId permission in Enum.GetValues(typeof(BiaPermissionId)))
+            foreach (BiaPermissionId permission in Enum.GetValues<BiaPermissionId>())
             {
                 permissions.Add(new PermissionDto
                 {
                     Name = permission.ToString(),
                     PermissionId = (int)permission,
-                    Category = "BiaPermission",
                 });
             }
 

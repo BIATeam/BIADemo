@@ -43,7 +43,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = nameof(OptionPermissionId.Plane_Options))]
+        [Authorize(Roles = nameof(PermissionId.Plane_Options))]
         public async Task<IActionResult> GetAllOptions()
         {
             var results = await this.planeOptionService.GetAllOptionsAsync();

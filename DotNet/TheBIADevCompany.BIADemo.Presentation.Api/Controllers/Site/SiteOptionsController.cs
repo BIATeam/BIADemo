@@ -43,7 +43,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = nameof(OptionPermissionId.Site_Options))]
+        [Authorize(Roles = nameof(PermissionId.Site_Options))]
         public async Task<IActionResult> GetAllOptions()
         {
             var results = await this.siteOptionService.GetAllOptionsAsync();

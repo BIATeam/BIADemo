@@ -104,22 +104,13 @@ namespace BIA.Net.Core.Application.Authentication
         public ClaimsIdentity GenerateClaimsIdentity<TUserDataDto>(TokenDto<TUserDataDto> tokenDto)
             where TUserDataDto : BaseUserDataDto
         {
-            var claims = new List<Claim>();
-
-            // Add compact permission IDs if present
-            if (tokenDto.PermissionIds?.Count > 0)
+            var claims = new List<Claim>
             {
-                claims.Add(new Claim(JwtFactory.PermissionIds, JsonConvert.SerializeObject(tokenDto.PermissionIds)));
-            }
+                new(ClaimTypes.Sid, tokenDto.Id.ToString()),
+                new(PermissionIds, JsonConvert.SerializeObject(tokenDto.PermissionIds)),
+            };
 
-            // Add legacy string permissions only if UseCompactPermissionsOnly is false (for backward compatibility)
-            if (!this.jwt.UseCompactPermissionsOnly)
-            {
-                claims.AddRange(tokenDto.Permissions.Select(s => new Claim(ClaimTypes.Role, s)).ToList());
-            }
-
-            claims.AddRange(tokenDto.RoleIds.Select(s => new Claim(BiaClaimsPrincipal.RoleId, s.ToString())).ToList());
-            claims.Add(new Claim(ClaimTypes.Sid, tokenDto.Id.ToString()));
+            claims.AddRange(tokenDto.RoleIds.Select(s => new Claim(BiaClaimsPrincipal.RoleId, s.ToString())));
 
             if (tokenDto.UserData != null)
             {

@@ -7,7 +7,4 @@ export interface PermissionInfo {
 
   /** Numeric permission ID */
   permissionId: number;
-
-  /** Category: 'BiaPermission', 'Permission', or 'OptionPermission' */
-  category: string;
 }

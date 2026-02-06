@@ -18,10 +18,5 @@ namespace BIA.Net.Core.Domain.Dto.App
         /// Gets or sets the permission numeric ID.
         /// </summary>
         public int PermissionId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the permission category (BiaPermission, Permission, OptionPermission).
-        /// </summary>
-        public string Category { get; set; }
     }
 }

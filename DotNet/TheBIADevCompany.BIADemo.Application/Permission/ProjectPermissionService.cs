@@ -29,24 +29,12 @@ namespace TheBIADevCompany.BIADemo.Application.Permission
             permissions.AddRange(base.GetAllPermissions());
 
             // Extract PermissionId enum
-            foreach (PermissionId permission in Enum.GetValues(typeof(PermissionId)))
+            foreach (PermissionId permission in Enum.GetValues<PermissionId>())
             {
                 permissions.Add(new PermissionDto
                 {
                     Name = permission.ToString(),
                     PermissionId = (int)permission,
-                    Category = "Permission",
-                });
-            }
-
-            // Extract OptionPermissionId enum
-            foreach (OptionPermissionId permission in Enum.GetValues(typeof(OptionPermissionId)))
-            {
-                permissions.Add(new PermissionDto
-                {
-                    Name = permission.ToString(),
-                    PermissionId = (int)permission,
-                    Category = "OptionPermission",
                 });
             }
 

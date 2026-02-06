@@ -18,7 +18,7 @@ namespace BIA.Net.Core.Common.Enum
         /// <summary>
         /// Background Task Admin.
         /// </summary>
-        Background_Task_Admin,
+        Background_Task_Admin = 1000,
 
         /// <summary>
         /// Background Task Read Only.

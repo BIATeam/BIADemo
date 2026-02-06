@@ -56,7 +56,6 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
                 options.Audience = configuration.Security?.Audience;
                 options.SecretKey = configuration.Jwt?.SecretKey;
                 options.ValidTime = configuration.Jwt?.ValidTime ?? 0;
-                options.UseCompactPermissionsOnly = configuration.Jwt?.UseCompactPermissionsOnly ?? false;
             });
             var tokenValidationParameters = new TokenValidationParameters
             {

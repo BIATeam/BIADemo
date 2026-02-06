@@ -19,7 +19,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         /// <summary>
         /// Home Access.
         /// </summary>
-        Home_Access = 2000,
+        Home_Access,
 
         /// <summary>
         /// Site Create.
@@ -510,5 +510,40 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         /// Maintenance Contract Update.
         /// </summary>
         MaintenanceContract_Update,
+
+        /// <summary>
+        /// Site Options.
+        /// </summary>
+        Site_Options,
+
+        /// <summary>
+        /// Country Options.
+        /// </summary>
+        Country_Options,
+
+        /// <summary>
+        /// Airport Options.
+        /// </summary>
+        Airport_Options,
+
+        /// <summary>
+        /// Plane Options.
+        /// </summary>
+        Plane_Options,
+
+        /// <summary>
+        /// Plane Type Options.
+        /// </summary>
+        PlaneType_Options,
+
+        /// <summary>
+        /// Aircraft Maintenance Company Options.
+        /// </summary>
+        AircraftMaintenanceCompany_Options,
+
+        /// <summary>
+        /// Part Options.
+        /// </summary>
+        Part_Options,
     }
 }
