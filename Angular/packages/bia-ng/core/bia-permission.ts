@@ -2,7 +2,6 @@
 export enum BiaPermission {
   Background_Task_Admin = 'Background_Task_Admin',
   Background_Task_Read_Only = 'Background_Task_Read_Only',
-
   Notification_Create = 'Notification_Create',
   Notification_List_Access = 'Notification_List_Access',
   Notification_Delete = 'Notification_Delete',
@@ -10,12 +9,10 @@ export enum BiaPermission {
   Notification_Update = 'Notification_Update',
 
   Roles_List = 'Roles_List',
-  Roles_List_For_Current_User = 'Roles_List_For_Current_User',
 
   User_Add = 'User_Add',
   User_Delete = 'User_Delete',
   User_Save = 'User_Save',
-  User_Read = 'User_Read',
   User_List = 'User_List',
   User_ListAD = 'User_ListAD',
   User_List_Access = 'User_List_Access',
@@ -23,26 +20,16 @@ export enum BiaPermission {
   User_UpdateRoles = 'User_UpdateRoles',
 
   LdapDomains_List = 'LdapDomains_List',
-  Languages_Options = 'Languages_Options',
-  ProfileImage_Get = 'ProfileImage_Get',
-  Logs_Create = 'Logs_Create',
-
-  Team_Access_All = 'Team_Access_All',
-  Team_List_Access = 'Team_List_Access',
-  Team_Set_Default_Team = 'Team_Set_Default_Team',
-  Team_Set_Default_Roles = 'Team_Set_Default_Roles',
-
   View_List = 'View_List',
-  View_Read = 'View_Read',
-  View_AddUserView = 'View_AddUserView',
-  View_AddTeamViewSuffix = 'View_AddTeamViewSuffix',
-  View_UpdateUserView = 'View_UpdateUserView',
-  View_UpdateTeamViewSuffix = 'View_UpdateTeamViewSuffix',
-  View_DeleteUserView = 'View_DeleteUserView',
-  View_DeleteTeamView = 'View_DeleteTeamView',
-  View_SetDefaultUserView = 'View_SetDefaultUserView',
-  View_SetDefaultTeamViewSuffix = 'View_SetDefaultTeamViewSuffix',
-  View_AssignToTeamSuffix = 'View_AssignToTeamSuffix',
+  View_AddUserView = 'View_Add_UserView',
+  View_AddTeamViewSuffix = '_View_Add_TeamView',
+  View_UpdateUserView = 'View_Update_UserView',
+  View_UpdateTeamViewSuffix = '_View_Update_TeamView',
+  View_DeleteUserView = 'View_Delete_UserView',
+  View_DeleteTeamView = 'View_Delete_TeamView',
+  View_SetDefaultUserView = 'View_Set_Default_UserView',
+  View_SetDefaultTeamViewSuffix = '_View_Set_Default_TeamView',
+  View_AssignToTeamSuffix = '_View_Assign_To_Team',
 
   Impersonation_Connection_Rights = 'Impersonation_Connection_Rights',
 
@@ -54,13 +41,11 @@ export enum BiaPermission {
 }
 
 export function IsAnnouncementPermission(permission: string): boolean {
-  const announcementPermissions = [
-    BiaPermission.Announcement_Create,
-    BiaPermission.Announcement_Delete,
-    BiaPermission.Announcement_List_Access,
-    BiaPermission.Announcement_Read,
-    BiaPermission.Announcement_Update,
-  ];
-
-  return announcementPermissions.some(p => BiaPermission[p] === permission);
+  return (
+    permission === BiaPermission.Announcement_Create ||
+    permission === BiaPermission.Announcement_Delete ||
+    permission === BiaPermission.Announcement_List_Access ||
+    permission === BiaPermission.Announcement_Read ||
+    permission === BiaPermission.Announcement_Update
+  );
 }

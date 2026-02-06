@@ -126,6 +126,10 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   public hasPermissionObs(
     permission: string | Permission | BiaPermission
   ): Observable<boolean> {
+    if (!permission) {
+      return of(true);
+    }
+
     if (RefreshTokenService.shouldRefreshToken) {
       console.info('Login from hasPermissionObs.');
       return this.login().pipe(
@@ -368,10 +372,6 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     authInfo: AuthInfo | null,
     permission: string | Permission | BiaPermission
   ): boolean {
-    if (!permission) {
-      return true;
-    }
-
     if (!authInfo) {
       return false;
     }

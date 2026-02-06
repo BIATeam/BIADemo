@@ -30,7 +30,6 @@ export class AppSettingsEffects {
               );
             }
             this.appSettingsService.appSettings = appSettings;
-
             return CoreAppSettingsActions.loadAllSuccess({ appSettings });
           }),
           catchError(err => {
@@ -44,7 +43,6 @@ export class AppSettingsEffects {
               if (json) {
                 const appSettings = <AppSettings>JSON.parse(json);
                 this.appSettingsService.appSettings = appSettings;
-
                 return of(
                   CoreAppSettingsActions.loadAllSuccess({ appSettings })
                 );
