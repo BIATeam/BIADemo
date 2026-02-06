@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import {
   AuthService,
   BiaAppConstantsService,
+  BiaPermission,
   BiaTranslationService,
   getCurrentCulture,
   NavigationService,
@@ -48,7 +49,7 @@ export class LayoutComponent implements OnInit {
   ) {
     this.enableNotifications =
       BiaAppConstantsService.allEnvironments.enableNotifications &&
-      this.authService.hasPermission('Notification_List_Access');
+      this.authService.hasPermission(BiaPermission.Notification_List_Access);
   }
 
   public showEnvironmentMessage(environmentType: EnvironmentType | undefined) {
@@ -90,7 +91,9 @@ export class LayoutComponent implements OnInit {
 
             this.enableNotifications =
               BiaAppConstantsService.allEnvironments.enableNotifications &&
-              this.authService.hasPermission('Notification_List_Access');
+              this.authService.hasPermission(
+                BiaPermission.Notification_List_Access
+              );
           }
           this.isLoadingUserInfo = false;
         }

@@ -179,7 +179,11 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       }
     }
 
-    permissions.push(...this.extractPermissionsFromRoles(objDecodedToken));
+    permissions.push(
+      ...objDecodedToken[
+        'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+      ]
+    );
 
     const decodedToken = <Token>{
       id: +objDecodedToken[
@@ -199,14 +203,6 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     };
 
     return decodedToken;
-  }
-
-  private extractPermissionsFromRoles(decodedToken: any): string[] {
-    const roleClaim =
-      decodedToken[
-        'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
-      ] || [];
-    return Array.isArray(roleClaim) ? roleClaim : roleClaim ? [roleClaim] : [];
   }
 
   public getAdditionalInfos(): AdditionalInfos {

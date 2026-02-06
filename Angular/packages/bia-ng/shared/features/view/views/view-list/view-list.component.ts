@@ -545,22 +545,20 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
         BiaAppConstantsService.teamTypeRightPrefix.find(
           t => t.key === this.useViewTeamWithTypeId
         )?.value;
-      if (teamTypeRightPrefix) {
-        canSetTeamView =
-          this.authService.hasPermission(
-            teamTypeRightPrefix + BiaPermission.View_AddTeamViewSuffix
-          ) ||
-          this.authService.hasPermission(
-            teamTypeRightPrefix + BiaPermission.View_UpdateTeamViewSuffix
-          ) ||
-          this.authService.hasPermission(
-            teamTypeRightPrefix + BiaPermission.View_SetDefaultTeamViewSuffix
-          ) ||
-          this.authService.hasPermission(
-            teamTypeRightPrefix + BiaPermission.View_AssignToTeamSuffix
-          ) ||
-          this.authService.hasPermission(BiaPermission.View_DeleteTeamView);
-      }
+      canSetTeamView =
+        this.authService.hasPermission(
+          teamTypeRightPrefix + BiaPermission.View_AddTeamViewSuffix
+        ) ||
+        this.authService.hasPermission(
+          teamTypeRightPrefix + BiaPermission.View_UpdateTeamViewSuffix
+        ) ||
+        this.authService.hasPermission(
+          teamTypeRightPrefix + BiaPermission.View_SetDefaultTeamViewSuffix
+        ) ||
+        this.authService.hasPermission(
+          teamTypeRightPrefix + BiaPermission.View_AssignToTeamSuffix
+        ) ||
+        this.authService.hasPermission(BiaPermission.View_DeleteTeamView);
     }
     return (
       canSetTeamView ||
