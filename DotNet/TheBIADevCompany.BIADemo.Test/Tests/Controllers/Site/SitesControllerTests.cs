@@ -52,7 +52,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
         {
             this.PrincipalBuilder.MockPrincipalUserPermissions(new List<string>
                 {
-                        BiaRights.Teams.AccessAll,
+                        nameof(BiaPermissionId.Team_Access_All),
                 });
         }
 
@@ -393,8 +393,8 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
         private void InitCurrentTeam(int teamId)
         {
             this.PrincipalBuilder.MockPrincipalUserData(new UserDataDto()
-                {
-                    CurrentTeams =
+            {
+                CurrentTeams =
                     {
                         new CurrentTeamDto()
                         {
@@ -402,7 +402,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
                             TeamId = teamId,
                         },
                     },
-                });
+            });
         }
 
         private void InitController()

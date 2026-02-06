@@ -462,7 +462,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
                     return null;
                 }
 
-                if (!this.IsAuthorize(BiaRights.Users.Add))
+                if (!this.IsAuthorize(nameof(BiaPermissionId.User_Add)))
                 {
                     return this.StatusCode(StatusCodes.Status403Forbidden);
                 }

@@ -68,7 +68,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         protected override async Task RunMonitoredTask()
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            bool accessAll = (this.principal as BiaClaimsPrincipal).GetUserPermissions().Any(x => x == BiaRights.Teams.AccessAll);
+            bool accessAll = (this.principal as BiaClaimsPrincipal).GetUserPermissions().Any(x => x == nameof(BiaPermissionId.Team_Access_All));
 
             if (accessAll)
             {

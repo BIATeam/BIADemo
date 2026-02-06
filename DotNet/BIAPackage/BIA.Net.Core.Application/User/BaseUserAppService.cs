@@ -11,6 +11,7 @@ namespace BIA.Net.Core.Application.User
     using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
@@ -384,8 +385,8 @@ namespace BIA.Net.Core.Application.User
             if (userDtos?.Any() == true)
             {
                 IEnumerable<string> currentUserPermissions = this.principal.GetUserPermissions();
-                bool canAdd = currentUserPermissions?.Any(x => x == Users.Add) == true;
-                bool canUpdate = currentUserPermissions?.Any(x => x == Users.UpdateRoles) == true;
+                bool canAdd = currentUserPermissions?.Any(x => x == nameof(BiaPermissionId.User_Add)) == true;
+                bool canUpdate = currentUserPermissions?.Any(x => x == nameof(BiaPermissionId.User_UpdateRoles)) == true;
 
                 var exceptions = new List<Exception>();
 

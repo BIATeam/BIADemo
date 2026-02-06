@@ -76,7 +76,7 @@ namespace BIA.Net.Core.Application.Notification
             this.Repository.QueryCustomizer = queryCustomizer;
             this.clientForHubService = clientForHubService;
             this.userId = (principal as BiaClaimsPrincipal).GetUserId();
-            bool isTeamAccesAll = (principal as BiaClaimsPrincipal).GetUserPermissions().Any(x => x == BiaRights.Teams.AccessAll);
+            bool isTeamAccesAll = (principal as BiaClaimsPrincipal).GetUserPermissions().Any(x => x == nameof(BiaPermissionId.Team_Access_All));
 
             this.FiltersContext.Add(
                  AccessMode.Read,

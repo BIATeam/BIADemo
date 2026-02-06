@@ -124,7 +124,7 @@ namespace BIA.Net.Core.Application.User
 
             AuthInfoDto<TAdditionalInfoDto> authInfo = await this.GetLoginToken(loginParam, true, teamsConfig);
 
-            if (!string.IsNullOrWhiteSpace(loginParam.BaseUserIdentity) && Application.Authentication.JwtFactory.HasRole(authInfo.Token, BiaRights.Impersonation.ConnectionRights))
+            if (!string.IsNullOrWhiteSpace(loginParam.BaseUserIdentity) && Application.Authentication.JwtFactory.HasRole(authInfo.Token, nameof(BiaPermissionId.Impersonation_Connection_Rights)))
             {
                 return await this.GetLoginToken(loginParam, false, teamsConfig);
             }
@@ -232,12 +232,12 @@ namespace BIA.Net.Core.Application.User
             // Map permission strings to IDs using all registered converters
             List<int> permissionIds = new List<int>();
             HashSet<string> convertedPermissions = new HashSet<string>();
-            
+
             foreach (var converter in this.permissionIdConverters)
             {
                 var ids = converter.ConvertToIds(userPermissions);
                 permissionIds.AddRange(ids);
-                
+
                 // Track which permissions were successfully converted by this converter
                 var names = converter.ConvertToNames(ids);
                 foreach (var name in names)
@@ -245,7 +245,7 @@ namespace BIA.Net.Core.Application.User
                     convertedPermissions.Add(name);
                 }
             }
-            
+
             // Log warning for permissions that weren't converted by any converter
             var unconvertedPermissions = userPermissions.Except(convertedPermissions).ToList();
             if (unconvertedPermissions.Any())
