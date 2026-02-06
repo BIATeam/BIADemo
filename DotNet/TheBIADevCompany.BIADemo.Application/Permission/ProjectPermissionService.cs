@@ -21,7 +21,7 @@ namespace TheBIADevCompany.BIADemo.Application.Permission
         /// Gets all permissions including BiaPermissionId, PermissionId, and OptionPermissionId.
         /// </summary>
         /// <returns>List of all permissions.</returns>
-        public new IEnumerable<PermissionDto> GetAllPermissions()
+        public override IEnumerable<PermissionDto> GetAllPermissions()
         {
             var permissions = new List<PermissionDto>();
 
@@ -50,7 +50,7 @@ namespace TheBIADevCompany.BIADemo.Application.Permission
                 });
             }
 
-            return permissions.OrderBy(p => p.PermissionId).ToList();
+            return permissions.OrderBy(p => p.PermissionId);
         }
     }
 }

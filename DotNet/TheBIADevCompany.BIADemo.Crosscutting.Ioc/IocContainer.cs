@@ -60,6 +60,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories;
 #endif
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
+    using TheBIADevCompany.BIADemo.Application.Permission;
 
     /// <summary>
     /// The IoC Container.
@@ -135,7 +136,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 serviceLifetime: ServiceLifetime.Transient);
 
             // Override BIA PermissionService with project-specific implementation
-            collection.AddTransient(typeof(IPermissionService), typeof(TheBIADevCompany.BIADemo.Application.Permission.ProjectPermissionService));
+            collection.AddTransient<IPermissionService, ProjectPermissionService>();
 
             if (isApi)
             {

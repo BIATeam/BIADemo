@@ -13,13 +13,13 @@ namespace BIA.Net.Core.Application.Permission
     /// <summary>
     /// Service to manage permissions.
     /// </summary>
-    public class PermissionService : IPermissionService
+    public abstract class PermissionService : IPermissionService
     {
         /// <summary>
         /// Gets all permissions from the BiaPermissionId enum.
         /// </summary>
         /// <returns>List of all BIA framework permissions.</returns>
-        public IEnumerable<PermissionDto> GetAllPermissions()
+        public virtual IEnumerable<PermissionDto> GetAllPermissions()
         {
             var permissions = new List<PermissionDto>();
 
@@ -34,7 +34,7 @@ namespace BIA.Net.Core.Application.Permission
                 });
             }
 
-            return permissions.OrderBy(p => p.PermissionId).ToList();
+            return permissions.OrderBy(p => p.PermissionId);
         }
     }
 }
