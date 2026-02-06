@@ -368,16 +368,27 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     return this.http.get<string>(`${this.route}frontEndVersion`);
   }
 
-  protected checkPermission(authInfo: AuthInfo | null, permission: string) {
-    if (!permission) {
-      return true;
+  protected checkPermission(
+    authInfo: AuthInfo | null,
+    permission: string | Permission | BiaPermission
+  ): boolean {
+    if (!authInfo) {
+      return false;
     }
-    if (authInfo) {
-      return (
-        authInfo.decryptedToken.permissions.some(p => p === permission) === true
-      );
+
+    const appSettings = this.appSettingsService.appSettings;
+    if (!appSettings?.permissions) {
+      return false;
     }
-    return false;
+
+    const appSettingPermission = appSettings.permissions.find(
+      p => p.name === permission
+    );
+
+    const permissionToCompare = appSettingPermission
+      ? appSettingPermission.permissionId.toString()
+      : permission;
+    return authInfo.decryptedToken.permissions.includes(permissionToCompare);
   }
 
   protected getAuthInfo() {
@@ -398,10 +409,17 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
           authInfo.decryptedToken = this.decodeToken(authInfo.token);
 
           if (!BiaAppConstantsService.allEnvironments.enableAnnouncements) {
-            authInfo.decryptedToken.permissions =
-              authInfo.decryptedToken.permissions.filter(
-                p => IsAnnouncementPermission(p) === false
-              );
+            const appSettings = this.appSettingsService.appSettings;
+            if (appSettings?.permissions) {
+              const announcementPermissionIds = appSettings.permissions
+                .filter(p => IsAnnouncementPermission(p.name))
+                .map(p => p.permissionId.toString());
+
+              authInfo.decryptedToken.permissions =
+                authInfo.decryptedToken.permissions.filter(
+                  permId => !announcementPermissionIds.includes(permId)
+                );
+            }
           }
         }
 

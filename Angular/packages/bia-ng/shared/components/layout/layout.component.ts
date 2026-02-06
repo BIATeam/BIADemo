@@ -86,7 +86,7 @@ export class LayoutComponent implements OnInit {
           if (authInfo) {
             this.setLanguage();
             this.setUserName(authInfo);
-            this.filterNavByRole(authInfo);
+            this.filterNavByRole();
 
             this.enableNotifications =
               BiaAppConstantsService.allEnvironments.enableNotifications &&
@@ -118,12 +118,9 @@ export class LayoutComponent implements OnInit {
     this.biaTranslationService.loadAndChangeLanguage(langSelected);
   }
 
-  protected filterNavByRole(authInfo: AuthInfo) {
-    if (authInfo) {
-      this.menus = this.navigationService.filterNavByRole(
-        authInfo,
-        BiaAppConstantsService.navigation
-      );
-    }
+  protected filterNavByRole() {
+    this.menus = this.navigationService.filterNavByRole(
+      BiaAppConstantsService.navigation
+    );
   }
 }
