@@ -10,6 +10,9 @@
 /src/assets/bia/primeng/layout/styles/theme/theme-dark/theme-dark.css
 /src/assets/bia/primeng/layout/styles/theme/theme-light/theme-light.css
 
+# License LTS PrimeNg
+/src/assets/bia/primeng/license/primeng-license.json
+
 # End BIATemplate only
 
 # compiled output
@@ -69,6 +72,3 @@ src/config.json
 .bia/crud/*
 .bia/crud-parent/*
 .bia/team/*
-
-# License
-/src/assets/bia/primeng/license
