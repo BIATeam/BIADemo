@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 import { PermissionInfo } from 'packages/bia-ng/models/permission-info';
+import { ReplaySubject } from 'rxjs';
 import { initializePermissionRegistry } from '../permission-registry';
+
+/**
+ * Type for static constant initializer functions
+ */
+type StaticConstantInitializer = () => void;
 
 /**
  * Service to manage dynamic permissions loaded from backend.
@@ -14,6 +20,25 @@ export class DynamicPermissionService {
   private nameToId = new Map<string, number>();
   private idToName = new Map<number, string>();
   private categoryMap = new Map<string, string>();
+  private staticInitializers: StaticConstantInitializer[] = [];
+
+  /**
+   * Emits when permissions are initialized.
+   * Uses ReplaySubject so late subscribers receive the event.
+   */
+  public permissionsInitialized$ = new ReplaySubject<void>(1);
+
+  /**
+   * Register a function to initialize static constants after permissions are loaded
+   * @example
+   * // In your module or component:
+   * dynamicPermissionService.registerStaticInitializer(() => {
+   *   NAVIGATION = getNavigation();
+   * });
+   */
+  registerStaticInitializer(initializer: StaticConstantInitializer): void {
+    this.staticInitializers.push(initializer);
+  }
 
   /**
    * Initialize the service with permissions from AppSettings
@@ -26,6 +51,11 @@ export class DynamicPermissionService {
       );
       return;
     }
+
+    console.log(
+      `[DynamicPermissionService] Initializing with ${permissions.length} permissions`,
+      permissions
+    );
 
     this.nameToId.clear();
     this.idToName.clear();
@@ -40,9 +70,15 @@ export class DynamicPermissionService {
     // Initialize the global Permission constant
     initializePermissionRegistry(permissions);
 
+    // Initialize static constants
+    this.staticInitializers.forEach(fn => fn());
+
     console.log(
-      `[DynamicPermissionService] Initialized with ${permissions.length} permissions`
+      `[DynamicPermissionService] Initialized with ${permissions.length} permissions and ${this.staticInitializers.length} static constant(s)`
     );
+
+    // Notify subscribers that permissions are ready
+    this.permissionsInitialized$.next();
   }
 
   /**

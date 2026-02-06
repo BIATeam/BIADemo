@@ -1,11 +1,18 @@
 ﻿import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import localeFr from '@angular/common/locales/fr';
-import { NgModule, Optional, SkipSelf } from '@angular/core';
+import {
+  inject,
+  NgModule,
+  Optional,
+  provideAppInitializer,
+  SkipSelf,
+} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {
   BiaCoreModule,
   BiaTranslationService,
+  DynamicPermissionService,
 } from 'packages/bia-ng/core/public-api';
 import { allEnvironments } from 'src/environments/all-environments';
 import { environment } from 'src/environments/environment';
@@ -19,7 +26,7 @@ import {
   DEFAULT_POPUP_MINWIDTH,
   TeamTypeRightPrefix,
 } from '../shared/constants';
-import { NAVIGATION } from '../shared/navigation';
+import { getNavigation, NAVIGATION } from '../shared/navigation';
 
 import {
   AppDB,
@@ -37,7 +44,7 @@ const ONLINEOFFLINE =
     BiaCoreModule.forRoot(
       allEnvironments,
       environment,
-      NAVIGATION,
+      NAVIGATION, // Pass the array reference (empty initially, filled later)
       APP_SUPPORTED_TRANSLATIONS,
       DEFAULT_PAGE_SIZE,
       TeamTypeRightPrefix,
@@ -45,7 +52,19 @@ const ONLINEOFFLINE =
       DEFAULT_POPUP_MINWIDTH
     ),
   ],
-  providers: [...ONLINEOFFLINE],
+  providers: [
+    ...ONLINEOFFLINE,
+    provideAppInitializer(() => {
+      const dynamicPermissionService = inject(DynamicPermissionService);
+      // Register NAVIGATION initializer to fill it after permissions are loaded
+      dynamicPermissionService.registerStaticInitializer(() => {
+        NAVIGATION.push(...getNavigation());
+        console.log(
+          '[CoreModule] NAVIGATION populated with dynamic permissions'
+        );
+      });
+    }),
+  ],
 })
 
 // https://medium.com/@benmohamehdi/angular-best-practices-coremodule-vs-sharedmodule-25f6721aa2ef
