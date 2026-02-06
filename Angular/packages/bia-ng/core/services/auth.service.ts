@@ -23,6 +23,7 @@ import {
   take,
 } from 'rxjs/operators';
 import { AppSettingsService } from '../app-settings/services/app-settings.service';
+import { BiaPermission } from '../bia-permission';
 import { BiaTeamsActions } from '../team/store/teams-actions';
 import { AbstractDas } from './abstract-das.service';
 import { BiaAppConstantsService } from './bia-app-constants.service';
@@ -386,8 +387,8 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
             authInfo.decryptedToken.permissions =
               authInfo.decryptedToken.permissions.filter(
                 p =>
-                  p !== 'Notification_List_Access' &&
-                  p !== 'Announcement_List_Access'
+                  p !== BiaPermission.Notification_List_Access &&
+                  p !== BiaPermission.Announcement_List_Access
               );
           }
         }
