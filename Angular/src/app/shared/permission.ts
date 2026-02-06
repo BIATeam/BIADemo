@@ -123,12 +123,4 @@ export enum Permission {
   Site_Member_List_Access = 'Site_Member_List_Access',
   Site_Member_Update = 'Site_Member_Update',
   Site_Member_Save = 'Site_Member_Save',
-  Site_Options = 'Site_Options',
-
-  Country_Options = 'Country_Options',
-  Airport_Options = 'Airport_Options',
-  Plane_Options = 'Plane_Options',
-  PlaneType_Options = 'PlaneType_Options',
-  AircraftMaintenanceCompany_Options = 'AircraftMaintenanceCompany_Options',
-  Part_Options = 'Part_Options',
 }
