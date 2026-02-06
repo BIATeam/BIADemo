@@ -23,6 +23,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
+    using BIA.Net.Core.Common.Enum;
 
     /// <summary>
     /// The startup class.

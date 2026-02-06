@@ -11,6 +11,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.Notification
     using BIA.Net.Core.Application.Notification;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;

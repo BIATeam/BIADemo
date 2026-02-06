@@ -9,7 +9,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.User
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.User;
-    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Enum;
 #if UseHubForClientInTeam
     using BIA.Net.Core.Application.Services;

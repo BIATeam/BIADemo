@@ -2,7 +2,7 @@
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Common
+namespace BIA.Net.Core.Common.Enum
 {
     /// <summary>
     /// Permission identifiers for BIA Framework (ordinales for JWT compaction).

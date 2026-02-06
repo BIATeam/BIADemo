@@ -7,7 +7,6 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
-    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;

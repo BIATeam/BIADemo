@@ -11,7 +11,6 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Job;
-    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.RepoContract;

@@ -5,7 +5,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Notification
 {
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Notification;
-    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Presentation.Api.Controller.Base;
     using Microsoft.AspNetCore.Authorization;
