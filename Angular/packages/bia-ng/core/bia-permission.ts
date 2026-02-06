@@ -2,6 +2,7 @@
 export enum BiaPermission {
   Background_Task_Admin = 'Background_Task_Admin',
   Background_Task_Read_Only = 'Background_Task_Read_Only',
+
   Notification_Create = 'Notification_Create',
   Notification_List_Access = 'Notification_List_Access',
   Notification_Delete = 'Notification_Delete',
