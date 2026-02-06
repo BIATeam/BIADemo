@@ -17,6 +17,7 @@ export class NavigationService {
           return this.authService.hasPermission(permissionName);
         });
       if (found) {
+        console.log('Navigation item allowed:', element.labelKey);
         biaNavigationFiltered.push(element);
         if (element.children) {
           element.children = this.filterNavByRole(element.children);

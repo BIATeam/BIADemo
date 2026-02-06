@@ -372,6 +372,10 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     authInfo: AuthInfo | null,
     permission: string | Permission | BiaPermission
   ): boolean {
+    if (!permission) {
+      return true;
+    }
+
     if (!authInfo) {
       return false;
     }
