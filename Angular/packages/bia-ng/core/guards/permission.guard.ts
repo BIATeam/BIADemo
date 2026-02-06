@@ -4,7 +4,6 @@ import { Inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { OptionPermission } from 'src/app/shared/option-permission';
 import { Permission } from 'src/app/shared/permission';
 import { BiaPermission } from '../bia-permission';
 //import { allEnvironments } from 'src/environments/all-environments';
@@ -24,7 +23,6 @@ export class PermissionGuard {
     const permission = route.data.permission as
       | string
       | Permission
-      | OptionPermission
       | BiaPermission;
     return this.authService.hasPermissionObs(permission).pipe(
       tap((hasPermission: boolean) => {

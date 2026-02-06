@@ -1,6 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
 import { AuthInfo, BiaNavigation } from 'packages/bia-ng/models/public-api';
-import { OptionPermission } from 'src/app/shared/option-permission';
 import { Permission } from 'src/app/shared/permission';
 import { BiaPermission } from '../bia-permission';
 
@@ -19,9 +18,7 @@ export class NavigationService {
         element.permissions.some(r => {
           // Convert enum to its string name if needed
           const permName =
-            typeof r === 'number'
-              ? Permission[r] || OptionPermission[r] || BiaPermission[r]
-              : r;
+            typeof r === 'number' ? Permission[r] || BiaPermission[r] : r;
           return authInfo?.decryptedToken?.permissions?.indexOf(permName) >= 0;
         });
       if (found) {

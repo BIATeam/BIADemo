@@ -22,10 +22,7 @@ import {
   switchMap,
   take,
 } from 'rxjs/operators';
-import { OptionPermission } from 'src/app/shared/option-permission';
-import { Permission } from 'src/app/shared/permission';
 import { AppSettingsService } from '../app-settings/services/app-settings.service';
-import { BiaPermission, IsAnnouncementPermission } from '../bia-permission';
 import { BiaTeamsActions } from '../team/store/teams-actions';
 import { AbstractDas } from './abstract-das.service';
 import { BiaAppConstantsService } from './bia-app-constants.service';
@@ -118,73 +115,32 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     );
   }
 
-  public hasPermission(
-    permission: string | Permission | OptionPermission | BiaPermission
-  ): boolean {
-    // Convert enum number to its string name if needed
-    const permissionName =
-      typeof permission === 'number'
-        ? this.getEnumName(permission)
-        : permission;
-    if (!permissionName) {
+  public hasPermission(permission: string): boolean {
+    // Permission is always a string now
+    if (!permission) {
       return true;
     }
-    return this.checkPermission(this.authInfoSubject.value, permissionName);
+    return this.checkPermission(this.authInfoSubject.value, permission);
   }
 
-  public hasPermissionObs(
-    permission: string | Permission | OptionPermission | BiaPermission
-  ): Observable<boolean> {
-    // Convert enum number to its string name if needed
-    const permissionName =
-      typeof permission === 'number'
-        ? this.getEnumName(permission)
-        : permission;
-    if (!permissionName) {
+  public hasPermissionObs(permission: string): Observable<boolean> {
+    // Permission is always a string now
+    if (!permission) {
       return of(true);
     }
     if (RefreshTokenService.shouldRefreshToken) {
       console.info('Login from hasPermissionObs.');
       return this.login().pipe(
         map((authInfo: AuthInfo | null) => {
-          return this.checkPermission(authInfo, permissionName);
+          return this.checkPermission(authInfo, permission);
         })
       );
     }
     return this.authInfo$.pipe(
       map((authInfo: AuthInfo) => {
-        return this.checkPermission(authInfo, permissionName);
+        return this.checkPermission(authInfo, permission);
       })
     );
-  }
-
-  private getEnumName(value: number): string | undefined {
-    // Check which enum range this value belongs to
-    // Permission enum (project CRUD)
-    const permissionKeys = Object.keys(Permission).filter(k =>
-      isNaN(Number(k))
-    );
-    if (value >= 0 && value < permissionKeys.length) {
-      return permissionKeys[value];
-    }
-
-    // OptionPermission enum
-    const optionPermissionKeys = Object.keys(OptionPermission).filter(k =>
-      isNaN(Number(k))
-    );
-    if (value >= 0 && value < optionPermissionKeys.length) {
-      return optionPermissionKeys[value];
-    }
-
-    // BiaPermission enum
-    const biaPermissionKeys = Object.keys(BiaPermission).filter(k =>
-      isNaN(Number(k))
-    );
-    if (value >= 0 && value < biaPermissionKeys.length) {
-      return biaPermissionKeys[value];
-    }
-
-    return undefined;
   }
 
   public getToken(): string {
@@ -206,75 +162,9 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   public decodeToken(token: string): Token {
     const objDecodedToken: any = jwtDecode(token);
 
-    // Decode permission IDs (compact format) with fallback to string permissions
-    let permissions: string[] = [];
-
-    const permIdsClaim = objDecodedToken['urn:bia:permissionid'];
-    if (permIdsClaim) {
-      try {
-        const permIds: number[] =
-          typeof permIdsClaim === 'string'
-            ? JSON.parse(permIdsClaim)
-            : permIdsClaim;
-
-        // Map IDs to Permission/PermissionOptions/BiaPermission enum names by ordinal with ID ranges:
-        // - IDs 0-999: BIA Framework permissions (BiaPermission enum, ordinal = ID)
-        // - IDs 1000-1999: Project Options permissions (PermissionOptions enum, ordinal = ID - 1000)
-        // - IDs 2000+: Project CRUD permissions (Permission enum, ordinal = ID - 2000)
-        // Since enums now use numeric values, we use Object.keys() to get enum member names
-        const projectPermissionKeys = Object.keys(Permission).filter(k =>
-          isNaN(Number(k))
-        );
-        const projectOptionsPermissionKeys = Object.keys(
-          OptionPermission
-        ).filter(k => isNaN(Number(k)));
-        const biaPermissionKeys = Object.keys(BiaPermission).filter(k =>
-          isNaN(Number(k))
-        );
-        const OPTIONS_PERMISSION_ID_OFFSET = 1000;
-        const PROJECT_PERMISSION_ID_OFFSET = 2000;
-
-        const unmappedIds: number[] = [];
-        permissions = permIds
-          .map(id => {
-            let permission: string | undefined;
-            if (id < OPTIONS_PERMISSION_ID_OFFSET) {
-              // BIA Framework permission (0-999)
-              permission = biaPermissionKeys[id];
-            } else if (id < PROJECT_PERMISSION_ID_OFFSET) {
-              // Project Options permission (1000-1999)
-              const optionsOrdinal = id - OPTIONS_PERMISSION_ID_OFFSET;
-              permission = projectOptionsPermissionKeys[optionsOrdinal];
-            } else {
-              // Project CRUD permission (2000+)
-              const projectOrdinal = id - PROJECT_PERMISSION_ID_OFFSET;
-              permission = projectPermissionKeys[projectOrdinal];
-            }
-            if (!permission) {
-              unmappedIds.push(id);
-            }
-            return permission;
-          })
-          .filter(perm => perm !== undefined);
-
-        if (unmappedIds.length > 0) {
-          console.warn(
-            `${unmappedIds.length} permission ID(s) could not be mapped: [${unmappedIds.join(', ')}] - fallback to string permissions (enum sync may be out of sync)`
-          );
-          // Fallback: use string permissions from role claim
-          permissions = this.extractPermissionsFromRoles(objDecodedToken);
-        }
-      } catch (e) {
-        console.warn(
-          'Failed to decode permission IDs, fallback to string permissions',
-          e
-        );
-        permissions = this.extractPermissionsFromRoles(objDecodedToken);
-      }
-    } else {
-      // No compact IDs: fallback to traditional role claim
-      permissions = this.extractPermissionsFromRoles(objDecodedToken);
-    }
+    // Extract permissions from roles (always use string format now)
+    const permissions: string[] =
+      this.extractPermissionsFromRoles(objDecodedToken);
 
     const decodedToken = <Token>{
       id: +objDecodedToken[
@@ -495,7 +385,9 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
           if (!BiaAppConstantsService.allEnvironments.enableAnnouncements) {
             authInfo.decryptedToken.permissions =
               authInfo.decryptedToken.permissions.filter(
-                p => IsAnnouncementPermission(p) === false
+                p =>
+                  p !== 'Notification_List_Access' &&
+                  p !== 'Announcement_List_Access'
               );
           }
         }

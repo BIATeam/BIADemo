@@ -16,7 +16,6 @@ export * from './bia-sw-update.service';
 export * from './bia-translate-http-loader';
 export * from './bia-translation.service';
 export * from './date-helper.service';
-export * from './dynamic-permission.service';
 export * from './generic-das.service';
 export * from './keycloak.config';
 export * from './matomo/public-api';

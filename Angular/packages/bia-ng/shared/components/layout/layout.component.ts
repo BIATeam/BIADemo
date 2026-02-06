@@ -5,9 +5,7 @@ import { Store } from '@ngrx/store';
 import {
   AuthService,
   BiaAppConstantsService,
-  BiaPermission,
   BiaTranslationService,
-  DynamicPermissionService,
   getCurrentCulture,
   NavigationService,
 } from 'packages/bia-ng/core/public-api';
@@ -38,7 +36,6 @@ export class LayoutComponent implements OnInit {
   footerLogo = 'assets/bia/img/Footer.png';
   supportedLangs = BiaAppConstantsService.supportedTranslations;
   private readonly destroyRef = inject(DestroyRef);
-  private currentAuthInfo: AuthInfo | null = null;
 
   constructor(
     public biaTranslationService: BiaTranslationService,
@@ -46,13 +43,12 @@ export class LayoutComponent implements OnInit {
     protected authService: AuthService,
     protected readonly layoutService: BiaLayoutService,
     protected readonly store: Store,
-    protected readonly dynamicPermissionService: DynamicPermissionService,
     // protected notificationSignalRService: NotificationSignalRService,
     @Inject(APP_BASE_HREF) public baseHref: string
   ) {
     this.enableNotifications =
       BiaAppConstantsService.allEnvironments.enableNotifications &&
-      this.authService.hasPermission(BiaPermission.Notification_List_Access);
+      this.authService.hasPermission('Notification_List_Access');
   }
 
   public showEnvironmentMessage(environmentType: EnvironmentType | undefined) {
@@ -65,14 +61,6 @@ export class LayoutComponent implements OnInit {
     }
     this.setAllParamByUserInfo();
     this.initHeaderLogos();
-    // Re-filter navigation when permissions are initialized
-    this.dynamicPermissionService.permissionsInitialized$
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        if (this.currentAuthInfo) {
-          this.filterNavByRole(this.currentAuthInfo);
-        }
-      });
   }
 
   protected initHeaderLogos() {
@@ -96,16 +84,13 @@ export class LayoutComponent implements OnInit {
       .subscribe((authInfo: AuthInfo) => {
         if (authInfo && authInfo.token !== '') {
           if (authInfo) {
-            this.currentAuthInfo = authInfo; // Store for later use
             this.setLanguage();
             this.setUserName(authInfo);
             this.filterNavByRole(authInfo);
 
             this.enableNotifications =
               BiaAppConstantsService.allEnvironments.enableNotifications &&
-              this.authService.hasPermission(
-                BiaPermission.Notification_List_Access
-              );
+              this.authService.hasPermission('Notification_List_Access');
           }
           this.isLoadingUserInfo = false;
         }
