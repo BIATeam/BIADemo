@@ -22,8 +22,9 @@ import {
   switchMap,
   take,
 } from 'rxjs/operators';
+import { Permission } from 'src/app/shared/permission';
 import { AppSettingsService } from '../app-settings/services/app-settings.service';
-import { BiaPermission } from '../bia-permission';
+import { BiaPermission, IsAnnouncementPermission } from '../bia-permission';
 import { BiaTeamsActions } from '../team/store/teams-actions';
 import { AbstractDas } from './abstract-das.service';
 import { BiaAppConstantsService } from './bia-app-constants.service';
@@ -116,19 +117,15 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     );
   }
 
-  public hasPermission(permission: string): boolean {
-    // Permission is always a string now
-    if (!permission) {
-      return true;
-    }
+  public hasPermission(
+    permission: string | Permission | BiaPermission
+  ): boolean {
     return this.checkPermission(this.authInfoSubject.value, permission);
   }
 
-  public hasPermissionObs(permission: string): Observable<boolean> {
-    // Permission is always a string now
-    if (!permission) {
-      return of(true);
-    }
+  public hasPermissionObs(
+    permission: string | Permission | BiaPermission
+  ): Observable<boolean> {
     if (RefreshTokenService.shouldRefreshToken) {
       console.info('Login from hasPermissionObs.');
       return this.login().pipe(
@@ -163,9 +160,26 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   public decodeToken(token: string): Token {
     const objDecodedToken: any = jwtDecode(token);
 
-    // Extract permissions from roles (always use string format now)
-    const permissions: string[] =
-      this.extractPermissionsFromRoles(objDecodedToken);
+    // Decode permission IDs (compact format) with fallback to string permissions
+    let permissions: string[] = [];
+
+    const permIdsClaim = objDecodedToken['urn:bia:permissionid'];
+    if (permIdsClaim) {
+      try {
+        const permIds: number[] =
+          typeof permIdsClaim === 'string'
+            ? JSON.parse(permIdsClaim)
+            : permIdsClaim;
+        permissions = permIds.map(id => id.toString());
+      } catch (e) {
+        console.warn(
+          'Failed to decode permission IDs, fallback to string permissions',
+          e
+        );
+      }
+    }
+
+    permissions.push(...this.extractPermissionsFromRoles(objDecodedToken));
 
     const decodedToken = <Token>{
       id: +objDecodedToken[
@@ -386,9 +400,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
           if (!BiaAppConstantsService.allEnvironments.enableAnnouncements) {
             authInfo.decryptedToken.permissions =
               authInfo.decryptedToken.permissions.filter(
-                p =>
-                  p !== BiaPermission.Notification_List_Access &&
-                  p !== BiaPermission.Announcement_List_Access
+                p => IsAnnouncementPermission(p) === false
               );
           }
         }
