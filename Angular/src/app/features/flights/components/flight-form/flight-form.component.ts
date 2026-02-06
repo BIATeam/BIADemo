@@ -2,15 +2,15 @@
 import {
   BiaFormComponent,
   CrudItemFormComponent,
-} from '@bia-team/bia-ng/shared';
+} from 'packages/bia-ng/shared/public-api';
 import { Flight } from '../../model/flight';
 
 @Component({
   selector: 'app-flight-form',
   templateUrl:
-    '../../../../../../node_modules/@bia-team/bia-ng/templates/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.html',
+    '../../../../../../packages/bia-ng/shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.html',
   styleUrls: [
-    '../../../../../../node_modules/@bia-team/bia-ng/templates/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
+    '../../../../../../packages/bia-ng/shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
   ],
   imports: [BiaFormComponent],
 })

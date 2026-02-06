@@ -7,7 +7,7 @@
   ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '@bia-team/bia-ng/core';
+import { AuthService } from 'packages/bia-ng/core/public-api';
 import { Subscription } from 'rxjs';
 import { LayoutHelperService } from '../../services/layout-helper.service';
 import { BiaLayoutService } from '../layout/services/layout.service';

@@ -1,11 +1,11 @@
 ﻿import { AsyncPipe } from '@angular/common';
 import { Component, Injector } from '@angular/core';
-import { BiaPermission } from '@bia-team/bia-ng/core';
+import { BiaPermission } from 'packages/bia-ng/core/public-api';
 import {
   BiaFormComponent,
   CrudItemImportComponent,
   CrudItemImportFormComponent,
-} from '@bia-team/bia-ng/shared';
+} from 'packages/bia-ng/shared/public-api';
 import { User } from '../../model/user';
 import { UserService } from '../../services/user.service';
 import { userCRUDConfiguration } from '../../user.constants';

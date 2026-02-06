@@ -4,7 +4,7 @@ import {
   NumberMode,
   PrimeNGFiltering,
   PropType,
-} from '@bia-team/bia-ng/models/enum';
+} from 'packages/bia-ng/models/enum/public-api';
 
 export class BiaFieldNumberFormat {
   autoLocale: string; // property automaticaly set when culture change.
