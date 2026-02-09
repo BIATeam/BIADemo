@@ -40,6 +40,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         /// <param name="viewAppService">The view service.</param>
         /// <param name="teamAppService">The team service.</param>
         /// <param name="biaClaimsPrincipalService">The bia claims principal service.</param>
+        /// <param name="permissionConverters">The permission converters.</param>
         public ViewsController(IViewAppService viewAppService, ITeamAppService teamAppService, IBiaClaimsPrincipalService biaClaimsPrincipalService, IEnumerable<IPermissionConverter> permissionConverters)
             : base(teamAppService)
         {
