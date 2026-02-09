@@ -5,11 +5,11 @@ import {
   ReactiveFormsModule,
   UntypedFormGroup,
 } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 import {
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
-} from '@bia-team/bia-ng/models';
-import { TranslateModule } from '@ngx-translate/core';
+} from 'packages/bia-ng/models/public-api';
 import { Checkbox } from 'primeng/checkbox';
 import { DatePicker } from 'primeng/datepicker';
 import { FloatLabel } from 'primeng/floatlabel';

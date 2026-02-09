@@ -3,7 +3,7 @@ import { Component, Injector } from '@angular/core';
 import {
   CrudItemEditComponent,
   SpinnerComponent,
-} from '@bia-team/bia-ng/shared';
+} from 'packages/bia-ng/shared/public-api';
 import { SiteFormComponent } from '../../components/site-form/site-form.component';
 import { Site } from '../../model/site';
 import { SiteService } from '../../services/site.service';
