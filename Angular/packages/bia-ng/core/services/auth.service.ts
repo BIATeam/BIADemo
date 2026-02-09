@@ -179,7 +179,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       ),
       permissions:
         objDecodedToken[
-          'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+          'http://schemas.microsoft.com/ws/2008/06/identity/claims/permissionids'
         ],
       expiredAt: objDecodedToken['exp'],
     };

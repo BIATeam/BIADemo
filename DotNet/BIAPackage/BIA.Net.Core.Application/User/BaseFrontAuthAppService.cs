@@ -119,7 +119,7 @@ namespace BIA.Net.Core.Application.User
 
             AuthInfoDto<TAdditionalInfoDto> authInfo = await this.GetLoginToken(loginParam, true, teamsConfig);
 
-            if (!string.IsNullOrWhiteSpace(loginParam.BaseUserIdentity) && Application.Authentication.JwtFactory.HasRole(authInfo.Token, nameof(BiaPermissionId.Impersonation_Connection_Rights)))
+            if (!string.IsNullOrWhiteSpace(loginParam.BaseUserIdentity) && Application.Authentication.JwtFactory.HasPermission(authInfo.Token, (int)BiaPermissionId.Impersonation_Connection_Rights))
             {
                 return await this.GetLoginToken(loginParam, false, teamsConfig);
             }

@@ -15,6 +15,8 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
     using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Presentation.Api.Helpers;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
@@ -94,22 +96,10 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
                 {
                     if (context.Principal?.Identity is ClaimsIdentity identity)
                     {
-                        var permIdsClaim = identity.FindFirst(ClaimTypes.Role);
-                        if (permIdsClaim != null && !string.IsNullOrWhiteSpace(permIdsClaim.Value))
+                        var permissionNames = context.Principal.GetPermissionNames(context.HttpContext.RequestServices.GetServices<IPermissionConverter>());
+                        foreach (var permissionName in permissionNames)
                         {
-                            var permIds = Newtonsoft.Json.JsonConvert.DeserializeObject<List<int>>(permIdsClaim.Value);
-                            if (permIds?.Count > 0)
-                            {
-                                var converters = context.HttpContext.RequestServices.GetServices<IPermissionConverter>();
-                                foreach (var converter in converters)
-                                {
-                                    var permissionNames = converter.ConvertToNames(permIds);
-                                    foreach (var permissionName in permissionNames)
-                                    {
-                                        identity.AddClaim(new Claim(ClaimTypes.Role, permissionName));
-                                    }
-                                }
-                            }
+                            identity.AddClaim(new Claim(ClaimTypes.Role, permissionName));
                         }
                     }
 

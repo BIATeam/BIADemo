@@ -50,16 +50,16 @@ namespace BIA.Net.Core.Application.Authentication
         public SigningCredentials SigningCredentials { get; set; }
 
         /// <summary>
-        /// Check if a role is in a given jwt token.
+        /// Check if a permission is in a given jwt token.
         /// </summary>
         /// <param name="jwtToken">The jwt token.</param>
-        /// <param name="roleToCheck">The role to look for in the token.</param>
+        /// <param name="permissionToCheck">The permission to look for in the token.</param>
         /// <returns>If the role is in the token.</returns>
-        public static bool HasRole(string jwtToken, string roleToCheck)
+        public static bool HasPermission(string jwtToken, int permissionToCheck)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.ReadJwtToken(jwtToken);
-            return token.Claims.Any(c => c.Type == BiaClaimsPrincipal.Role && c.Value == roleToCheck);
+            return token.Claims.Any(c => c.Type == BiaClaimsPrincipal.PermissionIds && c.Value == permissionToCheck.ToString());
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace BIA.Net.Core.Application.Authentication
             var claims = new List<Claim>
             {
                 new(ClaimTypes.Sid, tokenDto.Id.ToString()),
-                new(ClaimTypes.Role, JsonConvert.SerializeObject(tokenDto.Permissions)),
+                new(BiaClaimsPrincipal.PermissionIds, JsonConvert.SerializeObject(tokenDto.Permissions)),
             };
 
             claims.AddRange(tokenDto.RoleIds.Select(s => new Claim(BiaClaimsPrincipal.RoleId, s.ToString())));
