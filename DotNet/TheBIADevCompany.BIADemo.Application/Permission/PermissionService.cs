@@ -1,4 +1,4 @@
-// <copyright file="ProjectPermissionService.cs" company="TheBIADevCompany">
+// <copyright file="PermissionService.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 

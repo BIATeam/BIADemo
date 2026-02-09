@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 #endif
     using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Application.User;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
@@ -35,7 +36,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
     // End BIADemo
-    using BIA.Net.Core.Common;
 
     // End BIADemo
 

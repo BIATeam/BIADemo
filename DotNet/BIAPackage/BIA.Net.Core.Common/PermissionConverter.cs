@@ -1,4 +1,4 @@
-// <copyright file="PermissionIdConverter.cs" company="BIA">
+// <copyright file="PermissionConverter.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -10,8 +10,6 @@ namespace BIA.Net.Core.Common
 
     /// <summary>
     /// Generic converter for transforming permission strings to/from numeric IDs using any enum.
-    /// Usage: Instantiate with your project's PermissionId enum type.
-    /// Example: new PermissionIdConverter&lt;MyProject.PermissionId&gt;(logger)
     /// </summary>
     /// <typeparam name="TPermissionEnum">The enum type containing permission identifiers.</typeparam>
     public sealed class PermissionConverter<TPermissionEnum> : IPermissionConverter

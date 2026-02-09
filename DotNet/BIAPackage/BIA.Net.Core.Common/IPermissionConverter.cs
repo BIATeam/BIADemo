@@ -1,4 +1,4 @@
-// <copyright file="IPermissionIdConverter.cs" company="BIA">
+// <copyright file="IPermissionConverter.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -8,8 +8,6 @@ namespace BIA.Net.Core.Common
 
     /// <summary>
     /// Interface for converting permission strings to numeric IDs.
-    /// Implemented by PermissionIdConverter with the project's specific PermissionId enum.
-    /// This non-generic interface allows Core services to use the converter without knowing the enum type.
     /// </summary>
     public interface IPermissionConverter
     {

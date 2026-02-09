@@ -9,12 +9,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Enum;
+    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Ioc.HealthChecks;
     using BIA.Net.Core.Presentation.Api.Features;
     using BIA.Net.Core.Presentation.Api.Features.HangfireDashboard;
     using BIA.Net.Core.Presentation.Api.StartupConfiguration;
     using BIA.Net.Core.Presentation.Common.Features;
-    using BIA.Net.Core.Domain.Dto.User;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.CookiePolicy;
     using Microsoft.AspNetCore.Hosting;
@@ -23,7 +24,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
-    using BIA.Net.Core.Common.Enum;
 
     /// <summary>
     /// The startup class.

@@ -1,4 +1,8 @@
-﻿namespace BIA.Net.Core.Presentation.Api.Helpers
+﻿// <copyright file="ClaimsHelper.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
+// </copyright>
+
+namespace BIA.Net.Core.Presentation.Api.Helpers
 {
     using System;
     using System.Collections.Generic;

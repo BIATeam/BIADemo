@@ -39,6 +39,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
 #if BIA_FRONT_FEATURE
+    using TheBIADevCompany.BIADemo.Application.Permission;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
 #endif
@@ -60,7 +61,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories;
 #endif
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
-    using TheBIADevCompany.BIADemo.Application.Permission;
 
     /// <summary>
     /// The IoC Container.
