@@ -192,7 +192,7 @@ namespace BIA.Net.Core.Application.User
             // Get Permissions
             List<string> userPermissions = this.UserPermissionDomainService.TranslateRolesInPermissions(globalRoles, loginParam.LightToken);
             List<string> transversalUserPermissions = this.UserPermissionDomainService.TranslateRolesInPermissions(globalRoles, loginParam.LightToken, true);
-            List<PermissionTeamsDto> permissionsTeams = transversalUserPermissions.Select(p => new PermissionTeamsDto { Permission = p, IsGlobal = true, TeamIds = [] }).ToList();
+            List<PermissionTeamsDto> permissionsTeams = transversalUserPermissions.Select(p => new PermissionTeamsDto { PermissionId = PermissionHelper.GetPermissionId(p, this.PermissionConverters), IsGlobal = true, TeamIds = [] }).ToList();
 
             IEnumerable<BaseDtoVersionedTeam> allTeams = [];
             TUserDataDto userData = this.CreateUserData(userInfoFromDB);
@@ -520,14 +520,14 @@ namespace BIA.Net.Core.Application.User
                 var permissions = await this.GetTransversalPermissionsForTeam(team, userInfoId, teamConfig);
                 foreach (string permission in permissions)
                 {
-                    var permissionTeams = permissionsTeams.FirstOrDefault(pt => pt.Permission == permission);
+                    var permissionTeams = permissionsTeams.FirstOrDefault(pt => PermissionHelper.GetPermissionName(pt.PermissionId, this.PermissionConverters) == permission);
                     if (permissionTeams != null)
                     {
                         permissionTeams.TeamIds.Add(team.Id);
                     }
                     else
                     {
-                        permissionsTeams.Add(new PermissionTeamsDto { Permission = permission, TeamIds = [team.Id], IsGlobal = false });
+                        permissionsTeams.Add(new PermissionTeamsDto { PermissionId = PermissionHelper.GetPermissionId(permission, this.PermissionConverters), TeamIds = [team.Id], IsGlobal = false });
                     }
                 }
             }

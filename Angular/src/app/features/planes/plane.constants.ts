@@ -26,7 +26,7 @@ export const planeCRUDConfiguration: CrudConfig<Plane> = new CrudConfig({
   useCalcMode: true,
   useSignalR: false,
   useView: true,
-  useViewTeamWithTypeId: TeamTypeId.Site, // use to filter view by teams => should know the type of team
+  useViewTeamWithTypeId: TeamTypeId.AircraftMaintenanceCompany, // use to filter view by teams => should know the type of team
   usePopup: false,
   useSplit: false,
   useOfflineMode: false,

@@ -34,8 +34,6 @@ namespace BIA.Net.Core.Application.User
         where TAdditionalInfoDto : BaseAdditionalInfoDto, new()
         where TUserDataDto : BaseUserDataDto, new()
     {
-        private readonly IEnumerable<IPermissionConverter> permissionConverters;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseAuthAppService{TUserFromDirectoryDto, TUserFromDirectory, TAdditionalInfoDto, TUserDataDto}" /> class.
         /// </summary>
@@ -71,7 +69,7 @@ namespace BIA.Net.Core.Application.User
             this.LdapDomains = biaNetconfiguration.Value.Authentication?.LdapDomains;
             this.LdapRepositoryHelper = ldapRepositoryHelper;
             this.Configuration = configuration;
-            this.permissionConverters = permissionConverters ?? [];
+            this.PermissionConverters = permissionConverters ?? [];
         }
 
         /// <summary>
@@ -113,6 +111,11 @@ namespace BIA.Net.Core.Application.User
         /// The configuration.
         /// </summary>
         protected IConfiguration Configuration { get; }
+
+        /// <summary>
+        /// The permission converters.
+        /// </summary>
+        protected IEnumerable<IPermissionConverter> PermissionConverters { get; set; }
 
         /// <inheritdoc/>
         public async Task<string> LoginAsync()
@@ -297,7 +300,7 @@ namespace BIA.Net.Core.Application.User
             List<int> permissionIds = [];
             HashSet<string> convertedPermissions = [];
 
-            foreach (var converter in this.permissionConverters)
+            foreach (var converter in this.PermissionConverters)
             {
                 var ids = converter.ConvertToIds(userPermissions);
                 permissionIds.AddRange(ids);

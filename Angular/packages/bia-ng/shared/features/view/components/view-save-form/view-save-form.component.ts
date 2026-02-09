@@ -78,6 +78,7 @@ export class ViewSaveFormComponent
       changes['crudItem'] ||
       changes['permissionAssignTeams']
     ) {
+      console.log('teamList', this.teamList);
       this.otherAffectedTeams = this.crudItem?.viewTeams?.filter(
         team =>
           !this.permissionAssignTeams?.isGlobal &&
@@ -147,6 +148,7 @@ export class ViewSaveFormComponent
   }
 
   selectCurrentTeam() {
+    console.log('viewTeamList[0]', this.viewTeamList[0]);
     if (
       this.viewTeamList?.length === 1 &&
       !this.biaForm?.form?.controls['viewTeams'].value?.find(

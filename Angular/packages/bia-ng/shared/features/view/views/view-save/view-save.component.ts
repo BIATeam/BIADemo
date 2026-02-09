@@ -1,9 +1,10 @@
 ﻿import { CommonModule } from '@angular/common';
-import { Component, Inject, Injector } from '@angular/core';
+import { Component, inject, Inject, Injector } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import {
+  AppSettingsService,
   BiaAppConstantsService,
   BiaPermission,
   CoreTeamsStore,
@@ -15,7 +16,7 @@ import {
   Team,
 } from 'packages/bia-ng/models/public-api';
 import { ButtonDirective } from 'primeng/button';
-import { Observable, map, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
 import { CrudConfig } from '../../../../feature-templates/crud-items/model/crud-config';
 import { CrudItemService } from '../../../../feature-templates/crud-items/services/crud-item.service';
@@ -72,6 +73,8 @@ export class ViewSaveComponent<
   permissionAssignTeams?: PermissionTeams;
   submittedView?: View;
 
+  private appSettingsService = inject(AppSettingsService);
+
   constructor(
     protected injector: Injector,
     protected viewService: ViewService,
@@ -104,11 +107,16 @@ export class ViewSaveComponent<
       );
       this.permissionAssignTeams = this.authService
         .getDecryptedToken()
-        .userData.crossTeamPermissions?.find(
-          p =>
-            p.permission ===
+        .userData.crossTeamPermissions?.find(p => {
+          const appSettingPermission =
+            this.appSettingsService.appSettings.permissions.find(
+              ap => ap.permissionId === p.permissionId
+            );
+          return (
+            appSettingPermission?.name ===
             teamTypeRightPrefix + BiaPermission.View_AssignToTeamSuffix
-        );
+          );
+        });
     }
     this.canAddUserView = this.authService.hasPermission(
       BiaPermission.View_AddUserView
