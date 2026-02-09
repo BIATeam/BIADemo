@@ -48,11 +48,6 @@ namespace BIA.Net.Core.Application.User
         where TUserDataDto : BaseUserDataDto, new()
     {
         /// <summary>
-        /// The permission converters.
-        /// </summary>
-        private readonly IEnumerable<IPermissionConverter> permissionConverters;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="BaseFrontAuthAppService{TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId, TUserFromDirectoryDto, TUserFromDirectory, TAdditionalInfoDto, TUserDataDto}" /> class.
         /// </summary>
         /// <param name="userAppService">The user application service.</param>
@@ -82,14 +77,13 @@ namespace BIA.Net.Core.Application.User
             IUserDirectoryRepository<TUserFromDirectoryDto, TUserFromDirectory> userDirectoryHelper,
             ILdapRepositoryHelper ldapRepositoryHelper,
             IEnumerable<IPermissionConverter> permissionConverters)
-            : base(jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper)
+            : base(jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper, permissionConverters)
         {
             this.UserAppService = userAppService;
             this.TeamAppService = teamAppService;
             this.RoleAppService = roleAppService;
             this.IdentityProviderRepository = identityProviderRepository;
             this.RolesConfiguration = biaNetconfiguration.Value.Roles;
-            this.permissionConverters = permissionConverters ?? [];
         }
 
         /// <summary>
@@ -227,41 +221,13 @@ namespace BIA.Net.Core.Application.User
             // Check User Permissions
             this.CheckUserPermissions(userPermissions);
 
-            // Sort User Permissions
-            userPermissions.Sort();
-
-            // Map permission strings to IDs using all registered converters
-            List<int> permissionIds = new List<int>();
-            HashSet<string> convertedPermissions = new HashSet<string>();
-
-            foreach (var converter in this.permissionConverters)
-            {
-                var ids = converter.ConvertToIds(userPermissions);
-                permissionIds.AddRange(ids);
-
-                // Track which permissions were successfully converted by this converter
-                var names = converter.ConvertToNames(ids);
-                foreach (var name in names)
-                {
-                    convertedPermissions.Add(name);
-                }
-            }
-
-            // Log warning for permissions that weren't converted by any converter
-            var unconvertedPermissions = userPermissions.Except(convertedPermissions).ToList();
-            if (unconvertedPermissions.Any())
-            {
-                this.Logger.LogWarning($"Permissions not found in any registered PermissionId enum: [{string.Join(", ", unconvertedPermissions)}] - may need synchronization");
-            }
-
             // Create Token Dto
             TokenDto<TUserDataDto> tokenDto = new()
             {
                 IdentityKey = identityKey,
                 Id = (userInfoFromDB?.Id).GetValueOrDefault(),
                 RoleIds = roleIds,
-                Permissions = userPermissions,
-                PermissionIds = [.. permissionIds.Order()],
+                Permissions = this.GetPermissionIds(userPermissions),
                 UserData = userData,
             };
 

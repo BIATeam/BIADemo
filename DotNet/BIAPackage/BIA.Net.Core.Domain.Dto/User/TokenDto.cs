@@ -30,12 +30,7 @@ namespace BIA.Net.Core.Domain.Dto.User
         /// <summary>
         /// Gets or sets the permissions.
         /// </summary>
-        public IEnumerable<string> Permissions { get; set; }
-
-        /// <summary>
-        /// Gets or sets the permission IDs (compact ordinales for JWT).
-        /// </summary>
-        public List<int> PermissionIds { get; set; }
+        public IEnumerable<int> Permissions { get; set; }
 
         /// <summary>
         /// Gets or sets the user data.

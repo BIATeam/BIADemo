@@ -88,32 +88,21 @@ namespace BIA.Net.Core.Presentation.Api.Features.HangfireDashboard
                 return false;
             }
 
-            // Check if the user has the required permission by decoding permission IDs
             var permIdsClaim = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
             if (permIdsClaim != null && !string.IsNullOrWhiteSpace(permIdsClaim.Value))
             {
-                try
+                var permIds = JsonConvert.DeserializeObject<List<int>>(permIdsClaim.Value);
+                if (permIds?.Count > 0)
                 {
-                    var permIds = JsonConvert.DeserializeObject<List<int>>(permIdsClaim.Value);
-                    if (permIds?.Count > 0)
+                    var converters = httpContext.RequestServices.GetServices<IPermissionConverter>();
+                    foreach (var converter in converters)
                     {
-                        // Get all converters from DI (supports multiple permission enum types)
-                        var converters = httpContext.RequestServices.GetServices<IPermissionConverter>();
-
-                        foreach (var converter in converters)
+                        var permissionNames = converter.ConvertToNames(permIds);
+                        if (permissionNames.Contains(this.userPermission))
                         {
-                            var permissionNames = converter.ConvertToNames(permIds);
-                            if (permissionNames.Contains(this.userPermission))
-                            {
-                                return true;
-                            }
+                            return true;
                         }
                     }
-                }
-                catch
-                {
-                    // If deserialization fails, deny access
-                    return false;
                 }
             }
 

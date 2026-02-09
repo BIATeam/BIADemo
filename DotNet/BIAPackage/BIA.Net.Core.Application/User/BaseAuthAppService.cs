@@ -9,6 +9,7 @@ namespace BIA.Net.Core.Application.User
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Authentication;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Common.Helpers;
@@ -33,6 +34,8 @@ namespace BIA.Net.Core.Application.User
         where TAdditionalInfoDto : BaseAdditionalInfoDto, new()
         where TUserDataDto : BaseUserDataDto, new()
     {
+        private readonly IEnumerable<IPermissionConverter> permissionConverters;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseAuthAppService{TUserFromDirectoryDto, TUserFromDirectory, TAdditionalInfoDto, TUserDataDto}" /> class.
         /// </summary>
@@ -48,6 +51,7 @@ namespace BIA.Net.Core.Application.User
         /// <param name="biaNetconfiguration">The bia netconfiguration.</param>
         /// <param name="userDirectoryHelper">The user directory helper.</param>
         /// <param name="ldapRepositoryHelper">The LDAP repository helper.</param>
+        /// <param name="permissionConverters">The permission converters.</param>
         public BaseAuthAppService(
             IJwtFactory jwtFactory,
             IPrincipal principal,
@@ -56,7 +60,8 @@ namespace BIA.Net.Core.Application.User
             IConfiguration configuration,
             IOptions<BiaNetSection> biaNetconfiguration,
             IUserDirectoryRepository<TUserFromDirectoryDto, TUserFromDirectory> userDirectoryHelper,
-            ILdapRepositoryHelper ldapRepositoryHelper)
+            ILdapRepositoryHelper ldapRepositoryHelper,
+            IEnumerable<IPermissionConverter> permissionConverters)
         {
             this.JwtFactory = jwtFactory;
             this.ClaimsPrincipal = principal as BiaClaimsPrincipal;
@@ -66,6 +71,7 @@ namespace BIA.Net.Core.Application.User
             this.LdapDomains = biaNetconfiguration.Value.Authentication?.LdapDomains;
             this.LdapRepositoryHelper = ldapRepositoryHelper;
             this.Configuration = configuration;
+            this.permissionConverters = permissionConverters ?? [];
         }
 
         /// <summary>
@@ -128,15 +134,12 @@ namespace BIA.Net.Core.Application.User
             // Check User Permissions
             this.CheckUserPermissions(userPermissions);
 
-            // Sort User Permissions
-            userPermissions.Sort();
-
             // Create Token Dto
             TokenDto<TUserDataDto> tokenDto = new TokenDto<TUserDataDto>()
             {
                 IdentityKey = login,
                 RoleIds = new List<int>(),
-                Permissions = userPermissions,
+                Permissions = this.GetPermissionIds(userPermissions),
                 UserData = this.CreateUserData(null),
             };
 
@@ -282,6 +285,37 @@ namespace BIA.Net.Core.Application.User
         protected virtual TAdditionalInfoDto CreateAdditionalInfo()
         {
             return new TAdditionalInfoDto();
+        }
+
+        /// <summary>
+        /// Get permissions identifiers from user's permission names.
+        /// </summary>
+        /// <param name="userPermissions">The user's permission names.</param>
+        /// <returns>List of integers.</returns>
+        protected virtual IEnumerable<int> GetPermissionIds(List<string> userPermissions)
+        {
+            List<int> permissionIds = [];
+            HashSet<string> convertedPermissions = [];
+
+            foreach (var converter in this.permissionConverters)
+            {
+                var ids = converter.ConvertToIds(userPermissions);
+                permissionIds.AddRange(ids);
+
+                var names = converter.ConvertToNames(ids);
+                foreach (var name in names)
+                {
+                    convertedPermissions.Add(name);
+                }
+            }
+
+            var unconvertedPermissions = userPermissions.Except(convertedPermissions);
+            if (unconvertedPermissions.Any() && this.Logger.IsEnabled(LogLevel.Warning))
+            {
+                this.Logger.LogWarning("Permissions not found in any registered Permission enum: [{UnconvertedPermissions}] - may need synchronization", string.Join(", ", unconvertedPermissions));
+            }
+
+            return permissionIds.Order();
         }
     }
 }

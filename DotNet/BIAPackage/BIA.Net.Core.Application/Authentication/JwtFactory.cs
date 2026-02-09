@@ -102,7 +102,7 @@ namespace BIA.Net.Core.Application.Authentication
             var claims = new List<Claim>
             {
                 new(ClaimTypes.Sid, tokenDto.Id.ToString()),
-                new(ClaimTypes.Role, JsonConvert.SerializeObject(tokenDto.PermissionIds)),
+                new(ClaimTypes.Role, JsonConvert.SerializeObject(tokenDto.Permissions)),
             };
 
             claims.AddRange(tokenDto.RoleIds.Select(s => new Claim(BiaClaimsPrincipal.RoleId, s.ToString())));
