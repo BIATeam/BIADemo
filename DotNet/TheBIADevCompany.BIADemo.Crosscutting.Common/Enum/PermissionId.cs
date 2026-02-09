@@ -9,11 +9,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
     /// </summary>
     public enum PermissionId
     {
-        /// <summary>
-        /// Home Access.
-        /// </summary>
-        Home_Access,
-
+#if BIA_FRONT_FEATURE
         /// <summary>
         /// Site Create.
         /// </summary>
@@ -100,6 +96,20 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         Site_Access_All,
 
         /// <summary>
+        /// Site Options.
+        /// </summary>
+        Site_Options,
+#endif
+
+        // BIAToolKit - Begin Permissions
+        // BIAToolKit - End Permissions
+
+        // BIAToolKit - Begin PermissionsForOption
+        // BIAToolKit - End PermissionsForOption
+
+        // Begin BIADemo
+
+        /// <summary>
         /// Hangfire Access.
         /// </summary>
         Hangfire_Access,
@@ -108,6 +118,115 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         /// Hangfire Run Worker.
         /// </summary>
         Hangfire_Run_Worker,
+
+        /// <summary>
+        /// Aircraft Maintenance Company Options.
+        /// </summary>
+        AircraftMaintenanceCompany_Options,
+
+        /// <summary>
+        /// Part Options.
+        /// </summary>
+        Part_Options,
+
+        /// <summary>
+        /// Plane Options.
+        /// </summary>
+        Plane_Options,
+
+        /// <summary>
+        /// Plane Type Create.
+        /// </summary>
+        PlaneType_Create,
+
+        /// <summary>
+        /// Plane Type Delete.
+        /// </summary>
+        PlaneType_Delete,
+
+        /// <summary>
+        /// Plane Type List Access.
+        /// </summary>
+        PlaneType_List_Access,
+
+        /// <summary>
+        /// Plane Type Read.
+        /// </summary>
+        PlaneType_Read,
+
+        /// <summary>
+        /// Plane Type Save.
+        /// </summary>
+        PlaneType_Save,
+
+        /// <summary>
+        /// Plane Type Update.
+        /// </summary>
+        PlaneType_Update,
+
+        /// <summary>
+        /// Maintenance Contract Create.
+        /// </summary>
+        MaintenanceContract_Create,
+
+        /// <summary>
+        /// Maintenance Contract Delete.
+        /// </summary>
+        MaintenanceContract_Delete,
+
+        /// <summary>
+        /// Maintenance Contract List Access.
+        /// </summary>
+        MaintenanceContract_List_Access,
+
+        /// <summary>
+        /// Maintenance Contract Read.
+        /// </summary>
+        MaintenanceContract_Read,
+
+        /// <summary>
+        /// Maintenance Contract Save.
+        /// </summary>
+        MaintenanceContract_Save,
+
+        /// <summary>
+        /// Maintenance Contract Update.
+        /// </summary>
+        MaintenanceContract_Update,
+
+        /// <summary>
+        /// Airport Create.
+        /// </summary>
+        Airport_Create,
+
+        /// <summary>
+        /// Airport Delete.
+        /// </summary>
+        Airport_Delete,
+
+        /// <summary>
+        /// Airport List Access.
+        /// </summary>
+        Airport_List_Access,
+
+        /// <summary>
+        /// Airport Read.
+        /// </summary>
+        Airport_Read,
+
+        /// <summary>
+        /// Airport Save.
+        /// </summary>
+        Airport_Save,
+
+        /// <summary>
+        /// Airport Update.
+        /// </summary>
+        Airport_Update,
+
+        // End BIADemo
+        // Begin BIAToolKit Generation Ignore
+        // BIAToolKit - Begin Partial Permissions Plane
 
         /// <summary>
         /// Plane Create.
@@ -144,6 +263,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         /// </summary>
         Plane_Fix,
 
+        // BIAToolKit - End Partial Permissions Plane
+        // BIAToolKit - Begin Partial Permissions Engine
+
         /// <summary>
         /// Engine Create.
         /// </summary>
@@ -178,6 +300,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         /// Engine Fix.
         /// </summary>
         Engine_Fix,
+
+        // BIAToolKit - End Partial Permissions Engine
+        // BIAToolKit - Begin Partial Permissions AircraftMaintenanceCompany
 
         /// <summary>
         /// Aircraft Maintenance Company Create.
@@ -258,6 +383,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         /// Aircraft Maintenance Company View Assign To Team.
         /// </summary>
         AircraftMaintenanceCompany_View_Assign_To_Team,
+
+        // BIAToolKit - End Partial Permissions AircraftMaintenanceCompany
+        // BIAToolKit - Begin Partial Permissions MaintenanceTeam
 
         /// <summary>
         /// Maintenance Team Create.
@@ -344,6 +472,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         /// </summary>
         MaintenanceTeam_Fix,
 
+        // BIAToolKit - End Partial Permissions MaintenanceTeam
+        // BIAToolKit - Begin Partial Permissions Pilot
+
         /// <summary>
         /// Pilot Create.
         /// </summary>
@@ -378,6 +509,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         /// Pilot Fix.
         /// </summary>
         Pilot_Fix,
+
+        // BIAToolKit - End Partial Permissions Pilot
+        // BIAToolKit - Begin Partial Permissions Flight
 
         /// <summary>
         /// Flight Create.
@@ -414,129 +548,32 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         /// </summary>
         Flight_Fix,
 
-        /// <summary>
-        /// Airport Create.
-        /// </summary>
-        Airport_Create,
-
-        /// <summary>
-        /// Airport Delete.
-        /// </summary>
-        Airport_Delete,
-
-        /// <summary>
-        /// Airport List Access.
-        /// </summary>
-        Airport_List_Access,
-
-        /// <summary>
-        /// Airport Read.
-        /// </summary>
-        Airport_Read,
-
-        /// <summary>
-        /// Airport Save.
-        /// </summary>
-        Airport_Save,
-
-        /// <summary>
-        /// Airport Update.
-        /// </summary>
-        Airport_Update,
-
-        /// <summary>
-        /// Plane Type Create.
-        /// </summary>
-        PlaneType_Create,
-
-        /// <summary>
-        /// Plane Type Delete.
-        /// </summary>
-        PlaneType_Delete,
-
-        /// <summary>
-        /// Plane Type List Access.
-        /// </summary>
-        PlaneType_List_Access,
-
-        /// <summary>
-        /// Plane Type Read.
-        /// </summary>
-        PlaneType_Read,
-
-        /// <summary>
-        /// Plane Type Save.
-        /// </summary>
-        PlaneType_Save,
-
-        /// <summary>
-        /// Plane Type Update.
-        /// </summary>
-        PlaneType_Update,
-
-        /// <summary>
-        /// Maintenance Contract Create.
-        /// </summary>
-        MaintenanceContract_Create,
-
-        /// <summary>
-        /// Maintenance Contract Delete.
-        /// </summary>
-        MaintenanceContract_Delete,
-
-        /// <summary>
-        /// Maintenance Contract List Access.
-        /// </summary>
-        MaintenanceContract_List_Access,
-
-        /// <summary>
-        /// Maintenance Contract Read.
-        /// </summary>
-        MaintenanceContract_Read,
-
-        /// <summary>
-        /// Maintenance Contract Save.
-        /// </summary>
-        MaintenanceContract_Save,
-
-        /// <summary>
-        /// Maintenance Contract Update.
-        /// </summary>
-        MaintenanceContract_Update,
-
-        /// <summary>
-        /// Site Options.
-        /// </summary>
-        Site_Options,
+        // BIAToolKit - End Partial Permissions Flight
+        // BIAToolKit - Begin Partial RightsForOption Country
 
         /// <summary>
         /// Country Options.
         /// </summary>
         Country_Options,
 
+        // BIAToolKit - End Partial RightsForOption Country
+
+        // BIAToolKit - Begin Partial RightsForOption Airport
+
         /// <summary>
         /// Airport Options.
         /// </summary>
         Airport_Options,
 
-        /// <summary>
-        /// Plane Options.
-        /// </summary>
-        Plane_Options,
+        // BIAToolKit - End Partial RightsForOption Airport
+        // BIAToolKit - Begin Partial RightsForOption PlaneType
 
         /// <summary>
         /// Plane Type Options.
         /// </summary>
         PlaneType_Options,
 
-        /// <summary>
-        /// Aircraft Maintenance Company Options.
-        /// </summary>
-        AircraftMaintenanceCompany_Options,
-
-        /// <summary>
-        /// Part Options.
-        /// </summary>
-        Part_Options,
+        // BIAToolKit - End Partial RightsForOption PlaneType
+        // End BIAToolKit Generation Ignore
     }
 }

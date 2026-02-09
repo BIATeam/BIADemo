@@ -10,9 +10,14 @@ namespace BIA.Net.Core.Common.Enum
     public enum BiaPermissionId
     {
         /// <summary>
+        /// Home Access.
+        /// </summary>
+        Home_Access = 1000,
+
+        /// <summary>
         /// Background Task Admin.
         /// </summary>
-        Background_Task_Admin = 1000,
+        Background_Task_Admin,
 
         /// <summary>
         /// Background Task Read Only.
