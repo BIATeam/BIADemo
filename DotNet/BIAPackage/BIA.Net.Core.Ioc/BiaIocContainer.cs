@@ -166,9 +166,7 @@ namespace BIA.Net.Core.Ioc
         {
             // Configuration
             collection.Configure<BiaNetSection>(options => configuration.GetSection("BiaNet").Bind(options));
-
-            // Permission ID Converter for BIA Framework permissions
-            collection.AddScoped<IPermissionIdConverter, PermissionIdConverter<BiaPermissionId>>();
+            collection.AddSingleton<IPermissionConverter, PermissionConverter<BiaPermissionId>>();
         }
 
         private static void ConfigureInfrastructureDataContainer(IServiceCollection collection)

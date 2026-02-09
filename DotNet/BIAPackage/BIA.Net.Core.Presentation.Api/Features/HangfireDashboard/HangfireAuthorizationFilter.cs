@@ -98,7 +98,7 @@ namespace BIA.Net.Core.Presentation.Api.Features.HangfireDashboard
                     if (permIds?.Count > 0)
                     {
                         // Get all converters from DI (supports multiple permission enum types)
-                        var converters = httpContext.RequestServices.GetServices<IPermissionIdConverter>();
+                        var converters = httpContext.RequestServices.GetServices<IPermissionConverter>();
 
                         foreach (var converter in converters)
                         {

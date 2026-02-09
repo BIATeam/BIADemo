@@ -13,7 +13,7 @@ namespace BIA.Net.Core.Application.Permission
     public interface IPermissionService
     {
         /// <summary>
-        /// Gets all permissions from the enums.
+        /// Gets all permissions.
         /// </summary>
         /// <returns>List of all permissions.</returns>
         IEnumerable<PermissionDto> GetAllPermissions();

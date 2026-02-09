@@ -65,7 +65,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
         // End BIADemo
         ILdapRepositoryHelper ldapRepositoryHelper,
-        IEnumerable<IPermissionIdConverter> permissionIdConverters = null)
+        IEnumerable<IPermissionConverter> permissionConverters)
 #if BIA_FRONT_FEATURE
         : BaseFrontAuthAppService<UserDto, User, RoleId, TeamTypeId, UserFromDirectoryDto, UserFromDirectory, AdditionalInfoDto, UserDataDto>(
             userAppService,
@@ -80,7 +80,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             biaNetconfiguration,
             userDirectoryHelper,
             ldapRepositoryHelper,
-            permissionIdConverters),
+            permissionConverters),
         IAuthAppService
 #else
         : BaseAuthAppService<UserFromDirectoryDto, UserFromDirectory, AdditionalInfoDto, UserDataDto>(jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper), IAuthAppService

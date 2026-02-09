@@ -11,7 +11,7 @@ namespace BIA.Net.Core.Common
     /// Implemented by PermissionIdConverter with the project's specific PermissionId enum.
     /// This non-generic interface allows Core services to use the converter without knowing the enum type.
     /// </summary>
-    public interface IPermissionIdConverter
+    public interface IPermissionConverter
     {
         /// <summary>
         /// Converts permission string names to their numeric IDs.

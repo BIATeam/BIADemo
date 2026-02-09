@@ -8,6 +8,7 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Runtime.CompilerServices;
     using System.Security.Claims;
     using System.Text;
     using System.Threading.Tasks;
@@ -91,52 +92,23 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
                 },
                 OnTokenValidated = context =>
                 {
-                    // Enrich claims with permission strings decoded from permission IDs
-                    // This ensures [Authorize(Roles = ...)] works even with compact permissions
-                    var identity = context.Principal?.Identity as ClaimsIdentity;
-                    if (identity != null)
+                    if (context.Principal?.Identity is ClaimsIdentity identity)
                     {
                         var permIdsClaim = identity.FindFirst(ClaimTypes.Role);
-
                         if (permIdsClaim != null && !string.IsNullOrWhiteSpace(permIdsClaim.Value))
                         {
-                            try
+                            var permIds = Newtonsoft.Json.JsonConvert.DeserializeObject<List<int>>(permIdsClaim.Value);
+                            if (permIds?.Count > 0)
                             {
-                                var permIds = Newtonsoft.Json.JsonConvert.DeserializeObject<List<int>>(permIdsClaim.Value);
-                                if (permIds?.Count > 0)
+                                var converters = context.HttpContext.RequestServices.GetServices<IPermissionConverter>();
+                                foreach (var converter in converters)
                                 {
-                                    // Get all converters from DI (supports multiple permission enum types)
-                                    var converters = context.HttpContext.RequestServices.GetServices<IPermissionIdConverter>();
-                                    var convertedIds = new HashSet<int>();
-
-                                    foreach (var converter in converters)
+                                    var permissionNames = converter.ConvertToNames(permIds);
+                                    foreach (var permissionName in permissionNames)
                                     {
-                                        var permissionNames = converter.ConvertToNames(permIds);
-                                        foreach (var permissionName in permissionNames)
-                                        {
-                                            identity.AddClaim(new Claim(ClaimTypes.Role, permissionName));
-                                        }
-
-                                        // Track which IDs were successfully converted
-                                        var thisConverterIds = converter.ConvertToIds(permissionNames);
-                                        foreach (var id in thisConverterIds)
-                                        {
-                                            convertedIds.Add(id);
-                                        }
-                                    }
-
-                                    // Log warning for any IDs that weren't converted by any converter
-                                    var unconvertedIds = permIds.Except(convertedIds).ToList();
-                                    if (unconvertedIds.Any())
-                                    {
-                                        var logger = context.HttpContext.RequestServices.GetService<Microsoft.Extensions.Logging.ILogger<JwtFactory>>();
-                                        logger?.LogWarning($"Permission IDs not found in any registered converter: [{string.Join(", ", unconvertedIds)}] - may indicate synchronization issue");
+                                        identity.AddClaim(new Claim(ClaimTypes.Role, permissionName));
                                     }
                                 }
-                            }
-                            catch
-                            {
-                                // Silently fail - legacy string claims will be used if present
                             }
                         }
                     }

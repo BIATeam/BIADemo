@@ -48,9 +48,10 @@ namespace BIA.Net.Core.Application.User
         where TUserDataDto : BaseUserDataDto, new()
     {
         /// <summary>
-        /// The permission ID converters (supports multiple permission enum types).
+        /// The permission converters.
         /// </summary>
-        protected readonly IEnumerable<IPermissionIdConverter> permissionIdConverters;
+        private readonly IEnumerable<IPermissionConverter> permissionConverters;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseFrontAuthAppService{TUserDto, TUser, TEnumRoleId, TEnumTeamTypeId, TUserFromDirectoryDto, TUserFromDirectory, TAdditionalInfoDto, TUserDataDto}" /> class.
         /// </summary>
@@ -66,7 +67,7 @@ namespace BIA.Net.Core.Application.User
         /// <param name="biaNetconfiguration">The bia netconfiguration.</param>
         /// <param name="userDirectoryHelper">The user directory helper.</param>
         /// <param name="ldapRepositoryHelper">The LDAP repository helper.</param>
-        /// <param name="permissionIdConverters">The permission ID converters (all registered implementations).</param>
+        /// <param name="permissionConverters">The permission converters.</param>
         protected BaseFrontAuthAppService(
             IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory> userAppService,
             IBaseTeamAppService<TEnumTeamTypeId> teamAppService,
@@ -80,7 +81,7 @@ namespace BIA.Net.Core.Application.User
             IOptions<BiaNetSection> biaNetconfiguration,
             IUserDirectoryRepository<TUserFromDirectoryDto, TUserFromDirectory> userDirectoryHelper,
             ILdapRepositoryHelper ldapRepositoryHelper,
-            IEnumerable<IPermissionIdConverter> permissionIdConverters = null)
+            IEnumerable<IPermissionConverter> permissionConverters)
             : base(jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper)
         {
             this.UserAppService = userAppService;
@@ -88,7 +89,7 @@ namespace BIA.Net.Core.Application.User
             this.RoleAppService = roleAppService;
             this.IdentityProviderRepository = identityProviderRepository;
             this.RolesConfiguration = biaNetconfiguration.Value.Roles;
-            this.permissionIdConverters = permissionIdConverters ?? Enumerable.Empty<IPermissionIdConverter>();
+            this.permissionConverters = permissionConverters ?? [];
         }
 
         /// <summary>
@@ -233,7 +234,7 @@ namespace BIA.Net.Core.Application.User
             List<int> permissionIds = new List<int>();
             HashSet<string> convertedPermissions = new HashSet<string>();
 
-            foreach (var converter in this.permissionIdConverters)
+            foreach (var converter in this.permissionConverters)
             {
                 var ids = converter.ConvertToIds(userPermissions);
                 permissionIds.AddRange(ids);

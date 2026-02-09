@@ -118,6 +118,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient(typeof(IBaseUserSynchronizeDomainService<User, UserFromDirectory>), typeof(UserSynchronizeDomainService));
             collection.AddTransient(typeof(IBaseUserAppService<UserDto, User, UserFromDirectoryDto, UserFromDirectory>), typeof(UserAppService));
             collection.AddTransient(typeof(IBaseTeamAppService<TeamTypeId>), typeof(TeamAppService));
+            collection.AddSingleton<IPermissionService, PermissionService>();
 #endif
 #if BIA_FRONT_FEATURE || BIA_USE_DATABASE
 
@@ -134,9 +135,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 assemblyName: "TheBIADevCompany.BIADemo.Application",
                 excludedServiceNames: new List<string>() { nameof(AuthAppService) },
                 serviceLifetime: ServiceLifetime.Transient);
-
-            // Override BIA PermissionService with project-specific implementation
-            collection.AddTransient<IPermissionService, ProjectPermissionService>();
 
             if (isApi)
             {
@@ -266,8 +264,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             // Must specify the User type explicitly
             collection.AddScoped<ICoreUserRepository, CoreUserRepository<User>>();
 
-            // Register the project-specific permission ID converters
-            collection.AddScoped<IPermissionIdConverter, PermissionIdConverter<PermissionId>>();
+            // Register the project-specific permission converter
+            collection.AddSingleton<IPermissionConverter, PermissionConverter<PermissionId>>();
 #endif
         }
 #endif
