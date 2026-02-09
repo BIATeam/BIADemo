@@ -44,10 +44,10 @@ namespace BIA.Net.Core.Presentation.Api.Helpers
         /// <returns>An enumerable of permission IDs as integers.</returns>
         public static IEnumerable<int> GetPermissionIds(this ClaimsPrincipal principal)
         {
-            var permissionClaims = principal.GetClaimValue(BiaClaimsPrincipal.PermissionIds);
-            if (!string.IsNullOrEmpty(permissionClaims))
+            var permissionIdsClaim = principal.GetClaimValue(BiaClaimsPrincipal.PermissionIds);
+            if (!string.IsNullOrEmpty(permissionIdsClaim))
             {
-                return JsonConvert.DeserializeObject<List<int>>(permissionClaims);
+                return JsonConvert.DeserializeObject<IEnumerable<int>>(permissionIdsClaim);
             }
 
             return [];

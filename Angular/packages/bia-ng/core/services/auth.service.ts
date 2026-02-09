@@ -177,9 +177,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     };
 
     const tokenPermissions = JSON.parse(
-      objDecodedToken[
-        'http://schemas.microsoft.com/ws/2008/06/identity/claims/permissionids'
-      ]
+      objDecodedToken['urn:bia:claims:permission_ids']
     ) as number[];
 
     tokenPermissions.forEach(permissionId => {

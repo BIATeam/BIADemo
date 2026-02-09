@@ -206,7 +206,7 @@ namespace BIA.Net.Core.Application.User
                 // Get Fine Grained Roles
                 List<string> fineGrainedRoles = await this.GetFineRolesAsync(loginParam, userData, userInfoFromDB.Id, allTeams, teamsConfig);
                 List<int> fineGrainedRoleIds = GetRoleIds(fineGrainedRoles);
-                roleIds = roleIds.Union(fineGrainedRoleIds).ToList();
+                roleIds = [.. roleIds.Union(fineGrainedRoleIds)];
 
                 // Translate Roles in Permissions
                 List<string> fineGrainedUserPermissions = this.UserPermissionDomainService.TranslateRolesInPermissions(fineGrainedRoles, loginParam.LightToken);
@@ -227,7 +227,7 @@ namespace BIA.Net.Core.Application.User
                 IdentityKey = identityKey,
                 Id = (userInfoFromDB?.Id).GetValueOrDefault(),
                 RoleIds = roleIds,
-                Permissions = this.GetPermissionIds(userPermissions),
+                PermissionIds = this.GetPermissionIds(userPermissions),
                 UserData = userData,
             };
 

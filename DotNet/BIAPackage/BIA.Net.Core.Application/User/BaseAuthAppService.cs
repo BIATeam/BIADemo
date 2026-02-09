@@ -138,8 +138,8 @@ namespace BIA.Net.Core.Application.User
             TokenDto<TUserDataDto> tokenDto = new TokenDto<TUserDataDto>()
             {
                 IdentityKey = login,
-                RoleIds = new List<int>(),
-                Permissions = this.GetPermissionIds(userPermissions),
+                RoleIds = [],
+                PermissionIds = this.GetPermissionIds(userPermissions),
                 UserData = this.CreateUserData(null),
             };
 
