@@ -1,5 +1,6 @@
 ﻿import { CommonModule } from '@angular/common';
 import {
+  AfterViewInit,
   Component,
   Input,
   OnChanges,
@@ -37,7 +38,7 @@ import { ViewTeam } from '../../model/view-team';
 })
 export class ViewSaveFormComponent
   extends CrudItemFormComponent<View>
-  implements OnChanges
+  implements OnChanges, AfterViewInit
 {
   @ViewChild(BiaFormComponent) biaForm?: BiaFormComponent<View>;
   @Input() canAddTeamView: boolean;
