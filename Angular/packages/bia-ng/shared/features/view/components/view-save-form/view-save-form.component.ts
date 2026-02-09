@@ -73,6 +73,10 @@ export class ViewSaveFormComponent
   viewType: typeof ViewType = ViewType;
 
   ngOnChanges(changes: SimpleChanges) {
+    if (changes['crudItem']) {
+      setTimeout(() => this.setViewTypeFormValue(), 0);
+    }
+
     if (
       changes['teamList'] ||
       changes['crudItem'] ||
@@ -101,6 +105,20 @@ export class ViewSaveFormComponent
               ?.isDefault ?? false,
           dtoState: DtoState.Unchanged,
         }));
+    }
+  }
+
+  ngAfterViewInit() {
+    this.setViewTypeFormValue();
+  }
+
+  setViewTypeFormValue() {
+    if (
+      this.biaForm?.form &&
+      this.crudItem &&
+      (!this.crudItem?.viewType || this.crudItem.viewType === ViewType.System)
+    ) {
+      this.biaForm.form.controls['viewType'].setValue(ViewType.User);
     }
   }
 
