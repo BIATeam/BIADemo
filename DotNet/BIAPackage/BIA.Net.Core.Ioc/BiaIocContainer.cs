@@ -166,7 +166,7 @@ namespace BIA.Net.Core.Ioc
         {
             // Configuration
             collection.Configure<BiaNetSection>(options => configuration.GetSection("BiaNet").Bind(options));
-            collection.AddSingleton<IPermissionConverter, PermissionConverter<BiaPermissionId>>();
+            collection.AddSingleton<IPermissionProvider, PermissionProvider<BiaPermissionId>>();
         }
 
         private static void ConfigureInfrastructureDataContainer(IServiceCollection collection)

@@ -21,6 +21,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User.Models;
 #if BIA_FRONT_FEATURE
+    using BIA.Net.Core.Application.Permission;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Service;
@@ -65,7 +66,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
         // End BIADemo
         ILdapRepositoryHelper ldapRepositoryHelper,
-        IEnumerable<IPermissionConverter> permissionConverters)
+        IPermissionService permissionService)
 #if BIA_FRONT_FEATURE
         : BaseFrontAuthAppService<UserDto, User, RoleId, TeamTypeId, UserFromDirectoryDto, UserFromDirectory, AdditionalInfoDto, UserDataDto>(
             userAppService,
@@ -80,7 +81,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             biaNetconfiguration,
             userDirectoryHelper,
             ldapRepositoryHelper,
-            permissionConverters),
+            permissionService),
         IAuthAppService
 #else
         : BaseAuthAppService<UserFromDirectoryDto, UserFromDirectory, AdditionalInfoDto, UserDataDto>(jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper), IAuthAppService

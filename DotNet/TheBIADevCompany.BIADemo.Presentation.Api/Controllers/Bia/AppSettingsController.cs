@@ -53,7 +53,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
 #if BIA_FRONT_FEATURE
                 TeamsConfig = teamAppService.GetTeamsConfig(),
 #endif
-                Permissions = permissionService.GetAllPermissions(),
+                Permissions = permissionService.Permissions,
             };
         }
 

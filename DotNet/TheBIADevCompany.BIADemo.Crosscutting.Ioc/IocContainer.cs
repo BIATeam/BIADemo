@@ -39,7 +39,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
 #if BIA_FRONT_FEATURE
-    using TheBIADevCompany.BIADemo.Application.Permission;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
 #endif
@@ -264,8 +263,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             // Must specify the User type explicitly
             collection.AddScoped<ICoreUserRepository, CoreUserRepository<User>>();
 
-            // Register the project-specific permission converter
-            collection.AddSingleton<IPermissionConverter, PermissionConverter<PermissionId>>();
+            // Register the project-specific permission provider
+            collection.AddSingleton<IPermissionProvider, PermissionProvider<PermissionId>>();
 #endif
         }
 #endif

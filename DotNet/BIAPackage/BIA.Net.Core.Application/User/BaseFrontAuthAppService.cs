@@ -11,6 +11,7 @@ namespace BIA.Net.Core.Application.User
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Authentication;
+    using BIA.Net.Core.Application.Permission;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Enum;
@@ -62,7 +63,7 @@ namespace BIA.Net.Core.Application.User
         /// <param name="biaNetconfiguration">The bia netconfiguration.</param>
         /// <param name="userDirectoryHelper">The user directory helper.</param>
         /// <param name="ldapRepositoryHelper">The LDAP repository helper.</param>
-        /// <param name="permissionConverters">The permission converters.</param>
+        /// <param name="permissionService">The permission service.</param>
         protected BaseFrontAuthAppService(
             IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory> userAppService,
             IBaseTeamAppService<TEnumTeamTypeId> teamAppService,
@@ -76,8 +77,8 @@ namespace BIA.Net.Core.Application.User
             IOptions<BiaNetSection> biaNetconfiguration,
             IUserDirectoryRepository<TUserFromDirectoryDto, TUserFromDirectory> userDirectoryHelper,
             ILdapRepositoryHelper ldapRepositoryHelper,
-            IEnumerable<IPermissionConverter> permissionConverters)
-            : base(jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper, permissionConverters)
+            IPermissionService permissionService)
+            : base(jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper, permissionService)
         {
             this.UserAppService = userAppService;
             this.TeamAppService = teamAppService;
@@ -192,7 +193,7 @@ namespace BIA.Net.Core.Application.User
             // Get Permissions
             List<string> userPermissions = this.UserPermissionDomainService.TranslateRolesInPermissions(globalRoles, loginParam.LightToken);
             List<string> transversalUserPermissions = this.UserPermissionDomainService.TranslateRolesInPermissions(globalRoles, loginParam.LightToken, true);
-            List<PermissionTeamsDto> permissionsTeams = transversalUserPermissions.Select(p => new PermissionTeamsDto { PermissionId = PermissionHelper.GetPermissionId(p, this.PermissionConverters), IsGlobal = true, TeamIds = [] }).ToList();
+            List<PermissionTeamsDto> permissionsTeams = transversalUserPermissions.Select(p => new PermissionTeamsDto { PermissionId = this.PermissionService.GetPermissionId(p), IsGlobal = true, TeamIds = [] }).ToList();
 
             IEnumerable<BaseDtoVersionedTeam> allTeams = [];
             TUserDataDto userData = this.CreateUserData(userInfoFromDB);
@@ -520,14 +521,14 @@ namespace BIA.Net.Core.Application.User
                 var permissions = await this.GetTransversalPermissionsForTeam(team, userInfoId, teamConfig);
                 foreach (string permission in permissions)
                 {
-                    var permissionTeams = permissionsTeams.FirstOrDefault(pt => PermissionHelper.GetPermissionName(pt.PermissionId, this.PermissionConverters) == permission);
+                    var permissionTeams = permissionsTeams.FirstOrDefault(pt => this.PermissionService.GetPermissionName(pt.PermissionId) == permission);
                     if (permissionTeams != null)
                     {
                         permissionTeams.TeamIds.Add(team.Id);
                     }
                     else
                     {
-                        permissionsTeams.Add(new PermissionTeamsDto { PermissionId = PermissionHelper.GetPermissionId(permission, this.PermissionConverters), TeamIds = [team.Id], IsGlobal = false });
+                        permissionsTeams.Add(new PermissionTeamsDto { PermissionId = this.PermissionService.GetPermissionId(permission), TeamIds = [team.Id], IsGlobal = false });
                     }
                 }
             }

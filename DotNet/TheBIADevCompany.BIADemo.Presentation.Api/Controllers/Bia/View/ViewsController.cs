@@ -6,6 +6,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
 {
     using System;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Permission;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Application.View;
     using BIA.Net.Core.Common;
@@ -32,7 +33,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         /// </summary>
         private readonly IViewAppService viewAppService;
         private readonly IBiaClaimsPrincipalService biaClaimsPrincipalService;
-        private readonly IEnumerable<IPermissionConverter> permissionConverters;
+        private readonly IPermissionService permissionService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ViewsController" /> class.
@@ -40,13 +41,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         /// <param name="viewAppService">The view service.</param>
         /// <param name="teamAppService">The team service.</param>
         /// <param name="biaClaimsPrincipalService">The bia claims principal service.</param>
-        /// <param name="permissionConverters">The permission converters.</param>
-        public ViewsController(IViewAppService viewAppService, ITeamAppService teamAppService, IBiaClaimsPrincipalService biaClaimsPrincipalService, IEnumerable<IPermissionConverter> permissionConverters)
+        /// <param name="permissionService">The permission service.</param>
+        public ViewsController(IViewAppService viewAppService, ITeamAppService teamAppService, IBiaClaimsPrincipalService biaClaimsPrincipalService, IPermissionService permissionService)
             : base(teamAppService)
         {
             this.viewAppService = viewAppService;
             this.biaClaimsPrincipalService = biaClaimsPrincipalService;
-            this.permissionConverters = permissionConverters;
+            this.permissionService = permissionService;
         }
 
         /// <summary>
@@ -121,7 +122,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
                 }
 
                 var userData = this.biaClaimsPrincipalService.GetUserData<BaseUserDataDto>();
-                if (dto.ViewTeams.Any(team => (team.DtoState == BIA.Net.Core.Domain.Dto.Base.DtoState.Added || team.DtoState == BIA.Net.Core.Domain.Dto.Base.DtoState.Deleted) && !userData.CrossTeamPermissions.Any(p => PermissionHelper.GetPermissionName(p.PermissionId, this.permissionConverters) == permission && (p.IsGlobal || p.TeamIds.Any(ti => ti == team.Id)))))
+                if (dto.ViewTeams.Any(team => (team.DtoState == BIA.Net.Core.Domain.Dto.Base.DtoState.Added || team.DtoState == BIA.Net.Core.Domain.Dto.Base.DtoState.Deleted) && !userData.CrossTeamPermissions.Any(p => this.permissionService.GetPermissionName(p.PermissionId) == permission && (p.IsGlobal || p.TeamIds.Any(ti => ti == team.Id)))))
                 {
                     throw new BusinessException("Can't update view for these teams.");
                 }
@@ -165,7 +166,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
                 }
 
                 var userData = this.biaClaimsPrincipalService.GetUserData<BaseUserDataDto>();
-                if (dto.ViewTeams.Any(team => !userData.CrossTeamPermissions.Any(p => p.IsGlobal || (PermissionHelper.GetPermissionName(p.PermissionId, this.permissionConverters) == permission && p.TeamIds.Any(ti => ti == team.Id)))))
+                if (dto.ViewTeams.Any(team => !userData.CrossTeamPermissions.Any(p => p.IsGlobal || (this.permissionService.GetPermissionName(p.PermissionId) == permission && p.TeamIds.Any(ti => ti == team.Id)))))
                 {
                     throw FrontUserException.Create(BiaErrorId.CannotAddViewForSelectedTeams);
                 }

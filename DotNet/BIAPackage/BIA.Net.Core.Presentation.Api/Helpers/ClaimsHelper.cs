@@ -9,6 +9,7 @@ namespace BIA.Net.Core.Presentation.Api.Helpers
     using System.Linq;
     using System.Security.Claims;
     using System.Text;
+    using BIA.Net.Core.Application.Permission;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain.Authentication;
@@ -24,14 +25,14 @@ namespace BIA.Net.Core.Presentation.Api.Helpers
         /// converters.
         /// </summary>
         /// <param name="principal">The ClaimsPrincipal whose permissions are to be retrieved.</param>
-        /// <param name="permissionConverters">A collection of permission converters used to map permission IDs to names.</param>
+        /// <param name="permissionService">The permission service.</param>
         /// <returns>A distinct enumerable of permission names associated with the principal.</returns>
-        public static IEnumerable<string> GetPermissionNames(this ClaimsPrincipal principal, IEnumerable<IPermissionConverter> permissionConverters)
+        public static IEnumerable<string> GetPermissionNames(this ClaimsPrincipal principal, IPermissionService permissionService)
         {
             var permissionIds = principal.GetPermissionIds();
             if (permissionIds.Any())
             {
-                return permissionConverters.SelectMany(converter => converter.ConvertToNames(permissionIds)).Distinct();
+                return permissionIds.Select(permissionService.GetPermissionName).Distinct();
             }
 
             return [];

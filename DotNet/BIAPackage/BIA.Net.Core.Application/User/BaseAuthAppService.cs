@@ -9,6 +9,7 @@ namespace BIA.Net.Core.Application.User
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Authentication;
+    using BIA.Net.Core.Application.Permission;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Exceptions;
@@ -49,7 +50,7 @@ namespace BIA.Net.Core.Application.User
         /// <param name="biaNetconfiguration">The bia netconfiguration.</param>
         /// <param name="userDirectoryHelper">The user directory helper.</param>
         /// <param name="ldapRepositoryHelper">The LDAP repository helper.</param>
-        /// <param name="permissionConverters">The permission converters.</param>
+        /// <param name="permissionService">The permission service.</param>
         public BaseAuthAppService(
             IJwtFactory jwtFactory,
             IPrincipal principal,
@@ -59,7 +60,7 @@ namespace BIA.Net.Core.Application.User
             IOptions<BiaNetSection> biaNetconfiguration,
             IUserDirectoryRepository<TUserFromDirectoryDto, TUserFromDirectory> userDirectoryHelper,
             ILdapRepositoryHelper ldapRepositoryHelper,
-            IEnumerable<IPermissionConverter> permissionConverters)
+            IPermissionService permissionService)
         {
             this.JwtFactory = jwtFactory;
             this.ClaimsPrincipal = principal as BiaClaimsPrincipal;
@@ -68,8 +69,8 @@ namespace BIA.Net.Core.Application.User
             this.UserDirectoryHelper = userDirectoryHelper;
             this.LdapDomains = biaNetconfiguration.Value.Authentication?.LdapDomains;
             this.LdapRepositoryHelper = ldapRepositoryHelper;
+            this.PermissionService = permissionService;
             this.Configuration = configuration;
-            this.PermissionConverters = permissionConverters ?? [];
         }
 
         /// <summary>
@@ -108,14 +109,14 @@ namespace BIA.Net.Core.Application.User
         protected ILdapRepositoryHelper LdapRepositoryHelper { get; }
 
         /// <summary>
+        /// The permission service.
+        /// </summary>
+        protected IPermissionService PermissionService { get; }
+
+        /// <summary>
         /// The configuration.
         /// </summary>
         protected IConfiguration Configuration { get; }
-
-        /// <summary>
-        /// The permission converters.
-        /// </summary>
-        protected IEnumerable<IPermissionConverter> PermissionConverters { get; set; }
 
         /// <inheritdoc/>
         public async Task<string> LoginAsync()
@@ -300,16 +301,13 @@ namespace BIA.Net.Core.Application.User
             List<int> permissionIds = [];
             HashSet<string> convertedPermissions = [];
 
-            foreach (var converter in this.PermissionConverters)
-            {
-                var ids = converter.ConvertToIds(userPermissions);
-                permissionIds.AddRange(ids);
+            var ids = this.PermissionService.ConvertToIds(userPermissions);
+            permissionIds.AddRange(ids);
 
-                var names = converter.ConvertToNames(ids);
-                foreach (var name in names)
-                {
-                    convertedPermissions.Add(name);
-                }
+            var names = this.PermissionService.ConvertToNames(ids);
+            foreach (var name in names)
+            {
+                convertedPermissions.Add(name);
             }
 
             var unconvertedPermissions = userPermissions.Except(convertedPermissions);
