@@ -22,9 +22,8 @@ import {
   switchMap,
   take,
 } from 'rxjs/operators';
-import { Permission } from 'src/app/shared/permission';
 import { AppSettingsService } from '../app-settings/services/app-settings.service';
-import { BiaPermission, IsAnnouncementPermission } from '../bia-permission';
+import { IsAnnouncementPermission } from '../bia-permission';
 import { BiaTeamsActions } from '../team/store/teams-actions';
 import { AbstractDas } from './abstract-das.service';
 import { BiaAppConstantsService } from './bia-app-constants.service';
@@ -117,15 +116,11 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     );
   }
 
-  public hasPermission(
-    permission: string | Permission | BiaPermission
-  ): boolean {
+  public hasPermission(permission: string): boolean {
     return this.checkPermission(this.authInfoSubject.value, permission);
   }
 
-  public hasPermissionObs(
-    permission: string | Permission | BiaPermission
-  ): Observable<boolean> {
+  public hasPermissionObs(permission: string): Observable<boolean> {
     if (!permission) {
       return of(true);
     }
@@ -177,12 +172,30 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
           'http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata'
         ]
       ),
-      permissions:
-        objDecodedToken[
-          'http://schemas.microsoft.com/ws/2008/06/identity/claims/permissionids'
-        ],
       expiredAt: objDecodedToken['exp'],
+      permissions: [],
     };
+
+    const tokenPermissions = JSON.parse(
+      objDecodedToken[
+        'http://schemas.microsoft.com/ws/2008/06/identity/claims/permissionids'
+      ]
+    ) as number[];
+
+    tokenPermissions.forEach(permissionId => {
+      const appSettingPermission =
+        this.appSettingsService.appSettings.permissions.find(
+          p => p.permissionId === permissionId
+        );
+      if (!appSettingPermission) {
+        console.warn(
+          `Permission ${permissionId} not found in app settings permissions`
+        );
+      } else {
+        decodedToken.permissions.push(appSettingPermission.name);
+      }
+    });
+
     return decodedToken;
   }
 
@@ -347,30 +360,18 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
 
   protected checkPermission(
     authInfo: AuthInfo | null,
-    permission: string | Permission | BiaPermission
+    permission: string
   ): boolean {
     if (!permission) {
       return true;
     }
-
-    if (!authInfo?.decryptedToken?.permissions) {
-      return false;
-    }
-
-    const appSettingPermission =
-      this.appSettingsService.appSettings.permissions.find(
-        p => p.name === permission
+    if (authInfo) {
+      return (
+        authInfo.decryptedToken?.permissions?.some(p => p === permission) ===
+        true
       );
-    if (!appSettingPermission) {
-      console.warn(
-        `Permission ${permission} not found in app settings permissions`
-      );
-      return false;
     }
-
-    return authInfo.decryptedToken.permissions.includes(
-      appSettingPermission.permissionId
-    );
+    return false;
   }
 
   protected getAuthInfo() {
@@ -390,14 +391,9 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
         if (authInfo) {
           authInfo.decryptedToken = this.decodeToken(authInfo.token);
           if (!BiaAppConstantsService.allEnvironments.enableAnnouncements) {
-            const announcementPermissionIds =
-              this.appSettingsService.appSettings.permissions
-                .filter(p => IsAnnouncementPermission(p.name))
-                .map(p => p.permissionId);
-
             authInfo.decryptedToken.permissions =
               authInfo.decryptedToken.permissions.filter(
-                permId => !announcementPermissionIds.includes(permId)
+                p => IsAnnouncementPermission(p) === false
               );
           }
         }

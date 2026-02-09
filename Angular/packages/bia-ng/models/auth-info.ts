@@ -48,7 +48,7 @@ export interface AdditionalInfos {
 export interface Token {
   identityKey: string;
   id: number;
-  permissions: number[];
+  permissions: string[];
   userData: UserData;
   expiredAt: number;
 }
