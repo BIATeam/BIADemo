@@ -67,6 +67,7 @@ export class BiaTableHeaderComponent
   @Input() showHistoricalButton = false;
   @Input() selectionActionsMenuItems?: BiaButtonAndMenuItem[];
   @Input() listActionsMenuItems?: BiaButtonAndMenuItem[];
+  @Input() backRoute = '../../';
   @Output() create = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
   @Output() clone = new EventEmitter<void>();
@@ -169,8 +170,10 @@ export class BiaTableHeaderComponent
   }
 
   onBack() {
-    if (window.history.length > 1) {
-      this.location.back();
+    if (this.backRoute) {
+      this.router.navigate([this.backRoute], {
+        relativeTo: this.activatedRoute,
+      });
     } else {
       this.router.navigate(['/']);
     }
