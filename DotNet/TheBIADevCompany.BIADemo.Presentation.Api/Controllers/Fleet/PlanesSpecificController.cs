@@ -21,6 +21,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.Fleet;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
 
     /// <summary>
@@ -80,7 +81,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Planes.ListAccess)]
+        [Authorize(Roles = nameof(PermissionId.Plane_List_Access))]
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto<PlaneAdvancedFilterDto> filters)
         {
             var (results, total) = await this.planeSpecificService.GetRangeAsync(filters);
@@ -98,7 +99,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Planes.Read)]
+        [Authorize(Roles = nameof(PermissionId.Plane_Read))]
         public async Task<IActionResult> Get(int id)
         {
             if (id == 0)
@@ -126,7 +127,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Planes.Create)]
+        [Authorize(Roles = nameof(PermissionId.Plane_Create))]
         public async Task<IActionResult> Add([FromBody] PlaneSpecificDto dto)
         {
             try
@@ -155,7 +156,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Planes.Update)]
+        [Authorize(Roles = nameof(PermissionId.Plane_Update))]
         public async Task<IActionResult> Update(int id, [FromBody] PlaneSpecificDto dto)
         {
             if (id == 0 || dto == null || dto.Id != id)
@@ -196,7 +197,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Planes.Delete)]
+        [Authorize(Roles = nameof(PermissionId.Plane_Delete))]
         public async Task<IActionResult> Remove(int id)
         {
             if (id == 0)
@@ -228,7 +229,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Planes.Delete)]
+        [Authorize(Roles = nameof(PermissionId.Plane_Delete))]
         public async Task<IActionResult> Remove([FromQuery] List<int> ids)
         {
             if (ids?.Any() != true)
@@ -265,7 +266,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Planes.Save)]
+        [Authorize(Roles = nameof(PermissionId.Plane_Save))]
         public async Task<IActionResult> Save(IEnumerable<PlaneSpecificDto> dtos)
         {
             var dtoList = dtos.ToList();
@@ -279,9 +280,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
                 var savedDtos = await this.planeSpecificService.SaveSafeAsync(
                     dtos: dtoList,
                     principal: this.biaClaimsPrincipalService.GetBiaClaimsPrincipal(),
-                    rightAdd: Rights.Planes.Create,
-                    rightUpdate: Rights.Planes.Update,
-                    rightDelete: Rights.Planes.Delete);
+                    rightAdd: nameof(PermissionId.Plane_Create),
+                    rightUpdate: nameof(PermissionId.Plane_Update),
+                    rightDelete: nameof(PermissionId.Plane_Delete));
 #if UseHubForClientInPlane
                 savedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
                 {

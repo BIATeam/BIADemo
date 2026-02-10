@@ -12,6 +12,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 #if BIA_FRONT_FEATURE
     using BIA.Net.Core.Application.User;
 #endif
+    using BIA.Net.Core.Application.Permission;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
@@ -34,6 +35,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.EntityFrameworkCore.Migrations;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
 #if BIA_FRONT_FEATURE
@@ -111,6 +113,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
         private static void ConfigureApplicationContainer(IServiceCollection collection, bool isApi)
         {
+            // Permissions
+            collection.AddSingleton<IPermissionProvider, PermissionProvider<BiaPermissionId>>();
+            collection.AddSingleton<IPermissionProvider, PermissionProvider<PermissionId>>();
+            collection.AddSingleton<IPermissionService, PermissionService>();
+
 #if BIA_FRONT_FEATURE
             collection.AddTransient(typeof(IBaseUserSynchronizeDomainService<User, UserFromDirectory>), typeof(UserSynchronizeDomainService));
             collection.AddTransient(typeof(IBaseUserAppService<UserDto, User, UserFromDirectoryDto, UserFromDirectory>), typeof(UserAppService));

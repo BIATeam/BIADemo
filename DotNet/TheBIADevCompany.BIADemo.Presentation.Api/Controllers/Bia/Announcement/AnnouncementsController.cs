@@ -1,4 +1,4 @@
-// <copyright file="AnnouncementsController.cs" company="TheBIADevCompany">
+﻿// <copyright file="AnnouncementsController.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Announcement
@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Announcement
     using BIA.Net.Core.Application.Announcement;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Announcement;
     using BIA.Net.Core.Domain.Dto.Base;
@@ -18,6 +19,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Announcement
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
 
     /// <summary>
     /// The API controller used to manage Announcements.
@@ -51,7 +53,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Announcement
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Announcements.ListAccess)]
+        [Authorize(Roles = nameof(BiaPermissionId.Announcement_List_Access))]
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
             var (results, total) = await this.announcementService.GetRangeAsync(filters);
@@ -69,7 +71,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Announcement
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Announcements.Read)]
+        [Authorize(Roles = nameof(BiaPermissionId.Announcement_Read))]
         public async Task<IActionResult> Get(int id)
         {
             if (id == 0)
@@ -98,7 +100,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Announcement
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Announcements.Create)]
+        [Authorize(Roles = nameof(BiaPermissionId.Announcement_Create))]
         public async Task<IActionResult> Add([FromBody] AnnouncementDto dto)
         {
             try
@@ -130,7 +132,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Announcement
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Announcements.Update)]
+        [Authorize(Roles = nameof(BiaPermissionId.Announcement_Update))]
         public async Task<IActionResult> Update(int id, [FromBody] AnnouncementDto dto)
         {
             if (id == 0 || dto == null || dto.Id != id)
@@ -172,7 +174,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Announcement
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Announcements.Delete)]
+        [Authorize(Roles = nameof(BiaPermissionId.Announcement_Delete))]
         public async Task<IActionResult> Remove(int id)
         {
             if (id == 0)
@@ -202,7 +204,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Announcement
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Announcements.Delete)]
+        [Authorize(Roles = nameof(BiaPermissionId.Announcement_Delete))]
         public async Task<IActionResult> Remove([FromQuery] List<int> ids)
         {
             if (ids?.Any() != true)
@@ -231,7 +233,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Announcement
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Announcements.Read)]
+        [Authorize(Roles = nameof(BiaPermissionId.Announcement_Read))]
         public async Task<IActionResult> GetHistorical(int id)
         {
             try

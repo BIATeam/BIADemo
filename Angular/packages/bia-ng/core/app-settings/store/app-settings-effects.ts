@@ -1,4 +1,4 @@
-﻿import { inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { AppSettings } from 'packages/bia-ng/models/public-api';
 import { of } from 'rxjs';

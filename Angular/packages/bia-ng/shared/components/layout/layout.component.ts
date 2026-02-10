@@ -46,11 +46,7 @@ export class LayoutComponent implements OnInit {
     protected readonly store: Store,
     // protected notificationSignalRService: NotificationSignalRService,
     @Inject(APP_BASE_HREF) public baseHref: string
-  ) {
-    this.enableNotifications =
-      BiaAppConstantsService.allEnvironments.enableNotifications &&
-      this.authService.hasPermission(BiaPermission.Notification_List_Access);
-  }
+  ) {}
 
   public showEnvironmentMessage(environmentType: EnvironmentType | undefined) {
     return environmentType !== EnvironmentType.PRD;
@@ -87,7 +83,7 @@ export class LayoutComponent implements OnInit {
           if (authInfo) {
             this.setLanguage();
             this.setUserName(authInfo);
-            this.filterNavByRole(authInfo);
+            this.filterNavByRole();
 
             this.enableNotifications =
               BiaAppConstantsService.allEnvironments.enableNotifications &&
@@ -121,12 +117,9 @@ export class LayoutComponent implements OnInit {
     this.biaTranslationService.loadAndChangeLanguage(langSelected);
   }
 
-  protected filterNavByRole(authInfo: AuthInfo) {
-    if (authInfo) {
-      this.menus = this.navigationService.filterNavByRole(
-        authInfo,
-        BiaAppConstantsService.navigation
-      );
-    }
+  protected filterNavByRole() {
+    this.menus = this.navigationService.filterNavByRole(
+      BiaAppConstantsService.navigation
+    );
   }
 }

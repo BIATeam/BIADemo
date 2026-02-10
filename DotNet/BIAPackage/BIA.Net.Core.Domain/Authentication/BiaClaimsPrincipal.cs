@@ -9,6 +9,7 @@ namespace BIA.Net.Core.Domain.Authentication
     using System.Runtime.InteropServices;
     using System.Security.Claims;
     using System.Security.Principal;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Helpers;
     using Newtonsoft.Json;
@@ -22,12 +23,12 @@ namespace BIA.Net.Core.Domain.Authentication
         /// <summary>
         /// The role identifier.
         /// </summary>
-        public const string RoleId = "http://schemas.microsoft.com/ws/2008/06/identity/claims/roleid";
+        public const string RoleIds = "urn:bia:claims:role_ids";
 
         /// <summary>
-        /// The role name key.
+        /// Claim type for compact permission IDs.
         /// </summary>
-        public const string Role = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
+        public const string PermissionIds = "urn:bia:claims:permission_ids";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BiaClaimsPrincipal"/> class.
@@ -127,7 +128,7 @@ namespace BIA.Net.Core.Domain.Authentication
         /// <returns>The user roles.</returns>
         public virtual IEnumerable<int> GetRoleIds()
         {
-            return this.GetClaimValues(RoleId).Select(c => int.Parse(c));
+            return this.GetClaimValueJsonAs<IEnumerable<int>>(RoleIds);
         }
 
         /// <summary>
@@ -160,6 +161,16 @@ namespace BIA.Net.Core.Domain.Authentication
             }
 
             return JsonConvert.DeserializeObject<T>(json);
+        }
+
+        /// <summary>
+        /// Get the user roles in the claims.
+        /// This method is used to retrieve the roles contained in the token provided by the IdP.
+        /// </summary>
+        /// <returns>The user roles.</returns>
+        public virtual IEnumerable<int> GetPermissionIds()
+        {
+            return this.GetClaimValueJsonAs<IEnumerable<int>>(PermissionIds);
         }
     }
 }
