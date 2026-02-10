@@ -298,25 +298,7 @@ namespace BIA.Net.Core.Application.User
         /// <returns>List of integers.</returns>
         protected virtual IEnumerable<int> GetPermissionIds(List<string> userPermissions)
         {
-            List<int> permissionIds = [];
-            HashSet<string> convertedPermissions = [];
-
-            var ids = this.PermissionService.ConvertToIds(userPermissions);
-            permissionIds.AddRange(ids);
-
-            var names = this.PermissionService.ConvertToNames(ids);
-            foreach (var name in names)
-            {
-                convertedPermissions.Add(name);
-            }
-
-            var unconvertedPermissions = userPermissions.Except(convertedPermissions);
-            if (unconvertedPermissions.Any() && this.Logger.IsEnabled(LogLevel.Warning))
-            {
-                this.Logger.LogWarning("Permissions not found in any registered Permission enum: [{UnconvertedPermissions}] - may need synchronization", string.Join(", ", unconvertedPermissions));
-            }
-
-            return permissionIds.Order();
+            return this.PermissionService.ConvertToIds(userPermissions).Order();
         }
     }
 }

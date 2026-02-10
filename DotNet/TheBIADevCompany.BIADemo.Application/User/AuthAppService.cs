@@ -84,7 +84,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             permissionService),
         IAuthAppService
 #else
-        : BaseAuthAppService<UserFromDirectoryDto, UserFromDirectory, AdditionalInfoDto, UserDataDto>(jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper), IAuthAppService
+        : BaseAuthAppService<UserFromDirectoryDto, UserFromDirectory, AdditionalInfoDto, UserDataDto>(jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper, permissionService), IAuthAppService
 #endif
 #pragma warning restore SA1611 // Element parameters should be documented
     {
