@@ -12,8 +12,8 @@ namespace BIA.Net.Core.Presentation.Api.Features.HangfireDashboard
     using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Application.Permission;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Presentation.Api.Helpers;
     using Hangfire.Dashboard;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.DependencyInjection;
@@ -91,7 +91,8 @@ namespace BIA.Net.Core.Presentation.Api.Features.HangfireDashboard
                 return false;
             }
 
-            var permissionNames = principal.GetPermissionNames(httpContext.RequestServices.GetService<IPermissionService>());
+            var permissionService = httpContext.RequestServices.GetService<IPermissionService>();
+            var permissionNames = permissionService.ConvertToNames(principal.GetClaimValueJsonAs<IEnumerable<int>>(BiaClaimsPrincipal.PermissionIds));
             if (permissionNames.Contains(this.userPermission))
             {
                 return true;

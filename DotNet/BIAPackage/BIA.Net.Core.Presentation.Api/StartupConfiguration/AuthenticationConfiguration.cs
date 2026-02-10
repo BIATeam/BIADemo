@@ -16,8 +16,8 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
     using BIA.Net.Core.Application.Permission;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Presentation.Api.Helpers;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
@@ -97,7 +97,8 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
                 {
                     if (context.Principal?.Identity is ClaimsIdentity identity)
                     {
-                        var permissionNames = context.Principal.GetPermissionNames(context.HttpContext.RequestServices.GetService<IPermissionService>());
+                        var permissionService = context.HttpContext.RequestServices.GetService<IPermissionService>();
+                        var permissionNames = permissionService.ConvertToNames(context.Principal.GetClaimValueJsonAs<IEnumerable<int>>(BiaClaimsPrincipal.PermissionIds));
                         foreach (var permissionName in permissionNames)
                         {
                             identity.AddClaim(new Claim(ClaimTypes.Role, permissionName));

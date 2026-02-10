@@ -128,13 +128,7 @@ namespace BIA.Net.Core.Domain.Authentication
         /// <returns>The user roles.</returns>
         public virtual IEnumerable<int> GetRoleIds()
         {
-            var roleIdsClaim = this.GetClaimValue(RoleIds);
-            if (!string.IsNullOrEmpty(roleIdsClaim))
-            {
-                return JsonConvert.DeserializeObject<IEnumerable<int>>(roleIdsClaim);
-            }
-
-            return [];
+            return this.GetClaimValueJsonAs<IEnumerable<int>>(RoleIds);
         }
 
         /// <summary>
@@ -167,6 +161,16 @@ namespace BIA.Net.Core.Domain.Authentication
             }
 
             return JsonConvert.DeserializeObject<T>(json);
+        }
+
+        /// <summary>
+        /// Get the user roles in the claims.
+        /// This method is used to retrieve the roles contained in the token provided by the IdP.
+        /// </summary>
+        /// <returns>The user roles.</returns>
+        public virtual IEnumerable<int> GetPermissionIds()
+        {
+            return this.GetClaimValueJsonAs<IEnumerable<int>>(PermissionIds);
         }
     }
 }
