@@ -31,7 +31,7 @@ namespace BIA.Net.Core.Application.User
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using static BIA.Net.Core.Common.BiaRights;
+    using static BIA.Net.Core.Common.BiaPermissionSuffixes;
 
     /// <summary>
     /// The application service used for user.

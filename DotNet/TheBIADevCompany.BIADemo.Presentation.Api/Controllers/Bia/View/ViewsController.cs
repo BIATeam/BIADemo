@@ -248,7 +248,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateTeamView(int id, [FromBody] ViewDto dto)
         {
-            if (dto.ViewTeams.Count == 0 || !dto.ViewTeams.Any(vt => this.IsAuthorizeForTeam(vt.Id, BiaRights.Views.UpdateTeamViewSuffix).Result))
+            if (dto.ViewTeams.Count == 0 || !dto.ViewTeams.Any(vt => this.IsAuthorizeForTeam(vt.Id, BiaPermissionSuffixes.TeamViews.UpdateTeamViewSuffix).Result))
             {
                 return this.StatusCode(StatusCodes.Status403Forbidden);
             }
@@ -288,7 +288,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> SetDefaultTeamView(int id, [FromBody] DefaultTeamViewDto dto)
         {
-            if (!this.IsAuthorizeForTeam(dto.TeamId, BiaRights.Views.SetDefaultTeamViewSuffix).Result)
+            if (!this.IsAuthorizeForTeam(dto.TeamId, BiaPermissionSuffixes.TeamViews.SetDefaultTeamViewSuffix).Result)
             {
                 return this.StatusCode(StatusCodes.Status403Forbidden);
             }
@@ -325,7 +325,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> AssignViewToTeam(int id, [FromBody] AssignViewToTeamDto dto)
         {
-            if (!this.IsAuthorizeForTeam(dto.TeamId, BiaRights.Views.AssignToTeamSuffix).Result)
+            if (!this.IsAuthorizeForTeam(dto.TeamId, BiaPermissionSuffixes.TeamViews.AssignToTeamSuffix).Result)
             {
                 return this.StatusCode(StatusCodes.Status403Forbidden);
             }
@@ -350,7 +350,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
         {
             if (dto.ViewType == 1
                 && (dto.ViewTeams.Count == 0
-                    || !dto.ViewTeams.Any(vt => this.IsAuthorizeForTeam(vt.Id, BiaRights.Views.UpdateTeamViewSuffix).Result)))
+                    || !dto.ViewTeams.Any(vt => this.IsAuthorizeForTeam(vt.Id, BiaPermissionSuffixes.TeamViews.UpdateTeamViewSuffix).Result)))
             {
                 return (false, null);
             }
@@ -358,7 +358,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.View
             string permission = null;
             if (dto.ViewType == 1 && dto.ViewTeams.Count > 0)
             {
-                permission = await this.GetPermissionPrefixFromTeamId(dto.ViewTeams[0].Id) + BiaRights.Views.AssignToTeamSuffix;
+                permission = await this.GetPermissionPrefixFromTeamId(dto.ViewTeams[0].Id) + BiaPermissionSuffixes.TeamViews.AssignToTeamSuffix;
             }
 
             return (true, permission);
