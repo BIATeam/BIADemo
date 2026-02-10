@@ -124,7 +124,6 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     if (!permission) {
       return of(true);
     }
-
     if (RefreshTokenService.shouldRefreshToken) {
       console.info('Login from hasPermissionObs.');
       return this.login().pipe(
@@ -158,7 +157,6 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
 
   public decodeToken(token: string): Token {
     const objDecodedToken: any = jwtDecode(token);
-
     const decodedToken = <Token>{
       id: +objDecodedToken[
         'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid'
@@ -356,10 +354,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     return this.http.get<string>(`${this.route}frontEndVersion`);
   }
 
-  protected checkPermission(
-    authInfo: AuthInfo | null,
-    permission: string
-  ): boolean {
+  protected checkPermission(authInfo: AuthInfo | null, permission: string) {
     if (!permission) {
       return true;
     }
@@ -388,6 +383,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       map((authInfo: AuthInfo) => {
         if (authInfo) {
           authInfo.decryptedToken = this.decodeToken(authInfo.token);
+
           if (!BiaAppConstantsService.allEnvironments.enableAnnouncements) {
             authInfo.decryptedToken.permissions =
               authInfo.decryptedToken.permissions.filter(

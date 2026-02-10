@@ -4,8 +4,6 @@ import { Inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Permission } from 'src/app/shared/permission';
-import { BiaPermission } from '../bia-permission';
 //import { allEnvironments } from 'src/environments/all-environments';
 import { AuthService } from '../services/auth.service';
 import { BiaAppConstantsService } from '../services/bia-app-constants.service';
@@ -20,10 +18,7 @@ export class PermissionGuard {
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
-    const permission = route.data.permission as
-      | string
-      | Permission
-      | BiaPermission;
+    const permission = route.data.permission as string;
     return this.authService.hasPermissionObs(permission).pipe(
       tap((hasPermission: boolean) => {
         if (hasPermission !== true) {
