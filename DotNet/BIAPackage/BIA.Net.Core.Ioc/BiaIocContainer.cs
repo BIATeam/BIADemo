@@ -9,9 +9,9 @@ namespace BIA.Net.Core.Ioc
     using System.Linq;
     using System.Net.Http;
     using System.Reflection;
+    using BIA.Net.Core.Application.Permission;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Application.Translation;
-    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.AuthenticationSection;
     using BIA.Net.Core.Common.Enum;
@@ -166,7 +166,6 @@ namespace BIA.Net.Core.Ioc
         {
             // Configuration
             collection.Configure<BiaNetSection>(options => configuration.GetSection("BiaNet").Bind(options));
-            collection.AddSingleton<IPermissionProvider, PermissionProvider<BiaPermissionId>>();
         }
 
         private static void ConfigureInfrastructureDataContainer(IServiceCollection collection)

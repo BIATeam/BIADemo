@@ -2,7 +2,7 @@
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Common
+namespace BIA.Net.Core.Application.Permission
 {
     using System;
     using System.Collections.Generic;
@@ -13,18 +13,18 @@ namespace BIA.Net.Core.Common
     /// </summary>
     /// <typeparam name="TPermissionEnum">The enum type containing permission identifiers.</typeparam>
     public sealed class PermissionProvider<TPermissionEnum> : IPermissionProvider
-        where TPermissionEnum : struct, System.Enum
+        where TPermissionEnum : struct, Enum
     {
-        /// <inheritdoc/>
-        public Dictionary<int, string> GetAll()
-        {
-            var permissions = new Dictionary<int, string>();
-            foreach (var permission in System.Enum.GetValues<TPermissionEnum>())
-            {
-                permissions.Add(Convert.ToInt32(permission), permission.ToString());
-            }
+        private IReadOnlyDictionary<int, string> permissions;
 
-            return permissions;
+        /// <inheritdoc/>
+        public IReadOnlyDictionary<int, string> Permissions
+        {
+            get
+            {
+                this.permissions ??= Enum.GetValues<TPermissionEnum>().ToDictionary(permission => Convert.ToInt32(permission), permission => permission.ToString());
+                return this.permissions;
+            }
         }
     }
 }

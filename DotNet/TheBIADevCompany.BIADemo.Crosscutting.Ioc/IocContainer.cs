@@ -117,6 +117,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient(typeof(IBaseUserSynchronizeDomainService<User, UserFromDirectory>), typeof(UserSynchronizeDomainService));
             collection.AddTransient(typeof(IBaseUserAppService<UserDto, User, UserFromDirectoryDto, UserFromDirectory>), typeof(UserAppService));
             collection.AddTransient(typeof(IBaseTeamAppService<TeamTypeId>), typeof(TeamAppService));
+
+            // Permissions
+            collection.AddSingleton<IPermissionProvider, PermissionProvider<BiaPermissionId>>();
+            collection.AddSingleton<IPermissionProvider, PermissionProvider<PermissionId>>();
             collection.AddSingleton<IPermissionService, PermissionService>();
 #endif
 #if BIA_FRONT_FEATURE || BIA_USE_DATABASE
@@ -262,9 +266,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 #if BIA_FRONT_FEATURE
             // Must specify the User type explicitly
             collection.AddScoped<ICoreUserRepository, CoreUserRepository<User>>();
-
-            // Register the project-specific permission provider
-            collection.AddSingleton<IPermissionProvider, PermissionProvider<PermissionId>>();
 #endif
         }
 #endif

@@ -7,8 +7,6 @@ namespace BIA.Net.Core.Application.Permission
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using BIA.Net.Core.Common;
-    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Dto.App;
 
     /// <summary>
@@ -23,22 +21,22 @@ namespace BIA.Net.Core.Application.Permission
         /// <param name="permissionProviders">A collection of IPermissionProvider instances used to retrieve permissions.</param>
         public PermissionService(IEnumerable<IPermissionProvider> permissionProviders)
         {
-            this.Permissions = [.. permissionProviders.SelectMany(p => p.GetAll()).Select(p => new PermissionDto { PermissionId = p.Key, Name = p.Value })];
+            this.Permissions = [.. permissionProviders.SelectMany(p => p.Permissions).Select(p => new PermissionDto { PermissionId = p.Key, Name = p.Value })];
         }
 
         /// <inheritdoc/>
         public IReadOnlyCollection<PermissionDto> Permissions { get; }
 
         /// <inheritdoc/>
-        public List<int> ConvertToIds(IEnumerable<string> permissionNames)
+        public IEnumerable<int> ConvertToIds(IEnumerable<string> permissionNames)
         {
-            return [.. this.Permissions.Where(p => permissionNames.Contains(p.Name)).Select(p => p.PermissionId)];
+            return this.Permissions.Where(p => permissionNames.Contains(p.Name)).Select(p => p.PermissionId);
         }
 
         /// <inheritdoc/>
-        public List<string> ConvertToNames(IEnumerable<int> permissionIds)
+        public IEnumerable<string> ConvertToNames(IEnumerable<int> permissionIds)
         {
-            return [.. this.Permissions.Where(p => permissionIds.Contains(p.PermissionId)).Select(p => p.Name)];
+            return this.Permissions.Where(p => permissionIds.Contains(p.PermissionId)).Select(p => p.Name);
         }
 
         /// <inheritdoc/>
