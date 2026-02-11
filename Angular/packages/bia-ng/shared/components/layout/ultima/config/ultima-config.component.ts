@@ -1,4 +1,4 @@
-import { NgClass } from '@angular/common';
+﻿import { NgClass } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';

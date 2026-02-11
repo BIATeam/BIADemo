@@ -1,4 +1,4 @@
-import { CrudConfig } from 'packages/bia-ng/shared/public-api';
+﻿import { CrudConfig } from 'packages/bia-ng/shared/public-api';
 import {
   AircraftMaintenanceCompany,
   aircraftMaintenanceCompanyFieldsConfiguration,

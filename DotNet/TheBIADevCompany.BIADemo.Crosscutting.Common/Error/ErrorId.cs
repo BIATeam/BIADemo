@@ -9,6 +9,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Error
     /// </summary>
     public enum ErrorId
     {
+        // Begin project error Id
+
+        // End project error Id
         // Begin BIADemo
 
         /// <summary>
@@ -17,9 +20,5 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Error
         HangfireHandledError,
 
         // End BIADemo
-
-        // Begin project error Id
-
-        // End project error Id
     }
 }

@@ -5,11 +5,19 @@
 namespace BIA.Net.Core.Presentation.Api.Features.HangfireDashboard
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Net;
+    using System.Security.Claims;
     using BIA.Net.Core.Application.Authentication;
+    using BIA.Net.Core.Application.Permission;
+    using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Helpers;
+    using BIA.Net.Core.Domain.Authentication;
     using Hangfire.Dashboard;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.Extensions.DependencyInjection;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// Manage the authorisation to acced to the dashboard.
@@ -78,7 +86,14 @@ namespace BIA.Net.Core.Presentation.Api.Features.HangfireDashboard
             }
 
             var principal = this.jwtFactory.GetPrincipalFromToken(jwtToken, this.secretKey);
-            if (principal.IsInRole(this.userPermission))
+            if (principal == null)
+            {
+                return false;
+            }
+
+            var permissionService = httpContext.RequestServices.GetService<IPermissionService>();
+            var permissionNames = permissionService.ConvertToNames(principal.GetClaimValueJsonAs<IEnumerable<int>>(BiaClaimsPrincipal.PermissionIds));
+            if (permissionNames.Contains(this.userPermission))
             {
                 return true;
             }

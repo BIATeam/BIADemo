@@ -1,5 +1,7 @@
-<div>
-  <div [ngClass]="{ 'table-compact': crudConfiguration.useCompactMode }">
+<div class="flex flex-row bia-page-remove-margin bia-responsive-flex-row">
+  <div
+    class="flex-grow-1 bia-page-margin"
+    [ngClass]="{ 'table-compact': crudConfiguration.useCompactMode }">
     <bia-table-header
       [headerTitle]="'plane.listOf' | translate"
       [canAdd]="canAdd && !crudConfiguration.useCalcMode"
@@ -31,7 +33,11 @@
       [tableState]="tableState"
       [defaultViewPref]="defaultViewPref"
       [useViewTeamWithTypeId]="useViewTeamWithTypeId"
-      [hasColumnFilter]="hasColumnFilter">
+      [hasColumnFilter]="hasColumnFilter"
+      [showBtnFilter]="true"
+      [showFilter]="showAdvancedFilter"
+      [hasFilter]="hasAdvancedFilter"
+      (openFilter)="onOpenFilter()">
       <ng-template pTemplate="customControl">
         <bia-table-behavior-controller
           [crudConfiguration]="crudConfiguration"
@@ -114,6 +120,14 @@
       </ng-template>
     </bia-table>
   </div>
+  @if (showAdvancedFilter) {
+    <app-plane-advanced-filter
+      (filter)="onFilter($event)"
+      (closeFilter)="onCloseFilter()"
+      [advancedFilter]="
+        crudConfiguration.fieldsConfig.advancedFilter
+      "></app-plane-advanced-filter>
+  }
 </div>
 
 <ng-template #detailRow let-data="data"

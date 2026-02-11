@@ -1,4 +1,4 @@
-import { OptionDto } from 'packages/bia-ng/models/public-api';
+﻿import { OptionDto } from 'packages/bia-ng/models/public-api';
 
 export class DictOptionDto {
   key: string;

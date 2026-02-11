@@ -2036,6 +2036,44 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                     b.ToTable("PlanePlaneType");
                 });
 
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.PlanePlaneTypeAudit", b =>
+                {
+                    b.Property<int>("AuditId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("AuditId"));
+
+                    b.Property<string>("AuditAction")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("AuditChanges")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("AuditDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("AuditUserLogin")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("PlaneId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PlaneTypeId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("PlaneTypeTitle")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("AuditId");
+
+                    b.ToTable("PlanePlaneTypeAudit");
+                });
+
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.PlaneType", b =>
                 {
                     b.Property<int>("Id")
@@ -2292,7 +2330,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("xid")
-                        .HasColumnName("RowVersionXmin");
+                        .HasColumnName("xmin");
 
                     b.ToTable("AircraftMaintenanceCompanies", (string)null);
                 });
@@ -2369,7 +2407,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("xid")
-                        .HasColumnName("RowVersionXmin");
+                        .HasColumnName("xmin");
 
                     b.Property<decimal>("TotalOperationCost")
                         .HasColumnType("Money");
@@ -2397,7 +2435,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("xid")
-                        .HasColumnName("RowVersionXmin");
+                        .HasColumnName("xmin");
 
                     b.Property<string>("UniqueIdentifier")
                         .HasColumnType("text");
@@ -2837,7 +2875,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.PlanePlaneType", b =>
                 {
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Plane", "Plane")
-                        .WithMany("SimilarPlaneType")
+                        .WithMany("SimilarPlanePlaneTypes")
                         .HasForeignKey("PlaneId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -3056,7 +3094,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
 
                     b.Navigation("Engines");
 
-                    b.Navigation("SimilarPlaneType");
+                    b.Navigation("SimilarPlanePlaneTypes");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceContract", b =>

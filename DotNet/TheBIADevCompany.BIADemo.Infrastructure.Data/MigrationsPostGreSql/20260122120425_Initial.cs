@@ -207,6 +207,25 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                 });
 
             migrationBuilder.CreateTable(
+                name: "PlanePlaneTypeAudit",
+                columns: table => new
+                {
+                    AuditId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    PlaneTypeId = table.Column<int>(type: "integer", nullable: false),
+                    PlaneId = table.Column<int>(type: "integer", nullable: false),
+                    PlaneTypeTitle = table.Column<string>(type: "text", nullable: false),
+                    AuditDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    AuditAction = table.Column<string>(type: "text", nullable: false),
+                    AuditChanges = table.Column<string>(type: "text", nullable: false),
+                    AuditUserLogin = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PlanePlaneTypeAudit", x => x.AuditId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PlanesTypes",
                 columns: table => new
                 {
@@ -548,7 +567,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false),
-                    RowVersionXmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false)
+                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -593,7 +612,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false),
-                    RowVersionXmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false),
+                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false),
                     UniqueIdentifier = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -745,7 +764,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                 {
                     Id = table.Column<int>(type: "integer", nullable: false),
                     AircraftMaintenanceCompanyId = table.Column<int>(type: "integer", nullable: false),
-                    RowVersionXmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false),
+                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false),
                     Code = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
                     IsApproved = table.Column<bool>(type: "boolean", nullable: true),
@@ -1689,6 +1708,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
 
             migrationBuilder.DropTable(
                 name: "PlanePlaneType");
+
+            migrationBuilder.DropTable(
+                name: "PlanePlaneTypeAudit");
 
             migrationBuilder.DropTable(
                 name: "RoleTeamTypes");

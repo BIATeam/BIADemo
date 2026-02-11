@@ -2,6 +2,7 @@
 # $HANGFIRE_answer = Read-Host "Do you want the feature HANGFIRE ? (Y/N)"
 $SERVICE_API_answer = Read-Host "Do you want the feature BACK_TO_BACK_AUTH ? (Y/N)"
 $FRONT_FEATURE_answer = Read-Host "Do you want the feature FRONT_FEATURE ? (Y/N)"
+$USE_DATABASE_answer = Read-Host "Do you want the feature BIA_USE_DATABASE ? (Y/N)"
 $USER_CUSTOM_FIELDS_BACK_answer = Read-Host "Do you want the feature USER_CUSTOM_FIELDS_BACK ? (Y/N)"
 $USER_CUSTOM_FIELDS_FRONT_answer = Read-Host "Do you want the feature USER_CUSTOM_FIELDS_FRONT ? (Y/N)"
 
@@ -21,6 +22,10 @@ if ($SERVICE_API_answer -eq 'Y') {
 
 if ($FRONT_FEATURE_answer -eq 'Y') {
     $selected_features += 'BIA_FRONT_FEATURE'
+}
+
+if ($USE_DATABASE_answer -eq 'Y') {
+    $selected_features += 'BIA_USE_DATABASE'
 }
 
 if ($USER_CUSTOM_FIELDS_BACK_answer -eq 'Y') {

@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+﻿import { AsyncPipe } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';

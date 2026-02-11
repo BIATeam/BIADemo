@@ -1,4 +1,4 @@
-import { createEntityAdapter, EntityState } from '@ngrx/entity';
+﻿import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import {
   Announcement,
@@ -15,8 +15,7 @@ export const announcementsAdapter = createEntityAdapter<Announcement>({
 });
 
 export interface State
-  extends CrudState<Announcement>,
-    EntityState<Announcement> {
+  extends CrudState<Announcement>, EntityState<Announcement> {
   // additional props here
   currentItemHistorical: HistoricalEntryDto[];
 }

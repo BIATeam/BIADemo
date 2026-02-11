@@ -1,4 +1,4 @@
-import { NgClass, NgTemplateOutlet } from '@angular/common';
+﻿import { NgClass, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,

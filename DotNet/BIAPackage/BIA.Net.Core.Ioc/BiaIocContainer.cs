@@ -9,11 +9,13 @@ namespace BIA.Net.Core.Ioc
     using System.Linq;
     using System.Net.Http;
     using System.Reflection;
+    using BIA.Net.Core.Application.Permission;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Application.Translation;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.AuthenticationSection;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.RepoContract.BiaApi;

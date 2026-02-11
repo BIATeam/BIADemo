@@ -1,4 +1,4 @@
-import { Validators } from '@angular/forms';
+﻿import { Validators } from '@angular/forms';
 import { PropType } from 'packages/bia-ng/models/enum/public-api';
 import {
   ArchivableDto,
@@ -11,9 +11,7 @@ import {
 
 // TODO after creation of CRUD MaintenanceContract : adapt the model
 export interface MaintenanceContract
-  extends BaseDto,
-    ArchivableDto,
-    FixableDto {
+  extends BaseDto, ArchivableDto, FixableDto {
   aircraftMaintenanceCompanyId: number;
   contractNumber: string;
   description: string | null;

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { clone, TABLE_FILTER_GLOBAL } from 'packages/bia-ng/core/public-api';
 import { FilterMetadata } from 'primeng/api';
 import { TableLazyLoadEvent } from 'primeng/table';

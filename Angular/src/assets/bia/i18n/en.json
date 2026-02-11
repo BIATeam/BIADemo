@@ -123,7 +123,8 @@
     "success": "Success",
     "synchronize": "Synchronize",
     "team": {
-      "admins": "Administrators"
+      "admins": "Administrators",
+      "title": "Title"
     },
     "theme": "Theme",
     "themeDark": "Dark",

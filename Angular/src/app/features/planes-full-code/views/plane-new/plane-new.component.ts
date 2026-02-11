@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+﻿import { AsyncPipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';

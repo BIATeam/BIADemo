@@ -1,4 +1,4 @@
-import { DatePipe, NgClass, NgTemplateOutlet } from '@angular/common';
+﻿import { DatePipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { HistoricalEntryType } from 'packages/bia-ng/models/enum/public-api';

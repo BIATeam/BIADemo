@@ -1,4 +1,4 @@
-import { AsyncPipe, Location, NgClass } from '@angular/common';
+﻿import { AsyncPipe, Location, NgClass } from '@angular/common';
 import { HttpStatusCode } from '@angular/common/http';
 import {
   Component,
@@ -68,9 +68,9 @@ import { CrudItemService } from '../../services/crud-item.service';
   ],
 })
 export class CrudItemsIndexComponent<
-    ListCrudItem extends BaseDto<string | number>,
-    CrudItem extends BaseDto<string | number> = ListCrudItem,
-  >
+  ListCrudItem extends BaseDto<string | number>,
+  CrudItem extends BaseDto<string | number> = ListCrudItem,
+>
   implements OnInit, OnDestroy
 {
   public crudConfiguration: CrudConfig<ListCrudItem>;
@@ -673,7 +673,9 @@ export class CrudItemsIndexComponent<
     this.displayedColumns = this.crudConfiguration.fieldsConfig.columns
       .filter(col => col.isVisibleInTable && !col.isHideByDefault)
       .map(col => <KeyValuePair>{ key: col.field, value: col.header });
-    this.sortFieldValue = this.columns[0].key;
+    if (!this.sortFieldValue) {
+      this.sortFieldValue = this.columns[0].key;
+    }
 
     this.defaultViewPref = <BiaTableState>{
       first: 0,

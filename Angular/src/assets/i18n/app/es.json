@@ -151,7 +151,7 @@
     "planeType": "Tipos de aviones",
     "probability": "Oportunidad",
     "read": "Avión detalls",
-    "similarTypes": "Tipos de aviones similares",
+    "similarPlaneTypes": "Tipos de aviones similares",
     "site": "Aerolínea",
     "syncTime": "Tiempo de sincronización",
     "manufacturer": "Fabricante",
@@ -165,7 +165,14 @@
     "originalPrice": "Precio original",
     "groupIdentification": "Identificación",
     "groupStatus": "Estado",
-    "groupTracking": "Seguimiento"
+    "groupTracking": "Seguimiento",
+    "enginesNumberRange": {
+      "title": "Nombre de motores",
+      "zero": "0 motores",
+      "oneOrTwo": "1 o 2 motores",
+      "threeToFive": "3 a 5 motores",
+      "sixOrMore": "6 o más motores"
+    }
   },
   "planeType": {
     "add": "Añadir tipos de aviones",

@@ -155,12 +155,12 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
         /// <summary>
         /// Gets or sets the list of similar plane type. Direct access.
         /// </summary>
-        public ICollection<PlaneType> SimilarTypes { get; set; }
+        public ICollection<PlaneType> SimilarPlaneTypes { get; set; }
 
         /// <summary>
         /// Gets or sets the list of similar plane type. Via the jointure table.
         /// </summary>
-        public ICollection<PlanePlaneType> SimilarPlaneType { get; set; }
+        public ICollection<PlanePlaneType> SimilarPlanePlaneTypes { get; set; }
 
         /// <summary>
         /// Gets or sets the list of engines for plane.

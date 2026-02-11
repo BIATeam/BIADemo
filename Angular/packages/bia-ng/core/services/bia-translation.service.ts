@@ -1,4 +1,4 @@
-import { Inject, Injectable, LOCALE_ID } from '@angular/core';
+﻿import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { AppSettings } from 'packages/bia-ng/models/public-api';

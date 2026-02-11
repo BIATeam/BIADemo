@@ -6,6 +6,7 @@ namespace BIA.Net.Core.Common.Helpers
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// Extension class to extract value form claims.
@@ -42,6 +43,24 @@ namespace BIA.Net.Core.Common.Helpers
             }
 
             return identity.FindAll(x => x.Type == claimType).Select(s => s.Value).ToList();
+        }
+
+        /// <summary>
+        /// Gets the claim value stored as JSON as a specific type.
+        /// </summary>
+        /// <typeparam name="T">Specific type.</typeparam>
+        /// <param name="principal">The principal.</param>
+        /// <param name="claimType">The claim type.</param>
+        /// <returns>Claim value as specific type, or default.</returns>
+        public static T GetClaimValueJsonAs<T>(this ClaimsPrincipal principal, string claimType)
+        {
+            var permissionIdsClaim = principal.GetClaimValue(claimType);
+            if (!string.IsNullOrEmpty(permissionIdsClaim))
+            {
+                return JsonConvert.DeserializeObject<T>(permissionIdsClaim);
+            }
+
+            return default;
         }
     }
 }

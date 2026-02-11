@@ -1,4 +1,4 @@
-import { BiaOptionService } from 'packages/bia-ng/core/public-api';
+﻿import { BiaOptionService } from 'packages/bia-ng/core/public-api';
 import { DtoState, PropType } from 'packages/bia-ng/models/enum/public-api';
 import {
   BaseDto,

@@ -1,4 +1,4 @@
-import { Injectable, Injector } from '@angular/core';
+﻿import { Injectable, Injector } from '@angular/core';
 import { AbstractDas } from 'packages/bia-ng/core/public-api';
 import { DefaultView } from '../model/default-view';
 import { View } from '../model/view';

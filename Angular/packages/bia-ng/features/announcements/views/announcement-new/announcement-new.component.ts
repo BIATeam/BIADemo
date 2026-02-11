@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+﻿import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import { Announcement } from 'packages/bia-ng/models/public-api';
 import { CrudItemNewComponent } from 'packages/bia-ng/shared/public-api';

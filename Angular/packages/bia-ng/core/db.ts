@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import Dexie, { Table } from 'dexie';
 import { HttpRequestItem } from 'packages/bia-ng/models/public-api';
 

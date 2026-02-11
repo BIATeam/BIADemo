@@ -45,7 +45,7 @@ function ReplaceInProjectRec {
       }
       if ($oldContent -cne $newContent) {
         Write-Host "     => " $_.FullName
-        [System.IO.File]::WriteAllText($_.FullName, $newContent)
+        [System.IO.File]::WriteAllText($_.FullName, $newContent, [System.Text.Encoding]::UTF8)
       }
     }
   }

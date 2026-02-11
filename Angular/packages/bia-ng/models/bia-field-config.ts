@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/naming-convention */
+﻿/* eslint-disable @typescript-eslint/naming-convention */
 import { ValidatorFn } from '@angular/forms';
 import {
   NumberMode,

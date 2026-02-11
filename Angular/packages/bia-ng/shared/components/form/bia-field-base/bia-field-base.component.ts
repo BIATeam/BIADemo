@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+﻿import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { BiaTranslationService } from 'packages/bia-ng/core/public-api';
 import { PropType } from 'packages/bia-ng/models/enum/public-api';
 import {
