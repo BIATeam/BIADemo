@@ -4,7 +4,7 @@ import {
   BiaFormComponent,
   CrudItemImportComponent,
   CrudItemImportFormComponent,
-} from 'packages/bia-ng/shared/public-api';
+} from '@bia-team/bia-ng/shared';
 import { Permission } from 'src/app/shared/permission';
 import { flightCRUDConfiguration } from '../../flight.constants';
 import { Flight } from '../../model/flight';
@@ -13,7 +13,7 @@ import { FlightService } from '../../services/flight.service';
 @Component({
   selector: 'app-flight-import',
   templateUrl:
-    '../../../../../../packages/bia-ng/shared/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
+    '../../../../../../node_modules/@bia-team/bia-ng/templates/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
   imports: [CrudItemImportFormComponent, AsyncPipe, BiaFormComponent],
 })
 export class FlightImportComponent extends CrudItemImportComponent<Flight> {

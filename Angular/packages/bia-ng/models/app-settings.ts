@@ -1,7 +1,4 @@
-﻿import {
-  EnvironmentType,
-  RoleMode,
-} from 'packages/bia-ng/models/enum/public-api';
+﻿import { EnvironmentType, RoleMode } from '@bia-team/bia-ng/models/enum';
 
 export interface AppSettings {
   keycloak: Keycloak;

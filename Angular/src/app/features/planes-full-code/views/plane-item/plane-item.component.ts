@@ -1,11 +1,8 @@
 ﻿import { AsyncPipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
+import { BiaLayoutService, SpinnerComponent } from '@bia-team/bia-ng/shared';
 import { Store } from '@ngrx/store';
-import {
-  BiaLayoutService,
-  SpinnerComponent,
-} from 'packages/bia-ng/shared/public-api';
 import { Observable, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { AppState } from 'src/app/store/state';

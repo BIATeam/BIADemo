@@ -1,9 +1,9 @@
-﻿import { createAction, props } from '@ngrx/store';
-import {
+﻿import {
   Announcement,
   DataResult,
   HistoricalEntryDto,
-} from 'packages/bia-ng/models/public-api';
+} from '@bia-team/bia-ng/models';
+import { createAction, props } from '@ngrx/store';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { announcementCRUDConfiguration } from '../announcement.constants';
 

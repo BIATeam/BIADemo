@@ -1,8 +1,5 @@
-﻿import { createAction, props } from '@ngrx/store';
-import {
-  DataResult,
-  HistoricalEntryDto,
-} from 'packages/bia-ng/models/public-api';
+﻿import { DataResult, HistoricalEntryDto } from '@bia-team/bia-ng/models';
+import { createAction, props } from '@ngrx/store';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { Plane } from '../model/plane';
 import { planeCRUDConfiguration } from '../plane.constants';

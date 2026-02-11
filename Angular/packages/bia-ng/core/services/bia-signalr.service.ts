@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
+import { TargetedFeature } from '@bia-team/bia-ng/models';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
-import { TargetedFeature } from 'packages/bia-ng/models/public-api';
 import { BiaEnvironmentService } from './bia-environment.service';
 
 /**

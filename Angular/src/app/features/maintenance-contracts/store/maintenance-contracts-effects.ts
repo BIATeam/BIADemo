@@ -1,11 +1,11 @@
 ﻿import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import {
   BiaMessageService,
   biaSuccessWaitRefreshSignalR,
-} from 'packages/bia-ng/core/public-api';
-import { DataResult } from 'packages/bia-ng/models/public-api';
+} from '@bia-team/bia-ng/core';
+import { DataResult } from '@bia-team/bia-ng/models';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import {
   catchError,

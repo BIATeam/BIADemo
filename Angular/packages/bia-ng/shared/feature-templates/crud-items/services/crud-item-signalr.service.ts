@@ -1,8 +1,8 @@
 ﻿import { Injectable, Injector } from '@angular/core';
+import { BiaSignalRService } from '@bia-team/bia-ng/core';
+import { BaseDto, TargetedFeature } from '@bia-team/bia-ng/models';
+import { BiaAppState } from '@bia-team/bia-ng/store';
 import { Store } from '@ngrx/store';
-import { BiaSignalRService } from 'packages/bia-ng/core/public-api';
-import { BaseDto, TargetedFeature } from 'packages/bia-ng/models/public-api';
-import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { first } from 'rxjs/operators';
 import { CrudItemService } from './crud-item.service';
 

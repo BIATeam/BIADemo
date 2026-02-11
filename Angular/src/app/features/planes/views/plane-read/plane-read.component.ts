@@ -4,7 +4,7 @@ import {
   CrudItemReadComponent,
   FormReadOnlyMode,
   SpinnerComponent,
-} from 'packages/bia-ng/shared/public-api';
+} from '@bia-team/bia-ng/shared';
 import { filter } from 'rxjs';
 import { Permission } from 'src/app/shared/permission';
 import { PlaneFormComponent } from '../../components/plane-form/plane-form.component';

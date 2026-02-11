@@ -1,11 +1,11 @@
 ﻿import { AsyncPipe } from '@angular/common';
 import { Component, Injector } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
-import { Announcement } from 'packages/bia-ng/models/public-api';
+import { Announcement } from '@bia-team/bia-ng/models';
 import {
   CrudItemHistoricalComponent,
   CrudItemHistoricalTimelineComponent,
-} from 'packages/bia-ng/shared/public-api';
+} from '@bia-team/bia-ng/shared';
+import { TranslateModule } from '@ngx-translate/core';
 import { Button } from 'primeng/button';
 import { announcementCRUDConfiguration } from '../../announcement.constants';
 import { AnnouncementService } from '../../services/announcement.service';

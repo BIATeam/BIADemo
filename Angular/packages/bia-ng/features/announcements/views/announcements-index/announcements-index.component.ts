@@ -1,8 +1,7 @@
 ﻿import { AsyncPipe, NgClass } from '@angular/common';
 import { AfterViewInit, Component, Injector, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
-import { AuthService, BiaPermission } from 'packages/bia-ng/core/public-api';
-import { Announcement } from 'packages/bia-ng/models/public-api';
+import { AuthService, BiaPermission } from '@bia-team/bia-ng/core';
+import { Announcement } from '@bia-team/bia-ng/models';
 import {
   BiaTableBehaviorControllerComponent,
   BiaTableComponent,
@@ -11,7 +10,8 @@ import {
   CrudItemService,
   CrudItemsIndexComponent,
   SafeHtmlPipe,
-} from 'packages/bia-ng/shared/public-api';
+} from '@bia-team/bia-ng/shared';
+import { TranslateModule } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
 import { announcementCRUDConfiguration } from '../../announcement.constants';
 import { AnnouncementService } from '../../services/announcement.service';
