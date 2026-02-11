@@ -39,7 +39,7 @@
     "@angular/platform-browser-dynamic": "~20.3.16",
     "@angular/router": "~20.3.16",
     "@angular/service-worker": "~20.3.16",
-    "@bia-team/bia-ng": "file:./dist/bia-ng",
+    "@bia-team/bia-ng": "6.0.3",
     "@microsoft/signalr": "~9.0.6",
     "@ngrx/effects": "~20.1.0",
     "@ngrx/entity": "~20.1.0",
