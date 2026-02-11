@@ -32,6 +32,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             // Begin BIADemo
             CreateEngineAuditModel(modelBuilder);
             CreatePlaneAirportAuditModel(modelBuilder);
+            CreatePlanePlaneTypeAuditModel(modelBuilder);
 
             // End BIADemo
         }
@@ -57,6 +58,17 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<PlaneAirportAudit>().Property(p => p.AirportId).IsRequired();
             modelBuilder.Entity<PlaneAirportAudit>().Property(p => p.PlaneId).IsRequired();
             modelBuilder.Entity<PlaneAirportAudit>().Property(p => p.AirportName).IsRequired();
+        }
+
+        /// <summary>
+        /// Create the model for <see cref="PlanePlaneTypeAudit"/>.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        private static void CreatePlanePlaneTypeAuditModel(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PlanePlaneTypeAudit>().Property(p => p.PlaneTypeId).IsRequired();
+            modelBuilder.Entity<PlanePlaneTypeAudit>().Property(p => p.PlaneId).IsRequired();
+            modelBuilder.Entity<PlanePlaneTypeAudit>().Property(p => p.PlaneTypeTitle).IsRequired();
         }
 
         // End BIADemo

@@ -1,4 +1,4 @@
-import { Validators } from '@angular/forms';
+﻿import { Validators } from '@angular/forms';
 import { PropType } from 'packages/bia-ng/models/enum/public-api';
 import {
   Announcement,

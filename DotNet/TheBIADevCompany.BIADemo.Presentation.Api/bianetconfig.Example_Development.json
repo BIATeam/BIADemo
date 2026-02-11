@@ -97,6 +97,11 @@
         //}
       ]
     },
+    "Policies": [
+      {
+        "Name": "ServiceApiRW"
+      }
+    ],
     "Roles": [
       {
         "Label": "User",

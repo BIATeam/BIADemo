@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TargetedFeature, Team } from 'packages/bia-ng/models/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';

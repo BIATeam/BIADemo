@@ -1,4 +1,4 @@
-import { Location, NgTemplateOutlet } from '@angular/common';
+﻿import { Location, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -67,6 +67,7 @@ export class BiaTableHeaderComponent
   @Input() showHistoricalButton = false;
   @Input() selectionActionsMenuItems?: BiaButtonAndMenuItem[];
   @Input() listActionsMenuItems?: BiaButtonAndMenuItem[];
+  @Input() backRoute = '../../';
   @Output() create = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
   @Output() clone = new EventEmitter<void>();
@@ -106,6 +107,7 @@ export class BiaTableHeaderComponent
   headerDiv: ElementRef<HTMLDivElement>;
 
   protected parentContainerResizeObserver!: ResizeObserver;
+  protected listActionsResizeTimeoutId: ReturnType<typeof setTimeout>;
 
   constructor(
     protected location: Location,
@@ -155,6 +157,9 @@ export class BiaTableHeaderComponent
     if (this.parentContainerResizeObserver) {
       this.parentContainerResizeObserver.disconnect();
     }
+    if (this.listActionsResizeTimeoutId) {
+      clearTimeout(this.listActionsResizeTimeoutId);
+    }
   }
 
   protected updateHeaderTitle() {
@@ -165,8 +170,10 @@ export class BiaTableHeaderComponent
   }
 
   onBack() {
-    if (window.history.length > 1) {
-      this.location.back();
+    if (this.backRoute) {
+      this.router.navigate([this.backRoute], {
+        relativeTo: this.activatedRoute,
+      });
     } else {
       this.router.navigate(['/']);
     }
@@ -409,10 +416,13 @@ export class BiaTableHeaderComponent
         this.selectionActionsDiv.nativeElement,
         this.selectionActions
       );
-      this.onParentContainerResized(
-        this.listActionsDiv.nativeElement,
-        this.listActions
-      );
+      clearTimeout(this.listActionsResizeTimeoutId);
+      this.listActionsResizeTimeoutId = setTimeout(() => {
+        this.onParentContainerResized(
+          this.listActionsDiv.nativeElement,
+          this.listActions
+        );
+      }, 100);
     });
     this.parentContainerResizeObserver.observe(parentContainer);
   }
@@ -421,7 +431,7 @@ export class BiaTableHeaderComponent
     container: Element,
     actionMenuItems: ActionMenuItems
   ) {
-    const offset = 20;
+    const offset = 40;
     const minWidth = 140;
 
     if (!actionMenuItems.containerWidth || !actionMenuItems.compact) {
@@ -430,22 +440,76 @@ export class BiaTableHeaderComponent
 
     if (actionMenuItems.containerWidth > minWidth) {
       if (container.nextElementSibling) {
-        actionMenuItems.compact =
-          container.getBoundingClientRect().left +
-            actionMenuItems.containerWidth +
-            offset >=
-          container.nextElementSibling.getBoundingClientRect().left;
+        const availableSpace = this.calculateAvailableSpaceRight(
+          container,
+          container.nextElementSibling
+        );
+
+        if (actionMenuItems.compact) {
+          actionMenuItems.compact =
+            actionMenuItems.containerWidth + offset >= availableSpace;
+        } else {
+          actionMenuItems.compact = offset > availableSpace;
+        }
         return;
       }
 
       if (container.previousElementSibling) {
-        actionMenuItems.compact =
-          container.previousElementSibling.getBoundingClientRect().right >=
-          container.getBoundingClientRect().right -
-            actionMenuItems.containerWidth -
-            offset;
+        const availableSpace = this.calculateAvailableSpaceLeft(
+          container,
+          container.previousElementSibling
+        );
+
+        if (actionMenuItems.compact) {
+          actionMenuItems.compact =
+            actionMenuItems.containerWidth + offset >= availableSpace;
+        } else {
+          actionMenuItems.compact = offset > availableSpace;
+        }
       }
     }
+  }
+
+  protected calculateAvailableSpaceRight(
+    containerRef: Element,
+    sibling: Element | null,
+    totalSpace: number = 0
+  ): number {
+    if (!sibling) {
+      return totalSpace;
+    }
+
+    const siblingRect = sibling.getBoundingClientRect();
+    const containerRect = containerRef.getBoundingClientRect();
+
+    const gap = siblingRect.left - containerRect.right;
+
+    return this.calculateAvailableSpaceRight(
+      sibling,
+      sibling.nextElementSibling,
+      totalSpace + gap
+    );
+  }
+
+  protected calculateAvailableSpaceLeft(
+    containerRef: Element,
+    sibling: Element | null,
+    totalSpace: number = 0
+  ): number {
+    if (!sibling) {
+      return totalSpace;
+    }
+
+    const siblingRect = sibling.getBoundingClientRect();
+    const containerRect = containerRef.getBoundingClientRect();
+
+    const gap = containerRect.left - siblingRect.right;
+
+    return this.calculateAvailableSpaceLeft(
+      sibling,
+      sibling.previousElementSibling,
+      totalSpace + gap
+    );
   }
 
   hasVisibleMenuItems(actions: ActionMenuItems): boolean {

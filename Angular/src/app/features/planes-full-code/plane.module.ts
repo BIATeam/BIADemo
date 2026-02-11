@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+﻿import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
@@ -42,6 +42,15 @@ const ROUTES: Routes = [
         },
         component: PlaneNewComponent,
         canActivate: [PermissionGuard],
+      },
+      {
+        path: 'view',
+        data: {
+          featureStateKey: 'planesGrid',
+          leftWidth: 60,
+        },
+        loadChildren: () =>
+          import('../../shared/bia-shared/view.module').then(m => m.ViewModule),
       },
       {
         path: ':planeId',

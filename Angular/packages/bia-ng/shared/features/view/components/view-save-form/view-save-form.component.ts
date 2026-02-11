@@ -1,5 +1,6 @@
-import { CommonModule } from '@angular/common';
+﻿import { CommonModule } from '@angular/common';
 import {
+  AfterViewInit,
   Component,
   Input,
   OnChanges,
@@ -37,7 +38,7 @@ import { ViewTeam } from '../../model/view-team';
 })
 export class ViewSaveFormComponent
   extends CrudItemFormComponent<View>
-  implements OnChanges
+  implements OnChanges, AfterViewInit
 {
   @ViewChild(BiaFormComponent) biaForm?: BiaFormComponent<View>;
   @Input() canAddTeamView: boolean;
@@ -73,6 +74,10 @@ export class ViewSaveFormComponent
   viewType: typeof ViewType = ViewType;
 
   ngOnChanges(changes: SimpleChanges) {
+    if (changes['crudItem']) {
+      setTimeout(() => this.setViewTypeFormValue(), 0);
+    }
+
     if (
       changes['teamList'] ||
       changes['crudItem'] ||
@@ -101,6 +106,20 @@ export class ViewSaveFormComponent
               ?.isDefault ?? false,
           dtoState: DtoState.Unchanged,
         }));
+    }
+  }
+
+  ngAfterViewInit() {
+    this.setViewTypeFormValue();
+  }
+
+  setViewTypeFormValue() {
+    if (
+      this.biaForm?.form &&
+      this.crudItem &&
+      (!this.crudItem?.viewType || this.crudItem.viewType === ViewType.System)
+    ) {
+      this.biaForm.form.controls['viewType'].setValue(ViewType.User);
     }
   }
 

@@ -1,4 +1,4 @@
-import { BiaPermission } from 'packages/bia-ng/core/public-api';
+﻿import { BiaPermission } from 'packages/bia-ng/core/public-api';
 import { BiaNavigation } from 'packages/bia-ng/models/public-api';
 import { Permission } from './permission';
 

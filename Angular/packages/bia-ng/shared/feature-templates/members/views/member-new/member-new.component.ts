@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+﻿import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import { AuthService, BiaPermission } from 'packages/bia-ng/core/public-api';
 import { DomainUserOptionsStore } from 'packages/bia-ng/domains/public-api';

@@ -122,7 +122,8 @@
     "success": "Succès",
     "synchronize": "Synchroniser",
     "team": {
-      "admins": "Administrateurs"
+      "admins": "Administrateurs",
+      "title": "Titre"
     },
     "theme": "Thème",
     "themeDark": "Foncé",

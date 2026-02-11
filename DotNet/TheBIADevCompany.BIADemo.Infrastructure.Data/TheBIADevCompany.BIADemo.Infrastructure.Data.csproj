@@ -48,5 +48,6 @@
 	  <Compile Remove="**\*Team*.cs" />
 	  <Compile Remove="**\*Translation*.cs" />
 	  <Compile Remove="**\UserModelBuilder.cs" />
+	  <Compile Remove="**\*Site*.cs" />
   </ItemGroup>
 </Project>

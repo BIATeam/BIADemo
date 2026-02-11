@@ -6,11 +6,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Announcement
 {
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Announcement;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Presentation.Api.Controller.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
 
     /// <summary>
     /// The API controller used to manage announcement type options.
@@ -40,7 +42,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Announcement
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.AnnouncementTypeOptions.Options)]
+        [Authorize(Roles = nameof(BiaPermissionId.AnnouncementType_Options))]
         public async Task<IActionResult> GetAllOptions()
         {
             var results = await this.announcementTypeOptionService.GetAllOptionsAsync();

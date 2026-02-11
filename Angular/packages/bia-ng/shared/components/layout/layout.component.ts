@@ -1,5 +1,6 @@
-import { APP_BASE_HREF } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+﻿import { APP_BASE_HREF } from '@angular/common';
+import { Component, DestroyRef, Inject, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
 import {
   AuthService,
@@ -35,6 +36,7 @@ export class LayoutComponent implements OnInit {
   headerLogos: string[];
   footerLogo = 'assets/bia/img/Footer.png';
   supportedLangs = BiaAppConstantsService.supportedTranslations;
+  private readonly destroyRef = inject(DestroyRef);
 
   constructor(
     public biaTranslationService: BiaTranslationService,
@@ -44,11 +46,7 @@ export class LayoutComponent implements OnInit {
     protected readonly store: Store,
     // protected notificationSignalRService: NotificationSignalRService,
     @Inject(APP_BASE_HREF) public baseHref: string
-  ) {
-    this.enableNotifications =
-      BiaAppConstantsService.allEnvironments.enableNotifications &&
-      this.authService.hasPermission(BiaPermission.Notification_List_Access);
-  }
+  ) {}
 
   public showEnvironmentMessage(environmentType: EnvironmentType | undefined) {
     return environmentType !== EnvironmentType.PRD;
@@ -78,22 +76,24 @@ export class LayoutComponent implements OnInit {
 
   protected setAllParamByUserInfo() {
     this.isLoadingUserInfo = true;
-    this.authService.authInfo$.subscribe((authInfo: AuthInfo) => {
-      if (authInfo && authInfo.token !== '') {
-        if (authInfo) {
-          this.setLanguage();
-          this.setUserName(authInfo);
-          this.filterNavByRole(authInfo);
+    this.authService.authInfo$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((authInfo: AuthInfo) => {
+        if (authInfo && authInfo.token !== '') {
+          if (authInfo) {
+            this.setLanguage();
+            this.setUserName(authInfo);
+            this.filterNavByRole();
 
-          this.enableNotifications =
-            BiaAppConstantsService.allEnvironments.enableNotifications &&
-            this.authService.hasPermission(
-              BiaPermission.Notification_List_Access
-            );
+            this.enableNotifications =
+              BiaAppConstantsService.allEnvironments.enableNotifications &&
+              this.authService.hasPermission(
+                BiaPermission.Notification_List_Access
+              );
+          }
+          this.isLoadingUserInfo = false;
         }
-        this.isLoadingUserInfo = false;
-      }
-    });
+      });
   }
 
   protected setUserName(authInfo: AuthInfo) {
@@ -117,12 +117,9 @@ export class LayoutComponent implements OnInit {
     this.biaTranslationService.loadAndChangeLanguage(langSelected);
   }
 
-  protected filterNavByRole(authInfo: AuthInfo) {
-    if (authInfo) {
-      this.menus = this.navigationService.filterNavByRole(
-        authInfo,
-        BiaAppConstantsService.navigation
-      );
-    }
+  protected filterNavByRole() {
+    this.menus = this.navigationService.filterNavByRole(
+      BiaAppConstantsService.navigation
+    );
   }
 }

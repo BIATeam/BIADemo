@@ -17,6 +17,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.User
     {
         // Place here the custom user fields to retrieve in front.
 #if BIA_USER_CUSTOM_FIELDS_FRONT
+
         /// <summary>
         /// Gets or sets the country.
         /// </summary>

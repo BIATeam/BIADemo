@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+﻿import { AsyncPipe } from '@angular/common';
 import { Component, Injector } from '@angular/core';
 import { BiaPermission } from 'packages/bia-ng/core/public-api';
 import {

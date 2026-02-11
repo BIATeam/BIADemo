@@ -8,6 +8,7 @@ export class LayoutHelperService {
   ): string {
     let height: string;
     // topbar = 4rem
+    // announcement = 2.5rem
     // breadcrumb = 2.5rem
     // padding page = 2rem
     // bia-page-margin : 1.5rem
@@ -31,6 +32,10 @@ export class LayoutHelperService {
       !layoutService.state.isSmallScreen
     ) {
       height += ' - 3rem';
+    }
+
+    if (layoutService.state.isAnnouncementBarVisible) {
+      height += ' - 2.5rem';
     }
 
     if (offset) {

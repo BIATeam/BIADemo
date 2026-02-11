@@ -8,7 +8,8 @@
       <p-tieredmenu
         #menuData
         [model]="selectionActions.actionList | sortByProperty: 'order'"
-        [popup]="true" />
+        [popup]="true"
+        appendTo="body" />
       <p-button
         label="{{ 'bia.selectionActions' | translate }}"
         icon="pi pi-angle-down"
@@ -49,7 +50,8 @@
       <p-tieredmenu
         #menuTable
         [model]="listActions.actionList | sortByProperty: 'order'"
-        [popup]="true" />
+        [popup]="true"
+        appendTo="body" />
       <p-button
         label="{{ 'bia.listActions' | translate }}"
         icon="pi pi-angle-down"
