@@ -18,6 +18,6 @@ export const allEnvironments: AllEnvironments & { [key: string]: any } = {
   urlErrorPage: './assets/bia/html/error.html',
   // Except BIADemo version: '0.0.0',
   // Begin BIADemo
-  version: '6.0.2',
+  version: '6.0.3',
   // End BIADemo
 };
