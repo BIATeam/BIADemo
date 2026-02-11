@@ -22,7 +22,7 @@ export const THEME_DARK = 'dark';
 
 export const TABLE_FILTER_GLOBAL = 'global|';
 export const DEFAULT_POPUP_MINWIDTH = '60vw';
-export const SHOW_FPS = true;
+export const SHOW_FPS = false;
 
 export enum ViewType {
   System = 0,
