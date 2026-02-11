@@ -1,3 +1,4 @@
+export * from './bia-calc-table-cell/bia-calc-table-cell.component';
 export * from './bia-calc-table/bia-calc-table.component';
 export * from './bia-frozen-column/bia-frozen-column.directive';
 export * from './bia-table-behavior-controller/bia-table-behavior-controller.component';
