@@ -10,6 +10,7 @@ import {
   AuthService,
   BiaMessageService,
 } from 'packages/bia-ng/core/public-api';
+import { BiaCalcTableCellComponent } from 'packages/bia-ng/shared/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
@@ -46,6 +47,7 @@ import { Member } from '../../model/member';
     AsyncPipe,
     TranslateModule,
     BiaFrozenColumnDirective,
+    BiaCalcTableCellComponent,
   ],
 })
 export class MemberTableComponent extends CrudItemTableComponent<Member> {

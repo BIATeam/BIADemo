@@ -7,6 +7,7 @@ import {
   Input,
   OnInit,
   Output,
+  signal,
   SimpleChanges,
   TemplateRef,
 } from '@angular/core';
@@ -28,6 +29,7 @@ import { Skeleton } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 import { Tooltip } from 'primeng/tooltip';
 import { Subscription } from 'rxjs';
+import { BiaCalcTableCellComponent } from '../bia-calc-table-cell/bia-calc-table-cell.component';
 import { BiaFrozenColumnDirective } from '../bia-frozen-column/bia-frozen-column.directive';
 import { BiaTableFilterComponent } from '../bia-table-filter/bia-table-filter.component';
 import { BiaTableFooterControllerComponent } from '../bia-table-footer-controller/bia-table-footer-controller.component';
@@ -56,6 +58,7 @@ import { BiaTableComponent } from '../bia-table/bia-table.component';
     AsyncPipe,
     TranslateModule,
     BiaFrozenColumnDirective,
+    BiaCalcTableCellComponent,
   ],
 })
 export class BiaCalcTableComponent<TDto extends { id: number | string }>
@@ -77,6 +80,10 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
   protected isInComplexInput = false;
   public footerRowData: any;
   public editFooter = false;
+
+  // Signals pour la gestion de l'édition
+  public editingRowId = signal<number | string | null>(null);
+  public editFooterSignal = signal<boolean>(false);
 
   specificInputTemplate: TemplateRef<any>;
 
@@ -158,8 +165,8 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
     throw new Error('initForm not Implemented');
   }
 
-  public isFooter(element: any) {
-    return element.id === 0 || element.id === '';
+  public isFooter(rowData: any): boolean {
+    return rowData?.id === 0 || rowData?.id === '';
   }
 
   public onChange() {
@@ -217,14 +224,19 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
       if (rowData.id === 0 || rowData.id === '') {
         if (this.canAdd === true) {
           this.editFooter = true;
+          this.editFooterSignal.set(true);
+          this.editingRowId.set(null);
           this.isEditing.emit(true);
         }
       } else {
         this.editFooter = false;
+        this.editFooterSignal.set(false);
         if (this.canEdit === true) {
           this.table?.initRowEdit(rowData);
+          this.editingRowId.set(rowData.id);
           this.isEditing.emit(true);
         } else {
+          this.editingRowId.set(null);
           this.isEditing.emit(false);
         }
       }
@@ -240,6 +252,8 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
       this.table.editingRowKeys = {};
     }
     this.editFooter = false;
+    this.editFooterSignal.set(false);
+    this.editingRowId.set(null);
     this.isEditing.emit(false);
   }
 

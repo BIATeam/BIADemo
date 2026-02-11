@@ -100,7 +100,8 @@ export class BiaCoreModule {
     defaultPageSize: number,
     teamTypeRightPrefix: { key: number; value: string }[],
     defaultTranslations: number[],
-    defaultPopupMinWidth: string
+    defaultPopupMinWidth: string,
+    showFps: boolean
   ): ModuleWithProviders<BiaCoreModule> {
     BiaAppConstantsService.init(
       allEnvironments,
@@ -110,7 +111,8 @@ export class BiaCoreModule {
       defaultPageSize,
       teamTypeRightPrefix,
       defaultTranslations,
-      defaultPopupMinWidth
+      defaultPopupMinWidth,
+      showFps
     );
     return {
       ngModule: BiaCoreModule,

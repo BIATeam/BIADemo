@@ -22,3 +22,21 @@
   color: var(--surface-900);
   z-index: 1;
 }
+
+.layout-fps-indicator {
+  position: fixed;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
+  background-color: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  z-index: 1000;
+  pointer-events: none;
+}

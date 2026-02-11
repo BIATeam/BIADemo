@@ -179,7 +179,7 @@
         <tr
           class="bia-selectable-row"
           [ngClass]="{ 'p-even-row': ri % 2 !== 0 }"
-          [pSelectableRow]="rowData?.id !== 0 ? rowData : null"
+          [pSelectableRow]="!isFooter(rowData) ? rowData : null"
           [pEditableRow]="rowData"
           (focusout)="onFocusout()"
           (keyup.enter)="initEditableRow(null)"
@@ -192,7 +192,7 @@
               biaFrozenColumn
               [frozen]="isSelectFrozen">
               <!-- ONLY IF NOT FOOTER -->
-              @if (rowData.id !== 0 && rowData.id !== '') {
+              @if (!isFooter(rowData)) {
                 @if (canSelectMultipleElement === true) {
                   <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
                 } @else {
@@ -239,66 +239,18 @@
               [alignFrozen]="col.alignFrozen"
               biaFrozenColumn
               [frozen]="col.isFrozen">
-              <p-cellEditor>
-                <ng-template pTemplate="input">
-                  @if (canDisplayEditInput(col)) {
-                    <bia-table-input
-                      [field]="col"
-                      [form]="form"
-                      [dictOptionDtos]="dictOptionDtos"
-                      (valueChange)="onChange()"
-                      (complexInput)="onComplexInput($event)">
-                      <ng-template pTemplate="specificInput">
-                        <ng-container
-                          *ngTemplateOutlet="
-                            specificInputTemplate;
-                            context: { field: col, form: form }
-                          "></ng-container>
-                      </ng-template>
-                    </bia-table-input>
-                  } @else {
-                    <!-- ONLY IF NOT FOOTER -->
-                    @if (rowData?.id !== 0 && rowData?.id !== '') {
-                      <bia-table-output
-                        [field]="col"
-                        [data]="getCellData(rowData, col)">
-                        <ng-template pTemplate="specificOutput">
-                          <ng-container
-                            *ngTemplateOutlet="
-                              specificOutputTemplate;
-                              context: {
-                                rowData: rowData,
-                                field: col,
-                                data: getCellData(rowData, col),
-                              }
-                            "></ng-container>
-                        </ng-template>
-                      </bia-table-output>
-                    }
-                  }
-                </ng-template>
-                <!-- OUTPUT -->
-                <ng-template pTemplate="output">
-                  <!-- ONLY IF NOT FOOTER -->
-                  @if (rowData?.id !== 0 && rowData?.id !== '') {
-                    <bia-table-output
-                      [field]="col"
-                      [data]="getCellData(rowData, col)">
-                      <ng-template pTemplate="specificOutput">
-                        <ng-container
-                          *ngTemplateOutlet="
-                            specificOutputTemplate;
-                            context: {
-                              rowData: rowData,
-                              field: col,
-                              data: getCellData(rowData, col),
-                            }
-                          "></ng-container>
-                      </ng-template>
-                    </bia-table-output>
-                  }
-                </ng-template>
-              </p-cellEditor>
+              <bia-calc-table-cell
+                [col]="col"
+                [rowData]="rowData"
+                [form]="form"
+                [dictOptionDtos]="dictOptionDtos"
+                [editingRowId]="editingRowId"
+                [editFooterSignal]="editFooterSignal"
+                [specificInputTemplate]="specificInputTemplate"
+                [specificOutputTemplate]="specificOutputTemplate"
+                [onChange]="onChange.bind(this)"
+                [onComplexInput]="onComplexInput.bind(this)">
+              </bia-calc-table-cell>
             </td>
           }
         </tr>
@@ -384,7 +336,6 @@
                 [alignFrozen]="col.alignFrozen"
                 biaFrozenColumn
                 [frozen]="col.isFrozen">
-                <!-- <p-cellEditor> -->
                 @if (editFooter === true) {
                   @if (canDisplayAddInput(col)) {
                     <bia-table-input
@@ -426,7 +377,6 @@
                 @if (editFooter !== true && canDisplayAddInput(col)) {
                   <label>-</label>
                 }
-                <!-- </p-cellEditor> -->
               </td>
             }
           </tr>
