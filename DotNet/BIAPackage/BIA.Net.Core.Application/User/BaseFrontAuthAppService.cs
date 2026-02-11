@@ -191,8 +191,8 @@ namespace BIA.Net.Core.Application.User
             List<int> roleIds = GetRoleIds(globalRoles);
 
             // Get Permissions
-            List<string> userPermissions = this.UserPermissionDomainService.TranslateRolesInPermissions(globalRoles, loginParam.LightToken);
-            List<string> transversalUserPermissions = this.UserPermissionDomainService.TranslateRolesInPermissions(globalRoles, loginParam.LightToken, true);
+            List<string> userPermissions = this.UserPermissionDomainService.TranslateRolesInPermissions(globalRoles, loginParam.LightToken, source: loginParam.Source);
+            List<string> transversalUserPermissions = this.UserPermissionDomainService.TranslateRolesInPermissions(globalRoles, loginParam.LightToken, true, loginParam.Source);
             List<PermissionTeamsDto> permissionsTeams = transversalUserPermissions.Select(p => new PermissionTeamsDto { PermissionId = this.PermissionService.GetPermissionId(p), IsGlobal = true, TeamIds = [] }).ToList();
 
             IEnumerable<BaseDtoVersionedTeam> allTeams = [];
@@ -210,7 +210,7 @@ namespace BIA.Net.Core.Application.User
                 roleIds = [.. roleIds.Union(fineGrainedRoleIds)];
 
                 // Translate Roles in Permissions
-                List<string> fineGrainedUserPermissions = this.UserPermissionDomainService.TranslateRolesInPermissions(fineGrainedRoles, loginParam.LightToken);
+                List<string> fineGrainedUserPermissions = this.UserPermissionDomainService.TranslateRolesInPermissions(fineGrainedRoles, loginParam.LightToken, source: loginParam.Source);
 
                 // Get all transversal permissions
                 userData.CrossTeamPermissions = await this.GetTransversalPermissionsForUserAndTeams(allTeams, userInfoFromDB.Id, teamsConfig, permissionsTeams);

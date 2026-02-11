@@ -30,31 +30,28 @@ namespace BIA.Net.Core.Domain.User.Services
         }
 
         /// <inheritdoc />
-        public List<string> TranslateRolesInPermissions(List<string> roles, bool lightToken = false, bool transversal = false)
+        public List<string> TranslateRolesInPermissions(List<string> roles, bool lightToken = false, bool transversal = false, string source = null)
         {
             IEnumerable<Permission> rights = default;
 
             if (this.configuration.PermissionsByEnv?.Any() == true)
             {
-                rights = this.configuration.Permissions.Concat(this.configuration.PermissionsByEnv).ToList();
+                rights = [.. this.configuration.Permissions, .. this.configuration.PermissionsByEnv];
             }
             else
             {
                 rights = this.configuration.Permissions;
             }
 
-            var userPermissions1 = rights.Where(w => (!lightToken || w.LightToken)
+            var userPermissions = rights.Where(w => (!lightToken || w.LightToken)
                                                     && (!transversal || w.IsTransversal)
-                                                    && w.Name != null
-                                                    && w.Roles.Any(a => roles.Contains(a)))
-                                         .Select(s => s.Name);
-            var userPermissions2 = rights.Where(w => (!lightToken || w.LightToken)
-                                                    && (!transversal || w.IsTransversal)
-                                                    && w.Names != null
-                                                    && w.Roles.Any(a => roles.Contains(a)))
-                                         .SelectMany(s => s.Names);
+                                                    && (string.IsNullOrWhiteSpace(source) || w.ApplicableSources?.Any(s => s == source) == true)
+                                                    && w.Roles.Any(a => roles.Contains(a)));
 
-            return userPermissions1.Concat(userPermissions2).Distinct().ToList();
+            var userPermissionsSingleName = userPermissions.Where(w => w.Name != null).Select(s => s.Name);
+            var userPermissionsMultipleNames = userPermissions.Where(w => w.Names != null).SelectMany(s => s.Names);
+
+            return [.. userPermissionsSingleName.Concat(userPermissionsMultipleNames).Distinct()];
         }
 
         /// <inheritdoc />

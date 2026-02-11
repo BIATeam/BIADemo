@@ -7,6 +7,7 @@ export class LoginParamDto {
   additionalInfos: boolean;
   isFirstLogin: boolean;
   baseUserIdentity?: string;
+  source?: string;
 }
 
 export interface UserProfile {

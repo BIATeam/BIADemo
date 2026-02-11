@@ -41,5 +41,10 @@ namespace BIA.Net.Core.Domain.Dto.User
         /// User to copy rights and roles from.
         /// </summary>
         public string BaseUserIdentity { get; set; }
+
+        /// <summary>
+        /// Source of the login, used to filter permissions if needed.
+        /// </summary>
+        public string Source { get; set; }
     }
 }

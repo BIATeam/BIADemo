@@ -101,7 +101,8 @@ export class BiaCoreModule {
     teamTypeRightPrefix: { key: number; value: string }[],
     defaultTranslations: number[],
     defaultPopupMinWidth: string,
-    showFps: boolean
+    showFps: boolean,
+    loginParamSource: string | undefined
   ): ModuleWithProviders<BiaCoreModule> {
     BiaAppConstantsService.init(
       allEnvironments,
@@ -112,7 +113,8 @@ export class BiaCoreModule {
       teamTypeRightPrefix,
       defaultTranslations,
       defaultPopupMinWidth,
-      showFps
+      showFps,
+      loginParamSource
     );
     return {
       ngModule: BiaCoreModule,

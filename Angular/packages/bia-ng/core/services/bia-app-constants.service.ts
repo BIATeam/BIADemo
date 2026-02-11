@@ -14,6 +14,7 @@ export class BiaAppConstantsService {
   public static defaultTranslations: number[] = [];
   public static defaultPopupMinWidth: string = '60vw';
   public static showFps: boolean = false;
+  public static loginParamSource: string | undefined;
 
   public static storageAppSettingsKey = () => {
     return `${BiaAppConstantsService.allEnvironments.companyName}.${BiaAppConstantsService.allEnvironments.appTitle}.AppSettings`;
@@ -30,7 +31,8 @@ export class BiaAppConstantsService {
     teamTypeRightPrefix: { key: number; value: string }[],
     defaultTranslations: number[],
     defaultPopupMinWidth: string,
-    showFps: boolean
+    showFps: boolean,
+    loginParamSource: string | undefined
   ) {
     BiaAppConstantsService.allEnvironments = allEnvironments;
     BiaAppConstantsService.environment = environment;
@@ -41,5 +43,6 @@ export class BiaAppConstantsService {
     BiaAppConstantsService.defaultTranslations = defaultTranslations;
     BiaAppConstantsService.defaultPopupMinWidth = defaultPopupMinWidth;
     BiaAppConstantsService.showFps = showFps;
+    BiaAppConstantsService.loginParamSource = loginParamSource;
   }
 }

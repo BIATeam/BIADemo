@@ -221,6 +221,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       fineGrainedPermission: true,
       additionalInfos: true,
       isFirstLogin: true,
+      source: BiaAppConstantsService.loginParamSource,
     };
   }
 

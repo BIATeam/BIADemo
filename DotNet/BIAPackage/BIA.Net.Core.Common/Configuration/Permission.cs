@@ -35,5 +35,10 @@ namespace BIA.Net.Core.Common.Configuration
         /// Indicate if the permissions for all teams independant to current team should be included in token.
         /// </summary>
         public bool IsTransversal { get; set; }
+
+        /// <summary>
+        /// Gets or sets a collection of source emitter where the permissions are applicable.
+        /// </summary>
+        public IEnumerable<string> ApplicableSources { get; set; }
     }
 }
