@@ -673,7 +673,9 @@ export class CrudItemsIndexComponent<
     this.displayedColumns = this.crudConfiguration.fieldsConfig.columns
       .filter(col => col.isVisibleInTable && !col.isHideByDefault)
       .map(col => <KeyValuePair>{ key: col.field, value: col.header });
-    this.sortFieldValue = this.columns[0].key;
+    if (!this.sortFieldValue) {
+      this.sortFieldValue = this.columns[0].key;
+    }
 
     this.defaultViewPref = <BiaTableState>{
       first: 0,
