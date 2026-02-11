@@ -161,6 +161,28 @@ function RemoveCodeBetweenMarkers {
     }
 }
 
+
+function Remove-PropertyFromJson {
+  param (
+    [Parameter(Mandatory = $true)]
+    [string]$JsonFilePath,
+    [Parameter(Mandatory = $true)] 
+    [string]$PropertyName
+  )
+
+  if (-not (Test-Path $JsonFilePath)) {
+    throw "File not found: $JsonFilePath"
+  }
+
+  $json = Get-Content $JsonFilePath -Raw | ConvertFrom-Json
+
+  if ($null -ne $json.scripts) {
+    $json.scripts.PSObject.Properties.Remove($PropertyName)
+  }
+
+  $json | ConvertTo-Json -Depth 20 | Set-Content $JsonFilePath -Encoding UTF8
+}
+
 function CopyModel {
   param (
     [string]$modelName,

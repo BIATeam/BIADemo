@@ -23,7 +23,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
 #endif
     {
 #if BIA_FRONT_FEATURE
-
         /// <summary>
         /// Logins the on teams asynchronous.
         /// </summary>

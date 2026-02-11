@@ -12,6 +12,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 #if BIA_FRONT_FEATURE
     using BIA.Net.Core.Application.User;
 #endif
+    using BIA.Net.Core.Application.Permission;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
@@ -34,6 +35,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.EntityFrameworkCore.Migrations;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
 #if BIA_FRONT_FEATURE
@@ -99,6 +101,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 collection.Configure<ApiFeatures>(configuration.GetSection("BiaNet:ApiFeatures"));
             }
 #if BIA_FRONT_FEATURE
+
             ErrorMessage.FillErrorTranslations();
 #endif
         }
@@ -110,15 +113,18 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
         private static void ConfigureApplicationContainer(IServiceCollection collection, bool isApi)
         {
+            // Permissions
+            collection.AddSingleton<IPermissionProvider, PermissionProvider<BiaPermissionId>>();
+            collection.AddSingleton<IPermissionProvider, PermissionProvider<PermissionId>>();
+            collection.AddSingleton<IPermissionService, PermissionService>();
+
 #if BIA_FRONT_FEATURE
             collection.AddTransient(typeof(IBaseUserSynchronizeDomainService<User, UserFromDirectory>), typeof(UserSynchronizeDomainService));
             collection.AddTransient(typeof(IBaseUserAppService<UserDto, User, UserFromDirectoryDto, UserFromDirectory>), typeof(UserAppService));
-            collection.AddTransient(typeof(IUserAppService), typeof(UserAppService));
             collection.AddTransient(typeof(IBaseTeamAppService<TeamTypeId>), typeof(TeamAppService));
-            collection.AddTransient(typeof(ITeamAppService), typeof(TeamAppService));
 #endif
-
 #if BIA_FRONT_FEATURE || BIA_USE_DATABASE
+
             // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
             BiaIocContainer.RegisterServicesFromAssembly(
                 collection: collection,
@@ -160,8 +166,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             {
                 collection.AddScoped(type);
             }
-
 #if BIA_FRONT_FEATURE || BIA_USE_DATABASE
+
             collection.AddSingleton<IAuditMapper, AnnouncementAuditMapper>();
 
             Type auditMapperType = typeof(IAuditMapper);
@@ -257,8 +263,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 interfaceAssemblyName: "TheBIADevCompany.BIADemo.Domain",
                 serviceLifetime: ServiceLifetime.Transient);
 
+#if BIA_FRONT_FEATURE
             // Must specify the User type explicitly
             collection.AddScoped<ICoreUserRepository, CoreUserRepository<User>>();
+#endif
         }
 #endif
 
@@ -285,11 +293,15 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             }
 
             // Begin BIADemo
-            collection.AddHttpClient<IRemoteBiaApiRwRepository, RemoteBiaApiRwRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection));
-            collection.AddHttpClient<IRemotePlaneRepository, RemotePlaneRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
             collection.AddSingleton<Infrastructure.Service.Repositories.DocumentAnalysis.PdfAnalysisRepository>();
             collection.AddSingleton<IDocumentAnalysisRepositoryFactory, Infrastructure.Service.Repositories.DocumentAnalysis.DocumentAnalysisRepositoryFactory>();
-            collection.AddHttpClient<IBiaDemoRoleApiRepository, BiaDemoRoleApiRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection));
+
+            collection.AddHttpClient<IRemoteBiaApiRwRepository, RemoteBiaApiRwRepository>()
+                .ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection)).AddStandardResilienceHandler();
+            collection.AddHttpClient<IRemotePlaneRepository, RemotePlaneRepository>()
+                .ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false)).AddStandardResilienceHandler();
+            collection.AddHttpClient<IBiaDemoRoleApiRepository, BiaDemoRoleApiRepository>()
+                .ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection));
 
             // End BIADemo
 #endif

@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+﻿import { Injectable, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppSettings } from 'packages/bia-ng/models/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';

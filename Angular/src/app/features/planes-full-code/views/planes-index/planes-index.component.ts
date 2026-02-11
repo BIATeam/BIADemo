@@ -1,4 +1,4 @@
-import { AsyncPipe, Location } from '@angular/common';
+﻿import { AsyncPipe, Location } from '@angular/common';
 import {
   Component,
   HostBinding,

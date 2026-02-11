@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+﻿import { AsyncPipe } from '@angular/common';
 import { Component, HostBinding } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CoreTeamsStore } from 'packages/bia-ng/core/public-api';

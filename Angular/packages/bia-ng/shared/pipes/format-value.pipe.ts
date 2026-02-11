@@ -1,4 +1,4 @@
-import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
+﻿import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { Injectable, Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NumberMode, PropType } from 'packages/bia-ng/models/enum/public-api';

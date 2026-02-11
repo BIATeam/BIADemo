@@ -1,4 +1,4 @@
-import { createAction, props } from '@ngrx/store';
+﻿import { createAction, props } from '@ngrx/store';
 import { Team } from 'packages/bia-ng/models/public-api';
 import { storeKey } from '../team.constants';
 

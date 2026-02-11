@@ -11,6 +11,7 @@ namespace BIA.Net.Core.Application.User
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Authentication;
+    using BIA.Net.Core.Application.Permission;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Enum;
@@ -24,7 +25,7 @@ namespace BIA.Net.Core.Application.User
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using static BIA.Net.Core.Common.BiaRights;
+    using static BIA.Net.Core.Common.BiaPermissionSuffixes;
 
     /// <summary>
     /// Auth App Service.
@@ -62,6 +63,7 @@ namespace BIA.Net.Core.Application.User
         /// <param name="biaNetconfiguration">The bia netconfiguration.</param>
         /// <param name="userDirectoryHelper">The user directory helper.</param>
         /// <param name="ldapRepositoryHelper">The LDAP repository helper.</param>
+        /// <param name="permissionService">The permission service.</param>
         protected BaseFrontAuthAppService(
             IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory> userAppService,
             IBaseTeamAppService<TEnumTeamTypeId> teamAppService,
@@ -74,8 +76,9 @@ namespace BIA.Net.Core.Application.User
             IConfiguration configuration,
             IOptions<BiaNetSection> biaNetconfiguration,
             IUserDirectoryRepository<TUserFromDirectoryDto, TUserFromDirectory> userDirectoryHelper,
-            ILdapRepositoryHelper ldapRepositoryHelper)
-            : base(jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper)
+            ILdapRepositoryHelper ldapRepositoryHelper,
+            IPermissionService permissionService)
+            : base(jwtFactory, principal, userPermissionDomainService, logger, configuration, biaNetconfiguration, userDirectoryHelper, ldapRepositoryHelper, permissionService)
         {
             this.UserAppService = userAppService;
             this.TeamAppService = teamAppService;
@@ -117,7 +120,7 @@ namespace BIA.Net.Core.Application.User
 
             AuthInfoDto<TAdditionalInfoDto> authInfo = await this.GetLoginToken(loginParam, true, teamsConfig);
 
-            if (!string.IsNullOrWhiteSpace(loginParam.BaseUserIdentity) && Application.Authentication.JwtFactory.HasRole(authInfo.Token, BiaRights.Impersonation.ConnectionRights))
+            if (!string.IsNullOrWhiteSpace(loginParam.BaseUserIdentity) && Application.Authentication.JwtFactory.HasPermission(authInfo.Token, (int)BiaPermissionId.Impersonation_Connection_Rights))
             {
                 return await this.GetLoginToken(loginParam, false, teamsConfig);
             }
@@ -190,7 +193,7 @@ namespace BIA.Net.Core.Application.User
             // Get Permissions
             List<string> userPermissions = this.UserPermissionDomainService.TranslateRolesInPermissions(globalRoles, loginParam.LightToken);
             List<string> transversalUserPermissions = this.UserPermissionDomainService.TranslateRolesInPermissions(globalRoles, loginParam.LightToken, true);
-            List<PermissionTeamsDto> permissionsTeams = transversalUserPermissions.Select(p => new PermissionTeamsDto { Permission = p, IsGlobal = true, TeamIds = [] }).ToList();
+            List<PermissionTeamsDto> permissionsTeams = transversalUserPermissions.Select(p => new PermissionTeamsDto { PermissionId = this.PermissionService.GetPermissionId(p), IsGlobal = true, TeamIds = [] }).ToList();
 
             IEnumerable<BaseDtoVersionedTeam> allTeams = [];
             TUserDataDto userData = this.CreateUserData(userInfoFromDB);
@@ -204,7 +207,7 @@ namespace BIA.Net.Core.Application.User
                 // Get Fine Grained Roles
                 List<string> fineGrainedRoles = await this.GetFineRolesAsync(loginParam, userData, userInfoFromDB.Id, allTeams, teamsConfig);
                 List<int> fineGrainedRoleIds = GetRoleIds(fineGrainedRoles);
-                roleIds = roleIds.Union(fineGrainedRoleIds).ToList();
+                roleIds = [.. roleIds.Union(fineGrainedRoleIds)];
 
                 // Translate Roles in Permissions
                 List<string> fineGrainedUserPermissions = this.UserPermissionDomainService.TranslateRolesInPermissions(fineGrainedRoles, loginParam.LightToken);
@@ -219,16 +222,13 @@ namespace BIA.Net.Core.Application.User
             // Check User Permissions
             this.CheckUserPermissions(userPermissions);
 
-            // Sort User Permissions
-            userPermissions.Sort();
-
             // Create Token Dto
             TokenDto<TUserDataDto> tokenDto = new()
             {
                 IdentityKey = identityKey,
                 Id = (userInfoFromDB?.Id).GetValueOrDefault(),
                 RoleIds = roleIds,
-                Permissions = userPermissions,
+                PermissionIds = this.GetPermissionIds(userPermissions),
                 UserData = userData,
             };
 
@@ -521,14 +521,14 @@ namespace BIA.Net.Core.Application.User
                 var permissions = await this.GetTransversalPermissionsForTeam(team, userInfoId, teamConfig);
                 foreach (string permission in permissions)
                 {
-                    var permissionTeams = permissionsTeams.FirstOrDefault(pt => pt.Permission == permission);
+                    var permissionTeams = permissionsTeams.FirstOrDefault(pt => this.PermissionService.GetPermissionName(pt.PermissionId) == permission);
                     if (permissionTeams != null)
                     {
                         permissionTeams.TeamIds.Add(team.Id);
                     }
                     else
                     {
-                        permissionsTeams.Add(new PermissionTeamsDto { Permission = permission, TeamIds = [team.Id], IsGlobal = false });
+                        permissionsTeams.Add(new PermissionTeamsDto { PermissionId = this.PermissionService.GetPermissionId(permission), TeamIds = [team.Id], IsGlobal = false });
                     }
                 }
             }

@@ -122,7 +122,8 @@
     "success": "Éxito",
     "synchronize": "Sincronizar",
     "team": {
-      "admins": "Administradores"
+      "admins": "Administradores",
+      "title": "Título"
     },
     "theme": "Aspecto",
     "themeDark": "Oscuro",

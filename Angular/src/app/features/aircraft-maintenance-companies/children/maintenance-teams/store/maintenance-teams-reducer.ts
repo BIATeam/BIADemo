@@ -1,4 +1,4 @@
-import { createEntityAdapter, EntityState } from '@ngrx/entity';
+﻿import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import {
   CrudState,
@@ -14,8 +14,7 @@ export const maintenanceTeamsAdapter = createEntityAdapter<MaintenanceTeam>({
 });
 
 export interface State
-  extends CrudState<MaintenanceTeam>,
-    EntityState<MaintenanceTeam> {
+  extends CrudState<MaintenanceTeam>, EntityState<MaintenanceTeam> {
   // additional props here
 }
 

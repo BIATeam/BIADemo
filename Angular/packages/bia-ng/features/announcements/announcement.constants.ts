@@ -1,4 +1,4 @@
-import { Announcement } from 'packages/bia-ng/models/public-api';
+﻿import { Announcement } from 'packages/bia-ng/models/public-api';
 import { CrudConfig } from 'packages/bia-ng/shared/public-api';
 import {
   announcementFieldsConfiguration,

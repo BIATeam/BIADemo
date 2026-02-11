@@ -73,5 +73,6 @@
 	  <Compile Remove="**\LanguagesController.cs" />
 	  <Compile Remove="**\LdapDomainsController.cs" />
 	  <Compile Remove="**\*ProfileImageController*.cs" />
+	  <Compile Remove="**\*Announcement*.cs" />
   </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/naming-convention */
+﻿/* eslint-disable @typescript-eslint/naming-convention */
 
 import { OptionDto } from 'packages/bia-ng/models/public-api';
 

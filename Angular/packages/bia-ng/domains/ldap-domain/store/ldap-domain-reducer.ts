@@ -1,4 +1,4 @@
-import { EntityState, createEntityAdapter } from '@ngrx/entity';
+﻿import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { LdapDomain } from 'packages/bia-ng/models/public-api';
 import { DomainLdapDomainsActions } from './ldap-domain-actions';

@@ -31,8 +31,8 @@ export class CurrentTeamDto {
   useDefaultRoles: boolean;
 }
 
-export class PermissionTeams {
-  permission: string;
+export interface PermissionTeams {
+  permissionId: number;
   teamIds: number[];
   isGlobal: boolean;
 }

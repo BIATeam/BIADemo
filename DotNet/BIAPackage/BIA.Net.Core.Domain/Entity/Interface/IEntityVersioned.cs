@@ -5,6 +5,7 @@
 namespace BIA.Net.Core.Domain.Entity.Interface
 {
     using System;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Helpers;
 
     /// <summary>
@@ -31,14 +32,14 @@ namespace BIA.Net.Core.Domain.Entity.Interface
             get
             {
                 var type = this.GetType();
-                var rowVersionProperty = ObjectHelper.FindPropertyByColumnAttributeName(type, nameof(this.RowVersion));
+                var rowVersionProperty = type.GetBiaRowVersionProperty(DbProvider.SqlServer) ?? type.GetProperty(nameof(this.RowVersion));
 
                 if (rowVersionProperty != null)
                 {
                     return rowVersionProperty.GetValue(this) is byte[] value ? Convert.ToBase64String(value) : null;
                 }
 
-                var rowVersionXminProperty = ObjectHelper.FindPropertyByColumnAttributeName(type, nameof(this.RowVersionXmin));
+                var rowVersionXminProperty = type.GetBiaRowVersionProperty(DbProvider.PostGreSql) ?? type.GetProperty(nameof(this.RowVersionXmin));
                 if (rowVersionXminProperty != null)
                 {
                     return rowVersionXminProperty.GetValue(this)?.ToString();

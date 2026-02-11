@@ -45,7 +45,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Hangfires.RunWorker)]
+        [Authorize(Roles = nameof(PermissionId.Hangfire_Run_Worker))]
         public IActionResult CallWorker()
         {
             try
@@ -75,7 +75,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Hangfires.RunWorker)]
+        [Authorize(Roles = nameof(PermissionId.Hangfire_Run_Worker))]
         public IActionResult RandomReviewPlane(int teamId)
         {
             try

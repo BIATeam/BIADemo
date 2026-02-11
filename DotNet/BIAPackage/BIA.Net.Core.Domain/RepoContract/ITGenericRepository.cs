@@ -229,10 +229,14 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="items">Entities to update.</param>
         /// <param name="batchSize">Batch size (not used in bulk mode).</param>
         /// <param name="useBulk">if set to <c>true</c> [use bulk].</param>
+        /// <param name="useSetModified">if set to <c>true</c> [use SetModified rather than UpdateRange].
+        /// UpdateRange marks each provided entity and its related/child entities as Modified,
+        /// whereas SetModified marks only the specified entity as Modified.
+        /// </param>
         /// <returns>
         /// Number of element affected.
         /// </returns>
-        Task<int> MassUpdateAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false);
+        Task<int> MassUpdateAsync(IEnumerable<TEntity> items, int batchSize = 100, bool useBulk = false, bool useSetModified = false);
 
         /// <summary>
         /// Massively delete entities in batch.

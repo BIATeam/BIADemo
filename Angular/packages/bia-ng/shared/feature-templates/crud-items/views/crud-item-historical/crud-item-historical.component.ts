@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+﻿import { AsyncPipe } from '@angular/common';
 import { Component, Injector } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { BaseDto } from 'packages/bia-ng/models/public-api';

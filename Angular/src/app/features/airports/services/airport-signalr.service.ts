@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { BiaSignalRService } from 'packages/bia-ng/core/public-api';
 import { TargetedFeature } from 'packages/bia-ng/models/public-api';
 

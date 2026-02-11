@@ -49,6 +49,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
                 // Begin BIADemo
                 nameof(Engine) => typeof(EngineAudit),
                 nameof(PlaneAirport) => typeof(PlaneAirportAudit),
+                nameof(PlanePlaneType) => typeof(PlanePlaneTypeAudit),
 
                 // End BIADemo
 #if BIA_FRONT_FEATURE

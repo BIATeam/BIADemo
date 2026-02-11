@@ -4,6 +4,7 @@
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
 {
     using System;
+    using BIA.Net.Core.Application.Permission;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Dto.App;
     using BIA.Net.Core.Presentation.Api.Controller.Base;
@@ -30,13 +31,15 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="teamAppService">The team app service.</param>
-        public AppSettingsController(IOptions<BiaNetSection> configuration, ITeamAppService teamAppService)
+        /// <param name="permissionService">The permission service.</param>
+        public AppSettingsController(IOptions<BiaNetSection> configuration, ITeamAppService teamAppService, IPermissionService permissionService)
 #else
         /// <summary>
         /// Initializes a new instance of the <see cref="AppSettingsController"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
-        public AppSettingsController(IOptions<BiaNetSection> configuration)
+        /// <param name="permissionService">The permission service.</param>
+        public AppSettingsController(IOptions<BiaNetSection> configuration, IPermissionService permissionService)
 #endif
         {
             this.appSettings = new AppSettingsDto
@@ -50,6 +53,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
 #if BIA_FRONT_FEATURE
                 TeamsConfig = teamAppService.GetTeamsConfig(),
 #endif
+                Permissions = permissionService.Permissions,
             };
         }
 

@@ -1,4 +1,4 @@
-import { APP_BASE_HREF } from '@angular/common';
+﻿import { APP_BASE_HREF } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,

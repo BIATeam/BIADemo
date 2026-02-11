@@ -1,4 +1,4 @@
-import {
+﻿import {
   CrudConfig,
   FormReadOnlyMode,
 } from 'packages/bia-ng/shared/public-api';

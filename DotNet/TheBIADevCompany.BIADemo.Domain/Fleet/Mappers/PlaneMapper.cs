@@ -58,7 +58,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
                     { HeaderName.OriginalPrice, plane => plane.OriginalPrice },
                     { HeaderName.EstimatedPrice, plane => plane.EstimatedPrice },
                     { HeaderName.PlaneType, plane => plane.PlaneType != null ? plane.PlaneType.Title : null },
-                    { HeaderName.SimilarTypes, plane => plane.SimilarTypes.Select(x => x.Title).OrderBy(x => x) },
+                    { HeaderName.SimilarPlaneTypes, plane => plane.SimilarPlaneTypes.Select(x => x.Title).OrderBy(x => x) },
                     { HeaderName.CurrentAirport, plane => plane.CurrentAirport != null ? plane.CurrentAirport.Name : null },
                     { HeaderName.ConnectingAirports, plane => plane.ConnectingAirports.Select(x => x.Name).OrderBy(x => x) },
                 };
@@ -75,7 +75,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
                     new ExpressionCollection<Plane>()
                     {
                         { HeaderName.PlaneType, plane => plane.PlaneType.Id },
-                        { HeaderName.SimilarTypes, plane => plane.SimilarTypes.Select(x => x.Id) },
+                        { HeaderName.SimilarPlaneTypes, plane => plane.SimilarPlaneTypes.Select(x => x.Id) },
                         { HeaderName.CurrentAirport, plane => plane.CurrentAirport.Id },
                         { HeaderName.ConnectingAirports, plane => plane.ConnectingAirports.Select(x => x.Id) },
                     });
@@ -125,22 +125,22 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             // Map relationship 0..1-* : PlaneType
             entity.PlaneTypeId = dto.PlaneType?.Id;
 
-            // Map relationship *-* : SimilarTypes
-            if (dto.SimilarTypes != null && dto.SimilarTypes.Count != 0)
+            // Map relationship *-* : SimilarPlaneTypes
+            if (dto.SimilarPlaneTypes != null && dto.SimilarPlaneTypes.Count != 0)
             {
-                foreach (var similarTypeDto in dto.SimilarTypes.Where(x => x.DtoState == DtoState.Deleted))
+                foreach (var similarTypeDto in dto.SimilarPlaneTypes.Where(x => x.DtoState == DtoState.Deleted))
                 {
-                    var similarType = entity.SimilarTypes.FirstOrDefault(x => x.Id == similarTypeDto.Id);
+                    var similarType = entity.SimilarPlaneTypes.FirstOrDefault(x => x.Id == similarTypeDto.Id);
                     if (similarType != null)
                     {
-                        entity.SimilarTypes.Remove(similarType);
+                        entity.SimilarPlaneTypes.Remove(similarType);
                     }
                 }
 
-                entity.SimilarPlaneType = entity.SimilarPlaneType ?? new List<PlanePlaneType>();
-                foreach (var similarTypeDto in dto.SimilarTypes.Where(x => x.DtoState == DtoState.Added))
+                entity.SimilarPlanePlaneTypes = entity.SimilarPlanePlaneTypes ?? new List<PlanePlaneType>();
+                foreach (var similarTypeDto in dto.SimilarPlaneTypes.Where(x => x.DtoState == DtoState.Added))
                 {
-                    entity.SimilarPlaneType.Add(new PlanePlaneType
+                    entity.SimilarPlanePlaneTypes.Add(new PlanePlaneType
                     {
                         PlaneTypeId = similarTypeDto.Id,
                         PlaneId = dto.Id,
@@ -208,8 +208,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
                 }
                 : null,
 
-                // Map relationship *-* : SimilarTypes
-                SimilarTypes = entity.SimilarTypes.Select(x => new OptionDto
+                // Map relationship *-* : SimilarPlaneTypes
+                SimilarPlaneTypes = entity.SimilarPlaneTypes.Select(x => new OptionDto
                 {
                     Id = x.Id,
                     Display = x.Title,
@@ -255,7 +255,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
                 { HeaderName.OriginalPrice, () => CSVNumber(dto.OriginalPrice) },
                 { HeaderName.EstimatedPrice, () => CSVNumber(dto.EstimatedPrice) },
                 { HeaderName.PlaneType, () => CSVString(dto.PlaneType?.Display) },
-                { HeaderName.SimilarTypes, () => CSVList(dto.SimilarTypes) },
+                { HeaderName.SimilarPlaneTypes, () => CSVList(dto.SimilarPlaneTypes) },
                 { HeaderName.CurrentAirport, () => CSVString(dto.CurrentAirport?.Display) },
                 { HeaderName.ConnectingAirports, () => CSVList(dto.ConnectingAirports) },
             };
@@ -273,7 +273,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
         {
             return
             [
-                x => x.SimilarTypes,
+                x => x.SimilarPlaneTypes,
                 x => x.ConnectingAirports,
             ];
         }
@@ -386,7 +386,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             /// <summary>
             /// Header name for similar types.
             /// </summary>
-            public const string SimilarTypes = "similarTypes";
+            public const string SimilarPlaneTypes = "similarPlaneTypes";
 
             /// <summary>
             /// Header name for current airport.

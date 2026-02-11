@@ -1,4 +1,4 @@
-import { HttpStatusCode } from '@angular/common/http';
+﻿import { HttpStatusCode } from '@angular/common/http';
 import { Injectable, Injector, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
@@ -170,12 +170,27 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
           'http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata'
         ]
       ),
-      permissions:
-        objDecodedToken[
-          'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
-        ],
       expiredAt: objDecodedToken['exp'],
+      permissions: [],
     };
+
+    const tokenPermissions = JSON.parse(
+      objDecodedToken['urn:bia:claims:permission_ids']
+    ) as number[];
+
+    tokenPermissions.forEach(permissionId => {
+      const appSettingPermission =
+        this.appSettingsService.appSettings.permissions.find(
+          p => p.permissionId === permissionId
+        );
+      if (!appSettingPermission) {
+        console.warn(
+          `Permission ${permissionId} not found in app settings permissions`
+        );
+      } else {
+        decodedToken.permissions.push(appSettingPermission.name);
+      }
+    });
 
     return decodedToken;
   }
@@ -345,7 +360,8 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     }
     if (authInfo) {
       return (
-        authInfo.decryptedToken.permissions.some(p => p === permission) === true
+        authInfo.decryptedToken?.permissions?.some(p => p === permission) ===
+        true
       );
     }
     return false;

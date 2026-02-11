@@ -1,4 +1,4 @@
-import { DateFormat } from 'packages/bia-ng/core/public-api';
+﻿import { DateFormat } from 'packages/bia-ng/core/public-api';
 import { PropType } from 'packages/bia-ng/models/enum/public-api';
 import {
   BiaFieldConfig,

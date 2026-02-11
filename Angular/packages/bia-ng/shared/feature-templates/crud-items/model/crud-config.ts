@@ -1,4 +1,4 @@
-import {
+﻿import {
   BiaFieldsConfig,
   BiaFormLayoutConfig,
   BiaTableState,

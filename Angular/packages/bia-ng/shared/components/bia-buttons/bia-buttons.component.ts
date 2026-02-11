@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+﻿import { Component, Input } from '@angular/core';
 import { BiaButtonAndMenuItem } from 'packages/bia-ng/models/public-api';
 import { ButtonDirective } from 'primeng/button';
 import { Divider } from 'primeng/divider';

@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+﻿import { AsyncPipe } from '@angular/common';
 import { Component, Injector } from '@angular/core';
 import { CrudItemNewComponent } from 'packages/bia-ng/shared/public-api';
 import { UserFormComponent } from '../../components/user-form/user-form.component';

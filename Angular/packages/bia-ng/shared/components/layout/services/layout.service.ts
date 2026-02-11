@@ -1,4 +1,4 @@
-import {
+﻿import {
   ComponentPortal,
   ComponentType,
   Portal,
@@ -11,6 +11,7 @@ import {
   TemplateRef,
   ViewContainerRef,
   effect,
+  inject,
   signal,
 } from '@angular/core';
 import {
@@ -24,6 +25,7 @@ import {
 } from 'packages/bia-ng/models/public-api';
 import { MenuItem } from 'primeng/api';
 import { BehaviorSubject, Subject, debounceTime } from 'rxjs';
+import { AnnouncementLayoutService } from './announcement-layout.service';
 import { STORAGE_THEME_KEY } from './bia-theme.service';
 
 export const BIA_LAYOUT_DATA = new InjectionToken<any>('BiaLayoutData');
@@ -42,6 +44,7 @@ interface LayoutState {
   fullscreen: boolean;
   isSmallScreen: boolean;
   isInIframe: boolean;
+  isAnnouncementBarVisible: boolean;
 }
 
 const DEFAULT_LAYOUT_CONFIG: AppConfig = {
@@ -85,10 +88,13 @@ export class BiaLayoutService {
     menuProfileActive: false,
     isSmallScreen: false,
     isInIframe: false,
+    isAnnouncementBarVisible: false,
   };
 
   config = signal<AppConfig>(this._config);
   configDisplay = signal<ConfigDisplay>(this._configDisplay);
+
+  private announcementLayoutService = inject(AnnouncementLayoutService);
 
   protected configUpdate = new BehaviorSubject<AppConfig>(this._config);
   protected configDisplayUpdate = new BehaviorSubject<ConfigDisplay>(
@@ -136,7 +142,10 @@ export class BiaLayoutService {
         BiaAppConstantsService.storageBiaUserConfigKey(),
         JSON.stringify(config)
       );
+      this.state.isAnnouncementBarVisible =
+        this.announcementLayoutService.activeAnnouncements().length > 0;
     });
+
     this.checkSmallScreen();
   }
 

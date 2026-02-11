@@ -50,7 +50,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
                 .WithMany()
                 .UsingEntity<PlaneAirport>();
             modelBuilder.Entity<Plane>()
-               .HasMany(p => p.SimilarTypes)
+               .HasMany(p => p.SimilarPlaneTypes)
                .WithMany()
                .UsingEntity<PlanePlaneType>();
             modelBuilder.Entity<Plane>()
