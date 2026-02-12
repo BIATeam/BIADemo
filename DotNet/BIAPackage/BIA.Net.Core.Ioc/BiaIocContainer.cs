@@ -88,9 +88,11 @@ namespace BIA.Net.Core.Ioc
         /// <param name="excludedServiceNames">A list of class type names to be excluded from service registration, if any.</param>
         /// <param name="includedServiceNames">A list of class type names to be included for service registration, if any.</param>
         /// <remarks>
-        ///  This method scans the provided class assembly and maps each class to its interface based on naming convention ("I" + ClassName).
-        ///  The mapped pairs are then registered to the IServiceCollection based on the specified ServiceLifetime.
-        ///  The included/excluded service names are taken into account during this process.
+        /// This method scans the provided class assembly and identifies all concrete classes (non-generic, non-abstract).
+        /// For each interface found in the interface assembly, it discovers all classes that implement that interface.
+        /// Each interface-implementation pair is then registered to the IServiceCollection based on the specified ServiceLifetime,
+        /// but only if the interface is not already registered in the collection.
+        /// The included/excluded service names are taken into account during the filtering process.
         /// </remarks>
         public static void RegisterServicesFromAssembly(
             IServiceCollection collection,
@@ -103,34 +105,47 @@ namespace BIA.Net.Core.Ioc
             Assembly classAssembly = Assembly.Load(assemblyName);
             Assembly interfaceAssembly = !string.IsNullOrWhiteSpace(interfaceAssemblyName) ? Assembly.Load(interfaceAssemblyName) : classAssembly;
 
-            IEnumerable<Type> classTypes = classAssembly.GetTypes().Where(type => type.IsClass && !type.IsAbstract);
-            IEnumerable<Type> interfaceTypes = interfaceAssembly.GetTypes().Where(type => type.IsInterface);
+            IEnumerable<Type> classTypes = classAssembly.GetTypes().Where(type => !type.IsGenericTypeDefinition && type.IsClass && !type.IsAbstract);
+            IEnumerable<Type> interfaceTypes = interfaceAssembly.GetTypes().Where(type => !type.IsGenericTypeDefinition && type.IsInterface);
 
-            IEnumerable<(Type ClassType, Type InterfaceType)> mappings = from classType in classTypes
-                                                                         join interfaceType in interfaceTypes
-                                                                         on "I" + classType.Name equals interfaceType.Name
-                                                                         where (excludedServiceNames == null || !excludedServiceNames.Contains(classType.Name)) &&
-                                                                               (includedServiceNames == null || includedServiceNames.Contains(classType.Name))
-                                                                         select (classType, interfaceType);
-
-            foreach (var (classType, interfaceType) in mappings)
+            if (excludedServiceNames != null)
             {
+                classTypes = classTypes.Where(c => !excludedServiceNames.Contains(c.Name));
+                interfaceTypes = interfaceTypes.Where(i => !excludedServiceNames.Contains(i.Name));
+            }
+
+            if (includedServiceNames != null)
+            {
+                classTypes = classTypes.Where(c => includedServiceNames.Contains(c.Name));
+                interfaceTypes = interfaceTypes.Where(i => includedServiceNames.Contains(i.Name));
+            }
+
+            var classesImplementationsByInterface = new Dictionary<Type, List<Type>>();
+            foreach (var interfaceType in interfaceTypes)
+            {
+                classesImplementationsByInterface[interfaceType] = [.. classTypes.Where(c => c.IsAssignableTo(interfaceType))];
+            }
+
+            foreach (var kvp in classesImplementationsByInterface)
+            {
+                var interfaceType = kvp.Key;
+
                 if (!collection.Any(s => s.ServiceType == interfaceType))
                 {
-                    switch (serviceLifetime)
+                    foreach (var classType in kvp.Value)
                     {
-                        case ServiceLifetime.Singleton:
-                            collection.AddSingleton(interfaceType, classType);
-                            break;
-                        case ServiceLifetime.Scoped:
-                            collection.AddScoped(interfaceType, classType);
-                            break;
-                        case ServiceLifetime.Transient:
-                            collection.AddTransient(interfaceType, classType);
-                            break;
-                        default:
-                            collection.AddScoped(interfaceType, classType);
-                            break;
+                        switch (serviceLifetime)
+                        {
+                            case ServiceLifetime.Singleton:
+                                collection.AddSingleton(interfaceType, classType);
+                                break;
+                            case ServiceLifetime.Transient:
+                                collection.AddTransient(interfaceType, classType);
+                                break;
+                            default:
+                                collection.AddScoped(interfaceType, classType);
+                                break;
+                        }
                     }
                 }
             }
