@@ -77,17 +77,17 @@
               biaFrozenColumn
               [frozen]="col.isFrozen"
               pTooltip="{{
-                isResizableColumn && !col?.icon ? (col?.header | translate) : ''
+                isResizableColumn && !col?.icon ? getColumnHeader(col) : ''
               }}"
               tooltipPosition="top">
               <span class="nowrap">
                 @if (!!col?.icon) {
                   <i
                     class="{{ col?.icon }} bia-column-icon"
-                    pTooltip="{{ col?.header | translate }}"
+                    pTooltip="{{ getColumnHeader(col) }}"
                     tooltipPosition="top"></i>
                 } @else {
-                  {{ col?.header | translate }}
+                  {{ getColumnHeader(col) }}
                 }
                 <p-sortIcon [field]="col.field"></p-sortIcon>
               </span>
@@ -104,17 +104,17 @@
               biaFrozenColumn
               [frozen]="col.isFrozen"
               pTooltip="{{
-                isResizableColumn && !col?.icon ? (col?.header | translate) : ''
+                isResizableColumn && !col?.icon ? getColumnHeader(col) : ''
               }}"
               tooltipPosition="top">
               <span class="nowrap">
                 @if (!!col?.icon) {
                   <i
                     class="{{ col?.icon }} bia-column-icon"
-                    pTooltip="{{ col?.header | translate }}"
+                    pTooltip="{{ getColumnHeader(col) }}"
                     tooltipPosition="top"></i>
                 } @else {
-                  {{ col?.header | translate }}
+                  {{ getColumnHeader(col) }}
                 }
               </span>
             </th>

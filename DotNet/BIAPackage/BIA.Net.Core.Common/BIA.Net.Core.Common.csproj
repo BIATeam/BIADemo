@@ -26,6 +26,7 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" />
 		<PackageReference Include="Newtonsoft.Json" />
+		<PackageReference Include="NodaTime" />
 	</ItemGroup>
 
 

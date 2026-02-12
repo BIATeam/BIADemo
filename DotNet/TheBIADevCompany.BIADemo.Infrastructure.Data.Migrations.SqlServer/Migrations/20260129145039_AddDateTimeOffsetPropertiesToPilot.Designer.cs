@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TheBIADevCompany.BIADemo.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using TheBIADevCompany.BIADemo.Infrastructure.Data;
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20260129145039_AddDateTimeOffsetPropertiesToPilot")]
+    partial class AddDateTimeOffsetPropertiesToPilot
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,8 +33,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTimeOffset>("End")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("End")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("RawContent")
                         .IsRequired()
@@ -40,11 +43,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
-                    b.Property<DateTimeOffset>("Start")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("Start")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("TypeId")
                         .HasColumnType("int");
@@ -95,8 +97,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.HasKey("Id");
 
@@ -210,8 +211,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -248,8 +248,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.Property<int>("TeamId")
                         .HasColumnType("int");
@@ -274,8 +273,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.HasKey("NotificationTeamId", "RoleId");
 
@@ -305,8 +303,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.HasKey("Id");
 
@@ -356,8 +353,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.HasKey("UserId", "NotificationId");
 
@@ -388,8 +384,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.HasKey("Id");
 
@@ -465,8 +460,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.HasKey("Id");
 
@@ -524,8 +518,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -564,8 +557,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.HasKey("Id");
 
@@ -706,8 +698,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.HasKey("Id");
 
@@ -921,8 +912,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.Property<int>("TeamTypeId")
                         .HasColumnType("int");
@@ -981,8 +971,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.HasKey("Id");
 
@@ -1007,8 +996,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.Property<int>("TeamId")
                         .HasColumnType("int");
@@ -1043,8 +1031,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.HasKey("MemberId", "RoleId");
 
@@ -1074,8 +1061,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.HasKey("Id");
 
@@ -1166,8 +1152,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.HasKey("Id");
 
@@ -1207,8 +1192,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.Property<int>("TeamId")
                         .HasColumnType("int");
@@ -1250,8 +1234,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.Property<string>("TableId")
                         .IsRequired()
@@ -1290,8 +1273,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.HasKey("TeamId", "ViewId");
 
@@ -1314,8 +1296,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.HasKey("UserId", "ViewId");
 
@@ -1437,8 +1418,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.HasKey("Id");
 
@@ -1520,8 +1500,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.Property<TimeSpan>("SyncTime")
                         .HasColumnType("time");
@@ -1584,8 +1563,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.HasKey("EngineId", "PartId");
 
@@ -1620,8 +1598,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.Property<int>("SiteId")
                         .HasColumnType("int");
@@ -1654,8 +1631,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.Property<string>("SN")
                         .HasColumnType("nvarchar(max)");
@@ -1730,8 +1706,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.Property<int>("SiteId")
                         .HasColumnType("int");
@@ -1820,8 +1795,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.Property<int>("SiteId")
                         .HasColumnType("int");
@@ -1857,8 +1831,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.HasKey("AirportId", "PlaneId");
 
@@ -1947,52 +1920,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.HasKey("PlaneId", "PlaneTypeId");
 
                     b.HasIndex("PlaneTypeId");
 
                     b.ToTable("PlanePlaneType");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.PlanePlaneTypeAudit", b =>
-                {
-                    b.Property<int>("AuditId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditId"));
-
-                    b.Property<string>("AuditAction")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AuditChanges")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("AuditDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("AuditUserLogin")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PlaneId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlaneTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PlaneTypeTitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("AuditId");
-
-                    b.ToTable("PlanePlaneTypeAudit");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.PlaneType", b =>
@@ -2009,8 +1943,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -2038,8 +1971,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.HasKey("Id");
 
@@ -2102,8 +2034,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.Property<int>("SiteId")
                         .HasColumnType("int");
@@ -2128,8 +2059,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.HasKey("MaintenanceContractId", "PlaneId");
 
@@ -2149,8 +2079,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.HasKey("AirportId", "MaintenanceTeamId");
 
@@ -2170,8 +2099,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("rowversion");
 
                     b.HasKey("CountryId", "MaintenanceTeamId");
 
@@ -2793,7 +2721,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.PlanePlaneType", b =>
                 {
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Plane", "Plane")
-                        .WithMany("SimilarPlanePlaneTypes")
+                        .WithMany("SimilarPlaneType")
                         .HasForeignKey("PlaneId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -3012,7 +2940,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
 
                     b.Navigation("Engines");
 
-                    b.Navigation("SimilarPlanePlaneTypes");
+                    b.Navigation("SimilarPlaneType");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceContract", b =>

@@ -31,5 +31,17 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Fleet
         /// </summary>
         [BiaDtoField(Required = false)]
         public int FlightHours { get; set; }
+
+        /// <summary>
+        /// Gets or sets the first flight date.
+        /// </summary>
+        [BiaDtoField(Required = true, Type = "datetime", AsLocalDateTime = true)]
+        public DateTimeOffset FirstFlightDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the last flight date.
+        /// </summary>
+        [BiaDtoField(Required = false, Type = "datetime", AsLocalDateTime = true)]
+        public DateTimeOffset? LastFlightDate { get; set; }
     }
 }

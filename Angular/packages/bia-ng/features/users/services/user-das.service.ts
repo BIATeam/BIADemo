@@ -1,13 +1,13 @@
 ﻿import { Injectable, Injector } from '@angular/core';
 import { AbstractDas } from 'packages/bia-ng/core/public-api';
-import { User } from '../model/user';
+import { User, userFieldsConfiguration } from '../model/user';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserDas extends AbstractDas<User> {
   constructor(injector: Injector) {
-    super(injector, 'Users');
+    super(injector, 'Users', userFieldsConfiguration);
   }
 
   public synchronize() {

@@ -2,52 +2,55 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TheBIADevCompany.BIADemo.Infrastructure.Data;
 
 #nullable disable
 
-namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migrations
+namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
 {
-    [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(DataContextPostGreSql))]
+    [Migration("20260129145517_AddDateTimeOffsetPropertiesToPilot")]
+    partial class AddDateTimeOffsetPropertiesToPilot
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "10.0.1")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("BIA.Net.Core.Domain.Announcement.Entities.Announcement", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTimeOffset>("End")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("End")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("RawContent")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
-                    b.Property<DateTimeOffset>("Start")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("Start")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("TypeId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -60,27 +63,27 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<int>("AuditId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("AuditId"));
 
                     b.Property<string>("AuditAction")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("AuditChanges")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("AuditDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("AuditUserLogin")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("AuditId");
 
@@ -90,13 +93,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
             modelBuilder.Entity("BIA.Net.Core.Domain.Announcement.Entities.AnnouncementType", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -105,11 +108,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.HasData(
                         new
                         {
-                            Id = 0
+                            Id = 0,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
-                            Id = 1
+                            Id = 1,
+                            RowVersionXmin = 0u
                         });
                 });
 
@@ -117,33 +122,33 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<int>("AuditId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("AuditId"));
 
                     b.Property<string>("AuditAction")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("AuditChanges")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("AuditDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("AuditUserLogin")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("PrimaryKey")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Table")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
                     b.HasKey("AuditId");
 
@@ -154,20 +159,20 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(449)
-                        .HasColumnType("nvarchar(449)");
+                        .HasColumnType("character varying(449)");
 
                     b.Property<DateTimeOffset?>("AbsoluteExpiration")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTimeOffset>("ExpiresAtTime")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<long?>("SlidingExpirationInSeconds")
                         .HasColumnType("bigint");
 
                     b.Property<byte[]>("Value")
                         .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("bytea");
 
                     b.HasKey("Id");
 
@@ -181,45 +186,45 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("CreatedById")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
+                        .HasColumnType("character varying(21)");
 
                     b.Property<string>("JData")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("Read")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("character varying(100)");
 
                     b.Property<int>("TypeId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -238,21 +243,21 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("NotificationId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.Property<int>("TeamId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -266,16 +271,16 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
             modelBuilder.Entity("BIA.Net.Core.Domain.Notification.Entities.NotificationTeamRole", b =>
                 {
                     b.Property<int>("NotificationTeamId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("NotificationTeamId", "RoleId");
 
@@ -288,25 +293,25 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("character varying(10)");
 
                     b.Property<string>("Label")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -317,47 +322,52 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                         {
                             Id = 1,
                             Code = "task",
-                            Label = "Task"
+                            Label = "Task",
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 2,
                             Code = "info",
-                            Label = "Info"
+                            Label = "Info",
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 3,
                             Code = "success",
-                            Label = "Success"
+                            Label = "Success",
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 4,
                             Code = "warn",
-                            Label = "Warn"
+                            Label = "Warn",
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 5,
                             Code = "error",
-                            Label = "Error"
+                            Label = "Error",
+                            RowVersionXmin = 0u
                         });
                 });
 
             modelBuilder.Entity("BIA.Net.Core.Domain.Notification.Entities.NotificationUser", b =>
                 {
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("NotificationId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("UserId", "NotificationId");
 
@@ -370,26 +380,26 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AnnouncementTypeId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Label")
                         .IsRequired()
                         .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasColumnType("character varying(150)");
 
                     b.Property<int>("LanguageId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -406,42 +416,48 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                             Id = 101,
                             AnnouncementTypeId = 0,
                             Label = "Information",
-                            LanguageId = 1
+                            LanguageId = 1,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 102,
                             AnnouncementTypeId = 1,
                             Label = "Warning",
-                            LanguageId = 1
+                            LanguageId = 1,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 103,
                             AnnouncementTypeId = 0,
                             Label = "Information",
-                            LanguageId = 2
+                            LanguageId = 2,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 104,
                             AnnouncementTypeId = 1,
                             Label = "Avertissement",
-                            LanguageId = 2
+                            LanguageId = 2,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 105,
                             AnnouncementTypeId = 0,
                             Label = "Información",
-                            LanguageId = 3
+                            LanguageId = 3,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 106,
                             AnnouncementTypeId = 1,
                             Label = "Advertencia",
-                            LanguageId = 3
+                            LanguageId = 3,
+                            RowVersionXmin = 0u
                         });
                 });
 
@@ -449,24 +465,24 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("character varying(10)");
 
                     b.Property<string>("Name")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -480,25 +496,29 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                         {
                             Id = 1,
                             Code = "EN",
-                            Name = "English"
+                            Name = "English",
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 2,
                             Code = "FR",
-                            Name = "Français"
+                            Name = "Français",
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 3,
                             Code = "ES",
-                            Name = "Española"
+                            Name = "Española",
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 4,
                             Code = "DE",
-                            Name = "Deutsch"
+                            Name = "Deutsch",
+                            RowVersionXmin = 0u
                         });
                 });
 
@@ -506,31 +526,31 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<int>("LanguageId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("NotificationId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
 
@@ -546,26 +566,26 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Label")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
                     b.Property<int>("LanguageId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("NotificationTypeId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -582,105 +602,120 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                             Id = 101,
                             Label = "Tâche",
                             LanguageId = 2,
-                            NotificationTypeId = 1
+                            NotificationTypeId = 1,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 102,
                             Label = "Tarea",
                             LanguageId = 3,
-                            NotificationTypeId = 1
+                            NotificationTypeId = 1,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 103,
                             Label = "Aufgabe",
                             LanguageId = 4,
-                            NotificationTypeId = 1
+                            NotificationTypeId = 1,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 201,
                             Label = "Information",
                             LanguageId = 2,
-                            NotificationTypeId = 2
+                            NotificationTypeId = 2,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 202,
                             Label = "Información",
                             LanguageId = 3,
-                            NotificationTypeId = 2
+                            NotificationTypeId = 2,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 203,
                             Label = "Information",
                             LanguageId = 4,
-                            NotificationTypeId = 2
+                            NotificationTypeId = 2,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 301,
                             Label = "Succès",
                             LanguageId = 2,
-                            NotificationTypeId = 3
+                            NotificationTypeId = 3,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 302,
                             Label = "Éxito",
                             LanguageId = 3,
-                            NotificationTypeId = 3
+                            NotificationTypeId = 3,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 303,
                             Label = "Erfolg",
                             LanguageId = 4,
-                            NotificationTypeId = 3
+                            NotificationTypeId = 3,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 401,
                             Label = "Avertissement",
                             LanguageId = 2,
-                            NotificationTypeId = 4
+                            NotificationTypeId = 4,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 402,
                             Label = "Advertencia",
                             LanguageId = 3,
-                            NotificationTypeId = 4
+                            NotificationTypeId = 4,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 403,
                             Label = "Erwärmen",
                             LanguageId = 4,
-                            NotificationTypeId = 4
+                            NotificationTypeId = 4,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 501,
                             Label = "Erreur",
                             LanguageId = 2,
-                            NotificationTypeId = 5
+                            NotificationTypeId = 5,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 502,
                             Label = "Culpa",
                             LanguageId = 3,
-                            NotificationTypeId = 5
+                            NotificationTypeId = 5,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 503,
                             Label = "Fehler",
                             LanguageId = 4,
-                            NotificationTypeId = 5
+                            NotificationTypeId = 5,
+                            RowVersionXmin = 0u
                         });
                 });
 
@@ -688,26 +723,26 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Label")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
                     b.Property<int>("LanguageId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -724,189 +759,216 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                             Id = 1000101,
                             Label = "Administrateur",
                             LanguageId = 2,
-                            RoleId = 10001
+                            RoleId = 10001,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 1000102,
                             Label = "Administrador",
                             LanguageId = 3,
-                            RoleId = 10001
+                            RoleId = 10001,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 1000103,
                             Label = "Administrator",
                             LanguageId = 4,
-                            RoleId = 10001
+                            RoleId = 10001,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 1000201,
                             Label = "Administrateur des tâches en arrière-plan",
                             LanguageId = 2,
-                            RoleId = 10002
+                            RoleId = 10002,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 1000202,
                             Label = "Administrador de tareas en segundo plano",
                             LanguageId = 3,
-                            RoleId = 10002
+                            RoleId = 10002,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 1000203,
                             Label = "Administrator für Hintergrundaufgaben",
                             LanguageId = 4,
-                            RoleId = 10002
+                            RoleId = 10002,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 1000301,
                             Label = "Visualisation des tâches en arrière-plan",
                             LanguageId = 2,
-                            RoleId = 10003
+                            RoleId = 10003,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 1000302,
                             Label = "Visualización de tareas en segundo plano",
                             LanguageId = 3,
-                            RoleId = 10003
+                            RoleId = 10003,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 1000303,
                             Label = "Visualisierung von Hintergrundaufgaben",
                             LanguageId = 4,
-                            RoleId = 10003
+                            RoleId = 10003,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 101,
                             Label = "Administrateur de la compagnie",
                             LanguageId = 2,
-                            RoleId = 1
+                            RoleId = 1,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 102,
                             Label = "Administrador de la aerolínea",
                             LanguageId = 3,
-                            RoleId = 1
+                            RoleId = 1,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 103,
                             Label = "Fluglinienadministrator",
                             LanguageId = 4,
-                            RoleId = 1
+                            RoleId = 1,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 201,
                             Label = "Pilote",
                             LanguageId = 2,
-                            RoleId = 2
+                            RoleId = 2,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 202,
                             Label = "Piloto",
                             LanguageId = 3,
-                            RoleId = 2
+                            RoleId = 2,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 203,
                             Label = "Pilot",
                             LanguageId = 4,
-                            RoleId = 2
+                            RoleId = 2,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 10101,
                             Label = "Superviseur",
                             LanguageId = 2,
-                            RoleId = 101
+                            RoleId = 101,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 10102,
                             Label = "Supervisor",
                             LanguageId = 3,
-                            RoleId = 101
+                            RoleId = 101,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 10103,
                             Label = "Supervisor",
                             LanguageId = 4,
-                            RoleId = 101
+                            RoleId = 101,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 10201,
                             Label = "Expert",
                             LanguageId = 2,
-                            RoleId = 102
+                            RoleId = 102,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 10202,
                             Label = "Experto",
                             LanguageId = 3,
-                            RoleId = 102
+                            RoleId = 102,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 10203,
                             Label = "Experte",
                             LanguageId = 4,
-                            RoleId = 102
+                            RoleId = 102,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 20101,
                             Label = "Chef d'equipe",
                             LanguageId = 2,
-                            RoleId = 201
+                            RoleId = 201,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 20102,
                             Label = "Jefe de equipo",
                             LanguageId = 3,
-                            RoleId = 201
+                            RoleId = 201,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 20103,
                             Label = "Teamleiter",
                             LanguageId = 4,
-                            RoleId = 201
+                            RoleId = 201,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 20201,
                             Label = "Operateur",
                             LanguageId = 2,
-                            RoleId = 202
+                            RoleId = 202,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 20202,
                             Label = "Operador",
                             LanguageId = 3,
-                            RoleId = 202
+                            RoleId = 202,
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 20203,
                             Label = "Operator",
                             LanguageId = 4,
-                            RoleId = 202
+                            RoleId = 202,
+                            RowVersionXmin = 0u
                         });
                 });
 
@@ -914,23 +976,23 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.Property<int>("TeamTypeId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("character varying(64)");
 
                     b.HasKey("Id");
 
@@ -945,44 +1007,44 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
+                        .HasColumnType("character varying(21)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime?>("LastLoginDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
                     b.Property<DateTime>("LastSyncDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Login")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -1000,21 +1062,21 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.Property<int>("TeamId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -1029,22 +1091,22 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
             modelBuilder.Entity("BIA.Net.Core.Domain.User.Entities.MemberRole", b =>
                 {
                     b.Property<int>("MemberId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<bool>("IsDefault")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsFromRoleApi")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("MemberId", "RoleId");
 
@@ -1057,25 +1119,25 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
                     b.Property<string>("Label")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -1086,67 +1148,78 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                         {
                             Id = 10001,
                             Code = "Admin",
-                            Label = "Administrator"
+                            Label = "Administrator",
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 10002,
                             Code = "Back_Admin",
-                            Label = "Background task administrator"
+                            Label = "Background task administrator",
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 10003,
                             Code = "Back_Read_Only",
-                            Label = "Visualization of background tasks"
+                            Label = "Visualization of background tasks",
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 1,
                             Code = "Site_Admin",
-                            Label = "Airline administrator"
+                            Label = "Airline administrator",
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 2,
                             Code = "Pilot",
-                            Label = "Pilot"
+                            Label = "Pilot",
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 101,
                             Code = "Supervisor",
-                            Label = "Supervisor"
+                            Label = "Supervisor",
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 102,
                             Code = "Expert",
-                            Label = "Expert"
+                            Label = "Expert",
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 202,
                             Code = "Operator",
-                            Label = "Operator"
+                            Label = "Operator",
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 201,
                             Code = "Team_Leader",
-                            Label = "Team leader"
+                            Label = "Team leader",
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 3,
                             Code = "AircraftMaintenanceCompany_Admin",
-                            Label = "AircraftMaintenanceCompany administrator"
+                            Label = "AircraftMaintenanceCompany administrator",
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 4,
                             Code = "MaintenanceTeam_Admin",
-                            Label = "MaintenanceTeam administrator"
+                            Label = "MaintenanceTeam administrator",
+                            RowVersionXmin = 0u
                         });
                 });
 
@@ -1154,20 +1227,20 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                        .HasColumnType("character varying(32)");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -1177,22 +1250,26 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                         new
                         {
                             Id = 1,
-                            Name = "Root"
+                            Name = "Root",
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Site"
+                            Name = "Site",
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 3,
-                            Name = "AircraftMaintenanceCompany"
+                            Name = "AircraftMaintenanceCompany",
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 4,
-                            Name = "MaintenanceTeam"
+                            Name = "MaintenanceTeam",
+                            RowVersionXmin = 0u
                         });
                 });
 
@@ -1200,21 +1277,21 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.Property<int>("TeamId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -1230,36 +1307,36 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("character varying(500)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
                     b.Property<string>("Preference")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.Property<string>("TableId")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("character varying(100)");
 
                     b.Property<int>("ViewType")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -1271,6 +1348,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                             Id = -1,
                             Name = "default",
                             Preference = "{\"first\":0,\"rows\":10,\"sortField\":\"createdDate\",\"sortOrder\":-1,\"columnOrder\":[\"titleTranslated\",\"descriptionTranslated\",\"type\",\"read\",\"createdDate\",\"createdBy\"],\"selection\":[],\"filters\":{}}",
+                            RowVersionXmin = 0u,
                             TableId = "notificationsGrid",
                             ViewType = 0
                         });
@@ -1279,19 +1357,19 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
             modelBuilder.Entity("BIA.Net.Core.Domain.View.Entities.ViewTeam", b =>
                 {
                     b.Property<int>("TeamId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("ViewId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<bool>("IsDefault")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("TeamId", "ViewId");
 
@@ -1303,19 +1381,19 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
             modelBuilder.Entity("BIA.Net.Core.Domain.View.Entities.ViewUser", b =>
                 {
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("ViewId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<bool>("IsDefault")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("UserId", "ViewId");
 
@@ -1327,10 +1405,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
             modelBuilder.Entity("BaseEntityUserRole", b =>
                 {
                     b.Property<int>("RolesId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("UsersId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("RolesId", "UsersId");
 
@@ -1342,10 +1420,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
             modelBuilder.Entity("RoleTeamType", b =>
                 {
                     b.Property<int>("RolesId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("TeamTypesId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("RolesId", "TeamTypesId");
 
@@ -1420,25 +1498,25 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("City")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("character varying(64)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("character varying(64)");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -1449,12 +1527,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<double?>("AverageFlightHours")
-                        .HasColumnType("float");
+                        .HasColumnType("double precision");
 
                     b.Property<float?>("AverageFuelConsumption")
                         .HasColumnType("real");
@@ -1463,16 +1541,16 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                         .HasColumnType("date");
 
                     b.Property<decimal?>("EstimatedPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("numeric");
 
                     b.Property<DateTime?>("ExchangeDate")
                         .HasColumnType("date");
 
                     b.Property<DateTime?>("FixedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<double>("FlightHours")
-                        .HasColumnType("float");
+                        .HasColumnType("double precision");
 
                     b.Property<float>("FuelConsumption")
                         .HasColumnType("real");
@@ -1481,47 +1559,47 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                         .HasColumnType("time");
 
                     b.Property<bool>("IsFixed")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<bool?>("IsHybrid")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsToBeMaintained")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime?>("LastMaintenanceDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Manufacturer")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("NextMaintenanceDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("NoiseLevel")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<decimal>("OriginalPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("numeric");
 
                     b.Property<int>("PlaneId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int?>("Power")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int?>("PrincipalPartId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Reference")
                         .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("character varying(64)");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.Property<TimeSpan>("SyncTime")
                         .HasColumnType("time");
@@ -1539,34 +1617,34 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<int>("AuditId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("AuditId"));
 
                     b.Property<string>("AuditAction")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("AuditChanges")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("AuditDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("AuditUserLogin")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("PlaneId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Reference")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("AuditId");
 
@@ -1576,16 +1654,16 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.EnginePart", b =>
                 {
                     b.Property<int>("EngineId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("PartId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("EngineId", "PartId");
 
@@ -1597,34 +1675,34 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Flight", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("ArchivedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("ArrivalAirportId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("DepartureAirportId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("FixedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<bool>("IsArchived")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsFixed")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.Property<int>("SiteId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -1641,24 +1719,24 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Family")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("numeric");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.Property<string>("SN")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -1670,6 +1748,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                             Id = 1,
                             Family = "N.A",
                             Price = 499.99m,
+                            RowVersionXmin = 0u,
                             SN = "P0001"
                         },
                         new
@@ -1677,6 +1756,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                             Id = 2,
                             Family = "N.A",
                             Price = 250.99m,
+                            RowVersionXmin = 0u,
                             SN = "P0002"
                         },
                         new
@@ -1684,6 +1764,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                             Id = 3,
                             Family = "N.A",
                             Price = 100.99m,
+                            RowVersionXmin = 0u,
                             SN = "P0003"
                         },
                         new
@@ -1691,6 +1772,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                             Id = 4,
                             Family = "N.A",
                             Price = 25.99m,
+                            RowVersionXmin = 0u,
                             SN = "P0004"
                         });
                 });
@@ -1699,42 +1781,42 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime?>("ArchivedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTimeOffset>("FirstFlightDate")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("FixedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("FlightHours")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("IdentificationNumber")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("character varying(64)");
 
                     b.Property<bool>("IsArchived")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsFixed")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset?>("LastFlightDate")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.Property<int>("SiteId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -1747,18 +1829,18 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("ArchivedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("Capacity")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("CurrentAirportId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("DeliveryDate")
                         .HasColumnType("date");
@@ -1767,10 +1849,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                         .HasColumnType("Money");
 
                     b.Property<DateTime>("FirstFlightDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("FixedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<float>("FuelCapacity")
                         .HasColumnType("real");
@@ -1779,31 +1861,31 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                         .HasColumnType("real");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsArchived")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsFixed")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<bool?>("IsMaintenance")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime?>("LastFlightDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Manufacturer")
                         .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("character varying(64)");
 
                     b.Property<int?>("MotorsCount")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Msn")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("character varying(64)");
 
                     b.Property<DateTime>("NextMaintenanceDate")
                         .HasColumnType("date");
@@ -1812,19 +1894,19 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                         .HasColumnType("Money");
 
                     b.Property<int?>("PlaneTypeId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<double?>("Probability")
-                        .HasColumnType("float");
+                        .HasColumnType("double precision");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.Property<int>("SiteId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<TimeSpan>("SyncFlightDataTime")
                         .HasColumnType("time");
@@ -1833,7 +1915,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                         .HasColumnType("time");
 
                     b.Property<double>("TotalFlightHours")
-                        .HasColumnType("float");
+                        .HasColumnType("double precision");
 
                     b.HasKey("Id");
 
@@ -1849,16 +1931,16 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.PlaneAirport", b =>
                 {
                     b.Property<int>("AirportId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("PlaneId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("AirportId", "PlaneId");
 
@@ -1871,34 +1953,34 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<int>("AuditId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("AuditId"));
 
                     b.Property<int>("AirportId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("AirportName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("AuditAction")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("AuditChanges")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("AuditDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("AuditUserLogin")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("PlaneId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("AuditId");
 
@@ -1909,27 +1991,27 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<int>("AuditId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("AuditId"));
 
                     b.Property<string>("AuditAction")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("AuditChanges")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("AuditDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("AuditUserLogin")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("AuditId");
 
@@ -1939,16 +2021,16 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.PlanePlaneType", b =>
                 {
                     b.Property<int>("PlaneId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("PlaneTypeId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("PlaneId", "PlaneTypeId");
 
@@ -1957,65 +2039,27 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.ToTable("PlanePlaneType");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.PlanePlaneTypeAudit", b =>
-                {
-                    b.Property<int>("AuditId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditId"));
-
-                    b.Property<string>("AuditAction")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AuditChanges")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("AuditDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("AuditUserLogin")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PlaneId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlaneTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PlaneTypeTitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("AuditId");
-
-                    b.ToTable("PlanePlaneTypeAudit");
-                });
-
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.PlaneType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("CertificationDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("character varying(64)");
 
                     b.HasKey("Id");
 
@@ -2026,20 +2070,20 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("character varying(64)");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -2049,22 +2093,26 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                         new
                         {
                             Id = 1,
-                            Name = "France"
+                            Name = "France",
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Mexico"
+                            Name = "Mexico",
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 3,
-                            Name = "China"
+                            Name = "China",
+                            RowVersionXmin = 0u
                         },
                         new
                         {
                             Id = 4,
-                            Name = "Spain"
+                            Name = "Spain",
+                            RowVersionXmin = 0u
                         });
                 });
 
@@ -2072,41 +2120,41 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AircraftMaintenanceCompanyId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("ArchivedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("ContractNumber")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("character varying(64)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("FixedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<bool>("IsArchived")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsFixed")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.Property<int>("SiteId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -2120,16 +2168,16 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceContractPlane", b =>
                 {
                     b.Property<int>("MaintenanceContractId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("PlaneId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("MaintenanceContractId", "PlaneId");
 
@@ -2141,16 +2189,16 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceTeamAirport", b =>
                 {
                     b.Property<int>("AirportId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("MaintenanceTeamId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("AirportId", "MaintenanceTeamId");
 
@@ -2162,16 +2210,16 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceTeamCountry", b =>
                 {
                     b.Property<int>("CountryId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("MaintenanceTeamId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("CountryId", "MaintenanceTeamId");
 
@@ -2184,48 +2232,48 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.Property<int>("AuditId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("AuditId"));
 
                     b.Property<string>("AuditAction")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("AuditChanges")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("AuditDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("AuditUserLogin")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Domain")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
+                        .HasColumnType("text")
                         .HasDefaultValue("--");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
                     b.Property<string>("Login")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
                     b.HasKey("AuditId");
 
@@ -2243,11 +2291,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.HasBaseType("BIA.Net.Core.Domain.User.Entities.BaseEntityTeam");
 
-                    b.Property<byte[]>("RowVersionAircraftMaintenanceCompany")
+                    b.Property<uint>("RowVersionXminAircraftMaintenanceCompany")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("RowVersionXmin");
 
                     b.ToTable("AircraftMaintenanceCompanies", (string)null);
                 });
@@ -2257,80 +2305,80 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.HasBaseType("BIA.Net.Core.Domain.User.Entities.BaseEntityTeam");
 
                     b.Property<int>("AircraftMaintenanceCompanyId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("ApprovedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("ArchivedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<decimal?>("AverageOperationCost")
                         .HasColumnType("Money");
 
                     b.Property<double?>("AverageOperationDuration")
-                        .HasColumnType("float");
+                        .HasColumnType("double precision");
 
                     b.Property<float?>("AverageTravelDuration")
                         .HasColumnType("real");
 
                     b.Property<string>("Code")
                         .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("character varying(64)");
 
                     b.Property<int>("CurrentAirportId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int?>("CurrentCountryId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("FirstOperation")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("FixedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int?>("IncidentCount")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<bool?>("IsApproved")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsArchived")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsFixed")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime?>("LastOperation")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<TimeSpan>("MaxOperationDuration")
-                        .HasColumnType("time");
+                        .HasColumnType("interval");
 
                     b.Property<TimeSpan?>("MaxTravelDuration")
-                        .HasColumnType("time");
+                        .HasColumnType("interval");
 
                     b.Property<DateTime>("NextOperation")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("OperationCount")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.Property<byte[]>("RowVersionMaintenanceTeam")
+                    b.Property<uint>("RowVersionXminMaintenanceTeam")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("RowVersionXmin");
 
                     b.Property<decimal>("TotalOperationCost")
                         .HasColumnType("Money");
 
                     b.Property<double>("TotalOperationDuration")
-                        .HasColumnType("float");
+                        .HasColumnType("double precision");
 
                     b.Property<float>("TotalTravelDuration")
                         .HasColumnType("real");
@@ -2348,18 +2396,17 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                 {
                     b.HasBaseType("BIA.Net.Core.Domain.User.Entities.BaseEntityTeam");
 
-                    b.Property<byte[]>("RowVersionSite")
+                    b.Property<uint>("RowVersionXminSite")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion")
-                        .HasColumnName("RowVersion");
+                        .HasColumnType("xid")
+                        .HasColumnName("RowVersionXmin");
 
                     b.Property<string>("UniqueIdentifier")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasIndex("UniqueIdentifier")
-                        .IsUnique()
-                        .HasFilter("[UniqueIdentifier] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Sites", (string)null);
                 });
@@ -2370,7 +2417,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.HasDiscriminator().HasValue("User");
                 });
@@ -2793,7 +2840,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.PlanePlaneType", b =>
                 {
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Plane", "Plane")
-                        .WithMany("SimilarPlanePlaneTypes")
+                        .WithMany("SimilarPlaneType")
                         .HasForeignKey("PlaneId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -3012,7 +3059,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
 
                     b.Navigation("Engines");
 
-                    b.Navigation("SimilarPlanePlaneTypes");
+                    b.Navigation("SimilarPlaneType");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceContract", b =>

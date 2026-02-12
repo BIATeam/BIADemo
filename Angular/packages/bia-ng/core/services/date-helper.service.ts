@@ -29,6 +29,28 @@ export class DateHelperService {
     }
   }
 
+  public static fillDateWithLocalTimeFields<TOut>(
+    data: TOut,
+    localTimeFields: string[] | undefined
+  ): void {
+    if (!data) return;
+    const localTimeFieldsSet = new Set(localTimeFields ?? []);
+    Object.keys(data).forEach((key: string) => {
+      const value = (data as any)[key];
+      if (value instanceof Date === true) {
+        if (localTimeFieldsSet.has(key)) {
+          (data as any)[key] = value.toISOString();
+        } else {
+          (data as any)[key] = DateHelperService.toUtc(value);
+        }
+      } else if (DateHelperService.isDate(value)) {
+        (data as any)[key] = new Date(value);
+      } else if (value instanceof Object === true) {
+        this.fillDateWithLocalTimeFields(value, localTimeFields);
+      }
+    });
+  }
+
   public static fillDateISO<TOut>(data: TOut): TOut {
     if (!data) return data;
 

@@ -30,8 +30,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("End")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<DateTimeOffset>("End")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("RawContent")
                         .IsRequired()
@@ -43,8 +43,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                         .HasColumnType("xid")
                         .HasColumnName("xmin");
 
-                    b.Property<DateTime>("Start")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<DateTimeOffset>("Start")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("TypeId")
                         .HasColumnType("integer");
@@ -1783,6 +1783,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                     b.Property<DateTime?>("ArchivedDate")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<DateTimeOffset>("FirstFlightDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<DateTime?>("FixedDate")
                         .HasColumnType("timestamp without time zone");
 
@@ -1799,6 +1802,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
 
                     b.Property<bool>("IsFixed")
                         .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset?>("LastFlightDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()

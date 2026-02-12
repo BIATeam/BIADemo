@@ -7,6 +7,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Security.Principal;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
     using BIA.Net.Core.Common.Enum;
@@ -59,6 +60,9 @@ namespace BIA.Net.Core.Presentation.Api.Features
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IPrincipal>(provider => new BiaClaimsPrincipal(provider.GetService<IHttpContextAccessor>().HttpContext.User));
             services.AddTransient(provider => new UserContext(provider.GetService<IHttpContextAccessor>().HttpContext.Request.Headers.AcceptLanguage.ToString(), biaNetSection.Cultures));
+
+            // Client TimeZone
+            services.AddScoped<IClientTimeZoneContext, HttpClientTimeZoneContext>();
 
             // Swagger
             if (apiFeatures.Swagger?.IsActive == true)

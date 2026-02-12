@@ -29,6 +29,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
                 {
                     { HeaderName.IdentificationNumber, pilot => pilot.IdentificationNumber },
                     { HeaderName.FlightHours, pilot => pilot.FlightHours },
+                    { HeaderName.FirstFlightDate, pilot => pilot.FirstFlightDate },
+                    { HeaderName.LastFlightDate, pilot => pilot.LastFlightDate },
                 };
             }
         }
@@ -56,6 +58,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
 
             entity.IdentificationNumber = dto.IdentificationNumber;
             entity.FlightHours = dto.FlightHours;
+            entity.FirstFlightDate = dto.FirstFlightDate;
+            entity.LastFlightDate = dto.LastFlightDate;
         }
 
         /// <inheritdoc />
@@ -65,6 +69,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             {
                 IdentificationNumber = entity.IdentificationNumber,
                 FlightHours = entity.FlightHours,
+                FirstFlightDate = entity.FirstFlightDate,
+                LastFlightDate = entity.LastFlightDate,
             });
         }
 
@@ -75,6 +81,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             {
                 { HeaderName.IdentificationNumber, () => CSVString(dto.IdentificationNumber) },
                 { HeaderName.FlightHours, () => CSVNumber(dto.FlightHours) },
+                { HeaderName.FirstFlightDate, () => CSVDateTime(dto.FirstFlightDate.UtcDateTime) },
+                { HeaderName.LastFlightDate, () => CSVDateTime(dto.LastFlightDate?.UtcDateTime) },
             };
         }
 
@@ -105,6 +113,16 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             /// Header name for flightHours.
             /// </summary>
             public const string FlightHours = "flightHours";
+
+            /// <summary>
+            /// Header name for first flight date.
+            /// </summary>
+            public const string FirstFlightDate = "firstFlightDate";
+
+            /// <summary>
+            /// Header name for last flight date.
+            /// </summary>
+            public const string LastFlightDate = "lastFlightDate";
         }
     }
 }
