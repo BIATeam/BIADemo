@@ -25,9 +25,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using BIA.Net.Core.Domain.User.Mappers;
     using BIA.Net.Core.Domain.User.Services;
     using BIA.Net.Core.Infrastructure.Data;
-    using BIA.Net.Core.Infrastructure.Data.DateTimeConversion;
-    using BIA.Net.Core.Infrastructure.Data.DateTimeConversion.PostgreSql;
-    using BIA.Net.Core.Infrastructure.Data.DateTimeConversion.SqlServer;
     using BIA.Net.Core.Infrastructure.Data.Repositories;
     using BIA.Net.Core.Infrastructure.Data.Repositories.HistoryRepositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
@@ -225,11 +222,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                                 options.ReplaceService<IHistoryRepository, BiaSqlServerHistoryRepository>();
                             }
 
-                            ((IDbContextOptionsBuilderInfrastructure)options).AddOrUpdateExtension<IDbContextOptionsExtension>(
-                                dbEngine == DbProvider.SqlServer
-                                    ? new SqlServerDateTimeConversionDbContextOptionsExtension(ServiceLifetime.Scoped)
-                                    : new PostgreSqlDateTimeConversionDbContextOptionsExtension(ServiceLifetime.Scoped));
-
                             options.EnableSensitiveDataLogging();
                             options.AddInterceptors(new AuditSaveChangesInterceptor());
                         });
@@ -253,11 +245,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                                 });
                                 options.ReplaceService<IHistoryRepository, BiaSqlServerHistoryRepository>();
                             }
-
-                            ((IDbContextOptionsBuilderInfrastructure)options).AddOrUpdateExtension<IDbContextOptionsExtension>(
-                                dbEngine == DbProvider.SqlServer
-                                    ? new SqlServerDateTimeConversionDbContextOptionsExtension(ServiceLifetime.Transient)
-                                    : new PostgreSqlDateTimeConversionDbContextOptionsExtension(ServiceLifetime.Transient));
 
                             options.EnableSensitiveDataLogging();
                         },
