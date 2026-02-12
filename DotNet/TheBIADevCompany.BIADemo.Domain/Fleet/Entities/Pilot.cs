@@ -32,5 +32,15 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
         /// Gets or sets the site id.
         /// </summary>
         public int SiteId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the first flight date.
+        /// </summary>
+        public DateTimeOffset FirstFlightDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the last flight date.
+        /// </summary>
+        public DateTimeOffset? LastFlightDate { get; set; }
     }
 }

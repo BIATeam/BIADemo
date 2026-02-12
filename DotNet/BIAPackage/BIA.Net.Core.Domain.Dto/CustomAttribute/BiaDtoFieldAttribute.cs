@@ -31,6 +31,11 @@ namespace BIA.Net.Core.Domain.Dto.CustomAttribute
         public string ItemType { get; set; }
 
         /// <summary>
+        /// Indicates whether date and time values should be represented as local time.
+        /// </summary>
+        public bool AsLocalDateTime { get; set; }
+
+        /// <summary>
         /// Indicates whether the property model validation must be active or not.
         /// </summary>
         public bool EnableModelValidation { get; set; }
