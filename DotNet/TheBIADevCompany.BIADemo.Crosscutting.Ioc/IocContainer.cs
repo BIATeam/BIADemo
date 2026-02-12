@@ -63,6 +63,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories;
 #endif
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
+    using Microsoft.EntityFrameworkCore.Infrastructure;
 
     /// <summary>
     /// The IoC Container.

@@ -141,11 +141,7 @@
             [field]="field"
             [options]="options"></bia-table-filter-recap>
         }
-        @if (
-          !isArrayFilter(field) &&
-          columnFilterType !== 'boolean' &&
-          !field.asLocalDateTime
-        ) {
+        @if (!isArrayFilter(field) && columnFilterType !== 'boolean') {
           <input
             pInputText
             class="input-search"
