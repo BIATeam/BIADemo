@@ -88,9 +88,11 @@ namespace BIA.Net.Core.Ioc
         /// <param name="excludedServiceNames">A list of class type names to be excluded from service registration, if any.</param>
         /// <param name="includedServiceNames">A list of class type names to be included for service registration, if any.</param>
         /// <remarks>
-        ///  This method scans the provided class assembly and maps each class to its interface based on naming convention ("I" + ClassName).
-        ///  The mapped pairs are then registered to the IServiceCollection based on the specified ServiceLifetime.
-        ///  The included/excluded service names are taken into account during this process.
+        /// This method scans the provided class assembly and identifies all concrete classes (non-generic, non-abstract).
+        /// For each interface found in the interface assembly, it discovers all classes that implement that interface.
+        /// Each interface-implementation pair is then registered to the IServiceCollection based on the specified ServiceLifetime,
+        /// but only if the interface is not already registered in the collection.
+        /// The included/excluded service names are taken into account during the filtering process.
         /// </remarks>
         public static void RegisterServicesFromAssembly(
             IServiceCollection collection,
