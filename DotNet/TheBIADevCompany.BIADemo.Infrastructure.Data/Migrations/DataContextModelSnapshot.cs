@@ -30,8 +30,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("End")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("End")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("RawContent")
                         .IsRequired()
@@ -43,8 +43,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .HasColumnType("rowversion")
                         .HasColumnName("RowVersion");
 
-                    b.Property<DateTime>("Start")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("Start")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int>("TypeId")
                         .HasColumnType("int");
@@ -1704,6 +1704,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<DateTime?>("ArchivedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTimeOffset>("FirstFlightDate")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<DateTime?>("FixedDate")
                         .HasColumnType("datetime2");
 
@@ -1720,6 +1723,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.Property<bool>("IsFixed")
                         .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LastFlightDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()

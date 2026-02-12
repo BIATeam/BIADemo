@@ -1,14 +1,14 @@
 ﻿import { Injectable, Injector } from '@angular/core';
 import { AbstractDas } from 'packages/bia-ng/core/public-api';
 import { DefaultView } from '../model/default-view';
-import { View } from '../model/view';
+import { View, viewFieldsConfiguration } from '../model/view';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserViewDas extends AbstractDas<View> {
   constructor(injector: Injector) {
-    super(injector, 'Views/UserViews');
+    super(injector, 'Views/UserViews', viewFieldsConfiguration);
   }
 
   public setDefaultView(defaultView: DefaultView) {

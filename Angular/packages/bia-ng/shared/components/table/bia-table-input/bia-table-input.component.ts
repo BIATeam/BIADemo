@@ -30,7 +30,6 @@ import { InputNumber } from 'primeng/inputnumber';
 import { InputText } from 'primeng/inputtext';
 import { MultiSelect } from 'primeng/multiselect';
 import { Select } from 'primeng/select';
-import { Subscription } from 'rxjs';
 import { CrudHelperService } from '../../../services/crud-helper.service';
 import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.component';
 import { DictOptionDto } from '../bia-table/dict-option-dto';
@@ -66,7 +65,6 @@ export class BiaTableInputComponent<CrudItem>
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   specificInputTemplate: TemplateRef<any>;
-  protected sub = new Subscription();
 
   getDisplayDateFormat(
     displayFormat: BiaFieldNumberFormat | BiaFieldDateFormat | null

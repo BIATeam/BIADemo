@@ -737,4 +737,14 @@ export class BiaTableComponent<TDto extends { id: number | string }>
   onRowCollapse(event: TableRowCollapseEvent) {
     this.rowCollapse.emit(event);
   }
+
+  getColumnHeader(fieldConfig: BiaFieldConfig<TDto>): string {
+    const header = this.translateService.instant(fieldConfig.header);
+    if (fieldConfig.asLocalDateTime) {
+      return (
+        header + ' (' + this.translateService.instant('bia.localDateTime') + ')'
+      );
+    }
+    return header;
+  }
 }

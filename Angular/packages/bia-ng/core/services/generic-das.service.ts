@@ -154,11 +154,7 @@ export abstract class GenericDas {
     // param might contains ngrx state item which is immutable : clone to allow update
     param = clone(param);
     param.endpoint = param.endpoint ?? 'save';
-    if (param.items) {
-      param.items.forEach(item => {
-        DateHelperService.fillDate(item);
-      });
-    }
+    DateHelperService.fillDate(param.items);
 
     const url = `${this.route}${param.endpoint}`;
     if (param.offlineMode === true) {
@@ -175,7 +171,10 @@ export abstract class GenericDas {
     // param might contains ngrx state item which is immutable : clone to allow update
     param = clone(param);
     param.endpoint = param.endpoint ?? '';
-    DateHelperService.fillDate(param.item);
+    DateHelperService.fillDateWithLocalTimeFields(
+      param.item,
+      param.localTimeFields
+    );
 
     const url = `${this.route}${param.endpoint}${param.id}`;
     if (param.offlineMode === true) {
@@ -198,7 +197,10 @@ export abstract class GenericDas {
     // param might contains ngrx state item which is immutable : clone to allow update
     param = clone(param);
     param.endpoint = param.endpoint ?? '';
-    DateHelperService.fillDate(param.item);
+    DateHelperService.fillDateWithLocalTimeFields(
+      param.item,
+      param.localTimeFields
+    );
 
     const url = `${this.route}${param.endpoint}`;
     if (param.offlineMode === true) {
