@@ -2,14 +2,14 @@
 import { AbstractDas } from 'packages/bia-ng/core/public-api';
 import { Observable } from 'rxjs';
 import { AssignViewToTeam } from '../model/assign-view-to-team';
-import { View } from '../model/view';
+import { View, viewFieldsConfiguration } from '../model/view';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ViewDas extends AbstractDas<View> {
   constructor(injector: Injector) {
-    super(injector, 'Views');
+    super(injector, 'Views', viewFieldsConfiguration);
   }
 
   public getAll(): Observable<Array<View>> {
