@@ -29,7 +29,7 @@ namespace BIA.Net.Core.Application.User
     /// <typeparam name="TUserFromDirectory">The type of user from directory.</typeparam>
     /// <typeparam name="TAdditionalInfoDto">The type of additional info dto.</typeparam>
     /// <typeparam name="TUserDataDto">The type of user data dto.</typeparam>
-    public class BaseAuthAppService<TUserFromDirectoryDto, TUserFromDirectory, TAdditionalInfoDto, TUserDataDto> : IBaseAuthAppService
+    public abstract class BaseAuthAppService<TUserFromDirectoryDto, TUserFromDirectory, TAdditionalInfoDto, TUserDataDto> : IBaseAuthAppService
         where TUserFromDirectoryDto : BaseUserFromDirectoryDto, new()
         where TUserFromDirectory : IUserFromDirectory, new()
         where TAdditionalInfoDto : BaseAdditionalInfoDto, new()
@@ -51,7 +51,7 @@ namespace BIA.Net.Core.Application.User
         /// <param name="userDirectoryHelper">The user directory helper.</param>
         /// <param name="ldapRepositoryHelper">The LDAP repository helper.</param>
         /// <param name="permissionService">The permission service.</param>
-        public BaseAuthAppService(
+        protected BaseAuthAppService(
             IJwtFactory jwtFactory,
             IPrincipal principal,
             IUserPermissionDomainService userPermissionDomainService,
