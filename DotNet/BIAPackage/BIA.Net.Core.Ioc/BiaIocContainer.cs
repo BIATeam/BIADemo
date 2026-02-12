@@ -103,8 +103,8 @@ namespace BIA.Net.Core.Ioc
             Assembly classAssembly = Assembly.Load(assemblyName);
             Assembly interfaceAssembly = !string.IsNullOrWhiteSpace(interfaceAssemblyName) ? Assembly.Load(interfaceAssemblyName) : classAssembly;
 
-            IEnumerable<Type> classTypes = classAssembly.GetTypes().Where(type => type.IsClass && !type.IsAbstract);
-            IEnumerable<Type> interfaceTypes = interfaceAssembly.GetTypes().Where(type => type.IsInterface);
+            IEnumerable<Type> classTypes = classAssembly.GetTypes().Where(type => !type.IsGenericTypeDefinition && type.IsClass && !type.IsAbstract);
+            IEnumerable<Type> interfaceTypes = interfaceAssembly.GetTypes().Where(type => !type.IsGenericTypeDefinition && type.IsInterface);
 
             if (excludedServiceNames != null)
             {
@@ -137,9 +137,6 @@ namespace BIA.Net.Core.Ioc
                             case ServiceLifetime.Singleton:
                                 collection.AddSingleton(interfaceType, classType);
                                 break;
-                            case ServiceLifetime.Scoped:
-                                collection.AddScoped(interfaceType, classType);
-                                break;
                             case ServiceLifetime.Transient:
                                 collection.AddTransient(interfaceType, classType);
                                 break;
@@ -158,8 +155,7 @@ namespace BIA.Net.Core.Ioc
             RegisterServicesFromAssembly(
                 collection: collection,
                 assemblyName: "BIA.Net.Core.Domain",
-                serviceLifetime: ServiceLifetime.Transient,
-                excludedServiceNames: [nameof(IAuditPropertyMapper), nameof(ILinkedAuditMapper)]);
+                serviceLifetime: ServiceLifetime.Transient);
 
             // Domain
             Assembly assembly = Assembly.Load("BIA.Net.Core.Domain");
