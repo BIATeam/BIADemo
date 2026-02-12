@@ -12,7 +12,6 @@ namespace BIA.Net.Core.Ioc
     using BIA.Net.Core.Application.Permission;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Application.Translation;
-    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.AuthenticationSection;
     using BIA.Net.Core.Common.Enum;

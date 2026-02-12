@@ -32,7 +32,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using BIA.Net.Core.Presentation.Common.Features.HubForClients;
     using Hangfire;
     using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Infrastructure;
     using Microsoft.EntityFrameworkCore.Migrations;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
