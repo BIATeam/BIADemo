@@ -168,7 +168,7 @@ export class BiaFieldConfig<TDto> {
         filterWithDisplay: this.filterWithDisplay,
         customDisplayFormat: this.customDisplayFormat,
         multiline: this.multiline,
-        asLocalDateTime: this.asLocalDateTime,
+        asLocaleDateTime: this.asLocalDateTime,
       }
     );
   }

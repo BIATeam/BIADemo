@@ -141,22 +141,20 @@
             [field]="field"
             [options]="options"></bia-table-filter-recap>
         }
-        @if (
-          !isArrayFilter(field) &&
-          columnFilterType !== 'boolean' &&
-          !field.asLocalDateTime
-        ) {
-          <input
-            pInputText
-            class="input-search"
-            type="{{ field.type === propType.Number ? 'number' : 'text' }}"
-            [placeholder]="field.filterPlaceHolder | translate"
-            (input)="setSimpleFilter($event.target, field)"
-            [value]="isSimpleFilter(table.filters[field.field])?.value ?? ''"
-            [ngClass]="{
-              'p-state-filled':
-                isSimpleFilter(table.filters[field.field])?.value !== '',
-            }" />
+        @if (!isArrayFilter(field) && columnFilterType !== 'boolean') {
+          @if (columnFilterType !== 'boolean') {
+            <input
+              pInputText
+              class="input-search"
+              type="{{ field.type === propType.Number ? 'number' : 'text' }}"
+              [placeholder]="field.filterPlaceHolder | translate"
+              (input)="setSimpleFilter($event.target, field)"
+              [value]="isSimpleFilter(table.filters[field.field])?.value ?? ''"
+              [ngClass]="{
+                'p-state-filled':
+                  isSimpleFilter(table.filters[field.field])?.value !== '',
+              }" />
+          }
         }
       </div>
     </div>
