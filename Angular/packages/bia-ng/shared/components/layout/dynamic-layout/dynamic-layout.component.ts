@@ -76,6 +76,8 @@ export class DynamicLayoutComponent<TDto extends { id: number | string }>
   allowSplitScreenResize = true;
 
   popupTitle: string;
+  popupClosable: boolean;
+  popupVisible: boolean;
   style: any;
   maximizable: boolean;
 
@@ -179,7 +181,9 @@ export class DynamicLayoutComponent<TDto extends { id: number | string }>
     this.popupTitle = '';
     while (child && childScanDepth < this.maxScanDepth) {
       this.hasChildren = true;
+      this.popupVisible = true;
       this.popupTitle = child.data['title'] ?? this.popupTitle;
+      this.popupClosable = child.data['closable'] ?? false;
       this.style = child.data['style'] ?? this.style;
       this.maximizable = child.data['maximizable'] ?? true;
       this.leftWidth = child.data['leftWidth'] ?? this.leftWidth;
@@ -293,5 +297,13 @@ export class DynamicLayoutComponent<TDto extends { id: number | string }>
       this.removeMouseUpListener();
       this.removeMouseUpListener = undefined;
     }
+  }
+
+  onPopupHide() {
+    let route = this.activatedRoute;
+    while (route.firstChild) {
+      route = route.firstChild;
+    }
+    this.router.navigate(['../..'], { relativeTo: route });
   }
 }

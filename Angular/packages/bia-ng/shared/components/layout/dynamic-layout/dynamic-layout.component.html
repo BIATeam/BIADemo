@@ -41,12 +41,12 @@
     [header]="popupTitle | translate"
     [hidden]="!hasChildren"
     [focusOnShow]="false"
-    [visible]="hasChildren"
+    [(visible)]="popupVisible"
     [modal]="true"
-    [closable]="false"
+    [closable]="true"
     [maximizable]="maximizable"
     [style]="style"
-    [contentStyle]="{ overflow: 'auto' }">
+    (onHide)="onPopupHide()">
     <router-outlet #outlet="outlet"></router-outlet>
   </p-dialog>
 } @else {
