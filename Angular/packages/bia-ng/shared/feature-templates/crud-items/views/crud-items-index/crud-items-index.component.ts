@@ -607,86 +607,87 @@ export class CrudItemsIndexComponent<
     this.tableState = tableState;
   }
 
-  onExportCSV(fileName = 'bia.crud.listOf', useAllColumn = false) {
-    fileName = this.translateService.instant(fileName);
-
-    const selectedView = this.biaTableControllerComponent.getSelectedView();
-    if (!useAllColumn && selectedView?.name && selectedView.name.length > 0) {
-      fileName = `${fileName}-${selectedView.name}`;
-    }
-
-    const columns: { [key: string]: string } = {};
-
-    if (useAllColumn === true) {
-      const allColumns = [
-        ...this.crudConfiguration.fieldsConfig.columns.filter(
-          col => col.isVisibleInTable
-        ),
-      ];
-      const columnIdExists = allColumns.some(column => column.field === 'id');
-
-      if (columnIdExists !== true) {
-        allColumns.unshift(new BiaFieldConfig<ListCrudItem>('id', 'bia.id'));
+  translateExportFileName(base: string, includeView = false): string {
+    let fileName = this.translateService.instant(base);
+    if (includeView) {
+      const selectedView = this.biaTableControllerComponent.getSelectedView();
+      if (
+        selectedView?.name &&
+        selectedView.name.length > 0 &&
+        selectedView.name !== 'default'
+      ) {
+        fileName = `${fileName}-${selectedView.name}`;
       }
-
-      allColumns?.map(
-        (x: BiaFieldConfig<ListCrudItem>) =>
-          (columns[x.field.toString()] = this.translateService.instant(
-            x.header
-          ))
-      );
-    } else {
-      this.crudItemListComponent
-        .getPrimeNgTable()
-        ?.columns?.map(
-          (x: BiaFieldConfig<ListCrudItem>) =>
-            (columns[x.field.toString()] = this.translateService.instant(
-              x.header
-            ))
-        );
     }
-
-    const columnsAndFilter: PagingFilterFormatDto = {
-      parentIds: this.crudItemService.getParentIds().map(id => id.toString()),
-      columns: columns,
-      advancedFilter: this.crudConfiguration.fieldsConfig.advancedFilter,
-      ...this.crudItemListComponent.getLazyLoadMetadata(),
-    };
-    this.crudItemService.getFile(columnsAndFilter).subscribe(data => {
-      saveAs(data, fileName + '.csv');
-    });
+    return fileName;
   }
 
-  onExportForImport(fileName = 'bia.crud.listOf') {
-    fileName = this.translateService.instant(fileName);
-
+  buildColumns(
+    config: CrudConfig<any>,
+    useAllColumns: boolean,
+    tableColumns?: BiaFieldConfig<any>[]
+  ): { [key: string]: string } {
     const columns: { [key: string]: string } = {};
+    let columnList: BiaFieldConfig<any>[] = [];
 
-    const allColumns = [
-      ...this.crudConfigurationItem.fieldsConfig.columns.filter(
-        col => col.isVisibleInTable
-      ),
-    ];
-    const columnIdExists = allColumns.some(column => column.field === 'id');
-
-    if (columnIdExists !== true) {
-      allColumns.unshift(new BiaFieldConfig<CrudItem>('id', 'bia.id'));
+    if (useAllColumns) {
+      columnList = [
+        ...config.fieldsConfig.columns.filter(col => col.isVisibleInTable),
+      ];
+    } else if (tableColumns) {
+      columnList = tableColumns;
     }
 
-    allColumns?.map(
-      (x: BiaFieldConfig<CrudItem>) =>
-        (columns[x.field.toString()] = this.translateService.instant(x.header))
-    );
+    const columnIdExists = columnList.some(column => column.field === 'id');
+    if (!columnIdExists) {
+      columnList.unshift(new BiaFieldConfig<any>('id', 'bia.id'));
+    }
 
+    columnList.forEach(x => {
+      columns[x.field.toString()] = this.translateService.instant(x.header);
+    });
+
+    return columns;
+  }
+
+  doExport(
+    fileName: string,
+    columns: { [key: string]: string },
+    exportType: string = 'csv',
+    extra: Partial<PagingFilterFormatDto> = {}
+  ) {
     const columnsAndFilter: PagingFilterFormatDto = {
       parentIds: this.crudItemService.getParentIds().map(id => id.toString()),
       columns: columns,
+      ...extra,
     };
     this.crudItemService
-      .getFile(columnsAndFilter, 'csvForImport')
+      .getFile(columnsAndFilter, exportType)
       .subscribe(data => {
         saveAs(data, fileName + '.csv');
       });
+  }
+
+  onExportCSV(fileName = 'bia.crud.listOf', useAllColumn = false) {
+    const name = this.translateExportFileName(fileName, !useAllColumn);
+    const tableCols = this.crudItemListComponent.getPrimeNgTable()
+      ?.columns as BiaFieldConfig<ListCrudItem>[];
+    const columns = this.buildColumns(
+      this.crudConfiguration,
+      useAllColumn,
+      tableCols
+    );
+    const extra: Partial<PagingFilterFormatDto> = {
+      advancedFilter: this.crudConfiguration.fieldsConfig.advancedFilter,
+      ...this.crudItemListComponent.getLazyLoadMetadata(),
+    };
+    this.doExport(name, columns, 'csv', extra);
+  }
+
+  onExportForImport(fileName = 'bia.crud.listOf') {
+    const name = this.translateExportFileName(fileName);
+    const columns = this.buildColumns(this.crudConfigurationItem, true);
+    this.doExport(name, columns, 'csvForImport');
   }
 
   protected setPermissions() {
