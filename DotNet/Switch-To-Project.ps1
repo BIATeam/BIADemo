@@ -34,8 +34,8 @@ AddBIAProjectToSolution "WorkerService" "WorkerService"
 # Add the library project to the solution
 dotnet sln "$SolutionName.sln" add -s "BIAPackage" "$RelativePathToBIAPackage\NuGetPackage\NuGetPackage.csproj"
 
-# Add the unified BIA.Net.Core.Package project from the solution
-dotnet sln "$SolutionName.sln" add -s "BIAPackage" "$RelativePathToBIAPackage\BIA.Net.Core.Package\BIA.Net.Core.Package.csproj"
+# Add the unified BIA.Net.Core project from the solution
+dotnet sln "$SolutionName.sln" add -s "BIAPackage" "$RelativePathToBIAPackage\BIA.Net.Core\BIA.Net.Core.csproj"
 
 
 function UpdateDirectoryBuildPropsAnalyzersReferences {

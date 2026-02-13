@@ -133,8 +133,8 @@ AddBIAPackageToSolution "WorkerService" "WorkerService"
 # Remove the library from solution
 dotnet sln "$SolutionName.sln" remove "$RelativePathToBIAPackage\NuGetPackage\NuGetPackage.csproj"
 
-# Remove the unified BIA.Net.Core.Package project from the solution
-dotnet sln "$SolutionName.sln" remove "$RelativePathToBIAPackage\BIA.Net.Core.Package\BIA.Net.Core.Package.csproj"
+# Remove the unified BIA.Net.Core project from the solution
+dotnet sln "$SolutionName.sln" remove "$RelativePathToBIAPackage\BIA.Net.Core\BIA.Net.Core.csproj"
 
 function UpdateDirectoryBuildPropsAnalyzersReferences {
     $propsFilePath = "Directory.Build.props"
