@@ -14,20 +14,22 @@
 		<PackageIcon>LogoBIA.png</PackageIcon>
 		<PackageIconUrl />
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<IncludeReferencedProjects>true</IncludeReferencedProjects>
+		<SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\BIA.Net.Core.Common\BIA.Net.Core.Common.csproj" />
-		<ProjectReference Include="..\BIA.Net.Core.Domain.Dto\BIA.Net.Core.Domain.Dto.csproj" />
-		<ProjectReference Include="..\BIA.Net.Core.Domain\BIA.Net.Core.Domain.csproj" />
-		<ProjectReference Include="..\BIA.Net.Core.Application\BIA.Net.Core.Application.csproj" />
-		<ProjectReference Include="..\BIA.Net.Core.Infrastructure.Data\BIA.Net.Core.Infrastructure.Data.csproj" />
-		<ProjectReference Include="..\BIA.Net.Core.Infrastructure.Service\BIA.Net.Core.Infrastructure.Service.csproj" />
-		<ProjectReference Include="..\BIA.Net.Core.Ioc\BIA.Net.Core.Ioc.csproj" />
-		<ProjectReference Include="..\BIA.Net.Core.Presentation.Common\BIA.Net.Core.Presentation.Common.csproj" />
-		<ProjectReference Include="..\BIA.Net.Core.Presentation.Api\BIA.Net.Core.Presentation.Api.csproj" />
-		<ProjectReference Include="..\BIA.Net.Core.WorkerService\BIA.Net.Core.WorkerService.csproj" />
-		<ProjectReference Include="..\BIA.Net.Core.Test\BIA.Net.Core.Test.csproj" />
+		<ProjectReference Include="..\BIA.Net.Core.Common\BIA.Net.Core.Common.csproj" PrivateAssets="all" />
+		<ProjectReference Include="..\BIA.Net.Core.Domain.Dto\BIA.Net.Core.Domain.Dto.csproj" PrivateAssets="all" />
+		<ProjectReference Include="..\BIA.Net.Core.Domain\BIA.Net.Core.Domain.csproj" PrivateAssets="all" />
+		<ProjectReference Include="..\BIA.Net.Core.Application\BIA.Net.Core.Application.csproj" PrivateAssets="all" />
+		<ProjectReference Include="..\BIA.Net.Core.Infrastructure.Data\BIA.Net.Core.Infrastructure.Data.csproj" PrivateAssets="all" />
+		<ProjectReference Include="..\BIA.Net.Core.Infrastructure.Service\BIA.Net.Core.Infrastructure.Service.csproj" PrivateAssets="all" />
+		<ProjectReference Include="..\BIA.Net.Core.Ioc\BIA.Net.Core.Ioc.csproj" PrivateAssets="all" />
+		<ProjectReference Include="..\BIA.Net.Core.Presentation.Common\BIA.Net.Core.Presentation.Common.csproj" PrivateAssets="all" />
+		<ProjectReference Include="..\BIA.Net.Core.Presentation.Api\BIA.Net.Core.Presentation.Api.csproj" PrivateAssets="all" />
+		<ProjectReference Include="..\BIA.Net.Core.WorkerService\BIA.Net.Core.WorkerService.csproj" PrivateAssets="all" />
+		<ProjectReference Include="..\BIA.Net.Core.Test\BIA.Net.Core.Test.csproj" PrivateAssets="all" />
 	</ItemGroup>
 
 	<ItemGroup>
