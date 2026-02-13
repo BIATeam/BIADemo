@@ -85,7 +85,7 @@ function UpdateDirectoryBuildPropsAnalyzersReferences {
 
     $itemGroup2 = $xmlContent.CreateElement("ItemGroup")
     $itemGroup2.SetAttribute("Label", "AnalyzerReferencesBiaPackage")
-    $itemGroup2.SetAttribute("Condition", "`$(MSBuildProjectDirectory.Contains('BIAPackage')) and !`$(MSBuildProjectDirectory.Contains('BIA.Net.Analyzers')) and !`$(MSBuildProjectDirectory.Equals('BIA.Net.Core'))")
+    $itemGroup2.SetAttribute("Condition", "`$(MSBuildProjectDirectory.Contains('BIAPackage')) and !`$(MSBuildProjectDirectory.Contains('BIA.Net.Analyzers')) and !`$(MSBuildProjectDirectory.EndsWith('BIA.Net.Core'))")
 
     $analyzerReference2 = $xmlContent.CreateElement("ProjectReference")
     $analyzerReference2.SetAttribute("Include", "..\BIA.Net.Analyzers\BIA.Net.Analyzers\BIA.Net.Analyzers.csproj")
