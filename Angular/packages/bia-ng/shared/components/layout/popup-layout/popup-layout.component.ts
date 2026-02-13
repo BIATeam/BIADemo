@@ -3,12 +3,13 @@
   Component,
   ComponentRef,
   HostBinding,
+  inject,
   OnDestroy,
   OnInit,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { ActivatedRoute, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import {
   BiaAppConstantsService,
@@ -28,6 +29,8 @@ export class PopupLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   })
   viewContainerRef: ViewContainerRef;
 
+  private router = inject(Router);
+
   constructor(
     public activatedRoute: ActivatedRoute,
     protected serviceInjector: BiaInjectorService
@@ -35,6 +38,9 @@ export class PopupLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   protected dynamicComponent: ComponentRef<any>;
 
   popupTitle: string;
+  popupVisible: boolean = true;
+  popupClosable: boolean;
+  hasParentUrlSegment: boolean;
   style: any;
   maximizable: boolean;
   @HostBinding('class') classes = 'bia-flex';
@@ -49,6 +55,8 @@ export class PopupLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     this.maximizable = snapshot.data['maximizable'] ?? true;
+    this.popupClosable = snapshot.data['closable'] ?? false;
+    this.hasParentUrlSegment = snapshot.data['hasParentUrlSegment'] ?? false;
   }
   ngAfterViewInit() {
     setTimeout(() => {
@@ -63,5 +71,13 @@ export class PopupLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.dynamicComponent !== undefined) {
       this.dynamicComponent.destroy();
     }
+  }
+
+  onPopupHide() {
+    this.router.navigate(['..'], {
+      relativeTo: this.hasParentUrlSegment
+        ? this.activatedRoute.parent
+        : this.activatedRoute,
+    });
   }
 }
