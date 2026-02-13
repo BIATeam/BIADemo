@@ -16,6 +16,7 @@
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<IncludeReferencedProjects>true</IncludeReferencedProjects>
 		<SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+		<TargetsForTfmSpecificContentInPackage>_AddReferencedProjectOutputs</TargetsForTfmSpecificContentInPackage>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -38,6 +39,14 @@
 			<PackagePath></PackagePath>
 		</None>
 	</ItemGroup>
+
+	<Target Name="_AddReferencedProjectOutputs" DependsOnTargets="ResolveReferences">
+		<ItemGroup>
+			<TfmSpecificPackageFile Include="@(ReferenceCopyLocalPaths)" Condition="'%(ReferenceCopyLocalPaths.ReferenceSourceTarget)' == 'ProjectReference'">
+				<PackagePath>lib\$(TargetFramework)\</PackagePath>
+			</TfmSpecificPackageFile>
+		</ItemGroup>
+	</Target>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
 	</Target>
