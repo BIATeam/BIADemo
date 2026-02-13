@@ -300,12 +300,6 @@ export class DynamicLayoutComponent<TDto extends { id: number | string }>
   }
 
   onPopupHide() {
-    let urlPath = '';
-    let route = this.activatedRoute;
-    while (route.firstChild) {
-      route = route.firstChild;
-      urlPath += '../';
-    }
-    this.router.navigate([urlPath], { relativeTo: route });
+    this.router.navigate(['.'], { relativeTo: this.activatedRoute });
   }
 }
