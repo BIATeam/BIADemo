@@ -15,7 +15,7 @@ function AddBIAProjectToSolution {
         # Add the library reference to the executable project
         dotnet add $ProjectFile reference $BIAProjectFile
         # Remove the NuGet package reference
-        dotnet remove $ProjectFile package BIA.Net.Core.$layerPackage
+        dotnet remove $ProjectFile package BIA.Net.Core
     }
 }
 
@@ -33,6 +33,10 @@ AddBIAProjectToSolution "WorkerService" "WorkerService"
 
 # Add the library project to the solution
 dotnet sln "$SolutionName.sln" add -s "BIAPackage" "$RelativePathToBIAPackage\NuGetPackage\NuGetPackage.csproj"
+
+# Add the unified BIA.Net.Core.Package project from the solution
+dotnet sln "$SolutionName.sln" add -s "BIAPackage" "$RelativePathToBIAPackage\BIA.Net.Core.Package\BIA.Net.Core.Package.csproj"
+
 
 function UpdateDirectoryBuildPropsAnalyzersReferences {
     $propsFilePath = "Directory.Build.props"

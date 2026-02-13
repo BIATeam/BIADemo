@@ -113,10 +113,11 @@ function AddBIAPackageToSolution {
         # Remove the library reference
         dotnet remove $ProjectFile reference $BIAProjectFile
         # Restore the NuGet package reference without duplicating version metadata
-        EnsurePackageReferenceWithoutVersion $ProjectFile "BIA.Net.Core.$layerPackage"
+        EnsurePackageReferenceWithoutVersion $ProjectFile "BIA.Net.Core"
     }
 }
 
+# Remove all individual BIA.Net.Core.* projects from solution and project references
 AddBIAPackageToSolution "Crosscutting.Common" "Common"
 AddBIAPackageToSolution "Domain.Dto" "Domain.Dto"
 AddBIAPackageToSolution "Domain" "Domain"
@@ -131,6 +132,9 @@ AddBIAPackageToSolution "WorkerService" "WorkerService"
 
 # Remove the library from solution
 dotnet sln "$SolutionName.sln" remove "$RelativePathToBIAPackage\NuGetPackage\NuGetPackage.csproj"
+
+# Remove the unified BIA.Net.Core.Package project from the solution
+dotnet sln "$SolutionName.sln" remove "$RelativePathToBIAPackage\BIA.Net.Core.Package\BIA.Net.Core.Package.csproj"
 
 function UpdateDirectoryBuildPropsAnalyzersReferences {
     $propsFilePath = "Directory.Build.props"
