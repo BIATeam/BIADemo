@@ -50,7 +50,7 @@ export abstract class CrudItemImportComponent<
 
   constructor(
     protected injector: Injector,
-    protected crudItemService: CrudItemService<CrudItem>
+    protected crudItemService: CrudItemService<any, CrudItem>
   ) {
     this.router = this.injector.get<Router>(Router);
     this.activatedRoute = this.injector.get<ActivatedRoute>(ActivatedRoute);

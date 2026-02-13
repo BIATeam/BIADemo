@@ -31,6 +31,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<Pilot>()
             .Property(e => e.Id);
             modelBuilder.Entity<Pilot>().Property(p => p.IdentificationNumber).IsRequired().HasMaxLength(64);
+            modelBuilder.Entity<Pilot>().Property(p => p.FirstName).IsRequired().HasMaxLength(128);
+            modelBuilder.Entity<Pilot>().Property(p => p.LastName).IsRequired().HasMaxLength(128);
         }
     }
 }

@@ -83,6 +83,30 @@ namespace BIA.Net.Core.Domain.Service
             bool isReadOnlyMode = false);
 
         /// <summary>
+        /// Get the csv with filter.
+        /// </summary>
+        /// <param name="filters">The filters.</param>
+        /// <param name="id">The id.</param>
+        /// <param name="specification">Specification Used to filter query.</param>
+        /// <param name="filter">Filter Query.</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
+        /// <returns>
+        /// A <see cref="Task" /> representing the asynchronous operation.
+        /// </returns>
+        Task<byte[]> GetCsvForImportAsync(
+            TFilterDto filters = null,
+            TKey id = default,
+            Specification<TEntity> specification = null,
+            Expression<Func<TEntity, bool>> filter = null,
+            string accessMode = AccessMode.Read,
+            string queryMode = QueryMode.ReadList,
+            string mapperMode = null,
+            bool isReadOnlyMode = false);
+
+        /// <summary>
         /// Get the DTO list. (with a queryOrder).
         /// </summary>
         /// <param name="id">The id.</param>

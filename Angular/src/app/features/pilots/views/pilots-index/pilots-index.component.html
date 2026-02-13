@@ -11,7 +11,7 @@
       [canExportCSV]="true"
       (create)="onCreate()"
       (exportCSV)="onExportCSV('pilot.listOf')"
-      (fullExportCSV)="onExportCSV('pilot.listOf', true)"
+      (fullExportCSV)="onExportForImport('pilot.listOf')"
       (clone)="onClone()"
       (delete)="onDelete()"
       (import)="onImport()"

@@ -42,9 +42,31 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="mapperMode">Mode of the mapper (optionnal).</param>
         /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
         /// <returns>The list of DTO.</returns>
-        Task<(IEnumerable<TListItemDto> Results, int Total)> GetRangeAsync(
+        new Task<(IEnumerable<TListItemDto> Results, int Total)> GetRangeAsync(
             TFilterDto filters = null,
-            int id = 0,
+            TKey id = default,
+            Specification<TEntity> specification = null,
+            Expression<Func<TEntity, bool>> filter = null,
+            string accessMode = AccessMode.Read,
+            string queryMode = QueryMode.ReadList,
+            string mapperMode = null,
+            bool isReadOnlyMode = false);
+
+        /// <summary>
+        /// Get the DTO list for TDto type.
+        /// </summary>
+        /// <param name="filters">The filters.</param>
+        /// <param name="id">The id.</param>
+        /// <param name="specification">Specification Used to filter query.</param>
+        /// <param name="filter">Filter Query.</param>
+        /// <param name="accessMode">Acces mode, filter on right (optionnal).</param>
+        /// <param name="queryMode">Mode of the query (optionnal).</param>
+        /// <param name="mapperMode">Mode of the mapper (optionnal).</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
+        /// <returns>The list of DTO.</returns>
+        Task<(IEnumerable<TDto> Results, int Total)> GetRangeItemsAsync(
+            TFilterDto filters = null,
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             string accessMode = AccessMode.Read,
@@ -67,8 +89,8 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="mapperMode">Mode of the mapper (optionnal).</param>
         /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
         /// <returns>The list of DTO.</returns>
-        Task<IEnumerable<TListItemDto>> GetAllAsync(
-            int id = 0,
+        new Task<IEnumerable<TListItemDto>> GetAllAsync(
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             QueryOrder<TEntity> queryOrder = null,
@@ -96,10 +118,10 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="mapperMode">Mode of the mapper (optionnal).</param>
         /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
         /// <returns>Data in csv format.</returns>
-        Task<IEnumerable<TListItemDto>> GetAllAsync(
+        new Task<IEnumerable<TListItemDto>> GetAllAsync(
             Expression<Func<TEntity, TKey>> orderByExpression,
             bool ascending,
-            int id = 0,
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             int firstElement = 0,

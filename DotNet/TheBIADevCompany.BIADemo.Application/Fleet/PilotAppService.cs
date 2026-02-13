@@ -5,12 +5,15 @@
 
 namespace TheBIADevCompany.BIADemo.Application.Fleet
 {
+    using System.Collections.Generic;
+    using System.Linq.Expressions;
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
@@ -24,7 +27,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
     /// <summary>
     /// The application service used for pilot.
     /// </summary>
-    public class PilotAppService : CrudAppServiceBase<PilotDto, Pilot, Guid, PagingFilterFormatDto, PilotMapper>, IPilotAppService
+    public class PilotAppService : CrudAppServiceListAndItemBase<PilotDto, PilotListDto, Pilot, Guid, PagingFilterFormatDto, PilotMapper, PilotListMapper>, IPilotAppService
     {
         /// <summary>
         /// The current AncestorTeamId.

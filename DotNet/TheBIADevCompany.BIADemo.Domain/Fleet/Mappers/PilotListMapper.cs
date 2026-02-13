@@ -1,5 +1,5 @@
 // BIADemo only
-// <copyright file="PilotMapper.cs" company="TheBIADevCompany">
+// <copyright file="PilotListMapper.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -11,15 +11,14 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain;
-    using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Mapper;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
     /// <summary>
-    /// The mapper used for Pilot.
+    /// The mapper used for Pilot list.
     /// </summary>
-    public class PilotMapper : BaseMapper<PilotDto, Pilot, Guid>
+    public class PilotListMapper : BaseMapper<PilotListDto, Pilot, Guid>
     {
         /// <inheritdoc />
         public override ExpressionCollection<Pilot> ExpressionCollection
@@ -29,11 +28,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
                 return new ExpressionCollection<Pilot>(base.ExpressionCollection)
                 {
                     { HeaderName.IdentificationNumber, pilot => pilot.IdentificationNumber },
-                    { HeaderName.FirstName, pilot => pilot.FirstName },
-                    { HeaderName.LastName, pilot => pilot.LastName },
-                    { HeaderName.Birthdate, pilot => pilot.Birthdate },
-                    { HeaderName.CPLDate, pilot => pilot.CPLDate },
-                    { HeaderName.BaseAirport, pilot => pilot.BaseAirport != null ? pilot.BaseAirport.Name : null },
+                    { HeaderName.Name, pilot => pilot.FirstName + " " + pilot.LastName },
                     { HeaderName.FlightHours, pilot => pilot.FlightHours },
                     { HeaderName.FirstFlightDate, pilot => pilot.FirstFlightDate },
                     { HeaderName.LastFlightDate, pilot => pilot.LastFlightDate },
@@ -42,21 +37,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
         }
 
         /// <inheritdoc />
-        public override ExpressionCollection<Pilot> ExpressionCollectionFilterIn
-        {
-            get
-            {
-                return new ExpressionCollection<Pilot>(
-                    base.ExpressionCollectionFilterIn,
-                    new ExpressionCollection<Pilot>()
-                    {
-                        { HeaderName.BaseAirport, plane => plane.BaseAirport.Id },
-                    });
-            }
-        }
-
-        /// <inheritdoc />
-        public override void DtoToEntity(PilotDto dto, ref Pilot entity)
+        public override void DtoToEntity(PilotListDto dto, ref Pilot entity)
         {
             var isCreation = entity == null;
             base.DtoToEntity(dto, ref entity);
@@ -77,53 +58,31 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             }
 
             entity.IdentificationNumber = dto.IdentificationNumber;
-            entity.FirstName = dto.FirstName;
-            entity.LastName = dto.LastName;
-            entity.Birthdate = dto.Birthdate;
-            entity.CPLDate = dto.CPLDate;
             entity.FlightHours = dto.FlightHours;
             entity.FirstFlightDate = dto.FirstFlightDate;
             entity.LastFlightDate = dto.LastFlightDate;
-
-            // Map relationship 1-* : BaseAirport
-            entity.BaseAirportId = dto.BaseAirport?.Id;
         }
 
         /// <inheritdoc />
-        public override Expression<Func<Pilot, PilotDto>> EntityToDto()
+        public override Expression<Func<Pilot, PilotListDto>> EntityToDto()
         {
-            return base.EntityToDto().CombineMapping(entity => new PilotDto
+            return base.EntityToDto().CombineMapping(entity => new PilotListDto
             {
                 IdentificationNumber = entity.IdentificationNumber,
-                FirstName = entity.FirstName,
-                LastName = entity.LastName,
-                Birthdate = entity.Birthdate,
-                CPLDate = entity.CPLDate,
+                Name = entity.FirstName + " " + entity.LastName,
                 FlightHours = entity.FlightHours,
                 FirstFlightDate = entity.FirstFlightDate,
                 LastFlightDate = entity.LastFlightDate,
-
-                // Map relationship 1-* : BaseAirport
-                BaseAirport = entity.BaseAirport != null ? new OptionDto
-                {
-                    Id = entity.BaseAirport.Id,
-                    Display = entity.BaseAirport.Name,
-                }
-                : null,
             });
         }
 
         /// <inheritdoc />
-        public override Dictionary<string, Func<string>> DtoToCellMapping(PilotDto dto)
+        public override Dictionary<string, Func<string>> DtoToCellMapping(PilotListDto dto)
         {
             return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
             {
                 { HeaderName.IdentificationNumber, () => CSVString(dto.IdentificationNumber) },
-                { HeaderName.FirstName, () => CSVString(dto.FirstName) },
-                { HeaderName.LastName, () => CSVString(dto.LastName) },
-                { HeaderName.Birthdate, () => CSVDate(dto.Birthdate) },
-                { HeaderName.CPLDate, () => CSVDate(dto.CPLDate) },
-                { HeaderName.BaseAirport, () => CSVString(dto.BaseAirport?.Display) },
+                { HeaderName.Name, () => CSVString(dto.Name) },
                 { HeaderName.FlightHours, () => CSVNumber(dto.FlightHours) },
                 { HeaderName.FirstFlightDate, () => CSVDateTime(dto.FirstFlightDate.UtcDateTime) },
                 { HeaderName.LastFlightDate, () => CSVDateTime(dto.LastFlightDate?.UtcDateTime) },
@@ -131,7 +90,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
         }
 
         /// <inheritdoc/>
-        public override void MapEntityKeysInDto(Pilot entity, PilotDto dto)
+        public override void MapEntityKeysInDto(Pilot entity, PilotListDto dto)
         {
             base.MapEntityKeysInDto(entity, dto);
             dto.SiteId = entity.SiteId;
@@ -154,29 +113,9 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             public const string IdentificationNumber = "identificationNumber";
 
             /// <summary>
-            /// Header name for firs name.
+            /// Header name for name.
             /// </summary>
-            public const string FirstName = "firstName";
-
-            /// <summary>
-            /// Header name for last name.
-            /// </summary>
-            public const string LastName = "lastName";
-
-            /// <summary>
-            /// Header name for birthdate.
-            /// </summary>
-            public const string Birthdate = "birthdate";
-
-            /// <summary>
-            /// Header name for cpl date.
-            /// </summary>
-            public const string CPLDate = "cplDate";
-
-            /// <summary>
-            /// Header name for base airport.
-            /// </summary>
-            public const string BaseAirport = "baseAirport";
+            public const string Name = "name";
 
             /// <summary>
             /// Header name for flightHours.

@@ -1,30 +1,24 @@
-﻿import { OptionDto } from '@bia-team/bia-ng/models';
-import { PropType } from 'packages/bia-ng/models/enum/public-api';
+﻿import { PropType } from 'packages/bia-ng/models/enum/public-api';
 import {
   BaseDto,
   BiaFieldConfig,
   BiaFieldsConfig,
-  BiaFormLayoutConfig,
   FixableDto,
   VersionedDto,
 } from 'packages/bia-ng/models/public-api';
 
 // TODO after creation of CRUD Pilot : adapt the model
-export interface Pilot extends BaseDto<string>, VersionedDto, FixableDto {
+export interface PilotList extends BaseDto<string>, VersionedDto, FixableDto {
   siteId: number;
+  name: string;
   identificationNumber: string;
-  firstName: string;
-  lastName: string;
-  birthdate: Date | null;
-  cplDate: Date;
-  baseAirport: OptionDto | null;
   flightHours: number;
   firstFlightDate: Date;
   lastFlightDate: Date | null;
 }
 
 // TODO after creation of CRUD Pilot : adapt the field configuration
-export const pilotFieldsConfiguration: BiaFieldsConfig<Pilot> = {
+export const pilotListFieldsConfiguration: BiaFieldsConfig<PilotList> = {
   columns: [
     Object.assign(
       new BiaFieldConfig('identificationNumber', 'pilot.identificationNumber'),
@@ -33,23 +27,9 @@ export const pilotFieldsConfiguration: BiaFieldsConfig<Pilot> = {
         isRequired: true,
       }
     ),
-    Object.assign(new BiaFieldConfig('firstName', 'pilot.firstName'), {
+    Object.assign(new BiaFieldConfig('name', 'pilot.name'), {
       type: PropType.String,
       isRequired: true,
-    }),
-    Object.assign(new BiaFieldConfig('lastName', 'pilot.lastName'), {
-      type: PropType.String,
-      isRequired: true,
-    }),
-    Object.assign(new BiaFieldConfig('birthdate', 'pilot.birthdate'), {
-      type: PropType.Date,
-    }),
-    Object.assign(new BiaFieldConfig('cplDate', 'pilot.cplDate'), {
-      type: PropType.Date,
-      isRequired: true,
-    }),
-    Object.assign(new BiaFieldConfig('baseAirport', 'pilot.baseAirport'), {
-      type: PropType.OneToMany,
     }),
     Object.assign(new BiaFieldConfig('flightHours', 'pilot.flightHours'), {
       type: PropType.Number,
@@ -76,7 +56,3 @@ export const pilotFieldsConfiguration: BiaFieldsConfig<Pilot> = {
     }),
   ],
 };
-
-// TODO after creation of CRUD Pilot : adapt the form layout configuration
-export const pilotFormLayoutConfiguration: BiaFormLayoutConfig<Pilot> =
-  new BiaFormLayoutConfig([]);
