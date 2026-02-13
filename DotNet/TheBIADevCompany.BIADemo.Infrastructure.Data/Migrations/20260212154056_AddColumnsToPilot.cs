@@ -17,15 +17,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                 name: "BaseAirportId",
                 table: "Pilots",
                 type: "int",
-                nullable: true,
-                defaultValue: 0);
+                nullable: true);
 
             migrationBuilder.AddColumn<DateTime>(
                 name: "Birthdate",
                 table: "Pilots",
                 type: "datetime2",
-                nullable: true,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+                nullable: true);
 
             migrationBuilder.AddColumn<DateTime>(
                 name: "CPLDate",
@@ -37,14 +35,18 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
             migrationBuilder.AddColumn<string>(
                 name: "FirstName",
                 table: "Pilots",
-                type: "nvarchar(max)",
-                nullable: false);
+                type: "nvarchar(128)",
+                maxLength: 128,
+                nullable: false,
+                defaultValue: "");
 
             migrationBuilder.AddColumn<string>(
                 name: "LastName",
                 table: "Pilots",
-                type: "nvarchar(max)",
-                nullable: false);
+                type: "nvarchar(128)",
+                maxLength: 128,
+                nullable: false,
+                defaultValue: "");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Pilots_BaseAirportId",
@@ -56,8 +58,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                 table: "Pilots",
                 column: "BaseAirportId",
                 principalTable: "Airports",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                principalColumn: "Id");
         }
 
         /// <inheritdoc />

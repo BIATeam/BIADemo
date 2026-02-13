@@ -1704,10 +1704,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<DateTime?>("ArchivedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("BaseAirportId")
+                    b.Property<int?>("BaseAirportId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Birthdate")
+                    b.Property<DateTime?>("Birthdate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("CPLDate")
@@ -1715,9 +1715,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.Property<DateTimeOffset>("FirstFlightDate")
                         .HasColumnType("datetimeoffset");
-                        
+
                     b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<DateTime?>("FixedDate")
                         .HasColumnType("datetime2");
@@ -1738,9 +1740,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.Property<DateTimeOffset?>("LastFlightDate")
                         .HasColumnType("datetimeoffset");
-                        
+
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -2756,9 +2760,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                 {
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Airport", "BaseAirport")
                         .WithMany()
-                        .HasForeignKey("BaseAirportId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BaseAirportId");
 
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.Site.Entities.Site", "Site")
                         .WithMany()
