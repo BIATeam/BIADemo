@@ -311,11 +311,15 @@ export class CrudItemImportService<T extends BaseDto<string | number>> {
         : this.importParam.dateFormat;
       const timeFormat = containsDash ? 'HH:mm' : this.importParam.timeFormat;
 
-      const date: Date = DateHelperService.parseDate(
+      let date: Date = DateHelperService.parseDate(
         dateString,
         dateFormat,
         timeFormat
       );
+      if (column.asLocalDateTime) {
+        date = DateHelperService.toUtc(date);
+      }
+
       if (DateHelperService.isValidDate(date)) {
         csvObj[column.field] = <any>date;
       } else {
@@ -337,11 +341,14 @@ export class CrudItemImportService<T extends BaseDto<string | number>> {
             format = format.split('-').join('/');
           }
         }
-        const date2: Date = DateHelperService.parseDate(
+        let date2: Date = DateHelperService.parseDate(
           dateString,
           format.split(' ')[0],
           format.split(' ')[1]
         );
+        if (column.asLocalDateTime) {
+          date2 = DateHelperService.toUtc(date2);
+        }
         if (DateHelperService.isValidDate(date2)) {
           csvObj[column.field] = <any>date2;
         } else {
