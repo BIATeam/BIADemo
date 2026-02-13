@@ -23,8 +23,8 @@
     "build-bia-ng:prod": "ng build bia-ng --configuration production",
     "deploy": "ng deploy --base-href=/BIADemo/",
     "styles": "dart compile-sass.dart ./src/assets/bia/primeng/bia/layout-primeng-bia.scss ./src/assets/bia/primeng/layout/styles/layout/layout.css --output-style compressed",
-    "stats-compute": "ng build --configuration production --base-href /BIADemo/App/ --stats-json",
-    "stats-display": "webpack-bundle-analyzer --port 4299 dist/BIADemo/stats.json",
+    "stats-compute": "ng build --configuration production --base-href /BIADemo/App/ --stats-json && esbuild-visualizer --metadata dist/BIADemo/stats.json --filename dist/BIADemo/stats.html",
+    "stats-display": "start \"\" \"dist/BIADemo/stats.html\"",
     "stats": "npm run stats-compute && npm run stats-display"
   },
   "private": true,
