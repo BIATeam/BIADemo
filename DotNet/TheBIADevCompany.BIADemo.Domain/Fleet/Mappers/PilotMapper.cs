@@ -154,27 +154,27 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             public const string IdentificationNumber = "identificationNumber";
 
             /// <summary>
-            /// Header name for identificationNumber.
+            /// Header name for firs name.
             /// </summary>
             public const string FirstName = "firstName";
 
             /// <summary>
-            /// Header name for identificationNumber.
+            /// Header name for last name.
             /// </summary>
             public const string LastName = "lastName";
 
             /// <summary>
-            /// Header name for identificationNumber.
+            /// Header name for birthdate.
             /// </summary>
             public const string Birthdate = "birthdate";
 
             /// <summary>
-            /// Header name for identificationNumber.
+            /// Header name for cpl date.
             /// </summary>
-            public const string CPLDate = "cPLDate";
+            public const string CPLDate = "cplDate";
 
             /// <summary>
-            /// Header name for identificationNumber.
+            /// Header name for base airport.
             /// </summary>
             public const string BaseAirport = "baseAirport";
 
