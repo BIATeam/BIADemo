@@ -100,7 +100,7 @@ function EnsurePackageReferenceWithoutVersion {
     $xml.Save($projectFile)
 }
 
-function AddBIAPackageToSolution {
+function RemoveProjectReferenceFromSolution {
     param([string]$layerProject, [string]$layerPackage)
 	
     $SlnFile = "$SolutionName.sln"
@@ -118,17 +118,17 @@ function AddBIAPackageToSolution {
 }
 
 # Remove all individual BIA.Net.Core.* projects from solution and project references
-AddBIAPackageToSolution "Crosscutting.Common" "Common"
-AddBIAPackageToSolution "Domain.Dto" "Domain.Dto"
-AddBIAPackageToSolution "Domain" "Domain"
-AddBIAPackageToSolution "Application" "Application"
-AddBIAPackageToSolution "Infrastructure.Data" "Infrastructure.Data"
-AddBIAPackageToSolution "Infrastructure.Service" "Infrastructure.Service"
-AddBIAPackageToSolution "Crosscutting.Ioc" "Ioc"
-AddBIAPackageToSolution "Crosscutting.Ioc" "Presentation.Common"
-AddBIAPackageToSolution "Presentation.Api" "Presentation.Api"
-AddBIAPackageToSolution "Test" "Test"
-AddBIAPackageToSolution "WorkerService" "WorkerService"
+RemoveProjectReferenceFromSolution "Crosscutting.Common" "Common"
+RemoveProjectReferenceFromSolution "Domain.Dto" "Domain.Dto"
+RemoveProjectReferenceFromSolution "Domain" "Domain"
+RemoveProjectReferenceFromSolution "Application" "Application"
+RemoveProjectReferenceFromSolution "Infrastructure.Data" "Infrastructure.Data"
+RemoveProjectReferenceFromSolution "Infrastructure.Service" "Infrastructure.Service"
+RemoveProjectReferenceFromSolution "Crosscutting.Ioc" "Ioc"
+RemoveProjectReferenceFromSolution "Crosscutting.Ioc" "Presentation.Common"
+RemoveProjectReferenceFromSolution "Presentation.Api" "Presentation.Api"
+RemoveProjectReferenceFromSolution "Test" "Test"
+RemoveProjectReferenceFromSolution "WorkerService" "WorkerService"
 
 # Remove the library from solution
 dotnet sln "$SolutionName.sln" remove "$RelativePathToBIAPackage\NuGetPackage\NuGetPackage.csproj"
