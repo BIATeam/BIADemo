@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<Version>6.0.2</Version>
+		<PackageId>BIA.Net.Core</PackageId>
+		<Title>BIA.Net Core Framework</Title>
+		<Description>BIA.Net Core Framework</Description>
+		<Copyright>Copyright © BIA 2026</Copyright>
+		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+		<Authors>BIA Team</Authors>
+		<Company>BIA</Company>
+		<PackageIcon>LogoBIA.png</PackageIcon>
+		<PackageIconUrl />
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\BIA.Net.Core.Common\BIA.Net.Core.Common.csproj" />
+		<ProjectReference Include="..\BIA.Net.Core.Domain.Dto\BIA.Net.Core.Domain.Dto.csproj" />
+		<ProjectReference Include="..\BIA.Net.Core.Domain\BIA.Net.Core.Domain.csproj" />
+		<ProjectReference Include="..\BIA.Net.Core.Application\BIA.Net.Core.Application.csproj" />
+		<ProjectReference Include="..\BIA.Net.Core.Infrastructure.Data\BIA.Net.Core.Infrastructure.Data.csproj" />
+		<ProjectReference Include="..\BIA.Net.Core.Infrastructure.Service\BIA.Net.Core.Infrastructure.Service.csproj" />
+		<ProjectReference Include="..\BIA.Net.Core.Ioc\BIA.Net.Core.Ioc.csproj" />
+		<ProjectReference Include="..\BIA.Net.Core.Presentation.Common\BIA.Net.Core.Presentation.Common.csproj" />
+		<ProjectReference Include="..\BIA.Net.Core.Presentation.Api\BIA.Net.Core.Presentation.Api.csproj" />
+		<ProjectReference Include="..\BIA.Net.Core.WorkerService\BIA.Net.Core.WorkerService.csproj" />
+		<ProjectReference Include="..\BIA.Net.Core.Test\BIA.Net.Core.Test.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\Images\LogoBIA.png">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+	</Target>
+
+</Project>
