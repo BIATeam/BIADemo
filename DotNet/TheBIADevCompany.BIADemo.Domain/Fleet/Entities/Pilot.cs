@@ -14,14 +14,44 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
     public class Pilot : BaseEntityVersionedFixableArchivable<Guid>
     {
         /// <summary>
-        /// Gets or sets the Manufacturer's Serial Number.
+        /// Gets or sets the Identification number.
         /// </summary>
         public string IdentificationNumber { get; set; }
 
         /// <summary>
-        /// Gets or sets the Manufacturer.
+        /// Gets or sets the First Name of the pilot.
+        /// </summary>
+        public string FirstName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Last Name of the pilot.
+        /// </summary>
+        public string LastName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Birthdate of the pilot.
+        /// </summary>
+        public string Birthdate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Commercial Pilot License obtention date.
+        /// </summary>
+        public DateTime CPLDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Flight Hours.
         /// </summary>
         public int FlightHours { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Base Airport.
+        /// </summary>
+        public Airport BaseAirport { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Base Airport id.
+        /// </summary>
+        public int BaseAirportId { get; set; }
 
         /// <summary>
         /// Gets or sets the site.

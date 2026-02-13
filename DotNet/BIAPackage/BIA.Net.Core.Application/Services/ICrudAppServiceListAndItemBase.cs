@@ -42,9 +42,9 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="mapperMode">Mode of the mapper (optionnal).</param>
         /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
         /// <returns>The list of DTO.</returns>
-        Task<(IEnumerable<TListItemDto> Results, int Total)> GetRangeAsync(
+        new Task<(IEnumerable<TListItemDto> Results, int Total)> GetRangeAsync(
             TFilterDto filters = null,
-            int id = 0,
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             string accessMode = AccessMode.Read,
@@ -67,8 +67,8 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="mapperMode">Mode of the mapper (optionnal).</param>
         /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
         /// <returns>The list of DTO.</returns>
-        Task<IEnumerable<TListItemDto>> GetAllAsync(
-            int id = 0,
+        new Task<IEnumerable<TListItemDto>> GetAllAsync(
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             QueryOrder<TEntity> queryOrder = null,
@@ -96,10 +96,10 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="mapperMode">Mode of the mapper (optionnal).</param>
         /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
         /// <returns>Data in csv format.</returns>
-        Task<IEnumerable<TListItemDto>> GetAllAsync(
+        new Task<IEnumerable<TListItemDto>> GetAllAsync(
             Expression<Func<TEntity, TKey>> orderByExpression,
             bool ascending,
-            int id = 0,
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             int firstElement = 0,
