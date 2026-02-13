@@ -14,8 +14,6 @@ function AddBIAProjectToSolution {
     if ($layerProject -ne "") {
         # Add the library reference to the executable project
         dotnet add $ProjectFile reference $BIAProjectFile
-        # Remove the NuGet package reference
-        dotnet remove $ProjectFile package BIA.Net.Core
     }
 }
 
@@ -87,7 +85,7 @@ function UpdateDirectoryBuildPropsAnalyzersReferences {
 
     $itemGroup2 = $xmlContent.CreateElement("ItemGroup")
     $itemGroup2.SetAttribute("Label", "AnalyzerReferencesBiaPackage")
-    $itemGroup2.SetAttribute("Condition", "`$(MSBuildProjectDirectory.Contains('BIAPackage')) and !`$(MSBuildProjectDirectory.Contains('BIA.Net.Analyzers'))")
+    $itemGroup2.SetAttribute("Condition", "`$(MSBuildProjectDirectory.Contains('BIAPackage')) and !`$(MSBuildProjectDirectory.Contains('BIA.Net.Analyzers')) and !`$(MSBuildProjectDirectory.Equals('BIA.Net.Core'))")
 
     $analyzerReference2 = $xmlContent.CreateElement("ProjectReference")
     $analyzerReference2.SetAttribute("Include", "..\BIA.Net.Analyzers\BIA.Net.Analyzers\BIA.Net.Analyzers.csproj")
@@ -104,6 +102,23 @@ function UpdateDirectoryBuildPropsAnalyzersReferences {
     $itemGroup2.AppendChild($analyzerCodeFixReference2)
 
     $xmlContent.Project.AppendChild($itemGroup2)
+
+    # Save the updated Directory.Build.props
+    $xmlContent.Save($propsFilePath)
+}
+
+function RemoveDirectoryBuildPropsCorePackageReference {
+    $propsFilePath = "Directory.Build.props"
+
+    # Load the content of Directory.Build.props
+    [xml]$xmlContent = Get-Content $propsFilePath
+
+    # Remove CorePackageReference item groups
+    $itemGroupsToRemove = $xmlContent.Project.ItemGroup |
+    Where-Object {
+        $_.Label -eq "CorePackageReference"
+    }
+    $itemGroupsToRemove | ForEach-Object { $_.ParentNode.RemoveChild($_) }
 
     # Save the updated Directory.Build.props
     $xmlContent.Save($propsFilePath)
@@ -128,3 +143,6 @@ AddAnalyzerProjectToSolution "BIA.Net.Analyzers.Vsix"
 
 # Run the function to update Directory.Build.props references to Analyzers
 UpdateDirectoryBuildPropsAnalyzersReferences
+
+# Remove Directory.Build.props reference to BIA.Net.Core package
+RemoveDirectoryBuildPropsCorePackageReference

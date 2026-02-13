@@ -28,7 +28,7 @@
     <ProjectReference Include="..\BIAPackage\BIA.Net.Analyzers\BIA.Net.Analyzers\BIA.Net.Analyzers.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
     <ProjectReference Include="..\BIAPackage\BIA.Net.Analyzers\BIA.Net.Analyzers.CodeFixes\BIA.Net.Analyzers.CodeFixes.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
   </ItemGroup>
-  <ItemGroup Label="AnalyzerReferencesBiaPackage" Condition="$(MSBuildProjectDirectory.Contains('BIAPackage')) and !$(MSBuildProjectDirectory.Contains('BIA.Net.Analyzers')) and !$(MSBuildProjectDirectory.Contains('BIA.Net.Core.Package'))">
+  <ItemGroup Label="AnalyzerReferencesBiaPackage" Condition="$(MSBuildProjectDirectory.Contains('BIAPackage')) and !$(MSBuildProjectDirectory.Contains('BIA.Net.Analyzers')) and !$(MSBuildProjectDirectory.EndsWith('BIA.Net.Core'))">
     <ProjectReference Include="..\BIA.Net.Analyzers\BIA.Net.Analyzers\BIA.Net.Analyzers.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
     <ProjectReference Include="..\BIA.Net.Analyzers\BIA.Net.Analyzers.CodeFixes\BIA.Net.Analyzers.CodeFixes.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
   </ItemGroup>

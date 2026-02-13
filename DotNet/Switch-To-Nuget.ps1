@@ -112,8 +112,6 @@ function RemoveProjectReferenceFromSolution {
     if ($layerProject -ne "") {
         # Remove the library reference
         dotnet remove $ProjectFile reference $BIAProjectFile
-        # Restore the NuGet package reference without duplicating version metadata
-        EnsurePackageReferenceWithoutVersion $ProjectFile "BIA.Net.Core"
     }
 }
 
@@ -180,6 +178,33 @@ function UpdateDirectoryBuildPropsAnalyzersReferences {
     $xmlContent.Save($propsFilePath)
 }
 
+function UpdateDirectoryBuildPropsCorePackageReference {
+    $propsFilePath = "Directory.Build.props"
+
+    # Load the content of Directory.Build.props
+    [xml]$xmlContent = Get-Content $propsFilePath
+
+    # Remove existing CorePackageReference item groups
+    $itemGroupsToRemove = $xmlContent.Project.ItemGroup |
+    Where-Object {
+        $_.Label -eq "CorePackageReference"
+    }
+    $itemGroupsToRemove | ForEach-Object { $_.ParentNode.RemoveChild($_) }
+
+    # Add the CorePackageReference item group
+    $itemGroup = $xmlContent.CreateElement("ItemGroup")
+    $itemGroup.SetAttribute("Label", "CorePackageReference")
+
+    $packageReference = $xmlContent.CreateElement("PackageReference")
+    $packageReference.SetAttribute("Include", "BIA.Net.Core")
+    $itemGroup.AppendChild($packageReference)
+
+    $xmlContent.Project.AppendChild($itemGroup)
+
+    # Save the updated Directory.Build.props
+    $xmlContent.Save($propsFilePath)
+}
+
 # Remove Analyzer projects
 function RemoveAnalyzerProjectToSolution {
     param([string]$analyzerProjectName)
@@ -199,3 +224,6 @@ RemoveAnalyzerProjectToSolution "BIA.Net.Analyzers.Vsix"
 
 # Run the function to update Directory.Build.props references to Analyzers
 UpdateDirectoryBuildPropsAnalyzersReferences
+
+# Run the function to update Directory.Build.props reference to BIA.Net.Core package
+UpdateDirectoryBuildPropsCorePackageReference
