@@ -16,9 +16,9 @@ export interface Pilot extends BaseDto<string>, VersionedDto, FixableDto {
   firstName: string;
   lastName: string;
   birthdate: Date | null;
-  cPLDate: Date;
+  cplDate: Date;
   baseAirport: OptionDto | null;
-  flightHours: number | null;
+  flightHours: number;
   firstFlightDate: Date;
   lastFlightDate: Date | null;
 }
@@ -44,7 +44,7 @@ export const pilotFieldsConfiguration: BiaFieldsConfig<Pilot> = {
     Object.assign(new BiaFieldConfig('birthdate', 'pilot.birthdate'), {
       type: PropType.Date,
     }),
-    Object.assign(new BiaFieldConfig('cPLDate', 'pilot.cPLDate'), {
+    Object.assign(new BiaFieldConfig('cplDate', 'pilot.cplDate'), {
       type: PropType.Date,
       isRequired: true,
     }),
@@ -53,6 +53,7 @@ export const pilotFieldsConfiguration: BiaFieldsConfig<Pilot> = {
     }),
     Object.assign(new BiaFieldConfig('flightHours', 'pilot.flightHours'), {
       type: PropType.Number,
+      isRequired: true,
     }),
     Object.assign(
       new BiaFieldConfig('firstFlightDate', 'pilot.firstFlightDate'),

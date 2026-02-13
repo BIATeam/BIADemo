@@ -17,14 +17,14 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                 name: "BaseAirportId",
                 table: "Pilots",
                 type: "int",
-                nullable: false,
+                nullable: true,
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<DateTime>(
                 name: "Birthdate",
                 table: "Pilots",
                 type: "datetime2",
-                nullable: false,
+                nullable: true,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.AddColumn<DateTime>(
@@ -38,13 +38,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                 name: "FirstName",
                 table: "Pilots",
                 type: "nvarchar(max)",
-                nullable: true);
+                nullable: false);
 
             migrationBuilder.AddColumn<string>(
                 name: "LastName",
                 table: "Pilots",
                 type: "nvarchar(max)",
-                nullable: true);
+                nullable: false);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Pilots_BaseAirportId",
