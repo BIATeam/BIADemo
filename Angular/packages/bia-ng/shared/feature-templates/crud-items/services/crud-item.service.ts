@@ -15,12 +15,12 @@ import { CrudItemSingleService } from './crud-item-single.service';
   providedIn: 'root',
 })
 export abstract class CrudItemService<
-  ListCrudItem extends BaseDto<string | number>,
-  CrudItem extends BaseDto<string | number> = ListCrudItem,
-> extends CrudItemSingleService<CrudItem> {
+  TListCrudItem extends BaseDto<string | number>,
+  TFormCrudItem extends BaseDto<string | number> = TListCrudItem,
+> extends CrudItemSingleService<TFormCrudItem> {
   constructor(
-    public dasService: AbstractDas<ListCrudItem, CrudItem>,
-    public signalRService: CrudItemSignalRService<ListCrudItem, CrudItem>,
+    public dasService: AbstractDas<TListCrudItem, TFormCrudItem>,
+    public signalRService: CrudItemSignalRService<TListCrudItem, TFormCrudItem>,
     public optionsService: CrudItemOptionsService,
     protected injector: Injector
   ) {
@@ -30,7 +30,7 @@ export abstract class CrudItemService<
 
   protected biaMessageService: BiaMessageService;
 
-  abstract crudItems$: Observable<ListCrudItem[]>;
+  abstract crudItems$: Observable<TListCrudItem[]>;
   abstract totalCount$: Observable<number>;
   abstract loadingGetAll$: Observable<boolean>;
   crudItemHistorical$: Observable<HistoricalEntryDto[]>;

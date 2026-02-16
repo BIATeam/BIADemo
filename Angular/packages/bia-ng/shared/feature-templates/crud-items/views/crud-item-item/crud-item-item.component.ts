@@ -14,8 +14,8 @@ import { CrudItemService } from '../../services/crud-item.service';
   imports: [RouterOutlet, SpinnerComponent, AsyncPipe],
 })
 export class CrudItemItemComponent<
-  ListCrudItem extends BaseDto<string | number>,
-  CrudItem extends BaseDto<string | number> = ListCrudItem,
+  TListCrudItem extends BaseDto<string | number>,
+  TFormCrudItem extends BaseDto<string | number> = TListCrudItem,
 >
   implements OnInit, OnDestroy
 {
@@ -24,7 +24,7 @@ export class CrudItemItemComponent<
   protected layoutService: BiaLayoutService;
   constructor(
     protected injector: Injector,
-    public crudItemService: CrudItemService<ListCrudItem, CrudItem>
+    public crudItemService: CrudItemService<TListCrudItem, TFormCrudItem>
   ) {
     this.route = this.injector.get<ActivatedRoute>(ActivatedRoute);
     this.layoutService = this.injector.get<BiaLayoutService>(BiaLayoutService);

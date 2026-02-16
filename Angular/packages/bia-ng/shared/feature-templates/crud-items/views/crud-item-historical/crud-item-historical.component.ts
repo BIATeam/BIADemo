@@ -20,18 +20,18 @@ import { CrudItemComponent } from '../crud-item/crud-item.component';
   styleUrls: ['./crud-item-historical.component.scss'],
 })
 export class CrudItemHistoricalComponent<
-  CrudItem extends BaseDto<string | number>,
-> extends CrudItemComponent<CrudItem> {
+  TFormCrudItem extends BaseDto<string | number>,
+> extends CrudItemComponent<TFormCrudItem> {
   constructor(
     protected injector: Injector,
-    public crudItemService: CrudItemService<CrudItem>,
-    public crudConfiguration: CrudConfig<CrudItem>
+    public crudItemService: CrudItemService<TFormCrudItem>,
+    public crudConfiguration: CrudConfig<TFormCrudItem>
   ) {
     super(injector, crudItemService);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onSubmitted(_: CrudItem): void {
+  onSubmitted(_: TFormCrudItem): void {
     this.navigateBack();
   }
 

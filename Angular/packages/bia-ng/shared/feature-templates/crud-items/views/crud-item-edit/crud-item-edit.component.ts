@@ -26,8 +26,10 @@ import { CrudItemComponent } from '../crud-item/crud-item.component';
   styleUrls: ['./crud-item-edit.component.scss'],
   imports: [CrudItemFormComponent, SpinnerComponent, AsyncPipe],
 })
-export class CrudItemEditComponent<CrudItem extends BaseDto<string | number>>
-  extends CrudItemComponent<CrudItem>
+export class CrudItemEditComponent<
+  TFormCrudItem extends BaseDto<string | number>,
+>
+  extends CrudItemComponent<TFormCrudItem>
   implements OnInit, OnDestroy
 {
   @Output() displayChange = new EventEmitter<boolean>();
@@ -48,7 +50,7 @@ export class CrudItemEditComponent<CrudItem extends BaseDto<string | number>>
 
   constructor(
     protected injector: Injector,
-    public crudItemService: CrudItemSingleService<CrudItem>
+    public crudItemService: CrudItemSingleService<TFormCrudItem>
   ) {
     super(injector, crudItemService);
     this.authService = this.injector.get<AuthService>(AuthService);
@@ -95,7 +97,7 @@ export class CrudItemEditComponent<CrudItem extends BaseDto<string | number>>
     this.onSubmitSub.unsubscribe();
   }
 
-  onSubmitted(crudItemToUpdate: CrudItem) {
+  onSubmitted(crudItemToUpdate: TFormCrudItem) {
     const successActionType = this.crudItemService.updateSuccessActionType;
     const failureActionType = this.crudItemService.updateFailureActionType;
 

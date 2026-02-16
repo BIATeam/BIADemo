@@ -7,6 +7,7 @@ import {
 } from 'packages/bia-ng/shared/public-api';
 import { Permission } from 'src/app/shared/permission';
 import { Pilot } from '../../model/pilot';
+import { PilotList } from '../../model/pilot-list';
 import { pilotCRUDConfiguration } from '../../pilot.constants';
 import { PilotService } from '../../services/pilot.service';
 
@@ -16,7 +17,10 @@ import { PilotService } from '../../services/pilot.service';
     '../../../../../../packages/bia-ng/shared/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
   imports: [CrudItemImportFormComponent, AsyncPipe, BiaFormComponent],
 })
-export class PilotImportComponent extends CrudItemImportComponent<Pilot> {
+export class PilotImportComponent extends CrudItemImportComponent<
+  PilotList,
+  Pilot
+> {
   constructor(
     protected injector: Injector,
     private pilotService: PilotService

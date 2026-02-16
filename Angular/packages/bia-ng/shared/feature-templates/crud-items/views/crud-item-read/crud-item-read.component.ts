@@ -13,8 +13,10 @@ import { CrudItemEditComponent } from '../crud-item-edit/crud-item-edit.componen
   styleUrls: ['./crud-item-read.component.scss'],
   imports: [CrudItemFormComponent, SpinnerComponent, AsyncPipe],
 })
-export class CrudItemReadComponent<CrudItem extends BaseDto<string | number>>
-  extends CrudItemEditComponent<CrudItem>
+export class CrudItemReadComponent<
+  TFormCrudItem extends BaseDto<string | number>,
+>
+  extends CrudItemEditComponent<TFormCrudItem>
   implements OnInit
 {
   public canEdit: boolean;
@@ -30,7 +32,7 @@ export class CrudItemReadComponent<CrudItem extends BaseDto<string | number>>
 
   constructor(
     protected injector: Injector,
-    public crudItemService: CrudItemSingleService<CrudItem>
+    public crudItemService: CrudItemSingleService<TFormCrudItem>
   ) {
     super(injector, crudItemService);
   }
