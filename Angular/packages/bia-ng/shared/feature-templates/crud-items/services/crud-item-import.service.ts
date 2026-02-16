@@ -14,6 +14,7 @@ import {
   BiaFieldDateFormat,
 } from 'packages/bia-ng/models/public-api';
 import * as Papa from 'papaparse';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { combineLatest, from, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { BiaFormComponent } from '../../../components/form/bia-form/bia-form.component';
@@ -51,7 +52,7 @@ export class CrudItemImportService<T extends BaseDto<string | number>> {
   protected form: BiaFormComponent<T>;
   protected importData: ImportData<T>;
   protected tmpImportDataErrors: TmpImportDataError<T>[] = [];
-  protected crudItemService: CrudItemService<T>;
+  protected crudItemService: CrudItemService<any, T>;
   protected crudConfig: CrudConfig<T>;
   public importParam = <ImportParam>{
     useCurrentView: false,
@@ -68,7 +69,7 @@ export class CrudItemImportService<T extends BaseDto<string | number>> {
   public init(
     form: BiaFormComponent<T>,
     crudConfig: CrudConfig<T>,
-    crudItemService: CrudItemService<T>
+    crudItemService: CrudItemService<any, T>
   ): void {
     this.crudItemService = crudItemService;
     this.crudConfig = crudConfig;
@@ -133,28 +134,16 @@ export class CrudItemImportService<T extends BaseDto<string | number>> {
       this.crudConfig.importMode?.useDelete === true ||
       this.crudConfig.importMode?.useUpdate === true
     ) {
-      allObjs$ = this.crudItemService.lastLazyLoadEvent$.pipe(
-        map(event => {
-          const customEvent = { ...event };
-          customEvent.first = 0;
-          customEvent.rows = 0;
+      const customEvent: TableLazyLoadEvent = {
+        first: 0,
+        rows: 0,
+        filters: {},
+        globalFilter: null,
+      };
 
-          if (this.importParam.useCurrentView !== true) {
-            customEvent.filters = {};
-            customEvent.globalFilter = null;
-            if ('advancedFilter' in customEvent) {
-              customEvent.advancedFilter = null;
-            }
-          }
-
-          return customEvent;
-        }),
-        switchMap(event =>
-          this.crudItemService.dasService
-            .getListByPost({ event })
-            .pipe(map(x => x.data))
-        )
-      );
+      allObjs$ = this.crudItemService.dasService
+        .getListItemsByPost<T>({ event: customEvent, endpoint: 'allItems' })
+        .pipe(map(x => x.data));
     } else {
       allObjs$ = of([]);
     }

@@ -16,6 +16,7 @@ import { PilotTableComponent } from '../../components/pilot-table/pilot-table.co
 import { Pilot } from '../../model/pilot';
 import { PilotList } from '../../model/pilot-list';
 import { pilotListCRUDConfiguration } from '../../pilot-list.constants';
+import { pilotCRUDConfiguration } from '../../pilot.constants';
 import { PilotService } from '../../services/pilot.service';
 
 @Component({
@@ -52,6 +53,7 @@ export class PilotsIndexComponent
   ) {
     super(injector, pilotService);
     this.crudConfiguration = pilotListCRUDConfiguration;
+    this.crudConfigurationItem = pilotCRUDConfiguration;
   }
 
   protected setPermissions() {

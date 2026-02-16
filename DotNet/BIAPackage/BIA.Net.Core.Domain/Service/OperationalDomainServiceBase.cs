@@ -278,6 +278,20 @@ namespace BIA.Net.Core.Domain.Service
         }
 
         /// <inheritdoc />
+        public virtual async Task<byte[]> GetCsvForImportAsync(
+            TFilterDto filters = null,
+            TKey id = default,
+            Specification<TEntity> specification = null,
+            Expression<Func<TEntity, bool>> filter = null,
+            string accessMode = AccessMode.Read,
+            string queryMode = QueryMode.ReadList,
+            string mapperMode = null,
+            bool isReadOnlyMode = false)
+        {
+            return await this.GetCsvGenericAsync<TDto, TMapper, TFilterDto>(this.GetRangeGenericAsync<TDto, TMapper, TFilterDto>, filters, id, specification, filter, accessMode, queryMode, mapperMode, isReadOnlyMode);
+        }
+
+        /// <inheritdoc />
         public virtual async Task<TDto> GetAsync(
             TKey id = default,
             Specification<TEntity> specification = null,

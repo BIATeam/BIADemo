@@ -74,6 +74,7 @@ export class CrudItemsIndexComponent<
   implements OnInit, OnDestroy
 {
   public crudConfiguration: CrudConfig<ListCrudItem>;
+  public crudConfigurationItem: CrudConfig<CrudItem>;
 
   @HostBinding('class') classes = 'bia-flex';
   @ViewChild(BiaTableComponent, { static: false })
@@ -654,6 +655,38 @@ export class CrudItemsIndexComponent<
     this.crudItemService.getFile(columnsAndFilter).subscribe(data => {
       saveAs(data, fileName + '.csv');
     });
+  }
+
+  onExportForImport(fileName = 'bia.crud.listOf') {
+    fileName = this.translateService.instant(fileName);
+
+    const columns: { [key: string]: string } = {};
+
+    const allColumns = [
+      ...this.crudConfigurationItem.fieldsConfig.columns.filter(
+        col => col.isVisibleInTable
+      ),
+    ];
+    const columnIdExists = allColumns.some(column => column.field === 'id');
+
+    if (columnIdExists !== true) {
+      allColumns.unshift(new BiaFieldConfig<CrudItem>('id', 'bia.id'));
+    }
+
+    allColumns?.map(
+      (x: BiaFieldConfig<CrudItem>) =>
+        (columns[x.field.toString()] = this.translateService.instant(x.header))
+    );
+
+    const columnsAndFilter: PagingFilterFormatDto = {
+      parentIds: this.crudItemService.getParentIds().map(id => id.toString()),
+      columns: columns,
+    };
+    this.crudItemService
+      .getFile(columnsAndFilter, 'csvForImport')
+      .subscribe(data => {
+        saveAs(data, fileName + '.csv');
+      });
   }
 
   protected setPermissions() {
