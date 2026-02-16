@@ -8,7 +8,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
     using System;
     using System.Collections.Generic;
     using System.Linq.Expressions;
-    using System.Numerics;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain;
@@ -87,7 +86,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             entity.LastFlightDate = dto.LastFlightDate;
 
             // Map relationship 1-* : BaseAirport
-            entity.BaseAirportId = dto.BaseAirport.Id;
+            entity.BaseAirportId = dto.BaseAirport?.Id;
         }
 
         /// <inheritdoc />
@@ -105,11 +104,12 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
                 LastFlightDate = entity.LastFlightDate,
 
                 // Map relationship 1-* : BaseAirport
-                BaseAirport = new OptionDto
+                BaseAirport = entity.BaseAirport != null ? new OptionDto
                 {
                     Id = entity.BaseAirport.Id,
                     Display = entity.BaseAirport.Name,
-                },
+                }
+                : null,
             });
         }
 

@@ -43,7 +43,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Fleet
         /// Gets or sets the Last Name.
         /// </summary>
         [BiaDtoField(Required = false)]
-        public DateTime Birthdate { get; set; }
+        public DateTime? Birthdate { get; set; }
 
         /// <summary>
         /// Gets or sets the Commercial Pilot License obtention date.

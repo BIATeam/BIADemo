@@ -31,7 +31,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
         /// <summary>
         /// Gets or sets the Birthdate of the pilot.
         /// </summary>
-        public DateTime Birthdate { get; set; }
+        public DateTime? Birthdate { get; set; }
 
         /// <summary>
         /// Gets or sets the Commercial Pilot License obtention date.
@@ -51,7 +51,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Entities
         /// <summary>
         /// Gets or sets the Base Airport id.
         /// </summary>
-        public int BaseAirportId { get; set; }
+        public int? BaseAirportId { get; set; }
 
         /// <summary>
         /// Gets or sets the site.
