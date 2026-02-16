@@ -60,6 +60,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories;
 #endif
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
+    using BIA.Net.Core.Application.Services;
+    using TheBIADevCompany.BIADemo.Application.Notification;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Notification;
+    using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
 
     /// <summary>
     /// The IoC Container.
@@ -129,7 +133,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             BiaIocContainer.RegisterServicesFromAssembly(
                 collection: collection,
                 assemblyName: "BIA.Net.Core.Application",
-                serviceLifetime: ServiceLifetime.Transient);
+                serviceLifetime: ServiceLifetime.Transient,
+                excludedServiceNames: [nameof(IBiaFileDownloaderService)]);
 #endif
 
             // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
@@ -145,6 +150,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             }
 
             collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
+            collection.AddTransient<IBiaFileDownloaderService, BiaFileDownloaderService<NotificationAppService, NotificationDto, NotificationListItemDto, Notification>>();
         }
 
         private static void ConfigureDomainContainer(IServiceCollection collection)
