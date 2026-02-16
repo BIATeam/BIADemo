@@ -1,4 +1,4 @@
-﻿import { Injectable } from '@angular/core';
+﻿import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { parse } from 'date-fns';
 import {
@@ -21,6 +21,14 @@ import { DictOptionDto } from '../../../components/table/bia-table/dict-option-d
 import { FormatValuePipe } from '../../../pipes/format-value.pipe';
 import { CrudConfig } from '../model/crud-config';
 import { CrudItemService } from './crud-item.service';
+
+export const SAME_LIST_FORM_MODELS = new InjectionToken<boolean>(
+  'SAME_LIST_FORM_MODELS',
+  {
+    providedIn: 'root',
+    factory: () => true,
+  }
+);
 
 export interface ImportParam {
   useCurrentView: boolean;
@@ -63,7 +71,8 @@ export class CrudItemImportService<
   constructor(
     protected translateService: TranslateService,
     protected biaTranslationService: BiaTranslationService,
-    protected formatValuePipe: FormatValuePipe
+    protected formatValuePipe: FormatValuePipe,
+    @Inject(SAME_LIST_FORM_MODELS) protected isSameListFormModels: boolean
   ) {
     this.initImportParam();
   }
@@ -154,8 +163,9 @@ export class CrudItemImportService<
         }),
         switchMap(event =>
           this.crudItemService.dasService
-            .getListSingleItemsByPost({
+            .getListItemsByPost<TFormCrudItem>({
               event: event,
+              endpoint: this.isSameListFormModels ? 'all' : 'allItems',
             })
             .pipe(map(x => x.data))
         )
