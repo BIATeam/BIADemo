@@ -53,6 +53,12 @@ export abstract class AbstractDas<
     return this.getListItemsByPost<TOutListItem>(param);
   }
 
+  getListSingleItemsByPost(
+    param: GetListByPostParam
+  ): Observable<DataResult<TOutSingleItem[]>> {
+    return this.getListItemsByPost<TOutSingleItem>(param);
+  }
+
   get(param?: GetParam): Observable<TOutSingleItem> {
     return this.getItem<TOutSingleItem>(param);
   }

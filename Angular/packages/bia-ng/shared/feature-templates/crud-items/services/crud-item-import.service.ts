@@ -154,9 +154,8 @@ export class CrudItemImportService<
         }),
         switchMap(event =>
           this.crudItemService.dasService
-            .getListItemsByPost<TFormCrudItem>({
+            .getListSingleItemsByPost({
               event: event,
-              endpoint: 'allItems',
             })
             .pipe(map(x => x.data))
         )
