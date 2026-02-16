@@ -14,7 +14,6 @@ import {
   BiaFieldDateFormat,
 } from 'packages/bia-ng/models/public-api';
 import * as Papa from 'papaparse';
-import { TableLazyLoadEvent } from 'primeng/table';
 import { combineLatest, from, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { BiaFormComponent } from '../../../components/form/bia-form/bia-form.component';
@@ -137,19 +136,31 @@ export class CrudItemImportService<
       this.crudConfig.importMode?.useDelete === true ||
       this.crudConfig.importMode?.useUpdate === true
     ) {
-      const customEvent: TableLazyLoadEvent = {
-        first: 0,
-        rows: 0,
-        filters: {},
-        globalFilter: null,
-      };
+      allObjs$ = this.crudItemService.lastLazyLoadEvent$.pipe(
+        map(event => {
+          const customEvent = { ...event };
+          customEvent.first = 0;
+          customEvent.rows = 0;
 
-      allObjs$ = this.crudItemService.dasService
-        .getListItemsByPost<TFormCrudItem>({
-          event: customEvent,
-          endpoint: 'allItems',
-        })
-        .pipe(map(x => x.data));
+          if (this.importParam.useCurrentView !== true) {
+            customEvent.filters = {};
+            customEvent.globalFilter = null;
+            if ('advancedFilter' in customEvent) {
+              customEvent.advancedFilter = null;
+            }
+          }
+
+          return customEvent;
+        }),
+        switchMap(event =>
+          this.crudItemService.dasService
+            .getListItemsByPost<TFormCrudItem>({
+              event: event,
+              endpoint: 'allItems',
+            })
+            .pipe(map(x => x.data))
+        )
+      );
     } else {
       allObjs$ = of([]);
     }

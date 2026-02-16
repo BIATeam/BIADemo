@@ -653,13 +653,13 @@ export class CrudItemsIndexComponent<
   doExport(
     fileName: string,
     columns: { [key: string]: string },
-    exportType: string = 'csv',
-    extra: Partial<PagingFilterFormatDto> = {}
+    exportType: string = 'csv'
   ) {
     const columnsAndFilter: PagingFilterFormatDto = {
       parentIds: this.crudItemService.getParentIds().map(id => id.toString()),
       columns: columns,
-      ...extra,
+      advancedFilter: this.crudConfiguration.fieldsConfig.advancedFilter,
+      ...this.crudItemListComponent.getLazyLoadMetadata(),
     };
     this.crudItemService
       .getFile(columnsAndFilter, exportType)
@@ -677,11 +677,7 @@ export class CrudItemsIndexComponent<
       useAllColumn,
       tableCols
     );
-    const extra: Partial<PagingFilterFormatDto> = {
-      advancedFilter: this.crudConfiguration.fieldsConfig.advancedFilter,
-      ...this.crudItemListComponent.getLazyLoadMetadata(),
-    };
-    this.doExport(name, columns, 'csv', extra);
+    this.doExport(name, columns, 'csv');
   }
 
   onExportForImport(fileName = 'bia.crud.listOf') {
